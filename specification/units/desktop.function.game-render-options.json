@@ -3,20 +3,21 @@
 	"id": "desktop.function.game-render-options",
 	"kind": "function",
 	"title": "gameRenderOptions",
-	"responsibility": "Owns the gameRenderOptions shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Return the supported optional video preview models with their session cost rates.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/gameRenderOptions.ts"],
 		"symbols": ["gameRenderOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "gameRenderOptions",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Supported Restyle and Lucy model selections, fast-mode flags and cost rates per minute."
 			}
 		],
 		"errors": []

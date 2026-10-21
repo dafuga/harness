@@ -3,31 +3,34 @@
 	"id": "game.function.software3d",
 	"kind": "function",
 	"title": "software3d",
-	"responsibility": "Owns the software3d shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Render a simple projected game scene on a 2D canvas when a WebGL renderer cannot be created.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/game/src/utils/software3d.ts"],
 		"symbols": ["software3d"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "software3d.canvas",
-				"type": "HTMLCanvasElement"
+				"type": "HTMLCanvasElement",
+				"description": "Browser canvas that receives the native scene or supplies game-only video frames."
 			}
 		],
 		"outputs": [
 			{
 				"name": "software3d",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Canvas renderer exposing projected scene rendering and disposal when WebGL cannot be used."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The browser cannot provide a 2D drawing context for the fallback renderer."
 			}
 		]
 	},

@@ -3,33 +3,37 @@
 	"id": "desktop.component.game-checkpoint-editor",
 	"kind": "component",
 	"title": "GameCheckpointEditor",
-	"responsibility": "Owns the GameCheckpointEditor Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Edit checkpoint prerequisites, conditions, actions and agent guidance without changing mechanics.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameCheckpointEditor.svelte"],
 		"symbols": ["GameCheckpointEditor"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameCheckpointEditor.checkpoint",
-				"type": "Checkpoint | null"
+				"type": "Checkpoint | null",
+				"description": "Selected checkpoint whose guidance, rules or saved image are being edited."
 			},
 			{
 				"name": "GameCheckpointEditor.change",
-				"type": "(node: Checkpoint) => void"
+				"type": "(node: Checkpoint) => void",
+				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
 			},
 			{
 				"name": "GameCheckpointEditor.readonly",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCheckpointEditor",
-				"type": "markup"
+				"type": "markup",
+				"description": "Edit checkpoint prerequisites, conditions, actions and agent guidance without changing mechanics. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

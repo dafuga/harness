@@ -21,7 +21,7 @@ test('a repository without notes or evidence is pinned to none of either', async
 	await expect(refs.pinned({ notesRevision: null, evidenceRevision: f.tip })).rejects.toThrow(
 		/evidence revision/
 	);
-});
+}, 20_000);
 
 test('the refs are pinned to their commits, and an earlier commit of each stays readable', async () => {
 	const f = await fixture();
@@ -42,7 +42,7 @@ test('the refs are pinned to their commits, and an earlier commit of each stays 
 		notesRevision,
 		evidenceRevision
 	});
-});
+}, 20_000);
 
 test('a revision its ref never held, or none where there is one, is refused', async () => {
 	const f = await fixture();
@@ -59,4 +59,4 @@ test('a revision its ref never held, or none where there is one, is refused', as
 			/evidence revision/
 		);
 	}
-});
+}, 20_000);

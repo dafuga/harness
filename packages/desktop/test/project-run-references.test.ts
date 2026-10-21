@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import type { ProjectRunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git } from './run-fixture';
+import { fixtureHelper } from './project-fixture';
 
 /**
  * A creation run asks with the registered ids of every catalog, those the request names first,
@@ -21,6 +22,7 @@ async function registered(root: string) {
 	const owned = {
 		...{ ...manifest, id: 'app.function.owned', title: 'owned', dependencies: [], scenarios: [] },
 		owns: { source: ['src/owned.ts'], symbols: [] },
+		helperContracts: [fixtureHelper('src/owned.ts', 'owned', ['page.refunds', 'service.refunds'])],
 		runtime: {
 			kind: 'module',
 			entry: 'src/owned.ts',

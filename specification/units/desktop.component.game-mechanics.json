@@ -3,33 +3,37 @@
 	"id": "desktop.component.game-mechanics",
 	"kind": "component",
 	"title": "GameMechanics",
-	"responsibility": "Owns the GameMechanics Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Edit independent mechanic definitions, inputs and emitted events without changing checkpoints.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameMechanics.svelte"],
 		"symbols": ["GameMechanics"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameMechanics.mechanics",
-				"type": "MechanicDefinition[]"
+				"type": "MechanicDefinition[]",
+				"description": "Authored mechanic definitions, input names, events and implementation guidance."
 			},
 			{
 				"name": "GameMechanics.change",
-				"type": "(list: MechanicDefinition[]) => void"
+				"type": "(list: MechanicDefinition[]) => void",
+				"description": "Callback publishing the replacement mechanic list."
 			},
 			{
 				"name": "GameMechanics.readonly",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameMechanics",
-				"type": "markup"
+				"type": "markup",
+				"description": "Edit independent mechanic definitions, inputs and emitted events without changing checkpoints. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

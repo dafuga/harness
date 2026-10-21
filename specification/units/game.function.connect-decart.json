@@ -3,47 +3,54 @@
 	"id": "game.function.connect-decart",
 	"kind": "function",
 	"title": "connectDecart",
-	"responsibility": "Owns the connectDecart shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Connect canvas video through an injected safe transport with bounded lifetime and deterministic cleanup.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/game/src/utils/connectDecart.ts"],
 		"symbols": ["VideoConnection", "VideoConnector", "decartTransportReady", "connectDecart"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "connectDecart.canvas",
-				"type": "HTMLCanvasElement"
+				"type": "HTMLCanvasElement",
+				"description": "Browser canvas that receives the native scene or supplies game-only video frames."
 			},
 			{
 				"name": "connectDecart.session",
-				"type": "RenderSession"
+				"type": "RenderSession",
+				"description": "Bounded ephemeral rendering session containing the selected model and maximum duration."
 			},
 			{
 				"name": "connectDecart.prompt",
-				"type": "Prompt"
+				"type": "Prompt",
+				"description": "Visual prompt string or options including prompt, cancellation signal and injected safe connector."
 			},
 			{
 				"name": "connectDecart.onStream",
-				"type": "(stream: MediaStream) => void"
+				"type": "(stream: MediaStream) => void",
+				"description": "Callback receiving the remote output stream after connection succeeds."
 			}
 		],
 		"outputs": [
 			{
 				"name": "decartTransportReady",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "False until a credential-safe public provider transport has been configured."
 			},
 			{
 				"name": "connectDecart",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Connected video lifecycle exposing stop, ended and prompt updates; rejects unavailable or failed transports."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "No safe connector is available, cancellation has occurred, or the video connection failed."
 			}
 		]
 	},

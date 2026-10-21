@@ -3,29 +3,32 @@
 	"id": "desktop.function.game-payload",
 	"kind": "function",
 	"title": "gamePayload",
-	"responsibility": "Owns the gamePayload shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validate and sanitize local game creation, document, image and rendering requests at the IPC boundary.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/gamePayload.ts"],
 		"symbols": ["gamePayload"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gamePayload.channel",
-				"type": "string"
+				"type": "string",
+				"description": "Recognized game IPC operation selecting the allowed request fields and validation rules."
 			},
 			{
 				"name": "gamePayload.input",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Untrusted game operation payload to validate before passing to the host service."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gamePayload",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Sanitized operation-specific request; invalid fields and unsupported values throw before service execution."
 			}
 		],
 		"errors": []

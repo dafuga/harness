@@ -3,41 +3,47 @@
 	"id": "game.function.draw2d",
 	"kind": "function",
 	"title": "draw2d",
-	"responsibility": "Owns the draw2d shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Draw the current player, key and gate state on a native two-dimensional canvas.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/game/src/utils/draw2d.ts"],
 		"symbols": ["draw2d", "create2d"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "draw2d.canvas",
-				"type": "HTMLCanvasElement"
+				"type": "HTMLCanvasElement",
+				"description": "Browser canvas that receives the native scene or supplies game-only video frames."
 			},
 			{
 				"name": "draw2d.run",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "draw2d.view",
-				"type": "GameView"
+				"type": "GameView",
+				"description": "Active game view containing scene direction and executable checkpoints."
 			},
 			{
 				"name": "create2d.canvas",
-				"type": "HTMLCanvasElement"
+				"type": "HTMLCanvasElement",
+				"description": "Browser canvas that receives the native scene or supplies game-only video frames."
 			}
 		],
 		"outputs": [
 			{
 				"name": "draw2d",
-				"type": "void"
+				"type": "void",
+				"description": "Paints the supplied game state and view title into the canvas; returns no value."
 			},
 			{
 				"name": "create2d",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Native 2D renderer exposing render and disposal operations for the supplied canvas."
 			}
 		],
 		"errors": []

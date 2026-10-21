@@ -3,35 +3,39 @@
 	"id": "desktop.component.game-create",
 	"kind": "component",
 	"title": "GameCreate",
-	"responsibility": "Owns the GameCreate Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Create an app or dimensional game through the local host and open its resulting workspace.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameCreate.svelte"],
 		"symbols": ["GameCreate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameCreate.bridge",
-				"type": "DesktopBridge"
+				"type": "DesktopBridge",
+				"description": "Local desktop host operations for project creation, persistence and explicit image generation."
 			},
 			{
 				"name": "GameCreate.created",
-				"type": "(snapshot: ProjectSnapshot) => void"
+				"type": "(snapshot: ProjectSnapshot) => void",
+				"description": "Optional callback receiving the created project snapshot instead of full-page navigation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCreate",
-				"type": "markup"
+				"type": "markup",
+				"description": "Create an app or dimensional game through the local host and open its resulting workspace. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Creation or navigation cannot continue when the created game snapshot lacks its project identity."
 			}
 		]
 	},

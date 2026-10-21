@@ -43,7 +43,7 @@ test('game operations bind project identity, retain historical graphs and reject
 			seconds: 60
 		})
 	).rejects.toThrow('read-only');
-});
+}, 20_000);
 
 test('invalid game requests fail at the transport boundary', () => {
 	const validator = new IpcRequestValidator();

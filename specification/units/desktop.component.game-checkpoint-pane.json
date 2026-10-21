@@ -3,33 +3,37 @@
 	"id": "desktop.component.game-checkpoint-pane",
 	"kind": "component",
 	"title": "GameCheckpointPane",
-	"responsibility": "Owns the GameCheckpointPane Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Keep the selected checkpoint image and executable rule editor bound to the same document context.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameCheckpointPane.svelte"],
 		"symbols": ["GameCheckpointPane"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameCheckpointPane.context",
-				"type": "{ checkpoint: Checkpoint; view: GameView; document: GameDocument; projectId?: string | null; revision?: string; commit?: string; bridge?: DesktopBridge; }"
+				"type": "{ checkpoint: Checkpoint; view: GameView; document: GameDocument; projectId?: string | null; revision?: string; commit?: string; bridge?: DesktopBridge; }",
+				"description": "Selected checkpoint, view, document, project identity, revision and host bridge used by both editors."
 			},
 			{
 				"name": "GameCheckpointPane.readonly",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
 			},
 			{
 				"name": "GameCheckpointPane.change",
-				"type": "(node: Checkpoint) => void"
+				"type": "(node: Checkpoint) => void",
+				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCheckpointPane",
-				"type": "markup"
+				"type": "markup",
+				"description": "Keep the selected checkpoint image and executable rule editor bound to the same document context. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

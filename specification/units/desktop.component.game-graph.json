@@ -3,45 +3,52 @@
 	"id": "desktop.component.game-graph",
 	"kind": "component",
 	"title": "GameGraph",
-	"responsibility": "Owns the GameGraph Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Edit checkpoint dependencies and graph positions while showing eligibility and completed progress.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameGraph.svelte"],
 		"symbols": ["GameGraph"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameGraph.checkpoints",
-				"type": "Checkpoint[]"
+				"type": "Checkpoint[]",
+				"description": "Authoritative checkpoint nodes and prerequisite relationships for this view."
 			},
 			{
 				"name": "GameGraph.run",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "GameGraph.selected",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Identity of the checkpoint currently selected in the graph."
 			},
 			{
 				"name": "GameGraph.select",
-				"type": "(id: string) => void"
+				"type": "(id: string) => void",
+				"description": "Callback selecting the requested view or checkpoint identity without saving the document."
 			},
 			{
 				"name": "GameGraph.change",
-				"type": "(nodes: Checkpoint[]) => void"
+				"type": "(nodes: Checkpoint[]) => void",
+				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
 			},
 			{
 				"name": "GameGraph.readonly",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameGraph",
-				"type": "markup"
+				"type": "markup",
+				"description": "Edit checkpoint dependencies and graph positions while showing eligibility and completed progress. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

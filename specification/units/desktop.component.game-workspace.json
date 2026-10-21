@@ -3,25 +3,27 @@
 	"id": "desktop.component.game-workspace",
 	"kind": "component",
 	"title": "GameWorkspace",
-	"responsibility": "Owns the GameWorkspace Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Own game document loading, authoring, optimistic saves and run state across preview, graph and mechanics tabs.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameWorkspace.svelte"],
 		"symbols": ["GameWorkspace"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameWorkspace.props",
-				"type": "Props"
+				"type": "Props",
+				"description": "Local project identity, optional historical commit, read-only state and host bridge for document ownership."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameWorkspace",
-				"type": "markup"
+				"type": "markup",
+				"description": "Own game document loading, authoring, optimistic saves and run state across preview, graph and mechanics tabs. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

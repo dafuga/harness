@@ -3,67 +3,79 @@
 	"id": "game.function.game-step",
 	"kind": "function",
 	"title": "gameStep",
-	"responsibility": "Owns the gameStep shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Advance deterministic independent mechanics and checkpoint actions while preserving progress per game view.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/game/src/utils/gameStep.ts"],
 		"symbols": ["createRun", "stepGame", "gameStep", "enterView"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createRun.seed",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Initial deterministic random seed normalized to an unsigned 32-bit integer."
 			},
 			{
 				"name": "stepGame.run",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "stepGame.input",
-				"type": "GameInput"
+				"type": "GameInput",
+				"description": "Finite movement deltas and optional player branch choice for this fixed tick."
 			},
 			{
 				"name": "stepGame.view",
-				"type": "GameView"
+				"type": "GameView",
+				"description": "Active game view containing scene direction and executable checkpoints."
 			},
 			{
 				"name": "stepGame.mechanics",
-				"type": "Mechanic[]"
+				"type": "Mechanic[]",
+				"description": "Independent mechanics to evaluate against the shared tick snapshot and merge disjoint patches."
 			},
 			{
 				"name": "enterView.run",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "enterView.id",
-				"type": "string"
+				"type": "string",
+				"description": "Destination view identity whose prior checkpoint progress is restored."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createRun",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Fresh deterministic run with initial key-door state and empty completion, event and trace lists."
 			},
 			{
 				"name": "stepGame",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Next run after one fixed tick of mechanics and checkpoint evaluation, retaining view-specific progress."
 			},
 			{
 				"name": "gameStep",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Alias of stepGame with the same deterministic update and validation behavior."
 			},
 			{
 				"name": "enterView",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Run retaining global state and restoring the destination view checkpoint completion list."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Movement is non-finite or mechanics attempt conflicting or unsafe state-field writes."
 			}
 		]
 	},

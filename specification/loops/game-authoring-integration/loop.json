@@ -2,11 +2,9 @@
 	"name": "game-authoring-integration",
 	"goal": "Prove native game creation authoring saved checkpoint images and play on current main before squash landing",
 	"createdAt": "2026-10-21T11:35:45.966Z",
-	"updatedAt": "2026-10-21T11:50:13.346Z",
+	"updatedAt": "2026-10-21T12:00:54.532Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"steps": [
 		{
@@ -40,7 +38,9 @@
 		{
 			"id": "green",
 			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:00:54.532Z",
+			"evidence": "Immutable red 25ea123f and green b30104e0 recorded in the same runtime with identical complete test corpus, command and profile; all five real root/inherited workspace cases pass."
 		},
 		{
 			"id": "verify",

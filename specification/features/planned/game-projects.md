@@ -16,7 +16,7 @@ Create Harness apps or games while retaining app pages. Game views separate UI a
 - AI preview defaults off, discloses rates, supports Restyle 2 and Lucy 2.5 standard/fast, and caps sessions at 60 seconds. Server-side token limits and client lifecycle cleanup enforce the cap; no automatic retries.
 - Permanent Decart credentials remain in the game project's ignored .env.local. Local-only operations reject other project identities and historical writes.
 - Automated regressions, standalone generated-game checks, manual browser flows and fresh inspected screenshots prove the feature. Live provider quality is reported separately and remains unproven without a compliant transport and dedicated credential.
-- Work remains committed on feat/game-projects, unmerged and undeployed.
+- Merge into main only after current-main integration, complete verification and native game authoring acceptance pass. No separate application release is requested.
 
 ## Future Enhancements
 
@@ -52,3 +52,11 @@ The final root E2E run passed all 232 tests across 70 files. Work remains local 
 The native main bundle previously included Decart's browser worker code through createDecartClient and failed CommonJS parsing at import.meta. The server now calls only the token HTTP endpoint with header authentication; live video remains disabled. The normal native build checks both CommonJS bundles with Node before reporting success. The old bundle fails the same guard in an isolated temporary file, while repaired bundles parse and open the native app. This fixes a regression introduced by the game-provider import. Earlier verification treated the native timeout as an environment boundary and did not inspect its startup stage; build-time parsing now makes this failure class immediate. Checkpoint images appear before rule fields so their artwork and graph are visible together.
 
 Native follow-up proof: five game-host tests pass and the actual Harness desktop app opens the committed harness-checkpoint-test-game project with all four generated images. Ten affected browser scenarios pass unchanged after the stable rebuild; the standalone-server scenario was not requested in that run. The broader native planning/Git-LFS image scenario still fails at its expected design-image assertion, outside game checkpoint images. Full root check is not green: it also scanned the disposable .cache/checkpoint-proof dependency test sources and reported unrelated dependency and timing failures. These failures remain recorded; native startup, CommonJS guard and checkpoint browsing are independently verified.
+
+## Current-main integration acceptance
+
+Native game acceptance creates real 2D/3D Git projects through the creation form, edits views and independent mechanics, adds checkpoint prerequisites/conditions/actions, generates an image through the real host boundary with only the external provider controlled, saves, reloads, plays, preserves progress across tabs, reads historical image bytes and returns to app navigation. Disposable fixture projects and profiles are removed. A live GPT Image account request remains separately labelled because no game-owned API key is configured.
+
+The game service lifecycle fixture performs multiple Git snapshots, historical reads and stale-write refusals; its bounded allowance matches the 20-second integration fixtures instead of the default 5-second unit budget. No behavior assertion was removed. Root discovery now excludes ignored generated-project caches and nested dependencies, proven by unchanged real-runner root and inherited-workspace fixtures.
+
+Full desktop verification also exposed older canonical fixture functions without the pure/shared callable metadata now required by main's helper catalog. The shared project fixture and named-reference fixture declare that eligibility; production catalog filtering and all existing behavior assertions remain intact.

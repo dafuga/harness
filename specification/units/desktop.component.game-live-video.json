@@ -3,25 +3,27 @@
 	"id": "desktop.component.game-live-video",
 	"kind": "component",
 	"title": "GameLiveVideo",
-	"responsibility": "Owns the GameLiveVideo Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Attach an explicitly supplied remote video stream to its preview and clear it when replaced.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameLiveVideo.svelte"],
 		"symbols": ["GameLiveVideo"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameLiveVideo.stream",
-				"type": "MediaStream"
+				"type": "MediaStream",
+				"description": "Remote video stream explicitly provided by a running optional AI connection."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameLiveVideo",
-				"type": "markup"
+				"type": "markup",
+				"description": "Attach an explicitly supplied remote video stream to its preview and clear it when replaced. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

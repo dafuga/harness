@@ -30,7 +30,11 @@ export async function fixture() {
 	git(root, 'config', 'user.email', 'fixture@example.invalid');
 	git(root, 'lfs', 'install', '--local');
 	for (const [id, kind, path] of definitions) {
-		await put(root, path, text);
+		await put(
+			root,
+			path,
+			kind === 'function' ? 'export function filter(value: string) { return value; }\n' : text
+		);
 		await put(
 			root,
 			`specification/units/${id}.json`,
@@ -47,6 +51,9 @@ export async function fixture() {
 				status: 'active',
 				owns: { source: [path], symbols: [] },
 				contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
+				...(kind === 'function'
+					? { helperContracts: [fixtureHelper(path, 'filter', ['page.home', 'service.analytics'])] }
+					: {}),
 				dependencies:
 					id === 'page.home' ? [{ unit: 'function.filter', via: 'import', origin: 'declared' }] : []
 			})
@@ -62,11 +69,27 @@ export async function fixture() {
 	git(root, 'commit', '-m', 'feature source');
 	const feature = git(root, 'rev-parse', 'HEAD');
 	git(root, 'checkout', 'main');
-	await put(root, 'src/functions/filter.ts', 'current function source');
+	await put(
+		root,
+		'src/functions/filter.ts',
+		'export function filter(value: string) { return value.trim(); } // current function source\n'
+	);
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'main source');
 	const tip = git(root, 'rev-parse', 'HEAD');
 	const session = new ProjectSessionService();
 	await session.open(root);
 	return { session, base, feature, tip, ...session.requireProject() };
+}
+
+/** Canonical shared helper metadata, rather than an unclassified function-shaped fixture. */
+export function fixtureHelper(source: string, name: string, consumers: string[]) {
+	return {
+		name,
+		source,
+		inputs: [{ name: name + '.value', type: 'string' }],
+		output: 'string',
+		pure: true,
+		consumers: consumers.map((unit) => ({ unit }))
+	};
 }

@@ -3,25 +3,27 @@
 	"id": "game.function.create3d",
 	"kind": "function",
 	"title": "create3d",
-	"responsibility": "Owns the create3d shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Create a native Three.js scene with dimensional cameras and a software fallback when WebGL is unavailable.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/game/src/utils/create3d.ts"],
 		"symbols": ["create3d"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "create3d.canvas",
-				"type": "HTMLCanvasElement"
+				"type": "HTMLCanvasElement",
+				"description": "Browser canvas that receives the native scene or supplies game-only video frames."
 			}
 		],
 		"outputs": [
 			{
 				"name": "create3d",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Native renderer exposing render and disposal operations, using dimensional Three.js cameras or software fallback."
 			}
 		],
 		"errors": []

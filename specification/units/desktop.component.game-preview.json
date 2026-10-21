@@ -3,25 +3,27 @@
 	"id": "desktop.component.game-preview",
 	"kind": "component",
 	"title": "GamePreview",
-	"responsibility": "Owns the GamePreview Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Run native key-door gameplay and preserve progress while keeping optional AI video disabled by default.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GamePreview.svelte"],
 		"symbols": ["GamePreview"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GamePreview.props",
-				"type": "Props"
+				"type": "Props",
+				"description": "Current view, initial run, local project bridge, read-only state and run-update callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GamePreview",
-				"type": "markup"
+				"type": "markup",
+				"description": "Run native key-door gameplay and preserve progress while keeping optional AI video disabled by default. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

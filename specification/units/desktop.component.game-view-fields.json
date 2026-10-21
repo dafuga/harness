@@ -3,45 +3,52 @@
 	"id": "desktop.component.game-view-fields",
 	"kind": "component",
 	"title": "GameViewFields",
-	"responsibility": "Owns the GameViewFields Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Select and edit a game view title, dimension and visual direction with a read-only historical mode.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameViewFields.svelte"],
 		"symbols": ["GameViewFields"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameViewFields.view",
-				"type": "GameView"
+				"type": "GameView",
+				"description": "Active game view containing scene direction and executable checkpoints."
 			},
 			{
 				"name": "GameViewFields.views",
-				"type": "GameView[]"
+				"type": "GameView[]",
+				"description": "Available game views displayed by the view selector."
 			},
 			{
 				"name": "GameViewFields.readonly",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
 			},
 			{
 				"name": "GameViewFields.select",
-				"type": "(id: string) => void"
+				"type": "(id: string) => void",
+				"description": "Callback selecting the requested view or checkpoint identity without saving the document."
 			},
 			{
 				"name": "GameViewFields.create",
-				"type": "() => void"
+				"type": "() => void",
+				"description": "Callback creating an additional game view in the current document."
 			},
 			{
 				"name": "GameViewFields.change",
-				"type": "(patch: Partial<GameView>) => void"
+				"type": "(patch: Partial<GameView>) => void",
+				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameViewFields",
-				"type": "markup"
+				"type": "markup",
+				"description": "Select and edit a game view title, dimension and visual direction with a read-only historical mode. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []

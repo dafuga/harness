@@ -3,29 +3,32 @@
 	"id": "desktop.component.game-trace",
 	"kind": "component",
 	"title": "GameTrace",
-	"responsibility": "Owns the GameTrace Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Show the current game view checkpoint execution trace in a collapsible list.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/GameTrace.svelte"],
 		"symbols": ["GameTrace"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameTrace.run",
-				"type": "GameRun"
+				"type": "GameRun",
+				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
 			},
 			{
 				"name": "GameTrace.view",
-				"type": "GameView"
+				"type": "GameView",
+				"description": "Active game view containing scene direction and executable checkpoints."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameTrace",
-				"type": "markup"
+				"type": "markup",
+				"description": "Show the current game view checkpoint execution trace in a collapsible list. Renders reactive UI and publishes edits through its callbacks."
 			}
 		],
 		"errors": []
