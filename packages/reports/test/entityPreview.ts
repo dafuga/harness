@@ -1,7 +1,7 @@
 import { mount, unmount } from 'svelte';
 import ExplorerContent from '../src/components/harness/ExplorerContent.svelte';
 import HarnessShell from '../src/components/harness/HarnessShell.svelte';
-import { explorerRoutePath } from '../../../src/utils/explorerRoute';
+import { explorerRoute, explorerRoutePath } from '../../../src/utils/explorerRoute';
 import '../src/lib/styles/base.css';
 import '../src/lib/styles/base-2.css';
 import '../src/lib/styles/base-3.css';
@@ -118,7 +118,11 @@ function show(route: ExplorerLocation) {
 /** The address the page was opened at, or the pages of the branch tip without one. */
 function asked(): ExplorerLocation {
 	const named = decodeURIComponent(location.hash.slice(1));
-	return named ? (JSON.parse(named) as ExplorerLocation) : place({ commit: null });
+	if (named) return JSON.parse(named) as ExplorerLocation;
+	return (
+		explorerRoute(location.pathname.replace(/^\/harness/, ''), location.search) ??
+		place({ commit: null })
+	);
 }
 window.addEventListener('hashchange', () => show(asked()));
 if (variant === 'console') {

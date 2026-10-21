@@ -39,6 +39,11 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		await expect(page.getByRole('heading', { level: 1 })).toHaveText(name);
 	}
 	expect(await fits(page)).toBe(true);
+	await reviewConsoleAddress(page, commit, viewport);
+}
+
+/** The real host resolves readable links and restores them on refresh. */
+async function reviewConsoleAddress(page: Page, commit: string | null, viewport: string) {
 	await open(
 		page,
 		{
