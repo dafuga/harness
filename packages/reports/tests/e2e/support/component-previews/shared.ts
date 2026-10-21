@@ -1,4 +1,5 @@
 import { createRawSnippet } from 'svelte';
+import { formatDuration } from '../../../../src/utils/evidenceMedia';
 export type PreviewProps = Record<string, unknown>;
 export type PreviewCases = Record<string, PreviewProps>;
 export const noop = () => {};
@@ -27,7 +28,7 @@ export const example = {
 	name: 'Format a duration',
 	description: 'Turns seconds into display text.',
 	call: 'formatDuration(90)',
-	output: '"1:30"',
+	output: formatDuration(90),
 	input: { seconds: 90 },
 	result: '1:30'
 };
