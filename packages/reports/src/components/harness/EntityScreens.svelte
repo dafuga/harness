@@ -69,6 +69,7 @@
 	}
 	/** Where a shown capture was taken and how its check ended; a reused one names its commit. */
 	function standing(item: Evidence): string {
+		if (item.standing === 'Focused capture') return item.standing;
 		const reused = item.phase !== 'before' && shown.origin;
 		const origin = reused ? `Inherited from ${shortCommit(reused)}` : item.standing;
 		return [origin, item.status].filter(Boolean).join(' · ');
@@ -118,7 +119,9 @@
 					<strong>{named.title}</strong>
 					{#if named.role}<span class="ex-pill">{named.role}</span>{/if}
 					{#if !item.missing}
-						<span class="ex-standing" class:stale={item.standing !== 'Fresh capture'}
+						<span
+							class="ex-standing"
+							class:stale={item.standing !== 'Fresh capture' && item.standing !== 'Focused capture'}
 							>{standing(item)}</span
 						>
 						<button type="button" class="ex-text-button" onclick={() => (viewing = item)}

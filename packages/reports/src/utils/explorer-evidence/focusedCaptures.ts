@@ -56,6 +56,12 @@ export function focusedScenario(
 	const viewports = [
 		...new Set(captures.map((item) => item.capture.viewport).filter((id) => id !== undefined))
 	];
+	const declared = sides.flatMap(
+		(side) =>
+			side?.detail?.registry.scenarios
+				.filter((scenario) => scenario.units.includes(unit))
+				.flatMap((scenario) => scenario.viewports) ?? []
+	);
 	const fallback: Record<string, [number, number]> = {
 		desktop: [1440, 900],
 		tablet: [920, 800],
@@ -71,8 +77,11 @@ export function focusedScenario(
 			states: states.map((id) => ({ id, coverage: 'required' })),
 			viewports: viewports.map((id) => {
 				const size = captures.find((item) => item.capture.viewport === id)?.focused?.viewport;
-				const [width, height] = fallback[id] ?? [0, 0];
-				return { id, width: size?.width ?? width, height: size?.height ?? height };
+				const viewport = declared.find(
+					(item) => item.id === id && (!size || item.width === size.width)
+				);
+				const [width, height] = fallback[id] ?? [size?.width ?? 0, size?.height ?? 0];
+				return { id, width: viewport?.width ?? width, height: viewport?.height ?? height };
 			})
 		}
 	];

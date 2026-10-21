@@ -11,33 +11,39 @@
 		"symbols": ["focusedCaptures", "focusedScenario"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "focusedCaptures.detail",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Stored revision whose validated focused captures are considered; only points of this exact commit are eligible."
 			},
 			{
 				"name": "focusedCaptures.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Registered unit identifier; another unit cannot supply a missing screenshot."
 			},
 			{
 				"name": "focusedScenario.sides",
-				"type": "Array<ExplorerSide | null>"
+				"type": "Array<ExplorerSide | null>",
+				"description": "Selected commit and first-parent evidence, retaining the union of their focused states and viewport declarations."
 			},
 			{
 				"name": "focusedScenario.unit",
-				"type": "string"
+				"type": "string",
+				"description": "Unit whose focused gallery is described independently of full-verification scenario coverage."
 			}
 		],
 		"outputs": [
 			{
 				"name": "focusedCaptures",
-				"type": "ExplorerCapture[]"
+				"type": "ExplorerCapture[]",
+				"description": "Newest stored screenshot for each state and viewport, bound to this unit, served build and exact revision; no full verification verdict is granted."
 			},
 			{
 				"name": "focusedScenario",
-				"type": "HarnessScenario[]"
+				"type": "HarnessScenario[]",
+				"description": "Focused gallery declarations with its captured states and viewports; empty when neither side has a usable focused image."
 			}
 		],
 		"errors": []
