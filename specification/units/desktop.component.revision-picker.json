@@ -23,7 +23,7 @@
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "One summary line names the branch, explicitly selected short commit hash, or selected environment scope with its source-specific timestamp. Icon dialogs select branches and commits; View actions also confirm the current value. Go to tip exits a pinned revision."
+				"description": "One summary line names the branch or explicit short commit hash with its timestamp. For an environment scope, it reads Updated at and the deployment date and time; the selector already names the environment. Icon dialogs select revisions and Go to tip exits a pinned revision."
 			}
 		],
 		"errors": []

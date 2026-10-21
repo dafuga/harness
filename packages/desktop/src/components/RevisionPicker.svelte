@@ -4,11 +4,7 @@
 	import { displayTime, revisionTime } from '../utils/revisionTime';
 	import ChoiceDialog from './ChoiceDialog.svelte';
 	import Icon from './Icon.svelte';
-	/**
-	 * The selected context and its source-specific update time share one line; its branch and commit pickers wait behind icons.
-	 * Git times are told as such: when the commit and the branch tip were committed, never when
-	 * anything was deployed.
-	 */
+	/** One selected context and its source-specific update time, with revision choices behind icons. */
 	let { workspace }: { workspace: Workspace } = $props();
 	let branch = $state('');
 	let commit = $state('');
@@ -30,7 +26,7 @@
 		workspace.deployments.viewing ? workspace.deployments.environment : null
 	);
 	const name = $derived(
-		environment ?? (workspace.pinned ? revision?.commit.slice(0, 7) : revision?.branch)
+		environment ? 'Updated at' : workspace.pinned ? revision?.commit.slice(0, 7) : revision?.branch
 	);
 	const updated = $derived(
 		environment
@@ -109,7 +105,8 @@
 		</div>
 		<div class="revision-summary" aria-label="Viewed context">
 			<strong title={name}>{name}</strong><small
-				>· <time datetime={updated ?? undefined} title="Last updated">{displayTime(updated)}</time
+				>{environment ? '' : '· '}<time datetime={updated ?? undefined} title="Last updated"
+					>{displayTime(updated)}</time
 				></small
 			>
 		</div>
