@@ -151,9 +151,17 @@ const initializedModules = [
 	]
 ] as const;
 
-test.each(initializedModules)(
-	'registered %s modules retain only actual initialization observations',
-	async (_label, source, operation, expected, count) => {
+test.each(
+	initializedModules.map(([label, source, operation, expected, count]) => ({
+		label,
+		source,
+		operation,
+		expected,
+		count
+	}))
+)(
+	'registered $label modules retain only actual initialization observations',
+	async ({ source, operation, expected, count }) => {
 		const fixture = await runnerFixture(source, 'fields', 'object');
 		try {
 			await fixture.write(
