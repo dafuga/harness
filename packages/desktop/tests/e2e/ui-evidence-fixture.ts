@@ -9,9 +9,7 @@ import type {
 import { commits, evidenceData, ids, soundScenario, type EvidenceData } from './ui-evidence-data';
 export * from './ui-evidence-data';
 /**
- * SYNTHETIC BACKEND. A bridge like the one a backend gives the viewer, with the two evidence
- * reads answered from a sealed synthetic history: `evidence` answers what the reports functions
- * made of that history, and `artifact` gives bytes only for a binding that such an answer named.
+ * SYNTHETIC BACKEND: sealed history answers evidence and its bound artifact bytes.
  * No repository, server, account or credential exists here.
  */
 type Reads = Required<Pick<DesktopBridge, 'evidence' | 'artifact'>>;
@@ -61,13 +59,9 @@ function installProject(input: unknown) {
 	const host = window as unknown as Host;
 	const state = host.__evidence;
 	const shared = { comments: true, agents: false, planning: false, approval: false };
+	const repositoryUrl = 'https://github.com/fixture/orders';
 	const snapshot = (commit: string | null = null) => ({
-		project: {
-			name: data.project.name,
-			root: '/tmp/orders',
-			id: data.project.id,
-			repositoryUrl: 'https://github.com/fixture/orders'
-		},
+		project: { ...data.project, root: '/tmp/orders', repositoryUrl },
 		capabilities: data.shared
 			? { ...shared, source: 'github' }
 			: { comments: true, agents: true, planning: true, approval: true, source: 'local' },
@@ -97,10 +91,7 @@ function installProject(input: unknown) {
 			return found;
 		},
 		image: async () => new Uint8Array(data.design),
-		source: async (input: { path: string }) => ({
-			path: input.path,
-			text: `// ${input.path}\nexport {};`
-		}),
+		source: async ({ path }: { path: string }) => ({ path, text: `// ${path}\nexport {};` }),
 		messages: async () => [],
 		providers: async () => [],
 		onRunEvent: () => () => {},
