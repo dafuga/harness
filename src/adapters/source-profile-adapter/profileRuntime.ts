@@ -14,7 +14,6 @@ interface Boundary {
 }
 
 const profiler = new PerformanceProfileService();
-const sourceSampleLimit = 10;
 let flushing = false;
 
 /** A failed import never reaches its finishing statement and therefore emits no success sample. */
@@ -29,6 +28,7 @@ export function watchOperation<T extends (...args: never[]) => unknown>(
 	boundary: Boundary
 ): T {
 	if (!process.env.HARNESS_RUNTIME_PROFILE_DIR) return operation;
+	const sourceSampleLimit = 10;
 	if (boundary.inferredName && !operation.name)
 		Object.defineProperty(operation, 'name', { value: boundary.inferredName, configurable: true });
 	const input = observationInput(boundary, `first-${sourceSampleLimit}-successes`);
