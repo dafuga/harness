@@ -2,11 +2,9 @@
 	"name": "tab-focus-underline",
 	"goal": "Entity tabs show keyboard focus without clipped yellow side borders",
 	"createdAt": "2026-10-21T15:18:18.964Z",
-	"updatedAt": "2026-10-21T15:20:53.239Z",
+	"updatedAt": "2026-10-21T15:24:52.293Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,17 +32,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:22:43.395Z",
+			"evidence": "Shared entity-tab :focus-visible rule replaces the clipped outline with a text underline. Selected-tab bottom border and other controls are unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:22:46.347Z",
+			"evidence": "All 3 unchanged responsive cases pass at 9aab8d562 on the same pinned runtime and environment; record 99ee4619. Live Contract focus reports outline none and text underline."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:24:52.293Z",
+			"evidence": "Reports bun run check passes: 613 unit tests, types, lint, all builds and audit. Three responsive red/green browser cases pass; live helper page manually checked and fresh before/after screenshots inspected. Earlier root full check remains blocked by stale console navigation expectations."
 		}
 	],
 	"evaluators": [
