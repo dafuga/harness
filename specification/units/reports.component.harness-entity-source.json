@@ -14,33 +14,38 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "EntitySource.unit",
-				"type": "HarnessUnit",
-				"description": "Required unit with owned files/symbols, runtime targets, identity and version."
+				"name": "EntitySource.entity",
+				"type": "ExplorerEntity",
+				"description": "Entity at the selected revision, including its owned files, symbols, runtime targets and source metadata."
 			},
 			{
-				"name": "EntitySource.mediaBase",
-				"type": "string",
-				"description": "Existing authorized media route prefix for this history."
-			},
-			{
-				"name": "EntitySource.commit",
-				"type": "string",
-				"description": "Commit that archived these files, including a removed entity’s last retained revision."
+				"name": "EntitySource.nav",
+				"type": "EntityNav",
+				"description": "Enclosing screen navigation with the revision-scoped source modal callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySource",
 				"type": "markup",
-				"description": "Ownership details plus the shared source reader. Files are fetched only from validated content-addressed media references; older histories and unreadable files state explicit gaps."
+				"description": "Owned files, symbols and execution targets, plus a View code button opening the screen modal. No source file is fetched or rendered inline."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.source-content",
+			"unit": "reports.component.source-code-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -16,7 +16,6 @@
 	import RelationshipsPanel from '../RelationshipsPanel.svelte';
 	import HistoryPanel from '../history-panel/HistoryPanel.svelte';
 	import DetailsPanel from '../DetailsPanel.svelte';
-	import EntitySourceAction from '../EntitySourceAction.svelte';
 	import MeasuresPanel from '../MeasuresPanel.svelte';
 	import PlanBadge from '../PlanBadge.svelte';
 	import RuntimeEvidence from '../RuntimeEvidence.svelte';
@@ -147,7 +146,6 @@
 				<p>{entity.summary}</p>
 				{#if route}<p class="app-route"><span>App route</span><code>{route}</code></p>{/if}
 			</div>
-			<EntitySourceAction {entity} {workspace} title={name} />
 			{#if !conversation}<button onclick={() => (conversation = true)}>Conversation</button>{/if}
 		</div>
 		{#if pictured}<RuntimeEvidence {entity} {workspace} {evidence} />{/if}
@@ -165,6 +163,7 @@
 			{#key `${entity.id}:${workspace.snapshot?.revision.commit}`}<DetailsPanel
 					{entity}
 					{workspace}
+					title={name}
 				/>{/key}
 		{:else if tab === 'Overview'}<div class="base-panels">
 				<ContractPanel contract={entity.contract} /><MeasuresPanel

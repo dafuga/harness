@@ -28,17 +28,12 @@
 			{
 				"name": "EntityCard",
 				"type": "markup",
-				"description": "Catalog entity card with its existing preview and navigation plus independent View code. Source uses the selected project and revision without navigating away."
+				"description": "Catalog entity preview and navigation. Reading code is available from the entity detail Source tab, without an action on the card."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
-		{
-			"unit": "desktop.component.entity-source-action",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "desktop.component.plan-badge",
 			"via": "import",

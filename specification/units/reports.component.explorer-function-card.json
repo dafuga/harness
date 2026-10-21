@@ -28,7 +28,7 @@
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "Linked helper invocation or model name, Used In row and independent View code action. Revision and collection filters remain unchanged when reading code."
+				"description": "Linked helper invocation or model name and Used In links. Catalog cards navigate to detail without a source-code action."
 			}
 		],
 		"errors": []
@@ -36,11 +36,6 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.source-code-action",
 			"via": "import",
 			"origin": "derived"
 		},

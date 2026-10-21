@@ -8,7 +8,7 @@
 
 <!-- The details of an entity of any kind: contract, measurements, and the source on request. -->
 <EntityFrame {host}>
-	{#snippet children(entity)}
+	{#snippet children(entity, nav)}
 		{@const summary = entityShown(host, entity)}
 		<EntityDetails
 			{entity}
@@ -16,8 +16,7 @@
 			measure={summary.measure}
 			record={summary.record}
 			tab={host.route.tab}
-			mediaBase={host.mediaBase}
-			commit={entity.lastAt ?? host.scope.commit}
+			{nav}
 		/>
 	{/snippet}
 </EntityFrame>

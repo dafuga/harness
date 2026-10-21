@@ -33,7 +33,7 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "Category-specific entity rows with verdict, Open and View code actions. Opening source preserves the collection address, filters and revision."
+				"description": "Category-specific entity rows with verdict and Open action. Code viewing is available only from the detail Source tab."
 			}
 		],
 		"errors": []
@@ -56,11 +56,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-verdict",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.source-code-action",
 			"via": "import",
 			"origin": "derived"
 		},

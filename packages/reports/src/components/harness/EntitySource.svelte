@@ -31,19 +31,18 @@
 </script>
 
 <script lang="ts">
-	import SourceContent from '../SourceContent.svelte';
+	import type { ExplorerEntity } from '../../models/Explorer.types';
+	import type { EntityNav } from '../../utils/entityLens';
+	import SourceCodeAction from '../SourceCodeAction.svelte';
 	// Mounted only when a person opens Source; other tabs keep ownership paths out of view.
 	let {
-		unit,
-		mediaBase = '',
-		commit = ''
+		entity,
+		nav
 	}: {
-		unit: HarnessUnit;
-		mediaBase?: string;
-		/** The revision the code was archived at: a removed unit's last commit, not its removal. */
-		commit?: string;
+		entity: ExplorerEntity;
+		nav: EntityNav;
 	} = $props();
-	let source = $derived(archivedSource(unit, mediaBase));
+	let unit = $derived(entity.unit);
 </script>
 
 <div class="ex-stack">
@@ -78,6 +77,6 @@
 	</section>
 	<section class="ex-card" aria-labelledby="ex-source-code-title">
 		<h2 id="ex-source-code-title">Source code</h2>
-		<SourceContent files={source.files} read={source.read} {commit} empty={source.empty} />
+		<SourceCodeAction {entity} {nav} />
 	</section>
 </div>

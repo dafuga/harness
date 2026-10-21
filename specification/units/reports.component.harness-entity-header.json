@@ -43,7 +43,7 @@
 			{
 				"name": "EntityHeader",
 				"type": "markup",
-				"description": "Entity identity, verification, independent View code action and one tab bar. Private-function breadcrumbs, component screenshots and revision scope remain intact."
+				"description": "Entity identity, verification and tab bar. Source-code actions belong within the Source tab; private breadcrumbs, component screenshots and revision scope remain intact."
 			}
 		],
 		"errors": []
@@ -66,11 +66,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-verdict",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.source-code-action",
 			"via": "import",
 			"origin": "derived"
 		},

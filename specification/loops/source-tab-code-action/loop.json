@@ -2,7 +2,7 @@
 	"name": "source-tab-code-action",
 	"goal": "Every catalog opens details without a code action; only the detail Source tab offers View code in a revision-specific modal.",
 	"createdAt": "2026-10-21T11:35:13.478Z",
-	"updatedAt": "2026-10-21T11:39:53.111Z",
+	"updatedAt": "2026-10-21T11:51:56.997Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:51:56.997Z",
+			"evidence": "Moved existing actions into Reports and Desktop Source panels, removed catalog/header actions and inline readers. All 24 Reports source cases and four Desktop source cases pass. Final test-only failing checkpoint c42b186b, record aa5764e06be8e73569962b00a830b6e043d5377ce595e9315ba1ad6609284ec2, preserves the same assertions after the lint-only extraction."
 		},
 		{
 			"id": "green",

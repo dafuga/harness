@@ -37,13 +37,18 @@
 				"name": "EntityDetails.tab",
 				"type": "ExplorerTab",
 				"description": "Optional selected tab. Exactly source shows source; measurements shows measured detail; missing or any other tab uses the summary."
+			},
+			{
+				"name": "EntityDetails.nav",
+				"type": "EntityNav",
+				"description": "Enclosing screen navigation and source-modal callback, used only by the Source tab."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityDetails",
 				"type": "markup",
-				"description": "Named tabpanel containing the selected child view. The default shows contract/measurement summary without source; data fetching and child errors are outside this component."
+				"description": "Named tabpanel containing the selected contract, measurements or Source ownership view. The Source tab receives the screen code-modal action."
 			}
 		],
 		"errors": []
@@ -71,6 +76,11 @@
 		},
 		{
 			"unit": "reports.function.entity-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -272,12 +272,6 @@
 			"specifier": "../../../reports/src/components/SourceDialog.svelte",
 			"to": "packages/reports/src/components/SourceDialog.svelte",
 			"reason": "The Desktop source viewer uses the canonical shared source-code controls in Reports."
-		},
-		{
-			"from": "packages/desktop/src/components/DetailsPanel.svelte",
-			"specifier": "../../../reports/src/components/SourceContent.svelte",
-			"to": "packages/reports/src/components/SourceContent.svelte",
-			"reason": "The Desktop source viewer uses the canonical shared source-code controls in Reports."
 		}
 	]
 }

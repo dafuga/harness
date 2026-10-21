@@ -23,7 +23,7 @@
 			{
 				"name": "EntityView",
 				"type": "markup",
-				"description": "Entity identity, verification, View code action and selected tab. Source uses the selected revision; existing examples, screenshots and annotation permissions remain intact."
+				"description": "Entity identity, verification and selected tab. Only Source offers the code modal, preserving selected revision, examples, screenshots and annotation permissions."
 			}
 		],
 		"errors": []
@@ -46,11 +46,6 @@
 		},
 		{
 			"unit": "desktop.component.details-panel",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.component.entity-source-action",
 			"via": "import",
 			"origin": "derived"
 		},

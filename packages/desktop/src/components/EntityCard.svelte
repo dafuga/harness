@@ -3,7 +3,6 @@
 	import type { CatalogEntity } from '../models/Desktop.types';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	import { imageUrl } from '../utils/imageUrl';
-	import EntitySourceAction from './EntitySourceAction.svelte';
 	import PlanBadge from './PlanBadge.svelte';
 	import StatusIcon from './StatusIcon.svelte';
 	import WorkspaceLink from './WorkspaceLink.svelte';
@@ -88,8 +87,6 @@
 			>{entity.hasPlan ? `Review ${reviewed}` : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
 		>
 	{/if}
-	<!-- Every kind of card, beside its links and never inside one. -->
-	<EntitySourceAction {entity} {workspace} />
 </article>
 
 <style>
@@ -114,9 +111,5 @@
 	}
 	.thumbnail.runtime {
 		aspect-ratio: 16 / 11;
-	}
-	.entity-card > :global(.hx-action) {
-		align-self: flex-start;
-		justify-self: start;
 	}
 </style>

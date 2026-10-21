@@ -22,18 +22,28 @@
 				"name": "DetailsPanel.workspace",
 				"type": "Workspace",
 				"description": "Workspace supplying the source-reading bridge, snapshot revision commit and project context. These are required when a source is selected. Failures during that request, including unavailable required context, are caught and shown as text."
+			},
+			{
+				"name": "DetailsPanel.title",
+				"type": "string",
+				"description": "Display name used by the source-modal action and dialog."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DetailsPanel",
 				"type": "markup",
-				"description": "Shared source reader for the displayed entity and revision. Selection clears old contents and errors; late replies are ignored and failed reads show an alert."
+				"description": "Owned source paths and a View code action. Source loads lazily in the shared modal through the selected project and revision bridge; no code is rendered inline."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.entity-source-action",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",
@@ -41,11 +51,6 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.source-content",
 			"via": "import",
 			"origin": "derived"
 		}

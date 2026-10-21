@@ -2,7 +2,6 @@
 	import { type CatalogRow } from '../utils/entityCatalog';
 	import { entityLens, type EntityNav } from '../utils/entityLens';
 	import EntityLink from './harness/EntityLink.svelte';
-	import SourceCodeAction from './SourceCodeAction.svelte';
 	let { row, nav }: { row: CatalogRow; nav: EntityNav } = $props();
 	let model = $derived(row.entity.category === 'models');
 	let to = $derived(
@@ -63,7 +62,6 @@
 			>
 		{:else}<span>—</span>{/each}
 	</div>
-	<SourceCodeAction entity={row.entity} {nav} title={row.helper?.name ?? row.name} />
 </article>
 
 <style>
@@ -112,9 +110,5 @@
 	}
 	.ex-function-usage :global(.ex-function-consumer:hover) {
 		color: var(--ex-text);
-	}
-	.ex-function-tile > :global(.hx-action) {
-		justify-self: start;
-		margin: 0 16px 14px;
 	}
 </style>

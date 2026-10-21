@@ -43,7 +43,7 @@
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "Page title and screenshot or component usage card, with an independent View code action. Missing images show a gap; source opening preserves card navigation scope."
+				"description": "Page title and screenshot or component usage card with detail navigation. Missing images show a gap; code actions belong to the detail Source tab."
 			}
 		],
 		"errors": []
@@ -61,11 +61,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-verdict",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.source-code-action",
 			"via": "import",
 			"origin": "derived"
 		},
