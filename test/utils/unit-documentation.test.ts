@@ -90,8 +90,15 @@ test('every committed public helper example executes against its real implementa
 		if (unit.status !== 'active') continue;
 		for (const helper of unit.helperContracts ?? []) {
 			expect(helper.examples?.length, 'Callable examples are required').toBeGreaterThan(0);
+			const titles = helper.examples.map((example: { name: string }) =>
+				example.name.trim().toLowerCase()
+			);
+			expect(new Set(titles).size, 'Distinct behavior titles').toBe(titles.length);
 			const source = await import(resolve(helper.source));
 			for (const example of helper.examples) {
+				expect(example.name, 'Descriptive behavior titles').not.toMatch(
+					/(?:^|:\s*)(?:example|case|demo|usage)(?:\s*#?\d+)?$/i
+				);
 				expect(Array.isArray(example.input)).toBe(true);
 				expect(source[helper.name](...example.input), `${unit.id} ${example.name}`).toEqual(
 					example.output

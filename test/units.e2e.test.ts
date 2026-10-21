@@ -195,13 +195,25 @@ test('index records reviewed shared helper contracts for clients without source 
 			output: '2026-10-20T00:00:00.000Z'
 		}
 	];
-	await project.write(
-		'specification/units/function.format-date.json',
-		JSON.stringify({
-			...unit,
-			helperContracts: unit.helperContracts.map((item) => ({ ...(item as object), examples }))
-		})
-	);
+	const writeExamples = (examples: unknown[]) =>
+		project.write(
+			'specification/units/function.format-date.json',
+			JSON.stringify({
+				...unit,
+				helperContracts: unit.helperContracts.map((item) => ({ ...(item as object), examples }))
+			})
+		);
+	for (const names of [
+		['Example 1'],
+		['formatDate: example 2'],
+		['UTC date', ' utc DATE '],
+		['UTC date', 'Date formatting']
+	]) {
+		await writeExamples(names.map((name) => ({ ...examples[0], name })));
+		const rejected = await project.harness(['units', 'check'], false);
+		expect(rejected.exitCode, 'Distinct descriptive helper behaviors are required').toBe(1);
+	}
+	await writeExamples(examples);
 	await project.harness(['units', 'index', '--write']);
 	const again = await project.json<{ helperContracts: Array<{ examples: unknown }> }>(
 		'specification/units/function.format-date.json'
