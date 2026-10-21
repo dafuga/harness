@@ -2,7 +2,7 @@
 	"name": "compact-capture-headers",
 	"goal": "Comparison cards show revision identity without capture labels or duplicate full-size controls; clicking images still opens them.",
 	"createdAt": "2026-10-21T18:31:06.659Z",
-	"updatedAt": "2026-10-21T18:32:05.441Z",
+	"updatedAt": "2026-10-21T18:39:55.482Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:39:45.540Z",
+			"evidence": "Record fa84d123 at 3fddfaa0: the focused render and responsive browser matrix reject extra capture captions and duplicate controls. Retained 144 screenshots and 398 runtime observations; the image pointer/keyboard flow already passes."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:39:55.482Z",
+			"evidence": "Removed the redundant standing text and full-size text buttons from EntityScreens. Screenshot buttons still activate the existing EvidenceViewer, whose capture provenance is unchanged; synchronized the registered contract."
 		},
 		{
 			"id": "green",
