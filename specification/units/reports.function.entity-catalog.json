@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists shared instantiated concrete classes with multiple instance methods and pure helper exports using the same resolved owner set as Used In links.",
+	"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -61,6 +61,11 @@
 				"description": "Lookup called once for each entity in the requested category."
 			},
 			{
+				"name": "entityCatalog.options",
+				"type": "{ related?: boolean; consumers?: ExplorerEntity[] }",
+				"description": "Relationships retain instantiated classes with one active owner; global collections require two. Resolve usage against the full revision consumer set."
+			},
+			{
 				"name": "catalogFilter.rows",
 				"type": "CatalogRow[]",
 				"description": "Collection rows to filter without mutating the original array."
@@ -83,7 +88,7 @@
 			{
 				"name": "functionName.unit",
 				"type": "HarnessUnit",
-				"description": "The selected revision’s recorded exported shared helpers."
+				"description": "The selected revision\u2019s recorded exported shared helpers."
 			},
 			{
 				"name": "isShared.unit",
