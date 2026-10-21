@@ -1,6 +1,6 @@
 import type { HarnessRevision } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
-import { serviceClassProof, relationServiceMetadata } from './entityClassFixtures';
+import { serviceClassProof, relationServiceMetadata, relationSource } from './entityClassFixtures';
 
 const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
 	'no-visible': [{ unit: ids.page }, { unit: ids.filter }],
@@ -184,13 +184,7 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 						: [],
 				dependencies: [{ unit: ids.filter, via: 'import' }],
 				owns: {
-					source: [
-						kind === 'service'
-							? `src/routes/orders/Consumer${offset + 1}.ts`
-							: kind === 'page'
-								? `src/routes/consumers/${offset + 1}/+page.svelte`
-								: `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`
-					],
+					source: [relationSource(kind, offset)],
 					symbols: []
 				},
 				version: id

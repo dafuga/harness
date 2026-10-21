@@ -111,10 +111,13 @@ export const privateServiceUsers = [
 /** Concrete private classes used by the standard relationship matrix. */
 export function relationServiceMetadata(kind: string, offset: number, owner: string) {
 	return kind === 'service'
-		? serviceMetadata(
-				[{ unit: owner }],
-				`Consumer${offset + 1}`,
-				`src/routes/orders/Consumer${offset + 1}.ts`
-			)
+		? serviceMetadata([{ unit: owner }], `Consumer${offset + 1}`, relationSource(kind, offset))
 		: {};
+}
+
+/** Source ownership of each standard relationship fixture. */
+export function relationSource(kind: string, offset: number): string {
+	if (kind === 'service') return `src/routes/orders/Consumer${offset + 1}.ts`;
+	if (kind === 'page') return `src/routes/consumers/${offset + 1}/+page.svelte`;
+	return `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`;
 }

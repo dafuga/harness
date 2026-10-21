@@ -59,6 +59,15 @@ test('each related entity is a link to it in the same branch and commit', async 
 		});
 		expect(related, 'single-owner classes remain in their owner relationships').toHaveLength(9);
 		expect(related.every((row) => !row.shared && row.usedIn?.length === 1)).toBe(true);
+		const unproven = services.map((entity) => ({
+			...entity,
+			unit: { ...entity.unit, serviceClasses: [] }
+		}));
+		expect(
+			entityCatalog(unproven, 'services', relations, { related: true, consumers: entities }),
+			'relationships do not invent class proof'
+		).toEqual([]);
+
 		const collection = entityCatalog(entities, 'services', relations);
 		expect(collection.some((row) => services.some((service) => row.id === service.id))).toBe(false);
 		const owner = content(
