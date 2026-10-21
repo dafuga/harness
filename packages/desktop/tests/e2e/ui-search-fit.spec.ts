@@ -8,7 +8,6 @@ import {
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { alpha, searchFixture } from './ui-search-fixture';
-import { settled } from '../../../reports/tests/e2e/support/harnessCapture';
 import { buildStamp } from '../../../../src/utils/buildStamp';
 import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 
@@ -105,7 +104,19 @@ async function remember(page: Page, info: TestInfo, name: string): Promise<void>
 	const folder = process.env.SEARCH_SHOTS ?? info.outputDir;
 	mkdirSync(folder, { recursive: true });
 	const file = `${process.env.SCREENSHOT_LABEL ?? 'run'}-${name}.png`;
-	await settled(page);
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		for (const image of document.images) image.loading = 'eager';
+	});
+	await page.waitForFunction(() =>
+		[...document.images].every((image) => image.complete && image.naturalWidth > 0)
+	);
+	await page.evaluate(async () => {
+		await Promise.all([...document.images].map((image) => image.decode()));
+		await new Promise<void>((resolve) =>
+			requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+		);
+	});
 	await page.mouse.move(0, 0);
 	const bytes = await page.screenshot({
 		path: join(folder, file),
