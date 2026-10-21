@@ -2,7 +2,7 @@
 	"name": "game-standalone-views",
 	"goal": "Generated 2D and 3D games follow authored view transitions and restore per-view checkpoint progress.",
 	"createdAt": "2026-10-21T17:35:28.659Z",
-	"updatedAt": "2026-10-21T17:36:07.935Z",
+	"updatedAt": "2026-10-21T17:39:04.989Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:39:04.035Z",
+			"evidence": "Unchanged source and bundled 2D/3D browser cases fail at a81ac7026: checkpoint transitions must enter the target view. Inspected capture still shows The courtyard after collecting the key and requesting second view."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:39:04.989Z",
+			"evidence": "Use existing enterView to resolve checkpoint transition targets immediately, rerender the selected view and restore its own completed checkpoints."
 		},
 		{
 			"id": "green",

@@ -53,14 +53,19 @@ function gamePage(): string {
 	return `<script lang="ts">
  import {onMount} from 'svelte';
  import document from '../../../game.json';
- import {createRun,stepGame} from '$lib/game/utils/gameStep';
+ import {createRun,stepGame,enterView} from '$lib/game/utils/gameStep';
  import {assertDocument} from '$lib/game/validators/gameDocument';
  import type {GameView,GameRun} from '$lib/game/models/Game.types';
  let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
  assertDocument(document);
- const view=document.views[0] as GameView;
+ let view=$state(document.views[0] as GameView);
  let render:(run:GameRun,view:GameView)=>void;
- function move(x:number,y:number,choice?:string){run=stepGame(run,{x,y,choice},view);render?.(run,view);}
+ function move(x:number,y:number,choice?:string){
+ run=stepGame(run,{x,y,choice},view);
+ const target=document.views.find(candidate=>candidate.id===run.state.view) as GameView|undefined;
+ if(target && target.id!==view.id){view=target;run=enterView(run,target.id);}
+ render?.(run,view);
+ }
  onMount(()=>{let dispose=()=>{};let active=true;
  void import('$lib/game/adapters/ThreeSceneAdapter').then(({create3d})=>{if(!active)return;const scene=create3d(canvas);render=(r,v)=>scene.render(r,v);dispose=()=>scene.dispose();render(run,view);ready=true;});
  return ()=>{active=false;dispose();};});
