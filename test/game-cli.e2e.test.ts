@@ -85,7 +85,9 @@ async function playableRoute(cwd: string) {
 			server.once('error', reject);
 			server.stdout.on('data', (chunk) => {
 				output += String(chunk);
-				const address = stripVTControlCharacters(output).match(/http:\/\/127\.0\.0\.1:\d+/)?.[0];
+				const address = stripVTControlCharacters(output).match(
+					/(http:\/\/127\.0\.0\.1:\d+)\//
+				)?.[1];
 				if (address) {
 					clearTimeout(timeout);
 					resolveUrl(address);
