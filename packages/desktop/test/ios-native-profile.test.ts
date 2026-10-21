@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import { spawnSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
 import { resolve } from 'node:path';
 import { expect } from '../../../test/verificationExpect';
 import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
@@ -23,12 +23,7 @@ async function nativeCheck(script: string) {
 			const turn = setImmediate(() => {
 				responsive = true;
 			});
-			const child = spawnSync(command[0], command.slice(1), {
-				cwd,
-				encoding: 'utf8',
-				timeout: 120000,
-				maxBuffer: 2_000_000
-			});
+			const child = await nativeCommand(command, cwd);
 			clearImmediate(turn);
 			expect(responsive, 'native command must leave the test RPC event loop responsive').toBe(true);
 			expect(child.error ?? null).toBeNull();
@@ -90,3 +85,27 @@ test('Swift source remains within the declared native shape limits', async () =>
 	const output = await nativeCheck('ios:check:limits');
 	expect(output).toMatch(/\d+ Swift files checked; 0 findings\./);
 }, 20000);
+
+function nativeCommand(command: string[], cwd: string) {
+	return new Promise<{ error: Error | null; status: number; stdout: string; stderr: string }>(
+		(done) => {
+			execFile(
+				command[0],
+				command.slice(1),
+				{
+					cwd,
+					encoding: 'utf8',
+					timeout: 120000,
+					maxBuffer: 2_000_000
+				},
+				(error, stdout, stderr) =>
+					done({
+						error,
+						status: error ? (typeof error.code === 'number' ? error.code : 1) : 0,
+						stdout,
+						stderr
+					})
+			);
+		}
+	);
+}
