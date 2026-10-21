@@ -2,7 +2,7 @@
 	"name": "restore-source-viewer",
 	"goal": "Each category Source file opens exact committed text in the shared modal without changing address or focus",
 	"createdAt": "2026-10-21T19:18:10.269Z",
-	"updatedAt": "2026-10-21T19:20:05.664Z",
+	"updatedAt": "2026-10-21T19:26:34.817Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:26:34.817Z",
+			"evidence": "Red 6f71ee04 at 2fe4e3e7d: missing per-file code action, Source file list and committed source snapshots; original three-viewport captures retained."
 		},
 		{
 			"id": "implement",

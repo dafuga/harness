@@ -8,10 +8,11 @@
 
 <!-- The details of an entity of any kind: contract, measurements, and the source on request. -->
 <EntityFrame {host}>
-	{#snippet children(entity)}
+	{#snippet children(entity, nav)}
 		{@const summary = entityShown(host, entity)}
 		<EntityDetails
 			{entity}
+			{nav}
 			repository={host.index.sourceRepository}
 			commit={entity.lastAt ?? host.scope.commit}
 			contract={summary.contract}

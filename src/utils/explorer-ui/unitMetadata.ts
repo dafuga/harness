@@ -21,6 +21,7 @@ export interface PublicServiceClass {
 }
 
 export interface UnitMetadata {
+	sourceFiles?: SourceFileSnapshot[];
 	group?: { id: string; title: string };
 	documentation?: UnitDocumentation;
 	helpers?: PublicHelper[];
@@ -30,6 +31,13 @@ export interface UnitMetadata {
 	/** Concrete declarations, instance methods and constructor references from this revision. */
 	serviceClasses?: PublicServiceClass[];
 	helperGap?: string;
+}
+
+export interface SourceFileSnapshot {
+	path: string;
+	/** Committed text stored under the existing protected history media endpoint. */
+	media: string | null;
+	gap?: string;
 }
 
 export { unitMetadata } from '../../services/explorer-ui/revision-detail-service/unitMetadata';

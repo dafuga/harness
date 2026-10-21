@@ -11,7 +11,8 @@
 			"src/services/development-tooling/regression-proof-service/focusedScreens.ts",
 			"src/services/regression-proof-service/focusedScreens.ts",
 			"src/workflows/record-regression/RegressionProofService.ts",
-			"src/workflows/verification-evidence/record-regression/RegressionProofService.ts"
+			"src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+			"src/workflows/verification-evidence/record-regression/focusedScreens.ts"
 		],
 		"symbols": [
 			"focusedScreens",
@@ -19,7 +20,8 @@
 			"RegressionRun",
 			"RegressionProofService",
 			"RegressionProofService.constructor",
-			"RegressionProofService.run"
+			"RegressionProofService.run",
+			"focusedScreens"
 		]
 	},
 	"contract": {

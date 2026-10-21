@@ -266,6 +266,66 @@
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "Environment selection reuses the shared keyboard and value selection control."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceCodeAction.svelte",
+			"specifier": "./harness/HarnessAction.svelte",
+			"to": "packages/reports/src/components/explorer-ui/harness/HarnessAction.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceContent.svelte",
+			"specifier": "./SourceViewer.svelte",
+			"to": "packages/reports/src/components/explorer-ui/SourceViewer.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceDialog.svelte",
+			"specifier": "../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceDialog.svelte",
+			"specifier": "./SourceContent.svelte",
+			"to": "packages/reports/src/components/explorer-ui/SourceContent.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceViewer.svelte",
+			"specifier": "./harness/HarnessIcon.svelte",
+			"to": "packages/reports/src/components/explorer-ui/harness/HarnessIcon.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/SourceViewer.svelte",
+			"specifier": "../shared-primitives/Select.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Select.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"specifier": "../SourceCodeAction.svelte",
+			"to": "packages/reports/src/components/explorer-ui/SourceCodeAction.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"specifier": "../SourceFileList.svelte",
+			"to": "packages/reports/src/components/explorer-ui/SourceFileList.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
+			"specifier": "./EntityMissing.svelte",
+			"to": "packages/reports/src/components/explorer-ui/harness/EntityMissing.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
+			"specifier": "../SourceDialog.svelte",
+			"to": "packages/reports/src/components/explorer-ui/SourceDialog.svelte",
+			"reason": "The source reader renders this shared component at its registered implementation address."
 		}
 	]
 }

@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-source",
 	"kind": "component",
 	"title": "Source ownership",
-	"responsibility": "Lists an entity's implementation files at the selected revision, using its real category folder.",
+	"responsibility": "Lists real category implementation files and opens exact committed text in the shared read-only modal.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,7 +11,7 @@
 			"packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
 			"packages/reports/src/components/harness/EntitySource.svelte"
 		],
-		"symbols": ["EntitySource", "EntitySource"]
+		"symbols": ["EntitySource", "archivedSource", "EntitySource", "archivedSource"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -20,20 +20,65 @@
 				"name": "EntitySource.unit",
 				"type": "HarnessUnit",
 				"description": "Required unit with recorded owned source paths and optional revision-bound responsibility category."
+			},
+			{
+				"name": "EntitySource.entity",
+				"type": "ExplorerEntity | undefined",
+				"description": "Entity identity supplied by the host for per-file code actions."
+			},
+			{
+				"name": "EntitySource.nav",
+				"type": "EntityNav | undefined",
+				"description": "Revision-scoped modal callback; an unhosted source list remains read-only."
+			},
+			{
+				"name": "EntitySource.repository",
+				"type": "string | undefined",
+				"description": "Public GitHub repository used for commit-pinned file links; unsupported values remain plain paths."
+			},
+			{
+				"name": "EntitySource.commit",
+				"type": "string | undefined",
+				"description": "Full commit hash supplying the displayed files and GitHub links."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySource",
 				"type": "markup",
-				"description": "Category-folder implementation paths, falling back to recorded paths for framework entries and uncategorized revisions. Empty ownership is explicit. Symbols, execution targets and identity/version metadata are omitted. Does not fetch file contents or rename paths."
+				"description": "Actual category implementation paths with per-file View code controls. The modal reads archived committed text only on request; legacy histories state gaps. Symbols, execution targets and identity metadata stay absent."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.source-code-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-file-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.store.source-reader",
 			"via": "import",
 			"origin": "derived"
 		}

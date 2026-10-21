@@ -67,6 +67,8 @@
 	<div role="tabpanel" aria-label={`${entity.name} source`}>
 		<EntitySource
 			unit={entity.unit}
+			{entity}
+			{nav}
 			repository={host.index.sourceRepository}
 			commit={entity.lastAt ?? host.scope.commit}
 		/>

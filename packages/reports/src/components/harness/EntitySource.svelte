@@ -5,3 +5,6 @@
 </script>
 
 <CategoryImplementation {...props} />
+<script lang="ts" module>
+	export { archivedSource } from '../explorer-ui/harness/EntitySource.svelte';
+</script>

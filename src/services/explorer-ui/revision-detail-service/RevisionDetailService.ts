@@ -206,9 +206,7 @@ function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 		.map((scenario) => scenario.id);
 	return { base: record.source.base, record: record.id, units, changed, scenarios, uncertain };
 }
-function short(id: string): string {
-	return id.slice(0, 12);
-}
+const short = (id: string): string => id.slice(0, 12);
 async function regressionProofs(
 	root: string,
 	history: HistoryStatusService,

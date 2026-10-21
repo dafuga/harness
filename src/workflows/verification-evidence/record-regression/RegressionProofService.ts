@@ -1,4 +1,4 @@
-import { focusedScreens } from '../../../services/regression-proof-service/focusedScreens';
+import { focusedScreens } from './focusedScreens';
 import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';
 import type { ScenarioManifest } from '../../../core/development-tooling/unitTypes';
 import { benchmarkMeasurements } from '../run-verify/verification-service/record-assembly-service/sealRecord';

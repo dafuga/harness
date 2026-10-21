@@ -124,6 +124,11 @@
 			"unit": "service.revision-detail",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.source-archive",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
