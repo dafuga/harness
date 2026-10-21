@@ -1,0 +1,75 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [13.87s]
+$ bun run sync:shared && vitest run test/services/project-operations.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-I3BVDO/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ❯ test/services/project-operations.test.ts (2 tests | 1 failed) 4108ms
+   ✓ a historical human comment saves a pending draft without Git mutation or agent execution  1472ms
+   × every explicit request refuses stale project context before reading or starting an agent 2635ms
+     → promise rejected "Error: Cancel or finish the current run b…" instead of resolving
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/project-operations.test.ts > every explicit request refuses stale project context before reading or starting an agent
+AssertionError: promise rejected "Error: Cancel or finish the current run b…" instead of resolving
+ ❯ activeSelection test/services/project-operations.test.ts:98:53
+     96|   Object.assign(current.session, state);
+     97|   try {
+     98|    await expect(bridge.selectProject!({ projectId })).resolves.toMatch…
+       |                                                     ^
+     99|     project: { id: projectId }
+    100|    });
+ ❯ test/services/project-operations.test.ts:57:2
+
+Caused by: Error: Cancel or finish the current run before switching projects.
+ ❯ ProjectSessionService.open src/services/ProjectSessionService.ts:55:10
+ ❯ ProjectOperationsService.selectProject src/services/ProjectOperationsService.ts:17:23
+ ❯ activeSelection test/services/project-operations.test.ts:98:4
+ ❯ test/services/project-operations.test.ts:57:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  15:38:29
+   Duration  6.59s (transform 1.18s, setup 0ms, collect 2.26s, tests 4.11s, environment 0ms, prepare 42ms)
+
+error: script "test:unit" exited with code 1
