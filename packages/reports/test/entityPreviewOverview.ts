@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import { ids } from './entityUnits';
 
@@ -163,4 +163,26 @@ export async function reviewScalarMeasurements(page: Page): Promise<void> {
 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
 	await reviewProfileRows(page);
+}
+
+/** A component keeps the same screenshot above its tabs in the selected revision. */
+export async function reviewComponentCapture(
+	page: Page,
+	evidence: Locator,
+	commit: string | null
+): Promise<void> {
+	await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
+	const tabs = await page.getByRole('tablist').boundingBox();
+	const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();
+	expect(shot!.y + shot!.height, 'component screenshot stays above its tabs').toBeLessThanOrEqual(
+		tabs!.y
+	);
+	const files = await page
+		.locator('section[aria-labelledby="ex-screens-title"] img')
+		.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
+	expect(files).toEqual(
+		commit
+			? ['/media/aaaaaaa-default-desktop.png', '/media/bbbbbbb-default-desktop.png']
+			: ['/media/ccccccc-default-desktop.png']
+	);
 }

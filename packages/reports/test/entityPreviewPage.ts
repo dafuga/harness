@@ -5,6 +5,7 @@ import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
 import {
+	reviewComponentCapture,
 	reviewMeasuredSources,
 	reviewFocusedScreens,
 	reviewScalarMeasurements,
@@ -99,27 +100,21 @@ export async function reviewVisual(
 	const tabs = ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source'];
 	for (const name of tabs.filter((tab) => route.category !== 'pages' || tab !== 'Used In')) {
 		await page.getByRole('tab', { name, exact: true }).click();
+		if (name === 'Used In') await page.getByRole('tab', { name, exact: true }).press('Shift+Tab');
 		await ready(page);
 		await capture(page, `header-base-${route.category}-${name}-${mode}-${viewport}`);
+		if (name === 'Used In') {
+			const focused = page.getByRole('tab', { name: 'Contract', exact: true });
+			await expect(focused).toBeFocused();
+			await expect(focused).toHaveCSS('outline-style', 'none');
+			await expect(focused).toHaveCSS('text-decoration-line', 'underline');
+		}
 		if (route.category === 'pages') {
 			await expect(evidence).toHaveCount(name === 'Overview' ? 1 : 0);
 			expect(await where(page)).toMatchObject(route);
 			continue;
 		}
-		await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
-		const tabs = await page.getByRole('tablist').boundingBox();
-		const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();
-		expect(shot!.y + shot!.height, 'component screenshot stays above its tabs').toBeLessThanOrEqual(
-			tabs!.y
-		);
-		const files = await page
-			.locator('section[aria-labelledby="ex-screens-title"] img')
-			.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
-		expect(files).toEqual(
-			commit
-				? ['/media/aaaaaaa-default-desktop.png', '/media/bbbbbbb-default-desktop.png']
-				: ['/media/ccccccc-default-desktop.png']
-		);
+		await reviewComponentCapture(page, evidence, commit);
 		expect(await fits(page)).toBe(true);
 	}
 }
