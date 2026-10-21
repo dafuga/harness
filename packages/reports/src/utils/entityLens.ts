@@ -1,6 +1,7 @@
 import type {
 	ExplorerBehavior,
 	ExplorerCategory,
+	ExplorerEntity,
 	ExplorerEvidence,
 	ExplorerHistoryRow,
 	ExplorerLocation,
@@ -30,6 +31,8 @@ export interface EntityNav {
 	route: ExplorerLocation;
 	href(to: ExplorerLocation): string;
 	go(to: ExplorerLocation): void;
+	/** Opens owned source without changing the current address, search or filters. */
+	source?(entity: ExplorerEntity, title?: string, trigger?: HTMLElement): void;
 }
 
 export interface EntityLabel {

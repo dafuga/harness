@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.entity-source-action",
+	"kind": "component",
+	"title": "EntitySourceAction",
+	"responsibility": "Opens source from Desktop catalog and detail views using the existing authorized bridge.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/EntitySourceAction.svelte"],
+		"symbols": ["EntitySourceAction"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EntitySourceAction.entity",
+				"type": "CatalogEntity | EntityDetail",
+				"description": "Entity identity and optional detail source paths."
+			},
+			{
+				"name": "EntitySourceAction.workspace",
+				"type": "Workspace",
+				"description": "Authorized bridge, project context and selected revision."
+			},
+			{
+				"name": "EntitySourceAction.title",
+				"type": "string",
+				"description": "Optional displayed callable name."
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntitySourceAction",
+				"type": "markup",
+				"description": "Captures project, entity and commit when opened. Context changes close the session; closing restores focus and preserves navigation."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.store.source-reader",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/EntitySourceAction.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/EntitySourceAction.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

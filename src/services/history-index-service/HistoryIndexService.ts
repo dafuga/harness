@@ -19,6 +19,7 @@ import { stableJson } from '../../utils/stableJson';
 import { HistoryMediaService } from '../history-media-service/HistoryMediaService';
 import { HistoryStatusService } from '../HistoryStatusService';
 import { ProjectActivityService } from '../project-activity-service/ProjectActivityService';
+import { SourceArchiveService } from '../SourceArchiveService';
 import {
 	RevisionDetailService,
 	type BuiltRevision
@@ -54,10 +55,12 @@ export class HistoryIndexService {
 		media: HistoryMediaService
 	): Promise<Array<{ revision: SourceRevision; result: BuiltRevision }>> {
 		const details = new RevisionDetailService(this.root, this.history);
+		const sources = new SourceArchiveService(this.root, out);
 		const built: Array<{ revision: SourceRevision; result: BuiltRevision }> = [];
 		const sides = new Set<string>();
 		for (const revision of revisions) {
 			const result = await details.build(revision.commit, media);
+			await sources.archive(revision.commit, result.detail.registry.units);
 			await writeFile(join(out, detailPath(revision.commit)), stableJson(result.detail));
 			// One stored side per source tree: what any two revisions are compared from.
 			if (result.side && result.detail.side && !sides.has(result.detail.side)) {

@@ -2,7 +2,7 @@
 	"name": "entity-source-code-modal",
 	"goal": "Every catalog type opens actual source code for the selected revision in the shared modal; old or unavailable source remains explicit and closing preserves the current view.",
 	"createdAt": "2026-10-21T08:57:46.093Z",
-	"updatedAt": "2026-10-21T09:06:05.847Z",
+	"updatedAt": "2026-10-21T09:53:51.328Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:14:39.379Z",
+			"evidence": "Test-only commit 0cd4fbf3 reproduces the missing owned-source snapshots and absent catalog code actions in the unchanged product. The immutable red record includes the exact owned-source assertion, Models browser checkpoint and Desktop action failure."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:53:51.328Z",
+			"evidence": "Implemented committed-source archival and a shared revision-bound reader/modal across all seven catalog types and Desktop. Focused browser cases pass at desktop, tablet and phone widths; strengthened tests remain unchanged from 7076417c."
 		},
 		{
 			"id": "green",

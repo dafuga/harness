@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.source-code-action",
+	"kind": "component",
+	"title": "SourceCodeAction",
+	"responsibility": "Opens the selected entity source through its host without changing catalog navigation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/SourceCodeAction.svelte"],
+		"symbols": ["SourceCodeAction"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SourceCodeAction.entity",
+				"type": "ExplorerEntity",
+				"description": "Entity whose owned files should be read."
+			},
+			{
+				"name": "SourceCodeAction.nav",
+				"type": "EntityNav",
+				"description": "Revision-scoped navigation including an optional source callback."
+			},
+			{
+				"name": "SourceCodeAction.title",
+				"type": "string",
+				"description": "Optional displayed callable or entity name."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SourceCodeAction",
+				"type": "markup",
+				"description": "Accessible View code action outside entity links; disabled when the host has no source action."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/SourceCodeAction.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/SourceCodeAction.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -17,7 +17,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HistoryIndexService.constructor.root",
@@ -39,7 +39,8 @@
 		"outputs": [
 			{
 				"name": "HistoryIndexService.build",
-				"type": "Promise<BuiltHistory>"
+				"type": "Promise<BuiltHistory>",
+				"description": "Writes a deterministic prepared history with unit metadata, evidence and deduplicated committed source text in the existing protected media directory."
 			}
 		],
 		"errors": []
@@ -117,6 +118,11 @@
 		},
 		{
 			"unit": "service.revision-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-archive",
 			"via": "import",
 			"origin": "derived"
 		}
