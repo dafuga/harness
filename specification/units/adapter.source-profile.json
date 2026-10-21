@@ -15,7 +15,6 @@
 			"src/adapters/source-profile-adapter/profileRuntime.ts",
 			"src/adapters/source-profile-adapter/runnerConfig.ts",
 			"src/adapters/source-profile-adapter/runnerPlugins.js",
-			"src/adapters/source-profile-adapter/runnerPlugins.ts",
 			"src/adapters/source-profile-adapter/runnerSelection.ts",
 			"src/adapters/source-profile-adapter/vitestSetup.ts"
 		],
@@ -33,7 +32,6 @@
 			"sourceProfilePlugin",
 			"runnerConfiguration",
 			"nativeProfilePlugins",
-			"sourceProfilePlugins",
 			"profileSelection",
 			"profileEnvironment"
 		]
@@ -110,10 +108,6 @@
 				"type": "unknown"
 			},
 			{
-				"name": "sourceProfilePlugins.root",
-				"type": "string"
-			},
-			{
 				"name": "profileSelection.root",
 				"type": "string"
 			},
@@ -165,10 +159,6 @@
 			},
 			{
 				"name": "nativeProfilePlugins",
-				"type": "unknown"
-			},
-			{
-				"name": "sourceProfilePlugins",
 				"type": "unknown"
 			},
 			{

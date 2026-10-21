@@ -6,7 +6,7 @@
 	"name": "native-profile-bootstrap",
 	"goal": "Normal profiling configuration starts without native Node TypeScript support, while retaining root and inherited-workspace evidence and worker limits.",
 	"createdAt": "2026-10-21T12:14:06.873Z",
-	"updatedAt": "2026-10-21T12:14:10.070Z",
+	"updatedAt": "2026-10-21T12:27:32.117Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:27:27.937Z",
+			"evidence": "Initial47273755 proof0bef7885 establishes native TS startup failure. Latest lint-compliant test/fixture commitdcc22749 re-sealed asa658c9f6 with both owning test and shared fixture named; ERR_UNKNOWN_FILE_EXTENSION still proves the product boundary failure."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:27:29.780Z",
+			"evidence": "Keep a native JavaScript startup entry, ask the installed Vite loader to compile typed tooling, and remove the native typed hop. Preserve frozen root/workspace configs and each execution capture assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:27:32.117Z",
+			"evidence": "All27 focused integration cases pass together, including native TS disabled. Types, lint, audit and registry pass; skill validates. Existing SDK API source is unchanged from its successful packed-consumer check."
 		},
 		{
 			"id": "green",
