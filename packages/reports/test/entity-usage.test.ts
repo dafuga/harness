@@ -75,7 +75,9 @@ test('Uses keeps what the entity depends on apart by kind and leaves out a kind 
 	expect(uses).toMatch(
 		/Uses 3 .*Components 1 .*Order card.*Functions 1 .*filterOrders.*Services 1 .*Order store/
 	);
-	expect(uses).not.toMatch(/Configs|Orders page/);
+	expect(uses).not.toContain('Configs');
+	// Reused cards may mention their own consumers without listing them as dependencies.
+	expect(body).not.toContain(`href="${base}/pages/${ids.page}"`);
 	for (const [kind, id] of [
 		['components', ids.card],
 		['helpers', `filterOrders/in/${ids.filter}/contract`],
