@@ -1,0 +1,62 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [12.49s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KAZjjZ
+
+ ❯ test/structure.e2e.test.ts (3 tests | 1 failed) 5870ms
+   ✓ generated projects reject bad Harness structure through audit  1246ms
+   ✓ Codex marketplace structure is accepted while unrelated hidden folders are rejected  1315ms
+   × categorized projects generate dynamic folders and audit rejects flat implementations 3307ms
+     → module scripts preserve exports, never implementation: expected [ { …(3) } ] to have a length of +0 but got 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/structure.e2e.test.ts > categorized projects generate dynamic folders and audit rejects flat implementations
+AssertionError: module scripts preserve exports, never implementation: expected [ { …(3) } ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ expectCategoryForwarding test/structure.e2e.test.ts:148:5
+    146|    categoryFindings(report),
+    147|    'module scripts preserve exports, never implementation'
+    148|   ).toHaveLength(module.startsWith('export {') ? 0 : 1);
+       |     ^
+    149|  }
+    150|  await writeFile(
+ ❯ test/structure.e2e.test.ts:112:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  23:09:18
+   Duration  8.87s (transform 47ms, setup 7ms, collect 88ms, tests 5.87s, environment 0ms, prepare 38ms)
+
