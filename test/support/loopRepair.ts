@@ -1,3 +1,4 @@
+import { captureFixture } from './loop-repair/captureFixture';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect } from 'vitest';
@@ -16,6 +17,7 @@ export async function prepareRepair(root: string, template: string): Promise<voi
 		join(root, 'proof.ts'),
 		"import { value } from './source'; if (value < 0) process.exit(1);"
 	);
+	const captureScript = await captureFixture(root);
 	await runCommand(['git', 'init', '-q'], root);
 	await commitRepair(root, 'feat: existing value and test');
 	await runHarness(
@@ -24,19 +26,7 @@ export async function prepareRepair(root: string, template: string): Promise<voi
 	);
 	const old = await runHarness(['loop', 'evaluate', 'repair', '--json'], root);
 	expect(JSON.parse(old.stdout).passed).toBe(true);
-	await writeFile(
-		join(root, 'proof.ts'),
-		`import { strict as assert } from 'node:assert'; import { mkdirSync, writeFileSync } from 'node:fs'; import { value } from './source';
-const directory = process.env.HARNESS_EVIDENCE_DIR;
-if (directory) {
- mkdirSync(directory, {recursive:true});
- writeFileSync(directory+'/sample.json', JSON.stringify({measurements:[{unit:'function.sample', metric:'latency-warm-ms', unitOfMeasure:'ms', value:0.5, workload:'sample', method:'Synthetic fixture timing.'}]}));
- writeFileSync(directory+'/page.png', Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGMQUDAAAACkAGE0Zn1yAAAAAElFTkSuQmCC', 'base64'));
- const screen={evidence:'page.sample',kind:'screenshot',state:'overview',viewport:'desktop',file:'page.png',mediaType:'image/png',provenance:'fixture',server:{buildId:'fixture',revision:process.env.HARNESS_VERIFY_REVISION}};
- writeFileSync(directory+'/captures.ndjson', [JSON.stringify({evidence:'sample', kind:'benchmark', state:'sample', file:'sample.json', mediaType:'application/json'}),JSON.stringify(screen)].join('\\n')+'\\n');
-}
-assert.equal(value, 3);`
-	);
+	await writeFile(join(root, 'proof.ts'), captureScript);
 	await commitRepair(root, 'fix: commit the failing selected-value test');
 }
 
@@ -153,6 +143,12 @@ async function phaseProof(root: string, phase: string, frozen: string): Promise<
 				viewport: 'desktop',
 				sha256: expect.any(String)
 			})
+		})
+	);
+	expect(saved.captures, 'declared screenshot slots keep their registered unit').toContainEqual(
+		expect.objectContaining({
+			unit: 'function.sample',
+			capture: expect.objectContaining({ evidence: 'sample-screen' })
 		})
 	);
 	if (phase === 'green') await expectSavedScreens(root, saved.source.commit);
