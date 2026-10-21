@@ -90,9 +90,14 @@ export function withSourceMeasures(detail: HarnessRevision): HarnessRevision {
 }
 
 /** Focused UI evidence exists independently of a full verification verdict. */
-export function withFocused(detail: HarnessRevision, target = ids.page): HarnessRevision {
+export function withFocused(
+	detail: HarnessRevision,
+	target = ids.page,
+	viewports: Record<string, { width: number; height: number }> = {}
+): HarnessRevision {
 	const captures = ['desktop', 'tablet', 'mobile'].map((viewport) => ({
 		unit: target,
+		viewport: viewports[viewport],
 		capture: {
 			...capture(detail.commit, { kind: 'screenshot', state: 'default', viewport }),
 			kind: 'screenshot' as const,
