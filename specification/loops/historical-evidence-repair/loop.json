@@ -6,7 +6,7 @@
 	"name": "historical-evidence-repair",
 	"goal": "All unverified history has intact evidence, exact-source reasons and real representative runtime profiles; budget growth retains independent review before completion.",
 	"createdAt": "2026-10-21T08:50:13.415Z",
-	"updatedAt": "2026-10-21T09:01:36.723Z",
+	"updatedAt": "2026-10-21T09:06:48.997Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:06:47.266Z",
+			"evidence": "Same-process sealed pair: red 88c74cb370eaf5e499066a7423c8e0e1192669859d5ee35a22e52ee0f48d0e78 at b564121b, green 42044fcf25911107b46c26eeeb5c16a2b5fdae9a289e551dbcf3f906ea98b274 at 8443ec11. Identical frozen tests and command pass; actual integrity latency and process peak RSS recorded."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:06:48.997Z",
+			"evidence": "The isolated immutable red snapshot restores the rejecting checker and fails the unchanged historical-contract assertion. The isolated green snapshot passes the same corpus, including every altered version-field refusal. Three additional ancestor-tampering cases and the registration guard pass in the normal focused suite."
 		},
 		{
 			"id": "verify",

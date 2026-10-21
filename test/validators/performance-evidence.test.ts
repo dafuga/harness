@@ -89,6 +89,23 @@ test('type-only models are inapplicable, while unreadable or unexported code sta
 	expect(new PerformanceEvidenceValidator().validate(input)).toHaveLength(1);
 });
 
+test('readable stylesheets are declarative while unreadable and mixed sources stay required', async () => {
+	const input = await observed();
+	input.measurements = [];
+	const unit = input.units[0];
+	const file = input.files.get('title.ts')!;
+	input.files = new Map([['title.css', { ...file, language: 'css', exports: [] }]]);
+	unit.owns.source = ['title.css'];
+	const validator = new PerformanceEvidenceValidator();
+	expect(validator.required(input.units, input.files)).toEqual([]);
+	input.files.get('title.css')!.read = false;
+	expect(validator.required(input.units, input.files)).toEqual([unit]);
+	input.files.get('title.css')!.read = true;
+	input.files.set('title.ts', file);
+	unit.owns.source.push('title.ts');
+	expect(validator.required(input.units, input.files)).toEqual([unit]);
+});
+
 test('synthetic rule-fixture values cannot establish runtime profiling', async () => {
 	const input = await observed();
 	input.measurements = input.measurements.map((item) => ({
