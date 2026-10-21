@@ -6,7 +6,7 @@ import {
 	type Page,
 	type ElectronApplication
 } from '../../../../test/support/browserTest';
-import { writeFile } from 'node:fs/promises';
+import { writeFile, appendFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { join, resolve, basename } from 'node:path';
 import { mkdirSync, appendFileSync } from 'node:fs';

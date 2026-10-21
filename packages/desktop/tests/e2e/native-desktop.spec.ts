@@ -39,7 +39,13 @@ async function project(root: string) {
 }
 async function isolation(app: ElectronApplication, page: Page) {
 	const preferences = await app.evaluate(({ BrowserWindow }) => {
-		const options = BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences();
+		const contents = BrowserWindow.getAllWindows()[0].webContents;
+		// Electron exposes this diagnostic getter without a public type declaration.
+		const preferences = Reflect.get(
+			contents,
+			'getLastWebPreferences'
+		) as () => Electron.WebPreferences;
+		const options = preferences.call(contents);
 		return {
 			sandbox: options?.sandbox,
 			contextIsolation: options?.contextIsolation,
