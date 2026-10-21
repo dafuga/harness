@@ -32,7 +32,6 @@ function card(body: string, name: string): string {
 	const text = words(body.slice(body.indexOf('>', from) + 1, body.indexOf('</section>', from)));
 	return text.replace(/\s+/g, ' ').trim();
 }
-const times = (text: string, part: string) => text.split(part).length - 1;
 
 test('the sections of an entity are named Used In and Uses, and none is a relationship', () => {
 	for (const entity of [list, filter, page]) {
