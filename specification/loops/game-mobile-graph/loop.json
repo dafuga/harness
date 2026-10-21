@@ -2,9 +2,11 @@
 	"name": "game-mobile-graph",
 	"goal": "Fit the entire authored checkpoint graph on mobile and retain a selectable key checkpoint",
 	"createdAt": "2026-10-21T12:14:42.827Z",
-	"updatedAt": "2026-10-21T12:18:44.275Z",
+	"updatedAt": "2026-10-21T12:40:45.330Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -39,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:40:45.330Z",
+			"evidence": "Paired immutable proof at 586caf35 and 5dbc84de runs the same mobile scenarios, tests, fixture and command: viewport ratio 0 becomes fully visible and both dimensions pass."
 		},
 		{
 			"id": "verify",

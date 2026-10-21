@@ -19,6 +19,13 @@ interface BridgeContext {
 	/** False once the client this bridge serves has ended: nothing more is written for it. */
 	alive?: () => boolean;
 }
+const projectIndependentMethods: Array<keyof DesktopBridge> = [
+	'openProject',
+	'selectProject',
+	'listProjects',
+	'deploymentActivities',
+	'gameCreate'
+];
 async function writable(context: BridgeContext) {
 	const { session } = context;
 	if (session.busy || session.arbiter.held(session.root))
@@ -115,16 +122,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		get(target, property: keyof typeof bridge) {
 			const operation = target[property];
 			if (typeof operation !== 'function') return operation;
-			if (
-				[
-					'openProject',
-					'selectProject',
-					'listProjects',
-					'deploymentActivities',
-					'gameCreate'
-				].includes(property)
-			)
-				return operation;
+			if (projectIndependentMethods.includes(property)) return operation;
 			return async (input?: { projectId?: string }) => {
 				session.assertProject(input?.projectId);
 				session.pending++;

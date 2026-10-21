@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 const roots: string[] = [];
 export const text = 'export const owned = "é";\n'.repeat(100);
+const filterSource = 'export function filter(value: string) { return value; }\n';
 const definitions = [
 	['page.home', 'page', 'src/pages/Home.ts'],
 	['reports.component.select', 'component', 'src/components/Select.ts'],
@@ -30,11 +31,7 @@ export async function fixture() {
 	git(root, 'config', 'user.email', 'fixture@example.invalid');
 	git(root, 'lfs', 'install', '--local');
 	for (const [id, kind, path] of definitions) {
-		await put(
-			root,
-			path,
-			kind === 'function' ? 'export function filter(value: string) { return value; }\n' : text
-		);
+		await put(root, path, kind === 'function' ? filterSource : text);
 		await put(
 			root,
 			`specification/units/${id}.json`,
