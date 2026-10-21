@@ -33,3 +33,5 @@ separately from the purity and reuse checks.
 - Classes per file: 1.
 
 Profile a route only under its explicitly exercised framework owner. Do not copy whole-page navigation or heap samples to a fixed list of shared modules. Each additional subject needs its own actual workload and declared boundary; source imports alone do not prove execution.
+
+Source checkpoints follow the fixture's actual repository metadata. A history with no GitHub origin must explicitly show source unavailable and no invented links; retain separate positive browser cases asserting exact repository, commit and encoded source paths. Do not expect filenames from the retired inline-source renderer.
