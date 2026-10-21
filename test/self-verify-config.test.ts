@@ -2,7 +2,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
-import { scenarioManifestSchema } from '../src/core/unitTypes';
+import { scenarioManifestSchema, type ScenarioManifest } from '../src/core/unitTypes';
 import { verificationTarget } from './verification-targets';
 import { taskProfile } from './support/taskProfiles';
 
@@ -48,42 +48,60 @@ test('this repository requires profiling and declares no source as something a c
 	}
 });
 
-test('registered scenario wrappers cover their output states and visual build identities', () => {
-	const gaps: string[] = [];
-	for (const file of under('specification/scenarios').filter((path) => path.endsWith('.json'))) {
-		const scenario = scenarioManifestSchema.parse(JSON.parse(readFileSync(file, 'utf8')));
-		const states = new Set<string>();
-		let wrappers = 0;
-		for (const check of scenario.tests) {
-			if (!check.target.includes('test/verification-output.ts')) continue;
-			wrappers++;
-			const match = /verification-output\.ts (vitest|playwright) (?:--config \S+ )?(\S+)$/.exec(
-				check.target
-			);
-			if (!match) {
-				gaps.push(`${scenario.id}: unsupported wrapper command ${check.id}`);
-				continue;
-			}
-			try {
-				const scope = verificationTarget(
-					scenario.id,
-					match[1] as 'vitest' | 'playwright',
-					match[2],
-					join(process.cwd(), check.cwd ?? '.')
-				);
-				for (const state of scope.states) states.add(state);
-			} catch (error) {
-				gaps.push(`${scenario.id}: ${check.id}: ${String(error)}`);
-			}
+function registeredStates(scenario: ScenarioManifest) {
+	const states = new Set<string>(),
+		gaps: string[] = [];
+	let wrappers = 0;
+	for (const check of scenario.tests) {
+		if (!check.target.includes('test/verification-output.ts')) continue;
+		wrappers++;
+		const match = /verification-output\.ts (vitest|playwright) (?:--config \S+ )?(\S+)$/.exec(
+			check.target
+		);
+		if (!match) {
+			gaps.push(`${scenario.id}: unsupported wrapper command ${check.id}`);
+			continue;
 		}
-		for (const slot of scenario.evidence) {
-			if (slot.kind === 'screenshot' && !slot.build)
-				gaps.push(`${scenario.id}: ${slot.id}: missing compiled build binding`);
-			if (wrappers === scenario.tests.length && slot.kind === 'output' && slot.required)
-				for (const state of slot.states)
-					if (!states.has(state))
-						gaps.push(`${scenario.id}: ${state}: no registered output producer`);
+		try {
+			const scope = verificationTarget(
+				scenario.id,
+				match[1],
+				match[2],
+				join(process.cwd(), check.cwd ?? '.')
+			);
+			for (const state of scope.states) states.add(state);
+		} catch (error) {
+			gaps.push(`${scenario.id}: ${check.id}: ${String(error)}`);
 		}
 	}
+	return { states, gaps, wrappers };
+}
+
+function registrationProblems(scenario: ScenarioManifest): string[] {
+	const { states, gaps, wrappers } = registeredStates(scenario);
+	return [
+		...gaps,
+		...scenario.evidence.flatMap((slot) => {
+			const visual =
+				slot.kind === 'screenshot' && !slot.build
+					? [`${scenario.id}: ${slot.id}: missing compiled build binding`]
+					: [];
+			const output =
+				wrappers === scenario.tests.length && slot.kind === 'output' && slot.required
+					? slot.states
+							.filter((state) => !states.has(state))
+							.map((state) => `${scenario.id}: ${state}: no registered output producer`)
+					: [];
+			return [...visual, ...output];
+		})
+	];
+}
+
+test('registered scenario wrappers cover their output states and visual build identities', () => {
+	const gaps = under('specification/scenarios')
+		.filter((path) => path.endsWith('.json'))
+		.flatMap((file) =>
+			registrationProblems(scenarioManifestSchema.parse(JSON.parse(readFileSync(file, 'utf8'))))
+		);
 	expect(gaps).toEqual([]);
 });
