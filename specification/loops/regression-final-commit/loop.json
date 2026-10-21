@@ -6,7 +6,7 @@
 	"name": "regression-final-commit",
 	"goal": "Complete regression verification after committing proof bookkeeping while requiring current intact verification and performance evidence.",
 	"createdAt": "2026-10-21T20:06:31.016Z",
-	"updatedAt": "2026-10-21T20:07:36.122Z",
+	"updatedAt": "2026-10-21T20:12:44.152Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,12 +29,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:12:42.950Z",
+			"evidence": "0416b4c8d immutable proof aa1527d1 records three real failures across bug-fix, fix and regression-prevention. After a bookkeeping commit the final CLI reports current-tested-commit instead of reaching the completion audit; four existing cases pass. The standard matrix and command are frozen."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:12:44.152Z",
+			"evidence": "Keep exact tested-commit requirements for red, green and guard checkpoints. Final verify validates its unchanged historical red/green pair, then requires the current TaskCompletionService audit even for legacy loops without completion metadata. Never relabel historical proof as current."
 		},
 		{
 			"id": "implement",

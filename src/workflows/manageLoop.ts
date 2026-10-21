@@ -105,16 +105,7 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	if (state.enforceOrder && pending && pending.id !== step)
 		fail(`Complete loop step "${pending.id}" before "${step}".`);
 	await enforceRegressionStep(loopRoot(input), state, step);
-	if (
-		state.completion &&
-		state.steps.filter((candidate) => candidate.status === 'pending').length === 1
-	)
-		await new TaskCompletionService(loopRoot(input)).require({
-			kind: state.completion.kind,
-			plan: state.completion.plan,
-			goal: state.goal,
-			loop: state.name
-		});
+	await auditLoopCompletion(loopRoot(input), state, step);
 
 	const completedAt = timestamp(input.now);
 	Object.assign(item, { status: 'complete' as const, completedAt, evidence });
@@ -151,6 +142,18 @@ export function renderLoopStatus(status: LoopStatus): string {
 
 	if (status.state.steps.length === 0) return [...lines, '  none'].join('\n');
 	return [...lines, ...status.state.steps.flatMap(renderStep)].join('\n');
+}
+
+async function auditLoopCompletion(root: string, state: LoopState, step: string): Promise<void> {
+	const final = state.steps.filter((candidate) => candidate.status === 'pending').length === 1;
+	const regressionVerify = state.regressionCommits === 1 && step === 'verify';
+	if ((state.completion && final) || regressionVerify)
+		await new TaskCompletionService(root).require({
+			kind: state.completion?.kind ?? 'coding',
+			plan: state.completion?.plan,
+			goal: state.goal,
+			loop: state.name
+		});
 }
 
 function createTraceEvent(state: LoopState, timestampValue: string): Record<string, unknown> {
