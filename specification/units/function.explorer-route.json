@@ -7,15 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/explorerRoute.ts"],
+		"source": ["src/utils/explorer-route/explorerTabs.ts", "src/utils/explorerRoute.ts"],
 		"symbols": [
+			"explorerTabs",
+			"ExplorerTab",
+			"tabOf",
+			"explorerTabs",
+			"ExplorerTab",
 			"explorerCategories",
 			"ExplorerCategory",
 			"explorerKindCategory",
 			"explorerSections",
 			"ExplorerSection",
-			"explorerTabs",
-			"ExplorerTab",
 			"ExplorerLocation",
 			"explorerRoute",
 			"canonicalExplorerLocation",
@@ -75,7 +78,7 @@
 			{
 				"name": "explorerRoutePath",
 				"type": "string",
-				"description": "Canonical path with encoded branch/entity segments, selected helper identity and valid nondefault tab in the query."
+				"description": "Canonical branch or commit path. Helpers use callable-name paths, an optional owner qualifier and a tab path segment; legacy entity query links remain readable."
 			}
 		],
 		"errors": []

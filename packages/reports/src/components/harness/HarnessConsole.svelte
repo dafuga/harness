@@ -8,7 +8,7 @@
 	} from '../../models/Explorer.types';
 	import type { ExplorerScreen } from '../../models/ExplorerScreen.types';
 	import type { HarnessIndex, HarnessRevision, HarnessUnit } from '../../models/Harness.types';
-	import { correctedLocation } from '../../utils/correctedLocation';
+	import { correctedLocation, compactHelperLocation } from '../../utils/correctedLocation';
 	import type { EntityLens } from '../../utils/entityLens';
 	import { explorerBehavior } from '../../utils/explorerBehavior';
 	import { explorerEntities } from '../../utils/explorerEntities';
@@ -62,13 +62,23 @@
 		const first = scope?.mode === 'commit' ? scope.parent : null;
 		return first && index?.revisions.some((item) => item.commit === first) ? first : null;
 	});
-	const href = (to: ExplorerLocation) => base + explorerRoutePath(to);
+	function address(to: ExplorerLocation) {
+		const local = to.branch === scope?.branch && to.commit === scope?.location.commit;
+		return explorerRoutePath(local ? compactHelperLocation(to, entities) : to);
+	}
+	const href = (to: ExplorerLocation) => base + address(to);
 	type Answer = { evidence: ExplorerEvidence; behavior: ExplorerBehavior };
 	/** Another category, entity or section starts at its top; a tab of the same page does not. */
 	function onroute(to: ExplorerLocation) {
-		const next = explorerRoutePath(to);
+		const next = address(to);
 		navigate(next, false);
-		if (next.split('?')[0] !== pathname) window.scrollTo({ top: 0 });
+		const from = shown?.scope.location ?? scope?.location;
+		if (
+			['category', 'entity', 'helper', 'section'].some(
+				(key) => to[key as keyof ExplorerLocation] !== from?.[key as keyof ExplorerLocation]
+			)
+		)
+			window.scrollTo({ top: 0 });
 	}
 	/** What an entity relates to at a revision; what its commit removed, as the parent held it. */
 	function relationsOf(
@@ -96,7 +106,9 @@
 	/** Everything the content is given, once the revisions of exactly this scope are read. */
 	let shown = $derived.by(() => {
 		if (!index || !scope || !loaded || !relations || !answers) return null;
-		const [history, at, revisions, known] = [index, scope, loaded, answers];
+		const location = correctedLocation(scope.location, entities) ?? scope.location;
+		const at = { ...scope, location };
+		const [history, revisions, known] = [index, loaded, answers];
 		const answer = (unit: HarnessUnit) => {
 			const found = known.get(unit.id);
 			if (found) return found;
@@ -168,8 +180,10 @@
 	});
 	// An entity is addressed under the category it has at this revision; the address is corrected.
 	$effect(() => {
-		const corrected = scope?.location ? correctedLocation(scope.location, entities) : null;
-		if (corrected) navigate(explorerRoutePath(corrected), true);
+		if (!scope || !loaded) return;
+		const corrected = correctedLocation(scope.location, entities) ?? scope.location;
+		const canonical = address(corrected);
+		if (canonical !== pathname + search) navigate(canonical, true);
 	});
 </script>
 
@@ -178,7 +192,15 @@
 		{base}
 		{problem}
 		missing={page?.kind === 'missing' ? page : null}
-		navbar={{ repository, scope, index, commits, href, onroute, search: searchCatalog }}
+		navbar={{
+			repository,
+			scope: shown?.scope ?? scope,
+			index,
+			commits,
+			href,
+			onroute,
+			search: searchCatalog
+		}}
 	/>
 	<main class="hx-main">
 		{#if !index && !problem}<p class="hc-muted" role="status">Loading history…</p>{/if}

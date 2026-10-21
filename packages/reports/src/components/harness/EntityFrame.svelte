@@ -26,11 +26,13 @@
 		const unit = host.head.registry.units.find(
 			(item) => item.id === host.route.entity && item.status === 'active'
 		);
-		return unit ? explorerEntity(host.head, unit, true) ?? undefined : undefined;
+		return unit ? (explorerEntity(host.head, unit, true) ?? undefined) : undefined;
 	});
 	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
 	let choosing = $derived(
-		moduleEntity?.category === 'functions' && !host.route.helper && (moduleEntity.unit.helpers?.length ?? 0) > 1
+		moduleEntity?.category === 'functions' &&
+			!host.route.helper &&
+			(moduleEntity.unit.helpers?.length ?? 0) > 1
 	);
 	let owner = $derived.by(() => {
 		if (!entity || listed) return undefined;
@@ -90,7 +92,9 @@
 		{:else}
 			<EntityMissing
 				title="Not at this revision"
-				message={`Nothing named ${host.route.helper ?? host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
+				message={host.route.helper && !host.route.entity
+					? `The name ${host.route.helper} does not identify exactly one helper at this revision. Choose its owner from Helpers.`
+					: `Nothing named ${host.route.helper ?? host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
 				{nav}
 				to={entityLens(host.route, { category: host.route.category })}
 			/>
