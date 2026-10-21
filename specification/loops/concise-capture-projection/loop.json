@@ -2,7 +2,7 @@
 	"name": "concise-capture-projection",
 	"goal": "Screenshot cards stay concise and preserve identical-tree images across projections without exposing cache filenames.",
 	"createdAt": "2026-10-21T20:54:08.391Z",
-	"updatedAt": "2026-10-21T21:04:26.371Z",
+	"updatedAt": "2026-10-21T21:14:37.671Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:14:16.832Z",
+			"evidence": "Green 8a8a485f at d5332180 passes unchanged projection tests, 11 render tests, 10 responsive browser cases and 3 real-route cases. It retains 165 original PNGs and 400 runtime observations, including fresh projection latency and whole-process RSS."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:14:37.671Z",
+			"evidence": "At d5332180 in an isolated snapshot, reintroducing unconditional cache-side forwarding makes the unchanged projection guard fail; restoring it passes. Replacing EntityScreens with the original header also fails the unchanged render assertion; restoring it passes. Logs and exact source revision are retained."
 		},
 		{
 			"id": "verify",

@@ -64,6 +64,8 @@ These rules apply only to this Harness repository, including requests made in an
 - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
 - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. A feature-branch screenshot alone is not merged delivery.
 - When screenshot metadata crosses a projection or transport, run its existing isolation and re-derivation tests alongside browser captures, even when full verification is deferred. Carry opaque source-tree identity and original provenance, without prepared-history cache filenames.
+- When changing the screenshot viewer, capture the entity being reviewed as well as the viewer. Reopen that entity at the delivered revision with every device image and page workload figure present; an older selected commit does not prove current delivery.
+- Preserve focused runtime measurements across identical complete source trees, using the same identity rule as screenshots. Keep their original tested revision and focused status; source reuse does not grant a full verification verdict.
 - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
 
 ## Code Rules
