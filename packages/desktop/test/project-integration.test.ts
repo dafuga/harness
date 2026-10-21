@@ -5,7 +5,7 @@ import { PNG } from 'pngjs';
 import { fixture, git, text } from './project-fixture';
 test('project selection and slash branches retain full ancestry and explicit historical views are immutable', async () => {
 	const f = await fixture();
-	await git(f.root, ['remote', 'add', 'origin', 'git@github.com:fixture/orders.git']);
+	git(f.root, 'remote', 'add', 'origin', 'git@github.com:fixture/orders.git');
 	const current = await f.session.snapshot({ branch: null, commit: null });
 	expect(current.project.repositoryUrl).toBe('https://github.com/fixture/orders');
 	expect(current.entities).toHaveLength(4);

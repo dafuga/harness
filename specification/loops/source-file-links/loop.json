@@ -2,9 +2,11 @@
 	"name": "source-file-links",
 	"goal": "Source lists actual files with revision-pinned GitHub links and a modal button for each file",
 	"createdAt": "2026-10-21T15:24:58.053Z",
-	"updatedAt": "2026-10-21T15:29:41.141Z",
+	"updatedAt": "2026-10-21T15:31:38.229Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:31:38.229Z",
+			"evidence": "Committed test checkpoint 7e8d8dc63 fails with the missing Source files list and per-file actions. Immutable record 3bb3932c9753512563c88fbda0c8469a006f17b76db0f6cdc3ae8417253941f8; inspected paired Source screenshot."
 		},
 		{
 			"id": "implement",
