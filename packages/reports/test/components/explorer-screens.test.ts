@@ -80,6 +80,10 @@ test('no entry reaches the content that shows every screen, or the host that mou
 	for (const entry of Object.values(entries)) {
 		expect(has(entry, ['ExplorerContent', 'HarnessConsole', 'HarnessShell']), entry).toEqual([]);
 	}
+	const panes = direct('ExplorerFrame').filter(
+		(name) => name.startsWith('Entity') && name !== 'EntityMissing'
+	);
+	expect(panes, 'shared frames must not import entity-specific panes').toEqual([]);
 });
 
 test('collections reuse visual cards and tables without loading entity detail panes', () => {

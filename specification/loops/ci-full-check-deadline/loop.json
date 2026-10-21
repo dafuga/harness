@@ -2,7 +2,7 @@
 	"name": "ci-full-check-deadline",
 	"goal": "Allow the unchanged full repository check to finish instead of cancelling at 45 minutes",
 	"createdAt": "2026-10-21T21:34:21.696Z",
-	"updatedAt": "2026-10-21T21:35:29.580Z",
+	"updatedAt": "2026-10-21T21:36:49.151Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:36:47.818Z",
+			"evidence": "Commit 86529ba6a gives the existing Linux full-check job 90 minutes. All verification commands, workers, performance assertions, credentials and deployment mappings remain as before."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:36:49.151Z",
+			"evidence": "Sealed unchanged green is retained in ci-deadline-green.json at 86529ba6a. All six standard CI setup cases pass; full-suite and affected browser verification remain pending."
 		},
 		{
 			"id": "verify",
