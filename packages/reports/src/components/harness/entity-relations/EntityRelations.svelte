@@ -24,22 +24,36 @@
 		removed?: boolean;
 	} = $props();
 	let usage = $derived(entityUsage(relations));
+	let scope = $derived(
+		JSON.stringify([
+			nav.route.branch,
+			nav.route.commit,
+			nav.route.entity,
+			nav.route.helper,
+			show,
+			host.scope.commit
+		])
+	);
 	const gone = 'Removed at this commit: ';
 </script>
 
-{#snippet cards(items: ExplorerEntity[])}
+{#snippet cards(items: ExplorerEntity[], label: string)}
 	{#each [...new Set(items.map((item) => item.category))] as category (category)}
-		<ExplorerCatalogItems
-			{category}
-			{nav}
-			lens={host.lens}
-			mediaBase={host.mediaBase}
-			verification={false}
-			rows={entityCatalog(items, category, host.lens.relations, {
-				related: true,
-				consumers: host.entities
-			})}
-		/>
+		{#key scope}
+			<ExplorerCatalogItems
+				{category}
+				{nav}
+				lens={host.lens}
+				mediaBase={host.mediaBase}
+				verification={false}
+				batch={4}
+				{label}
+				rows={entityCatalog(items, category, host.lens.relations, {
+					related: true,
+					consumers: host.entities
+				})}
+			/>
+		{/key}
 	{/each}
 {/snippet}
 
@@ -63,7 +77,7 @@
 					<HarnessIcon name={group.icon} size={18} />
 					{group.title} <span class="ex-count">{group.items.length}</span>
 				</h3>
-				{@render cards(group.items)}
+				{@render cards(group.items, `${group.title} used in`)}
 			{/each}
 		</section>
 	{/if}
@@ -85,7 +99,7 @@
 					<HarnessIcon name={group.icon} size={18} />
 					{group.title} <span class="ex-count">{group.items.length}</span>
 				</h3>
-				{@render cards(group.items)}
+				{@render cards(group.items, `${group.title} uses`)}
 			{/each}
 			{#if usage.other.length}
 				<h3>

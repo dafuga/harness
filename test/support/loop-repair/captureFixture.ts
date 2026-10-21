@@ -1,5 +1,47 @@
 import { ScenarioRepository } from '../../../src/repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../src/repositories/UnitRegistryRepository';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { expect } from 'vitest';
+import { runCommand, runHarness } from '../cli';
+
+/** Squash landing preserves identical pixels with their original revision, never a new verdict. */
+export async function expectSquashedScreens(root: string, source: string): Promise<void> {
+	const tree = (await runCommand(['git', 'rev-parse', source + '^{tree}'], root)).stdout.trim();
+	const parent = (await runCommand(['git', 'rev-parse', source + '^'], root)).stdout.trim();
+	const squash = (
+		await runCommand(
+			[
+				'git',
+				'-c',
+				'user.name=Fixture',
+				'-c',
+				'user.email=fixture@harness.invalid',
+				'commit-tree',
+				tree,
+				'-p',
+				parent,
+				'-m',
+				'fix: squash source-identical repair'
+			],
+			root
+		)
+	).stdout.trim();
+	await runCommand(['git', 'update-ref', 'refs/heads/squashed', squash], root);
+	const out = join(root, 'squashed-history');
+	await runHarness(['history', 'build', '--out', out, '--limit', '10'], root);
+	const detail = JSON.parse(await readFile(join(out, 'revisions', squash + '.json'), 'utf8'));
+	expect(detail.records).toEqual([]);
+	expect(detail.regressions, 'source-identical squash retains focused screenshots').toContainEqual(
+		expect.objectContaining({
+			green: expect.objectContaining({
+				commit: source,
+				sourceTree: tree,
+				captures: expect.arrayContaining([expect.objectContaining({ unit: 'page.sample' })])
+			})
+		})
+	);
+}
 
 /** Both explicit unit names and canonical scenario slots use the same standard proof fixture. */
 export async function captureFixture(root: string): Promise<string> {

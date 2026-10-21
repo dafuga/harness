@@ -27,7 +27,7 @@ import {
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
 import { withFocused } from './entityStates';
-import { withHelpers } from './entityPreviewHelpers';
+import { withHelpers, withRelationGroups } from './entityPreviewHelpers';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = ((window as unknown as { previewVariant?: PreviewVariant }).previewVariant ??
@@ -45,6 +45,8 @@ if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
 if (variant === 'focused')
 	for (const commit of Object.keys(stored)) stored[commit] = withFocused(stored[commit]);
+if (variant === 'relations')
+	for (const commit of Object.keys(stored)) stored[commit] = withRelationGroups(stored[commit]);
 if (variant === 'helpers')
 	for (const commit of Object.keys(stored)) stored[commit] = withHelpers(stored[commit]);
 if (variant === 'inherited')
