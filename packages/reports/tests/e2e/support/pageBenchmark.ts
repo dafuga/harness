@@ -64,6 +64,7 @@ function includedUnits(page: string): string[] {
 	const units = [
 		page,
 		'reports.component.harness-entity-header',
+		'function.explorer-route',
 		'reports.component.harness-entity-summary',
 		'reports.function.entity-measure',
 		'reports.function.entity-shown',
@@ -71,7 +72,11 @@ function includedUnits(page: string): string[] {
 		'reports.function.explorer-evidence-focused-captures'
 	];
 	if (/-(pages|shells|components)-entity$/.test(page))
-		units.push('reports.component.harness-entity-screens', 'reports.function.entity-screens');
+		units.push(
+			'reports.component.harness-entity-screens',
+			'reports.function.entity-screens',
+			'reports.component.harness-entity-frame'
+		);
 	return units.filter((unit) =>
 		existsSync(join(import.meta.dirname, '../../../../../specification/units', unit + '.json'))
 	);

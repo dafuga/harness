@@ -13,7 +13,7 @@ const main = (rest: string) => at('main', commits.approved, rest);
 const content = (page: Page) => page.locator('.ex-content');
 const card = (page: Page, name: string) => content(page).getByRole('region', { name, exact: true });
 const heading = (page: Page, name: string) => page.getByRole('heading', { level: 1, name });
-const named = ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History'];
+const named = ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source'];
 const sectionsOf = (page: Page, entity: string) =>
 	page.getByRole('tablist', { name: `${entity} sections` }).getByRole('tab');
 
@@ -23,7 +23,7 @@ test('a former relationships address opens the overview without embedded usage s
 	await page.goto(main(`pages/${units.page}?tab=relationships`));
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await checkpoint(page, 'usage-former-address');
-	await expect(sectionsOf(page, 'Titles')).toHaveText(named);
+	await expect(sectionsOf(page, 'Titles')).toHaveText(named.filter((tab) => tab !== 'Used In'));
 	await expect(card(page, 'Used In')).toHaveCount(0);
 	await expect(card(page, 'Uses')).toHaveCount(0);
 	await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
