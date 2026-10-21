@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/HostedConnection.svelte"],
-		"symbols": ["HostedConnection"]
+		"source": [
+			"packages/desktop/src/components/HostedConnection.svelte",
+			"packages/desktop/src/components/networking-security/HostedConnection.svelte"
+		],
+		"symbols": ["HostedConnection", "HostedConnection"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/HostedConnection.svelte",
+		"entry": "packages/desktop/src/components/networking-security/HostedConnection.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/HostedConnection.svelte"
+				"entry": "packages/desktop/src/components/networking-security/HostedConnection.svelte"
 			}
 		]
 	},

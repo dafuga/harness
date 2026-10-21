@@ -1,1 +1,1 @@
-export { createCollaboration } from './create-collaboration/createCollaboration';
+export { createCollaboration } from './projects-sessions/create-collaboration/createCollaboration';

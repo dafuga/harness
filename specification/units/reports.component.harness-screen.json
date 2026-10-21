@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/HarnessScreen.svelte"],
-		"symbols": ["HarnessScreen"]
+		"source": [
+			"packages/reports/src/components/HarnessScreen.svelte",
+			"packages/reports/src/components/explorer-ui/HarnessScreen.svelte"
+		],
+		"symbols": ["HarnessScreen", "HarnessScreen"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/HarnessScreen.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/HarnessScreen.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/HarnessScreen.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/HarnessScreen.svelte"
 			}
 		]
 	},

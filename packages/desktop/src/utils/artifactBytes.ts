@@ -1,5 +1,3 @@
-export const unreadArtifact = 'Recorded bytes cannot be read on this connection.';
-
-export const damagedArtifact = 'The bytes that were read do not have the recorded SHA-256.';
-
-export { artifactBytes } from '../components/recorded-preview/artifactBytes';
+export { artifactBytes } from './shared-primitives/artifactBytes';
+export { unreadArtifact, damagedArtifact } from './shared-primitives/artifactBytes';
+export * from './shared-primitives/artifactBytes';

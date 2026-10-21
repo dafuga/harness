@@ -1,1 +1,1 @@
-export { claudeState } from '../adapters/claude-cli-adapter/claudeState';
+export { claudeState } from '../adapters/agents-providers/claude-cli-adapter/claudeState';

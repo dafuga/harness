@@ -1,1 +1,1 @@
-export { validateGitHubAnchor } from './create-git-hub-source/validateGitHubAnchor';
+export { validateGitHubAnchor } from './git-source-history/create-git-hub-source/validateGitHubAnchor';

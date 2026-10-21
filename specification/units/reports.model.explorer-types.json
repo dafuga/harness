@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/models/Explorer.types.ts"],
+		"source": [
+			"packages/reports/src/models/Explorer.types.ts",
+			"packages/reports/src/models/explorer-ui/Explorer.types.ts"
+		],
 		"symbols": [
 			"ExplorerCategory",
 			"ExplorerLocation",
@@ -57,11 +60,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/models/Explorer.types.ts",
+		"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/models/Explorer.types.ts"
+				"entry": "packages/reports/src/models/explorer-ui/Explorer.types.ts"
 			}
 		]
 	},

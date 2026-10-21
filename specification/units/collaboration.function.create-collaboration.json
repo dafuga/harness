@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/create-collaboration/createCollaboration.ts",
-			"packages/collaboration/src/utils/createCollaboration.ts"
+			"packages/collaboration/src/utils/createCollaboration.ts",
+			"packages/collaboration/src/utils/projects-sessions/create-collaboration/createCollaboration.ts"
 		],
-		"symbols": ["createCollaboration", "createCollaboration"]
+		"symbols": ["createCollaboration", "createCollaboration", "createCollaboration"]
 	},
 	"contract": {
 		"origin": "declared",

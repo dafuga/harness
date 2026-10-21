@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages.ts",
 			"src/services/claude-query-service/gatewayMessages.ts",
 			"src/utils/gatewayMessages.ts"
 		],
-		"symbols": ["gatewayMessages", "gatewayMessages"]
+		"symbols": ["gatewayMessages", "gatewayMessages", "gatewayMessages"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleManifest.ts"],
+		"source": ["src/utils/consoleManifest.ts", "src/utils/development-tooling/consoleManifest.ts"],
 		"symbols": [
+			"consoleManifestFile",
+			"consoleManifest",
+			"writeConsoleManifest",
 			"consoleManifestFile",
 			"ConsoleFileEntry",
 			"FileIdentity",
@@ -60,11 +63,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/consoleManifest.ts",
+		"entry": "src/utils/development-tooling/consoleManifest.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/consoleManifest.ts"
+				"entry": "src/utils/development-tooling/consoleManifest.ts"
 			}
 		]
 	},

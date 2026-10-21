@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/ComponentManifestValidator.ts"],
+		"source": [
+			"src/validators/ComponentManifestValidator.ts",
+			"src/validators/development-tooling/ComponentManifestValidator.ts"
+		],
 		"symbols": [
+			"ComponentManifestValidator",
+			"wellFormed",
+			"schemaErrors",
 			"ManifestValidation",
 			"ComponentManifestValidator",
 			"ComponentManifestValidator.validate",
@@ -70,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/ComponentManifestValidator.ts",
+		"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/ComponentManifestValidator.ts"
+				"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
 			}
 		]
 	},

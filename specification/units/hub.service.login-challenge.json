@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/LoginChallengeService.ts"],
+		"source": [
+			"packages/hub/src/services/LoginChallengeService.ts",
+			"packages/hub/src/services/accounts-access/LoginChallengeService.ts"
+		],
 		"symbols": [
+			"CHALLENGE_TTL",
+			"LoginChallengeService",
 			"CHALLENGE_TTL",
 			"LoginChallengeOptions",
 			"IssuedChallenge",
@@ -74,11 +79,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/LoginChallengeService.ts",
+		"entry": "packages/hub/src/services/accounts-access/LoginChallengeService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/LoginChallengeService.ts"
+				"entry": "packages/hub/src/services/accounts-access/LoginChallengeService.ts"
 			}
 		]
 	},

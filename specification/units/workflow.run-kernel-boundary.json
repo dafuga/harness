@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/runKernelBoundary.ts"],
+		"source": ["src/cli/program/runKernelBoundary.ts"],
 		"symbols": ["boundaryUnit", "BoundaryBenchmark", "kernelBoundary"]
 	},
 	"contract": {
@@ -94,11 +94,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/runKernelBoundary.ts",
+		"entry": "src/cli/program/runKernelBoundary.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/runKernelBoundary.ts"
+				"entry": "src/cli/program/runKernelBoundary.ts"
 			}
 		]
 	},

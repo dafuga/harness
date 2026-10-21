@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/services/hub-projection-service/hubEntity.ts",
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts",
 			"packages/hub/src/utils/hubEntity.ts"
 		],
 		"symbols": ["hubEntity", "hubEntity"]

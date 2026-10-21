@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/runtimeReply.ts"],
-		"symbols": ["RuntimeReply", "runtimeReply"]
+		"source": ["src/utils/execution-runtimes/runtimeReply.ts", "src/utils/runtimeReply.ts"],
+		"symbols": ["RuntimeReply", "runtimeReply", "runtimeReply"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/runtimeReply.ts",
+		"entry": "src/utils/execution-runtimes/runtimeReply.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/runtimeReply.ts"
+				"entry": "src/utils/execution-runtimes/runtimeReply.ts"
 			}
 		]
 	},

@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/guide.ts"],
-		"symbols": ["Guide", "guides", "findGuide", "availableGuideTopics"]
+		"source": ["src/guides/development-tooling/guide.ts", "src/guides/guide.ts"],
+		"symbols": [
+			"Guide",
+			"guides",
+			"findGuide",
+			"availableGuideTopics",
+			"guides",
+			"findGuide",
+			"availableGuideTopics"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -103,11 +111,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/guides/guide.ts",
+		"entry": "src/guides/development-tooling/guide.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/guides/guide.ts"
+				"entry": "src/guides/development-tooling/guide.ts"
 			}
 		]
 	},

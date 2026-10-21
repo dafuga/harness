@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/serializers/GatewayContentSerializer.ts"],
+		"source": [
+			"src/serializers/GatewayContentSerializer.ts",
+			"src/serializers/development-tooling/GatewayContentSerializer.ts"
+		],
 		"symbols": [
+			"GatewayContentSerializer",
 			"GatewayContentSerializer",
 			"GatewayContentSerializer.history",
 			"GatewayContentSerializer.toolResult"
@@ -57,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/serializers/GatewayContentSerializer.ts",
+		"entry": "src/serializers/development-tooling/GatewayContentSerializer.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/serializers/GatewayContentSerializer.ts"
+				"entry": "src/serializers/development-tooling/GatewayContentSerializer.ts"
 			}
 		]
 	},

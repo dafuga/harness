@@ -7,8 +7,8 @@ export {
 	consolePolicy,
 	loopbackAddress
 } from '../../packages/reports/src/utils/console-server/consolePolicy';
-export { denyAll } from '../utils/consolePolicy';
-export type { ConsolePolicy, ConsoleRequest, OwnerMode } from '../utils/consolePolicy';
+export { denyAll } from '../utils/explorer-ui/consolePolicy';
+export type { ConsolePolicy, ConsoleRequest, OwnerMode } from '../utils/explorer-ui/consolePolicy';
 export { consoleAccess } from '../../packages/reports/src/utils/console-server/consoleAccess';
 export type {
 	ConsoleAccess,
@@ -17,14 +17,17 @@ export type {
 	ConsoleExportInput,
 	ConsoleHost,
 	ConsoleSource
-} from '../utils/consoleAccess';
-export { consoleStore } from '../utils/consoleStore';
-export type { ConsoleBucket, ConsoleObject } from '../utils/consoleStore';
-export { buildStamp, sdkPackage } from '../utils/buildStamp';
-export { consoleBundle } from '../utils/consoleBundle';
-export type { ConsoleModules } from '../utils/consoleBundle';
-export { consoleDocument } from '../utils/consoleDocument';
-export type { ConsoleAssets, ConsoleDocumentOptions } from '../utils/consoleDocument';
+} from '../utils/explorer-ui/consoleAccess';
+export { consoleStore } from '../utils/development-tooling/consoleStore';
+export type { ConsoleBucket, ConsoleObject } from '../utils/development-tooling/consoleStore';
+export { buildStamp, sdkPackage } from '../utils/development-tooling/buildStamp';
+export { consoleBundle } from '../utils/development-tooling/consoleBundle';
+export type { ConsoleModules } from '../utils/development-tooling/consoleBundle';
+export { consoleDocument } from '../utils/development-tooling/consoleDocument';
+export type {
+	ConsoleAssets,
+	ConsoleDocumentOptions
+} from '../utils/development-tooling/consoleDocument';
 export {
 	commitBranch,
 	consoleCanonical,
@@ -32,9 +35,9 @@ export {
 	explorerAddress,
 	explorerExact,
 	explorerHome
-} from '../utils/console-canonical/consoleCanonical';
-export { type IndexedHistory } from '../utils/console-canonical/consoleCanonical';
-export { explorerLegacy } from '../utils/console-canonical/explorerLegacy';
+} from '../utils/projects-sessions/console-canonical/consoleCanonical';
+export { type IndexedHistory } from '../utils/projects-sessions/console-canonical/consoleCanonical';
+export { explorerLegacy } from '../utils/projects-sessions/console-canonical/explorerLegacy';
 export {
 	explorerCategories,
 	explorerKindCategory,
@@ -42,14 +45,14 @@ export {
 	explorerRoutePath,
 	explorerSections,
 	explorerTabs
-} from '../utils/explorerRoute';
+} from '../utils/explorer-ui/explorerRoute';
 export type {
 	ExplorerCategory,
 	ExplorerLocation,
 	ExplorerSection,
 	ExplorerTab
-} from '../utils/explorerRoute';
-export { consoleRoute } from '../utils/console-canonical/consoleRoute';
+} from '../utils/explorer-ui/explorerRoute';
+export { consoleRoute } from '../utils/projects-sessions/console-canonical/consoleRoute';
 export { consoleRoutePath } from '../../packages/reports/src/components/project-activity/consoleRoute';
-export { consoleViews } from '../utils/consoleRoute';
-export type { ConsoleRoute, ConsoleView } from '../utils/consoleRoute';
+export { consoleViews } from '../utils/projects-sessions/consoleRoute';
+export type { ConsoleRoute, ConsoleView } from '../utils/projects-sessions/consoleRoute';

@@ -1,1 +1,4 @@
-export { createProject, removeMember } from './create-collaboration/createProject';
+export {
+	createProject,
+	removeMember
+} from './projects-sessions/create-collaboration/createProject';

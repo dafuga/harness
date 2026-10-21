@@ -54,11 +54,11 @@ test('Used In lists what uses the entity, the pages that show it too, each once 
 	const body = content('commit', { ...filter, tab: 'used-in' });
 	const used = card(body, 'Used In');
 	expect(sections(body)).toEqual(['Used In']);
-	expect(body).toContain('aria-label="Filter orders used in"');
+	expect(body).toContain('aria-label="filterOrders used in"');
 	expect(used).toMatch(/^Used In 2 /);
 	expect(used).toMatch(/Orders page/);
-	expect(used).toMatch(/Order list/);
-	for (const name of ['Orders page', 'Order list'])
+	expect(used).toMatch(/OrderList/);
+	for (const name of ['Orders page', 'OrderList'])
 		expect([...body.matchAll(new RegExp(`<article[^>]*aria-label="${name}"`, 'g'))]).toHaveLength(
 			1
 		);
@@ -70,9 +70,9 @@ test('Uses keeps what the entity depends on apart by kind and leaves out a kind 
 	const body = content('commit', { ...list, tab: 'uses' });
 	const uses = card(body, 'Uses');
 	expect(sections(body)).toEqual(['Uses']);
-	expect(body).toContain('aria-label="Order list uses"');
+	expect(body).toContain('aria-label="OrderList uses"');
 	expect(uses).toMatch(
-		/Uses 3 .*Components 1 .*Order card.*Functions 1 .*filterOrders.*Services 1 .*Order store/
+		/Uses 3 .*Components 1 .*OrderCard.*Functions 1 .*filterOrders.*Services 1 .*OrderStore/
 	);
 	expect(uses).not.toContain('Configs');
 	// Reused cards may mention their own consumers without listing them as dependencies.
@@ -85,7 +85,7 @@ test('Uses keeps what the entity depends on apart by kind and leaves out a kind 
 	])
 		expect(body).toContain(`href="${base}/${kind}/${id}"`);
 	expect(card(content('commit', { ...page, tab: 'uses' }), 'Uses')).toMatch(
-		/Uses 3 .*Components 2 .*Order list.*Search box.*Configs 1 .*Order settings/
+		/Uses 3 .*Components 2 .*OrderList.*SearchBox.*Configs 1 .*orderSettings/
 	);
 });
 
@@ -97,7 +97,7 @@ test('the overview and both dedicated usage sections show no source paths', () =
 		for (const name of ['Used In', 'Uses'])
 			expect(card(body, name)).not.toMatch(/src\/|\.ts\b|\.svelte\b/);
 	expect(card(screens[1], 'Used In')).toMatch(/Orders page/);
-	expect(card(screens[2], 'Uses')).toMatch(/Components 1 .*Order card/);
+	expect(card(screens[2], 'Uses')).toMatch(/Components 1 .*OrderCard/);
 });
 
 test('a former relationships address opens the overview without embedded usage sections', () => {
@@ -105,7 +105,7 @@ test('a former relationships address opens the overview without embedded usage s
 	expect([at('?tab=used-in')?.tab, at('?tab=uses')?.tab]).toEqual(['used-in', 'uses']);
 	expect(at('?tab=relationships')?.tab).toBe('relationships');
 	const body = content('commit', { ...list, tab: 'relationships' });
-	expect(body).toContain('aria-label="Order list overview"');
+	expect(body).toContain('aria-label="OrderList overview"');
 	expect(sections(body).filter((name) => /^Use/.test(name))).toEqual([]);
 	expect(body).toMatch(/aria-selected="true"[^>]*>\s*Overview/);
 	expect(words(body)).not.toMatch(/relationship/i);

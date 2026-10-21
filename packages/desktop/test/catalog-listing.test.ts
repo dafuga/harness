@@ -43,6 +43,17 @@ test('implemented pages select their declared screenshot rather than an absent p
 		preview
 	} as ComponentManifest;
 	expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+	const service = {
+		...unit,
+		kind: 'service',
+		id: 'service.payment',
+		title: 'Take payments',
+		owns: {
+			source: ['src/lib/checkout/PaymentService.ts'],
+			symbols: ['PaymentOptions', 'PaymentService']
+		}
+	};
+	expect(catalogUnit(service, new Set())?.title).toBe('PaymentService');
 	const source = { units: async () => [unit], changed: async () => new Set<string>() };
 	for (const versions of [[], [imagelessDesign]]) {
 		const plan = pagePlan(unit, versions);

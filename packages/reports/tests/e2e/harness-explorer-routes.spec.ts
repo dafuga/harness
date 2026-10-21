@@ -41,7 +41,7 @@ test('an earlier map page of a commit opens the entity in the explorer, without 
 	expect(pathOf(page)).toBe(at('main', commits.approved, `functions/${units.slugify}`));
 	await expect(nav(page).getByRole('link')).toHaveText(categories);
 	await expect(page.getByRole('link', { name: dropped })).toHaveCount(0);
-	await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'slugify' })).toBeVisible();
 	// A commit subject in the selector may name a file; what the entity shows does not.
 	const content = page.locator('.ex-content');
 	await expect(content.getByText('src/utils/slugify.ts')).toHaveCount(0);

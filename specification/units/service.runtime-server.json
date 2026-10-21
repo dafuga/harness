@@ -7,12 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/RuntimeServerService.ts"],
+		"source": [
+			"src/cli/program/run-kernel/RuntimeServerService.ts",
+			"src/services/RuntimeServerService.ts"
+		],
 		"symbols": [
 			"ServedRuntime",
 			"ServeOptions",
 			"RuntimeServerService",
-			"RuntimeServerService.serve"
+			"RuntimeServerService.serve",
+			"RuntimeServerService",
+			"ServedRuntime",
+			"ServeOptions"
 		]
 	},
 	"contract": {
@@ -49,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/RuntimeServerService.ts",
+		"entry": "src/cli/program/run-kernel/RuntimeServerService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/RuntimeServerService.ts"
+				"entry": "src/cli/program/run-kernel/RuntimeServerService.ts"
 			}
 		]
 	},

@@ -9,13 +9,20 @@
 	"owns": {
 		"source": [
 			"src/services/verification-service/scenarioCoverage.ts",
-			"src/utils/scenarioCoverage.ts"
+			"src/utils/scenarioCoverage.ts",
+			"src/utils/verification-evidence/scenarioCoverage.ts",
+			"src/workflows/run-verify/verification-service/scenarioCoverage.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts"
 		],
 		"symbols": [
 			"scenarioCoverage",
+			"scenarioCoverage",
+			"problem",
 			"CoverageInput",
 			"CoverageResult",
 			"problem",
+			"scenarioCoverage",
+			"scenarioCoverage",
 			"scenarioCoverage"
 		]
 	},
@@ -71,11 +78,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/scenarioCoverage.ts",
+		"entry": "src/utils/verification-evidence/scenarioCoverage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/scenarioCoverage.ts"
+				"entry": "src/utils/verification-evidence/scenarioCoverage.ts"
 			}
 		]
 	},

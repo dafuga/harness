@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/catalogUnit.ts"],
-		"symbols": ["catalogUnit", "catalogListed", "planCatalog"]
+		"source": [
+			"packages/desktop/src/utils/catalogUnit.ts",
+			"packages/desktop/src/utils/explorer-ui/catalogUnit.ts"
+		],
+		"symbols": [
+			"catalogUnit",
+			"catalogListed",
+			"planCatalog",
+			"catalogUnit",
+			"catalogListed",
+			"planCatalog"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -93,15 +103,20 @@
 			"unit": "module.contracts",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/catalogUnit.ts",
+		"entry": "packages/desktop/src/utils/explorer-ui/catalogUnit.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/catalogUnit.ts"
+				"entry": "packages/desktop/src/utils/explorer-ui/catalogUnit.ts"
 			}
 		]
 	},

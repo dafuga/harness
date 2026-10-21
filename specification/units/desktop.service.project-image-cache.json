@@ -7,11 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/ProjectImageCacheService.ts"],
+		"source": [
+			"packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
+			"packages/desktop/src/services/ProjectImageCacheService.ts"
+		],
 		"symbols": [
 			"ProjectImageCacheService",
+			"ProjectImageCacheService",
 			"ProjectImageCacheService.constructor",
-			"ProjectImageCacheService.read"
+			"ProjectImageCacheService.read",
+			"ProjectImageCacheService"
 		]
 	},
 	"contract": {
@@ -63,11 +69,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/ProjectImageCacheService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/ProjectImageCacheService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts"
 			}
 		]
 	},

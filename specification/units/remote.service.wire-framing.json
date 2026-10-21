@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/WireFramingService.ts"],
+		"source": [
+			"packages/remote/src/services/WireFramingService.ts",
+			"packages/remote/src/services/networking-security/WireFramingService.ts"
+		],
 		"symbols": [
+			"WireFramingService",
 			"WireFramingOptions",
 			"WireFramingService",
 			"WireFramingService.constructor",
@@ -81,11 +85,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/WireFramingService.ts",
+		"entry": "packages/remote/src/services/networking-security/WireFramingService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/WireFramingService.ts"
+				"entry": "packages/remote/src/services/networking-security/WireFramingService.ts"
 			}
 		]
 	},

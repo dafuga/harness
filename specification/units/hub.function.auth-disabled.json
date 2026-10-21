@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/server/auth/authDisabled.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/authDisabled.ts",
 			"packages/hub/src/utils/authDisabled.ts"
 		],
-		"symbols": ["authDisabled", "authDisabled"]
+		"symbols": ["authDisabled", "authDisabled", "authDisabled"]
 	},
 	"contract": {
 		"origin": "declared",

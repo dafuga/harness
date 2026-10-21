@@ -1,1 +1,1 @@
-export { hubApproval } from './hub-catalog/hubApproval';
+export { hubApproval } from './networking-security/hub-catalog/hubApproval';

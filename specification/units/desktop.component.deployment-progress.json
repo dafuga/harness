@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/DeploymentProgress.svelte"],
-		"symbols": ["DeploymentProgress"]
+		"source": [
+			"packages/desktop/src/components/DeploymentProgress.svelte",
+			"packages/desktop/src/components/development-tooling/DeploymentProgress.svelte"
+		],
+		"symbols": ["DeploymentProgress", "DeploymentProgress"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/DeploymentProgress.svelte",
+		"entry": "packages/desktop/src/components/development-tooling/DeploymentProgress.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/DeploymentProgress.svelte"
+				"entry": "packages/desktop/src/components/development-tooling/DeploymentProgress.svelte"
 			}
 		]
 	},

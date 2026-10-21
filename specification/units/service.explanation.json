@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/ExplanationService.ts"],
-		"symbols": ["ReasonReport", "ExplanationService", "ExplanationService.report", "describe"]
+		"source": [
+			"src/services/ExplanationService.ts",
+			"src/services/development-tooling/ExplanationService.ts"
+		],
+		"symbols": [
+			"ExplanationService",
+			"describe",
+			"ReasonReport",
+			"ExplanationService",
+			"ExplanationService.report",
+			"describe"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -56,11 +66,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/ExplanationService.ts",
+		"entry": "src/services/development-tooling/ExplanationService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ExplanationService.ts"
+				"entry": "src/services/development-tooling/ExplanationService.ts"
 			}
 		]
 	},

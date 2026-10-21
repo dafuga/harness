@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/runtimes.ts"],
-		"symbols": ["runtimeGuides"]
+		"source": ["src/guides/execution-runtimes/runtimes.ts", "src/guides/runtimes.ts"],
+		"symbols": ["runtimeGuides", "runtimeGuides"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,11 +30,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/guides/runtimes.ts",
+		"entry": "src/guides/execution-runtimes/runtimes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/guides/runtimes.ts"
+				"entry": "src/guides/execution-runtimes/runtimes.ts"
 			}
 		]
 	},

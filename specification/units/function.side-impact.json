@@ -8,18 +8,26 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-compare/sideImpact.ts",
 			"packages/reports/src/components/harness/harness-compare/sideImpact.ts",
-			"src/services/source-impact-service/sideImpact.ts",
+			"src/services/explorer-ui/revision-detail-service/source-impact-service/sideImpact.ts",
+			"src/services/revision-detail-service/source-impact-service/sideImpact.ts",
+			"src/utils/explorer-ui/sideImpact.ts",
 			"src/utils/sideImpact.ts"
 		],
 		"symbols": [
 			"sideImpact",
+			"sideImpact",
+			"storedSide",
 			"storedSide",
 			"StoredSide",
 			"SourceImpact",
 			"impactView",
 			"storedSide",
-			"sideImpact"
+			"sideImpact",
+			"storedSide",
+			"sideImpact",
+			"impactView"
 		]
 	},
 	"contract": {
@@ -109,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/sideImpact.ts",
+		"entry": "src/utils/explorer-ui/sideImpact.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/sideImpact.ts"
+				"entry": "src/utils/explorer-ui/sideImpact.ts"
 			}
 		]
 	},

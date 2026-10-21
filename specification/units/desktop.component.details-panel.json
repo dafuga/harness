@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/DetailsPanel.svelte"],
-		"symbols": ["DetailsPanel"]
+		"source": [
+			"packages/desktop/src/components/DetailsPanel.svelte",
+			"packages/desktop/src/components/shared-primitives/DetailsPanel.svelte"
+		],
+		"symbols": ["DetailsPanel", "DetailsPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/DetailsPanel.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/DetailsPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/DetailsPanel.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/DetailsPanel.svelte"
 			}
 		]
 	},

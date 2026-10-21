@@ -75,7 +75,7 @@ test('an entity has a name, a role, a purpose, a verdict and how the commit chan
 		verdict: { passed: true, label: 'Full coverage passed' }
 	});
 	const byId = new Map(entities.map((item) => [item.id, item]));
-	expect(byId.get('function.money')).toMatchObject({ name: 'Format money', change: 'direct' });
+	expect(byId.get('function.money')).toMatchObject({ name: 'formatMoney', change: 'direct' });
 	expect(byId.get('component.row')).toMatchObject({ change: 'indirect', appRoute: null });
 	expect(byId.get('config.site')?.change).toBe('added');
 	expect(byId.get('page.loader')).toMatchObject({ category: 'services', role: 'Route loader' });
@@ -163,7 +163,7 @@ test('a unit the shown commit removed is listed from its parent, with its last c
 	const listed = explorerEntities(after, before);
 	const old = listed.find((item) => item.id === 'function.old');
 	expect(old).toMatchObject({
-		name: 'Old helper',
+		name: 'oldHelper',
 		category: 'functions',
 		change: 'removed',
 		lastAt: 'b'.repeat(40),

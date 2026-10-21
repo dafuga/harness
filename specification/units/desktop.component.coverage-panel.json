@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/CoveragePanel.svelte"],
-		"symbols": ["CoveragePanel"]
+		"source": [
+			"packages/desktop/src/components/CoveragePanel.svelte",
+			"packages/desktop/src/components/shared-primitives/CoveragePanel.svelte"
+		],
+		"symbols": ["CoveragePanel", "CoveragePanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -92,11 +95,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/CoveragePanel.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/CoveragePanel.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte"
 			}
 		]
 	},

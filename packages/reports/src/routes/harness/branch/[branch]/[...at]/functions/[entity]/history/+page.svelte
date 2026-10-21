@@ -1,6 +1,6 @@
 <script lang="ts">
-	import EntityHistoryScreen from '../../../../../../../../components/harness/EntityHistoryScreen.svelte';
-	import HarnessScreen from '../../../../../../../../components/HarnessScreen.svelte';
+	import EntityHistoryScreen from '../../../../../../../../components/explorer-ui/harness/EntityHistoryScreen.svelte';
+	import HarnessScreen from '../../../../../../../../components/explorer-ui/HarnessScreen.svelte';
 </script>
 
 <HarnessScreen title="Function history" content={EntityHistoryScreen} />

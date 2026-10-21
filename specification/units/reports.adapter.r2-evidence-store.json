@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/adapters/R2EvidenceStoreAdapter.ts"],
+		"source": [
+			"packages/reports/src/adapters/R2EvidenceStoreAdapter.ts",
+			"packages/reports/src/adapters/reports-media/R2EvidenceStoreAdapter.ts"
+		],
 		"symbols": [
+			"evidenceObjectKey",
+			"replayObjectKey",
+			"R2EvidenceStoreAdapter",
 			"evidenceObjectKey",
 			"replayObjectKey",
 			"R2EvidenceStoreAdapter",
@@ -165,11 +171,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/adapters/R2EvidenceStoreAdapter.ts",
+		"entry": "packages/reports/src/adapters/reports-media/R2EvidenceStoreAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/adapters/R2EvidenceStoreAdapter.ts"
+				"entry": "packages/reports/src/adapters/reports-media/R2EvidenceStoreAdapter.ts"
 			}
 		]
 	},

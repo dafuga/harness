@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/python.ts"],
-		"symbols": ["pythonAdapter"]
+		"source": ["src/audit/adapters/python.ts", "src/audit/development-tooling/adapters/python.ts"],
+		"symbols": ["pythonAdapter", "pythonAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/adapters/python.ts",
+		"entry": "src/audit/development-tooling/adapters/python.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/adapters/python.ts"
+				"entry": "src/audit/development-tooling/adapters/python.ts"
 			}
 		]
 	},

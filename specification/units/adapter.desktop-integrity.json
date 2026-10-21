@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/DesktopIntegrityAdapter.ts"],
-		"symbols": ["DesktopIntegrityAdapter", "DesktopIntegrityAdapter.update"]
+		"source": [
+			"scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
+			"src/adapters/DesktopIntegrityAdapter.ts"
+		],
+		"symbols": [
+			"DesktopIntegrityAdapter",
+			"DesktopIntegrityAdapter.update",
+			"DesktopIntegrityAdapter"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -34,11 +41,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/DesktopIntegrityAdapter.ts",
+		"entry": "scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/DesktopIntegrityAdapter.ts"
+				"entry": "scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/models/RemoteLocal.types.ts"],
-		"symbols": ["localTransport", "LocalBootstrap", "WirePart"]
+		"source": [
+			"packages/remote/src/models/RemoteLocal.types.ts",
+			"packages/remote/src/models/networking-security/RemoteLocal.types.ts"
+		],
+		"symbols": ["localTransport", "localTransport", "LocalBootstrap", "WirePart"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -24,11 +27,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/models/RemoteLocal.types.ts",
+		"entry": "packages/remote/src/models/networking-security/RemoteLocal.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/models/RemoteLocal.types.ts"
+				"entry": "packages/remote/src/models/networking-security/RemoteLocal.types.ts"
 			}
 		]
 	},

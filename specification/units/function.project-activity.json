@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"src/services/project-activity-service/projectActivity.ts",
-			"src/utils/projectActivity.ts"
+			"src/services/projects-sessions/project-activity-service/projectActivity.ts",
+			"src/utils/projectActivity.ts",
+			"src/utils/projects-sessions/projectActivity.ts"
 		],
-		"symbols": ["projectActivity", "ActivityRevision", "ActivitySource", "projectActivity"]
+		"symbols": [
+			"projectActivity",
+			"projectActivity",
+			"projectActivity",
+			"ActivityRevision",
+			"ActivitySource",
+			"projectActivity"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/projectActivity.ts",
+		"entry": "src/utils/projects-sessions/projectActivity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/projectActivity.ts"
+				"entry": "src/utils/projects-sessions/projectActivity.ts"
 			}
 		]
 	},

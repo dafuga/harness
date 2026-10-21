@@ -1,7 +1,7 @@
 import { error, type RequestEvent } from '@sveltejs/kit';
-import { ReplayVideoService } from '../../../services/replay-video-service/ReplayVideoService';
-import { mediaResponse } from '../../../utils/mediaResponse';
-import { repository } from '../../../utils/reportHttp';
+import { ReplayVideoService } from './replay-video-service/ReplayVideoService';
+import { mediaResponse } from '../../../utils/development-tooling/mediaResponse';
+import { repository } from '../../../utils/reports-media/reportHttp';
 const service = new ReplayVideoService(repository);
 export async function GET({ url, request }: RequestEvent) {
 	const id = url.searchParams.get('run');

@@ -28,7 +28,7 @@ async function opened(page: Page, address: string) {
 	await expect(page.getByRole('heading', { level: 1, name: 'Orders page' })).toBeVisible();
 	await related(page);
 	await visit(page, address);
-	await expect(page.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 }
 
 test('the overview of an entity holds Used In and Uses, and no section is named Relationships', async ({
@@ -37,14 +37,14 @@ test('the overview of an entity holds Used In and Uses, and no section is named 
 	await opened(page, at(filter));
 	await pictured(page, info, 'workspace-overview');
 	await expect(tabs(page).getByRole('button')).toHaveText(named);
-	await expect(panel(page, 'Used In').getByRole('link')).toHaveText(['Orders page', 'Order list']);
+	await expect(panel(page, 'Used In').getByRole('link')).toHaveText(['Orders page', 'OrderList']);
 	await expect(panel(page, 'Used In')).toContainText(/Orders page\s*Page/);
-	await expect(panel(page, 'Used In')).toContainText(/Order list\s*Component/);
+	await expect(panel(page, 'Used In')).toContainText(/OrderList\s*Component/);
 	for (const kind of ['Configs', 'Services', 'Other'])
 		await expect(
 			panel(page, 'Uses').getByRole('heading', { name: new RegExp(`^${kind}`) })
 		).toBeVisible();
-	await expect(panel(page, 'Uses').getByRole('link')).toHaveText(['Order settings', 'Order store']);
+	await expect(panel(page, 'Uses').getByRole('link')).toHaveText(['orderSettings', 'OrderStore']);
 	await expect(page.getByText(/relationship|used by/i)).toHaveCount(0);
 	for (const name of ['Used In', 'Uses']) await expect(panel(page, name)).not.toContainText('src/');
 });
@@ -69,7 +69,7 @@ test('Used In and Uses have addresses of their own, and the former address still
 	await expect(panel(page, 'Used In')).toBeVisible();
 	await expect(panel(page, 'Uses')).toBeVisible();
 	await pictured(page, info, 'workspace-former-address');
-	await panel(page, 'Used In').getByRole('link', { name: 'Order list' }).click();
+	await panel(page, 'Used In').getByRole('link', { name: 'OrderList' }).click();
 	await expect.poll(() => path(page)).toBe(at(`components/${ids.list}`));
 });
 

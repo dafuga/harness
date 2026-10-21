@@ -6,5 +6,5 @@ export {
 	offlineCapabilities,
 	forgetShared,
 	cacheStatus
-} from './cache-status/cacheStatus';
-export { offlineView } from './load-workspace/offlineView';
+} from './projects-sessions/cache-status/cacheStatus';
+export { offlineView } from './projects-sessions/load-workspace/offlineView';

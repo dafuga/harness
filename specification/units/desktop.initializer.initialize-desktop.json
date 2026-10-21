@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/initializers/initializeDesktop.ts",
-			"packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts"
+			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+			"packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts"
 		],
-		"symbols": ["initializeDesktop", "initializeDesktop"]
+		"symbols": ["initializeDesktop", "initializeDesktop", "initializeDesktop", "initializeDesktop"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -138,11 +140,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts"
 			}
 		]
 	},

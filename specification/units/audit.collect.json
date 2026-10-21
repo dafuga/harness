@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/collect.ts"],
-		"symbols": ["CollectedFile", "CollectedFiles", "collectAuditedFiles"]
+		"source": ["src/audit/collect.ts", "src/audit/development-tooling/collect.ts"],
+		"symbols": ["collectAuditedFiles", "CollectedFile", "CollectedFiles", "collectAuditedFiles"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -29,11 +29,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/collect.ts",
+		"entry": "src/audit/development-tooling/collect.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/collect.ts"
+				"entry": "src/audit/development-tooling/collect.ts"
 			}
 		]
 	},

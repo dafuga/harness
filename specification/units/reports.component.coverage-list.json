@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/CoverageList.svelte"],
-		"symbols": ["CoverageList"]
+		"source": [
+			"packages/reports/src/components/CoverageList.svelte",
+			"packages/reports/src/components/shared-primitives/CoverageList.svelte"
+		],
+		"symbols": ["CoverageList", "CoverageList"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,11 +60,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/CoverageList.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/CoverageList.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/CoverageList.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/CoverageList.svelte"
 			}
 		]
 	},

@@ -2,12 +2,9 @@ import { expect, test } from 'vitest';
 import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogScreen.svelte';
 import { record, revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
-import { commits } from '../entityUnits';
+import { commits, ids } from '../entityUnits';
 
-const kinds = {
-	configs: ['Configs', 'Order settings'],
-	services: ['Services', 'Order store']
-} as const;
+const kinds = { configs: ['Configs', 'orderSettings'] } as const;
 
 test('nonvisual collections are tables of their own kind, never image cards', () => {
 	for (const [category, [title, name]] of Object.entries(kinds)) {
@@ -17,6 +14,22 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 		expect(words(body), category).toContain(name);
 		expect(count(body, /<article\b/g), category).toBe(0);
 		expect(drawn(body), category).toBe(drawn(content('commit', at)));
+	}
+});
+
+test('service cards show only the class name and revision-scoped consumer links', () => {
+	for (const mode of ['current', 'commit'] as const) {
+		const body = screen(ExplorerCatalogScreen, mode, { category: 'services' });
+		expect(count(body, /<article\b/g), 'services use the helper card grid').toBe(1);
+		const card = /<article\b.*?<\/article>/s.exec(body)![0];
+		expect(words(card).trim()).toBe('OrderStore Used In Components OrderList SearchBox');
+		expect(card).not.toMatch(/<h2|<p\b|<img|<button|<svg|hx-verdict/);
+		expect(count(card, /<a\b/g)).toBe(3);
+		const scope = `/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}`;
+		expect(card).toContain(`${scope}/services/${ids.store}`);
+		expect(card).toContain(`${scope}/components/${ids.list}`);
+		expect(card).not.toContain('helper=');
+		expect(count(body, /<table\b/g)).toBe(0);
 	}
 });
 

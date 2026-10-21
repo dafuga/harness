@@ -8,10 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
 			"packages/desktop/src/services/relay-link-service/relayFrame.ts",
+			"packages/desktop/src/services/remote-host-service/relay-link-service/relayFrame.ts",
 			"packages/desktop/src/utils/relayFrame.ts"
 		],
-		"symbols": ["relayFrame", "relayFrame"]
+		"symbols": ["relayFrame", "relayFrame", "relayFrame", "relayFrame"]
 	},
 	"contract": {
 		"origin": "declared",

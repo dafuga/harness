@@ -1,1 +1,1 @@
-export { hubSnapshot } from '../services/hub-projection-service/hubSnapshot';
+export { hubSnapshot } from '../routes/api/[...path]/hub-projection-service/hubSnapshot';

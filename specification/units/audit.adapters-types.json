@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/types.ts"],
+		"source": ["src/audit/adapters/types.ts", "src/audit/development-tooling/adapters/types.ts"],
 		"symbols": [
 			"AuditProfile",
 			"AuditOptions",
@@ -46,11 +46,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/adapters/types.ts",
+		"entry": "src/audit/development-tooling/adapters/types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/adapters/types.ts"
+				"entry": "src/audit/development-tooling/adapters/types.ts"
 			}
 		]
 	},

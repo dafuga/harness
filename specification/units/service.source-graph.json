@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/SourceGraphService.ts"],
+		"source": [
+			"src/services/SourceGraphService.ts",
+			"src/services/development-tooling/SourceGraphService.ts"
+		],
 		"symbols": [
+			"fileNode",
+			"unitNode",
+			"scenarioNode",
+			"SourceGraphService",
 			"fileNode",
 			"unitNode",
 			"scenarioNode",
@@ -83,11 +90,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/SourceGraphService.ts",
+		"entry": "src/services/development-tooling/SourceGraphService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/SourceGraphService.ts"
+				"entry": "src/services/development-tooling/SourceGraphService.ts"
 			}
 		]
 	},

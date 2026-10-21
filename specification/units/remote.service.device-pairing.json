@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/device-pairing-service/DevicePairingService.ts"],
+		"source": [
+			"packages/remote/src/services/device-pairing-service/DevicePairingService.ts",
+			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts"
+		],
 		"symbols": [
+			"DevicePairingService",
 			"DevicePairingInput",
 			"ScanningDevice",
 			"PendingPairing",
@@ -136,11 +140,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/device-pairing-service/DevicePairingService.ts",
+		"entry": "packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/device-pairing-service/DevicePairingService.ts"
+				"entry": "packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts"
 			}
 		]
 	},

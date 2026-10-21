@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
 			"packages/hub/src/utils/hubSnapshot.ts"
 		],
 		"symbols": ["hubSnapshot", "hubSnapshot"]

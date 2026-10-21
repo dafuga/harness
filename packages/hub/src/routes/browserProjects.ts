@@ -1,5 +1,5 @@
 import type { Invitation, Member, ProjectSummary, Role } from 'collaboration';
-import type { GithubRepositories, GithubStatus } from '../models/HubAuth.types';
+import type { GithubRepositories, GithubStatus } from '../models/accounts-access/HubAuth.types';
 import type { BrowserApi } from '../utils/browserApi';
 
 const base = (projectId: string) => `/api/projects/${encodeURIComponent(projectId)}`;

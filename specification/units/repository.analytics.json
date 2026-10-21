@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/AnalyticsRepository.ts"],
+		"source": [
+			"src/repositories/AnalyticsRepository.ts",
+			"src/repositories/reports-media/AnalyticsRepository.ts"
+		],
 		"symbols": [
+			"AnalyticsRepository",
 			"AnalyticsRepository",
 			"AnalyticsRepository.constructor",
 			"AnalyticsRepository.reconcileHistorical",
@@ -80,11 +84,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/AnalyticsRepository.ts",
+		"entry": "src/repositories/reports-media/AnalyticsRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/AnalyticsRepository.ts"
+				"entry": "src/repositories/reports-media/AnalyticsRepository.ts"
 			}
 		]
 	},

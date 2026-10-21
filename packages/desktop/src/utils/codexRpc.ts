@@ -1,1 +1,1 @@
-export { codexRpc } from './codex-rpc/codexRpc';
+export { codexRpc } from './agents-providers/codex-rpc/codexRpc';

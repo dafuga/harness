@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/serializers/ReportExportSerializer.ts"],
+		"source": [
+			"packages/reports/src/serializers/ReportExportSerializer.ts",
+			"packages/reports/src/serializers/reports-media/ReportExportSerializer.ts"
+		],
 		"symbols": [
+			"ReportExportSerializer",
 			"ReportExportSerializer",
 			"ReportExportSerializer.constructor",
 			"ReportExportSerializer.html",
@@ -76,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/serializers/ReportExportSerializer.ts",
+		"entry": "packages/reports/src/serializers/reports-media/ReportExportSerializer.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/serializers/ReportExportSerializer.ts"
+				"entry": "packages/reports/src/serializers/reports-media/ReportExportSerializer.ts"
 			}
 		]
 	},

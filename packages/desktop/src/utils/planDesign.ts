@@ -1,1 +1,1 @@
-export { planDesign } from './plan-design/planDesign';
+export { planDesign } from './planning-collaboration/plan-design/planDesign';

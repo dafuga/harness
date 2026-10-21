@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/validators/RemoteInputValidator.ts"],
+		"source": [
+			"packages/remote/src/validators/RemoteInputValidator.ts",
+			"packages/remote/src/validators/networking-security/RemoteInputValidator.ts"
+		],
 		"symbols": [
+			"RemoteInputValidator",
 			"RemoteInputValidator",
 			"RemoteInputValidator.attach",
 			"RemoteInputValidator.projectId",
@@ -98,11 +102,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/validators/RemoteInputValidator.ts",
+		"entry": "packages/remote/src/validators/networking-security/RemoteInputValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/validators/RemoteInputValidator.ts"
+				"entry": "packages/remote/src/validators/networking-security/RemoteInputValidator.ts"
 			}
 		]
 	},

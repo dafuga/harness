@@ -15,7 +15,7 @@ const reference = [
 	'src/utils/impact-kernel/kernelRequest.ts',
 	'src/utils/kernelRequest.ts',
 	'src/utils/portableJson.ts',
-	'src/workflows/run-kernel/impactKernel.ts'
+	'src/cli/program/run-kernel/impactKernel.ts'
 ];
 
 function run(command: string[], env?: Record<string, string | undefined>): string {

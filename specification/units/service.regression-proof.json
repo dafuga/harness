@@ -8,10 +8,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/RegressionProofService.ts",
-			"src/services/regression-proof-service/focusedScreens.ts"
+			"src/services/development-tooling/regression-proof-service/focusedScreens.ts",
+			"src/services/regression-proof-service/focusedScreens.ts",
+			"src/workflows/record-regression/RegressionProofService.ts",
+			"src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+			"src/workflows/verification-evidence/record-regression/focusedScreens.ts"
 		],
 		"symbols": [
+			"focusedScreens",
+			"RegressionProofService",
 			"RegressionRun",
 			"RegressionProofService",
 			"RegressionProofService.constructor",
@@ -127,11 +132,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/RegressionProofService.ts",
+		"entry": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/RegressionProofService.ts"
+				"entry": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts"
 			}
 		]
 	},

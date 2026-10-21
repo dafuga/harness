@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/models/ExplorerEvidence.types.ts"],
+		"source": [
+			"packages/reports/src/models/ExplorerEvidence.types.ts",
+			"packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts"
+		],
 		"symbols": [
 			"CoverageStanding",
 			"ExplorerSlotCoverage",
@@ -50,11 +53,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/models/ExplorerEvidence.types.ts",
+		"entry": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/models/ExplorerEvidence.types.ts"
+				"entry": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts"
 			}
 		]
 	},

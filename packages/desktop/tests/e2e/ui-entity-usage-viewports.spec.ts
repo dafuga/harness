@@ -24,17 +24,11 @@ for (const viewport of widths)
 			history.pushState({}, '', to);
 			dispatchEvent(new PopStateEvent('popstate'));
 		}, `${root}/functions/${ids.filter}`);
-		await expect(page.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
+		await expect(page.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 		await pictured(page, info, `workspace-overview-${viewport.id}`);
-		await expect(panel(page, 'Used In').getByRole('link')).toHaveText([
-			'Orders page',
-			'Order list'
-		]);
-		await expect(panel(page, 'Used In')).toContainText(/Order list\s*Component/);
-		await expect(panel(page, 'Uses').getByRole('link')).toHaveText([
-			'Order settings',
-			'Order store'
-		]);
+		await expect(panel(page, 'Used In').getByRole('link')).toHaveText(['Orders page', 'OrderList']);
+		await expect(panel(page, 'Used In')).toContainText(/OrderList\s*Component/);
+		await expect(panel(page, 'Uses').getByRole('link')).toHaveText(['orderSettings', 'OrderStore']);
 		await expect(page.getByText(/relationship|used by/i)).toHaveCount(0);
 		const hidden = await page
 			.getByRole('navigation', { name: 'Entity sections' })

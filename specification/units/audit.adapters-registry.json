@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/registry.ts"],
+		"source": [
+			"src/audit/adapters/registry.ts",
+			"src/audit/development-tooling/adapters/registry.ts"
+		],
 		"symbols": [
+			"auditAdapters",
+			"adaptersForProfile",
+			"adapterForExtension",
+			"knownAuditExtensions",
+			"resolveAuditProfile",
 			"auditAdapters",
 			"adaptersForProfile",
 			"adapterForExtension",
@@ -118,11 +126,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/adapters/registry.ts",
+		"entry": "src/audit/development-tooling/adapters/registry.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/adapters/registry.ts"
+				"entry": "src/audit/development-tooling/adapters/registry.ts"
 			}
 		]
 	},

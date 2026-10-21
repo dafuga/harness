@@ -7,18 +7,36 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/structure-rules/structureRules.ts"],
-		"symbols": ["auditHarnessStructure"]
+		"source": [
+			"src/audit/development-tooling/structure-rules/moduleCategoryFindings.ts",
+			"src/audit/development-tooling/structure-rules/structureRules.ts",
+			"src/audit/structure-rules/moduleCategoryFindings.ts",
+			"src/audit/structure-rules/structureRules.ts"
+		],
+		"symbols": [
+			"moduleCategoryFindings",
+			"auditHarnessStructure",
+			"moduleCategoryFindings",
+			"auditHarnessStructure"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "moduleCategoryFindings.structure",
+				"type": "AuditStructure"
+			},
 			{
 				"name": "auditHarnessStructure.structure",
 				"type": "AuditStructure"
 			}
 		],
 		"outputs": [
+			{
+				"name": "moduleCategoryFindings",
+				"type": "AuditFinding[]"
+			},
 			{
 				"name": "auditHarnessStructure",
 				"type": "AuditFinding[]"
@@ -43,18 +61,28 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.module-group",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.planning-artifact-paths",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-category",
 			"via": "import",
 			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/structure-rules/structureRules.ts",
+		"entry": "src/audit/development-tooling/structure-rules/structureRules.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/structure-rules/structureRules.ts"
+				"entry": "src/audit/development-tooling/structure-rules/structureRules.ts"
 			}
 		]
 	},

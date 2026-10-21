@@ -7,14 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"],
+		"source": [
+			"src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.ts",
+			"src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"
+		],
 		"symbols": [
 			"ProcessRuntimeConfig",
 			"ProcessRuntimeAdapter",
 			"ProcessRuntimeAdapter.constructor",
 			"ProcessRuntimeAdapter.invoke",
 			"ProcessRuntimeAdapter.invokeText",
-			"ProcessRuntimeAdapter.close"
+			"ProcessRuntimeAdapter.close",
+			"ProcessRuntimeAdapter"
 		]
 	},
 	"contract": {
@@ -73,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts",
+		"entry": "src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/process-runtime-adapter/ProcessRuntimeAdapter.ts"
+				"entry": "src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.ts"
 			}
 		]
 	},

@@ -8,10 +8,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/desktopIpc.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc.ts",
 			"packages/desktop/src/lib/initialize-desktop/desktopIpc.ts",
-			"packages/desktop/src/utils/desktopIpc.ts"
+			"packages/desktop/src/utils/desktopIpc.ts",
+			"packages/desktop/src/utils/development-tooling/desktopIpc.ts"
 		],
-		"symbols": ["desktopIpc", "bootstrapChannel", "DesktopIpcPort", "desktopIpc"]
+		"symbols": [
+			"desktopIpc",
+			"desktopIpc",
+			"desktopIpc",
+			"desktopIpc",
+			"bootstrapChannel",
+			"bootstrapChannel",
+			"DesktopIpcPort",
+			"desktopIpc"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -56,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/desktopIpc.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/desktopIpc.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/desktopIpc.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/desktopIpc.ts"
 			}
 		]
 	},

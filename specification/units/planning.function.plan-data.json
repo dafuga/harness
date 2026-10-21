@@ -7,8 +7,24 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/utils/planData.ts"],
-		"symbols": ["planData", "hash", "fail", "json", "now", "parse"]
+		"source": [
+			"packages/planning/src/utils/planData.ts",
+			"packages/planning/src/utils/planning-collaboration/planData.ts"
+		],
+		"symbols": [
+			"planData",
+			"hash",
+			"fail",
+			"json",
+			"now",
+			"parse",
+			"planData",
+			"hash",
+			"fail",
+			"json",
+			"now",
+			"parse"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -93,11 +109,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planData.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planData.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planData.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planData.ts"
 			}
 		]
 	},

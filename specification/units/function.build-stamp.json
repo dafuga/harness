@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/buildStamp.ts"],
-		"symbols": ["buildStampPattern", "sdkPackage", "emptyBuildStamp", "buildStamp"]
+		"source": ["src/utils/buildStamp.ts", "src/utils/development-tooling/buildStamp.ts"],
+		"symbols": [
+			"buildStampPattern",
+			"sdkPackage",
+			"emptyBuildStamp",
+			"buildStamp",
+			"buildStampPattern",
+			"sdkPackage",
+			"emptyBuildStamp",
+			"buildStamp"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -46,11 +55,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/buildStamp.ts",
+		"entry": "src/utils/development-tooling/buildStamp.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/buildStamp.ts"
+				"entry": "src/utils/development-tooling/buildStamp.ts"
 			}
 		]
 	},

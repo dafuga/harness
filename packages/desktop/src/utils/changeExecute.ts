@@ -1,1 +1,4 @@
-export { changeExecute, recordChange } from '../services/change-run-service/changeExecute';
+export {
+	changeExecute,
+	recordChange
+} from '../services/agents-providers/desktop-run-service/change-run-service/changeExecute';

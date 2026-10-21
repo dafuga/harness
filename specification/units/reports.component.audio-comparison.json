@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/AudioComparison.svelte"],
-		"symbols": ["AudioComparison"]
+		"source": [
+			"packages/reports/src/components/AudioComparison.svelte",
+			"packages/reports/src/components/reports-media/AudioComparison.svelte"
+		],
+		"symbols": ["AudioComparison", "AudioComparison"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/AudioComparison.svelte",
+		"entry": "packages/reports/src/components/reports-media/AudioComparison.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/AudioComparison.svelte"
+				"entry": "packages/reports/src/components/reports-media/AudioComparison.svelte"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorer-evidence/focusedCaptures.ts"],
-		"symbols": ["focusedCaptures", "focusedScenario"]
+		"source": [
+			"packages/reports/src/utils/explorer-evidence/focusedCaptures.ts",
+			"packages/reports/src/utils/explorer-ui/explorer-evidence/focusedCaptures.ts"
+		],
+		"symbols": ["focusedCaptures", "focusedScenario", "focusedCaptures", "focusedScenario"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorer-evidence/focusedCaptures.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/explorer-evidence/focusedCaptures.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/explorer-evidence/focusedCaptures.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/explorer-evidence/focusedCaptures.ts"
 			}
 		]
 	},

@@ -15,9 +15,22 @@ const xcode = '/Applications/Xcode_26.3.app/Contents/Developer';
 const at = (text: string): number => verify.indexOf(text);
 
 test('the full check stays on Linux with its display and dependency setup', () => {
-	expect(check).toContain('name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 45');
+	expect(check, 'The full check must have time to finish every required stage').toContain(
+		'name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 90'
+	);
+	const checkout = check.slice(check.indexOf('actions/checkout@'), check.indexOf('- name:'));
+	expect(checkout).toContain('ref: ${{ env.COMMIT }}');
+	expect(checkout, 'ownership review commits must be available to the full check').toContain(
+		'fetch-depth: 0'
+	);
+	expect(checkout).toContain('persist-credentials: false');
 	expect(check).toContain('@playwright/test/cli.js install --with-deps chromium');
 	expect(check).toContain('sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg');
+	const archiveRead = "git fetch --no-tags origin '+refs/harness/source/*:refs/harness/source/*'";
+	expect(check, 'squash landing must retain immutable source review commits').toContain(
+		archiveRead
+	);
+	expect(check.indexOf(archiveRead)).toBeLessThan(check.indexOf('xvfb-run -a bun run check'));
 	expect(check).toContain('run: xvfb-run -a bun run check');
 	expect(check).not.toMatch(/macos|xcode|DEVELOPER_DIR/i);
 });

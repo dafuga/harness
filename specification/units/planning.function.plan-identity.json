@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/utils/plan-read/validateIdentity.ts",
-			"packages/planning/src/utils/planIdentity.ts"
+			"packages/planning/src/utils/planIdentity.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-read/validateIdentity.ts",
+			"packages/planning/src/utils/planning-collaboration/planIdentity.ts"
 		],
 		"symbols": [
+			"validateIdentity",
+			"validateIdentity",
+			"identity",
+			"attest",
+			"planFiles",
+			"findIdentity",
+			"planIdentity",
 			"validateIdentity",
 			"identity",
 			"attest",
@@ -164,11 +173,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planIdentity.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planIdentity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planIdentity.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planIdentity.ts"
 			}
 		]
 	},

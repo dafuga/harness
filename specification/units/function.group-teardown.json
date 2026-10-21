@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/groupTeardown.ts", "src/utils/run-isolated/groupTeardown.ts"],
-		"symbols": ["GroupTiming", "signalGroup", "groupTeardown", "groupTeardown"]
+		"source": [
+			"src/utils/groupTeardown.ts",
+			"src/utils/reports-media/groupTeardown.ts",
+			"src/utils/reports-media/run-isolated/groupTeardown.ts",
+			"src/utils/run-isolated/groupTeardown.ts"
+		],
+		"symbols": [
+			"groupTeardown",
+			"signalGroup",
+			"GroupTiming",
+			"signalGroup",
+			"groupTeardown",
+			"groupTeardown",
+			"groupTeardown"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/groupTeardown.ts",
+		"entry": "src/utils/reports-media/groupTeardown.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/groupTeardown.ts"
+				"entry": "src/utils/reports-media/groupTeardown.ts"
 			}
 		]
 	},

@@ -8,11 +8,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/development-tooling/scan-notice/scanNotice.ts",
 			"packages/desktop/src/utils/scan-notice/scanNotice.ts",
 			"packages/desktop/src/utils/scanNotice.ts"
 		],
 		"symbols": [
 			"ScanFailure",
+			"scanFailures",
+			"nameNotice",
+			"scanNotices",
+			"scanFailure",
+			"scanNotice",
+			"phoneName",
 			"scanFailures",
 			"nameNotice",
 			"scanNotices",

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/StatusIcon.svelte"],
-		"symbols": ["StatusIcon"]
+		"source": [
+			"packages/desktop/src/components/StatusIcon.svelte",
+			"packages/desktop/src/components/shared-primitives/StatusIcon.svelte"
+		],
+		"symbols": ["StatusIcon", "StatusIcon"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/StatusIcon.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/StatusIcon.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/StatusIcon.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/StatusIcon.svelte"
 			}
 		]
 	},

@@ -1,8 +1,3 @@
-const decisions = /\b(?:if|for|while|case|catch)\b|&&|\|\||\?\?|(?<![?])\?(?![?.:,)\]=>;])/g;
-
-/** Counts decision points in masked source; functions start from a base of one. */
-export function blockComplexity(masked: string, base: 0 | 1): number {
-	return base + (masked.match(decisions)?.length ?? 0);
-}
-
-export { templateComplexity } from '../services/source-index-service/blockComplexity';
+export { templateComplexity } from './development-tooling/blockComplexity';
+export { blockComplexity } from './development-tooling/blockComplexity';
+export * from './development-tooling/blockComplexity';

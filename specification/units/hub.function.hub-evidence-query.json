@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/controllers/hub-api-controller/hubEvidenceQuery.ts",
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceQuery.ts",
 			"packages/hub/src/utils/hubEvidenceQuery.ts"
 		],
-		"symbols": ["hubEvidenceQuery", "hubArtifactQuery", "hubEvidenceQuery", "hubArtifactQuery"]
+		"symbols": [
+			"hubEvidenceQuery",
+			"hubArtifactQuery",
+			"hubEvidenceQuery",
+			"hubArtifactQuery",
+			"hubEvidenceQuery",
+			"hubArtifactQuery"
+		]
 	},
 	"contract": {
 		"origin": "declared",

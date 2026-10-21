@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/audioPairs.ts"],
-		"symbols": ["audioPairs"]
+		"source": [
+			"packages/reports/src/utils/audioPairs.ts",
+			"packages/reports/src/utils/reports-media/audioPairs.ts"
+		],
+		"symbols": ["audioPairs", "audioPairs"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/audioPairs.ts",
+		"entry": "packages/reports/src/utils/reports-media/audioPairs.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/audioPairs.ts"
+				"entry": "packages/reports/src/utils/reports-media/audioPairs.ts"
 			}
 		]
 	},

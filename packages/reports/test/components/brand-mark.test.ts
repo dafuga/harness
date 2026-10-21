@@ -20,11 +20,11 @@ function unitSource(id: string): string {
 }
 const surfaces = [
 	unitSource('desktop.component.nav-bar'),
-	'desktop/src/components/ProjectGate.svelte',
-	'hub/src/components/HubFrame.svelte',
+	unitSource('desktop.component.project-gate'),
+	unitSource('hub.component.hub-frame'),
 	unitSource('reports.component.harness-harness-navbar'),
-	'reports/src/components/harness/HarnessHeader.svelte',
-	'reports/src/components/ReportView.svelte'
+	unitSource('reports.component.harness-harness-header'),
+	unitSource('reports.component.report-view')
 ];
 
 test('the mark is five square tiles in the current colour, decorative by default', () => {

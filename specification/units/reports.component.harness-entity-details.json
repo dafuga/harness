@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityDetails.svelte"],
-		"symbols": ["EntityDetails"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntityDetails.svelte",
+			"packages/reports/src/components/harness/EntityDetails.svelte"
+		],
+		"symbols": ["EntityDetails", "EntityDetails"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -85,6 +88,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-measure",
 			"via": "import",
 			"origin": "derived"
@@ -102,11 +110,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityDetails.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntityDetails.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityDetails.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntityDetails.svelte"
 			}
 		]
 	},

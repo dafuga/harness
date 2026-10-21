@@ -1,3 +1,4 @@
+import { serviceMetadata } from './entityClassFixtures';
 import type { HarnessCapture, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
 
 /** Synthetic history of an invented orders application; nothing here is a real repository. */
@@ -43,7 +44,13 @@ function unit(seed: UnitSeed): HarnessUnit {
 		responsibility: seed.responsibility,
 		dependencies: (seed.uses ?? []).map((target) => ({ unit: target, via: 'import' })),
 		scenarios: [],
-		owns: { source: [file], symbols: [seed.title] },
+		owns: {
+			source: [file],
+			symbols:
+				seed.kind === 'service'
+					? [`${seed.title}Options`, seed.title, `${seed.title}Result`]
+					: [seed.title]
+		},
 		contract: { inputs: named(seed.inputs), outputs: named(seed.outputs), errors: [] },
 		...(seed.kind === 'function'
 			? {
@@ -57,6 +64,9 @@ function unit(seed: UnitSeed): HarnessUnit {
 						}
 					]
 				}
+			: {}),
+		...(seed.kind === 'service'
+			? serviceMetadata([{ unit: ids.list }, { unit: ids.search }], seed.title, file)
 			: {}),
 		runtime: {
 			kind: 'module',
@@ -99,6 +109,7 @@ export const units: HarnessUnit[] = [
 		kind: 'component',
 		title: 'SearchBox',
 		responsibility: 'Takes the text orders are searched by.',
+		uses: [ids.store],
 		inputs: ['value'],
 		outputs: ['markup']
 	}),

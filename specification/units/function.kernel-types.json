@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/kernelTypes.ts"],
-		"symbols": ["kernelContract", "KernelGraph", "ImpactInput", "AffectedNode", "ImpactOutput"]
+		"source": ["src/core/execution-runtimes/kernelTypes.ts", "src/core/kernelTypes.ts"],
+		"symbols": [
+			"kernelContract",
+			"KernelGraph",
+			"ImpactInput",
+			"AffectedNode",
+			"ImpactOutput",
+			"kernelContract"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,11 +32,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/kernelTypes.ts",
+		"entry": "src/core/execution-runtimes/kernelTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/kernelTypes.ts"
+				"entry": "src/core/execution-runtimes/kernelTypes.ts"
 			}
 		]
 	},

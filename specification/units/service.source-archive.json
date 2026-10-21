@@ -1,0 +1,92 @@
+{
+	"schemaVersion": 1,
+	"id": "service.source-archive",
+	"kind": "service",
+	"title": "SourceArchiveService",
+	"responsibility": "Archives the exact committed text owned by active units as deduplicated, private, content-addressed media.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/cli/program/history-index-service/SourceArchiveService.ts",
+			"src/services/SourceArchiveService.ts"
+		],
+		"symbols": [
+			"SourceArchiveService",
+			"SourceArchiveService.constructor",
+			"SourceArchiveService.archive",
+			"SourceArchiveService"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SourceArchiveService.constructor.root",
+				"type": "string",
+				"description": "Git repository containing the selected immutable commit."
+			},
+			{
+				"name": "SourceArchiveService.constructor.out",
+				"type": "string",
+				"description": "History output directory; existing protected media carries source text."
+			},
+			{
+				"name": "SourceArchiveService.archive.commit",
+				"type": "string",
+				"description": "Selected Git commit, never a working tree or latest-ref fallback."
+			},
+			{
+				"name": "SourceArchiveService.archive.units",
+				"type": "Unit[]",
+				"description": "Registry units to enrich; inactive units archive no source."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SourceArchiveService.archive",
+				"type": "Promise<void>",
+				"description": "Adds sourceFiles to units. Directory ownership expands to tracked files; missing, binary or unreadable files retain explicit gaps. Does not read working-copy files."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/history-index-service/SourceArchiveService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/history-index-service/SourceArchiveService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

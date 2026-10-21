@@ -1,5 +1,10 @@
 import { expect, test } from 'vitest';
-import { content, verdicts, words } from '../entityRender';
+import { content, hostProps, verdicts, words } from '../entityRender';
+import { withRelationGroups } from '../entityPreviewHelpers';
+import { entityCatalog } from '../../src/utils/entityCatalog';
+import { explorerEntities } from '../../src/utils/explorerEntities';
+import { explorerRelations } from '../../src/utils/explorerRelations';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { commits, ids } from '../entityUnits';
 
 const sections = (body: string) =>
@@ -14,7 +19,7 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 	for (const mode of ['current', 'commit'] as const) {
 		const [uses, used] = both(mode);
 		expect([sections(uses), sections(used)]).toEqual([['Uses'], ['Used In']]);
-		expect(words(uses)).toMatch(/Components\s+1[^]*Order card[^]*Functions\s+1[^]*Services\s+1/);
+		expect(words(uses)).toMatch(/Components\s+1[^]*OrderCard[^]*Functions\s+1[^]*Services\s+1/);
 		expect(words(uses + used)).not.toMatch(/sub-?components|\brelated\b/i);
 		expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
 		expect(uses, 'Relationships reuse catalog cards').toContain('ex-function-tile');
@@ -34,7 +39,7 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 	}
 });
 
-test('each related entity is a link to it in the same branch and commit', () => {
+test('each related entity is a link to it in the same branch and commit', async () => {
 	const [uses, used] = both();
 	const base = `/harness/branch/feature%2Forders/commit/${commits.middle}`;
 	expect(uses).toContain(`href="${base}/components/${ids.card}"`);
@@ -43,6 +48,39 @@ test('each related entity is a link to it in the same branch and commit', () => 
 	expect(used).toContain(`href="${base}/pages/${ids.page}"`);
 	// A kind the entity uses nothing of is left out; it is not listed as an empty one.
 	expect(words(uses)).not.toContain('Configs');
+	await measureWorkload('reports.function.entity-catalog', 'single-owner-service-relations', () => {
+		const head = withRelationGroups(hostProps('current').head);
+		const entities = explorerEntities(head);
+		const services = entities.filter((entity) => entity.id.startsWith('consumer.service.'));
+		const relations = (id: string) => explorerRelations(head, id);
+		const related = entityCatalog(services, 'services', relations, {
+			related: true,
+			consumers: entities
+		});
+		expect(related, 'single-owner classes remain in their owner relationships').toHaveLength(9);
+		expect(related.every((row) => !row.shared && row.usedIn?.length === 1)).toBe(true);
+		expect(related.every((row) => row.usedIn?.[0]?.id === ids.page)).toBe(true);
+		expect(related.map((row) => row.id)).toEqual(services.map((service) => service.id));
+		const unproven = services.map((entity) => ({
+			...entity,
+			unit: { ...entity.unit, serviceClasses: [] }
+		}));
+		expect(
+			entityCatalog(unproven, 'services', relations, { related: true, consumers: entities }),
+			'relationships do not invent class proof'
+		).toEqual([]);
+
+		const collection = entityCatalog(entities, 'services', relations);
+		expect(collection.some((row) => services.some((service) => row.id === service.id))).toBe(false);
+		const owner = content(
+			'current',
+			{ category: 'pages', entity: ids.page, tab: 'uses' },
+			{ head }
+		);
+		for (const service of services.slice(0, 4)) expect(owner).toContain(`/services/${service.id}`);
+		for (const service of services.slice(4)) expect(owner).not.toContain(`/services/${service.id}`);
+		expect(owner).toContain('aria-label="View more Services"');
+	});
 });
 
 test('a page leads to its components and a component to the components inside it', () => {

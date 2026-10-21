@@ -8,12 +8,24 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/lib/planning-collaboration/planning/planGit.ts",
 			"packages/planning/src/lib/planning/planGit.ts",
 			"packages/planning/src/utils/plan-read/containing.ts",
-			"packages/planning/src/utils/planGit.ts"
+			"packages/planning/src/utils/planGit.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-read/containing.ts",
+			"packages/planning/src/utils/planning-collaboration/planGit.ts"
 		],
 		"symbols": [
 			"planGit",
+			"planGit",
+			"containing",
+			"planGit",
+			"containing",
+			"revision",
+			"paths",
+			"blob",
+			"imageBlob",
+			"safePath",
 			"containing",
 			"Git",
 			"revision",
@@ -168,11 +180,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planGit.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planGit.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planGit.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planGit.ts"
 			}
 		]
 	},

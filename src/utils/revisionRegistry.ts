@@ -1,1 +1,4 @@
-export { type RevisionRegistry, revisionRegistry } from './revision-registry/revisionRegistry';
+export {
+	type RevisionRegistry,
+	revisionRegistry
+} from './verification-evidence/revision-registry/revisionRegistry';

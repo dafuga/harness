@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityAudio.svelte"],
-		"symbols": ["EntityAudio"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntityAudio.svelte",
+			"packages/reports/src/components/harness/EntityAudio.svelte"
+		],
+		"symbols": ["EntityAudio", "EntityAudio"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityAudio.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntityAudio.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityAudio.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntityAudio.svelte"
 			}
 		]
 	},

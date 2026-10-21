@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/openProject.ts"],
-		"symbols": ["openProject"]
+		"source": [
+			"packages/desktop/src/utils/openProject.ts",
+			"packages/desktop/src/utils/projects-sessions/openProject.ts"
+		],
+		"symbols": ["openProject", "openProject"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/openProject.ts",
+		"entry": "packages/desktop/src/utils/projects-sessions/openProject.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/openProject.ts"
+				"entry": "packages/desktop/src/utils/projects-sessions/openProject.ts"
 			}
 		]
 	},

@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/entity-search/entitySearch.ts",
-			"packages/reports/src/utils/entitySearch.ts"
+			"packages/reports/src/components/explorer-ui/entity-search/entitySearch.ts",
+			"packages/reports/src/utils/entitySearch.ts",
+			"packages/reports/src/utils/explorer-ui/entitySearch.ts"
 		],
-		"symbols": ["entitySearch", "SearchEntry", "entitySearch"]
+		"symbols": ["entitySearch", "entitySearch", "entitySearch", "SearchEntry", "entitySearch"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/entitySearch.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/entitySearch.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/entitySearch.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/entitySearch.ts"
 			}
 		]
 	},

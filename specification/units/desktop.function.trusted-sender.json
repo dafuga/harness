@@ -8,10 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/trustedSender.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/trustedSender.ts",
 			"packages/desktop/src/lib/initialize-desktop/trustedSender.ts",
 			"packages/desktop/src/utils/trustedSender.ts"
 		],
-		"symbols": ["trustedSender", "trustedSender"]
+		"symbols": ["trustedSender", "trustedSender", "trustedSender", "trustedSender"]
 	},
 	"contract": {
 		"origin": "declared",

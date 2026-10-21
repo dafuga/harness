@@ -1,9 +1,2 @@
-import { retainedBranch } from '../../../utils/harnessAncestry';
-import type { HarnessIndex, HarnessRevisionSummary } from '../../../models/Harness.types';
-
-/** The commits a branch contains, newest first; evidence and notes are never among them. */
-export function branchCommits(index: HarnessIndex, branch: string): HarnessRevisionSummary[] {
-	return index.revisions.filter((revision) =>
-		branch === retainedBranch ? revision.retained : revision.branches.includes(branch)
-	);
-}
+export { branchCommits } from '../../explorer-ui/harness/harness-navbar/harnessAncestry';
+export * from '../../explorer-ui/harness/harness-navbar/harnessAncestry';

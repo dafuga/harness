@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/sanitize.ts"],
-		"symbols": ["sanitize", "cleanData"]
+		"source": [
+			"packages/reports/src/utils/development-tooling/sanitize.ts",
+			"packages/reports/src/utils/sanitize.ts"
+		],
+		"symbols": ["sanitize", "cleanData", "sanitize", "cleanData"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,11 +44,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/sanitize.ts",
+		"entry": "packages/reports/src/utils/development-tooling/sanitize.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/sanitize.ts"
+				"entry": "packages/reports/src/utils/development-tooling/sanitize.ts"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/harnessClient.ts"],
-		"symbols": ["HarnessClient", "harnessClient"]
+		"source": [
+			"packages/reports/src/utils/explorer-ui/harnessClient.ts",
+			"packages/reports/src/utils/harnessClient.ts"
+		],
+		"symbols": ["HarnessClient", "harnessClient", "harnessClient"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -58,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessClient.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/harnessClient.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harnessClient.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/harnessClient.ts"
 			}
 		]
 	},

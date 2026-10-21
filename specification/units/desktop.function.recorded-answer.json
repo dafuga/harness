@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.ts",
 			"packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
 			"packages/desktop/src/utils/recordedAnswer.ts"
 		],
-		"symbols": ["AnswerInput", "recordedAnswer", "AnswerInput", "recordedAnswer"]
+		"symbols": ["AnswerInput", "recordedAnswer", "recordedAnswer", "AnswerInput", "recordedAnswer"]
 	},
 	"contract": {
 		"origin": "declared",

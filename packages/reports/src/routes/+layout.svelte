@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import ConsoleChat from '../components/ConsoleChat.svelte';
+	import ConsoleChat from '../components/planning-collaboration/ConsoleChat.svelte';
 	const navigate = (path: string, replace: boolean) =>
 		void goto('/harness' + path, { replaceState: replace, noScroll: true, keepFocus: true });
 	import '../lib/styles/base.css';

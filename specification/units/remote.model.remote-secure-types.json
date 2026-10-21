@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/models/RemoteSecure.types.ts"],
+		"source": [
+			"packages/remote/src/models/RemoteSecure.types.ts",
+			"packages/remote/src/models/networking-security/RemoteSecure.types.ts"
+		],
 		"symbols": [
+			"SecureFailure",
 			"RemoteKeyPair",
 			"StoredRemoteKeys",
 			"SecureRole",
@@ -46,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/models/RemoteSecure.types.ts",
+		"entry": "packages/remote/src/models/networking-security/RemoteSecure.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/models/RemoteSecure.types.ts"
+				"entry": "packages/remote/src/models/networking-security/RemoteSecure.types.ts"
 			}
 		]
 	},

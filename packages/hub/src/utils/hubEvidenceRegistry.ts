@@ -1,1 +1,1 @@
-export { hubEvidenceRegistry } from './hub-evidence-revision/hubEvidenceRegistry';
+export { hubEvidenceRegistry } from './verification-evidence/hub-evidence-revision/hubEvidenceRegistry';

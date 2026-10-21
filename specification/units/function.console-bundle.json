@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleBundle.ts"],
-		"symbols": ["ConsoleModules", "consoleBundle"]
+		"source": ["src/utils/consoleBundle.ts", "src/utils/development-tooling/consoleBundle.ts"],
+		"symbols": ["consoleBundle", "ConsoleModules", "consoleBundle"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,11 +37,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/consoleBundle.ts",
+		"entry": "src/utils/development-tooling/consoleBundle.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/consoleBundle.ts"
+				"entry": "src/utils/development-tooling/consoleBundle.ts"
 			}
 		]
 	},

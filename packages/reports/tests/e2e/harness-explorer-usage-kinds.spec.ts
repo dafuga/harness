@@ -22,7 +22,7 @@ for (const viewport of viewports)
 	}) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await page.goto(main(`configs/${units.config}`));
-		await expect(heading(page, 'Titles config')).toBeVisible();
+		await expect(heading(page, 'titlesConfig')).toBeVisible();
 		await checkpoint(page, `kinds-config-overview-${viewport.id}`);
 		for (const name of ['Contract', 'Used In', 'Uses'])
 			await expect(card(page, name)).toHaveCount(0);

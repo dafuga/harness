@@ -1,9 +1,3 @@
-import type { HubRecordStatusService } from '../services/HubRecordStatusService';
-
-export async function hubEvidenceOrigin(history: HubRecordStatusService, id: string) {
-	const line = (await history.verifications()).find((item) => item.record === id);
-	const loaded = line ? await history.attached.load(line.evidence) : undefined;
-	return loaded?.record?.id === id ? loaded : undefined;
-}
-
-export { hubEvidenceViews } from './hub-evidence-revision/hubEvidenceViews';
+export { hubEvidenceViews } from './verification-evidence/hubEvidenceViews';
+export { hubEvidenceOrigin } from './verification-evidence/hubEvidenceViews';
+export * from './verification-evidence/hubEvidenceViews';

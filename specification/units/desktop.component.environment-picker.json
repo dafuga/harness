@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/EnvironmentPicker.svelte"],
-		"symbols": ["EnvironmentPicker"]
+		"source": [
+			"packages/desktop/src/components/EnvironmentPicker.svelte",
+			"packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte"
+		],
+		"symbols": ["EnvironmentPicker", "EnvironmentPicker"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/EnvironmentPicker.svelte",
+		"entry": "packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/EnvironmentPicker.svelte"
+				"entry": "packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte"
 			}
 		]
 	},

@@ -8,10 +8,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/console-install-service/consoleDataModules.ts",
 			"src/services/console-install-service/consoleDataModules.ts",
-			"src/utils/consoleDataModules.ts"
+			"src/utils/consoleDataModules.ts",
+			"src/utils/development-tooling/consoleDataModules.ts"
 		],
 		"symbols": [
+			"consoleDataModules",
+			"bundledSize",
+			"consoleDataModules",
+			"bundledSize",
 			"consoleDataModules",
 			"bundledSize",
 			"IndexFile",
@@ -57,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/consoleDataModules.ts",
+		"entry": "src/utils/development-tooling/consoleDataModules.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/consoleDataModules.ts"
+				"entry": "src/utils/development-tooling/consoleDataModules.ts"
 			}
 		]
 	},

@@ -2,6 +2,11 @@ import { expect, test } from 'vitest';
 import { unitMetadata } from '../../src/services/revision-detail-service/unitMetadata';
 import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../support/memoryTree';
+import {
+	referenceCases as cases,
+	serviceClassCases,
+	serviceClassFiles
+} from '../support/referenceFixtures';
 
 const source = [
 	'export type Options = { enabled: boolean };',
@@ -14,6 +19,31 @@ const source = [
 	'export function unused(value: number) { return value; }',
 	'export const sharedArrow = (text: string): string => text;'
 ].join('\n');
+
+test('revision metadata derives project categories from the same committed source tree', async () => {
+	const paths = ['services', 'components', 'utils', 'models', 'config'].map(
+		(folder) => `src/${folder}/payments/Example.ts`
+	);
+	const files = Object.fromEntries(paths.map((path) => [path, 'export const example = 1;']));
+	const config = (title: string) =>
+		JSON.stringify({ schemaVersion: 1, groups: [{ id: 'payments', title, terms: [] }] });
+	const indexed = await indexFiles(files);
+	const registry = revisionRegistry(indexed.result.manifests, []);
+	await unitMetadata(
+		memoryTree({ ...files, 'harness.groups.json': config('Payments') }),
+		registry.units
+	);
+	for (const unit of registry.units)
+		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Payments' });
+	await unitMetadata(
+		memoryTree({ ...files, 'harness.groups.json': config('Billing') }),
+		registry.units
+	);
+	for (const unit of registry.units)
+		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Billing' });
+	await unitMetadata(memoryTree(files), registry.units);
+	for (const unit of registry.units) expect(unit).not.toHaveProperty('group');
+});
 
 test('revision metadata lists standalone shared exports without requiring callers', async () => {
 	const paths = [
@@ -42,74 +72,6 @@ test('revision metadata lists standalone shared exports without requiring caller
 	expect(shared.helperGap).toContain('could not be read');
 });
 
-const cases: Array<{ files: Record<string, string>; count: number }> = [
-	{
-		files: {
-			'src/templates/one.ts':
-				"import { shared } from '../utils/shared'; export function firstTemplate() { return shared(); }",
-			'src/workflows/other.ts':
-				"import { shared } from '../utils/shared'; export function otherWorkflow() { return shared(); }"
-		},
-		count: 2
-	},
-	{
-		files: {
-			'src/config/options.ts':
-				"import { shared } from '../utils/shared'; export function configuration() { return shared(); }",
-			'src/routes/+page.server.ts':
-				"import { shared } from '../utils/shared'; export function load() { return shared(); }"
-		},
-		count: 2
-	},
-	{
-		files: {
-			'src/services/OneService.ts':
-				"import { shared } from '../utils/shared'; export class OneService { run() { shared(); shared(); } }"
-		},
-		count: 1
-	},
-	{
-		files: {
-			'src/utils/callers.ts':
-				"import { shared as use } from './shared'; export function first() { use(); use(); } export function second() { [1].map(use); }"
-		},
-		count: 2
-	},
-	{
-		files: {
-			'src/components/One.svelte':
-				"<script>import { shared } from '../utils/shared';</script><p>{shared()}</p>",
-			'src/services/TwoService.ts':
-				"import * as helpers from '../utils/shared'; export class TwoService { run() { helpers.shared(); } }"
-		},
-		count: 2
-	},
-	{
-		files: {
-			'src/utils/callers.ts':
-				"import { shared } from './shared'; export function first(shared: Function) { shared(); }",
-			'src/utils/types.ts':
-				"import type { shared } from './shared'; export type Example = typeof shared;"
-		},
-		count: 0
-	},
-	{
-		files: {
-			'src/utils/callers.ts':
-				"import { shared, other } from './shared'; export function first() { other(); }"
-		},
-		count: 0
-	},
-	{
-		files: {
-			'src/pages/one.ts': "import { shared } from '../utils/shared'; shared();",
-			'src/utils/barrel.ts': "export { shared } from './shared';",
-			'src/utils/callers.ts':
-				"import { shared } from './barrel'; export function first() { shared(); }"
-		},
-		count: 1
-	}
-];
 test.each(cases)(
 	'revision metadata counts distinct actual consumers: $count',
 	async ({ files, count }) => {
@@ -164,5 +126,80 @@ test.each(pureCases)(
 		const registry = revisionRegistry(indexed.result.manifests, []);
 		await unitMetadata(memoryTree(files), registry.units);
 		expect(registry.units[0].helpers?.[0]).toMatchObject({ pure });
+	}
+);
+
+// Services count the owning code unit once, including top-level page and entry references.
+test.each(cases.map((item, index) => ({ ...item, serviceCount: [2, 2, 1, 1, 2, 0, 0, 2][index] })))(
+	'revision metadata counts distinct runtime service owners: $serviceCount',
+	async ({ files, serviceCount }) => {
+		const sources = {
+			'src/services/SharedService.ts':
+				'export function shared() { return 1; } export function other() {}',
+			...Object.fromEntries(
+				Object.entries(files).map(([path, text]) => [
+					path,
+					text
+						.replaceAll('../utils/shared', '../services/SharedService')
+						.replaceAll("'./shared'", "'../services/SharedService'")
+				])
+			)
+		};
+		const indexed = await indexFiles(sources);
+		const registry = revisionRegistry(indexed.result.manifests, []);
+		await unitMetadata(memoryTree(sources), registry.units);
+		const service = registry.units.find((unit) =>
+			unit.owns.source.includes('src/services/SharedService.ts')
+		)!;
+		expect(service.serviceConsumers?.length, 'only distinct runtime owners establish sharing').toBe(
+			serviceCount
+		);
+		await unitMetadata(
+			memoryTree({ 'src/services/SharedService.ts': sources['src/services/SharedService.ts'] }),
+			registry.units
+		);
+		expect(service.serviceConsumers).toEqual([]);
+	}
+);
+
+test.each(serviceClassCases)(
+	'revision metadata proves service class declarations and construction: $label',
+	async ({ label, declaration, methods }) => {
+		const files = serviceClassFiles(label, declaration);
+		const indexed = await indexFiles(files);
+		const registry = revisionRegistry(indexed.result.manifests, []);
+		await unitMetadata(memoryTree(files), registry.units);
+		const service = registry.units.find((unit) =>
+			unit.owns.source.includes('src/services/SharedService.ts')
+		)!;
+		const owners = registry.units
+			.filter((unit) =>
+				unit.owns.source.some((path) => /workflows\/(first|second)\.ts$/.test(path))
+			)
+			.map((unit) => ({ unit: unit.id }))
+			.sort((a, b) => a.unit.localeCompare(b.unit));
+		const consumers = label === 'shadow' ? [] : owners;
+		let constructedBy = consumers;
+		if (label === 'registry' || label === 'shadow') constructedBy = [];
+		if (label === 'factory') constructedBy = [{ unit: service.id }];
+		expect(
+			service,
+			'class proof is source-derived rather than inferred from a service filename'
+		).toHaveProperty(
+			'serviceClasses',
+			methods === null
+				? []
+				: [
+						{
+							name: 'SharedService',
+							source: 'src/services/SharedService.ts',
+							methods,
+							constructedBy,
+							consumers
+						}
+					]
+		);
+		await unitMetadata(memoryTree({}), registry.units);
+		expect(service).toHaveProperty('serviceClasses', []);
 	}
 );

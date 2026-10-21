@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/impactTypes.ts"],
+		"source": ["src/core/development-tooling/impactTypes.ts", "src/core/impactTypes.ts"],
 		"symbols": ["ChangedFile", "ImpactReport", "ImpactSide"]
 	},
 	"contract": {
@@ -35,11 +35,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/impactTypes.ts",
+		"entry": "src/core/development-tooling/impactTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/impactTypes.ts"
+				"entry": "src/core/development-tooling/impactTypes.ts"
 			}
 		]
 	},

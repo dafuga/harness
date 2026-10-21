@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/cleanCodeValue.ts"],
-		"symbols": ["recordValue", "probabilityValue", "tokenCount"]
+		"source": [
+			"src/validators/cleanCodeValue.ts",
+			"src/validators/development-tooling/cleanCodeValue.ts"
+		],
+		"symbols": [
+			"recordValue",
+			"probabilityValue",
+			"tokenCount",
+			"recordValue",
+			"probabilityValue",
+			"tokenCount"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -50,11 +60,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/cleanCodeValue.ts",
+		"entry": "src/validators/development-tooling/cleanCodeValue.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/cleanCodeValue.ts"
+				"entry": "src/validators/development-tooling/cleanCodeValue.ts"
 			}
 		]
 	},

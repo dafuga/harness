@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/config/pickerViteConfig.ts"],
-		"symbols": ["default"]
+		"source": [
+			"packages/reports/src/config/development-tooling/pickerViteConfig.ts",
+			"packages/reports/src/config/pickerViteConfig.ts"
+		],
+		"symbols": ["default", "default"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -19,11 +22,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/config/pickerViteConfig.ts",
+		"entry": "packages/reports/src/config/development-tooling/pickerViteConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/config/pickerViteConfig.ts"
+				"entry": "packages/reports/src/config/development-tooling/pickerViteConfig.ts"
 			}
 		]
 	},

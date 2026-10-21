@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/load-workspace/loadWorkspace.ts",
-			"packages/desktop/src/utils/loadWorkspace.ts"
+			"packages/desktop/src/utils/loadWorkspace.ts",
+			"packages/desktop/src/utils/projects-sessions/load-workspace/loadWorkspace.ts"
 		],
 		"symbols": [
+			"loadWorkspace",
 			"LoadedWorkspace",
 			"ProjectSelection",
 			"loadWorkspace",

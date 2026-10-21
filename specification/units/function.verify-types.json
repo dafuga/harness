@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/verifyTypes.ts"],
+		"source": ["src/core/verification-evidence/verifyTypes.ts", "src/core/verifyTypes.ts"],
 		"symbols": [
 			"verifyConfigFile",
 			"verificationsDirectory",
@@ -21,7 +21,17 @@
 			"reportedMeasurementSchema",
 			"benchmarkCaptureSchema",
 			"workloadSchema",
-			"Workload"
+			"Workload",
+			"verifyConfigFile",
+			"verificationsDirectory",
+			"snapshotsDirectory",
+			"captureIndex",
+			"verifyConfigSchema",
+			"defaultVerifyConfig",
+			"captureLineSchema",
+			"reportedMeasurementSchema",
+			"benchmarkCaptureSchema",
+			"workloadSchema"
 		]
 	},
 	"contract": {
@@ -95,11 +105,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/verifyTypes.ts",
+		"entry": "src/core/verification-evidence/verifyTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/verifyTypes.ts"
+				"entry": "src/core/verification-evidence/verifyTypes.ts"
 			}
 		]
 	},

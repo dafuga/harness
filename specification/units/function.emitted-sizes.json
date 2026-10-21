@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/emittedSizes.ts"],
-		"symbols": ["emittedMetric", "emittedKey", "emittedSizes"]
+		"source": ["src/utils/development-tooling/emittedSizes.ts", "src/utils/emittedSizes.ts"],
+		"symbols": [
+			"emittedMetric",
+			"emittedKey",
+			"emittedSizes",
+			"emittedMetric",
+			"emittedKey",
+			"emittedSizes"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/emittedSizes.ts",
+		"entry": "src/utils/development-tooling/emittedSizes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/emittedSizes.ts"
+				"entry": "src/utils/development-tooling/emittedSizes.ts"
 			}
 		]
 	},

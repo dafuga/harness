@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/deploymentProof.ts"],
-		"symbols": ["deploymentProof", "deploymentBlockers", "deploymentHealth", "deploymentCurrent"]
+		"source": [
+			"packages/desktop/src/utils/deploymentProof.ts",
+			"packages/desktop/src/utils/development-tooling/deploymentProof.ts"
+		],
+		"symbols": [
+			"deploymentProof",
+			"deploymentProof",
+			"deploymentBlockers",
+			"deploymentHealth",
+			"deploymentCurrent"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -108,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/deploymentProof.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/deploymentProof.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/deploymentProof.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/deploymentProof.ts"
 			}
 		]
 	},

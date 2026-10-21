@@ -7,11 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/services/DeviceRevocationService.ts"],
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
+			"packages/relay/src/lib/host-runtime/DeviceRevocationService.ts"
+		],
 		"symbols": [
 			"DeviceRevocationService",
 			"DeviceRevocationService.constructor",
-			"DeviceRevocationService.revoke"
+			"DeviceRevocationService.revoke",
+			"DeviceRevocationService"
 		]
 	},
 	"contract": {
@@ -66,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/services/DeviceRevocationService.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/DeviceRevocationService.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts"
 			}
 		]
 	},

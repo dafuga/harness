@@ -1,1 +1,1 @@
-export { hubNotes } from '../services/hub-evidence-service/hubNotes';
+export { hubNotes } from '../routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes';

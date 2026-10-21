@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/ExplorerPageCard.svelte"],
-		"symbols": ["ExplorerPageCard"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/ExplorerPageCard.svelte",
+			"packages/reports/src/components/harness/ExplorerPageCard.svelte"
+		],
+		"symbols": ["ExplorerPageCard", "ExplorerPageCard"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -102,11 +105,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/ExplorerPageCard.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerPageCard.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/ExplorerPageCard.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerPageCard.svelte"
 			}
 		]
 	},

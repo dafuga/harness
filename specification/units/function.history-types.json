@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/historyTypes.ts"],
+		"source": ["src/core/git-source-history/historyTypes.ts", "src/core/historyTypes.ts"],
 		"symbols": [
 			"evidenceBranch",
 			"evidenceRef",
@@ -26,7 +26,20 @@
 			"HistoryNote",
 			"EvidenceFile",
 			"EvidenceManifest",
-			"LegacyRecord"
+			"LegacyRecord",
+			"evidenceBranch",
+			"evidenceRef",
+			"notesRef",
+			"sourceArchivePrefix",
+			"remoteTrackingPrefix",
+			"evidenceMarker",
+			"recordsDirectory",
+			"legacyDirectory",
+			"evidencePointerSchema",
+			"historyNoteSchema",
+			"evidenceFileSchema",
+			"evidenceManifestSchema",
+			"legacyRecordSchema"
 		]
 	},
 	"contract": {
@@ -110,11 +123,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/historyTypes.ts",
+		"entry": "src/core/git-source-history/historyTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/historyTypes.ts"
+				"entry": "src/core/git-source-history/historyTypes.ts"
 			}
 		]
 	},

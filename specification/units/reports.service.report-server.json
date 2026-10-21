@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/report-server-service/ReportServerService.ts"],
+		"source": [
+			"packages/reports/src/services/report-command-service/report-server-service/ReportServerService.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts"
+		],
 		"symbols": [
+			"ReportServerService",
 			"ReportServerService",
 			"ReportServerService.constructor",
 			"ReportServerService.serve",
@@ -72,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/report-server-service/ReportServerService.ts",
+		"entry": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/report-server-service/ReportServerService.ts"
+				"entry": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts"
 			}
 		]
 	},

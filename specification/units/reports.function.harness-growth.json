@@ -8,10 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-growth/harnessGrowth.ts",
 			"packages/reports/src/components/harness/harness-growth/harnessGrowth.ts",
+			"packages/reports/src/utils/explorer-ui/harnessGrowth.ts",
 			"packages/reports/src/utils/harnessGrowth.ts"
 		],
 		"symbols": [
+			"harnessGrowth",
+			"unitTimings",
 			"harnessGrowth",
 			"unitTimings",
 			"growthMetrics",
@@ -19,7 +23,11 @@
 			"GrowthRow",
 			"signed",
 			"harnessGrowth",
-			"unitTimings"
+			"unitTimings",
+			"harnessGrowth",
+			"unitTimings",
+			"growthMetrics",
+			"signed"
 		]
 	},
 	"contract": {
@@ -84,11 +92,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessGrowth.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/harnessGrowth.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harnessGrowth.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/harnessGrowth.ts"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EntitySearchResults.svelte"],
-		"symbols": ["EntitySearchResults"]
+		"source": [
+			"packages/reports/src/components/EntitySearchResults.svelte",
+			"packages/reports/src/components/explorer-ui/EntitySearchResults.svelte"
+		],
+		"symbols": ["EntitySearchResults", "EntitySearchResults"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EntitySearchResults.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/EntitySearchResults.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/EntitySearchResults.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/EntitySearchResults.svelte"
 			}
 		]
 	},

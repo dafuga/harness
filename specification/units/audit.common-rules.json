@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/commonRules.ts"],
-		"symbols": ["splitLines", "auditFileLength", "auditClassCount", "maskTemplateLiterals"]
+		"source": ["src/audit/commonRules.ts", "src/audit/development-tooling/commonRules.ts"],
+		"symbols": [
+			"splitLines",
+			"auditFileLength",
+			"auditClassCount",
+			"maskTemplateLiterals",
+			"splitLines",
+			"auditFileLength",
+			"auditClassCount",
+			"maskTemplateLiterals"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -80,11 +89,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/commonRules.ts",
+		"entry": "src/audit/development-tooling/commonRules.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/commonRules.ts"
+				"entry": "src/audit/development-tooling/commonRules.ts"
 			}
 		]
 	},

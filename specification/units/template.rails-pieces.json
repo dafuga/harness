@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/railsPieces.ts"],
+		"source": ["src/templates/development-tooling/railsPieces.ts", "src/templates/railsPieces.ts"],
 		"symbols": [
+			"mailerFiles",
+			"helperFiles",
+			"concernFiles",
+			"channelFiles",
+			"formFiles",
+			"initializerFiles",
+			"configFiles",
+			"middlewareFiles",
+			"resourceFiles",
 			"mailerFiles",
 			"helperFiles",
 			"concernFiles",
@@ -139,11 +148,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/railsPieces.ts",
+		"entry": "src/templates/development-tooling/railsPieces.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/railsPieces.ts"
+				"entry": "src/templates/development-tooling/railsPieces.ts"
 			}
 		]
 	},

@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/browser-errors/browserErrorRows.ts",
-			"packages/reports/src/utils/browserErrorRows.ts"
+			"packages/reports/src/components/shared-primitives/browser-errors/browserErrorRows.ts",
+			"packages/reports/src/utils/browserErrorRows.ts",
+			"packages/reports/src/utils/shared-primitives/browserErrorRows.ts"
 		],
-		"symbols": ["browserErrorRows", "Observed", "BrowserErrorRow", "browserErrorRows"]
+		"symbols": [
+			"browserErrorRows",
+			"browserErrorRows",
+			"browserErrorRows",
+			"Observed",
+			"BrowserErrorRow",
+			"browserErrorRows"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,11 +49,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/browserErrorRows.ts",
+		"entry": "packages/reports/src/utils/shared-primitives/browserErrorRows.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/browserErrorRows.ts"
+				"entry": "packages/reports/src/utils/shared-primitives/browserErrorRows.ts"
 			}
 		]
 	},

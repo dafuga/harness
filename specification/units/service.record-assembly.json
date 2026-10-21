@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/record-assembly-service/RecordAssemblyService.ts"],
+		"source": [
+			"src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts"
+		],
 		"symbols": [
+			"RecordAssemblyService",
 			"AssemblyContext",
 			"AssemblyInput",
 			"RecordAssemblyService",
@@ -110,11 +114,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/record-assembly-service/RecordAssemblyService.ts",
+		"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/record-assembly-service/RecordAssemblyService.ts"
+				"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts"
 			}
 		]
 	},

@@ -8,10 +8,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/development-tooling/ipc-payload/ipcPayload.ts",
 			"packages/desktop/src/utils/ipc-payload/ipcPayload.ts",
 			"packages/desktop/src/utils/ipcPayload.ts"
 		],
 		"symbols": [
+			"approvalPayload",
+			"threadPayload",
+			"creationProject",
+			"creationPayload",
+			"runPayload",
+			"ipcPayload",
 			"approvalPayload",
 			"threadPayload",
 			"creationProject",

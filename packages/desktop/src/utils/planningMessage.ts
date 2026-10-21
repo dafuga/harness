@@ -1,1 +1,1 @@
-export { planningMessage } from '../adapters/planning-facade-adapter/planningMessage';
+export { planningMessage } from '../services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage';

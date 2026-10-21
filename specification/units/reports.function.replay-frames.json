@@ -9,10 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/gameplay-replay/replayFrames.ts",
-			"packages/reports/src/utils/replayFrames.ts"
+			"packages/reports/src/components/reports-media/gameplay-replay/replayFrames.ts",
+			"packages/reports/src/utils/replayFrames.ts",
+			"packages/reports/src/utils/reports-media/replayFrames.ts"
 		],
 		"symbols": [
 			"replayStart",
+			"replayStart",
+			"replayStart",
+			"FRAME_SECONDS",
+			"REPLAY_SPEEDS",
+			"replayFrames",
 			"FRAME_SECONDS",
 			"REPLAY_SPEEDS",
 			"ReplayFrame",
@@ -72,11 +79,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/replayFrames.ts",
+		"entry": "packages/reports/src/utils/reports-media/replayFrames.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/replayFrames.ts"
+				"entry": "packages/reports/src/utils/reports-media/replayFrames.ts"
 			}
 		]
 	},

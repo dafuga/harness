@@ -25,7 +25,7 @@ for (const [name, size] of Object.entries(viewports)) {
 	}) => {
 		await tab.setViewportSize(size);
 		await open(tab, components, 'partial');
-		const row = tab.getByRole('article', { name: 'Order list', exact: true });
+		const row = tab.getByRole('article', { name: 'OrderList', exact: true });
 		const mark = row.getByRole('button', { name: 'Coverage incomplete' });
 		await expect(mark).toBeVisible();
 		expect((await shown(tab, '.hx-verdict')).join('')).toBe('');
@@ -38,7 +38,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		await capture(tab, `marks-open-${name}`);
 		await tab.mouse.move(1, 1);
 		await expect(tip(tab)).toHaveCount(0);
-		await row.getByRole('link', { name: 'Order list', exact: true }).focus();
+		await row.getByRole('link', { name: 'OrderList', exact: true }).focus();
 		await tab.keyboard.press('Tab');
 		await expect(mark).toBeFocused();
 		await expect(tip(tab)).toContainText(why);
@@ -54,7 +54,7 @@ test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
 	browserErrors.watch(context);
 	const tab = await context.newPage();
 	await open(tab, components, 'partial');
-	const row = tab.getByRole('article', { name: 'Order list', exact: true });
+	const row = tab.getByRole('article', { name: 'OrderList', exact: true });
 	await row.getByRole('button', { name: 'Coverage incomplete' }).tap();
 	await expect(tip(tab)).toContainText(why);
 	expect(await inside(tab, viewports.mobile)).toBe(true);
@@ -183,7 +183,7 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, components);
 	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
-	const title = tab.getByRole('link', { name: 'Order list', exact: true });
+	const title = tab.getByRole('link', { name: 'OrderList', exact: true });
 	await title.scrollIntoViewIfNeeded();
 	const box = (await title.boundingBox()) as {
 		x: number;

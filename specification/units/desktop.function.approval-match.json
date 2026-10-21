@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/approvalMatch.ts",
 			"packages/desktop/src/services/desktop-run-service/approvalMatch.ts",
 			"packages/desktop/src/utils/approvalMatch.ts"
 		],
-		"symbols": ["approvalMatch", "approvalMatch"]
+		"symbols": ["approvalMatch", "approvalMatch", "approvalMatch"]
 	},
 	"contract": {
 		"origin": "declared",

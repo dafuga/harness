@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/ImpactCommand.ts"],
+		"source": ["src/cli/program/ImpactCommand.ts"],
 		"symbols": ["registerImpactCommand"]
 	},
 	"contract": {
@@ -35,11 +35,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/ImpactCommand.ts",
+		"entry": "src/cli/program/ImpactCommand.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/ImpactCommand.ts"
+				"entry": "src/cli/program/ImpactCommand.ts"
 			}
 		]
 	},

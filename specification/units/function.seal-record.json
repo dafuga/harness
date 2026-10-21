@@ -8,9 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/record-assembly-service/sealRecord.ts",
-			"src/services/verification-service/sealRecord.ts",
-			"src/utils/sealRecord.ts"
+			"src/utils/sealRecord.ts",
+			"src/utils/verification-evidence/sealRecord.ts",
+			"src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+			"src/workflows/run-verify/verification-service/sealRecord.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/sealRecord.ts"
 		],
 		"symbols": [
 			"recordComponents",
@@ -18,6 +21,14 @@
 			"referencedScenario",
 			"sealRecord",
 			"recordIntact",
+			"sealRecord",
+			"recordIntact",
+			"recordComponents",
+			"benchmarkMeasurements",
+			"referencedScenario",
+			"recordComponents",
+			"benchmarkMeasurements",
+			"referencedScenario",
 			"recordComponents",
 			"benchmarkMeasurements",
 			"referencedScenario"
@@ -145,11 +156,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/sealRecord.ts",
+		"entry": "src/utils/verification-evidence/sealRecord.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/sealRecord.ts"
+				"entry": "src/utils/verification-evidence/sealRecord.ts"
 			}
 		]
 	},

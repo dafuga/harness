@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceViews.ts",
-			"packages/hub/src/utils/hubEvidenceViews.ts"
+			"packages/hub/src/utils/hubEvidenceViews.ts",
+			"packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceViews.ts",
+			"packages/hub/src/utils/verification-evidence/hubEvidenceViews.ts"
 		],
-		"symbols": ["hubEvidenceViews", "hubEvidenceOrigin", "hubEvidenceViews"]
+		"symbols": [
+			"hubEvidenceViews",
+			"hubEvidenceViews",
+			"hubEvidenceOrigin",
+			"hubEvidenceViews",
+			"hubEvidenceOrigin",
+			"hubEvidenceViews"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -75,11 +84,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubEvidenceViews.ts",
+		"entry": "packages/hub/src/utils/verification-evidence/hubEvidenceViews.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubEvidenceViews.ts"
+				"entry": "packages/hub/src/utils/verification-evidence/hubEvidenceViews.ts"
 			}
 		]
 	},

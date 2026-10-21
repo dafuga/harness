@@ -1,6 +1,2 @@
-export interface PriorImage {
-	version: string;
-	sha256: string;
-}
-
-export { priorImage } from '../components/design-panel/priorImage';
+export { priorImage } from './planning-collaboration/priorImage';
+export * from './planning-collaboration/priorImage';

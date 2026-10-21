@@ -7,9 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/required-reasons/requiredReasons.ts", "src/utils/requiredReasons.ts"],
+		"source": [
+			"src/utils/development-tooling/required-reasons/requiredReasons.ts",
+			"src/utils/required-reasons/requiredReasons.ts",
+			"src/utils/requiredReasons.ts"
+		],
 		"symbols": [
 			"ReasonSide",
+			"presentUnits",
+			"requiredReasons",
 			"presentUnits",
 			"requiredReasons",
 			"ReasonSide",

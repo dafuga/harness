@@ -1,1 +1,1 @@
-export { planningArtifactPaths } from '../audit/structure-rules/planningArtifactPaths';
+export { planningArtifactPaths } from '../audit/development-tooling/structure-rules/planningArtifactPaths';

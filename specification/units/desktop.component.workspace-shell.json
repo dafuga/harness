@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/WorkspaceShell.svelte"],
-		"symbols": ["WorkspaceShell"]
+		"source": [
+			"packages/desktop/src/components/WorkspaceShell.svelte",
+			"packages/desktop/src/components/projects-sessions/WorkspaceShell.svelte"
+		],
+		"symbols": ["WorkspaceShell", "WorkspaceShell"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/WorkspaceShell.svelte",
+		"entry": "packages/desktop/src/components/projects-sessions/WorkspaceShell.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/WorkspaceShell.svelte"
+				"entry": "packages/desktop/src/components/projects-sessions/WorkspaceShell.svelte"
 			}
 		]
 	},

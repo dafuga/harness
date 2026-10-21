@@ -1,1 +1,4 @@
-export { type AnswerInput, recordedAnswer } from './recorded-answer/recordedAnswer';
+export {
+	type AnswerInput,
+	recordedAnswer
+} from './development-tooling/recorded-answer/recordedAnswer';

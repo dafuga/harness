@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/platformServices.ts", "src/utils/run-isolated/stillPrivate.ts"],
+		"source": [
+			"src/utils/platformServices.ts",
+			"src/utils/reports-media/platformServices.ts",
+			"src/utils/reports-media/run-isolated/stillPrivate.ts",
+			"src/utils/run-isolated/stillPrivate.ts"
+		],
 		"symbols": [
+			"stillPrivate",
+			"sameTime",
+			"named",
+			"probing",
+			"macAuthority",
+			"platformServices",
+			"classifyProcess",
 			"ServiceAuthority",
 			"Standing",
 			"Verdict",
@@ -19,6 +31,7 @@
 			"macAuthority",
 			"platformServices",
 			"classifyProcess",
+			"stillPrivate",
 			"stillPrivate",
 			"stillPrivate"
 		]
@@ -90,11 +103,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/platformServices.ts",
+		"entry": "src/utils/reports-media/platformServices.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/platformServices.ts"
+				"entry": "src/utils/reports-media/platformServices.ts"
 			}
 		]
 	},

@@ -1,6 +1,2 @@
-import { ReportCommandService } from '../services/report-command-service/ReportCommandService';
-export class ReportCommand {
-	run(argv: string[]) {
-		return new ReportCommandService().execute(argv);
-	}
-}
+export { ReportCommand } from './reports-media/ReportCommand';
+export * from './reports-media/ReportCommand';

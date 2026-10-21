@@ -1,7 +1,2 @@
-export interface CliOptions {
-	operation: string;
-	flags: Record<string, string | boolean>;
-	positionals: string[];
-}
-
-export { reportCli, inputData, required } from '../services/report-command-service/reportCli';
+export { reportCli, inputData, required } from './reports-media/reportCli';
+export * from './reports-media/reportCli';

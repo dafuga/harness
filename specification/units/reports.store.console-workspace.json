@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/lib/stores/consoleWorkspace.svelte.ts"],
-		"symbols": ["createConsoleWorkspaceStore"]
+		"source": [
+			"packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts",
+			"packages/reports/src/lib/projects-sessions/console-workspace/consoleWorkspace.svelte.ts",
+			"packages/reports/src/lib/stores/consoleWorkspace.svelte.ts"
+		],
+		"symbols": [
+			"createConsoleWorkspaceStore",
+			"createConsoleWorkspaceStore",
+			"createConsoleWorkspaceStore"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/lib/stores/consoleWorkspace.svelte.ts",
+		"entry": "packages/reports/src/lib/projects-sessions/console-workspace/consoleWorkspace.svelte.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/lib/stores/consoleWorkspace.svelte.ts"
+				"entry": "packages/reports/src/lib/projects-sessions/console-workspace/consoleWorkspace.svelte.ts"
 			}
 		]
 	},

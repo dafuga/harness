@@ -1,1 +1,1 @@
-export { createGitHubRepository } from './create-git-hub-repository/createGitHubRepository';
+export { createGitHubRepository } from './git-source-history/create-git-hub-repository/createGitHubRepository';

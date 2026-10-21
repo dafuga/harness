@@ -9,9 +9,19 @@
 	"owns": {
 		"source": [
 			"src/services/evidence-attach-service/evidenceManifest.ts",
-			"src/utils/evidenceManifest.ts"
+			"src/services/verification-evidence/evidence-attach-service/evidenceManifest.ts",
+			"src/utils/evidenceManifest.ts",
+			"src/utils/verification-evidence/evidenceManifest.ts"
 		],
-		"symbols": ["evidenceManifest", "RecordFile", "recordFiles", "evidenceManifest"]
+		"symbols": [
+			"evidenceManifest",
+			"evidenceManifest",
+			"evidenceManifest",
+			"recordFiles",
+			"RecordFile",
+			"recordFiles",
+			"evidenceManifest"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -65,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/evidenceManifest.ts",
+		"entry": "src/utils/verification-evidence/evidenceManifest.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/evidenceManifest.ts"
+				"entry": "src/utils/verification-evidence/evidenceManifest.ts"
 			}
 		]
 	},

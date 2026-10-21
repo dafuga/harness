@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/parseParameters.ts"],
-		"symbols": ["splitTopLevel", "parseParameters", "normalizeType"]
+		"source": ["src/utils/development-tooling/parseParameters.ts", "src/utils/parseParameters.ts"],
+		"symbols": [
+			"splitTopLevel",
+			"parseParameters",
+			"normalizeType",
+			"splitTopLevel",
+			"parseParameters",
+			"normalizeType"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +79,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/parseParameters.ts",
+		"entry": "src/utils/development-tooling/parseParameters.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/parseParameters.ts"
+				"entry": "src/utils/development-tooling/parseParameters.ts"
 			}
 		]
 	},

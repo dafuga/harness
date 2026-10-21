@@ -7,8 +7,22 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/cpu-process-adapter/cpuProcesses.ts", "src/utils/cpuProcesses.ts"],
-		"symbols": ["cpuProcesses", "CpuRole", "CpuProcess", "cpuProcesses"]
+		"source": [
+			"src/adapters/cpu-process-adapter/cpuProcesses.ts",
+			"src/services/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
+			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts",
+			"src/utils/cpuProcesses.ts",
+			"src/utils/development-tooling/cpuProcesses.ts"
+		],
+		"symbols": [
+			"cpuProcesses",
+			"cpuProcesses",
+			"cpuProcesses",
+			"cpuProcesses",
+			"CpuRole",
+			"CpuProcess",
+			"cpuProcesses"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,11 +50,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/cpuProcesses.ts",
+		"entry": "src/utils/development-tooling/cpuProcesses.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/cpuProcesses.ts"
+				"entry": "src/utils/development-tooling/cpuProcesses.ts"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/Modal.svelte"],
-		"symbols": ["Modal"]
+		"source": [
+			"packages/reports/src/components/Modal.svelte",
+			"packages/reports/src/components/shared-primitives/Modal.svelte"
+		],
+		"symbols": ["Modal", "Modal"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/Modal.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/Modal.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/Modal.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/Modal.svelte"
 			}
 		]
 	},

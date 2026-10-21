@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/runAudit.ts"],
+		"source": ["src/cli/program/runAudit.ts"],
 		"symbols": ["AuditCommandOptions", "runAudit"]
 	},
 	"contract": {
@@ -69,11 +69,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/runAudit.ts",
+		"entry": "src/cli/program/runAudit.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/runAudit.ts"
+				"entry": "src/cli/program/runAudit.ts"
 			}
 		]
 	},

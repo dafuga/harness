@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/deploymentExecution.ts"],
-		"symbols": ["deploymentExecution"]
+		"source": [
+			"packages/desktop/src/utils/deploymentExecution.ts",
+			"packages/desktop/src/utils/development-tooling/deploymentExecution.ts"
+		],
+		"symbols": ["deploymentExecution", "deploymentExecution"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -78,11 +81,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/deploymentExecution.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/deploymentExecution.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/deploymentExecution.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/deploymentExecution.ts"
 			}
 		]
 	},

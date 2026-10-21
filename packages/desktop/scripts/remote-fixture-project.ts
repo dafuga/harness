@@ -3,10 +3,14 @@ import { mkdir, mkdtemp, realpath, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { RunCancelled } from '../src/models/AgentRunner.types';
-import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/AgentRunner.types';
-import type { ProviderId, ProviderState } from '../src/models/Desktop.types';
-import { ProjectSessionService } from '../src/services/ProjectSessionService';
+import { RunCancelled } from '../src/models/agents-providers/AgentRunner.types';
+import type {
+	AgentRunner,
+	AgentTurn,
+	ImageGenerator
+} from '../src/models/agents-providers/AgentRunner.types';
+import type { ProviderId, ProviderState } from '../src/models/development-tooling/Desktop.types';
+import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 
 const model = 'fixture-model';
 const git = (root: string, ...args: string[]) =>

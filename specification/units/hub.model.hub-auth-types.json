@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/models/HubAuth.types.ts"],
+		"source": [
+			"packages/hub/src/models/HubAuth.types.ts",
+			"packages/hub/src/models/accounts-access/HubAuth.types.ts"
+		],
 		"symbols": [
+			"EMAIL_CODE_LENGTH",
+			"NATIVE_AUDIENCE",
+			"NATIVE_ACTION",
 			"HubEnvironment",
 			"EMAIL_CODE_LENGTH",
 			"AuthEnv",
@@ -57,11 +63,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/models/HubAuth.types.ts",
+		"entry": "packages/hub/src/models/accounts-access/HubAuth.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/models/HubAuth.types.ts"
+				"entry": "packages/hub/src/models/accounts-access/HubAuth.types.ts"
 			}
 		]
 	},

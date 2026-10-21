@@ -3,5 +3,5 @@ export {
 	type UnitDocumentation,
 	unitDocumentation,
 	readUnitDocumentation
-} from './unit-documentation/unitDocumentation';
-export { hydrateUnitDocumentation } from '../services/revision-detail-service/unitDocumentation';
+} from './explorer-ui/unit-documentation/unitDocumentation';
+export { hydrateUnitDocumentation } from '../services/explorer-ui/revision-detail-service/unitDocumentation';

@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/analyticsMetrics.ts"],
-		"symbols": ["analyticsSnapshot", "counts"]
+		"source": ["src/cli/program/analyticsMetrics.ts", "src/workflows/analyticsMetrics.ts"],
+		"symbols": ["analyticsSnapshot", "counts", "analyticsSnapshot", "counts"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -56,11 +56,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/analyticsMetrics.ts",
+		"entry": "src/cli/program/analyticsMetrics.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/analyticsMetrics.ts"
+				"entry": "src/cli/program/analyticsMetrics.ts"
 			}
 		]
 	},

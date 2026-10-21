@@ -1,7 +1,8 @@
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
-	reviewPrivateFunctions
+	reviewPrivateFunctions,
+	reviewServiceCard
 } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import {
@@ -40,9 +41,11 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 		await reviewRelationPaging(tab, name);
 	});
-	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
+	test(`component, helper and service lists use a card grid at ${name} width`, async ({
+		page: tab
+	}) => {
 		await tab.setViewportSize(size);
-		for (const category of ['components', 'functions'] as const) {
+		for (const category of ['components', 'functions', 'services'] as const) {
 			await open(tab, { category }, 'helpers');
 			await tab.evaluate(async () => {
 				await document.fonts.ready;
@@ -52,8 +55,8 @@ for (const [name, size] of Object.entries(viewports)) {
 			const cards = tab.getByRole('article');
 			await expect(
 				cards,
-				'only helpers used in two distinct visible places are listed'
-			).toHaveCount(category === 'components' ? 3 : 1);
+				'collections use cards; helpers require two distinct visible consumers'
+			).toHaveCount({ components: 3, functions: 1, services: 1 }[category]);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
 			if (name !== 'mobile') {
@@ -65,6 +68,7 @@ for (const [name, size] of Object.entries(viewports)) {
 				await reviewHelperUsage(tab, name);
 				await reviewPrivateFunctions(tab, name);
 			}
+			if (category === 'services') await reviewServiceCard(tab, name);
 		}
 	});
 	test(`component screenshot cards follow the shown revision at ${name} width`, async ({
@@ -80,7 +84,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			await capture(tab, `component-cards-${commit?.slice(0, 7) ?? 'tip'}-${name}`);
 			const cards = tab.getByRole('article');
 			await expect(cards, 'components show screenshot cards').toHaveCount(3);
-			const shot = cards.getByRole('img', { name: 'Screenshot of Order card', exact: true });
+			const shot = cards.getByRole('img', { name: 'Screenshot of OrderCard', exact: true });
 			const viewed = (commit ?? commits.tip).slice(0, 7);
 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
@@ -164,7 +168,7 @@ test('the component catalog labels reused screenshots with their original commit
 }) => {
 	await open(tab, { category: 'components' }, 'inherited');
 	await capture(tab, 'component-cards-reused-desktop');
-	const card = tab.getByRole('article', { name: 'Order card', exact: true });
+	const card = tab.getByRole('article', { name: 'OrderCard', exact: true });
 	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
 	await expect(card).toContainText('Reused from bbbbbbb');
 	await expect(card).not.toContainText('Captured at ccccccc');
@@ -173,7 +177,7 @@ test('branch and commit selection replace component screenshots with that revisi
 	page: tab
 }) => {
 	await open(tab, { category: 'components' }, 'console');
-	const card = tab.getByRole('article', { name: 'Order card', exact: true });
+	const card = tab.getByRole('article', { name: 'OrderCard', exact: true });
 	await expect(card.getByRole('img')).toHaveAttribute(
 		'src',
 		'/harness/media/ccccccc-default-desktop.png'

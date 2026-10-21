@@ -1,16 +1,3 @@
-/** Artifact folders are planning history, never active implementation units. */
-export const planningIgnores = [
-	'pages',
-	'shells',
-	'components',
-	'functions',
-	'services',
-	'configs'
-].flatMap((category) => [
-	`**/src/${category}/*/plan.json`,
-	`**/src/${category}/*/.gitattributes`,
-	`**/src/${category}/*/designs/**/*`,
-	`**/src/${category}/*/threads/**/*`
-]);
-
-export { planRegistry } from '../services/planning-service/planRegistry';
+export { planRegistry } from './planning-collaboration/planRegistry';
+export { planningIgnores } from './planning-collaboration/planRegistry';
+export * from './planning-collaboration/planRegistry';

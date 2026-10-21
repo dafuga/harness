@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/runImpact.ts"],
-		"symbols": ["ImpactOptions", "runImpact", "runtimeKind", "renderImpact"]
+		"source": ["src/workflows/development-tooling/runImpact.ts", "src/workflows/runImpact.ts"],
+		"symbols": [
+			"ImpactOptions",
+			"runImpact",
+			"runtimeKind",
+			"renderImpact",
+			"runImpact",
+			"runtimeKind",
+			"renderImpact"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -81,11 +89,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/runImpact.ts",
+		"entry": "src/workflows/development-tooling/runImpact.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/runImpact.ts"
+				"entry": "src/workflows/development-tooling/runImpact.ts"
 			}
 		]
 	},

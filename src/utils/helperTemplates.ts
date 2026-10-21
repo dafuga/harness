@@ -1,1 +1,1 @@
-export { helperTemplates } from '../services/revision-detail-service/helperTemplates';
+export { helperTemplates } from '../services/explorer-ui/revision-detail-service/helperTemplates';

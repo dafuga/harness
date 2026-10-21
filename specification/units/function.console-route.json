@@ -9,11 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/project-activity/consoleRoute.ts",
+			"packages/reports/src/components/projects-sessions/project-activity/consoleRoute.ts",
 			"src/utils/console-canonical/consoleRoute.ts",
-			"src/utils/consoleRoute.ts"
+			"src/utils/consoleRoute.ts",
+			"src/utils/projects-sessions/console-canonical/consoleRoute.ts",
+			"src/utils/projects-sessions/consoleRoute.ts"
 		],
 		"symbols": [
 			"consoleRoutePath",
+			"consoleRoutePath",
+			"consoleRoute",
+			"consoleRoute",
+			"consoleRoutePath",
+			"consoleViews",
 			"consoleRoute",
 			"consoleViews",
 			"ConsoleView",
@@ -58,11 +66,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/consoleRoute.ts",
+		"entry": "src/utils/projects-sessions/consoleRoute.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/consoleRoute.ts"
+				"entry": "src/utils/projects-sessions/consoleRoute.ts"
 			}
 		]
 	},

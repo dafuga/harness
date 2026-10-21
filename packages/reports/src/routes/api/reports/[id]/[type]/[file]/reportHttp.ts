@@ -1,13 +1,13 @@
-import { repository } from '../../../../../../utils/reportHttp';
+import { repository } from '../../../../../../utils/reports-media/reportHttp';
 import { error } from '@sveltejs/kit';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { registeredAsset } from '../../../../../../utils/reportAssets';
-import { R2ScreenshotStoreAdapter } from '../../../../../../adapters/R2ScreenshotStoreAdapter';
+import { registeredAsset } from '../../../../../../utils/reports-media/reportAssets';
+import { R2ScreenshotStoreAdapter } from '../../../../../../adapters/reports-media/R2ScreenshotStoreAdapter';
 import { R2EvidenceStoreAdapter } from '../../../../../../adapters/R2EvidenceStoreAdapter';
-import type { Report } from '../../../../../../models/Report.types';
-import { mediaMime } from '../../../../../../utils/evidenceMedia';
-import { mediaResponse } from '../../../../../../utils/mediaResponse';
+import type { Report } from '../../../../../../models/reports-media/Report.types';
+import { mediaMime } from '../../../../../../utils/verification-evidence/evidenceMedia';
+import { mediaResponse } from '../../../../../../utils/development-tooling/mediaResponse';
 
 function assetIsRemote(run: Report, file: string) {
 	const matches = run.evidence.filter((item) => item.file === file);

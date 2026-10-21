@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/hub-http/hubBodyBytes.ts",
-			"packages/hub/src/utils/hubBodyBytes.ts"
+			"packages/hub/src/utils/hubBodyBytes.ts",
+			"packages/hub/src/utils/networking-security/hub-http/hubBodyBytes.ts"
 		],
-		"symbols": ["hubBodyBytes", "hubBodyBytes"]
+		"symbols": ["hubBodyBytes", "hubBodyBytes", "hubBodyBytes"]
 	},
 	"contract": {
 		"origin": "declared",

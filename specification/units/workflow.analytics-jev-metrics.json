@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/analyticsJevMetrics.ts"],
+		"source": ["src/cli/program/analyticsJevMetrics.ts"],
 		"symbols": ["jevMetrics"]
 	},
 	"contract": {
@@ -47,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/analyticsJevMetrics.ts",
+		"entry": "src/cli/program/analyticsJevMetrics.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/analyticsJevMetrics.ts"
+				"entry": "src/cli/program/analyticsJevMetrics.ts"
 			}
 		]
 	},

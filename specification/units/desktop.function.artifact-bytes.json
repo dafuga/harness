@@ -9,9 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/recorded-preview/artifactBytes.ts",
-			"packages/desktop/src/utils/artifactBytes.ts"
+			"packages/desktop/src/components/shared-primitives/recorded-preview/artifactBytes.ts",
+			"packages/desktop/src/utils/artifactBytes.ts",
+			"packages/desktop/src/utils/shared-primitives/artifactBytes.ts"
 		],
-		"symbols": ["artifactBytes", "unreadArtifact", "damagedArtifact", "artifactBytes"]
+		"symbols": [
+			"artifactBytes",
+			"artifactBytes",
+			"artifactBytes",
+			"unreadArtifact",
+			"damagedArtifact",
+			"unreadArtifact",
+			"damagedArtifact",
+			"artifactBytes"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -66,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/artifactBytes.ts",
+		"entry": "packages/desktop/src/utils/shared-primitives/artifactBytes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/artifactBytes.ts"
+				"entry": "packages/desktop/src/utils/shared-primitives/artifactBytes.ts"
 			}
 		]
 	},

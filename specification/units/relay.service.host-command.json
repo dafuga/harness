@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/services/HostCommandService.ts"],
-		"symbols": ["HostCommandService", "HostCommandService.constructor", "HostCommandService.handle"]
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
+			"packages/relay/src/lib/host-runtime/HostCommandService.ts"
+		],
+		"symbols": [
+			"HostCommandService",
+			"HostCommandService.constructor",
+			"HostCommandService.handle",
+			"HostCommandService"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -80,11 +88,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/services/HostCommandService.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/HostCommandService.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts"
 			}
 		]
 	},

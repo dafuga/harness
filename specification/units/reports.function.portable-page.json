@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/console-server/portablePage.ts",
+			"packages/reports/src/utils/explorer-ui/console-server/portablePage.ts",
+			"packages/reports/src/utils/explorer-ui/portablePage.ts",
 			"packages/reports/src/utils/portablePage.ts"
 		],
-		"symbols": ["portablePage", "PortableAssets", "portablePage"]
+		"symbols": ["portablePage", "portablePage", "PortableAssets", "portablePage", "portablePage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/portablePage.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/portablePage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/portablePage.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/portablePage.ts"
 			}
 		]
 	},

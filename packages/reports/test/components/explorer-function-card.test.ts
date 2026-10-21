@@ -21,8 +21,8 @@ test('function catalog cards stay concise and retain revision links without deta
 		expect(words(card)).toContain('Used In');
 		expect(card).toContain('aria-label="Components"');
 		expect(card).toContain('aria-label="Services"');
-		expect(words(card)).toContain('Order list');
-		expect(words(card)).toContain('Order store');
+		expect(words(card)).toContain('OrderList');
+		expect(words(card)).toContain('OrderStore');
 		expect(card).toContain(
 			`/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}/services/${ids.store}`
 		);

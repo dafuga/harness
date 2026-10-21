@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/manageLoop.ts"],
+		"source": ["src/cli/program/manageLoop.ts", "src/workflows/manageLoop.ts"],
 		"symbols": [
 			"LoopEvaluator",
 			"LoopState",
@@ -21,7 +21,20 @@
 			"addLoopStep",
 			"completeLoopStep",
 			"readLoopStatus",
-			"renderLoopStatus"
+			"renderLoopStatus",
+			"LoopEvaluator",
+			"LoopState",
+			"LoopStatus",
+			"LoopStep",
+			"createLoop",
+			"addLoopStep",
+			"completeLoopStep",
+			"readLoopStatus",
+			"renderLoopStatus",
+			"CreateLoopInput",
+			"AddLoopStepInput",
+			"CompleteLoopStepInput",
+			"ReadLoopInput"
 		]
 	},
 	"contract": {
@@ -101,11 +114,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/manageLoop.ts",
+		"entry": "src/cli/program/manageLoop.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/manageLoop.ts"
+				"entry": "src/cli/program/manageLoop.ts"
 			}
 		]
 	},

@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/activity.ts"],
-		"symbols": ["activityGuide"]
+		"source": ["src/guides/activity.ts", "src/guides/projects-sessions/activity.ts"],
+		"symbols": ["activityGuide", "activityGuide"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,11 +30,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/guides/activity.ts",
+		"entry": "src/guides/projects-sessions/activity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/guides/activity.ts"
+				"entry": "src/guides/projects-sessions/activity.ts"
 			}
 		]
 	},

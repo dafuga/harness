@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/adapters/hosted-http-adapter/HostedHttpAdapter.ts"],
+		"source": [
+			"packages/desktop/src/adapters/hosted-http-adapter/HostedHttpAdapter.ts",
+			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.ts"
+		],
 		"symbols": [
+			"HostedHttpAdapter",
 			"NativeHostedCredential",
 			"RemoteHttpOptions",
 			"HostedHttpAdapter",
@@ -104,11 +108,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/hosted-http-adapter/HostedHttpAdapter.ts",
+		"entry": "packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/hosted-http-adapter/HostedHttpAdapter.ts"
+				"entry": "packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.ts"
 			}
 		]
 	},

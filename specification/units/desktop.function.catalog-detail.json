@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/catalog-service/catalogDetail.ts",
+			"packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
 			"packages/desktop/src/utils/catalogDetail.ts"
 		],
-		"symbols": ["catalogDetail", "catalogDetail"]
+		"symbols": ["catalogDetail", "catalogDetail", "catalogDetail"]
 	},
 	"contract": {
 		"origin": "declared",
