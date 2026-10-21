@@ -26,11 +26,10 @@ async function designsAt(page: Page, expected: NativeExpected): Promise<void> {
 		'page'
 	);
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(expected.commit);
-	const note =
-		expected.state === 'history'
-			? `Historical commit · ${expected.commit.slice(0, 7)}`
-			: 'Current · branch tip';
-	await expect(page.getByText(note, { exact: true })).toBeVisible();
+	const name = expected.state === 'history' ? expected.commit.slice(0, 7) : 'feat/native';
+	await expect(page.getByLabel('Viewed context', { exact: true }).locator('strong')).toHaveText(
+		name
+	);
 }
 
 /** Approval is offered on the tip, recorded once approved, and refused on a historical commit. */

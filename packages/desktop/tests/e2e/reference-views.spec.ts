@@ -103,11 +103,11 @@ test('the project agent says its public reply with the units it names as links',
 	await emitRun(page, { kind: 'text', text: '-frame]] or [[unit:app.function.missing]]?' });
 	const reply = agent.getByText('Should the page reuse', { exact: false });
 	await expect(reply).toHaveText(
-		'Should the page reuse Order frame or [[unit:app.function.missing]]?'
+		'Agent: Should the page reuse Order frame or [[unit:app.function.missing]]?'
 	);
 	await expect(reply.getByRole('link', { name: 'Order frame', exact: true })).toHaveAttribute(
 		'href',
-		alphaAt('shells/app.shell.order-frame')
+		alphaAt('shells/app.shell.order-frame/history')
 	);
 	await expect(reply.getByRole('link')).toHaveCount(1);
 	await capture(page, info, 'agent-reply');

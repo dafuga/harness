@@ -80,6 +80,7 @@ function entity(unit: HarnessUnit, image: number) {
 	const thumbnail = { version: 'v001', sha256: designSha, state: 'default', viewport: 'desktop' };
 	return {
 		documentation: undefined as UnitDocumentation | undefined,
+		helperContracts: unit.helpers,
 		id: unit.id,
 		category: categories[unit.kind],
 		kind: unit.kind,

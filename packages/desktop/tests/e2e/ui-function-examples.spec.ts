@@ -26,7 +26,7 @@ test('a function is listed and opened without a design picture, and no image is 
 	page
 }, info) => {
 	await opened(page, `${root}/functions`);
-	const card = page.locator('main.catalog article').filter({ hasText: 'Filter orders' });
+	const card = page.locator('main.catalog article').filter({ hasText: 'filterOrders' });
 	await expect(card).toBeVisible();
 	await pictured(page, info, 'function-card');
 	await expect(card.getByRole('link')).toHaveText(/Review plan/);
@@ -148,20 +148,19 @@ for (const viewport of [
 			});
 			await page.goto(`${filter}/examples`);
 			await expect(current(page)).toHaveText('Examples');
-			await expect(page.locator('.cases > table > tbody > tr')).toHaveCount(2);
-			await expect(page.getByRole('columnheader')).toHaveText([
-				'Example',
-				'Input',
-				'Expected output'
-			]);
-			await expect(page.locator('.cases')).toContainText('Service call');
-			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toHaveCount(0);
+			const examples = page.locator('.examples > article');
+			await expect(examples).toHaveCount(2);
+			await expect(examples.getByRole('heading')).toHaveText(['Search by name', 'No match']);
+			await expect(examples.nth(0).locator('code')).toContainText('SERVICE');
+			await expect(examples.nth(0).locator('code')).toContainText('Service call');
+			await expect(examples.nth(1).locator('code')).toContainText('none');
+			await expect(examples.nth(1).locator('code')).toContainText(/=>\s*\[\]/);
+			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
 			if (process.env.TAKE_SCREENSHOT === '1')
 				await page.screenshot({
 					path: `/tmp/harness-shared-examples-${viewport.id}-${shared ? 'hosted' : 'local'}.png`,
 					fullPage: true
 				});
-			await page.getByText('Recorded tests and verification', { exact: true }).click();
 			await expect(page.getByRole('region', { name: 'Evidence coverage' })).toBeVisible();
 			expect(
 				await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
