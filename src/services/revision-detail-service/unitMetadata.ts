@@ -46,6 +46,7 @@ async function helpersAt(tree: Pick<SourceTree, 'read'>, path: string) {
 async function servicesAt(tree: HelperTree, unit: Unit): Promise<void> {
 	unit.serviceExports = [];
 	unit.serviceConsumers = [];
+	unit.serviceClasses = [];
 	const category = explorerKindCategory(unit.kind);
 	if (category !== 'services' && category !== 'pages') return;
 	if (unit.owns.source.some((path) => path.endsWith('/+page.svelte'))) return;

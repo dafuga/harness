@@ -57,7 +57,7 @@ function forwards(source: ts.SourceFile): HelperFacts['forwards'] {
 			return exportedBindings(node);
 		}
 		if (
-			ts.isFunctionDeclaration(node) &&
+			(ts.isFunctionDeclaration(node) || ts.isClassDeclaration(node)) &&
 			node.name &&
 			node.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.DefaultKeyword)
 		) {
@@ -106,7 +106,7 @@ function collect(source: ts.SourceFile): HelperReference[] {
 	const visit = (node: ts.Node) => {
 		if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node) || ts.isTypeNode(node)) return;
 		const used = reference(node, bindings);
-		if (used) found.push(used);
+		if (used) found.push(constructed(node) ? { ...used, construct: true } : used);
 		ts.forEachChild(node, visit);
 	};
 	visit(source);
@@ -124,8 +124,81 @@ export function helperReferences(code: string, svelte = false): HelperFacts {
 		ts.ScriptTarget.Latest,
 		true
 	);
-	const facts = { references: collect(source), forwards: forwards(source) };
+	const facts = {
+		references: collect(source),
+		forwards: forwards(source),
+		classes: classes(source)
+	};
 	if (cache.size >= 4096) cache.delete(cache.keys().next().value!);
 	cache.set(key, facts);
 	return facts;
+}
+
+function constructed(node: ts.Node): boolean {
+	let expression = node;
+	while (
+		ts.isParenthesizedExpression(expression.parent) ||
+		ts.isAsExpression(expression.parent) ||
+		ts.isTypeAssertionExpression(expression.parent) ||
+		ts.isNonNullExpression(expression.parent)
+	)
+		expression = expression.parent;
+	return ts.isNewExpression(expression.parent) && expression.parent.expression === expression;
+}
+
+function publicMethod(member: ts.ClassElement): string[] {
+	const modifiers = ts.canHaveModifiers(member) ? ts.getModifiers(member) : undefined;
+	if (!member.name || ts.isPrivateIdentifier(member.name)) return [];
+	if (
+		modifiers?.some((modifier) =>
+			[
+				ts.SyntaxKind.PrivateKeyword,
+				ts.SyntaxKind.ProtectedKeyword,
+				ts.SyntaxKind.StaticKeyword
+			].includes(modifier.kind)
+		)
+	)
+		return [];
+	if (
+		!callableMember(member) ||
+		(!ts.isIdentifier(member.name) && !ts.isStringLiteral(member.name))
+	)
+		return [];
+	return [member.name.text];
+}
+
+function callableMember(member: ts.ClassElement): boolean {
+	return (
+		ts.isMethodDeclaration(member) ||
+		Boolean(
+			ts.isPropertyDeclaration(member) &&
+			member.initializer &&
+			(ts.isArrowFunction(member.initializer) || ts.isFunctionExpression(member.initializer))
+		)
+	);
+}
+
+function baseOf(node: ts.ClassLikeDeclaration, bindings: Map<string, HelperBinding>) {
+	const base = node.heritageClauses?.find((clause) => clause.token === ts.SyntaxKind.ExtendsKeyword)
+		?.types[0]?.expression;
+	if (!base) return undefined;
+	if (ts.isIdentifier(base)) return bindings.get(base.text) ?? { imported: base.text };
+	return namespaceReference(base, bindings) ?? undefined;
+}
+
+function classes(source: ts.SourceFile): NonNullable<HelperFacts['classes']> {
+	const bindings = imports(source);
+	return source.statements.flatMap((node) => {
+		if (!ts.isClassDeclaration(node) || !node.name) return [];
+		return [
+			{
+				name: node.name.text,
+				abstract:
+					node.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AbstractKeyword) ??
+					false,
+				methods: [...new Set(node.members.flatMap(publicMethod))],
+				base: baseOf(node, bindings)
+			}
+		];
+	});
 }

@@ -3,7 +3,7 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Reads helper contracts, service runtime exports and their actual consumers from the selected source revision.",
+	"responsibility": "Reads selected-revision helper contracts, service exports, concrete class proof and actual runtime consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,6 +19,7 @@
 			"pureHelpers",
 			"unitMetadata",
 			"PublicHelper",
+			"PublicServiceClass",
 			"UnitMetadata",
 			"unitMetadata"
 		]
@@ -41,7 +42,7 @@
 			{
 				"name": "unitMetadata",
 				"type": "Promise<void>",
-				"description": "Updates each entity in place. Missing source leaves an explicit gap; another revision is never substituted."
+				"description": "Attaches helper contracts and per-class declaration, instance-method, construction and consumer facts from the selected revision. Missing source is never replaced from another revision."
 			}
 		],
 		"errors": []

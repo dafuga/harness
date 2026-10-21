@@ -3,15 +3,22 @@
 	"id": "function.helper-consumers",
 	"kind": "function",
 	"title": "helperConsumers",
-	"responsibility": "Counts distinct runtime owner units of service exports and distinct callable consumers of pure helpers at the selected revision.",
+	"responsibility": "Counts runtime owners and proves concrete instantiated service classes, public instance methods and per-class consumers at the selected revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/revision-detail-service/helperConsumers.ts",
+			"src/services/revision-detail-service/serviceClasses.ts",
 			"src/utils/helperConsumers.ts"
 		],
-		"symbols": ["helperConsumers", "HelperTree", "HelperConsumer", "helperConsumers"]
+		"symbols": [
+			"helperConsumers",
+			"serviceClasses",
+			"HelperTree",
+			"HelperConsumer",
+			"helperConsumers"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,7 +38,7 @@
 			{
 				"name": "helperConsumers",
 				"type": "Promise<void>",
-				"description": "Completes after attaching consumer facts to the supplied helper metadata; it returns no separate value."
+				"description": "Attaches distinct helper and runtime export consumers plus concrete class facts, inherited instance methods and construction sites from active owned source."
 			}
 		],
 		"errors": []
@@ -59,6 +66,11 @@
 		},
 		{
 			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
 			"via": "import",
 			"origin": "derived"
 		},

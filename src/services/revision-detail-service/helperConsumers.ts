@@ -8,6 +8,7 @@ import {
 	type UnitsConfig
 } from '../../core/unitsConfig';
 import { helperReferences } from './helperReferences';
+import { serviceClasses } from './serviceClasses';
 import {
 	type HelperFacts,
 	type HelperReference,
@@ -180,6 +181,11 @@ export async function helperConsumers(tree: HelperTree, units: Unit[]): Promise<
 			);
 		}
 	attachServices(units, users);
+	serviceClasses(active, facts, {
+		users,
+		target: (path, binding) => target(path, binding, context),
+		reference: (path, reference) => consumerReference(path, reference, context)
+	});
 }
 
 function attachServices(units: Unit[], users: Map<string, Map<string, HelperConsumer>>): void {

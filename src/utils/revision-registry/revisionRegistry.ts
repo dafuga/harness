@@ -27,6 +27,7 @@ export interface RevisionRegistry {
 		helperGap?: string;
 		serviceExports?: UnitMetadata['serviceExports'];
 		serviceConsumers?: UnitMetadata['serviceConsumers'];
+		serviceClasses?: UnitMetadata['serviceClasses'];
 		/** Static observations from this source commit; not a verification verdict. */
 		sourceMeasurements?: Measurement[];
 		documentation?: UnitDocumentation;

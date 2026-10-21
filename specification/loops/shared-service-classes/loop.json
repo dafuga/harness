@@ -2,11 +2,9 @@
 	"name": "shared-service-classes",
 	"goal": "Services lists shared instantiated classes with multiple instance methods and canonical PascalCase names, excluding functions, objects and static namespaces",
 	"createdAt": "2026-10-21T08:51:48.972Z",
-	"updatedAt": "2026-10-21T09:02:03.545Z",
+	"updatedAt": "2026-10-21T09:38:05.317Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:06:56.979Z",
+			"evidence": "Committed 9d64d930; immutable red e1e62a2606afed01c2c12d93e19339d01b9e23d95919c8fc55fb6ebc4812002e. Source class proof assertion fails; class-only browser count captures the workflow defect before assertion."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:06:57.659Z",
+			"evidence": "Record concrete class facts and constructor references from the existing AST parser; resolve inherited methods; require matching source proof, construction, multiple instance methods and per-class owners in the catalog. Emit the same rule in existing guidance."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:38:05.317Z",
+			"evidence": "Added owner-local source class proof, default/factory constructor tracking, inherited public methods, per-class consumers and catalog eligibility. Normal metadata/catalog suites, type checks and Reports lint pass; registry refreshed to 1309 units and 63 explicit uncertain references."
 		},
 		{
 			"id": "green",

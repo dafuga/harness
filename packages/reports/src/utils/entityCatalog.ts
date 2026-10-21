@@ -130,10 +130,21 @@ export function entityCatalog(
 			const row = rowOf(entity, relations(entity.id));
 			if (category === 'services') {
 				if (entity.change === 'removed') return [];
-				const usedIn = [...new Set((entity.unit.serviceConsumers ?? []).map((user) => user.unit))]
+				const service = entity.unit.serviceClasses?.find(
+					(item) =>
+						item.name === entity.name &&
+						/^[A-Z][A-Za-z0-9]*$/.test(item.name) &&
+						entity.unit.owns.source.includes(item.source) &&
+						item.constructedBy.length > 0 &&
+						new Set(item.methods).size >= 2
+				);
+				if (!service) return [];
+				const usedIn = [...new Set(service.consumers.map((user) => user.unit))]
 					.filter((id) => id !== entity.id)
 					.map((id) => byId.get(id))
-					.filter((owner): owner is ExplorerEntity => Boolean(owner && owner.change !== 'removed'))
+					.filter((owner): owner is ExplorerEntity =>
+						Boolean(owner && owner.change !== 'removed' && owner.unit.status === 'active')
+					)
 					.slice(0, 3)
 					.map(({ id, name, category }) => ({ id, name, category }));
 				return usedIn.length >= 2 ? [{ ...row, shared: true, usedIn }] : [];

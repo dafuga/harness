@@ -48,6 +48,8 @@ export const harnessNamingRules: Record<string, string> = {
 			`Naming: ${suffix} classes use <PascalName>${suffix}.ts and export the matching class, including inside an owner's folder.`
 		])
 	),
+	service:
+		'Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.',
 	model:
 		'Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.',
 	component: 'Naming: Components use <PascalName>.svelte and the same PascalCase import name.',

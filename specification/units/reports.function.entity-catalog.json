@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists service and helper cards only when two distinct active runtime owners resolve to the same Used In links.",
+	"responsibility": "Lists shared instantiated concrete classes with multiple instance methods and pure helper exports using the same resolved owner set as Used In links.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -99,7 +99,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Rows sorted by canonical displayed code name. Services require at least two distinct resolved runtime owners and use the same set for up to three usage links. Helpers retain per-export eligibility, exact callable names and consumers. Cards and related entities share the same name resolver."
+				"description": "Rows sorted by canonical code name. Services require an owned concrete class, a constructor reference, multiple public instance methods and two resolved active owners of that same class. The same owner set provides up to three Used In links. Helpers keep per-export pure eligibility."
 			},
 			{
 				"name": "catalogFilter",

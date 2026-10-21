@@ -104,3 +104,5 @@ Read `harness info naming` and the scaffold guide before naming a module. Classe
 Before freezing a naming regression, format and lint the strengthened tests and shared fixtures. Record the failing assertion only after that preflight so green can use the unchanged test inputs.
 
 Keep registered test titles stable when extending naming coverage; verification records bind to those names.
+
+Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.

@@ -9,12 +9,22 @@ export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | '
 	consumers?: HelperConsumer[];
 }
 
+export interface PublicServiceClass {
+	source: string;
+	name: string;
+	methods: string[];
+	constructedBy: HelperConsumer[];
+	consumers: HelperConsumer[];
+}
+
 export interface UnitMetadata {
 	documentation?: UnitDocumentation;
 	helpers?: PublicHelper[];
 	/** Runtime exports and their distinct owning code units at this exact revision. */
 	serviceExports?: Array<{ source: string; name: string }>;
 	serviceConsumers?: HelperConsumer[];
+	/** Concrete declarations, instance methods and constructor references from this revision. */
+	serviceClasses?: PublicServiceClass[];
 	helperGap?: string;
 }
 
