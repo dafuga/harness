@@ -1,5 +1,10 @@
 import { expect, test } from 'vitest';
-import { performanceTolerance, type ComponentManifest } from '../../src/core/unitTypes';
+import {
+	componentManifestSchema,
+	performanceTolerance,
+	type ComponentManifest
+} from '../../src/core/unitTypes';
+import { taskProfile } from '../support/taskProfiles';
 import { ComponentManifestValidator } from '../../src/validators/ComponentManifestValidator';
 import { indexFiles, unitOf } from '../support/memoryTree';
 
@@ -43,6 +48,9 @@ test('headless units cannot declare screenshot previews', async () => {
 
 test('a derived unit names its default execution target and lists it as its only target', async () => {
 	const unit = await manifest();
+	await taskProfile('function.unit-types', 'parse-derived-runtime-manifest', () =>
+		componentManifestSchema.parse(unit)
+	);
 	expect(unit.runtime).toEqual({
 		kind: 'module',
 		entry: 'src/utils/rank.ts',

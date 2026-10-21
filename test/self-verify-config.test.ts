@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
+import { taskProfile } from './support/taskProfiles';
 
 interface Manifest {
 	owns: { source: string[] };
@@ -20,8 +21,13 @@ function covers(declared: string, path: string): boolean {
 	return path === declared || path.startsWith(directory);
 }
 
-test('this repository declares no source, test or specification file as something a check may write', () => {
-	const config = verifyConfigSchema.parse(JSON.parse(readFileSync('harness.verify.json', 'utf8')));
+test('this repository requires profiling and declares no source as something a check may write', async () => {
+	const declared = JSON.parse(readFileSync('harness.verify.json', 'utf8'));
+	const config = verifyConfigSchema.parse(declared);
+	expect(config.performanceRequired, 'normal repository verification requires profiling').toBe(1);
+	await taskProfile('function.verify-types', 'parse-committed-verification-config', () =>
+		verifyConfigSchema.parse(declared)
+	);
 	const manifests = under('specification/units').map(
 		(file) => JSON.parse(readFileSync(file, 'utf8')) as Manifest
 	);

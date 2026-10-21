@@ -15,6 +15,7 @@ Harness owns performance measurement and the final audit of coding and planning 
 - Entity overviews retain expandable measured values and frozen limits after legacy Details links redirect; unavailable metrics never become zero. Source remains a dedicated tab.
 - Source inventories outside Git retain authored iOS and Android files while excluding generated output; audit scope remains explicit.
 - Historical records remain readable; their absent profiling cannot satisfy a new completion claim.
+- This repository opts into mandatory performance evidence for plain `harness verify run`. Bootstrap schemas use explicit Harness workloads over actual parse calls, preserving the automatic observer's cycle exclusions.
 
 ## Dependencies
 
