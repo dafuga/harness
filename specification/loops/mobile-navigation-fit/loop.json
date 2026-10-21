@@ -2,7 +2,7 @@
 	"name": "mobile-navigation-fit",
 	"goal": "All category links and labels fit visibly at mobile widths, alongside accessible search and revision controls",
 	"createdAt": "2026-10-21T11:11:19.858Z",
-	"updatedAt": "2026-10-21T11:14:02.082Z",
+	"updatedAt": "2026-10-21T11:25:51.396Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:25:48.694Z",
+			"evidence": "9bc8fb94 integrates the actual Opus grid, resets inherited tab minimum widths and retains non-mobile centering; the existing shared-search scenario now registers the full responsive guard"
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:25:51.396Z",
+			"evidence": "Immutable 9bc8fb94 passes the same unchanged c0f830d0 tests, fixture corpus, command and runtime at 320/390. Green was recorded before test registration metadata changed."
 		},
 		{
 			"id": "guard",
