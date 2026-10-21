@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { benchmarkCaptureSchema } from '../../src/core/verifyTypes';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 
 /** Observe a normal behavior case, including its fixtures and assertions, without replaying it. */
@@ -11,7 +12,7 @@ export async function measureWorkload<T>(
 	const start = performance.now();
 	const result = await run();
 	const duration = performance.now() - start;
-	const context = { unit, workload, target: 'test-worker', samples: 1 };
+	const context = { unit, workload, target: 'process', samples: 1 };
 	const measurements = [
 		{
 			...context,
@@ -37,7 +38,7 @@ export async function measureWorkload<T>(
 			file: 'behavior-' + randomUUID() + '.json',
 			mediaType: 'application/json'
 		},
-		JSON.stringify({ measurements })
+		JSON.stringify(benchmarkCaptureSchema.parse({ measurements }))
 	);
 	return result;
 }
