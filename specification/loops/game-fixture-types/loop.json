@@ -2,7 +2,7 @@
 	"name": "game-fixture-types",
 	"goal": "Typecheck every desktop browser and native fixture before runtime acceptance.",
 	"createdAt": "2026-10-21T19:44:29.850Z",
-	"updatedAt": "2026-10-21T19:44:30.513Z",
+	"updatedAt": "2026-10-21T19:44:58.315Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -20,7 +20,9 @@
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:44:58.315Z",
+			"evidence": "The normal Svelte typecheck covered src and test but not tests/e2e. Add the whole browser/native fixture directory to its existing include list; do not exempt mocks or acceptance helpers. The strengthened normal check must name the missing import before repair."
 		},
 		{
 			"id": "red",
