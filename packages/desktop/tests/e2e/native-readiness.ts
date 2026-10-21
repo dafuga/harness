@@ -1,5 +1,30 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect, type ElectronApplication, type Locator, type Page } from '@playwright/test';
+import type { WebPreferences } from 'electron';
+import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 
+/** Runtime isolation is a prerequisite for trusting the native window and its bridge. */
+export async function nativeIsolation(app: ElectronApplication, page: Page) {
+	const preferences = await app.evaluate(({ BrowserWindow }) => {
+		const contents = BrowserWindow.getAllWindows()[0].webContents;
+		// Electron exposes this runtime inspection method without declaring it in WebContents.
+		const inspected = contents as typeof contents & { getLastWebPreferences(): WebPreferences };
+		const options = inspected.getLastWebPreferences();
+		return {
+			sandbox: options?.sandbox,
+			contextIsolation: options?.contextIsolation,
+			nodeIntegration: options?.nodeIntegration
+		};
+	});
+	expect(preferences).toEqual({ sandbox: true, contextIsolation: true, nodeIntegration: false });
+	expect(
+		await page.evaluate(() => typeof (window as unknown as { require: unknown }).require)
+	).toBe('undefined');
+	expect(
+		await page.evaluate(
+			() => typeof (window as unknown as { harness: DesktopBridge }).harness.openProject
+		)
+	).toBe('function');
+}
 /** What a native capture must show before any pixels of it are recorded. */
 export interface NativeExpected {
 	state: 'draft' | 'design' | 'approved' | 'history';

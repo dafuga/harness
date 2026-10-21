@@ -6,7 +6,7 @@
 	"name": "mobile-search-target",
 	"goal": "Search controls retain a 40-pixel target without overlapping revision fields or clipping category labels at every supported viewport.",
 	"createdAt": "2026-10-21T17:19:30.616Z",
-	"updatedAt": "2026-10-21T17:28:48.825Z",
+	"updatedAt": "2026-10-21T17:39:36.360Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -50,12 +50,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:35:22.716Z",
+			"evidence": "Paired green6933ccc81e78ae2eebd74c73f3110127cede051020dc6f0c716cd0f5e3b48574 on54e2967bd passesall16cases with the same tests,command,environment and corpus as redc85e0b59. Width,height,category-overlap,revisiongeometry andall-label assertions unchanged. Freshbefore/aftershotsretained."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:39:36.360Z",
+			"evidence": "After the repair, freshisolatedred d9b8494cfd706254a70c6b43bd20cb5a0327289a416e2d7055edf64dd04a54e5 reinstatedoriginal3eCSS andagainfailed40pxassertions; restored54green d7146e777ebcee2368e32fd1691f5da4c23b07f822bc5473ccef27918b5f86cf passedall16unchangedcases. Bothruns havefreshcommitscopedcapturefolders withuniqueinvocationIDs. Widerverificationandowningtest-fileauditrepairremainpending."
 		},
 		{
 			"id": "verify",

@@ -1,5 +1,6 @@
 import { nativeImageFixture } from './native-image-fixture';
 import { nativeCapture } from './native-capture';
+import { nativeIsolation } from './native-readiness';
 import {
 	test,
 	expect,
@@ -15,7 +16,6 @@ import { createRequire } from 'node:module';
 import { createPlanning } from '../../../planning/src/lib/planning/index';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { PlanningFacadeAdapter } from '../../src/adapters/planning-facade-adapter/PlanningFacadeAdapter';
-import type { WebPreferences } from 'electron';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const electronBinary = createRequire(import.meta.url)('electron') as string;
@@ -37,28 +37,6 @@ async function project(root: string) {
 	git(root, 'add', 'README.md');
 	git(root, 'commit', '-m', 'chore: seed native acceptance');
 	return git(root, 'rev-parse', 'HEAD');
-}
-async function isolation(app: ElectronApplication, page: Page) {
-	const preferences = await app.evaluate(({ BrowserWindow }) => {
-		const contents = BrowserWindow.getAllWindows()[0].webContents;
-		// Electron exposes this runtime inspection method without declaring it in WebContents.
-		const inspected = contents as typeof contents & { getLastWebPreferences(): WebPreferences };
-		const options = inspected.getLastWebPreferences();
-		return {
-			sandbox: options?.sandbox,
-			contextIsolation: options?.contextIsolation,
-			nodeIntegration: options?.nodeIntegration
-		};
-	});
-	expect(preferences).toEqual({ sandbox: true, contextIsolation: true, nodeIntegration: false });
-	expect(
-		await page.evaluate(() => typeof (window as unknown as { require: unknown }).require)
-	).toBe('undefined');
-	expect(
-		await page.evaluate(
-			() => typeof (window as unknown as { harness: DesktopBridge }).harness.openProject
-		)
-	).toBe('function');
 }
 /** Seed the review fixture through the real facade; creation now belongs to the agent flow. */
 async function openDraftThroughUi(page: Page, root: string) {
@@ -211,7 +189,7 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 		}, root);
 		const page = await app.firstWindow();
 		await page.waitForLoadState('domcontentloaded');
-		await isolation(app, page);
+		await nativeIsolation(app, page);
 		const unitId = await openDraftThroughUi(page, root);
 		const imageCommit = await committedImage(page, root, unitId);
 		await historical(page, imageCommit, unitId);
