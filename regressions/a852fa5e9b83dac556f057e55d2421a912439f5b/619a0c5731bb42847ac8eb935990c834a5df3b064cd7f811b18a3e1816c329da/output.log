@@ -1,0 +1,69 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [54.33s]
+$ playwright test ui-workspace.spec.ts --grep "workspace selectors"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/ui-workspace.spec.ts:130:1 › workspace selectors start collapsed and environment stays directly selectable (7.5s)
+
+
+  1) tests/e2e/ui-workspace.spec.ts:130:1 › workspace selectors start collapsed and environment stays directly selectable 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('.revision-summary').locator('strong')
+    Expected: "Updated at"
+    Received: "dev"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('.revision-summary').locator('strong') with timeout 5000ms
+      - waiting for locator('.revision-summary').locator('strong')
+        14 × locator resolved to <strong title="dev" class="s-4yIONWSFR_m_">dev</strong>
+           - unexpected value "dev"
+
+
+      174 | 		await expect(page.getByText(/Changes reach preprod\./)).toHaveCount(0);
+      175 | 		const summary = page.locator('.revision-summary');
+    > 176 | 		await expect(summary.locator('strong')).toHaveText('Updated at');
+          | 		                                        ^
+      177 | 		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:15:00.000Z');
+      178 | 		await expect(page.locator('.environment-status')).toHaveCount(0);
+      179 | 		await expect(summary).not.toContainText(/Deployed|Current|branch tip|Tip|dev|prod|·/);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5I3ISs/packages/desktop/tests/e2e/ui-workspace.spec.ts:176:43
+
+    Error Context: test-results/ui-workspace-workspace-sel-7ee46-t-stays-directly-selectable/error-context.md
+
+  1 failed
+    tests/e2e/ui-workspace.spec.ts:130:1 › workspace selectors start collapsed and environment stays directly selectable 
+error: script "test:e2e" exited with code 1
