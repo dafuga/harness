@@ -107,16 +107,7 @@ export const reportCases: PreviewCases = {
 		onselect: noop
 	},
 	'reports.component.explorer-function-card': {
-		row: {
-			...d.rows[0],
-			helper: {
-				name: 'formatDuration',
-				source: 'duration.ts',
-				inputs: [{ name: 'seconds', type: 'number' }],
-				pure: true
-			},
-			usedIn: []
-		},
+		row: d.helperRows[0],
 		nav: d.navigation,
 		lens: d.reading,
 		mediaBase: '/media/'
