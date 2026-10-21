@@ -57,10 +57,26 @@
 		white-space: nowrap;
 		font-size: 14px;
 	}
-	/* On a phone the name takes what its row leaves, cut short only where the row ends. */
+	/* On a phone the name is the row's title, cut short only where the row ends, and the choice and
+	   Add are quiet icons beside it. */
 	@media (max-width: 560px) {
+		.project-switcher {
+			gap: 2px;
+			margin-inline: 6px;
+		}
 		.project-name {
 			max-width: none;
+			padding-inline: 2px;
+			font-size: 15px;
+			font-weight: 600;
+		}
+		.add-project {
+			border-color: transparent;
+			background: none;
+			font-size: 20px;
+		}
+		.add-project:focus-visible {
+			outline-offset: -2px;
 		}
 	}
 	/* In its dialog the switcher is a field of the dialog's width, drawn as a field. */

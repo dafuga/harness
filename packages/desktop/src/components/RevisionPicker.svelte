@@ -43,33 +43,47 @@
 	>{/snippet}
 
 {#if snapshot && revision}<div class="revision-picker">
-		<ChoiceDialog label="Choose branch" title="Choose branch" width={320} maxHeight={320} gap={10}>
-			{#snippet icon()}<Icon name="branch" size={18} />{/snippet}
-			{#snippet children(close: () => void)}<label
-					class="picker-field"
-					onchange={() => chooseBranch(close)}
-					>Branch<Select
-						label="Branch"
-						title={`Tip · ${revision.tip.slice(0, 7)}`}
-						bind:value={branch}
-						>{#each snapshot.branches as item (item.name)}<option value={item.name}
-								>{item.name}</option
-							>{/each}</Select
-					></label
-				>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
-		</ChoiceDialog>
-		<ChoiceDialog label="Choose commit" title="Choose commit" width={380} maxHeight={320} gap={10}>
-			{#snippet icon()}<Icon name="commit" size={18} />{/snippet}
-			{#snippet children(close: () => void)}<label
-					class="picker-field"
-					onchange={() => chooseCommit(close)}
-					>Commit<Select label="Commit" title={viewed} bind:value={commit}
-						>{#each snapshot.commits as item (item.hash)}<option value={item.hash}
-								>{item.hash.slice(0, 7)} · {item.subject}</option
-							>{/each}</Select
-					></label
-				>{@render when('Commit updated', committed)}{/snippet}
-		</ChoiceDialog>
+		<div class="revision-choices">
+			<ChoiceDialog
+				label="Choose branch"
+				title="Choose branch"
+				width={320}
+				maxHeight={320}
+				gap={10}
+			>
+				{#snippet icon()}<Icon name="branch" size={18} />{/snippet}
+				{#snippet children(close: () => void)}<label
+						class="picker-field"
+						onchange={() => chooseBranch(close)}
+						>Branch<Select
+							label="Branch"
+							title={`Tip · ${revision.tip.slice(0, 7)}`}
+							bind:value={branch}
+							>{#each snapshot.branches as item (item.name)}<option value={item.name}
+									>{item.name}</option
+								>{/each}</Select
+						></label
+					>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
+			</ChoiceDialog>
+			<ChoiceDialog
+				label="Choose commit"
+				title="Choose commit"
+				width={380}
+				maxHeight={320}
+				gap={10}
+			>
+				{#snippet icon()}<Icon name="commit" size={18} />{/snippet}
+				{#snippet children(close: () => void)}<label
+						class="picker-field"
+						onchange={() => chooseCommit(close)}
+						>Commit<Select label="Commit" title={viewed} bind:value={commit}
+							>{#each snapshot.commits as item (item.hash)}<option value={item.hash}
+									>{item.hash.slice(0, 7)} · {item.subject}</option
+								>{/each}</Select
+						></label
+					>{@render when('Commit updated', committed)}{/snippet}
+			</ChoiceDialog>
+		</div>
 		<div class="revision-summary">
 			<strong title={revision.branch}>{revision.branch}</strong><small class="tip"
 				>Tip · {revision.tip.slice(0, 7)}</small
@@ -89,6 +103,10 @@
 	.revision-picker {
 		align-items: center;
 		gap: 8px;
+	}
+	/* The branch and commit icons are a group of their own only where a phone draws one. */
+	.revision-choices {
+		display: contents;
 	}
 	.revision-summary {
 		display: grid;
@@ -117,30 +135,55 @@
 	.picker-field :global(.report-select) {
 		display: block;
 	}
-	/* On a phone the icons, the branch and what is shown share one row beside the environment; the
-	   tip is named in the branch dialog, with when it was committed. */
+	/* On a phone the icons end the bar's rail, after the environment, and Go to tip ends its row.
+	   The branch and what is shown take a whole line beneath, so neither is cut short; the tip is
+	   named in the branch dialog, with when it was committed. */
 	@media (max-width: 560px) {
 		.revision-picker {
+			display: contents;
+		}
+		.revision-choices {
+			grid-area: revision;
 			display: flex;
-			gap: 6px;
-			min-width: 0;
-			margin-inline-start: 6px;
+			justify-self: start;
+			margin-inline-start: -1px;
+			border-radius: 0 8px 8px 0;
+			background: var(--panel);
+			box-shadow: inset 0 0 0 1px var(--line);
 		}
 		.revision-summary {
-			flex: 1 1 auto;
+			grid-area: summary;
+			display: flex;
+			align-items: baseline;
+			gap: 8px;
+			min-width: 0;
 			max-width: none;
-			margin-inline-start: 2px;
-			line-height: 1.3;
+			margin: 0;
+			line-height: 13px;
+		}
+		/* A long branch gives way first; what is shown stays whole. */
+		.revision-summary strong {
+			flex: 0 1 auto;
+			min-width: 0;
+			font-size: 12px;
 		}
 		.revision-summary small {
+			flex: none;
 			font-size: 11px;
-			line-height: 1.3;
+			line-height: 13px;
 		}
 		.tip {
 			display: none;
 		}
 		.go-to-tip {
-			padding: 6px 8px;
+			grid-area: tip;
+			justify-self: end;
+			height: 30px;
+			padding: 0 12px;
+			border-color: rgb(255 208 53 / 0.5);
+			border-radius: 15px;
+			background: none;
+			color: var(--gold);
 		}
 	}
 </style>
