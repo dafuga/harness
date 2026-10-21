@@ -12,6 +12,7 @@
 			"ProfileInput",
 			"ObservationInput",
 			"PerformanceProfileService",
+			"PerformanceProfileService.beginScope",
 			"PerformanceProfileService.observe",
 			"PerformanceProfileService.observeAsync",
 			"PerformanceProfileService.flush",
@@ -22,6 +23,10 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "PerformanceProfileService.beginScope.input",
+				"type": "ObservationInput"
+			},
 			{
 				"name": "PerformanceProfileService.observe.input",
 				"type": "ObservationInput"
@@ -56,6 +61,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "PerformanceProfileService.beginScope",
+				"type": "()"
+			},
 			{
 				"name": "PerformanceProfileService.observe",
 				"type": "T"

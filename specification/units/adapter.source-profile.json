@@ -11,6 +11,7 @@
 			"src/adapters/source-profile-adapter/SourceProfileAdapter.ts",
 			"src/adapters/source-profile-adapter/bunPreload.ts",
 			"src/adapters/source-profile-adapter/instrumentSource.ts",
+			"src/adapters/source-profile-adapter/moduleInitialization.ts",
 			"src/adapters/source-profile-adapter/profileRuntime.ts",
 			"src/adapters/source-profile-adapter/runnerConfig.ts",
 			"src/adapters/source-profile-adapter/runnerPlugins.ts",
@@ -23,6 +24,8 @@
 			"SourceProfileAdapter.constructor",
 			"SourceProfileAdapter.transform",
 			"instrumentSource",
+			"initializationEdits",
+			"beginSourceScope",
 			"watchOperation",
 			"watchMethod",
 			"flushSourceProfiles",
@@ -59,6 +62,22 @@
 			{
 				"name": "instrumentSource.unit",
 				"type": "ComponentManifest"
+			},
+			{
+				"name": "initializationEdits.file",
+				"type": "ts.SourceFile"
+			},
+			{
+				"name": "initializationEdits.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "initializationEdits.watch",
+				"type": "string"
+			},
+			{
+				"name": "beginSourceScope.boundary",
+				"type": "Boundary"
 			},
 			{
 				"name": "watchOperation.args",
@@ -109,6 +128,14 @@
 			{
 				"name": "instrumentSource",
 				"type": "string | null"
+			},
+			{
+				"name": "initializationEdits",
+				"type": "unknown"
+			},
+			{
+				"name": "beginSourceScope",
+				"type": "()"
 			},
 			{
 				"name": "watchOperation",

@@ -15,6 +15,12 @@ interface Boundary {
 const profiler = new PerformanceProfileService();
 let flushing = false;
 
+/** A failed import never reaches its finishing statement and therefore emits no success sample. */
+export function beginSourceScope(boundary: Boundary): () => void {
+	if (!process.env.HARNESS_RUNTIME_PROFILE_DIR || flushing) return () => {};
+	return profiler.beginScope(observationInput(boundary));
+}
+
 /** Metadata describes source boundaries only; values and arguments never enter the collector. */
 export function watchOperation<T extends (...args: never[]) => unknown>(
 	operation: T,
