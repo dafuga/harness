@@ -36,7 +36,7 @@ export async function reviewUsage(page: Page, route: UsageRoute, viewport: strin
 		await expect(page.getByRole('region', { name: label, exact: true })).toBeVisible();
 		await capture(page, `usage-${tab}-${checkpoint}`);
 		await expect(page.locator('.ex-relations .hx-verdict'), 'no row marks').toHaveCount(0);
-		await reviewUsageCards(page, category, tab);
+		await reviewUsageCards(page, category, tab, commit);
 		await expect(page.locator('.ex-head .hx-verdict')).toHaveCount(1);
 		await expect(
 			page.getByRole('region', { name: label === 'Uses' ? 'Used In' : 'Uses', exact: true })

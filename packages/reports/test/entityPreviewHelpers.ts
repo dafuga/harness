@@ -119,9 +119,27 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 				id,
 				kind,
 				title: `Consumer ${kind} ${offset + 1}`,
-				helpers: [],
+				helpers:
+					kind === 'function'
+						? [
+								{
+									name: `consumerFunction${offset + 1}`,
+									source: `src/functions/Consumer${offset + 1}.ts`,
+									pure: true,
+									inputs: [],
+									consumers: [{ unit: ids.list }, { unit: ids.store }]
+								}
+							]
+						: [],
 				dependencies: [{ unit: ids.filter, via: 'import' }],
-				owns: { source: [`src/${kind}s/Consumer${offset + 1}.ts`], symbols: [] },
+				owns: {
+					source: [
+						kind === 'page'
+							? `src/routes/consumers/${offset + 1}/+page.svelte`
+							: `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`
+					],
+					symbols: []
+				},
 				version: id
 			};
 		})
@@ -129,7 +147,13 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 	const hosts = detail.registry.units.map((unit) => ({
 		...unit,
 		dependencies:
-			unit.id === ids.page ? generated.map(({ id }) => ({ unit: id, via: 'import' })) : []
+			unit.id === ids.page
+				? generated.map(({ id }) => ({ unit: id, via: 'import' }))
+				: [ids.list, ids.store].includes(unit.id)
+					? generated
+							.filter((item) => item.kind === 'function')
+							.map(({ id }) => ({ unit: id, via: 'import' }))
+					: []
 	}));
 	return { ...detail, registry: { ...detail.registry, units: [...hosts, ...generated] } };
 }
