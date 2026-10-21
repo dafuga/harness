@@ -21,48 +21,66 @@
 		"reports.repository.site-report",
 		"reports.service.report-export",
 		"reports.serializer.report-export",
-		"reports.endpoint.api-reports-id-type-file"
+		"reports.endpoint.api-reports-id-type-file",
+		"reports.page.harness-branch-branch-at-pages"
 	],
 	"states": [
 		{
 			"id": "retired-hub",
 			"title": "The explorer page that the address of the removed report hub leads to",
-			"coverage": "required"
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages"]
 		},
 		{
 			"id": "retired-report",
 			"title": "The explorer page that the address of a removed report page leads to",
-			"coverage": "required"
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages"]
 		},
 		{
 			"id": "retired-analytics",
 			"title": "The explorer page that the address of the removed analytics dashboard leads to",
-			"coverage": "required"
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages"]
 		},
 		{
 			"id": "exported",
 			"title": "Exported report with its summary, checks and coverage, as the server serves it",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"reports.component.report-view",
+				"reports.component.report-summary",
+				"reports.component.report-checks",
+				"reports.component.coverage-list"
+			]
 		},
 		{
 			"id": "gallery",
 			"title": "Evidence gallery of the exported report",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"reports.component.evidence-grid",
+				"reports.component.evidence-card",
+				"reports.component.audio-comparison"
+			]
 		},
 		{
 			"id": "viewer",
 			"title": "Screenshot viewer open on a tall capture",
-			"coverage": "required"
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer", "reports.component.image-zoom"]
 		},
 		{
 			"id": "comparison",
 			"title": "Before and after screenshots in the viewer",
-			"coverage": "required"
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer", "reports.component.image-zoom"]
 		},
 		{
 			"id": "audio",
 			"title": "Paired recording in the audio comparison viewer, played from the bytes the report API serves",
-			"coverage": "required"
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer", "reports.component.audio-evidence"]
 		}
 	],
 	"viewports": [

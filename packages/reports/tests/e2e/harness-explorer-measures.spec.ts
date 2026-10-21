@@ -8,7 +8,6 @@ import { fits } from './support/sharedSelect';
 import type { HarnessRevision } from '../../src/models/Harness.types';
 import { explorerKindCategory } from '../../../../src/utils/explorerRoute';
 
-/** Synthetic model input completes the same category fixture; it claims no real model source. */
 function everyKind(): HarnessRevision {
 	const detail = JSON.parse(
 		readFileSync(join(home, 'data/revisions', `${commits.shelled}.json`), 'utf8')

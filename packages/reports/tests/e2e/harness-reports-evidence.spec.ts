@@ -57,8 +57,11 @@ const states: Record<string, (page: Page) => Promise<void>> = {
 	'retired-analytics': (page) => retired(page, '/harness/analytics'),
 	exported,
 	async gallery(page) {
-		await exported(page);
+		await page.goto(await servedReport(made.paired, origin));
 		await page.locator('.gallery-section').first().scrollIntoViewIfNeeded();
+		await expect(
+			page.getByRole('button', { name: 'Open audio comparison: Paired recording', exact: true })
+		).toBeVisible();
 	},
 	async viewer(page) {
 		await exported(page);

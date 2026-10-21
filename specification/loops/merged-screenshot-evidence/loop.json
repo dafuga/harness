@@ -2,7 +2,7 @@
 	"name": "merged-screenshot-evidence",
 	"goal": "Keep source-identical merged screenshots visible with honest original provenance and verify main after landing",
 	"createdAt": "2026-10-21T19:06:15.524Z",
-	"updatedAt": "2026-10-21T19:24:37.029Z",
+	"updatedAt": "2026-10-21T19:32:17.944Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -48,12 +48,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:32:11.433Z",
+			"evidence": "Immutable corrected green 15c910636053711aaa46c7f732fe05f82372b09d109b2fb9a09d3773ea34f68a at f0d6a762d31de8c227c26d89d2e92ae185c72576 passes unchanged tests and all 50 Explorer browser cases, retaining 217 images and 1086 observations."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:32:17.944Z",
+			"evidence": "Isolated f0d6a762 snapshot with original selector fails source-identical squash displays original screenshot; restored selector passes 12 tests. Guard outputs retained in .cache/harness/merged-screenshots."
 		},
 		{
 			"id": "verify",
