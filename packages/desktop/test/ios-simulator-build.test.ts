@@ -2,19 +2,42 @@ import { test } from 'vitest';
 import { execFile } from 'node:child_process';
 import { resolve } from 'node:path';
 import { expect } from '../../../test/verificationExpect';
+import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
 
 /** Xcode integration runs in the native scenario after its clean renderer was copied by setup. */
 const unavailable =
 	process.platform !== 'darwin' || process.env.HARNESS_SCENARIO !== 'remote-mobile-native';
 
 async function simulatorBuild(args: string[]) {
+	const result = await measureProcess(
+		{
+			units: ['desktop.script.build-ios-simulator'],
+			workload: args.includes('--release') ? 'release-simulator-build' : 'debug-simulator-build',
+			target: 'module',
+			command: ['bun', 'scripts/build-ios-simulator.ts', ...args],
+			cwd: resolve(import.meta.dirname, '..'),
+			expectSuccess: false,
+			partial:
+				'Real Xcode simulator product build and signing checks, including the child command and OS subprocess accounting. No app launch, camera, simulator interaction or physical-device runtime performance.'
+		},
+		async (command, cwd) => {
+			const child = await built(command, cwd);
+			expect(child.error).toBeNull();
+			return { exitCode: child.status ?? 1, stdout: child.output, stderr: '' };
+		}
+	);
+	console.info(result.stdout);
+	return { status: result.exitCode, output: result.stdout };
+}
+
+async function built(command: string[], cwd: string) {
 	const result = await new Promise<{ error: Error | null; status: number | null; output: string }>(
 		(done) => {
 			execFile(
-				'bun',
-				['scripts/build-ios-simulator.ts', ...args],
+				command[0],
+				command.slice(1),
 				{
-					cwd: resolve(import.meta.dirname, '..'),
+					cwd,
 					encoding: 'utf8',
 					timeout: 240000,
 					maxBuffer: 4_000_000
@@ -28,8 +51,6 @@ async function simulatorBuild(args: string[]) {
 			);
 		}
 	);
-	console.info(result.output);
-	expect(result.error).toBeNull();
 	return result;
 }
 
