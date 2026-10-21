@@ -77,6 +77,11 @@ test('deployment activity shows concurrent destinations and opens their current 
 	const light = page.getByRole('button', { name: 'Deployments', exact: true });
 	await expect(light).toBeVisible();
 	await expect(light).toHaveAttribute('data-active', '3');
+	await expect(light).toHaveText('');
+	await expect(page.getByRole('banner')).not.toContainText(
+		/Run checks|Uploading preprod|Building stage/
+	);
+	await expect(page.getByRole('dialog', { name: 'Deployments', exact: true })).not.toBeVisible();
 	await light.click();
 	const dialog = page.getByRole('dialog', { name: 'Deployments', exact: true });
 	for (const environment of ['prod', 'preprod', 'stage', 'dev'])
@@ -101,6 +106,8 @@ test('deployment activity shows concurrent destinations and opens their current 
 	await expect(dialog.getByRole('status')).toContainText('Building stage');
 	await page.keyboard.press('Escape');
 	await expect(light).toBeFocused();
+	await expect(dialog).not.toBeVisible();
+	await expect(light).toHaveAttribute('data-active', '3');
 });
 
 test('mobile deployment details retain queued and failed steps when status reads fail', async ({

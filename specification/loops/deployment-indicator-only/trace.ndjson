@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-21T10:10:57.599Z","name":"deployment-indicator-only","goal":"Remove production scope guidance from the header and keep running deployment progress in the indicator modal","template":"visual-change","templateLineage":["feature","visual-change"]}
+{"event":"step.completed","timestamp":"2026-10-21T10:12:31.470Z","loop":"deployment-indicator-only","step":"spec","evidence":"scope.md records copy removal and reuse of existing light/modal. Registry contracts, NavBar ownership and shared dialog dependencies inspected."}

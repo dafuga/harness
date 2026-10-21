@@ -145,9 +145,6 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		expect(environment!.x + environment!.width).toBeLessThan(icon!.x);
 	}
 	await page.getByLabel('Environment', { exact: true }).selectOption('prod');
-	await expect(
-		page.getByText('Changes reach preprod. Use Deploy to promote preprod to production.')
-	).toBeVisible();
 	for (const [button, selector] of [
 		['Choose commit', 'Commit'],
 		['Choose branch', 'Branch'],
@@ -171,6 +168,7 @@ test('workspace selectors start collapsed and environment stays directly selecta
 			await page.screenshot({
 				path: `/tmp/harness-env-evidence/mobile-header-${width}-${environment}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 			});
+		await expect(page.getByText(/Changes reach preprod\./)).toHaveCount(0);
 		const projectControl = await page
 			.getByRole('button', { name: 'Choose workbench' })
 			.boundingBox();
