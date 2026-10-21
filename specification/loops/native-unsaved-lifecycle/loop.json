@@ -2,7 +2,7 @@
 	"name": "native-unsaved-lifecycle",
 	"goal": "Native close, reload and quit with unsaved game edits ask Stay or Discard; Stay keeps the document and backend; hosted selection rereads the open local project.",
 	"createdAt": "2026-10-21T15:03:12.982Z",
-	"updatedAt": "2026-10-21T15:25:59.710Z",
+	"updatedAt": "2026-10-21T15:28:51.752Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:28:51.752Z",
+			"evidence": "Paired 07ef8e0a9 to b2916f837 passes identical startup and hosted-wrapper tests under the same profile. Native UI confirms Stay for reload, close, quit and a working save; Discard reload restores saved state."
 		},
 		{
 			"id": "verify",
