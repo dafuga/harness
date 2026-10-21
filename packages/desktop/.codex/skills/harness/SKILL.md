@@ -1,5 +1,7 @@
 # Harness Project Discipline
 
+Native performance evidence comes from running the actual compiled Debug and Release check binaries through the shared Harness child-process capture, separately from compilation. State the macOS/test-vault/test-transport boundary as partial coverage; these observations do not establish UIKit, camera, simulator or physical-device performance. Keep native behavior assertions after each measured invocation.
+
 Use this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness SvelteKit app.
 
 ## Operating Rules
