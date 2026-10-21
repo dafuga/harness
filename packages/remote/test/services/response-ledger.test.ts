@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import { ResponseLedgerService } from '../../src/services/ResponseLedgerService';
 import { deferred } from '../support/wireHarness';
+import { taskProfile } from '../../../../test/support/taskProfiles';
 
 function counted() {
 	const state = { runs: 0 };
@@ -14,6 +15,20 @@ test('the same id and digest runs once and returns the first answer', async () =
 	expect(await ledger.run(entry('a'), execute)).toEqual({ run: 1 });
 	expect(await ledger.run(entry('a'), execute)).toEqual({ run: 1 });
 	expect(state.runs).toBe(1);
+	await taskProfile(
+		'remote.service.response-ledger',
+		'create-and-replay-one-mutation',
+		async () => {
+			const current = new ResponseLedgerService();
+			const operation = counted();
+			const first = current.run(entry('profile'), operation.execute);
+			const second = current.run(entry('profile'), operation.execute);
+			if (first !== second) throw new Error('Replay replaced the original answer promise');
+			const answers = await Promise.all([first, second]);
+			if (operation.state.runs !== 1) throw new Error('Replay repeated the mutation');
+			return answers;
+		}
+	);
 });
 test('a re-send joins an answer that is still being produced', async () => {
 	const ledger = new ResponseLedgerService(),

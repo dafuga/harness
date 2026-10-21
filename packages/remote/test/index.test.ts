@@ -1,6 +1,9 @@
 import { expect, test } from 'vitest';
 import { taskProfile } from '../../../test/support/taskProfiles';
 import * as remote from '../src/index';
+import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
+import { runCommand } from '../../../test/support/cli';
+import { resolve } from 'node:path';
 
 const names = [
 	'REMOTE_PROTOCOL',
@@ -68,7 +71,37 @@ test('the package exports the protocol surface', async () => {
 		() => JSON.stringify(remote.remoteScanFailures),
 		100
 	);
+	const reasons = ['state', 'packet', 'counter', 'tag', 'size'] as const;
+	const failures = () => reasons.map((reason) => new remote.SecureFailure(reason));
+	expect(failures().map((failure) => failure.reason)).toEqual(reasons);
+	await taskProfile(
+		'remote.model.remote-secure-types',
+		'construct-every-secure-error',
+		failures,
+		100
+	);
+	await profilePublicEntry();
 });
+
+async function profilePublicEntry() {
+	const source = resolve(import.meta.dirname, '../src/index.ts');
+	const program = `const remote = await import(${JSON.stringify(source)});
+const names = ${JSON.stringify(names)};
+if (names.some(name => !(name in remote))) throw new Error('Missing public export');
+console.log(JSON.stringify({protocol:remote.REMOTE_PROTOCOL, checked:names.length}));`;
+	const result = await measureProcess(
+		{
+			units: ['remote.entry.index'],
+			workload: 'cold-bun-public-entry-import',
+			target: 'module',
+			command: ['bun', '--eval', program],
+			cwd: process.cwd(),
+			env: { HARNESS_RUNTIME_PROFILE_BOUNDARY: 'benchmark' }
+		},
+		runCommand
+	);
+	expect(JSON.parse(result.stdout)).toEqual({ protocol: 1, checked: names.length });
+}
 test('folders, hosted credentials and the control port are never device methods', () => {
 	const device: readonly string[] = [
 		remote.attachMethod,
