@@ -3,7 +3,7 @@
 	"id": "service.regression-proof",
 	"kind": "service",
 	"title": "Run a committed regression",
-	"responsibility": "Run one test command on an isolated export of an exact source commit.",
+	"responsibility": "Run one test command on an isolated export of an exact source commit. Retains decoded screenshot bytes before snapshot cleanup and requires actual captures to name the exact served revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {

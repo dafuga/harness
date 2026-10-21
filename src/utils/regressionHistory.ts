@@ -8,19 +8,22 @@ import {
 } from '../core/regressionTypes';
 import type { HistoryNote } from '../core/historyTypes';
 import { canonicalJson } from './canonicalJson';
+import { checkedMedia, type MediaPlacer } from './mediaPlace';
+import { mediaFacts } from './mediaFacts';
 import type { ReadNote } from './note-lines/noteCommit';
 
 type RegressionNote = Extract<HistoryNote, { kind: 'regression' }>;
 export const regressionHash = (bytes: string | Buffer) =>
 	createHash('sha256').update(bytes).digest('hex');
-type Loaded = { record: RegressionRecord; output: string };
+type Loaded = { record: RegressionRecord; output: string; files?: Map<string, Buffer> };
 type Loader = (note: RegressionNote) => Promise<Loaded>;
 
 /** A red commit never borrows a future green result. Corrupt evidence remains a visible gap. */
 export async function regressionHistory(
 	commit: string,
 	notes: Map<string, ReadNote>,
-	load: Loader
+	load: Loader,
+	media: MediaPlacer = checkedMedia
 ): Promise<RegressionView[]> {
 	const selected =
 		notes
@@ -29,7 +32,7 @@ export async function regressionHistory(
 	const found: RegressionView[] = [];
 	for (const note of selected) {
 		try {
-			found.push(await pairedRegression(await load(note), note, { notes, load }));
+			found.push(await pairedRegression(await load(note), note, { notes, load }, media));
 		} catch (error) {
 			found.push({
 				loop: note.loop,
@@ -45,9 +48,10 @@ export async function regressionHistory(
 async function pairedRegression(
 	own: Loaded,
 	note: RegressionNote,
-	context: { notes: Map<string, ReadNote>; load: Loader }
+	context: { notes: Map<string, ReadNote>; load: Loader },
+	media?: MediaPlacer
 ): Promise<RegressionView> {
-	const current = regressionPoint(own),
+	const current = await regressionPoint(own, media),
 		units = own.record.units;
 	if (own.record.phase === 'red') return { loop: note.loop, units, red: current };
 	const origin = own.record.red;
@@ -64,7 +68,7 @@ async function pairedRegression(
 	const red = await context.load(redNote);
 	if (!sameRegression(red.record, own.record))
 		return fail('The checkpoints do not prove unchanged tests and command.');
-	return { loop: note.loop, units, red: regressionPoint(red), green: current };
+	return { loop: note.loop, units, red: await regressionPoint(red, media), green: current };
 }
 
 export function sameRegression(red: RegressionRecord, green: RegressionRecord): boolean {
@@ -92,14 +96,29 @@ function sameInputs(red: RegressionRecord, green: RegressionRecord): boolean {
 		canonicalJson(red.tests) === canonicalJson(green.tests)
 	);
 }
-function regressionPoint(loaded: Loaded): RegressionPoint {
+async function regressionPoint(loaded: Loaded, media?: MediaPlacer): Promise<RegressionPoint> {
 	const { record, output } = loaded;
+	const captures = await Promise.all(
+		(record.captures ?? []).map(async (item) => ({
+			...item,
+			capture: {
+				...item.capture,
+				...((await media?.place(
+					loaded.files?.get(item.capture.path),
+					item.capture,
+					'Focused capture is missing.'
+				)) ?? { media: null, gap: 'Focused media is not resolved by this reader.' })
+			}
+		}))
+	);
 	return {
 		commit: record.source.commit,
+		id: record.id,
 		status: record.status,
 		command: record.command,
 		assertion: record.assertion,
 		finishedAt: record.finishedAt,
+		...(captures.length ? { captures } : {}),
 		...(record.measurements ? { measurements: record.measurements } : {}),
 		output
 	};
@@ -115,7 +134,7 @@ export async function readRegression(
 	assertIdentity(record, note, log);
 	if (!validPhase(record, log))
 		return fail('Regression phase does not match the recorded outcome.');
-	return { record, output: log.toString('utf8') };
+	return { record, output: log.toString('utf8'), files: await regressionCaptures(record, read) };
 }
 async function regressionBytes(
 	note: RegressionNote,
@@ -156,4 +175,31 @@ function validPhase(record: RegressionRecord, log: Buffer): boolean {
 			log.includes(record.assertion)
 		);
 	return record.status === 'passed' && record.exitCode === 0 && Boolean(record.red);
+}
+
+async function regressionCaptures(
+	record: RegressionRecord,
+	read: (path: string) => Promise<Buffer | undefined>
+) {
+	const files = new Map<string, Buffer>();
+	for (const { capture } of record.captures ?? []) {
+		const bytes = await read(capture.path);
+		if (!bytes) return fail(`Focused capture ${capture.path} is missing.`);
+		if (bytes.length !== capture.bytes || regressionHash(bytes) !== capture.sha256)
+			return fail(`Focused capture ${capture.path} has different bytes.`);
+		const facts = mediaFacts(bytes, capture.mediaType);
+		if ('error' in facts || facts.kind !== 'image')
+			return fail(`Focused capture ${capture.path} cannot be decoded.`);
+		assertCaptureRevision(capture, record.source.commit);
+		files.set(capture.path, bytes);
+	}
+	return files;
+}
+
+function assertCaptureRevision(
+	capture: NonNullable<RegressionRecord['captures']>[number]['capture'],
+	commit: string
+): void {
+	if (capture.provenance === 'actual-capture' && capture.server?.revision !== commit)
+		fail(`Focused capture ${capture.path} has a different served revision.`);
 }

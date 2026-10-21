@@ -1,5 +1,5 @@
 import { benchmarkMeasurements } from './record-assembly-service/sealRecord';
-import { gatherCaptures } from './check-run-service/gatherCaptures';
+import { gatherCaptures, type Gathered } from '../utils/gatherCaptures';
 import { machineProfile } from '../utils/machineProfile';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -41,7 +41,7 @@ export class RegressionProofService {
 			for (const path of config.link) await snapshot.link(this.root, path);
 			const observed = await observeRegression(snapshot, directory, input);
 			const record = await sealRegression(this.root, input, observed);
-			await new RegressionProofRepository(this.root).save(record, observed.output);
+			await new RegressionProofRepository(this.root).save(record, observed.output, observed.files);
 			return record;
 		} finally {
 			await snapshot.remove();
@@ -98,6 +98,8 @@ interface Observation {
 	result: Awaited<ReturnType<typeof runIsolated>>;
 	output: Buffer;
 	measurements: NonNullable<RegressionRecord['measurements']>;
+	captures: NonNullable<RegressionRecord['captures']>;
+	files: Array<{ path: string; bytes: Buffer }>;
 }
 
 async function observeRegression(
@@ -135,7 +137,14 @@ async function observeRegression(
 		profile: machineProfile().id,
 		commit: input.commit
 	});
-	return { profile, startedAt, result, output, measurements };
+	return {
+		profile,
+		startedAt,
+		result,
+		output,
+		measurements,
+		...(await focusedScreens(captures.gathered, directory, input.commit))
+	};
 }
 
 async function sealRegression(
@@ -160,6 +169,7 @@ async function sealRegression(
 		finishedAt: new Date().toISOString(),
 		exitCode: result.exitCode!,
 		...(observed.measurements.length ? { measurements: observed.measurements } : {}),
+		...(observed.captures.length ? { captures: observed.captures } : {}),
 		log: { ...result.log, path: 'output.log' },
 		...(input.red ? { red: { commit: input.red.source.commit, record: input.red.id } } : {})
 	};
@@ -174,4 +184,25 @@ function invalidExecution(result: Awaited<ReturnType<typeof runIsolated>>): bool
 		result.survivors.length > 0 ||
 		Boolean(result.unknown)
 	);
+}
+
+/** Retain the inspected pixels before the snapshot and its evidence directory are removed. */
+async function focusedScreens(gathered: Gathered[], directory: string, commit: string) {
+	const captures: NonNullable<RegressionRecord['captures']> = [],
+		files: Observation['files'] = [];
+	for (const { line, capture, facts } of gathered.filter(
+		(item) => item.capture.kind === 'screenshot'
+	)) {
+		if (!facts || 'error' in facts || facts.kind !== 'image')
+			fail('Focused capture is not a decoded screenshot.');
+		if (capture.provenance === 'actual-capture' && capture.server?.revision !== commit)
+			fail('Focused capture has a different served revision.');
+		captures.push({
+			unit: line.evidence,
+			capture,
+			viewport: { width: facts.width, height: facts.height }
+		});
+		files.push({ path: capture.path, bytes: await readFile(join(directory, line.file)) });
+	}
+	return { captures, files };
 }

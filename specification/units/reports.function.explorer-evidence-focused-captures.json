@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-evidence-focused-captures",
+	"kind": "function",
+	"title": "Focused screenshot selection",
+	"responsibility": "Projects stored focused screenshots of one unit and exact revision without granting a full verification verdict.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorer-evidence/focusedCaptures.ts"],
+		"symbols": ["focusedCaptures", "focusedScenario"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "focusedCaptures.detail",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "focusedCaptures.unit",
+				"type": "string"
+			},
+			{
+				"name": "focusedScenario.sides",
+				"type": "Array<ExplorerSide | null>"
+			},
+			{
+				"name": "focusedScenario.unit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "focusedCaptures",
+				"type": "ExplorerCapture[]"
+			},
+			{
+				"name": "focusedScenario",
+				"type": "HarnessScenario[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-evidence/focusedCaptures.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-evidence/focusedCaptures.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
