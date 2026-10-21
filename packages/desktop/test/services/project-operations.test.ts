@@ -54,6 +54,7 @@ test('every explicit request refuses stale project context before reading or sta
 		b = await fixture(),
 		{ bridge, start, cancel } = bridgeFor(a.session);
 	const projectId = a.session.projectId!;
+	await activeSelection(a, b.root, bridge);
 	await a.session.open(b.root);
 	const input = { projectId, entityId: 'page.home', commit: b.tip };
 	await expect(bridge.entity(input)).rejects.toThrow('project');
@@ -79,3 +80,32 @@ test('every explicit request refuses stale project context before reading or sta
 	expect(cancel).not.toHaveBeenCalled();
 	expect((await bridge.entity({ entityId: 'page.home', commit: b.tip })).id).toBe('page.home');
 }, 15000);
+
+/** Opening the selected project is a read; a different project remains a guarded switch. */
+async function activeSelection(
+	current: Awaited<ReturnType<typeof fixture>>,
+	otherRoot: string,
+	bridge: ReturnType<typeof bridgeFor>['bridge']
+) {
+	const other = await current.session.registry.register(otherRoot);
+	const projectId = current.session.projectId!;
+	for (const state of [
+		{ busy: true, pending: 0 },
+		{ busy: false, pending: 1 }
+	]) {
+		Object.assign(current.session, state);
+		try {
+			await expect(bridge.selectProject!({ projectId })).resolves.toMatchObject({
+				project: { id: projectId }
+			});
+			await expect(bridge.selectProject!({ projectId: other.id })).rejects.toThrow(
+				'before switching projects'
+			);
+			expect(current.session.projectId).toBe(projectId);
+			expect(current.session.busy).toBe(state.busy);
+			expect(current.session.pending).toBe(state.pending);
+		} finally {
+			Object.assign(current.session, { busy: false, pending: 0 });
+		}
+	}
+}

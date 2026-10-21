@@ -2,7 +2,7 @@
 	"name": "generated-game-validation",
 	"goal": "Generated game checks reject invalid checkpoint graphs and missing view references",
 	"createdAt": "2026-10-21T14:30:15.970Z",
-	"updatedAt": "2026-10-21T14:33:30.626Z",
+	"updatedAt": "2026-10-21T14:35:31.999Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:35:31.999Z",
+			"evidence": "Paired 0d0cc2336 to 0ce121f52 on identical environment and tests: both dimensions pass their own full check and reject missing prerequisites, duplicate IDs, cycles and missing views."
 		},
 		{
 			"id": "verify",
