@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { observedTaskOperation } from '../../../../test/support/taskProfiles';
 import { hubNotes } from '../../src/services/hub-evidence-service/hubNotes';
 import { evidenceFixture, sourceAt } from '../support/evidenceFixture';
 import { verification } from '../support/evidenceRecords';
@@ -11,7 +12,11 @@ test('the notes of a pinned commit are read for each commit, whatever directorie
 	const f = evidenceFixture();
 	const { root, changed, tip } = f.commits;
 	const base = await sourceAt(f, changed);
-	const notes = await hubNotes(base, f.pins.notesRevision);
+	const notes = await observedTaskOperation(
+		'hub.function.hub-notes',
+		'read-pinned-synthetic-git-notes',
+		() => hubNotes(base, f.pins.notesRevision)
+	);
 	const paths = [...(f.git.commits.get(f.pins.notesRevision)?.files.keys() ?? [])];
 	expect(paths.map((path) => path.includes('/')).sort()).toEqual([false, true]);
 	expect([...notes.keys()].sort()).toEqual([root, changed].sort());
