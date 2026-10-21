@@ -2,7 +2,7 @@
 	"name": "game-document-transport",
 	"goal": "A valid game document of up to 1 MiB saves and reopens over the local transport; phone requests stay bounded at 64 KiB.",
 	"createdAt": "2026-10-21T14:23:41.588Z",
-	"updatedAt": "2026-10-21T14:49:48.784Z",
+	"updatedAt": "2026-10-21T14:52:24.880Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:52:24.880Z",
+			"evidence": "Paired b7139eb0c to dcc6aa077 keeps the same tests, fixtures, command and environment. Full-size local saves, UTF-8 rejection, mode preservation and failed-write cleanup pass; remote defaults remain 64KiB."
 		},
 		{
 			"id": "verify",

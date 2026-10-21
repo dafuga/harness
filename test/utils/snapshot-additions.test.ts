@@ -1,4 +1,5 @@
-import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
+import { existsSync, readdirSync } from 'node:fs';
+import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -60,3 +61,26 @@ test('declaredOutput matches a directory, a file and a pattern, never a sibling'
 	expect(declaredOutput('coverage', outputs)).toBe(false);
 	expect(declaredOutput('src/app.tsbuildinfo', outputs)).toBe(false);
 });
+
+const workspaces = readdirSync('packages').filter((name) =>
+	existsSync(join('packages', name, 'package.json'))
+);
+test.each(workspaces)(
+	'normal %s build and test outputs never exempt its source tree',
+	async (workspace) => {
+		const prefix = `packages/${workspace}/`;
+		const created = [
+			'node_modules/.vite/vitest/results.json',
+			'.cache/run.json',
+			'dist/index.js',
+			'src/untracked.ts'
+		];
+		for (const path of created) await write(prefix + path);
+		const { outputs } = JSON.parse(
+			await readFile(new URL('../../harness.verify.json', import.meta.url), 'utf8')
+		) as { outputs: string[] };
+		expect(await snapshotAdditions(root, { tracked, outputs, links: new Set() }, prefix)).toEqual([
+			prefix + 'src/untracked.ts'
+		]);
+	}
+);
