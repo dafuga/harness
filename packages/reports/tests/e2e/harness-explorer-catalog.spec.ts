@@ -1,11 +1,10 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { generatedUnits } from '../../scripts/harness-scale-data';
-import { at, branch, checkpoint, commit, expectPath, explorer, tip } from './support/explorer';
+import { at, branch, checkpoint, commit, expectPath, tip } from './support/explorer';
 import { seeded } from './support/harnessHistory';
 import { fits, screens, sharedField, typed } from './support/sharedSelect';
 
 const { commits, keptBranch } = seeded();
-const { explorerUnits: units } = explorer();
 const scale = `http://127.0.0.1:${Number(process.env.HARNESS_CONSOLE_E2E_SCALE_PORT || 5593)}`;
 const cards = (page: Page) => page.getByRole('main').getByRole('article');
 const shown = (page: Page) => page.getByRole('main').getByRole('status');
@@ -34,10 +33,7 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(page.getByRole('link', { name: 'Models', exact: true })).toBeVisible();
 	// The title itself is clicked, as a reader does, not an address that the test put together.
 	await titled(page).click();
-	await expectPath(
-		page,
-		at('main', commits.approved, `functions/${units.slugify}?tab=contract&helper=slugify`)
-	);
+	await expectPath(page, at('main', commits.approved, 'helpers/slugify/contract'));
 	await expect(commit(page)).toHaveValue(commits.approved);
 	await expect(page.getByRole('heading', { level: 1, name: 'slugify' })).toBeVisible();
 	await page.goBack();
@@ -70,10 +66,7 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await titled(page).focus();
 	await page.keyboard.press('Enter');
-	await expectPath(
-		page,
-		at('main', commits.approved, `functions/${units.slugify}?tab=contract&helper=slugify`)
-	);
+	await expectPath(page, at('main', commits.approved, 'helpers/slugify/contract'));
 });
 
 test('private helpers stay off the shared catalog while their historical pages remain reachable', async ({
@@ -158,10 +151,7 @@ test.describe('a registry of several hundred units', () => {
 		await expect(cards(page).first()).toHaveAttribute('aria-label', 'unit309');
 		await titled(page).focus();
 		await page.keyboard.press('Enter');
-		await expectPath(
-			page,
-			tip('main', 'functions/function.generated-309?tab=contract&helper=unit309')
-		);
+		await expectPath(page, tip('main', 'helpers/unit309/contract'));
 	});
 
 	test('on a phone the list reaches any unit without scrolling sideways', async ({ page }) => {
@@ -171,9 +161,6 @@ test.describe('a registry of several hundred units', () => {
 		await expect(cards(page)).toHaveCount(1);
 		expect(await fits(page)).toBe(true);
 		await titled(page).click();
-		await expectPath(
-			page,
-			tip('main', 'functions/function.generated-477?tab=contract&helper=unit477')
-		);
+		await expectPath(page, tip('main', 'helpers/unit477/contract'));
 	});
 });

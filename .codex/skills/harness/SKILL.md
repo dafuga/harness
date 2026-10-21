@@ -128,6 +128,8 @@ Use descriptive behavior titles, never numbered placeholders. Choose one represe
 
 When changing URL structure or moving tabs between query strings and paths, key the rendered page by its logical entity, helper, branch, revision and section; tab or canonical-alias changes must preserve the frame. Extend the existing host browser matrix to assert DOM continuity across tabs, refresh and correctly scoped links. Capture after canonical navigation, fonts and layout settle, and inspect the original images; a passing text assertion alone does not establish a ready screenshot.
 
+Before broad verification of helper URL changes, run the built Reports catalog browser spec and shared callable-contract cases. Update exact canonical URL expectations in every host matrix, including the catalog used by packaged concurrent-run tests. Preserve legacy input coverage; never normalize expected URLs with the production formatter or accept both old and new destinations.
+
 ## Shared Catalog Interaction Review
 
 When reusing a catalog item in relationships or another context, review the rendered
