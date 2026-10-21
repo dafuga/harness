@@ -160,6 +160,14 @@ test('a generated game displays the saved reference after completing its checkpo
 	const url = process.env.CHECKPOINT_GAME_PROOF_URL;
 	test.skip(!url, 'Run with the disposable generated-game server for standalone proof.');
 	await page.goto(url + '/game');
+	await page.reload();
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready);
+		await page.screenshot({
+			path: 'test-results/checkpoint-image-runtime-entry.png',
+			fullPage: true
+		});
+	}
 	await expect(page.locator('canvas')).toHaveAttribute('data-ready', 'true');
 	await page.getByRole('button', { name: 'Move right', exact: true }).click({ clickCount: 2 });
 	const reference = page.getByRole('img', {
