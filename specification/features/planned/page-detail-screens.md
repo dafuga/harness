@@ -1,5 +1,11 @@
 # Feature: Concise page details
 
+After squash landing, focused screenshots may be retained only when the complete
+Git source tree is identical to the captured tree. Keep the capture's original
+commit, build and focused status; it grants no new verification verdict. Different
+trees, units, states and viewport identities cannot borrow those images. The
+delivered main index must resolve and decode the affected previews after landing.
+
 Pages open with their name, role and verification mark. The screenshot panel keeps a concise
 heading, viewport buttons and the image. Overview begins with the page's short registered purpose;
 route details remain in Contract. Scenario

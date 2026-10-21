@@ -2,9 +2,11 @@
 	"name": "merged-screenshot-evidence",
 	"goal": "Keep source-identical merged screenshots visible with honest original provenance and verify main after landing",
 	"createdAt": "2026-10-21T19:06:15.524Z",
-	"updatedAt": "2026-10-21T19:06:53.848Z",
+	"updatedAt": "2026-10-21T19:24:37.029Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:24:30.100Z",
+			"evidence": "Corrected readiness checkpoint f25505fc938cfc39b7097f5790f20dc52bf904fd fails source-identical squash in the unchanged standardized history matrix. Details captures now wait for their actual Contract tab rather than an absent Performance panel."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:24:31.271Z",
+			"evidence": "Retain sealed original captures only across identical complete Git trees; preserve original commit/build and focused status; reject changed trees and verify delivered main after landing."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:24:37.029Z",
+			"evidence": "History and shared projections retain source-identical focused evidence with original provenance. Generated/local guidance requires post-merge decoding; failed green diagnostics now retain the command output in the error."
 		},
 		{
 			"id": "green",
