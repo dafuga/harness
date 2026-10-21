@@ -2,7 +2,7 @@
 	"name": "desktop-ui-verification",
 	"goal": "Desktop browser scenarios pass with current catalogs and controls, correct image lifecycles and no overflow or browser errors.",
 	"createdAt": "2026-10-21T18:23:33.780Z",
-	"updatedAt": "2026-10-21T18:47:48.847Z",
+	"updatedAt": "2026-10-21T19:08:53.728Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,13 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending",
-			"evidence": "Preserved diagnostic runs 022ff344 and a38f2305 include capture setup gaps. Declare the existing Examples screenshot states, retain every assertion, and repeat the stamped run before product changes."
+			"status": "complete",
+			"evidence": "Frozen checkpoint c751db8d8: 190 UI passes, 8 UI failures; 6 unit passes, 4 unit failures. Immutable proof 964e0fe2ef62048e303281976678fd2bfaf86539738df51d7c0eaab77d82bc19. No stamp or capture-state setup errors. Earlier setup diagnostics remain retained.",
+			"completedAt": "2026-10-21T19:06:04.782Z"
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:08:53.728Z",
+			"evidence": "Reuse store permission, Svelte tick, local arrow icon and existing responsive rules; route default stays in its reader. Ten unit and four affected browser cases pass with no unexpected errors; three fresh screenshot states inspected. Frozen tests, fixtures and scenario remain unchanged."
 		},
 		{
 			"id": "green",

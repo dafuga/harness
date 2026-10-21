@@ -231,6 +231,17 @@ and a read-only chat label with no AI actions on immutable revisions.
 The first unchanged-product preflight passes 188 of 198 scenarios. Test preparation
 also exposed a shadowed local variable and a collapsed historical evidence panel;
 those are corrected before the committed red checkpoint and are not defect proof.
-Product repairs are still pending: premature blob URL release, immutable chat
-labelling, the Go to tip control overflowing its fixed width, and search wrapping
-away from the category controls when Models adds a seventh category.
+The final test-only checkpoint is `c751db8d8`. Its clean stamped immutable red
+`964e0fe2ef62048e303281976678fd2bfaf86539738df51d7c0eaab77d82bc19`
+records 190 browser passes and eight product failures, plus six unit passes and
+four failures. Earlier runs with missing stamps or capture declarations remain
+diagnostics rather than defect proof. The existing Examples captures are now
+declared in their scenario without dropping either capture.
+
+The repair releases image URLs after the view update, derives the chat label from
+actual permission, uses the existing arrow icon for Go to tip, and raises the
+existing revision-wrap breakpoint for seven categories. Hub routing owns its
+empty operation default in the reader to satisfy complexity without changing
+routes. All ten focused unit cases and four affected browser cases pass; fresh
+test-owned phone, header and image/thread screenshots have been inspected. The
+unchanged full regression and repository check remain required.

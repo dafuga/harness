@@ -8,7 +8,7 @@
 }
 /* Narrower than one row: the revision takes a row of its own under the bar, and the search, with
    the settings, stays at the end of the first row, as in the explorer bar. */
-@media (max-width: 1409px) {
+@media (max-width: 1520px) {
 	.topbar-search {
 		margin-left: auto;
 	}

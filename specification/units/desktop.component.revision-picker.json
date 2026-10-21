@@ -30,6 +30,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"

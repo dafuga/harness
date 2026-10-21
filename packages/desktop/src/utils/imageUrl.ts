@@ -1,3 +1,4 @@
+import { tick } from 'svelte';
 import type { Workspace } from '../lib/stores/workspace.svelte';
 
 export interface ImageRequest {
@@ -34,6 +35,6 @@ export function imageUrl(
 			});
 	return () => {
 		disposed = true;
-		if (url) URL.revokeObjectURL(url);
+		if (url) void tick().then(() => URL.revokeObjectURL(url));
 	};
 }

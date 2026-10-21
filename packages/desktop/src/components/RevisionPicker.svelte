@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
+	import Icon from './Icon.svelte';
 	import type { Workspace } from '../lib/stores/workspace.svelte';
 	let { workspace }: { workspace: Workspace } = $props();
 	let branch = $state('');
@@ -52,7 +53,7 @@
 				class="go-to-tip"
 				aria-label="Go to tip"
 				title="Go to tip"
-				onclick={chooseBranch}>Go to tip</button
+				onclick={chooseBranch}><Icon name="open" /></button
 			>{/if}
 	</div>{/if}
 
@@ -103,6 +104,8 @@
 		inset-inline-start: 28px;
 	}
 	.revision-picker .go-to-tip {
+		display: inline-grid;
+		place-items: center;
 		width: 32px;
 		min-width: 32px;
 		height: 32px;

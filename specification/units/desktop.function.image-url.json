@@ -21,7 +21,7 @@
 			{
 				"name": "imageUrl.request",
 				"type": "ImageRequest | null",
-				"description": "The entity identity, design version and SHA-256 image identifier to send to the image reader, or null to request no image. This helper passes those identifiers through without validating them itself."
+				"description": "The entity identity, design version and SHA-256 image identifier to send to the image reader, or null to request no image. These identifiers pass through without validation."
 			},
 			{
 				"name": "imageUrl.apply",
@@ -33,7 +33,7 @@
 			{
 				"name": "imageUrl",
 				"type": "()",
-				"description": "A cleanup function that suppresses later results and releases the temporary URL if one was created. Call it when the view is removed or its project, commit or image changes; it does not cancel the underlying read."
+				"description": "A cleanup function that immediately suppresses later results and releases an existing temporary URL after the view updates. Call it when the view is removed or its project, commit or image changes; it does not cancel the underlying read."
 			}
 		],
 		"errors": []
