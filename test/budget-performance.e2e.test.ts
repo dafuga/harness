@@ -1,3 +1,6 @@
+import { UnitBenchmarkService } from '../src/services/UnitBenchmarkService';
+import type { ComponentManifest } from '../src/core/unitTypes';
+import { runCommand } from './support/cli';
 import { profileCodingCompletion } from './support/completionProfiles';
 import { TaskCompletionService } from '../src/services/TaskCompletionService';
 import { readFile } from 'node:fs/promises';
@@ -131,6 +134,7 @@ test('a real operation that is slowed without changing its result fails the end-
 	};
 	const fast = await digest(before);
 	expect(fast.target).toBe('module');
+	await assertBenchmarkDriver(repo, fast.responseDigest);
 	const rss = fast.measurements.find((entry) => entry.metric === 'process-peak-rss-bytes');
 	expect(rss?.value, 'tiny fresh rank process has sane byte-scale RSS').toBeGreaterThan(0);
 	expect(rss?.value, 'tiny fresh rank process has sane byte-scale RSS').toBeLessThan(8 * 1024 ** 3);
@@ -181,4 +185,23 @@ async function assertTaskProfile(repo: VerifyRepo) {
 		'--json'
 	]);
 	expect(JSON.parse(checked.stdout).passed).toBe(true);
+}
+
+/** The normal Node test host invokes the actual driver over a real compiled module. */
+async function assertBenchmarkDriver(repo: VerifyRepo, expectedDigest: string) {
+	const entry = '.cache/rank-driver.mjs';
+	await runCommand(
+		['bun', 'build', 'src/utils/rank.ts', '--target=node', `--outfile=${entry}`],
+		repo.root
+	);
+	const manifest = await repo.json<ComponentManifest>('specification/units/function.rank.json');
+	const target = { kind: 'module' as const, entry, handler: 'rank' };
+	const driver = await new UnitBenchmarkService(repo.root).measure(
+		{ ...manifest, runtime: { ...target, targets: [target] } },
+		{ ...rankWorkload, schemaVersion: 1, rounds: 3, iterations: 10 },
+		'module'
+	);
+	expect(driver.responseDigest).toBe(expectedDigest);
+	const rss = driver.measurements.find((metric) => metric.metric === 'process-peak-rss-bytes');
+	expect(rss?.value).toBeGreaterThan(0);
 }

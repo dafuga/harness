@@ -12,6 +12,7 @@
 			"ProfileInput",
 			"ObservationInput",
 			"PerformanceProfileService",
+			"PerformanceProfileService.peakProcessRssBytes",
 			"PerformanceProfileService.beginScope",
 			"PerformanceProfileService.observe",
 			"PerformanceProfileService.observeAsync",
@@ -61,6 +62,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "PerformanceProfileService.peakProcessRssBytes",
+				"type": "number"
+			},
 			{
 				"name": "PerformanceProfileService.beginScope",
 				"type": "()"
