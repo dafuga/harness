@@ -26,7 +26,9 @@
 	let summary = $derived(entityShown(host, entity));
 	const said = { 'used-in': 'used in', uses: 'uses' } as const;
 	let direction = $derived(
-		host.route.tab === 'used-in' || host.route.tab === 'uses' ? host.route.tab : null
+		(host.route.tab === 'used-in' && entity.category !== 'pages') || host.route.tab === 'uses'
+			? host.route.tab
+			: null
 	);
 	let removed = $derived(entity.change === 'removed');
 	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));

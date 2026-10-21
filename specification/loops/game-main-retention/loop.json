@@ -2,9 +2,11 @@
 	"name": "game-main-retention",
 	"goal": "Integrate newly landed main screenshot retention and measurements without losing game behavior.",
 	"createdAt": "2026-10-21T17:45:56.054Z",
-	"updatedAt": "2026-10-21T17:48:52.869Z",
+	"updatedAt": "2026-10-21T18:09:27.574Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +29,7 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-21T17:48:52.245Z",
-			"evidence": "At 20eb70f4e the original main tests fail four genuine assertions: three loop templates lose focused screenshot bytes and history loses selected-commit source measurements. Preserved raw failure output; these are behavioral failures, not setup errors."
+			"evidence": "At6b53c12f6, combined main/game tests and prepared runner settings reproduce missing focused screenshots and source measurements. The earlier20eb70f4e reproduction remains recorded; use the refreshed frozen corpus for green."
 		},
 		{
 			"id": "propose",
@@ -39,7 +41,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:09:27.574Z",
+			"evidence": "Integrate the pinned main product tree with game ownership and native repairs preserved. Restore focused screenshot bytes, artifact resolution, source projection and page UI. Keep all frozen tests/configuration intact; defer only unrelated new scenario metadata until this paired root proof completes."
 		},
 		{
 			"id": "green",

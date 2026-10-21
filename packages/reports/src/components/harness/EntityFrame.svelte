@@ -26,7 +26,25 @@
 		const unit = host.head.registry.units.find(
 			(item) => item.id === host.route.entity && item.status === 'active'
 		);
-		return unit ? (explorerEntity(host.head, unit, true) ?? undefined) : undefined;
+		if (unit) return explorerEntity(host.head, unit, true) ?? undefined;
+		const parent = host.parent;
+		if (!parent || !host.head.sourceImpact?.units.removed.includes(host.route.entity ?? ''))
+			return undefined;
+		const previous = parent.registry.units.find((item) => item.id === host.route.entity);
+		const removed = previous && explorerEntity(parent, previous, true);
+		if (!removed) return undefined;
+		return {
+			...removed,
+			change: 'removed' as const,
+			lastAt: parent.commit,
+			verdict: {
+				passed: false,
+				label: 'Removed at this commit',
+				reasons: [
+					`This commit removed it; its contract is shown as it last was, at ${shortCommit(parent.commit)}.`
+				]
+			}
+		};
 	});
 	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
 	let choosing = $derived(
@@ -50,6 +68,7 @@
 				{@const evidence = host.lens.evidence(entity.unit)}
 				<EntityScreens
 					options={screenOptions(evidence.scenarios)}
+					preview={entity.unit.preview}
 					{evidence}
 					scope={host.scope}
 					mediaBase={host.mediaBase}

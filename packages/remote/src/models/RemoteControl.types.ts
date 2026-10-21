@@ -3,6 +3,7 @@ export interface RemoteRevision {
 	branch: string;
 	commit: string;
 }
+/** The projects and permissions explicitly approved for one phone. */
 export interface RemoteGrant {
 	projects: { id: string; name: string }[];
 	/** False grants read-only access; omitted preserves older read-and-comment grants. */

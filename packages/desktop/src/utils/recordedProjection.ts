@@ -52,7 +52,12 @@ function record(whole: HarnessRecord, entity: string, shown: Shown): HarnessReco
 function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRevision {
 	const { registry, comparison, sourceImpact } = whole;
 	const proofs = (whole.regressions ?? []).filter(
-		(proof) => !proof.units.length || proof.units.includes(entity)
+		(proof) =>
+			!proof.units.length ||
+			proof.units.includes(entity) ||
+			[proof.green, proof.red].some((point) =>
+				point?.captures?.some((item) => item.unit === entity)
+			)
 	);
 	const ran = (ids: string[]) => ids.filter((id) => shown.has(id));
 	const impact = (stated: Pick<Impact, 'base' | 'units' | 'scenarios'>) => ({
@@ -75,7 +80,15 @@ function detail(whole: HarnessRevision, entity: string, shown: Shown): HarnessRe
 		...(changed === undefined ? {} : { sourceImpact: changed && { ...changed, changed: [] } }),
 		records: whole.records.map((item) => record(item, entity, shown)),
 		explanations: whole.explanations.filter((reason) => reason.unit === entity),
-		...(proofs.length ? { regressions: proofs } : {})
+		...(proofs.length
+			? {
+					regressions: proofs.map((proof) => ({
+						...proof,
+						red: ownPoint(proof.red, entity),
+						...(proof.green ? { green: ownPoint(proof.green, entity)! } : {})
+					}))
+				}
+			: {})
 	};
 }
 
@@ -87,3 +100,14 @@ export function side(whole: ExplorerSide, entity: string): ExplorerSide {
 }
 
 export { recordedProjection } from './recorded-answer/recordedProjection';
+
+function ownPoint(
+	point: NonNullable<HarnessRevision['regressions']>[number]['red'],
+	entity: string
+) {
+	if (!point) return null;
+	return {
+		...point,
+		...(point.captures ? { captures: point.captures.filter((item) => item.unit === entity) } : {})
+	};
+}
