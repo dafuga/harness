@@ -64,10 +64,12 @@ export async function recordRuntime(page: Page, started: number, dimension: stri
 	await appendFile(
 		join(directory, 'runtime.ndjson'),
 		JSON.stringify({
-			revision: execFileSync('git', ['rev-parse', 'HEAD'], {
-				cwd: desktop,
-				encoding: 'utf8'
-			}).trim(),
+			revision:
+				process.env.HARNESS_VERIFY_REVISION ??
+				execFileSync('git', ['rev-parse', 'HEAD'], {
+					cwd: desktop,
+					encoding: 'utf8'
+				}).trim(),
 			dimension,
 			viewport: page.viewportSize(),
 			workload: 'Native page reload to saved game and ready canvas',
