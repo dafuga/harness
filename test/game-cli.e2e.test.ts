@@ -1,9 +1,10 @@
 import { expect, test } from 'vitest';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { execFileSync, spawn } from 'node:child_process';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { GameDocumentRepository } from '../packages/game/src/repositories/GameDocumentRepository';
+import type { GameDocument } from '../packages/game/src/models/Game.types';
 const cli = resolve('src/index.ts');
 
 test.each(['2d', '3d'])(
@@ -31,6 +32,7 @@ test.each(['2d', '3d'])(
 			saved.document.views[0].title = 'Authored courtyard';
 			await repository.save(saved.document, saved.revision);
 			execFileSync('bun', ['run', 'check'], { cwd, stdio: 'pipe' });
+			await invalidGames(cwd, saved.document);
 			expect(await readFile(join(cwd, 'src/routes/inventory/+page.svelte'), 'utf8')).toContain(
 				'Inventory'
 			);
@@ -101,3 +103,47 @@ test('game-only generators reject apps before creating broken imports', async ()
 		await rm(root, { recursive: true, force: true });
 	}
 });
+
+/** The generated project's ordinary test entrypoint enforces the author's graph contract. */
+async function invalidGames(cwd: string, valid: GameDocument) {
+	const cases: [string, (document: GameDocument) => void][] = [
+		[
+			'Unknown checkpoint',
+			(d) => {
+				d.views[0].checkpoints[0].requires = ['missing'];
+			}
+		],
+		[
+			'duplicate id',
+			(d) => {
+				d.views[0].checkpoints[1].id = d.views[0].checkpoints[0].id;
+			}
+		],
+		[
+			'Cyclic checkpoint',
+			(d) => {
+				d.views[0].checkpoints[0].requires = [d.views[0].checkpoints[1].id];
+				d.views[0].checkpoints[1].requires = [d.views[0].checkpoints[0].id];
+			}
+		],
+		[
+			'Unknown view',
+			(d) => {
+				d.views[0].checkpoints[0].actions.push({
+					type: 'transition',
+					target: 'missing',
+					value: true
+				});
+			}
+		]
+	];
+	for (const [message, change] of cases) {
+		const document = structuredClone(valid);
+		change(document);
+		await writeFile(join(cwd, 'game.json'), JSON.stringify(document, null, '\t') + '\n');
+		const result = spawnSync('bun', ['run', 'test:unit'], { cwd, encoding: 'utf8' });
+		expect(result.status, 'Invalid graph must fail the generated project check').toBe(1);
+		expect(result.stdout + result.stderr).toContain(message);
+	}
+	await writeFile(join(cwd, 'game.json'), JSON.stringify(valid, null, '\t') + '\n');
+}

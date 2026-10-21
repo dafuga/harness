@@ -2,7 +2,7 @@
 	"name": "game-unsaved-edits",
 	"goal": "Keep unsaved authored game edits and generated image references when navigation is canceled",
 	"createdAt": "2026-10-21T14:24:58.206Z",
-	"updatedAt": "2026-10-21T14:29:08.795Z",
+	"updatedAt": "2026-10-21T14:30:15.268Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:30:15.268Z",
+			"evidence": "Immutable paired proof 993ceb6af to 7ab19e6bd preserves the same tests and environment: dirty navigation and reload can be canceled, saved data reopens, and historical edits remain blocked."
 		},
 		{
 			"id": "verify",
