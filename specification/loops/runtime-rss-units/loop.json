@@ -6,7 +6,7 @@
 	"name": "runtime-rss-units",
 	"goal": "Record process peak RSS in bytes across Bun and Node without accepting the macOS Bun scaling error.",
 	"createdAt": "2026-10-21T20:24:55.590Z",
-	"updatedAt": "2026-10-21T20:31:29.323Z",
+	"updatedAt": "2026-10-21T20:42:35.970Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -43,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:42:31.289Z",
+			"evidence": "PerformanceProfileService now owns peakProcessRssBytes: Bun/Darwin native bytes remain bytes; KiB reports are converted once. Observations, repeated profiles and UnitBenchmarkService reuse it. Corrected memory methods explicitly state normalization, so prior incompatible measurements remain distinguishable."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:42:33.835Z",
+			"evidence": "651daf526 proof eb39fd48 passes all 17 unchanged runner and real rank benchmark cases; the end-to-end slowdown guard still passes. Another 20 lifecycle, sampling, transformation and profiler-service cases pass with profiling requested. Old records are retained and affected Bun memory values cannot establish budgets."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:42:35.970Z",
+			"evidence": "Fresh isolated recurrence fails unfixed bf56ed73f with 4bdf596c and passes restored 651daf526 with d21bdb46. Command, test/config corpus and environment remain identical. The byte-reference runner and tiny-workload scale assertions reject the original 1024x conversion. Full corrected-source verification remains pending."
 		},
 		{
 			"id": "verify",
