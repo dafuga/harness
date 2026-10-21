@@ -48,6 +48,20 @@ const histories = async (count: number, wanted: string): Promise<SeededHistory[]
 	}
 };
 
+async function survivingRequests(run: BrowserRun, own: SeededHistory, departed: SeededHistory) {
+	const response = await fetch(`${run.url}/harness/data/revisions/${own.commits.baseline}.json`, {
+		signal: AbortSignal.timeout(5_000)
+	});
+	expect(response.status).toBe(200);
+	expect((await response.json()).commit).toBe(own.commits.baseline);
+	const foreign = await fetch(
+		`${run.url}/harness/data/revisions/${departed.commits.baseline}.json`,
+		{ signal: AbortSignal.timeout(5_000) }
+	);
+	expect(foreign.status).toBe(404);
+	await foreign.arrayBuffer();
+}
+
 beforeAll(async () => {
 	scratch = await mkdtemp(join(tmpdir(), 'harness-concurrent-runs-'));
 }, 60_000);
@@ -99,18 +113,8 @@ test('two runs at once each keep their own history, media and results, through t
 	expect(left).toHaveLength(1);
 	expect(left[0].home).toBe(secondRoot);
 	expect(kept(left[0])).toEqual(before[both.indexOf(left[0])]);
-	const own = await fetch(`${second.url}/harness/data/revisions/${left[0].commits.baseline}.json`, {
-		signal: AbortSignal.timeout(5_000)
-	});
-	expect(own.status).toBe(200);
-	expect((await own.json()).commit).toBe(left[0].commits.baseline);
 	const departed = both.find((history) => history.home === firstRoot)!;
-	const foreign = await fetch(
-		`${second.url}/harness/data/revisions/${departed.commits.baseline}.json`,
-		{ signal: AbortSignal.timeout(5_000) }
-	);
-	expect(foreign.status).toBe(404);
-	await foreign.arrayBuffer();
+	await survivingRequests(second, left[0], departed);
 
 	// Its peer gone and its own history seen to be untouched, the longer run may clear away too.
 	secondGate.release();
