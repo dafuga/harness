@@ -43,3 +43,25 @@ The final integration includes main `503f75a9` (mobile navigation). Two existing
 Hosted clean-snapshot verification exposed a missing desktop SvelteKit config during the Reports build. Root tests had generated that file first, masking the cold-build dependency. The root build now synchronizes Reports, desktop and hub configs before building. A separate Git archive of `4cb7ca86` with newly installed locked dependencies completes the whole root build successfully; no warm generated config is shared. The existing clean-snapshot CI setup continues to exercise this boundary.
 
 The completed Reports run passed 610 tests, all builds and audit. The original broad root run passed 891 unit tests before its integration phase; its terminal and temporary logs were lost during a session reset. A fresh complete `bun run check` is running with a workspace-local log. Full verification remains incomplete, and the loop verification step stays pending. Hosted exact-commit records also have outstanding historical reason/budget findings; no baseline approval is fabricated. Jev's startup review has unresolved `needs-review` configuration entries and is not a clean verdict for this final source.
+
+## Consumer links and screenshot previews
+
+PR16 reused the item renderer, but kept pages' minimal variant and component
+usage as flattened names. Its shared-card acceptance checked classes and names,
+so it missed interaction parity. The revised local Harness skill now requires
+rendered variant, consumer footer, hover/focus preview and revision navigation
+coverage whenever catalog items are reused. The existing responsive matrix covers
+this rule; it is not a new workflow.
+
+The committed red checkpoint is 201046d7. Initial cold-snapshot attempts lacked
+dependencies and generated SvelteKit configs and are excluded as defect proof.
+After the normal install/sync preparation, all six responsive usage/card cases
+fail on the actual missing footer or preview, with inspected before captures.
+
+Catalog rows now retain consumer entities instead of only names. A generated
+ExplorerUsage footer and ExplorerUsageLink preview serve visual cards, helper
+cards and table consumer cells in both list and relationship views. The existing
+EntityLink preserves real link behavior and revision scope. Screenshot evidence
+comes from the referenced entity at the selected revision; missing captures and
+image errors stay explicit. New shared UI source and manifests are tracked;
+original screenshots remain outside source control. Verification is pending.

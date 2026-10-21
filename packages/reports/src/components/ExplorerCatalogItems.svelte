@@ -31,15 +31,16 @@
 					{row}
 					{category}
 					{nav}
+					{lens}
 					{mediaBase}
 					{verification}
 					shot={catalogShot(lens.evidence(row.entity.unit), row.entity.unit.preview)}
 				/>
-			{:else}<ExplorerFunctionCard {row} {nav} />{/if}
+			{:else}<ExplorerFunctionCard {row} {nav} {lens} {mediaBase} />{/if}
 		{/each}
 	</div>
 {:else}
-	<ExplorerTable {category} {rows} {nav} {verification} />
+	<ExplorerTable {category} {rows} {nav} {lens} {mediaBase} {verification} />
 {/if}
 
 <style>

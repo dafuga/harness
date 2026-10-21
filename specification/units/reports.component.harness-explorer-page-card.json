@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
 	"title": "Visual catalog card",
-	"responsibility": "Shows a page title and screenshot, or a visual component with its screenshot and usage facts.",
+	"responsibility": "Shows page or component screenshots and facts with a shared linked consumer footer.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -36,24 +36,34 @@
 			{
 				"name": "ExplorerPageCard.category",
 				"type": "'pages' | 'components'",
-				"description": "Defaults to pages. Components retain the same screenshot card while showing their consumers and contained components, with an Open component icon."
+				"description": "Pages keep their title and screenshot, plus the same shared usage footer. Components also show purpose, contained components and verification."
 			},
 			{
 				"name": "ExplorerPageCard.verification",
 				"type": "boolean",
 				"description": "Defaults to true in catalogs; false in relationship tabs to omit verification indicators."
+			},
+			{
+				"name": "ExplorerPageCard.lens",
+				"type": "EntityLens",
+				"description": "Revision-scoped screenshot evidence for linked consumers."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "Pages show only their title and screenshot in one keyboard-accessible link. Capture origin appears on hover. Components retain purpose, usages, provenance and verification. A missing or broken image shows a gap."
+				"description": "Catalog item using the shared Used In consumer links and screenshot previews, with navigation and captures bound to the selected revision. Other item facts and verification follow the category."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-usage",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-entity-link",
 			"via": "import",

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { Evidence } from '../../models/Report.types';
 	import { listed, type CatalogRow } from '../../utils/entityCatalog';
-	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
+	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../utils/entityLens';
 	import { categoryIcon } from '../../utils/harnessIcons';
+	import ExplorerUsage from '../ExplorerUsage.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
@@ -11,6 +12,7 @@
 		shot,
 		mediaBase,
 		nav,
+		lens,
 		category = 'pages',
 		verification = true
 	}: {
@@ -19,6 +21,7 @@
 		shot: Evidence | null;
 		mediaBase: string;
 		nav: EntityNav;
+		lens: EntityLens;
 		/** A page counts its components; a component tells where it is used and what it contains. */
 		category?: 'pages' | 'components';
 		/** Relationship cards keep verification on the entity detail page. */
@@ -68,6 +71,8 @@
 			<h2>{row.name}</h2>
 			<span class="ex-thumb">{@render picture()}</span>
 		</EntityLink>
+		<!-- Beside the page's link, never inside it: a link holds no other link. -->
+		<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
 	{:else}
 		<figure class="ex-card-shot">
 			<EntityLink {to} {nav} class="ex-thumb" label={`Open ${row.name}`}>
@@ -83,10 +88,6 @@
 			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
 			<p class="ex-soft">{row.summary}</p>
 			<p class="ex-fact">
-				<HarnessIcon name="pages" size={22} />
-				<span><strong>Used on</strong> {listed(row.usedOn)}</span>
-			</p>
-			<p class="ex-fact">
 				<HarnessIcon name="layers" size={22} />
 				<span><strong>Contains</strong> {listed(row.contains, 2)}</span>
 				{#if row.shared}<span class="ex-pill gold">Shared</span>{/if}
@@ -99,6 +100,7 @@
 			<EntityLink {to} {nav} class="hx-action gold ex-open-page" label={open} title={open}>
 				<HarnessIcon name="arrow-right" size={18} />
 			</EntityLink>
+			<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
 		</div>
 	{/if}
 </article>
@@ -106,6 +108,7 @@
 <style>
 	.ex-page-card.ex-page-minimal {
 		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
 	}
 	:global(.ex-page-open) {
 		display: grid;
