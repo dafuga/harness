@@ -2,11 +2,9 @@
 	"name": "category-module-forwards",
 	"goal": "Preserve component and module forwarding exports at categorized Svelte public entries without admitting implementation logic",
 	"createdAt": "2026-10-21T22:04:46.624Z",
-	"updatedAt": "2026-10-21T22:05:56.545Z",
+	"updatedAt": "2026-10-21T22:13:49.678Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T22:13:48.215Z",
+			"evidence": "a1daf0d79 preserves the immutable failing-test commit and repairs forwardingScript admission for one props script plus an optional forwarding-only module script. Named compatibility exports and all assertions are retained."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T22:13:49.678Z",
+			"evidence": "Sealed red 8e48a891 at cd2eb7652 and unchanged green aff385ea at a1daf0d79 use identical corpus, command and runtime. All three standard structure cases pass; module implementation logic remains rejected."
 		},
 		{
 			"id": "verify",
