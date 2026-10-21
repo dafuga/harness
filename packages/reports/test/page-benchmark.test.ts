@@ -100,7 +100,7 @@ test.each(['missing build', 'other revision', 'soft navigation'])(
 	async (condition) => {
 		await isolatedProfileCapture(async (directory) => {
 			const f = browser();
-			if (condition === 'missing build') vi.mocked(servedBuild).mockResolvedValue(null);
+			if (condition === 'missing build') vi.mocked(servedBuild).mockResolvedValue(undefined);
 			if (condition === 'other revision')
 				vi.mocked(servedBuild).mockResolvedValue({ buildId: 'other', revision: 'b'.repeat(40) });
 			if (condition === 'soft navigation') f.navigation.name += '/previous';
