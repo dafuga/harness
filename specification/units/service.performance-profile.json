@@ -10,7 +10,11 @@
 		"source": ["src/services/PerformanceProfileService.ts"],
 		"symbols": [
 			"ProfileInput",
+			"ObservationInput",
 			"PerformanceProfileService",
+			"PerformanceProfileService.observe",
+			"PerformanceProfileService.observeAsync",
+			"PerformanceProfileService.flush",
 			"PerformanceProfileService.measure",
 			"PerformanceProfileService.capture"
 		]
@@ -18,6 +22,22 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "PerformanceProfileService.observe.input",
+				"type": "ObservationInput"
+			},
+			{
+				"name": "PerformanceProfileService.observe.operation",
+				"type": "() => T"
+			},
+			{
+				"name": "PerformanceProfileService.observeAsync.input",
+				"type": "ObservationInput"
+			},
+			{
+				"name": "PerformanceProfileService.observeAsync.operation",
+				"type": "() => T"
+			},
 			{
 				"name": "PerformanceProfileService.measure.input",
 				"type": "ProfileInput"
@@ -36,6 +56,18 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "PerformanceProfileService.observe",
+				"type": "T"
+			},
+			{
+				"name": "PerformanceProfileService.observeAsync",
+				"type": "Promise<Awaited<T>>"
+			},
+			{
+				"name": "PerformanceProfileService.flush",
+				"type": "Measured[]"
+			},
 			{
 				"name": "PerformanceProfileService.measure",
 				"type": "Promise<Measured[]>"

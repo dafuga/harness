@@ -6,9 +6,11 @@
 	"name": "runtime-observation-capture",
 	"goal": "Harness captures real one-pass synchronous and awaited operation latency and process memory without rerunning effectful behavior tests or replacing results.",
 	"createdAt": "2026-10-21T09:27:44.989Z",
-	"updatedAt": "2026-10-21T09:27:49.215Z",
+	"updatedAt": "2026-10-21T09:47:14.071Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -29,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:39:03.130Z",
+			"evidence": "Sealed red056abf08960fbbefec6a5f65d947186af814596dc000491ea498426318ecc007 at80509f46 fails with profiler.observe is not a function. Four one-pass boundary cases fail; the three batch profiling cases pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:39:03.800Z",
+			"evidence": "Extend the existing profiler with observe, explicit observeAsync and aggregate flush. Execute callbacks once, preserve sync return identity and errors, leave raw promises untouched in the sync path, and measure awaited completion explicitly. Aggregate actual durations and whole-process RSS without retaining test inputs or outputs."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:47:14.071Z",
+			"evidence": "observe, observeAsync and flush capture actual calls once, aggregate timings without retaining values, preserve sync results/errors and label process RSS. Eighteen focused tests, types, source audit, API build and two real packed-consumer cases pass. Public SDK smoke calls pass in Node and Bun."
 		},
 		{
 			"id": "green",
