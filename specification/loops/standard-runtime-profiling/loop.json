@@ -6,7 +6,7 @@
 	"name": "standard-runtime-profiling",
 	"goal": "Standard runners record actual registered operations through Harness profiling with preserved behavior, source scope, benchmark boundaries and truthful missing coverage.",
 	"createdAt": "2026-10-21T10:25:19.874Z",
-	"updatedAt": "2026-10-21T10:53:23.912Z",
+	"updatedAt": "2026-10-21T11:11:03.073Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:10:58.641Z",
+			"evidence": "Committed01669429 red proof2c53496af68bb7a1a9d4ac03ac564045701939907eb24a3674d10673d3af543c: all five unchanged cases fail because adapter.transform is absent."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:11:00.592Z",
+			"evidence": "Transform only unambiguously registered module source in memory; wrap declared callable boundaries with Harness observations. Preserve receivers and promises, skip generators/accessors, and keep fixture values out of captures."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:11:03.073Z",
+			"evidence": "Internal adapter plus cohesive source-transform/runtime modules; five unchanged actual Bun execution cases pass. Realpath ownership is required; source and public SDK remain unchanged."
 		},
 		{
 			"id": "green",

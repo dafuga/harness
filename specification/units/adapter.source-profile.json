@@ -7,12 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/source-profile-adapter/SourceProfileAdapter.ts"],
+		"source": [
+			"src/adapters/source-profile-adapter/SourceProfileAdapter.ts",
+			"src/adapters/source-profile-adapter/instrumentSource.ts",
+			"src/adapters/source-profile-adapter/profileRuntime.ts"
+		],
 		"symbols": [
 			"SourceProfileAdapterConfig",
 			"SourceProfileAdapter",
 			"SourceProfileAdapter.constructor",
-			"SourceProfileAdapter.connect"
+			"SourceProfileAdapter.transform",
+			"instrumentSource",
+			"watchOperation",
+			"watchMethod",
+			"flushSourceProfiles"
 		]
 	},
 	"contract": {
@@ -21,17 +29,80 @@
 			{
 				"name": "SourceProfileAdapter.constructor.config",
 				"type": "SourceProfileAdapterConfig"
+			},
+			{
+				"name": "SourceProfileAdapter.transform.source",
+				"type": "string"
+			},
+			{
+				"name": "SourceProfileAdapter.transform.id",
+				"type": "string"
+			},
+			{
+				"name": "instrumentSource.source",
+				"type": "string"
+			},
+			{
+				"name": "instrumentSource.path",
+				"type": "string"
+			},
+			{
+				"name": "instrumentSource.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "watchOperation.args",
+				"type": "never[]"
+			},
+			{
+				"name": "watchMethod.owner",
+				"type": "object"
+			},
+			{
+				"name": "watchMethod.name",
+				"type": "string"
+			},
+			{
+				"name": "watchMethod.boundary",
+				"type": "Boundary"
 			}
 		],
 		"outputs": [
 			{
-				"name": "SourceProfileAdapter.connect",
-				"type": "string"
+				"name": "SourceProfileAdapter.transform",
+				"type": "string | null"
+			},
+			{
+				"name": "instrumentSource",
+				"type": "string | null"
+			},
+			{
+				"name": "watchOperation",
+				"type": "unknown"
+			},
+			{
+				"name": "watchMethod",
+				"type": "void"
+			},
+			{
+				"name": "flushSourceProfiles",
+				"type": "void"
 			}
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.performance-profile",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/source-profile-adapter/SourceProfileAdapter.ts",
