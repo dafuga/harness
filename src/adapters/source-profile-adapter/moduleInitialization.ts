@@ -35,37 +35,46 @@ export function initializationEdits(file: ts.SourceFile, unit: ComponentManifest
 	];
 }
 
-function hasCallable(statement: ts.Statement): boolean {
-	if (ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement)) return true;
-	if (!ts.isVariableStatement(statement)) return false;
-	return statement.declarationList.declarations.some((item) => {
-		if (!item.initializer) return false;
-		const value = unwrapped(item.initializer);
-		return ts.isArrowFunction(value) || ts.isFunctionExpression(value);
-	});
+function hasCallable(node: ts.Node): boolean {
+	if (ts.isClassDeclaration(node) || ts.isClassExpression(node)) return true;
+	if (ts.isFunctionLike(node) && 'body' in node && node.body) return true;
+	return ts.forEachChild(node, hasCallable) === true;
 }
 
 function dataInitializer(expression: ts.Expression, unit: ComponentManifest): boolean {
 	const value = unwrapped(expression);
 	if (ts.isArrowFunction(value) || ts.isFunctionExpression(value)) return false;
 	if (ts.isIdentifier(value) || ts.isPropertyAccessExpression(value)) return false;
-	if (['model', 'config'].includes(unit.kind)) return true;
-	if (literalData(value)) return true;
+	if (
+		ts.isObjectLiteralExpression(value) ||
+		ts.isArrayLiteralExpression(value) ||
+		dataConstructor(value)
+	)
+		return literalData(value);
+	return ['model', 'config'].includes(unit.kind) || literalData(value);
+}
+
+function literalData(expression: ts.Expression): boolean {
+	const value = unwrapped(expression);
+	if (ts.isObjectLiteralExpression(value))
+		return value.properties.every(
+			(property) => ts.isPropertyAssignment(property) && literalData(property.initializer)
+		);
+	if (ts.isArrayLiteralExpression(value)) return value.elements.every(literalData);
+	if (dataConstructor(value)) return (value.arguments ?? []).every(literalData);
+	return (
+		ts.isLiteralExpression(value) ||
+		[ts.SyntaxKind.TrueKeyword, ts.SyntaxKind.FalseKeyword, ts.SyntaxKind.NullKeyword].includes(
+			value.kind
+		)
+	);
+}
+
+function dataConstructor(value: ts.Expression): value is ts.NewExpression {
 	return (
 		ts.isNewExpression(value) &&
 		ts.isIdentifier(value.expression) &&
 		['Map', 'Set', 'RegExp', 'Date', 'URL'].includes(value.expression.text)
-	);
-}
-
-function literalData(value: ts.Expression): boolean {
-	return (
-		ts.isLiteralExpression(value) ||
-		ts.isObjectLiteralExpression(value) ||
-		ts.isArrayLiteralExpression(value) ||
-		[ts.SyntaxKind.TrueKeyword, ts.SyntaxKind.FalseKeyword, ts.SyntaxKind.NullKeyword].includes(
-			value.kind
-		)
 	);
 }
 
