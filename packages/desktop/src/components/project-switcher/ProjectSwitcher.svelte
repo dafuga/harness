@@ -57,6 +57,12 @@
 		white-space: nowrap;
 		font-size: 14px;
 	}
+	/* On a phone the name takes what its row leaves, cut short only where the row ends. */
+	@media (max-width: 560px) {
+		.project-name {
+			max-width: none;
+		}
+	}
 	/* In its dialog the switcher is a field of the dialog's width, drawn as a field. */
 	.picker-field {
 		display: grid;

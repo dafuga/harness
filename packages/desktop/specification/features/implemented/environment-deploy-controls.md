@@ -37,3 +37,9 @@ Use one visual language for promotion, activity rows, directional routes and dep
 The environment selector precedes the branch, commit and deployment icons in the top-right toolbar. Keyboard order follows the visual order. General project chat, like entity chat, carries the selected available environment for Change only. Both run paths validate deployment configuration before admitting a scoped change and reuse the verified promotion chain, capped at preprod. Production remains a single explicit promotion from preprod through Deploy.
 
 Integration verification preserves current main behavior: Helpers and Models are catalog categories; general chat permits explicit Change at a writable tip and stays available read-only in history. Search opens a modal from its icon. Tests exercise collapsed revision icons, modal search bounds and protected read-only chat rather than expecting the older always-visible fields.
+
+## Compact mobile workspace and dialogs
+
+At 320px and 390px the persistent mobile header stays at or below 164px, leaving room for project content. Keep the environment directly selectable to the left of revision and deployment controls; workbench, branch, commit, search and deployment activity remain accessible. Secondary revision and deployment timestamps stay available without permanent stacked header rows. Catalog navigation may scroll horizontally without widening the page.
+
+Promotion, concurrent activity and shared deployment details remain within the viewport with at least 8px clearance, including 320×480 short screens. Tall content scrolls inside the dialog; the promotion action remains visible during progress and completion. Preserve complete readable commit IDs, distance, routes, status, all steps and receipts, focus restoration and one production action. Browser coverage owns both narrow-width and short-height acceptance states; width-only overflow checks are insufficient.
