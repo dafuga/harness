@@ -9,7 +9,8 @@
 		"desktop.store.workspace",
 		"reports.component.entity-search",
 		"reports.component.entity-search-results",
-		"reports.function.entity-search"
+		"reports.function.entity-search",
+		"desktop.style.responsive"
 	],
 	"states": [
 		{
@@ -107,6 +108,14 @@
 			"kind": "e2e",
 			"runner": "command",
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-search-scope.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "search-fit-ui",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/ui-search-fit.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 240000
 		}
