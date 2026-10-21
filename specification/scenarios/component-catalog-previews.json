@@ -175,7 +175,10 @@
 		"desktop.component.deployment-activity",
 		"desktop.component.deployment-dialog",
 		"desktop.component.environment-picker",
-		"desktop.component.deployment-route"
+		"desktop.component.deployment-route",
+		"reports.component.explorer-catalog-items",
+		"reports.component.explorer-usage",
+		"reports.component.explorer-usage-link"
 	],
 	"states": [
 		{
@@ -1209,6 +1212,24 @@
 			"title": "Deployment route",
 			"coverage": "required",
 			"units": ["desktop.component.deployment-route"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items",
+			"title": "ExplorerCatalogItems",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-usage",
+			"title": "ExplorerUsage",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link",
+			"title": "ExplorerUsageLink",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
 		}
 	],
 	"viewports": [
@@ -1414,7 +1435,10 @@
 				"desktop-component-deployment-activity",
 				"desktop-component-deployment-dialog",
 				"desktop-component-environment-picker",
-				"desktop-component-deployment-route"
+				"desktop-component-deployment-route",
+				"reports-component-explorer-catalog-items",
+				"reports-component-explorer-usage",
+				"reports-component-explorer-usage-link"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

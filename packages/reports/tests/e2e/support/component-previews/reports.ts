@@ -117,7 +117,9 @@ export const reportCases: PreviewCases = {
 			},
 			usedIn: []
 		},
-		nav: d.navigation
+		nav: d.navigation,
+		lens: d.reading,
+		mediaBase: '/media/'
 	},
 	'reports.component.filter-dialog': {
 		children: text('<label>Verification<select><option>Any result</option></select></label>'),
