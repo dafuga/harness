@@ -1,15 +1,27 @@
 import { test } from 'vitest';
-import { spawnSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
 import { resolve } from 'node:path';
 import { expect } from '../../../test/verificationExpect';
 
 /** Real Swift checks on macOS. Other platforms have an explicit native coverage gap. */
-function nativeCheck(script: string) {
-	const result = spawnSync('bun', ['run', script], {
-		cwd: resolve(import.meta.dirname, '..'),
-		encoding: 'utf8',
-		timeout: 120000,
-		maxBuffer: 2_000_000
+async function nativeCheck(script: string) {
+	const result = await new Promise<{
+		error: Error | null;
+		status: number | string;
+		stdout: string;
+		stderr: string;
+	}>((done) => {
+		execFile(
+			'bun',
+			['run', script],
+			{
+				cwd: resolve(import.meta.dirname, '..'),
+				encoding: 'utf8',
+				timeout: 120000,
+				maxBuffer: 2_000_000
+			},
+			(error, stdout, stderr) => done({ error, status: error?.code ?? 0, stdout, stderr })
+		);
 	});
 	const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
 	console.info(output);

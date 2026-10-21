@@ -1,4 +1,5 @@
-import type { RemoteHostStatus } from './RemoteControl.types';
+import type { RemoteHostStatus, RemoteGrant } from './RemoteControl.types';
+export type { RemoteGrant, RemoteRevision } from './RemoteControl.types';
 
 export const REMOTE_PROTOCOL = 1;
 
@@ -179,17 +180,6 @@ export interface WireEvent {
 }
 export type WireMessage = WireRequest | WireResponse | WireEvent;
 
-/** The checked-out branch and its tip, as the client last saw them. */
-export interface RemoteRevision {
-	branch: string;
-	commit: string;
-}
-export interface RemoteGrant {
-	projects: { id: string; name: string }[];
-	/** False grants read-only access; omitted preserves older read-and-comment grants. */
-	comments?: boolean;
-	agents: boolean;
-}
 export interface RemoteResume {
 	epoch: string;
 	sequence: number;

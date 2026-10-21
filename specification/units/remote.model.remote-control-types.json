@@ -9,6 +9,8 @@
 	"owns": {
 		"source": ["packages/remote/src/models/RemoteControl.types.ts"],
 		"symbols": [
+			"RemoteRevision",
+			"RemoteGrant",
 			"RemotePairingOffer",
 			"RemotePairingRequest",
 			"RemoteDeviceInfo",
@@ -36,13 +38,7 @@
 		],
 		"errors": []
 	},
-	"dependencies": [
-		{
-			"unit": "remote.model.remote-types",
-			"via": "import",
-			"origin": "derived"
-		}
-	],
+	"dependencies": [],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/remote/src/models/RemoteControl.types.ts",
