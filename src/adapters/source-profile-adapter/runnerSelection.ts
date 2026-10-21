@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { componentManifestSchema } from '../../core/unitTypes';
 
 export function profileSelection(root: string) {
+	if (process.env.HARNESS_COLLECT_FILES) return null;
 	const explicit = process.env.HARNESS_RUNTIME_PROFILE_DIR;
 	const evidence =
 		process.env.TAKE_SCREENSHOT === '1' ? process.env.HARNESS_EVIDENCE_DIR : undefined;

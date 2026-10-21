@@ -6,7 +6,7 @@
 	"name": "source-runner-lifecycle",
 	"goal": "Source profiling observes actual execution with bounded overhead while preserving foreign-process startup, type erasure, declaration collection and explicit benchmark boundaries.",
 	"createdAt": "2026-10-21T13:14:51.960Z",
-	"updatedAt": "2026-10-21T13:14:55.434Z",
+	"updatedAt": "2026-10-21T13:28:31.473Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:28:29.781Z",
+			"evidence": "Committed1c5b852ca red2c3e6961aaf7: six of seven new lifecycle/sampling cases fail for actual loader/observer behavior, while the registered-import positive case passes. Lint passes on the strengthened tests."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:28:30.509Z",
+			"evidence": "Use a lightweight Bun hook with lazy, cycle-safe compiler loading; trim type-only imports; separate declaration collection; remove only the owned preload in benchmark children. Limit automatic observations to first10successful calls with async slot release; never replay or suppress business calls."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:28:31.473Z",
+			"evidence": "All34 focused profiling/runner cases pass together. Types, lint, audit and registry pass. The original five failed files and broader checks remain to be replayed with evidence requested; no original limit or assertion was changed."
 		},
 		{
 			"id": "green",

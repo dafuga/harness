@@ -100,6 +100,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## Integration Checkpoints
 
+- Before adopting runtime hooks, run the standard loader lifecycle and sampling cases: verify lazy foreign-process startup, type-only and live side-effect imports, declaration-only collection, owned-preload removal for benchmark children, and bounded observations that preserve every application call. Rerun the original timing guards with profiling requested; a focused loader pass alone is insufficient.
 - When changing native runner startup, exercise normal root and inherited configurations without native TypeScript loading, disabling that capability when the host supports it. Keep native entries in JavaScript and let the supported runner compile typed tooling; a successful import on a newer Node does not prove that boundary.
 - For shared test-support edits, run the owning workspace audit before the long root check. Root audit exclusions can omit files the workspace audits. Extract cohesive assertions into existing support modules when a file reaches its limit.
 - Test Node server imports with external dependencies and packaged CJS bundles; cold-import and call the operation in each supported mode. Prefer public package entries over internal build files.
