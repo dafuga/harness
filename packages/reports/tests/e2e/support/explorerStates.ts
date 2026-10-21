@@ -77,8 +77,8 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 			'aria-selected',
 			'true'
 		);
-		for (const name of ['Used In', 'Uses'])
-			await expect(page.getByRole('tab', { name, exact: true })).toBeVisible();
+		await expect(page.getByRole('tab', { name: 'Uses', exact: true })).toBeVisible();
+		await expect(page.getByRole('tab', { name: 'Used In', exact: true })).toHaveCount(0);
 	},
 	// What uses a component, the page that shows it too, in a section of its own.
 	async 'used-in'(page) {

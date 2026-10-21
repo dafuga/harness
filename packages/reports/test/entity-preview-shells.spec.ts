@@ -56,7 +56,9 @@ test('the shell says it is a Shell, uses the order list and is used in the order
 	await open(page, { category: 'shells', entity: frameId, tab: 'used-in' }, 'shells');
 	await settled(page, 'shell-used-in-desktop');
 	await expect(content(page).getByText('Shell', { exact: true }).first()).toBeVisible();
-	await expect(content(page).getByRole('link', { name: 'Orders page', exact: true })).toBeVisible();
+	await expect(
+		content(page).getByRole('link', { name: 'Open Orders page', exact: true })
+	).toBeVisible();
 	await open(page, { category: 'shells', entity: frameId, tab: 'uses' }, 'shells');
 	await expect(content(page).getByRole('link', { name: 'Order list', exact: true })).toBeVisible();
 	await open(page, { commit: commits.first, category: 'components', entity: frameId }, 'shells');

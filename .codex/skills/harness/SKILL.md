@@ -96,6 +96,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Complete and format tracked loop metadata before the final capture run. Keep the captured tree unchanged through landing; further tracked changes require fresh captures.
 - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
 
+- Keep every wrapped scenario command registered under its actual package, runner, file and output states. Every screenshot viewport names its compiled build. The standard self-verification configuration matrix checks these declarations before long verification. When benchmark captures are added, retain all captures for validation but assert visual counts only over visual media; do not drop measurements to restore old counts.
+
 ## Measurement Evidence
 
 - End coding and planning tasks through `harness task check`. Coding completion requires an intact record for the committed source and actual representative latency and memory profiles, independently of budget declarations. Run `harness verify run --require-performance`; use the Harness `PerformanceProfileService` or declared benchmark runner rather than ad hoc timing scripts.
