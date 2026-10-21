@@ -2,7 +2,7 @@
 	"name": "typed-usage-lists",
 	"goal": "Group consumers by module type and reserve screenshot previews for visual modules",
 	"createdAt": "2026-10-21T13:20:50.119Z",
-	"updatedAt": "2026-10-21T13:21:14.753Z",
+	"updatedAt": "2026-10-21T13:24:09.466Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:24:08.492Z",
+			"evidence": "Frozen browser matrix at 7eabf80a9 fails on missing typed consumer headings/lists; immutable run fb920774 retained before screenshots."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:24:09.466Z",
+			"evidence": "Reuse declared-category grouping in relationship sections and shared footer. Keep visual screenshot renderer; nonvisual previews use code names without screenshots. Existing standard matrix is the guard."
 		},
 		{
 			"id": "implement",

@@ -58,7 +58,13 @@
 						: 'No page shows it and nothing else uses it.'}
 				</p>
 			{/if}
-			{@render cards(usage.usedIn)}
+			{#each usage.usedInGroups as group (group.title)}
+				<h3>
+					<HarnessIcon name={group.icon} size={18} />
+					{group.title} <span class="ex-count">{group.items.length}</span>
+				</h3>
+				{@render cards(group.items)}
+			{/each}
 		</section>
 	{/if}
 	{#if show !== 'used-in'}

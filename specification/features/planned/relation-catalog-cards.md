@@ -108,3 +108,18 @@ Exact product commit `55c9fe81` source observations (bytes and decision points):
 | Catalog row data            |         7043 |         43 |
 
 Source observations are independent of full verification. Runtime capture measurements describe the synthetic route and whole renderer; they do not attribute allocations or latency to one component. No production or native-device deployment is claimed.
+
+## Typed consumer lists
+
+Used In now groups pages, shells, components, functions, configs, services and
+models separately, omitting empty groups. The shared footer uses the same grouping.
+Visual components retain screenshot cards even when a capture is missing. Hover
+and keyboard previews for nonvisual modules show their code name and module role,
+without screenshot placeholders or image requests. Module category and navigation
+identity stay unchanged; a service is not reclassified as a pure helper.
+
+The previous matrix checked dependency headings and working consumer links but
+flattened reverse dependencies and accepted an empty screenshot for OrderStore.
+The existing relation, helper-card and responsive interaction tests now require
+consumer type lists and nonvisual code previews. The project skill records this
+review checkpoint for future shared catalog changes.
