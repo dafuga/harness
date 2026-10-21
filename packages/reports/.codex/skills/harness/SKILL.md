@@ -31,3 +31,5 @@ separately from the purity and reuse checks.
 - Nesting: 4 levels.
 - Parameters: 4.
 - Classes per file: 1.
+
+Profile a route only under its explicitly exercised framework owner. Do not copy whole-page navigation or heap samples to a fixed list of shared modules. Each additional subject needs its own actual workload and declared boundary; source imports alone do not prove execution.
