@@ -116,7 +116,7 @@ function recordUsage(input: ProcessInput, duration: number, usage: string): void
 				unitOfMeasure: 'bytes',
 				value: memory,
 				method:
-					'Maximum RSS of the actual child process including its shared runtime; excludes the parent test runner and is not isolated unit memory or the sum of descendants.'
+					'OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.'
 			}
 		];
 	});
