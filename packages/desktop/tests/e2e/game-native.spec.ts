@@ -1,4 +1,4 @@
-import { keepEdits } from './game-unsaved-fixture';
+import { keepNativeNavigation } from './game-unsaved-fixture';
 import {
 	expect,
 	test,
@@ -56,7 +56,7 @@ async function author(page: Page) {
 	await expect(
 		page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
 	).toBeVisible();
-	await keepEdits(page);
+	await keepNativeNavigation(page);
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 }
@@ -100,6 +100,8 @@ async function play(page: Page, dimension: string) {
 	);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.getByText('Reached the garden', { exact: true })).toBeVisible();
+	await page.getByRole('button', { name: 'Save', exact: true }).click();
+	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 }
 async function history(page: Page, root: string) {
 	execFileSync('git', ['add', '.'], { cwd: root });
@@ -108,14 +110,13 @@ async function history(page: Page, root: string) {
 	const url = new URL(page.url());
 	url.searchParams.set('commit', commit);
 	url.searchParams.set('readonly', '1');
-	page.once('dialog', (dialog) => dialog.accept());
 	await page.goto(url.href);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
-	await page.getByText('Collect the key', { exact: true }).first().click();
+	await page.getByText('Collected key', { exact: true }).first().click();
 	await expect(
-		page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
+		page.getByRole('img', { name: 'Collected key gameplay reference', exact: true })
 	).toBeVisible();
 	await expect(
 		page.getByRole('button', { name: 'Regenerate checkpoint image', exact: true })
@@ -140,6 +141,7 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 		const name = 'harness-e2e-game-' + dimension + '-' + Date.now();
 		const root = join(homedir(), 'projects', name);
 		let app: ElectronApplication | undefined;
+		let finished = false;
 		try {
 			app = await test.step('Launch real native host', () => launch(profile));
 			browserErrors.watch(app.context());
@@ -151,8 +153,10 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 			await persisted(page, root, dimension);
 			await play(page, dimension);
 			await history(page, root);
+			finished = true;
 		} finally {
-			await app?.close();
+			if (finished) await app?.close();
+			else app?.process().kill();
 			await rm(profile, { recursive: true, force: true });
 			await rm(root, { recursive: true, force: true });
 		}

@@ -23,3 +23,24 @@ export async function keepEdits(page: Page) {
 	await expect(title).toHaveValue(value);
 	await expect(page.getByText('Unsaved changes', { exact: true })).toBeVisible();
 }
+
+/** Native app navigation uses a controlled confirm; host unload is checked by startup tests and native UI. */
+export async function keepNativeNavigation(page: Page) {
+	const address = page.url();
+	const title = page.getByLabel('View title', { exact: true });
+	const saved = await title.inputValue();
+	await page.evaluate(() => {
+		window.confirm = (message) => {
+			document.documentElement.dataset.gameConfirmation = message;
+			return false;
+		};
+	});
+	await page.getByRole('link', { name: 'Back to project', exact: true }).click();
+	await expect(page.locator('html')).toHaveAttribute(
+		'data-game-confirmation',
+		'Discard unsaved game changes?'
+	);
+	await expect(page).toHaveURL(address);
+	await expect(title).toHaveValue(saved);
+	await expect(page.getByText('Unsaved changes', { exact: true })).toBeVisible();
+}
