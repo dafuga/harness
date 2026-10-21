@@ -16,11 +16,13 @@ export async function previewOwner(port: number, identity: string): Promise<stri
 			throw new Error('Preview ownership port is occupied by another application.');
 		if (owner.url !== null && !/^http:\/\/127\.0\.0\.1:\d+$/.test(owner.url))
 			throw new Error('Invalid preview owner address.');
-		if (owner.identity !== identity)
-			throw new Error(
-				`A different Harness preview is already running at ${owner.url ?? 'startup'}. Close it before switching checkout or history data.`
-			);
-		if (owner.url) return owner.url;
+		if (owner.url) {
+			if (owner.identity !== identity)
+				throw new Error(
+					`A different Harness preview is already running at ${owner.url}. Close it before switching checkout or history data.`
+				);
+			return owner.url;
+		}
 		await new Promise((resolve) => setTimeout(resolve, 100));
 	}
 	throw new Error('The existing Harness preview is still starting; no duplicate was launched.');
