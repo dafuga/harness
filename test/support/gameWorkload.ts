@@ -82,16 +82,21 @@ afterEach(({ task }) => {
 	if (!units.length) return;
 	const elapsedMs = performance.now() - started;
 	const rssBytes = process.memoryUsage().rss;
+	const caseId =
+		'case-' +
+		createHash('sha256')
+			.update(file + '\n' + task.name)
+			.digest('hex')
+			.slice(0, 24);
 	const measurements = units.flatMap((unit) => {
-		const common = { unit, workload: task.name, target: 'process', samples: 1 };
+		const common = { unit, workload: caseId, target: 'process', samples: 1 };
 		return [
 			{
 				...common,
 				metric: 'behavior-case-duration-ms',
 				unitOfMeasure: 'ms',
 				value: elapsedMs,
-				method:
-					'Wall time of the existing standard behavior case, including deterministic mocks, fixtures and assertions; not production provider, network or GPU latency.'
+				method: `Standard case "${task.name}": wall time including deterministic mocks, fixtures and assertions; not production provider, network or GPU latency.`
 			},
 			{
 				...common,
@@ -107,12 +112,7 @@ afterEach(({ task }) => {
 		captureLineSchema.parse({
 			evidence: 'game-behavior-benchmarks',
 			kind: 'benchmark',
-			state:
-				'case-' +
-				createHash('sha256')
-					.update(file + '\n' + task.name)
-					.digest('hex')
-					.slice(0, 24),
+			state: caseId,
 			file: 'game-behavior-' + randomUUID() + '.json',
 			mediaType: 'application/json'
 		}),
