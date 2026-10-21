@@ -127,3 +127,21 @@ console.log(JSON.stringify(names));`;
 	);
 	return JSON.parse(result.stdout) as string[];
 }
+
+/** The actual workspace launcher, resolved to this source checkout rather than a global CLI. */
+export function profileWorkspaceAudit(workspace: string) {
+	return measureProcess(
+		{
+			units: [`${workspace}.script.harness-audit`],
+			workload: 'cold-current-source-workspace-audit',
+			target: 'module',
+			command: ['bun', 'scripts/harness-audit.ts'],
+			cwd: join(process.cwd(), 'packages', workspace),
+			env: {
+				HARNESS_CLI_PATH: join(process.cwd(), 'src/index.ts'),
+				HARNESS_RUNTIME_PROFILE_BOUNDARY: 'benchmark'
+			}
+		},
+		runCommand
+	);
+}

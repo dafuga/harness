@@ -1,14 +1,18 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, extname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { auditProject } from '../src/audit/audit';
 import { collectAuditedFiles } from '../src/audit/collect';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import { PerformanceProfileService } from '../src/services/PerformanceProfileService';
-import { adaptersForProfile, resolveAuditProfile } from '../src/audit/adapters/registry';
-import { measureProcess } from './support/cli-measurement/measureHarness';
-import { runCommand } from './support/cli';
+import {
+	auditAdapters,
+	adaptersForProfile,
+	resolveAuditProfile
+} from '../src/audit/adapters/registry';
+import { observedTaskOperation, profileWorkspaceAudit } from './support/taskProfiles';
+import { harnessRuleLimits } from '../src/rules/catalog';
 
 test('audit profiles select ecosystem adapters', () => {
 	expect(adaptersForProfile('app').map((adapter) => adapter.id)).toEqual([
@@ -40,20 +44,7 @@ test('audit profiles select ecosystem adapters', () => {
 test.each(['reports', 'planning', 'desktop', 'collaboration', 'hub', 'remote', 'relay'])(
 	'the %s workspace launcher audits through the current repository CLI',
 	async (workspace) => {
-		const result = await measureProcess(
-			{
-				units: [`${workspace}.script.harness-audit`],
-				workload: 'cold-current-source-workspace-audit',
-				target: 'module',
-				command: ['bun', 'scripts/harness-audit.ts'],
-				cwd: join(process.cwd(), 'packages', workspace),
-				env: {
-					HARNESS_CLI_PATH: join(process.cwd(), 'src/index.ts'),
-					HARNESS_RUNTIME_PROFILE_BOUNDARY: 'benchmark'
-				}
-			},
-			runCommand
-		);
+		const result = await profileWorkspaceAudit(workspace);
 		expect(result.exitCode, result.stderr).toBe(0);
 		expect(result.stdout).toContain('Harness audit passed.');
 	}
@@ -180,4 +171,48 @@ test.each([
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
+});
+
+test.each([
+	[
+		'typescript',
+		'src/components/bad-name.tsx',
+		'export const View = () => null;',
+		'react-component-name'
+	],
+	['svelte', 'src/components/Bad.svelte', '<script>let count = 0;</script>', 'svelte-script-lang'],
+	['sql', 'db/migrations/drop_users.sql', 'DROP TABLE users;', 'sql-dangerous-migration'],
+	['cpp', 'src/native/bad.hpp', 'using namespace std;', 'cpp-header-namespace'],
+	['rust', 'src/main.rs', 'pub fn read() { unsafe { todo!(); } }', 'rust-unsafe-comment'],
+	['python', 'scripts/run.py', 'def bad(items=[]):\n    return items', 'python-mutable-default'],
+	['shell', 'scripts/run.sh', 'rm -rf $TARGET', 'shell-shebang'],
+	['wasm', 'src/module.wasm', 'synthetic artifact bytes', 'wasm-artifact-placement'],
+	[
+		'antelope-dapp',
+		'contracts/token/source/main.cpp',
+		'void apply() {}',
+		'antelope-contract-workspace'
+	]
+])('the %s adapter profiles its real rule evaluation', async (id, path, contents, expected) => {
+	const adapter = auditAdapters.find((item) => item.id === id)!;
+	const lines = contents.split('\n');
+	const file = {
+		absolutePath: join(tmpdir(), 'harness-rule-fixture', path),
+		relativePath: path,
+		extension: extname(path),
+		contents,
+		lines,
+		structuralLines: lines,
+		limits: harnessRuleLimits,
+		size: Buffer.byteLength(contents)
+	};
+	const findings = await observedTaskOperation(
+		`audit.adapters-${id}`,
+		'evaluate-representative-rule-violation',
+		() =>
+			id === 'antelope-dapp'
+				? adapter.auditStructure!({ profile: 'dapp', files: [path], dirs: ['contracts/token/'] })
+				: adapter.audit(file)
+	);
+	expect(findings.map((finding) => finding.rule)).toContain(expected);
 });
