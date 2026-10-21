@@ -104,3 +104,32 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 		}
 	};
 }
+
+/** Mixed module groups exceed one and two batches, with an uneven final batch. */
+export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
+	const kinds = ['page', 'shell', 'component', 'function', 'config', 'service', 'model'];
+	const generated = kinds.flatMap((kind) =>
+		Array.from({ length: 9 }, (_, offset) => {
+			const seed =
+				detail.registry.units.find((unit) => unit.kind === kind) ??
+				detail.registry.units.find((unit) => unit.id === ids.store)!;
+			const id = `consumer.${kind}.${offset + 1}`;
+			return {
+				...seed,
+				id,
+				kind,
+				title: `Consumer ${kind} ${offset + 1}`,
+				helpers: [],
+				dependencies: [{ unit: ids.filter, via: 'import' }],
+				owns: { source: [`src/${kind}s/Consumer${offset + 1}.ts`], symbols: [] },
+				version: id
+			};
+		})
+	);
+	const hosts = detail.registry.units.map((unit) => ({
+		...unit,
+		dependencies:
+			unit.id === ids.page ? generated.map(({ id }) => ({ unit: id, via: 'import' })) : []
+	}));
+	return { ...detail, registry: { ...detail.registry, units: [...hosts, ...generated] } };
+}
