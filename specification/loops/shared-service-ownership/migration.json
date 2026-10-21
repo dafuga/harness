@@ -1596,13 +1596,27 @@
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c"
+			"definition": "d686ee37b2344e2960908907bfd564b34cbffbb50df4422256129fa9241e1104",
+			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "src/services/RegressionProofService.ts",
+				"definition": "d686ee37b2344e2960908907bfd564b34cbffbb50df4422256129fa9241e1104",
+				"reason": "Retain main’s canonical screenshot evidence mapping after relocation."
+			}
 		},
 		{
 			"unit": "workflow.load-units",
 			"from": "src/workflows/loadUnits.ts",
 			"to": "src/workflows/development-tooling/load-units/loadUnits.ts",
-			"definition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769"
+			"definition": "9d367801f0fa6ade38ffdf6e7c305993641678882f75cca10eae2642226738dc",
+			"relocationDefinition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "src/workflows/loadUnits.ts",
+				"definition": "9d367801f0fa6ade38ffdf6e7c305993641678882f75cca10eae2642226738dc",
+				"reason": "Retain main’s committed helper-example validation after relocation."
+			}
 		},
 		{
 			"unit": "service.unit-index",
@@ -1656,7 +1670,14 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab"
+			"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
+			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/desktop/src/utils/desktopBridge.ts",
+				"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
+				"reason": "Retain main’s deployment operations and active project scoping."
+			}
 		},
 		{
 			"unit": "desktop.service.recorded-evidence",
@@ -1722,7 +1743,14 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0"
+			"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
+			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
+				"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
+				"reason": "Retain main’s measurement-aware hosted API replies."
+			}
 		},
 		{
 			"unit": "hub.function.hub-evidence-query",
@@ -2334,7 +2362,14 @@
 			"unit": "hub.service.hub-evidence",
 			"from": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
-			"definition": "b8b70551bd974df12b8d8bc33ada984bf1caa9395a519226df7aa5865651a69f"
+			"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
+			"relocationDefinition": "b8b70551bd974df12b8d8bc33ada984bf1caa9395a519226df7aa5865651a69f",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+				"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
+				"reason": "Retain main’s focused screenshot evidence reads."
+			}
 		},
 		{
 			"unit": "hub.function.hub-evidence-scope",
@@ -2586,7 +2621,14 @@
 			"unit": "desktop.adapter.git-source",
 			"from": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"definition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90"
+			"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
+			"relocationDefinition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
+				"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
+				"reason": "Retain main’s committed source measurement projection."
+			}
 		},
 		{
 			"unit": "desktop.function.git-blobs",
@@ -2766,7 +2808,14 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5"
+			"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
+			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/desktop/src/initializers/initializePreload.ts",
+				"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
+				"reason": "Retain main’s deployment bridge methods in the isolated preload."
+			}
 		},
 		{
 			"unit": "desktop.service.local-transport-client",
@@ -2952,7 +3001,14 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb"
+			"definition": "5b06f79a7a2276858b3d6dd7055d31159a99e83069efd3cb8b0611ebac079dbd",
+			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
+			"review": {
+				"commit": "16ab6fdf66c235918411bf42bb02e39653653a05",
+				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+				"definition": "5b06f79a7a2276858b3d6dd7055d31159a99e83069efd3cb8b0611ebac079dbd",
+				"reason": "Archive owned committed text before writing revision details."
+			}
 		},
 		{
 			"unit": "function.budget-reviews",
@@ -3108,7 +3164,14 @@
 			"unit": "desktop.adapter.pinned-history",
 			"from": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
-			"definition": "235f3a164c394ef8af28277f70a8dacb6277795a732f363a2188221f354dfd97"
+			"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
+			"relocationDefinition": "235f3a164c394ef8af28277f70a8dacb6277795a732f363a2188221f354dfd97",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
+				"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
+				"reason": "Retain main’s regression evidence and source measurement projection."
+			}
 		},
 		{
 			"unit": "repository.codex-session",
@@ -3444,7 +3507,14 @@
 			"unit": "desktop.service.project-task",
 			"from": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
-			"definition": "73959fb2b3c38f25589fe1b5ba676292ada0f9cc0799254885488e8680b3b573"
+			"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
+			"relocationDefinition": "73959fb2b3c38f25589fe1b5ba676292ada0f9cc0799254885488e8680b3b573",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
+				"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
+				"reason": "Retain main’s verified change promotion after approved project tasks."
+			}
 		},
 		{
 			"unit": "desktop.function.proposal-units",
@@ -3456,7 +3526,14 @@
 			"unit": "desktop.service.change-run",
 			"from": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/ChangeRunService.ts",
-			"definition": "0e7b44a91393721aec86b5823c9e30b365650d9a0e47fe4c2f050aa079c8684d"
+			"definition": "3ba2a6fd8c7b69de3f0a3a15db0efb9dfa49c820fbe8cd08536ec3f5cf81a3c5",
+			"relocationDefinition": "0e7b44a91393721aec86b5823c9e30b365650d9a0e47fe4c2f050aa079c8684d",
+			"review": {
+				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"path": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
+				"definition": "3ba2a6fd8c7b69de3f0a3a15db0efb9dfa49c820fbe8cd08536ec3f5cf81a3c5",
+				"reason": "Retain main’s verified change promotion after approved entity runs."
+			}
 		},
 		{
 			"unit": "desktop.function.change-execute",
@@ -4926,5 +5003,6 @@
 			"id": "reports.endpoint.api-reports",
 			"source": ["packages/reports/src/routes/api/reports/+server.ts"]
 		}
-	]
+	],
+	"originalProof": "16ab6fdf66c235918411bf42bb02e39653653a05"
 }

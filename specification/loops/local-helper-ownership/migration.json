@@ -4796,9 +4796,18 @@
 		{
 			"unit": "function.unit-metadata",
 			"name": "unitMetadata",
-			"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65",
-			"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
-			"commit": "132d82b5342d010c3431ef40d94a80d02622776d"
+			"definition": "f550da3c5fa65567ed1ceeb81488e17bf3a7939065053b8a27e79396ac7a2ddd",
+			"reason": "Preserve committed examples while deriving revision categories and concrete shared service proofs.",
+			"commit": "16ab6fdf66c235918411bf42bb02e39653653a05",
+			"previousDefinitions": [
+				{
+					"unit": "function.unit-metadata",
+					"name": "unitMetadata",
+					"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65",
+					"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
+					"commit": "132d82b5342d010c3431ef40d94a80d02622776d"
+				}
+			]
 		},
 		{
 			"unit": "reports.function.entity-catalog",
