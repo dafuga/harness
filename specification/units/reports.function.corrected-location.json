@@ -3,7 +3,7 @@
 	"id": "reports.function.corrected-location",
 	"kind": "function",
 	"title": "correctedLocation",
-	"responsibility": "Says where an explorer address of an entity belongs at its revision: under the category the entity has there, with its branch, commit, section and tab kept.",
+	"responsibility": "Resolves helper names and entity categories at the viewed revision; omits helper owners only when their callable name is unambiguous.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,7 +11,7 @@
 			"packages/reports/src/utils/correctedLocation.ts",
 			"packages/reports/src/utils/development-tooling/correctedLocation.ts"
 		],
-		"symbols": ["correctedLocation", "correctedLocation"]
+		"symbols": ["correctedLocation", "correctedLocation", "compactHelperLocation"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,13 +25,28 @@
 				"name": "correctedLocation.entities",
 				"type": "Pick<ExplorerEntity, 'id' | 'category'>[]",
 				"description": "The entities of the shown revision, each with the category its manifest declares there."
+			},
+			{
+				"name": "compactHelperLocation.at",
+				"type": "ExplorerLocation",
+				"description": "A resolved callable location to shorten without losing its identity."
+			},
+			{
+				"name": "compactHelperLocation.entities",
+				"type": "ExplorerEntity[]",
+				"description": "Public entities of the target revision."
 			}
 		],
 		"outputs": [
 			{
 				"name": "correctedLocation",
 				"type": "ExplorerLocation | null",
-				"description": "The same address under the category of the entity at this revision; null when it is already there, names no entity or the revision does not hold it."
+				"description": "Corrected category or the sole helper owner at the selected revision; null when unchanged, unknown or ambiguous."
+			},
+			{
+				"name": "compactHelperLocation",
+				"type": "ExplorerLocation",
+				"description": "Owner-free helper location only when one matching owner is proven; otherwise the original location."
 			}
 		],
 		"errors": []

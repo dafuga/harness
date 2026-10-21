@@ -35,7 +35,7 @@ export class HubApiController {
 		const parts = requestParts(request);
 		if (parts[1] === 'remote')
 			return new HubRemoteController(this.runtime.remote).handle(request, actor);
-		if (parts[0] !== 'api' || parts[1] !== 'projects') return hubHttp({ error: 'not-found' }, 404);
+		if (!isProjectsRoute(parts)) return hubHttp({ error: 'not-found' }, 404);
 		const { api, projection } = this.runtime.connect(),
 			projectId = parts[2] ?? '';
 		if (!projectId) return collection({ api, request, actor });
@@ -180,4 +180,8 @@ async function executable(
 
 function requestParts(request: Request) {
 	return new URL(request.url).pathname.split('/').filter(Boolean).map(decodeURIComponent);
+}
+
+function isProjectsRoute(parts: string[]): boolean {
+	return parts[0] === 'api' && parts[1] === 'projects';
 }

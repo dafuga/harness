@@ -58,6 +58,7 @@ export function entityHistory(
 			series.flatMap((item) => {
 				const at = (commit: string | null) =>
 					item.points.findLast((point) => point.commit === commit)?.value;
+				if (!['ms', 'us', 'μs', 'ns', 's'].includes(item.unitOfMeasure)) return [];
 				const [after, before] = [at(row.commit), at(earlier)];
 				if (after === undefined) return [];
 				const shared = {

@@ -77,7 +77,8 @@ export default defineConfig({
 			// now, so this entry has the time the two had between them and the next has little.
 			command: `${seed} && ${compile} && ${freeze} && ${built(application, '127.0.0.1', port)}`,
 			url: `http://127.0.0.1:${port}/api/health`,
-			timeout: 420_000,
+			// Evidence runs rebuild the complete Git fixture before their first capture.
+			timeout: process.env.HARNESS_EVIDENCE_DIR ? 900_000 : 420_000,
 			reuseExistingServer
 		},
 		{

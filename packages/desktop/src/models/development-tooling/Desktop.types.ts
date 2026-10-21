@@ -44,7 +44,6 @@ export interface ModelChoice {
 	defaultEffort: string | null;
 	isDefault: boolean;
 }
-
 export interface ProviderState {
 	id: ProviderId;
 	label: string;
@@ -66,6 +65,7 @@ export interface CommitInfo {
 	hash: string;
 	subject: string;
 	authoredAt: string;
+	committedAt?: string;
 }
 
 export interface Revision {

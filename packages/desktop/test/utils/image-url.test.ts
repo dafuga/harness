@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { imageUrl } from '../../src/utils/imageUrl';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 
@@ -18,15 +19,16 @@ beforeEach(() => {
 });
 afterEach(() => vi.unstubAllGlobals());
 
-test('an image is read for the shown project and commit and released afterwards', async () => {
-	const image = vi.fn(async () => new Uint8Array([1, 2, 3]));
-	const seen: string[] = [];
-	const release = imageUrl(workspaceOf(image, 'p'), request, (url) => seen.push(url));
-	await vi.waitFor(() => expect(seen).toEqual(['', 'blob:one']));
-	expect(image).toHaveBeenCalledWith({ ...request, commit, projectId: 'p' });
-	release();
-	expect(revoke).toHaveBeenCalledWith('blob:one');
-});
+test('an image is read for the shown project and commit and released afterwards', () =>
+	measureWorkload('desktop.function.image-url', 'bound-image-lifetime', async () => {
+		const image = vi.fn(async () => new Uint8Array([1, 2, 3]));
+		const seen: string[] = [];
+		const release = imageUrl(workspaceOf(image, 'p'), request, (url) => seen.push(url));
+		await vi.waitFor(() => expect(seen).toEqual(['', 'blob:one']));
+		expect(image).toHaveBeenCalledWith({ ...request, commit, projectId: 'p' });
+		release();
+		await vi.waitFor(() => expect(revoke).toHaveBeenCalledWith('blob:one'));
+	}));
 
 test('a bridge without project identities is asked without one', async () => {
 	const image = vi.fn(async () => new Uint8Array());

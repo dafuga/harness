@@ -30,6 +30,12 @@ const call =
 	(input?: Input): Promise<T> =>
 		transport.request<T>(method, { ...input });
 const bridge: DesktopBridge = {
+	deploymentStatus: call('deploymentStatus'),
+	deploymentActivities: call('deploymentActivities'),
+	startDeployment: call('startDeployment'),
+	deploymentProgress: call('deploymentProgress'),
+	planDeployment: call('planDeployment'),
+	deploy: call('deploy'),
 	history: call('history'),
 	onCacheStatus: (listener) => transport.on('cache', (value) => listener(value as CacheStatus)),
 	hostedStatus: call('hostedStatus'),

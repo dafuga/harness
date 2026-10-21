@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { record, revision } from '../entityFixture';
+import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withGroups } from '../entityPreviewData';
@@ -17,19 +17,15 @@ const tabs = (body: string) =>
 
 test('details opens on the contract with size and performance, and shows no source', () => {
 	const body = content('commit', page);
-	expect(tabs(body)).toEqual([
-		'Overview',
-		'Contract',
-		'Used In',
-		'Uses',
-		'States',
-		'History',
-		'Source'
-	]);
+	expect(tabs(body)).toEqual(['Overview', 'Contract', 'Uses', 'States', 'History', 'Source']);
 	expect(words(body)).toContain('Lists the orders of an account.');
-	for (const heading of ['Contract', 'Size', 'Performance profile']) {
+	for (const heading of ['Contract', 'Performance profile']) {
 		expect(body).toContain(`aria-label="${heading}"`);
 	}
+	expect(body).not.toContain('aria-label="Size"');
+	expect(words(body)).toContain('Source size');
+	expect(words(body)).not.toContain('Emitted size');
+	expect(words(body)).not.toContain('This unit declares no process or Wasm output.');
 	expect(words(body)).not.toContain('Back to overview');
 	expect(words(body)).not.toContain('Details');
 	expect(words(body)).not.toMatch(owned);
@@ -51,9 +47,24 @@ test('a page has details like every other kind: purpose, address, inputs, output
 });
 
 test('source is shown only when the source tab is the open one', () => {
-	const closed = ['measurements', undefined] as const;
-	for (const tab of closed) {
+	for (const tab of ['measurements', undefined] as const)
 		expect(words(content('commit', { ...page, tab }))).not.toMatch(owned);
+	for (const mode of ['current', 'commit'] as const) {
+		const body = content(mode, { ...page, tab: 'source' });
+		const commit = mode === 'current' ? commits.tip : commits.middle;
+		expect(body, 'GitHub source links use the selected commit').toContain(
+			`href="https://github.com/example/orders/blob/${commit}/src/routes/orders/%2Bpage.svelte"`
+		);
+		expect(words(body)).not.toMatch(/Symbols|Execution targets|Identity /);
+	}
+	for (const sourceRepository of [
+		undefined,
+		'javascript:alert(1)',
+		'https://github.com.evil/repo'
+	]) {
+		const body = content('commit', { ...page, tab: 'source' }, {}, { ...index, sourceRepository });
+		expect(words(body)).toContain('GitHub source unavailable');
+		expect(body).not.toContain('href="https://github.com/');
 	}
 	const body = content('commit', { ...page, tab: 'source' });
 	expect(words(body)).toContain('Source ownership');

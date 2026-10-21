@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick, untrack } from 'svelte';
+	import { untrack } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type {
 		ExplorerEntity,
@@ -8,12 +8,11 @@
 		ExplorerScope
 	} from '../../../../models/explorer-ui/Explorer.types';
 	import type { HarnessIndex, HarnessRevision } from '../../../../models/explorer-ui/Harness.types';
-	import { entityHistory, historyListed, historyProfiles, historyVerdict } from './entityHistory';
+	import { entityHistory, historyListed, historyProfiles } from './entityHistory';
 	import { entityLens, shortCommit, type EntityNav } from '../../../../utils/explorer-ui/entityLens';
 	import { historyDetail } from './explorerHistory';
 	import type { HarnessClient } from '../../../../utils/explorer-ui/harnessClient';
 	import Select from '../../../shared-primitives/Select.svelte';
-	import EntityChange from '../entity-change/EntityChange.svelte';
 	import EntityHistoryRow from '../entity-history-row/EntityHistoryRow.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
@@ -62,31 +61,13 @@
 	let timings = $derived(entityHistory(index, entity.id, found.listed));
 	let profiles = $derived(historyProfiles(timings));
 	let profile = $state('');
-	let chosen = $state('');
 	let shown = $derived(profiles.includes(profile) ? profile : (profiles[0] ?? ''));
-	let selected = $derived(
-		found.listed.find((row) => row.commit === chosen) ??
-			found.listed.find((row) => row.commit === scope.commit) ??
-			found.listed[0]
-	);
-	// Whether the reasons of the shown change are open as they were written.
-	let full = $state(false);
-	/** Shows a change below the table, with its reasons in full when that was asked for. */
-	async function choose(commit: string, whole: boolean) {
-		[chosen, full] = [commit, whole];
-		if (!whole) return;
-		await tick();
-		document.querySelector<HTMLElement>('#ex-reasons-full > summary')?.focus();
-	}
 	// Why the history cannot say what the commits not read yet changed, each reason once.
 	let gaps = $derived([...new Set(found.unread.flatMap((row) => (row.gap ? [row.gap] : [])))]);
 	const at = (row: ExplorerHistoryRow) =>
 		entityLens(nav.route, { category: entity.category, entity: entity.id, commit: row.commit });
 	const timing = (row: ExplorerHistoryRow) =>
 		(timings.get(row.commit) ?? []).find((item) => item.profile === shown);
-	// The verdict of the entity at a commit once its revision is read; the commit's own before that.
-	const verdict = (row: ExplorerHistoryRow) =>
-		read.get(row.commit)?.verdict ?? historyVerdict(row.coverage);
 </script>
 
 <div role="tabpanel" aria-label={`${entity.name} history`} class="ex-stack">
@@ -142,12 +123,9 @@
 							<th scope="col">Date</th>
 							<th scope="col">Commit</th>
 							<th scope="col">Behavior change</th>
-							<th scope="col">Simplification / performance attempt</th>
 							<th scope="col">Size</th>
 							<th scope="col">Complexity</th>
-							<th scope="col">Timing{shown ? ` (${shown})` : ''}</th>
-							<th scope="col">Evidence</th>
-							<th scope="col"><span class="ex-hidden">Open</span></th>
+							<th scope="col">Latency{shown ? ` (${shown})` : ''}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -156,12 +134,9 @@
 								{row}
 								detail={read.get(row.commit)}
 								timing={timing(row)}
-								verdict={verdict(row)}
-								selected={row.commit === selected?.commit}
 								viewed={row.commit === scope.commit}
 								to={at(row)}
 								{nav}
-								onselect={(whole) => choose(row.commit, whole)}
 							/>
 						{/each}
 					</tbody>
@@ -180,35 +155,4 @@
 			</p>
 		{/if}
 	</section>
-	{#if selected}
-		{#if selected.commit !== scope.commit}<RegressionProof
-				items={read.get(selected.commit)?.regressions ?? []}
-				unit={entity.id}
-				href={(commit) =>
-					nav.href(
-						entityLens(nav.route, {
-							commit,
-							category: entity.category,
-							entity: entity.id,
-							tab: 'tests'
-						})
-					)}
-				follow={(commit) =>
-					nav.go(
-						entityLens(nav.route, {
-							commit,
-							category: entity.category,
-							entity: entity.id,
-							tab: 'tests'
-						})
-					)}
-			/>{/if}
-		<EntityChange
-			row={selected}
-			timings={timings.get(selected.commit) ?? []}
-			detail={read.get(selected.commit) ?? null}
-			{nav}
-			bind:full
-		/>
-	{/if}
 </div>

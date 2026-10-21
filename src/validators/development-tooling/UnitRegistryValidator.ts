@@ -8,10 +8,37 @@ export class UnitRegistryValidator {
 		const known = new Set(active.map((manifest) => manifest.id));
 		return [
 			...active.flatMap((unit) => this.missingSource(unit, files)),
+			...active.flatMap((unit) => this.helperExamples(unit)),
 			...active.flatMap((unit) => this.unknownDependencies(unit, known)),
 			...this.sharedSource(active),
 			...active.flatMap((unit) => this.lineage(unit, manifests))
 		];
+	}
+
+	private helperExamples(unit: ComponentManifest): string[] {
+		return (unit.helperContracts ?? []).flatMap((helper) => {
+			const prefix = `${unit.id}: ${helper.name}`;
+			if (!helper.examples?.length)
+				return [
+					`${prefix} requires at least one usage example with call, arguments and expected result`
+				];
+			const titles = new Set<string>(),
+				calls = new Set<string>();
+			return helper.examples.flatMap((example) => {
+				const title = example.name.trim().replace(/\s+/g, ' ').toLowerCase();
+				const call = example.call!.trim();
+				const issues: string[] = [];
+				if (/(?:^|:\s*)(?:example|case|demo|usage)(?:\s*#?\d+)?$/i.test(title))
+					issues.push(
+						`${prefix} usage examples require descriptive behavior titles: ${example.name}`
+					);
+				if (titles.has(title) || calls.has(call))
+					issues.push(`${prefix} usage examples repeat a behavior title or call: ${example.name}`);
+				titles.add(title);
+				calls.add(call);
+				return issues;
+			});
+		});
 	}
 
 	/** Lineage to retired identities must be recorded and must point at known units. */

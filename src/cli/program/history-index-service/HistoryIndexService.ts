@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { EvidenceTreeAdapter } from '../../../adapters/verification-evidence/EvidenceTreeAdapter';
 import type {
 	HistoryIndex,
@@ -42,7 +43,7 @@ export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]
 /**
  * Builds the history index: a deterministic, self-contained set of files made only from Git.
  * Every source commit is listed, with what proves it or the gap; media is copied in by hash.
- * The same refs always produce the same bytes, wherever and whenever the index is built.
+ * The same refs and repository URL produce the same bytes wherever the index is built.
  */
 export class HistoryIndexService {
 	private readonly history: HistoryStatusService;
@@ -73,6 +74,16 @@ export class HistoryIndexService {
 		return built;
 	}
 
+	/** Git origin is navigation metadata; only canonical GitHub addresses are published. */
+	private async sourceRepository(): Promise<string | undefined> {
+		const origin = await new GitAdapter(this.root).attempt(['remote', 'get-url', 'origin']);
+		const match =
+			/^(?:https:\/\/github\.com\/|git@github\.com:|ssh:\/\/git@github\.com\/)([A-Za-z0-9_-]+\/[A-Za-z0-9_.-]+?)(?:\.git)?\/?$/.exec(
+				origin ?? ''
+			);
+		return match ? `https://github.com/${match[1]}` : undefined;
+	}
+
 	async build(out: string, limit: number, legacy: LegacyReader): Promise<BuiltHistory> {
 		await emptied(out);
 		const source = await new SourceHistoryRepository(this.root).read(limit);
@@ -83,6 +94,7 @@ export class HistoryIndexService {
 		const tree = new EvidenceTreeAdapter(this.root);
 		const index: HistoryIndex = {
 			schemaVersion: 1,
+			sourceRepository: await this.sourceRepository(),
 			refs: {
 				evidence: (await tree.tip(evidenceRef)) ?? null,
 				notes: (await tree.tip(notesRef)) ?? null

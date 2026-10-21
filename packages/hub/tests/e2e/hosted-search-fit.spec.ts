@@ -2,25 +2,29 @@ import { expect, test, type Locator, type Page } from '../../../../test/support/
 import { atlas, hostedFixture } from './hosted-fixture';
 
 /**
- * The search in the bar of the hosted workspace, beside its account area, at every supported
- * width. Closed, focused or with its results open, the field and its focus ring meet neither
- * revision field nor anything of the account, all of which stay on the screen, and no page is
- * wider than the screen. A result opens in place.
+ * The search trigger fits beside the revision and account controls at every supported width.
+ * Its dialog gives the field room without moving those controls. Both the field and its results
+ * stay inside the window, and a result opens in place.
  */
 type Box = { x: number; y: number; width: number; height: number };
 const pages = `/projects/${atlas}/harness/branch/main/pages`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
-const bar = (page: Page) => page.getByRole('banner');
+const bar = (page: Page) => page.getByRole('banner', { includeHidden: true });
+const trigger = (page: Page) =>
+	bar(page).getByRole('button', { name: 'Search entities', exact: true, includeHidden: true });
 const field = (page: Page) =>
-	bar(page).getByRole('combobox', { name: 'Search entities', exact: true });
+	page.getByRole('dialog', { name: 'Search project' }).getByRole('combobox', {
+		name: 'Search entities',
+		exact: true
+	});
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const controls = (page: Page): Locator[] => [
-	bar(page).getByRole('combobox', { name: 'Branch', exact: true }),
-	bar(page).getByRole('combobox', { name: 'Commit', exact: true }),
+	bar(page).getByRole('button', { name: 'Choose branch', exact: true, includeHidden: true }),
+	bar(page).getByRole('button', { name: 'Choose commit', exact: true, includeHidden: true }),
 	bar(page).getByText('Ada Example', { exact: true }),
-	bar(page).getByRole('link', { name: 'Projects', exact: true }),
-	bar(page).getByRole('link', { name: 'Members', exact: true }),
-	bar(page).getByRole('button', { name: 'Sign out', exact: true })
+	bar(page).getByRole('link', { name: 'Projects', exact: true, includeHidden: true }),
+	bar(page).getByRole('link', { name: 'Members', exact: true, includeHidden: true }),
+	bar(page).getByRole('button', { name: 'Sign out', exact: true, includeHidden: true })
 ];
 const box = async (locator: Locator): Promise<Box> => (await locator.boundingBox())!;
 /** Whether two boxes share a pixel, the first with a focus ring of three pixels around it. */
@@ -31,12 +35,12 @@ const meet = (one: Box, two: Box) =>
 	two.y < one.y + one.height + 3;
 
 async function apart(page: Page, width: number): Promise<void> {
-	const search = await box(field(page));
+	const search = await box(trigger(page));
 	const placed = await Promise.all(controls(page).map(box));
 	expect(placed.map((one) => meet(search, one))).toEqual(placed.map(() => false));
 	const shown = (one: Box) => one.x >= 0 && one.x + one.width <= width;
 	expect([search, ...placed].map(shown)).toEqual([search, ...placed].map(() => true));
-	expect(search.width).toBeGreaterThanOrEqual(120);
+	expect(search.width).toBeGreaterThanOrEqual(32);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
 	);
@@ -52,9 +56,12 @@ for (const width of widths) {
 		await expect(page).toHaveURL(new RegExp(`${pages}$`));
 		await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 		await apart(page, width);
-		await field(page).focus();
-		await expect(field(page)).toBeFocused();
+		await trigger(page).focus();
+		await expect(trigger(page)).toBeFocused();
 		await apart(page, width);
+		await trigger(page).click();
+		await expect(field(page)).toBeFocused();
+		expect((await box(field(page))).width).toBeGreaterThanOrEqual(120);
 		await field(page).fill('atlas');
 		await expect(found(page).getByRole('option')).toHaveText([/Page.*Atlas activity/]);
 		const list = await box(found(page));

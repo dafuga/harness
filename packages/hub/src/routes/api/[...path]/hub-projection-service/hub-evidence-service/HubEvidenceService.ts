@@ -46,6 +46,7 @@ export class HubEvidenceService {
 			projectId
 		} as EvidenceArtifactQuery;
 		const context = await hubEvidenceContext(this.deps, actor, query);
+		const { repository } = context;
 		await hubEvidencePins(context.base, query);
 		const built = await hubEvidenceScope(context.base, query, context.tip);
 		let found;
@@ -57,6 +58,7 @@ export class HubEvidenceService {
 		} catch {
 			return hubFail('artifact-refused');
 		}
+		if (found.focused) return this.focusedArtifact(actor, projectId, { found, built, repository });
 		const original = await hubEvidenceOrigin(built.history, found.record);
 		if (!original || original.problems.length) return hubFail('artifact-refused');
 		const fact = original.facts.get(found.capture.path);
@@ -68,6 +70,24 @@ export class HubEvidenceService {
 		} catch {
 			return hubFail('artifact-refused');
 		}
+		await this.authorize(actor, projectId, repository);
+		return answer;
+	}
+	private async focusedArtifact(
+		actor: Actor,
+		projectId: string,
+		context: {
+			found: ReturnType<typeof recordedCapture>;
+			built: Awaited<ReturnType<typeof hubEvidenceScope>>;
+			repository: unknown;
+		}
+	) {
+		const { found, built } = context;
+		const notes = [...(await built.history.all()).values()].flatMap((item) => item.entries);
+		const note = notes.find((item) => item.kind === 'regression' && item.record === found.record);
+		if (note?.kind !== 'regression') return hubFail('artifact-refused');
+		const loaded = await built.history.attached.regression(note);
+		const answer = await artifactAnswer(found.capture, loaded.files.get(found.capture.path));
 		await this.authorize(actor, projectId, context.repository);
 		return answer;
 	}

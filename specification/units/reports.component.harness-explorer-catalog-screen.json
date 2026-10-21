@@ -64,7 +64,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.explorer-function-card",
+			"unit": "reports.component.explorer-catalog-items",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -79,27 +79,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-explorer-page-card",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-explorer-table",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.function.entity-catalog",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-lens",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},

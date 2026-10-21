@@ -46,7 +46,14 @@ test('IPC refuses unknown operations, invalid regions and unapproved changes', (
 });
 
 test('subscription subprocesses omit API overrides without changing the parent', () => {
-	const env = { PATH: '/bin', OPENAI_API_KEY: 'synthetic', ANTHROPIC_BASE_URL: 'synthetic' };
+	const env = {
+		PATH: '/bin',
+		OPENAI_API_KEY: 'synthetic',
+		ANTHROPIC_BASE_URL: 'synthetic',
+		CLOUDFLARE_API_TOKEN: 'synthetic',
+		HARNESS_FIXTURE_DEV_CLOUDFLARE_API_TOKEN: 'synthetic',
+		CLOUDFLARE_ENV: 'prod'
+	};
 	expect(scrubEnvironment(env)).toEqual({ PATH: '/bin' });
 	expect(env.OPENAI_API_KEY).toBe('synthetic');
 });

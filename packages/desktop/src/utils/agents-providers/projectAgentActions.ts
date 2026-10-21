@@ -88,6 +88,9 @@ function requestFor(agent: ProjectAgent, draft: RunDraft, projectId: string) {
 				...common,
 				intent: 'task' as const,
 				mode: draft.mode,
+				...(draft.mode === 'change' && agent.workspace.deployments?.selected?.available
+					? { environment: agent.workspace.deployments.environment }
+					: {}),
 				branch: revision.branch,
 				commit: revision.commit,
 				conversation: agent.messages

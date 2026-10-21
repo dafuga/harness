@@ -15,6 +15,7 @@ import {
 	reviewStates
 } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
+import { reviewUsage, reviewRelationPaging } from './entityPreviewUsage';
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
 	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
@@ -35,32 +36,10 @@ for (const [name, size] of Object.entries(viewports)) {
 			['services', ids.store],
 			['configs', ids.settings]
 		] as const) {
-			await open(tab, { category, entity, commit: commits.middle });
-			await capture(tab, `overview-usage-${category}-${name}`);
-			await expect(
-				tab.getByRole('region', { name: /^(Used In|Uses)$/ }),
-				'overview excludes usage sections'
-			).toHaveCount(0);
-			for (const [label, value] of [
-				['Used In', 'used-in'],
-				['Uses', 'uses']
-			] as const) {
-				await tab.getByRole('tab', { name: label, exact: true }).click();
-				await expect(tab.getByRole('region', { name: label, exact: true })).toBeVisible();
-				await capture(tab, `usage-${category}-${value}-${name}`);
-				await expect(tab.locator('.ex-related .hx-verdict'), 'no row marks').toHaveCount(0);
-				await expect(tab.locator('.ex-head .hx-verdict')).toHaveCount(1);
-				await expect(
-					tab.getByRole('region', { name: label === 'Uses' ? 'Used In' : 'Uses', exact: true })
-				).toHaveCount(0);
-				expect(await where(tab)).toMatchObject({
-					category,
-					entity,
-					commit: commits.middle,
-					tab: value
-				});
-			}
+			for (const commit of [null, commits.middle])
+				await reviewUsage(tab, { category, entity, commit }, name);
 		}
+		await reviewRelationPaging(tab, name);
 	});
 	test(`component, helper and service lists use a card grid at ${name} width`, async ({
 		page: tab
@@ -109,7 +88,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			const viewed = (commit ?? commits.tip).slice(0, 7);
 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
-			await expect(cards.first()).toContainText('Used on');
+			await expect(cards.first()).toContainText('Used In');
 			expect(await fits(tab)).toBe(true);
 			const action = cards.first().getByRole('link', { name: 'Open component', exact: true });
 			expect((await action.innerText()).trim()).toBe('');
@@ -118,7 +97,9 @@ for (const [name, size] of Object.entries(viewports)) {
 			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.card });
 		}
 	});
-	test(`page cards show only a title and screenshot at ${name} width`, async ({ page: tab }) => {
+	test(`page cards show a title, screenshot and shared usage footer at ${name} width`, async ({
+		page: tab
+	}) => {
 		await tab.setViewportSize(size);
 		await open(tab);
 		await tab.evaluate(async () => {
@@ -127,7 +108,8 @@ for (const [name, size] of Object.entries(viewports)) {
 		});
 		await capture(tab, `compact-page-${name}`);
 		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
-		expect((await card.innerText()).trim(), 'page cards show only their title').toBe('Orders page');
+		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toHaveText('Used In—');
+		await expect(card.getByRole('heading', { name: 'Orders page', exact: true })).toBeVisible();
 		await expect(card.locator('button, .hx-verdict, .ex-fact')).toHaveCount(0);
 		const action = card.getByRole('link', { name: 'Open Orders page', exact: true });
 		await expect(action).toHaveCount(1);
@@ -144,10 +126,12 @@ for (const [name, size] of Object.entries(viewports)) {
 	}, info) => {
 		await tab.setViewportSize(size);
 		await open(tab, page, 'console');
+		await capture(tab, `quiet-console-${name}`);
+		await expect(tab.locator('body')).not.toContainText('Older commits were left out');
 		const content = await tab.locator('.ex-content').elementHandle();
 		const start = await tab.evaluate(() => performance.now());
-		await tab.getByRole('tab', { name: 'Used In', exact: true }).click();
-		await expect(tab.getByRole('tabpanel', { name: /used in/i })).toBeVisible();
+		await tab.getByRole('tab', { name: 'Uses', exact: true }).click();
+		await expect(tab.getByRole('tabpanel', { name: /uses/i })).toBeVisible();
 		const elapsed = (await tab.evaluate(() => performance.now())) - start;
 		const retained = await content!.evaluate((node) => node.isConnected);
 		const categoryStart = await tab.evaluate(() => performance.now());
@@ -156,13 +140,13 @@ for (const [name, size] of Object.entries(viewports)) {
 			.getByRole('link', { name: 'Helpers', exact: true })
 			.click();
 		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
-			'1001 of 1001 helpers shown'
+			'1003 of 1003 helpers shown'
 		);
 		const categoryMs = (await tab.evaluate(() => performance.now())) - categoryStart;
 		const searchStart = await tab.evaluate(() => performance.now());
 		await tab.getByRole('searchbox', { name: 'Search helpers' }).fill('generated 999');
 		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
-			'1 of 1001 helpers shown'
+			'1 of 1003 helpers shown'
 		);
 		const searchMs = (await tab.evaluate(() => performance.now())) - searchStart;
 		await tab.evaluate(async () => {

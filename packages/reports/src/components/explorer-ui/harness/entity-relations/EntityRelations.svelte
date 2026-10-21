@@ -3,40 +3,58 @@
 	import { explorerKindCategory } from '../../../../../../../src/utils/explorerRoute';
 	import { entityLens, type EntityNav } from '../../../../utils/explorer-ui/entityLens';
 	import { entityUsage } from './entityUsage';
+	import { entityCatalog } from '../../../../utils/explorer-ui/entityCatalog';
+	import type { ExplorerScreenProps } from '../../../../models/explorer-ui/ExplorerScreen.types';
+	import ExplorerCatalogItems from '../../../ExplorerCatalogItems.svelte';
 	import EntityLink from '../EntityLink.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	let {
 		relations,
+		host,
 		nav,
 		show = 'both',
-		compact = false,
 		removed = false
 	}: {
 		relations: ExplorerRelations;
+		host: ExplorerScreenProps;
 		nav: EntityNav;
 		/** Which of the two sections is drawn; an overview draws both. */
 		show?: 'both' | 'used-in' | 'uses';
-		/** Names only; a section of its own also shows each entity's purpose. */
-		compact?: boolean;
 		/** The shown commit removed the entity: its revision holds no relation of it. */
 		removed?: boolean;
 	} = $props();
 	let usage = $derived(entityUsage(relations));
-	const changed = ['direct', 'added'];
+	let scope = $derived(
+		JSON.stringify([
+			nav.route.branch,
+			nav.route.commit,
+			nav.route.entity,
+			nav.route.helper,
+			show,
+			host.scope.commit
+		])
+	);
 	const gone = 'Removed at this commit: ';
 </script>
 
-{#snippet row(item: ExplorerEntity, badge: boolean)}
-	<li>
-		<span>
-			<EntityLink to={entityLens(nav.route, { category: item.category, entity: item.id })} {nav}
-				>{item.name}</EntityLink
-			>
-			{#if badge}<span class="ex-pill">{item.role}</span>{/if}
-			{#if changed.includes(item.change ?? '')}<span class="ex-pill gold">Changed</span>{/if}
-			{#if !compact}<span class="ex-soft ex-block">{item.purpose}</span>{/if}
-		</span>
-	</li>
+{#snippet cards(items: ExplorerEntity[], label: string)}
+	{#each [...new Set(items.map((item) => item.category))] as category (category)}
+		{#key scope}
+			<ExplorerCatalogItems
+				{category}
+				{nav}
+				lens={host.lens}
+				mediaBase={host.mediaBase}
+				verification={false}
+				batch={4}
+				{label}
+				rows={entityCatalog(items, category, host.lens.relations, {
+					related: true,
+					consumers: host.entities
+				})}
+			/>
+		{/key}
+	{/each}
 {/snippet}
 
 <!-- What uses the entity and what it uses are two sections; neither names a file. -->
@@ -54,9 +72,13 @@
 						: 'No page shows it and nothing else uses it.'}
 				</p>
 			{/if}
-			<ul class="ex-related">
-				{#each usage.usedIn as item (item.id)}{@render row(item, true)}{/each}
-			</ul>
+			{#each usage.usedInGroups as group (group.title)}
+				<h3>
+					<HarnessIcon name={group.icon} size={18} />
+					{group.title} <span class="ex-count">{group.items.length}</span>
+				</h3>
+				{@render cards(group.items, `${group.title} used in`)}
+			{/each}
 		</section>
 	{/if}
 	{#if show !== 'used-in'}
@@ -77,9 +99,7 @@
 					<HarnessIcon name={group.icon} size={18} />
 					{group.title} <span class="ex-count">{group.items.length}</span>
 				</h3>
-				<ul class="ex-related">
-					{#each group.items as item (item.id)}{@render row(item, false)}{/each}
-				</ul>
+				{@render cards(group.items, `${group.title} uses`)}
 			{/each}
 			{#if usage.other.length}
 				<h3>

@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, cloneRepo, reviewer, type VerifyRepo } from './support/verifyRepo';
+import { fixtureSources } from './support/verifyFixture';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
@@ -22,6 +23,9 @@ const grow = (source: string) =>
 		'\treturn input',
 		"\tif (input.length > 99 || input.includes('?')) return input;\n\treturn input"
 	);
+
+const baselineBytes = Buffer.byteLength(fixtureSources['src/utils/slugify.ts']);
+const grownBytes = Buffer.byteLength(grow(fixtureSources['src/utils/slugify.ts']));
 
 test('a new unit needs a reviewer to establish its baseline from a clean passing record', async () => {
 	const repo = await cloneRepo(baseline);
@@ -77,8 +81,8 @@ test('size and complexity are frozen until a reviewer approves the new limits', 
 	expect(blocked.exitCode).toBe(1);
 	expect(finding(blocked.record, 'function.slugify', 'source-bytes')).toMatchObject({
 		status: 'exceeded',
-		baseline: 87,
-		measured: 148
+		baseline: baselineBytes,
+		measured: grownBytes
 	});
 	expect(finding(blocked.record, 'function.slugify', 'complexity')).toMatchObject({
 		status: 'exceeded',
@@ -86,11 +90,11 @@ test('size and complexity are frozen until a reviewer approves the new limits', 
 		measured: 3
 	});
 	expect(blocked.record.failures).toContain(
-		'function.slugify: source-bytes grew from 87 to 148 without a recorded approval'
+		`function.slugify: source-bytes grew from ${baselineBytes} to ${grownBytes} without a recorded approval`
 	);
 
 	const before = await repo.read(ledger);
-	await repo.write(ledger, before.replace('"source-bytes":87', '"source-bytes":999'));
+	await repo.write(ledger, before.replace(`"source-bytes":${baselineBytes}`, '"source-bytes":999'));
 	await repo.commit('chore: quietly raise the limit');
 	const rewritten = await repo.verify();
 	expect(rewritten.record.failures).toContain(
@@ -111,8 +115,8 @@ test('size and complexity are frozen until a reviewer approves the new limits', 
 	expect(history[1]).toMatchObject({
 		reviewer: 'Reviewer One',
 		reason: 'Reviewed fixture change',
-		before: { 'source-bytes': 87, complexity: 1 },
-		after: { 'source-bytes': 148, complexity: 3 }
+		before: { 'source-bytes': baselineBytes, complexity: 1 },
+		after: { 'source-bytes': grownBytes, complexity: 3 }
 	});
 	expect(await repo.read(ledger)).toContain(before.trim());
 	await repo.dispose();
@@ -135,8 +139,8 @@ test('retiring and recreating a unit cannot reset its budget, and identities can
 	const blocked = await repo.verify();
 	expect(finding(blocked.record, 'function.slug', 'source-bytes')).toMatchObject({
 		status: 'exceeded',
-		baseline: 87,
-		measured: 148
+		baseline: baselineBytes,
+		measured: grownBytes
 	});
 	const establish = await repo.run([
 		'budget',

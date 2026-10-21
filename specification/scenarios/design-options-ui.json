@@ -15,6 +15,7 @@
 		"desktop.function.compose-modes",
 		"desktop.function.thread-anchor",
 		"desktop.function.prior-image",
+		"desktop.function.image-url",
 		"desktop.store.project-agent",
 		"desktop.style.design-2"
 	],
@@ -57,6 +58,11 @@
 		{
 			"id": "options",
 			"title": "Each option shows its own image",
+			"coverage": "required"
+		},
+		{
+			"id": "selected-option",
+			"title": "Switching options preserves decoded images without revoked URL errors",
 			"coverage": "required"
 		},
 		{
@@ -128,6 +134,7 @@
 				"legacy",
 				"option-fit",
 				"options",
+				"selected-option",
 				"approve",
 				"option-thread",
 				"pinned",
@@ -148,6 +155,7 @@
 				"legacy",
 				"option-fit",
 				"options",
+				"selected-option",
 				"approve",
 				"option-thread",
 				"pinned",

@@ -8,7 +8,11 @@ export function reportStale(report: Report, now = Date.now()): boolean {
 	return report.state !== 'finalized' && now - Date.parse(report.updatedAt) > 15 * 60_000;
 }
 
-export function timeAgo(value: string, now = Date.now()) {
+export function timeAgo(
+	value: string,
+	now = Date.now(),
+	numeric: Intl.RelativeTimeFormatNumeric = 'auto'
+) {
 	const elapsed = now - Date.parse(value);
 	if (!Number.isFinite(elapsed)) return '';
 	if (elapsed < 60_000) return 'just now';
@@ -21,7 +25,7 @@ export function timeAgo(value: string, now = Date.now()) {
 		['minute', 60_000]
 	];
 	const [unit, duration] = units.find(([, duration]) => elapsed >= duration)!;
-	return new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
+	return new Intl.RelativeTimeFormat('en', { numeric }).format(
 		-Math.floor(elapsed / duration),
 		unit
 	);

@@ -1,3 +1,4 @@
+import { tick } from 'svelte';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 
 export interface ImageRequest {
@@ -34,6 +35,7 @@ export function imageUrl(
 			});
 	return () => {
 		disposed = true;
-		if (url) URL.revokeObjectURL(url);
+		// The old image remains in the DOM until Svelte flushes the new selection.
+		if (url) void tick().then(() => URL.revokeObjectURL(url));
 	};
 }

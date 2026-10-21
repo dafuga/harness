@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { type CatalogRow } from '../../utils/explorer-ui/entityCatalog';
-	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import ExplorerUsage from '../ExplorerUsage.svelte';
 	import EntityLink from './harness/EntityLink.svelte';
-	let { row, nav }: { row: CatalogRow; nav: EntityNav } = $props();
+	let {
+		row,
+		nav,
+		lens,
+		mediaBase
+	}: { row: CatalogRow; nav: EntityNav; lens: EntityLens; mediaBase: string } = $props();
 	let to = $derived(
 		entityLens(nav.route, {
 			category: row.entity.category,
@@ -51,16 +57,7 @@
 	>
 		<code>{call}</code>
 	</EntityLink>
-	<div class="ex-function-usage" role="group" aria-label="Used In">
-		<span>Used In</span>
-		{#each row.usedIn ?? [] as consumer (consumer.id)}
-			<EntityLink
-				to={entityLens(nav.route, { category: consumer.category, entity: consumer.id })}
-				{nav}
-				class="ex-function-consumer">{consumer.name}</EntityLink
-			>
-		{:else}<span>—</span>{/each}
-	</div>
+	<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
 </article>
 
 <style>
@@ -92,22 +89,7 @@
 		padding: 16px 16px 8px;
 		border-radius: inherit;
 	}
-	.ex-function-usage {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 4px 10px;
+	.ex-function-tile > :global(.ex-usage) {
 		padding: 0 16px 14px;
-		color: var(--ex-muted);
-		font-size: 0.75rem;
-		line-height: 1.5;
-	}
-	.ex-function-usage :global(.ex-function-consumer) {
-		color: var(--ex-soft);
-		overflow-wrap: anywhere;
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-	.ex-function-usage :global(.ex-function-consumer:hover) {
-		color: var(--ex-text);
 	}
 </style>

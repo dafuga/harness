@@ -1,10 +1,10 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import { explorerRoute } from '../../../src/utils/explorerRoute';
+import { explorerRoute, explorerRoutePath } from '../../../src/utils/explorerRoute';
 import EntityRelations from '../src/components/harness/entity-relations/EntityRelations.svelte';
 import type { ExplorerRelations } from '../src/models/Explorer.types';
 import type { EntityNav } from '../src/utils/entityLens';
-import { content, words } from './entityRender';
+import { content, hostProps, words } from './entityRender';
 import { commits, ids } from './entityUnits';
 
 /**
@@ -32,7 +32,6 @@ function card(body: string, name: string): string {
 	const text = words(body.slice(body.indexOf('>', from) + 1, body.indexOf('</section>', from)));
 	return text.replace(/\s+/g, ' ').trim();
 }
-const times = (text: string, part: string) => text.split(part).length - 1;
 
 test('the sections of an entity are named Used In and Uses, and none is a relationship', () => {
 	for (const entity of [list, filter, page]) {
@@ -40,7 +39,7 @@ test('the sections of an entity are named Used In and Uses, and none is a relati
 		expect(tabs(body)).toEqual([
 			'Overview',
 			'Contract',
-			'Used In',
+			...(entity.category === 'pages' ? [] : ['Used In']),
 			'Uses',
 			entity.category === 'functions' ? 'Examples' : 'States',
 			'History',
@@ -57,9 +56,12 @@ test('Used In lists what uses the entity, the pages that show it too, each once 
 	expect(sections(body)).toEqual(['Used In']);
 	expect(body).toContain('aria-label="filterOrders used in"');
 	expect(used).toMatch(/^Used In 2 /);
-	expect(used).toMatch(/Orders page\s+Page\b/);
-	expect(used).toMatch(/OrderList\s+Component\b/);
-	expect([times(used, 'Orders page'), times(used, 'OrderList')]).toEqual([1, 1]);
+	expect(used).toMatch(/Orders page/);
+	expect(used).toMatch(/OrderList/);
+	for (const name of ['Orders page', 'OrderList'])
+		expect([...body.matchAll(new RegExp(`<article[^>]*aria-label="${name}"`, 'g'))]).toHaveLength(
+			1
+		);
 	expect(body).toContain(`href="${base}/pages/${ids.page}"`);
 	expect(body).toContain(`href="${base}/components/${ids.list}"`);
 });
@@ -70,17 +72,20 @@ test('Uses keeps what the entity depends on apart by kind and leaves out a kind 
 	expect(sections(body)).toEqual(['Uses']);
 	expect(body).toContain('aria-label="OrderList uses"');
 	expect(uses).toMatch(
-		/Uses 3 .*Components 1 OrderCard.*Functions 1 filterOrders.*Services 1 OrderStore/
+		/Uses 3 .*Components 1 .*OrderCard.*Functions 1 .*filterOrders.*Services 1 .*OrderStore/
 	);
-	expect(uses).not.toMatch(/Configs|Orders page/);
+	expect(uses).not.toContain('Configs');
+	// Reused cards may mention their own consumers without listing them as dependencies.
+	expect(body).not.toMatch(/<article\b[^>]*aria-label="Orders page"/);
+	expect(body).toContain(`href="${base}/pages/${ids.page}"`);
 	for (const [kind, id] of [
 		['components', ids.card],
-		['functions', ids.filter],
+		['helpers', `filterOrders/in/${ids.filter}/contract`],
 		['services', ids.store]
 	])
 		expect(body).toContain(`href="${base}/${kind}/${id}"`);
 	expect(card(content('commit', { ...page, tab: 'uses' }), 'Uses')).toMatch(
-		/Uses 3 .*Components 2 OrderList.*SearchBox.*Configs 1 orderSettings/
+		/Uses 3 .*Components 2 .*OrderList.*SearchBox.*Configs 1 .*orderSettings/
 	);
 });
 
@@ -91,8 +96,8 @@ test('the overview and both dedicated usage sections show no source paths', () =
 	for (const body of screens)
 		for (const name of ['Used In', 'Uses'])
 			expect(card(body, name)).not.toMatch(/src\/|\.ts\b|\.svelte\b/);
-	expect(card(screens[1], 'Used In')).toMatch(/Orders page\s+Page\b/);
-	expect(card(screens[2], 'Uses')).toMatch(/Components 1 OrderCard/);
+	expect(card(screens[1], 'Used In')).toMatch(/Orders page/);
+	expect(card(screens[2], 'Uses')).toMatch(/Components 1 .*OrderCard/);
 });
 
 test('a former relationships address opens the overview without embedded usage sections', () => {
@@ -104,12 +109,20 @@ test('a former relationships address opens the overview without embedded usage s
 	expect(sections(body).filter((name) => /^Use/.test(name))).toEqual([]);
 	expect(body).toMatch(/aria-selected="true"[^>]*>\s*Overview/);
 	expect(words(body)).not.toMatch(/relationship/i);
+	for (const commit of [null, commits.middle]) {
+		const location = { branch: 'main', commit, ...page };
+		const path = `/branch/main${commit ? `/commit/${commit}` : ''}/pages/${ids.page}`;
+		expect(explorerRoute(path, '?tab=used-in')).toEqual(location);
+		expect(explorerRoutePath({ ...location, tab: 'used-in' })).toBe(path);
+		const legacy = content(commit ? 'commit' : 'current', { ...page, tab: 'used-in' });
+		expect(legacy).toContain('aria-label="Orders page overview"');
+		expect(tabs(legacy)).not.toContain('Used In');
+		expect(sections(legacy).filter((name) => /^Use/.test(name))).toEqual([]);
+		expect(legacy).toMatch(/aria-selected="true"[^>]*>\s*Overview/);
+	}
 });
 
 test('an entity nothing uses, one that uses nothing and one that was removed each say so', () => {
-	expect(card(content('commit', { ...page, tab: 'used-in' }), 'Used In')).toContain(
-		'Used In 0 No page shows it and nothing else uses it.'
-	);
 	expect(card(content('commit', { ...filter, tab: 'uses' }), 'Uses')).toContain(
 		'Uses 0 It uses no component, function, config or service.'
 	);
@@ -125,7 +138,13 @@ test('an entity nothing uses, one that uses nothing and one that was removed eac
 	};
 	const route = { branch: 'main', commit: null, category: 'functions' } as const;
 	const nav: EntityNav = { route, href: () => '/', go: () => {} };
-	const body = render(EntityRelations, { props: { relations: none, nav, removed: true } }).body;
+	const empty = render(EntityRelations, {
+		props: { relations: none, nav, host: hostProps('commit') }
+	}).body;
+	expect(card(empty, 'Used In')).toContain('Used In 0 No page shows it and nothing else uses it.');
+	const body = render(EntityRelations, {
+		props: { relations: none, nav, removed: true, host: hostProps('commit') }
+	}).body;
 	expect(card(body, 'Used In')).toContain(
 		'Removed at this commit: nothing of this commit uses it.'
 	);

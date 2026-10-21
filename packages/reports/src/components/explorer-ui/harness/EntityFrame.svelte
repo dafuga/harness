@@ -26,7 +26,25 @@
 		const unit = host.head.registry.units.find(
 			(item) => item.id === host.route.entity && item.status === 'active'
 		);
-		return unit ? (explorerEntity(host.head, unit, true) ?? undefined) : undefined;
+		if (unit) return explorerEntity(host.head, unit, true) ?? undefined;
+		const parent = host.parent;
+		if (!parent || !host.head.sourceImpact?.units.removed.includes(host.route.entity ?? ''))
+			return undefined;
+		const previous = parent.registry.units.find((item) => item.id === host.route.entity);
+		const removed = previous && explorerEntity(parent, previous, true);
+		if (!removed) return undefined;
+		return {
+			...removed,
+			change: 'removed' as const,
+			lastAt: parent.commit,
+			verdict: {
+				passed: false,
+				label: 'Removed at this commit',
+				reasons: [
+					`This commit removed it; its contract is shown as it last was, at ${shortCommit(parent.commit)}.`
+				]
+			}
+		};
 	});
 	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
 	let choosing = $derived(
@@ -50,6 +68,7 @@
 				{@const evidence = host.lens.evidence(entity.unit)}
 				<EntityScreens
 					options={screenOptions(evidence.scenarios)}
+					preview={entity.unit.preview}
 					{evidence}
 					scope={host.scope}
 					mediaBase={host.mediaBase}
@@ -85,14 +104,13 @@
 				shared={isShared(host.lens.relations(entity.id), entity.unit)}
 				preview={screens}
 			/>
-			{#if host.route.helper}<p class="ex-note">
-					Size, complexity, history, relationships and verification describe the owning module.
-				</p>{/if}
 			{@render screen(entity, nav)}
 		{:else}
 			<EntityMissing
 				title="Not at this revision"
-				message={`Nothing named ${host.route.helper ?? host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
+				message={host.route.helper && !host.route.entity
+					? `The name ${host.route.helper} does not identify exactly one helper at this revision. Choose its owner from Helpers.`
+					: `Nothing named ${host.route.helper ?? host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
 				{nav}
 				to={entityLens(host.route, { category: host.route.category })}
 			/>

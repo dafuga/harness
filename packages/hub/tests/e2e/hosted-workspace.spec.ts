@@ -38,7 +38,7 @@ test('the hosted workspace has no agent control and a comment never calls a run'
 	await expect(page.getByRole('heading', { name: 'Atlas activity', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: /New page/ })).toHaveCount(0);
 	await noAgentControls(page);
-	const open = page.getByRole('link', { name: /Open page/ });
+	const open = page.getByRole('link', { name: 'Open Atlas activity', exact: true });
 	await expect(open).toHaveAttribute('href', entity(atlas, 'main'));
 	await open.click();
 	// The hosted page is the same viewer: an entity opens on its overview, with its evidence.
@@ -76,9 +76,9 @@ test('the hosted workspace has no agent control and a comment never calls a run'
 test('a comment on a historical commit names that commit', async ({ page }) => {
 	const state = await hostedFixture(page);
 	await page.goto(designs(atlas, `main/commit/${earlier}`));
-	await expect(
-		page.getByText(`Historical commit · ${earlier.slice(0, 7)}`, { exact: true })
-	).toBeVisible();
+	await expect(page.getByRole('contentinfo')).toContainText('Historical commit · comments only');
+	await expect(page.getByRole('contentinfo')).toContainText(earlier.slice(0, 7));
+	await expect(page.getByRole('button', { name: 'Go to tip', exact: true })).toBeVisible();
 	await noAgentControls(page);
 	await page.getByRole('button', { name: 'Comment on image', exact: true }).click();
 	await message(page).fill('This was clearer');
@@ -101,13 +101,15 @@ test('changing project leaves nothing of the previous one and reads only the new
 	await expect(project.locator('option')).toHaveText(['Atlas', 'Borealis']);
 	await expect(project.locator('optgroup')).toHaveAttribute('label', 'Shared');
 	const before = state.calls.length;
+	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
 	await project.selectOption(borealis);
+	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/projects/${borealis}/harness/branch/trunk/pages$`));
 	await expect(page.getByRole('heading', { name: 'Borealis activity', exact: true })).toBeVisible();
 	await expect(page.getByRole('main').getByText(/Atlas/)).toHaveCount(0);
 	await expect(page.getByRole('complementary', { name: 'Design conversation' })).toHaveCount(0);
 	await expect(page.getByRole('main').getByRole('img')).toHaveCount(0);
-	await page.getByRole('link', { name: /Open page/ }).click();
+	await page.getByRole('link', { name: 'Open Borealis activity', exact: true }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Borealis activity' })).toBeVisible();
 	await expect(page.getByText('Atlas: align the filters.')).toHaveCount(0);
 	await expect(page.getByRole('button', { name: /^Thread 1/ })).toHaveCount(0);

@@ -153,3 +153,15 @@ unit and History link table, static observations, original captures and logs.
 - [Taxonomy data](../../../harness.groups.json), [audit source](../../../src/audit/development-tooling/structure-rules/moduleCategoryFindings.ts) and [authoring guidance](../../../.codex/skills/harness/SKILL.md).
 - [Source presentation](http://127.0.0.1:5735/harness/branch/dafuga%2Fservice-cards/commit/f4e2068d356422f1dfc131f1ad29c6df3a47ecc1/components/reports.component.harness-entity-source) and [History](http://127.0.0.1:5735/harness/branch/dafuga%2Fservice-cards/commit/f4e2068d356422f1dfc131f1ad29c6df3a47ecc1/components/reports.component.harness-entity-source/history).
 - [Actual AgentActivityService Source](http://127.0.0.1:5735/harness/branch/dafuga%2Fservice-cards/services/service.agent-activity?tab=source).
+
+## Main integration and source viewer follow-up
+
+The user requested landing this work on main and restoring per-file code modals.
+Main at `0816efe0e` is integrated locally with its catalog usage previews, compact
+profiles, relationship batches and environment header. Its edits follow the real
+category implementations; 34 new source files retain supported entry addresses.
+Focused Reports integration checks pass (34 cases). The first broader Reports
+run found six integration expectations; their canonical-name, usage-count and
+registered-entry resolutions are being verified. Root type checking passes.
+Registry freshness and source-ownership migration guards remain under repair;
+no remote landing or full-verification verdict is claimed at this checkpoint.

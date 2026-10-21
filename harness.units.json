@@ -260,6 +260,12 @@
 			"specifier": "$desktop/services/ProjectSyncService",
 			"to": "packages/desktop/src/services/ProjectSyncService.ts",
 			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Environment selection reuses the shared keyboard and value selection control."
 		}
 	]
 }

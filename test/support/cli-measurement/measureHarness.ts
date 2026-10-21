@@ -1,0 +1,111 @@
+import { existsSync } from 'node:fs';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { randomUUID } from 'node:crypto';
+import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import type { CommandResult } from '../cli';
+
+type Runner = (
+	args: string[],
+	cwd: string,
+	success?: boolean,
+	env?: Record<string, string>
+) => Promise<CommandResult>;
+interface Input {
+	args: string[];
+	cwd: string;
+	expectSuccess: boolean;
+	env: Record<string, string>;
+	command: string[];
+	source: string;
+}
+
+/** Observe successful standard CLI workloads without changing their output or verification context. */
+export async function measureHarness(input: Input, run: Runner): Promise<CommandResult> {
+	const units = measuredUnits(input.args).filter((unit) =>
+		existsSync(join(input.source, 'specification/units', unit + '.json'))
+	);
+	if (!evidenceRequested() || !units.length)
+		return run(input.command, input.cwd, input.expectSuccess, input.env);
+	if (!existsSync('/usr/bin/time'))
+		throw new Error('No process usage collector is available for the required CLI workload.');
+	const directory = await mkdtemp(join(tmpdir(), 'harness-cli-usage-'));
+	const usage = join(directory, 'usage.txt');
+	try {
+		const start = performance.now();
+		const result = await run(
+			['/usr/bin/time', process.platform === 'darwin' ? '-l' : '-v', '-o', usage, ...input.command],
+			input.cwd,
+			input.expectSuccess,
+			input.env
+		);
+		const duration = performance.now() - start;
+		if (result.exitCode === 0)
+			recordUsage(units, input.args, duration, await readFile(usage, 'utf8'));
+		return result;
+	} finally {
+		await rm(directory, { recursive: true, force: true });
+	}
+}
+
+function measuredUnits(args: string[]): string[] {
+	if (args[0] === 'new') return ['template.project-guidance'];
+	if (args[0] === 'history' && args[1] === 'build')
+		return [
+			'service.revision-detail',
+			'function.regression-history',
+			'repository.regression-proof'
+		];
+	if (args[0] !== 'loop' || args[1] !== 'record') return [];
+	const units = [
+		'service.regression-proof',
+		'repository.regression-proof',
+		'function.regression-types'
+	];
+	return args[args.indexOf('--phase') + 1] === 'green'
+		? [...units, 'function.regression-history']
+		: units;
+}
+
+function recordUsage(units: string[], args: string[], duration: number, usage: string): void {
+	const resident =
+		process.platform === 'darwin'
+			? /^\s*(\d+)\s+maximum resident set size/m.exec(usage)
+			: /Maximum resident set size \(kbytes\):\s*(\d+)/.exec(usage);
+	if (!resident) throw new Error('The CLI workload did not report peak RSS.');
+	const memory = Number(resident[1]) * (process.platform === 'darwin' ? 1 : 1024);
+	const phase = args.includes('--phase') ? args[args.indexOf('--phase') + 1] : '';
+	const workload = [args[0], args[1], phase].filter(Boolean).join('-');
+	const measurements = units.flatMap((unit) => {
+		const context = { unit, workload, target: 'process', samples: 1 };
+		return [
+			{
+				...context,
+				metric: 'latency-cli-ms',
+				unitOfMeasure: 'ms',
+				value: duration,
+				method:
+					'Wall time of one cold CLI workload including startup, snapshots and shared code; no isolated-unit attribution or warmup.'
+			},
+			{
+				...context,
+				metric: 'process-peak-rss-bytes',
+				unitOfMeasure: 'bytes',
+				value: memory,
+				method:
+					'Maximum RSS of the whole CLI process including shared runtime; not isolated unit memory or the sum of child processes.'
+			}
+		];
+	});
+	recordCapture(
+		{
+			evidence: 'cli-benchmarks',
+			kind: 'benchmark',
+			state: 'cli-workload',
+			file: 'cli-' + randomUUID() + '.json',
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
+}

@@ -1,8 +1,9 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
 import { home } from './harnessHistory';
+import { pageBenchmark, pageUnit } from './pageBenchmark';
 
 export const viewports = [
 	{ id: 'desktop', width: 1440, height: 900 },
@@ -10,6 +11,19 @@ export const viewports = [
 	{ id: 'mobile', width: 390, height: 844 }
 ] as const;
 export type Viewport = (typeof viewports)[number];
+
+// Kept only by a run with TAKE_SCREENSHOT=true and a before or after label; fonts and images wait.
+export async function capturePhase(page: Page, name: string): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	const label = process.env.SCREENSHOT_LABEL;
+	if (label !== 'before' && label !== 'after') throw new Error('SCREENSHOT_LABEL: before or after');
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	const folder = process.env.HARNESS_EXPLORER_SHOTS ?? test.info().outputDir;
+	await page.screenshot({ path: `${folder}/${label}-${name}.png`, fullPage: true });
+}
 
 /**
  * Outside `harness verify` no revision is being verified, so the built server is told this
@@ -95,7 +109,10 @@ export async function captureScreen(
 	directory = evidenceDirectory
 ): Promise<void> {
 	await settled(page);
-	const bytes = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+	const bytes = await page.screenshot({
+		animations: 'disabled',
+		caret: 'hide'
+	});
 	const file = `${state}-${viewport.id}.png`;
 	const server = await servedBuild(page);
 	const stamp = server ? { server } : {};
@@ -114,6 +131,7 @@ export async function captureScreen(
 		requested(directory)
 	);
 	keep(file, bytes);
+	await pageBenchmark(page, `${state}-${viewport.id}`, pageUnit(page.url()));
 }
 
 /**
@@ -154,4 +172,17 @@ export async function captureAudio(
 	);
 	keep(`${state}.wav`, bytes);
 	return durationSeconds;
+}
+
+/** Every visible tab of the real route keeps its own screenshot at the selected viewport. */
+export async function captureSections(
+	page: Page,
+	name: string,
+	checkpoint: (page: Page, name: string) => Promise<void>
+): Promise<void> {
+	const tabs = await page.getByRole('tablist').getByRole('tab').allTextContents();
+	for (const label of tabs.filter((label) => label.trim() !== 'Overview')) {
+		await page.getByRole('tab', { name: label.trim(), exact: true }).click();
+		await checkpoint(page, name + '-' + label.trim().toLowerCase().replaceAll(' ', '-'));
+	}
 }

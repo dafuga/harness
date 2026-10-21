@@ -75,13 +75,15 @@ test('a collection lists the entities of its category by the name a person reads
 		catalogFilter(sorted, { ...filter, search: 'Z title' }).map((row) => row.id),
 		'owner names remain searchable when cards show callable names'
 	).toEqual(['Alpha']);
-	const shown = rows('components').map(({ entity: _entity, ...row }) => row);
+	const shown = rows('components').map(({ entity: _entity, usedIn: _consumers, ...row }) => row);
 	expect(JSON.stringify(shown)).not.toMatch(/src\/|\.ts"/);
 });
 test('a component says which pages it is used on and which components it contains', () => {
 	const card = rows('components').find((row) => row.id === ids.card)!;
 	expect(card.usedOn).toEqual(['Orders page']);
 	expect(card.usedBy).toEqual(['OrderList']);
+	expect(card.usedIn?.map((item) => item.id)).toEqual([ids.list, ids.page]);
+	expect(card.usedIn?.every((item) => item.unit.id === item.id)).toBe(true);
 	const list = rows('components').find((row) => row.id === ids.list)!;
 	expect(list.contains).toEqual(['OrderCard']);
 	expect(list.shared).toBe(false);
@@ -91,7 +93,7 @@ test('service rows require two distinct resolved runtime owners and use that set
 	const service = rows('services')[0];
 	expect(service.targets).toEqual(['module', 'wasm', 'process']);
 	expect(service.name).toBe('OrderStore');
-	expect(service.usedIn).toEqual([
+	expect(service.usedIn?.map(({ id, name, category }) => ({ id, name, category }))).toEqual([
 		{ id: ids.list, name: 'OrderList', category: 'components' },
 		{ id: ids.search, name: 'SearchBox', category: 'components' }
 	]);

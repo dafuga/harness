@@ -22,6 +22,8 @@ class ThreadRunState {
 		this.streaming = '';
 		try {
 			const request = await build();
+			if (request.mode === 'change' && this.workspace.deployments?.selected?.available)
+				request.environment = this.workspace.deployments.environment;
 			const run = await this.workspace.bridge!.startRun(request);
 			[this.runId, this.mode] = [run.runId, request.mode];
 			this.status = 'Request accepted';
@@ -44,6 +46,7 @@ class ThreadRunState {
 		if (!['failed', 'cancelled', 'finished'].includes(value.kind)) return false;
 		this.runId = '';
 		await this.workspace.refresh();
+		if (this.mode === 'change') await this.workspace.deployments?.load();
 		return value.kind === 'finished';
 	}
 	/** A finished Change wrote what its agent said into its notice; a failed one keeps it here. */

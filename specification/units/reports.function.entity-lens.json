@@ -85,7 +85,24 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "Abbreviate a commit to its first seven characters",
+					"call": "shortCommit(\"0123456789abcdef\")",
+					"input": ["0123456789abcdef"],
+					"output": "0123456"
+				},
+				{
+					"name": "Preserve commit text shorter than seven characters",
+					"call": "shortCommit(\"abc\")",
+					"input": ["abc"],
+					"output": "abc"
+				}
+			],
 			"consumers": [
+				{
+					"unit": "reports.component.explorer-usage-link"
+				},
 				{
 					"unit": "reports.component.harness-entity-audio"
 				},

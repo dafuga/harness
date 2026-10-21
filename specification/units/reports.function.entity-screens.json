@@ -92,7 +92,7 @@
 			{
 				"name": "entityScreens",
 				"type": "EntityScreens",
-				"description": "After screenshot or explicit gap, plus before at a selected commit. Matches scenario/state/viewport exactly; current mode rejects a non-current capture rather than borrowing it. Includes freshness and inherited-origin information."
+				"description": "Matching after screenshot or gap, plus before at a selected commit. Validated unchanged captures remain visible with their origin and fresh=false; rejected, unvalidated or unavailable captures remain gaps. Matching scenario, state and viewport is required."
 			},
 			{
 				"name": "galleryItems",

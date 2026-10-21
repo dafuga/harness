@@ -4776,9 +4776,9 @@
 		{
 			"unit": "reports.function.entity-usage",
 			"name": "entityUsage",
-			"commit": "f22e91fa",
-			"reason": "Keep model relations in their separate catalog category.",
-			"definition": "3de8093b75f09af4d6c9725f036e38ccabba60e9ece720f785b585f11e9f4423"
+			"commit": "f549d87bd8bb6eb19418ef2c3df73be55dd5bf30",
+			"reason": "Group reverse dependencies and shared consumer footers by declared module type while preserving ownership and identity.",
+			"definition": "cc6a2de1f4a9b449a903fff1bf56f1fbf4523a8da998c6ea6f840ef113c9fb62"
 		},
 		{
 			"unit": "function.unit-documentation",
@@ -4796,8 +4796,9 @@
 		{
 			"unit": "function.unit-metadata",
 			"name": "unitMetadata",
-			"definition": "c3f321c900f0bf880c79b23911666af2a2cab0d7dc479e6a099f3fafab4cad07",
-			"reason": "Add source-derived service runtime ownership without changing helper eligibility."
+			"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65",
+			"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
+			"commit": "132d82b5342d010c3431ef40d94a80d02622776d"
 		},
 		{
 			"unit": "reports.function.entity-catalog",
@@ -4810,6 +4811,62 @@
 			"name": "helperReferences",
 			"definition": "28d0344dd3bafd7ee73c25ac326b0ee5b30dd479a309aa9fbe13620f014e4cd3",
 			"reason": "Record source class declarations and actual construction while preserving runtime reference and helper ownership semantics."
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "runPayload",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Carry the canonical optional deployment environment across the existing run IPC boundary.",
+			"definition": "7db3c53210d6e9481b2e1505e2a2a35eec08ec899e8200d5ca5fc2948b7e494f"
+		},
+		{
+			"unit": "desktop.function.prepare-project-task",
+			"name": "prepareProjectTask",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Validate environment configuration and source cleanliness before admitting general-chat writes.",
+			"definition": "b1fc8d35ad47d455c12eff51c3d30200c59360b77e995b2031ca85fe8bd70989"
+		},
+		{
+			"unit": "desktop.function.prepare-run",
+			"name": "prepareRun",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Validate the selected deployment environment before admitting approved entity changes.",
+			"definition": "952d57fef52b450cc905fcc13f53d647d987d2685897c5ba47b795726be78338"
+		},
+		{
+			"unit": "desktop.function.scrub-environment",
+			"name": "scrubEnvironment",
+			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+			"reason": "Remove inherited Cloudflare and Wrangler credentials before launching agent subprocesses.",
+			"definition": "0db72e2a49862f3859a846b448bab964d5f991bf03d548b80704c4a95ed5aad0"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"name": "entityMeasure",
+			"commit": "6b6bea9048e887b98b1ee93b07ed13a0c4bc9d29",
+			"reason": "Review exact-revision source observations added after the relocation; retain runtime measurement grouping and registered ownership.",
+			"definition": "15d6c025c0d07d544925ac1a1418195405751065d5d96b601f668f57082bb29c"
+		},
+		{
+			"unit": "reports.function.entity-shown",
+			"name": "entityShown",
+			"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
+			"reason": "Review main-branch derivation of unit measurements from the current record and matching regression proofs.",
+			"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"name": "entityHistory",
+			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
+			"reason": "Show only elapsed-time benchmark series as latency in compact commit history.",
+			"definition": "d928e2f493ceb344949fb3fe6c4fde2aa542905fae8b5c9f35c4dfeca0b669a5"
+		},
+		{
+			"unit": "reports.function.explorer-history",
+			"name": "historyDetail",
+			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
+			"reason": "Read source size and complexity from the exact historical revision alongside existing evidence.",
+			"definition": "efd95649c13e63d700372d38417c274df8a18bfb1a955447ee974d61261b679b"
 		}
 	]
 }

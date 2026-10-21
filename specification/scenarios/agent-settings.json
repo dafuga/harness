@@ -20,32 +20,93 @@
 		{
 			"id": "compact-controls",
 			"title": "Icon controls preserve compact request modes and approval gating",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.agent-controls",
+				"desktop.component.agent-model-picker",
+				"desktop.component.agent-effort-picker",
+				"desktop.component.choice-dialog",
+				"desktop.component.composer",
+				"desktop.component.nav-bar",
+				"desktop.adapter.agent-settings",
+				"desktop.store.agent-settings",
+				"desktop.component.icon"
+			]
 		},
 		{
 			"id": "model-picker",
 			"title": "Both discovered CLIs and model-supported reasoning choices",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.agent-controls",
+				"desktop.component.agent-model-picker",
+				"desktop.component.agent-effort-picker",
+				"desktop.component.choice-dialog",
+				"desktop.component.composer",
+				"desktop.component.nav-bar",
+				"desktop.adapter.agent-settings",
+				"desktop.store.agent-settings",
+				"desktop.component.icon"
+			]
 		},
 		{
 			"id": "settings",
 			"title": "Design options are configured on Settings and persist across reload",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.page.settings",
+				"desktop.component.agent-settings",
+				"desktop.adapter.agent-settings",
+				"desktop.store.agent-settings"
+			]
 		},
 		{
 			"id": "preference-storage",
 			"title": "Valid counts persist; invalid values and storage failures are handled",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.agent-controls",
+				"desktop.component.agent-model-picker",
+				"desktop.component.agent-effort-picker",
+				"desktop.component.choice-dialog",
+				"desktop.component.composer",
+				"desktop.component.nav-bar",
+				"desktop.adapter.agent-settings",
+				"desktop.store.agent-settings",
+				"desktop.component.icon"
+			]
 		},
 		{
 			"id": "provider-boundaries",
 			"title": "Unavailable providers, unsupported effort and save failures stay explicit",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.agent-controls",
+				"desktop.component.agent-model-picker",
+				"desktop.component.agent-effort-picker",
+				"desktop.component.choice-dialog",
+				"desktop.component.composer",
+				"desktop.component.nav-bar",
+				"desktop.adapter.agent-settings",
+				"desktop.store.agent-settings",
+				"desktop.component.icon"
+			]
 		},
 		{
 			"id": "cleanup-ownership",
 			"title": "Shared modal ownership and retired unused UI stay enforced",
-			"coverage": "required"
+			"coverage": "required",
+			"units": [
+				"desktop.component.agent-controls",
+				"desktop.component.agent-model-picker",
+				"desktop.component.agent-effort-picker",
+				"desktop.component.choice-dialog",
+				"desktop.component.composer",
+				"desktop.component.nav-bar",
+				"desktop.adapter.agent-settings",
+				"desktop.store.agent-settings",
+				"desktop.component.icon"
+			]
 		}
 	],
 	"viewports": [
@@ -53,6 +114,11 @@
 			"id": "desktop",
 			"width": 1440,
 			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
 		},
 		{
 			"id": "phone",
@@ -166,6 +232,20 @@
 			"required": true,
 			"build": "desktop-renderer",
 			"capture": "viewport"
+		},
+		{
+			"id": "agent-settings-benchmarks",
+			"kind": "benchmark",
+			"states": ["settings"],
+			"viewports": ["desktop", "tablet", "phone"],
+			"required": true
+		},
+		{
+			"id": "agent-settings-tablet",
+			"kind": "screenshot",
+			"states": ["settings"],
+			"viewports": ["tablet"],
+			"required": true
 		}
 	]
 }

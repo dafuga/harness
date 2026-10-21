@@ -117,7 +117,7 @@ export class RevisionDetailService {
 			records,
 			explanations: reasons.explanations,
 			rangeReasons: reasons.range,
-			regressions: await regressionProofs(this.root, this.history, commit)
+			regressions: await regressionProofs(this.root, this.history, commit, media)
 		};
 		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
 	}
@@ -209,7 +209,12 @@ function comparison(sound: VerificationRecord[]): RevisionDetail['comparison'] {
 function short(id: string): string {
 	return id.slice(0, 12);
 }
-async function regressionProofs(root: string, history: HistoryStatusService, commit: string) {
+async function regressionProofs(
+	root: string,
+	history: HistoryStatusService,
+	commit: string,
+	media: MediaPlacer
+) {
 	const repository = new RegressionProofRepository(root, history.pinned?.evidence);
-	return regressionHistory(commit, await history.all(), repository.load.bind(repository));
+	return regressionHistory(commit, await history.all(), repository.load.bind(repository), media);
 }

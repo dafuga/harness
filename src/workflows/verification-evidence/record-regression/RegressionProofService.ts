@@ -1,3 +1,6 @@
+import { focusedScreens } from '../../../services/regression-proof-service/focusedScreens';
+import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';
+import type { ScenarioManifest } from '../../../core/development-tooling/unitTypes';
 import { benchmarkMeasurements } from '../run-verify/verification-service/record-assembly-service/sealRecord';
 import { gatherCaptures } from '../run-verify/verification-service/check-run-service/gatherCaptures';
 import { machineProfile } from '../../../utils/development-tooling/machineProfile';
@@ -45,9 +48,9 @@ export class RegressionProofService {
 		try {
 			if (snapshot.misdeclared().length) fail('Regression outputs may not cover tracked files.');
 			for (const path of config.link) await snapshot.link(this.root, path);
-			const observed = await observeRegression(snapshot, directory, input);
+			const observed = await observeRegression(snapshot, directory, input, config.scenarios);
 			const record = await sealRegression(this.root, input, observed);
-			await new RegressionProofRepository(this.root).save(record, observed.output);
+			await new RegressionProofRepository(this.root).save(record, observed.output, observed.files);
 			return record;
 		} finally {
 			await snapshot.remove();
@@ -67,9 +70,12 @@ async function sourceIdentity(root: string, commit: string) {
 async function snapshotConfig(root: string, commit: string) {
 	const tree = await CommitTreeAdapter.open(root, commit);
 	const listed = (await tree.list()).some((entry) => entry.path === 'harness.verify.json');
-	return listed
+	const config = listed
 		? verifyConfigSchema.parse(JSON.parse(await tree.read('harness.verify.json')))
 		: defaultVerifyConfig;
+	const scenarios = await new ScenarioRepository(root).read(tree);
+	if (scenarios.errors.length) fail(scenarios.errors.join('; '));
+	return { ...config, scenarios: scenarios.manifests };
 }
 
 function environmentProfile(): string {
@@ -104,12 +110,15 @@ interface Observation {
 	result: Awaited<ReturnType<typeof runIsolated>>;
 	output: Buffer;
 	measurements: NonNullable<RegressionRecord['measurements']>;
+	captures: NonNullable<RegressionRecord['captures']>;
+	files: Array<{ path: string; bytes: Buffer }>;
 }
 
 async function observeRegression(
 	snapshot: SnapshotAdapter,
 	directory: string,
-	input: RegressionRun
+	input: RegressionRun,
+	scenarios: ScenarioManifest[]
 ): Promise<Observation> {
 	const startedAt = new Date().toISOString(),
 		profile = environmentProfile();
@@ -141,7 +150,14 @@ async function observeRegression(
 		profile: machineProfile().id,
 		commit: input.commit
 	});
-	return { profile, startedAt, result, output, measurements };
+	return {
+		profile,
+		startedAt,
+		result,
+		output,
+		measurements,
+		...(await focusedScreens(captures.gathered, directory, { commit: input.commit, scenarios }))
+	};
 }
 
 async function sealRegression(
@@ -166,6 +182,7 @@ async function sealRegression(
 		finishedAt: new Date().toISOString(),
 		exitCode: result.exitCode!,
 		...(observed.measurements.length ? { measurements: observed.measurements } : {}),
+		...(observed.captures.length ? { captures: observed.captures } : {}),
 		log: { ...result.log, path: 'output.log' },
 		...(input.red ? { red: { commit: input.red.source.commit, record: input.red.id } } : {})
 	};

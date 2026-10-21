@@ -1,22 +1,22 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import type { ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';
 	import type { EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { plainClick } from '../../../utils/explorer-ui/harnessShell';
+	// Any other anchor attribute is passed on; the address and the click stay this link's own.
 	let {
 		to,
 		nav,
 		label,
 		children,
 		...rest
-	}: {
+	}: Omit<HTMLAnchorAttributes, 'href' | 'onclick' | 'children'> & {
 		to: ExplorerLocation;
 		nav: EntityNav;
 		/** The accessible name, when the visible text alone does not say where the link leads. */
 		label?: string;
 		children: Snippet;
-		class?: string;
-		title?: string;
 	} = $props();
 	// A modified click, or any other button, stays the browser's: it may open another tab.
 	function follow(event: MouseEvent) {
@@ -26,4 +26,4 @@
 	}
 </script>
 
-<a href={nav.href(to)} aria-label={label} onclick={follow} {...rest}>{@render children()}</a>
+<a aria-label={label} {...rest} href={nav.href(to)} onclick={follow}>{@render children()}</a>

@@ -22,7 +22,7 @@ test('service cards show only the class name and revision-scoped consumer links'
 		const body = screen(ExplorerCatalogScreen, mode, { category: 'services' });
 		expect(count(body, /<article\b/g), 'services use the helper card grid').toBe(1);
 		const card = /<article\b.*?<\/article>/s.exec(body)![0];
-		expect(words(card).trim()).toBe('OrderStore Used In OrderList SearchBox');
+		expect(words(card).trim()).toBe('OrderStore Used In Components OrderList SearchBox');
 		expect(card).not.toMatch(/<h2|<p\b|<img|<button|<svg|hx-verdict/);
 		expect(count(card, /<a\b/g)).toBe(3);
 		const scope = `/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commits.middle}`}`;
@@ -44,7 +44,7 @@ test('visual component cards show the selected revision, never the parent or ano
 		expect(body).toContain(`src="/harness/media/${commit.slice(0, 7)}-default-desktop.png"`);
 		expect(body).not.toContain('src="/harness/media/aaaaaaa-');
 		expect(body).toContain('/components/app.component.order-card');
-		expect(words(body)).toContain('Used on');
+		expect(words(body)).toContain('Used In');
 	}
 });
 

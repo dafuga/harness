@@ -1,4 +1,5 @@
-import type { RemoteHostStatus } from './RemoteControl.types';
+import type { RemoteGrant, RemoteHostStatus } from './RemoteControl.types';
+export type { RemoteGrant } from './RemoteControl.types';
 
 /** Wire v1. A host answers no other protocol number. */
 export const REMOTE_PROTOCOL = 1;
@@ -45,6 +46,12 @@ export const commentMethods = ['addComment', 'openThread'] as const;
 export const agentMethods = ['createPlan', 'approve', 'startRun', 'cancelRun'] as const;
 /** Never available to a remote device: folders and hosted credentials stay on the computer. */
 export const localMethods = [
+	'deploymentStatus',
+	'deploymentActivities',
+	'startDeployment',
+	'deploymentProgress',
+	'planDeployment',
+	'deploy',
 	'openProject',
 	'selectProject',
 	'hostedStatus',
@@ -79,16 +86,19 @@ export const revisionMethods: readonly RemoteMethod[] = [
 	'approve',
 	'startRun'
 ];
-/** Methods of a device that name no project. */
 export const projectlessMethods: readonly RemoteMethod[] = [
 	attachMethod,
 	'listProjects',
+	'deploymentActivities',
 	'providers'
 ];
 /** Answers remembered by request id: re-sending one of these never runs it twice. */
 export const mutationMethods: readonly RemoteMethod[] = [
 	...commentMethods,
 	...agentMethods,
+	'deploy',
+	'planDeployment',
+	'startDeployment',
 	'openProject',
 	'selectProject',
 	'connectHosted',
@@ -166,12 +176,6 @@ export type WireMessage = WireRequest | WireResponse | WireEvent;
 export interface RemoteRevision {
 	branch: string;
 	commit: string;
-}
-export interface RemoteGrant {
-	projects: { id: string; name: string }[];
-	/** False grants read-only access; omitted preserves older read-and-comment grants. */
-	comments?: boolean;
-	agents: boolean;
 }
 export interface RemoteResume {
 	epoch: string;

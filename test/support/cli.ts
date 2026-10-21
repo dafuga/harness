@@ -1,3 +1,4 @@
+import { measureHarness } from './cli-measurement/measureHarness';
 import { spawn } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import type { Readable } from 'node:stream';
@@ -40,7 +41,10 @@ export async function runHarness(
 	expectSuccess = true,
 	env: Record<string, string> = {}
 ): Promise<CommandResult> {
-	return runCommand(['bun', cliPath, ...args], cwd, expectSuccess, env);
+	return measureHarness(
+		{ args, cwd, expectSuccess, env, command: ['bun', cliPath, ...args], source: repoRoot },
+		runCommand
+	);
 }
 
 export async function runCommand(

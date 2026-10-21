@@ -7,15 +7,25 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/explorer-ui/explorerRoute.ts", "src/utils/explorerRoute.ts"],
+		"source": [
+			"src/utils/development-tooling/explorer-route/explorerTabs.ts",
+			"src/utils/explorer-route/explorerTabs.ts",
+			"src/utils/explorer-ui/explorerRoute.ts",
+			"src/utils/explorerRoute.ts"
+		],
 		"symbols": [
+			"explorerTabs",
+			"ExplorerTab",
+			"tabOf",
+			"explorerTabs",
+			"tabOf",
+			"explorerTabs",
+			"ExplorerTab",
 			"explorerCategories",
 			"ExplorerCategory",
 			"explorerKindCategory",
 			"explorerSections",
 			"ExplorerSection",
-			"explorerTabs",
-			"ExplorerTab",
 			"ExplorerLocation",
 			"explorerRoute",
 			"canonicalExplorerLocation",
@@ -72,17 +82,17 @@
 			{
 				"name": "explorerTabs",
 				"type": "unknown",
-				"description": "Allowed tabs by section. Overview includes overview, used-in, uses, relationships and tests; details includes contract, measurements and source; history has none."
+				"description": "Allowed tabs by section. Overview includes overview, used-in, uses, relationships and tests; pages exclude used-in. Details includes contract, measurements and source; history has none."
 			},
 			{
 				"name": "explorerRoute",
 				"type": "ExplorerLocation | undefined",
-				"description": "Parsed location, or undefined for malformed scope, encoding, category or selection. A bare branch or commit opens Pages; invalid/default tabs are omitted."
+				"description": "Parsed location, or undefined for malformed scope, encoding, category or selection. A bare branch or commit opens Pages; invalid/default tabs and page used-in tabs are omitted."
 			},
 			{
 				"name": "explorerRoutePath",
 				"type": "string",
-				"description": "Canonical path with encoded branch/entity segments, selected helper identity and valid nondefault tab in the query."
+				"description": "Canonical branch or commit path. Helpers use callable-name paths, an optional owner qualifier and a tab path segment; legacy entity query links remain readable."
 			}
 		],
 		"errors": []

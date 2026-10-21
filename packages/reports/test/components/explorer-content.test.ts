@@ -6,7 +6,7 @@ import { commits, ids } from '../entityUnits';
 const source = /src\/|\+page\.svelte|\.ts\b|OrdersPage|filterOrders/;
 const banned = /sub-?components|\brelated\b|\breports?\b|dashboard|analytics/i;
 
-test('the pages collection is cards with only the page title and its screenshot', () => {
+test('the pages collection is cards with a page title, screenshot and shared usage footer', () => {
 	const body = content('current');
 	expect(words(body)).toContain('Pages Start with the pages people use.');
 	expect(body).toContain('aria-label="Orders page"');

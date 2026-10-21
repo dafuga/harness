@@ -3,8 +3,8 @@
 	"id": "template.project-guidance",
 	"kind": "template",
 	"title": "projectGuidance",
-	"responsibility": "Owns the projectGuidance scaffold template.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Generates project agent and skill instructions, including required regression proof and fresh change measurements.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,7 +14,7 @@
 		"symbols": ["agentRules", "skillRules", "agentRules", "skillRules"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "agentRules.projectType",
@@ -32,7 +32,8 @@
 			},
 			{
 				"name": "skillRules",
-				"type": "string"
+				"type": "string",
+				"description": "Project skill with mandatory selected-commit static measurements, representative runtime observations for changed executable units, and explicit measurement blockers."
 			}
 		],
 		"errors": []

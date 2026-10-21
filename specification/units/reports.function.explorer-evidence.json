@@ -36,7 +36,7 @@
 			{
 				"name": "explorerEvidence",
 				"type": "ExplorerEvidence",
-				"description": "After evidence bound to the exact shown commit, and first-parent evidence only in selected-commit mode. Each side includes the chosen verdict record, applicable coverage, captures and explicit gaps. Current captures must be usable and not inherited. Scenario/state/viewport declarations from both sides are retained; differing profiles, viewport dimensions or tests are listed as comparison limits."
+				"description": "After evidence bound to the exact shown commit, and first-parent evidence only in selected-commit mode. Each side includes the chosen verdict record, applicable coverage, captures and explicit gaps. Current captures must be usable and not inherited. Scenario/state/viewport declarations from both sides are retained; differing profiles, viewport dimensions or tests are listed as comparison limits. Retained focused screenshots remain visible for their exact unit and revision, separately labelled without granting a verification verdict."
 			}
 		],
 		"errors": []
@@ -44,6 +44,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.function.capture-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
 			"via": "import",
 			"origin": "derived"
 		},

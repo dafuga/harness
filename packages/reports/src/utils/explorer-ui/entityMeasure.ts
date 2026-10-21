@@ -6,6 +6,8 @@ export const tolerancePolicy = 0.05;
 export interface MeasureRow {
 	label: string;
 	value: string;
+	/** Emitted artifact target; none means no output-size metric applies. */
+	target?: string;
 	/** Why there is no value, or what the value leaves out. */
 	note?: string;
 }

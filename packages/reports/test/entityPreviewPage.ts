@@ -1,9 +1,20 @@
 import { expect, type Page } from '@playwright/test';
-import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
+import {
+	reviewComponentCapture,
+	reviewMeasuredSources,
+	reviewFocusedScreens,
+	reviewScalarMeasurements,
+	reviewOverviewControls,
+	reviewProfileRows
+} from './entityPreviewOverview';
+import { commits, ids } from './entityUnits';
+import { capture, ready } from './entityPreviewCapture';
+export { capture, ready } from './entityPreviewCapture';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
@@ -12,6 +23,7 @@ export const viewports = {
 	mobile: { width: 390, height: 844 }
 };
 const served = new WeakSet<Page>();
+const variants = new WeakMap<Page, PreviewVariant>();
 const types: Record<string, string> = {
 	'.js': 'text/javascript',
 	'.css': 'text/css',
@@ -19,14 +31,14 @@ const types: Record<string, string> = {
 	'.wav': 'audio/wav',
 	'.json': 'application/json'
 };
-function shell(home: string): string {
+function shell(home: string, variant: PreviewVariant = ''): string {
 	const sheets = readdirSync(home).filter((name) => name.endsWith('.css'));
 	const hashes = readFileSync(join(home, 'hashes.json'), 'utf8');
 	const links = sheets.map((name) => `<link rel="stylesheet" href="/${name}">`).join('');
 	return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">${links}</head>
 <body><div class="hx-shell"><main class="hx-main" id="app"></main></div>
-<script>window.artifactHashes=${hashes}</script><script src="/preview.iife.js"></script></body></html>`;
+<script>window.artifactHashes=${hashes};window.previewVariant=${JSON.stringify(variant)}</script><script src="/preview.iife.js"></script></body></html>`;
 }
 /**
  * Opens the content at an address, served from the built preview and from nowhere else. A
@@ -38,13 +50,15 @@ export async function open(
 	variant: PreviewVariant = ''
 ): Promise<void> {
 	const home = previewHome();
+	variants.set(page, variant);
 	// Keep asset routes installed while this page switches views, including pending lazy reads.
 	await page.goto('about:blank');
 	if (!served.has(page)) {
 		await page.route(`${origin}/**`, (request) => {
 			const path = new URL(request.request().url()).pathname;
 			const file = join(home, path.replace(/^\/harness\/media\//, 'media/'));
-			if (path === '/') return request.fulfill({ contentType: 'text/html', body: shell(home) });
+			if (path === '/' || /^\/harness\/(branch|commit)\//.test(path))
+				return request.fulfill({ contentType: 'text/html', body: shell(home, variants.get(page)) });
 			if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
 			return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });
 		});
@@ -66,24 +80,6 @@ export const shown = async (page: Page, selector: string): Promise<string[]> =>
 /** True when nothing makes the page wider than its window. */
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
-/** Keeps what the page shows, when a run asks for screenshots; the name says what and how wide. */
-export async function capture(page: Page, name: string): Promise<void> {
-	if (process.env.TAKE_SCREENSHOT !== '1') return;
-	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
-	mkdirSync(directory, { recursive: true });
-	await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
-}
-/** Wait for the visible capture to render without forcing offscreen lazy images to load. */
-async function ready(page: Page): Promise<void> {
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		const visible = [...document.images].filter((image) => {
-			const box = image.getBoundingClientRect();
-			return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
-		});
-		await Promise.all(visible.map((image) => image.decode()));
-	});
-}
 /** Visual evidence leads its overview; a component retains it above every row of tabs. */
 export async function reviewVisual(
 	page: Page,
@@ -97,28 +93,28 @@ export async function reviewVisual(
 	await capture(page, `overview-${route.category}-${mode}-${viewport}`);
 	const title = commit ? 'Commit comparison' : 'Current screenshot';
 	const evidence = page.getByRole('heading', { name: title, exact: true });
-	const size = page.getByRole('region', { name: 'Size', exact: true });
-	expect((await evidence.boundingBox())!.y).toBeLessThan((await size.boundingBox())!.y);
+	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+	expect((await evidence.boundingBox())!.y).toBeLessThan((await profile.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
-	if (route.category !== 'components') return;
-	for (const name of ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']) {
+	await reviewOverviewControls(page, route.category);
+	const tabs = ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source'];
+	for (const name of tabs.filter((tab) => route.category !== 'pages' || tab !== 'Used In')) {
 		await page.getByRole('tab', { name, exact: true }).click();
+		if (name === 'Used In') await page.getByRole('tab', { name, exact: true }).press('Shift+Tab');
 		await ready(page);
-		await capture(page, `header-base-${name}-${mode}-${viewport}`);
-		await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
-		const tabs = await page.getByRole('tablist').boundingBox();
-		const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();
-		expect(shot!.y + shot!.height, 'component screenshot stays above its tabs').toBeLessThanOrEqual(
-			tabs!.y
-		);
-		const files = await page
-			.locator('section[aria-labelledby="ex-screens-title"] img')
-			.evaluateAll((images) => images.map((image) => image.getAttribute('src')));
-		expect(files).toEqual(
-			commit
-				? ['/media/aaaaaaa-default-desktop.png', '/media/bbbbbbb-default-desktop.png']
-				: ['/media/ccccccc-default-desktop.png']
-		);
+		await capture(page, `header-base-${route.category}-${name}-${mode}-${viewport}`);
+		if (name === 'Used In') {
+			const focused = page.getByRole('tab', { name: 'Contract', exact: true });
+			await expect(focused).toBeFocused();
+			await expect(focused).toHaveCSS('outline-style', 'none');
+			await expect(focused).toHaveCSS('text-decoration-line', 'underline');
+		}
+		if (route.category === 'pages') {
+			await expect(evidence).toHaveCount(name === 'Overview' ? 1 : 0);
+			expect(await where(page)).toMatchObject(route);
+			continue;
+		}
+		await reviewComponentCapture(page, evidence, commit);
 		expect(await fits(page)).toBe(true);
 	}
 }
@@ -175,19 +171,29 @@ export async function reviewMeasurements(tab: Page, name: string): Promise<void>
 	await capture(tab, `automatic-measurements-${name}`);
 	await expect(performance).toContainText('0.12 ms');
 	await expect(performance).not.toContainText('No performance budget');
-	const metric = performance.getByRole('cell', {
-		name: 'Benchmark process peak RSS',
-		exact: true
-	});
-	const fragments = await metric.evaluate((cell) => {
-		const range = document.createRange();
-		const text = [...cell.childNodes].find(
-			(node) => node.nodeType === Node.TEXT_NODE && node.textContent?.includes('Benchmark')
-		)!;
-		range.setStart(text, 0);
-		range.setEnd(text, 'Benchmark'.length);
-		return range.getClientRects().length;
-	});
-	expect(fragments, 'benchmark labels stay whole').toBe(1);
+
+	await reviewScalarMeasurements(tab);
 	expect(await fits(tab)).toBe(true);
+	await open(tab, { category: 'services', entity: ids.store, commit: commits.middle });
+	await ready(tab);
+	await capture(tab, `measurements-service-${name}`);
+	const profile = tab.getByRole('region', { name: 'Performance profile', exact: true });
+	await expect(profile).toContainText('Emitted size · Wasm');
+	await expect(profile).toContainText('18 KB');
+	await expect(profile).toContainText('no toolchain');
+	await reviewProfileRows(tab);
+	await reviewMeasuredSources(tab, async (route) => {
+		await open(tab, { ...route, commit: commits.middle }, 'measurements');
+		await ready(tab);
+		await capture(tab, `measurements-current-${route.category}-${name}`);
+	});
+	await reviewFocusedScreens(
+		tab,
+		name,
+		() => open(tab, { category: 'pages', entity: ids.page, commit: commits.middle }, 'focused'),
+		async (name) => {
+			await ready(tab);
+			await capture(tab, name);
+		}
+	);
 }

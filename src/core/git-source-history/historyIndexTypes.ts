@@ -143,6 +143,7 @@ export const legacyEntrySchema = z.strictObject({
 
 export const historyIndexSchema = z.strictObject({
 	schemaVersion: version,
+	sourceRepository: z.string().url().optional(),
 	refs: z.strictObject({ evidence: commit.nullable(), notes: commit.nullable() }),
 	branches: z.array(z.strictObject({ name: text, head: commit })),
 	revisions: z.array(indexedRevisionSchema),

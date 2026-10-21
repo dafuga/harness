@@ -128,6 +128,20 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "Keep the singular word for one item",
+					"call": "plural(1, \"task\")",
+					"input": [1, "task"],
+					"output": "1 task"
+				},
+				{
+					"name": "Add s for other counts",
+					"call": "plural(2, \"task\")",
+					"input": [2, "task"],
+					"output": "2 tasks"
+				}
+			],
 			"consumers": [
 				{
 					"unit": "reports.component.activity-loops"

@@ -1,28 +1,18 @@
 import { z } from 'zod';
+import { usageExampleSchema } from '../../../core/development-tooling/unitTypes';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
-
-const example = z
-	.strictObject({
-		name: z.string().trim().min(1).max(160),
-		description: z.string().max(500).optional(),
-		call: z.string().trim().min(1).max(16_000).optional(),
-		input: z.json(),
-		output: z.json().optional(),
-		error: z.json().optional()
-	})
-	.refine((value) => Object.hasOwn(value, 'output') !== Object.hasOwn(value, 'error'));
 
 const document = z.strictObject({
 	schemaVersion: z.literal(1),
 	unitId: z.string(),
 	setup: z.string().trim().min(1).max(32_000).optional(),
-	examples: z.array(example).min(1).max(64)
+	examples: z.array(usageExampleSchema).min(1).max(64)
 });
 
 export interface UsageExample {
 	name: string;
 	description?: string;
-	/** Authored invocation code, displayed as text and never executed by the viewer. */
+	/** Authored invocations are displayed as text and never executed by the viewer. */
 	call?: string;
 	input: unknown;
 	output?: unknown;

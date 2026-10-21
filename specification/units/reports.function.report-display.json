@@ -3,7 +3,7 @@
 	"id": "reports.function.report-display",
 	"kind": "function",
 	"title": "Report status and time labels",
-	"responsibility": "Formats report activity status, stale state, timestamps and evidence anchors.",
+	"responsibility": "Formats report freshness, evidence anchors and relative dates. Commit dates can request numeric wording such as one week ago.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -64,6 +64,11 @@
 				"name": "timeAgo.now",
 				"type": "unknown",
 				"description": "Optional current epoch milliseconds, defaulting to Date.now()."
+			},
+			{
+				"name": "timeAgo.numeric",
+				"type": "'auto' | 'always'",
+				"description": "Optional relative-date wording. Defaults to auto; always uses numeric wording such as 1 week ago."
 			},
 			{
 				"name": "evidenceAnchor.id",

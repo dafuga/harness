@@ -4,11 +4,15 @@ import { join } from 'node:path';
 import { deflateSync } from 'node:zlib';
 import { audioFixture } from './audioFixture';
 import { stateRecord } from './entityPreviewData';
-import { commits } from './entityUnits';
+import { capture, commits } from './entityUnits';
 
 type Colour = [number, number, number];
 const tints: Record<string, Colour> = { a: [36, 52, 71], b: [20, 39, 58], c: [16, 44, 52] };
-const sizes: Record<string, [number, number]> = { desktop: [1440, 900], mobile: [390, 844] };
+const sizes: Record<string, [number, number]> = {
+	desktop: [1440, 900],
+	tablet: [920, 800],
+	mobile: [390, 844]
+};
 
 function crc(bytes: Buffer): number {
 	let value = ~0;
@@ -90,7 +94,13 @@ export function entityPreviewAssets(directory: string): Record<string, string> {
 	for (const commit of Object.values(commits)) {
 		const states = stateRecord(commit).scenarios.flatMap((scenario) => scenario.states);
 		for (const state of states) {
-			for (const capture of state.captures) {
+			const captures = [
+				...state.captures,
+				...(state.id === 'default'
+					? [capture(commit, { kind: 'screenshot', state: 'default', viewport: 'tablet' })]
+					: [])
+			];
+			for (const capture of captures) {
 				const [width, height] = sizes[capture.viewport ?? 'desktop'];
 				const full = commit === commits.first ? 4 : 6;
 				const cards = state.id === 'empty' ? 0 : full;

@@ -18,7 +18,11 @@ export class RegressionProofRepository {
 		private readonly within?: string | null
 	) {}
 
-	async save(record: RegressionRecord, output: Buffer): Promise<void> {
+	async save(
+		record: RegressionRecord,
+		output: Buffer,
+		files: Array<{ path: string; bytes: Buffer }> = []
+	): Promise<void> {
 		const json = canonicalJson(record);
 		const path = `regressions/${record.source.commit}/${record.id}`;
 		const manifest = canonicalJson({ record: regressionHash(json), log: regressionHash(output) });
@@ -27,7 +31,8 @@ export class RegressionProofRepository {
 			[
 				{ path: 'record.json', content: { bytes: json } },
 				{ path: 'output.log', content: { bytes: output } },
-				{ path: 'manifest.json', content: { bytes: manifest } }
+				{ path: 'manifest.json', content: { bytes: manifest } },
+				...files.map(({ path, bytes }) => ({ path, content: { bytes } }))
 			],
 			`chore: record ${record.phase} regression ${record.source.commit.slice(0, 7)}`,
 			'manifest.json'
@@ -43,7 +48,7 @@ export class RegressionProofRepository {
 	}
 
 	/** Reading is pinned to the supplied note map; a copied or corrupt checkpoint is refused. */
-	async load(note: RegressionNote): Promise<{ record: RegressionRecord; output: string }> {
+	async load(note: RegressionNote) {
 		const tree = new EvidenceTreeAdapter(this.root);
 		const within = this.within === undefined ? await tree.tip(evidenceRef) : this.within;
 		if (!within || !(await tree.contains(within, note.evidence.commit)))

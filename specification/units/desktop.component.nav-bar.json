@@ -31,12 +31,27 @@
 			{
 				"name": "NavBar",
 				"type": "markup",
-				"description": "Top bar with a Harness link to Pages, project and revision pickers, category links highlighting the current category, search, an agent-capability-dependent Settings link and any supplied account content. Accepted search selections navigate through the workspace; selections without a current path do not trigger that navigation."
+				"description": "Top bar with project and revision controls, category navigation, search, optional Settings and account content. On phones all category icon-and-text labels fit in two rows, with search controls in the spare cell. Search uses the current workspace context; desktop navigation behavior is preserved."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.deployment-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.deployment-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.environment-picker",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.icon",
 			"via": "import",

@@ -79,14 +79,17 @@ async function committedHelpers(
 		const helpers =
 			enriched.find((item) => item.id === unit.id)?.helpers?.filter(helperContract) ?? [];
 		if (helpers.length)
-			unit.helperContracts = helpers.map(({ name, source, inputs, output, consumers }) => ({
-				name,
-				source,
-				inputs,
-				output,
-				consumers: consumers ?? [],
-				pure: true
-			}));
+			unit.helperContracts = helpers.map(
+				({ name, source, inputs, output, consumers, examples }) => ({
+					name,
+					source,
+					inputs,
+					output,
+					consumers: consumers ?? [],
+					...(examples ? { examples } : {}),
+					pure: true
+				})
+			);
 		else delete unit.helperContracts;
 	}
 	fresh.manifests = fresh.manifests.map((unit) => {

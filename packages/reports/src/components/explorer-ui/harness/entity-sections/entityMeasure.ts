@@ -38,9 +38,20 @@ function emittedRows(unit: HarnessUnit, record: HarnessRecord | null): MeasureRo
 	return harnessEmitted(unit, record).map((line) => {
 		const label = line.label ? `Emitted size · ${line.label}` : 'Emitted size';
 		const bytes = /^(\d+) bytes?$/.exec(line.value);
-		if (bytes) return { label, value: byteSize(Number(bytes[1])), note: told(line.note) };
+		if (bytes)
+			return {
+				label,
+				target: line.target,
+				value: byteSize(Number(bytes[1])),
+				note: told(line.note)
+			};
 		// A line without a size says why after its first word; that reason is the note.
-		return { label, value: notMeasured, note: told(/^\w+: (.+)$/s.exec(line.value)?.[1]) };
+		return {
+			label,
+			target: line.target,
+			value: notMeasured,
+			note: told(/^\w+: (.+)$/s.exec(line.value)?.[1])
+		};
 	});
 }
 
@@ -53,6 +64,8 @@ function observedValue(found: Measurement | undefined): string {
 function metricLabel(metric: string): string {
 	if (metric === 'process-peak-rss-bytes') return 'Benchmark process peak RSS';
 	if (metric === 'latency-warm-ms') return 'Warm latency per call';
+	if (metric === 'browser-navigation-ms') return 'Page navigation time';
+	if (metric === 'browser-js-heap-bytes') return 'Page JavaScript heap';
 	return humanize(metric);
 }
 
@@ -95,9 +108,9 @@ export function entityMeasure(
 	observations: Measurement[] = []
 ): EntityMeasure {
 	const measured = [
+		...(unit.sourceMeasurements ?? []),
 		...(record?.measurements ?? []),
-		...observations,
-		...(unit.sourceMeasurements ?? [])
+		...observations
 	].filter(
 		(item) => item.unit === unit.id && (!item.callable || unit.owns.symbols.includes(item.callable))
 	);

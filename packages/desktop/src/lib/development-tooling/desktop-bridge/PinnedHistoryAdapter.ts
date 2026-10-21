@@ -3,9 +3,13 @@ import { HistoryStatusService } from '../../../../../../src/services/history-sta
 import {
 	RevisionDetailService,
 	revisionSources
-} from '../../../../../../src/services/revision-detail-service/RevisionDetailService';
-import { checkedMedia } from '../../../../../../src/utils/mediaPlace';
-import { revisionSummary, type RevisionRecords } from '../../../../../../src/utils/revisionSummary';
+} from '../../../../../../src/services/explorer-ui/revision-detail-service/RevisionDetailService';
+import { RegressionProofRepository } from '../../../../../../src/repositories/verification-evidence/RegressionProofRepository';
+import { checkedMedia } from '../../../../../../src/utils/development-tooling/mediaPlace';
+import {
+	revisionSummary,
+	type RevisionRecords
+} from '../../../../../../src/utils/development-tooling/revisionSummary';
 import type {
 	HarnessRevision,
 	HarnessRevisionSummary
@@ -87,7 +91,15 @@ export class PinnedHistoryAdapter {
 	async files(pins: PinnedRevisions, record: string): Promise<Map<string, Buffer> | undefined> {
 		const { history } = this.at(pins);
 		const line = (await history.verifications()).find((item) => item.record === record);
-		const loaded = line ? await history.attached.load(line.evidence) : undefined;
+		if (!line) {
+			const note = [...(await history.all()).values()]
+				.flatMap((item) => item.entries)
+				.find((item) => item.kind === 'regression' && item.record === record);
+			return note?.kind === 'regression'
+				? (await new RegressionProofRepository(this.root, pins.evidenceRevision).load(note)).files
+				: undefined;
+		}
+		const loaded = await history.attached.load(line.evidence);
 		const intact = loaded?.record?.id === record && loaded.problems.length === 0;
 		return intact ? loaded.files : undefined;
 	}

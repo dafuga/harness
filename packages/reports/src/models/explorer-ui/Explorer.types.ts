@@ -123,6 +123,9 @@ export interface ExplorerHistoryRow {
 
 /** What one stored revision says about an entity, once it has been read. */
 export interface ExplorerHistoryDetail {
+	/** Static observations from this exact revision, independent of test verification. */
+	sourceSize?: number | null;
+	sourceComplexity?: number | null;
 	regressions?: RegressionView[];
 	/** False when the revision stores no registry or no impact, so the change is not known. */
 	known: boolean;

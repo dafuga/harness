@@ -19,7 +19,11 @@
 </script>
 
 <!-- Contract, Used In and Uses are tabs of their own; an overview does not repeat them. -->
-<div role="tabpanel" aria-label={`${entity.name} overview`}>
+<!-- A stack, so the description, the evidence and the profile each stand 16px apart. -->
+<div role="tabpanel" class="ex-stack" aria-label={`${entity.name} overview`}>
+	{#if entity.category === 'pages' && entity.purpose}
+		<p class="ex-lead">{entity.purpose}</p>
+	{/if}
 	{#if first}{@render children()}{/if}
 	<EntitySummary {measure} compact />
 	{#if !first}{@render children()}{/if}

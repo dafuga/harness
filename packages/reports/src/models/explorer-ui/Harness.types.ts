@@ -52,6 +52,7 @@ export interface HarnessGrowthPoint {
 	notes?: Record<string, string>;
 }
 export interface HarnessIndex {
+	sourceRepository?: string;
 	branches: Array<{ name: string; head: string }>;
 	revisions: HarnessRevisionSummary[];
 	units: Array<{ id: string; growth: HarnessGrowthPoint[]; reviews?: HarnessReview[] }>;
@@ -150,6 +151,8 @@ export interface HarnessRecord {
 		metric: string;
 		callable?: string;
 		method?: string;
+		/** Exact source revision when the observation records it; absent in older indexes. */
+		testedRevision?: string;
 		unitOfMeasure: string;
 		value: number | null;
 		unavailable?: string;

@@ -1,9 +1,11 @@
+import { DeploymentService } from '../../../services/DeploymentService';
 import { repositoryLease } from '../../../utils/development-tooling/repositoryLease';
 import { ProjectImageCacheService } from './ProjectImageCacheService';
 import { ProjectOperationsService } from './ProjectOperationsService';
 import { RecordedEvidenceService } from './RecordedEvidenceService';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
+import type { DeploymentBridge } from '../../../models/Deployment.types';
 import type { ProviderDiscoveryService } from '../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import type { DesktopRunService } from '../../../services/agents-providers/desktop-run-service/DesktopRunService';
 interface BridgeContext {
@@ -61,11 +63,8 @@ async function create(context: BridgeContext, input: Parameters<DesktopBridge['c
 		revision = await p.source.revision({ branch: p.revision.branch, commit: null });
 	return p.catalog.entity(plan.id, revision.commit);
 }
-export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
-	const { session, providers, runs, choose } = context;
-	const operations = new ProjectOperationsService(session);
-	const recorded = new RecordedEvidenceService(session);
-	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
+function authentication(session: ProjectSessionService) {
+	return {
 		hostedStatus: () =>
 			session.auth?.status() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
 		connectHosted: async () => {
@@ -73,7 +72,16 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 			return session.auth.connect();
 		},
 		disconnectHosted: () =>
-			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' }),
+			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' })
+	};
+}
+export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
+	const { session, providers, runs, choose } = context;
+	const operations = new ProjectOperationsService(session);
+	const recorded = new RecordedEvidenceService(session);
+	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
+		...deploymentOperations(session),
+		...authentication(session),
 		listProjects: () => operations.listProjects(),
 		selectProject: (input) => operations.selectProject(input),
 		capabilities: (input) => operations.capabilities(input),
@@ -103,7 +111,10 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		get(target, property: keyof typeof bridge) {
 			const operation = target[property];
 			if (typeof operation !== 'function') return operation;
-			if (['openProject', 'selectProject', 'listProjects'].includes(property)) return operation;
+			if (
+				['openProject', 'selectProject', 'listProjects', 'deploymentActivities'].includes(property)
+			)
+				return operation;
 			return async (input?: { projectId?: string }) => {
 				session.assertProject(input?.projectId);
 				session.pending++;
@@ -115,4 +126,15 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 			};
 		}
 	});
+}
+function deploymentOperations(session: ProjectSessionService): DeploymentBridge {
+	const deployments = new DeploymentService(session);
+	return {
+		deploymentStatus: (input) => deployments.status(input),
+		deploymentActivities: async () => deployments.activities(),
+		startDeployment: (input) => deployments.start(input),
+		deploymentProgress: (input) => deployments.progress(input),
+		planDeployment: (input) => deployments.plan(input),
+		deploy: (input) => deployments.deploy(input)
+	};
 }

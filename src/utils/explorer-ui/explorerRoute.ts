@@ -1,3 +1,6 @@
+import { tabOf, type ExplorerTab } from '../explorer-route/explorerTabs';
+export { explorerTabs, type ExplorerTab } from '../explorer-route/explorerTabs';
+
 /** The seven kinds of entity the explorer shows, in the order of its navigation. */
 export const explorerCategories = [
 	'pages',
@@ -56,28 +59,6 @@ export function explorerKindCategory(kind: string): ExplorerCategory | null {
 /** What is shown of one entity; an address without a section shows its overview. */
 export const explorerSections = ['details', 'history'] as const;
 export type ExplorerSection = (typeof explorerSections)[number];
-
-/**
- * The tabs a section keeps in the query; the first of each is its default and is not written.
- * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
- * Source is optional on the entity page; Details is accepted only as a legacy address.
- */
-export const explorerTabs = {
-	overview: [
-		'overview',
-		'contract',
-		'used-in',
-		'uses',
-		'relationships',
-		'tests',
-		'examples',
-		'states',
-		'source'
-	],
-	details: ['contract', 'measurements', 'source'],
-	history: []
-} as const satisfies Record<string, readonly string[]>;
-export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][number];
 
 /** One address of the explorer: where it is in history and which entity it shows there. */
 export interface ExplorerLocation {
@@ -139,18 +120,6 @@ function scope(parts: string[]): Scope | undefined {
 	return { branch, commit, rest: commit === null ? after : after.slice(2) };
 }
 
-/** The tab a query names, when the shown section has it and it is not the default one. */
-function tabOf(location: ExplorerLocation, search: string): ExplorerTab | undefined {
-	if (!location.entity) return undefined;
-	const [, ...others] = explorerTabs[location.section ?? 'overview'] as readonly ExplorerTab[];
-	let asked = new URLSearchParams(search).get('tab');
-	const visual = ['pages', 'components', 'shells'].includes(location.category);
-	if (visual && asked === 'tests') asked = 'states';
-	if (location.category === 'functions' && asked === 'tests') asked = 'examples';
-	if (!visual && asked === 'states') return undefined;
-	return others.find((known) => known === asked);
-}
-
 /** The entity and section the parts after a category name; null when they name neither. */
 function selection(rest: string[]): Pick<ExplorerLocation, 'entity' | 'section'> | null {
 	const [id, section, ...extra] = rest;
@@ -171,6 +140,7 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	const found = scope(path.replace(/\/+$/, '').split('/').slice(1));
 	if (!found) return undefined;
 	const [category = 'pages', ...after] = found.rest;
+	if (category === 'helpers') return helperSelection(found, after);
 	const selected = isCategory(category) ? selection(after) : null;
 	if (!isCategory(category) || !selected) return undefined;
 	const { branch, commit } = found;
@@ -191,18 +161,18 @@ export function canonicalExplorerLocation(location: ExplorerLocation): ExplorerL
 	return canonical;
 }
 
-/** The canonical path of an address, with its tab as a query; every part is one segment. */
+/** Canonical paths use helper names and tab segments; legacy module tabs remain in the query. */
 export function explorerRoutePath(location: ExplorerLocation): string {
 	location = canonicalExplorerLocation(location);
 	const branch = location.branch === null ? '' : `/branch/${encodeURIComponent(location.branch)}`;
 	const commit = location.commit === null ? '' : `/commit/${location.commit}`;
+	const callable = helperPath(location);
+	if (callable) return `${branch}${commit}${callable}`;
 	const entity = location.entity ? `/${encodeURIComponent(location.entity)}` : '';
 	const section = location.entity && location.section ? `/${location.section}` : '';
 	const tab = tabOf(location, `tab=${location.tab ?? ''}`);
 	const params = new URLSearchParams();
 	if (tab) params.set('tab', tab);
-	const helper = helperOf(location, location.helper);
-	if (helper) params.set('helper', helper);
 	const query = params.size ? `?${params}` : '';
 	return `${branch}${commit}/${location.category}${entity}${section}${query}`;
 }
@@ -210,4 +180,38 @@ export function explorerRoutePath(location: ExplorerLocation): string {
 /** A helper selector belongs only to a function entity, never to a category or visual entity. */
 function helperOf(location: ExplorerLocation, helper?: string | null): string | undefined {
 	return location.category === 'functions' && location.entity && helper ? helper : undefined;
+}
+
+/** Readable callable names may name their owner when the name alone is ambiguous. */
+function helperSelection(found: Scope, parts: string[]): ExplorerLocation | undefined {
+	const helper = decoded(parts[0] ?? '');
+	if (!helper) return undefined;
+	const qualified = parts[1] === 'in';
+	const entity = qualified ? decoded(parts[2] ?? '') : undefined;
+	const rest = parts.slice(qualified ? 3 : 1);
+	if ((qualified && !entity) || rest.length > 1) return undefined;
+	const location: ExplorerLocation = {
+		branch: found.branch,
+		commit: found.commit,
+		category: 'functions',
+		helper
+	};
+	if (entity) location.entity = entity;
+	return helperPane(location, rest[0]);
+}
+
+function helperPane(location: ExplorerLocation, pane?: string): ExplorerLocation | undefined {
+	if (pane === 'history') return { ...location, section: 'history' };
+	if (pane === undefined || pane === 'overview') return location;
+	const tab = tabOf(location, `tab=${pane}`);
+	return tab ? { ...location, tab } : undefined;
+}
+
+function helperPath(location: ExplorerLocation): string | undefined {
+	if (location.category !== 'functions' || !location.helper) return undefined;
+	const helper = encodeURIComponent(location.helper);
+	const owner = location.entity ? `/in/${encodeURIComponent(location.entity)}` : '';
+	const tab = tabOf(location, `tab=${location.tab ?? ''}`);
+	const pane = location.section === 'history' ? 'history' : tab;
+	return `/helpers/${helper}${owner}${pane ? `/${pane}` : ''}`;
 }

@@ -88,6 +88,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "Join separated words with lowercase hyphens",
+					"call": "toKebabCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "hello-world"
+				},
+				{
+					"name": "Split lowercase-to-uppercase word boundaries",
+					"call": "toKebabCase(\"orderID\")",
+					"input": ["orderID"],
+					"output": "order-id"
+				},
+				{
+					"name": "Return blank when the input contains no words",
+					"call": "toKebabCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "function.unit-identity",
@@ -229,6 +249,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "Capitalize and join separated words",
+					"call": "toPascalCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "HelloWorld"
+				},
+				{
+					"name": "Split lowercase-to-uppercase word boundaries",
+					"call": "toPascalCase(\"orderID\")",
+					"input": ["orderID"],
+					"output": "OrderId"
+				},
+				{
+					"name": "Return blank when the input contains no words",
+					"call": "toPascalCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "audit.scaffold-naming-rules",
@@ -346,6 +386,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "Join separated words with a lowercase first word",
+					"call": "toCamelCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "helloWorld"
+				},
+				{
+					"name": "Split lowercase-to-uppercase word boundaries",
+					"call": "toCamelCase(\"orderID\")",
+					"input": ["orderID"],
+					"output": "orderId"
+				},
+				{
+					"name": "Return blank when the input contains no words",
+					"call": "toCamelCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "audit.scaffold-naming-rules",
@@ -395,6 +455,26 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "Join separated words with lowercase underscores",
+					"call": "toSnakeCase(\"Hello world\")",
+					"input": ["Hello world"],
+					"output": "hello_world"
+				},
+				{
+					"name": "Split lowercase-to-uppercase word boundaries",
+					"call": "toSnakeCase(\"orderID\")",
+					"input": ["orderID"],
+					"output": "order_id"
+				},
+				{
+					"name": "Return blank when the input contains no words",
+					"call": "toSnakeCase(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "function.fields",

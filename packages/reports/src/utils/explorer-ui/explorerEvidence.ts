@@ -11,6 +11,7 @@ import type {
 	HarnessScenario,
 	HarnessUnit
 } from '../../models/explorer-ui/Harness.types';
+import { focusedCaptures, focusedScenario } from '../explorer-evidence/focusedCaptures';
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { scenarioFor } from './explorerState';
 import { verdictCoverage, verdictRecord } from './explorer-verdict/explorerVerdict';
@@ -98,8 +99,10 @@ function side(
 	const record = verdictRecord(detail);
 	const coverage = verdictCoverage(unit, detail);
 	const gap = unrecorded(detail, record, unit.id);
-	if (gap !== null || !record) return { commit, detail, record, captures: [], coverage, gap };
-	const found = captures(record, coverage);
+	const found = [
+		...focusedCaptures(detail, unit.id),
+		...(gap === null && record ? captures(record, coverage) : [])
+	];
 	const none =
 		found.length === 0 ? 'The record of this commit holds no capture for this unit.' : null;
 	const usable = found.some((item) => item.usable);
@@ -109,7 +112,7 @@ function side(
 		record,
 		captures: found,
 		coverage,
-		gap: usable ? null : (none ?? unusable)
+		gap: usable ? null : (gap ?? none ?? unusable)
 	};
 }
 
@@ -182,7 +185,7 @@ export function explorerEvidence(
 	);
 	return {
 		mode: scope.mode,
-		scenarios: united(now, earlier),
+		scenarios: [...focusedScenario([after, before], unit.id), ...united(now, earlier)],
 		after,
 		before,
 		initial: scope.mode === 'commit' && scope.parent === null ? first : null,

@@ -74,6 +74,9 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
 		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
+		for (const kind of ['Components', 'Services', 'Models'])
+			await expect(usage.getByRole('list', { name: kind, exact: true })).toBeVisible();
+		await reviewConsumerPreview(page, usage, commit, viewport);
 		const sizes = await card.evaluate((node) => [
 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
 			parseFloat(getComputedStyle(node.querySelector('[aria-label="Used In"]')!).fontSize)
@@ -120,7 +123,7 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 		await expect(card.locator('h2, p, img, button, svg, .hx-verdict')).toHaveCount(0);
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'SearchBox']);
-		for (const search of ['OrderStore', 'Order store']) {
+		for (const search of ['OrderStore', 'OrderStore']) {
 			await page.getByRole('searchbox', { name: 'Search services' }).fill(search);
 			await expect(card).toHaveCount(1);
 		}
@@ -159,4 +162,107 @@ async function reviewFunctionService(page: Page, commit: string | null) {
 	);
 	await expect(page.getByRole('heading', { name: 'recordAnalytics', exact: true })).toBeVisible();
 	expect(await where(page)).toMatchObject({ commit, entity: 'app.workflow.record-analytics' });
+}
+
+async function reviewConsumerPreview(
+	page: Page,
+	usage: Locator,
+	commit: string | null,
+	viewport: string
+): Promise<void> {
+	const consumer = usage.getByRole('link', { name: 'OrderList', exact: true });
+	await consumer.hover();
+	await capture(page, `usage-preview-${commit ? 'commit' : 'tip'}-${viewport}`);
+	const preview = page.getByRole('tooltip', { name: 'Preview of OrderList', exact: true });
+	await expect(preview, 'consumer links show screenshot previews').toBeVisible();
+	const image = preview.getByRole('img', { name: 'Screenshot of OrderList', exact: true });
+	await expect(image).toHaveAttribute(
+		'src',
+		`/media/${(commit ?? commits.tip).slice(0, 7)}-default-desktop.png`
+	);
+	await expect(image).toHaveJSProperty('naturalWidth', 1440);
+	await preview.hover();
+	await expect(preview).toBeVisible();
+	expect(await fits(page)).toBe(true);
+	await page.keyboard.press('Escape');
+	await expect(preview).toHaveCount(0);
+	await consumer.focus();
+	await expect(preview, 'keyboard focus shows the same preview').toBeVisible();
+	await page.keyboard.press('Escape');
+	await expect(preview).toHaveCount(0);
+	const missing = usage.getByRole('link', { name: 'OrderStore', exact: true });
+	await missing.hover();
+	await capture(page, `nonvisual-preview-${commit ? 'commit' : 'tip'}-${viewport}`);
+	const service = page.getByRole('tooltip', { name: 'Preview of OrderStore', exact: true });
+	await expect(service.locator('code')).toHaveText('OrderStore');
+	await expect(service).not.toContainText('No screenshot');
+	await expect(service.locator('img')).toHaveCount(0);
+	await page.mouse.move(1, 1);
+}
+
+/** Source navigation stays bound to the selected repository and full commit. */
+export async function reviewHelperSource(page: Page, viewport: string): Promise<void> {
+	const filter = { category: 'functions' as const, entity: ids.filter };
+	for (const commit of [null, commits.middle]) {
+		await open(page, { ...filter, commit });
+		await expect(page.getByRole('link', { name: 'Details', exact: true })).toHaveCount(0);
+		await page.getByRole('tab', { name: 'Source', exact: true }).click();
+		await capture(page, `github-source-${commit ? 'commit' : 'tip'}-${viewport}`);
+		const file = 'src/functions/filterOrders.ts';
+		await expect(
+			page.getByRole('link', { name: file, exact: true }),
+			'GitHub source links'
+		).toHaveAttribute(
+			'href',
+			`https://github.com/example/orders/blob/${commit ?? commits.tip}/${file}`
+		);
+		await expect(page.getByText(/Source ownership|Execution targets|Identity /)).toHaveCount(0);
+		expect(await fits(page)).toBe(true);
+		await page.getByRole('tab', { name: 'Overview', exact: true }).click();
+		expect(await where(page)).toEqual({ branch: 'feature/orders', commit, ...filter });
+	}
+}
+
+/** Usage tabs use the same cards as their collections without widening the page. */
+export async function reviewUsageCards(
+	page: Page,
+	category: string,
+	direction: string,
+	commit: string | null = commits.middle
+): Promise<void> {
+	await reviewConsumerKinds(page, category, direction);
+	const cards = page.locator('.ex-relations article');
+	for (const card of await cards.all()) {
+		await expect(
+			card.getByRole('group', { name: 'Used In', exact: true }),
+			'every relationship card includes its usage footer'
+		).toBeVisible();
+	}
+	if (category === 'components' && direction === 'uses') {
+		const card = page.getByRole('article', { name: 'OrderCard', exact: true });
+		await expect(
+			card
+				.getByRole('group', { name: 'Used In', exact: true })
+				.getByRole('link', { name: 'OrderList', exact: true })
+		).toHaveAttribute(
+			'href',
+			`/harness/branch/feature%2Forders${commit ? `/commit/${commit}` : ''}/components/${ids.list}`
+		);
+	}
+	if (category === 'pages' && direction === 'uses')
+		await expect(
+			page.getByRole('region', { name: 'Uses', exact: true }).locator('article.ex-page-card'),
+			'Relationships reuse catalog cards'
+		).toHaveCount(2);
+	if (category === 'components' && direction === 'uses')
+		await expect(page.locator('.ex-relations .ex-function-tile')).toHaveCount(1);
+	expect(await fits(page)).toBe(true);
+}
+
+/** Reverse dependencies name every populated module type. */
+async function reviewConsumerKinds(page: Page, category: string, direction: string): Promise<void> {
+	if (direction !== 'used-in' || category !== 'functions') return;
+	const used = page.getByRole('region', { name: 'Used In', exact: true });
+	for (const kind of ['Pages', 'Components'])
+		await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
 }

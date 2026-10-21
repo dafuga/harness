@@ -110,7 +110,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Rows sorted by canonical code name. Services require an owned concrete class, a constructor reference, multiple public instance methods and two resolved active owners of that same class. The same owner set provides up to three Used In links. Helpers keep per-export pure eligibility."
+				"description": "Sorted category rows retaining full revision-scoped consumer entities for links and previews. Helpers keep up to three distinct eligible consumers and retain the public sharing threshold."
 			},
 			{
 				"name": "catalogFilter",

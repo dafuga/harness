@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-history-row",
 	"kind": "component",
 	"title": "Entity history row",
-	"responsibility": "Shows a selectable commit row with recorded change reasons, metrics and verification.",
+	"responsibility": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -32,16 +32,6 @@
 				"description": "Required selected-profile timing or undefined. Displays before-to-after when before exists, otherwise after only; missing timing is Not measured."
 			},
 			{
-				"name": "EntityHistoryRow.verdict",
-				"type": "Pick<ExplorerVerdict, 'passed' | 'label'> & { reasons?: string[] }",
-				"description": "Required passing flag, label and optional reasons forwarded to the verification marker without reevaluation."
-			},
-			{
-				"name": "EntityHistoryRow.selected",
-				"type": "boolean",
-				"description": "Required flag applying row selection styling and pressed state to the commit button."
-			},
-			{
 				"name": "EntityHistoryRow.viewed",
 				"type": "boolean",
 				"description": "Required flag marking this as the currently viewed commit and adding its badge."
@@ -55,18 +45,13 @@
 				"name": "EntityHistoryRow.nav",
 				"type": "EntityNav",
 				"description": "Required navigation context passed to the revision link."
-			},
-			{
-				"name": "EntityHistoryRow.onselect",
-				"type": "(full: boolean) => void",
-				"description": "Required callback: commit button passes false for the summary, Full reasons passes true for original text. Does not itself navigate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHistoryRow",
 				"type": "markup",
-				"description": "Table row with date, short commit, change/viewed badges, bounded reason or subject, attempts, metrics/deltas, optional budget approval, timing and verdict. Long reasons expose a Full reasons button. View revision uses the supplied destination; missing measurements remain explicit."
+				"description": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control. Registry lifecycle badges are omitted because they do not establish helper introduction dates."
 			}
 		],
 		"errors": []
@@ -83,12 +68,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-verdict",
+			"unit": "reports.component.harness-entity-reasons",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -113,12 +93,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.model.explorer-types",
+			"unit": "reports.function.report-display",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.model.harness-types",
+			"unit": "reports.model.explorer-types",
 			"via": "import",
 			"origin": "derived"
 		}
