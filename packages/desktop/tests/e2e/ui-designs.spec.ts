@@ -59,10 +59,11 @@ test('exact image region, approval, Change, public stream and source disclosure'
 		.getByRole('navigation', { name: 'Entity sections' })
 		.getByRole('button', { name: 'Source', exact: true })
 		.click();
-	await page.getByRole('button', { name: 'src/activity.svelte', exact: true }).click();
-	await expect(page.getByLabel('src/activity.svelte', { exact: true })).toContainText(
-		'<h1>Activity</h1>'
-	);
+	await expect(page.locator('pre')).toHaveCount(0);
+	await page
+		.getByRole('button', { name: 'View code for src/activity.svelte', exact: true })
+		.click();
+	await expect(page.getByRole('dialog').locator('pre')).toContainText('<h1>Activity</h1>');
 	await checkpoint(page, 'approved');
 });
 
