@@ -144,16 +144,15 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 			};
 		})
 	);
-	const hosts = detail.registry.units.map((unit) => ({
-		...unit,
-		dependencies:
-			unit.id === ids.page
-				? generated.map(({ id }) => ({ unit: id, via: 'import' }))
-				: [ids.list, ids.store].includes(unit.id)
-					? generated
-							.filter((item) => item.kind === 'function')
-							.map(({ id }) => ({ unit: id, via: 'import' }))
-					: []
-	}));
+	const hosts = detail.registry.units.map((unit) => {
+		let dependencies = [] as typeof unit.dependencies;
+		if ([ids.list, ids.store].includes(unit.id))
+			dependencies = generated
+				.filter((item) => item.kind === 'function')
+				.map(({ id }) => ({ unit: id, via: 'import' }));
+		if (unit.id === ids.page)
+			dependencies = generated.map(({ id }) => ({ unit: id, via: 'import' }));
+		return { ...unit, dependencies };
+	});
 	return { ...detail, registry: { ...detail.registry, units: [...hosts, ...generated] } };
 }

@@ -2,7 +2,7 @@
 	"name": "relation-view-more",
 	"goal": "Show four relationships per module type and reveal four more without changing scope or other groups",
 	"createdAt": "2026-10-21T18:32:09.808Z",
-	"updatedAt": "2026-10-21T18:39:24.688Z",
+	"updatedAt": "2026-10-21T18:40:44.542Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:40:43.044Z",
+			"evidence": "Extended ExplorerCatalogItems with optional four-row batches and HarnessAction; EntityRelations keys independent groups by navigation scope. Commit e16911522dddddef681957c50c613475121b1f0a."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:40:44.542Z",
+			"evidence": "Same frozen browser command passed at e16911522dddddef681957c50c613475121b1f0a in desktop, tablet and mobile at tip and historical scopes. Green checkpoint preserved; no test edits between red and green."
 		},
 		{
 			"id": "verify",
