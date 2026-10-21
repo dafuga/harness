@@ -14,26 +14,42 @@ interface Observed {
 	peakRssBytes: number;
 	stdout: string;
 }
+/** What the driver prints: Bun's raw `maxRSS` and the platform whose accounting produced it. */
+interface Reported {
+	elapsedMs: number;
+	maxRSS: number;
+	platform: string;
+	stdout: string;
+}
 const driver = `
 const {command,cwd}=JSON.parse(process.argv[1]);
 const started=performance.now();
 const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
 const elapsedMs=performance.now()-started;
 if(result.exitCode!==0)throw new Error(result.stderr.toString());
-console.log(JSON.stringify({elapsedMs,peakRssBytes:result.resourceUsage.maxRSS,stdout:result.stdout.toString()}));`;
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()}));`;
 
 /** Run the real normal command; observe its child process rather than the test worker. */
 export function gameCommand(command: string[], cwd: string, scope: Scope): Observed {
-	const output: Observed = JSON.parse(
+	const reported: Reported = JSON.parse(
 		execFileSync('bun', ['-e', driver, JSON.stringify({ command, cwd })], {
 			encoding: 'utf8',
 			env: { ...process.env, HARNESS_CLI_PATH: scope.cli ?? resolve('src/index.ts') }
 		})
 	);
+	const output: Observed = {
+		elapsedMs: reported.elapsedMs,
+		peakRssBytes: bunMaxRssBytes(reported.maxRSS, reported.platform),
+		stdout: reported.stdout
+	};
 	if (!(output.elapsedMs > 0) || !(output.peakRssBytes > 0))
 		throw new Error('Game command requires actual positive timing and child RSS observations.');
 	if (evidenceRequested()) recordCommand(scope, output);
 	return output;
+}
+/** Bun 1.2.18 `resourceUsage.maxRSS` recorded as bytes: currently the raw value, unchanged. */
+export function bunMaxRssBytes(maxRss: number, _platform: string): number {
+	return maxRss;
 }
 export function createGameWithCli(cli: string, root: string, dimension: string, entry: string) {
 	return gameCommand(['bun', cli, 'new', 'game', 'adventure', '--dimension', dimension], root, {

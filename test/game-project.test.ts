@@ -7,7 +7,16 @@ import { mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
-import { gameCommand } from './support/gameCommand';
+import { bunMaxRssBytes, gameCommand } from './support/gameCommand';
+
+/** Bun 1.2.18 reports raw ru_maxrss: bytes on macOS, KiB on Linux and Windows. 50 MiB each. */
+const maxRssUnits: [string, number, number][] = [
+	['darwin', 52_428_800, 52_428_800],
+	['linux', 51_200, 52_428_800],
+	['win32', 51_200, 52_428_800]
+];
+/** A launched Bun runtime holds several MiB; a smaller figure means KiB were recorded as bytes. */
+const minimumBunProcessBytes = 4 * 1024 * 1024;
 
 test.each(['2d', '3d'] as const)(
 	'game project retains app scaffolds with %s engine',
@@ -93,7 +102,7 @@ test('game build scripts retain engine bytes and audit through the project CLI',
 			await writeFile(file, contents);
 		}
 		await mkdir(join(root, 'src/templates'), { recursive: true });
-		observeScript(
+		const sync = observeScript(
 			'script.sync-game-sources',
 			['bun', resolve('scripts/sync-game-sources.ts')],
 			root
@@ -112,17 +121,22 @@ test('game build scripts retain engine bytes and audit through the project CLI',
 		const desktop = join(root, 'desktop');
 		await mkdir(desktop);
 		await symlink(resolve('packages/desktop/src'), join(desktop, 'src'), 'dir');
-		observeScript(
+		const build = observeScript(
 			'desktop.script.build-main',
 			['bun', resolve('packages/desktop/scripts/build-main.ts')],
 			desktop
 		);
+		for (const observed of [sync, audit, build])
+			expect(observed.peakRssBytes).toBeGreaterThanOrEqual(minimumBunProcessBytes);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
+	for (const [platform, reported, bytes] of maxRssUnits)
+		expect(bunMaxRssBytes(reported, platform), platform).toBe(bytes);
+	expect(() => bunMaxRssBytes(52_428_800, 'freebsd')).toThrow('not established for freebsd');
 }, 30_000);
 
 /** Run the actual build script; Bun's OS resource usage describes that launched process. */
-function observeScript(unit: string, command: string[], cwd: string): { stdout: string } {
+function observeScript(unit: string, command: string[], cwd: string) {
 	return gameCommand(command, cwd, { units: [unit], workload: unit + '.normal-script' });
 }
