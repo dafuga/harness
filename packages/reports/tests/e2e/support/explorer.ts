@@ -2,6 +2,7 @@ import { expect, type Page } from '@playwright/test';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { home, short } from './harnessHistory';
+import { settled } from './harnessCapture';
 
 /** What the seed recorded about the explorer's part of the synthetic history. */
 export interface SeededExplorer {
@@ -19,6 +20,15 @@ export const categories = [
 	'Configs',
 	'Services',
 	'Models'
+];
+export const visualSections = [
+	'Overview',
+	'Contract',
+	'Used In',
+	'Uses',
+	'States',
+	'History',
+	'Source'
 ];
 export const nav = (page: Page) => page.getByRole('navigation', { name: 'Harness categories' });
 export const branch = (page: Page) => page.getByRole('combobox', { name: 'Branch' });
@@ -43,6 +53,7 @@ export async function checkpoint(page: Page, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
 	mkdirSync(shots, { recursive: true });
 	await page.waitForLoadState('networkidle');
+	await settled(page);
 	await page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
 }
 

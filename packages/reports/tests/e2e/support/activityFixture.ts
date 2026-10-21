@@ -29,13 +29,9 @@ const reason = (behavior: string) => [
 	...['--performance-outcome', 'not-applicable']
 ];
 
-/** One Harness command in a checkout. A command this product does not have yet returns nothing. */
-function harness(cwd: string, args: string[]): string | undefined {
-	try {
-		return execFileSync('bun', [cli, ...args], { cwd, encoding: 'utf8', stdio: 'pipe' });
-	} catch {
-		return undefined;
-	}
+/** The fixture uses supported public commands; a rejected command must fail setup. */
+function harness(cwd: string, args: string[]): string {
+	return execFileSync('bun', [cli, ...args], { cwd, encoding: 'utf8', stdio: 'pipe' });
 }
 
 function write(cwd: string, path: string, contents: string): void {
@@ -47,6 +43,55 @@ function commit(message: string): string {
 	git(site, ['add', '-A']);
 	git(site, ['commit', '-q', '-m', message]);
 	return git(site, ['rev-parse', 'HEAD']);
+}
+
+/** A completed planning feature uses the real audit; the two coding loops remain open. */
+function loops(): void {
+	const plan = 'specification/features/planned/cart-release.md';
+	write(
+		site,
+		plan,
+		[
+			'# Cart release plan',
+			'## Overview',
+			'Plan the cart release using the existing price and cart operations.',
+			'## Acceptance Criteria',
+			'- Check cart totals and rounding before release approval.',
+			'## Dependencies',
+			'Use the current price helper and CartService contracts.',
+			'## Verification',
+			'Run unit tests for prices and integration tests for cart totals.',
+			'## Performance',
+			'Profile representative cart workloads for latency and process memory through Harness.'
+		].join('\n')
+	);
+	for (const [name, from] of [
+		['ship-cart', 'feature'],
+		['fix-rounding', 'bug-fix'],
+		['more-cart', 'feature']
+	]) {
+		const completion = name === 'ship-cart' ? ['--kind', 'planning', '--plan', plan] : [];
+		harness(site, [
+			'loop',
+			'create',
+			name,
+			'--from',
+			from,
+			'--goal',
+			name === 'ship-cart' ? 'Plan cart release' : `Goal of ${name}`,
+			...completion
+		]);
+	}
+	commit('chore: record cart release plan');
+	for (const step of ['spec', 'implement', 'test', 'verify'])
+		harness(site, [
+			'loop',
+			'complete',
+			'ship-cart',
+			step,
+			'--evidence',
+			'Cart release plan reviewed.'
+		]);
 }
 
 function history(): ActivityFixture['commits'] {
@@ -61,16 +106,7 @@ function history(): ActivityFixture['commits'] {
 	write(site, 'src/services/CartService.ts', cart);
 	harness(site, ['units', 'index', '--write']);
 	const first = commit('feat: prices and a cart');
-	for (const [name, from] of [
-		['ship-cart', 'feature'],
-		['fix-rounding', 'bug-fix'],
-		['more-cart', 'feature']
-	]) {
-		harness(site, ['loop', 'create', name, '--from', from, '--goal', `Goal of ${name}`]);
-	}
-	for (const step of ['spec', 'implement', 'test', 'verify']) {
-		harness(site, ['loop', 'complete', 'ship-cart', step, '--evidence', 'Done.']);
-	}
+	loops();
 	write(
 		site,
 		'src/utils/price.ts',

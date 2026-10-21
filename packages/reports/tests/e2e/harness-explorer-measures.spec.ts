@@ -21,6 +21,7 @@ async function openMeasures(page: Page, commit: string, unit: string): Promise<v
 	// Old measurement links retain their scope and lead to the overview's expandable detail.
 	await page.goto(at(keptBranch, commit, `functions/${unit}/details?tab=measurements`));
 	await expectPath(page, at(keptBranch, commit, `functions/${unit}`));
+	await checkpoint(page, `measures-${unit}-${commit}-${page.viewportSize()?.width}`);
 	await content(page)
 		.locator('summary', { hasText: /^Measurements and frozen limits$/ })
 		.click();
@@ -135,9 +136,11 @@ test.describe('a record with hundreds of failures of other units', () => {
 		expect(failed?.failures.length).toBeGreaterThan(400);
 		await page.goto(at('main', commits.grown, 'functions'));
 		await checkpoint(page, 'measures-failures');
-		const row = page.getByRole('article', { name: 'Slugify', exact: true });
+		const row = page.getByRole('article', { name: 'slugify', exact: true });
 		await row.getByRole('link').first().click();
-		await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
+		await expect(
+			page.getByRole('heading', { level: 1, name: 'slugify', exact: true })
+		).toBeVisible();
 		await verdict(page, 'Verification failed').first().hover();
 		const reasons = page.getByRole('tooltip').filter({ hasText: 'Verification failed' });
 		await expect(reasons).toContainText('function.slugify: source-bytes');

@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
@@ -154,4 +154,15 @@ export async function captureAudio(
 	);
 	keep(`${state}.wav`, bytes);
 	return durationSeconds;
+}
+
+/** Keeps labelled before/after evidence only after the shared screenshot readiness checks. */
+export async function comparisonScreenshot(page: Page, name: string): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	const label = process.env.SCREENSHOT_LABEL;
+	if (label !== 'before' && label !== 'after') throw new Error('SCREENSHOT_LABEL: before or after');
+	await settled(page);
+	const folder = process.env.HARNESS_EXPLORER_SHOTS ?? test.info().outputDir;
+	mkdirSync(folder, { recursive: true });
+	await page.screenshot({ path: join(folder, `${label}-${name}.png`), fullPage: true });
 }

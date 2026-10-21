@@ -17,7 +17,7 @@ function sections(tab?: 'uses' | 'tests') {
 test('a visual overview leads with evidence and keeps usage in its dedicated tabs', () => {
 	const body = sections();
 	expect(body).toContain('aria-label="Orders page overview"');
-	expect(body).toContain('<summary>Measurements and frozen limits</summary>');
+	expect(body.match(/<summary>Measurements and frozen limits<\/summary>/g)).toHaveLength(1);
 	expect(body).toContain('aria-label="Measurements and frozen limits"');
 	expect(words(body)).not.toContain('Metric Measured Limit Note');
 	expect(disclosed(body)).toContain('Metric Measured Limit Note');
