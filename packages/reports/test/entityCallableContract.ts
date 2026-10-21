@@ -68,6 +68,7 @@ async function reviewConsoleAddress(page: Page, commit: string | null, viewport:
 	await page.getByRole('tab', { name: 'Examples', exact: true }).click();
 	await expect(page).toHaveURL(/\/helpers\/toKebabCase\/examples$/);
 	await page.evaluate(() => new Promise(requestAnimationFrame));
+	await capture(page, `callable-frame-${commit ? 'commit' : 'tip'}-${viewport}`);
 	expect(await frame!.evaluate((node) => node.isConnected), 'Tabs keep their helper frame').toBe(
 		true
 	);
