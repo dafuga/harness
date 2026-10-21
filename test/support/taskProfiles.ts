@@ -8,6 +8,8 @@ import { unmeasured } from '../../src/services/record-assembly-service/unmeasure
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { measureProcess } from './cli-measurement/measureHarness';
+import { runCommand } from './cli';
 
 /** Fake unit identifiers in profiler protocol tests never enter actual task evidence. */
 export async function isolatedProfileCapture(check: (directory: string) => Promise<void>) {
@@ -89,4 +91,24 @@ export async function profileProfiler() {
 			() => titles.map((title) => title.trim().toLowerCase())
 		)
 	);
+}
+
+/** A fresh public import, not a warm dependency observation borrowed by its barrel. */
+export async function profilePublicEntry(unit: string, source: string, names: readonly string[]) {
+	const program = `const api = await import(${JSON.stringify(source)});
+const names = ${JSON.stringify(names)};
+if (names.some(name => !(name in api))) throw new Error('Missing public export');
+console.log(JSON.stringify(names));`;
+	const result = await measureProcess(
+		{
+			units: [unit],
+			workload: 'cold-bun-public-entry-import',
+			target: 'module',
+			command: ['bun', '--eval', program],
+			cwd: process.cwd(),
+			env: { HARNESS_RUNTIME_PROFILE_BOUNDARY: 'benchmark' }
+		},
+		runCommand
+	);
+	return JSON.parse(result.stdout) as string[];
 }

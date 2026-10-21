@@ -29,6 +29,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 ## Hard Limits
 
+The standard collaboration flow profiles actual project and record schema parse calls over its produced records. Importing Zod schemas cannot establish their deferred validation workload. Keep the cold public-entry check on the shared Harness entry-import helper and retain its export assertions; parent test-runner memory is not the imported child's memory. These tests use the existing synthetic repository and never require a real GitHub write.
+
 - Files: 220 lines.
 - Functions: 55 lines.
 - Classes: 120 lines.

@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
 import { anchor, collaborationFixture, guest, owner } from './githubFixture';
+import { recordsSchema, projectSchema } from '../src/utils/recordsSchema';
+import { profilePublicEntry, taskProfile } from '../../../test/support/taskProfiles';
+import { resolve } from 'node:path';
 test('GitHub authority rejects unknown members and public storage; invitation is hashed and consumed once', async () => {
 	const { api, remote } = collaborationFixture();
 	const project = await api.createProject(owner, { name: 'Private project', repositoryId: 202 });
@@ -40,7 +43,38 @@ test('GitHub authority rejects unknown members and public storage; invitation is
 	expect(
 		remote.scopes.every((s) => s.repositoryIds.length === 1 && s.repositoryIds[0] === 101)
 	).toBe(true);
+	const records = remote.records();
+	await taskProfile(
+		'collaboration.function.records-schema',
+		'parse-two-member-project-records',
+		() => {
+			projectSchema.parse(records.projects[0]);
+			return recordsSchema.parse(records);
+		}
+	);
+	expect(recordsSchema.parse(records)).toEqual(records);
+	await publicEntry();
 });
+
+async function publicEntry() {
+	const names = [
+		'createCollaboration',
+		'createGitHubRepository',
+		'createGitHubSource',
+		'cacheKey',
+		'readCache',
+		'writeCache',
+		'githubHistory',
+		'githubHistoryPage'
+	];
+	expect(
+		await profilePublicEntry(
+			'collaboration.entry.index',
+			resolve(import.meta.dirname, '../src/index.ts'),
+			names
+		)
+	).toEqual(names);
+}
 test('concurrent comments retain all messages and same request is idempotent without agents', async () => {
 	const { api, remote } = collaborationFixture();
 	const project = await api.createProject(owner, { name: 'Project', repositoryId: 202 });
