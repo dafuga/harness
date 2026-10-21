@@ -21,6 +21,9 @@ test('a visual overview leads with evidence and keeps usage in its dedicated tab
 	expect(body).toContain('aria-label="Measurements and frozen limits"');
 	expect(words(body)).not.toContain('Metric Measured Limit Note');
 	expect(disclosed(body)).toContain('Metric Measured Limit Note');
+	expect(body.indexOf('<summary>Measurements and frozen limits</summary>')).toBeGreaterThan(
+		body.indexOf('aria-label="Size"')
+	);
 	expect(body).not.toMatch(/aria-label="(?:Used In|Uses)"/);
 	expect(body.indexOf('the evidence of its kind')).toBeLessThan(body.indexOf('aria-label="Size"'));
 });

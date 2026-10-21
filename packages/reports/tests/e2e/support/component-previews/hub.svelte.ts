@@ -39,7 +39,6 @@ export function hubPreview(id: string) {
 	};
 	const api = {
 		get: async () => ({ resource: { kind: 'project', projectId: project.id }, status: 'pending' }),
-		post: done,
 		send: async () => ({ resource: `project:${project.id}`, status: 'pending' })
 	};
 	const cases: PreviewCases = {
