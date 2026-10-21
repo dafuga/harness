@@ -1,4 +1,10 @@
-import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import {
+	expect,
+	test,
+	type Locator,
+	type Page,
+	type TestInfo
+} from '../../../../test/support/browserTest';
 import { atlas, hostedFixture } from './hosted-fixture';
 
 /**
@@ -47,6 +53,22 @@ async function apart(page: Page, width: number, without: number[]): Promise<void
 	);
 }
 
+async function remember(page: Page, info: TestInfo, state: string): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+		if ([...document.images].some((image) => !image.complete || image.naturalWidth <= 0))
+			throw new Error('Hosted search images are not ready');
+	});
+	await page.mouse.move(0, 0);
+	await page.screenshot({
+		path: info.outputPath(`hosted-search-${state}.png`),
+		fullPage: true,
+		animations: 'disabled'
+	});
+}
+
 for (const width of widths) {
 	test(`at ${width} pixels the search, the revision fields and the account fit the bar apart`, async ({
 		page
@@ -64,12 +86,7 @@ for (const width of widths) {
 		await trigger(page).focus();
 		await expect(trigger(page)).toBeFocused();
 		await apart(page, width, without);
-		if (process.env.TAKE_SCREENSHOT === 'true')
-			await page.screenshot({
-				path: info.outputPath(`hosted-search-closed-${width}.png`),
-				fullPage: true,
-				animations: 'disabled'
-			});
+		await remember(page, info, `closed-${width}`);
 		await trigger(page).click();
 		await expect(field(page)).toBeFocused();
 		const input = await box(field(page));
@@ -83,12 +100,7 @@ for (const width of widths) {
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			width
 		);
-		if (process.env.TAKE_SCREENSHOT === 'true')
-			await page.screenshot({
-				path: info.outputPath(`hosted-search-open-${width}.png`),
-				fullPage: true,
-				animations: 'disabled'
-			});
+		await remember(page, info, `open-${width}`);
 		await field(page).press('Escape');
 		await expect(trigger(page)).toBeFocused();
 		await expect(found(page)).toBeHidden();

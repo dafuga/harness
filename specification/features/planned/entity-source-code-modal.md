@@ -257,3 +257,8 @@ and revision hover status without changing product code. All 28 hosted browser
 cases then pass, retaining comment, identity, project isolation and denial checks.
 Collaboration's complete check passes with 45 tests. Full root verification is
 still pending; these focused and workspace results do not replace it.
+
+Remote and Relay also pass their complete checks with 135 and 159 tests. Hosted
+search screenshots wait for final fonts and decoded images; all seven widths
+pass again with that evidence gate. The next required check is the complete root
+command on the final committed tree. No application deployment has occurred.
