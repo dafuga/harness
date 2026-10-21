@@ -13,6 +13,7 @@
 			"src/adapters/source-profile-adapter/instrumentSource.ts",
 			"src/adapters/source-profile-adapter/profileRuntime.ts",
 			"src/adapters/source-profile-adapter/runnerConfig.ts",
+			"src/adapters/source-profile-adapter/runnerPlugins.ts",
 			"src/adapters/source-profile-adapter/runnerSelection.ts",
 			"src/adapters/source-profile-adapter/vitestSetup.ts"
 		],
@@ -26,6 +27,7 @@
 			"watchMethod",
 			"flushSourceProfiles",
 			"sourceProfilePlugin",
+			"sourceProfilePlugins",
 			"profileSelection",
 			"profileEnvironment"
 		]
@@ -78,6 +80,10 @@
 				"type": "string"
 			},
 			{
+				"name": "sourceProfilePlugins._root",
+				"type": "string"
+			},
+			{
 				"name": "profileSelection.root",
 				"type": "string"
 			},
@@ -114,6 +120,10 @@
 			{
 				"name": "sourceProfilePlugin",
 				"type": "unknown"
+			},
+			{
+				"name": "sourceProfilePlugins",
+				"type": "ReturnType<typeof sourceProfilePlugin>[]"
 			},
 			{
 				"name": "profileSelection",
