@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { tick, type Snippet } from 'svelte';
+	import type { ExplorerEntity } from '../../models/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../utils/entityLens';
 	import '../../lib/styles/entity.css';
@@ -8,6 +9,8 @@
 	import '../../lib/styles/entity-evidence.css';
 	import '../../lib/styles/entity-history.css';
 	import EntityMissing from './EntityMissing.svelte';
+	import { archivedSource } from './EntitySource.svelte';
+	import SourceDialog from '../SourceDialog.svelte';
 	let {
 		host,
 		children
@@ -17,7 +20,40 @@
 		/** The screen itself, drawn only where the revision has a registry to read it from. */
 		children: Snippet<[EntityNav]>;
 	} = $props();
-	let nav = $derived<EntityNav>({ route: host.route, href: host.lens.href, go: host.onroute });
+	interface Opened {
+		entity: ExplorerEntity;
+		title: string;
+		trigger?: HTMLElement;
+		/** The revision of the screen it was opened on. */
+		at: string;
+		route: string;
+	}
+	// One reader for the screen, however many entities it lists; opening it changes no address.
+	let source = $state.raw<Opened | null>(null);
+	let route = $derived(
+		`${host.route.branch}|${host.route.category}|${host.route.entity ?? ''}|${host.route.helper ?? ''}`
+	);
+	function openSource(entity: ExplorerEntity, title = entity.name, trigger?: HTMLElement) {
+		source = { entity, title, trigger, at: host.scope.commit, route };
+	}
+	async function closeSource() {
+		const trigger = source?.trigger;
+		source = null;
+		await tick();
+		if (trigger?.isConnected) trigger.focus();
+	}
+	// The code of one revision is never shown under another: a new revision closes it.
+	let shown = $derived(source?.at === host.scope.commit && source.route === route ? source : null);
+	let reader = $derived(shown && archivedSource(shown.entity.unit, host.mediaBase, shown.title));
+	$effect(() => {
+		if (source && !shown) source = null;
+	});
+	let nav = $derived<EntityNav>({
+		route: host.route,
+		href: host.lens.href,
+		go: host.onroute,
+		source: openSource
+	});
 	let registry = $derived(host.head.registry);
 	let gap = $derived(
 		registry.gap ?? `No unit registry is stored at ${shortCommit(host.scope.commit)}`
@@ -35,5 +71,17 @@
 		/>
 	{:else}
 		{@render children(nav)}
+	{/if}
+	{#if shown && reader}
+		<!-- A removed unit's code is its parent's, so it is labelled with that commit. -->
+		<SourceDialog
+			open
+			title={shown.title}
+			files={reader.files}
+			read={reader.read}
+			empty={reader.empty}
+			commit={shown.entity.lastAt ?? shown.at}
+			onClose={closeSource}
+		/>
 	{/if}
 </div>

@@ -9,7 +9,15 @@ export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | '
 	consumers?: HelperConsumer[];
 }
 
+export interface SourceFileSnapshot {
+	path: string;
+	/** Content-addressed UTF-8 text under the existing protected history media endpoint. */
+	media: string | null;
+	gap?: string;
+}
+
 export interface UnitMetadata {
+	sourceFiles?: SourceFileSnapshot[];
 	documentation?: UnitDocumentation;
 	helpers?: PublicHelper[];
 	helperGap?: string;

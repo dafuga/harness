@@ -28,12 +28,17 @@
 			{
 				"name": "EntityCard",
 				"type": "markup",
-				"description": "Pages use one title-and-image navigation link. Other entities retain their summary, plan marker, verification and open action. Recorded screenshots and planned designs keep separate identity and accessible labels."
+				"description": "Catalog entity card with its existing preview and navigation plus independent View code. Source uses the selected project and revision without navigating away."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.entity-source-action",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.plan-badge",
 			"via": "import",

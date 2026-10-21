@@ -16,6 +16,8 @@
 			measure={summary.measure}
 			record={summary.record}
 			tab={host.route.tab}
+			mediaBase={host.mediaBase}
+			commit={entity.lastAt ?? host.scope.commit}
 		/>
 	{/snippet}
 </EntityFrame>
