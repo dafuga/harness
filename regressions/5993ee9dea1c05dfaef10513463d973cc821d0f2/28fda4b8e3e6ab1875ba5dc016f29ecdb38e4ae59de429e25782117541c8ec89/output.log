@@ -1,0 +1,46 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [8.73s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5ptcJC
+
+ ✓ test/history-index.e2e.test.ts (4 tests) 25704ms
+   ✓ the index is deterministic and names every commit, verified or not  2163ms
+   ✓ a revision carries its graph, comparison, inherited provenance, media and reasons  1776ms
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  3837ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  5890ms
+ ✓ test/loop.e2e.test.ts (6 tests) 43355ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  2178ms
+   ✓ generated app and lib instructions mention harness loops  740ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  1446ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  11843ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  12068ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  15078ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  19:14:24
+   Duration  71.67s (transform 301ms, setup 12ms, collect 195ms, tests 69.06s, environment 0ms, prepare 65ms)
+
