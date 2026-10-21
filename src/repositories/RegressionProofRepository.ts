@@ -2,8 +2,7 @@ import { EvidenceTreeAdapter } from '../adapters/EvidenceTreeAdapter';
 import { evidenceRef, type HistoryNote } from '../core/historyTypes';
 import { fail } from '../core/errors';
 import type { RegressionRecord } from '../core/regressionTypes';
-import { readRegression, regressionHash, regressionHistory } from '../utils/regressionHistory';
-import type { MediaPlacer } from '../utils/mediaPlace';
+import { readRegression, regressionHash } from '../utils/regressionHistory';
 import { canonicalJson } from '../utils/canonicalJson';
 import { sourceArchiveRef } from '../utils/historyRefs';
 import type { ReadNote } from '../utils/note-lines/noteCommit';
@@ -18,33 +17,6 @@ export class RegressionProofRepository {
 		private readonly root: string,
 		private readonly within?: string | null
 	) {}
-
-	/** Squash commits may reuse sealed pixels only when their entire source trees are identical. */
-	async history(commit: string, notes: Map<string, ReadNote>, media: MediaPlacer) {
-		const git = new EvidenceTreeAdapter(this.root).git;
-		const target = await git.run(['rev-parse', `${commit}^{tree}`]);
-		const candidates = [
-			...new Set(
-				regressionNotes(notes)
-					.filter((note) => note.phase === 'green' && note.commit !== commit)
-					.map((note) => note.commit)
-			)
-		];
-		const trees = candidates.length
-			? (
-					await git.run(['cat-file', '--batch-check=%(objectname) %(objecttype)'], {
-						input: candidates.map((id) => `${id}^{tree}\n`).join('')
-					})
-				).split('\n')
-			: [];
-		const identical = candidates.filter((_, index) => trees[index] === `${target} tree`);
-		const origins = [commit, ...identical];
-		return (
-			await Promise.all(
-				origins.map((origin) => regressionHistory(origin, notes, this.load.bind(this), media))
-			)
-		).flat();
-	}
 
 	async save(
 		record: RegressionRecord,

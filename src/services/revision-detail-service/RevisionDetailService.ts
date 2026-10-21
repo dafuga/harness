@@ -16,6 +16,7 @@ import type { CommitStatus, HistoryStatusService } from '../HistoryStatusService
 import type { StoredSide } from '../../utils/sideImpact';
 import * as sourceImpact from '../source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../repositories/RegressionProofRepository';
+import { regressionHistory } from '../../utils/regressionHistory';
 import type { RegressionView } from '../../core/regressionTypes';
 import { unitMetadata } from './unitMetadata';
 export interface RevisionDetail {
@@ -212,5 +213,5 @@ async function regressionProofs(
 	media: MediaPlacer
 ) {
 	const repository = new RegressionProofRepository(root, history.pinned?.evidence);
-	return repository.history(commit, await history.all(), media);
+	return regressionHistory(commit, await history.all(), repository.load.bind(repository), media);
 }

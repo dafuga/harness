@@ -12,7 +12,6 @@
 			"RegressionNote",
 			"RegressionProofRepository",
 			"RegressionProofRepository.constructor",
-			"RegressionProofRepository.history",
 			"RegressionProofRepository.save",
 			"RegressionProofRepository.load",
 			"RegressionProofRepository.latest",
@@ -66,11 +65,6 @@
 		},
 		{
 			"unit": "function.history-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.media-place",
 			"via": "import",
 			"origin": "derived"
 		},
