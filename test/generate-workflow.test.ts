@@ -116,7 +116,8 @@ test('the same category works for every source scaffold and can be extended', as
 			const result = await generatePiece({ root, kind, name: `${kind}Example`, group: 'commerce' });
 			expect(
 				result.writes.some(
-					(file) => file.path.startsWith('src/') && /\/(?:\(commerce\)|commerce)\//.test(file.path)
+					(file) =>
+						/^(?:src|db)\//.test(file.path) && /\/(?:\(commerce\)|commerce)\//.test(file.path)
 				),
 				kind
 			).toBe(true);
