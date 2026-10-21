@@ -65,3 +65,46 @@ EntityLink preserves real link behavior and revision scope. Screenshot evidence
 comes from the referenced entity at the selected revision; missing captures and
 image errors stay explicit. New shared UI source and manifests are tracked;
 original screenshots remain outside source control. Verification is pending.
+
+The accepted immutable checkpoints are red `b092f49f` and fix `55c9fe81`, with
+the same frozen test corpus and pinned runtime/environment. Six responsive
+usage/card cases pass. A separate isolated fix snapshot with the old page card
+reintroduced fails all three usage cases; restoring the fixed file passes all
+three. Original build assets, captures, hashes, navigation timing and Chromium
+whole-renderer JavaScript heap estimates remain in the local evidence cache.
+The synthetic Orders fixture proves shared UI behavior; its captures are not
+screenshots of real Harness project entities.
+
+A broader usage assertion formerly forbade consumer links anywhere in Uses. It
+now forbids consumers as top-level dependency cards while requiring their nested
+links, matching the requested reusable footer. The six unchanged focused cases
+and their regression checkpoint remain intact. Reports and root verification
+are still being completed; no full-verification verdict is asserted.
+
+Changed executable units, with why they changed and links to their History:
+
+- [Shared consumer footer](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-usage/history): One usage footer shared across cards and tables.
+- [Consumer screenshot preview](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-usage-link/history): One accessible hover/focus preview and entity link.
+- [Visual catalog card](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.harness-explorer-page-card/history): Pages and components expose the same linked usage footer.
+- [Helper card](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-function-card/history): Replace its separate footer with the shared component.
+- [Catalog table](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.harness-explorer-table/history): Replace flattened consumer names with shared usage links.
+- [Catalog item renderer](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.explorer-catalog-items/history): Pass the selected evidence lens and media prefix to all items.
+- [Entity navigation link](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/components/reports.component.harness-entity-link/history): Forward preview events and accessibility attributes while preserving native link behavior.
+- [Catalog row data](http://127.0.0.1:5688/harness/branch/dafuga%2Fusage-card-previews/functions/reports.function.entity-catalog/history): Retain distinct revision-scoped consumer entities for links and previews.
+
+The EntityLens manifest also records the new preview consumer of shortCommit; its implementation is unchanged. The local Harness skill has no explorer entity; its source is `.codex/skills/harness/SKILL.md`.
+
+Exact product commit `55c9fe81` source observations (bytes and decision points):
+
+| Unit                        | Source bytes | Complexity |
+| --------------------------- | -----------: | ---------: |
+| Shared consumer footer      |         1011 |          1 |
+| Consumer screenshot preview |         5693 |         27 |
+| Visual catalog card         |         4303 |         13 |
+| Helper card                 |         2718 |         11 |
+| Catalog table               |         3701 |         13 |
+| Catalog item renderer       |         2144 |          3 |
+| Entity navigation link      |         1015 |          2 |
+| Catalog row data            |         7043 |         43 |
+
+Source observations are independent of full verification. Runtime capture measurements describe the synthetic route and whole renderer; they do not attribute allocations or latency to one component. No production or native-device deployment is claimed.
