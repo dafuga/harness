@@ -1,4 +1,4 @@
-import { captureFixture } from './loop-repair/captureFixture';
+import { captureFixture, expectSquashedScreens } from './loop-repair/captureFixture';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -168,6 +168,7 @@ async function phaseProof(root: string, phase: string, frozen: string): Promise<
 
 /** A Git-backed rebuild keeps the pixels, while loss of those bytes rejects the proof. */
 async function expectSavedScreens(root: string, commit: string): Promise<void> {
+	await expectSquashedScreens(root, commit);
 	const out = join(root, 'history');
 	await runHarness(['history', 'build', '--out', out, '--limit', '3'], root);
 	const detail = JSON.parse(await readFile(join(out, 'revisions', commit + '.json'), 'utf8'));

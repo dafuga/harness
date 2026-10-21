@@ -18,6 +18,7 @@ export type PreviewVariant =
 	| 'states'
 	| 'documented'
 	| 'helpers'
+	| 'relations'
 	| 'measurements'
 	| 'focused';
 export function stateRecord(commit: string): HarnessRecord {
