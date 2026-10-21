@@ -53,7 +53,8 @@
 						: category[0].toUpperCase() + category.slice(1)}</span
 				></WorkspaceLink
 			>{/each}
-		{#if gameViews}<a href={resolve(gameViews as '/')}>Game Views</a>{/if}
+		<!-- On a phone, Game Views starts a row of its own, which search and settings then end. -->
+		{#if gameViews}<a href={resolve(gameViews as '/')} style:grid-column="1">Game Views</a>{/if}
 	</nav>
 	<div class="topbar-search">
 		<EntitySearch

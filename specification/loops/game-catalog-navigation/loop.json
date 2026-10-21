@@ -2,7 +2,7 @@
 	"name": "game-catalog-navigation",
 	"goal": "Keep Game Views reachable without overlapping catalog controls at every declared viewport.",
 	"createdAt": "2026-10-21T21:29:56.507Z",
-	"updatedAt": "2026-10-21T21:30:39.154Z",
+	"updatedAt": "2026-10-21T21:39:51.742Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:39:51.742Z",
+			"evidence": "Sealed red0c1b59e21 recorddeaa50843afd uses the standard native matrix: desktop/tablet4pass, mobile2fail specifically at Game Views must not overlap catalog search or settings. Retains54 original screenshots with342 unit bindings and816 canonical observations. The earlier744 diagnostic used an incorrect readonly return expectation and is not adopted."
 		},
 		{
 			"id": "implement",
