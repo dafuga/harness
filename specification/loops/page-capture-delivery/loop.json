@@ -2,7 +2,7 @@
 	"name": "page-capture-delivery",
 	"goal": "Persist revision-bound page screenshots through Git history and show one scalar per overview metric before merging main.",
 	"createdAt": "2026-10-21T08:49:06.015Z",
-	"updatedAt": "2026-10-21T09:48:28.385Z",
+	"updatedAt": "2026-10-21T17:27:45.849Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -60,7 +60,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:27:45.849Z",
+			"evidence": "At 4843a73bf2d22b8c50d040687967f565de8a3119, record 0d3daecbc0adc57d1a9adf972e24b8cc7c07f1f741598220736700bdcebfae99 passes unchanged tests and fixtures: 22 overview/selection tests, all 50 Explorer browser cases, three measurement previews, four Settings cases, five design review cases and 26 workload cases. The record retains 1020 observations, including 12 schema-validated process readings. Root 891 unit and 230 E2E tests, corrected package/isolation checks, Reports 615 tests, Desktop 932 tests with complete 201-case browser coverage via affected reruns, Hub 477 tests and 28 browser cases, and remaining workspace stages pass. Historical failed runs remain recorded; this is focused proof, not a full verification verdict."
 		}
 	],
 	"evaluators": [

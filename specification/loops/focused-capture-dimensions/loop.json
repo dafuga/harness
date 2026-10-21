@@ -2,7 +2,7 @@
 	"name": "focused-capture-dimensions",
 	"goal": "Show stored focused image dimensions instead of invented desktop defaults.",
 	"createdAt": "2026-10-21T13:42:39.799Z",
-	"updatedAt": "2026-10-21T15:30:32.784Z",
+	"updatedAt": "2026-10-21T17:27:37.521Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:27:37.521Z",
+			"evidence": "At 4843a73bf2d22b8c50d040687967f565de8a3119, the unchanged 22 overview and selection tests pass. The full current capture checkpoint also passes with 1020 retained observations. Reports 615 tests, the combined responsive focus matrix and prescribed local check scopes pass; fresh pixels and retained media are inspected."
 		}
 	],
 	"evaluators": [
