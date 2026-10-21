@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import {
 	actor,
@@ -15,15 +16,16 @@ function post(path: string, body: unknown = {}) {
 		body: JSON.stringify(body)
 	});
 }
-test('hosted routes refuse execution even for the owner and return safe auth errors', async () => {
-	const f = projectionFixture();
-	for (const operation of ['runs', 'plans', 'approve', 'changes'])
-		expect((await f.controller.handle(post(operation))).status).toBe(403);
-	f.setActor(null);
-	expect((await f.controller.handle(new Request(base))).status).toBe(401);
-	f.setActor(outsider);
-	expect((await f.controller.handle(new Request(base + project.id))).status).toBe(403);
-});
+test('hosted routes refuse execution even for the owner and return safe auth errors', () =>
+	measureWorkload('hub.controller.hub-api', 'authenticated-project-routing', async () => {
+		const f = projectionFixture();
+		for (const operation of ['runs', 'plans', 'approve', 'changes'])
+			expect((await f.controller.handle(post(operation))).status).toBe(403);
+		f.setActor(null);
+		expect((await f.controller.handle(new Request(base))).status).toBe(401);
+		f.setActor(outsider);
+		expect((await f.controller.handle(new Request(base + project.id))).status).toBe(403);
+	}));
 test('comments use verified server identity, actual GitHub acknowledgment and exact project', async () => {
 	const f = projectionFixture(),
 		anchor = {

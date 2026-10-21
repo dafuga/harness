@@ -94,7 +94,6 @@ test('the registry stores Select as a derived dependency of each registered cons
 			'entity-states',
 			'evidence-grid',
 			'harness-entity-history',
-			'harness-entity-screens',
 			'harness-explorer-controls',
 			'harness-harness-compare-media',
 			'harness-harness-growth',
@@ -112,7 +111,6 @@ test('the registry stores Select as a derived dependency of each registered cons
 	expect(units.filter((id) => !linked(id))).toEqual([]);
 	expect(loaded.fresh.updated).toEqual([]);
 });
-
 test('a change of Select reaches its consumers, the pages that show them, and their tests and scenarios', async () => {
 	const report = await changed(select);
 	expect(report.units.direct).toEqual(['reports.component.select']);

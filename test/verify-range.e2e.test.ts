@@ -6,6 +6,7 @@ import {
 	type VerifyOutcome,
 	type VerifyRepo
 } from './support/verifyRepo';
+import { fixtureSources } from './support/verifyFixture';
 
 let baseline: VerifyRepo;
 let verified: string;
@@ -20,8 +21,11 @@ const grow = (source: string) =>
 		'\treturn input',
 		"\tif (input.length > 99 || input.includes('?')) return input;\n\treturn input"
 	);
+const baselineBytes = Buffer.byteLength(fixtureSources['src/utils/slugify.ts']);
+const grownBytes = Buffer.byteLength(grow(fixtureSources['src/utils/slugify.ts']));
+
 const growth = [
-	'function.slugify: source-bytes grew from 100 to 161 without a recorded approval',
+	`function.slugify: source-bytes grew from ${baselineBytes} to ${grownBytes} without a recorded approval`,
 	'function.slugify: complexity grew from 1 to 3 without a recorded approval'
 ];
 /** A behaviour change of the same size and complexity, so only reasons and tests are at stake. */

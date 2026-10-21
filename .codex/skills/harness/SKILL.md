@@ -84,6 +84,14 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
+## Screenshot Evidence
+
+- A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
+- Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
+- Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
+- Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
+- Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
+
 ## Measurement Evidence
 
 - End coding and planning tasks through `harness task check`. Coding completion requires an intact record for the committed source and actual representative latency and memory profiles, independently of budget declarations. Run `harness verify run --require-performance`; use the Harness `PerformanceProfileService` or declared benchmark runner rather than ad hoc timing scripts.
@@ -97,6 +105,14 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Before distributing profiling across runners, require the standard profile suite to retain distinct capture paths for independent producers and repeated chunks of the same workload. A workload key never identifies one immutable evidence file.
 - Label data-module initialization scopes as initialization. They cannot replace callable or deferred-work profiles. Bootstrap dependencies require explicit workloads when observing them would create a loading cycle; their missing profiles still block completion.
 - Verify profiling through normal root and inherited workspace entrypoints and an actual Bun child. Require fresh latency and process-memory captures from each execution; retain source and build bytes. Keep benchmark operations uninstrumented, isolate fixture identities and sinks, and never count a whole test's duration as every imported unit's profile. Prove the installed runtimes handle typed source and preload inheritance before adopting a loader.
+
+- Every code change must collect source bytes, source lines, complexity and dependency counts for each added or directly changed unit from the exact committed tree. Measure each applicable emitted target from that snapshot's real build output. A failed or missing full verification record must not hide readable source measurements.
+- Every changed executable unit must also have a representative measured workload in its normal behavior tests, even without a performance budget. Record fresh timing and a meaningful memory observation with the unit or callable, workload, method, samples, target, runtime profile and tested revision. Focused regression evidence and full verification both retain these observations.
+- For pages, collect real route navigation timing and page JavaScript heap after fonts and images settle. Bind the capture to the server's verified build and revision. A client-side route change must not borrow the previous document's navigation timing. Name whole-page heap or whole-process RSS accurately, including shared code or runner overhead; never describe it as isolated unit memory.
+- Page screenshot scenarios require navigation timing and scoped renderer memory at every required viewport. Collect both through the shared capture helper and retain them with the images.
+- Do not complete a changed executable unit with applicable metrics left unmeasured. Extend its standard workload coverage and rerun it. If source, runtime, toolchain or safe memory attribution is unavailable, record the exact reason, keep that check open, and report the blocker; absence is never zero or a passing measurement.
+- Refresh prepared history when measurement support changes and verify the delivered data as well as the renderer. Every entity kind must show figures from its selected commit; old missing placeholders must not override current source observations. A portable index without its Git source must be rebuilt from that source rather than borrowing the working tree.
+- Show actual performance observations independently of budget declarations. Preserve workload, target and profile boundaries. A changed unit requires a fresh run; inherited observations of an unchanged unit keep their original revision and label. A focused benchmark does not grant full verification or approve a budget baseline.
 
 ## Integration Checkpoints
 

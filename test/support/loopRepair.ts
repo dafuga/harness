@@ -1,7 +1,12 @@
+import { captureFixture } from './loop-repair/captureFixture';
+import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect } from 'vitest';
 import { runCommand, runHarness } from './cli';
+import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
+import { EvidenceTreeAdapter } from '../../src/adapters/EvidenceTreeAdapter';
+import { readRegression } from '../../src/utils/regressionHistory';
 
 export async function prepareRepair(root: string, template: string): Promise<void> {
 	await writeFile(
@@ -13,6 +18,7 @@ export async function prepareRepair(root: string, template: string): Promise<voi
 		join(root, 'proof.ts'),
 		"import { value } from './source'; if (value < 0) process.exit(1);"
 	);
+	const captureScript = await captureFixture(root);
 	await runCommand(['git', 'init', '-q'], root);
 	await commitRepair(root, 'feat: existing value and test');
 	await runHarness(
@@ -21,17 +27,7 @@ export async function prepareRepair(root: string, template: string): Promise<voi
 	);
 	const old = await runHarness(['loop', 'evaluate', 'repair', '--json'], root);
 	expect(JSON.parse(old.stdout).passed).toBe(true);
-	await writeFile(
-		join(root, 'proof.ts'),
-		`import { strict as assert } from 'node:assert'; import { mkdirSync, writeFileSync } from 'node:fs'; import { value } from './source';
-const directory = process.env.HARNESS_EVIDENCE_DIR;
-if (directory) {
- mkdirSync(directory, {recursive:true});
- writeFileSync(directory+'/sample.json', JSON.stringify({measurements:[{unit:'function.sample', metric:'latency-warm-ms', unitOfMeasure:'ms', value:0.5, workload:'sample', method:'Synthetic fixture timing.'}]}));
- writeFileSync(directory+'/captures.ndjson', JSON.stringify({evidence:'sample', kind:'benchmark', state:'sample', file:'sample.json', mediaType:'application/json'})+'\\n');
-}
-assert.equal(value, 3);`
-	);
+	await writeFile(join(root, 'proof.ts'), captureScript);
 	await commitRepair(root, 'fix: commit the failing selected-value test');
 }
 
@@ -106,15 +102,7 @@ export async function expectPendingVerification(root: string): Promise<void> {
 }
 
 async function phaseProof(root: string, phase: string, frozen: string): Promise<void> {
-	if (phase === 'red') {
-		const missing = await runHarness(
-			['loop', 'complete', 'repair', 'red', '--evidence', 'Trust me'],
-			root,
-			false
-		);
-		expect(missing.exitCode, 'A regression step needs a committed failing test').toBe(1);
-		expect(missing.stderr).toContain('committed failing test');
-	}
+	if (phase === 'red') await rejectMissingProof(root);
 	const result = await runHarness(['loop', 'evaluate', 'repair', '--json'], root, false);
 	expect(JSON.parse(result.stdout).passed).toBe(phase === 'green');
 	expect(result.exitCode).toBe(phase === 'green' ? 0 : 1);
@@ -144,5 +132,70 @@ async function phaseProof(root: string, phase: string, frozen: string): Promise<
 			})
 		])
 	);
+	const saved = JSON.parse(recorded.stdout);
+	expect(
+		saved.captures ?? [],
+		'focused screenshots survive the committed checkpoint'
+	).toContainEqual(
+		expect.objectContaining({
+			unit: 'page.sample',
+			capture: expect.objectContaining({
+				kind: 'screenshot',
+				viewport: 'desktop',
+				sha256: expect.any(String)
+			})
+		})
+	);
+	expect(saved.captures, 'declared screenshot slots keep their registered unit').toContainEqual(
+		expect.objectContaining({
+			unit: 'function.sample',
+			capture: expect.objectContaining({ evidence: 'sample-screen' })
+		})
+	);
+	if (phase === 'green') await expectSavedScreens(root, saved.source.commit);
 	if (phase === 'red') await rejected(root, ['--phase', 'green'], 'separate fix commit');
+}
+
+/** A Git-backed rebuild keeps the pixels, while loss of those bytes rejects the proof. */
+async function expectSavedScreens(root: string, commit: string): Promise<void> {
+	const out = join(root, 'history');
+	await runHarness(['history', 'build', '--out', out, '--limit', '3'], root);
+	const detail = JSON.parse(await readFile(join(out, 'revisions', commit + '.json'), 'utf8'));
+	expect(detail.regressions[0].green.captures).toContainEqual(
+		expect.objectContaining({
+			unit: 'function.sample',
+			capture: expect.objectContaining({ media: expect.stringMatching(/^media\//) })
+		})
+	);
+	const screen = detail.regressions[0].green.captures[0];
+	for (const kept of detail.regressions[0].green.captures) {
+		const bytes = await readFile(join(out, kept.capture.media));
+		expect(createHash('sha256').update(bytes).digest('hex')).toBe(kept.capture.sha256);
+	}
+	expect(screen.capture.media, 'rebuilt history resolves focused screenshot media').toMatch(
+		/^media\//
+	);
+	expect((await readFile(join(out, screen.capture.media))).length).toBe(screen.capture.bytes);
+	const note = (await new HistoryNoteRepository(root).read(commit)).entries.find(
+		(entry) => entry.kind === 'regression' && entry.phase === 'green'
+	);
+	if (note?.kind !== 'regression') throw new Error('Expected the recorded checkpoint');
+	const tree = new EvidenceTreeAdapter(root);
+	await expect(
+		readRegression(note, (path) =>
+			path === screen.capture.path
+				? Promise.resolve(undefined)
+				: tree.read(note.evidence.commit, note.evidence.path + '/' + path)
+		)
+	).rejects.toThrow(/capture.*missing/i);
+}
+
+async function rejectMissingProof(root: string): Promise<void> {
+	const missing = await runHarness(
+		['loop', 'complete', 'repair', 'red', '--evidence', 'Trust me'],
+		root,
+		false
+	);
+	expect(missing.exitCode, 'A regression step needs a committed failing test').toBe(1);
+	expect(missing.stderr).toContain('committed failing test');
 }

@@ -13,7 +13,7 @@ export interface Added {
 	summary: string;
 	at?: 'tip' | 'earlier';
 }
-/** Alpha holds one entity of every category; Beta one of its own; some exist at one commit only. */
+/** Project-owned helpers name component and service callers; some exist at one commit only. */
 export const added: Added[] = [
 	{
 		project: 0,
@@ -64,6 +64,14 @@ export const added: Added[] = [
 		kind: 'function',
 		title: 'Beta only function',
 		summary: 'Exists in Beta alone.'
+	},
+	{
+		project: 1,
+		id: 'app.service.formatting',
+		category: 'services',
+		kind: 'service',
+		title: 'Formatting service',
+		summary: 'Uses the shared formatter for display values.'
 	}
 ];
 
@@ -78,8 +86,28 @@ function install(items: Added[]) {
 	for (const item of items) {
 		const project = state.data.projects[item.project];
 		const base = project.entities.find((entity) => entity.category === 'components');
+		if (!base) throw new Error('The synthetic project needs a component consumer.');
 		const { project: _project, at = null, ...shown } = item;
-		project.entities.push({ ...base, ...shown, at, threads: [], versions: [] });
+		const helperContracts =
+			item.category === 'functions'
+				? [
+						{
+							name: item.id.split('.').at(-1),
+							pure: true,
+							source: `src/functions/${item.id}.ts`,
+							inputs: [],
+							consumers: [
+								{ unit: String(base.id) },
+								...items
+									.filter(
+										(caller) => caller.project === item.project && caller.category === 'services'
+									)
+									.map((caller) => ({ unit: caller.id }))
+							]
+						}
+					]
+				: [];
+		project.entities.push({ ...base, ...shown, at, helperContracts, threads: [], versions: [] });
 	}
 	// Each commit lists only what it holds; every entity can still be opened by its id.
 	const read = state.snapshot;

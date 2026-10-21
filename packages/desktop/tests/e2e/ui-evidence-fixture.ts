@@ -75,7 +75,7 @@ function installProject(serialized: string) {
 		},
 		branches: [{ name: data.branch, tip: data.tip, current: true }],
 		commits: data.commits,
-		entities: data.entities,
+		entities: data.catalog,
 		writable: !commit && !data.shared
 	});
 	const kind = data.shared ? 'shared' : 'local';

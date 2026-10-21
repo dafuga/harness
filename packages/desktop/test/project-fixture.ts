@@ -25,6 +25,13 @@ async function put(root: string, path: string, content: string) {
 	await mkdir(dirname(join(root, path)), { recursive: true });
 	await writeFile(join(root, path), content);
 }
+function checkFilterExamples(root: string) {
+	const program =
+		"import { filter } from './src/functions/filter.ts'; console.log(JSON.stringify([filter(false), filter(true)]));";
+	const actual = execFileSync('bun', ['-e', program], { cwd: root, encoding: 'utf8' }).trim();
+	if (actual !== '[0,1]')
+		throw new Error('Fixture helper examples do not match its implementation.');
+}
 export async function fixture() {
 	const root = await realpath(await mkdtemp(join(tmpdir(), 'harness-project-')));
 	roots.push(root);
@@ -60,6 +67,7 @@ export async function fixture() {
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'main source');
 	const tip = git(root, 'rev-parse', 'HEAD');
+	checkFilterExamples(root);
 	const session = new ProjectSessionService();
 	await session.open(root);
 	return { session, base, feature, tip, ...session.requireProject() };

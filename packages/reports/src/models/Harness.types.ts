@@ -151,6 +151,8 @@ export interface HarnessRecord {
 		metric: string;
 		callable?: string;
 		method?: string;
+		/** Exact source revision when the observation records it; absent in older indexes. */
+		testedRevision?: string;
 		unitOfMeasure: string;
 		value: number | null;
 		unavailable?: string;

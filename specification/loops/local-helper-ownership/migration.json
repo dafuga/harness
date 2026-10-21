@@ -4811,9 +4811,9 @@
 		{
 			"unit": "reports.function.entity-measure",
 			"name": "entityMeasure",
-			"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
-			"reason": "Review main-branch support for recorded regression measurements alongside existing runtime observations.",
-			"definition": "7110374921d27ac582f1e6ac64f7910e804b23f12eea28296e7060cfb721661d"
+			"commit": "6b6bea9048e887b98b1ee93b07ed13a0c4bc9d29",
+			"reason": "Review exact-revision source observations added after the relocation; retain runtime measurement grouping and registered ownership.",
+			"definition": "15d6c025c0d07d544925ac1a1418195405751065d5d96b601f668f57082bb29c"
 		},
 		{
 			"unit": "reports.function.entity-shown",
