@@ -8,6 +8,9 @@ import {
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { alpha, searchFixture } from './ui-search-fixture';
+import { settled } from '../../../reports/tests/e2e/support/harnessCapture';
+import { buildStamp } from '../../../../src/utils/buildStamp';
+import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 
 /**
  * The search of the top bar at every supported width. Closed, focused or with its results open,
@@ -88,6 +91,11 @@ async function fits(page: Page, width: number, without: number[]): Promise<void>
 	const overlaps = await Promise.all(links.map(async (link) => meet(search, await box(link), 0)));
 	expect(overlaps, 'Search target does not cover category links').toEqual(links.map(() => false));
 	expect([search.x >= 0, search.x + search.width <= width]).toEqual([true, true]);
+	if (width <= 560)
+		expect(
+			(await box(bar(page))).height,
+			'Mobile header remains within its 184 pixel budget'
+		).toBeLessThanOrEqual(184);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
 	);
@@ -97,7 +105,34 @@ async function remember(page: Page, info: TestInfo, name: string): Promise<void>
 	const folder = process.env.SEARCH_SHOTS ?? info.outputDir;
 	mkdirSync(folder, { recursive: true });
 	const file = `${process.env.SCREENSHOT_LABEL ?? 'run'}-${name}.png`;
-	await page.screenshot({ path: join(folder, file), fullPage: true, animations: 'disabled' });
+	await settled(page);
+	await page.mouse.move(0, 0);
+	const bytes = await page.screenshot({
+		path: join(folder, file),
+		fullPage: true,
+		animations: 'disabled'
+	});
+	if (process.env.HARNESS_VERIFY !== '1') return;
+	const buildId = buildStamp(
+		(await page.locator('meta[name="harness-build"]').getAttribute('content')) ?? undefined
+	);
+	if (!buildId) throw new Error('The header capture requires its compiled build identity');
+	const viewport = page.viewportSize()!;
+	recordCapture(
+		{
+			evidence: 'desktop.component.nav-bar',
+			kind: 'screenshot',
+			state: name,
+			viewport: `${viewport.width}x${viewport.height}`,
+			file,
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server: { buildId, revision: process.env.HARNESS_VERIFY_REVISION! },
+			note: 'Actual navigation header over the synthetic Alpha fixture; layout regression evidence.'
+		},
+		bytes,
+		{ ...process.env, TAKE_SCREENSHOT: '1' }
+	);
 }
 
 for (const width of widths) {
