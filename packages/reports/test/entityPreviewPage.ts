@@ -90,8 +90,15 @@ export async function reviewVisual(
 	if (route.category !== 'components') return;
 	for (const name of ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source']) {
 		await page.getByRole('tab', { name, exact: true }).click();
+		if (name === 'Used In') await page.getByRole('tab', { name, exact: true }).press('Shift+Tab');
 		await ready(page);
 		await capture(page, `header-base-${name}-${mode}-${viewport}`);
+		if (name === 'Used In') {
+			const focused = page.getByRole('tab', { name: 'Contract', exact: true });
+			await expect(focused).toBeFocused();
+			await expect(focused).toHaveCSS('outline-style', 'none');
+			await expect(focused).toHaveCSS('text-decoration-line', 'underline');
+		}
 		await expect(evidence, 'component screenshot persists across tabs').toHaveCount(1);
 		const tabs = await page.getByRole('tablist').boundingBox();
 		const shot = await page.locator('section[aria-labelledby="ex-screens-title"]').boundingBox();

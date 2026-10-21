@@ -123,3 +123,10 @@ flattened reverse dependencies and accepted an empty screenshot for OrderStore.
 The existing relation, helper-card and responsive interaction tests now require
 consumer type lists and nonvisual code previews. The project skill records this
 review checkpoint for future shared catalog changes.
+
+## Tab keyboard focus
+
+The shared entity tab strip uses a text underline for keyboard focus. Its active
+tab keeps the existing gold bottom border. No outline extends outside the scroll
+strip, where clipping previously left two yellow vertical lines. The responsive
+visual-overview matrix covers this focused state at each viewport and revision.
