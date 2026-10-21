@@ -6,7 +6,7 @@
 	"name": "native-profile-bootstrap",
 	"goal": "Normal profiling configuration starts without native Node TypeScript support, while retaining root and inherited-workspace evidence and worker limits.",
 	"createdAt": "2026-10-21T12:14:06.873Z",
-	"updatedAt": "2026-10-21T12:27:32.117Z",
+	"updatedAt": "2026-10-21T12:31:44.563Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:31:41.634Z",
+			"evidence": "Paired red225b052a atdcc22749 and green9dda3faf at391bfba6 execute identical test/fixture inputs and runner configs in one environment; all six cases pass including unavailable native TypeScript."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:31:44.563Z",
+			"evidence": "The isolated earlier native entry forwards to typed startup and fails ERR_UNKNOWN_FILE_EXTENSION. Repaired JavaScript startup passes both root and inherited capability variants with fresh captures; existing worker and sparse-startup cases remain green."
 		},
 		{
 			"id": "verify",
