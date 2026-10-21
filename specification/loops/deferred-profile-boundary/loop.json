@@ -6,7 +6,7 @@
 	"name": "deferred-profile-boundary",
 	"goal": "Initialization observations never stand in for deferred object operations; retain real data initialization profiles.",
 	"createdAt": "2026-10-21T18:13:28.237Z",
-	"updatedAt": "2026-10-21T18:16:16.443Z",
+	"updatedAt": "2026-10-21T18:24:29.445Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -43,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:24:26.714Z",
+			"evidence": "Recursive source inspection rejects nested callable bodies and opaque values inside literal data and known containers. Function invocation instrumentation and genuine data/schema initialization remain intact."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:24:28.128Z",
+			"evidence": "At 5bcab4186 immutable green da5c5210 pairs with test-only red 965b1009 at 5a9cbc2ee: all 14 unchanged runner cases pass after 7 deferred cases fail. The earlier 7226b67bd/643b3cf25 pair remains retained. Matrix lint, root types and audit pass; 26 runner/lifecycle/sampling cases passed."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:24:29.445Z",
+			"evidence": "Fresh recurrence ran actual broken source 5a9cbc2ee in an isolated snapshot: red 7f0b104f fails all 7 deferred cases. Restored fixed 5bcab4186: green 49e19571 passes all 14 unchanged cases in the same environment. Inputs and original outputs are retained in Harness evidence."
 		},
 		{
 			"id": "verify",
