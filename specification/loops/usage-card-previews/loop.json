@@ -2,7 +2,7 @@
 	"name": "usage-card-previews",
 	"goal": "Catalog and relationship items share clickable consumer footers and revision-bound screenshot previews",
 	"createdAt": "2026-10-21T12:09:32.061Z",
-	"updatedAt": "2026-10-21T12:26:46.027Z",
+	"updatedAt": "2026-10-21T12:35:06.075Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -48,7 +48,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:35:06.075Z",
+			"evidence": "Pinned environment: red b092f49f and separate fix 55c9fe81 run the same frozen corpus and command. All six responsive usage/hover cases pass; exact branch/commit links and Escape/focus are verified."
 		},
 		{
 			"id": "guard",
