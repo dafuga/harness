@@ -326,6 +326,18 @@
 			"specifier": "../SourceDialog.svelte",
 			"to": "packages/reports/src/components/explorer-ui/SourceDialog.svelte",
 			"reason": "The source reader renders this shared component at its registered implementation address."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
+			"specifier": "../../../lib/explorer-ui/stores/sourceReader.svelte",
+			"to": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+			"reason": "Source sessions and category paths use the registered reader store without importing a screen-specific pane."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"specifier": "../../../lib/explorer-ui/stores/sourceReader.svelte",
+			"to": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+			"reason": "Source sessions and category paths use the registered reader store without importing a screen-specific pane."
 		}
 	]
 }

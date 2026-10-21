@@ -9,7 +9,7 @@
 	import '../../../lib/styles/entity-evidence.css';
 	import '../../../lib/styles/entity-history.css';
 	import EntityMissing from './EntityMissing.svelte';
-	import { archivedSource } from './EntitySource.svelte';
+	import { archivedSource } from '../../../lib/explorer-ui/stores/sourceReader.svelte';
 	import SourceDialog from '../SourceDialog.svelte';
 	let {
 		host,

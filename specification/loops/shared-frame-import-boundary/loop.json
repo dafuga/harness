@@ -2,7 +2,7 @@
 	"name": "shared-frame-import-boundary",
 	"goal": "Keep shared explorer frames independent of entity-specific panels while preserving source-code modal behavior",
 	"createdAt": "2026-10-21T21:48:06.788Z",
-	"updatedAt": "2026-10-21T21:49:42.606Z",
+	"updatedAt": "2026-10-21T21:52:51.174Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:52:50.327Z",
+			"evidence": "Sealed red 2ae28d51 at 5dd1dbd5d proves the direct shared-frame pane-import assertion. The original history-separation assertion also fails; archive and modal behavior still pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:52:51.174Z",
+			"evidence": "Move the unchanged archive reader and path selector into the existing source-reader store; preserve the component export. Enforce the general Entity-pane boundary in standard composition coverage and frame-focused acceptance."
 		},
 		{
 			"id": "implement",

@@ -49,11 +49,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-entity-source",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.source-dialog",
 			"via": "import",
 			"origin": "derived"
@@ -70,6 +65,11 @@
 		},
 		{
 			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.store.source-reader",
 			"via": "import",
 			"origin": "derived"
 		},

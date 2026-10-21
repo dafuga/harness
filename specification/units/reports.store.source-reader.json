@@ -3,7 +3,7 @@
 	"id": "reports.store.source-reader",
 	"kind": "store",
 	"title": "sourceReader",
-	"responsibility": "Owns source selection, loading, errors and cancellation for one revision-bound reader.",
+	"responsibility": "Owns revision-bound archived source access, category paths, selection, loading, errors and cancellation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,21 +11,65 @@
 			"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
 			"packages/reports/src/lib/stores/sourceReader.svelte.ts"
 		],
-		"symbols": ["SourceState", "SourceFiles", "SourceRead", "createSourceReaderStore"]
+		"symbols": [
+			"SourceState",
+			"SourceFiles",
+			"SourceRead",
+			"createSourceReaderStore",
+			"implementationFiles",
+			"archivedSource"
+		]
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "archivedSource.unit",
+				"type": "HarnessUnit",
+				"description": "The selected revision’s owned files and source snapshots."
+			},
+			{
+				"name": "archivedSource.mediaBase",
+				"type": "string",
+				"description": "The host-controlled media address for this revision."
+			},
+			{
+				"name": "archivedSource.filePath",
+				"type": "string | undefined",
+				"description": "Optional owned path to select first."
+			},
+			{
+				"name": "implementationFiles.unit",
+				"type": "HarnessUnit",
+				"description": "A source-owning unit with optional responsibility category."
+			}
+		],
 		"outputs": [
 			{
 				"name": "createSourceReaderStore",
 				"type": "unknown",
 				"description": "Returns reactive state plus initialise, select and cancel. Each selection clears prior contents and errors; superseded or disposed reads cannot overwrite the current session."
+			},
+			{
+				"name": "implementationFiles",
+				"type": "string[]",
+				"description": "Category implementation paths, preserving recorded paths for older revisions and framework entries."
+			},
+			{
+				"name": "archivedSource",
+				"type": "{ files: SourceFiles; read: SourceRead; empty?: string }",
+				"description": "Reads only archived committed text; missing source is an explicit gap and never uses a working copy."
 			}
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
