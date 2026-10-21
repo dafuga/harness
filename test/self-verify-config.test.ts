@@ -2,6 +2,8 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
+import { scenarioManifestSchema } from '../src/core/unitTypes';
+import { verificationTarget } from './verification-targets';
 import { taskProfile } from './support/taskProfiles';
 
 interface Manifest {
@@ -44,4 +46,44 @@ test('this repository requires profiling and declares no source as something a c
 	for (const build of config.builds) {
 		expect(config.outputs.some((declared) => covers(declared, `${build.directory}/x`))).toBe(true);
 	}
+});
+
+test('registered scenario wrappers cover their output states and visual build identities', () => {
+	const gaps: string[] = [];
+	for (const file of under('specification/scenarios').filter((path) => path.endsWith('.json'))) {
+		const scenario = scenarioManifestSchema.parse(JSON.parse(readFileSync(file, 'utf8')));
+		const states = new Set<string>();
+		let wrappers = 0;
+		for (const check of scenario.tests) {
+			if (!check.target.includes('test/verification-output.ts')) continue;
+			wrappers++;
+			const match = /verification-output\.ts (vitest|playwright) (?:--config \S+ )?(\S+)$/.exec(
+				check.target
+			);
+			if (!match) {
+				gaps.push(`${scenario.id}: unsupported wrapper command ${check.id}`);
+				continue;
+			}
+			try {
+				const scope = verificationTarget(
+					scenario.id,
+					match[1] as 'vitest' | 'playwright',
+					match[2],
+					join(process.cwd(), check.cwd ?? '.')
+				);
+				for (const state of scope.states) states.add(state);
+			} catch (error) {
+				gaps.push(`${scenario.id}: ${check.id}: ${String(error)}`);
+			}
+		}
+		for (const slot of scenario.evidence) {
+			if (slot.kind === 'screenshot' && !slot.build)
+				gaps.push(`${scenario.id}: ${slot.id}: missing compiled build binding`);
+			if (wrappers === scenario.tests.length && slot.kind === 'output' && slot.required)
+				for (const state of slot.states)
+					if (!states.has(state))
+						gaps.push(`${scenario.id}: ${state}: no registered output producer`);
+		}
+	}
+	expect(gaps).toEqual([]);
 });
