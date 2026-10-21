@@ -6,7 +6,7 @@
 	"name": "runtime-declaration-applicability",
 	"goal": "Require runtime profiling for actual executable initialization while exempting parsed ambient and type declarations; unreadable and mixed source remain required.",
 	"createdAt": "2026-10-21T15:08:31.007Z",
-	"updatedAt": "2026-10-21T15:08:32.152Z",
+	"updatedAt": "2026-10-21T15:11:41.233Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,12 +29,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:11:40.429Z",
+			"evidence": "Committed d0910a9c8; sealed red dcae9e64a5ca preserves 8 actual failures and12passing controls from the unchanged20-case parsed-source matrix."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:11:41.233Z",
+			"evidence": "Record conservative AST-derived execution facts in SourceIndex metadata. Exempt only parsed declarations and readable stylesheets; runtime imports, statements, enums, malformed, unreadable and unknown source remain required. No extension-based exemption or fabricated profile."
 		},
 		{
 			"id": "implement",

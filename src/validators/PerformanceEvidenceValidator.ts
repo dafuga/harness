@@ -34,8 +34,7 @@ function executable(unit: ComponentManifest, files: Map<string, SourceFile>): bo
 	if (owned.some((file) => !file?.read)) return true;
 	if (owned.length === 0) return true;
 	const code = owned.filter((file) => file?.language !== 'css');
-	if (code.some((file) => file?.exports.length === 0)) return true;
-	return code.some((file) => file?.exports.some((item) => item.kind !== 'type'));
+	return code.some((file) => file?.execution !== 'declarative');
 }
 
 function requiredMetrics(
