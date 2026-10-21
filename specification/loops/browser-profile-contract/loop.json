@@ -6,7 +6,7 @@
 	"name": "browser-profile-contract",
 	"goal": "Accept real browser navigation and heap observations for their declared unit target without accepting stale, mismatched or fixture evidence.",
 	"createdAt": "2026-10-21T22:34:21.143Z",
-	"updatedAt": "2026-10-21T22:36:28.355Z",
+	"updatedAt": "2026-10-21T22:38:48.995Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -43,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T22:38:46.350Z",
+			"evidence": "Commit 5e1e985cd recognizes the existing browser metric names without changing applicability or identity filters. All 22 standard validator cases, type checking, lint, unit indexing and source audit pass. The standard skill now requires the actual browser protocol and declared-target checks."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T22:38:47.778Z",
+			"evidence": "Same-process frozen red da9d4539 at 0baf335c3 fails both browser cases; paired green 97eb9708 at 5e1e985cd passes all 22. Tests, command and environment are unchanged. A separate-process green was correctly rejected for environment mismatch and is not proof."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T22:38:48.995Z",
+			"evidence": "The isolated historical snapshot reinstates the old validator and fails the exact browser assertion in both targets; the separately restored fix snapshot passes the identical 22-case matrix. Wrong-target, stale revision/profile/workload, missing samples and synthetic fixture controls remain rejecting."
 		},
 		{
 			"id": "verify",
