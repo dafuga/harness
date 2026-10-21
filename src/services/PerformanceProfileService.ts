@@ -32,6 +32,13 @@ interface Observation {
 export class PerformanceProfileService {
 	private readonly observations = new Map<string, Observation>();
 
+	/** Pinned Bun returns Darwin's native bytes; Node and other supported hosts report KiB. */
+	static peakProcessRssBytes(): number {
+		const peak = process.resourceUsage().maxRSS;
+		const nativeBytes = Boolean(process.versions.bun) && process.platform === 'darwin';
+		return nativeBytes ? peak : peak * 1024;
+	}
+
 	/** Module exports cannot move into a callback; only an explicitly completed scope is sampled. */
 	beginScope(input: ObservationInput): () => void {
 		const subject = observationInput.parse(input);
@@ -99,9 +106,9 @@ export class PerformanceProfileService {
 				...common,
 				metric: 'process-peak-rss-bytes',
 				unitOfMeasure: 'bytes',
-				value: process.resourceUsage().maxRSS * 1024,
+				value: PerformanceProfileService.peakProcessRssBytes(),
 				method:
-					'Peak RSS of this whole process, including its runner and earlier work; not memory attributable to one callable.'
+					'Peak RSS of this whole process, normalized to bytes for this runtime, including its runner and earlier work; not memory attributable to one callable.'
 			}
 		];
 	}
@@ -133,7 +140,7 @@ function completeObservation(
 ): void {
 	const key = JSON.stringify([input.unit, input.callable ?? '', input.workload, completion]);
 	const previous = observations.get(key);
-	const peakRss = process.resourceUsage().maxRSS * 1024;
+	const peakRss = PerformanceProfileService.peakProcessRssBytes();
 	observations.set(key, {
 		input,
 		completion,
@@ -165,7 +172,7 @@ function writeObservation(observation: Observation): Measured[] {
 			unitOfMeasure: 'bytes',
 			value: peakRss,
 			method:
-				'Peak RSS of this whole process, including runner, profiler and earlier work; not memory attributable to one callable.'
+				'Peak RSS of this whole process, normalized to bytes for this runtime, including runner, profiler and earlier work; not memory attributable to one callable.'
 		}
 	];
 	const key = JSON.stringify([input.unit, input.callable ?? '', input.workload, completion]);
