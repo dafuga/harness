@@ -25,6 +25,7 @@ test.each(['2d', '3d'])(
 			]) {
 				execFileSync('bun', [cli, 'generate', kind, name], { cwd });
 			}
+			execFileSync('bun', ['run', 'check'], { cwd, stdio: 'pipe' });
 			expect(await readFile(join(cwd, 'src/routes/inventory/+page.svelte'), 'utf8')).toContain(
 				'Inventory'
 			);
