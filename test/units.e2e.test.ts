@@ -210,6 +210,7 @@ test('index records reviewed shared helper contracts for clients without source 
 		['UTC date', 'Date formatting']
 	]) {
 		await writeExamples(names.map((name) => ({ ...examples[0], name })));
+		await project.harness(['units', 'index', '--write']);
 		const rejected = await project.harness(['units', 'check'], false);
 		expect(rejected.exitCode, 'Distinct descriptive helper behaviors are required').toBe(1);
 	}
