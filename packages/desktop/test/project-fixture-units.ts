@@ -21,6 +21,15 @@ export function unitManifest(id: string, kind: string, path: string) {
 							pure: true,
 							inputs: [{ name: 'filter.input', type: 'string' }],
 							output: 'string',
+							examples: [
+								{
+									name: 'Trim surrounding spaces',
+									call: 'filter("  VALUE  ")',
+									input: '  VALUE  ',
+									output: 'VALUE'
+								},
+								{ name: 'Empty text', call: 'filter("")', input: '', output: '' }
+							],
 							consumers: [
 								{ unit: 'page.home', symbol: 'owned' },
 								{ unit: 'service.analytics', symbol: 'owned' }
