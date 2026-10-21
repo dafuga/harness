@@ -41,9 +41,7 @@ export function serviceMoveReviews(ledger: {
 				gaps.push(`${file.to}: reviewed source does not match its commit`);
 		}
 	} catch (cause) {
-		gaps.push(
-			`Reviewed source unavailable: ${cause instanceof Error ? cause.message : String(cause)}`
-		);
+		gaps.push(`Reviewed source unavailable: ${String(cause)}`);
 	}
 	return gaps;
 }

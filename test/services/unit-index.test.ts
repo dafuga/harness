@@ -197,6 +197,10 @@ test('several owned files produce identical metadata after one indexing pass', a
 });
 
 test('recorded service moves preserve implementations and registered owner-local placement', () => {
+	expect(
+		new Set(services.files.map((file) => file.to)).size,
+		'Each moved source has one proof'
+	).toBe(services.files.length);
 	const gaps = [...serviceMoveGaps(services), ...serviceMoveReviews(services)];
 	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
 		[]
