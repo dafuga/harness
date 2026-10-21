@@ -26,6 +26,11 @@ test('the full check stays on Linux with its display and dependency setup', () =
 	expect(checkout).toContain('persist-credentials: false');
 	expect(check).toContain('@playwright/test/cli.js install --with-deps chromium');
 	expect(check).toContain('sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg');
+	const archiveRead = "git fetch --no-tags origin '+refs/harness/source/*:refs/harness/source/*'";
+	expect(check, 'squash landing must retain immutable source review commits').toContain(
+		archiveRead
+	);
+	expect(check.indexOf(archiveRead)).toBeLessThan(check.indexOf('xvfb-run -a bun run check'));
 	expect(check).toContain('run: xvfb-run -a bun run check');
 	expect(check).not.toMatch(/macos|xcode|DEVELOPER_DIR/i);
 });
