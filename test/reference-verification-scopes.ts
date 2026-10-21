@@ -16,6 +16,8 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 				'Change reports actual registered source owners rather than the requested subject':
 					'reference-functions',
 				'an unexpected Ask write fails and preserves the changed file for review':
+					'reference-functions',
+				'a scoped project change refuses missing deployment configuration before an agent writes':
 					'reference-functions'
 			},
 
@@ -79,9 +81,17 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 				'a message written before references renders exactly its words': 'reference-functions'
 			},
 			'test/run-context-references.test.ts': {
-				'a plan or change prompt asks for references and lists the entity and its relationships once':
-					'reference-functions',
 				'the creation prompt asks the notes to name existing units by registered id':
+					'reference-functions',
+				'a undefined plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a dev plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a stage plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a preprod plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a prod plan or change prompt names references and its exact promotion boundary':
 					'reference-functions'
 			},
 			'test/utils/reference-prompt.test.ts': {
@@ -106,15 +116,15 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 				'a notice names at most forty units and counts the rest': 'change-notice'
 			},
 			'test/change-owners.test.ts': {
-				'a completed change names the unit owning a changed file and counts the file no unit owns':
+				'a completion audit failure retains the unit owning a changed file and counts the file no unit owns':
 					'change-notice'
 			},
 			'test/change-reply.test.ts': {
-				'a completed change keeps the reply of its agent and names the entity it implements':
-					'change-notice',
 				'a failed change keeps the text its agent streamed before failing': 'change-notice',
 				'a cancelled change keeps what was said before the cancellation': 'change-notice',
-				'a change whose agent said nothing keeps the notice alone': 'change-notice'
+				'a change whose agent said nothing keeps the notice alone': 'change-notice',
+				'a change rejected by the completion audit keeps the reply of its agent and names the entity it implements':
+					'change-notice'
 			},
 			'test/project-run-references.test.ts': {
 				'a pages request is asked with a registered function it names, and its checked notes are said':

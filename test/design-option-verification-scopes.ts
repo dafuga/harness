@@ -13,6 +13,8 @@ export const designOptionVerificationScopes: Record<string, VerificationScope> =
 				'a Plan cancelled during an option leaves no version and no design commit':
 					'option-plan-runs',
 				'a headless Plan keeps notes and generates no image, whatever count it is given':
+					'option-plan-runs',
+				'visual provenance stores actual image orchestration model and exact full generator prompt':
 					'option-plan-runs'
 			},
 			'test/design-options-creation.test.ts': {

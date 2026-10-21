@@ -22,9 +22,7 @@ const measured = async (page: Page) => {
  */
 const asked = new Map<string, string>();
 /** The address the latest reach of a state asked for. */
-export const askedFor = (state: string) => {
-	return asked.get(state) ?? '';
-};
+export const askedFor = (state: string) => asked.get(state) ?? '';
 /** The states whose flow is also recorded as end-to-end evidence, with what each must find. */
 export const explorerFlows: Record<string, { expects: string; source?: boolean }> = {
 	pages: { expects: 'Wait for the Pages catalog' },
@@ -153,10 +151,13 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(tip('main', `functions/${units.slugify}`));
 		await expect(verdict(page, 'Evidence missing').first()).toBeVisible();
 	},
-	// What a commit removed is listed from its parent, where it last was.
+	// A retired private helper remains reachable at its historical address.
 	async removed(page) {
-		await page.goto(at('main', commits.removed, 'functions'));
-		await expect(content(page).getByRole('article', { name: 'Extra', exact: true })).toBeVisible();
+		await page.goto(at('main', commits.removed, 'functions/function.extra'));
+		await titled(page, 'Extra');
+		await expect(
+			content(page).getByRole('button', { name: 'Removed at this commit', exact: true })
+		).toBeVisible();
 	},
 	// An entity that is not at a revision stays absent; no other revision is shown.
 	async missing(page) {
@@ -192,7 +193,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	// A catalog of several hundred generated units.
 	async hundreds(page) {
 		await page.goto(`${scale}${tip('main', 'functions')}`);
-		await titled(page, 'Functions');
+		await titled(page, 'Helpers');
 		await expect(content(page).getByRole('article').first()).toBeVisible();
 		expect(await content(page).getByRole('article').count()).toBeGreaterThan(400);
 	}

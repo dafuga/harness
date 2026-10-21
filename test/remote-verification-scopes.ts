@@ -88,7 +88,8 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 				'a reload keeps the session of its window; closing the window ends its socket and its run only':
 					'local-socket',
 				'the control port travels over the same socket, with exactly what the page gave':
-					'local-socket'
+					'local-socket',
+				'repeated concurrent listens reuse one listener and closing releases it': 'local-socket'
 			},
 			'test/local-transport-teardown.test.ts': {
 				'a page socket whose handshake is never answered is still connecting when its test ends':

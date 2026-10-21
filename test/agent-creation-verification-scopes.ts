@@ -8,7 +8,10 @@ export const agentCreationVerificationScopes: Record<string, VerificationScope> 
 			'test/project-conversation.test.ts': {
 				'a project conversation creates the proposed function and retains its original request':
 					'boundary-tests',
-				'an invalid creation proposal creates no plan and emits no success': 'boundary-tests'
+				'an invalid or incomplete proposal creates no plan and emits no success: {"category":"functions","title":"../outside"}':
+					'boundary-tests',
+				'an invalid or incomplete proposal creates no plan and emits no success: {"category":"functions","title":"Format elapsed time","goal":"Format elapsed milliseconds for people.","proposal":"Just implement the formatter.","contract":{"inputs":[{"name":"milliseconds","type":"number"}],"outputs":[{"name":"formatted","type":"string"}],"errors":["negative-value"]}}':
+					'boundary-tests'
 			},
 			'test/project-conversation-boundaries.test.ts': {
 				'a pinned commit rejects project creation before any CLI or plan write': 'boundary-tests',
