@@ -160,6 +160,12 @@ async function expectSavedScreens(root: string, commit: string): Promise<void> {
 	const out = join(root, 'history');
 	await runHarness(['history', 'build', '--out', out, '--limit', '3'], root);
 	const detail = JSON.parse(await readFile(join(out, 'revisions', commit + '.json'), 'utf8'));
+	expect(detail.regressions[0].green.captures).toContainEqual(
+		expect.objectContaining({
+			unit: 'function.sample',
+			capture: expect.objectContaining({ media: expect.stringMatching(/^media\//) })
+		})
+	);
 	const screen = detail.regressions[0].green.captures[0];
 	expect(screen.capture.media, 'rebuilt history resolves focused screenshot media').toMatch(
 		/^media\//
