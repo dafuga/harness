@@ -1,3 +1,4 @@
+import { PerformanceProfileService } from '../../src/services/PerformanceProfileService';
 import { expect } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -195,9 +196,9 @@ async function benchmarkReader(read: () => Promise<string | undefined>): Promise
 			...context,
 			metric: 'process-peak-rss-bytes',
 			unitOfMeasure: 'bytes',
-			value: process.resourceUsage().maxRSS * 1024,
+			value: PerformanceProfileService.peakProcessRssBytes(),
 			method:
-				'Peak RSS of the whole benchmark process, including Vitest and fixture setup; not memory attributable to this function.'
+				'Peak RSS of the whole benchmark process, normalized to bytes for this runtime, including Vitest and fixture setup; not memory attributable to this function.'
 		}
 	];
 	recordCapture(
