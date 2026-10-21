@@ -24,9 +24,7 @@ class DeploymentsState {
 	get job() {
 		return this.workspace.activity?.items.find((item) => item.id === this.jobId) ?? null;
 	}
-	get receipt() {
-		return this.job?.receipt ?? null;
-	}
+	receipt = $derived(this.job?.receipt ?? null);
 	get pending() {
 		return this.reviewing || this.starting || Boolean(this.job && !this.job.finishedAt);
 	}
