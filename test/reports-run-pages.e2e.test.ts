@@ -43,15 +43,16 @@ const built = async (url: string) =>
 	((await (await fetch(`${url}/api/health`)).json()) as { buildId?: string }).buildId;
 
 /**
- * The supported state the reader opened at a selected commit and viewport. Both the viewport
- * selection and the open viewer live on the page alone, so a reload would lose that choice.
+ * What the reader sees of a page at a selected commit after choosing another state and viewport
+ * than the page opens with: the choice lives on the page alone, so a page that was loaded again
+ * would have lost it.
  */
 async function chosen(page: Page) {
-	const viewer = page.getByRole('dialog', { name: 'filled · After', exact: true });
-	const viewport = viewer.getByRole('group', { name: 'Viewport' });
-	const shot = viewer.locator('img');
+	const evidence = page.getByRole('region', { name: 'Commit comparison' });
+	const viewport = evidence.getByRole('group', { name: 'Viewport' });
+	const shot = evidence.getByRole('figure', { name: /^After ·/ }).locator('img');
 	return {
-		state: await viewer.getByRole('heading', { level: 2 }).innerText(),
+		state: await evidence.getByRole('combobox', { name: 'State' }).inputValue(),
 		viewport: await viewport.locator('[aria-pressed="true"]').innerText(),
 		file: await shot.evaluate((image: HTMLImageElement) => image.src.split('/').pop() ?? ''),
 		drawn: await shot.evaluate((image: HTMLImageElement) => image.naturalWidth > 0)
@@ -84,15 +85,16 @@ test('a page one run has open keeps what was opened on it when another run start
 	browserErrors.watch(page.context());
 	const { branch, commits } = history;
 	const address = `/harness/branch/${encodeURIComponent(branch)}/commit/${commits.twin}`;
-	await page.goto(`${first.url}${address}/pages/${history.page}?tab=states`);
-	const evidence = page.getByRole('region', { name: /supported states$/ });
-	await evidence.getByRole('combobox', { name: 'Viewport' }).selectOption('mobile');
-	await evidence.getByRole('button', { name: 'Open filled · After', exact: true }).click();
+	await page.goto(`${first.url}${address}/pages/${history.page}`);
+	const evidence = page.getByRole('region', { name: 'Commit comparison' });
+	await evidence.getByRole('combobox', { name: 'State' }).selectOption('filled');
+	await evidence
+		.getByRole('group', { name: 'Viewport' })
+		.getByRole('button', { name: 'Mobile' })
+		.click();
 	const before = await eventually(async () => {
 		const now = await chosen(page);
-		return now.state === 'filled · After' && now.viewport === 'Mobile screenshots' && now.drawn
-			? now
-			: undefined;
+		return now.state === 'filled' && now.viewport === 'Mobile' && now.drawn ? now : undefined;
 	}, 'the chosen state and viewport to be drawn');
 	// The capture is served under the name of its own content, by the build the run started from.
 	const media = `${first.url}/harness/media/${before.file}`;
