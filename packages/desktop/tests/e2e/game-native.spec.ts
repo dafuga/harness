@@ -10,7 +10,7 @@ import { execFileSync } from 'node:child_process';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { capture, launch, imageProvider } from './game-native-fixture';
-import { beginGameFlow, recordRuntime } from './game-runtime-fixture';
+import { beginGameFlow, recordRuntime, recordStartup } from './game-runtime-fixture';
 import { nativeImageFixture } from './native-image-fixture';
 import type { GameDocument } from '../../../game/src/models/Game.types';
 test.setTimeout(120_000);
@@ -152,6 +152,7 @@ async function history(page: Page, root: string, dimension: string) {
 		page.getByRole('navigation', { name: 'Catalog categories', exact: true })
 	).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Game Views', exact: true })).toBeVisible();
+	await capture(page, `${dimension}-catalog`);
 }
 for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 	[
@@ -169,10 +170,13 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 		let app: ElectronApplication | undefined;
 		let finished = false;
 		try {
+			const started = performance.now();
 			app = await test.step('Launch real native host', () => launch(profile));
 			browserErrors.watch(app.context());
 			const page = await app.firstWindow();
 			await page.setViewportSize(viewport);
+			await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();
+			await recordStartup(app, page, started, dimension);
 			beginGameFlow(page);
 			await test.step('Create a game', () => create(page, name, dimension));
 			await imageProvider(root);

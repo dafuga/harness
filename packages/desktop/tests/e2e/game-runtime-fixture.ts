@@ -1,6 +1,6 @@
 import scenario from '../../../../specification/scenarios/game-authoring.json' with { type: 'json' };
 import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
-import type { Page } from '../../../../test/support/browserTest';
+import type { Page, ElectronApplication } from '../../../../test/support/browserTest';
 import { mkdir, appendFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
@@ -9,6 +9,75 @@ const starts = new WeakMap<Page, number>();
 /** Cumulative standard-flow timing, never an isolated component benchmark. */
 export function beginGameFlow(page: Page) {
 	starts.set(page, performance.now());
+}
+/** Actual startup, with main-process RSS and renderer heap kept in separate scopes. */
+export async function recordStartup(
+	app: ElectronApplication,
+	page: Page,
+	started: number,
+	dimension: string
+) {
+	if (!process.env.HARNESS_EVIDENCE_DIR) return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	const elapsedMs = performance.now() - started;
+	const main = await app.evaluate(() => ({ rss: process.memoryUsage().rss, pid: process.pid }));
+	const cdp = await page.context().newCDPSession(page);
+	const heap = await cdp.send('Runtime.getHeapUsage');
+	await cdp.detach();
+	const viewport = scenario.viewports.find((item) => item.width === page.viewportSize()?.width)?.id;
+	if (!viewport) throw new Error('Startup measurement requires a declared viewport.');
+	const measurements = startupMemory(main.rss, main.pid, heap.usedSize).flatMap((memory) => {
+		const common = {
+			unit: memory.unit,
+			workload: `native-startup-${dimension}-${viewport}`,
+			target: 'process',
+			samples: 1
+		};
+		return [
+			{
+				...common,
+				metric: 'startup-ready-ms',
+				unitOfMeasure: 'ms',
+				value: elapsedMs,
+				method:
+					'Wall time from the launch request through a ready project gate and settled fonts/images; includes fixture launch setup, Electron, preload, shared backend and frontend; not isolated initializer timing.'
+			},
+			{ ...common, ...memory }
+		];
+	});
+	recordCapture(
+		{
+			evidence: 'game-native-startup',
+			kind: 'benchmark',
+			state: dimension + '-creation',
+			viewport,
+			file: `game-startup-${dimension}-${viewport}.json`,
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
+}
+function startupMemory(rss: number, pid: number, rendererHeap: number) {
+	return [
+		{
+			unit: 'desktop.initializer.initialize-desktop',
+			metric: 'electron-main-rss-bytes',
+			unitOfMeasure: 'bytes',
+			value: rss,
+			method: `RSS in Electron main PID ${pid} at the ready project gate, including shared backend; excludes renderer/GPU and is not isolated initializer memory.`
+		},
+		{
+			unit: 'desktop.initializer.initialize-preload',
+			metric: 'renderer-js-heap-bytes',
+			unitOfMeasure: 'bytes',
+			value: rendererHeap,
+			method:
+				'Runtime.getHeapUsage on the project-gate renderer; whole V8 isolate including shared app code, not isolated preload memory; excludes main/GPU.'
+		}
+	];
 }
 export async function recordGameState(page: Page, state: string) {
 	if (!process.env.HARNESS_EVIDENCE_DIR) return;
@@ -22,7 +91,8 @@ export async function recordGameState(page: Page, state: string) {
 	const heap = await cdp.send('Runtime.getHeapUsage');
 	await cdp.detach();
 	const units = [...declared.units];
-	if (!state.endsWith('-creation')) units.push('desktop.component.game-navigation-guard');
+	if (!state.endsWith('-creation') && !state.endsWith('-catalog'))
+		units.push('desktop.component.game-navigation-guard');
 	if (state.endsWith('-play')) units.push('desktop.function.game-render-options');
 	const measurements = units.flatMap((unit) => {
 		const common = {

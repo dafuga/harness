@@ -6,6 +6,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { GameDocumentRepository } from '../packages/game/src/repositories/GameDocumentRepository';
 import type { GameDocument } from '../packages/game/src/models/Game.types';
 import { playableGame, gameCli } from './support/playableGame';
+import { gameCommand, createGameWithCli, generateGamePieces } from './support/gameCommand';
 const cli = resolve('src/index.ts');
 
 test.each([
@@ -19,21 +20,12 @@ test.each([
 		const root = await mkdtemp(join(tmpdir(), 'harness-game-cli-'));
 		try {
 			const cli = gameCli(root, entry);
-			execFileSync('bun', [cli, 'new', 'game', 'adventure', '--dimension', dimension], {
-				cwd: root
-			});
+			createGameWithCli(cli, root, dimension, entry);
 			const cwd = join(root, 'adventure');
 			const manifest = JSON.parse(await readFile(join(cwd, 'package.json'), 'utf8'));
 			expect(manifest.harness).toEqual({ kind: 'game', dimension, aiRendering: false });
 			await playableGame(cwd);
-			for (const [kind, name] of [
-				['view', 'inventory'],
-				['game-view', 'battle'],
-				['mechanic', 'combat'],
-				['checkpoint', 'victory']
-			]) {
-				execFileSync('bun', [cli, 'generate', kind, name], { cwd });
-			}
+			generateGamePieces(cli, cwd, dimension, entry);
 			const repository = new GameDocumentRepository(cwd);
 			const saved = await repository.read();
 			saved.document.views[0].title = 'Authored courtyard';
@@ -76,7 +68,11 @@ test('game-only generators reject apps before creating broken imports', async ()
 		execFileSync('bun', [cli, 'new', 'game', 'game', '--dimension', '3d'], { cwd: root });
 		for (const scaffold of ['game-view', 'mechanic', 'checkpoint']) {
 			const info = JSON.parse(
-				execFileSync('bun', [cli, 'info', scaffold, '--json'], { cwd: root, encoding: 'utf8' })
+				gameCommand(['bun', cli, 'info', scaffold, '--json'], root, {
+					cli,
+					workload: 'game-info-' + scaffold,
+					units: ['template.game-scaffold-details']
+				}).stdout
 			);
 			expect(info.rules).toContain('This scaffold belongs in Harness game projects.');
 			for (const kind of ['app', 'lib']) {

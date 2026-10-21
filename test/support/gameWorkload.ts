@@ -20,7 +20,12 @@ const owners: Record<string, string> = {
 	'desktop/test/services/game-render': 'desktop.service.game-render',
 	'desktop/test/adapters/project-game-credential': 'desktop.function.project-game-credential',
 	'desktop/test/utils/project-game-credential': 'desktop.function.project-game-credential',
-	'desktop/test/components/game-text-field': 'desktop.component.game-text-field'
+	'desktop/test/components/game-text-field': 'desktop.component.game-text-field',
+	'desktop/test/services/hosted-project': 'desktop.service.hosted-project',
+	'desktop/test/services/project-operations': 'desktop.function.desktop-bridge',
+	'desktop/test/utils/workspace-route': 'desktop.function.workspace-route',
+	'desktop/test/components/project-agent': 'desktop.component.project-agent',
+	'desktop/test/nav-bar-search': 'desktop.component.nav-bar'
 };
 /** Standard cases exercise several owners; labels retain the whole-case/process scope. */
 function caseOwners(file: string, name: string): string[] {
@@ -40,29 +45,55 @@ const workloads: Record<string, [RegExp, string[]][]> = {
 		]
 	],
 	'desktop/test/desktop-startup': [
-		[/^a page that refuses/, ['desktop.module.initialize-desktop-confirm-unload']]
+		[
+			/^a page that refuses/,
+			['desktop.module.initialize-desktop-confirm-unload', 'desktop.initializer.initialize-desktop']
+		],
+		[/.*/, ['desktop.initializer.initialize-desktop']]
 	],
 	'desktop/test/services/game-project': [
-		[/^invalid game requests/, ['desktop.function.game-payload']],
+		[/^invalid game requests/, ['desktop.function.game-payload', 'desktop.validator.ipc-request']],
 		[/^AI preview|^prepared token/, ['desktop.service.game-render']],
-		[/^game operations/, ['desktop.service.game-project', 'desktop.service.game-render']]
+		[
+			/^game operations/,
+			[
+				'desktop.service.game-project',
+				'desktop.service.game-render',
+				'desktop.service.project-session'
+			]
+		],
+		[
+			/^project creation|^failed project creation/,
+			['desktop.service.game-project', 'desktop.service.project-session', 'workflow.create-project']
+		]
 	],
-	'desktop/test/services/game-image': [[/^image IPC/, ['desktop.function.game-payload']]],
+	'desktop/test/services/game-image': [
+		[/^image IPC/, ['desktop.function.game-payload', 'desktop.validator.ipc-request']]
+	],
+	'desktop/test/services/client-projects': [
+		[
+			/.*/,
+			[
+				'desktop.service.project-operations',
+				'desktop.service.project-session',
+				'desktop.function.desktop-bridge'
+			]
+		]
+	],
+	'desktop/test/local-transport-bounds': [
+		[
+			/^the app page may send more/,
+			[
+				'desktop.service.local-client',
+				'desktop.service.local-transport-client',
+				'remote.service.wire-session',
+				'remote.validator.wire-message'
+			]
+		]
+	],
 	'root/game-project': [
 		[/^embedded engine/, ['template.game-sources']],
 		[/^game project retains/, ['template.game-project', 'template.project-tests']]
-	],
-	'root/game-cli.e2e': [
-		[
-			/^game-only/,
-			[
-				'template.game-project',
-				'template.game-pieces',
-				'template.game-scaffold-details',
-				'template.project-tests'
-			]
-		],
-		[/.*/, ['template.game-project', 'template.game-pieces', 'template.project-tests']]
 	]
 };
 let started: number | undefined;
