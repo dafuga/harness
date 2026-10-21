@@ -2,7 +2,7 @@
 	"name": "focused-measurement-delivery",
 	"goal": "Deliver concise screenshot cards and retain page screenshots and runtime measurements through identical-tree main landing, with original provenance.",
 	"createdAt": "2026-10-21T21:46:23.123Z",
-	"updatedAt": "2026-10-21T22:08:14.923Z",
+	"updatedAt": "2026-10-21T22:37:21.281Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -63,6 +63,13 @@
 			"status": "complete",
 			"completedAt": "2026-10-21T22:08:14.923Z",
 			"evidence": "At 394aa9b2cdbe98fa06a45a59685b16183fcd562d, all 628 Reports tests, types, lint, build and audits pass, alongside root format/types/lint/audit and registry checks. Earlier unchanged transport suites and full repository stages retain their original source labels. The actual Settings comparison at this captured source is inspected at 1440, 920 and 390px: both images decode, the two header items are absent, all four profile rows have numbers, Enter opens the viewer, and browser errors/overflow are absent. Parent main 9fb0505e also reloads all three Settings images and six observations from an identical complete tree. This complete loop consolidates the earlier unmerged header/projection loop, whose original red/fix source and proofs remain archived; unfinished duplicate loop metadata is omitted from delivery. Final delivery still requires an unchanged-tree capture and actual remote main verification."
+		},
+		{
+			"id": "definition-record",
+			"title": "Record intentional helper definition updates and verify the root ownership guard.",
+			"status": "complete",
+			"completedAt": "2026-10-21T22:37:21.281Z",
+			"evidence": "The hosted definition guard failure is reproduced locally with the unchanged test. The original 411 move definitions remain intact; the existing entityShown follow-up now records approved implementation 4037c0cf, its exact definition and reason. The complete root unit suite passes at cca534d500fdfa0b79471d9f909fe393805f6565. Owning Reports behavior and browser tests are unchanged and retain their earlier passing proof; final captured tree verification follows. The Harness skill and AGENTS now require this root guard alongside workspace checks."
 		}
 	],
 	"evaluators": [

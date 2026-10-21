@@ -38,6 +38,8 @@ remains effectful even when the function has a clear name.
 
 ## Catalog Threshold Review
 
+For helpers recorded by `specification/loops/local-helper-ownership/migration.json`, preserve the original move definition and update the existing intentional `followUps` record with the implementation commit, reason and current definition. Run the root `test/services/unit-index.test.ts` guard alongside the owning workspace's tests before landing; workspace-only checks do not cover this repository-wide ownership record.
+
 When a reuse threshold controls catalog inclusion, derive that decision and the
 visible usage links from the same resolved, distinct consumer set. Cover zero,
 one and multiple eligible consumers in the standardized catalog tests, including
