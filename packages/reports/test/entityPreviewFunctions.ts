@@ -167,7 +167,8 @@ export async function reviewHelperSource(page: Page, viewport: string): Promise<
 export async function reviewUsageCards(
 	page: Page,
 	category: string,
-	direction: string
+	direction: string,
+	commit: string | null = commits.middle
 ): Promise<void> {
 	await reviewConsumerKinds(page, category, direction);
 	const cards = page.locator('.ex-relations article');
@@ -185,7 +186,7 @@ export async function reviewUsageCards(
 				.getByRole('link', { name: 'Order list', exact: true })
 		).toHaveAttribute(
 			'href',
-			`/harness/branch/feature%2Forders/commit/${commits.middle}/components/${ids.list}`
+			`/harness/branch/feature%2Forders${commit ? `/commit/${commit}` : ''}/components/${ids.list}`
 		);
 	}
 	if (category === 'pages' && direction === 'uses')

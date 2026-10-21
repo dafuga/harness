@@ -14,7 +14,7 @@ import {
 	reviewStates
 } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
-import { reviewUsage } from './entityPreviewUsage';
+import { reviewUsage, reviewRelationPaging } from './entityPreviewUsage';
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
 	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
@@ -38,6 +38,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			for (const commit of [null, commits.middle])
 				await reviewUsage(tab, { category, entity, commit }, name);
 		}
+		await reviewRelationPaging(tab, name);
 	});
 	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
