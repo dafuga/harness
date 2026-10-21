@@ -11,7 +11,14 @@
 			"packages/reports/src/components/harness/entity-relations/entityUsage.ts",
 			"packages/reports/src/utils/entityUsage.ts"
 		],
-		"symbols": ["entityUsage", "UsageGroup", "EntityUsage", "entityUsage"]
+		"symbols": [
+			"usageGroups",
+			"entityUsage",
+			"UsageGroup",
+			"EntityUsage",
+			"entityUsage",
+			"usageGroups"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -20,13 +27,23 @@
 				"name": "entityUsage.relations",
 				"type": "ExplorerRelations",
 				"description": "Host-derived pages, consumers, categorized dependencies and support units."
+			},
+			{
+				"name": "usageGroups.items",
+				"type": "ExplorerEntity[]",
+				"description": "Resolved revision-scoped consumers with declared module categories."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityUsage",
 				"type": "EntityUsage",
-				"description": "Deduplicated users with pages first, nonempty dependency groups with icons, support units and total dependency count. Deduplication uses identifiers and preserves their first position; later duplicate values replace earlier values."
+				"description": "Deduplicated users, nonempty consumer and dependency groups with icons, support units and total dependency count."
+			},
+			{
+				"name": "usageGroups",
+				"type": "UsageGroup[]",
+				"description": "Nonempty navigation-ordered groups with distinct entity identifiers within each category."
 			}
 		],
 		"errors": []

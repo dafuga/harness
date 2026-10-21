@@ -18,7 +18,10 @@
 	let focused = $state(false);
 	let open = $derived(over || focused);
 	// This consumer's own capture at the shown revision, read only while open; never another's.
-	let shot = $derived(open ? catalogShot(lens.evidence(entity.unit), entity.unit.preview) : null);
+	let visual = $derived(['pages', 'shells', 'components'].includes(entity.category));
+	let shot = $derived(
+		open && visual ? catalogShot(lens.evidence(entity.unit), entity.unit.preview) : null
+	);
 	let file = $derived(shot && !shot.missing ? shot.file : '');
 	let failed = $state('');
 	let pictured = $derived(Boolean(file) && failed !== file);
@@ -107,7 +110,9 @@
 			onpointerenter={enter}
 			onpointerleave={leave}
 		>
-			{#if pictured && shot}
+			{#if !visual}
+				<code>{entity.unit.title}</code><span>{entity.role}</span>
+			{:else if pictured && shot}
 				<img
 					src={mediaBase + file}
 					alt={`Screenshot of ${entity.name}`}

@@ -108,3 +108,9 @@ footer, clickable references, hover/focus preview and branch/revision navigation
 Include empty usage and missing screenshots. A class-name or entity-name assertion
 alone does not prove interaction parity. Keep screenshot evidence at the failing
 and passing checkpoints; do not substitute another entity or revision's image.
+
+Consumer views must group references by declared module type in both relationship
+sections and shared card footers. Screenshot UI belongs to visual pages, shells
+and components; helpers, services, models and configs use compact code previews.
+A missing screenshot does not make a visual component nonvisual. Extend the normal
+mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
