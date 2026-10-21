@@ -1,7 +1,7 @@
 import type { ExplorerLocation } from '../explorerRoute';
 
 /**
- * The tabs a section keeps in the query; the first of each is its default and is not written.
+ * The tabs a section supports; helpers use path segments and legacy modules use the query.
  * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
  * Source is optional on the entity page; Details is accepted only as a legacy address.
  */

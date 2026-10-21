@@ -161,7 +161,7 @@ export function canonicalExplorerLocation(location: ExplorerLocation): ExplorerL
 	return canonical;
 }
 
-/** The canonical path of an address, with its tab as a query; every part is one segment. */
+/** Canonical paths use helper names and tab segments; legacy module tabs remain in the query. */
 export function explorerRoutePath(location: ExplorerLocation): string {
 	location = canonicalExplorerLocation(location);
 	const branch = location.branch === null ? '' : `/branch/${encodeURIComponent(location.branch)}`;

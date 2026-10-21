@@ -26,8 +26,9 @@ test('function catalog cards stay concise and retain revision links without deta
 		);
 		expect(card).not.toMatch(/<svg|ex-function-open/);
 		const commit = mode === 'current' ? '' : `/commit/${commits.middle}`;
-		expect(body).toContain(`/branch/feature%2Forders${commit}/functions/${ids.filter}`);
-		expect(body).toContain('/helpers/filterOrders/');
+		expect(body).toContain(
+			`/branch/feature%2Forders${commit}/helpers/filterOrders/in/${ids.filter}/contract`
+		);
 		expect(body).not.toContain('tab=tests');
 		expect(words(body)).not.toMatch(/src\/|\.ts\b/);
 	}

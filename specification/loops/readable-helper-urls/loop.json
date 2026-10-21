@@ -2,7 +2,7 @@
 	"name": "readable-helper-urls",
 	"goal": "Readable helper paths retain callable identity, branch, revision, tabs and backward-compatible deep links",
 	"createdAt": "2026-10-21T09:26:21.254Z",
-	"updatedAt": "2026-10-21T09:31:03.451Z",
+	"updatedAt": "2026-10-21T09:45:47.984Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:45:46.484Z",
+			"evidence": "846b2a93 adds helper-name paths, optional owner qualification, revision-bound resolution, legacy redirects and explicit unknown-name states. Standard desktop/tablet/mobile browser matrix passes."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:45:47.984Z",
+			"evidence": "846b2a93 passes the identical frozen command and environment paired with failing 1fc95d66: 74 root route/legacy/canonical tests and ten revision-resolution tests."
 		},
 		{
 			"id": "verify",
