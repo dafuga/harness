@@ -1,3 +1,4 @@
+import { indexFiles } from '../support/memoryTree';
 import { profileEvidenceValidation } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
 import { PerformanceEvidenceValidator } from '../../src/validators/PerformanceEvidenceValidator';
@@ -76,18 +77,55 @@ test('one callable cannot lend its observations to another helper in the same mo
 	expect(missing[0]).toContain('#formatSubtitle');
 });
 
-test('type-only models are inapplicable, while unreadable or unexported code stays required', async () => {
-	const input = await observed();
-	input.measurements = [];
-	const file = input.files.get('title.ts')!;
-	file.exports = [{ name: 'Title', kind: 'type', inputs: [] }];
-	expect(new PerformanceEvidenceValidator().validate(input)).toEqual([]);
-	file.read = false;
-	expect(new PerformanceEvidenceValidator().validate(input)).toHaveLength(1);
-	file.read = true;
-	file.exports = [];
-	expect(new PerformanceEvidenceValidator().validate(input)).toHaveLength(1);
-});
+const declarationCases = [
+	['type declarations', 'export interface Title { text: string }', false],
+	['type imports', 'import type { Value } from "./value";\nexport type Title = Value;', false],
+	[
+		'ambient globals',
+		'declare global { namespace App { interface Platform { id: string } } }\nexport {};',
+		false
+	],
+	['empty module marker', 'export {};', false],
+	[
+		'module initialization',
+		'console.log("initialize");\nexport interface Title { text: string }',
+		true
+	],
+	['side-effect import', 'import "./initialize";\nexport interface Title { text: string }', true],
+	[
+		'value import',
+		'import { initialize } from "./initialize";\nexport interface Title { text: string }',
+		true
+	],
+	[
+		'private operation',
+		'function initialize() { return 1; }\nexport interface Title { text: string }',
+		true
+	],
+	['runtime enum', 'export enum State { Ready, Finished }', true],
+	['unparseable declaration', 'export interface Title {', true]
+] as const;
+
+test.each(declarationCases)(
+	'parsed %s determines runtime applicability',
+	async (_name, code, required) => {
+		const path = 'src/models/Title.types.ts';
+		const indexed = await indexFiles({ [path]: code });
+		const input = await observed();
+		input.units[0].owns.source = [path];
+		input.files = indexed.index.files;
+		const validator = new PerformanceEvidenceValidator();
+		expect(
+			validator.required(input.units, input.files),
+			'parsed source determines profiling'
+		).toHaveLength(required ? 1 : 0);
+		input.files.get(path)!.read = false;
+		expect(
+			validator.required(input.units, input.files),
+			'unreadable source remains required'
+		).toHaveLength(1);
+	}
+);
 
 test('readable stylesheets are declarative while unreadable and mixed sources stay required', async () => {
 	const input = await observed();
