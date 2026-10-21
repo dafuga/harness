@@ -17,7 +17,13 @@ async function answer(response: Response): Promise<[number, unknown]> {
 }
 
 test('health answers the protocol, never cached and never sniffed', async () => {
-	const response = await relay.fetch('/v1/health');
+	const response = await relay.profile(
+		{
+			units: ['relay.entry.index', 'relay.controller.public-relay'],
+			workload: 'local-health-request'
+		},
+		() => relay.fetch('/v1/health')
+	);
 	expect(response.headers.get('Cache-Control')).toBe('no-store');
 	expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff');
 	expect(response.headers.get('Content-Type')).toBe('application/json');

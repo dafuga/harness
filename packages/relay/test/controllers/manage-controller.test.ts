@@ -17,7 +17,19 @@ async function answer(response: Response): Promise<[number, unknown]> {
 test('a host is registered through the namespace binding', async () => {
 	const host = await newHost();
 	const before = Date.now();
-	const response = await relay.manage('register', await registration(host));
+	const body = await registration(host);
+	const response = await relay.profile(
+		{
+			units: [
+				'relay.controller.manage',
+				'relay.controller.host-object',
+				'relay.service.host-registry',
+				'relay.adapter.host-storage'
+			],
+			workload: 'register-local-host'
+		},
+		() => relay.manage('register', body)
+	);
 	expect(response.status).toBe(200);
 	expect(response.headers.get('Cache-Control')).toBe('no-store');
 	const registered = (await response.json()) as { registeredAt: string };

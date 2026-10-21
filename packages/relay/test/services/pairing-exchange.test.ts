@@ -62,7 +62,10 @@ async function deviceCount(): Promise<number> {
 
 test('the exchange returns the credential and the approval exactly once', async () => {
 	const pairing = await approved();
-	const response = await exchange(pairing);
+	const response = await relay.profile(
+		{ units: ['relay.service.pairing-exchange'], workload: 'exchange-local-approved-pairing' },
+		() => exchange(pairing)
+	);
 	expect(response.headers.get('Cache-Control')).toBe('no-store');
 	const body = (await response.json()) as { deviceId: string; credential: string; sealed: string };
 	expect(response.status).toBe(200);

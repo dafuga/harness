@@ -43,8 +43,21 @@ async function pairingKeys(): Promise<string[]> {
 test('pairing-open is acknowledged by its ref and the offer becomes public', async () => {
 	const pairingId = randomId();
 	const expiresAt = new Date(Date.now() + 60_000).toISOString();
-	socket.send({ type: 'pairing-open', ref: 'open-1', pairingId, expiresAt });
-	expect(await socket.until('ack')).toEqual({ type: 'ack', ref: 'open-1', ok: true });
+	const ack = await relay.profile(
+		{
+			units: [
+				'relay.service.pairing-offer',
+				'relay.service.host-command',
+				'relay.service.socket-frame'
+			],
+			workload: 'open-local-pairing-offer'
+		},
+		async () => {
+			socket.send({ type: 'pairing-open', ref: 'open-1', pairingId, expiresAt });
+			return socket.until('ack');
+		}
+	);
+	expect(ack).toEqual({ type: 'ack', ref: 'open-1', ok: true });
 	const info = await relay.fetch(pairingPath(host, pairingId));
 	expect(info.headers.get('Cache-Control')).toBe('no-store');
 	expect(await answer(info)).toEqual([
