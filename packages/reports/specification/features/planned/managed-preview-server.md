@@ -11,6 +11,7 @@ The desktop transport also creates another listener if listen is called twice.
 - Reports and desktop renderer dev commands use one shared local preview owner across checkouts.
 - Repeated and concurrent starts of the same checkout and environment return the existing URL.
 - A different checkout or history configuration is refused with the existing URL; it never serves the wrong source.
+- A startup owner may briefly omit its address; a conflicting launch waits for the published URL before refusing, without launching another worker.
 - Port conflicts never silently move to another port or kill another application.
 - Startup failure, normal shutdown and owner crash release ownership so a later start can recover.
 - Preview ownership uses a loopback-only, read-only status endpoint; no remote launch or stop API.
@@ -22,7 +23,7 @@ The desktop transport also creates another listener if listen is called twice.
 
 Extend the standardized local transport lifecycle tests. Add the missing reusable preview-launch
 lifecycle category using a tiny Vite app in a temporary workspace, real dev commands and owned
-process cleanup. Commit failing proof before the implementation. No native Electron UI testing.
+process cleanup. Cover the interval between the worker answering and the owner publishing its URL: replay one address-less status, then the actual address, and assert refusal keeps the original worker and leaves the requested port unused. Commit failing proof before the implementation. No native Electron UI testing.
 
 ## Recorded results
 

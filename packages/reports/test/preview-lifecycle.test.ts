@@ -1,6 +1,7 @@
 import {
 	assertPreviewRoutes,
 	publishedPreviewOwner,
+	startingPreviewOwner,
 	previewWorkerPid,
 	sveltePreviewFixture,
 	previewFixture as fixture,
@@ -16,6 +17,8 @@ import { once } from 'node:events';
 import { createServer } from 'node:net';
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
+import { taskProfile } from '../../../test/support/taskProfiles';
+import { previewOwner } from '../src/utils/previewOwner';
 const reports = fileURLToPath(new URL('..', import.meta.url));
 test('repeated starts on another requested port reuse the same owned preview', async () => {
 	const f = await fixture(),
@@ -94,11 +97,22 @@ test('a different checkout is refused without affecting the owner', async () => 
 		nextPort = await port();
 	start(f, webPort);
 	await ready(webPort);
-	const second = start({ ...f, root: other.root }, nextPort);
-	await exited(second);
-	expect(second.child.exitCode).not.toBe(0);
-	expect(second.text()).toContain(`already running at http://127.0.0.1:${webPort}`);
-	await ready(webPort);
+	const owner = await publishedPreviewOwner(f.owner, webPort);
+	await taskProfile('reports.function.preview-owner', 'ready-owner-http', () =>
+		previewOwner(f.owner, owner.identity)
+	);
+	const starting = await startingPreviewOwner(owner);
+	try {
+		const second = start({ ...f, root: other.root, owner: starting.port }, nextPort);
+		await exited(second);
+		expect(second.child.exitCode).not.toBe(0);
+		expect(second.text()).toContain(`already running at http://127.0.0.1:${webPort}`);
+		expect(starting.reads()).toBeGreaterThan(1);
+		await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow();
+		await ready(webPort);
+	} finally {
+		await starting.close();
+	}
 }, 30000);
 test('normal shutdown releases both the preview and ownership listeners', async () => {
 	const f = await fixture(),
