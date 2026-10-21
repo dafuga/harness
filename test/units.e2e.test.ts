@@ -5,7 +5,8 @@ import {
 	slugifySource,
 	titleServiceSource,
 	unitProject,
-	sharedDateHelperProject
+	sharedDateHelperProject,
+	utcDateExamples
 } from './support/unitProject';
 
 interface Manifest {
@@ -182,14 +183,7 @@ test('index records reviewed shared helper contracts for clients without source 
 	]);
 	const missing = await project.harness(['units', 'check'], false);
 	expect(missing.exitCode, 'Callable examples are required').toBe(1);
-	const examples = [
-		{
-			name: 'UTC date',
-			call: 'formatDate("2026-10-20")',
-			input: ['2026-10-20'],
-			output: '2026-10-20T00:00:00.000Z'
-		}
-	];
+	const examples = utcDateExamples;
 	const writeExamples = (examples: unknown[]) =>
 		project.write(
 			'specification/units/function.format-date.json',

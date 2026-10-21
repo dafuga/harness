@@ -72,3 +72,12 @@ export const titleServiceSource = [
 	'}',
 	''
 ].join('\n');
+
+export const utcDateExamples = [
+	{
+		name: 'UTC date',
+		call: 'formatDate("2026-10-20")',
+		input: ['2026-10-20'],
+		output: '2026-10-20T00:00:00.000Z'
+	}
+];
