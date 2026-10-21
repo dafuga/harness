@@ -211,10 +211,8 @@ test('shared helper rows require source exports, list every callable and keep ow
 	).toEqual(['first', 'second']);
 	expect(new Set(shown.map((row) => row.id)).size).toBe(2);
 	expect(shown.every((row) => row.entity.id === ids.filter)).toBe(true);
-	expect(
-		shown.every((row) => row.shared),
-		'sharing requires two distinct proven consumers'
-	).toBe(true);
+	const allShared = shown.every((row) => row.shared);
+	expect(allShared, 'sharing requires two distinct proven consumers').toBe(true);
 	expect(catalogFilter(shown, { ...filter, search: 'second' }).map((row) => row.name)).toEqual([
 		'second'
 	]);

@@ -38,7 +38,6 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		expect(await fits(page)).toBe(true);
 	}
 }
-
 /** A shared helper card opens the same callable's contract without extra detail panels. */
 export async function reviewHelperCard(page: Page, cards: Locator): Promise<void> {
 	await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
@@ -61,7 +60,6 @@ export async function reviewHelperCard(page: Page, cards: Locator): Promise<void
 	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
 	await expect(page.getByRole('table', { name: 'Parameters', exact: true })).toBeVisible();
 }
-
 /** Consumer links are limited to three eligible units and retain current or selected-commit scope. */
 export async function reviewHelperUsage(page: Page, viewport: string): Promise<void> {
 	for (const commit of [null, commits.middle]) {
@@ -103,7 +101,6 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		}
 	}
 }
-
 /** Service cards keep only a recorded name and usage, with navigation in the viewed revision. */
 export async function reviewServiceCard(page: Page, viewport: string): Promise<void> {
 	for (const commit of [null, commits.middle]) {
@@ -150,7 +147,6 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 		await reviewFunctionService(page, commit);
 	}
 }
-
 /** Shared effectful functions retain their actual code identity outside the class catalog. */
 async function reviewFunctionService(page: Page, commit: string | null) {
 	await open(page, { category: 'services', commit }, 'helpers');
@@ -163,7 +159,6 @@ async function reviewFunctionService(page: Page, commit: string | null) {
 	await expect(page.getByRole('heading', { name: 'recordAnalytics', exact: true })).toBeVisible();
 	expect(await where(page)).toMatchObject({ commit, entity: 'app.workflow.record-analytics' });
 }
-
 async function reviewConsumerPreview(
 	page: Page,
 	usage: Locator,
@@ -199,7 +194,6 @@ async function reviewConsumerPreview(
 	await expect(service.locator('img')).toHaveCount(0);
 	await page.mouse.move(1, 1);
 }
-
 /** Source navigation stays bound to the selected repository and full commit. */
 export async function reviewHelperSource(page: Page, viewport: string): Promise<void> {
 	const filter = { category: 'functions' as const, entity: ids.filter };
@@ -222,5 +216,4 @@ export async function reviewHelperSource(page: Page, viewport: string): Promise<
 		expect(await where(page)).toEqual({ branch: 'feature/orders', commit, ...filter });
 	}
 }
-
 export { reviewUsageCards } from './entityPreviewUsage';

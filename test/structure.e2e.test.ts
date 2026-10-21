@@ -133,6 +133,20 @@ async function expectCategoryForwarding(project: string, taxonomy: object) {
 			(finding) => finding.path === entry && finding.rule === 'module-category-folder'
 		);
 	expect(categoryFindings(proxy)).toEqual([]);
+	for (const module of [
+		"export { archivedSource } from './billing/Entry.svelte';",
+		'export function archivedSource() { return 1; }'
+	]) {
+		await writeFile(
+			join(project, entry),
+			`<script lang="ts" module>${module}</script><script lang="ts">${script}</script>${markup}`
+		);
+		const report = JSON.parse((await runHarness(['audit', '.', '--json'], project, false)).stdout);
+		expect(
+			categoryFindings(report),
+			'module scripts preserve exports, never implementation'
+		).toHaveLength(module.startsWith('export {') ? 0 : 1);
+	}
 	await writeFile(
 		join(project, entry),
 		`<script lang="ts">${script} function localLogic() { return 1; }</script>${markup}`
