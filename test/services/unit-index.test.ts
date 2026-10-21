@@ -7,6 +7,7 @@ import { indexFiles, retire, unitOf, helperMoveGaps, serviceMoveGaps } from '../
 import { resolve } from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
 import services from '../../specification/loops/shared-service-ownership/migration.json';
+import { serviceMoveReviews } from '../support/serviceMoveReviews';
 import migration from '../../specification/loops/local-helper-ownership/migration.json';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
@@ -196,7 +197,7 @@ test('several owned files produce identical metadata after one indexing pass', a
 });
 
 test('recorded service moves preserve implementations and registered owner-local placement', () => {
-	const gaps = serviceMoveGaps(services);
+	const gaps = [...serviceMoveGaps(services), ...serviceMoveReviews(services)];
 	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
 		[]
 	);
