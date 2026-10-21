@@ -30,9 +30,11 @@ const mounted = Object.fromEntries(
 		[`${category}/[entity]/history`, entries.history]
 	])
 );
-/** The components a file imports, by name. */
+/** Default component imports; named module functions do not mount a component. */
 const imported = (file: string): string[] =>
-	[...readFileSync(file, 'utf8').matchAll(/from '[^']*\/(\w+)\.svelte'/g)].map((found) => found[1]);
+	[...readFileSync(file, 'utf8').matchAll(/import\s+(\w+)\s+from '[^']*\/\w+\.svelte'/g)].map(
+		(found) => found[1]
+	);
 const files = readdirSync(home, { recursive: true, encoding: 'utf8' }).filter((file) =>
 	file.endsWith('.svelte')
 );

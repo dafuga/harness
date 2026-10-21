@@ -1,6 +1,20 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { branch, commits, evidenceFixture, ids, sharedProject } from './ui-evidence-fixture';
-import { runtimeEvidence } from './runtime-evidence';
+import type { Page, TestInfo } from '@playwright/test';
+
+/** Test-owned screenshots; synthetic source sessions are not sealed runtime scenario evidence. */
+async function sourceScreenshot(page: Page, info: TestInfo, phase: string) {
+	if (!process.env.TAKE_SCREENSHOT) return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	await page.mouse.move(0, 0);
+	await info.attach(`source-${phase}`, {
+		body: await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' }),
+		contentType: 'image/png'
+	});
+}
 
 for (const width of [1440, 920, 390]) {
 	test(`catalog and detail source use the selected revision at ${width}px`, async ({
@@ -11,7 +25,7 @@ for (const width of [1440, 920, 390]) {
 		const root = `/projects/${sharedProject}/harness/branch/${encodeURIComponent(branch)}`;
 		await page.goto(`${root}/functions`);
 		const button = page.getByRole('button', { name: 'View code for filterOrders', exact: true });
-		await runtimeEvidence(page, info, 'source-action');
+		await sourceScreenshot(page, info, 'action');
 		await expect(button).toBeVisible();
 		const address = page.url();
 		await button.click();
@@ -19,7 +33,7 @@ for (const width of [1440, 920, 390]) {
 		await expect(dialog).toBeVisible();
 		await expect(dialog.locator('pre')).toContainText('export {};');
 		await expect(dialog.getByText(commits.tip.slice(0, 7), { exact: true })).toBeVisible();
-		await runtimeEvidence(page, info, 'source-modal');
+		await sourceScreenshot(page, info, 'modal');
 		await page.keyboard.press('Escape');
 		await expect(dialog).toHaveCount(0);
 		await expect(button).toBeFocused();
