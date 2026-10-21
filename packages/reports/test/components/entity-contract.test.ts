@@ -134,6 +134,9 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 			expect(body, 'detail header identifies the selected function').toMatch(
 				new RegExp(`<h1[^>]*>.*?${helper}.*?</h1>`, 's')
 			);
+			expect(words(body), 'Helper tabs omit module ownership commentary').not.toContain(
+				'Size, complexity, history, relationships and verification describe the owning module.'
+			);
 			expect(body).toContain(`aria-label="${helper} contract"`);
 			expect(body).not.toContain(
 				`aria-label="${helper === 'first' ? 'second' : 'first'} contract"`

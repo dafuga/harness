@@ -26,6 +26,13 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		await reviewCallableApi(page, name, result);
 		await page.getByRole('tab', { name: 'Examples', exact: true }).click();
 		await capture(page, `callable-examples-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
+		await expect(
+			page.getByText(
+				'Size, complexity, history, relationships and verification describe the owning module.',
+				{ exact: true }
+			),
+			'Helper tabs omit module ownership commentary'
+		).toHaveCount(0);
 		const code = page.locator('.examples pre');
 		await expect(code, 'Callable examples are required').toHaveCount(1);
 		await expect(code).toContainText(
