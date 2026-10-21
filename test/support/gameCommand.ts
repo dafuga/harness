@@ -47,9 +47,14 @@ export function gameCommand(command: string[], cwd: string, scope: Scope): Obser
 	if (evidenceRequested()) recordCommand(scope, output);
 	return output;
 }
-/** Bun 1.2.18 `resourceUsage.maxRSS` recorded as bytes: currently the raw value, unchanged. */
-export function bunMaxRssBytes(maxRss: number, _platform: string): number {
-	return maxRss;
+/**
+ * Bun 1.2.18 passes the OS `ru_maxrss` through unchanged: bytes on macOS, KiB on Linux, and Windows
+ * PeakWorkingSetSize / 1024. Recorded figures are bytes, so convert KiB and refuse unknown units.
+ */
+export function bunMaxRssBytes(maxRss: number, platform: string): number {
+	if (platform === 'darwin') return maxRss;
+	if (platform === 'linux' || platform === 'win32') return maxRss * 1024;
+	throw new Error(`Bun maxRSS units are not established for ${platform}.`);
 }
 export function createGameWithCli(cli: string, root: string, dimension: string, entry: string) {
 	return gameCommand(['bun', cli, 'new', 'game', 'adventure', '--dimension', dimension], root, {
@@ -100,7 +105,7 @@ function recordCommand(scope: Scope, output: Observed) {
 				unitOfMeasure: 'bytes',
 				value: output.peakRssBytes,
 				method:
-					'Bun-reported maximum RSS for the launched command subprocess using OS child accounting; includes descendants only as aggregated by that OS. Excludes the test worker and renderer/GPU; not isolated unit memory.'
+					'Bun-reported maximum RSS for the launched command subprocess using OS child accounting, converted to bytes from KiB on Linux and Windows; includes descendants only as aggregated by that OS. Excludes the test worker and renderer/GPU; not isolated unit memory.'
 			}
 		];
 	});
