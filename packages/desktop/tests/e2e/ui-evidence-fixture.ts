@@ -8,10 +8,7 @@ import type {
 } from '../../src/models/DesktopEvidence.types';
 import { commits, evidenceData, ids, soundScenario, type EvidenceData } from './ui-evidence-data';
 export * from './ui-evidence-data';
-/**
- * SYNTHETIC BACKEND: sealed history answers evidence and its bound artifact bytes.
- * No repository, server, account or credential exists here.
- */
+/** Synthetic backend: sealed evidence and artifact bytes; no real repository or credentials. */
 type Reads = Required<Pick<DesktopBridge, 'evidence' | 'artifact'>>;
 export interface EvidenceState {
 	calls: Array<Record<string, unknown>>;
