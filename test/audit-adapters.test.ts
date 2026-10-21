@@ -1,8 +1,11 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { auditProject } from '../src/audit/audit';
+import { collectAuditedFiles } from '../src/audit/collect';
+import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
+import { PerformanceProfileService } from '../src/services/PerformanceProfileService';
 import { adaptersForProfile, resolveAuditProfile } from '../src/audit/adapters/registry';
 
 test('audit profiles select ecosystem adapters', () => {
@@ -46,7 +49,7 @@ test('auto profile detects Svelte apps and Harness libs', async () => {
 	}
 });
 
-test('coverage reports covered, ignored, and unknown files', async () => {
+test('coverage distinguishes audit exclusions from the complete source inventory', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-coverage-'));
 	try {
 		await mkdir(join(root, 'src'));
@@ -54,12 +57,34 @@ test('coverage reports covered, ignored, and unknown files', async () => {
 		await writeFile(join(root, 'src/index.ts'), 'export const value = 1;\n');
 		await writeFile(join(root, 'src/component.vue'), '<template />\n');
 		await writeFile(join(root, 'node_modules/ignored.ts'), 'export const ignored = true;\n');
+		const native = ['ios/App/App/Native.swift', 'android/app/src/main/Native.kt'];
+		const generated = ['ios/DerivedData/Generated.swift', 'android/build/Generated.kt'];
+		for (const path of [...native, ...generated]) {
+			await mkdir(dirname(join(root, path)), { recursive: true });
+			await writeFile(join(root, path), '// native source\n');
+		}
 
 		const result = await auditProject(root, { profile: 'lib' });
 
 		expect(result.coverage.coveredFiles).toContain('src/index.ts');
 		expect(result.coverage.unknownFiles).toContain('src/component.vue');
 		expect(result.coverage.ignoredPaths).toContain('node_modules/');
+		expect(result.coverage.ignoredPaths).toEqual(expect.arrayContaining(['ios/', 'android/']));
+		const tree = new WorkingTreeAdapter(root);
+		for (const path of native) expect(await tree.read(path)).toBe('// native source\n');
+		const paths = (await tree.list()).map((entry) => entry.path);
+		expect(paths).toEqual(expect.arrayContaining(native));
+		for (const path of generated) expect(paths).not.toContain(path);
+		expect(paths).not.toContain('node_modules/ignored.ts');
+		const profiler = new PerformanceProfileService();
+		for (const [unit, operation] of [
+			['adapter.working-tree', () => new WorkingTreeAdapter(root).list()],
+			['audit.collect', () => collectAuditedFiles(root)]
+		] as const)
+			await profiler.capture(
+				{ unit, workload: 'mixed-platform-source-list', rounds: 3, iterations: 1, warmups: 1 },
+				operation
+			);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
