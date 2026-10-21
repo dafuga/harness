@@ -1,6 +1,11 @@
 import { expect, test } from 'vitest';
 import { PerformanceProfileService } from '../../src/services/PerformanceProfileService';
 import { isolatedProfileCapture } from '../support/taskProfiles';
+import { measureProcess } from '../support/cli-measurement/measureHarness';
+import { runCommand } from '../support/cli';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { benchmarkCaptureSchema } from '../../src/core/verifyTypes';
 
 const input = { unit: 'function.schema-fixture', workload: 'initialize-fields' };
 
@@ -30,5 +35,47 @@ test('incomplete source scopes and invalid subjects never become successful samp
 		profiler.beginScope(input);
 		expect(() => profiler.beginScope({ ...input, unit: '' })).toThrow();
 		expect(profiler.flush()).toEqual([]);
+	});
+});
+
+test('child scopes retain actual child RSS and reject failed invocations', async () => {
+	await isolatedProfileCapture(async (directory) => {
+		const input = {
+			units: ['script.child-fixture'],
+			workload: 'cold-node-process',
+			target: 'module' as const,
+			command: [process.execPath, '-e', 'console.log(process.memoryUsage().rss)'],
+			cwd: process.cwd()
+		};
+		const references: number[] = [];
+		for (let index = 0; index < 2; index++) {
+			const result = await measureProcess(input, runCommand);
+			references.push(Number(result.stdout.trim()));
+		}
+		const failed = await measureProcess(
+			{ ...input, command: [process.execPath, '-e', 'process.exit(2)'], expectSuccess: false },
+			runCommand
+		);
+		expect(failed.exitCode).toBe(2);
+		const captures = (await readFile(join(directory, 'captures.ndjson'), 'utf8'))
+			.trim()
+			.split('\n')
+			.map((line) => JSON.parse(line));
+		expect(captures).toHaveLength(2);
+		expect(new Set(captures.map((capture) => capture.file)).size).toBe(2);
+		for (const [index, capture] of captures.entries()) {
+			const data = benchmarkCaptureSchema.parse(
+				JSON.parse(await readFile(join(directory, capture.file), 'utf8'))
+			);
+			const [time, memory] = data.measurements;
+			expect(time.metric).toBe('latency-process-ms');
+			expect(time.value).toBeGreaterThan(0);
+			expect(memory.value).toBeGreaterThan(references[index] / 2);
+			expect(memory.value).toBeLessThan(references[index] * 8);
+			expect(memory.method).toContain('actual child process');
+			expect(
+				data.measurements.every((item) => item.samples === 1 && item.target === 'module')
+			).toBe(true);
+		}
 	});
 });

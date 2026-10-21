@@ -21,15 +21,34 @@ interface Input {
 	source: string;
 }
 
+interface ProcessInput {
+	units: string[];
+	workload: string;
+	target: 'process' | 'module';
+	command: string[];
+	cwd: string;
+	expectSuccess?: boolean;
+	env?: Record<string, string>;
+	partial?: string;
+}
+
 /** Observe successful standard CLI workloads without changing their output or verification context. */
 export async function measureHarness(input: Input, run: Runner): Promise<CommandResult> {
 	const units = measuredUnits(input.args).filter((unit) =>
 		existsSync(join(input.source, 'specification/units', unit + '.json'))
 	);
+	const phase = input.args.includes('--phase') ? input.args[input.args.indexOf('--phase') + 1] : '';
+	const workload = [input.args[0], input.args[1], phase].filter(Boolean).join('-');
+	return measureProcess({ ...input, units, workload, target: 'process' }, run);
+}
+
+/** One actual child invocation; OS usage belongs to that child, not the test runner. */
+export async function measureProcess(input: ProcessInput, run: Runner): Promise<CommandResult> {
+	const { units } = input;
 	if (!evidenceRequested() || !units.length)
 		return run(input.command, input.cwd, input.expectSuccess, input.env);
 	if (!existsSync('/usr/bin/time'))
-		throw new Error('No process usage collector is available for the required CLI workload.');
+		throw new Error('No process usage collector is available for the required workload.');
 	const directory = await mkdtemp(join(tmpdir(), 'harness-cli-usage-'));
 	const usage = join(directory, 'usage.txt');
 	try {
@@ -41,8 +60,7 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 			input.env
 		);
 		const duration = performance.now() - start;
-		if (result.exitCode === 0)
-			recordUsage(units, input.args, duration, await readFile(usage, 'utf8'));
+		if (result.exitCode === 0) recordUsage(input, duration, await readFile(usage, 'utf8'));
 		return result;
 	} finally {
 		await rm(directory, { recursive: true, force: true });
@@ -68,25 +86,29 @@ function measuredUnits(args: string[]): string[] {
 		: units;
 }
 
-function recordUsage(units: string[], args: string[], duration: number, usage: string): void {
+function recordUsage(input: ProcessInput, duration: number, usage: string): void {
 	const resident =
 		process.platform === 'darwin'
 			? /^\s*(\d+)\s+maximum resident set size/m.exec(usage)
 			: /Maximum resident set size \(kbytes\):\s*(\d+)/.exec(usage);
-	if (!resident) throw new Error('The CLI workload did not report peak RSS.');
+	if (!resident) throw new Error('The child workload did not report peak RSS.');
 	const memory = Number(resident[1]) * (process.platform === 'darwin' ? 1 : 1024);
-	const phase = args.includes('--phase') ? args[args.indexOf('--phase') + 1] : '';
-	const workload = [args[0], args[1], phase].filter(Boolean).join('-');
-	const measurements = units.flatMap((unit) => {
-		const context = { unit, workload, target: 'process', samples: 1 };
+	const measurements = input.units.flatMap((unit) => {
+		const context = {
+			unit,
+			workload: input.workload,
+			target: input.target,
+			samples: 1,
+			...(input.partial ? { partial: input.partial } : {})
+		};
 		return [
 			{
 				...context,
-				metric: 'latency-cli-ms',
+				metric: input.target === 'process' ? 'latency-cli-ms' : 'latency-process-ms',
 				unitOfMeasure: 'ms',
 				value: duration,
 				method:
-					'Wall time of one cold CLI workload including startup, snapshots and shared code; no isolated-unit attribution or warmup.'
+					'Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.'
 			},
 			{
 				...context,
@@ -94,16 +116,16 @@ function recordUsage(units: string[], args: string[], duration: number, usage: s
 				unitOfMeasure: 'bytes',
 				value: memory,
 				method:
-					'Maximum RSS of the whole CLI process including shared runtime; not isolated unit memory or the sum of child processes.'
+					'Maximum RSS of the actual child process including its shared runtime; excludes the parent test runner and is not isolated unit memory or the sum of descendants.'
 			}
 		];
 	});
 	recordCapture(
 		{
-			evidence: 'cli-benchmarks',
+			evidence: 'process-benchmarks',
 			kind: 'benchmark',
-			state: 'cli-workload',
-			file: 'cli-' + randomUUID() + '.json',
+			state: 'child-workload',
+			file: 'process-' + randomUUID() + '.json',
 			mediaType: 'application/json'
 		},
 		JSON.stringify({ measurements })
