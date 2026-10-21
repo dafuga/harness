@@ -114,6 +114,7 @@ test('generated project guidance requires Harness completion audits and keeps pl
 			expect(guidance).toContain('isolate app themes');
 			expect(guidance).toContain('Reject caught fixture errors');
 			expect(guidance).toContain('Provide semantic table containers');
+			expect(guidance).toContain('Node server imports with external dependencies');
 			expect(guidance).toContain('synthetic media inputs');
 			expect(guidance).toContain('reject undeclared media');
 		}
