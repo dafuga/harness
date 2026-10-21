@@ -73,7 +73,9 @@ test('going to the tip from a named commit leaves the commit, as it did before',
 	await page.goto(at(filter, commits.middle, '/history'));
 	await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
 	await expect.poll(() => path(page)).toBe(`${root}/functions`);
-	await page.getByRole('link', { name: 'Open filterOrders' }).click();
+	await page
+		.getByRole('link', { name: 'Open filterOrders(orders, searchText)', exact: true })
+		.click();
 	await expect.poll(() => path(page)).toBe(at(filter));
 	await expect(current(page)).toHaveText('Overview');
 	await expect(

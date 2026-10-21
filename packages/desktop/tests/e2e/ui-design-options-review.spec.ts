@@ -44,6 +44,7 @@ test('each option shows its own image, and a new thread is anchored to the optio
 	await expect(page.getByRole('button', { name: 'Open thread 3', exact: true })).toBeVisible();
 	await option(page, 3).click();
 	await shows(page, 'o3');
+	await remember(page, info, 'selected-option');
 	await page.getByRole('button', { name: 'Select region with keyboard' }).click();
 	await page.getByRole('button', { name: 'Comment on region', exact: true }).click();
 	await modes(page).getByRole('button', { name: 'Plan', exact: true }).click();

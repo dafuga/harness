@@ -2,27 +2,28 @@ import { expect, test, type Locator, type Page } from '../../../../test/support/
 import { atlas, hostedFixture } from './hosted-fixture';
 
 /**
- * The search in the bar of the hosted workspace, beside its account area, at every supported
- * width. Closed, focused or with its results open, the field and its focus ring meet neither
- * revision field nor anything of the account, all of which stay on the screen, and no page is
- * wider than the screen. A result opens in place.
+ * The search trigger fits beside the revision and account controls at every supported width.
+ * Its dialog gives the field room without moving those controls. Both the field and its results
+ * stay inside the window, and a result opens in place.
  */
 type Box = { x: number; y: number; width: number; height: number };
 const pages = `/projects/${atlas}/harness/branch/main/pages`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
-const bar = (page: Page) => page.getByRole('banner');
+const bar = (page: Page) => page.getByRole('banner', { includeHidden: true });
+const trigger = (page: Page) =>
+	bar(page).getByRole('button', { name: 'Search entities', exact: true, includeHidden: true });
 const field = (page: Page) =>
 	page
 		.getByRole('dialog', { name: 'Search project' })
 		.getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const controls = (page: Page): Locator[] => [
-	bar(page).getByRole('button', { name: 'Choose branch', exact: true }),
-	bar(page).getByRole('button', { name: 'Choose commit', exact: true }),
+	bar(page).getByRole('button', { name: 'Choose branch', exact: true, includeHidden: true }),
+	bar(page).getByRole('button', { name: 'Choose commit', exact: true, includeHidden: true }),
 	bar(page).getByText('Ada Example', { exact: true }),
-	bar(page).getByRole('link', { name: 'Projects', exact: true }),
-	bar(page).getByRole('link', { name: 'Members', exact: true }),
-	bar(page).getByRole('button', { name: 'Sign out', exact: true })
+	bar(page).getByRole('link', { name: 'Projects', exact: true, includeHidden: true }),
+	bar(page).getByRole('link', { name: 'Members', exact: true, includeHidden: true }),
+	bar(page).getByRole('button', { name: 'Sign out', exact: true, includeHidden: true })
 ];
 const box = async (locator: Locator): Promise<Box> => (await locator.boundingBox())!;
 /** Whether two boxes share a pixel, the first with a focus ring of three pixels around it. */
@@ -57,6 +58,9 @@ for (const width of widths) {
 		await bar(page).getByRole('button', { name: 'Search entities', exact: true }).click();
 		await expect(field(page)).toBeFocused();
 		await apart(page, width);
+		await trigger(page).click();
+		await expect(field(page)).toBeFocused();
+		expect((await box(field(page))).width).toBeGreaterThanOrEqual(120);
 		await field(page).fill('atlas');
 		await expect(found(page).getByRole('option')).toHaveText([/Page.*Atlas activity/]);
 		const list = await box(found(page));

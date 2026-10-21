@@ -3,6 +3,7 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import type { ProjectRunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git } from './run-fixture';
 
@@ -16,19 +17,62 @@ const template = resolve(
 	import.meta.dirname,
 	'../../../specification/units/desktop.function.time-label.json'
 );
+function referenceUnit(base: Record<string, unknown>, kind: 'function' | 'component' | 'service') {
+	const entry = `src/${kind}.ts`;
+	return {
+		...base,
+		id: kind === 'function' ? 'app.function.owned' : `app.${kind}.consumer`,
+		kind,
+		title: kind === 'function' ? 'owned' : kind,
+		owns: { source: [entry], symbols: [kind === 'function' ? 'owned' : 'consumer'] },
+		runtime: { kind: 'module', entry, targets: [{ kind: 'module', entry }] },
+		scenarios: [],
+		contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
+		dependencies:
+			kind === 'function' ? [] : [{ unit: 'app.function.owned', via: 'import', origin: 'declared' }]
+	};
+}
 async function registered(root: string) {
 	const manifest = JSON.parse(await readFile(template, 'utf8'));
 	await mkdir(join(root, 'specification/units'), { recursive: true });
 	const owned = {
-		...{ ...manifest, id: 'app.function.owned', title: 'owned', dependencies: [], scenarios: [] },
-		owns: { source: ['src/owned.ts'], symbols: [] },
-		runtime: {
-			kind: 'module',
-			entry: 'src/owned.ts',
-			targets: [{ kind: 'module', entry: 'src/owned.ts' }]
-		}
+		...referenceUnit(manifest, 'function'),
+		helperContracts: [
+			{
+				name: 'owned',
+				source: 'src/function.ts',
+				inputs: [],
+				output: 'number',
+				pure: true,
+				examples: [{ name: 'Stable result', call: 'owned()', input: null, output: 0 }],
+				consumers: [{ unit: 'app.component.consumer' }, { unit: 'app.service.consumer' }]
+			}
+		]
 	};
+	await writeFile(
+		join(root, 'src/function.ts'),
+		'/** @pure */\nexport function owned(): number { return 0; }\n'
+	);
+	for (const kind of ['component', 'service'] as const) {
+		const consumer = referenceUnit(manifest, kind);
+		await writeFile(
+			join(root, `specification/units/${consumer.id}.json`),
+			JSON.stringify(consumer)
+		);
+		await writeFile(
+			join(root, `src/${kind}.ts`),
+			"import { owned } from './function';\nexport const consumer = owned();\n"
+		);
+	}
 	await writeFile(join(root, 'specification/units/app.function.owned.json'), JSON.stringify(owned));
+	execFileSync(
+		'bun',
+		[
+			'-e',
+			"import { owned } from './src/function.ts'; if (owned() !== 0) throw Error('Fixture example failed');"
+		],
+		{ cwd: root }
+	);
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'register the owned unit');
 }

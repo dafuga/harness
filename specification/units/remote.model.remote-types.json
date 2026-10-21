@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["packages/remote/src/models/Remote.types.ts"],
 		"symbols": [
+			"RemoteGrant",
 			"RemoteConnectionEvent",
 			"REMOTE_PROTOCOL",
 			"remoteLimits",
@@ -35,7 +36,6 @@
 			"WireEvent",
 			"WireMessage",
 			"RemoteRevision",
-			"RemoteGrant",
 			"RemoteResume",
 			"AttachInput",
 			"RemoteAttachment",
@@ -113,7 +113,7 @@
 	"dependencies": [
 		{
 			"unit": "remote.model.remote-control-types",
-			"via": "reexport",
+			"via": "import",
 			"origin": "derived"
 		}
 	],

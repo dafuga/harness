@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { expect, test } from '../../../../test/support/browserTest';
 import {
 	agentAt,
@@ -8,16 +10,36 @@ import {
 	settingsAt
 } from './agent-settings-fixture';
 
-for (const width of [1440, 390]) {
+for (const width of [1440, 920, 390]) {
 	test(`Settings owns the persistent design count at ${width}px`, async ({ page }) => {
-		await page.setViewportSize({ width, height: 900 });
+		await page.setViewportSize({ width, height: width === 920 ? 800 : 900 });
 		await agentSettingsFixture(page);
 		await page.goto(settingsAt);
 		await rememberSettings(page, 'settings');
+		if (process.env.HARNESS_EVIDENCE_DIR) {
+			const viewport = width === 1440 ? 'desktop' : width === 920 ? 'tablet' : 'phone';
+			const saved = JSON.parse(
+				readFileSync(
+					join(process.env.HARNESS_EVIDENCE_DIR, `settings-settings-${viewport}-benchmark.json`),
+					'utf8'
+				)
+			);
+			for (const metric of ['browser-navigation-ms', 'browser-js-heap-bytes']) {
+				const observed = saved.measurements.find(
+					(m: { unit: string; metric: string }) =>
+						m.unit === 'desktop.page.settings' && m.metric === metric
+				);
+				expect(observed, `Settings records ${metric} at ${viewport}`).toBeDefined();
+				expect(observed.value).toBeGreaterThan(0);
+			}
+		}
 		await expect(
 			page.getByRole('heading', { name: 'Settings', exact: true, level: 1 })
 		).toBeVisible();
-		const count = page.getByRole('combobox', { name: 'Design options', exact: true });
+		const count = page.getByRole('combobox', {
+			name: 'Design options',
+			exact: true
+		});
 		await expect(count).toHaveValue('3');
 		await expect(count.locator('option')).toHaveCount(10);
 		await count.selectOption('2');
@@ -26,7 +48,10 @@ for (const width of [1440, 390]) {
 		await page.getByRole('link', { name: 'Back to project', exact: true }).click();
 		await expect(page).toHaveURL(new RegExp(`${agentAt}$`));
 		await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
-		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+		const panel = page.getByRole('complementary', {
+			name: 'Project agent',
+			exact: true
+		});
 		await expect(panel.getByRole('combobox', { name: 'Design options', exact: true })).toHaveCount(
 			0
 		);

@@ -29,7 +29,9 @@ test('a former relationships address opens the overview without embedded usage s
 	await page.goto(main(`pages/${units.page}?tab=relationships`));
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await checkpoint(page, 'usage-former-address');
-	await expect(sectionsOf(page, 'Titles')).toHaveText(visualSections);
+	await expect(sectionsOf(page, 'Titles')).toHaveText(
+		visualSections.filter((tab) => tab !== 'Used In')
+	);
 	await expect(card(page, 'Used In')).toHaveCount(0);
 	await expect(card(page, 'Uses')).toHaveCount(0);
 	await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
@@ -51,9 +53,11 @@ test('Used In and Uses are sections of their own, from the navigation and by add
 	await expectPath(page, main(`components/${units.list}?tab=used-in`));
 	await checkpoint(page, 'usage-used-in');
 	await expect(
-		card(page, 'Used In').getByRole('link', { name: 'Titles', exact: true })
+		card(page, 'Used In').getByRole('link', { name: 'Open Titles', exact: true })
 	).toBeVisible();
-	await expect(card(page, 'Used In')).toContainText('Page');
+	await expect(
+		card(page, 'Used In').getByRole('article', { name: 'Titles', exact: true })
+	).toHaveCount(1);
 	await expect(card(page, 'Used In')).not.toContainText('src/');
 	await expect(card(page, 'Uses')).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
@@ -74,7 +78,7 @@ test('a function says where it is used, down from the page that shows it', async
 	await page.getByRole('tab', { name: 'Used In', exact: true }).click();
 	await expectPath(page, main(`functions/${units.slugify}?tab=used-in`));
 	const used = card(page, 'Used In');
-	await expect(used.getByRole('link', { name: 'Titles', exact: true })).toHaveCount(1);
+	await expect(used.getByRole('link', { name: 'Open Titles', exact: true })).toHaveCount(1);
 	await expect(used.getByRole('link', { name: 'Title row', exact: true })).toHaveCount(1);
 	await expect(card(page, 'Uses')).toHaveCount(0);
 	await used.getByRole('link', { name: 'Title row', exact: true }).click();

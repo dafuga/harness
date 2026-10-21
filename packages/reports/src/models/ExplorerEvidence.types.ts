@@ -58,6 +58,13 @@ export interface ExplorerCapture {
 	state: string;
 	capture: HarnessCapture;
 	standing: CaptureStanding;
+	/** Retained focused pixels; this grants no full-verification verdict. */
+	focused?: {
+		loop: string;
+		status: string;
+		record: string;
+		viewport?: { width: number; height: number };
+	};
 	/** True for a passed, stored capture that stands as proof for the commit of its side. */
 	usable: boolean;
 	/** True only for a usable capture made from the build of exactly that commit. */

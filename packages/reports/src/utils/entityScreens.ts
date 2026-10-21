@@ -63,13 +63,18 @@ export function screenPick(
 	};
 }
 const unrecorded = { standing: null, label: undefined, facts: undefined, note: undefined };
-/** What the record of a side says produced a capture; nothing when the side has no such record. */
 function told(side: ExplorerSide, found: ExplorerCapture) {
+	if (found.focused)
+		return {
+			standing: 'unvalidated' as const,
+			label: 'Focused capture',
+			facts: [{ label: 'Focused run', value: found.focused.loop + ' · ' + found.focused.status }],
+			note: 'Captured from the exact served revision; this focused run grants no full verification verdict.'
+		};
 	const tested = side.record?.scenarios.find((entry) => entry.id === found.scenario);
 	if (!side.record || !tested) return unrecorded;
 	return captureProvenance(side.record, tested, found.capture);
 }
-
 /** A recorded capture as a gallery item, with the standing the record gives it and nothing more. */
 function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidence {
 	const { capture, scenario, state } = found;
@@ -96,7 +101,6 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 		transcript: capture.transcript
 	};
 }
-
 /** What a gap is named by: the picked state, or that no visual scenario names the entity. */
 function gapOf(pick: ScreenPick | null, at: string) {
 	if (!pick) {
@@ -110,7 +114,6 @@ function gapOf(pick: ScreenPick | null, at: string) {
 		none: null
 	};
 }
-
 /** A side's own gap, never another's capture; an undeclared visual state says so. */
 function gap(
 	side: ExplorerSide | null,
@@ -134,18 +137,15 @@ function gap(
 		mediaType: 'image'
 	};
 }
-
 const matches = (found: ExplorerCapture, pick: ScreenPick) =>
 	found.capture.kind === 'screenshot' &&
 	found.scenario === pick.scenario &&
 	found.state === pick.state &&
 	found.capture.viewport === pick.viewport;
-
 interface Pane {
 	found?: ExplorerCapture;
 	shown: Evidence;
 }
-
 /** One side at the picked state: its own capture, or its stated gap. */
 function pane(
 	side: ExplorerSide | null,
@@ -155,14 +155,13 @@ function pane(
 ): Pane {
 	const found = pick ? side?.captures.find((entry) => matches(entry, pick)) : undefined;
 	if (!side || !pick || !found) return { shown: gap(side, pick, phase, why) };
-	// What stands for the branch tip is a capture of the tip; an older or rejected one is a gap.
-	const stale = phase === 'current' && !current(found);
+	// Validated unchanged proof keeps its original capture identity; rejected proof stays a gap.
+	const stale = phase === 'current' && !found.usable;
 	return stale
 		? { found, shown: gap(side, pick, phase, borrowed(side, found)) }
 		: { found, shown: item(side, found, phase) };
 }
 
-/** True when the host says a capture was made from the build of exactly the commit of its side. */
 const current = (found: ExplorerCapture) => found.current;
 
 /** Why a recorded capture is not shown as the screenshot of the branch tip. */
@@ -193,7 +192,8 @@ export function catalogShot(evidence: ExplorerEvidence, preview?: ScreenPick): E
 			entry.usable &&
 			entry.capture.kind === 'screenshot' &&
 			entry.capture.media !== null &&
-			(!preview || matches(entry, preview))
+			(!preview ||
+				matches(entry, { ...preview, scenario: entry.focused ? entry.scenario : preview.scenario }))
 	);
 	const found = usable.find((entry) => entry.current) ?? usable[0];
 	if (!found) return null;

@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import { explorerRoute } from '../../../src/utils/explorerRoute';
+import { explorerRoute, explorerRoutePath } from '../../../src/utils/explorerRoute';
 import EntityRelations from '../src/components/harness/entity-relations/EntityRelations.svelte';
 import type { ExplorerRelations } from '../src/models/Explorer.types';
 import type { EntityNav } from '../src/utils/entityLens';
@@ -39,7 +39,7 @@ test('the sections of an entity are named Used In and Uses, and none is a relati
 		expect(tabs(body)).toEqual([
 			'Overview',
 			'Contract',
-			'Used In',
+			...(entity.category === 'pages' ? [] : ['Used In']),
 			'Uses',
 			entity.category === 'functions' ? 'Examples' : 'States',
 			'History',
@@ -109,12 +109,20 @@ test('a former relationships address opens the overview without embedded usage s
 	expect(sections(body).filter((name) => /^Use/.test(name))).toEqual([]);
 	expect(body).toMatch(/aria-selected="true"[^>]*>\s*Overview/);
 	expect(words(body)).not.toMatch(/relationship/i);
+	for (const commit of [null, commits.middle]) {
+		const location = { branch: 'main', commit, ...page };
+		const path = `/branch/main${commit ? `/commit/${commit}` : ''}/pages/${ids.page}`;
+		expect(explorerRoute(path, '?tab=used-in')).toEqual(location);
+		expect(explorerRoutePath({ ...location, tab: 'used-in' })).toBe(path);
+		const legacy = content(commit ? 'commit' : 'current', { ...page, tab: 'used-in' });
+		expect(legacy).toContain('aria-label="Orders page overview"');
+		expect(tabs(legacy)).not.toContain('Used In');
+		expect(sections(legacy).filter((name) => /^Use/.test(name))).toEqual([]);
+		expect(legacy).toMatch(/aria-selected="true"[^>]*>\s*Overview/);
+	}
 });
 
 test('an entity nothing uses, one that uses nothing and one that was removed each say so', () => {
-	expect(card(content('commit', { ...page, tab: 'used-in' }), 'Used In')).toContain(
-		'Used In 0 No page shows it and nothing else uses it.'
-	);
 	expect(card(content('commit', { ...filter, tab: 'uses' }), 'Uses')).toContain(
 		'Uses 0 It uses no component, function, config or service.'
 	);
@@ -130,6 +138,10 @@ test('an entity nothing uses, one that uses nothing and one that was removed eac
 	};
 	const route = { branch: 'main', commit: null, category: 'functions' } as const;
 	const nav: EntityNav = { route, href: () => '/', go: () => {} };
+	const empty = render(EntityRelations, {
+		props: { relations: none, nav, host: hostProps('commit') }
+	}).body;
+	expect(card(empty, 'Used In')).toContain('Used In 0 No page shows it and nothing else uses it.');
 	const body = render(EntityRelations, {
 		props: { relations: none, nav, removed: true, host: hostProps('commit') }
 	}).body;

@@ -1,3 +1,4 @@
+import { pageWorkload } from './page-workload';
 import type { Page } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import { buildStamp } from '../../../../src/utils/buildStamp';
@@ -40,6 +41,7 @@ export async function scenarioCapture(
 	if (!buildId) throw new Error('The rendered build has no compiled identity stamp');
 	if (process.env.HARNESS_VERIFY !== '1' || !/^[a-f0-9]{40}$/.test(revision))
 		throw new Error('A verification revision is required to record a capture');
+	await pageWorkload(page, scenario, { ...capture, viewport, buildId });
 	recordCapture(
 		{
 			evidence: evidence.id,

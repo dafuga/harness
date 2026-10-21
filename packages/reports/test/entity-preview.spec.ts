@@ -84,8 +84,7 @@ test('a page shows one screenshot at the tip and a matching pair at a commit', a
 	await capture(tab, 'page-current-desktop');
 	await tab.getByRole('button', { name: 'Mobile' }).click();
 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-mobile.png');
-	await tab.getByRole('combobox', { name: 'State' }).selectOption('empty');
-	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-empty-mobile.png');
+	await expect(tab.getByRole('combobox', { name: 'State' })).toHaveCount(0);
 	await open(tab, { ...page, commit: commits.middle });
 	await expect(tab.getByRole('heading', { name: 'Commit comparison' })).toBeVisible();
 	const sources = () =>

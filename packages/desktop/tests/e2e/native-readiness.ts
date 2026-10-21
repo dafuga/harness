@@ -57,6 +57,11 @@ async function designsAt(page: Page, expected: NativeExpected): Promise<void> {
 			: 'Current · branch tip';
 	await expect(page.getByLabel('Commit', { exact: true })).toHaveAttribute('title', note);
 	await expect(page.getByRole('button', { name: 'Choose commit', exact: true })).toBeVisible();
+	const footer = page.locator('footer.status-bar');
+	await expect(footer).toContainText(expected.commit.slice(0, 7));
+	await expect(footer).toContainText(
+		expected.state === 'history' ? 'Historical commit · comments only' : 'Local project'
+	);
 }
 
 /** Approval is offered on the tip, recorded once approved, and refused on a historical commit. */

@@ -1,4 +1,5 @@
-export type { RemoteConnectionEvent } from './RemoteControl.types';
+import type { RemoteGrant } from './RemoteControl.types';
+export type { RemoteGrant, RemoteConnectionEvent } from './RemoteControl.types';
 
 /** Wire v1. A host answers no other protocol number. */
 export const REMOTE_PROTOCOL = 1;
@@ -175,12 +176,6 @@ export type WireMessage = WireRequest | WireResponse | WireEvent;
 export interface RemoteRevision {
 	branch: string;
 	commit: string;
-}
-export interface RemoteGrant {
-	projects: { id: string; name: string }[];
-	/** False grants read-only access; omitted preserves older read-and-comment grants. */
-	comments?: boolean;
-	agents: boolean;
 }
 export interface RemoteResume {
 	epoch: string;

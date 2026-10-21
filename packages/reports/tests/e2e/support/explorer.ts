@@ -1,8 +1,10 @@
 import { expect, type Page } from '@playwright/test';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pageBenchmark, pageUnit } from './pageBenchmark';
 import { home, short } from './harnessHistory';
-import { settled } from './harnessCapture';
+import { settled, servedBuild } from './harnessCapture';
+import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
 
 /** What the seed recorded about the explorer's part of the synthetic history. */
 export interface SeededExplorer {
@@ -54,7 +56,34 @@ export async function checkpoint(page: Page, name: string): Promise<void> {
 	mkdirSync(shots, { recursive: true });
 	await page.waitForLoadState('networkidle');
 	await settled(page);
-	await page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
+	const bytes = await page.screenshot({
+		path: join(shots, `${name}.png`),
+		fullPage: true
+	});
+	await pageScreenshot(page, name, bytes);
+	await pageBenchmark(page, name, pageUnit(page.url()));
+}
+
+/** Each persisted picture names the actual app page, state, viewport and served revision. */
+async function pageScreenshot(page: Page, name: string, bytes: Buffer): Promise<void> {
+	const unit = pageUnit(page.url());
+	const server = await servedBuild(page);
+	if (!unit || !server || server.revision !== process.env.HARNESS_VERIFY_REVISION) return;
+	const width = page.viewportSize()!.width;
+	const state = new URL(page.url()).searchParams.get('tab') ?? 'overview';
+	recordCapture(
+		{
+			evidence: unit,
+			kind: 'screenshot',
+			state,
+			viewport: width >= 1200 ? 'desktop' : width >= 600 ? 'tablet' : 'mobile',
+			file: name + '.png',
+			mediaType: 'image/png',
+			provenance: 'actual-capture',
+			server
+		},
+		bytes
+	);
 }
 
 /** The navbar says which tip the branch has and which commit is looked at. */
@@ -100,7 +129,12 @@ interface Judging {
 		origin: { commit: string };
 		states: Array<{
 			id: string;
-			captures: Array<{ kind: string; viewport?: string; sha256: string; media: string | null }>;
+			captures: Array<{
+				kind: string;
+				viewport?: string;
+				sha256: string;
+				media: string | null;
+			}>;
 		}>;
 	}>;
 }
@@ -132,8 +166,9 @@ export function recordedShot(
 
 /** Overview exposes actual source size and whatever runtime observations were recorded. */
 export async function measured(page: Page): Promise<void> {
-	await expect(page.getByRole('region', { name: 'Size', exact: true })).toBeVisible();
-	await expect(
-		page.getByRole('region', { name: 'Performance profile', exact: true })
-	).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Size', exact: true })).toHaveCount(0);
+	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+	await expect(profile).toBeVisible();
+	for (const label of ['Source size', 'Emitted size', 'Complexity'])
+		await expect(profile).toContainText(label);
 }

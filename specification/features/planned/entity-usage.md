@@ -11,7 +11,7 @@ Only what is shown changes. What is related to what is read from the same graph 
 - **Used In** lists what uses the entity, the pages that show it included, each once, with a badge saying what kind of thing it is.
 - **Uses** lists what the entity depends on, kept apart by kind: components, functions, configs, services, and what is none of these.
 - Neither section shows a source path. Source stays under Details, then Source.
-- The explorer keeps Used In and Uses in dedicated tabs; Overview does not repeat them. Neither section is named Relationships.
+- The explorer keeps Used In and Uses in dedicated tabs; Overview does not repeat them. Pages expose Uses only, with no Used In tab or panel. Existing page Used In addresses open Overview in the same branch and commit. Neither section is named Relationships.
 - Usage rows show names, kind/change badges and descriptions without verification marks. The entity page header retains its verification mark.
 - An address of the former relationships section still opens the entity on its overview: `?tab=relationships` in the explorer and `/relationships` in the workspace.
 - A link of either section opens the entity it names in the same branch and commit.
