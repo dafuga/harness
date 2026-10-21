@@ -1,4 +1,9 @@
 import { expect, test } from 'vitest';
+import { taskProfile } from '../../../../test/support/taskProfiles';
+import { hostedEvidenceSchema } from '../../src/utils/hostedEvidenceSchema';
+import { hostedEvidenceDetail } from '../../src/utils/hostedEvidenceDetail';
+import { hostedEvidenceRecord } from '../../src/utils/hostedEvidenceRecord';
+import { hostedEvidenceFields } from '../../src/utils/hostedEvidenceFields';
 import { HostedEvidenceValidator } from '../../src/validators/HostedEvidenceValidator';
 import { asked, hubAnswer, type AnswerAt } from '../hosted-evidence-fixture';
 
@@ -20,10 +25,29 @@ function changed(path: string, value: unknown, at: Partial<AnswerAt> = {}): unkn
 	return answer;
 }
 
-test('the answer of the hub to exactly what was asked is accepted as it is', () => {
+test('the answer of the hub to exactly what was asked is accepted as it is', async () => {
 	for (const mode of ['commit', 'current'] as const) {
 		const answer = hubAnswer({ mode });
 		expect(validator.evidence(answer, { ...asked, mode })).toBe(answer);
+		const detail = answer.evidence.after.detail!;
+		const subjects = [
+			['desktop.function.hosted-evidence-schema', hostedEvidenceSchema, answer],
+			['desktop.function.hosted-evidence-detail', hostedEvidenceDetail, detail],
+			[
+				'desktop.function.hosted-evidence-record',
+				hostedEvidenceRecord,
+				answer.evidence.after.record
+			],
+			[
+				'desktop.function.hosted-evidence-fields',
+				hostedEvidenceFields.unit,
+				detail.registry.units[0]
+			]
+		] as const;
+		for (const [unit, schema, value] of subjects) {
+			await taskProfile(unit, 'parse-synthetic-hosted-evidence', () => schema.parse(value));
+			expect(schema.parse(value)).toEqual(value);
+		}
 	}
 	const results = hubAnswer({ entityId: feed });
 	expect(validator.evidence(results, { ...asked, entityId: feed }).behavior.rows).toHaveLength(1);

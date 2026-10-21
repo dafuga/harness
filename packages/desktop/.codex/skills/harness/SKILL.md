@@ -1,5 +1,7 @@
 # Harness Project Discipline
 
+For mandatory profiles, measure stateful promise-returning APIs through one actual awaited operation in their standard tests. Preserve effects, result identity and rejection; do not replay a handoff, discovery or CLI turn. Hosted evidence schema profiles parse the same representative answers validated by the standard contract matrix. Label synthetic HTTP/child boundaries and whole-process memory explicitly.
+
 Native performance evidence comes from running the actual compiled Debug and Release check binaries through the shared Harness child-process capture, separately from compilation. State the macOS/test-vault/test-transport boundary as partial coverage; these observations do not establish UIKit, camera, simulator or physical-device performance. Keep native behavior assertions after each measured invocation.
 
 Use this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness SvelteKit app.

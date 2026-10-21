@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { PerformanceProfileService } from '../../src/services/PerformanceProfileService';
-import { isolatedProfileCapture } from '../support/taskProfiles';
+import { isolatedProfileCapture, observedTaskOperation } from '../support/taskProfiles';
 import { measureProcess } from '../support/cli-measurement/measureHarness';
 import { runCommand } from '../support/cli';
 import { readFile } from 'node:fs/promises';
@@ -8,6 +8,39 @@ import { join } from 'node:path';
 import { benchmarkCaptureSchema } from '../../src/core/verifyTypes';
 
 const input = { unit: 'function.schema-fixture', workload: 'initialize-fields' };
+
+test('explicit awaited scopes preserve one effect, result identity and rejection without replay', async () => {
+	await isolatedProfileCapture(async (directory) => {
+		let calls = 0;
+		const value = { id: 'owned-result' };
+		const operation = async () => {
+			calls++;
+			return value;
+		};
+		expect(await observedTaskOperation('service.fixture', 'one-owned-operation', operation)).toBe(
+			value
+		);
+		expect(calls).toBe(1);
+		const error = new Error('actual failure');
+		await expect(
+			observedTaskOperation('service.fixture', 'failed-operation', async () => {
+				throw error;
+			})
+		).rejects.toBe(error);
+		const captures = (await readFile(join(directory, 'captures.ndjson'), 'utf8'))
+			.trim()
+			.split('\n');
+		expect(captures).toHaveLength(1);
+		const data = benchmarkCaptureSchema.parse(
+			JSON.parse(await readFile(join(directory, JSON.parse(captures[0]).file), 'utf8'))
+		);
+		expect(
+			data.measurements.every(
+				(item) => item.samples === 1 && item.workload === 'one-owned-operation'
+			)
+		).toBe(true);
+	});
+});
 
 test('a completed source scope records actual elapsed work and process memory once', async () => {
 	await isolatedProfileCapture(async () => {

@@ -23,6 +23,7 @@ Harness owns performance measurement and the final audit of coding and planning 
 - Standard Remote tests explicitly profile secure-error construction, ledger creation/replay, and a fresh public-entry import. Constructors, identity-preserving promise returns and re-export barrels must not borrow dependency observations.
 - The standard audit-adapter matrix executes every real workspace audit launcher with this checkout's CLI and retains its child-process observations. An installed global CLI cannot stand in for the tested revision.
 - Standard Collaboration tests explicitly profile project/record schema parsing over their actual fixture records and a cold public-entry import. Library entry checks share the same child-process collector and retain their export assertions.
+- Stateful APIs with identity-preserving promise returns use explicit single awaited observations in their normal tests. Profiling must not replay their effects, replace their results or convert rejected operations into successful samples.
 - Browser-run isolation uses observed teardown gates to hold live peers, rather than repeating suites to estimate lifetime. Preserve source/history/media isolation assertions, reject early exits with diagnostics, and verify the surviving server after its peer is removed without increasing deadlines.
 - Helper-card previews reuse canonical callable contracts and consumer relations. The standard three-viewport component matrix asserts the rendered call and consumer links, retaining ready captures even when an assertion fails.
 

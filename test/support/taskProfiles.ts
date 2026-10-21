@@ -52,6 +52,21 @@ export async function taskProfile(
 	);
 }
 
+/** One real awaited test operation, retaining its result and effects without replay. */
+export async function observedTaskOperation<T>(
+	unit: string,
+	workload: string,
+	operation: () => T
+): Promise<Awaited<T>> {
+	if (!evidenceRequested()) return await operation();
+	const profiler = new PerformanceProfileService();
+	try {
+		return await profiler.observeAsync({ unit, workload }, operation);
+	} finally {
+		profiler.flush();
+	}
+}
+
 export async function profileEvidenceValidation(input: PerformanceEvidenceInput) {
 	if (!evidenceRequested()) return;
 	const units = Array.from({ length: 1000 }, (_, index) => ({
