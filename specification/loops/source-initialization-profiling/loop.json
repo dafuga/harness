@@ -6,7 +6,7 @@
 	"name": "source-initialization-profiling",
 	"goal": "Record actual completed initialization of registered data modules through Harness without substituting initialization for callable work or inventing failed/type-only profiles.",
 	"createdAt": "2026-10-21T11:58:25.789Z",
-	"updatedAt": "2026-10-21T12:07:39.702Z",
+	"updatedAt": "2026-10-21T12:10:39.381Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:10:38.293Z",
+			"evidence": "Paired red288aec6b at14a71502 and green67e50b91 at7c17c326 run unchanged scope and runner tests in one environment; eight cases pass and four actual source measurements are retained."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:10:39.381Z",
+			"evidence": "The isolated pre-scope snapshot lacks beginScope and data-import observations; repaired source passes the same cases. Failed initialization and type-only modules remain unobserved, callable profiles are not replaced."
 		},
 		{
 			"id": "verify",
