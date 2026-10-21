@@ -81,19 +81,19 @@
 			"pure": true,
 			"examples": [
 				{
-					"name": "toKebabCase: example 1",
+					"name": "Join separated words with lowercase hyphens",
 					"call": "toKebabCase(\"Hello world\")",
 					"input": ["Hello world"],
 					"output": "hello-world"
 				},
 				{
-					"name": "toKebabCase: example 2",
+					"name": "Split lowercase-to-uppercase word boundaries",
 					"call": "toKebabCase(\"orderID\")",
 					"input": ["orderID"],
 					"output": "order-id"
 				},
 				{
-					"name": "toKebabCase: empty input",
+					"name": "Return blank when the input contains no words",
 					"call": "toKebabCase(\"\")",
 					"input": [""],
 					"output": ""
@@ -242,19 +242,19 @@
 			"pure": true,
 			"examples": [
 				{
-					"name": "toPascalCase: example 1",
+					"name": "Capitalize and join separated words",
 					"call": "toPascalCase(\"Hello world\")",
 					"input": ["Hello world"],
 					"output": "HelloWorld"
 				},
 				{
-					"name": "toPascalCase: example 2",
-					"call": "toPascalCase(\"order_id\")",
-					"input": ["order_id"],
+					"name": "Split lowercase-to-uppercase word boundaries",
+					"call": "toPascalCase(\"orderID\")",
+					"input": ["orderID"],
 					"output": "OrderId"
 				},
 				{
-					"name": "toPascalCase: empty input",
+					"name": "Return blank when the input contains no words",
 					"call": "toPascalCase(\"\")",
 					"input": [""],
 					"output": ""
@@ -379,19 +379,19 @@
 			"pure": true,
 			"examples": [
 				{
-					"name": "toCamelCase: example 1",
+					"name": "Join separated words with a lowercase first word",
 					"call": "toCamelCase(\"Hello world\")",
 					"input": ["Hello world"],
 					"output": "helloWorld"
 				},
 				{
-					"name": "toCamelCase: example 2",
-					"call": "toCamelCase(\"order_id\")",
-					"input": ["order_id"],
+					"name": "Split lowercase-to-uppercase word boundaries",
+					"call": "toCamelCase(\"orderID\")",
+					"input": ["orderID"],
 					"output": "orderId"
 				},
 				{
-					"name": "toCamelCase: empty input",
+					"name": "Return blank when the input contains no words",
 					"call": "toCamelCase(\"\")",
 					"input": [""],
 					"output": ""
@@ -448,19 +448,19 @@
 			"pure": true,
 			"examples": [
 				{
-					"name": "toSnakeCase: example 1",
+					"name": "Join separated words with lowercase underscores",
 					"call": "toSnakeCase(\"Hello world\")",
 					"input": ["Hello world"],
 					"output": "hello_world"
 				},
 				{
-					"name": "toSnakeCase: example 2",
+					"name": "Split lowercase-to-uppercase word boundaries",
 					"call": "toSnakeCase(\"orderID\")",
 					"input": ["orderID"],
 					"output": "order_id"
 				},
 				{
-					"name": "toSnakeCase: empty input",
+					"name": "Return blank when the input contains no words",
 					"call": "toSnakeCase(\"\")",
 					"input": [""],
 					"output": ""

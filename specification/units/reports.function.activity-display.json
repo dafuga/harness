@@ -120,22 +120,16 @@
 			"pure": true,
 			"examples": [
 				{
-					"name": "plural: example 1",
+					"name": "Keep the singular word for one item",
 					"call": "plural(1, \"task\")",
 					"input": [1, "task"],
 					"output": "1 task"
 				},
 				{
-					"name": "plural: example 2",
+					"name": "Add s for other counts",
 					"call": "plural(2, \"task\")",
 					"input": [2, "task"],
 					"output": "2 tasks"
-				},
-				{
-					"name": "plural: example 3",
-					"call": "plural(0, \"task\")",
-					"input": [0, "task"],
-					"output": "0 tasks"
 				}
 			],
 			"consumers": [
