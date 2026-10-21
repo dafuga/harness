@@ -4776,9 +4776,9 @@
 		{
 			"unit": "reports.function.entity-usage",
 			"name": "entityUsage",
-			"commit": "f22e91fa",
-			"reason": "Keep model relations in their separate catalog category.",
-			"definition": "3de8093b75f09af4d6c9725f036e38ccabba60e9ece720f785b585f11e9f4423"
+			"commit": "f549d87bd8bb6eb19418ef2c3df73be55dd5bf30",
+			"reason": "Group reverse dependencies and shared consumer footers by declared module type while preserving ownership and identity.",
+			"definition": "cc6a2de1f4a9b449a903fff1bf56f1fbf4523a8da998c6ea6f840ef113c9fb62"
 		},
 		{
 			"unit": "function.unit-documentation",
