@@ -121,7 +121,7 @@
 <section class="game" data-harness-component="game-workspace">
 	<a class="back" href={resolve('/harness')}><span aria-hidden="true">←</span> Back to project</a>
 	<header class="row" style="flex-wrap:wrap">
-		<h1>Game Views</h1>
+		<h1 style="flex:1;margin:0">Game Views</h1>
 		{#if demo}<span class="chip gold">Demo</span>{/if}
 		{#if commit}<span class="chip">History · {commit.slice(0, 8)}</span>{/if}
 		{#if readonly && !commit}<span class="chip">Read-only</span>{/if}
@@ -204,10 +204,6 @@
 	.back {
 		justify-self: start;
 		color: var(--gold);
-	}
-	h1 {
-		flex: 1;
-		margin: 0;
 	}
 	.split {
 		display: grid;
