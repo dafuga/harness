@@ -6,7 +6,7 @@
 	"name": "runner-profile-integration",
 	"goal": "Normal Vitest and Bun runners emit actual source-bound profiles while preserving production builds, benchmark boundaries and fixture isolation.",
 	"createdAt": "2026-10-21T11:15:14.941Z",
-	"updatedAt": "2026-10-21T11:15:17.357Z",
+	"updatedAt": "2026-10-21T11:20:02.793Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:19:59.859Z",
+			"evidence": "Committed f46368e1 red49719640: two real capture-count assertions fail, while ordinary and benchmark boundaries and unowned source pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:20:00.982Z",
+			"evidence": "Install evidence-only Vitest transform and a bounded Bun runtime hook. Use a separate owned sink and schema-validated registry; explicitly transpile TS and pass Bun preload as one equals-form option."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:20:02.793Z",
+			"evidence": "All nine unchanged adapter/runner cases pass. Vitest and Bun observations are distinct; build output stays original. Type, lint, audit and registry checks pass. Normal project configs are not yet enabled."
 		},
 		{
 			"id": "green",

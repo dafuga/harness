@@ -12,7 +12,9 @@
 			"src/adapters/source-profile-adapter/bunPreload.ts",
 			"src/adapters/source-profile-adapter/instrumentSource.ts",
 			"src/adapters/source-profile-adapter/profileRuntime.ts",
-			"src/adapters/source-profile-adapter/runnerConfig.ts"
+			"src/adapters/source-profile-adapter/runnerConfig.ts",
+			"src/adapters/source-profile-adapter/runnerSelection.ts",
+			"src/adapters/source-profile-adapter/vitestSetup.ts"
 		],
 		"symbols": [
 			"SourceProfileAdapterConfig",
@@ -23,7 +25,9 @@
 			"watchOperation",
 			"watchMethod",
 			"flushSourceProfiles",
-			"sourceProfilePlugin"
+			"sourceProfilePlugin",
+			"profileSelection",
+			"profileEnvironment"
 		]
 	},
 	"contract": {
@@ -70,7 +74,19 @@
 				"type": "Boundary"
 			},
 			{
-				"name": "sourceProfilePlugin._root",
+				"name": "sourceProfilePlugin.root",
+				"type": "string"
+			},
+			{
+				"name": "profileSelection.root",
+				"type": "string"
+			},
+			{
+				"name": "profileEnvironment.root",
+				"type": "string"
+			},
+			{
+				"name": "profileEnvironment.directory",
 				"type": "string"
 			}
 		],
@@ -97,6 +113,14 @@
 			},
 			{
 				"name": "sourceProfilePlugin",
+				"type": "unknown"
+			},
+			{
+				"name": "profileSelection",
+				"type": "unknown"
+			},
+			{
+				"name": "profileEnvironment",
 				"type": "unknown"
 			}
 		],
