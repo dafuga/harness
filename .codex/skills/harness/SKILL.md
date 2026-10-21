@@ -94,3 +94,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 Every public helper needs committed examples with a real invocation, argument values and expected output or error. Execute authored examples against the actual implementation. `harness units check` rejects missing examples; indexing must preserve them and the detail page must select only the current callable and revision.
 
 Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review implementation features and meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests. Registry checks reject placeholder titles and repeated titles or calls; semantic overlap requires agent review.
+
+## Route identity and UI state
+
+When changing URL structure or moving tabs between query strings and paths, key the rendered page by its logical entity, helper, branch, revision and section; tab or canonical-alias changes must preserve the frame. Extend the existing host browser matrix to assert DOM continuity across tabs, refresh and correctly scoped links. Capture after canonical navigation, fonts and layout settle, and inspect the original images; a passing text assertion alone does not establish a ready screenshot.

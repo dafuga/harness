@@ -88,6 +88,18 @@
 			: null
 	);
 
+	let contentKey = $derived.by(() => {
+		const at = shown?.scope.location;
+		return JSON.stringify([
+			at?.branch,
+			at?.commit,
+			at?.category,
+			at?.entity,
+			at?.helper,
+			at?.section
+		]);
+	});
+
 	// The search of the bar holds the entities of exactly the revision shown; none while it is read.
 	let searchCatalog = $derived({
 		entries: loaded ? explorerSearchEntries(entities, loaded.head.commit) : null
@@ -182,7 +194,7 @@
 				</p>
 			{/if}
 			<!-- Another category, entity or section opens afresh; a tab of the same page keeps it. -->
-			{#key pathname}
+			{#key contentKey}
 				<Content
 					index={shown.index}
 					head={shown.head}
