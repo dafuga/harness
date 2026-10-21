@@ -2,11 +2,9 @@
 	"name": "source-tab-code-action",
 	"goal": "Every catalog opens details without a code action; only the detail Source tab offers View code in a revision-specific modal.",
 	"createdAt": "2026-10-21T11:35:13.478Z",
-	"updatedAt": "2026-10-21T11:51:56.997Z",
+	"updatedAt": "2026-10-21T11:53:54.485Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:53:54.485Z",
+			"evidence": "Unchanged proof passes at product 9d465581 against test-only c42b186b. Reports catalog/Source scenario, card/detail contracts and Desktop modal/focus/revision scenario pass with the frozen command and environment. Green record 140aa80f48b990a05922fd25377390316c21df80767f443fbefab7776d547a36."
 		},
 		{
 			"id": "verify",
