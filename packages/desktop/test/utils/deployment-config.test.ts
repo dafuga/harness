@@ -63,26 +63,35 @@ test.each(['cjs', 'esm'] as const)(
 		const { execFileSync } = await import('node:child_process');
 		const root = await mkdtemp(join(tmpdir(), 'harness-cf-bundle-'));
 		try {
-			await symlink(resolve('../..', 'node_modules'), join(root, 'node_modules'), 'dir');
+			if (format === 'esm')
+				await symlink(resolve('../..', 'node_modules'), join(root, 'node_modules'), 'dir');
 			await writeFile(join(root, 'wrangler.jsonc'), '{"name":"fixture",/* comment */"env":{}}');
 			await writeFile(
 				join(root, 'harness.deploy.json'),
 				JSON.stringify({ adapter: 'cloudflare', sourceBranch: 'dev', environments: {} })
 			);
 			const bundle = join(root, `deployment.${format === 'cjs' ? 'cjs' : 'mjs'}`);
+			const cjs = `import {buildDesktopBundle} from './scripts/build-main.ts';
+const run = () => buildDesktopBundle('src/utils/deploymentConfig.ts', ${JSON.stringify(bundle)});
+if (process.env.HARNESS_EVIDENCE_DIR) {
+ const {PerformanceProfileService} = await import('../../src/services/PerformanceProfileService.ts');
+ await new PerformanceProfileService().capture({unit:'desktop.script.build-main',workload:'node-deployment-cjs',rounds:3,iterations:1,warmups:0}, run);
+} else await run();`;
 			execFileSync(
 				'bun',
-				[
-					'build',
-					'src/utils/deploymentConfig.ts',
-					'--target',
-					'node',
-					'--format',
-					format,
-					...(format === 'esm' ? ['--packages', 'external'] : []),
-					'--outfile',
-					bundle
-				],
+				format === 'cjs'
+					? ['-e', cjs]
+					: [
+							'build',
+							'src/utils/deploymentConfig.ts',
+							'--target',
+							'node',
+							'--format',
+							format,
+							...(format === 'esm' ? ['--packages', 'external'] : []),
+							'--outfile',
+							bundle
+						],
 				{ cwd: process.cwd(), stdio: 'pipe' }
 			);
 			const output = execFileSync(
