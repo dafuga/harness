@@ -7,6 +7,7 @@
 	import EntityContract from '../../entity-contract/EntityContract.svelte';
 	import EntitySource from '../EntitySource.svelte';
 	import EntityOverview from '../EntityOverview.svelte';
+	import EntityMeasures from '../EntityMeasures.svelte';
 	import EntityRelations from '../entity-relations/EntityRelations.svelte';
 	import EntityTests from '../entity-tests/EntityTests.svelte';
 	import EntityStates from '../../EntityStates.svelte';
@@ -67,6 +68,10 @@
 	<EntityOverview {entity} measure={summary.measure}>
 		{@render pane()}
 	</EntityOverview>
+	<details>
+		<summary>Measurements and frozen limits</summary>
+		<EntityMeasures unit={entity.unit} record={summary.record} />
+	</details>
 {/if}
 
 {#snippet verificationPanel()}
