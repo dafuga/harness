@@ -119,6 +119,8 @@
 			bind:edges
 			colorMode="dark"
 			fitView
+			minZoom={0.1}
+			fitViewOptions={{ minZoom: 0.1, maxZoom: 1 }}
 			deleteKey={null}
 			nodesDraggable={!readonly}
 			nodesConnectable={!readonly}
@@ -128,7 +130,7 @@
 			onconnect={connect}
 		>
 			<Background variant={BackgroundVariant.Dots} gap={28} />
-			<Controls showLock={false} />
+			<Controls showLock={false} fitViewOptions={{ minZoom: 0.1, maxZoom: 1 }} />
 		</SvelteFlow>
 	</div>
 </section>

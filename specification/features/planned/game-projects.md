@@ -60,3 +60,5 @@ Native game acceptance creates real 2D/3D Git projects through the creation form
 The game service lifecycle fixture performs multiple Git snapshots, historical reads and stale-write refusals; its bounded allowance matches the 20-second integration fixtures instead of the default 5-second unit budget. No behavior assertion was removed. Root discovery now excludes ignored generated-project caches and nested dependencies, proven by unchanged real-runner root and inherited-workspace fixtures.
 
 Full desktop verification also exposed older canonical fixture functions without the pure/shared callable metadata now required by main's helper catalog. The shared project fixture and named-reference fixture declare that eligibility; production catalog filtering and all existing behavior assertions remain intact.
+
+Mobile graph fitting allows zoom to 0.1 for both initial layout and the explicit Fit View control. Native authoring scenarios require the key checkpoint fully visible after adding a dependent node, before clicking it, in both dimensions and every standard viewport.

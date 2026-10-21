@@ -2,7 +2,7 @@
 	"name": "game-mobile-graph",
 	"goal": "Fit the entire authored checkpoint graph on mobile and retain a selectable key checkpoint",
 	"createdAt": "2026-10-21T12:14:42.827Z",
-	"updatedAt": "2026-10-21T12:14:45.058Z",
+	"updatedAt": "2026-10-21T12:18:44.275Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:18:42.670Z",
+			"evidence": "Immutable f9a734c8 native mobile scenarios fail after Fit View with key-node viewport ratio 0; both dimensions reproduce and captured graph pixels are retained."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:18:44.275Z",
+			"evidence": "Allow the graph viewport and Fit View to zoom down to 0.1 so the full authored dependency chain remains visible on narrow screens."
 		},
 		{
 			"id": "green",
