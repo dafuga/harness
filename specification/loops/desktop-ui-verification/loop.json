@@ -2,7 +2,7 @@
 	"name": "desktop-ui-verification",
 	"goal": "Desktop browser scenarios pass with current catalogs and controls, correct image lifecycles and no overflow or browser errors.",
 	"createdAt": "2026-10-21T18:23:33.780Z",
-	"updatedAt": "2026-10-21T19:08:53.728Z",
+	"updatedAt": "2026-10-21T19:12:42.793Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:12:42.793Z",
+			"evidence": "Unchanged stamped suite at 1fa2d58ce: 198 Desktop browser cases and 10 unit cases pass, including native Electron and browser-error assertions. Immutable green 3a0145f4c599fc903cfbcb8e4f034dfebe7a5bce6b59327d6ebcd995aef967ad matches frozen red 964e0fe2. Full verification remains pending."
 		},
 		{
 			"id": "verify",

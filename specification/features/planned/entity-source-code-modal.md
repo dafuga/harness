@@ -245,3 +245,15 @@ empty operation default in the reader to satisfy complexity without changing
 routes. All ten focused unit cases and four affected browser cases pass; fresh
 test-owned phone, header and image/thread screenshots have been inspected. The
 unchanged full regression and repository check remain required.
+
+At product commit `1fa2d58ce`, immutable green
+`3a0145f4c599fc903cfbcb8e4f034dfebe7a5bce6b59327d6ebcd995aef967ad`
+passes all 198 Desktop browser cases and ten unit cases with the frozen inputs.
+The 25 contract and shared-component guards pass, the registry validates, and
+all 35 changed definitions have explanations. Hub's 477 unit tests, types, lint,
+build and audit pass. Its browser suite first exposed ten stale selectors;
+separate test maintenance follows the existing search modal, exact card names
+and revision hover status without changing product code. All 28 hosted browser
+cases then pass, retaining comment, identity, project isolation and denial checks.
+Collaboration's complete check passes with 45 tests. Full root verification is
+still pending; these focused and workspace results do not replace it.
