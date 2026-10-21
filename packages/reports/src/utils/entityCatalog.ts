@@ -11,8 +11,8 @@ type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
 export interface CatalogRow {
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** First three distinct component, service or model consumers of this specific helper. */
-	usedIn?: Array<Pick<ExplorerEntity, 'id' | 'name' | 'category'>>;
+	/** Revision-scoped consumers for linked usage previews; helper rows keep the first three eligible consumers. */
+	usedIn?: ExplorerEntity[];
 	entity: ExplorerEntity;
 	id: string;
 	name: string;
@@ -74,6 +74,13 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 		changed: own.includes(entity.change ?? ''),
 		shared: isShared(related, entity.unit),
 		verdict: entity.verdict,
+		usedIn: [
+			...new Map(
+				[...related.usedBy, ...related.pages]
+					.filter((item) => item.change !== 'removed')
+					.map((item) => [item.id, item])
+			).values()
+		],
 		usedOn: names(related.pages),
 		usedBy: names(related.usedBy),
 		contains: names(related.components),
@@ -107,7 +114,7 @@ function helperConsumers(
 		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
 		if (!['components', 'services', 'models'].includes(entity.category)) continue;
 		seen.add(entity.id);
-		usedIn.push({ id: entity.id, name: entity.name, category: entity.category });
+		usedIn.push(entity);
 		if (usedIn.length === 3) break;
 	}
 	return usedIn;
