@@ -27,6 +27,11 @@
 				"name": "ExplorerTable.nav",
 				"type": "EntityNav",
 				"description": "Required navigation context for entity links and actions."
+			},
+			{
+				"name": "ExplorerTable.verification",
+				"type": "boolean",
+				"description": "Defaults to true in catalogs; false in relationship tabs to omit verification indicators."
 			}
 		],
 		"outputs": [
