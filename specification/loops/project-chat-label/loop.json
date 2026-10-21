@@ -2,7 +2,7 @@
 	"name": "project-chat-label",
 	"goal": "Read-only or unbound project views expose project chat without promising agent execution",
 	"createdAt": "2026-10-21T13:47:55.805Z",
-	"updatedAt": "2026-10-21T13:50:11.665Z",
+	"updatedAt": "2026-10-21T13:52:27.752Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:50:13.132Z",
+			"evidence": "Use the existing agent eligibility policy to name the launcher, preserving the writable controls and server-side authority checks."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T13:52:27.752Z",
+			"evidence": "Paired immutable d465c0163 red and a82e24c65 green use identical capability-matrix tests and runtime profile; all six cases now render their permitted launcher label."
 		},
 		{
 			"id": "verify",
