@@ -148,3 +148,5 @@ When changing a previously relocated helper's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in
 the existing follow-up ledger, then run the standardized unit-index guard.
+
+When merging ownership review metadata, reconcile follow-ups by unit and callable rather than concatenating duplicate identities. Keep the entry reviewed against the actual current definition, preserve the original move, and run the standardized unit-index guard before broad verification.
