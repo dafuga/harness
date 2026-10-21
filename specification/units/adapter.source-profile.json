@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.source-profile",
+	"kind": "adapter",
+	"title": "SourceProfileAdapter",
+	"responsibility": "Bind registered source operations to Harness observations in standard test runners.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/source-profile-adapter/SourceProfileAdapter.ts"],
+		"symbols": [
+			"SourceProfileAdapterConfig",
+			"SourceProfileAdapter",
+			"SourceProfileAdapter.constructor",
+			"SourceProfileAdapter.connect"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SourceProfileAdapter.constructor.config",
+				"type": "SourceProfileAdapterConfig"
+			}
+		],
+		"outputs": [
+			{
+				"name": "SourceProfileAdapter.connect",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/source-profile-adapter/SourceProfileAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/source-profile-adapter/SourceProfileAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
