@@ -1,5 +1,7 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
+import { observedTaskOperation, taskProfile } from '../../../test/support/taskProfiles';
+import { RunCancelled } from '../src/models/AgentRunner.types';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
@@ -64,7 +66,11 @@ test('Claude uses requested model, project cwd, stdin and subscription-only envi
 	const f = await fixture('claude-text');
 	expect((await f.adapter.discover()).available).toBe(true);
 	const request = turn(f.root);
-	expect(await f.adapter.run(request)).toEqual({ text: 'Public answer', model: 'selected' });
+	expect(
+		await observedTaskOperation('desktop.adapter.claude-cli', 'claude-turn-synthetic-child', () =>
+			f.adapter.run(request)
+		)
+	).toEqual({ text: 'Public answer', model: 'selected' });
 	expect(request.onText).toHaveBeenCalledExactlyOnceWith('Public answer');
 	const events = await f.events();
 	const run = events.find((e) => e.argv?.includes('-p'));
@@ -87,6 +93,11 @@ test.each(['codex-hang', 'claude-hang'])(
 	async (mode) => {
 		const f = await fixture(mode);
 		const controller = new AbortController();
+		await taskProfile(
+			'desktop.model.agent-runner-types',
+			'construct-cancelled-run-error',
+			() => new RunCancelled()
+		);
 		const unrelated = spawn(process.execPath, ['-e', 'setInterval(()=>{},1000)'], {
 			stdio: 'ignore'
 		});

@@ -1,4 +1,5 @@
 import { test, expect, vi } from 'vitest';
+import { observedTaskOperation } from '../../../../test/support/taskProfiles';
 import { createHash } from 'node:crypto';
 import { NativeAuthService } from '../../src/services/NativeAuthService';
 import { HostedHttpAdapter } from '../../src/adapters/hosted-http-adapter/HostedHttpAdapter';
@@ -61,12 +62,20 @@ function setup(wrongNonce = false) {
 }
 test('native PKCE exchanges only approved exact nonce/resource and keeps verifier and bearer outside renderer status', async () => {
 	const f = setup();
-	const started = await f.service.connect();
+	const started = await observedTaskOperation(
+		'desktop.service.native-auth',
+		'native-connect-synthetic-http',
+		() => f.service.connect()
+	);
 	expect(started.state).toBe('pending');
 	expect(f.open).toHaveBeenCalledWith(origin + '/native/fixture-id');
 	expect(JSON.stringify(started)).not.toContain('verifier');
 	f.advance();
-	const signedIn = await f.service.status();
+	const signedIn = await observedTaskOperation(
+		'desktop.service.native-auth',
+		'native-exchange-synthetic-http',
+		() => f.service.status()
+	);
 	expect(signedIn.state).toBe('signed-in');
 	expect(f.save).toHaveBeenCalledWith({
 		origin,
