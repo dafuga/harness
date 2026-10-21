@@ -122,6 +122,20 @@ const initializedModules = [
 		0
 	],
 	[
+		'imported object callback',
+		'import { isAbsolute } from "node:path"; export const fields = { read: isAbsolute };',
+		'Boolean(fields)',
+		'true',
+		0
+	],
+	[
+		'imported Map callback',
+		'import { isAbsolute } from "node:path"; export const fields = new Map([["read", isAbsolute]]);',
+		'Boolean(fields)',
+		'true',
+		0
+	],
+	[
 		'getter',
 		'export const fields = { get read() { throw Error("not called"); } };',
 		'Boolean(fields)',
