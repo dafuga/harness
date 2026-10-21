@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { attach, harnessJson } from './historyRepo';
 import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './verifyRepo';
+import { runCommand } from './cli';
 
 export interface Summary {
 	commit: string;
@@ -44,6 +45,8 @@ export interface Detail {
 		available: boolean;
 		units: Array<{
 			id: string;
+			owns: { source: string[] };
+			sourceFiles?: Array<{ path: string; media: string | null; gap?: string }>;
 			sourceMeasurements?: Array<{ metric: string; value: number | null; testedRevision: string }>;
 			helpers?: Array<{ name: string; source: string; inputs: Array<{ name: string }> }>;
 		}>;
@@ -81,6 +84,25 @@ export const build = (target: VerifyRepo, out: string, env = {}) =>
 
 export const detail = async (out: string, summary: Summary | undefined) =>
 	JSON.parse(await readFile(join(out, summary?.detail ?? ''), 'utf8')) as Detail;
+
+/** Owned source is the exact committed blob, across kinds and historical revisions. */
+export async function expectSourceArchive(repo: VerifyRepo, out: string, revisions: Summary[]) {
+	for (const summary of revisions) {
+		const stored = await detail(out, summary);
+		for (const unit of stored.registry.units) {
+			expect(unit.sourceFiles, `${unit.id} has revision-bound source`).toBeDefined();
+			for (const file of unit.sourceFiles ?? []) {
+				expect(file.media, file.path).toMatch(/^media\/[a-f0-9]{64}\.txt$/);
+				const original = await runCommand(
+					['git', 'show', `${stored.commit}:${file.path}`],
+					repo.root
+				);
+				expect(original.exitCode).toBe(0);
+				expect(await readFile(join(out, file.media!), 'utf8')).toBe(original.stdout);
+			}
+		}
+	}
+}
 
 /**
  * A repository with four commits: one whose only record failed, a verified baseline, a verified

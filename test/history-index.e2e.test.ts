@@ -5,6 +5,7 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import {
 	build,
 	expectSourceMeasures,
+	expectSourceArchive,
 	detail,
 	indexedRepo,
 	type Detail,
@@ -68,6 +69,7 @@ test('the index is deterministic and names every commit, verified or not', async
 		{ name: 'slugify', source: 'src/utils/slugify.ts', inputs: [{ name: 'slugify.input' }] }
 	]);
 	expect(stored.registry.units.find((unit) => unit.id === 'service.title')?.helpers).toEqual([]);
+	await expectSourceArchive(repo, one, index.revisions);
 	await rm(two, { recursive: true });
 }, 240_000);
 /** Every capture, inherited ones included, points at a file holding exactly its bytes. */

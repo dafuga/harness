@@ -7,6 +7,7 @@ import type {
 import { record } from './entityFixture';
 import { capture, ids, units } from './entityUnits';
 export type PreviewVariant =
+	| 'source'
 	| ''
 	| 'legacy'
 	| 'partial'

@@ -1,0 +1,56 @@
+{
+	"name": "entity-source-code-modal",
+	"goal": "Every catalog type opens actual source code for the selected revision in the shared modal; old or unavailable source remains explicit and closing preserves the current view.",
+	"createdAt": "2026-10-21T08:57:46.093Z",
+	"updatedAt": "2026-10-21T09:06:05.847Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-21T09:06:04.759Z",
+			"evidence": "All catalog kinds, source modal and existing Source tab acceptance are documented in specification/features/planned/entity-source-code-modal.md. Source belongs to the selected committed tree; missing text stays explicit."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-21T09:06:05.847Z",
+			"evidence": "Existing unified Source coverage asserted only ownership paths, not code. Extended the standard catalog fixture and browser scenarios, Desktop bridge cases and history-index Git-byte assertions. Added reusable source-history coverage for directory ownership, deduplication, binary/missing gaps, Unicode and dirty-tree isolation."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -27,6 +27,7 @@ import {
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
 import { withHelpers } from './entityPreviewHelpers';
+import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = new URLSearchParams(location.search).get('variant') as PreviewVariant | null;
@@ -79,6 +80,10 @@ const parents: Record<string, string | null> = {
 	[commits.middle]: commits.first,
 	[commits.tip]: commits.middle
 };
+if (variant === 'source') {
+	for (const [commit, detail] of Object.entries(stored))
+		stored[commit] = sourceSnapshots(sourceCatalog(detail), hashes ?? {});
+}
 /** The tip alone, or a selected commit beside the first parent the history gives it. */
 function viewOf(route: ExplorerLocation): View {
 	if (route.commit === null) {

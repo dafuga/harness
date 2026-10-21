@@ -5,6 +5,7 @@ import { deflateSync } from 'node:zlib';
 import { audioFixture } from './audioFixture';
 import { stateRecord } from './entityPreviewData';
 import { commits } from './entityUnits';
+import { sourcePaths, sourceText } from './entitySourceFixture';
 
 type Colour = [number, number, number];
 const tints: Record<string, Colour> = { a: [36, 52, 71], b: [20, 39, 58], c: [16, 44, 52] };
@@ -87,6 +88,14 @@ function run(state: string, kind: string) {
 export function entityPreviewAssets(directory: string): Record<string, string> {
 	mkdirSync(join(directory, 'media'), { recursive: true });
 	const hashes: Record<string, string> = {};
+	for (const commit of Object.values(commits)) {
+		for (const path of sourcePaths) {
+			const text = sourceText(commit, path);
+			const hash = createHash('sha256').update(text).digest('hex');
+			hashes[`source:${commit}:${path}`] = hash;
+			writeFileSync(join(directory, `media/${hash}.txt`), text);
+		}
+	}
 	for (const commit of Object.values(commits)) {
 		const states = stateRecord(commit).scenarios.flatMap((scenario) => scenario.states);
 		for (const state of states) {
