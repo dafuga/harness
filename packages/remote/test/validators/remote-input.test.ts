@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { RemoteFailure } from '../../src/models/Remote.types';
 import { RemoteInputValidator } from '../../src/validators/RemoteInputValidator';
@@ -57,34 +58,37 @@ test('a change names the branch and the full commit it applies to', () => {
 	for (const bad of refused)
 		expect(code(() => validator.revision({ revision: bad }))).toBe('revision-required');
 });
-test('control inputs are exact', () => {
-	const deviceId = 'd'.repeat(40),
-		approval = { pairingId, deviceId, projectIds: [projectId], agents: true };
-	expect(validator.approval(approval)).toEqual(approval);
-	expect(validator.approval({ ...approval, agents: false, comments: false })).toMatchObject({
-		agents: false,
-		comments: false
-	});
-	expect(validator.approval({ ...approval, comments: true })).toMatchObject({
-		agents: true,
-		comments: true
-	});
-	expect(code(() => validator.approval({ ...approval, comments: false }))).toBe('invalid-message');
-	expect(validator.pairing({ pairingId })).toEqual({ pairingId });
-	expect(validator.device({ deviceId: 'd'.repeat(40) })).toEqual({ deviceId: 'd'.repeat(40) });
-	const refused: unknown[] = [
-		{ ...approval, projectIds: [] },
-		{ ...approval, projectIds: [projectId, projectId] },
-		{ ...approval, projectIds: ['a6196e55-8746-4bc5-bfeb-5e2c8771e241'] },
-		{ ...approval, projectIds: Array.from({ length: 65 }, () => projectId) },
-		{ ...approval, agents: 'yes' },
-		{ ...approval, pairingId: 'nope' },
-		{ projectIds: [projectId], agents: true },
-		{ pairingId, projectIds: [projectId], agents: true },
-		{ ...approval, deviceId: 'D'.repeat(40) }
-	];
-	for (const input of refused)
-		expect(code(() => validator.approval(input))).toBe('invalid-message');
-	expect(code(() => validator.pairing({ pairingId: 'B'.repeat(32) }))).toBe('invalid-message');
-	expect(code(() => validator.device({ deviceId: 'nope' }))).toBe('invalid-message');
-});
+test('control inputs are exact', () =>
+	measureWorkload('remote.validator.remote-input', 'approval-input-validation', () => {
+		const deviceId = 'd'.repeat(40),
+			approval = { pairingId, deviceId, projectIds: [projectId], agents: true };
+		expect(validator.approval(approval)).toEqual(approval);
+		expect(validator.approval({ ...approval, agents: false, comments: false })).toMatchObject({
+			agents: false,
+			comments: false
+		});
+		expect(validator.approval({ ...approval, comments: true })).toMatchObject({
+			agents: true,
+			comments: true
+		});
+		expect(code(() => validator.approval({ ...approval, comments: false }))).toBe(
+			'invalid-message'
+		);
+		expect(validator.pairing({ pairingId })).toEqual({ pairingId });
+		expect(validator.device({ deviceId: 'd'.repeat(40) })).toEqual({ deviceId: 'd'.repeat(40) });
+		const refused: unknown[] = [
+			{ ...approval, projectIds: [] },
+			{ ...approval, projectIds: [projectId, projectId] },
+			{ ...approval, projectIds: ['a6196e55-8746-4bc5-bfeb-5e2c8771e241'] },
+			{ ...approval, projectIds: Array.from({ length: 65 }, () => projectId) },
+			{ ...approval, agents: 'yes' },
+			{ ...approval, pairingId: 'nope' },
+			{ projectIds: [projectId], agents: true },
+			{ pairingId, projectIds: [projectId], agents: true },
+			{ ...approval, deviceId: 'D'.repeat(40) }
+		];
+		for (const input of refused)
+			expect(code(() => validator.approval(input))).toBe('invalid-message');
+		expect(code(() => validator.pairing({ pairingId: 'B'.repeat(32) }))).toBe('invalid-message');
+		expect(code(() => validator.device({ deviceId: 'nope' }))).toBe('invalid-message');
+	}));

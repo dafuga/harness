@@ -11,10 +11,11 @@ const content = (page: Page) => page.locator('.ex-content');
 const titled = (page: Page, name: string) =>
 	expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
 const measured = async (page: Page) => {
-	await expect(page.getByRole('region', { name: 'Size', exact: true })).toBeVisible();
-	await expect(
-		page.getByRole('region', { name: 'Performance profile', exact: true })
-	).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Size', exact: true })).toHaveCount(0);
+	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+	await expect(profile).toBeVisible();
+	for (const label of ['Source size', 'Emitted size', 'Complexity'])
+		await expect(profile).toContainText(label);
 };
 /**
  * How each state of the explorer scenario is reached in the synthetic history. Every state is a
@@ -67,9 +68,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	// One current screenshot of a page at a branch tip that was verified.
 	async 'page-current'(page) {
 		await page.goto(tip(explorerBranch, `pages/${units.page}`));
-		await expect(
-			content(page).getByText(`Current snapshot · ${short(commits.approved)}`)
-		).toBeVisible();
+		await expect(content(page).getByText(`Branch tip · ${short(commits.approved)}`)).toBeVisible();
 	},
 	// The parent's and the selected commit's screenshots of the same state and viewport.
 	async 'page-commit'(page) {

@@ -1,4 +1,10 @@
-import type { RemoteGrant } from './Remote.types';
+/** The projects and permissions explicitly approved for one phone. */
+export interface RemoteGrant {
+	projects: { id: string; name: string }[];
+	/** False grants read-only access; omitted preserves older read-and-comment grants. */
+	comments?: boolean;
+	agents: boolean;
+}
 
 /**
  * A one-time offer shown on the computer as a QR code. It lets a phone ask; it is no credential,

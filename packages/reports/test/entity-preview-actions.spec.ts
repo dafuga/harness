@@ -1,8 +1,7 @@
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
-	reviewPrivateFunctions,
-	reviewUsageCards
+	reviewPrivateFunctions
 } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
 import {
@@ -15,6 +14,7 @@ import {
 	reviewStates
 } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
+import { reviewUsage } from './entityPreviewUsage';
 const page = { category: 'pages' as const, entity: ids.page };
 for (const [name, size] of Object.entries(viewports)) {
 	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
@@ -35,32 +35,8 @@ for (const [name, size] of Object.entries(viewports)) {
 			['services', ids.store],
 			['configs', ids.settings]
 		] as const) {
-			await open(tab, { category, entity, commit: commits.middle });
-			await capture(tab, `overview-usage-${category}-${name}`);
-			await expect(
-				tab.getByRole('region', { name: /^(Used In|Uses)$/ }),
-				'overview excludes usage sections'
-			).toHaveCount(0);
-			for (const [label, value] of [
-				['Used In', 'used-in'],
-				['Uses', 'uses']
-			] as const) {
-				await tab.getByRole('tab', { name: label, exact: true }).click();
-				await expect(tab.getByRole('region', { name: label, exact: true })).toBeVisible();
-				await capture(tab, `usage-${category}-${value}-${name}`);
-				await expect(tab.locator('.ex-relations .hx-verdict'), 'no row marks').toHaveCount(0);
-				await reviewUsageCards(tab, category, value);
-				await expect(tab.locator('.ex-head .hx-verdict')).toHaveCount(1);
-				await expect(
-					tab.getByRole('region', { name: label === 'Uses' ? 'Used In' : 'Uses', exact: true })
-				).toHaveCount(0);
-				expect(await where(tab)).toMatchObject({
-					category,
-					entity,
-					commit: commits.middle,
-					tab: value
-				});
-			}
+			for (const commit of [null, commits.middle])
+				await reviewUsage(tab, { category, entity, commit }, name);
 		}
 	});
 	test(`component and function lists use a card grid at ${name} width`, async ({ page: tab }) => {
@@ -149,8 +125,8 @@ for (const [name, size] of Object.entries(viewports)) {
 		await expect(tab.locator('body')).not.toContainText('Older commits were left out');
 		const content = await tab.locator('.ex-content').elementHandle();
 		const start = await tab.evaluate(() => performance.now());
-		await tab.getByRole('tab', { name: 'Used In', exact: true }).click();
-		await expect(tab.getByRole('tabpanel', { name: /used in/i })).toBeVisible();
+		await tab.getByRole('tab', { name: 'Uses', exact: true }).click();
+		await expect(tab.getByRole('tabpanel', { name: /uses/i })).toBeVisible();
 		const elapsed = (await tab.evaluate(() => performance.now())) - start;
 		const retained = await content!.evaluate((node) => node.isConnected);
 		const categoryStart = await tab.evaluate(() => performance.now());

@@ -34,9 +34,9 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(page.getByRole('link', { name: 'Models', exact: true })).toBeVisible();
 	// The title itself is clicked, as a reader does, not an address that the test put together.
 	await titled(page).click();
-	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
+	await expectPath(page, at('main', commits.approved, `helpers/slugify/contract`));
 	await expect(commit(page)).toHaveValue(commits.approved);
-	await expect(page.getByRole('heading', { level: 1, name: 'Slugify' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'slugify' })).toBeVisible();
 	await page.goBack();
 	await expectPath(page, at('main', commits.approved, 'functions'));
 	await page.getByRole('link', { name: 'Models', exact: true }).click();
@@ -67,7 +67,7 @@ test('the keyboard reaches the controls, changes the order and opens an entity',
 	await page.getByRole('button', { name: 'Done', exact: true }).click();
 	await titled(page).focus();
 	await page.keyboard.press('Enter');
-	await expectPath(page, at('main', commits.approved, `functions/${units.slugify}`));
+	await expectPath(page, at('main', commits.approved, `helpers/slugify/contract`));
 });
 
 test('private helpers stay off the shared catalog while their historical pages remain reachable', async ({
@@ -152,7 +152,7 @@ test.describe('a registry of several hundred units', () => {
 		await expect(cards(page).first()).toHaveAttribute('aria-label', 'unit309');
 		await titled(page).focus();
 		await page.keyboard.press('Enter');
-		await expectPath(page, tip('main', 'functions/function.generated-309'));
+		await expectPath(page, tip('main', 'helpers/unit309/contract'));
 	});
 
 	test('on a phone the list reaches any unit without scrolling sideways', async ({ page }) => {
@@ -161,7 +161,7 @@ test.describe('a registry of several hundred units', () => {
 		await search(page).fill('generated 477');
 		await expect(cards(page)).toHaveCount(1);
 		expect(await fits(page)).toBe(true);
-		await cards(page).getByRole('link').click();
-		await expectPath(page, tip('main', 'functions/function.generated-477'));
+		await cards(page).locator('.ex-function-call').click();
+		await expectPath(page, tip('main', 'helpers/unit477/contract'));
 	});
 });

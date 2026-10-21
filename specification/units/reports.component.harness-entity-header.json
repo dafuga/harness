@@ -16,7 +16,7 @@
 			{
 				"name": "EntityHeader.entity",
 				"type": "ExplorerEntity",
-				"description": "Required name, category, role, purpose, verdict and optional app route/change. Removed entities receive a removed-at-commit badge. Page route links are enabled only for nonempty routes without bracket, colon, asterisk or parameter-pattern characters checked here."
+				"description": "Required identity, category, role, purpose and verdict. Page headers keep identity concise; purpose and app route remain in Contract."
 			},
 			{
 				"name": "EntityHeader.nav",
@@ -43,7 +43,7 @@
 			{
 				"name": "EntityHeader",
 				"type": "markup",
-				"description": "Entity identity, verification and one tab bar. Pages also show their app route. Source is optional; navigation keeps the branch and commit. Component screenshots stay above every tab. Private function breadcrumbs point to the owner when known, otherwise say Function; they never link to Helpers."
+				"description": "Entity identity, verification and one tab bar. Pages omit Used In, purpose prose and route metadata. Component screenshots remain above tabs. Private function breadcrumbs identify their recorded owner and never link to Helpers."
 			}
 		],
 		"errors": []

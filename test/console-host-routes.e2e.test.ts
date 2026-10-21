@@ -31,7 +31,7 @@ const main = (commit: string, rest: string) => `/harness/branch/main/commit/${co
 const tip = (rest: string) => `/harness/branch/main/${rest}`;
 /** The whole branch is one segment of an explorer address. */
 const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
-const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
+const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
 const pathOf = (page: Page) => new URL(page.url()).pathname;
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
@@ -107,16 +107,16 @@ test('in a browser each branch, commit and category of the installed console is 
 	await page.waitForURL(`**${tip('shells')}`);
 	await page.getByRole('heading', { level: 1, name: 'Shells' }).waitFor();
 	expect(await commit.inputValue()).toBe(head);
-	await links.filter({ hasText: 'Functions' }).click();
+	await links.filter({ hasText: 'Helpers' }).click();
 	await page.waitForURL(`**${tip('functions')}`);
 	expect(await commit.inputValue()).toBe(head);
 	await commit.selectOption(other);
 	await page.waitForURL(`**${main(other, 'functions')}`);
-	await page.getByRole('heading', { level: 1, name: 'Functions' }).waitFor();
+	await page.getByRole('heading', { level: 1, name: 'Helpers' }).waitFor();
 
 	// A reload keeps the page, and back and forward return to the pages that were visited.
 	await page.reload();
-	await page.getByRole('heading', { level: 1, name: 'Functions' }).waitFor();
+	await page.getByRole('heading', { level: 1, name: 'Helpers' }).waitFor();
 	expect(await commit.inputValue()).toBe(other);
 	await page.goBack();
 	await page.waitForURL(`**${tip('functions')}`);

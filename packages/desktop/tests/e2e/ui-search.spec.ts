@@ -21,7 +21,7 @@ const sixth = [
 	['Page', 'Alpha activity'],
 	['Shell', 'Alpha order frame'],
 	['Component', 'Alpha button'],
-	['Function', 'Alpha format time'],
+	['Helper', 'Alpha format time'],
 	['Config', 'Alpha order limits'],
 	['Service', 'Alpha refund service']
 ];
@@ -119,7 +119,7 @@ test('another project is never searched', async ({ page }, info) => {
 	await page.goto(`/projects/${beta}/harness/branch/main/pages`);
 	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 	await field(page).fill('only');
-	await expect(options(page)).toHaveText([/Function.*Beta only function/]);
+	await expect(options(page)).toHaveText([/Helper.*Beta only function/]);
 	await field(page).fill('alpha');
 	await expect(page.getByText('No entity matches “alpha”')).toBeVisible();
 });

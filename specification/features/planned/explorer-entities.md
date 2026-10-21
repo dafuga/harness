@@ -31,8 +31,9 @@ props name; the host decides the address and supplies the data.
 - An entity is named by its title and described by its responsibility. No file name, path,
   symbol list or raw source is in an Overview, in Relationships, in Tests, in History or in the
   default Details tab. Source ownership is rendered only when Details → Source is the open tab.
-- Visual overviews show their screenshot or commit comparison first, followed by Contract, Size
-  and Performance profile. Contract, Used In and Uses appear only in their dedicated tabs, never embedded
+- Visual overviews show their screenshot or commit comparison first, followed by one Performance
+  profile card containing size, complexity and performance measurements. Standalone Size cards are
+  omitted in both overview and details. Contract, Used In and Uses appear only in their dedicated tabs, never embedded
   in any overview. The Contract tab shows each field’s data type, description and examples. Declared examples remain distinct from illustrative primitive examples; opaque types without examples state the gap. Details retain the same typed contract and measurements. A metric nothing measured
   reads `Not measured`; it is never a zero. Timings taken under different profiles or targets are
   separate rows and are never joined or averaged. A declared tolerance is shown as the
