@@ -9,7 +9,12 @@
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	type Kind = Exclude<ExplorerCategory, 'pages'>;
-	let { category, rows, nav }: { category: Kind; rows: CatalogRow[]; nav: EntityNav } = $props();
+	let {
+		category,
+		rows,
+		nav,
+		verification = true
+	}: { category: Kind; rows: CatalogRow[]; nav: EntityNav; verification?: boolean } = $props();
 	/** What uses a row: the entities that use it directly, else the pages it is shown on. */
 	const users = (row: CatalogRow) => listed(row.usedBy.length ? row.usedBy : row.usedOn);
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
@@ -52,7 +57,7 @@
 			<tr>
 				<th scope="col">{one}</th>
 				{#each shown as [title], position (position)}<th scope="col">{title}</th>{/each}
-				<th scope="col">Verification</th>
+				{#if verification}<th scope="col">Verification</th>{/if}
 				<th scope="col"><span class="ex-hidden">Open</span></th>
 			</tr>
 		</thead>
@@ -74,7 +79,8 @@
 							>{read(row)}</td
 						>
 					{/each}
-					<td data-label="Verification"><HarnessVerdict {...row.verdict} /></td>
+					{#if verification}<td data-label="Verification"><HarnessVerdict {...row.verdict} /></td
+						>{/if}
 					<td class="ex-open">
 						<HarnessAction
 							href={nav.href(open(row))}

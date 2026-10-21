@@ -3,7 +3,7 @@
 	"id": "reports.function.explorer-history",
 	"kind": "function",
 	"title": "Entity change history",
-	"responsibility": "Builds ancestor-only entity history with recorded measurements, reviews and revision detail.",
+	"responsibility": "Builds ancestor-only history and reads exact-revision source measurements independently of verification records.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {

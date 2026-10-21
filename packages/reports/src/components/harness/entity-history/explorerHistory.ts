@@ -10,7 +10,13 @@ import { explorerVerdict } from '../../../utils/explorer-verdict/explorerVerdict
  */
 export function historyDetail(detail: HarnessRevision, unit: string): ExplorerHistoryDetail {
 	const found = detail.registry.units.find((item) => item.id === unit && item.status === 'active');
+	const source = (metric: string) =>
+		found?.sourceMeasurements?.find(
+			(item) => item.metric === metric && !item.workload && !item.profile
+		)?.value ?? null;
 	return {
+		sourceSize: source('source-bytes'),
+		sourceComplexity: source('complexity'),
 		known: detail.registry.available && Boolean(detail.sourceImpact),
 		...(detail.regressions?.length ? { regressions: detail.regressions } : {}),
 		present: Boolean(found),

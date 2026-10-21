@@ -10,7 +10,13 @@ export function skillRules(projectType: string): string {
 }
 
 function regressionLoopRules(): string {
-	return `## Bug and Regression Loops
+	return `## Callable usage examples
+
+- Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.
+- Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests, not the Examples tab.
+- Run \`harness units check\`: missing helper examples, placeholder titles and repeated titles or calls must fail. Re-indexing must preserve authored examples. Each helper detail page shows only its own examples at the viewed commit.
+
+## Bug and Regression Loops
 
 ${bugRepairPolicy()
 	.map((rule) => `- ${rule}`)

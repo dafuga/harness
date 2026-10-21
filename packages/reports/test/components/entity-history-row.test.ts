@@ -55,23 +55,28 @@ test('a commit with no recorded reason is told by its subject, held to the limit
 	expect(words(told).trim().endsWith('…')).toBe(true);
 	expect(subject.startsWith(words(told).trim().slice(0, -2))).toBe(true);
 	// Nothing is measured and nothing was tried: both are said, neither is a zero.
-	expect(words(body)).toContain('— Not measured Not measured Not measured');
+	expect(words(body)).toContain('Not measured Not measured Not measured');
 	expect(body).not.toContain('Full reasons');
 });
 
-test('what the commit did to the entity is a pill, also once only its revision says so', () => {
-	expect(words(shown(row({ change: 'added' })))).toContain('bbbbbbb Added');
-	expect(words(shown(row({ change: 'removed' })))).toContain('bbbbbbb Removed');
-	expect(words(shown(row()))).not.toMatch(/Added|Removed/);
+test('commit rows omit lifecycle badges from index and revision change metadata', () => {
+	for (const change of ['added', 'removed', 'direct', 'indirect'] as const) {
+		const body = shown(row({ change }));
+		expect(words(body), 'History lifecycle badges').not.toMatch(/\bAdded\b|\bRemoved\b/);
+		expect(words(body)).toContain('bbbbbbb');
+	}
 	const unknown = row({ standing: 'unknown', change: null, gap: 'Not recorded.' });
-	expect(words(shown(unknown, read({ change: 'added' })))).toContain('bbbbbbb Added');
+	expect(
+		words(shown(unknown, read({ change: 'added' }))),
+		'History lifecycle badges'
+	).not.toContain('Added');
 });
 
-test('the evidence of a row is the mark alone, with its status and reason in the tooltip', () => {
+test('the commit itself opens the revision without evidence or a duplicate action', () => {
 	const body = shown(row());
-	expect(verdicts(body)).toEqual([
-		{ passed: false, name: 'Evidence missing', reasons: ['No record judges it.'] }
-	]);
-	expect(words(body)).not.toMatch(/Evidence missing|No record judges it/);
-	expect(body).toContain('aria-label="View revision bbbbbbb"');
+	expect(verdicts(body), 'Compact commit history').toEqual([]);
+	expect(body).not.toContain('View revision');
+	expect(body).toContain(`href="${nav(to).href(to)}"`);
+	expect(body).toContain('title="2026-10-09T09:00:00.000Z"');
+	expect(words(body)).toMatch(/ago|yesterday|today|just now/);
 });

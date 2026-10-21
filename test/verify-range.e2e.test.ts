@@ -21,7 +21,7 @@ const grow = (source: string) =>
 		"\tif (input.length > 99 || input.includes('?')) return input;\n\treturn input"
 	);
 const growth = [
-	'function.slugify: source-bytes grew from 87 to 148 without a recorded approval',
+	'function.slugify: source-bytes grew from 100 to 161 without a recorded approval',
 	'function.slugify: complexity grew from 1 to 3 without a recorded approval'
 ];
 /** A behaviour change of the same size and complexity, so only reasons and tests are at stake. */

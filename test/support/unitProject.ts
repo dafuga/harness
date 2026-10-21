@@ -18,6 +18,22 @@ export async function unitProject(kind: 'app' | 'lib'): Promise<UnitProject> {
 	return projectAt(join(parent, 'demo'));
 }
 
+/** A reviewed pure helper shared by two named consumers for registry coverage. */
+export async function sharedDateHelperProject(): Promise<UnitProject> {
+	const project = await unitProject('lib');
+	await project.write(
+		'src/utils/formatDate.ts',
+		'/** @pure */\nexport function formatDate(iso: string): string { return new Date(iso).toISOString(); }\n'
+	);
+	for (const name of ['first', 'second'])
+		await project.write(
+			`src/utils/${name}.ts`,
+			`import { formatDate } from './formatDate';\nexport function ${name}(value: string) { return formatDate(value); }`
+		);
+	await project.harness(['units', 'index', '--write']);
+	return project;
+}
+
 export function projectAt(root: string): UnitProject {
 	const read = (path: string) => readFile(join(root, path), 'utf8');
 	const harness = (args: string[], expectSuccess = true) => runHarness(args, root, expectSuccess);
@@ -56,3 +72,12 @@ export const titleServiceSource = [
 	'}',
 	''
 ].join('\n');
+
+export const utcDateExamples = [
+	{
+		name: 'UTC date',
+		call: 'formatDate("2026-10-20")',
+		input: ['2026-10-20'],
+		output: '2026-10-20T00:00:00.000Z'
+	}
+];

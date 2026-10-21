@@ -27,7 +27,8 @@
 	/** The one screen an address is; this content holds none of its own. */
 	let Shown = $derived.by((): Screen => {
 		const { category, entity, section } = host.route;
-		if (!entity) return category === 'pages' ? ExplorerPagesScreen : ExplorerCatalogScreen;
+		if (!entity && !host.route.helper)
+			return category === 'pages' ? ExplorerPagesScreen : ExplorerCatalogScreen;
 		if (section === 'details') return EntityDetailsScreen;
 		return section === 'history' ? EntityHistoryScreen : overviews[kind];
 	});
