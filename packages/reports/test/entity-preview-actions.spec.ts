@@ -142,6 +142,8 @@ for (const [name, size] of Object.entries(viewports)) {
 	}, info) => {
 		await tab.setViewportSize(size);
 		await open(tab, page, 'console');
+		await capture(tab, `quiet-console-${name}`);
+		await expect(tab.locator('.hx-shell')).not.toContainText('Older commits were left out');
 		const content = await tab.locator('.ex-content').elementHandle();
 		const start = await tab.evaluate(() => performance.now());
 		await tab.getByRole('tab', { name: 'Used In', exact: true }).click();
@@ -154,20 +156,19 @@ for (const [name, size] of Object.entries(viewports)) {
 			.getByRole('link', { name: 'Helpers', exact: true })
 			.click();
 		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
-			'1001 of 1001 helpers shown'
+			'1003 of 1003 helpers shown'
 		);
 		const categoryMs = (await tab.evaluate(() => performance.now())) - categoryStart;
 		const searchStart = await tab.evaluate(() => performance.now());
 		await tab.getByRole('searchbox', { name: 'Search helpers' }).fill('generated 999');
 		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
-			'1 of 1001 helpers shown'
+			'1 of 1003 helpers shown'
 		);
 		const searchMs = (await tab.evaluate(() => performance.now())) - searchStart;
 		await tab.evaluate(async () => {
 			await document.fonts.ready;
 		});
 		await capture(tab, `responsive-console-${name}`);
-		await expect(tab.locator('.hx-shell')).not.toContainText('Older commits were left out');
 		await info.attach('interaction-ms', {
 			body: JSON.stringify({ tab: elapsed, category: categoryMs, search: searchMs }),
 			contentType: 'application/json'
