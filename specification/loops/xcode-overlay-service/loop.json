@@ -6,7 +6,7 @@
 	"name": "xcode-overlay-service",
 	"goal": "Recognize only the selected signed Xcode overlay service after verified system adoption; preserve refusal of lookalikes and unproven leftovers.",
 	"createdAt": "2026-10-21T23:24:09.052Z",
-	"updatedAt": "2026-10-21T23:27:09.198Z",
+	"updatedAt": "2026-10-21T23:30:37.249Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -43,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:30:33.681Z",
+			"evidence": "c6b5f84c registers only the exact IBAgent-iOS overlay path and Apple identity under the selected canonical Xcode. Guarded names protect lookalikes without accepting them. All 15 standard service/cleanup tests and root types, full lint and audit pass."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:30:35.650Z",
+			"evidence": "Frozen same-environment red 3a11e5c4 at db6b9f92b reproduces the private-instead-of-delegated defect; paired green e64b2910 at c6b5f84c passes identical tests and fixture inputs. A separately launched green was rejected for environment mismatch and is not proof."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:30:37.249Z",
+			"evidence": "The isolated original-policy snapshot rejects the expanded standard matrix; restored exact-service policy passes all 15 cases with wrong-signature, lookalike, unadopted and ordinary-private cleanup controls intact. A real native snapshot rerun is pending, so final verification remains open."
 		},
 		{
 			"id": "verify",
