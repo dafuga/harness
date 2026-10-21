@@ -1,7 +1,12 @@
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { slugifySource, titleServiceSource, unitProject } from './support/unitProject';
+import {
+	slugifySource,
+	titleServiceSource,
+	unitProject,
+	sharedDateHelperProject
+} from './support/unitProject';
 
 interface Manifest {
 	id: string;
@@ -160,17 +165,7 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 }, 60_000);
 
 test('index records reviewed shared helper contracts for clients without source rescans', async () => {
-	const project = await unitProject('lib');
-	await project.write(
-		'src/utils/formatDate.ts',
-		'/** @pure */\nexport function formatDate(iso: string): string { return new Date(iso).toISOString(); }\n'
-	);
-	for (const name of ['first', 'second'])
-		await project.write(
-			`src/utils/${name}.ts`,
-			`import { formatDate } from './formatDate';\nexport function ${name}(value: string) { return formatDate(value); }`
-		);
-	await project.harness(['units', 'index', '--write']);
+	const project = await sharedDateHelperProject();
 	const unit = await project.json<{ helperContracts: unknown[] }>(
 		'specification/units/function.format-date.json'
 	);

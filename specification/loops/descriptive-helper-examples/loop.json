@@ -2,7 +2,7 @@
 	"name": "descriptive-helper-examples",
 	"goal": "Public helper examples explain distinct behaviors with descriptive titles and no redundant demonstrations",
 	"createdAt": "2026-10-21T08:45:15.928Z",
-	"updatedAt": "2026-10-21T08:49:46.764Z",
+	"updatedAt": "2026-10-21T08:53:44.780Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -41,17 +41,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T08:52:18.125Z",
+			"evidence": "5832974a changes all ten public helper contracts, current registry guard and generated tenant guidance without changing helper implementations."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T08:52:19.592Z",
+			"evidence": "5832974a passes the identical snapshot command, frozen corpus and environment paired with failing 4d66bfe3; all eleven tests pass."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T08:53:44.780Z",
+			"evidence": "Isolated snapshot restored the old validator: indexed placeholder examples made the unchanged CLI test fail. Restoring the repair passed. Logs are retained in /tmp/harness-helper-behavior-guard-{red,green}.log."
 		},
 		{
 			"id": "verify",
