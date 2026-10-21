@@ -1,3 +1,4 @@
+import { keepEdits } from './game-unsaved-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 import { fakeProject } from './ui-workspace-fixture';
 if (process.env.TAKE_SCREENSHOT === 'true') test.use({ video: 'on' });
@@ -85,6 +86,7 @@ test('saved graph edits persist, invalid references block saves and history is r
 	const url = '/game?projectId=local-' + 'a'.repeat(64);
 	await page.goto(url);
 	await page.getByLabel('View title', { exact: true }).fill('Saved courtyard');
+	await keepEdits(page);
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 	await page.reload();
@@ -95,6 +97,7 @@ test('saved graph edits persist, invalid references block saves and history is r
 	await page.getByLabel('Prerequisites', { exact: true }).press('Tab');
 	await expect(page.getByRole('alert')).toContainText('Unknown checkpoint: missing-node');
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeDisabled();
+	page.once('dialog', (dialog) => dialog.accept());
 	await page.goto(url + '&readonly=1&commit=' + 'c'.repeat(40));
 	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);

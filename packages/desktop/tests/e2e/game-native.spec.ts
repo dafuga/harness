@@ -1,3 +1,4 @@
+import { keepEdits } from './game-unsaved-fixture';
 import {
 	expect,
 	test,
@@ -55,6 +56,7 @@ async function author(page: Page) {
 	await expect(
 		page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
 	).toBeVisible();
+	await keepEdits(page);
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 }
@@ -106,6 +108,7 @@ async function history(page: Page, root: string) {
 	const url = new URL(page.url());
 	url.searchParams.set('commit', commit);
 	url.searchParams.set('readonly', '1');
+	page.once('dialog', (dialog) => dialog.accept());
 	await page.goto(url.href);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);
