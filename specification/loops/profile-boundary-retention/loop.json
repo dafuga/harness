@@ -6,7 +6,7 @@
 	"name": "profile-boundary-retention",
 	"goal": "Retain declared partial workload boundaries from actual child captures through benchmark parsing and verification assembly.",
 	"createdAt": "2026-10-21T23:04:05.532Z",
-	"updatedAt": "2026-10-21T23:04:06.777Z",
+	"updatedAt": "2026-10-21T23:07:28.013Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,12 +29,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:07:27.131Z",
+			"evidence": "Sealed red 64ee9dd4 at 360328425 fails the standard actual-child assertion because benchmark parsing drops partial. The prior RSS, unique-path, single-operation and failed-invocation checks remain unchanged."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:07:28.013Z",
+			"evidence": "Add the already supported optional string field to the reported benchmark schema, preserving its type validation through existing assembly. Retain immutable original captures and rerun real native/retention workloads on corrected source; do not rewrite historical records."
 		},
 		{
 			"id": "implement",

@@ -106,6 +106,7 @@ export const reportedMeasurementSchema = z.object({
 	unitOfMeasure: text,
 	value: z.number().nullable(),
 	unavailable: z.string().optional(),
+	partial: z.string().optional(),
 	method: text,
 	workload: z.string().nullable(),
 	target: z.enum(runtimeKinds).optional(),
