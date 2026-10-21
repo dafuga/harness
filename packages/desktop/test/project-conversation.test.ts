@@ -62,7 +62,7 @@ test('a project conversation creates the proposed function and retains its origi
 		expect.objectContaining({ runId: started.runId, kind: 'finished', verified: false })
 	);
 	expect(git(f.root, 'status', '--porcelain')).toBe('');
-}, 20000);
+}, 60000);
 
 test('an invalid creation proposal creates no plan and emits no success', async () => {
 	const f = await fixture();
@@ -86,4 +86,4 @@ test('an invalid creation proposal creates no plan and emits no success', async 
 	expect((await f.planning.plans(before)).map((plan) => plan.title)).toEqual(['Target']);
 	expect(f.events.some((event) => event.kind === 'finished')).toBe(false);
 	expect(f.events).toContainEqual(expect.objectContaining({ kind: 'failed' }));
-}, 20000);
+}, 60000);

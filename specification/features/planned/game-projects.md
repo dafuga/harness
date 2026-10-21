@@ -2,11 +2,14 @@
 
 ## Overview
 
-Create Harness apps or games while retaining app pages. Game views separate UI and visual direction from deterministic mechanics. Interactive checkpoint graphs describe executable conditions and consequences and give coding agents implementation guidance. Both 2D and 3D simple scenes can feed an opt-in AI video renderer.
+Create Harness apps or games while retaining app pages. Game views separate UI and visual direction from deterministic mechanics. Interactive checkpoint graphs describe executable conditions and consequences and give coding agents implementation guidance. Native Three.js renders 2D and 3D gameplay using saved assets; AI video rendering remains an opt-in experiment.
 
 ## Acceptance Criteria
 
 - CLI and desktop project creation support App or Game, with 2D/3D selection for games; existing app/library behavior remains compatible.
+- Generated games serve a playable `/game` route on first visits and reloads. Explicit `game.json` imports must not shadow the route.
+- Both dimensions retain passing normal project checks after adding app/game scaffolds and saving an authored game document. The game-file formatter matches the repository's canonical JSON encoding.
+- Native desktop, tablet and phone scenarios create real Git projects, author views and mechanics, edit and fit checkpoint graphs, save/reopen image references, play and inspect read-only history. Paid image-provider calls are controlled at the HTTP boundary in automated acceptance.
 - Game views, mechanics contracts, graph positions, conditions, actions and guidance persist in versioned game.json with optimistic concurrency and historical reads.
 - Graph editing supports selection, node creation/deletion, dependency connections, dragging, structured condition/action editing and execution traces.
 - Editor-only changes preserve the current run across Preview, Checkpoints and Mechanics; only explicit Reset or loading another document clears progress. Both dimension scenarios enforce this lifecycle contract in normal browser verification.
