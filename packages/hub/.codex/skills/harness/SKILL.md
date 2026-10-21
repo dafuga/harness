@@ -40,3 +40,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 - Nesting: 4 levels.
 - Parameters: 4.
 - Classes per file: 1.
+
+## Runtime observations
+
+Profile existing promise-returning note reads by awaiting their single actual test operation; preserve memoization, blob-count and source-identity assertions. Measure coded-error construction separately from an expected throwing operation. Synthetic Git inputs and whole runner RSS remain explicit workload boundaries.
