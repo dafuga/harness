@@ -133,6 +133,7 @@ const told = (direct: string[], base: string = commits.middle) => ({
 });
 
 export const index: HarnessIndex = {
+	repositoryUrl: 'https://github.com/fixture/orders',
 	branches: [
 		{ name: 'feature/orders', head: commits.tip },
 		{ name: 'release/orders', head: commits.first }

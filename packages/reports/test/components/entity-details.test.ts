@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { record, revision } from '../entityFixture';
+import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 
@@ -51,8 +51,25 @@ test('source is shown only when the source tab is the open one', () => {
 		expect(words(content('commit', { ...page, tab }))).not.toMatch(owned);
 	}
 	const body = content('commit', { ...page, tab: 'source' });
-	expect(words(body)).toContain('Source ownership');
+	expect(words(body)).toContain('Source files');
+	expect(words(body)).not.toMatch(/Source ownership|Execution targets|Symbols|Identity /);
 	expect(words(body)).toContain('src/routes/orders/+page.svelte');
+	for (const repositoryUrl of [
+		undefined,
+		'https://github.com.evil.test/fixture/orders',
+		'javascript:alert(1)',
+		'https://user:secret@github.com/fixture/orders'
+	]) {
+		const unavailable = content(
+			'commit',
+			{ ...page, tab: 'source' },
+			{},
+			{ ...index, repositoryUrl }
+		);
+		expect(unavailable).not.toContain('/blob/');
+		expect(unavailable).toContain('aria-label="View code for src/routes/orders/+page.svelte"');
+	}
+
 	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=source`);
 });
 

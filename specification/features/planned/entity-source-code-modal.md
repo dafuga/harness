@@ -4,12 +4,16 @@
 
 Every entity detail exposes View code only within its Source tab. Catalog cards,
 rows and detail headers have no code action. The shared modal shows actual file
-contents from the selected committed revision. Source ownership stays in the tab;
-code is loaded only after opening the modal. Closing retains the Source tab,
+contents from the selected committed revision. Source lists actual files, each
+with a GitHub link and its own modal button. Code loads only when requested. Closing retains the Source tab,
 address and keyboard focus.
 
 ## Acceptance Criteria
 
+- Source lists files only, without symbols, execution targets or identity metadata.
+- Each filename links to its GitHub blob at the selected commit when the project
+  has a GitHub origin. Missing repository context leaves a plain filename.
+- Each file's button opens that exact file first, including filenames requiring URL encoding.
 - Pages, Shells, Components, Helpers, Configs, Services and Models expose the action
   only within the detail Source tab, with no inline code reader behind the modal.
 - Source belongs to the entity's owned files at the selected revision, including
@@ -26,6 +30,13 @@ address and keyboard focus.
   and fresh manually inspected real-project screenshots are retained.
 
 ## Source Tab Placement Coverage
+
+The file-list follow-up uses `source-file-links`. The standard Reports matrix and
+Desktop source scenarios previously accepted ownership metadata and one entity-level
+button. They did not assert GitHub destinations or which file a row button opens.
+Strengthen these same scenarios with commit-pinned links, encoded paths, direct
+second-file opening, focus restoration and explicit legacy gaps. Extend the normal
+history, local-session and hosted snapshot tests to prove repository context.
 
 The standard Reports source scenarios and Desktop source scenarios previously
 required catalog and detail-header actions. They tested source reading but never

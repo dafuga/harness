@@ -13,6 +13,7 @@ test('GitHub snapshot binds exact project, slash branch and all cache revisions'
 	const f = projectionFixture(),
 		view = await f.projection.snapshot(actor, project.id, { branch: 'feat/a/b', commit: null });
 	expect(view.project.id).toBe(project.id);
+	expect(view.project.repositoryUrl).toBe('https://github.com/fixture/harness');
 	expect(view.revision).toMatchObject({ branch: 'feat/a/b', commit, atTip: true });
 	expect(view.capabilities).toMatchObject({ comments: true, agents: false, planning: false });
 	expect(view.cache?.identity).toMatchObject({

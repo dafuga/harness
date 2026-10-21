@@ -33,7 +33,10 @@ test('its tabs open measurements, and the source only where the source is asked 
 	expect(words(measured)).not.toMatch(owned);
 	const source = screen(EntityDetailsScreen, 'commit', { ...at, tab: 'source' });
 	expect(words(source)).toContain('src/routes/orders/+page.svelte');
-	expect(source).toContain('aria-label="View code for Orders page"');
+	expect(source).toContain('aria-label="View code for src/routes/orders/+page.svelte"');
+	expect(source).toContain(
+		'/blob/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/src/routes/orders/%2Bpage.svelte'
+	);
 	expect(source).not.toContain('<pre');
 });
 

@@ -12,7 +12,7 @@ export const sourcePaths = [
 	...new Set(units.flatMap((unit) => unit.owns.source)),
 	'src/models/Order.ts',
 	'src/shells/OrderFrame.svelte',
-	'src/services/OrderStore.types.ts'
+	'src/services/Order types #é.ts'
 ];
 
 /** The standard catalog matrix gains all seven kinds and a second owned service file. */
@@ -24,7 +24,7 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 			...added.registry,
 			units: added.registry.units.map((unit) =>
 				unit.kind === 'service'
-					? { ...unit, owns: { ...unit.owns, source: [...unit.owns.source, sourcePaths.at(-1)!] } }
+					? { ...unit, owns: { ...unit.owns, source: ['src/services/'] } }
 					: unit
 			)
 		}
@@ -38,7 +38,10 @@ export function sourceSnapshots(detail: HarnessRevision, hashes: Record<string, 
 			...detail.registry,
 			units: detail.registry.units.map((unit) => ({
 				...unit,
-				sourceFiles: unit.owns.source.map((path) => ({
+				sourceFiles: (unit.kind === 'service'
+					? sourcePaths.filter((path) => path.startsWith('src/services/'))
+					: unit.owns.source
+				).map((path) => ({
 					path,
 					media: `media/${hashes[`source:${detail.commit}:${path}`]}.txt`
 				}))

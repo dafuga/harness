@@ -62,7 +62,12 @@ function installProject(input: unknown) {
 	const state = host.__evidence;
 	const shared = { comments: true, agents: false, planning: false, approval: false };
 	const snapshot = (commit: string | null = null) => ({
-		project: { name: data.project.name, root: '/tmp/orders', id: data.project.id },
+		project: {
+			name: data.project.name,
+			root: '/tmp/orders',
+			id: data.project.id,
+			repositoryUrl: 'https://github.com/fixture/orders'
+		},
 		capabilities: data.shared
 			? { ...shared, source: 'github' }
 			: { comments: true, agents: true, planning: true, approval: true, source: 'local' },
@@ -92,7 +97,10 @@ function installProject(input: unknown) {
 			return found;
 		},
 		image: async () => new Uint8Array(data.design),
-		source: async (input: { path: string }) => ({ path: input.path, text: 'export {};' }),
+		source: async (input: { path: string }) => ({
+			path: input.path,
+			text: `// ${input.path}\nexport {};`
+		}),
 		messages: async () => [],
 		providers: async () => [],
 		onRunEvent: () => () => {},
@@ -143,6 +151,7 @@ function removeEvidence() {
 }
 
 export interface EvidenceOptions extends Partial<Settings> {
+	sources?: Record<string, string[]>;
 	documentation?: Record<string, UnitDocumentation>;
 	previews?: Record<string, NonNullable<ComponentManifest['preview']>>;
 	example?: Parameters<typeof evidenceData>[2];
@@ -164,6 +173,7 @@ export async function evidenceFixture(page: Page, options: EvidenceOptions = {})
 		inheritedOnly: options.inheritedOnly
 	});
 	for (const entity of data.entities) {
+		entity.sources = options.sources?.[entity.id] ?? entity.sources;
 		entity.documentation = options.documentation?.[entity.id];
 		const preview = options.previews?.[entity.id];
 		if (preview) entity.thumbnail = { source: 'recorded', ...preview };

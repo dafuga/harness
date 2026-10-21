@@ -29,6 +29,7 @@ beforeAll(async () => {
 }, 240_000);
 afterAll(() => repo.dispose());
 test('the index is deterministic and names every commit, verified or not', async () => {
+	await repo.git(['config', 'remote.origin.url', 'git@github.com:fixture/orders.git']);
 	const one = join(repo.root, '.cache/history-one');
 	const two = join(repo.root, '.cache/history-two');
 	const built = await build(repo, one);
@@ -36,6 +37,8 @@ test('the index is deterministic and names every commit, verified or not', async
 	expect(await directoryDigest(one)).toBe(await directoryDigest(two));
 	expect(sha256(await readFile(join(one, 'index.json')))).toBe(built.digest);
 	const { index } = built;
+	await repo.git(['config', '--unset', 'remote.origin.url']);
+	expect(index.repositoryUrl).toBe('https://github.com/fixture/orders');
 	expect([index.schemaVersion, index.problems, index.branches]).toEqual([
 		1,
 		[],
