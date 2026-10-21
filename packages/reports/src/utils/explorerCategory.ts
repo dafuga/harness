@@ -23,14 +23,6 @@ const roles = new Map<string, string>([
 const renders = (unit: Classified) =>
 	unit.owns.source.some((path) => /(^|\/)\+page\.svelte$/.test(path));
 
-/** The framework's former details addresses canonicalize to the existing entity page. */
-const compatibility = (unit: Classified) =>
-	unit.owns.source.some(
-		(path) =>
-			path.startsWith('packages/reports/src/routes/harness/') &&
-			path.endsWith('/[entity]/details/+page.svelte')
-	);
-
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
@@ -39,7 +31,6 @@ const compatibility = (unit: Classified) =>
  * presented as a function, and stays reachable from what depends on it under its own role.
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {
-	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'functions' || unit.kind === 'module') {
@@ -50,7 +41,6 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 
 /** What a unit is, in words a reader knows: `Page`, `Route loader`, `Audit rule`. */
 export function explorerRole(unit: Classified): string {
-	if (compatibility(unit)) return 'Route alias';
 	if (renders(unit)) return 'Page';
 	if (explorerKindCategory(unit.kind) === 'pages') return 'Route loader';
 	const words = unit.kind
