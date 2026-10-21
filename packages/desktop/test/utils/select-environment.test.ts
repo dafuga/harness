@@ -1,4 +1,7 @@
 import { expect, test, vi } from 'vitest';
+import { fileURLToPath } from 'node:url';
+import { profilePublicEntry } from '../../../../test/support/taskProfiles';
+import { remoteContext } from '../../src/models/Environment.types';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import type { RemoteDesktopControl } from '../../src/models/Environment.types';
 import { selectEnvironment } from '../../src/utils/selectEnvironment';
@@ -18,7 +21,15 @@ const names = [
 const control = () =>
 	Object.fromEntries(names.map((name) => [name, vi.fn()])) as unknown as RemoteDesktopControl;
 
-test('an ordinary page is the web environment: no bridge, no folder, no control port', () => {
+test('an ordinary page is the web environment: no bridge, no folder, no control port', async () => {
+	expect(remoteContext).toBe('harness:remote');
+	expect(
+		await profilePublicEntry(
+			'desktop.model.environment-types',
+			fileURLToPath(new URL('../../src/models/Environment.types.ts', import.meta.url)),
+			['remoteContext']
+		)
+	).toEqual(['remoteContext']);
 	expect(selectEnvironment({})).toEqual({ kind: 'web', bridge: undefined, local: false });
 	const web = selectEnvironment({ Capacitor: { isNativePlatform: () => false } });
 	expect(web.kind).toBe('web');

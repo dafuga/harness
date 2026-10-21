@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { isWorkspacePath, workspacePath, workspaceRoute } from '../../src/utils/workspaceRoute';
+import { rendererPath } from '../../src/utils/rendererPath';
 
 const commit = 'a'.repeat(40);
 
@@ -34,6 +35,13 @@ test('a branch link has no commit and a legacy link has no project', () => {
 		category: 'configs'
 	});
 	expect(workspacePath(legacy)).toBe(`/harness/branch/feat%2Fa%2Fb/commit/${commit}/configs`);
+	expect(rendererPath(`/harness/branch/feat%2Fa%2Fb/commit/${commit}/configs`)).toEqual({
+		branch: 'feat/a/b',
+		commit,
+		category: 'configs',
+		entityId: null,
+		tab: null
+	});
 	expect(workspaceRoute(`/harness/commit/${commit}/pages`)).toMatchObject({ branch: null, commit });
 });
 
