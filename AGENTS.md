@@ -14,6 +14,7 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - When adding shared UI imports, declare their source reference bindings and run `test/shared-select-impact.test.ts`, `test/shared-search-impact.test.ts` and `test/shared-alias-index.test.ts` before handing off the component.
 - When changing shared explorer frames or their imports, include `packages/reports/test/components/explorer-screens.test.ts` in the focused regression command. Keep data readers in data/store modules so frames do not import entity-specific panes.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
+- When changing a helper recorded by `local-helper-ownership`, keep its original migration definition and record the intentional update in `followUps` with the implementation commit and reason. Run `test/services/unit-index.test.ts` alongside the owning workspace's checks before landing.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 
