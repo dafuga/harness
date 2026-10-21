@@ -6,7 +6,7 @@
 	"name": "regression-final-commit",
 	"goal": "Complete regression verification after committing proof bookkeeping while requiring current intact verification and performance evidence.",
 	"createdAt": "2026-10-21T20:06:31.016Z",
-	"updatedAt": "2026-10-21T20:12:44.152Z",
+	"updatedAt": "2026-10-21T20:22:54.791Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -43,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:22:49.699Z",
+			"evidence": "Final verification validates the stored immutable red/green pair after bookkeeping commits. The loop completion owner requires the current task audit for regression verify, including legacy loops; red, green and guard keep exact-commit checks."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:22:52.254Z",
+			"evidence": "70fc281d5 proof 5b447994 passes all seven unchanged standard CLI cases, including metadata commits and legacy loops. The paired red aa1527d1 fails the three repair templates. Focused planning, task-completion and loop tests also pass all fourteen cases with profiling requested."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T20:22:54.791Z",
+			"evidence": "Fresh isolated recurrence records the original failure at 0416b4c8d as 8c531300 and the restored passing repair at 70fc281d5 as 94482e08. Same command, test/config corpus and environment are retained. Full current-source verification remains pending."
 		},
 		{
 			"id": "verify",
