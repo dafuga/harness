@@ -133,8 +133,9 @@ test('without a resolved address the bar keeps the seven categories and offers n
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });
 
-test('an index that left older commits out says so under the bar', () => {
+test('a limited history index keeps revision choices without a limitation banner', () => {
 	const html = body(current, { index: { ...shellIndex, truncated: true } });
-	expect(text(html)).toContain('Older commits were left out of this index');
+	expect(text(html)).not.toContain('Older commits were left out');
+	expect(chosen(html, 'Commit')?.[0]).toBe(sha(5));
 	expect(text(body(current))).not.toContain('Older commits were left out');
 });

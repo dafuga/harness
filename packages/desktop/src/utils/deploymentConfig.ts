@@ -2,7 +2,7 @@ import { cloudflareSafety } from './cloudflareSafety';
 import { createHash } from 'node:crypto';
 import { readFile, realpath } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';
-import { parse as jsonc, type ParseError } from 'jsonc-parser/lib/esm/main.js';
+import { parse as jsonc, type ParseError } from 'jsonc-parser';
 import { parse as toml } from 'smol-toml';
 import { z } from 'zod';
 import { deploymentEnvironments } from '../models/Deployment.types';

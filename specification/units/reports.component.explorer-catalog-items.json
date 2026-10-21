@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-catalog-items",
+	"kind": "component",
+	"title": "ExplorerCatalogItems",
+	"responsibility": "Renders catalog rows through the existing page/component cards, helper cards or category table in list pages and relationship tabs.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/ExplorerCatalogItems.svelte"],
+		"symbols": ["ExplorerCatalogItems"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerCatalogItems.category",
+				"type": "ExplorerCategory",
+				"description": "Required catalog category choosing screenshot cards, helper cards or the category table."
+			},
+			{
+				"name": "ExplorerCatalogItems.rows",
+				"type": "CatalogRow[]",
+				"description": "Required revision-scoped rows to render in their supplied order."
+			},
+			{
+				"name": "ExplorerCatalogItems.nav",
+				"type": "EntityNav",
+				"description": "Required entity navigation retaining the selected branch and revision."
+			},
+			{
+				"name": "ExplorerCatalogItems.lens",
+				"type": "EntityLens",
+				"description": "Required evidence lens supplying screenshots for each visual entity."
+			},
+			{
+				"name": "ExplorerCatalogItems.mediaBase",
+				"type": "string",
+				"description": "Required URL prefix used to resolve captured screenshot assets."
+			},
+			{
+				"name": "ExplorerCatalogItems.verification",
+				"type": "boolean",
+				"description": "Optional verification visibility, defaulting to true; relationship tabs pass false."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerCatalogItems",
+				"type": "markup",
+				"description": "One category of revision-scoped catalog items using the same renderer in collections and relationship tabs. Verification is optional without changing item navigation or screenshots."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-function-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-explorer-page-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-explorer-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/ExplorerCatalogItems.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/ExplorerCatalogItems.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,3 +1,4 @@
+import { explorerRoutePath } from '../../../src/utils/explorerRoute';
 import type { ExplorerLocation, ExplorerScope } from '../src/models/Explorer.types';
 import type { HarnessIndex, HarnessRevision } from '../src/models/Harness.types';
 import type { EntityLens, EntityNav } from '../src/utils/entityLens';
@@ -10,15 +11,7 @@ import { index, record, revision } from './entityFixture';
 import { commits } from './entityUnits';
 
 export function placePath(place: ExplorerLocation): string {
-	const branch = place.branch === null ? '' : `/branch/${encodeURIComponent(place.branch)}`;
-	const commit = place.commit ? `/commit/${place.commit}` : '';
-	const entity = place.entity ? `/${encodeURIComponent(place.entity)}` : '';
-	const section = place.section ? `/${place.section}` : '';
-	const query = new URLSearchParams();
-	if (place.tab) query.set('tab', place.tab);
-	if (place.helper) query.set('helper', place.helper);
-	const tab = query.size ? `?${query}` : '';
-	return `/harness${branch}${commit}/${place.category}${entity}${section}${tab}`;
+	return '/harness' + explorerRoutePath(place);
 }
 
 export const place = (changed: Partial<ExplorerLocation> = {}): ExplorerLocation => ({

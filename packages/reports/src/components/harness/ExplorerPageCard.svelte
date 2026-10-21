@@ -11,7 +11,8 @@
 		shot,
 		mediaBase,
 		nav,
-		category = 'pages'
+		category = 'pages',
+		verification = true
 	}: {
 		row: CatalogRow;
 		/** The entity's own screenshot at the shown revision, or null for its gap; never another's. */
@@ -20,6 +21,8 @@
 		nav: EntityNav;
 		/** A page counts its components; a component tells where it is used and what it contains. */
 		category?: 'pages' | 'components';
+		/** Relationship cards keep verification on the entity detail page. */
+		verification?: boolean;
 	} = $props();
 	let to = $derived(entityLens(nav.route, { category, entity: row.id }));
 	let file = $derived(shot && !shot.missing ? shot.file : '');
@@ -89,10 +92,10 @@
 				{#if row.shared}<span class="ex-pill gold">Shared</span>{/if}
 				{#if row.changed}<span class="ex-pill gold">Changed</span>{/if}
 			</p>
-			<p class="ex-fact">
-				<HarnessIcon name="tests" size={22} />
-				<HarnessVerdict {...row.verdict} framed />
-			</p>
+			{#if verification}<p class="ex-fact">
+					<HarnessIcon name="tests" size={22} />
+					<HarnessVerdict {...row.verdict} framed />
+				</p>{/if}
 			<EntityLink {to} {nav} class="hx-action gold ex-open-page" label={open} title={open}>
 				<HarnessIcon name="arrow-right" size={18} />
 			</EntityLink>

@@ -66,6 +66,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-catalog-items",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-frame",
 			"via": "import",
 			"origin": "derived"
@@ -76,17 +81,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-explorer-page-card",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.function.entity-catalog",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},

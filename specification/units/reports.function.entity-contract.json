@@ -103,6 +103,32 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "Separate lowercase words from uppercase letters",
+					"call": "humanize(\"orderID\")",
+					"input": ["orderID"],
+					"output": "order id"
+				},
+				{
+					"name": "Separate an acronym from the following word",
+					"call": "humanize(\"HTTPServer\")",
+					"input": ["HTTPServer"],
+					"output": "http server"
+				},
+				{
+					"name": "Replace identifier separators with spaces and trim",
+					"call": "humanize(\" order-item_count.total \")",
+					"input": [" order-item_count.total "],
+					"output": "order item count total"
+				},
+				{
+					"name": "Leave an empty identifier blank",
+					"call": "humanize(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
 			"consumers": [
 				{
 					"unit": "desktop.component.contract-panel"

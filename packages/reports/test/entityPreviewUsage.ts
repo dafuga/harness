@@ -1,3 +1,4 @@
+import { reviewUsageCards } from './entityPreviewFunctions';
 import { expect, type Page } from '@playwright/test';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import { capture, open, ready, where } from './entityPreviewPage';
@@ -33,7 +34,8 @@ export async function reviewUsage(page: Page, route: UsageRoute, viewport: strin
 		await page.getByRole('tab', { name: label, exact: true }).click();
 		await expect(page.getByRole('region', { name: label, exact: true })).toBeVisible();
 		await capture(page, `usage-${tab}-${checkpoint}`);
-		await expect(page.locator('.ex-related .hx-verdict'), 'no row marks').toHaveCount(0);
+		await expect(page.locator('.ex-relations .hx-verdict'), 'no row marks').toHaveCount(0);
+		await reviewUsageCards(page, category, tab);
 		await expect(page.locator('.ex-head .hx-verdict')).toHaveCount(1);
 		await expect(
 			page.getByRole('region', { name: label === 'Uses' ? 'Used In' : 'Uses', exact: true })
