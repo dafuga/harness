@@ -2,9 +2,11 @@
 	"name": "desktop-ui-verification",
 	"goal": "Desktop browser scenarios pass with current catalogs and controls, correct image lifecycles and no overflow or browser errors.",
 	"createdAt": "2026-10-21T18:23:33.780Z",
-	"updatedAt": "2026-10-21T18:33:42.924Z",
+	"updatedAt": "2026-10-21T18:47:48.847Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,7 +27,8 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Preserved diagnostic runs 022ff344 and a38f2305 include capture setup gaps. Declare the existing Examples screenshot states, retain every assertion, and repeat the stamped run before product changes."
 		},
 		{
 			"id": "implement",

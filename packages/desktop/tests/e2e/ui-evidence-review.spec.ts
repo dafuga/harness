@@ -54,6 +54,7 @@ test('the address decides the section, also when the entity stays the same', asy
 	// Details is left with its address: the section that is named next is shown without it.
 	await visit(page, at(filter, undefined, '/details'));
 	await expect(page.getByRole('heading', { name: 'Source files', exact: true })).toBeVisible();
+	await expect(page.getByRole('main').locator('pre')).toHaveCount(0);
 	await visit(page, at(filter, undefined, '/evidence'));
 	await expect(current(page)).toHaveText('Examples');
 	await runtimeEvidence(page, info, 'examples-collapsed');

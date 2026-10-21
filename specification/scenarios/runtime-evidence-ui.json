@@ -257,6 +257,26 @@
 			]
 		},
 		{
+			"id": "examples-collapsed",
+			"title": "Examples with recorded verification collapsed",
+			"coverage": "required",
+			"units": [
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
+		},
+		{
+			"id": "examples-expanded",
+			"title": "Examples with recorded verification expanded",
+			"coverage": "required",
+			"units": [
+				"desktop.component.coverage-panel",
+				"desktop.store.entity-evidence",
+				"desktop.style.evidence"
+			]
+		},
+		{
 			"id": "old-host-gap",
 			"title": "old host gap",
 			"coverage": "required",
@@ -505,6 +525,8 @@
 				"audio-current",
 				"audio-commit",
 				"coverage",
+				"examples-collapsed",
+				"examples-expanded",
 				"old-host-gap",
 				"shared-saved",
 				"status-missing",
