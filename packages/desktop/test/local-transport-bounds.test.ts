@@ -11,6 +11,8 @@ async function admitted(f: Fixture, target = f.window()) {
 	if (!socket) throw new Error('The transport refused an honest socket.');
 	return socket;
 }
+/** The largest game document, with an envelope no larger than any request of a phone. */
+const localRequestBytes = 1048576 + remoteLimits.requestBytes;
 const framesOf = (text: string, chunkBytes?: number) => {
 	const frames: string[] = [];
 	new WireFramingService({
@@ -62,7 +64,7 @@ test('a ticket is short-lived, and the number of sockets is bounded', async () =
 test('frames that break the bounds close the socket and reach no operation', async () => {
 	const f = await localFixture(),
 		head = git(f.root, 'rev-parse', 'HEAD'),
-		oversize = framesOf('x'.repeat(remoteLimits.requestBytes + 1)),
+		oversize = framesOf('x'.repeat(localRequestBytes + 1)),
 		starts = Array.from({ length: 9 }, (_, message) =>
 			JSON.stringify({ type: 'part', message, index: 0, last: false, data: 'YQ==' })
 		);
@@ -112,4 +114,37 @@ test('a request that never completes is never performed', async () => {
 	expect(f.control.calls).toEqual([]);
 	expect(git(f.root, 'rev-parse', 'HEAD')).toBe(head);
 	expect(window.ended).toBe(false);
+}, 40000);
+
+test('the app page may send more than a phone request, up to the local bound, and is answered', async () => {
+	const f = await localFixture(),
+		socket = await admitted(f),
+		answers: string[] = [],
+		outgoing: string[] = [],
+		framing = new WireFramingService({
+			write: (frame) => outgoing.push(frame),
+			defer: (step) => step()
+		}),
+		attach = { protocol: 1, client: { kind: 'electron', name: 'fixture' }, resume: null },
+		id = crypto.randomUUID(),
+		pad = 'x'.repeat(localRequestBytes - 200),
+		large = JSON.stringify({ type: 'request', id, method: 'listProjects', input: { pad } });
+	socket.on('message', (data) => answers.push(data.toString()));
+	const request = { type: 'request', id: crypto.randomUUID(), method: 'session.attach' };
+	framing.send(JSON.stringify({ ...request, input: attach }));
+	for (const frame of outgoing.splice(0)) socket.send(frame);
+	await expect.poll(() => answers.length).toBe(1);
+	expect(Buffer.byteLength(large)).toBeGreaterThan(remoteLimits.requestBytes);
+	expect(Buffer.byteLength(large)).toBeLessThanOrEqual(localRequestBytes);
+	framing.send(large);
+	expect(outgoing.length).toBeGreaterThan(1);
+	expect(Math.max(...outgoing.map((frame) => frame.length))).toBeLessThanOrEqual(
+		remoteLimits.frameBytes
+	);
+	for (const frame of outgoing.splice(0)) socket.send(frame);
+	await expect.poll(() => answers.length, { timeout: 10000 }).toBe(2);
+	const part = JSON.parse(answers[1]) as { data: string };
+	expect(JSON.parse(Buffer.from(part.data, 'base64').toString())).toMatchObject({ id });
+	expect(socket.readyState).toBe(socket.OPEN);
+	expect(f.control.calls).toEqual([]);
 }, 40000);

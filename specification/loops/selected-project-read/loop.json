@@ -2,7 +2,7 @@
 	"name": "selected-project-read",
 	"goal": "Keep the currently selected project readable during active runs while refusing a switch to another project",
 	"createdAt": "2026-10-21T14:35:32.733Z",
-	"updatedAt": "2026-10-21T14:39:10.024Z",
+	"updatedAt": "2026-10-21T14:41:03.715Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T14:41:03.715Z",
+			"evidence": "Paired cb7432733 to 34f99c0ed: identical tests and environment pass for busy and pending reads, still reject cross-project switches, and preserve stale-context refusal."
 		},
 		{
 			"id": "verify",
