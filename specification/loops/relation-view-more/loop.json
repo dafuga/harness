@@ -2,28 +2,32 @@
 	"name": "relation-view-more",
 	"goal": "Show four relationships per module type and reveal four more without changing scope or other groups",
 	"createdAt": "2026-10-21T18:32:09.808Z",
-	"updatedAt": "2026-10-21T18:32:09.808Z",
+	"updatedAt": "2026-10-21T18:39:24.688Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:32:37.150Z",
+			"evidence": "Each module type in Used In and Uses starts with four rendered catalog rows; View More appends four more independently, disappears at the end, and preserves navigation scope. Changing entity, tab or revision resets batches."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:32:37.675Z",
+			"evidence": "Existing shared relationship browser matrix uses at most two rows per type. Extend its shared fixture with nine of every module kind, and the same matrix with partial/final batch, independent type, keyboard focus and reset assertions."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:39:24.688Z",
+			"evidence": "Committed browser matrix at 24cfcb3d892b310354723dce75afc7601830625d failed four initial entries per type; preserved record d02409eb4f32a52cbfc8f4e0ab56daa4b5ed93e45e947b09cecc33ca2aed1aec and before screenshots."
 		},
 		{
 			"id": "implement",
