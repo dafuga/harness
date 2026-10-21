@@ -6,7 +6,7 @@
 	"name": "mobile-search-target",
 	"goal": "Search controls retain a 40-pixel target without overlapping revision fields or clipping category labels at every supported viewport.",
 	"createdAt": "2026-10-21T17:19:30.616Z",
-	"updatedAt": "2026-10-21T17:20:46.508Z",
+	"updatedAt": "2026-10-21T17:28:48.825Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,17 +29,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:27:51.442Z",
+			"evidence": "Harness record c85e0b59d5cf226dcf937202265a32d4bdcd8a3eedaa67a37dd07babb68400ba proves the unchanged eight-width matrix fails at320/390: expected width>=40,received34. Fourteen cases pass,two fail. Isolated snapshot source3e47528d7;loghash verified and beforeimages retained by sourcecommit."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:27:52.087Z",
+			"evidence": "Give the search/settings subtree a40px custom control size while other icon controls retain their default. Reserve88px=40+8+40 in the final category column and40px category rows. Keep all labels,exactwidth/height,category collision,and revision geometry assertions unchanged. Add Desktop browser compiler coverage as a separate immutable regression after this pair."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T17:28:48.825Z",
+			"evidence": "Responsive CSS now scopes40px controls to search/settings, reservesan88px finalcategorycolumn and40pxrows. Existingagenticondefaultremains34px. The stylesheet remains220lines. The committed viewportmatrix is unchanged during productrepair; pairedgreenproof isnext."
 		},
 		{
 			"id": "green",
