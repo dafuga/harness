@@ -6,11 +6,10 @@
 	"name": "browser-profile-attribution",
 	"goal": "Record page measurements only for the explicitly exercised route owner, never a fixed list of possibly inactive shared units.",
 	"createdAt": "2026-10-21T23:32:06.146Z",
-	"updatedAt": "2026-10-21T23:32:10.326Z",
-	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"updatedAt": "2026-10-21T23:36:54.091338+00:00",
+	"template": "feature",
+	"templateLineage": ["feature"],
 	"enforceOrder": true,
-	"regressionCommits": 1,
 	"steps": [
 		{
 			"id": "spec",
