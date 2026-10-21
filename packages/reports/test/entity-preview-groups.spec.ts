@@ -32,7 +32,9 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				);
 			});
 			await capture(page, `groups-${category}-${viewport}`);
-			await expect.soft(page.getByRole('heading', { level: 2, name: /^Orders/ })).toBeVisible();
+			await expect
+				.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
+				.toBeVisible();
 			expect(await fits(page)).toBe(true);
 		}
 		await open(page, { category: 'components', commit: commits.middle }, 'groups');
@@ -52,7 +54,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await chooseCatalogFilter(page, 'Changed only', true);
 		await expect(page.getByRole('article')).toHaveCount(1);
 		await open(page, { category: 'services', commit: commits.first }, 'groups');
-		await expect(page.getByRole('heading', { level: 2, name: /^Purchases/ })).toBeVisible();
-		await expect(page.getByRole('heading', { level: 2, name: /^Orders/ })).toHaveCount(0);
+		await expect(page.getByRole('heading', { level: 2, name: /^Purchases \d+$/ })).toBeVisible();
+		await expect(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ })).toHaveCount(0);
 	});
 }
