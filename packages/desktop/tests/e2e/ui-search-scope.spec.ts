@@ -76,7 +76,7 @@ test('while another project loads, no result of the project left is offered', as
 }, info) => {
 	await opened(page, info, alphaAt('pages'), 'search-project-change');
 	await field(page).fill('alpha');
-	await expect(options(page)).toHaveCount(6);
+	await expect(options(page)).toHaveCount(7);
 	await followed(page, `/projects/${beta}/harness/branch/main/pages`);
 	await expect(page.getByText('Loading entities…').first()).toBeVisible();
 	await expect(options(page)).toHaveCount(0);
@@ -84,7 +84,7 @@ test('while another project loads, no result of the project left is offered', as
 	await evidenced(page, 'search-project-loading');
 	await expect(page.getByText('No entity matches “alpha”')).toBeVisible();
 	await field(page).fill('only');
-	await expect(options(page)).toHaveText([/Function.*Beta only function/]);
+	await expect(options(page)).toHaveText([/Helper.*Beta only function/]);
 });
 
 test('while another commit loads, no result of the tip is offered, then only that commit is', async ({
@@ -92,7 +92,7 @@ test('while another commit loads, no result of the tip is offered, then only tha
 }, info) => {
 	await opened(page, info, alphaAt('pages'), 'search-commit-change');
 	await field(page).fill('format');
-	await expect(options(page)).toHaveText([/Function.*Alpha format time/]);
+	await expect(options(page)).toHaveText([/Helper.*Alpha format time/]);
 	await followed(page, alphaAt(`commit/${earlier}/pages`));
 	await expect(options(page)).toHaveCount(0);
 	await expect(page.getByText('Loading entities…').first()).toBeVisible();
@@ -152,9 +152,10 @@ test('a long name wraps inside the results on a phone, which stay inside the scr
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
-test('at a wide desktop the search shares the one row of the top bar, overlapping nothing', async ({
+test('the desktop bar keeps search with its categories and wraps revision controls together', async ({
 	page
 }, info) => {
+	await page.setViewportSize({ width: 1920, height: 900 });
 	await opened(page, info, alphaAt('pages'), 'search-fit-desktop');
 	await field(page).press('Escape');
 	const bar = page.getByRole('banner');
@@ -164,29 +165,34 @@ test('at a wide desktop the search shares the one row of the top bar, overlappin
 				Math.round((await bar.getByRole('combobox', { name, exact: true }).boundingBox())!.width)
 			)
 		);
-	// The branch and commit fields keep the width a wider screen gives them: the search squeezes neither.
-	await page.setViewportSize({ width: 1920, height: 900 });
 	const natural = await revision();
-	await page.setViewportSize({ width: 1440, height: 900 });
-	expect(await revision()).toEqual(natural);
-	const [search, branch, row] = [
-		(await bar.getByRole('button', { name: 'Search entities', exact: true }).boundingBox())!,
-		(await bar.getByRole('combobox', { name: 'Branch', exact: true }).boundingBox())!,
-		(await bar.getByRole('navigation', { name: 'Catalog categories' }).boundingBox())!
-	];
-	type Box = typeof row;
-	// The layout of a wide desktop is one row: the field and the branch field lie in the row of the
-	// categories, as the branch field did before the search.
-	const within = (item: Box) => item.y >= row.y && item.y + item.height <= row.y + row.height;
-	expect([within(search), within(branch)]).toEqual([true, true]);
-	// The field, with its focus ring of three pixels, and the branch field meet on neither axis.
-	const ring = 3;
-	const meet = (one: Box, two: Box) =>
-		one.x - ring < two.x + two.width &&
-		two.x < one.x + one.width + ring &&
-		one.y - ring < two.y + two.height &&
-		two.y < one.y + one.height + ring;
-	expect(meet(search, branch)).toBe(false);
-	expect(search.width).toBeGreaterThanOrEqual(40);
-	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);
+	for (const [width, oneRow] of [
+		[1920, true],
+		[1440, false]
+	] as const) {
+		await page.setViewportSize({ width, height: 900 });
+		await remember(page, info, 'search-fit-' + width);
+		expect(await revision()).toEqual(natural);
+		const [search, branch, row] = [
+			(await bar.getByRole('button', { name: 'Search entities', exact: true }).boundingBox())!,
+			(await bar.getByRole('combobox', { name: 'Branch', exact: true }).boundingBox())!,
+			(await bar.getByRole('navigation', { name: 'Catalog categories' }).boundingBox())!
+		];
+		const within = (item: typeof row) =>
+			item.y >= row.y && item.y + item.height <= row.y + row.height;
+		expect(within(search)).toBe(true);
+		expect(within(branch)).toBe(oneRow);
+		if (!oneRow) expect(branch.y).toBeGreaterThanOrEqual(row.y + row.height);
+		const ring = 3;
+		const meet =
+			search.x - ring < branch.x + branch.width &&
+			branch.x < search.x + search.width + ring &&
+			search.y - ring < branch.y + branch.height &&
+			branch.y < search.y + search.height + ring;
+		expect(meet).toBe(false);
+		expect(search.width).toBeGreaterThanOrEqual(40);
+		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+			width
+		);
+	}
 });

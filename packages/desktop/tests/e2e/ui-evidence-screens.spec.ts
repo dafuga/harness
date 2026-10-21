@@ -44,7 +44,7 @@ test('a page at its branch tip shows one current screenshot beside its contract,
 	await evidenceFixture(page);
 	await page.goto(pageAt());
 	const tabs = page.getByRole('navigation', { name: 'Entity sections' });
-	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History'];
+	const names = ['Overview', 'Designs', 'Used In', 'Uses', 'States', 'History', 'Source'];
 	await expect(tabs.getByRole('button')).toHaveText(names);
 	await expect(tabs.getByRole('button', { name: 'Overview' })).toHaveAttribute(
 		'aria-current',
@@ -208,7 +208,9 @@ for (const viewport of [
 		const overflow = await page.evaluate(
 			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 		);
-		expect(overflow).toBeLessThanOrEqual(0);
 		await runtimeEvidence(page, info, 'commit');
+		const tip = page.getByRole('button', { name: 'Go to tip', exact: true });
+		expect(await tip.evaluate((button) => button.scrollWidth <= button.clientWidth)).toBe(true);
+		expect(overflow).toBeLessThanOrEqual(0);
 	});
 }

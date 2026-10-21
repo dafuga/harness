@@ -68,7 +68,10 @@ for (const category of ['components', 'functions']) {
 		await projectFixture(page);
 		await page.goto(route(category));
 		await expect(
-			page.getByRole('heading', { name: new RegExp('^' + category + '$', 'i'), level: 1 })
+			page.getByRole('heading', {
+				name: new RegExp('^' + (category === 'functions' ? 'Helpers' : category) + '$', 'i'),
+				level: 1
+			})
 		).toBeVisible();
 		await remember(page, info, category + '-catalog');
 		await expect(
@@ -128,6 +131,11 @@ test('hosted and pinned revisions offer no project AI creation', async ({ page }
 		await page.goto(target);
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
+		await page.getByRole('button', { name: 'Open project chat', exact: true }).click();
+		const chat = page.getByRole('complementary', { name: 'Project agent', exact: true });
+		await expect(
+			chat.getByRole('button', { name: /^(Ask|Plan|Change|Send plan|Send change)$/ })
+		).toHaveCount(0);
 		await expect(
 			page.getByRole('button', { name: /^\+?\s*New (component|function)$/ })
 		).toHaveCount(0);

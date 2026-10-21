@@ -1,7 +1,7 @@
 import { expect, test, type Page, type TestInfo } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { alpha } from './ui-project-fixture';
+import { alpha, catalogCategories } from './ui-project-fixture';
 import { evidenced, shell, withShell } from './ui-shells-fixture';
 
 /**
@@ -10,7 +10,6 @@ import { evidenced, shell, withShell } from './ui-shells-fixture';
  * it under Shells. A screenshot is kept before the checks of each place when TAKE_SCREENSHOT=true.
  */
 const route = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
-const categories = ['Pages', 'Shells', 'Components', 'Functions', 'Configs', 'Services'];
 const nav = (page: Page) => page.getByRole('navigation', { name: 'Catalog categories' });
 
 /**
@@ -41,7 +40,7 @@ for (const viewport of [
 		await withShell(page);
 		await page.goto(route('shells'));
 		await remember(page, info, `shells-catalog-${viewport.id}`);
-		await expect(nav(page).getByRole('link')).toHaveText(categories);
+		await expect(nav(page).getByRole('link')).toHaveText(catalogCategories);
 		await expect(nav(page).getByRole('link', { name: 'Shells' })).toHaveClass(/active/);
 		await expect(page.getByText('Shared workspace shell', { exact: true })).toBeVisible();
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(

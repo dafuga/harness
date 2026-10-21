@@ -20,7 +20,19 @@ for (const width of [1440, 390]) {
 		await expect(model.locator('svg')).toHaveCount(1);
 		await expect(effort.locator('svg')).toHaveCount(1);
 		await expect(panel.getByRole('combobox')).toHaveCount(0);
-		await expect(panel.getByRole('button', { name: 'Change', exact: true })).toBeDisabled();
+		const change = panel.getByRole('button', { name: 'Change', exact: true });
+		await expect(change).toBeEnabled();
+		await change.click();
+		await expect(change).toHaveAttribute('aria-pressed', 'true');
+		await expect(panel.getByRole('button', { name: 'Send change', exact: true })).toBeEnabled();
+		expect(
+			await page.evaluate(() =>
+				(window as unknown as { __calls: { op: string }[] }).__calls.filter(
+					(call) => call.op === 'startRun'
+				)
+			)
+		).toEqual([]);
+		await panel.getByRole('button', { name: 'Plan', exact: true }).click();
 		await expect(panel.getByRole('button', { name: 'Send plan', exact: true })).toBeEnabled();
 	});
 }

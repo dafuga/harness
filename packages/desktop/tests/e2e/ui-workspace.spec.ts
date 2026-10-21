@@ -1,5 +1,6 @@
 import { compactRevision } from '../../../reports/tests/e2e/support/shellChecks';
 import { fakeProject } from './ui-workspace-fixture';
+import { catalogCategories } from './ui-project-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 
 test('browser preview exposes no writable backend', async ({ page }) => {
@@ -20,7 +21,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await compactRevision(page.getByRole('banner'));
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
-	).toHaveCount(6);
+	).toHaveText(catalogCategories);
 	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
 		'href',
 		'/harness/branch/feat%2Factivity/pages/page%3Aactivity/designs'

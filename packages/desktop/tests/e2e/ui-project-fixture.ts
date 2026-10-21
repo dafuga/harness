@@ -1,6 +1,15 @@
 import type { Page } from '@playwright/test';
 import { projectData, type ProjectData } from './ui-project-data';
 export * from './ui-project-data';
+export const catalogCategories = [
+	'Pages',
+	'Shells',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models'
+];
 
 type Input = Record<string, unknown> & { projectId?: string; commit?: string | null };
 type Project = ProjectData['projects'][number];

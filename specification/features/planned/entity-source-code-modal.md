@@ -160,3 +160,77 @@ The prevention proposal is an affected-workspace audit checkpoint in the existin
 AGENTS verification rules, before the long root check. The existing audit rejects
 the original factory and accepts the repaired one. This proposal is recorded;
 no new workflow or policy change was applied.
+
+## Per-file Source list delivery
+
+- Source now lists actual archived filenames rather than ownership symbols,
+  execution targets or identity/version metadata. Each row links to its selected
+  GitHub commit and opens that file first in the shared code modal.
+- The shared SourceFileList is used by Reports and Desktop. Existing HarnessAction,
+  Modal, Select and source-reader controls remain in use. Catalogs and headers keep
+  no View code action, and closed modals do not fetch implementation text.
+- Optional repository context comes from a normalized local GitHub origin or the
+  authorized hosted project's repository identity. Older indexes remain readable.
+- Initial implementation: `69a37f294`; delivered executable repair: `6f9dba967`.
+  Frozen test-only checkpoint: `05a9d9e30`; immutable red:
+  `b8bf3157eba32bef5566f3f626a4e2e0eb2ce79f3d59ce7c17be8e94d02e316a`.
+  Unchanged green at the delivered source:
+  `5c23122a7ba23e8bcac7f38f188bed289366bd23d9c0c21f31f287eacfe322c5`.
+- Fresh responsive verification passes: 44 Reports browser cases and 11 Desktop
+  cases. Reports' complete check passes with 613 tests. The fresh root run at
+  `6f9dba967` also passes Desktop's complete check: 870 tests and three skips,
+  types, lint, build, audit and Swift limits. Five Hub projection/cache tests pass.
+  Test-only commit `1e17b5a5d` updates two legacy Source steps to use per-file modal
+  actions; both pass with their code-content and access-denial assertions intact.
+- The first root check at `573b8d478` found missing input descriptions and a changed
+  recorded hubSnapshot definition. The repair documents the inputs, restores that
+  function byte-for-byte and enriches snapshots in HubProjectionService. All 12
+  unchanged contract/ownership guards pass; the URL helpers are indexed as pure.
+- Harness refuses an auxiliary immutable checkpoint for already-failing unchanged
+  tests because its red command requires a strengthened named test. Actual failing
+  and passing standard runs and their unchanged test hashes remain retained; the
+  auxiliary source-link-contracts loop stays pending rather than claiming a record.
+- The required root check at `6f9dba967` exits 1 after 3,856 seconds. It passes
+  891 root unit tests, 230 CLI/history tests, 33 package tests, Reports' complete
+  check, planning's 50 tests and Desktop's complete check. It then reports 153
+  Desktop browser passes and 45 failures. Two legacy Source selector failures
+  are repaired by `1e17b5a5d`; broader agent, evidence, navigation, search and
+  remote failures are included in the authorized `desktop-ui-verification` loop.
+  The clean pre-change revision reproduces the same 45 failing scenarios. Collaboration, Hub, Remote and Relay root stages
+  were not reached. Full verification and the loop verify step remain open.
+- The sampled root-check peak RSS is 2,938,302,464 bytes across 26 processes,
+  sampled each second. Shared Codex, browser and other projects are excluded.
+- Hub's complete check stops at unchanged HubApiController.projects complexity 11
+  against limit 10. Its types and affected tests pass; no full Hub approval is claimed.
+- Real browser checks retain 53 models. Report.types.ts and the second Harness route
+  source file match their selected Git blobs byte-for-byte; focus and Source URLs
+  survive modal closing. Current renderer source is separate from catalog data at
+  SQLite commit `edd93768`.
+- That SQLite commit is not yet on GitHub (the API returns 422), so its correctly
+  pinned links require the branch to be pushed before GitHub can display them.
+  In-app source reading works from the local archive. No push or application release
+  was performed, and no physical native-device installation was exercised.
+- Screenshots and measurements stay outside the worktree. The feature report remains
+  active while full verification is open. Its 77 registered images are hash-verified
+  in private R2; this is evidence retention rather than website publication.
+
+## Desktop verification follow-up
+
+Daniel authorized the broader Desktop UI repairs. Baseline `418f9e426` reproduces
+all 45 browser failures from `6f9dba967`; the selected test files are unchanged.
+The full check previously stopped before these scenarios could run. The existing
+console-error and overflow guards already detect their product failures.
+
+The standard scenarios and shared fixtures now cover seven categories and model
+search, Helpers labels, the shared search modal, the current mode selector and
+Read/Comment/Write approval. They preserve keyboard navigation, scoped results,
+selected commits, exact code contents, no automatic runs and denied-access cleanup.
+Stronger lifecycle checks require decoded images, a contained Go to tip control,
+and a read-only chat label with no AI actions on immutable revisions.
+
+The first unchanged-product preflight passes 188 of 198 scenarios. Test preparation
+also exposed a shadowed local variable and a collapsed historical evidence panel;
+those are corrected before the committed red checkpoint and are not defect proof.
+Product repairs are still pending: premature blob URL release, immutable chat
+labelling, the Go to tip control overflowing its fixed width, and search wrapping
+away from the category controls when Models adds a seventh category.

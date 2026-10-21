@@ -17,6 +17,14 @@ export interface Added {
 export const added: Added[] = [
 	{
 		project: 0,
+		id: 'app.model.order',
+		category: 'models',
+		kind: 'model',
+		title: 'Alpha order model',
+		summary: 'Defines the Alpha order fields.'
+	},
+	{
+		project: 0,
 		id: 'app.shell.order-frame',
 		category: 'shells',
 		kind: 'shell',

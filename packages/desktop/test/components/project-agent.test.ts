@@ -24,12 +24,14 @@ test('a writable catalog offers the agent as one closed control, and no form', (
 });
 
 test.each([
-	['a hosted project', { capabilities: { agents: false } }],
-	['a past commit', { pinned: true }],
-	['a view that cannot be written', { snapshot: { writable: false } }],
-	['a project without an identity', { projectId: null }],
-	['an entity that is open', { entity: { id: 'page.orders' } }]
-])('%s still exposes the closed project chat bubble', (_name, change) => {
-	expect(drawn(change)).toMatch(/<button[^>]*aria-label="(?:Work with agent|Open project chat)"/);
+	['a hosted project', { capabilities: { agents: false } }, 'Open project chat'],
+	['a past commit', { pinned: true }, 'Open project chat'],
+	['a view that cannot be written', { snapshot: { writable: false } }, 'Open project chat'],
+	['a project without an identity', { projectId: null }, 'Open project chat'],
+	['an entity that is open', { entity: { id: 'page.orders' } }, 'Work with agent']
+])('%s still exposes the closed project chat bubble', (_name, change, label) => {
+	expect(drawn(change)).toMatch(
+		new RegExp('<button[^>]*aria-label="' + label + '"[^>]*aria-expanded="false"')
+	);
 	expect(drawn(change)).not.toMatch(/<textarea|<form/);
 });

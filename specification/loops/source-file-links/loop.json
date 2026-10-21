@@ -2,7 +2,7 @@
 	"name": "source-file-links",
 	"goal": "Source lists actual files with revision-pinned GitHub links and a modal button for each file",
 	"createdAt": "2026-10-21T15:24:58.053Z",
-	"updatedAt": "2026-10-21T15:50:28.681Z",
+	"updatedAt": "2026-10-21T18:09:23.096Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -41,12 +41,13 @@
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
 			"status": "complete",
 			"completedAt": "2026-10-21T15:50:28.681Z",
-			"evidence": "Unchanged tests, fixtures, command and environment pass at 69a37f29489a7c82fdd7fd19aea0fdd74726d1b5. Immutable green 6dba2a73c0e25b00673e00a42e43502439e12075910dd0744e638b312cc913bd; final red b8bf3157eba32bef5566f3f626a4e2e0eb2ce79f3d59ce7c17be8e94d02e316a."
+			"evidence": "Unchanged regression passes at 6f9dba96778cdf94fbd286dcf4730c588acfe31e. Immutable green 5c23122a7ba23e8bcac7f38f188bed289366bd23d9c0c21f31f287eacfe322c5; original red b8bf3157eba32bef5566f3f626a4e2e0eb2ce79f3d59ce7c17be8e94d02e316a. Contract and ownership guards also pass unchanged."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "At 6f9dba967 all 55 focused browser cases and Reports/Desktop complete checks pass. Root check then fails 45 of 198 Desktop browser cases; the clean 418f9e426 baseline reproduces all 45. Two legacy Source steps pass after test-only 1e17b5a5d. Broader repairs are authorized under desktop-ui-verification; full verification remains pending."
 		}
 	],
 	"evaluators": [

@@ -10,9 +10,9 @@ import { join } from 'node:path';
 import { alpha, searchFixture } from './ui-search-fixture';
 
 /**
- * The search of the top bar at every supported width. Closed, focused or with its results open,
- * the field and its focus ring meet neither revision field, which keep the widths they have at that
- * width without the search, the results cover neither, and no page is wider than the screen. A
+ * The search icon and modal at every supported width. The icon and its focus ring meet neither
+ * revision field, which retain their widths when the modal opens. Its field and results fit the
+ * screen, the results cover neither revision field, and no page is wider than the screen. A
  * result opens in place, and with a modifier in another tab. A screenshot is kept when
  * TAKE_SCREENSHOT=true.
  */
@@ -20,8 +20,12 @@ type Box = { x: number; y: number; width: number; height: number };
 const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
 const bar = (page: Page) => page.getByRole('banner');
+const trigger = (page: Page) =>
+	bar(page).getByRole('button', { name: 'Search entities', exact: true });
 const field = (page: Page) =>
-	bar(page).getByRole('combobox', { name: 'Search entities', exact: true });
+	page
+		.getByRole('dialog', { name: 'Search project', exact: true })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
 const revision = (page: Page) =>
 	['Branch', 'Commit'].map((name) => bar(page).getByRole('combobox', { name, exact: true }));
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
@@ -33,31 +37,22 @@ const meet = (one: Box, two: Box, ring: number) =>
 	one.y - ring < two.y + two.height &&
 	two.y < one.y + one.height + ring;
 
-/** Opens Alpha at `width`, and answers the widths of the revision fields there without the search. */
+/** Opens Alpha at `width`, and answers the revision widths before the search modal opens. */
 async function opened(page: Page, width: number): Promise<number[]> {
 	await searchFixture(page);
 	await page.setViewportSize({ width, height: 900 });
 	await page.goto(at('pages'));
 	await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
-	const searched = page.getByRole('combobox', {
-		name: 'Search entities',
-		exact: true,
-		includeHidden: true
-	});
-	const place = bar(page).locator(':scope > *').filter({ has: searched });
-	await place.evaluate((element: HTMLElement) => (element.style.display = 'none'));
-	const without = await Promise.all(revision(page).map(async (one) => (await box(one)).width));
-	await place.evaluate((element: HTMLElement) => (element.style.display = ''));
-	return without.map(Math.round);
+	return Promise.all(revision(page).map(async (one) => Math.round((await box(one)).width)));
 }
 async function fits(page: Page, width: number, without: number[]): Promise<void> {
-	const search = await box(field(page));
+	const search = await box(trigger(page));
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
-	// The search takes nothing of the room of either revision field.
+	// Opening the modal takes nothing of the room of either revision field.
 	expect(fields.map((one) => Math.round(one.width))).toEqual(without);
-	expect(search.width).toBeGreaterThanOrEqual(120);
+	expect(search.width).toBeGreaterThanOrEqual(40);
 	expect([search.x >= 0, search.x + search.width <= width]).toEqual([true, true]);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
@@ -78,11 +73,16 @@ for (const width of widths) {
 		const without = await opened(page, width);
 		await remember(page, info, `fit-${width}`);
 		await fits(page, width, without);
-		await field(page).focus();
-		await expect(field(page)).toBeFocused();
+		await trigger(page).focus();
+		await expect(trigger(page)).toBeFocused();
 		await fits(page, width, without);
+		await trigger(page).click();
+		await expect(field(page)).toBeFocused();
+		const input = await box(field(page));
+		expect(input.width).toBeGreaterThanOrEqual(120);
+		expect([input.x >= 0, input.x + input.width <= width]).toEqual([true, true]);
 		await field(page).fill('alpha');
-		await expect(found(page).getByRole('option')).toHaveCount(6);
+		await expect(found(page).getByRole('option')).toHaveCount(7);
 		await fits(page, width, without);
 		const list = await box(found(page));
 		expect([list.x >= 0, list.x + list.width <= width]).toEqual([true, true]);
@@ -95,6 +95,7 @@ for (const width of widths) {
 		page
 	}) => {
 		await opened(page, width);
+		await trigger(page).click();
 		await field(page).fill('refund');
 		const link = found(page).getByRole('option').first().getByRole('link');
 		const [tab] = await Promise.all([

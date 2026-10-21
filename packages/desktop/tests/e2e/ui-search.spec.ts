@@ -6,7 +6,7 @@ import { evidenced } from './ui-search-evidence';
 import { alpha, beta, earlier, gamma, searchFixture } from './ui-search-fixture';
 
 /**
- * One search in the top bar of the shared workspace finds entities of all six categories in the
+ * One modal search of the shared workspace finds entities of all seven categories in the
  * shown project and revision, and opens the chosen one with its project, branch and commit kept.
  * A screenshot is kept before the checks of each place when TAKE_SCREENSHOT=true.
  */
@@ -17,13 +17,14 @@ const field = (page: Page) =>
 		.getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const options = (page: Page) => found(page).getByRole('option');
-const sixth = [
+const expected = [
 	['Page', 'Alpha activity'],
 	['Shell', 'Alpha order frame'],
 	['Component', 'Alpha button'],
-	['Function', 'Alpha format time'],
+	['Helper', 'Alpha format time'],
 	['Config', 'Alpha order limits'],
-	['Service', 'Alpha refund service']
+	['Service', 'Alpha refund service'],
+	['Model', 'Alpha order model']
 ];
 
 /** The bar of the project is drawn: the moment before any search is checked, kept when asked. */
@@ -52,9 +53,9 @@ test('every category of the shown revision is found, and the keyboard opens a sh
 	await page.goto(alphaAt('pages'));
 	await ready(page, info, 'search-results-desktop');
 	await field(page).fill('alpha');
-	await expect(options(page)).toHaveCount(6);
+	await expect(options(page)).toHaveCount(7);
 	await remember(page, info, 'search-results-desktop');
-	for (const [index, [badge, title]] of sixth.entries()) {
+	for (const [index, [badge, title]] of expected.entries()) {
 		await expect(options(page).nth(index)).toContainText(badge);
 		await expect(options(page).nth(index)).toContainText(title);
 	}
@@ -69,6 +70,12 @@ test('every category of the shown revision is found, and the keyboard opens a sh
 	await expect(page).toHaveURL(alphaAt('shells/app.shell.order-frame'));
 	await expect(page.getByRole('heading', { level: 1, name: 'Alpha order frame' })).toBeVisible();
 	await expect(found(page)).toBeHidden();
+	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
+	await field(page).fill('order model');
+	await expect(options(page)).toHaveText([/Model.*Alpha order model/]);
+	await field(page).press('Enter');
+	await expect(page).toHaveURL(alphaAt('models/app.model.order'));
+	await expect(page.getByRole('heading', { level: 1, name: 'Alpha order model' })).toBeVisible();
 });
 
 test('Escape closes the list and then clears the field, and nothing found is said', async ({
@@ -119,7 +126,7 @@ test('another project is never searched', async ({ page }, info) => {
 	await page.goto(`/projects/${beta}/harness/branch/main/pages`);
 	await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 	await field(page).fill('only');
-	await expect(options(page)).toHaveText([/Function.*Beta only function/]);
+	await expect(options(page)).toHaveText([/Helper.*Beta only function/]);
 	await field(page).fill('alpha');
 	await expect(page.getByText('No entity matches “alpha”')).toBeVisible();
 });
@@ -145,7 +152,7 @@ for (const viewport of [
 		await ready(page, info, `search-results-${viewport.id}`);
 		await expect(field(page)).toBeVisible();
 		await field(page).fill('alpha');
-		await expect(options(page)).toHaveCount(6);
+		await expect(options(page)).toHaveCount(7);
 		await remember(page, info, `search-results-${viewport.id}`);
 		const box = await found(page).boundingBox();
 		expect(box && box.x >= 0 && box.x + box.width <= viewport.width).toBe(true);

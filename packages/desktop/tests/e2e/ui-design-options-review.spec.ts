@@ -51,6 +51,14 @@ test('each option shows its own image, and a new thread is anchored to the optio
 	await expect.poll(async () => (await calls(page, 'openThread')).length).toBe(1);
 	const [opened] = await calls(page, 'openThread');
 	expect(opened).toMatchObject({ version: 'v003', option: 'o3', imageSha256: sha('o3') });
+	await expect
+		.poll(() =>
+			page
+				.locator('img')
+				.evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0))
+		)
+		.toBe(true);
+	await remember(page, info, 'option-thread');
 });
 
 test('approval binds the option shown, and Change runs only on that approved option', async ({

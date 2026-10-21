@@ -76,8 +76,9 @@ test('evidence is read only where it is shown, and each section has its own addr
 		.getByRole('button', { name: 'Source', exact: true })
 		.click();
 	await expect(
-		page.getByRole('button', { name: 'src/routes/orders/+page.svelte', exact: true })
+		page.getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true })
 	).toBeVisible();
+	await expect(page.locator('pre')).toHaveCount(0);
 });
 
 test('an answer for a scope or an entity that is no longer shown is dropped', async ({ page }) => {

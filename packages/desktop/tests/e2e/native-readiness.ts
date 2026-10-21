@@ -30,7 +30,10 @@ async function designsAt(page: Page, expected: NativeExpected): Promise<void> {
 		expected.state === 'history'
 			? `Historical commit · ${expected.commit.slice(0, 7)}`
 			: 'Current · branch tip';
-	await expect(page.getByText(note, { exact: true })).toBeVisible();
+	await expect(page.getByLabel('Commit', { exact: true })).toHaveAttribute(
+		'title',
+		`${expected.commit} · ${note}`
+	);
 }
 
 /** Approval is offered on the tip, recorded once approved, and refused on a historical commit. */
