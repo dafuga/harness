@@ -100,14 +100,6 @@ export function admission(
 	return errors;
 }
 
-export const privateServiceUsers = [
-	[],
-	[{ unit: ids.list }],
-	[{ unit: ids.list }, { unit: ids.list }],
-	[{ unit: ids.list }, { unit: 'missing' }],
-	undefined
-];
-
 /** Concrete private classes used by the standard relationship matrix. */
 export function relationServiceMetadata(kind: string, offset: number, owner: string) {
 	return kind === 'service'

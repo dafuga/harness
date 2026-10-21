@@ -153,7 +153,13 @@ function withServices(detail: HarnessRevision): HarnessRevision {
 	};
 }
 
-export { privateServiceUsers } from './entityClassFixtures';
+export const privateServiceUsers = [
+	[],
+	[{ unit: ids.list }],
+	[{ unit: ids.list }, { unit: ids.list }],
+	[{ unit: ids.list }, { unit: 'missing' }],
+	undefined
+];
 
 /** Mixed module groups exceed one and two batches, with an uneven final batch. */
 export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
