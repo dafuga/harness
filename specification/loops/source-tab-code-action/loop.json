@@ -2,7 +2,7 @@
 	"name": "source-tab-code-action",
 	"goal": "Every catalog opens details without a code action; only the detail Source tab offers View code in a revision-specific modal.",
 	"createdAt": "2026-10-21T11:35:13.478Z",
-	"updatedAt": "2026-10-21T11:53:54.485Z",
+	"updatedAt": "2026-10-21T13:51:32.485Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Required root check at 66fb79fe failed only the concurrent-report package case: synthetic history did not seed within 180 seconds. An unchanged isolated retry failed at the second history deadline. Reports and Desktop complete checks and 55 affected browser cases pass. See the feature specification for exact commands, revisions, measurements and the open boundary."
 		}
 	],
 	"evaluators": [
