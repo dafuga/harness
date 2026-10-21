@@ -12,6 +12,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { runnerFixture, runnerCaptures } from './support/sourceProfileRunners';
 
 /**
  * The root Vitest config is inherited by a workspace that has none of its own: Vitest finds it
@@ -94,7 +95,7 @@ function peakWorkers(cwd: string): number {
  */
 const runLimit = 45_000;
 /** A normal `vitest run` from `cwd`: its exit code and the test files it ran, relative to `root`. */
-function run(root: string, cwd: string) {
+function run(root: string, cwd: string, environment: Record<string, string> = {}) {
 	const report = join(root, `report-${Math.random().toString(36).slice(2)}.json`);
 	const env = Object.fromEntries(
 		Object.entries(process.env).filter(
@@ -106,7 +107,7 @@ function run(root: string, cwd: string) {
 		['x', 'vitest', 'run', '--reporter=json', `--outputFile=${report}`],
 		{
 			cwd,
-			env: { ...env, NO_COLOR: '1' },
+			env: { ...env, NO_COLOR: '1', ...environment },
 			encoding: 'utf8',
 			timeout: runLimit,
 			killSignal: 'SIGKILL'
@@ -168,3 +169,42 @@ test.each(['collaboration', 'remote', 'relay'])(
 	},
 	60_000
 );
+
+test('normal root and inherited workspace configurations retain requested source profiles', async () => {
+	const fixture = await runnerFixture();
+	try {
+		for (const file of ['vitest.config.ts', 'test/setup.ts', 'test/svelteKitConfigs.ts']) {
+			mkdirSync(join(fixture.root, file, '..'), { recursive: true });
+			copyFileSync(join(repository, file), join(fixture.root, file));
+		}
+		symlinkSync(join(repository, 'src'), join(fixture.root, 'src'), 'dir');
+		const nested = join(fixture.root, 'packages/nested');
+		mkdirSync(join(nested, 'test'), { recursive: true });
+		copyFileSync(join(repository, 'test/setup.ts'), join(nested, 'test/setup.ts'));
+		for (const [file, entry] of [
+			['subject.test.ts', './subject.ts'],
+			['packages/nested/test/subject.test.ts', '../../../subject.ts']
+		]) {
+			await fixture.write(
+				file,
+				`import { expect, test } from 'vitest';
+import { greet } from '${entry}';
+test('source operation',()=>expect(greet('real')).toBe('REAL'));`
+			);
+		}
+		for (const cwd of [fixture.root, nested]) {
+			const previous = (await runnerCaptures(fixture.directory)).length;
+			const result = run(fixture.root, cwd, fixture.environment);
+			expect(result.output).not.toMatch(/ERR_MODULE_NOT_FOUND|ERR_LOAD_URL|No test files found/);
+			expect([result.timedOut, result.status]).toEqual([false, 0]);
+			const observations = (await runnerCaptures(fixture.directory)).slice(previous);
+			expect(
+				observations.some((item) => item.unitOfMeasure === 'ms'),
+				'normal configurations require source observations'
+			).toBe(true);
+			expect(observations.some((item) => item.unitOfMeasure === 'bytes')).toBe(true);
+		}
+	} finally {
+		await fixture.remove();
+	}
+}, 60_000);
