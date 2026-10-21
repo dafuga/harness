@@ -3,16 +3,20 @@
 	"id": "service.regression-proof",
 	"kind": "service",
 	"title": "Run a committed regression",
-	"responsibility": "Run one test command on an isolated export of an exact source commit. Retains decoded screenshot bytes before snapshot cleanup and requires actual captures to name the exact served revision.",
+	"responsibility": "Run committed regressions in isolated snapshots. Retain decoded screenshots for their declared units before cleanup and bind actual captures to the exact served revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/RegressionProofService.ts"],
+		"source": [
+			"src/services/RegressionProofService.ts",
+			"src/services/regression-proof-service/focusedScreens.ts"
+		],
 		"symbols": [
 			"RegressionRun",
 			"RegressionProofService",
 			"RegressionProofService.constructor",
-			"RegressionProofService.run"
+			"RegressionProofService.run",
+			"focusedScreens"
 		]
 	},
 	"contract": {
@@ -101,12 +105,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verify-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "repository.regression-proof",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.scenario",
 			"via": "import",
 			"origin": "derived"
 		}

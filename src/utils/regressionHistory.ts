@@ -183,7 +183,7 @@ async function regressionCaptures(
 ) {
 	const files = new Map<string, Buffer>();
 	for (const { capture } of record.captures ?? []) {
-		const bytes = await read(capture.path);
+		const bytes = files.get(capture.path) ?? (await read(capture.path));
 		if (!bytes) return fail(`Focused capture ${capture.path} is missing.`);
 		if (bytes.length !== capture.bytes || regressionHash(bytes) !== capture.sha256)
 			return fail(`Focused capture ${capture.path} has different bytes.`);

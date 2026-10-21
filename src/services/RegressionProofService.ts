@@ -1,5 +1,8 @@
+import { focusedScreens } from './regression-proof-service/focusedScreens';
+import { ScenarioRepository } from '../repositories/ScenarioRepository';
+import type { ScenarioManifest } from '../core/unitTypes';
 import { benchmarkMeasurements } from './record-assembly-service/sealRecord';
-import { gatherCaptures, type Gathered } from '../utils/gatherCaptures';
+import { gatherCaptures } from '../utils/gatherCaptures';
 import { machineProfile } from '../utils/machineProfile';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -39,7 +42,7 @@ export class RegressionProofService {
 		try {
 			if (snapshot.misdeclared().length) fail('Regression outputs may not cover tracked files.');
 			for (const path of config.link) await snapshot.link(this.root, path);
-			const observed = await observeRegression(snapshot, directory, input);
+			const observed = await observeRegression(snapshot, directory, input, config.scenarios);
 			const record = await sealRegression(this.root, input, observed);
 			await new RegressionProofRepository(this.root).save(record, observed.output, observed.files);
 			return record;
@@ -61,9 +64,12 @@ async function sourceIdentity(root: string, commit: string) {
 async function snapshotConfig(root: string, commit: string) {
 	const tree = await CommitTreeAdapter.open(root, commit);
 	const listed = (await tree.list()).some((entry) => entry.path === 'harness.verify.json');
-	return listed
+	const config = listed
 		? verifyConfigSchema.parse(JSON.parse(await tree.read('harness.verify.json')))
 		: defaultVerifyConfig;
+	const scenarios = await new ScenarioRepository(root).read(tree);
+	if (scenarios.errors.length) fail(scenarios.errors.join('; '));
+	return { ...config, scenarios: scenarios.manifests };
 }
 
 function environmentProfile(): string {
@@ -105,7 +111,8 @@ interface Observation {
 async function observeRegression(
 	snapshot: SnapshotAdapter,
 	directory: string,
-	input: RegressionRun
+	input: RegressionRun,
+	scenarios: ScenarioManifest[]
 ): Promise<Observation> {
 	const startedAt = new Date().toISOString(),
 		profile = environmentProfile();
@@ -143,7 +150,7 @@ async function observeRegression(
 		result,
 		output,
 		measurements,
-		...(await focusedScreens(captures.gathered, directory, input.commit))
+		...(await focusedScreens(captures.gathered, directory, { commit: input.commit, scenarios }))
 	};
 }
 
@@ -184,25 +191,4 @@ function invalidExecution(result: Awaited<ReturnType<typeof runIsolated>>): bool
 		result.survivors.length > 0 ||
 		Boolean(result.unknown)
 	);
-}
-
-/** Retain the inspected pixels before the snapshot and its evidence directory are removed. */
-async function focusedScreens(gathered: Gathered[], directory: string, commit: string) {
-	const captures: NonNullable<RegressionRecord['captures']> = [],
-		files: Observation['files'] = [];
-	for (const { line, capture, facts } of gathered.filter(
-		(item) => item.capture.kind === 'screenshot'
-	)) {
-		if (!facts || 'error' in facts || facts.kind !== 'image')
-			fail('Focused capture is not a decoded screenshot.');
-		if (capture.provenance === 'actual-capture' && capture.server?.revision !== commit)
-			fail('Focused capture has a different served revision.');
-		captures.push({
-			unit: line.evidence,
-			capture,
-			viewport: { width: facts.width, height: facts.height }
-		});
-		files.push({ path: capture.path, bytes: await readFile(join(directory, line.file)) });
-	}
-	return { captures, files };
 }
