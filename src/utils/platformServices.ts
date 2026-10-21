@@ -48,11 +48,15 @@ const xcodeRequirement =
 	'certificate leaf[subject.OU] = "59GAB85EFG")';
 
 const vetted = [
-	{ path: 'usr/bin/ibtoold', requirement: 'identifier "com.apple.ibtool" and anchor apple' }
+	{ path: 'usr/bin/ibtoold', requirement: 'identifier "com.apple.ibtool" and anchor apple' },
+	{
+		path: 'Platforms/iPhoneSimulator.platform/Developer/Library/Xcode/Overlays/IBAgent-iOS',
+		requirement: 'identifier "com.apple.InterfaceBuilder.IBAgent-iOS" and anchor apple'
+	}
 ];
 
 /** Names of the shared service and of the tools that start it: never signalled under any path. */
-const guarded = ['ibtoold', 'ibtool', 'actool'];
+const guarded = ['ibtoold', 'ibtool', 'actool', 'IBAgent-iOS'];
 
 const vouched = new Set<string>();
 
@@ -66,7 +70,7 @@ export const named = (...names: string[]) => names.some((name) => guarded.includ
 export const probing = (context: ServiceContext) =>
 	context.probes ?? processProbes({ signal: context.signal });
 
-/** The Xcode a developer directory is part of, with the one service of it that is shared. */
+/** The Xcode a developer directory is part of, with the exact services of it that are shared. */
 function authorityAt(selected: string): ServiceAuthority | null {
 	try {
 		const root = realpathSync(selected.trim());

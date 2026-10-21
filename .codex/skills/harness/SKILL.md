@@ -139,6 +139,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 - When catalog eligibility, labels or card controls change, refresh the canonical registry fixtures and run the existing planning-reference and browser navigation suites. A catalog display filter must not remove valid registry identities from planning prompts or direct historical routes. Cover active private units, first-parent removals and unrelated parent units; keep private units out of collections.
 - For image lifecycle changes, exercise replacement and unmount while reads are pending. Detach old image elements before releasing blob URLs, retain late-result cancellation coverage, and require the unchanged browser error collector to remain clean.
 
+- Native build cleanup must recognize each vetted Xcode service by the selected canonical bundle, exact path, running signature and system adoption. Extend the standard signed-service matrix when a new service appears, including wrong signatures and lookalikes. Never accept arbitrary descendants or signal shared services to obtain a passing build.
+
 ## Hard Limits
 
 - Files: 220 lines.
