@@ -9,8 +9,10 @@
 	"owns": {
 		"source": [
 			"src/adapters/source-profile-adapter/SourceProfileAdapter.ts",
+			"src/adapters/source-profile-adapter/bunPreload.ts",
 			"src/adapters/source-profile-adapter/instrumentSource.ts",
-			"src/adapters/source-profile-adapter/profileRuntime.ts"
+			"src/adapters/source-profile-adapter/profileRuntime.ts",
+			"src/adapters/source-profile-adapter/runnerConfig.ts"
 		],
 		"symbols": [
 			"SourceProfileAdapterConfig",
@@ -20,7 +22,8 @@
 			"instrumentSource",
 			"watchOperation",
 			"watchMethod",
-			"flushSourceProfiles"
+			"flushSourceProfiles",
+			"sourceProfilePlugin"
 		]
 	},
 	"contract": {
@@ -65,6 +68,10 @@
 			{
 				"name": "watchMethod.boundary",
 				"type": "Boundary"
+			},
+			{
+				"name": "sourceProfilePlugin._root",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -87,6 +94,10 @@
 			{
 				"name": "flushSourceProfiles",
 				"type": "void"
+			},
+			{
+				"name": "sourceProfilePlugin",
+				"type": "unknown"
 			}
 		],
 		"errors": []
