@@ -6,7 +6,7 @@
 	"name": "repository-profile-default",
 	"goal": "Normal repository verification always requires Harness runtime profiles, including schema bootstrap workloads.",
 	"createdAt": "2026-10-21T18:24:30.286Z",
-	"updatedAt": "2026-10-21T18:24:30.873Z",
+	"updatedAt": "2026-10-21T18:27:58.617Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -21,12 +21,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:27:58.077Z",
+			"evidence": "Repository verification opts into performanceRequired:1; other projects retain the existing optional config. Actual parsing workloads cover cycle-sensitive verification, unit-manifest and comparison schemas without instrumenting bootstrap imports."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:27:58.617Z",
+			"evidence": "7825279a1 configuration coverage failed because profiling was not required. Same 11 cases pass at 3188220c8. Normal focused run at that exact source recorded positive latency and process-peak RSS for all three schema parse workloads through Harness; lint, types and root audit pass. Raw captures remain focused, not sealed verification."
 		},
 		{
 			"id": "verify",
