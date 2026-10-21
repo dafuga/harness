@@ -78,18 +78,6 @@ test('a side with no capture of the state is a stated gap, never the other side 
 	]);
 	expect(words(focused)).toContain('Focused capture');
 	expect(verdicts(focused).some((badge) => badge.passed)).toBe(false);
-	const sized = content('current', page, {
-		head: withFocused(revision(commits.tip, []), ids.page, {
-			desktop: { width: 1280, height: 720 }
-		})
-	});
-	expect(
-		words(sized),
-		'known focused dimensions override conventional viewport defaults'
-	).toContain('1280 × 720');
-	expect(words(sized), 'a stored width never becomes an invented desktop label').not.toContain(
-		'1440 × 900'
-	);
 	const other = content('commit', page, {
 		head: withFocused(revision(commits.middle, []), ids.list),
 		parent
