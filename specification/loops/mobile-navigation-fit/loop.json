@@ -2,7 +2,7 @@
 	"name": "mobile-navigation-fit",
 	"goal": "All category links and labels fit visibly at mobile widths, alongside accessible search and revision controls",
 	"createdAt": "2026-10-21T11:11:19.858Z",
-	"updatedAt": "2026-10-21T11:12:33.592Z",
+	"updatedAt": "2026-10-21T11:14:02.082Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:14:01.393Z",
+			"evidence": "Immutable c0f830d0 fails the shared nav-label bounds guard at 320/390; original source is unchanged and real screenshots precede the assertion"
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:14:02.082Z",
+			"evidence": "Opus will fit all seven icon-and-text category links in a compact wrapping mobile nav, retain controls, and preserve the existing header height bound; the shared bounds guard runs across the normal viewport matrix"
 		},
 		{
 			"id": "implement",
