@@ -54,7 +54,7 @@ test('a page leads to its components, those to components, and those to function
 	page
 }) => {
 	await page.goto(main('pages'));
-	await open(page, 'Titles');
+	await open(page, 'Open Titles');
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await checkpoint(page, 'evidence-page-uses');
@@ -69,28 +69,32 @@ test('a page leads to its components, those to components, and those to function
 	await open(page, 'Title row');
 	await expectPath(page, main(`components/${units.row}`));
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
-	await open(page, 'Slugify');
-	await expectPath(page, main(`functions/${units.slugify}`));
-	await expect(heading(page, 'Slugify')).toBeVisible();
+	await content(page).locator('.ex-function-call').first().click();
+	await expectPath(page, main(`helpers/slugify/in/${units.slugify}/contract`));
+	await expect(heading(page, 'slugify')).toBeVisible();
 });
 
-test('source is not shown until Details and then Source are opened, on a page too', async ({
-	page
-}) => {
+test('page source stays hidden until its Source tab is opened', async ({ page }) => {
 	const file = 'src/routes/titles/+page.svelte';
 	await page.goto(main(`pages/${units.page}`));
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await expect(content(page).getByText(file)).toHaveCount(0);
-	await content(page).getByRole('link', { name: 'Details' }).click();
-	await expectPath(page, main(`pages/${units.page}/details`));
-	await checkpoint(page, 'evidence-page-details');
-	for (const section of ['Contract', 'Size', 'Performance profile']) {
-		await expect(content(page).getByRole('heading', { name: section, exact: true })).toBeVisible();
-	}
-	await expect(page.getByRole('tab')).toHaveText(['Contract', 'Measurements', 'Source', 'History']);
+	await expect(content(page).getByRole('link', { name: 'Details', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('tab')).toHaveText([
+		'Overview',
+		'Contract',
+		'Uses',
+		'States',
+		'History',
+		'Source'
+	]);
+	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+	await expectPath(page, main(`pages/${units.page}?tab=contract`));
+	await checkpoint(page, 'evidence-page-contract');
+	await expect(content(page).getByRole('heading', { name: 'Contract', exact: true })).toBeVisible();
 	await expect(content(page).getByText(file)).toHaveCount(0);
-	await page.getByRole('tab', { name: 'Source' }).click();
-	await expectPath(page, main(`pages/${units.page}/details?tab=source`));
+	await page.getByRole('tab', { name: 'Source', exact: true }).click();
+	await expectPath(page, main(`pages/${units.page}?tab=source`));
 	await expect(content(page).getByText(file).first()).toBeVisible();
 	await page.reload();
 	await expect(content(page).getByText(file).first()).toBeVisible();
