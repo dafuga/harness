@@ -83,7 +83,10 @@ for (const viewport of viewports)
 			}
 			await captureSections(page, `current-measurements-${category}-${viewport.id}`, checkpoint);
 			await page.goto(at('feature/shells', commits.shelled, `${category}/${unit.id}/details`));
-			await expect(profile).toBeVisible();
+			await expect(page.getByRole('tab', { name: 'Contract', exact: true })).toHaveAttribute(
+				'aria-selected',
+				'true'
+			);
 			await checkpoint(page, `details-measurements-${category}-${viewport.id}`);
 		}
 	});
