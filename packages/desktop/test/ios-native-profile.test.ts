@@ -98,13 +98,11 @@ function nativeCommand(command: string[], cwd: string) {
 					timeout: 120000,
 					maxBuffer: 2_000_000
 				},
-				(error, stdout, stderr) =>
-					done({
-						error,
-						status: error ? (typeof error.code === 'number' ? error.code : 1) : 0,
-						stdout,
-						stderr
-					})
+				(error, stdout, stderr) => {
+					let status = 0;
+					if (error) status = typeof error.code === 'number' ? error.code : 1;
+					done({ error, status, stdout, stderr });
+				}
 			);
 		}
 	);
