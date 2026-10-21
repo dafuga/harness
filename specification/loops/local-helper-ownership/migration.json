@@ -4859,9 +4859,18 @@
 		{
 			"unit": "reports.function.entity-shown",
 			"name": "entityShown",
-			"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
-			"reason": "Review main-branch derivation of unit measurements from the current record and matching regression proofs.",
-			"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
+			"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
+			"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+			"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e",
+			"previousDefinitions": [
+				{
+					"unit": "reports.function.entity-shown",
+					"name": "entityShown",
+					"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
+					"reason": "Review main-branch derivation of unit measurements from the current record and matching regression proofs.",
+					"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
+				}
+			]
 		},
 		{
 			"unit": "reports.function.entity-history",

@@ -11,7 +11,13 @@
 			"packages/desktop/src/utils/deploymentProof.ts",
 			"packages/desktop/src/utils/development-tooling/deploymentProof.ts"
 		],
-		"symbols": ["deploymentProof", "deploymentBlockers", "deploymentHealth", "deploymentCurrent"]
+		"symbols": [
+			"deploymentProof",
+			"deploymentProof",
+			"deploymentBlockers",
+			"deploymentHealth",
+			"deploymentCurrent"
+		]
 	},
 	"contract": {
 		"origin": "declared",
