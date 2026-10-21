@@ -6,7 +6,7 @@
 	"name": "runtime-observation-capture",
 	"goal": "Harness captures real one-pass synchronous and awaited operation latency and process memory without rerunning effectful behavior tests or replacing results.",
 	"createdAt": "2026-10-21T09:27:44.989Z",
-	"updatedAt": "2026-10-21T09:47:14.071Z",
+	"updatedAt": "2026-10-21T09:51:10.575Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:51:08.925Z",
+			"evidence": "Sealed same-process redf38cd1558435021daaaca5076b40a8abc9049aa052f877b7b5c4b9e89f3c7f22 at80509f46 and greend2ed52061f86a491291e0d2387b5b26c870c51f172b5240a91bc24edfa68a75d at5790bba3 pass the unchanged seven-test profiler suite. Four actual self-profile observations cover batch and one-pass operations."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:51:10.575Z",
+			"evidence": "The isolated red snapshot restores the missing API and rejects all four one-pass boundaries. The isolated green snapshot passes the same frozen corpus; pending work cannot become an early latency sample, failures remain failures and fake protocol unit identifiers remain in temporary evidence only."
 		},
 		{
 			"id": "verify",

@@ -177,3 +177,25 @@ test('one-pass captures retain separate callable and workload observations', asy
 		expect(new Set(lines.map((line) => JSON.parse(line).file)).size).toBe(3);
 	});
 });
+
+test('observation chunks never overwrite another producer or an earlier flush', async () => {
+	await isolatedProfileCapture(async (directory) => {
+		const first = new PerformanceProfileService();
+		const second = new PerformanceProfileService();
+		const input = { unit: 'function.title', workload: 'same-title' };
+		for (const profiler of [first, second, first]) {
+			profiler.observe(input, () => ' A title '.trim());
+			profiler.flush();
+		}
+		const lines = (await readFile(join(directory, 'captures.ndjson'), 'utf8')).trim().split('\n');
+		const files = lines.map((line) => JSON.parse(line).file);
+		expect(files).toHaveLength(3);
+		expect(new Set(files).size).toBe(3);
+		for (const file of files) {
+			const capture = benchmarkCaptureSchema.parse(
+				JSON.parse(await readFile(join(directory, file), 'utf8'))
+			);
+			expect(capture.measurements.every((item) => item.samples === 1)).toBe(true);
+		}
+	});
+});
