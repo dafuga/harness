@@ -2,11 +2,9 @@
 	"name": "compact-capture-headers",
 	"goal": "Comparison cards show revision identity without capture labels or duplicate full-size controls; clicking images still opens them.",
 	"createdAt": "2026-10-21T18:31:06.659Z",
-	"updatedAt": "2026-10-21T18:39:55.482Z",
+	"updatedAt": "2026-10-21T19:59:33.174Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T18:45:50.030Z",
+			"evidence": "Immutable paired proof 1c2b7c0c at 94cc6d07 passes the unchanged 11 render tests, 7 responsive viewer/overview cases and 3 real-route category cases. It retains 144 screenshots and 398 runtime observations."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T19:59:33.174Z",
+			"evidence": "All normal repository verification stages pass at the original 94cc6d07 candidate, with unchanged socket cases rerun under a short TMPDIR. The paired proof and three manually inspected Settings layouts are retained. Main 0816efe0 will receive a fresh integration proof."
 		}
 	],
 	"evaluators": [
