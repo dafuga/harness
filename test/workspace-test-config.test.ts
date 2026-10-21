@@ -12,7 +12,11 @@ import {
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import { runnerFixture, runnerCaptures } from './support/sourceProfileRunners';
+import {
+	runnerFixture,
+	runnerCaptures,
+	nativeRunnerEnvironments
+} from './support/sourceProfileRunners';
 
 /**
  * The root Vitest config is inherited by a workspace that has none of its own: Vitest finds it
@@ -192,17 +196,21 @@ import { greet } from '${entry}';
 test('source operation',()=>expect(greet('real')).toBe('REAL'));`
 			);
 		}
-		for (const cwd of [fixture.root, nested]) {
-			const previous = (await runnerCaptures(fixture.directory)).length;
-			const result = run(fixture.root, cwd, fixture.environment);
-			expect(result.output).not.toMatch(/ERR_MODULE_NOT_FOUND|ERR_LOAD_URL|No test files found/);
-			expect([result.timedOut, result.status]).toEqual([false, 0]);
-			const observations = (await runnerCaptures(fixture.directory)).slice(previous);
-			expect(
-				observations.some((item) => item.unitOfMeasure === 'ms'),
-				'normal configurations require source observations'
-			).toBe(true);
-			expect(observations.some((item) => item.unitOfMeasure === 'bytes')).toBe(true);
+		for (const environment of nativeRunnerEnvironments(fixture.environment)) {
+			for (const cwd of [fixture.root, nested]) {
+				const previous = (await runnerCaptures(fixture.directory)).length;
+				const result = run(fixture.root, cwd, environment);
+				expect(result.output).not.toMatch(
+					/ERR_MODULE_NOT_FOUND|ERR_LOAD_URL|ERR_UNKNOWN_FILE_EXTENSION|No test files found/
+				);
+				expect([result.timedOut, result.status]).toEqual([false, 0]);
+				const observations = (await runnerCaptures(fixture.directory)).slice(previous);
+				expect(
+					observations.some((item) => item.unitOfMeasure === 'ms'),
+					'normal configurations require source observations'
+				).toBe(true);
+				expect(observations.some((item) => item.unitOfMeasure === 'bytes')).toBe(true);
+			}
 		}
 	} finally {
 		await fixture.remove();
