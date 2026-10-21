@@ -77,37 +77,36 @@
 		padding: 10px 12px 0;
 	}
 	.account {
-		order: 2;
-		width: 100%;
-		justify-content: center;
+		justify-content: flex-end;
 		border: 0;
 		padding: 0;
 	}
-	/* The workspace bar in three rows: the mark, the project and the deployment light; the
-	   environment beside the revision, with how the environment stands under both; the categories,
-	   which scroll, and the search. A signed-in account takes a row under the project. */
+	/* The bar in bands: mark, project and deployment light; the environment and revision rail, with
+	   what it shows on lines beneath; the categories and search. An account has a row of its own. */
 	.topbar:has(.topbar-search) {
-		grid-template-columns: 34px auto minmax(0, 1fr) auto;
+		grid-template-columns: 26px auto minmax(0, 1fr) auto 34px;
 		grid-template-areas:
-			'brand project project account'
-			'environment environment revision revision'
-			'status status status status'
-			'tools tools tools search';
-		gap: 4px 6px;
-		padding-top: 6px;
+			'brand project project project account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'status status status status status'
+			'tools tools tools search search';
+		gap: 4px 0;
+		padding-top: 4px;
 	}
 	.topbar.with-account {
 		grid-template-areas:
-			'brand project project project'
-			'account account account account'
-			'environment environment revision revision'
-			'status status status status'
-			'tools tools tools search';
+			'brand project project project project'
+			'account account account account account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'status status status status status'
+			'tools tools tools search search';
 	}
 	/* The mark alone stands for Harness, so the project's name keeps the room. */
 	.topbar:has(.topbar-search) .brand-mark {
 		display: flex;
-		font-size: 28px;
+		font-size: 26px;
 	}
 	.brand-word {
 		position: absolute;
@@ -120,23 +119,38 @@
 	.topbar-search {
 		grid-area: search;
 	}
-	/* The categories scroll along the last row, the shown one brought into view. */
+	/* Icons are quiet, with no box of their own until hovered; focus rings them from inside. */
+	header.topbar .agent-icon,
+	header.topbar .topbar-search .entity-search-trigger,
+	header.topbar .topbar-search .topbar-settings {
+		width: 34px;
+		height: 34px;
+		padding: 0;
+		border-color: transparent;
+		background: none;
+		color: var(--muted);
+	}
+	header.topbar .agent-icon:focus-visible {
+		outline-offset: -2px;
+	}
+	/* The categories share the last row and scroll when they must, the shown one in gold. */
 	.topbar nav {
-		gap: 2px;
-		height: 44px;
+		height: 34px;
 		overflow: auto hidden;
 		scrollbar-width: none;
 	}
 	.topbar nav a {
-		flex: none;
-		min-width: 62px;
-		gap: 4px;
-		padding-inline: 6px;
+		flex: 1 0 auto;
+		min-width: 60px;
+		gap: 1px;
+		padding: 1px 8px 0;
+		border-bottom-width: 2px;
+		color: var(--muted);
 		font-size: 11px;
 	}
 	.topbar nav svg {
-		width: 18px;
-		height: 18px;
+		width: 16px;
+		height: 16px;
 	}
 	/* Inside the scrolling row a focus ring is drawn within its tab, so the row never cuts it. */
 	.topbar nav a:focus-visible {

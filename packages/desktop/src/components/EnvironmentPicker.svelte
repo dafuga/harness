@@ -127,8 +127,9 @@
 		border-color: rgb(255 208 53 / 0.55);
 		color: var(--gold);
 	}
-	/* On a phone the bar places the choice beside the revision and how the environment stands on one
-	   line under both, its time after its commit; a note wraps under that line. */
+	/* On a phone the choice and Deploy begin the bar's rail, which the revision icons end. How the
+	   environment stands is told under the rail on a line of its own, its time after its commit; a
+	   note wraps under that line. */
 	@media (max-width: 560px) {
 		.full-note {
 			display: none;
@@ -141,17 +142,37 @@
 		}
 		.environment-choice {
 			grid-area: environment;
+			gap: 0;
+			border-radius: 8px 0 0 8px;
+			background: var(--panel);
+			box-shadow: inset 0 0 0 1px var(--line);
 		}
+		/* The rail draws the choice; a hairline parts it from Deploy. */
 		.environment-picker .environment-choice :global(.report-select select) {
-			padding-inline: 10px 28px;
+			padding-inline: 12px 28px;
+			border-color: transparent;
+			border-inline-end-color: var(--line);
+			border-radius: 8px 0 0 8px;
+			background-color: transparent;
+			font-weight: 600;
 		}
 		.environment-picker .environment-choice :global(.report-select svg) {
 			inset-inline-end: 8px;
 		}
+		.environment-choice :global(select:focus-visible) {
+			outline: 2px solid var(--gold);
+			outline-offset: -2px;
+		}
 		.environment-status {
 			grid-area: status;
-			gap: 1px;
+			gap: 0;
 			min-width: 0;
+		}
+		small {
+			line-height: 13px;
+		}
+		.deployed code {
+			line-height: 1;
 		}
 		small:not(.environment-note) {
 			overflow: hidden;
