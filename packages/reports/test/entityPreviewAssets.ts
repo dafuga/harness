@@ -92,6 +92,14 @@ export function entityPreviewAssets(directory: string): Record<string, string> {
 	mkdirSync(join(directory, 'media'), { recursive: true });
 	const hashes: Record<string, string> = {};
 	for (const commit of Object.values(commits)) {
+		for (const path of sourcePaths) {
+			const text = sourceText(commit, path);
+			const hash = createHash('sha256').update(text).digest('hex');
+			hashes[`source:${commit}:${path}`] = hash;
+			writeFileSync(join(directory, `media/${hash}.txt`), text);
+		}
+	}
+	for (const commit of Object.values(commits)) {
 		const states = stateRecord(commit).scenarios.flatMap((scenario) => scenario.states);
 		for (const state of states) {
 			const captures = [
@@ -115,3 +123,4 @@ export function entityPreviewAssets(directory: string): Record<string, string> {
 	}
 	return hashes;
 }
+import { sourcePaths, sourceText } from './entitySourceFixture';

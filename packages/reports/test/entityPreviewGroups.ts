@@ -36,7 +36,10 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		...detail,
 		registry: {
 			...detail.registry,
-			units: [...detail.registry.units, model].map((unit) => categoryUnit(unit, detail.commit))
+			units: [
+				...detail.registry.units,
+				...(detail.registry.units.some((unit) => unit.id === model.id) ? [] : [model])
+			].map((unit) => categoryUnit(unit, detail.commit))
 		}
 	};
 }

@@ -93,7 +93,9 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect
 				.soft(section.getByRole('heading', { name: /Symbols|Execution targets/ }))
 				.toHaveCount(0, { timeout: 500 });
-			await expect.soft(section.getByRole('listitem')).toHaveText([file], { timeout: 500 });
+			await expect
+				.soft(section.getByRole('listitem').locator('a, code').first())
+				.toHaveText(file, { timeout: 500 });
 			expect(await fits(page)).toBe(true);
 		}
 	});

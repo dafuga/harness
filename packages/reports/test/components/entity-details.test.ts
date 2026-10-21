@@ -67,7 +67,7 @@ test('source is shown only when the source tab is the open one', () => {
 		expect(body).not.toContain('href="https://github.com/');
 	}
 	const body = content('commit', { ...page, tab: 'source' });
-	expect(words(body)).toContain('Source ownership');
+	expect(words(body)).toContain('Source files');
 	expect(words(body)).toContain('src/routes/orders/+page.svelte');
 	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=source`);
 	const head = withGroups(revision(commits.middle, []));
@@ -91,8 +91,13 @@ test('source is shown only when the source tab is the open one', () => {
 		);
 		const files = grouped.length ? grouped : entity.unit.owns.source;
 		expect(
-			[...section.matchAll(/<li>(.*?)<\/li>/gs)].map((match) => words(match[1]).trim())
+			[...section.matchAll(/<li>(.*?)<\/li>/gs)].map((match) =>
+				words(match[1])
+					.replace(/View code$/, '')
+					.trim()
+			)
 		).toEqual(files);
+		expect((section.match(/aria-label="View code for /g) ?? []).length).toBe(files.length);
 	}
 });
 

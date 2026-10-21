@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-21T19:18:10.269Z","name":"restore-source-viewer","goal":"Each category Source file opens exact committed text in the shared modal without changing address or focus","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-21T19:20:04.532Z","loop":"restore-source-viewer","step":"spec","evidence":"Per-file category Source modal, exact committed code, seven kinds, three viewports, main landing."}
+{"event":"step.completed","timestamp":"2026-10-21T19:20:05.664Z","loop":"restore-source-viewer","step":"coverage","evidence":"Existing Source tests assert paths only; restore standard viewer matrix and Git archive fixture with category paths, stale reads and focus checks."}

@@ -29,6 +29,7 @@ import {
 import { commits, ids } from './entityUnits';
 import { withFocused } from './entityStates';
 import { withHelpers, withRelationGroups } from './entityPreviewHelpers';
+import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = ((window as unknown as { previewVariant?: PreviewVariant }).previewVariant ??
@@ -59,6 +60,9 @@ if (variant === 'documented')
 if (variant === 'states')
 	for (const commit of Object.keys(stored)) stored[commit] = withStates(stored[commit]);
 const hashes = (window as unknown as { artifactHashes?: Record<string, string> }).artifactHashes;
+if (variant === 'source')
+	for (const commit of Object.keys(stored))
+		stored[commit] = sourceSnapshots(sourceCatalog(stored[commit]), hashes ?? {});
 for (const detail of Object.values(stored)) {
 	for (const state of detail.records
 		.flatMap((item) => item.scenarios)
