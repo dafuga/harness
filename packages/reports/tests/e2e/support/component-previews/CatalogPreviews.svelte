@@ -13,6 +13,17 @@
 	const fullFrame = /harness-(navbar|header|console|shell)$/.test(id);
 	const explorer = unit.source.includes('/components/harness/');
 	const reports = id.startsWith('reports.');
+	const historyColumns = [
+		'Date',
+		'Commit',
+		'Behavior change',
+		'Attempts',
+		'Size',
+		'Complexity',
+		'Timing',
+		'Verdict',
+		'Revision'
+	];
 	setContext(key, fixture.hub);
 	setContext(remoteContext, fixture.remote);
 	onDestroy(fixture.cleanup);
@@ -29,7 +40,20 @@
 				class:ex-content={explorer}
 				data-preview-unit={unit.id}
 			>
-				<Component {...fixture.props} />
+				{#if id === 'reports.component.harness-entity-history-row'}
+					<div class="ex-scroll">
+						<table class="ex-table ex-history" aria-label="History row preview">
+							<thead
+								><tr
+									>{#each historyColumns as column (column)}<th>{column}</th>{/each}</tr
+								></thead
+							>
+							<tbody><Component {...fixture.props} /></tbody>
+						</table>
+					</div>
+				{:else}
+					<Component {...fixture.props} />
+				{/if}
 			</div>
 		{/await}
 	</main>

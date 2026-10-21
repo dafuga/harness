@@ -22,6 +22,10 @@ for (const viewport of catalogViewports) {
 			await openPreview(page, home, unit.id);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
+			if (unit.id === 'reports.component.harness-entity-history-row') {
+				await expect(component.locator('table.ex-history tbody > tr')).toHaveCount(1);
+				await expect(component.locator('td').first()).toHaveCSS('white-space', 'nowrap');
+			}
 			if (unit.id === 'reports.component.harness-harness-icon') {
 				await expect(component.getByRole('img', { name: 'Component', exact: true })).toBeVisible();
 				await expect(component.locator('path')).toHaveAttribute('d', /\S+/);
