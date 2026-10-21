@@ -9,7 +9,14 @@ import { atlas, hostedFixture } from './hosted-fixture';
 type Box = { x: number; y: number; width: number; height: number };
 const pages = `/projects/${atlas}/harness/branch/main/pages`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
-const bar = (page: Page) => page.getByRole('banner', { includeHidden: true });
+const bar = (page: Page) =>
+	page.getByRole('banner', { includeHidden: true }).filter({
+		has: page.getByRole('navigation', {
+			name: 'Catalog categories',
+			exact: true,
+			includeHidden: true
+		})
+	});
 const trigger = (page: Page) =>
 	bar(page).getByRole('button', { name: 'Search entities', exact: true, includeHidden: true });
 const field = (page: Page) =>
@@ -58,6 +65,11 @@ for (const width of widths) {
 		await bar(page).getByRole('button', { name: 'Search entities', exact: true }).click();
 		await expect(field(page)).toBeFocused();
 		await apart(page, width);
+		const dialog = page.getByRole('dialog', { name: 'Search project' });
+		expect(await dialog.evaluate((node) => node.matches(':modal'))).toBe(true);
+		await page.keyboard.press('Escape');
+		await expect(dialog).not.toBeVisible();
+		await expect(trigger(page)).toBeFocused();
 		await trigger(page).click();
 		await expect(field(page)).toBeFocused();
 		expect((await box(field(page))).width).toBeGreaterThanOrEqual(120);
