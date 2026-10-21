@@ -41,12 +41,18 @@ function preservedEntry(path: string): boolean {
 function forwardingEntry(path: string): boolean {
 	const text = readFileSync(path, 'utf8');
 	if (!path.endsWith('.svelte')) return forwardingScript(text, false);
-	const scripts = [...text.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)];
+	const scripts = [...text.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
+	const isModule = (attributes: string) =>
+		/(?:^|\s)(?:module(?:\s|$)|context\s*=\s*['"]module['"])/.test(attributes);
+	const instance = scripts.filter((script) => !isModule(script[1]));
+	const modules = scripts.filter((script) => isModule(script[1]));
 	const markup = text.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '').trim();
 	return (
-		scripts.length === 1 &&
+		instance.length === 1 &&
+		modules.length <= 1 &&
 		/^<CategoryImplementation\s+\{\.\.\.props\}(?:\s+bind:[A-Za-z_$][\w$]*)*\s*\/>$/.test(markup) &&
-		forwardingScript(scripts[0][1], true)
+		forwardingScript(instance[0][2], true) &&
+		modules.every((script) => forwardingScript(script[2], false))
 	);
 }
 
