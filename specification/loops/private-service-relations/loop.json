@@ -2,7 +2,7 @@
 	"name": "private-service-relations",
 	"goal": "Keep single-owner instantiated service classes in their owner relationships while excluding them from the global shared catalog",
 	"createdAt": "2026-10-21T22:52:17.695Z",
-	"updatedAt": "2026-10-21T23:08:44.024Z",
+	"updatedAt": "2026-10-21T23:24:11.024Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:24:09.633Z",
+			"evidence": "a4b95aff0 retains valid private classes in owner relationships, derives shared status from the same owner set and preserves every declaration, construction and method guard. The existing context option is documented."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:24:11.024Z",
+			"evidence": "Unchanged sealed green d22555f4 at a4b95aff0 passes twelve standard catalog/relationship unit cases and thirty-nine browser cases. Paired red 074dcebd at ebd8c2f86 fails actual private-class visibility; global exclusion and four-item paging remain asserted."
 		},
 		{
 			"id": "verify",
