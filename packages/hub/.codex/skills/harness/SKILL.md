@@ -12,6 +12,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
 7. Use `harness info clean-code` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.
 8. Verify with `bun run check` before handing work back.
+9. Include browser tests and fixtures in normal compiler inputs. The standard SvelteKit configuration matrix must reject excluded invalid browser code through the owning config and accept valid code; check the actual hosted corpus before browser execution.
+10. For shared search changes, run both Desktop and hosted Hub viewport suites. Verify modal isolation, Escape, focus restoration and reopening; never make the test click inert controls behind an open dialog.
 
 ## Bug and Regression Loops
 
