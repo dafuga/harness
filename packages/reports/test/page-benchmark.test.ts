@@ -51,6 +51,9 @@ test('the browser collector satisfies the real page module contract without losi
 			readFileSync(join(directory, 'catalog-benchmark.json'), 'utf8')
 		);
 		expect(measurements.every((item: { target: string }) => item.target === 'module')).toBe(true);
+		expect([...new Set(measurements.map((item: { unit: string }) => item.unit))]).toEqual([
+			unit.id
+		]);
 		const own = measurements.filter((item: { unit: string }) => item.unit === unit.id);
 		expect(own.map((item: { metric: string }) => item.metric)).toEqual([
 			'browser-navigation-ms',
