@@ -1,5 +1,7 @@
 # Harness Project Discipline
 
+Local Worker profiles use the standard fixture's single-operation capture with actual workerd inspector heap. Name only the units exercised by that shared request or socket path; label transport overhead and whole-isolate memory without isolated-unit attribution. Keep behavior assertions after the measured operation, preserve one effect and result identity, close inspector clients, and reject failed or unavailable samples. Node test-runner memory cannot stand in for Worker memory.
+
 Use this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness Bun TypeScript library.
 
 ## Operating Rules

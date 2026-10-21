@@ -41,7 +41,13 @@ test('a request is kept, forwarded to the host and reported to the phone', async
 		expiresAt: string;
 	};
 	const request = await newRequest(pairingId);
-	const asked = await relay.post(pairingPath(host, pairingId, 'request'), request.body);
+	const asked = await relay.profile(
+		{
+			units: ['relay.service.pairing-access', 'relay.controller.pairing'],
+			workload: 'request-local-device-pairing'
+		},
+		() => relay.post(pairingPath(host, pairingId, 'request'), request.body)
+	);
 	expect(asked.headers.get('Cache-Control')).toBe('no-store');
 	expect(await answer(asked)).toEqual([202, { state: 'requested', expiresAt: info.expiresAt }]);
 	expect(await socket.next()).toEqual({ type: 'pairing-request', pairingId, ...request.body });

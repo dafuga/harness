@@ -1,6 +1,8 @@
 import { build } from 'esbuild';
 import { Miniflare } from 'miniflare';
 import { fileURLToPath } from 'node:url';
+import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
+import { relayProfile, type WorkerWorkload } from './relayProfile';
 
 const entry = fileURLToPath(new URL('../../src/index.ts', import.meta.url));
 const className = 'RemoteHostObject';
@@ -58,6 +60,8 @@ export const relayBinding: Binding = {
 };
 
 export interface RelayFixture {
+	/** One shared operation with actual Worker heap, only when Harness requests evidence. */
+	profile<T>(input: WorkerWorkload, operation: () => Promise<T>): Promise<T>;
 	/** `http://127.0.0.1:<port>` of the public Worker. */
 	origin: string;
 	socketOrigin: string;
@@ -80,6 +84,7 @@ export interface RelayFixture {
 export async function startRelay(options: RelayOptions = {}): Promise<RelayFixture> {
 	const script = await bundle();
 	const miniflare = new Miniflare({
+		...(evidenceRequested() ? { inspectorPort: 0, inspectorHost: '127.0.0.1' } : {}),
 		cf: false,
 		host: '127.0.0.1',
 		...(options.port ? { port: options.port } : {}),
@@ -95,6 +100,7 @@ export async function startRelay(options: RelayOptions = {}): Promise<RelayFixtu
 	const hub = (await miniflare.getWorker('hub')) as unknown as { fetch: Fetcher };
 	const strict = (await miniflare.getWorker('relay-production')) as unknown as { fetch: Fetcher };
 	return {
+		profile: (input, operation) => relayProfile(miniflare, input, operation),
 		origin,
 		socketOrigin: origin.replace(/^http/, 'ws'),
 		fetch: (path, init) => fetch(origin + path, init),

@@ -41,7 +41,17 @@ test('devices are told when the host goes and when it comes back', async () => {
 	socket.close();
 	expect(await first.next()).toEqual(offline);
 	expect(await second.next()).toEqual(offline);
-	const back = await connectHost(relay, host);
+	const back = await relay.profile(
+		{
+			units: [
+				'relay.service.socket-accept',
+				'relay.service.host-link',
+				'relay.adapter.host-sockets'
+			],
+			workload: 'reconnect-host-with-two-devices'
+		},
+		() => connectHost(relay, host)
+	);
 	expect(await first.next()).toEqual(online);
 	expect(await second.next()).toEqual(online);
 	expect(await first.drain()).toEqual([]);

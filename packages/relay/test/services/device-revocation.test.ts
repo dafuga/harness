@@ -61,10 +61,10 @@ test('revoke-device through management does the same and tells the host', async 
 	const kept = await pairDevice(relay, host, socket);
 	const phone = await openDevice(relay, host, { device, socket });
 	const other = await openDevice(relay, host, { device: kept, socket });
-	const response = await relay.manage('revoke-device', {
-		...ownerOf(host),
-		deviceId: device.deviceId
-	});
+	const response = await relay.profile(
+		{ units: ['relay.service.device-revocation'], workload: 'revoke-local-connected-device' },
+		() => relay.manage('revoke-device', { ...ownerOf(host), deviceId: device.deviceId })
+	);
 	expect([response.status, await response.json()]).toEqual([200, { ok: true }]);
 	expect((await phone.socket.closed).code).toBe(4401);
 	expect(await socket.drain()).toEqual([
