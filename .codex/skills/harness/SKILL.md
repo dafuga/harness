@@ -119,3 +119,7 @@ When changing a previously relocated helper's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in
 the existing follow-up ledger, then run the standardized unit-index guard.
+
+## Native Unload Verification
+
+Whenever a change adds, removes or alters unload prevention (`beforeNavigate` cancel, `beforeunload`), verify it in the native host: close, reload and quit each offer Stay or Discard; Stay keeps the document and a working backend; shutdown starts only after every window accepted closing. Browser-only or automation-intercepted dialogs do not prove this.

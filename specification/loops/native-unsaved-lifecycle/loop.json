@@ -2,7 +2,7 @@
 	"name": "native-unsaved-lifecycle",
 	"goal": "Native close, reload and quit with unsaved game edits ask Stay or Discard; Stay keeps the document and backend; hosted selection rereads the open local project.",
 	"createdAt": "2026-10-21T15:03:12.982Z",
-	"updatedAt": "2026-10-21T15:24:40.866Z",
+	"updatedAt": "2026-10-21T15:25:59.710Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:25:57.925Z",
+			"evidence": "At 07ef8e0a9 the standardized startup and hosted-wrapper tests fail: no native unload decision, backend stops before a quit can be canceled, current local selection is blocked. Paired recorder preserves actual failures."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:25:59.710Z",
+			"evidence": "Confirm native unload through Electron Stay or Discard, shut down only at will-quit, and allow same-local identity reads through the hosted wrapper. Add native-host acceptance to existing project skill."
 		},
 		{
 			"id": "green",

@@ -34,7 +34,9 @@ export class HostedProjectService {
 		});
 	}
 	private async select(local: Bridge, projectId: string) {
-		if (this.session.busy || this.session.pending)
+		// The local project already open is read again; any switch waits for active work.
+		const reread = this.selected === null && projectId === this.session.projectId;
+		if (!reread && (this.session.busy || this.session.pending))
 			throw new Error('Wait for the active project operation.');
 		if (projectId.startsWith('local-')) {
 			const snapshot = await local.selectProject!({ projectId });
