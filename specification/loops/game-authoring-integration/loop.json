@@ -1,0 +1,53 @@
+{
+	"name": "game-authoring-integration",
+	"goal": "Prove native game creation authoring saved checkpoint images and play on current main before squash landing",
+	"createdAt": "2026-10-21T11:35:45.966Z",
+	"updatedAt": "2026-10-21T11:38:47.922Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-21T11:37:44.087Z",
+			"evidence": "Integrate origin/main 1374b7a9 then verify native project creation authoring checkpoint persistence and play before merge. Existing full-check failures remain unproven until reproduced."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-21T11:38:47.922Z",
+			"evidence": "workspace-test-config root fixture lacked generated-project dependency tests under ignored .cache; native authoring scenarios mocked every bridge method and never crossed UI socket service repository lifecycle."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test and shared coverage; run it failing before repair and record the command, assertion and result.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Repeat repair and the same unchanged regression test until it passes; record passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

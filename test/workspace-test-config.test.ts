@@ -31,6 +31,9 @@ function project(config?: string): string {
 	}
 	symlinkSync(join(repository, 'node_modules'), join(root, 'node_modules'));
 	samples(root, 'root', '');
+	const disposable = join(root, '.cache', 'generated-game', 'node_modules', 'dependency');
+	mkdirSync(join(disposable, 'test'), { recursive: true });
+	samples(disposable, 'dependency', '');
 	const nested = join(root, 'packages', 'nested');
 	mkdirSync(join(nested, 'test'), { recursive: true });
 	writeFileSync(join(nested, 'package.json'), '{ "name": "nested", "private": true }\n');
