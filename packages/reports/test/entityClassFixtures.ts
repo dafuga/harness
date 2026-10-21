@@ -99,3 +99,22 @@ export function admission(
 			errors.push(`${label}: ${JSON.stringify(actual)} expected ${JSON.stringify(expected)}`);
 	return errors;
 }
+
+export const privateServiceUsers = [
+	[],
+	[{ unit: ids.list }],
+	[{ unit: ids.list }, { unit: ids.list }],
+	[{ unit: ids.list }, { unit: 'missing' }],
+	undefined
+];
+
+/** Concrete private classes used by the standard relationship matrix. */
+export function relationServiceMetadata(kind: string, offset: number, owner: string) {
+	return kind === 'service'
+		? serviceMetadata(
+				[{ unit: owner }],
+				`Consumer${offset + 1}`,
+				`src/routes/orders/Consumer${offset + 1}.ts`
+			)
+		: {};
+}

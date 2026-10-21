@@ -1,6 +1,6 @@
 import type { HarnessRevision } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
-import { serviceClassProof } from './entityClassFixtures';
+import { serviceClassProof, relationServiceMetadata } from './entityClassFixtures';
 
 const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
 	'no-visible': [{ unit: ids.page }, { unit: ids.filter }],
@@ -153,13 +153,7 @@ function withServices(detail: HarnessRevision): HarnessRevision {
 	};
 }
 
-export const privateServiceUsers = [
-	[],
-	[{ unit: ids.list }],
-	[{ unit: ids.list }, { unit: ids.list }],
-	[{ unit: ids.list }, { unit: 'missing' }],
-	undefined
-];
+export { privateServiceUsers } from './entityClassFixtures';
 
 /** Mixed module groups exceed one and two batches, with an uneven final batch. */
 export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
@@ -175,6 +169,7 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 				id,
 				kind,
 				title: `Consumer ${kind} ${offset + 1}`,
+				...relationServiceMetadata(kind, offset, ids.page),
 				helpers:
 					kind === 'function'
 						? [
@@ -190,9 +185,11 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 				dependencies: [{ unit: ids.filter, via: 'import' }],
 				owns: {
 					source: [
-						kind === 'page'
-							? `src/routes/consumers/${offset + 1}/+page.svelte`
-							: `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`
+						kind === 'service'
+							? `src/routes/orders/Consumer${offset + 1}.ts`
+							: kind === 'page'
+								? `src/routes/consumers/${offset + 1}/+page.svelte`
+								: `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`
 					],
 					symbols: []
 				},

@@ -1,0 +1,56 @@
+{
+	"name": "private-service-relations",
+	"goal": "Keep single-owner instantiated service classes in their owner relationships while excluding them from the global shared catalog",
+	"createdAt": "2026-10-21T22:52:17.695Z",
+	"updatedAt": "2026-10-21T22:55:42.451Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-21T22:55:41.634Z",
+			"evidence": "The current catalog ignores related context for services, so source-proven single-owner classes disappear from their owner’s Uses group. Global Services must continue excluding those classes."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-21T22:55:42.451Z",
+			"evidence": "Catalog cases cover global eligibility; relation cases use shared classes. Strengthen the existing linked-entity case and shared paging fixture with nine valid instantiated single-owner classes, owner links, false shared flags and global exclusion."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
