@@ -100,8 +100,8 @@ test('a phone is approved on the desktop for chosen local projects, and can be r
 	await expect(request.getByRole('button', { name: 'Deny', exact: true })).toBeEnabled();
 	await expect(request.getByRole('checkbox', { name: 'Beta', exact: true })).toBeVisible();
 	await expect(request.getByRole('checkbox', { name: 'Gamma', exact: true })).toHaveCount(0);
-	const access = request.getByRole('combobox', { name: 'Device access', exact: true });
-	await expect(access).toHaveValue('comment');
+	const deviceAccess = request.getByRole('combobox', { name: 'Device access', exact: true });
+	await expect(deviceAccess).toHaveValue('comment');
 	await request.getByRole('checkbox', { name: 'Alpha', exact: true }).check();
 	await request.scrollIntoViewIfNeeded();
 	await remoteEvidence(page, testInfo, 'desktop-approval');
@@ -119,7 +119,7 @@ test('a phone is approved on the desktop for chosen local projects, and can be r
 	const phones = panel.getByRole('list', { name: 'Approved phones' });
 	const item = phones.getByRole('listitem').filter({ hasText: phone.name });
 	await expect(item.getByText('Alpha', { exact: true })).toBeVisible();
-	await expect(item.getByText('Read and comment only')).toBeVisible();
+	await expect(item.getByText('Comment · read and comment', { exact: true })).toBeVisible();
 	await expect(item.getByText('Connected', { exact: true })).toBeVisible();
 	await expect(code(page)).toHaveCount(0);
 	await item.getByRole('button', { name: `Revoke ${phone.name}`, exact: true }).click();

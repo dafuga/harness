@@ -26,7 +26,9 @@ test('a function is listed and opened without a design picture, and no image is 
 	page
 }, info) => {
 	await opened(page, `${root}/functions`);
-	const card = page.locator('main.catalog article').filter({ hasText: 'filterOrders' });
+	const card = page
+		.locator('main.catalog article')
+		.filter({ has: page.getByRole('heading', { name: 'Filter orders', exact: true }) });
 	await expect(card).toBeVisible();
 	await pictured(page, info, 'function-card');
 	await expect(card.getByRole('link')).toHaveText(/Review plan/);
