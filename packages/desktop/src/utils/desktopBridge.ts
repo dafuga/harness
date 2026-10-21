@@ -8,6 +8,7 @@ import { ProjectOperationsService } from '../services/ProjectOperationsService';
 import { RecordedEvidenceService } from '../services/RecordedEvidenceService';
 import type { DesktopBridge } from '../models/DesktopBridge.types';
 import type { DeploymentBridge } from '../models/Deployment.types';
+import type { GameDesktopBridge } from '../models/GameDesktopBridge.types';
 import type { ProjectSessionService } from '../services/ProjectSessionService';
 import type { ProviderDiscoveryService } from '../services/provider-discovery-service/ProviderDiscoveryService';
 import type { DesktopRunService } from '../services/desktop-run-service/DesktopRunService';
@@ -147,20 +148,16 @@ function deploymentOperations(session: ProjectSessionService): DeploymentBridge 
 	};
 }
 
-function gameOperations(session: ProjectSessionService) {
+function gameOperations(session: ProjectSessionService): Required<GameDesktopBridge> {
 	const images = new GameImageService(session);
 	const game = new GameProjectService(session),
 		render = new GameRenderService(session);
 	return {
-		gameCreate: (input: Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]) =>
-			game.create(input),
-		gameImageGenerate: (input: Parameters<NonNullable<DesktopBridge['gameImageGenerate']>>[0]) =>
-			images.generate(input),
-		gameImageRead: (input: Parameters<NonNullable<DesktopBridge['gameImageRead']>>[0]) =>
-			images.read(input),
-		gameRead: (input: Parameters<NonNullable<DesktopBridge['gameRead']>>[0]) => game.read(input),
-		gameSave: (input: Parameters<NonNullable<DesktopBridge['gameSave']>>[0]) => game.save(input),
-		gameRender: (input: Parameters<NonNullable<DesktopBridge['gameRender']>>[0]) =>
-			render.start(input)
+		gameCreate: (input) => game.create(input),
+		gameImageGenerate: (input) => images.generate(input),
+		gameImageRead: (input) => images.read(input),
+		gameRead: (input) => game.read(input),
+		gameSave: (input) => game.save(input),
+		gameRender: (input) => render.start(input)
 	};
 }

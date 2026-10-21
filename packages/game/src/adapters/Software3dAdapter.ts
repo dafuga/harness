@@ -1,48 +1,52 @@
-import type { GameRun, GameView } from '../models/Game.types';
+import type { FrameSource, GameRun, GameView } from '../models/Game.types';
 type Point = [number, number, number];
 type Box = { id: string; at: Point; size: Point; color: string };
 
 /** The same primitive world projected onto Canvas when WebGL is unavailable. */
-export function software3d(canvas: HTMLCanvasElement) {
-	const context = canvas.getContext('2d');
-	if (!context) throw new Error('This browser cannot create a game canvas.');
-	const ctx = context;
-	const project = (point: Point) => projectPoint(point, canvas.width, canvas.height);
-	return {
-		canvas,
-		render(run: GameRun, _view: GameView) {
-			ctx.fillStyle = '#152c29';
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-			face(
-				ctx,
-				[
-					[-2, -0.1, -3.5],
-					[10, -0.1, -3.5],
-					[10, -0.1, 3.5],
-					[-2, -0.1, 3.5]
-				].map((p) => project(p as Point)),
-				'#476755'
-			);
-			const boxes: Box[] = [
-				{
-					id: 'player',
-					at: [Number(run.state.x), 0, Number(run.state.y)],
-					size: [0.4, 0.8, 0.4],
-					color: '#acd8ee'
-				}
-			];
-			if (!run.state.hasKey && run.state['visible:key'] !== false)
-				boxes.push({ id: 'key', at: [2, 0.3, 0], size: [0.35, 0.35, 0.35], color: '#f5d77d' });
-			if (!run.state.doorOpen && run.state['visible:door'] !== false)
-				boxes.push({ id: 'door', at: [4, 0, 0], size: [0.25, 2, 1.8], color: '#c7995d' });
-			boxes.sort((a, b) => depth(b.at) - depth(a.at));
-			for (const box of boxes)
-				if (run.state['visible:' + box.id] !== false) drawBox(ctx, box, project);
-			canvas.dataset.ready = 'true';
-			canvas.dataset.renderer = 'software3d';
-		},
-		dispose: () => ctx.clearRect(0, 0, canvas.width, canvas.height)
+export class Software3dAdapter implements FrameSource {
+	private readonly ctx: CanvasRenderingContext2D;
+
+	constructor(readonly canvas: HTMLCanvasElement) {
+		const context = canvas.getContext('2d');
+		if (!context) throw new Error('This browser cannot create a game canvas.');
+		this.ctx = context;
+	}
+
+	render = (run: GameRun, _view: GameView) => {
+		const { canvas, ctx } = this;
+		const project = (point: Point) => projectPoint(point, canvas.width, canvas.height);
+		ctx.fillStyle = '#152c29';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		face(
+			ctx,
+			[
+				[-2, -0.1, -3.5],
+				[10, -0.1, -3.5],
+				[10, -0.1, 3.5],
+				[-2, -0.1, 3.5]
+			].map((p) => project(p as Point)),
+			'#476755'
+		);
+		const boxes: Box[] = [
+			{
+				id: 'player',
+				at: [Number(run.state.x), 0, Number(run.state.y)],
+				size: [0.4, 0.8, 0.4],
+				color: '#acd8ee'
+			}
+		];
+		if (!run.state.hasKey && run.state['visible:key'] !== false)
+			boxes.push({ id: 'key', at: [2, 0.3, 0], size: [0.35, 0.35, 0.35], color: '#f5d77d' });
+		if (!run.state.doorOpen && run.state['visible:door'] !== false)
+			boxes.push({ id: 'door', at: [4, 0, 0], size: [0.25, 2, 1.8], color: '#c7995d' });
+		boxes.sort((a, b) => depth(b.at) - depth(a.at));
+		for (const box of boxes)
+			if (run.state['visible:' + box.id] !== false) drawBox(ctx, box, project);
+		canvas.dataset.ready = 'true';
+		canvas.dataset.renderer = 'software3d';
 	};
+
+	dispose = () => this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
 function projectPoint(point: Point, width: number, height: number): [number, number] {
 	const [x, y, z] = point;

@@ -7,10 +7,10 @@ const paths = [
 	'utils/gameStep.ts',
 	'utils/keyDoor.ts',
 	'utils/checkpointGraph.ts',
-	'utils/draw2d.ts',
-	'utils/create3d.ts',
-	'utils/software3d.ts',
-	'utils/connectDecart.ts'
+	'adapters/Canvas2dAdapter.ts',
+	'adapters/ThreeSceneAdapter.ts',
+	'adapters/Software3dAdapter.ts',
+	'adapters/DecartStreamAdapter.ts'
 ];
 const sources: Record<string, string> = {};
 for (const path of paths) sources[path] = await readFile('packages/game/src/' + path, 'utf8');

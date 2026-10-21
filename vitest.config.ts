@@ -1,6 +1,13 @@
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
-import { testDiscoveryExcludes } from './src/utils/testDiscoveryExcludes';
+/** Test discovery stays private to the config which resolves it for each workspace. */
+const testDiscoveryExcludes = [
+	'packages/**',
+	'**/node_modules/**',
+	'dist/**',
+	'work/**',
+	'.cache/**'
+];
 // A workspace without a config of its own inherits this one, and Vitest resolves relative paths
 // from that workspace. A helper this config owns is therefore named from this file; `setupFiles`
 // stays relative on purpose, so each such workspace runs its own `test/setup.ts`.

@@ -68,7 +68,7 @@ function gamePage(): string {
  let render:(run:GameRun,view:GameView)=>void;
  function move(x:number,y:number,choice?:string){run=stepGame(run,{x,y,choice},view);render?.(run,view);}
  onMount(()=>{let dispose=()=>{};let active=true;
- void import('$lib/game/utils/create3d').then(({create3d})=>{if(!active)return;const scene=create3d(canvas);render=(r,v)=>scene.render(r,v);dispose=()=>scene.dispose();render(run,view);ready=true;});
+ void import('$lib/game/adapters/ThreeSceneAdapter').then(({create3d})=>{if(!active)return;const scene=create3d(canvas);render=(r,v)=>scene.render(r,v);dispose=()=>scene.dispose();render(run,view);ready=true;});
  return ()=>{active=false;dispose();};});
  </script>
  <svelte:head><title>{view.title}</title></svelte:head>

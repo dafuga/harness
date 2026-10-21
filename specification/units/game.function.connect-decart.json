@@ -1,56 +1,89 @@
 {
 	"schemaVersion": 1,
 	"id": "game.function.connect-decart",
-	"kind": "function",
-	"title": "connectDecart",
+	"kind": "adapter",
+	"title": "DecartStreamAdapter",
 	"responsibility": "Connect canvas video through an injected safe transport with bounded lifetime and deterministic cleanup.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/utils/connectDecart.ts"],
-		"symbols": ["VideoConnection", "VideoConnector", "decartTransportReady", "connectDecart"]
+		"source": ["packages/game/src/adapters/DecartStreamAdapter.ts"],
+		"symbols": [
+			"VideoConnection",
+			"VideoConnector",
+			"decartTransportReady",
+			"DecartStreamAdapter",
+			"DecartStreamAdapter.constructor",
+			"DecartStreamAdapter.connect",
+			"connectDecart"
+		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "DecartStreamAdapter.constructor.canvas",
+				"type": "HTMLCanvasElement",
+				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+			},
+			{
+				"name": "DecartStreamAdapter.connect.session",
+				"type": "RenderSession",
+				"description": "Bounded ephemeral rendering session prepared by the project service."
+			},
+			{
+				"name": "DecartStreamAdapter.connect.prompt",
+				"type": "Prompt",
+				"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
+			},
+			{
+				"name": "DecartStreamAdapter.connect.onStream",
+				"type": "(stream: MediaStream) => void",
+				"description": "Callback receiving the rendered remote stream for this preview."
+			},
+			{
 				"name": "connectDecart.canvas",
 				"type": "HTMLCanvasElement",
-				"description": "Browser canvas that receives the native scene or supplies game-only video frames."
+				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 			},
 			{
 				"name": "connectDecart.session",
 				"type": "RenderSession",
-				"description": "Bounded ephemeral rendering session containing the selected model and maximum duration."
+				"description": "Bounded ephemeral rendering session prepared by the project service."
 			},
 			{
 				"name": "connectDecart.prompt",
 				"type": "Prompt",
-				"description": "Visual prompt string or options including prompt, cancellation signal and injected safe connector."
+				"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
 			},
 			{
 				"name": "connectDecart.onStream",
 				"type": "(stream: MediaStream) => void",
-				"description": "Callback receiving the remote output stream after connection succeeds."
+				"description": "Callback receiving the rendered remote stream for this preview."
 			}
 		],
 		"outputs": [
 			{
 				"name": "decartTransportReady",
 				"type": "boolean",
-				"description": "False until a credential-safe public provider transport has been configured."
+				"description": "False while no credential-safe live video transport is registered."
+			},
+			{
+				"name": "DecartStreamAdapter.connect",
+				"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
+				"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
 			},
 			{
 				"name": "connectDecart",
-				"type": "unknown",
-				"description": "Connected video lifecycle exposing stop, ended and prompt updates; rejects unavailable or failed transports."
+				"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
+				"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "No safe connector is available, cancellation has occurred, or the video connection failed."
+				"description": "Unavailable transport, cancellation or connection failure; native rendering remains independent."
 			}
 		]
 	},
@@ -63,11 +96,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/utils/connectDecart.ts",
+		"entry": "packages/game/src/adapters/DecartStreamAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/utils/connectDecart.ts"
+				"entry": "packages/game/src/adapters/DecartStreamAdapter.ts"
 			}
 		]
 	},

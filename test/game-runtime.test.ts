@@ -1,6 +1,5 @@
 import { expect, test, vi } from 'vitest';
 import type * as Three from 'three';
-import { create3d } from '../packages/game/src/utils/create3d';
 const painted = vi.hoisted(() => vi.fn());
 vi.mock('three', async (original) => ({
 	...(await original<typeof Three>()),
@@ -13,7 +12,13 @@ vi.mock('three', async (original) => ({
 		dispose() {}
 	}
 }));
-import { createRun, stepGame, exampleDocument, validateDocument } from '../packages/game/src/index';
+import {
+	create3d,
+	createRun,
+	stepGame,
+	exampleDocument,
+	validateDocument
+} from '../packages/game/src/index';
 
 test.each(['2d', '3d'] as const)(
 	'%s key, door and branch share deterministic mechanics',
@@ -78,6 +83,6 @@ test('native dimensions select real camera types while preserving engine objects
 	expect(deep.isPerspectiveCamera).toBe(true);
 	expect(progressed.state.hasKey).toBe(true);
 	expect(world.children.filter((object: { visible: boolean }) => !object.visible)).toHaveLength(1);
-	expect(canvas.dataset.dimension).toBe('3d');
+	expect(canvas.dataset).toEqual({ renderer: 'webgl3d', dimension: '3d', ready: 'true' });
 	source.dispose();
 });

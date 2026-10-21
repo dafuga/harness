@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["packages/remote/src/models/Remote.types.ts"],
 		"symbols": [
+			"RemoteConnectionEvent",
 			"RemoteGrant",
 			"RemoteRevision",
 			"REMOTE_PROTOCOL",
@@ -38,8 +39,7 @@
 			"RemoteResume",
 			"AttachInput",
 			"RemoteAttachment",
-			"RemoteBinary",
-			"RemoteConnectionEvent"
+			"RemoteBinary"
 		]
 	},
 	"contract": {

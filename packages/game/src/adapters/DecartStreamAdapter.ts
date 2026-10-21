@@ -21,7 +21,24 @@ export function decartTransportReady(): boolean {
 }
 
 /** Canvas only: no camera, microphone, credentials in addresses, or automatic retry. */
-export async function connectDecart(
+export class DecartStreamAdapter {
+	constructor(private readonly canvas: HTMLCanvasElement) {}
+	connect(session: RenderSession, prompt: Prompt, onStream: (stream: MediaStream) => void) {
+		return connectCanvas(this.canvas, session, prompt, onStream);
+	}
+}
+
+/** The existing connector entry delegates to its canvas transport owner. */
+export function connectDecart(
+	canvas: HTMLCanvasElement,
+	session: RenderSession,
+	prompt: Prompt,
+	onStream: (stream: MediaStream) => void
+) {
+	return new DecartStreamAdapter(canvas).connect(session, prompt, onStream);
+}
+
+async function connectCanvas(
 	canvas: HTMLCanvasElement,
 	session: RenderSession,
 	prompt: Prompt,

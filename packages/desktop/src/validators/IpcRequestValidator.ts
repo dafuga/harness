@@ -1,7 +1,7 @@
 import { ProjectContextValidator } from './ProjectContextValidator';
 import { channels } from '../models/DesktopBridge.types';
 import { ipcPayload } from '../utils/ipc-payload/ipcPayload';
-import { gamePayload } from '../utils/gamePayload';
+import { gamePayload } from './gamePayload';
 export class IpcRequestValidator {
 	parse(channel: string, input: unknown): unknown {
 		if (!(Object.values(channels) as string[]).includes(channel))

@@ -9,6 +9,13 @@ export interface RemoteGrant {
 	comments?: boolean;
 	agents: boolean;
 }
+/** `resync` is raised by a client itself after a `gap`; a host never sends it. */
+export type RemoteConnectionEvent =
+	| { kind: 'grant'; grant: RemoteGrant }
+	| { kind: 'revoked' }
+	| { kind: 'host'; state: 'suspending' | 'locked' | 'unlocked' }
+	| { kind: 'remote-status'; status: RemoteHostStatus }
+	| { kind: 'resync' };
 
 /**
  * A one-time offer shown on the computer as a QR code. It lets a phone ask; it is no credential,

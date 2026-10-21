@@ -1,7 +1,8 @@
-import { ipcFields, textField, enumField, commitPattern } from './ipcFields';
+import { ipcFields, textField, enumField, commitPattern } from '../utils/ipcFields';
 import { assertDocument } from '../../../game/src/validators/gameDocument';
 import { validateSession } from '../../../game/src/adapters/DecartAdapter';
 import type { RenderSessionRequest } from '../../../game/src/models/Game.types';
+/** Private to IpcRequestValidator: sanitize a game request or throw before service execution. */
 export function gamePayload(channel: string, input: unknown): unknown {
 	const x = ipcFields(input);
 	if (channel === 'game:create')

@@ -8,7 +8,7 @@
 	const models = gameRenderOptions();
 	import { createRun, create3d, draw2d, stepGame } from '../../../game/src/index';
 	import type { GameInput, GameRun } from '../../../game/src/index';
-	import { connectDecart, decartTransportReady } from '../../../game/src/utils/connectDecart';
+	import * as aiVideo from '../../../game/src/adapters/DecartStreamAdapter';
 	const [cap, speed, tick] = [60, 0.05, 1000 / 60];
 	let { view, projectId, readonly = false, onRun, bridge, initialRun }: Props = $props();
 	let run = $state.raw<GameRun>(createRun());
@@ -20,7 +20,7 @@
 	let note = $state('');
 	let error = $state('');
 	let left = $state(cap);
-	let live: Awaited<ReturnType<typeof connectDecart>> | undefined;
+	let live: Awaited<ReturnType<typeof aiVideo.connectDecart>> | undefined;
 	let stream = $state.raw<MediaStream>();
 	let timer: ReturnType<typeof setInterval> | undefined;
 	let abort: AbortController | undefined;
@@ -28,12 +28,12 @@
 	const held = new SvelteSet<string>();
 	const pick = $derived(models[choice as keyof typeof models] ?? models.restyle);
 	const available = $derived(
-		Boolean(decartTransportReady() && !readonly && projectId && bridge?.gameRender)
+		Boolean(aiVideo.decartTransportReady() && !readonly && projectId && bridge?.gameRender)
 	);
 	const busy = $derived(status !== 'off');
 	const scope = $derived(view.id + ':' + view.dimension);
 	const summary = $derived.by(() => {
-		if (!decartTransportReady()) return 'Live AI is not configured for this build.';
+		if (!aiVideo.decartTransportReady()) return 'Live AI is not configured for this build.';
 		if (!available) return 'AI video needs a saved project open in the desktop app.';
 		if (busy) return status === 'live' ? `Live · ${left} s left` : 'Starting the AI video…';
 		return note || `Runs at most ${cap} s, so it costs at most $${pick.rate.toFixed(2)}.`;
@@ -106,7 +106,7 @@
 			if (id !== generation) return;
 			countdown();
 			abort = new AbortController();
-			const connection = await connectDecart(
+			const connection = await aiVideo.connectDecart(
 				canvas,
 				session,
 				{ prompt: view.style, signal: abort.signal },

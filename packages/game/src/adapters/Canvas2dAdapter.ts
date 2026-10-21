@@ -1,4 +1,18 @@
-import type { GameRun, GameView } from '../models/Game.types';
+import type { FrameSource, GameRun, GameView } from '../models/Game.types';
+
+/** Native 2D canvas frame source for the player, key and gate scene. */
+export class Canvas2dAdapter implements FrameSource {
+	constructor(readonly canvas: HTMLCanvasElement) {}
+
+	render = (run: GameRun, view: GameView) => draw2d(this.canvas, run, view);
+
+	dispose = () =>
+		this.canvas.getContext('2d')?.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+
+export function create2d(canvas: HTMLCanvasElement): FrameSource {
+	return new Canvas2dAdapter(canvas);
+}
 
 export function draw2d(canvas: HTMLCanvasElement, run: GameRun, view: GameView): void {
 	const ctx = canvas.getContext('2d');
@@ -45,12 +59,4 @@ export function draw2d(canvas: HTMLCanvasElement, run: GameRun, view: GameView):
 	ctx.font = '16px sans-serif';
 	ctx.fillText(view.title, 24, 32);
 	canvas.dataset.ready = 'true';
-}
-
-export function create2d(canvas: HTMLCanvasElement) {
-	return {
-		canvas,
-		render: (run: GameRun, view: GameView) => draw2d(canvas, run, view),
-		dispose: () => canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height)
-	};
 }

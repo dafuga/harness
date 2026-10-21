@@ -1,8 +1,10 @@
-import type { RemoteHostStatus, RemoteGrant } from './RemoteControl.types';
-export type { RemoteGrant, RemoteRevision } from './RemoteControl.types';
+import type { RemoteGrant } from './RemoteControl.types';
+export type { RemoteConnectionEvent, RemoteGrant, RemoteRevision } from './RemoteControl.types';
 
+/** Wire v1. A host answers no other protocol number. */
 export const REMOTE_PROTOCOL = 1;
 
+/** Every bound of the protocol. A host also returns them from `session.attach`. */
 export const remoteLimits = {
 	frameBytes: 262144,
 	chunkBytes: 131072,
@@ -210,10 +212,3 @@ export interface RemoteBinary {
 	sha256: string;
 	data: string;
 }
-/** `resync` is raised by a client itself after a `gap`; a host never sends it. */
-export type RemoteConnectionEvent =
-	| { kind: 'grant'; grant: RemoteGrant }
-	| { kind: 'revoked' }
-	| { kind: 'host'; state: 'suspending' | 'locked' | 'unlocked' }
-	| { kind: 'remote-status'; status: RemoteHostStatus }
-	| { kind: 'resync' };
