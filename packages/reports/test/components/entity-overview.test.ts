@@ -87,6 +87,9 @@ test('a side with no capture of the state is a stated gap, never the other side 
 		words(sized),
 		'known focused dimensions override conventional viewport defaults'
 	).toContain('1280 × 720');
+	expect(words(sized), 'a stored width never becomes an invented desktop label').not.toContain(
+		'1440 × 900'
+	);
 	const other = content('commit', page, {
 		head: withFocused(revision(commits.middle, []), ids.list),
 		parent
