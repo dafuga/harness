@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import { readFile } from 'node:fs/promises';
 import { commandOutput, runCommand, runHarness } from './support/cli';
 
 test('generated projects reject bad Harness structure through audit', async () => {
@@ -82,3 +83,32 @@ function expectRules(output: string, rules: string[]): void {
 		expect(output, rule).toContain(rule);
 	}
 }
+
+test('categorized projects generate dynamic folders and audit rejects flat implementations', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-category-structure-'));
+	try {
+		await runHarness(['new', 'lib', 'categorized'], root);
+		const project = join(root, 'categorized');
+		await runHarness(
+			['generate', 'unit', 'Invoice', '--kind', 'service', '--group', 'billing'],
+			project
+		);
+		const category = await readFile(join(project, 'harness.groups.json'), 'utf8');
+		expect(JSON.parse(category).groups).toEqual(
+			expect.arrayContaining([expect.objectContaining({ id: 'billing' })])
+		);
+		const indexed = await runHarness(['units', 'check'], project);
+		expect(indexed.exitCode).toBe(0);
+		const accepted = await runHarness(['audit', '.'], project);
+		expect(accepted.exitCode).toBe(0);
+		await writeFile(
+			join(project, 'src/services/FlatService.ts'),
+			'export class FlatService { run() {} }\n'
+		);
+		const rejected = await runHarness(['audit', '.'], project, false);
+		expect(rejected.exitCode).toBe(1);
+		expect(commandOutput(rejected)).toContain('module-category-folder');
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 60_000);

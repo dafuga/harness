@@ -17,7 +17,8 @@ export type PreviewVariant =
 	| 'states'
 	| 'documented'
 	| 'helpers'
-	| 'measurements';
+	| 'measurements'
+	| 'groups';
 export function stateRecord(commit: string): HarnessRecord {
 	const taken = previewRecord(commit);
 	taken.scenarios[0].states.push({
@@ -194,3 +195,23 @@ export function withMeasurements(detail: HarnessRevision): HarnessRevision {
 }
 
 export { withDocumentation } from './entityPreviewDocumentation';
+
+/** Category metadata is synthetic selected-revision data, like contracts and measurements. */
+export function withGroups(detail: HarnessRevision): HarnessRevision {
+	const grouped = withFrame(detail, 'shell');
+	const model = {
+		...units[1],
+		id: 'app.model.order',
+		kind: 'model',
+		title: 'Order',
+		owns: { source: ['src/models/orders/Order.ts'], symbols: ['Order'] }
+	};
+	const listed = [...grouped.registry.units, model].map((unit) => ({
+		...unit,
+		group:
+			unit.id === ids.search
+				? { id: 'inputs', title: 'Inputs' }
+				: { id: 'orders', title: detail.commit === 'a'.repeat(40) ? 'Purchases' : 'Orders' }
+	}));
+	return { ...grouped, registry: { ...grouped.registry, units: listed } };
+}

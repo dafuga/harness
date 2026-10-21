@@ -20,6 +20,31 @@ const source = [
 	'export const sharedArrow = (text: string): string => text;'
 ].join('\n');
 
+test('revision metadata derives project categories from the same committed source tree', async () => {
+	const paths = ['services', 'components', 'utils', 'models', 'config'].map(
+		(folder) => `src/${folder}/payments/Example.ts`
+	);
+	const files = Object.fromEntries(paths.map((path) => [path, 'export const example = 1;']));
+	const config = (title: string) =>
+		JSON.stringify({ schemaVersion: 1, groups: [{ id: 'payments', title, terms: [] }] });
+	const indexed = await indexFiles(files);
+	const registry = revisionRegistry(indexed.result.manifests, []);
+	await unitMetadata(
+		memoryTree({ ...files, 'harness.groups.json': config('Payments') }),
+		registry.units
+	);
+	for (const unit of registry.units)
+		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Payments' });
+	await unitMetadata(
+		memoryTree({ ...files, 'harness.groups.json': config('Billing') }),
+		registry.units
+	);
+	for (const unit of registry.units)
+		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Billing' });
+	await unitMetadata(memoryTree(files), registry.units);
+	for (const unit of registry.units) expect(unit).not.toHaveProperty('group');
+});
+
 test('revision metadata lists standalone shared exports without requiring callers', async () => {
 	const paths = [
 		'src/utils/helpers.ts',

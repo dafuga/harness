@@ -23,6 +23,7 @@ import {
 	withInherited,
 	withScale,
 	withStates,
+	withGroups,
 	type PreviewVariant
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
@@ -39,6 +40,8 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'groups')
+	for (const commit of Object.keys(stored)) stored[commit] = withGroups(stored[commit]);
 if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
 if (variant === 'helpers')

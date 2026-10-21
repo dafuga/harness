@@ -1,0 +1,56 @@
+import { expect, test } from '../../../test/support/browserTest';
+import { capture, fits, open, viewports, chooseCatalogFilter } from './entityPreviewPage';
+import { commits } from './entityUnits';
+
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`category folders group every collection and filter together at ${viewport}`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		for (const category of [
+			'pages',
+			'shells',
+			'components',
+			'functions',
+			'configs',
+			'services',
+			'models'
+		] as const) {
+			await open(page, { category, commit: commits.middle }, 'groups');
+			await page.evaluate(async () => {
+				await document.fonts.ready;
+				await Promise.all(
+					[...document.images]
+						.filter(
+							(image) =>
+								image.getBoundingClientRect().top < innerHeight &&
+								image.getBoundingClientRect().bottom > 0
+						)
+						.map((image) => image.decode())
+				);
+			});
+			await capture(page, `groups-${category}-${viewport}`);
+			await expect.soft(page.getByRole('heading', { level: 2, name: /^Orders/ })).toBeVisible();
+			expect(await fits(page)).toBe(true);
+		}
+		await open(page, { category: 'components', commit: commits.middle }, 'groups');
+		await page.getByRole('button', { name: 'Filters', exact: true }).click();
+		const dialog = page.getByRole('dialog', { name: 'Filters', exact: true });
+		await capture(page, `groups-filter-${viewport}`);
+		await expect(dialog.getByRole('group', { name: 'Categories', exact: true })).toBeVisible();
+		await dialog.getByRole('checkbox', { name: /^Inputs/ }).check();
+		await capture(page, `groups-filter-${viewport}`);
+		await dialog.getByRole('button', { name: 'Done', exact: true }).click();
+		await expect(page.getByRole('article')).toHaveCount(1);
+		await expect(page.getByRole('article')).toContainText('SearchBox');
+		await page.getByRole('searchbox').fill('OrderCard');
+		await expect(page.getByText('No components match this search.')).toBeVisible();
+		await page.getByRole('button', { name: 'Show all components' }).click();
+		await expect(page.getByRole('article')).toHaveCount(3);
+		await chooseCatalogFilter(page, 'Changed only', true);
+		await expect(page.getByRole('article')).toHaveCount(1);
+		await open(page, { category: 'services', commit: commits.first }, 'groups');
+		await expect(page.getByRole('heading', { level: 2, name: /^Purchases/ })).toBeVisible();
+		await expect(page.getByRole('heading', { level: 2, name: /^Orders/ })).toHaveCount(0);
+	});
+}
