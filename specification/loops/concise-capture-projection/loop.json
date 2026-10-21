@@ -2,7 +2,7 @@
 	"name": "concise-capture-projection",
 	"goal": "Screenshot cards stay concise and preserve identical-tree images across projections without exposing cache filenames.",
 	"createdAt": "2026-10-21T20:54:08.391Z",
-	"updatedAt": "2026-10-21T20:56:04.062Z",
+	"updatedAt": "2026-10-21T21:04:26.371Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:04:10.895Z",
+			"evidence": "Red 0c6b8f55 at 0fc3bfd9 reproduces four projection filename failures, the header render failure and six responsive header failures. The three canonical route cases pass; 165 original screenshots and 400 runtime observations are retained. Admission fixtures do not produce setup errors."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:04:12.137Z",
+			"evidence": "Carry the verified opaque source-tree hash through entity projections and accept it in focused capture selection; keep legacy raw-history locators internal. Remove the two header items. The normal projection matrix guards identity, provenance, changed-tree rejection and filename isolation; isolated mutations will prove both original failures are rejected."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T21:04:26.371Z",
+			"evidence": "EntityScreens has revision-only captions with image activation preserved. HarnessRevision carries opaque sourceTree identity; the projection copies only a proof-matched hash and focused selection accepts it without forwarding side filenames. Existing contracts and Harness instructions are synchronized; targeted projection/answer tests pass."
 		},
 		{
 			"id": "green",

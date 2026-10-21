@@ -3,7 +3,7 @@
 	"id": "reports.function.explorer-evidence-focused-captures",
 	"kind": "function",
 	"title": "Focused screenshot selection",
-	"responsibility": "Projects stored focused screenshots of one unit and exact revision without granting a full verification verdict.",
+	"responsibility": "Selects one unit's focused screenshots at the exact revision or a proven identical source tree, preserving original provenance without a full verdict.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,7 @@
 			{
 				"name": "focusedCaptures.detail",
 				"type": "HarnessRevision",
-				"description": "Stored revision whose validated focused captures are considered; only points of this exact commit are eligible."
+				"description": "Stored revision with exact-commit captures or validated whole-tree identity. Entity projections carry an opaque sourceTree hash; raw prepared history may use its legacy side locator. A different tree is rejected."
 			},
 			{
 				"name": "focusedCaptures.unit",
@@ -38,7 +38,7 @@
 			{
 				"name": "focusedCaptures",
 				"type": "ExplorerCapture[]",
-				"description": "Newest stored screenshot for each state and viewport, bound to this unit, served build and exact revision; no full verification verdict is granted."
+				"description": "Newest screenshot per state and viewport, bound to this unit, served build and original revision. Identical-tree reuse retains that original source and focused status; it grants no full verdict."
 			},
 			{
 				"name": "focusedScenario",

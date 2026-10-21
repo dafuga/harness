@@ -3,7 +3,7 @@
 	"id": "reports.model.harness-types",
 	"kind": "model",
 	"title": "Harness",
-	"responsibility": "Describes the parts of the history index and revision details the console reads.",
+	"responsibility": "Describes history indexes and revision details, including opaque whole-tree identity for entity projections without cache filenames.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
