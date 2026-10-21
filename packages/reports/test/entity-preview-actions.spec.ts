@@ -77,7 +77,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			await expect(
 				cards,
 				'collections use cards; helpers require two distinct visible consumers'
-			).toHaveCount({ components: 3, functions: 1, services: 2 }[category]);
+			).toHaveCount({ components: 3, functions: 1, services: 1 }[category]);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
 			if (name !== 'mobile') {

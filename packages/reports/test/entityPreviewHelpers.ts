@@ -1,5 +1,6 @@
 import type { HarnessRevision } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
+import { serviceClassProof } from './entityClassFixtures';
 
 const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
 	'no-visible': [{ unit: ids.page }, { unit: ids.filter }],
@@ -125,13 +126,23 @@ function withServices(detail: HarnessRevision): HarnessRevision {
 						source: ['src/workflows/recordAnalytics.ts'],
 						symbols: ['AnalyticsInput', 'recordAnalytics']
 					},
-					serviceConsumers: [{ unit: ids.list }, { unit: ids.store }]
+					serviceConsumers: [{ unit: ids.list }, { unit: ids.store }],
+					...{ serviceClasses: [] }
 				},
 				...variants.map((serviceConsumers, index) => ({
 					...template,
 					id: `app.service.private-${index}`,
 					title: `Private${index}`,
 					serviceConsumers,
+					...{
+						serviceClasses: [
+							serviceClassProof(
+								`Private${index}`,
+								`src/components/order-list/Private${index}.ts`,
+								serviceConsumers ?? []
+							)
+						]
+					},
 					owns: {
 						source: [`src/components/order-list/Private${index}.ts`],
 						symbols: [`Private${index}`]

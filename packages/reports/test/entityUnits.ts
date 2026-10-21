@@ -1,3 +1,4 @@
+import { serviceMetadata } from './entityClassFixtures';
 import type { HarnessCapture, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
 
 /** Synthetic history of an invented orders application; nothing here is a real repository. */
@@ -65,7 +66,7 @@ function unit(seed: UnitSeed): HarnessUnit {
 				}
 			: {}),
 		...(seed.kind === 'service'
-			? { serviceConsumers: [{ unit: ids.list }, { unit: ids.search }] }
+			? serviceMetadata([{ unit: ids.list }, { unit: ids.search }], seed.title, file)
 			: {}),
 		runtime: {
 			kind: 'module',

@@ -110,7 +110,10 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 		});
 		await capture(page, `service-card-${commit ? 'commit' : 'tip'}-${viewport}`);
 		const card = page.getByRole('article', { name: 'OrderStore', exact: true });
-		await expect(page.getByRole('article')).toHaveCount(2);
+		await expect(
+			page.getByRole('article'),
+			'only instantiated shared classes with multiple methods are services'
+		).toHaveCount(1);
 		await expect(card, 'service cards show only name and usage').toHaveText(
 			/^\s*OrderStore\s*Used In\s*OrderList\s*SearchBox\s*$/
 		);
@@ -145,19 +148,15 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 	}
 }
 
-/** Function services and their class consumers keep one code name on every surface. */
+/** Shared effectful functions retain their actual code identity outside the class catalog. */
 async function reviewFunctionService(page: Page, commit: string | null) {
 	await open(page, { category: 'services', commit }, 'helpers');
-	const card = page
-		.getByRole('article')
-		.filter({ has: page.getByRole('link', { name: 'recordAnalytics', exact: true }) });
-	await expect(
-		card.getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
-	).toHaveText(['OrderList', 'OrderStore']);
-	await card.getByRole('link', { name: 'recordAnalytics', exact: true }).press('Enter');
+	await expect(page.getByRole('article', { name: 'recordAnalytics', exact: true })).toHaveCount(0);
+	await open(
+		page,
+		{ category: 'services', entity: 'app.workflow.record-analytics', commit },
+		'helpers'
+	);
 	await expect(page.getByRole('heading', { name: 'recordAnalytics', exact: true })).toBeVisible();
-	await open(page, { category: 'services', commit }, 'helpers');
-	await card.getByRole('link', { name: 'OrderStore', exact: true }).press('Enter');
-	await expect(page.getByRole('heading', { name: 'OrderStore', exact: true })).toBeVisible();
-	expect(await where(page)).toMatchObject({ commit, entity: ids.store });
+	expect(await where(page)).toMatchObject({ commit, entity: 'app.workflow.record-analytics' });
 }

@@ -7,8 +7,8 @@ import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { record, revision } from '../entityFixture';
 import { privateServiceUsers } from '../entityPreviewHelpers';
+import { invalidServiceClasses, serviceMetadata } from '../entityClassFixtures';
 import { commits, ids } from '../entityUnits';
-
 const head = revision(commits.middle, [record(commits.middle)]);
 // The same commit with the empty state of the page never captured.
 const partial = revision(commits.middle, [record(commits.middle, false)]);
@@ -16,7 +16,6 @@ const rows = (category: Parameters<typeof entityCatalog>[1], detail = head) =>
 	entityCatalog(explorerEntities(detail), category, (id) => explorerRelations(detail, id));
 const consumers = explorerEntities(head).filter((entity) => entity.category !== 'functions');
 const filter = { search: '', changedOnly: false, order: 'name' as const };
-
 test.each([
 	{
 		entry: '../../src/utils/entityCatalog.ts',
@@ -110,16 +109,19 @@ test('service rows require two distinct resolved runtime owners and use that set
 			'services',
 			() => related
 		);
-	for (const serviceConsumers of privateServiceUsers) {
-		const privateService = { ...original, unit: { ...original.unit, serviceConsumers } };
+	for (const consumers of privateServiceUsers)
 		expect(
-			serviceRows(privateService),
+			serviceRows({ ...original, unit: { ...original.unit, ...serviceMetadata(consumers) } }),
 			'transitive pages and imports cannot establish sharing'
 		).toEqual([]);
-	}
+	const proof = serviceMetadata([{ unit: ids.list }, { unit: ids.search }]).serviceClasses[0];
+	for (const serviceClasses of invalidServiceClasses(proof))
+		expect(
+			serviceRows({ ...original, unit: { ...original.unit, ...{ serviceClasses } } }),
+			'functions, objects, static namespaces, unused classes and unproven history are not class cards'
+		).toEqual([]);
 	const unnamed = { ...original, unit: { ...original.unit, owns: { source: [], symbols: [] } } };
-	const fallback = serviceRows(unnamed)[0];
-	expect(fallback.name).toBe('OrderStore');
+	expect(serviceRows(unnamed), 'unowned source cannot prove a class').toEqual([]);
 });
 test('changed is what the commit changed itself, and the verdict is the one it was given', () => {
 	expect(rows('functions')[0].changed).toBe(true);

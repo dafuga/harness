@@ -65,6 +65,7 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('harness info naming');
 		expect(fileContents(files, path)).toContain('<PascalName>Service.ts');
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
+		expect(fileContents(files, path)).toContain('instantiated classes');
 	}
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');

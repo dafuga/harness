@@ -28,6 +28,7 @@ test('code-rules guidance exposes hard Harness limits', () => {
 	expect(naming?.rules.join('\n')).toContain('<PascalName>.svelte');
 	expect(naming?.rules.join('\n')).toContain('<camelName>.ts');
 	expect(naming?.rules.join('\n')).toContain('<PascalName>.types.ts');
+	expect(findGuide('service')?.rules.join('\n')).toContain('instantiated classes');
 });
 
 test('loop guidance describes loop driven development', () => {
