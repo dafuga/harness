@@ -7,6 +7,7 @@ import type {
 } from '../../models/Deployment.types';
 class DeploymentsState {
 	environment = $state<DeploymentEnvironment>('dev');
+	viewing = $state(false);
 	statuses = $state<DeploymentStatus[]>([]);
 	loading = $state(false);
 	error = $state('');
@@ -42,6 +43,7 @@ class DeploymentsState {
 	}
 	choose(value: DeploymentEnvironment) {
 		this.environment = value;
+		this.viewing = true;
 	}
 	clear() {
 		this.plan = null;
@@ -52,6 +54,7 @@ class DeploymentsState {
 		if (this.owner !== this.workspace.projectId) {
 			this.owner = this.workspace.projectId;
 			this.environment = 'dev';
+			this.viewing = false;
 			this.jobId = null;
 			untrack(() => {
 				this.statuses = [];
