@@ -6,7 +6,7 @@
 	"name": "standard-profile-adoption",
 	"goal": "Normal root and workspace test entrypoints record current source operations when verification requests evidence, while preserving worker limits and lazy startup.",
 	"createdAt": "2026-10-21T11:24:54.408Z",
-	"updatedAt": "2026-10-21T11:24:57.712Z",
+	"updatedAt": "2026-10-21T11:28:54.828Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:28:52.835Z",
+			"evidence": "Committed2833131e red39584045: normal tests pass but the capture assertion reports false. Five pre-existing workspace startup/worker cases remain green."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:28:53.706Z",
+			"evidence": "Enable the shared adoption boundary through the installed Vite TS loader. Keep runner configs frozen, lazily load internal tooling only for requested evidence, and preserve original source addresses."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T11:28:54.828Z",
+			"evidence": "All six unchanged workspace cases pass; root and inherited runs each retain fresh latency and memory. Types, product lint, audit and registry checks pass. Full-project verification remains pending."
 		},
 		{
 			"id": "green",

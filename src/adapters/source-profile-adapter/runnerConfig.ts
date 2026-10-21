@@ -25,3 +25,8 @@ export function sourceProfilePlugin(root: string) {
 		}
 	};
 }
+
+/** The installed Vite loader supplies its original source addresses and resolves TS imports. */
+export default function runnerConfiguration(environment: { profileRoot: string }) {
+	return { plugins: [sourceProfilePlugin(environment.profileRoot)] };
+}
