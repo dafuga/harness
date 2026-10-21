@@ -48,3 +48,5 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 - Nesting: 4 levels.
 - Parameters: 4.
 - Classes per file: 1.
+
+Page workloads retain the registered page's module target and release their inspector in a finally block. The standard collector protocol matrix must reject another route, soft navigation, absent or zero readings and failed heap reads. Keep protocol fixture values in removed isolated sinks; actual browser observations must come from a verified build. Every required screenshot viewport names its compiled build in the scenario.

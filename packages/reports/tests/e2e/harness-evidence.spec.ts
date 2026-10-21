@@ -53,7 +53,9 @@ test('what was captured satisfies the scenario contract, and another build would
 	const { gathered, failures } = gatherCaptures(evidenceDirectory, 'evidence');
 	expect(failures).toEqual([]);
 	const flows = Object.keys(explorerFlows).length * 2;
-	expect(gathered).toHaveLength(Object.keys(states).length * viewports.length + flows + 1);
+	expect(gathered.filter(({ line }) => line.kind !== 'benchmark')).toHaveLength(
+		Object.keys(states).length * viewports.length + flows + 1
+	);
 	// The server reports the digest of the very files it was started from.
 	const served = await servedBuild(page);
 	// The server reports the digest of the very files it was started from: this run's own copy.
@@ -80,7 +82,9 @@ test('what was captured satisfies the scenario contract, and another build would
 	});
 	// The same captures judged against the files of any other build are all rejected.
 	const other = judge('f'.repeat(64));
-	expect(other.failures).toHaveLength(gathered.length);
+	expect(other.failures).toHaveLength(
+		gathered.filter(({ line }) => line.kind !== 'benchmark').length
+	);
 	expect(other.failures[0]).toMatch(
 		/was served by build [0-9a-f]{12}, not the reports build f{12}/
 	);

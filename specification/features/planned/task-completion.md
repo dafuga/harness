@@ -8,6 +8,7 @@ Harness owns performance measurement and the final audit of coding and planning 
 
 - Coding completion requires clean committed source, intact verification of that revision, and representative latency and memory observations for affected executable units, independently of budget declarations.
 - Harness profiling runs declared workloads, records workload, sample count, runtime profile, revision and the measurement boundary, and labels whole-process memory accurately.
+- Scenario configuration guards reject unregistered wrapped runners, required output states with no producer, and screenshots without a compiled-build binding. Existing media checks retain added benchmark evidence while preserving exact visual and audio counts.
 - Page captures name only their explicitly exercised framework owner. Shared imports or a fixed related-unit list cannot receive copied route observations as proof of their own workloads.
 - Mandatory profiling accepts actual browser navigation and JavaScript-heap observations for their declared unit target. Wrong targets, stale revisions, other workloads and synthetic rule-fixture observations remain rejected; collector repairs require fresh observations.
 - Planning completion checks the proposal, acceptance criteria, dependencies, verification and performance-testing plan without executing implementation work.

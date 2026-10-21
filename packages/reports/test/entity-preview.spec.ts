@@ -146,7 +146,7 @@ test('links walk page to component to function, and keep the branch and the comm
 		commit: commits.middle
 	});
 	await capture(tab, 'page-uses-desktop');
-	await tab.getByRole('link', { name: 'Order list' }).click();
+	await tab.getByRole('link', { name: 'Order list', exact: true }).click();
 	expect(await where(tab)).toEqual({
 		branch: 'feature/orders',
 		commit: commits.middle,
@@ -154,13 +154,20 @@ test('links walk page to component to function, and keep the branch and the comm
 		entity: ids.list
 	});
 	await tab.getByRole('tab', { name: 'Uses', exact: true }).click();
-	await tab.getByRole('link', { name: 'Filter orders' }).click();
+	const call = tab
+		.getByRole('article', { name: 'filterOrders', exact: true })
+		.getByRole('link', { name: 'filterOrders(orders, "SERVICE")', exact: true });
+	await expect(call).toHaveAttribute(
+		'href',
+		`/harness/branch/feature%2Forders/commit/${commits.middle}/helpers/filterOrders/in/${ids.filter}/contract`
+	);
+	await call.click();
 	expect(await where(tab)).toMatchObject({
 		category: 'functions',
 		entity: ids.filter,
 		commit: commits.middle
 	});
-	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
+	await expect(tab.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 });
 test('one entity page keeps source optional without a duplicate Details page', async ({
 	page: tab

@@ -65,6 +65,7 @@ export const designOptionVerificationScopes: Record<string, VerificationScope> =
 			],
 			'tests/e2e/ui-design-options-review.spec.ts': [
 				'options',
+				'selected-option',
 				'approve',
 				'option-thread',
 				'pinned',

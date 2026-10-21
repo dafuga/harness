@@ -157,7 +157,9 @@ test('what was captured satisfies the reports scenario, served by the build unde
 	const { gathered, failures } = gatherCaptures(evidence, 'evidence');
 	const declared = Object.keys(states);
 	expect(failures).toEqual([]);
-	expect(gathered).toHaveLength(declared.length * viewports.length + 1);
+	expect(gathered.filter(({ line }) => line.kind !== 'benchmark')).toHaveLength(
+		declared.length * viewports.length + 1
+	);
 	const served = await servedBuild(page);
 	const builds = { declared: ['reports'], compiled: new Map([['reports', served?.buildId ?? '']]) };
 	const judged = scenarioCoverage({
@@ -168,9 +170,12 @@ test('what was captured satisfies the reports scenario, served by the build unde
 		builds
 	});
 	expect(judged.failures).toEqual([]);
-	expect(judged.states.map((state) => [state.id, state.captures.length])).toEqual(
-		declared.map((state) => [state, state === 'audio' ? 4 : 3])
-	);
+	expect(
+		judged.states.map((state) => [
+			state.id,
+			state.captures.filter((capture) => capture.kind !== 'benchmark').length
+		])
+	).toEqual(declared.map((state) => [state, state === 'audio' ? 4 : 3]));
 	for (const { line } of gathered)
 		recordCapture(
 			{ ...line, file: 'reports-' + line.file },

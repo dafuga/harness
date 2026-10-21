@@ -245,7 +245,8 @@
 			"kind": "screenshot",
 			"states": ["settings"],
 			"viewports": ["tablet"],
-			"required": true
+			"required": true,
+			"build": "desktop-renderer"
 		}
 	]
 }

@@ -26,9 +26,7 @@ export async function pageWorkload(
 	if (!navigation || navigation.name !== page.url()) return;
 	const units = scenario.units.filter((id) => pageAt(id, new URL(page.url()).pathname));
 	if (!units.length) return;
-	const session = await page.context().newCDPSession(page);
-	const heap = await session.send('Runtime.getHeapUsage');
-	await session.detach();
+	const heap = await pageHeap(page);
 	if (navigation.duration <= 0 || heap.usedSize <= 0)
 		throw new Error('A required page workload has no positive navigation and heap readings.');
 	const slot = scenario.evidence.find(
@@ -39,7 +37,7 @@ export async function pageWorkload(
 		units,
 		{
 			workload: `${capture.state}-${size.width}x${size.height}`,
-			target: 'http',
+			target: 'module',
 			samples: 1,
 			...size,
 			buildId: capture.buildId
@@ -105,4 +103,13 @@ function pageAt(id: string, pathname: string): boolean {
 		})
 		.join('/');
 	return new RegExp('^/' + pattern + '/?$').test(pathname);
+}
+
+async function pageHeap(page: Page) {
+	const session = await page.context().newCDPSession(page);
+	try {
+		return await session.send('Runtime.getHeapUsage');
+	} finally {
+		await session.detach();
+	}
 }
