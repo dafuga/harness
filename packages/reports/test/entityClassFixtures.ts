@@ -62,8 +62,9 @@ function observed<T>(items: T[], reads: Reads): T[] {
 		}
 	});
 	Object.defineProperty(list, Symbol.iterator, {
-		value: function* () {
+		value: function () {
 			reads.iterated++;
+			return [][Symbol.iterator]();
 		}
 	});
 	return list;

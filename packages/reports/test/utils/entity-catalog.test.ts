@@ -156,7 +156,6 @@ test('search reads names and purposes, changed only keeps changes, and an order 
 		catalogFilter(rows('functions'), { ...filter, search: ' FILTERORDERS ' }).map((row) => row.id),
 		'visible function symbols are searchable'
 	).toEqual([ids.filter]);
-	// Filtering leaves the rows it was given as they were.
 	expect(names(all)).toEqual(['OrderCard', 'OrderList', 'SearchBox']);
 });
 test('a list of names is none, one name, or the first and how many more', () => {
