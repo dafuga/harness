@@ -2,10 +2,7 @@ import { createHash } from 'node:crypto';
 import { lstat, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Report } from '../../models/reports-media/Report.types';
-import {
-	R2EvidenceStoreAdapter,
-	replayObjectKey
-} from '../../adapters/R2EvidenceStoreAdapter';
+import { R2EvidenceStoreAdapter, replayObjectKey } from '../../adapters/R2EvidenceStoreAdapter';
 import { registeredAsset } from '../../utils/reports-media/reportAssets';
 import { atomicJson, readJson } from '../../utils/reports-media/reportFiles';
 import { reportRetention } from '../../utils/reports-media/reportRetention';

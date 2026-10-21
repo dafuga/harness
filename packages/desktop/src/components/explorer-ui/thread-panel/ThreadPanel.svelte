@@ -1,22 +1,14 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { explorerName } from '../../../../../reports/src/utils/explorerName';
-	import type {
-		EntityDetail,
-		ProviderState,
-		ThreadInfo
-	} from '../../../models/development-tooling/Desktop.types';
+	import type { EntityDetail, ProviderState, ThreadInfo } from '../../../models/Desktop.types';
 	import type { RunEvent } from '../../../models/development-tooling/DesktopBridge.types';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import { createThreadCommentsStore } from '../../../lib/stores/development-tooling/threadComments.svelte';
 	import { createThreadRunStore } from '../../../lib/stores/development-tooling/threadRun.svelte';
 	import { pendingEntries, requestEntry, threadInfo } from './commentEntries';
 	import type { ThreadEntry } from '../../../utils/explorer-ui/commentEntries';
-	import {
-		composeModes,
-		visualCategory,
-		type RunDraft
-	} from '../../../utils/explorer-ui/composeModes';
+	import { composeModes, visualCategory, type RunDraft } from '../../../utils/composeModes';
 	import { designTarget, otherOption, shownApproval, threadAnchor } from './threadAnchor';
 	import type { ThreadTarget } from '../../../utils/explorer-ui/threadAnchor';
 	import ApprovalButton from '../../shared-primitives/ApprovalButton.svelte';

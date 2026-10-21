@@ -1,8 +1,5 @@
-import type {
-	ProjectCapabilities,
-	CacheProvenance
-} from '../projects-sessions/ProjectContext.types';
-import type { DesignVersion } from '../planning-collaboration/DesignVersion.types';
+import type { ProjectCapabilities, CacheProvenance } from '../ProjectContext.types';
+import type { DesignVersion } from '../DesignVersion.types';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { UnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';
 export type {
@@ -10,7 +7,7 @@ export type {
 	DesignOptionInfo,
 	DesignRevision,
 	DesignVersion
-} from '../planning-collaboration/DesignVersion.types';
+} from '../DesignVersion.types';
 /**
  * What the Electron main process tells the renderer about a project. Every value here is
  * serializable: it crosses the preload bridge by structured clone.
