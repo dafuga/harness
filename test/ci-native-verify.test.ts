@@ -28,7 +28,7 @@ test('the exact commit is verified on Apple silicon macOS, where native evidence
 	expect(verify).toMatch(/\n {4}runs-on: macos-15\n/);
 	expect(verify).toContain('test "$(uname -m)" = arm64');
 	expect(verify).not.toMatch(/ubuntu|xvfb|apt-get|--with-deps/);
-	expect(verify).toMatch(/\n {4}timeout-minutes: 180\n/);
+	expect(verify).toMatch(/\n {4}timeout-minutes: 360\n/);
 });
 
 test('one Xcode is pinned, selected for every tool that asks, and logged before anything runs', () => {
