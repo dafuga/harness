@@ -60,6 +60,7 @@ test('each related entity is a link to it in the same branch and commit', async 
 		expect(related, 'single-owner classes remain in their owner relationships').toHaveLength(9);
 		expect(related.every((row) => !row.shared && row.usedIn?.length === 1)).toBe(true);
 		expect(related.every((row) => row.usedIn?.[0]?.id === ids.page)).toBe(true);
+		expect(related.map((row) => row.id)).toEqual(services.map((service) => service.id));
 		const unproven = services.map((entity) => ({
 			...entity,
 			unit: { ...entity.unit, serviceClasses: [] }

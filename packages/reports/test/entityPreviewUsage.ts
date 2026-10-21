@@ -88,6 +88,10 @@ async function expandUsageGroups(
 		const group = page.getByRole('group', { name: `${kind} uses`, exact: true });
 		const items = kind === 'Services' ? group.getByRole('article') : group.locator('tbody tr');
 		const more = group.getByRole('button', { name: `View more ${kind}`, exact: true });
+		await capture(
+			page,
+			`relations-${kind.toLowerCase()}-initial-${commit ? 'commit' : 'tip'}-${viewport}`
+		);
 		await expect(items, 'card and table groups use four-entry batches').toHaveCount(4);
 		await more.click();
 		await expect(items).toHaveCount(8);
