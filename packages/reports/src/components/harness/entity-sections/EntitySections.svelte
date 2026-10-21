@@ -39,7 +39,13 @@
 <!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
 {#if direction}
 	<div role="tabpanel" aria-label={`${entity.name} ${said[direction]}`}>
-		<EntityRelations relations={host.lens.relations(entity.id)} {nav} show={direction} {removed} />
+		<EntityRelations
+			{host}
+			relations={host.lens.relations(entity.id)}
+			{nav}
+			show={direction}
+			{removed}
+		/>
 	</div>
 {:else if entity.category === 'functions' && (host.route.tab === 'examples' || host.route.tab === 'tests')}
 	<div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">
@@ -59,7 +65,11 @@
 	{:else}{@render verificationPanel()}{/if}
 {:else if host.route.tab === 'source'}
 	<div role="tabpanel" aria-label={`${entity.name} source`}>
-		<EntitySource unit={entity.unit} />
+		<EntitySource
+			unit={entity.unit}
+			repository={host.index.sourceRepository}
+			commit={entity.lastAt ?? host.scope.commit}
+		/>
 	</div>
 {:else if host.route.tab === 'contract'}
 	<div role="tabpanel" aria-label={`${entity.name} contract`}>

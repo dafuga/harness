@@ -1,6 +1,5 @@
 import { fakeProject } from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
-
 test('browser preview exposes no writable backend', async ({ page }) => {
 	await page.goto('/');
 	if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -11,7 +10,6 @@ test('browser preview exposes no writable backend', async ({ page }) => {
 	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeDisabled();
 	await expect(page.getByText(/Browser preview · read-only/)).toBeVisible();
 });
-
 test('designless Plan preserves truthful status and branch/commit paths', async ({ page }) => {
 	await fakeProject(page);
 	await page.goto('/');
@@ -66,7 +64,6 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 			.getByRole('link', { name: 'Components', exact: true })
 	).toHaveAttribute('href', `/harness/branch/feat%2Factivity/commit/${'b'.repeat(40)}/components`);
 });
-
 test('catalog search, changed filter and conversational plan request', async ({ page }) => {
 	await fakeProject(page, true);
 	await page.goto('/');
@@ -90,9 +87,9 @@ test('catalog search, changed filter and conversational plan request', async ({ 
 		.toContain('Add an Activity page to make work visible');
 	await expect(page.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
 });
-
 test('Go to tip exits both historical and explicitly pinned tip revisions', async ({ page }) => {
 	await fakeProject(page, true);
+	await page.setViewportSize({ width: 320, height: 568 });
 	await page.goto('/');
 	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
 	for (const commit of ['b'.repeat(40), 'a'.repeat(40)]) {
@@ -110,8 +107,15 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 				path: `test-results/go-to-tip-${process.env.SCREENSHOT_LABEL ?? 'local'}-${commit[0]}.png`
 			});
 		}
+		await expect(page.locator('.revision-summary strong')).toHaveText(commit.slice(0, 7));
+		await expect(page.locator('.revision-summary time')).toHaveAttribute(
+			'datetime',
+			commit[0] === 'a' ? '2026-10-11' : '2026-10-10'
+		);
 		await page.getByRole('button', { name: 'Go to tip', exact: true }).click();
 		await expect(page).toHaveURL(/\/harness\/branch\/feat%2Factivity\/pages$/);
+		await expect(page.locator('.revision-summary strong')).toHaveText('feat/activity');
+		await expect(page.locator('.revision-summary time')).toHaveAttribute('datetime', '2026-10-11');
 		await expect(page.getByLabel('Commit', { exact: true })).toHaveValue('a'.repeat(40));
 		await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeEnabled();
 		if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -123,7 +127,6 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 		}
 	}
 });
-
 test('workspace selectors start collapsed and environment stays directly selectable', async ({
 	page
 }) => {
@@ -145,9 +148,6 @@ test('workspace selectors start collapsed and environment stays directly selecta
 		expect(environment!.x + environment!.width).toBeLessThan(icon!.x);
 	}
 	await page.getByLabel('Environment', { exact: true }).selectOption('prod');
-	await expect(
-		page.getByText('Changes reach preprod. Use Deploy to promote preprod to production.')
-	).toBeVisible();
 	for (const [button, selector] of [
 		['Choose commit', 'Commit'],
 		['Choose branch', 'Branch'],
@@ -171,13 +171,35 @@ test('workspace selectors start collapsed and environment stays directly selecta
 			await page.screenshot({
 				path: `/tmp/harness-env-evidence/mobile-header-${width}-${environment}-${process.env.SCREENSHOT_LABEL ?? 'local'}.png`
 			});
+		await expect(page.getByText(/Changes reach preprod\./)).toHaveCount(0);
+		const summary = page.locator('.revision-summary');
+		await expect(summary.locator('strong')).toHaveText('Updated at');
+		await expect(summary.locator('time')).toHaveAttribute('datetime', '2026-10-20T10:15:00.000Z');
+		await expect(page.locator('.environment-status')).toHaveCount(0);
+		await expect(summary).not.toContainText(/Deployed|Current|branch tip|Tip|dev|prod|·/);
+		const sameLine = await summary.evaluate((element) => {
+			const name = element.querySelector('strong')!.getBoundingClientRect();
+			const time = element.querySelector('time')!.getBoundingClientRect();
+			return (
+				Math.abs(name.top - time.top) < 4 && time.right <= element.getBoundingClientRect().right
+			);
+		});
+		expect(sameLine, 'Viewed context and update time must fit on one line').toBe(true);
+		const projectControl = await page
+			.getByRole('button', { name: 'Choose workbench' })
+			.boundingBox();
+		const contextControl = await page.getByLabel('Environment', { exact: true }).boundingBox();
+		expect(
+			contextControl!.y - projectControl!.y - projectControl!.height,
+			'Mobile project and context controls need breathing room'
+		).toBeGreaterThanOrEqual(8);
 		const branchFits = await page
 			.locator('.revision-summary strong')
 			.evaluate((element) => element.scrollWidth <= element.clientWidth);
 		expect(branchFits, 'The short current branch name must remain readable on mobile').toBe(true);
 		const header = await page.getByRole('banner').boundingBox();
 		expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
-			164
+			184
 		);
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			width

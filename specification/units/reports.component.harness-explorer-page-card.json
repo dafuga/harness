@@ -37,6 +37,11 @@
 				"name": "ExplorerPageCard.category",
 				"type": "'pages' | 'components'",
 				"description": "Defaults to pages. Components retain the same screenshot card while showing their consumers and contained components, with an Open component icon."
+			},
+			{
+				"name": "ExplorerPageCard.verification",
+				"type": "boolean",
+				"description": "Defaults to true in catalogs; false in relationship tabs to omit verification indicators."
 			}
 		],
 		"outputs": [

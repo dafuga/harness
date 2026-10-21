@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
-import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { pageBenchmark } from './pageBenchmark';
+import { pageBenchmark, pageUnit } from './pageBenchmark';
 import { home, short } from './harnessHistory';
 import { settled, servedBuild } from './harnessCapture';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
@@ -46,7 +46,10 @@ export async function checkpoint(page: Page, name: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
 	mkdirSync(shots, { recursive: true });
 	await settled(page);
-	const bytes = await page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
+	const bytes = await page.screenshot({
+		path: join(shots, `${name}.png`),
+		fullPage: true
+	});
 	await pageScreenshot(page, name, bytes);
 	await pageBenchmark(page, name, pageUnit(page.url()));
 }
@@ -71,18 +74,6 @@ async function pageScreenshot(page: Page, name: string, bytes: Buffer): Promise<
 		},
 		bytes
 	);
-}
-
-function pageUnit(address: string): string | undefined {
-	const match =
-		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
-			new URL(address).pathname
-		);
-	if (!match) return;
-	const unit = `reports.page.harness-branch-branch-at-${match[1]}${match[2] ? '-entity' : ''}${match[3] ? '-' + match[3].slice(1) : ''}`;
-	return existsSync(join(import.meta.dirname, '../../../../../specification/units', unit + '.json'))
-		? unit
-		: undefined;
 }
 
 /** The navbar says which tip the branch has and which commit is looked at. */
@@ -128,7 +119,12 @@ interface Judging {
 		origin: { commit: string };
 		states: Array<{
 			id: string;
-			captures: Array<{ kind: string; viewport?: string; sha256: string; media: string | null }>;
+			captures: Array<{
+				kind: string;
+				viewport?: string;
+				sha256: string;
+				media: string | null;
+			}>;
 		}>;
 	}>;
 }

@@ -29,21 +29,21 @@
 				"description": "Optional both, used-in or uses, default both. Selects which sections appear."
 			},
 			{
-				"name": "EntityRelations.compact",
-				"type": "boolean",
-				"description": "Optional flag, false by default. True hides purpose text while keeping names and badges."
-			},
-			{
 				"name": "EntityRelations.removed",
 				"type": "boolean",
 				"description": "Optional flag, false by default, changing empty-state wording to explain removal at this commit."
+			},
+			{
+				"name": "EntityRelations.host",
+				"type": "ExplorerScreenProps",
+				"description": "Selected revision lens, known consumers and media base used by shared catalog items."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityRelations",
 				"type": "markup",
-				"description": "Counted Used In and Uses groups without row verification marks. Private callables in Other link to their own detail screens; other unknown kinds stay unlinked. Changed entities receive Changed badges."
+				"description": "Counted Used In and Uses groups reuse the collection renderer, including revision screenshots and helper calls. Relationship items omit verification marks. Private callables and unknown support dependencies remain accessible."
 			}
 		],
 		"errors": []
@@ -51,6 +51,11 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-catalog-items",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -65,12 +70,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.function.entity-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
 			"via": "import",
 			"origin": "derived"
 		},

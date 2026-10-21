@@ -38,6 +38,18 @@ export const contractItemSchema = z.strictObject({
 	examples: z.array(z.json()).optional()
 });
 
+/** Authored usage, distinct from observed verification evidence. */
+export const usageExampleSchema = z
+	.strictObject({
+		name: text.max(160),
+		description: z.string().max(500).optional(),
+		call: text.max(16_000).optional(),
+		input: z.json(),
+		output: z.json().optional(),
+		error: z.json().optional()
+	})
+	.refine((example) => Object.hasOwn(example, 'output') !== Object.hasOwn(example, 'error'));
+
 /** Reviewed helper declarations, derived at indexing time and pinned with the source. */
 export const helperContractSchema = z.strictObject({
 	name: text,
@@ -45,6 +57,12 @@ export const helperContractSchema = z.strictObject({
 	inputs: z.array(contractItemSchema),
 	output: z.string().optional(),
 	pure: z.literal(true),
+	/** Optional for reading historical manifests; current registry checks require examples. */
+	examples: z
+		.array(usageExampleSchema.refine((example) => Boolean(example.call)))
+		.min(1)
+		.max(64)
+		.optional(),
 	consumers: z.array(z.strictObject({ unit: identifier, symbol: text.optional() })).min(2)
 });
 

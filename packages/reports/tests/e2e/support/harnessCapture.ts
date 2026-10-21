@@ -3,6 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
 import { home } from './harnessHistory';
+import { pageBenchmark, pageUnit } from './pageBenchmark';
 
 export const viewports = [
 	{ id: 'desktop', width: 1440, height: 900 },
@@ -95,7 +96,10 @@ export async function captureScreen(
 	directory = evidenceDirectory
 ): Promise<void> {
 	await settled(page);
-	const bytes = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+	const bytes = await page.screenshot({
+		animations: 'disabled',
+		caret: 'hide'
+	});
 	const file = `${state}-${viewport.id}.png`;
 	const server = await servedBuild(page);
 	const stamp = server ? { server } : {};
@@ -114,6 +118,7 @@ export async function captureScreen(
 		requested(directory)
 	);
 	keep(file, bytes);
+	await pageBenchmark(page, `${state}-${viewport.id}`, pageUnit(page.url()));
 }
 
 /**

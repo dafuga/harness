@@ -76,3 +76,16 @@ function includedUnits(page: string): string[] {
 		existsSync(join(import.meta.dirname, '../../../../../specification/units', unit + '.json'))
 	);
 }
+
+/** The registered framework page of this exact route. */
+export function pageUnit(address: string): string | undefined {
+	const match =
+		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
+			new URL(address).pathname
+		);
+	if (!match) return;
+	const unit = `reports.page.harness-branch-branch-at-${match[1]}${match[2] ? '-entity' : ''}${match[3] ? '-' + match[3].slice(1) : ''}`;
+	return existsSync(join(import.meta.dirname, '../../../../../specification/units', unit + '.json'))
+		? unit
+		: undefined;
+}

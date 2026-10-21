@@ -96,7 +96,11 @@ test('an explorer address is left alone, with its tab', () => {
 	expect(canonical('/harness/branch/main/pages')).toBeUndefined();
 	expect(
 		canonical('/harness/branch/main/functions/function.case?tab=contract&helper=toKebabCase'),
-		'a callable URL must not redirect to itself'
+		'legacy callable links lead to readable paths'
+	).toBe('/harness/branch/main/helpers/toKebabCase/in/function.case/contract');
+	expect(canonical('/harness/branch/main/helpers/toKebabCase/contract')).toBeUndefined();
+	expect(
+		canonical('/harness/branch/main/helpers/toKebabCase/in/function.case/contract')
 	).toBeUndefined();
 	expect(
 		canonical(`/harness/branch/feature%2Fkept%231/commit/${id('b')}/functions`)

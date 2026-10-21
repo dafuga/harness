@@ -4828,6 +4828,27 @@
 			"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
 			"reason": "Review main-branch derivation of unit measurements from the current record and matching regression proofs.",
 			"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"name": "unitMetadata",
+			"commit": "132d82b5342d010c3431ef40d94a80d02622776d",
+			"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
+			"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65"
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"name": "entityHistory",
+			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
+			"reason": "Show only elapsed-time benchmark series as latency in compact commit history.",
+			"definition": "d928e2f493ceb344949fb3fe6c4fde2aa542905fae8b5c9f35c4dfeca0b669a5"
+		},
+		{
+			"unit": "reports.function.explorer-history",
+			"name": "historyDetail",
+			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
+			"reason": "Read source size and complexity from the exact historical revision alongside existing evidence.",
+			"definition": "efd95649c13e63d700372d38417c274df8a18bfb1a955447ee974d61261b679b"
 		}
 	]
 }
