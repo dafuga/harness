@@ -75,10 +75,15 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-explorer-usage",
+		"viewport": "desktop"
 	}
 }

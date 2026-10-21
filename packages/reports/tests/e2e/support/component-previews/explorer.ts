@@ -1,7 +1,7 @@
 import type { PreviewCases } from './shared';
 import { children, noop, text } from './shared';
 import * as d from './explorerData';
-const base = { nav: d.navigation, scope: d.shown.scope, mediaBase: '/media/' };
+const base = { nav: d.navigation, lens: d.reading, scope: d.shown.scope, mediaBase: '/media/' };
 const entity = { entity: d.entity, ...base };
 const page = d.host();
 const seen = {
@@ -47,7 +47,8 @@ export const explorerCases: PreviewCases = {
 		contract: d.contract,
 		measure: d.measure,
 		record: d.shown.head.records[0],
-		tab: 'contract'
+		tab: 'contract',
+		commit: d.commits.middle
 	},
 	'reports.component.harness-entity-details-screen': d.host(
 		'components',
@@ -99,6 +100,7 @@ export const explorerCases: PreviewCases = {
 	},
 	'reports.component.harness-entity-relations': {
 		...base,
+		host: page,
 		relations: d.reading.relations(d.entity.id)
 	},
 	'reports.component.harness-entity-run': seen,
@@ -114,7 +116,7 @@ export const explorerCases: PreviewCases = {
 		nav: d.navigation,
 		pane: children
 	},
-	'reports.component.harness-entity-source': { unit: d.entity.unit },
+	'reports.component.harness-entity-source': { unit: d.entity.unit, commit: d.commits.middle },
 	'reports.component.harness-entity-summary': { measure: d.measure },
 	'reports.component.harness-entity-tests': {
 		...entity,
@@ -158,6 +160,9 @@ export const explorerCases: PreviewCases = {
 	'reports.component.harness-explorer-table': {
 		category: 'services',
 		rows: d.rows,
-		nav: d.navigation
-	}
+		...base
+	},
+	'reports.component.explorer-catalog-items': { category: 'components', rows: d.rows, ...base },
+	'reports.component.explorer-usage': { consumers: d.rows[0].usedIn ?? [], ...base },
+	'reports.component.explorer-usage-link': { entity: d.entity, ...base }
 };
