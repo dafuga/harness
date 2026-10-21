@@ -24,7 +24,7 @@ const state = vi.hoisted(() => {
 	};
 });
 /** A window as `new BrowserWindow()` makes it: its own events and those of its page. */
-function BrowserWindow() {
+function browserWindow() {
 	const window = { contents: state.listeners(), own: state.listeners() };
 	state.windows.push(window);
 	return {
@@ -42,7 +42,7 @@ vi.mock('electron', () => ({
 		getPath: () => tmpdir(),
 		getAppPath: () => tmpdir()
 	},
-	BrowserWindow,
+	BrowserWindow: browserWindow,
 	dialog: { showMessageBoxSync: state.choose, showOpenDialog: vi.fn() },
 	ipcMain: { handle: vi.fn(), removeHandler: vi.fn() },
 	powerMonitor: { on: vi.fn() },
