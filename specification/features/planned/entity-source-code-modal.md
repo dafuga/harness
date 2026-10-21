@@ -41,3 +41,35 @@ integration. Existing prepared histories remain readable and show explicit gaps.
 ## Future Enhancements
 
 - Editing or saving code is outside this read-only viewer.
+
+## Verification Evidence
+
+The final unchanged regression pair is test-only `ebc48834` and product `b07584fb`.
+The preview-runner mapping is prepared before the failing checkpoint; the normal
+preview inventory now includes the source spec. Desktop source checks retain
+test-owned synthetic screenshots rather than requesting sealed evidence from an
+unstamped dev fixture. Existing card layout and navigation assertions remain.
+
+Root source bytes, explicit gaps and dirty-tree isolation, Reports source viewing,
+Desktop source selection and the normal function-card contract pass together.
+Fresh responsive captures, normal repository checks and real Git-backed browser
+flows supplement that focused proof.
+
+## Current Verification Boundary
+
+- Product commit: `b07584fb`; unchanged failing checkpoint: `ebc48834`.
+- Fresh source UI: 24 Reports cases and four Desktop cases pass at all widths.
+- Reports unit suite: 613 passed; affected integration/dependency checks: 24 passed.
+- The standard 1,001-helper responsiveness check passes at all three widths.
+- Root audit, unit registry and all 42 required explanations pass.
+- Full check: formatting, types, lint and Rust/kernel checks passed; the root unit
+  stage ended with timeouts in four files. Related files pass on focused retry;
+  the unchanged native toolchain case still takes 23.6s against its 5s limit.
+- Full verification and the loop verify step remain pending; later full-check
+  stages were not reached. Native-device and release proof are not claimed.
+- Real browser proof uses 53 models from SQLite commit `edd93768`, alongside
+  source-viewer commit `b07584fb`. The branches remain separate.
+- Captures are retained outside the source tree and verified in private R2,
+  respecting the instruction not to commit screenshots.
+- The source-reader store and verification config have no explorer pages;
+  handoff links use their source paths rather than invented entity URLs.
