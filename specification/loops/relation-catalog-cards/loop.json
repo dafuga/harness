@@ -2,11 +2,9 @@
 	"name": "relation-catalog-cards",
 	"goal": "Uses and Used In render the same catalog components with revision-scoped links and no verification marks",
 	"createdAt": "2026-10-21T10:30:18.163Z",
-	"updatedAt": "2026-10-21T10:32:15.974Z",
+	"updatedAt": "2026-10-21T10:35:19.984Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:35:19.984Z",
+			"evidence": "5d861b93: responsive usage matrix fails Relationships reuse catalog cards against unchanged product code; existing rows render zero component cards. Before captures retained."
 		},
 		{
 			"id": "implement",
