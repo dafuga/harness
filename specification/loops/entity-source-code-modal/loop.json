@@ -2,11 +2,9 @@
 	"name": "entity-source-code-modal",
 	"goal": "Every catalog type opens actual source code for the selected revision in the shared modal; old or unavailable source remains explicit and closing preserves the current view.",
 	"createdAt": "2026-10-21T08:57:46.093Z",
-	"updatedAt": "2026-10-21T09:53:51.328Z",
+	"updatedAt": "2026-10-21T10:04:05.918Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:04:05.918Z",
+			"evidence": "Paired proof passes at 3757eb14 against unchanged tests from 084b3c17. Root archived-source assertions, Reports model source, and Desktop source selection pass in the same isolated command and environment. Record 7f489ca168a1b9142034856c3bd921a9e2f07a21cd50ca35487eecd5d268425d."
 		},
 		{
 			"id": "verify",
