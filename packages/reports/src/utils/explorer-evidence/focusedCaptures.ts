@@ -80,7 +80,7 @@ export function focusedScenario(
 				const viewport = declared.find(
 					(item) => item.id === id && (!size || item.width === size.width)
 				);
-				const [width, height] = fallback[id] ?? [size?.width ?? 0, size?.height ?? 0];
+				const [width, height] = size ? [size.width, size.height] : (fallback[id] ?? [0, 0]);
 				return { id, width: viewport?.width ?? width, height: viewport?.height ?? height };
 			})
 		}
