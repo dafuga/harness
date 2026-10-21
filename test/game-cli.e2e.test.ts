@@ -152,7 +152,7 @@ async function invalidGames(cwd: string, valid: GameDocument) {
 		]
 	];
 	for (const [message, change] of cases) {
-		const document = structuredClone(valid);
+		const document = globalThis.structuredClone(valid);
 		change(document);
 		await writeFile(join(cwd, 'game.json'), JSON.stringify(document, null, '\t') + '\n');
 		const result = spawnSync('bun', ['run', 'test:unit'], { cwd, encoding: 'utf8' });
