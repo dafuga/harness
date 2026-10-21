@@ -41,3 +41,16 @@ integration. Existing prepared histories remain readable and show explicit gaps.
 ## Future Enhancements
 
 - Editing or saving code is outside this read-only viewer.
+
+## Verification Evidence
+
+The final unchanged regression pair is test-only `6aa9d5f1` and product `a16b89f3`.
+The earlier Desktop capture hook requested sealed runtime evidence from an unstamped
+dev fixture; the source tests now retain their own explicitly synthetic screenshots.
+Legacy card assertions require the new View code action while retaining existing
+layout and navigation checks. Architecture coverage distinguishes named module
+exports from mounted Svelte components.
+
+The pair covers committed source bytes and gaps, Reports source viewing, Desktop
+source selection, and the standard Desktop function-card contract. Fresh all-kind
+responsive coverage and normal checks supplement that focused proof.
