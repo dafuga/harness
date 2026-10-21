@@ -71,7 +71,7 @@ Existing public entry boundaries remain injectable for storage and process tests
 The frozen input checkpoint includes runner mapping and category configuration
 manifest addresses before the separate product repair commit.
 
-Delivered source is `c4447fb640f919fc60ed0c747f7b392f0595a18c`; the main
+The category-folder delivery is `c4447fb640f919fc60ed0c747f7b392f0595a18c`; the main
 category implementation is `f6cce71419935bb9e919aadf2c2ff1c5c8b0216b`.
 The test-only checkpoint is `312289aa830b70a7050c57bfa276d25049111fb1`.
 Red `84b8fbe1949cf798426af2b3a7300d523d8b8f6c337d53354ac044da3898a1ce`
@@ -116,6 +116,29 @@ manual observations supplement the automated fixture proof. The fresh Jev adviso
 cannot complete without the project's dedicated credential. Full verification
 remains pending, and the feature report stays active and unpublished.
 
+The Source presentation follow-up is `f4e2068d356422f1dfc131f1ad29c6df3a47ecc1`.
+Test-only `e649ba4b10cf48887648d48924433aa9bcac81ed` records red
+`ecb06a25742c44d7b6e70f7938c7eb608691a6f3be904604f58e9ed2e7acc1d6`;
+unchanged green is `5600cb94b4c180f27029e4e44eb21a1db427c8e971ee817a493a9b947a8a1011`.
+Source shows actual category-folder implementations, retaining recorded paths for
+framework entries and older uncategorized revisions. It omits forwarding aliases,
+symbols, execution targets and identity/version metadata. Compatibility forwarding
+files remain supported entries on disk; this presentation does not rename paths.
+The confirmed category slug is `agents-providers`.
+
+On that follow-up, Reports passes all 621 cases and its full normal check. Seven
+category/Source browser cases, root audit and registry validation pass. All 42
+original Source captures across seven kinds and three viewports decode and were
+inspected. Actual AgentActivityService Source was inspected in the Codex browser
+at 775×988; fonts are ready and captured diagnostics are empty. The new frozen
+preview on port 5735 serves build
+`763624832b2cc08dc81f8c1edd6b1223f301814ab7331992b2894b0ed03a2fa1`.
+The earlier server remains running. Root verification again has 914 passing cases,
+one inherited ownership fingerprint failure and 25 skipped live cases. Previous
+workspace/Jev blockers are inherited, not rerun or waived by this UI follow-up.
+Exact source observations and whole-page timing/renderer heap are retained outside
+Git. Whole-process verification samples are attribution only, not a global peak.
+
 ## Review links
 
 The explorer links below select the tested commit. The taxonomy data itself and
@@ -128,3 +151,5 @@ unit and History link table, static observations, original captures and logs.
 - [Explorer index](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-index) and [History](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-index/history)
 - [Filter controls](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-controls) and [History](http://127.0.0.1:5734/harness/branch/dafuga%2Fservice-cards/commit/c4447fb640f919fc60ed0c747f7b392f0595a18c/components/reports.component.harness-explorer-controls/history)
 - [Taxonomy data](../../../harness.groups.json), [audit source](../../../src/audit/development-tooling/structure-rules/moduleCategoryFindings.ts) and [authoring guidance](../../../.codex/skills/harness/SKILL.md).
+- [Source presentation](http://127.0.0.1:5735/harness/branch/dafuga%2Fservice-cards/commit/f4e2068d356422f1dfc131f1ad29c6df3a47ecc1/components/reports.component.harness-entity-source) and [History](http://127.0.0.1:5735/harness/branch/dafuga%2Fservice-cards/commit/f4e2068d356422f1dfc131f1ad29c6df3a47ecc1/components/reports.component.harness-entity-source/history).
+- [Actual AgentActivityService Source](http://127.0.0.1:5735/harness/branch/dafuga%2Fservice-cards/services/service.agent-activity?tab=source).
