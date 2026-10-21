@@ -44,6 +44,18 @@
 			"title": "Shared and fresh checkers agree across source changes and corrupted evidence",
 			"coverage": "required",
 			"units": ["service.verification-check"]
+		},
+		{
+			"id": "historical-derived-contract",
+			"title": "A newer derived contract preserves exact committed historical metadata",
+			"coverage": "required",
+			"units": ["service.verification-check"]
+		},
+		{
+			"id": "historical-version-tampering",
+			"title": "Every altered recorded version field remains invalid",
+			"coverage": "required",
+			"units": ["service.verification-check"]
 		}
 	],
 	"viewports": [],
@@ -83,7 +95,9 @@
 				"changed-parent-log",
 				"changed-grandparent-log",
 				"changed-parent-capture",
-				"indexer-parity"
+				"indexer-parity",
+				"historical-derived-contract",
+				"historical-version-tampering"
 			],
 			"viewports": [],
 			"required": true
@@ -97,7 +111,9 @@
 				"changed-parent-log",
 				"changed-grandparent-log",
 				"changed-parent-capture",
-				"indexer-parity"
+				"indexer-parity",
+				"historical-derived-contract",
+				"historical-version-tampering"
 			],
 			"viewports": [],
 			"required": true

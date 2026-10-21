@@ -19,7 +19,11 @@ export const historyFixtureVerificationScopes: Record<string, VerificationScope>
 			},
 			'test/verification-check-shared.test.ts': {
 				'a checker shared by the records of a chain answers as a fresh checker for each':
-					'indexer-parity'
+					'indexer-parity',
+				'derived contract interpretation does not invalidate exact committed historical metadata':
+					'historical-derived-contract',
+				'historical contract compatibility never accepts altered recorded version fields':
+					'historical-version-tampering'
 			}
 		},
 		playwright: {}
