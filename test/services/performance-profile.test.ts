@@ -59,7 +59,7 @@ test('Harness capture retains separate workloads in its standard benchmark evide
 	vi.stubEnv('TAKE_SCREENSHOT', '1');
 	try {
 		const profiler = new PerformanceProfileService();
-		for (const workload of ['short-title', 'long-title'])
+		for (const workload of ['short-title', 'long-title', 'short-title'])
 			await profiler.capture(
 				{ unit: 'function.title', callable: 'formatTitle', workload, rounds: 1, iterations: 2 },
 				() => workload.toLowerCase()
@@ -68,7 +68,7 @@ test('Harness capture retains separate workloads in its standard benchmark evide
 			.trim()
 			.split('\n')
 			.map((line) => JSON.parse(line));
-		expect(new Set(lines.map((line) => line.file)).size).toBe(2);
+		expect(new Set(lines.map((line) => line.file)).size).toBe(3);
 		const captured = await Promise.all(
 			lines.map(async (line) =>
 				benchmarkCaptureSchema.parse(JSON.parse(await readFile(join(directory, line.file), 'utf8')))
@@ -76,7 +76,8 @@ test('Harness capture retains separate workloads in its standard benchmark evide
 		);
 		expect(captured.map((capture) => capture.measurements[0].workload)).toEqual([
 			'short-title',
-			'long-title'
+			'long-title',
+			'short-title'
 		]);
 		expect(lines.every((line) => line.kind === 'benchmark')).toBe(true);
 	} finally {
