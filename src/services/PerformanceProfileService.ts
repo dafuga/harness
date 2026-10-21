@@ -1,5 +1,5 @@
 import { performance } from 'node:perf_hooks';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { types } from 'node:util';
 import { z } from 'zod';
 import { recordCapture } from '../utils/record-capture/recordCapture';
@@ -98,7 +98,7 @@ export class PerformanceProfileService {
 	async capture(input: ProfileInput, operation: () => unknown): Promise<Measured[]> {
 		const measurements = await this.measure(input, operation);
 		const key = JSON.stringify([input.unit, input.callable ?? '', input.workload]);
-		const name = `profile-${createHash('sha256').update(key).digest('hex').slice(0, 24)}`;
+		const name = uniqueCaptureName('profile', key);
 		recordCapture(
 			{
 				evidence: name,
@@ -152,7 +152,7 @@ function writeObservation(observation: Observation): Measured[] {
 		}
 	];
 	const key = JSON.stringify([input.unit, input.callable ?? '', input.workload, completion]);
-	const name = `observation-${createHash('sha256').update(key).digest('hex').slice(0, 24)}`;
+	const name = uniqueCaptureName('observation', key);
 	recordCapture(
 		{
 			evidence: name,
@@ -164,4 +164,10 @@ function writeObservation(observation: Observation): Measured[] {
 		JSON.stringify({ measurements })
 	);
 	return measurements;
+}
+
+/** A workload identifies comparable work; each captured chunk needs its own immutable path. */
+function uniqueCaptureName(prefix: string, workloadKey: string): string {
+	const group = createHash('sha256').update(workloadKey).digest('hex').slice(0, 24);
+	return `${prefix}-${group}-${randomUUID()}`;
 }

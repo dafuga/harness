@@ -6,9 +6,11 @@
 	"name": "profile-capture-isolation",
 	"goal": "Independent runtime observation producers and successive flushes retain distinct immutable capture chunks with no overwritten evidence.",
 	"createdAt": "2026-10-21T09:51:11.349Z",
-	"updatedAt": "2026-10-21T09:51:12.728Z",
+	"updatedAt": "2026-10-21T10:04:07.522Z",
 	"template": "regression-prevention",
-	"templateLineage": ["regression-prevention"],
+	"templateLineage": [
+		"regression-prevention"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -29,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:04:02.257Z",
+			"evidence": "Sealed redef47b89822ea89ad633bacfbe991f4f0858f476e0e6b673a7cad1f942007f33d at6e13136c reproduces both same-workload batch overwrites and independent/flush observation overwrites. Six other profiling cases pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:04:02.808Z",
+			"evidence": "Separate comparable workload identity from immutable capture identity. Preserve the workload group hash and add a unique chunk suffix for both batch and one-pass captures; keep values, sampling and performance limits unchanged. Enforce multiple producers and repeated chunks in the standard suite before runner integration."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T10:04:07.522Z",
+			"evidence": "Both capture paths retain stable workload grouping and add a unique chunk identifier after sampling. All23 focused tests, types and source audit pass. The local skill now requires producer/chunk isolation coverage before worker profiling and validates successfully."
 		},
 		{
 			"id": "green",

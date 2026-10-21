@@ -94,6 +94,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Display recorded performance independently of budget declarations. Budgets judge limits; they do not decide whether an observation is visible. A focused benchmark never grants full verification or approves a baseline.
 - Label whole-process memory as process memory, including runner overhead; never attribute it to one function. Explain unavailable metrics and distinguish missing evidence from actual failed checks.
 - Before changing profiling applicability, extend the standard validator matrix with executable, declarative, type-only, unreadable and mixed-source units. Exempt only inspected non-executable source; an asset mixed with code never exempts its owner. Declarative assets still participate in their consuming page's visual and performance checks.
+- Before distributing profiling across runners, require the standard profile suite to retain distinct capture paths for independent producers and repeated chunks of the same workload. A workload key never identifies one immutable evidence file.
 
 ## Integration Checkpoints
 
