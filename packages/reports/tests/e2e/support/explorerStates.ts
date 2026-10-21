@@ -1,5 +1,5 @@
 import { expect, type Page } from '@playwright/test';
-import { at, explorer, tip, verdict } from './explorer';
+import { at, explorer, measured, tip, verdict } from './explorer';
 import { screenStates } from './explorerScreens';
 import { searchStates } from './explorerSearch';
 import { shellStates } from './explorerShells';
@@ -10,19 +10,15 @@ const scale = `http://127.0.0.1:${Number(process.env.HARNESS_CONSOLE_E2E_SCALE_P
 const content = (page: Page) => page.locator('.ex-content');
 const titled = (page: Page, name: string) =>
 	expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
-const measured = async (page: Page) => {
-	await expect(page.getByRole('region', { name: 'Size', exact: true })).toBeVisible();
-	await expect(
-		page.getByRole('region', { name: 'Performance profile', exact: true })
-	).toBeVisible();
-};
 /**
  * How each state of the explorer scenario is reached in the synthetic history. Every state is a
  * real address of the explorer; none is put together from parts of another revision.
  */
 const asked = new Map<string, string>();
 /** The address the latest reach of a state asked for. */
-export const askedFor = (state: string) => asked.get(state) ?? '';
+export const askedFor = (state: string) => {
+	return asked.get(state) ?? '';
+};
 /** The states whose flow is also recorded as end-to-end evidence, with what each must find. */
 export const explorerFlows: Record<string, { expects: string; source?: boolean }> = {
 	pages: { expects: 'Wait for the Pages catalog' },

@@ -2,6 +2,8 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { once } from 'node:events';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { createServer } from 'node:net';
+import { createServer as createHttpServer } from 'node:http';
+import type { PreviewOwner } from '../../src/utils/previewOwner';
 import type { AddressInfo } from 'node:net';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -170,4 +172,20 @@ export async function previewWorkerPid(webPort: number): Promise<number> {
 	} catch {
 		return 0;
 	}
+}
+
+/** Replays the valid startup status once, before publishing the actual owner's address. */
+export async function startingPreviewOwner(owner: PreviewOwner) {
+	let reads = 0;
+	const server = createHttpServer((_request, response) => {
+		response.writeHead(200, { 'content-type': 'application/json' });
+		response.end(JSON.stringify({ ...owner, url: reads++ === 0 ? null : owner.url }));
+	});
+	server.listen(0, '127.0.0.1');
+	await once(server, 'listening');
+	return {
+		port: (server.address() as AddressInfo).port,
+		reads: () => reads,
+		close: () => new Promise<void>((resolve) => server.close(() => resolve()))
+	};
 }
