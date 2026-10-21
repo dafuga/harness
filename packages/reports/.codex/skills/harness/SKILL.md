@@ -14,6 +14,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
+- PDF and ZIP export profiles execute the real Python scripts through the shared Harness child-process capture in the standard export test; keep registered-file and output assertions. Retention installation tests write only within a temporary directory, mock scheduler calls, and label that boundary as partial coverage. Never install a live LaunchAgent to obtain test evidence.
+
 ## Helper Review
 
 Apply the [project helper naming review](../../../../../.codex/skills/harness/SKILL.md#helper-naming-review)

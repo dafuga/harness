@@ -6,6 +6,8 @@ import { ReportRepository } from '../src/repositories/report-repository/ReportRe
 import { ReportExportService } from '../src/services/report-export-service/ReportExportService';
 import { reportProcess } from '../src/utils/reportProcess';
 import { reportPdf } from '../src/services/report-export-service/reportPdf';
+import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
+import { runCommand } from '../../../test/support/cli';
 const roots: string[] = [];
 const pixel =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
@@ -51,6 +53,28 @@ async function archiveEntries(path: string) {
 	if (result.code) throw new Error(result.output);
 	return JSON.parse(result.output) as string[];
 }
+
+async function profileExportScripts(directory: string) {
+	const target = join(directory, 'exports');
+	const manifest = join(target, 'manifest.json');
+	for (const script of ['pdf', 'zip']) {
+		const args =
+			script === 'pdf'
+				? [manifest, join(target, 'report.pdf'), join(directory, 'assets')]
+				: [manifest, target, join(target, 'report.zip')];
+		const result = await measureProcess(
+			{
+				units: [`reports.script.build-${script}`],
+				workload: 'registered-screenshot-report-export',
+				target: 'module',
+				command: [reportPdf(), join(process.cwd(), `scripts/build_${script}.py`), ...args],
+				cwd: process.cwd()
+			},
+			runCommand
+		);
+		expect(result.exitCode, result.stderr).toBe(0);
+	}
+}
 test('finalization emits portable gallery, readable PDF, and only registered ZIP assets', async () => {
 	const { root, store, run } = await fixture();
 	const directory = store.directory(run.id);
@@ -58,6 +82,7 @@ test('finalization emits portable gallery, readable PDF, and only registered ZIP
 	await mkdir(join(directory, 'assets'), { recursive: true });
 	await writeFile(join(directory, 'assets', 'stray.png'), Buffer.from(pixel, 'base64'));
 	const final = await new ReportExportService(store).finalize(run.id);
+	await profileExportScripts(directory);
 	expect(final.state).toBe('finalized');
 	expect(final.status).toBe('passed');
 	const html = await readFile(join(directory, 'exports', 'index.html'), 'utf8');

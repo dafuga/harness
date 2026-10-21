@@ -9,6 +9,8 @@ import { ReportExportService } from '../../src/services/report-export-service/Re
 import type { Report } from '../../src/models/Report.types';
 import { reportProcess } from '../../src/utils/reportProcess';
 import { reportPdf } from '../../src/services/report-export-service/reportPdf';
+import { measureProcess } from '../../../../test/support/cli-measurement/measureHarness';
+import { runCommand } from '../../../../test/support/cli';
 
 const roots: string[] = [];
 const oldImage = Buffer.from(
@@ -156,4 +158,45 @@ test('one cleanup covers uploaded screenshots from every project in the hub', as
 		const report = await repository.get(id);
 		expect(report.evidence.every((item) => item.missing)).toBe(true);
 	}
+});
+
+test('retention installation writes a private schedule through an isolated scheduler boundary', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'report-retention-install-'));
+	roots.push(root);
+	const program = `import json, os, plistlib, runpy, sys
+from pathlib import Path
+from unittest.mock import patch
+home = Path(sys.argv[2])
+with patch('pathlib.Path.home', return_value=home), patch('subprocess.run') as run:
+    runpy.run_path(sys.argv[1], run_name='__main__')
+    commands = [call.args[0] for call in run.call_args_list]
+    assert [command[:2] for command in commands] == [['plutil', '-lint'], ['launchctl', 'bootout'], ['launchctl', 'bootstrap'], ['launchctl', 'print']]
+path = next((home / 'Library' / 'LaunchAgents').glob('*.plist'))
+config = plistlib.loads(path.read_bytes())
+assert config['StartCalendarInterval'] == {'Hour': 3, 'Minute': 0}
+assert config['ProgramArguments'][-2:] == ['report', 'cleanup']
+assert config['EnvironmentVariables']['HOME'] == str(home)
+assert config['RunAtLoad'] is True
+assert path.stat().st_mode & 0o777 == 0o600
+assert (home / '.codex' / 'project-reports').stat().st_mode & 0o777 == 0o700
+print('Private retention schedule and scheduler calls verified')`;
+	const result = await measureProcess(
+		{
+			units: ['reports.script.install-screenshot-retention'],
+			workload: 'write-private-daily-retention-schedule',
+			target: 'module',
+			command: [
+				reportPdf(),
+				'-c',
+				program,
+				join(process.cwd(), 'scripts/install_screenshot_retention.py'),
+				root
+			],
+			cwd: process.cwd(),
+			partial:
+				'Actual Python main and filesystem writes in a temporary directory; scheduler subprocess calls are mocked. No live LaunchAgent is installed.'
+		},
+		runCommand
+	);
+	expect(result.stdout).toContain('Private retention schedule and scheduler calls verified');
 });
