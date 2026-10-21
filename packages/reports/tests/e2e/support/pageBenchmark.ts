@@ -14,16 +14,14 @@ export async function pageBenchmark(page: Page, state: string, unit?: string): P
 	});
 	// A soft navigation has no new NavigationTiming entry; do not borrow its predecessor's time.
 	if (!navigation || navigation.name !== page.url()) return;
-	const session = await page.context().newCDPSession(page);
-	const heap = await session.send('Runtime.getHeapUsage');
-	await session.detach();
+	const heap = await pageHeap(page);
 	expect(navigation.duration).toBeGreaterThan(0);
 	expect(heap.usedSize).toBeGreaterThan(0);
 	const viewport = page.viewportSize()!;
 	const context = {
 		unit,
 		workload: `${state}-${viewport.width}x${viewport.height}`,
-		target: 'http',
+		target: 'module',
 		samples: 1
 	};
 	const measurements = [
@@ -59,6 +57,15 @@ export async function pageBenchmark(page: Page, state: string, unit?: string): P
 	);
 }
 
+async function pageHeap(page: Page) {
+	const session = await page.context().newCDPSession(page);
+	try {
+		return await session.send('Runtime.getHeapUsage');
+	} finally {
+		await session.detach();
+	}
+}
+
 /** A route workload includes its rendered shared units; these figures never claim isolation. */
 function includedUnits(page: string): string[] {
 	const units = [
@@ -84,9 +91,16 @@ function includedUnits(page: string): string[] {
 
 /** The registered framework page of this exact route. */
 export function pageUnit(address: string): string | undefined {
+	const pathname = new URL(address).pathname;
+	if (
+		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?helpers\/[^/]+(?:\/[^/]+)?$/.test(
+			pathname
+		)
+	)
+		return 'reports.page.harness-view';
 	const match =
 		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
-			new URL(address).pathname
+			pathname
 		);
 	if (!match) return;
 	const unit = `reports.page.harness-branch-branch-at-${match[1]}${match[2] ? '-entity' : ''}${match[3] ? '-' + match[3].slice(1) : ''}`;
