@@ -2,11 +2,9 @@
 	"name": "page-capture-delivery",
 	"goal": "Persist revision-bound page screenshots through Git history and show one scalar per overview metric before merging main.",
 	"createdAt": "2026-10-21T08:49:06.015Z",
-	"updatedAt": "2026-10-21T08:50:42.571Z",
+	"updatedAt": "2026-10-21T09:48:28.385Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,27 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:07:32.487Z",
+			"evidence": "Committed standard tests at 8640d15b. Isolated red proof 12123b56 reproduced screenshot retention and scalar overview failures; root recorder failure was the named assertion."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:07:49.127Z",
+			"evidence": "Retain decoded, hash-sealed captures with focused proofs before cleanup; rebuild exact-unit/revision media in history without granting full verdicts. Overview selects one latency and matching-workload memory, preserving details separately. Existing standard tests guard retention, missing bytes and scalar rows."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:21:08.236Z",
+			"evidence": "Focused records retain sealed pixels and source-bound metadata before cleanup. Local, desktop and hosted readers resolve them without granting full verification. Standard recorder and overview tests pass locally; instructions now require complete durable screenshot delivery."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:48:23.837Z",
+			"evidence": "Immutable proof 0a198bd9 passed the unchanged corpus at 5d87bd54, retaining 144 screenshots and 42 measured page observations. Git rebuild resolved all captures; desktop and hosted readers opened the three viewport images and refused wrong hashes."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T09:48:28.385Z",
+			"evidence": "In an isolated 5d87bd54 snapshot, restored the old recorder and verbose overview from 8ac6231a: standard tests failed for missing image bytes and Latency rows. Restored both repaired files and the same 6 CLI plus 11 overview tests passed."
 		},
 		{
 			"id": "verify",

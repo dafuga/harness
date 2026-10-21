@@ -9,8 +9,24 @@
 		/** The measurement profile of an overview, without notes; false for Details. */
 		compact?: boolean;
 	} = $props();
-	// No timing reads as Latency and Memory, one as rows of the list; more take a table.
-	let tabled = $derived(measure.performance.length > 1);
+	// Overview selects one context; Details retains every workload, target and profile.
+	let tabled = $derived(!compact && measure.performance.length > 1);
+	let primary = $derived(
+		measure.performance.find(
+			(row) =>
+				/latency|navigation|^p\d|duration|time/i.test(row.metric) && row.value !== notMeasured
+		)
+	);
+	let memory = $derived(
+		measure.performance.find(
+			(row) =>
+				/memory|heap|rss/i.test(row.metric) &&
+				(!primary ||
+					(row.workload === primary.workload &&
+						row.target === primary.target &&
+						row.profile === primary.profile))
+		)
+	);
 	const where = (row: EntityMeasure['performance'][number]) =>
 		[row.target, row.profile].filter(Boolean).join(' · ') || '—';
 </script>
@@ -34,7 +50,18 @@
 						</div>
 					{/if}
 				{/each}
-				{#if measure.performance.length === 0}
+				{#if compact}
+					<div>
+						<dt>Latency</dt>
+						<dd class:unmeasured={!primary} title={primary?.note}>
+							{primary?.value ?? notMeasured}
+						</dd>
+					</div>
+					<div>
+						<dt>Memory</dt>
+						<dd class:unmeasured={!memory} title={memory?.note}>{memory?.value ?? notMeasured}</dd>
+					</div>
+				{:else if measure.performance.length === 0}
 					<div>
 						<dt>Latency</dt>
 						<dd class="unmeasured">{notMeasured}</dd>

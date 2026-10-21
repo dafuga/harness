@@ -63,8 +63,14 @@ export function screenPick(
 	};
 }
 const unrecorded = { standing: null, label: undefined, facts: undefined, note: undefined };
-/** What the record of a side says produced a capture; nothing when the side has no such record. */
 function told(side: ExplorerSide, found: ExplorerCapture) {
+	if (found.focused)
+		return {
+			standing: 'unvalidated' as const,
+			label: 'Focused capture',
+			facts: [{ label: 'Focused run', value: found.focused.loop + ' · ' + found.focused.status }],
+			note: 'Captured from the exact served revision; this focused run grants no full verification verdict.'
+		};
 	const tested = side.record?.scenarios.find((entry) => entry.id === found.scenario);
 	if (!side.record || !tested) return unrecorded;
 	return captureProvenance(side.record, tested, found.capture);
@@ -162,7 +168,6 @@ function pane(
 		: { found, shown: item(side, found, phase) };
 }
 
-/** True when the host says a capture was made from the build of exactly the commit of its side. */
 const current = (found: ExplorerCapture) => found.current;
 
 /** Why a recorded capture is not shown as the screenshot of the branch tip. */
@@ -193,7 +198,7 @@ export function catalogShot(evidence: ExplorerEvidence, preview?: ScreenPick): E
 			entry.usable &&
 			entry.capture.kind === 'screenshot' &&
 			entry.capture.media !== null &&
-			(!preview || matches(entry, preview))
+			(!preview || entry.focused || matches(entry, preview))
 	);
 	const found = usable.find((entry) => entry.current) ?? usable[0];
 	if (!found) return null;

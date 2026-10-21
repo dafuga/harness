@@ -26,12 +26,13 @@ export function artifactQuery(
 	const found = stored.find((item) =>
 		typeof file === 'string' ? mediaFile(item.capture) === file : item === file
 	);
-	if (!held?.record || !found) return null;
+	const record = found?.focused?.record || held?.record?.id;
+	if (!record || !found) return null;
 	const { capture } = found;
 	return {
 		...scope,
 		side,
-		recordId: held.record.id,
+		recordId: record,
 		scenarioId: found.scenario,
 		state: found.state,
 		evidenceId: capture.evidence,
