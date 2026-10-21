@@ -51,7 +51,11 @@
 	/** A declared preview keeps its own scenario and state, never another in its place. */
 	function picked(viewport?: string): ScreenPick | null {
 		if (options.some((item) => item.scenario === 'focused'))
-			return screenPick(options, { scenario: 'focused', viewport });
+			return screenPick(options, {
+				scenario: 'focused',
+				state: preview?.state,
+				viewport: viewport ?? preview?.viewport
+			});
 		const fixed = preview;
 		if (!fixed) return screenPick(options, { viewport });
 		const declared = options.find((item) => item.scenario === fixed.scenario);
