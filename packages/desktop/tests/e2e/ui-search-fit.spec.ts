@@ -21,7 +21,10 @@ import { recordCapture } from '../../../../src/utils/record-capture/recordCaptur
 type Box = { x: number; y: number; width: number; height: number };
 const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390, 320];
-const bar = (page: Page) => page.getByRole('banner');
+const bar = (page: Page) =>
+	page.getByRole('banner').filter({
+		has: page.getByRole('navigation', { name: 'Catalog categories', exact: true })
+	});
 const field = (page: Page) =>
 	page
 		.getByRole('dialog', { name: 'Search project' })
