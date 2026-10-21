@@ -6,7 +6,6 @@ export const shellsVerificationScopes: Record<string, VerificationScope> = {
 		package: 'desktop',
 		vitest: {
 			'test/shells-category.test.ts': {
-				'the shared app has six categories, Shells after Pages': 'shells-routing',
 				'a unit declared a shell is a Shell, and every other kind stays where it was':
 					'shells-routing',
 				'a shell has a workspace address with its project, branch, commit and section':
@@ -16,7 +15,8 @@ export const shellsVerificationScopes: Record<string, VerificationScope> = {
 				'at a commit that recorded it as a component, its Components address stays':
 					'shells-routing',
 				'plans and agent requests may name Shells, and a shell plan needs the image capability':
-					'shells-routing'
+					'shells-routing',
+				'the shared app has seven categories, Shells after Pages': 'shells-routing'
 			},
 			'test/shells-planning.test.ts': {
 				'a shell plan is visual: it is planned for the desktop viewport under Shells':

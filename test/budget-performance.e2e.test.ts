@@ -25,8 +25,18 @@ function prepare(extend: (repo: VerifyRepo) => Promise<void> = () => Promise.res
 async function prepareRanked() {
 	return prepare(async (repo) => {
 		await repo.write('src/utils/rank.ts', rankSource);
-		await repo.write('specification/workloads/rank-20k.json', JSON.stringify(rankWorkload));
-		await repo.write('specification/scenarios/rank-boundary.json', JSON.stringify(rankScenario));
+		// Sample the unchanged positive operation long enough to compare steady-state timings.
+		await repo.write(
+			'specification/workloads/rank-20k.json',
+			JSON.stringify({ ...rankWorkload, rounds: 15, iterations: 100 })
+		);
+		await repo.write(
+			'specification/scenarios/rank-boundary.json',
+			JSON.stringify({
+				...rankScenario,
+				tests: rankScenario.tests.map((check) => ({ ...check, timeoutMs: 120_000 }))
+			})
+		);
 		await repo.harness(['units', 'index', '--write']);
 		const path = 'specification/units/function.rank.json';
 		const manifest = await repo.json<{ budgets: object }>(path);

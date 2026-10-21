@@ -141,17 +141,17 @@ const scopes: Record<string, VerificationScope> = {
 				'cancelled Change records cancellation and cannot cancel another run ID': 'plan-change',
 				'observed host writes retain actual absolute path and hashes in committed change history':
 					'plan-change',
-				'visual provenance stores actual image orchestration model and exact full generator prompt':
-					'plan-change',
 				'Plan refuses a generation whose expected latest version changed while the image was running':
-					'plan-change'
+					'plan-change',
+				'Plan rejects an incomplete proposal before generating or saving designs': 'plan-change'
 			},
 			'test/backend-boundaries.test.ts': {
 				'remote pages and child frames cannot use the project bridge': 'project-scope',
 				'IPC refuses unknown operations, invalid regions and unapproved changes': 'project-scope',
 				'subscription subprocesses omit API overrides without changing the parent':
 					'cli-boundaries',
-				'private reasoning is never forwarded to the renderer': 'cli-boundaries'
+				'private reasoning is never forwarded to the renderer': 'cli-boundaries',
+				'portable workspace sources must not depend on the Hub app': 'project-scope'
 			}
 		},
 		playwright: {}

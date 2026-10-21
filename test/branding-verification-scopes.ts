@@ -18,17 +18,17 @@ export const brandingVerificationScopes: Record<string, VerificationScope> = {
 			'test/components/brand-mark.test.ts': {
 				'the mark is five square tiles in the current colour, decorative by default': 'shared-mark',
 				'a labelled mark is an image with that name': 'shared-mark',
-				'desktop/src/components/NavBar.svelte compiles to the shared mark, not the old one':
-					'shared-surfaces',
 				'desktop/src/components/ProjectGate.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
 				'hub/src/components/HubFrame.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'reports/src/components/harness/HarnessNavbar.svelte compiles to the shared mark, not the old one':
-					'shared-surfaces',
 				'reports/src/components/harness/HarnessHeader.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
 				'reports/src/components/ReportView.svelte compiles to the shared mark, not the old one':
+					'shared-surfaces',
+				'desktop/src/components/nav-bar/NavBar.svelte compiles to the shared mark, not the old one':
+					'shared-surfaces',
+				'reports/src/components/harness/harness-navbar/HarnessNavbar.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces'
 			}
 		},
