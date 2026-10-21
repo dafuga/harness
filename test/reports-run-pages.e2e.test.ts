@@ -7,12 +7,14 @@ import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest
 import { browserErrorCollector } from './support/browserTest';
 import {
 	browserRun,
+	atTeardown,
 	eventually,
 	runPassed,
 	seededHistories,
 	serving,
 	type BrowserRun
 } from './support/browserRun';
+import { openRunGate, type RunGate } from './support/runGate';
 
 /**
  * A page that one browser run has open while another run starts beside it in the same checkout,
@@ -31,12 +33,8 @@ afterEach(async () => {
 	await browserErrors.finish();
 });
 const runs: BrowserRun[] = [];
+const gates: RunGate[] = [];
 const quick = ['tests/e2e/harness-cache.spec.ts'];
-/**
- * Enough repetitions of a spec that takes a tenth of a second to outlast the start of any second
- * run by minutes; both runs are stopped long before they would end.
- */
-const held = 5000;
 const sha256 = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 /** The build a server says it serves; a run serves its own copy of the compiled build. */
 const built = async (url: string) =>
@@ -64,17 +62,21 @@ beforeAll(async () => {
 }, 60_000);
 afterAll(async () => {
 	await browser?.close();
+	await Promise.all(gates.map((gate) => gate.close()));
 	await Promise.all(runs.map((run) => run.stop()));
 	await rm(scratch, { recursive: true, force: true });
 }, 120_000);
 
 test('a page one run has open keeps what was opened on it when another run starts its servers', async () => {
 	// The first run goes on, and so do its servers, until this test has seen what it came for.
-	const first = await browserRun('first', scratch, quick, held);
+	const firstGate = await openRunGate(scratch, 'first');
+	gates.push(firstGate);
+	const first = await browserRun('first', scratch, quick, { repeat: 1, gate: firstGate.path });
 	runs.push(first);
 	let over = false;
 	void first.finished.then(() => (over = true));
 	await serving(first.url);
+	await atTeardown(first, firstGate, 'first');
 	const [history] = await eventually(() => {
 		const found = seededHistories(scratch);
 		return found.length === 1 ? found : undefined;
@@ -104,9 +106,12 @@ test('a page one run has open keeps what was opened on it when another run start
 	page.on('load', () => (loads += 1));
 
 	// The second run goes on as well, so its server is still there to be asked what it serves.
-	const second = await browserRun('second', scratch, quick, held);
+	const secondGate = await openRunGate(scratch, 'second');
+	gates.push(secondGate);
+	const second = await browserRun('second', scratch, quick, { repeat: 1, gate: secondGate.path });
 	runs.push(second);
 	await serving(second.url);
+	await atTeardown(second, secondGate, 'second');
 	// A reload is sent the moment the other server writes its files; this is time for it to land.
 	await eventually(() => (loads > 0 ? loads : undefined), 'a reload', 5).catch(() => 0);
 
@@ -124,4 +129,7 @@ test('a page one run has open keeps what was opened on it when another run start
 	expect(other?.commits.twin).not.toBe(commits.twin);
 	const foreign = await fetch(`${second.url}/harness/data/revisions/${commits.twin}.json`);
 	expect(foreign.status).toBe(404);
+	firstGate.release();
+	secondGate.release();
+	await Promise.all([runPassed(first, 'first'), runPassed(second, 'second')]);
 }, 900_000);

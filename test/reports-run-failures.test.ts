@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { runPassed } from './support/browserRun';
+import { atTeardown, runPassed } from './support/browserRun';
 import { runFailures, type RunReport } from './support/runFailures';
 
 const red = String.fromCharCode(27) + '[31m';
@@ -90,4 +90,22 @@ test('the error of a failed run carries its first failing assertion, which its o
 	await expect(
 		runPassed({ ...silent, finished: Promise.resolve(0) }, 'first')
 	).resolves.toBeUndefined();
+});
+
+test('teardown arrival is observed directly and an early exit cannot become an indefinite wait', async () => {
+	const pending = new Promise<never>(() => {});
+	const run = {
+		finished: pending,
+		failures: () => ['actual assertion'],
+		output: () => 'last output'
+	};
+	await expect(atTeardown(run, { reached: Promise.resolve('/owned/run') }, 'peer')).resolves.toBe(
+		'/owned/run'
+	);
+	await expect(
+		atTeardown({ ...run, finished: Promise.resolve(1) }, { reached: pending }, 'failed')
+	).rejects.toThrow('actual assertion');
+	await expect(
+		atTeardown({ ...run, finished: Promise.resolve(0) }, { reached: pending }, 'early')
+	).rejects.toThrow('ended before reaching its teardown gate');
 });
