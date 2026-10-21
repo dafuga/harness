@@ -121,7 +121,8 @@ test('the card of a function has no design picture or placeholder, and opens its
 	const plain = card({});
 	expect(words(plain)).not.toMatch(/design/i);
 	expect(plain).toContain('href="/harness/functions/function.filter"');
-	expect(words(plain)).toBe('filterOrders');
+	expect(words(plain)).toBe('filterOrders View code');
+	expect(plain).toContain('aria-label="View code for filterOrders"');
 	expect(plain).toContain('aria-label="Open filterOrders"');
 });
 
