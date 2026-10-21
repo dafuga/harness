@@ -3,6 +3,7 @@ import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 import { sourceText } from './entitySourceFixture';
+import { createHash } from 'node:crypto';
 
 const kinds = [
 	['Models', 'models', 'Order', 'app.model.order'],
@@ -97,4 +98,35 @@ test('the Source tab shows file contents and older histories state an explicit g
 		page.getByText('Source contents are not recorded for this revision.', { exact: true })
 	).toBeVisible();
 	await expect(page.locator('pre')).toHaveCount(0);
+});
+
+test('a delayed previous source read cannot replace the selected file', async ({ page }) => {
+	await open(page, { category: 'services' }, 'source');
+	const previous = sourceText(commits.tip, 'src/services/OrderStore.ts');
+	const hash = createHash('sha256').update(previous).digest('hex');
+	let release = () => {};
+	const held = new Promise<void>((done) => {
+		release = done;
+	});
+	await page.route(`**/media/${hash}.txt`, async (route) => {
+		await held;
+		await route.fulfill({ contentType: 'text/plain', body: previous });
+	});
+	const requested = page.waitForRequest(`**/media/${hash}.txt`);
+	await page.getByRole('button', { name: 'View code for Order store' }).click();
+	await requested;
+	const dialog = page.getByRole('dialog');
+	await dialog
+		.getByRole('combobox', { name: 'Source file' })
+		.selectOption('src/services/OrderStore.types.ts');
+	const expected = sourceText(commits.tip, 'src/services/OrderStore.types.ts');
+	await expect(dialog.locator('pre')).toHaveText(expected);
+	const answered = page.waitForResponse(`**/media/${hash}.txt`);
+	release();
+	await (await answered).finished();
+	await page.evaluate(
+		() =>
+			new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done())))
+	);
+	await expect(dialog.locator('pre')).toHaveText(expected);
 });

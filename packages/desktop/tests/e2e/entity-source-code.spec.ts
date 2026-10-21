@@ -30,3 +30,20 @@ for (const width of [1440, 920, 390]) {
 		await expect(dialog.getByText(commits.middle.slice(0, 7), { exact: true })).toBeVisible();
 	});
 }
+
+test('a source refusal is explicit and leaves no previous code visible', async ({ page }) => {
+	await evidenceFixture(page);
+	await page.goto(
+		`/projects/${sharedProject}/harness/branch/${encodeURIComponent(branch)}/functions`
+	);
+	await page.evaluate(() => {
+		const host = window as unknown as { harness: { source: () => Promise<unknown> } };
+		host.harness.source = async () => {
+			throw new Error('Source refused for this revision.');
+		};
+	});
+	await page.getByRole('button', { name: 'View code for filterOrders', exact: true }).click();
+	const dialog = page.getByRole('dialog');
+	await expect(dialog.getByRole('alert')).toHaveText('Source refused for this revision.');
+	await expect(dialog.locator('pre')).toHaveCount(0);
+});
