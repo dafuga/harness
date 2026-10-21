@@ -2,7 +2,7 @@
 	"name": "usage-card-previews",
 	"goal": "Catalog and relationship items share clickable consumer footers and revision-bound screenshot previews",
 	"createdAt": "2026-10-21T12:09:32.061Z",
-	"updatedAt": "2026-10-21T12:35:06.075Z",
+	"updatedAt": "2026-10-21T12:43:02.283Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -53,7 +53,9 @@
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:43:02.283Z",
+			"evidence": "At exact fix 55c9fe81, an isolated copy with the old page card reintroduced fails all three unchanged usage cases. Restoring the exact fixed file passes all three. Original screenshots and logs retained in the local evidence cache."
 		},
 		{
 			"id": "verify",
