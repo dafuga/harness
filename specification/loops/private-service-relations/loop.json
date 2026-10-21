@@ -2,7 +2,7 @@
 	"name": "private-service-relations",
 	"goal": "Keep single-owner instantiated service classes in their owner relationships while excluding them from the global shared catalog",
 	"createdAt": "2026-10-21T22:52:17.695Z",
-	"updatedAt": "2026-10-21T22:55:42.451Z",
+	"updatedAt": "2026-10-21T23:08:44.024Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T23:08:44.024Z",
+			"evidence": "Sealed red 06f06999 at 5115107d4 fails the unchanged owner-relationship assertion for nine valid single-owner instantiated classes. Fixture, formatting, types and lint pass; the global exclusion assertions remain in the same test."
 		},
 		{
 			"id": "implement",

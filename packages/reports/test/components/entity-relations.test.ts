@@ -76,7 +76,9 @@ test('each related entity is a link to it in the same branch and commit', async 
 			{ category: 'pages', entity: ids.page, tab: 'uses' },
 			{ head }
 		);
-		for (const service of services) expect(owner).toContain(`/services/${service.id}`);
+		for (const service of services.slice(0, 4)) expect(owner).toContain(`/services/${service.id}`);
+		for (const service of services.slice(4)) expect(owner).not.toContain(`/services/${service.id}`);
+		expect(owner).toContain('aria-label="View more Services"');
 	});
 });
 
