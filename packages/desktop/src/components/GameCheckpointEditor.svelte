@@ -3,15 +3,12 @@
 	import GameTextField from './GameTextField.svelte';
 	import type { Checkpoint, Condition, GameAction } from '../../../game/src/models/Game.types';
 	/** Checkpoint edits return new values to the parent. */
-	let {
-		checkpoint,
-		change,
-		readonly = false
-	}: {
+	interface Props {
 		checkpoint: Checkpoint | null;
 		change: (node: Checkpoint) => void;
 		readonly?: boolean;
-	} = $props();
+	}
+	let { checkpoint, change, readonly = false }: Props = $props();
 	const ops: Record<Condition['op'], string> = { eq: 'equals', gte: 'at least', lte: 'at most' };
 	const kinds = { set: 'Set', emit: 'Emit', transition: 'Transition', visibility: 'Visibility' };
 	/** True and false read as booleans and numeric text as numbers; anything else stays text. */

@@ -204,6 +204,38 @@
 				"desktop.component.game-text-field",
 				"desktop.component.game-trace"
 			]
+		},
+		{
+			"id": "2d-trace",
+			"title": "2d authored checkpoint executes after its prerequisite",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
+		},
+		{
+			"id": "3d-trace",
+			"title": "3d authored checkpoint executes after its prerequisite",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor",
+				"desktop.component.game-graph",
+				"desktop.component.game-text-field",
+				"desktop.component.game-trace"
+			]
 		}
 	],
 	"viewports": [
@@ -251,7 +283,9 @@
 				"3d-saved",
 				"3d-reopened",
 				"3d-play",
-				"3d-history"
+				"3d-history",
+				"2d-trace",
+				"3d-trace"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -283,7 +317,9 @@
 				"3d-saved",
 				"3d-reopened",
 				"3d-play",
-				"3d-history"
+				"3d-history",
+				"2d-trace",
+				"3d-trace"
 			],
 			"viewports": [],
 			"required": true

@@ -1,4 +1,4 @@
-import gameScenario from '../specification/scenarios/game-authoring.json';
+import gameScenario from '../specification/scenarios/game-authoring.json' with { type: 'json' };
 import { hostedVerificationScopes } from './hosted-verification-scopes';
 import { functionVerificationScopes } from './function-verification-scopes';
 import { recordedEvidenceScopes } from './recorded-evidence-scopes';

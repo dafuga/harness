@@ -101,6 +101,17 @@ async function play(page: Page, dimension: string) {
 	);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.getByText('Reached the garden', { exact: true })).toBeVisible();
+	await page.getByRole('button', { name: 'Move right', exact: true }).click();
+	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
+	await expect(page.locator('[data-harness-component=game-graph] header')).toContainText(
+		'4 of 5 checkpoints complete'
+	);
+	await page.getByText('Execution trace (4)', { exact: true }).click();
+	const trace = page.getByRole('list', { name: 'Checkpoint execution trace', exact: true });
+	await expect(trace).toContainText('After the garden');
+	await expect(trace).toContainText('doorOpen eq true');
+	await capture(page, `${dimension}-trace`);
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 }
