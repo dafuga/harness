@@ -1,3 +1,4 @@
+import { expect } from 'vitest';
 import { mkdtemp, mkdir, writeFile, symlink, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
@@ -34,7 +35,7 @@ export async function runnerFixture(subjectSource = source, symbol = 'greet', ou
 	await writeFile(join(root, 'subject.ts'), subjectSource);
 	await writeFile(
 		join(root, 'run.ts'),
-		"import { greet } from './subject.ts'; console.log(greet('fixture-value'));\n"
+		"import { greet } from './subject.ts'; import {writeFileSync} from 'node:fs'; const result=greet('fixture-value'); writeFileSync('bun-rss.json',JSON.stringify(process.memoryUsage().rss)); console.log(result);\n"
 	);
 	await writeFile(
 		join(root, 'specification/units/function.runner-fixture.json'),
@@ -60,7 +61,7 @@ export async function runnerFixture(subjectSource = source, symbol = 'greet', ou
 	};
 }
 
-export async function runnerCaptures(directory: string) {
+export async function runnerCaptures(directory: string, runtimeReference?: string) {
 	let index: string;
 	try {
 		index = await readFile(join(directory, 'captures.ndjson'), 'utf8');
@@ -68,7 +69,7 @@ export async function runnerCaptures(directory: string) {
 		if ((error as { code?: string }).code === 'ENOENT') return [];
 		throw error;
 	}
-	return (
+	const measurements = (
 		await Promise.all(
 			index
 				.trim()
@@ -82,6 +83,27 @@ export async function runnerCaptures(directory: string) {
 				})
 		)
 	).flat();
+	if (runtimeReference) await assertRunnerMemory(runtimeReference, measurements);
+	return measurements;
+}
+
+async function assertRunnerMemory(
+	root: string,
+	measurements: Awaited<ReturnType<typeof runnerCaptures>>
+) {
+	const rss = await Promise.all(
+		['bun', 'node'].map(
+			async (runtime) =>
+				JSON.parse(await readFile(join(root, `${runtime}-rss.json`), 'utf8')) as number
+		)
+	);
+	for (const value of rss) expect(value).toBeGreaterThan(0);
+	for (const measured of measurements.filter((item) => item.unitOfMeasure === 'bytes')) {
+		expect(measured.value, 'fresh runtime RSS uses byte units').toBeGreaterThan(
+			Math.min(...rss) / 2
+		);
+		expect(measured.value, 'fresh runtime RSS uses byte units').toBeLessThan(Math.max(...rss) * 8);
+	}
 }
 
 function manifest(symbol: string, output: string) {
