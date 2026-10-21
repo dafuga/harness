@@ -22,7 +22,7 @@ type Measured = z.infer<typeof reportedMeasurementSchema>;
 
 interface Observation {
 	input: ObservationInput;
-	completion: 'return' | 'await';
+	completion: 'return' | 'await' | 'scope';
 	elapsed: number;
 	samples: number;
 	peakRss: number;
@@ -31,6 +31,18 @@ interface Observation {
 /** Measures the caller's representative operation; no replacement operation is used. */
 export class PerformanceProfileService {
 	private readonly observations = new Map<string, Observation>();
+
+	/** Module exports cannot move into a callback; only an explicitly completed scope is sampled. */
+	beginScope(input: ObservationInput): () => void {
+		const subject = observationInput.parse(input);
+		const started = performance.now();
+		let completed = false;
+		return () => {
+			if (completed) return;
+			completed = true;
+			completeObservation(this.observations, subject, performance.now() - started, 'scope');
+		};
+	}
 
 	/** Time one synchronous return without replaying effects or inspecting returned values. */
 	observe<T>(input: ObservationInput, operation: () => T): T {
@@ -133,6 +145,11 @@ function completeObservation(
 
 function writeObservation(observation: Observation): Measured[] {
 	const { input, completion, elapsed, samples, peakRss } = observation;
+	const labels = {
+		return: 'synchronous returns',
+		await: 'awaited operations',
+		scope: 'completed source scopes'
+	};
 	const common = { ...input, target: 'module' as const, samples };
 	const measurements: Measured[] = [
 		{
@@ -140,7 +157,7 @@ function writeObservation(observation: Observation): Measured[] {
 			metric: 'latency-observed-ms',
 			unitOfMeasure: 'ms',
 			value: elapsed / samples,
-			method: `Arithmetic mean of ${samples} successful ${completion === 'await' ? 'awaited operations' : 'synchronous returns'}; includes clock and observer overhead, with no replay or warmup.`
+			method: `Arithmetic mean of ${samples} successful ${labels[completion]}; includes clock and observer overhead, with no replay or warmup.`
 		},
 		{
 			...common,

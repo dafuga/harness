@@ -1,6 +1,7 @@
 import ts from 'typescript';
 import { createHash } from 'node:crypto';
 import type { ComponentManifest } from '../../core/unitTypes';
+import { initializationEdits } from './moduleInitialization';
 
 type Edit = { start: number; end: number; text: string };
 type Callable =
@@ -28,9 +29,10 @@ export function instrumentSource(
 	while (source.includes(watch)) watch += '_';
 	const context: Context = { file, unit, watch, method: `${watch}Method`, edits: [] };
 	for (const statement of file.statements) instrumentStatement(context, statement);
+	if (!context.edits.length) context.edits.push(...initializationEdits(file, unit, watch));
 	if (!context.edits.length) return null;
 	const runtime = new URL('./profileRuntime.ts', import.meta.url).href;
-	const header = `\nimport { watchOperation as ${watch}, watchMethod as ${context.method} } from ${JSON.stringify(runtime)};\n`;
+	const header = `\nimport { watchOperation as ${watch}, watchMethod as ${context.method}, beginSourceScope as ${watch}Begin } from ${JSON.stringify(runtime)};\n`;
 	const start = source.startsWith('#!') ? source.indexOf('\n') + 1 : 0;
 	context.edits.push({ start, end: start, text: header });
 	return context.edits

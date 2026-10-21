@@ -6,7 +6,7 @@
 	"name": "source-initialization-profiling",
 	"goal": "Record actual completed initialization of registered data modules through Harness without substituting initialization for callable work or inventing failed/type-only profiles.",
 	"createdAt": "2026-10-21T11:58:25.789Z",
-	"updatedAt": "2026-10-21T11:58:29.965Z",
+	"updatedAt": "2026-10-21T12:07:39.702Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:07:36.806Z",
+			"evidence": "Committed14a71502 redde3d4bb2: two actual profiler cases fail because beginScope is absent; the registered data import also lacks its two observations. Five boundary cases already pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:07:38.297Z",
+			"evidence": "Add idempotent completed scopes to the existing profiler and admit only inspected data initializers in the adapter. Skip callable definitions, helper contracts and profiler bootstrap dependencies; failed scopes never reach finish."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T12:07:39.702Z",
+			"evidence": "21 focused cases pass; eight scope/runner cases rerun unchanged after lint extraction. Types, lint, audit, registry, API declarations/build and two packed-consumer tests pass. Bootstrap profiles remain required via explicit workloads."
 		},
 		{
 			"id": "green",
