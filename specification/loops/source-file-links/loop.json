@@ -2,7 +2,7 @@
 	"name": "source-file-links",
 	"goal": "Source lists actual files with revision-pinned GitHub links and a modal button for each file",
 	"createdAt": "2026-10-21T15:24:58.053Z",
-	"updatedAt": "2026-10-21T15:41:30.183Z",
+	"updatedAt": "2026-10-21T15:50:28.681Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:50:28.681Z",
+			"evidence": "Unchanged tests, fixtures, command and environment pass at 69a37f29489a7c82fdd7fd19aea0fdd74726d1b5. Immutable green 6dba2a73c0e25b00673e00a42e43502439e12075910dd0744e638b312cc913bd; final red b8bf3157eba32bef5566f3f626a4e2e0eb2ce79f3d59ce7c17be8e94d02e316a."
 		},
 		{
 			"id": "verify",
