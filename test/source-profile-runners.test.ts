@@ -97,27 +97,71 @@ test('unowned source and fixture copies never borrow a registered unit identity'
 	}
 }, 30_000);
 
-test('registered data modules retain their actual initialization observations', async () => {
-	const fixture = await runnerFixture(
-		'export const fields = new Map([["id", 7]]);\n',
-		'fields',
-		'Map<string, number>'
-	);
-	try {
-		await fixture.write(
-			'run.ts',
-			"import {fields} from './subject'; console.log(fields.get('id'));\n"
-		);
-		const ran = await fixture.run(['bun', '--preload', preload, 'run.ts'], fixture.environment);
-		expect(ran.stdout.trim()).toBe('7');
-		const measurements = await runnerCaptures(fixture.directory);
-		expect(measurements, 'data initialization requires its actual source scope').toHaveLength(2);
-		expect(measurements[0].method).toContain('completed source scopes');
-		expect(measurements.every((item) => item.samples === 1)).toBe(true);
-	} finally {
-		await fixture.remove();
-	}
-}, 30_000);
+const initializedModules = [
+	['Map data', 'export const fields = new Map([["id", 7]]);', "fields.get('id')", '7', 2],
+	['nested data', 'export const fields = { nested: { id: 7 } };', 'fields.nested.id', '7', 2],
+	[
+		'deferred method',
+		'export const fields = { read() { return 7; } };',
+		'Boolean(fields)',
+		'true',
+		0
+	],
+	[
+		'nested callback',
+		'export const fields = { nested: { read: () => 7 } };',
+		'Boolean(fields)',
+		'true',
+		0
+	],
+	[
+		'Map callback',
+		'export const fields = new Map([["read", () => 7]]);',
+		'Boolean(fields)',
+		'true',
+		0
+	],
+	[
+		'getter',
+		'export const fields = { get read() { throw Error("not called"); } };',
+		'Boolean(fields)',
+		'true',
+		0
+	],
+	[
+		'nested class',
+		'export const fields = { type: class { read() { return 7; } } };',
+		'Boolean(fields)',
+		'true',
+		0
+	]
+] as const;
+
+test.each(initializedModules)(
+	'registered %s modules retain only actual initialization observations',
+	async (_label, source, operation, expected, count) => {
+		const fixture = await runnerFixture(source, 'fields', 'object');
+		try {
+			await fixture.write(
+				'run.ts',
+				`import {fields} from './subject'; console.log(${operation});\n`
+			);
+			const ran = await fixture.run(['bun', '--preload', preload, 'run.ts'], fixture.environment);
+			expect(ran.stdout.trim()).toBe(expected);
+			const measurements = await runnerCaptures(fixture.directory);
+			expect(measurements, 'data initialization cannot replace deferred operations').toHaveLength(
+				count
+			);
+			if (count) {
+				expect(measurements[0].method).toContain('completed source scopes');
+				expect(measurements.every((item) => item.samples === 1)).toBe(true);
+			}
+		} finally {
+			await fixture.remove();
+		}
+	},
+	30_000
+);
 
 test('failed initialization and type-only modules never gain successful scope observations', async () => {
 	for (const source of [
