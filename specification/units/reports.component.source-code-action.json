@@ -3,7 +3,7 @@
 	"id": "reports.component.source-code-action",
 	"kind": "component",
 	"title": "SourceCodeAction",
-	"responsibility": "Opens the selected entity source through its host without changing catalog navigation.",
+	"responsibility": "Opens one selected source file through its host without changing detail navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -27,13 +27,18 @@
 				"name": "SourceCodeAction.title",
 				"type": "string",
 				"description": "Optional displayed callable or entity name."
+			},
+			{
+				"name": "SourceCodeAction.path",
+				"type": "string",
+				"description": "The owned file selected by this row; its contents appear first in the modal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceCodeAction",
 				"type": "markup",
-				"description": "Accessible View code action outside entity links; disabled when the host has no source action."
+				"description": "A file-specific View code button. Opening retains the selected commit and address; closing restores focus to this row."
 			}
 		],
 		"errors": []

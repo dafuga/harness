@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-source",
 	"kind": "component",
-	"title": "Source ownership",
-	"responsibility": "Shows owned paths, symbols, execution targets and actual archived code at the selected revision.",
+	"title": "Source files",
+	"responsibility": "Lists actual source files with commit-pinned GitHub links and a View code action for each file.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,19 +16,19 @@
 			{
 				"name": "EntitySource.entity",
 				"type": "ExplorerEntity",
-				"description": "Entity at the selected revision, including its owned files, symbols, runtime targets and source metadata."
+				"description": "Entity at the selected revision, including actual archived file paths and legacy ownership paths."
 			},
 			{
 				"name": "EntitySource.nav",
 				"type": "EntityNav",
-				"description": "Enclosing screen navigation with the revision-scoped source modal callback."
+				"description": "Revision-scoped GitHub destinations and per-file modal callback supplied by the screen."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySource",
 				"type": "markup",
-				"description": "Owned files, symbols and execution targets, plus a View code button opening the screen modal. No source file is fetched or rendered inline."
+				"description": "A concise file list with GitHub links and per-file View code actions. No ownership metadata or source body appears inline."
 			}
 		],
 		"errors": []
@@ -36,6 +36,11 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.source-code-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-file-list",
 			"via": "import",
 			"origin": "derived"
 		},

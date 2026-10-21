@@ -3,7 +3,7 @@
 	"id": "desktop.component.entity-source-action",
 	"kind": "component",
 	"title": "EntitySourceAction",
-	"responsibility": "Opens source from Desktop catalog and detail views using the existing authorized bridge.",
+	"responsibility": "Opens a selected owned source file through the authorized Desktop bridge.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -27,13 +27,18 @@
 				"name": "EntitySourceAction.title",
 				"type": "string",
 				"description": "Optional displayed callable name."
+			},
+			{
+				"name": "EntitySourceAction.path",
+				"type": "string",
+				"description": "The owned file selected by this row; its contents appear first in the modal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySourceAction",
 				"type": "markup",
-				"description": "Captures project, entity and commit when opened. Context changes close the session; closing restores focus and preserves navigation."
+				"description": "A file-specific View code button. Opening retains the selected commit and address; closing restores focus to this row."
 			}
 		],
 		"errors": []

@@ -12,6 +12,7 @@ import { CatalogService } from './catalog-service/CatalogService';
 import type { RevisionQuery } from '../models/DesktopBridge.types';
 import type { ProjectSnapshot } from '../models/Desktop.types';
 import { gitRead } from '../utils/gitRead';
+import { githubRepositoryUrl } from '../../../../src/utils/githubSourceUrl';
 export class ProjectSessionService {
 	root: string | null = null;
 	projectId: string | null = null;
@@ -80,9 +81,11 @@ export class ProjectSessionService {
 		const branches = await source.branches(),
 			current = branches.find((b) => b.current);
 		const entities = await catalog.list(revision.commit);
+		const remote = await gitRead(root, ['config', '--get', 'remote.origin.url']).catch(() => '');
+		const repositoryUrl = githubRepositoryUrl(remote);
 		this.query = { branch: revision.branch, commit: query.commit };
 		return {
-			project: { name: basename(root), root, id: this.projectId! },
+			project: { name: basename(root), root, id: this.projectId!, repositoryUrl },
 			capabilities: {
 				comments: true,
 				agents: true,

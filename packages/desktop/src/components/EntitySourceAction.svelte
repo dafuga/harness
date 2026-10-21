@@ -11,12 +11,14 @@
 	let {
 		entity,
 		workspace,
-		title
+		title,
+		path
 	}: {
 		entity: CatalogEntity | EntityDetail;
 		workspace: Workspace;
 		/** The name the entity is shown under where that is not its title, as in its detail. */
 		title?: string;
+		path: string;
 	} = $props();
 	interface Session {
 		scope: string;
@@ -45,7 +47,10 @@
 			scope,
 			commit,
 			trigger: event.currentTarget as HTMLElement,
-			files: async () => listed ?? (await bridge.entity(query)).sources,
+			files: async () => [
+				path,
+				...(listed ?? (await bridge.entity(query)).sources).filter((file) => file !== path)
+			],
 			read: async (path) => (await bridge.source({ ...query, path })).text
 		};
 	}
@@ -60,7 +65,7 @@
 <HarnessAction
 	tone="plain"
 	lead="file"
-	label={`View code for ${named}`}
+	label={`View code for ${path}`}
 	disabled={!workspace.bridge}
 	onclick={open}>View code</HarnessAction
 >

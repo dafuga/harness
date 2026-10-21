@@ -202,7 +202,7 @@ export interface EntityDetail extends CatalogEntity {
 }
 
 export interface ProjectSnapshot {
-	project: { name: string; root: string; id?: string };
+	project: { name: string; root: string; id?: string; repositoryUrl?: string };
 	capabilities?: ProjectCapabilities;
 	cache?: CacheProvenance;
 	revision: Revision;

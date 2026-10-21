@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.source-file-list",
+	"kind": "component",
+	"title": "Source file list",
+	"responsibility": "Renders source file rows with optional external links and a supplied per-file action.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/SourceFileList.svelte"],
+		"symbols": ["SourceFileList"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SourceFileList.files",
+				"type": "string[]",
+				"description": "Actual source paths, in display order."
+			},
+			{
+				"name": "SourceFileList.href",
+				"type": "(path: string) => string | undefined",
+				"description": "Optional external GitHub destination for each path."
+			},
+			{
+				"name": "SourceFileList.children",
+				"type": "Snippet<[string]>",
+				"description": "The existing action for each source file."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SourceFileList",
+				"type": "markup",
+				"description": "Responsive file rows with links opening in a new tab, or plain paths when no GitHub repository is known. Empty input states that no file is recorded."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/SourceFileList.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/SourceFileList.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

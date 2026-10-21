@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "function.github-source-url",
+	"kind": "function",
+	"title": "GitHub source links",
+	"responsibility": "Normalizes GitHub repository addresses and builds encoded file links pinned to an exact commit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/githubSourceUrl.ts"],
+		"symbols": ["githubRepositoryUrl", "githubSourceUrl"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "githubRepositoryUrl.remote",
+				"type": "string"
+			},
+			{
+				"name": "githubSourceUrl.repository",
+				"type": "string | undefined"
+			},
+			{
+				"name": "githubSourceUrl.commit",
+				"type": "string"
+			},
+			{
+				"name": "githubSourceUrl.path",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubRepositoryUrl",
+				"type": "string | undefined",
+				"description": "A normalized https://github.com/owner/repository URL, or undefined for unsupported or credential-bearing input."
+			},
+			{
+				"name": "githubSourceUrl",
+				"type": "string | undefined",
+				"description": "A GitHub blob URL at a full commit hash with every path segment encoded, or undefined for unsafe repository, revision or path input."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/githubSourceUrl.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/githubSourceUrl.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

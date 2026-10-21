@@ -5,12 +5,14 @@
 	let {
 		entity,
 		nav,
-		title
+		title,
+		path
 	}: {
 		entity: ExplorerEntity;
 		nav: EntityNav;
 		/** The name the entity is shown under here; its own name otherwise. */
 		title?: string;
+		path: string;
 	} = $props();
 	let named = $derived(title ?? entity.name);
 </script>
@@ -19,8 +21,8 @@
 <HarnessAction
 	tone="plain"
 	lead="file"
-	label={`View code for ${named}`}
+	label={`View code for ${path}`}
 	disabled={!nav.source}
-	onclick={(event) => nav.source?.(entity, named, event.currentTarget as HTMLElement)}
+	onclick={(event) => nav.source?.(entity, named, event.currentTarget as HTMLElement, path)}
 	>View code</HarnessAction
 >

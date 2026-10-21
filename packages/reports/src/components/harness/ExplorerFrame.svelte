@@ -11,6 +11,7 @@
 	import EntityMissing from './EntityMissing.svelte';
 	import { archivedSource } from './EntitySource.svelte';
 	import SourceDialog from '../SourceDialog.svelte';
+	import { githubSourceUrl } from '../../../../../src/utils/githubSourceUrl';
 	let {
 		host,
 		children
@@ -24,6 +25,7 @@
 		entity: ExplorerEntity;
 		title: string;
 		trigger?: HTMLElement;
+		path?: string;
 		/** The revision of the screen it was opened on. */
 		at: string;
 		route: string;
@@ -33,8 +35,13 @@
 	let route = $derived(
 		`${host.route.branch}|${host.route.category}|${host.route.entity ?? ''}|${host.route.helper ?? ''}`
 	);
-	function openSource(entity: ExplorerEntity, title = entity.name, trigger?: HTMLElement) {
-		source = { entity, title, trigger, at: host.scope.commit, route };
+	function openSource(
+		entity: ExplorerEntity,
+		title = entity.name,
+		trigger?: HTMLElement,
+		path?: string
+	) {
+		source = { entity, title, trigger, path, at: host.scope.commit, route };
 	}
 	async function closeSource() {
 		const trigger = source?.trigger;
@@ -44,7 +51,7 @@
 	}
 	// The code of one revision is never shown under another: a new revision closes it.
 	let shown = $derived(source?.at === host.scope.commit && source.route === route ? source : null);
-	let reader = $derived(shown && archivedSource(shown.entity.unit, host.mediaBase, shown.title));
+	let reader = $derived(shown && archivedSource(shown.entity.unit, host.mediaBase, shown.path));
 	$effect(() => {
 		if (source && !shown) source = null;
 	});
@@ -52,7 +59,9 @@
 		route: host.route,
 		href: host.lens.href,
 		go: host.onroute,
-		source: openSource
+		source: openSource,
+		fileHref: (entity, path) =>
+			githubSourceUrl(host.index.repositoryUrl, entity.lastAt ?? host.scope.commit, path)
 	});
 	let registry = $derived(host.head.registry);
 	let gap = $derived(

@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { githubRepositoryUrl } from '../../utils/githubSourceUrl';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { EvidenceTreeAdapter } from '../../adapters/EvidenceTreeAdapter';
@@ -39,7 +40,7 @@ export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]
 /**
  * Builds the history index: a deterministic, self-contained set of files made only from Git.
  * Every source commit is listed, with what proves it or the gap; media is copied in by hash.
- * The same refs always produce the same bytes, wherever and whenever the index is built.
+ * The same refs and GitHub origin produce the same bytes wherever the index is built.
  */
 export class HistoryIndexService {
 	private readonly history: HistoryStatusService;
@@ -80,8 +81,11 @@ export class HistoryIndexService {
 		const entries = await legacy(media);
 		const sound = built.flatMap((item) => item.result.sound).reverse();
 		const tree = new EvidenceTreeAdapter(this.root);
+		const remote = await tree.git.attempt(['config', '--get', 'remote.origin.url']);
+		const repositoryUrl = githubRepositoryUrl(remote ?? '');
 		const index: HistoryIndex = {
 			schemaVersion: 1,
+			...(repositoryUrl ? { repositoryUrl } : {}),
 			refs: {
 				evidence: (await tree.tip(evidenceRef)) ?? null,
 				notes: (await tree.tip(notesRef)) ?? null

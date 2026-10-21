@@ -52,6 +52,8 @@ export interface HarnessGrowthPoint {
 	notes?: Record<string, string>;
 }
 export interface HarnessIndex {
+	/** Public repository address, without credentials; absent for older or non-GitHub histories. */
+	repositoryUrl?: string;
 	branches: Array<{ name: string; head: string }>;
 	revisions: HarnessRevisionSummary[];
 	units: Array<{ id: string; growth: HarnessGrowthPoint[]; reviews?: HarnessReview[] }>;

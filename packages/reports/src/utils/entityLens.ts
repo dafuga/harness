@@ -32,7 +32,9 @@ export interface EntityNav {
 	href(to: ExplorerLocation): string;
 	go(to: ExplorerLocation): void;
 	/** Opens owned source without changing the current address, search or filters. */
-	source?(entity: ExplorerEntity, title?: string, trigger?: HTMLElement): void;
+	source?(entity: ExplorerEntity, title?: string, trigger?: HTMLElement, path?: string): void;
+	/** A GitHub blob address pinned to the commit that supplied this entity's files. */
+	fileHref?(entity: ExplorerEntity, path: string): string | undefined;
 }
 
 export interface EntityLabel {

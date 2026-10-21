@@ -10,6 +10,7 @@ import { hubCatalog } from '../../utils/hub-catalog/hubCatalog';
 import { hubFail, hubHash } from '../../utils/hubJson';
 import { hubProjectionCache } from '../../utils/hubProjectionCache';
 import { RemoteProjectResponseValidator } from '../../../../desktop/src/validators/RemoteProjectResponseValidator';
+import { githubRepositoryUrl } from '../../../../../src/utils/githubSourceUrl';
 
 export async function hubSnapshot(
 	input: {
@@ -29,7 +30,7 @@ export async function hubSnapshot(
 	const commit = query.commit ?? branch.tip,
 		context = await hubSource({ ...input, ref: query.commit ?? `refs/heads/${branch.name}` });
 	if (context.commit !== commit) return hubFail('revision-mismatch');
-	return hubProjectionCache<ProjectSnapshot>(
+	const snapshot = await hubProjectionCache<ProjectSnapshot>(
 		context,
 		{
 			// Named for what is listed: a snapshot cached with route loaders in it is not read.
@@ -62,4 +63,17 @@ export async function hubSnapshot(
 			};
 		}
 	);
+	// Repository context also reaches snapshots cached before file links were introduced.
+	return { ...snapshot, project: snapshotProject(project) };
+}
+
+/** @pure The public identity of the already-authorized project, without credentials. */
+function snapshotProject(project: ProjectSummary): ProjectSnapshot['project'] {
+	const { owner, name } = project.sourceRepository;
+	return {
+		id: project.id,
+		name: project.name,
+		root: '',
+		repositoryUrl: githubRepositoryUrl(`https://github.com/${owner}/${name}`)
+	};
 }

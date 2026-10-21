@@ -41,6 +41,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.github-source-url",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-entity-missing",
 			"via": "import",
 			"origin": "derived"

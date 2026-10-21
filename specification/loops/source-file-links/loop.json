@@ -2,11 +2,9 @@
 	"name": "source-file-links",
 	"goal": "Source lists actual files with revision-pinned GitHub links and a modal button for each file",
 	"createdAt": "2026-10-21T15:24:58.053Z",
-	"updatedAt": "2026-10-21T15:31:38.229Z",
+	"updatedAt": "2026-10-21T15:41:30.183Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -29,12 +27,14 @@
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
 			"status": "complete",
 			"completedAt": "2026-10-21T15:31:38.229Z",
-			"evidence": "Committed test checkpoint 7e8d8dc63 fails with the missing Source files list and per-file actions. Immutable record 3bb3932c9753512563c88fbda0c8469a006f17b76db0f6cdc3ae8417253941f8; inspected paired Source screenshot."
+			"evidence": "Final test-only checkpoint 05a9d9e3068194f3d4d244081e6b8a876ec1e746 fails with missing per-file Source rows and repository metadata. Immutable record b8bf3157eba32bef5566f3f626a4e2e0eb2ce79f3d59ce7c17be8e94d02e316a. Earlier fixture and audit checkpoints are superseded; expectations remain intact."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-21T15:41:30.183Z",
+			"evidence": "Shared SourceFileList replaces ownership metadata. Each row links to the selected GitHub commit and opens its file first; Reports archives and the Desktop bridge preserve lazy reads and focus."
 		},
 		{
 			"id": "green",

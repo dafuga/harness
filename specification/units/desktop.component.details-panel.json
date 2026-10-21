@@ -3,7 +3,7 @@
 	"id": "desktop.component.details-panel",
 	"kind": "component",
 	"title": "Source files",
-	"responsibility": "Lets a person read source files from the displayed entity and revision, only on the Source tab.",
+	"responsibility": "Lists source files with commit-pinned GitHub links and per-file modal actions on the Source tab.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -33,7 +33,7 @@
 			{
 				"name": "DetailsPanel",
 				"type": "markup",
-				"description": "Owned source paths and a View code action. Source loads lazily in the shared modal through the selected project and revision bridge; no code is rendered inline."
+				"description": "Actual file paths link to GitHub at the selected commit when available. Each row opens that file in the shared modal through the authorized bridge."
 			}
 		],
 		"errors": []
@@ -51,6 +51,16 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.github-source-url",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-file-list",
 			"via": "import",
 			"origin": "derived"
 		}
