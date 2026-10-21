@@ -134,7 +134,8 @@ function historicalContract(
 	fresh?: ComponentManifest,
 	stored?: ComponentManifest
 ): ComponentManifest | undefined {
-	if (fresh?.contract.origin !== 'derived' || stored?.contract.origin !== 'derived') return;
+	if (fresh?.contract.origin !== 'derived' || stored?.contract.origin !== 'derived')
+		return undefined;
 	return canonicalJson({ ...stored, contract: fresh.contract }) === canonicalJson(fresh)
 		? stored
 		: undefined;

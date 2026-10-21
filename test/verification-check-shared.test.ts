@@ -80,7 +80,8 @@ test('historical contract compatibility never accepts altered recorded version f
 	repos.push(repo);
 	const stored = await repo.verify();
 	const checker = new VerificationCheckService(repo.root, changedInterpretation());
-	const { id: _id, ...draft } = stored.record;
+	const draft: Omit<typeof stored.record, 'id'> & { id?: string } = { ...stored.record };
+	delete draft.id;
 	for (const field of ['source', 'manifest', 'contract', 'runtime'] as const) {
 		const record = sealRecord({
 			...draft,
