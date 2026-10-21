@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/config/hubEnvConfig.ts"],
-		"symbols": ["HubEnv", "hubEnvConfig"]
+		"source": [
+			"packages/hub/src/config/development-tooling/hubEnvConfig.ts",
+			"packages/hub/src/config/hubEnvConfig.ts"
+		],
+		"symbols": ["HubEnv", "hubEnvConfig", "hubEnvConfig"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -29,11 +32,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/config/hubEnvConfig.ts",
+		"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/config/hubEnvConfig.ts"
+				"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.ts"
 			}
 		]
 	},

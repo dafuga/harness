@@ -260,6 +260,10 @@
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-activity-list.spec.ts",
 			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-groups.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
 		}
 	],
 	"tools": [
