@@ -45,6 +45,7 @@ export type RegressionRecord = z.infer<typeof regressionRecordSchema>;
 export type RegressionPhase = z.infer<typeof regressionPhaseSchema>;
 const pointSchema = z.strictObject({
 	commit,
+	sourceTree: commit.optional(),
 	id: hash.optional(),
 	status: z.enum(['failed', 'passed']),
 	command: text,

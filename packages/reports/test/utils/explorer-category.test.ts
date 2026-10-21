@@ -9,6 +9,16 @@ import { unit } from '../explorerFixture';
 const owning = (id: string, kind: string, source: string[]) =>
 	unit(id, kind, { owns: { source, symbols: [] } });
 
+test.each(explorerCategories)('compatibility details routes are nonvisual: %s', (category) => {
+	const path = `packages/reports/src/routes/harness/branch/[branch]/[...at]/${category}/[entity]/details/+page.svelte`;
+	const alias = owning(`page.${category}.details`, 'page', [path]);
+	expect(explorerCategory(alias), 'compatibility routes are nonvisual').toBe('services');
+	expect(explorerRole(alias)).toBe('Route alias');
+	expect(
+		explorerCategory(owning('page.real-details', 'page', ['src/routes/details/+page.svelte']))
+	).toBe('pages');
+});
+
 test('a unit of a product kind is listed under the category of that kind', () => {
 	expect(explorerCategory(unit('reports.component.select', 'component'))).toBe('components');
 	expect(explorerCategory(unit('function.slugify', 'function'))).toBe('functions');
@@ -83,9 +93,15 @@ test("the policy holds for Harness's own registry", () => {
 	const units = ownRegistry().filter((item) => item.status === 'active');
 	expect(units.length).toBeGreaterThan(500);
 	const listed = (category: string) => units.filter((item) => explorerCategory(item) === category);
+	const aliases = new Set(
+		explorerCategories.map(
+			(category) => `reports.page.harness-branch-branch-at-${category}-entity-details`
+		)
+	);
 	// Every page renders an address, and every unit that renders one is a page.
-	const rendering = units.filter((item) =>
-		item.owns.source.some((path) => path.endsWith('/+page.svelte'))
+	const rendering = units.filter(
+		(item) =>
+			item.owns.source.some((path) => path.endsWith('/+page.svelte')) && !aliases.has(item.id)
 	);
 	expect(
 		listed('pages')

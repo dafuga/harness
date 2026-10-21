@@ -88,9 +88,12 @@ test('a screen is recorded on the pages that mount it and on no other route page
 	expect(routed(`${part}entity-history-screen`)).toEqual(
 		entity.map((page) => `${page}-history`).sort()
 	);
-	expect(routed(`${part}entity-details-screen`)).toEqual(
-		entity.map((page) => `${page}-details`).sort()
-	);
+	expect(routed(`${part}entity-details-screen`)).toEqual([]);
+	const aliases = explorerRelations(head, `${part}entity-details-screen`)
+		.usedBy.filter((item) => item.role === 'Route alias')
+		.map((item) => item.id.replace(at, ''))
+		.sort();
+	expect(aliases).toEqual(entity.map((page) => `${page}-details`).sort());
 });
 
 test('a page is under its own states, and a screen under the states of the pages that mount it', () => {

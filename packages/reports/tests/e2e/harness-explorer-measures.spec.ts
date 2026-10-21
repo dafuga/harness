@@ -8,7 +8,6 @@ import { fits } from './support/sharedSelect';
 import type { HarnessRevision } from '../../src/models/Harness.types';
 import { explorerKindCategory } from '../../../../src/utils/explorerRoute';
 
-/** Synthetic model input completes the same category fixture; it claims no real model source. */
 function everyKind(): HarnessRevision {
 	const detail = JSON.parse(
 		readFileSync(join(home, 'data/revisions', `${commits.shelled}.json`), 'utf8')
@@ -82,6 +81,12 @@ for (const viewport of viewports)
 				await expect(row.locator('dd')).toContainText(/\d/);
 			}
 			await captureSections(page, `current-measurements-${category}-${viewport.id}`, checkpoint);
+			await page.goto(at('feature/shells', commits.shelled, `${category}/${unit.id}/details`));
+			await expect(page.getByRole('tab', { name: 'Contract', exact: true })).toHaveAttribute(
+				'aria-selected',
+				'true'
+			);
+			await checkpoint(page, `details-measurements-${category}-${viewport.id}`);
 		}
 	});
 
