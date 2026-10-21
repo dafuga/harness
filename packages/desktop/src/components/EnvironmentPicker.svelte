@@ -53,17 +53,11 @@
 			>{:else if status?.available}<small>No verified deployment</small>{:else}<small title={reason}
 				>Unavailable</small
 			>{/if}
-		{#if gated}<small class="environment-note" role="status">
-				<span class="full-note"
-					>Changes reach preprod. Use Deploy to promote preprod to production.</span
-				>
-				<span class="compact-note">Changes reach preprod. Deploy promotes to prod.</span></small
-			>{/if}
 	</div>
 </div>
 
 <style>
-	/* A fixed width, so a status or the note that comes and goes never moves the bar. */
+	/* A fixed width keeps deployment status from moving the bar. */
 	.environment-picker {
 		display: grid;
 		flex: none;
@@ -116,27 +110,14 @@
 		display: block;
 		padding-inline-start: 12px;
 	}
-	.environment-note {
-		color: var(--gold);
-	}
-	.compact-note {
-		display: none;
-	}
 	/* Prod is reached through Deploy alone; while prod is chosen, Deploy is marked as the way there. */
 	.gated .environment-choice :global(.agent-icon:enabled) {
 		border-color: rgb(255 208 53 / 0.55);
 		color: var(--gold);
 	}
-	/* On a phone the choice and Deploy begin the bar's rail, which the revision icons end. How the
-	   environment stands is told under the rail on a line of its own, its time after its commit; a
-	   note wraps under that line. Both keep off the edge of the bar's frame round them. */
+	/* On a phone the choice and Deploy begin the bar's rail, which the revision icons end. The last
+	   verified deployment stays beneath it, inset from the frame with its commit and timestamp. */
 	@media (max-width: 560px) {
-		.full-note {
-			display: none;
-		}
-		.compact-note {
-			display: inline;
-		}
 		.environment-picker {
 			display: contents;
 		}
@@ -173,14 +154,12 @@
 		}
 		small {
 			line-height: 13px;
-		}
-		.deployed code {
-			line-height: 1;
-		}
-		small:not(.environment-note) {
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
+		}
+		.deployed code {
+			line-height: 1;
 		}
 		.deployed time {
 			display: inline;
