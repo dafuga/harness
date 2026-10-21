@@ -11,8 +11,8 @@ export const testWorkers = { minWorkers: 1, maxWorkers: 1 };
 export async function profilingPlugins() {
 	const requested = process.env.HARNESS_RUNTIME_PROFILE_DIR ?? process.env.HARNESS_EVIDENCE_DIR;
 	if (!requested || !existsSync(owned('./specification/units'))) return [];
-	const { sourceProfilePlugins } = await import(
-		owned('./src/adapters/source-profile-adapter/runnerPlugins.ts')
+	const { default: sourceProfilePlugins } = await import(
+		owned('./src/adapters/source-profile-adapter/runnerPlugins.js')
 	);
 	return sourceProfilePlugins(owned('./'));
 }
