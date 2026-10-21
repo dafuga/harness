@@ -58,7 +58,11 @@ async function remember(page: Page, info: TestInfo, state: string): Promise<void
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 		await Promise.all([...document.images].map((image) => image.decode()));
-		if ([...document.images].some((image) => !image.complete || image.naturalWidth <= 0))
+		if (
+			[...document.images].some(
+				(image) => !image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0
+			)
+		)
 			throw new Error('Hosted search images are not ready');
 	});
 	await page.mouse.move(0, 0);
