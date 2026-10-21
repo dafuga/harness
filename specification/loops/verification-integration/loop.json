@@ -6,7 +6,7 @@
 	"name": "verification-integration",
 	"goal": "The branch preserves cold public API imports, canonical planning references and decoded design images while enforcing component evidence and task completion.",
 	"createdAt": "2026-10-20T21:00:51.258Z",
-	"updatedAt": "2026-10-20T22:44:13.713Z",
+	"updatedAt": "2026-10-21T00:12:44.181Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -24,7 +24,7 @@
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
 			"status": "complete",
 			"completedAt": "2026-10-20T21:01:26.456Z",
-			"evidence": "Packed-consumer, project-run-references and image-url standardized coverage already owns these paths. Extend it with actual exported plan auditing, a canonical registry assertion and a DOM-safe release assertion; preserve browser error collection. EntityFrame coverage omitted retired private functions; add active, retired and unrelated-parent variants while asserting collection exclusion."
+			"evidence": "Packed-consumer, project-run-references and image-url standardized coverage already owns these paths. Extend it with actual exported plan auditing, a canonical registry assertion and a DOM-safe release assertion; preserve browser error collection. EntityFrame coverage omitted retired private functions; add active, retired and unrelated-parent variants while asserting collection exclusion. Deployment configuration covered bundled CJS but omitted external-dependency ESM startup. Extend the same boundary matrix to cold-import and call the config reader in Node."
 		},
 		{
 			"id": "red",

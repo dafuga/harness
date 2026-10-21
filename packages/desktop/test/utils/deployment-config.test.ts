@@ -63,7 +63,7 @@ test.each(['cjs', 'esm'] as const)(
 		const { execFileSync } = await import('node:child_process');
 		const root = await mkdtemp(join(tmpdir(), 'harness-cf-bundle-'));
 		try {
-			await symlink(resolve('node_modules'), join(root, 'node_modules'), 'dir');
+			await symlink(resolve('../..', 'node_modules'), join(root, 'node_modules'), 'dir');
 			await writeFile(join(root, 'wrangler.jsonc'), '{"name":"fixture",/* comment */"env":{}}');
 			await writeFile(
 				join(root, 'harness.deploy.json'),
