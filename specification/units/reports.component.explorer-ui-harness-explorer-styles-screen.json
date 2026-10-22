@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-harness-explorer-styles-screen",
+	"kind": "component",
+	"title": "ExplorerStylesScreen",
+	"responsibility": "Shows every supported Harness CSS design token as a grouped value and visual specimen.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/harness/ExplorerStylesScreen.svelte"],
+		"symbols": ["ExplorerStylesScreen"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerStylesScreen.host",
+				"type": "ExplorerScreenProps",
+				"description": "The branch, commit and shared explorer navigation context."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerStylesScreen",
+				"type": "markup",
+				"description": "The discovered color, font, type-scale, text-style and layout tokens with their computed CSS values and specimens."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-explorer-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.explorer-styles",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerStylesScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerStylesScreen.svelte"
+			}
+		]
+	},
+	"scenarios": ["harness-styles"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

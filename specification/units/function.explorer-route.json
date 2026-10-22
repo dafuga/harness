@@ -23,6 +23,7 @@
 			"ExplorerTab",
 			"explorerCategories",
 			"ExplorerCategory",
+			"ExplorerScreen",
 			"explorerKindCategory",
 			"explorerSections",
 			"ExplorerSection",
@@ -108,7 +109,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["harness-styles"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
