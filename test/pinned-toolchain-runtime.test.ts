@@ -5,6 +5,8 @@ import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 
 const root = resolve(import.meta.dirname, '..');
+// Match Harness's declared-tool deadline; five cold tool invocations share one integration case.
+const toolTimeout = 60_000;
 const channel = /channel\s*=\s*"([^"]+)"/.exec(
 	readFileSync(join(root, 'rust-toolchain.toml'), 'utf8')
 )![1];
@@ -12,7 +14,8 @@ const channel = /channel\s*=\s*"([^"]+)"/.exec(
 function rust(command: string, args: string[]): string {
 	const result = spawnSync('rustup', ['run', channel, command, ...args], {
 		cwd: root,
-		encoding: 'utf8'
+		encoding: 'utf8',
+		timeout: toolTimeout
 	});
 	expect(result.status, result.stderr).toBe(0);
 	return result.stdout.trim();
@@ -42,7 +45,11 @@ function selectedEnvironment(folder: string): Record<string, string | undefined>
 			DYLD_LIBRARY_PATH: folder + '/unrelated', DYLD_FALLBACK_LIBRARY_PATH: '' };
 		console.log(JSON.stringify(pinnedToolchain('cargo', { env, run: () => answer }).env));
 	`;
-	const result = spawnSync('bun', ['-e', code, folder], { cwd: root, encoding: 'utf8' });
+	const result = spawnSync('bun', ['-e', code, folder], {
+		cwd: root,
+		encoding: 'utf8',
+		timeout: toolTimeout
+	});
 	expect(result.status, result.stderr).toBe(0);
 	return JSON.parse(result.stdout);
 }
@@ -58,7 +65,11 @@ test.runIf(process.platform === 'darwin')(
 				['rust-lld', ['-flavor', 'wasm', '--version']],
 				['rust-objcopy', ['--version']]
 			] as const) {
-				const result = spawnSync(join(bin, tool), args, { env, encoding: 'utf8' });
+				const result = spawnSync(join(bin, tool), args, {
+					env,
+					encoding: 'utf8',
+					timeout: toolTimeout
+				});
 				expect(result.status, `${tool}: ${result.stderr}`).toBe(0);
 				expect(result.stdout).toMatch(/LLD|LLVM/);
 			}
@@ -69,5 +80,6 @@ test.runIf(process.platform === 'darwin')(
 		} finally {
 			rmSync(folder, { recursive: true, force: true });
 		}
-	}
+	},
+	toolTimeout * 6
 );
