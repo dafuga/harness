@@ -1,0 +1,66 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.11s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-h04daR
+
+ ❯ test/source-profile-lifecycle.test.ts (7 tests | 1 failed) 3923ms
+   ✓ unrelated foreign processes never load the source compiler 32ms
+   ✓ foreign entries still profile registered imports when work begins 172ms
+   ✓ type imports and live side-effect imports retain normal Bun behavior 186ms
+   ✓ declaration collection and 0 module resets preserve runtime evidence  1606ms
+   × declaration collection and 2 module resets preserve runtime evidence 1480ms
+     → expected [ { …(8) }, { …(8) } ] to have a length of 6 but got 2
+   ✓ explicit benchmark children keep user flags and remove only the owned preload 43ms
+   ✓ profiling its own project crosses public schema forwarding entries without a bootstrap cycle  401ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/source-profile-lifecycle.test.ts > declaration collection and 2 module resets preserve runtime evidence
+AssertionError: expected [ { …(8) }, { …(8) } ] to have a length of 6 but got 2
+
+- Expected
++ Received
+
+- 6
++ 2
+
+ ❯ test/source-profile-lifecycle.test.ts:118:52
+    116|     HARNESS_COLLECT_FILES: ''
+    117|    });
+    118|    expect(await runnerCaptures(fixture.directory)).toHaveLength((1 + r…
+       |                                                    ^
+    119|   } finally {
+    120|    await fixture.remove();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  06:23:10
+   Duration  4.31s (transform 123ms, setup 101ms, collect 85ms, tests 3.92s, environment 0ms, prepare 33ms)
+
