@@ -35,10 +35,31 @@
 		category === 'services' ? serviceContract(unit) : { methods: [], facts: [] }
 	);
 	let groups = $derived(
-		callables.length > 0 || service.methods.length > 0 ? [] : contractFields(unit, category)
+		(callables.length > 0 || service.methods.length > 0
+			? []
+			: contractFields(unit, category)
+		).filter((group) => category !== 'services' || group.id !== 'errors')
 	);
+	let serviceErrors = $derived.by(() => {
+		if (category !== 'services') return undefined;
+		const group = contractFields(unit, category).find((group) => group.id === 'errors');
+		return (
+			group && {
+				...group,
+				fields: group.fields.map((field, index) => ({
+					...field,
+					name: unit.contract.errors[index].name
+				}))
+			}
+		);
+	});
 	let facts = $derived(
-		callables.length > 0 ? [] : [...contractFacts(contract, unit, category), ...service.facts]
+		callables.length > 0
+			? []
+			: [
+					...contractFacts(contract, unit, category),
+					...service.facts.filter((row) => row.label !== 'Errors not tied to a method')
+				]
 	);
 	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
 	let chosen = $state<{ field: ContractField; title: string } | null>(null);
@@ -64,16 +85,7 @@
 	{#if last}
 		<p class="ex-note">Removed at the shown commit; this is what its parent held.</p>
 	{/if}
-	{#if facts.length > 0}
-		<dl class="ex-rows">
-			{#each facts as row, position (position)}
-				<div>
-					<dt>{row.label}</dt>
-					<dd>{row.value}</dd>
-				</div>
-			{/each}
-		</dl>
-	{/if}
+	{@render summaryRows(facts)}
 	{#each callables as callable, position (position)}
 		{@render callableSection(callable, `${callable.name} contract`)}
 	{:else}
@@ -89,11 +101,24 @@
 			{/each}
 		{/each}
 	{/each}
+	{#if serviceErrors}<ContractTable group={serviceErrors} onexample={openExample} />{/if}
 </section>
+{#snippet summaryRows(rows: ContractRow[])}
+	{#if rows.length > 0}
+		<dl class="ex-rows">
+			{#each rows as row, position (position)}
+				<div>
+					<dt>{row.label}</dt>
+					<dd>{row.value}</dd>
+				</div>
+			{/each}
+		</dl>
+	{/if}
+{/snippet}
 {#snippet callableSection(callable: CallableContract, label: string)}
 	<section class="callable" aria-label={label}>
 		<h3><code>{callable.signature}</code></h3>
-		{#each callable.groups as group (group.id)}
+		{#each callable.groups.filter((group) => category !== 'services' || group.id !== 'errors') as group (group.id)}
 			<ContractTable
 				{group}
 				plain
