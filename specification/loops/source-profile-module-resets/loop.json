@@ -6,7 +6,7 @@
 	"name": "source-profile-module-resets",
 	"goal": "Retain actual source observations across test module-cache resets without fabricating, replaying or mixing unrelated sinks",
 	"createdAt": "2026-10-22T05:22:33.849Z",
-	"updatedAt": "2026-10-22T05:29:30.305Z",
+	"updatedAt": "2026-10-22T05:31:55.374Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -45,17 +45,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:30:35.431Z",
+			"evidence": "Retain collectors by evidence directory across module resets under the source runtime global. Original teardown flushes all instances; 24 collector cases pass without replay or benchmark instrumentation."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:31:33.702Z",
+			"evidence": "At exact repair commit 6bce96168 all unchanged lifecycle cases pass, retaining [3,3] samples after two resets. Green seal aa62ce9516eaaef11c135a2eb3556a8377b054075a2fccd906e65c459a85c2a7 pairs red d526b8be519c79e8b34dd8d4816724b03c572793899d3efcf4f5a6feeb829de9."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:31:55.374Z",
+			"evidence": "In an isolated Harness export of exact repair 6bce96168, reverting only profileRuntime to 4c6f03b1d fails [1,1] versus [3,3]. Restoring the repair passes seven unchanged lifecycle cases with empty source drift."
 		},
 		{
 			"id": "verify",
