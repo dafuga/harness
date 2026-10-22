@@ -11,8 +11,6 @@ export interface ContractFacts {
 	category: ExplorerCategory;
 	/** The web address of a page; null when the history records none. */
 	appRoute?: string | null;
-	/** The states the entity has to be proven in. */
-	states?: string[];
 }
 
 /** An identifier of any casing as the words it is made of. */

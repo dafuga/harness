@@ -194,7 +194,7 @@ const offered = (body: string) => {
 	return [...select.matchAll(/<option[^>]*value="([^"]*)"/g)].map((found) => found[1]);
 };
 
-test('contract and details list required states without an overview selector', () => {
+test('contract and details omit verification states without an overview selector', () => {
 	for (const entity of [ids.page, ids.list]) {
 		const at = {
 			category: entity === ids.page ? ('pages' as const) : ('components' as const),
@@ -202,12 +202,11 @@ test('contract and details list required states without an overview selector', (
 		};
 		const overview = content('commit', at, both());
 		expect(offered(overview), entity).toEqual([]);
-		// The scenario has a required state of another page too: it is not asked of this entity.
-		const label = entity === ids.page ? 'Required states' : 'States';
 		const contract = content('commit', { ...at, tab: 'contract' }, both());
-		expect(words(contract), entity).toContain(`${label} default, empty`);
+		expect(words(contract), entity).not.toMatch(/(?:Required )?states default, empty/i);
 		const details = content('commit', { ...at, section: 'details' }, both());
-		expect(words(details), entity).toContain(`${label} default, empty`);
+		expect(words(details), entity).not.toMatch(/(?:Required )?states default, empty/i);
+		expect(words(content('commit', { ...at, tab: 'states' }, both())), entity).toContain('States');
 		for (const body of [overview, contract, details]) {
 			expect(words(body), entity).not.toMatch(/returns|src\/|\.ts\b|\.svelte\b/);
 		}

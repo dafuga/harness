@@ -75,16 +75,15 @@ function pageRows(unit: HarnessUnit, facts: ContractFacts): ContractRow[] {
 		row('Inputs', inputs, 'None'),
 		row('Output', outputs, 'Nothing declared', unit),
 		// What a page says or does when it cannot show what was asked, once its contract says it.
-		...(errors.length > 0 ? [row('Fails with', errors, 'Nothing declared')] : []),
-		{ label: 'Required states', value: facts.states?.join(', ') || 'None declared' }
+		...(errors.length > 0 ? [row('Fails with', errors, 'Nothing declared')] : [])
 	];
 }
 
 /**
  * The contract of an entity as a person reads it: what it takes, what it gives and how it may
- * fail, in words. A page adds its purpose, its web address and the states it has to be proven
- * in; a config says what it provides; a service says how it runs. No row holds a file, a symbol
- * or a type expression.
+ * fail, in words. A page adds its purpose and web address; a config says what it provides; a
+ * service says how it runs. Verification states belong to evidence views, not contract rows.
+ * No row holds a file, a symbol or a type expression.
  */
 export function entityContract(unit: HarnessUnit, facts: ContractFacts): ContractRow[] {
 	if (facts.category === 'pages') return pageRows(unit, facts);
@@ -101,6 +100,5 @@ export function entityContract(unit: HarnessUnit, facts: ContractFacts): Contrac
 		row('Fails with', errors, 'Nothing declared')
 	];
 	if (facts.category === 'services') rows.push({ label: 'Runs as', value: runsAs(unit) });
-	if (facts.states?.length) rows.push({ label: 'States', value: facts.states.join(', ') });
 	return rows;
 }
