@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { runHarness } from './support/cli';
+import { runCommand, runHarness } from './support/cli';
 import { prepareRepair, exerciseRepair, expectPendingVerification } from './support/loopRepair';
 test('loop CLI traces work and remains audit-safe in generated projects', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-loop-e2e-'));
@@ -131,3 +131,61 @@ test.each(['bug-fix', 'fix', 'regression-prevention'])(
 	},
 	120_000
 );
+
+test('standalone evidence capture preserves images and measurements without inventing a regression or full verdict', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-capture-cli-'));
+	try {
+		await prepareRepair(root, 'bug-fix');
+		await writeFile(join(root, 'source.ts'), 'export const value = 3;');
+		await runCommand(['git', 'add', 'source.ts'], root);
+		await runCommand(
+			[
+				'git',
+				'-c',
+				'user.name=Fixture',
+				'-c',
+				'user.email=fixture@harness.invalid',
+				'commit',
+				'-qm',
+				'fix: capture existing behavior'
+			],
+			root
+		);
+		const result = await runHarness(
+			[
+				'loop',
+				'record',
+				'repair',
+				'--phase',
+				'capture',
+				'--test',
+				'proof.ts',
+				'--unit',
+				'function.sample',
+				'--command',
+				'bun proof.ts',
+				'--json'
+			],
+			root,
+			false
+		);
+		expect(result.exitCode, 'standalone capture needs no fabricated failing checkpoint').toBe(0);
+		const record = JSON.parse(result.stdout);
+		expect(record).toMatchObject({ phase: 'capture', status: 'passed' });
+		expect(record.red).toBeUndefined();
+		await runHarness(['history', 'build', '--out', 'history', '--limit', '3'], root);
+		const detail = JSON.parse(
+			await readFile(join(root, 'history/revisions', record.source.commit + '.json'), 'utf8')
+		);
+		expect(detail.regressions).toContainEqual(
+			expect.objectContaining({
+				red: null,
+				green: expect.objectContaining({ id: record.id, captures: expect.any(Array) })
+			})
+		);
+		const status = await runHarness(['history', 'status', '--json'], root);
+		expect(JSON.parse(status.stdout).verified).toBe(false);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 120_000);
