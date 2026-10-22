@@ -16,8 +16,11 @@ export function initializationEdits(file: ts.SourceFile, unit: ComponentManifest
 		.flatMap((statement) =>
 			[...statement.declarationList.declarations].filter((item) => item.initializer)
 		);
+	const effects = file.statements.some(
+		(statement) => ts.isExpressionStatement(statement) && !ts.isStringLiteral(statement.expression)
+	);
 	if (
-		!declarations.length ||
+		(!declarations.length && !effects) ||
 		!declarations.every((item) => dataInitializer(item.initializer!, unit))
 	)
 		return [];

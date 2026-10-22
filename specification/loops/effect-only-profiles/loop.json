@@ -6,7 +6,7 @@
 	"name": "effect-only-profiles",
 	"goal": "Measure actual effect-only module initialization without treating deferred callables or failed imports as successful runtime work",
 	"createdAt": "2026-10-22T03:52:41.854Z",
-	"updatedAt": "2026-10-22T03:52:45.758Z",
+	"updatedAt": "2026-10-22T03:54:42.120Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -31,7 +31,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:54:42.120Z",
+			"evidence": "At 7283db85a, the strengthened initializedModules matrix reproduces zero observations for an executed effect-only module. Existing data and deferred-callable controls remain unchanged."
 		},
 		{
 			"id": "implement",
