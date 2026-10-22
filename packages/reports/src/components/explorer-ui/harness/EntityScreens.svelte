@@ -63,13 +63,11 @@
 		return { ...fixed, viewport: known?.id ?? fixed.viewport };
 	}
 	/** Who a pane is: the parent, the selected commit, or the branch tip the section names. */
-	function heading(item: Evidence): { title: string; role?: string } {
-		if (item.phase === 'before') {
-			return { title: `Before · ${shortCommit(scope.parent ?? '')}`, role: 'Parent commit' };
-		}
+	function heading(item: Evidence): string {
+		if (item.phase === 'before') return `Before · ${shortCommit(scope.parent ?? '')}`;
 		const at = shortCommit(scope.commit);
-		if (paired) return { title: `After · ${at}`, role: 'Selected commit' };
-		return { title: `Branch tip · ${at}` };
+		if (paired) return `After · ${at}`;
+		return `Branch tip · ${at}`;
 	}
 </script>
 
@@ -110,11 +108,10 @@
 	{/if}
 	<div class="ex-panes" class:paired>
 		{#each panes as item (item.id)}
-			{@const named = heading(item)}
-			<figure class="ex-pane" aria-label={named.title}>
+			{@const title = heading(item)}
+			<figure class="ex-pane" aria-label={title}>
 				<figcaption>
-					<strong>{named.title}</strong>
-					{#if named.role}<span class="ex-pill">{named.role}</span>{/if}
+					<strong>{title}</strong>
 				</figcaption>
 				{#if item.missing}
 					<p class="ex-gap">
