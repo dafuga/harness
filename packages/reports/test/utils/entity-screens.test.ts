@@ -39,13 +39,13 @@ test('source-identical squash previews retain origin and reject a changed source
 	).toBeNull();
 });
 test('device states share a picker while original metadata and missing-device gaps remain intact', () => {
-	const captured = withFocused(head, ids.page, {}, true);
+	const captured = withFocused(tip, ids.page, {}, true);
 	const found = evidence(page, captured);
 	const opts = screenOptions(found.scenarios);
 	for (const viewport of ['desktop', 'tablet', 'mobile']) {
 		expect(
 			entityScreens(found, screenPick(opts, { scenario: 'focused', viewport })!).after.file
-		).toBe(`bbbbbbb-default-${viewport}.png`);
+		).toBe(`ccccccc-default-${viewport}.png`);
 	}
 	expect(found.after.captures.map((item) => item.state)).toEqual(['default', 'default', 'default']);
 	expect(found.after.captures.map((item) => item.capture.state)).toEqual([

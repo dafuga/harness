@@ -51,9 +51,8 @@ export function focusedCaptures(detail: HarnessRevision, unit: string): Explorer
 }
 
 /** @pure The logical capture state supplied by the producer, independent of its storage path. */
-export function withoutViewportSuffix(state: string, viewport: string): string {
-	const suffix = `-${viewport}`;
-	return viewport && state.endsWith(suffix) ? state.slice(0, -suffix.length) : state;
+export function withoutViewportSuffix(state: string, _viewport: string): string {
+	return state;
 }
 
 /** Preserve original capture metadata while grouping compatible device-qualified display states. */
