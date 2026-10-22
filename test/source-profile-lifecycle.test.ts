@@ -115,7 +115,9 @@ console.log(JSON.stringify({declared:result.testModules.length,observed:transfor
 				...fixture.environment,
 				HARNESS_COLLECT_FILES: ''
 			});
-			expect(await runnerCaptures(fixture.directory)).toHaveLength((1 + resets) * 2);
+			const measurements = await runnerCaptures(fixture.directory);
+			expect(measurements).toHaveLength(2);
+			expect(measurements.map((item) => item.samples)).toEqual([1 + resets, 1 + resets]);
 		} finally {
 			await fixture.remove();
 		}
