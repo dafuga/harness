@@ -10,7 +10,7 @@ import {
 
 /** The address the fixture pages are opened at; nothing listens there. */
 export const shellOrigin = 'http://shell.fixture';
-export type ShellPage = 'navbar' | 'primitives' | 'errors' | 'activity';
+export type ShellPage = 'navbar' | 'primitives' | 'errors' | 'activity' | 'catalog';
 const config = 'src/config/shellViteConfig.ts';
 /** Where the setup of a verification compiles the fixture: the build its captures are tied to. */
 const compiled = 'output/shell-fixture';
