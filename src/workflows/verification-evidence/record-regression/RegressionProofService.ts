@@ -78,11 +78,13 @@ async function snapshotConfig(root: string, commit: string) {
 	return { ...config, scenarios: scenarios.manifests };
 }
 
-function environmentProfile(): string {
+export function environmentProfile(
+	source: Record<string, string | undefined> = process.env
+): string {
 	const volatile =
 		/^(PWD|OLDPWD|_|SHLVL|HARNESS_AGENT_ID|HARNESS_VERIFY_REVISION|HARNESS_VERIFY_TREE|HARNESS_EVIDENCE_DIR|SCREENSHOT_LABEL)$/;
 	const env = Object.fromEntries(
-		Object.entries(process.env)
+		Object.entries(source)
 			.filter(([key]) => !volatile.test(key))
 			.sort()
 	);
