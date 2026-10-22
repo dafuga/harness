@@ -3,37 +3,42 @@
 	"id": "reports.function.explorer-ui-entity-metric-comparison",
 	"kind": "function",
 	"title": "entityMetricComparison",
-	"responsibility": "Owns the entityMetricComparison shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Pairs current and first-parent Page measurements when both revisions contain the active Page, excluding helper, removed and non-Page views.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/explorer-ui/entityMetricComparison.ts"],
 		"symbols": ["entityMetricComparison"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "entityMetricComparison.host",
-				"type": "MetricHost"
+				"type": "MetricHost",
+				"description": "The viewed revision, optional first-parent revision and explorer route used to determine whether a Page comparison applies."
 			},
 			{
 				"name": "entityMetricComparison.entity",
-				"type": "ExplorerEntity"
+				"type": "ExplorerEntity",
+				"description": "The viewed entity; comparisons require an active Page in both registries and exclude entities shown from a removed revision."
 			},
 			{
 				"name": "entityMetricComparison.measure",
-				"type": "EntityMeasure"
+				"type": "EntityMeasure",
+				"description": "The caller-provided current measurement profile to pair with measurements derived from the parent revision."
 			},
 			{
 				"name": "entityMetricComparison.helper",
-				"type": "string"
+				"type": "string",
+				"description": "Optional selected helper name; a nonempty helper selection disables whole-Page measurement comparison."
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityMetricComparison",
-				"type": "MetricComparison | null"
+				"type": "MetricComparison | null",
+				"description": "Current and first-parent commit/profile pairs, including eligible parent focused observations; null when the view or registry entries do not permit comparison."
 			}
 		],
 		"errors": []
