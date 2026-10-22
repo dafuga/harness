@@ -36,13 +36,15 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(page).toHaveURL(new RegExp(`/platforms/${id}$`));
 			await expect(page.getByRole('heading', { level: 1, name, exact: true })).toBeVisible();
 			await expect(page.getByRole('main')).toContainText(value);
-			if (id === 'web')
+			if (id === 'web') {
 				await expect(
 					page.getByRole('link', { name: 'wrangler.jsonc', exact: true })
 				).toHaveAttribute(
 					'href',
 					`https://github.com/example/orders/blob/${commits.tip}/wrangler.jsonc`
 				);
+				await expect(page.getByRole('main')).toContainText('ORDERS_GITHUB_CLIENT_SECRET');
+			}
 			if (id === 'android') {
 				await expect(page.getByText('Not configured', { exact: true }).first()).toBeVisible();
 				await expect(page.getByRole('heading', { name: 'Commands', exact: true })).toHaveCount(0);

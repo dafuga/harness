@@ -7,7 +7,14 @@ export const platformFixture = {
 			runtime: 'SvelteKit on Cloudflare',
 			status: 'configured',
 			summary: 'Orders in the browser.',
-			configuration: [{ name: 'Application', value: 'orders-web', description: 'Worker name.' }],
+			configuration: [
+				{ name: 'Application', value: 'orders-web', description: 'Worker name.' },
+				{
+					name: 'GitHub App variables',
+					value:
+						'ORDERS_GITHUB_APP_ID, ORDERS_GITHUB_PRIVATE_KEY, ORDERS_GITHUB_CLIENT_ID, ORDERS_GITHUB_CLIENT_SECRET'
+				}
+			],
 			commands: [{ name: 'Build', command: 'bun run build:web' }],
 			requirements: ['Set the Orders deployment credential in the host secret store.'],
 			sources: ['wrangler.jsonc']
