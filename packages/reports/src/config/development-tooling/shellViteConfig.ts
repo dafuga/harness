@@ -16,20 +16,20 @@ export default defineConfig(
 					alias: {
 						'$app/navigation': fileURLToPath(
 							new URL(
-								'../../tests/e2e/support/component-previews/router.svelte.ts',
+								'../../../tests/e2e/support/component-previews/router.svelte.ts',
 								import.meta.url
 							)
 						),
 						'$app/state': fileURLToPath(
 							new URL(
-								'../../tests/e2e/support/component-previews/router.svelte.ts',
+								'../../../tests/e2e/support/component-previews/router.svelte.ts',
 								import.meta.url
 							)
 						),
-						$desktop: fileURLToPath(new URL('../../../desktop/src', import.meta.url)),
-						$shared: fileURLToPath(new URL('../components', import.meta.url)),
+						$desktop: fileURLToPath(new URL('../../../../desktop/src', import.meta.url)),
+						$shared: fileURLToPath(new URL('../../components', import.meta.url)),
 						'$app/paths': fileURLToPath(
-							new URL('../../tests/e2e/support/shell/hubPaths.ts', import.meta.url)
+							new URL('../../../tests/e2e/support/shell/hubPaths.ts', import.meta.url)
 						)
 					}
 				}
