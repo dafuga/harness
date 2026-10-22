@@ -1,0 +1,173 @@
+import type { ContractGroup } from '../../../utils/explorer-ui/contractFields';
+import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
+import type { ContractRow } from '../../../utils/explorer-ui/entityContract';
+import { fieldOf, returnField, typeLabel, type CallableContract } from './contractFields';
+
+type Item = HarnessUnit['contract']['inputs'][number];
+type Recorded = NonNullable<HarnessUnit['serviceClasses']>[number];
+
+/** A class of a service and the methods its contract is read by, its constructor first. */
+interface ServiceClass {
+	name: string;
+	methods: string[];
+}
+
+/** Whether a name is declared under a member: `Class.method.name`, or `Class.method` itself. */
+const within = (name: string, owner: string, whole: boolean): boolean =>
+	name.startsWith(`${owner}.`) || (whole && name === owner);
+
+/** The method a name declares on its class, and what it names under that method. */
+function memberOf(name: string, owner: string): { method: string; rest: string } | undefined {
+	if (!name.startsWith(`${owner}.`)) return undefined;
+	const [method, ...rest] = name.slice(owner.length + 1).split('.');
+	return method ? { method, rest: rest.join('.') } : undefined;
+}
+
+/** The methods of a class that names declare: `Class.method` itself, or a name under it. */
+const methodsNamed = (names: string[], owner: string, whole: boolean): string[] =>
+	names.flatMap((name) => {
+		const found = memberOf(name, owner);
+		return found && (whole || found.rest) ? [found.method] : [];
+	});
+
+/** Each method once, the constructor first and the rest in the order given. */
+const constructorFirst = (methods: string[]): string[] =>
+	[...new Set(methods)].sort(
+		(left, right) => Number(right === 'constructor') - Number(left === 'constructor')
+	);
+
+/** Whether a symbol, or a parameter, return or error, is declared under `Class.method`. */
+function declares(unit: HarnessUnit, owner: string): boolean {
+	const { inputs, outputs, errors } = unit.contract;
+	return (
+		unit.owns.symbols.includes(owner) ||
+		inputs.some((item) => within(item.name, owner, false)) ||
+		[...outputs, ...errors].some((item) => within(item.name, owner, true))
+	);
+}
+
+/**
+ * The classes the revision records, whatever the unit is titled: each public method in its
+ * recorded order, the constructor first where a symbol or field declares it. A same-named class
+ * of another file is named alike in the contract, so it is one class here. A class whose
+ * contract names none of its methods shows no method.
+ */
+function recordedClasses(unit: HarnessUnit, recorded: Recorded[]): ServiceClass[] {
+	return [...new Set(recorded.map((found) => found.name))].flatMap((name) => {
+		const listed = recorded
+			.filter((found) => found.name === name)
+			.flatMap((found) => found.methods.filter((method) => method !== 'constructor'));
+		const built = declares(unit, `${name}.constructor`) ? ['constructor'] : [];
+		const methods = constructorFirst([...built, ...listed]);
+		const shown = methods.some((method) => declares(unit, `${name}.${method}`));
+		return shown ? [{ name, methods }] : [];
+	});
+}
+
+/**
+ * Where an older revision records no class: each class its symbols name, with each method a
+ * `Class.method` symbol or a parameter, return or error under it declares. An output named
+ * `Class.method` is the return of that method once the class has a declared method.
+ */
+function namedClasses(unit: HarnessUnit): ServiceClass[] {
+	const { inputs, outputs, errors } = unit.contract;
+	const fields = [...inputs, ...outputs, ...errors].map((item) => item.name);
+	const returns = outputs.map((item) => item.name);
+	const owners = new Set(unit.owns.symbols.map((symbol) => symbol.split('.')[0]));
+	return [...owners].flatMap((name) => {
+		const declared = [
+			...methodsNamed(unit.owns.symbols, name, true),
+			...methodsNamed(fields, name, false)
+		];
+		if (declared.length === 0) return [];
+		const methods = constructorFirst([...declared, ...methodsNamed(returns, name, true)]);
+		return [{ name, methods }];
+	});
+}
+
+/**
+ * One method: its literal parameters, its return and the errors declared under it alone. Where a
+ * service holds more than one class, the method is named with its class.
+ */
+function methodContract(
+	unit: HarnessUnit,
+	of: string,
+	method: string,
+	qualified: boolean
+): CallableContract {
+	const owner = `${of}.${method}`;
+	const name = qualified ? owner : method;
+	const under = (items: Item[], whole: boolean) =>
+		items.filter((item) => within(item.name, owner, whole));
+	const parameters = under(unit.contract.inputs, false).map((item) => ({
+		...fieldOf(item, unit),
+		name: item.name.slice(owner.length + 1)
+	}));
+	const returns = under(unit.contract.outputs, true).map((item) =>
+		returnField(item, typeLabel(item.type), owner, unit)
+	);
+	const groups: ContractGroup[] = [
+		{
+			id: 'inputs',
+			title: 'Parameters',
+			none: 'No parameters.',
+			fields: parameters,
+			keepEmpty: true
+		},
+		{
+			id: 'outputs',
+			title: 'Returns',
+			none: method === 'constructor' ? 'Creates the service.' : 'No return value declared.',
+			fields: returns
+		},
+		{
+			id: 'errors',
+			title: 'Throws',
+			none: 'No errors declared for this method.',
+			fields: under(unit.contract.errors, true).map((item) => fieldOf(item, unit)),
+			hideNames: true
+		}
+	];
+	const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
+	const type = returns[0]?.type;
+	return { name, signature: `${name}(${args})${type ? `: ${type}` : ''}`, groups };
+}
+
+/** What a service contract declares under no one `Class.method`, said once beside its methods. */
+function unscoped(unit: HarnessUnit, owners: string[]): ContractRow[] {
+	const free = (items: Item[], whole: boolean) =>
+		items.filter((item) => !owners.some((owner) => within(item.name, owner, whole)));
+	const names = (items: Item[]) => [...new Set(items.map((item) => item.name))].join(', ');
+	const { inputs, outputs, errors: failures } = unit.contract;
+	const errors = names(free(failures, true));
+	const others = names([...free(inputs, false), ...free(outputs, true)]);
+	return [
+		...(errors ? [{ label: 'Errors not tied to a method', value: errors }] : []),
+		...(others ? [{ label: 'Fields not tied to a method', value: others }] : [])
+	];
+}
+
+/**
+ * A service contract by method: each class with its constructor and methods, each with its own
+ * parameters, return and errors, and what no one method declares. Same-named methods of two
+ * classes stay apart. A contract that names no method has none, and keeps its fields together.
+ */
+export function serviceContract(unit: HarnessUnit): {
+	methods: CallableContract[];
+	facts: ContractRow[];
+} {
+	const classes = unit.serviceClasses
+		? recordedClasses(unit, unit.serviceClasses)
+		: namedClasses(unit);
+	// Where a unit holds more than one class, each method is named with its class.
+	const recorded = (unit.serviceClasses ?? classes).map((found) => found.name);
+	const qualified = new Set(recorded).size > 1;
+	const members = classes.flatMap(({ name, methods }) =>
+		methods.map((method) => ({ of: name, method }))
+	);
+	const owners = members.map(({ of, method }) => `${of}.${method}`);
+	return {
+		methods: members.map(({ of, method }) => methodContract(unit, of, method, qualified)),
+		facts: owners.length > 0 ? unscoped(unit, owners) : []
+	};
+}

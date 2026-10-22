@@ -10,7 +10,15 @@ import { commits, ids } from './entityUnits';
 const base = `/harness/branch/feature%2Forders/commit/${commits.middle}`;
 const settings = { category: 'configs', entity: ids.settings } as const;
 const store = { category: 'services', entity: ids.store } as const;
-const named = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
+const named = (evidence: 'Tests' | 'Examples') => [
+	'Overview',
+	'Contract',
+	'Used In',
+	'Uses',
+	evidence,
+	'History',
+	'Source'
+];
 const sections = (body: string) =>
 	[...body.matchAll(/<section class="ex-card[^"]*" aria-label="([^"]+)"/g)].map(
 		(match) => match[1]
@@ -27,11 +35,14 @@ function card(body: string, name: string): string {
 }
 const times = (text: string, part: string) => text.split(part).length - 1;
 
-test('a config and a service have the sections of every entity, and none is named Used by', () => {
-	for (const entity of [settings, store])
+test('a config and a service have the sections of every entity, a service showing Examples where a config shows Tests, and none is named Used by', () => {
+	for (const [entity, evidence] of [
+		[settings, 'Tests'],
+		[store, 'Examples']
+	] as const)
 		for (const tab of [undefined, 'used-in', 'uses'] as const) {
 			const body = content('commit', { ...entity, tab });
-			expect(tabs(body), `${entity.entity} ${tab}`).toEqual(named);
+			expect(tabs(body), `${entity.entity} ${tab}`).toEqual(named(evidence));
 			expect(words(body), `${entity.entity} ${tab}`).not.toMatch(
 				/relationship|Used by|Used on pages/i
 			);

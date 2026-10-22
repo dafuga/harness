@@ -32,6 +32,11 @@
 	);
 	let removed = $derived(entity.change === 'removed');
 	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	// Functions and services show their authored uses; their former Tests address opens them too.
+	let examples = $derived(
+		['functions', 'services'].includes(entity.category) &&
+			(host.route.tab === 'examples' || host.route.tab === 'tests')
+	);
 	// The purpose is the sentence under the name of an overview tab; it is not said twice there.
 	let contract = $derived(summary.contract.filter((row) => row.label !== 'Purpose'));
 </script>
@@ -47,9 +52,16 @@
 			{removed}
 		/>
 	</div>
-{:else if entity.category === 'functions' && (host.route.tab === 'examples' || host.route.tab === 'tests')}
+{:else if examples}
 	<div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">
-		<EntityExamples documentation={entity.unit.documentation} />
+		{#if entity.category === 'services'}
+			<!-- Creation leads; recorded verification stays apart from authored uses. -->
+			<EntityExamples documentation={entity.unit.documentation} setupTitle="Create the service" />
+			<p class="ex-soft">These examples are authored documentation, not test results.</p>
+			<details><summary>Verification details</summary>{@render verificationPanel()}</details>
+		{:else}
+			<EntityExamples documentation={entity.unit.documentation} />
+		{/if}
 	</div>
 {:else if host.route.tab === 'states' || host.route.tab === 'tests'}
 	{#if visual}

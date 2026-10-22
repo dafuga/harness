@@ -69,6 +69,16 @@ export async function open(
 	await page.goto(`${origin}/${asked}#${encodeURIComponent(JSON.stringify(address))}`);
 	await page.locator('.ex-content').waitFor();
 }
+/** Opens an address and the verification kept apart from its examples or states. */
+export async function openVerification(
+	page: Page,
+	route: Partial<ExplorerLocation> = {},
+	variant: PreviewVariant = ''
+): Promise<void> {
+	await open(page, route, variant);
+	const summary = page.locator('[role="tabpanel"] > details > summary');
+	await summary.filter({ hasText: 'Verification details' }).first().click();
+}
 /** The address the content is at, as the preview keeps it. */
 export const where = (page: Page): Promise<ExplorerLocation> =>
 	page.evaluate(() => JSON.parse(decodeURIComponent(location.hash.slice(1))) as ExplorerLocation);
