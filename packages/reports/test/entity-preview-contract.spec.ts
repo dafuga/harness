@@ -13,7 +13,9 @@ test('component contracts expose Props and keep verification states on States', 
 	await expect(contract).toBeVisible();
 	await expect(contract).not.toContainText(/\bstates?\b/i);
 	await capture(tab, 'component-contract-props-no-output-desktop');
-	await expect(contract.getByRole('table', { name: 'Props', exact: true })).toBeVisible();
+	const props = contract.getByRole('table', { name: 'Props', exact: true });
+	await expect(props).toBeVisible();
+	await expect(props.locator('tbody tr')).toHaveCount(2);
 	await expect(contract.getByRole('table', { name: 'Inputs', exact: true })).toHaveCount(0);
 	await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toHaveCount(0);
 	await expect(contract).toContainText('Orders');
