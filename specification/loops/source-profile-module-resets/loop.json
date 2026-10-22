@@ -6,7 +6,7 @@
 	"name": "source-profile-module-resets",
 	"goal": "Retain actual source observations across test module-cache resets without fabricating, replaying or mixing unrelated sinks",
 	"createdAt": "2026-10-22T05:22:33.849Z",
-	"updatedAt": "2026-10-22T05:29:30.305Z",
+	"updatedAt": "2026-10-22T05:29:31.408Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -45,7 +45,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:29:31.408Z",
+			"evidence": "Retain per-directory collectors across module resets under this source runtime global. Original teardown flushes all collectors; one exit listener prevents duplicate registration. Standard collector tests pass 24 cases."
 		},
 		{
 			"id": "green",
