@@ -18,6 +18,10 @@ import {
 import { commits, ids } from './entityUnits';
 import { reviewUsage, reviewRelationPaging } from './entityPreviewUsage';
 const page = { category: 'pages' as const, entity: ids.page };
+const cardUnits = [
+	'reports.component.explorer-ui-explorer-module-card',
+	'reports.component.explorer-usage'
+];
 for (const [name, size] of Object.entries(viewports)) {
 	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
@@ -57,7 +61,7 @@ for (const [name, size] of Object.entries(viewports)) {
 				await document.fonts.ready;
 				await Promise.all([...document.images].map((image) => image.decode()));
 			});
-			await capture(tab, `grid-${category}-${name}`);
+			await capture(tab, `grid-${category}-${name}`, cardUnits);
 			const cards = tab.getByRole('article');
 			await expect(
 				cards,
@@ -125,7 +129,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			await document.fonts.ready;
 			await Promise.all([...document.images].map((image) => image.decode()));
 		});
-		await capture(tab, `compact-page-${name}`);
+		await capture(tab, `compact-page-${name}`, cardUnits);
 		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
 		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toHaveText('Used In—');
 		await expect(card.getByRole('heading', { name: 'Orders page', exact: true })).toBeVisible();

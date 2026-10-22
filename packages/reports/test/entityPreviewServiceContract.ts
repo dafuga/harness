@@ -17,7 +17,7 @@ const agentMethods = [
  * A service contract is read by method at desktop and phone widths: AgentActivityService shows
  * every method it declares now and an invented service, titled apart from its class, its
  * initialize method, each with its own parameters, return and errors, and no class-wide Inputs,
- * Outputs or Errors table remains.
+ * Outputs table remains; errors follow the methods in one table.
  */
 export async function reviewServiceContract(page: Page): Promise<void> {
 	for (const viewport of ['desktop', 'mobile'] as const) {
@@ -52,7 +52,9 @@ async function withoutClassGroups(pane: Locator): Promise<void> {
 
 async function reviewAgentActivity(page: Page, viewport: string): Promise<void> {
 	const pane = await contractOf(page, agentActivity.id);
-	await capture(page, shot(`service-contract-methods-${viewport}`));
+	await capture(page, shot(`service-contract-methods-${viewport}`), [
+		'reports.component.entity-contract'
+	]);
 	expect(await methodsOf(pane)).toEqual(agentMethods.map(([name]) => `${name} method`));
 	await withoutClassGroups(pane);
 	for (const [name, signature] of agentMethods) {
@@ -91,7 +93,9 @@ async function reviewAgentActivity(page: Page, viewport: string): Promise<void> 
 async function reviewInitialize(page: Page, viewport: string): Promise<void> {
 	expect(orderFeed.title).not.toContain(orderFeed.className);
 	const pane = await contractOf(page, orderFeed.id);
-	await capture(page, shot(`service-contract-initialize-${viewport}`));
+	await capture(page, shot(`service-contract-initialize-${viewport}`), [
+		'reports.component.entity-contract'
+	]);
 	const names = ['constructor method', 'initialize method', 'latest method'];
 	expect(await methodsOf(pane)).toEqual(names);
 	await expect(methodIn(pane, 'constructor').getByRole('heading', { level: 3 })).toHaveText(
