@@ -1,0 +1,233 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [10.86s]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview-actions.spec.ts entity-preview-captures.spec.ts entity-preview-groups.spec.ts entity-preview-words.spec.ts entity-preview-contract.spec.ts entity-preview-metric-diff.spec.ts entity-preview-source.spec.ts
+
+Running 64 tests using 1 worker
+
+(node:84086) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-actions.spec.ts:23:2 › visual overviews lead with screenshots at desktop width (5.2s)
+  ✓   2 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at desktop width (5.6s)
+  ✓   3 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (3.0s)
+  ✓   4 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at desktop width (437ms)
+  ✓   5 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at desktop width (181ms)
+  ✓   6 test/entity-preview-actions.spec.ts:144:2 › the console keeps a loaded revision responsive at desktop width (531ms)
+  ✓   7 test/entity-preview-actions.spec.ts:23:2 › visual overviews lead with screenshots at tablet width (4.7s)
+  ✓   8 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at tablet width (5.3s)
+  ✓   9 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (3.1s)
+  ✓  10 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at tablet width (492ms)
+  ✓  11 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at tablet width (203ms)
+  ✓  12 test/entity-preview-actions.spec.ts:144:2 › the console keeps a loaded revision responsive at tablet width (517ms)
+  ✓  13 test/entity-preview-actions.spec.ts:23:2 › visual overviews lead with screenshots at mobile width (4.5s)
+  ✓  14 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at mobile width (5.3s)
+  ✓  15 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (3.0s)
+  ✓  16 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at mobile width (494ms)
+  ✓  17 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at mobile width (201ms)
+  ✓  18 test/entity-preview-actions.spec.ts:144:2 › the console keeps a loaded revision responsive at mobile width (565ms)
+  ✓  19 test/entity-preview-actions.spec.ts:186:1 › the component catalog keeps reused screenshots revision-bound without extra source text (188ms)
+  ✓  20 test/entity-preview-actions.spec.ts:195:1 › branch and commit selection replace component screenshots with that revision (192ms)
+  ✓  21 test/entity-preview-captures.spec.ts:20:1 › preview captures retain decoded pixels and measured workloads with their served identity (452ms)
+  ✓  22 test/entity-preview-captures.spec.ts:75:1 › screenshots use their capture commit and comparisons show their paired revisions (734ms)
+  ✓  23 test/entity-preview-captures.spec.ts:122:1 › legacy device-qualified captures remain selectable without changing their origin (585ms)
+  ✓  24 test/entity-preview-contract.spec.ts:9:1 › component contracts expose Props and keep verification states on States (270ms)
+  ✓  25 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at desktop width (728ms)
+  ✓  26 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at tablet width (725ms)
+  ✓  27 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at mobile width (705ms)
+  ✓  28 test/entity-preview-groups.spec.ts:33:2 › category folders group every collection and filter together at desktop (1.1s)
+  ✓  29 test/entity-preview-groups.spec.ts:33:2 › category folders group every collection and filter together at tablet (1.0s)
+  ✓  30 test/entity-preview-groups.spec.ts:33:2 › category folders group every collection and filter together at mobile (1.0s)
+  ✓  31 test/entity-preview-groups.spec.ts:74:2 › source lists category implementation files only at desktop (835ms)
+  ✓  32 test/entity-preview-groups.spec.ts:74:2 › source lists category implementation files only at tablet (797ms)
+  ✓  33 test/entity-preview-groups.spec.ts:74:2 › source lists category implementation files only at mobile (765ms)
+  ✓  34 test/entity-preview-metric-diff.spec.ts:13:1 › a selected page diff shows before, after and performance metric changes (341ms)
+  ✓  35 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at desktop width (647ms)
+  ✓  36 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at desktop width (645ms)
+  ✓  37 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at desktop width (623ms)
+  ✓  38 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at desktop width (674ms)
+  ✓  39 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at desktop width (627ms)
+  ✓  40 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at desktop width (604ms)
+  ✓  41 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at desktop width (620ms)
+  ✓  42 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at tablet width (607ms)
+  ✓  43 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at tablet width (612ms)
+  ✓  44 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at tablet width (595ms)
+  ✓  45 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at tablet width (652ms)
+  ✓  46 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at tablet width (625ms)
+  ✓  47 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at tablet width (637ms)
+  ✓  48 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at tablet width (656ms)
+  ✓  49 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at mobile width (595ms)
+  ✓  50 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at mobile width (631ms)
+  ✓  51 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at mobile width (613ms)
+  ✓  52 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at mobile width (684ms)
+  ✓  53 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at mobile width (594ms)
+  ✓  54 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at mobile width (597ms)
+  ✓  55 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at mobile width (618ms)
+  ✓  56 test/entity-preview-source.spec.ts:121:1 › source file selection and closing retain the detail Source tab (234ms)
+  ✓  57 test/entity-preview-source.spec.ts:142:1 › Source opens file contents in a modal and older histories state an explicit gap (326ms)
+  ✓  58 test/entity-preview-source.spec.ts:172:1 › a delayed previous source read cannot replace the selected file (242ms)
+  ✓  59 test/entity-preview-words.spec.ts:24:1 › a long word in a narrow column of a collection stays whole, and the table scrolls (198ms)
+  ✓  60 test/entity-preview-words.spec.ts:43:1 › a long word in a row of a history stays whole too (135ms)
+  ✓  61 test/entity-preview-words.spec.ts:59:1 › the details of a declared contract say what each item is, and fit a phone (535ms)
+  ✓  62 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at desktop width (6.0s)
+  ✓  63 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at tablet width (5.8s)
+  ✓  64 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at mobile width (5.8s)
+
+  64 passed (1.5m)
+$ vitest run test/components test/utils test/entity-usage.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-FEONK5/packages/reports
+
+ ✓ test/components/entity-overview.test.ts (11 tests) 37ms
+ ✓ test/utils/entity-catalog.test.ts (9 tests) 45ms
+ ✓ test/utils/entity-screens.test.ts (13 tests) 5ms
+ ✓ test/components/entity-details.test.ts (7 tests) 21ms
+ ✓ test/utils/entity-contract.test.ts (12 tests) 2ms
+ ✓ test/utils/explorer-registry.test.ts (5 tests) 25ms
+ ✓ test/utils/explorer-category.test.ts (13 tests) 47ms
+ ✓ test/components/entity-relations.test.ts (5 tests) 41ms
+ ✓ test/utils/explorer-verdict.test.ts (13 tests) 8ms
+ ✓ test/utils/explorer-coverage.test.ts (9 tests) 4ms
+ ✓ test/utils/explorer-entities.test.ts (9 tests) 4ms
+ ✓ test/utils/entity-reasons.test.ts (10 tests) 3ms
+ ✓ test/components/entity-history.test.ts (9 tests) 16ms
+ ✓ test/entity-usage.test.ts (7 tests) 24ms
+ ✓ test/components/project-activity.test.ts (4 tests) 5ms
+ ✓ test/utils/entity-measure.test.ts (8 tests) 12ms
+ ✓ test/components/service-contract.test.ts (5 tests) 13ms
+ ✓ test/components/explorer-screens.test.ts (7 tests) 59ms
+ ✓ test/utils/explorer-history.test.ts (8 tests) 3ms
+ ✓ test/utils/harness-emitted.test.ts (4 tests) 2ms
+ ✓ test/components/harness-shell-legacy.test.ts (6 tests) 6ms
+ ✓ test/utils/explorer-differences.test.ts (8 tests) 2ms
+ ✓ test/utils/explorer-evidence.test.ts (8 tests) 3ms
+ ✓ test/utils/capture-provenance.test.ts (6 tests) 2ms
+ ✓ test/utils/explorer-name.test.ts (18 tests) 2ms
+ ✓ test/components/entity-tests.test.ts (7 tests) 29ms
+ ✓ test/utils/harness-shell.test.ts (8 tests) 2ms
+ ✓ test/components/harness-navbar.test.ts (7 tests) 7ms
+ ✓ test/components/entity-contract.test.ts (4 tests) 14ms
+ ✓ test/utils/entity-behavior.test.ts (10 tests) 9ms
+ ✓ test/components/explorer-content.test.ts (6 tests) 16ms
+ ✓ test/utils/explorer-behavior.test.ts (8 tests) 2ms
+ ✓ test/utils/explorer-reading.test.ts (6 tests) 5ms
+ ✓ test/components/explorer-function-card.test.ts (10 tests) 13ms
+ ✓ test/components/explorer-composition.test.ts (5 tests) 1914ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  388ms
+   ✓ the four screens of a category are made of different components  391ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  1068ms
+ ✓ test/utils/explorer-drawn.test.ts (5 tests) 3ms
+ ✓ test/utils/harness-page.test.ts (7 tests) 4ms
+ ✓ test/components/entity-behavior.test.ts (5 tests) 20ms
+ ✓ test/components/explorer-catalog-screen.test.ts (10 tests) 20ms
+ ✓ test/utils/focus-view.test.ts (5 tests) 7ms
+ ✓ test/utils/explorer-artifact.test.ts (6 tests) 4ms
+ ✓ test/components/entity-sections.test.ts (4 tests) 26ms
+ ✓ test/utils/entity-history.test.ts (7 tests) 3ms
+ ✓ test/components/harness-verdict.test.ts (6 tests) 4ms
+ ✓ test/utils/explorer-evidence-pairs.test.ts (3 tests) 3ms
+ ✓ test/utils/explorer-applicable.test.ts (4 tests) 3ms
+ ✓ test/utils/explorer-ui/metric-changes.test.ts (4 tests) 2ms
+ ✓ test/utils/explorer-coverage-inherited.test.ts (2 tests) 3ms
+ ✓ test/components/activity-preview.test.ts (3 tests) 9ms
+ ✓ test/utils/entity-shown.test.ts (7 tests) 6ms
+ ✓ test/utils/trackpad-zoom.test.ts (3 tests) 3ms
+ ✓ test/utils/harness-budget.test.ts (4 tests) 1ms
+ ✓ test/utils/teardown-gate.test.ts (3 tests) 5ms
+ ✓ test/components/explorer-usage.test.ts (12 tests) 12ms
+ ✓ test/utils/navbar-search.test.ts (7 tests) 2ms
+ ✓ test/utils/console-export.test.ts (2 tests) 64ms
+ ✓ test/components/entity-history-row.test.ts (3 tests) 7ms
+ ✓ test/utils/recorded-value.test.ts (4 tests) 3ms
+ ✓ test/components/entity-proof.test.ts (4 tests) 21ms
+ ✓ test/components/entity-visual-screen.test.ts (4 tests) 28ms
+ ✓ test/utils/e2e-fixtures.test.ts (4 tests) 227ms
+ ✓ test/utils/explorer-verdict-reasons.test.ts (2 tests) 3ms
+ ✓ test/components/entity-examples.test.ts (4 tests) 2ms
+ ✓ test/utils/artifact-cases.test.ts (4 tests) 3ms
+ ✓ test/utils/harness-ancestry.test.ts (2 tests) 1ms
+ ✓ test/utils/entity-lens.test.ts (5 tests) 3ms
+ ✓ test/utils/explorer-scope.test.ts (5 tests) 2ms
+ ✓ test/utils/site-processes.test.ts (1 test) 152ms
+ ✓ test/components/entity-details-screen.test.ts (3 tests) 20ms
+ ✓ test/utils/harness-failures.test.ts (3 tests) 2ms
+ ✓ test/utils/report-server-record.test.ts (2 tests) 30ms
+ ✓ test/utils/frozen-build.test.ts (2 tests) 11ms
+ ✓ test/components/entity-reasons.test.ts (3 tests) 3ms
+ ✓ test/components/select.test.ts (4 tests) 3ms
+ ✓ test/components/entity-search-results.test.ts (2 tests) 2ms
+ ✓ test/utils/activity-reading.test.ts (2 tests) 7ms
+ ✓ test/components/entity-behavior-screen.test.ts (3 tests) 23ms
+ ✓ test/components/brand-mark.test.ts (8 tests) 56ms
+ ✓ test/utils/harness-layout.test.ts (3 tests) 2ms
+ ✓ test/components/harness-shell-address.test.ts (3 tests) 3ms
+ ✓ test/components/harness-action.test.ts (3 tests) 2ms
+ ✓ test/utils/audio-pairs.test.ts (3 tests) 3ms
+ ✓ test/components/entity-audio.test.ts (3 tests) 22ms
+ ✓ test/utils/harness-icons.test.ts (3 tests) 4ms
+ ✓ test/utils/report-destination.test.ts (4 tests) 1ms
+ ✓ test/utils/tooltip-place.test.ts (4 tests) 1ms
+ ✓ test/utils/report-pages.test.ts (2 tests) 2ms
+ ✓ test/utils/report-local-cleanup.test.ts (1 test) 5ms
+ ✓ test/components/harness-icon.test.ts (3 tests) 3ms
+ ✓ test/utils/harness-keys.test.ts (1 test) 2ms
+ ✓ test/utils/entity-usage.test.ts (2 tests) 2ms
+ ✓ test/utils/brand-mark.test.ts (5 tests) 3ms
+ ✓ test/utils/browser-error-rows.test.ts (3 tests) 2ms
+ ✓ test/utils/report-publication-verify.test.ts (2 tests) 3ms
+ ✓ test/components/entity-frame.test.ts (2 tests) 8ms
+ ✓ test/utils/report-publication.test.ts (2 tests) 19ms
+ ✓ test/utils/entity-removed.test.ts (3 tests) 5ms
+ ✓ test/components/recorded-value.test.ts (3 tests) 3ms
+ ✓ test/components/entity-config-screen.test.ts (2 tests) 11ms
+ ✓ test/utils/media-response.test.ts (2 tests) 3ms
+ ✓ test/components/usage-examples.test.ts (2 tests) 2ms
+ ✓ test/components/explorer-frame.test.ts (2 tests) 5ms
+ ✓ test/components/explorer-pages-screen.test.ts (2 tests) 7ms
+ ✓ test/utils/explorer-ui/entity-metric-comparison.test.ts (2 tests) 4ms
+ ✓ test/components/entity-run.test.ts (2 tests) 6ms
+ ✓ test/components/entity-history-screen.test.ts (2 tests) 11ms
+ ✓ test/utils/evidence-media.test.ts (2 tests) 2ms
+ ✓ test/components/audio-comparison-viewer.test.ts (1 test) 4ms
+ ✓ test/utils/replay-frames.test.ts (2 tests) 1ms
+ ✓ test/utils/select-reuse.test.ts (1 test) 63ms
+ ✓ test/components/entity-search.test.ts (1 test) 2ms
+ ✓ test/utils/usage-examples.test.ts (2 tests) 1ms
+ ✓ test/components/entity-cases.test.ts (2 tests) 3ms
+ ✓ test/utils/audio-asset.test.ts (2 tests) 5ms
+ ✓ test/utils/analytics-cpu-client.test.ts (1 test) 2ms
+ ✓ test/components/browser-errors.test.ts (2 tests) 2ms
+ ✓ test/utils/wav-info.test.ts (2 tests) 3ms
+ ✓ test/components/explorer-usage-link.test.ts (1 test) 4ms
+ ✓ test/components/harness-screen.test.ts (1 test) 1ms
+ ✓ test/components/activity-list-states.test.ts (1 test) 2ms
+ ✓ test/utils/replay-video.test.ts (1 test) 2ms
+ ✓ test/utils/report-retention.test.ts (1 test) 1ms
+ ✓ test/utils/analytics-display.test.ts (1 test) 1ms
+
+ Test Files  123 passed (123)
+      Tests  563 passed (563)
+   Start at  00:01:29
+   Duration  25.61s (transform 1.65s, setup 0ms, collect 6.43s, tests 3.46s, environment 8ms, prepare 2.80s)
+
