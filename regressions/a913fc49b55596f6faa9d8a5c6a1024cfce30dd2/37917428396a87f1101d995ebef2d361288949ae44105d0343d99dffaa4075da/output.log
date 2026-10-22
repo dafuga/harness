@@ -1,0 +1,934 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [15.25s]
+External component capture driver 3eb8829322861ed86bb975cc60c63514809a02e6 over unchanged selected source a913fc49b55596f6faa9d8a5c6a1024cfce30dd2
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+
+
+Running 582 tests using 1 worker
+
+(node:66474) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-controls at desktop (483ms)
+  ✓    2 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-effort-picker at desktop (479ms)
+  ✓    3 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-model-picker at desktop (462ms)
+  ✓    4 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-settings at desktop (481ms)
+  ✓    5 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.annotated-image at desktop (615ms)
+  ✓    6 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.approval-button at desktop (462ms)
+  ✓    7 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.catalog-view at desktop (716ms)
+  ✓    8 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.choice-dialog at desktop (462ms)
+  ✓    9 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.composer at desktop (464ms)
+  ✓   10 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.contract-panel at desktop (480ms)
+  ✓   11 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.coverage-panel at desktop (521ms)
+  ✓   12 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-activity at desktop (752ms)
+  ✓   13 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-details at desktop (485ms)
+  ✓   14 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-dialog at desktop (699ms)
+  ✓   15 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-progress at desktop (482ms)
+  ✓   16 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-route at desktop (463ms)
+  ✓   17 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.design-panel at desktop (653ms)
+  ✓   18 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.details-panel at desktop (521ms)
+  ✓   19 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.entity-card at desktop (624ms)
+  ✓   20 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.entity-view at desktop (984ms)
+  ✓   21 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.environment-picker at desktop (463ms)
+  ✓   22 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-authoring-game-graph-fit at desktop (462ms)
+  ✓   23 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-editor at desktop (483ms)
+  ✓   24 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-image at desktop (466ms)
+  ✓   25 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-pane at desktop (480ms)
+  ✓   26 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-create at desktop (466ms)
+  ✓   27 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-graph at desktop (466ms)
+  ✓   28 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-live-video at desktop (468ms)
+  ✓   29 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-mechanics at desktop (465ms)
+  ✘   30 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at desktop (5.1s)
+(node:67189) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   31 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-preview at desktop (552ms)
+  ✓   32 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-text-field at desktop (465ms)
+  ✓   33 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-trace at desktop (482ms)
+  ✓   34 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-view-fields at desktop (464ms)
+  ✓   35 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-workspace at desktop (488ms)
+  ✓   36 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.history-panel at desktop (466ms)
+  ✓   37 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.hosted-connection at desktop (468ms)
+  ✓   38 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.icon at desktop (464ms)
+  ✓   39 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.image-thumbnail at desktop (615ms)
+  ✓   40 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.measures-panel at desktop (464ms)
+  ✓   41 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.message-list at desktop (464ms)
+  ✓   42 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.nav-bar at desktop (482ms)
+  ✓   43 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.plan-badge at desktop (462ms)
+  ✓   44 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.prior-image at desktop (620ms)
+  ✓   45 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-agent at desktop (478ms)
+  ✓   46 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-gate at desktop (465ms)
+  ✓   47 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-switcher at desktop (461ms)
+  ✓   48 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.recorded-preview at desktop (733ms)
+  ✓   49 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.reference-text at desktop (470ms)
+  ✓   50 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.relationships-panel at desktop (463ms)
+  ✓   51 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-approval at desktop (462ms)
+  ✓   52 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-connection at desktop (481ms)
+  ✓   53 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-devices at desktop (480ms)
+  ✓   54 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-host-panel at desktop (465ms)
+  ✓   55 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-offer-code at desktop (462ms)
+  ✓   56 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-phone-panel at desktop (465ms)
+  ✓   57 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.revision-picker at desktop (443ms)
+  ✓   58 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.run-status at desktop (461ms)
+  ✓   59 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-artifact at desktop (466ms)
+  ✓   60 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-audio at desktop (461ms)
+  ✓   61 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-behavior at desktop (498ms)
+  ✓   62 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-evidence at desktop (634ms)
+  ✓   63 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-pane at desktop (618ms)
+  ✓   64 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-run at desktop (483ms)
+  ✓   65 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-screens at desktop (615ms)
+  ✓   66 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.segmented-choice at desktop (443ms)
+  ✓   67 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.status-bar at desktop (441ms)
+  ✓   68 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.status-icon at desktop (442ms)
+  ✓   69 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-history at desktop (676ms)
+  ✓   70 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-links at desktop (443ms)
+  ✓   71 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-panel at desktop (680ms)
+  ✓   72 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.workspace-link at desktop (444ms)
+  ✓   73 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.account-menu at desktop (444ms)
+  ✓   74 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.email-proof-panel at desktop (445ms)
+  ✓   75 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.hub-frame at desktop (528ms)
+  ✓   76 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.invitation-form at desktop (461ms)
+  ✓   77 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.invite-accept at desktop (447ms)
+  ✓   78 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.login-panel at desktop (463ms)
+  ✓   79 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.members-panel at desktop (447ms)
+  ✓   80 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.native-approval at desktop (483ms)
+  ✓   81 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.project-create at desktop (483ms)
+  ✓   82 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.project-list at desktop (449ms)
+  ✓   83 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-agents at desktop (482ms)
+  ✓   84 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-files at desktop (465ms)
+  ✓   85 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-list at desktop (481ms)
+  ✓   86 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-loops at desktop (464ms)
+  ✓   87 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-work at desktop (464ms)
+  ✓   88 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-cpu at desktop (470ms)
+  ✓   89 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-filters at desktop (463ms)
+  ✓   90 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-history at desktop (531ms)
+  ✓   91 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-models at desktop (504ms)
+  ✓   92 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-tasks at desktop (463ms)
+  ✓   93 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-comparison at desktop (465ms)
+  ✓   94 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-comparison-viewer at desktop (492ms)
+  ✓   95 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-evidence at desktop (468ms)
+  ✓   96 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-upload-files at desktop (460ms)
+  ✓   97 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.brand-mark at desktop (442ms)
+  ✓   98 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.browser-errors at desktop (442ms)
+  ✓   99 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.console-chat at desktop (460ms)
+  ✓  100 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.contract-example at desktop (446ms)
+  ✓  101 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.contract-table at desktop (443ms)
+  ✓  102 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.coverage-list at desktop (449ms)
+  ✓  103 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-cases at desktop (445ms)
+  ✓  104 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-contract at desktop (464ms)
+  ✓  105 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-examples at desktop (457ms)
+  ✓  106 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-search at desktop (443ms)
+  ✓  107 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-search-results at desktop (449ms)
+  ✓  108 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-states at desktop (2.3s)
+  ✓  109 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-card at desktop (599ms)
+  ✓  110 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-grid at desktop (631ms)
+  ✓  111 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-provenance at desktop (478ms)
+  ✓  112 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-viewer at desktop (623ms)
+  ✓  113 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-catalog-items at desktop (1.1s)
+  ✘  114 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at desktop (5.4s)
+(node:68636) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  115 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-usage at desktop (476ms)
+  ✓  116 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-usage-link at desktop (443ms)
+  ✓  117 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.filter-dialog at desktop (445ms)
+  ✓  118 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.floating-chat at desktop (464ms)
+  ✓  119 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.gameplay-replay at desktop (1.4s)
+  ✓  120 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-artifact at desktop (464ms)
+  ✓  121 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-audio at desktop (517ms)
+  ✓  122 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-behavior at desktop (535ms)
+  ✓  123 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-behavior-screen at desktop (467ms)
+  ✓  124 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-change at desktop (502ms)
+  ✓  125 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-config at desktop (482ms)
+  ✓  126 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-config-screen at desktop (502ms)
+  ✓  127 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-details at desktop (502ms)
+  ✓  128 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-details-screen at desktop (885ms)
+  ✓  129 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-frame at desktop (863ms)
+  ✓  130 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-header at desktop (462ms)
+  ✓  131 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history at desktop (447ms)
+  ✓  132 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history-row at desktop (463ms)
+  ✓  133 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history-screen at desktop (866ms)
+  ✓  134 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-link at desktop (479ms)
+  ✓  135 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-measures at desktop (464ms)
+  ✓  136 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-missing at desktop (463ms)
+  ✓  137 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-overview at desktop (479ms)
+  ✓  138 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-reasons at desktop (463ms)
+  ✓  139 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-relations at desktop (898ms)
+  ✓  140 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-run at desktop (518ms)
+  ✓  141 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-screens at desktop (854ms)
+  ✓  142 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-sections at desktop (464ms)
+  ✓  143 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-source at desktop (498ms)
+  ✓  144 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-summary at desktop (464ms)
+  ✓  145 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-tests at desktop (1.5s)
+  ✓  146 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-visual-screen at desktop (867ms)
+  ✓  147 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-catalog-screen at desktop (1.1s)
+  ✓  148 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-content at desktop (866ms)
+  ✓  149 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-controls at desktop (442ms)
+  ✓  150 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-frame at desktop (463ms)
+  ✓  151 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-index at desktop (464ms)
+  ✘  152 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at desktop (5.6s)
+(node:70195) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  153 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-pages-screen at desktop (1.7s)
+  ✓  154 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-table at desktop (485ms)
+  ✓  155 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-action at desktop (504ms)
+  ✓  156 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-activity at desktop (562ms)
+  ✓  157 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-compare at desktop (1.5s)
+  ✓  158 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-compare-media at desktop (1.4s)
+  ✓  159 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-emitted-growth at desktop (504ms)
+  ✓  160 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-failures at desktop (502ms)
+  ✓  161 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-growth at desktop (499ms)
+  ✓  162 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-header at desktop (513ms)
+  ✓  163 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-history at desktop (1.4s)
+  ✓  164 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-icon at desktop (492ms)
+  ✓  165 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-legacy at desktop (467ms)
+  ✓  166 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-map at desktop (486ms)
+  ✓  167 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-navbar at desktop (479ms)
+  ✓  168 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-selectors at desktop (446ms)
+  ✓  169 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-tabs at desktop (464ms)
+  ✓  170 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-unit at desktop (521ms)
+  ✓  171 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-verdict at desktop (463ms)
+  ✓  172 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.image-zoom at desktop (616ms)
+  ✓  173 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.modal at desktop (515ms)
+  ✓  174 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.project-activity at desktop (537ms)
+  ✓  175 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.provider-picker at desktop (501ms)
+  ✓  176 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.provider-picker-cards at desktop (481ms)
+  ✓  177 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.recorded-value at desktop (466ms)
+  ✓  178 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.regression-proof at desktop (465ms)
+  ✓  179 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.replay-controls at desktop (482ms)
+  ✓  180 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-checks at desktop (470ms)
+  ✓  181 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-findings at desktop (524ms)
+  ✓  182 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-summary at desktop (482ms)
+  ✓  183 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-view at desktop (1.0s)
+  ✓  184 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.select at desktop (486ms)
+  ✓  185 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.site-activity at desktop (571ms)
+  ✓  186 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-code-action at desktop (461ms)
+  ✓  187 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-content at desktop (462ms)
+  ✓  188 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-dialog at desktop (471ms)
+  ✓  189 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-file-list at desktop (464ms)
+  ✓  190 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-viewer at desktop (430ms)
+  ✓  191 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.status-badge at desktop (447ms)
+  ✓  192 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.upload-audio at desktop (445ms)
+  ✓  193 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.upload-comparison at desktop (447ms)
+  ✓  194 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.usage-examples-usage-examples at desktop (459ms)
+  ✓  195 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-controls at tablet (258ms)
+  ✓  196 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-effort-picker at tablet (260ms)
+  ✓  197 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-model-picker at tablet (261ms)
+  ✓  198 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-settings at tablet (260ms)
+  ✓  199 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.annotated-image at tablet (298ms)
+  ✓  200 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.approval-button at tablet (259ms)
+  ✓  201 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.catalog-view at tablet (295ms)
+  ✓  202 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.choice-dialog at tablet (264ms)
+  ✓  203 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.composer at tablet (269ms)
+  ✓  204 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.contract-panel at tablet (261ms)
+  ✓  205 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.coverage-panel at tablet (284ms)
+  ✓  206 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-activity at tablet (311ms)
+  ✓  207 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-details at tablet (260ms)
+  ✓  208 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-dialog at tablet (311ms)
+  ✓  209 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-progress at tablet (260ms)
+  ✓  210 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-route at tablet (262ms)
+  ✓  211 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.design-panel at tablet (297ms)
+  ✓  212 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.details-panel at tablet (280ms)
+  ✓  213 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.entity-card at tablet (297ms)
+  ✓  214 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.entity-view at tablet (314ms)
+  ✓  215 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.environment-picker at tablet (259ms)
+  ✓  216 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-authoring-game-graph-fit at tablet (259ms)
+  ✓  217 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-editor at tablet (266ms)
+  ✓  218 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-image at tablet (261ms)
+  ✓  219 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-pane at tablet (283ms)
+  ✓  220 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-create at tablet (266ms)
+  ✓  221 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-graph at tablet (261ms)
+  ✓  222 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-live-video at tablet (259ms)
+  ✓  223 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-mechanics at tablet (262ms)
+  ✘  224 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at tablet (5.1s)
+(node:72078) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  225 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-preview at tablet (275ms)
+  ✓  226 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-text-field at tablet (259ms)
+  ✓  227 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-trace at tablet (259ms)
+  ✓  228 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-view-fields at tablet (259ms)
+  ✓  229 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-workspace at tablet (277ms)
+  ✓  230 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.history-panel at tablet (261ms)
+  ✓  231 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.hosted-connection at tablet (227ms)
+  ✓  232 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.icon at tablet (256ms)
+  ✓  233 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.image-thumbnail at tablet (317ms)
+  ✓  234 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.measures-panel at tablet (262ms)
+  ✓  235 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.message-list at tablet (256ms)
+  ✓  236 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.nav-bar at tablet (259ms)
+  ✓  237 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.plan-badge at tablet (259ms)
+  ✓  238 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.prior-image at tablet (293ms)
+  ✓  239 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-agent at tablet (259ms)
+  ✓  240 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-gate at tablet (266ms)
+  ✓  241 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-switcher at tablet (258ms)
+  ✓  242 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.recorded-preview at tablet (293ms)
+  ✓  243 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.reference-text at tablet (261ms)
+  ✓  244 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.relationships-panel at tablet (259ms)
+  ✓  245 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-approval at tablet (267ms)
+  ✓  246 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-connection at tablet (231ms)
+  ✓  247 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-devices at tablet (259ms)
+  ✓  248 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-host-panel at tablet (260ms)
+  ✓  249 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-offer-code at tablet (259ms)
+  ✓  250 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-phone-panel at tablet (259ms)
+  ✓  251 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.revision-picker at tablet (261ms)
+  ✓  252 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.run-status at tablet (258ms)
+  ✓  253 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-artifact at tablet (260ms)
+  ✓  254 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-audio at tablet (261ms)
+  ✓  255 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-behavior at tablet (283ms)
+  ✓  256 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-evidence at tablet (295ms)
+  ✓  257 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-pane at tablet (295ms)
+  ✓  258 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-run at tablet (262ms)
+  ✓  259 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-screens at tablet (262ms)
+  ✓  260 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.segmented-choice at tablet (260ms)
+  ✓  261 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.status-bar at tablet (259ms)
+  ✓  262 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.status-icon at tablet (228ms)
+  ✓  263 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-history at tablet (290ms)
+  ✓  264 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-links at tablet (260ms)
+  ✓  265 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-panel at tablet (296ms)
+  ✓  266 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.workspace-link at tablet (259ms)
+  ✓  267 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.account-menu at tablet (259ms)
+  ✓  268 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.email-proof-panel at tablet (262ms)
+  ✓  269 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.hub-frame at tablet (348ms)
+  ✓  270 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.invitation-form at tablet (260ms)
+  ✓  271 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.invite-accept at tablet (259ms)
+  ✓  272 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.login-panel at tablet (260ms)
+  ✓  273 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.members-panel at tablet (260ms)
+  ✓  274 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.native-approval at tablet (262ms)
+  ✓  275 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.project-create at tablet (260ms)
+  ✓  276 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.project-list at tablet (261ms)
+  ✓  277 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-agents at tablet (227ms)
+  ✓  278 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-files at tablet (261ms)
+  ✓  279 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-list at tablet (226ms)
+  ✓  280 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-loops at tablet (258ms)
+  ✓  281 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-work at tablet (259ms)
+  ✓  282 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-cpu at tablet (266ms)
+  ✓  283 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-filters at tablet (257ms)
+  ✓  284 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-history at tablet (262ms)
+  ✓  285 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-models at tablet (296ms)
+  ✓  286 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-tasks at tablet (229ms)
+  ✓  287 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-comparison at tablet (260ms)
+  ✓  288 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-comparison-viewer at tablet (268ms)
+  ✓  289 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-evidence at tablet (262ms)
+  ✓  290 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-upload-files at tablet (225ms)
+  ✓  291 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.brand-mark at tablet (223ms)
+  ✓  292 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.browser-errors at tablet (226ms)
+  ✓  293 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.console-chat at tablet (222ms)
+  ✓  294 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.contract-example at tablet (257ms)
+  ✓  295 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.contract-table at tablet (224ms)
+  ✓  296 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.coverage-list at tablet (224ms)
+  ✓  297 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-cases at tablet (225ms)
+  ✓  298 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-contract at tablet (277ms)
+  ✓  299 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-examples at tablet (224ms)
+  ✓  300 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-search at tablet (224ms)
+  ✓  301 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-search-results at tablet (228ms)
+  ✓  302 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-states at tablet (1.3s)
+  ✓  303 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-card at tablet (298ms)
+  ✓  304 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-grid at tablet (311ms)
+  ✓  305 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-provenance at tablet (225ms)
+  ✓  306 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-viewer at tablet (306ms)
+  ✓  307 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-catalog-items at tablet (379ms)
+  ✘  308 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at tablet (5.3s)
+(node:72892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  309 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-usage at tablet (275ms)
+  ✓  310 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-usage-link at tablet (263ms)
+  ✓  311 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.filter-dialog at tablet (260ms)
+  ✓  312 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.floating-chat at tablet (259ms)
+  ✓  313 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.gameplay-replay at tablet (1.1s)
+  ✓  314 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-artifact at tablet (259ms)
+  ✓  315 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-audio at tablet (268ms)
+  ✓  316 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-behavior at tablet (281ms)
+  ✓  317 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-behavior-screen at tablet (260ms)
+  ✓  318 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-change at tablet (261ms)
+  ✓  319 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-config at tablet (261ms)
+  ✓  320 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-config-screen at tablet (298ms)
+  ✓  321 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-details at tablet (297ms)
+  ✓  322 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-details-screen at tablet (329ms)
+  ✓  323 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-frame at tablet (330ms)
+  ✓  324 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-header at tablet (258ms)
+  ✓  325 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history at tablet (258ms)
+  ✓  326 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history-row at tablet (258ms)
+  ✓  327 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history-screen at tablet (330ms)
+  ✓  328 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-link at tablet (228ms)
+  ✓  329 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-measures at tablet (262ms)
+  ✓  330 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-missing at tablet (263ms)
+  ✓  331 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-overview at tablet (260ms)
+  ✓  332 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-reasons at tablet (262ms)
+  ✓  333 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-relations at tablet (344ms)
+  ✓  334 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-run at tablet (279ms)
+  ✓  335 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-screens at tablet (328ms)
+  ✓  336 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-sections at tablet (261ms)
+  ✓  337 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-source at tablet (262ms)
+  ✓  338 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-summary at tablet (262ms)
+  ✓  339 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-tests at tablet (446ms)
+  ✓  340 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-visual-screen at tablet (329ms)
+  ✓  341 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-catalog-screen at tablet (380ms)
+  ✓  342 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-content at tablet (329ms)
+  ✓  343 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-controls at tablet (229ms)
+  ✓  344 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-frame at tablet (256ms)
+  ✓  345 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-index at tablet (260ms)
+  ✘  346 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at tablet (5.3s)
+(node:73247) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  347 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-pages-screen at tablet (1.2s)
+  ✓  348 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-table at tablet (258ms)
+  ✓  349 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-action at tablet (258ms)
+  ✓  350 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-activity at tablet (281ms)
+  ✓  351 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-compare at tablet (452ms)
+  ✓  352 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-compare-media at tablet (417ms)
+  ✓  353 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-emitted-growth at tablet (261ms)
+  ✓  354 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-failures at tablet (228ms)
+  ✓  355 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-growth at tablet (242ms)
+  ✓  356 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-header at tablet (258ms)
+  ✓  357 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-history at tablet (430ms)
+  ✓  358 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-icon at tablet (224ms)
+  ✓  359 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-legacy at tablet (260ms)
+  ✓  360 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-map at tablet (277ms)
+  ✓  361 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-navbar at tablet (258ms)
+  ✓  362 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-selectors at tablet (257ms)
+  ✓  363 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-tabs at tablet (259ms)
+  ✓  364 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-unit at tablet (296ms)
+  ✓  365 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-verdict at tablet (225ms)
+  ✓  366 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.image-zoom at tablet (291ms)
+  ✓  367 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.modal at tablet (285ms)
+  ✓  368 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.project-activity at tablet (281ms)
+  ✓  369 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.provider-picker at tablet (299ms)
+  ✓  370 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.provider-picker-cards at tablet (243ms)
+  ✓  371 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.recorded-value at tablet (261ms)
+  ✓  372 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.regression-proof at tablet (265ms)
+  ✓  373 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.replay-controls at tablet (259ms)
+  ✓  374 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-checks at tablet (225ms)
+  ✓  375 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-findings at tablet (257ms)
+  ✓  376 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-summary at tablet (263ms)
+  ✓  377 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-view at tablet (381ms)
+  ✓  378 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.select at tablet (225ms)
+  ✓  379 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.site-activity at tablet (285ms)
+  ✓  380 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-code-action at tablet (229ms)
+  ✓  381 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-content at tablet (261ms)
+  ✓  382 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-dialog at tablet (265ms)
+  ✓  383 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-file-list at tablet (261ms)
+  ✓  384 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-viewer at tablet (263ms)
+  ✓  385 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.status-badge at tablet (264ms)
+  ✓  386 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.upload-audio at tablet (259ms)
+  ✓  387 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.upload-comparison at tablet (261ms)
+  ✓  388 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.usage-examples-usage-examples at tablet (259ms)
+  ✓  389 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-controls at mobile (257ms)
+  ✓  390 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-effort-picker at mobile (257ms)
+  ✓  391 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-model-picker at mobile (258ms)
+  ✓  392 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.agent-settings at mobile (257ms)
+  ✓  393 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.annotated-image at mobile (258ms)
+  ✓  394 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.approval-button at mobile (259ms)
+  ✓  395 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.catalog-view at mobile (292ms)
+  ✓  396 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.choice-dialog at mobile (259ms)
+  ✓  397 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.composer at mobile (258ms)
+  ✓  398 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.contract-panel at mobile (270ms)
+  ✓  399 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.coverage-panel at mobile (277ms)
+  ✓  400 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-activity at mobile (307ms)
+  ✓  401 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-details at mobile (258ms)
+  ✓  402 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-dialog at mobile (308ms)
+  ✓  403 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-progress at mobile (260ms)
+  ✓  404 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.deployment-route at mobile (259ms)
+  ✓  405 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.design-panel at mobile (292ms)
+  ✓  406 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.details-panel at mobile (255ms)
+  ✓  407 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.entity-card at mobile (274ms)
+  ✓  408 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.entity-view at mobile (324ms)
+  ✓  409 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.environment-picker at mobile (256ms)
+  ✓  410 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-authoring-game-graph-fit at mobile (264ms)
+  ✓  411 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-editor at mobile (260ms)
+  ✓  412 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-image at mobile (226ms)
+  ✓  413 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-checkpoint-pane at mobile (277ms)
+  ✓  414 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-create at mobile (262ms)
+  ✓  415 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-graph at mobile (258ms)
+  ✓  416 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-live-video at mobile (257ms)
+  ✓  417 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-mechanics at mobile (257ms)
+  ✘  418 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at mobile (5.1s)
+(node:73834) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  419 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-preview at mobile (272ms)
+  ✓  420 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-text-field at mobile (256ms)
+  ✓  421 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-trace at mobile (257ms)
+  ✓  422 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-view-fields at mobile (227ms)
+  ✓  423 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-workspace at mobile (277ms)
+  ✓  424 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.history-panel at mobile (257ms)
+  ✓  425 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.hosted-connection at mobile (257ms)
+  ✓  426 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.icon at mobile (255ms)
+  ✓  427 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.image-thumbnail at mobile (257ms)
+  ✓  428 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.measures-panel at mobile (256ms)
+  ✓  429 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.message-list at mobile (256ms)
+  ✓  430 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.nav-bar at mobile (255ms)
+  ✓  431 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.plan-badge at mobile (255ms)
+  ✓  432 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.prior-image at mobile (291ms)
+  ✓  433 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-agent at mobile (257ms)
+  ✓  434 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-gate at mobile (258ms)
+  ✓  435 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.project-switcher at mobile (258ms)
+  ✓  436 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.recorded-preview at mobile (291ms)
+  ✓  437 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.reference-text at mobile (255ms)
+  ✓  438 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.relationships-panel at mobile (260ms)
+  ✓  439 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-approval at mobile (258ms)
+  ✓  440 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-connection at mobile (260ms)
+  ✓  441 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-devices at mobile (259ms)
+  ✓  442 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-host-panel at mobile (261ms)
+  ✓  443 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-offer-code at mobile (258ms)
+  ✓  444 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.remote-phone-panel at mobile (260ms)
+  ✓  445 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.revision-picker at mobile (279ms)
+  ✓  446 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.run-status at mobile (259ms)
+  ✓  447 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-artifact at mobile (260ms)
+  ✓  448 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-audio at mobile (258ms)
+  ✓  449 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-behavior at mobile (280ms)
+  ✓  450 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-evidence at mobile (295ms)
+  ✓  451 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-pane at mobile (294ms)
+  ✓  452 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-run at mobile (278ms)
+  ✓  453 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.runtime-screens at mobile (275ms)
+  ✓  454 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.segmented-choice at mobile (258ms)
+  ✓  455 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.status-bar at mobile (258ms)
+  ✓  456 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.status-icon at mobile (259ms)
+  ✓  457 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-history at mobile (292ms)
+  ✓  458 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-links at mobile (258ms)
+  ✓  459 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.thread-panel at mobile (295ms)
+  ✓  460 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.workspace-link at mobile (259ms)
+  ✓  461 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.account-menu at mobile (259ms)
+  ✓  462 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.email-proof-panel at mobile (262ms)
+  ✓  463 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.hub-frame at mobile (292ms)
+  ✓  464 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.invitation-form at mobile (257ms)
+  ✓  465 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.invite-accept at mobile (257ms)
+  ✓  466 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.login-panel at mobile (258ms)
+  ✓  467 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.members-panel at mobile (291ms)
+  ✓  468 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.native-approval at mobile (262ms)
+  ✓  469 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.project-create at mobile (260ms)
+  ✓  470 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › hub.component.project-list at mobile (255ms)
+  ✓  471 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-agents at mobile (259ms)
+  ✓  472 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-files at mobile (257ms)
+  ✓  473 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-list at mobile (223ms)
+  ✓  474 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-loops at mobile (225ms)
+  ✓  475 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.activity-work at mobile (258ms)
+  ✓  476 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-cpu at mobile (296ms)
+  ✓  477 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-filters at mobile (259ms)
+  ✓  478 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-history at mobile (256ms)
+  ✓  479 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-models at mobile (259ms)
+  ✓  480 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.analytics-tasks at mobile (224ms)
+  ✓  481 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-comparison at mobile (224ms)
+  ✓  482 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-comparison-viewer at mobile (263ms)
+  ✓  483 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-evidence at mobile (260ms)
+  ✓  484 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.audio-upload-files at mobile (226ms)
+  ✓  485 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.brand-mark at mobile (223ms)
+  ✓  486 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.browser-errors at mobile (221ms)
+  ✓  487 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.console-chat at mobile (223ms)
+  ✓  488 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.contract-example at mobile (222ms)
+  ✓  489 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.contract-table at mobile (223ms)
+  ✓  490 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.coverage-list at mobile (222ms)
+  ✓  491 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-cases at mobile (224ms)
+  ✓  492 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-contract at mobile (258ms)
+  ✓  493 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-examples at mobile (221ms)
+  ✓  494 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-search at mobile (219ms)
+  ✓  495 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-search-results at mobile (258ms)
+  ✓  496 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.entity-states at mobile (1.2s)
+  ✓  497 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-card at mobile (294ms)
+  ✓  498 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-grid at mobile (291ms)
+  ✓  499 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-provenance at mobile (256ms)
+  ✓  500 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.evidence-viewer at mobile (294ms)
+  ✓  501 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-catalog-items at mobile (378ms)
+  ✘  502 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at mobile (5.2s)
+(node:75518) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  503 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-usage at mobile (291ms)
+  ✓  504 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-usage-link at mobile (261ms)
+  ✓  505 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.filter-dialog at mobile (257ms)
+  ✓  506 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.floating-chat at mobile (259ms)
+  ✓  507 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.gameplay-replay at mobile (1.1s)
+  ✓  508 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-artifact at mobile (263ms)
+  ✓  509 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-audio at mobile (286ms)
+  ✓  510 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-behavior at mobile (311ms)
+  ✓  511 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-behavior-screen at mobile (260ms)
+  ✓  512 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-change at mobile (257ms)
+  ✓  513 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-config at mobile (258ms)
+  ✓  514 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-config-screen at mobile (291ms)
+  ✓  515 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-details at mobile (293ms)
+  ✓  516 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-details-screen at mobile (344ms)
+  ✓  517 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-frame at mobile (326ms)
+  ✓  518 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-header at mobile (226ms)
+  ✓  519 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history at mobile (257ms)
+  ✓  520 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history-row at mobile (258ms)
+  ✓  521 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-history-screen at mobile (324ms)
+  ✓  522 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-link at mobile (260ms)
+  ✓  523 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-measures at mobile (291ms)
+  ✓  524 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-missing at mobile (257ms)
+  ✓  525 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-overview at mobile (259ms)
+  ✓  526 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-reasons at mobile (257ms)
+  ✓  527 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-relations at mobile (339ms)
+  ✓  528 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-run at mobile (277ms)
+  ✓  529 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-screens at mobile (325ms)
+  ✓  530 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-sections at mobile (224ms)
+  ✓  531 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-source at mobile (255ms)
+  ✓  532 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-summary at mobile (223ms)
+  ✓  533 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-tests at mobile (445ms)
+  ✓  534 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-entity-visual-screen at mobile (342ms)
+  ✓  535 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-catalog-screen at mobile (359ms)
+  ✓  536 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-content at mobile (324ms)
+  ✓  537 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-controls at mobile (223ms)
+  ✓  538 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-frame at mobile (223ms)
+  ✓  539 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-index at mobile (223ms)
+  ✘  540 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at mobile (5.3s)
+(node:76525) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  541 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-pages-screen at mobile (1.2s)
+  ✓  542 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-table at mobile (257ms)
+  ✓  543 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-action at mobile (263ms)
+  ✓  544 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-activity at mobile (276ms)
+  ✓  545 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-compare at mobile (493ms)
+  ✓  546 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-compare-media at mobile (411ms)
+  ✓  547 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-emitted-growth at mobile (260ms)
+  ✓  548 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-failures at mobile (257ms)
+  ✓  549 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-growth at mobile (257ms)
+  ✓  550 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-header at mobile (257ms)
+  ✓  551 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-history at mobile (410ms)
+  ✓  552 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-icon at mobile (225ms)
+  ✓  553 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-legacy at mobile (226ms)
+  ✓  554 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-map at mobile (276ms)
+  ✓  555 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-navbar at mobile (222ms)
+  ✓  556 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-selectors at mobile (255ms)
+  ✓  557 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-tabs at mobile (258ms)
+  ✓  558 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-unit at mobile (292ms)
+  ✓  559 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-harness-verdict at mobile (257ms)
+  ✓  560 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.image-zoom at mobile (258ms)
+  ✓  561 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.modal at mobile (261ms)
+  ✓  562 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.project-activity at mobile (283ms)
+  ✓  563 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.provider-picker at mobile (281ms)
+  ✓  564 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.provider-picker-cards at mobile (259ms)
+  ✓  565 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.recorded-value at mobile (258ms)
+  ✓  566 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.regression-proof at mobile (263ms)
+  ✓  567 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.replay-controls at mobile (256ms)
+  ✓  568 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-checks at mobile (223ms)
+  ✓  569 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-findings at mobile (259ms)
+  ✓  570 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-summary at mobile (258ms)
+  ✓  571 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.report-view at mobile (361ms)
+  ✓  572 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.select at mobile (257ms)
+  ✓  573 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.site-activity at mobile (278ms)
+  ✓  574 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-code-action at mobile (259ms)
+  ✓  575 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-content at mobile (257ms)
+  ✓  576 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-dialog at mobile (262ms)
+  ✓  577 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-file-list at mobile (226ms)
+  ✓  578 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.source-viewer at mobile (260ms)
+  ✓  579 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.status-badge at mobile (259ms)
+  ✓  580 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.upload-audio at mobile (224ms)
+  ✓  581 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.upload-comparison at mobile (256ms)
+  ✓  582 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.usage-examples-usage-examples at mobile (259ms)
+
+
+  1) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at desktop 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+       at support/component-previews/previewPage.ts:28
+
+      26 | 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
+      27 | 	}
+    > 28 | 	await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
+         | 	                                                             ^
+      29 | 	await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
+      30 | 	await expect(content).not.toContainText(
+      31 | 		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Sampling CPU…|Checking sign-in…|Reading the request…/
+        at readyPreview (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/support/component-previews/previewPage.ts:28:63)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:22:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-bb153-navigation-guard-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-bb153-navigation-guard-at-desktop/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-bb153-navigation-guard-at-desktop/error-context.md
+
+  2) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at desktop 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true })
+
+
+      28 | 				await expect(
+      29 | 					component.getByRole('link', { name: 'Order list', exact: true })
+    > 30 | 				).toBeVisible();
+         | 				  ^
+      31 | 				await expect(
+      32 | 					component.getByRole('link', { name: 'Order store', exact: true })
+      33 | 				).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:30:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-013c3-er-function-card-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-013c3-er-function-card-at-desktop/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-013c3-er-function-card-at-desktop/error-context.md
+
+  3) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at desktop 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true })
+    Expected pattern: /Synthetic preview input/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true })
+
+
+      75 | 				await expect(
+      76 | 					component.getByRole('link', { name: 'Open Order card', exact: true })
+    > 77 | 				).toHaveAttribute('title', /Synthetic preview input/);
+         | 				  ^
+      78 | 			}
+      79 | 			await expect
+      80 | 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:77:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-73f36-plorer-page-card-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-73f36-plorer-page-card-at-desktop/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-73f36-plorer-page-card-at-desktop/error-context.md
+
+  4) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at tablet 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+       at support/component-previews/previewPage.ts:28
+
+      26 | 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
+      27 | 	}
+    > 28 | 	await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
+         | 	                                                             ^
+      29 | 	await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
+      30 | 	await expect(content).not.toContainText(
+      31 | 		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Sampling CPU…|Checking sign-in…|Reading the request…/
+        at readyPreview (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/support/component-previews/previewPage.ts:28:63)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:22:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-29526--navigation-guard-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-29526--navigation-guard-at-tablet/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-29526--navigation-guard-at-tablet/error-context.md
+
+  5) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at tablet 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true })
+
+
+      28 | 				await expect(
+      29 | 					component.getByRole('link', { name: 'Order list', exact: true })
+    > 30 | 				).toBeVisible();
+         | 				  ^
+      31 | 				await expect(
+      32 | 					component.getByRole('link', { name: 'Order store', exact: true })
+      33 | 				).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:30:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-1de72-rer-function-card-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-1de72-rer-function-card-at-tablet/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-1de72-rer-function-card-at-tablet/error-context.md
+
+  6) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at tablet 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true })
+    Expected pattern: /Synthetic preview input/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true })
+
+
+      75 | 				await expect(
+      76 | 					component.getByRole('link', { name: 'Open Order card', exact: true })
+    > 77 | 				).toHaveAttribute('title', /Synthetic preview input/);
+         | 				  ^
+      78 | 			}
+      79 | 			await expect
+      80 | 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:77:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-78acf-xplorer-page-card-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-78acf-xplorer-page-card-at-tablet/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-78acf-xplorer-page-card-at-tablet/error-context.md
+
+  7) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at mobile 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+       at support/component-previews/previewPage.ts:28
+
+      26 | 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
+      27 | 	}
+    > 28 | 	await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
+         | 	                                                             ^
+      29 | 	await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
+      30 | 	await expect(content).not.toContainText(
+      31 | 		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Sampling CPU…|Checking sign-in…|Reading the request…/
+        at readyPreview (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/support/component-previews/previewPage.ts:28:63)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:22:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-8c339--navigation-guard-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-8c339--navigation-guard-at-mobile/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-8c339--navigation-guard-at-mobile/error-context.md
+
+  8) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at mobile 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-function-card"]').getByRole('link', { name: 'Order list', exact: true })
+
+
+      28 | 				await expect(
+      29 | 					component.getByRole('link', { name: 'Order list', exact: true })
+    > 30 | 				).toBeVisible();
+         | 				  ^
+      31 | 				await expect(
+      32 | 					component.getByRole('link', { name: 'Order store', exact: true })
+      33 | 				).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:30:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-6cd8d-rer-function-card-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-6cd8d-rer-function-card-at-mobile/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-6cd8d-rer-function-card-at-mobile/error-context.md
+
+  9) ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at mobile 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true })
+    Expected pattern: /Synthetic preview input/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.harness-explorer-page-card"]').getByRole('link', { name: 'Open Order card', exact: true })
+
+
+      75 | 				await expect(
+      76 | 					component.getByRole('link', { name: 'Open Order card', exact: true })
+    > 77 | 				).toHaveAttribute('title', /Synthetic preview input/);
+         | 				  ^
+      78 | 			}
+      79 | 			await expect
+      80 | 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-YHngB7/.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:77:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/source-component-capture/explorer-shell-component-c-86577-xplorer-page-card-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-86577-xplorer-page-card-at-mobile/error-context.md
+
+    Error Context: test-results/source-component-capture/explorer-shell-component-c-86577-xplorer-page-card-at-mobile/error-context.md
+
+  9 failed
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at desktop 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at desktop 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at desktop 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at tablet 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at tablet 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at tablet 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › desktop.component.game-navigation-guard at mobile 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.explorer-function-card at mobile 
+    ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:18:3 › reports.component.harness-explorer-page-card at mobile 
+  573 passed (4.5m)
+
