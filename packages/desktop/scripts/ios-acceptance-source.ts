@@ -19,7 +19,7 @@ function sourceArguments(): string[] {
 	const cache = realpathSync(resolve(repository, '.cache'));
 	if (!realpathSync(metadata).startsWith(`${cache}/`))
 		throw new Error('Native source metadata must stay inside this snapshot cache');
-	const args = [`--git-dir=${metadata}`, `--work-tree=${repository}`];
+	const args = ['-C', repository, `--git-dir=${metadata}`, `--work-tree=${repository}`];
 	const read = (revision: string) => tool(['git', ...args, 'rev-parse', revision]).trim();
 	if (
 		read('HEAD') !== process.env.HARNESS_VERIFY_REVISION ||
@@ -98,11 +98,14 @@ export interface SourceReading {
 }
 
 export function readSources(): SourceReading {
-	return {
+	const reading = {
 		renderer: sourceFiles(rendererSources),
 		native: sourceFiles(nativeSources),
 		fixtureComputer: sourceFiles(computerSources)
 	};
+	for (const [kind, files] of Object.entries(reading))
+		if (files.size === 0) throw new Error(`Native ${kind} source inventory is empty`);
+	return reading;
 }
 
 /** Every file that two readings do not agree on, in any of the three sets. */
