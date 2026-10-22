@@ -8,8 +8,12 @@ import { buildData } from '../../../tests/e2e/support/component-previews/buildDa
 const page = process.env.SHELL_FIXTURE_PAGE ?? 'navbar';
 export default defineConfig(
 	async (): Promise<UserConfig> => ({
-		define:
-			page === 'catalog' ? { __COMPONENT_PREVIEW_DATA__: JSON.stringify(await buildData()) } : {},
+		define: {
+			'process.env.NODE_ENV': JSON.stringify('production'),
+			...(page === 'catalog'
+				? { __COMPONENT_PREVIEW_DATA__: JSON.stringify(await buildData()) }
+				: {})
+		},
 		plugins: [svelte()],
 		resolve: ['components', 'catalog'].includes(page)
 			? {

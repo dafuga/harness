@@ -1,10 +1,10 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.component.explorer-ui-entity-contract-service-methods",
-	"kind": "component",
+	"kind": "function",
 	"title": "serviceMethods",
-	"responsibility": "Owns the serviceMethods Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Builds the owning contract component\u2019s service method rows from declared callable contracts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/entity-contract/serviceMethods.ts"],

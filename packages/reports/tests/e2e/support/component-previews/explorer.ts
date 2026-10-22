@@ -8,7 +8,12 @@ const entity = { entity: d.entity, ...base };
 const page = d.host();
 /** The list an index is given: synthetic names alone, since each card has a preview of its own. */
 const names = createRawSnippet((listed: () => CatalogRow[]) => ({
-	render: () => '<ul>' + listed().map((row) => `<li>${row.name}</li>`).join('') + '</ul>'
+	render: () =>
+		'<ul>' +
+		listed()
+			.map((row) => `<li>${row.name}</li>`)
+			.join('') +
+		'</ul>'
 }));
 const sourceFiles = ['src/components/OrderList.svelte', 'src/utils/filterOrders.ts'];
 const sourceText = (path: string) =>
@@ -184,6 +189,12 @@ export const explorerCases: PreviewCases = {
 	'reports.component.harness-explorer-table': {
 		category: 'configs',
 		rows: d.configRows,
+		nav: d.navigation,
+		lens: d.reading,
+		mediaBase: '/media/'
+	},
+	'reports.component.explorer-ui-explorer-module-card': {
+		row: d.rows[0],
 		nav: d.navigation,
 		lens: d.reading,
 		mediaBase: '/media/'

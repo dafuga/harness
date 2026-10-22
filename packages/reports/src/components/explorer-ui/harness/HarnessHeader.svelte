@@ -21,9 +21,13 @@
 </script>
 
 {#if navbar}
-	<HarnessNavbar {base} {...navbar} />
+	<!-- The bar as this header draws it. Its marker draws no box, and the bar and a notice under it
+		lay out as they do without one. -->
+	<div class="hx-header" data-harness-component="harness-harness-header">
+		<HarnessNavbar {base} {...navbar} />
+	</div>
 {:else}
-	<header class="hc-top">
+	<header class="hc-top" data-harness-component="harness-harness-header">
 		<span class="brand-symbol" aria-hidden="true"><BrandMark /></span>
 		<h1>Harness</h1>
 		<span class="hc-muted">Components, impact and recorded evidence of this repository</span>
@@ -39,3 +43,17 @@
 		{#if missing.home}<a class="hc-link" href={base + missing.home}>Open the newest commit</a>{/if}
 	</p>
 {/if}
+
+<style>
+	.hx-header {
+		display: contents;
+	}
+	/* In the explorer's shell the marker takes nothing the bar did not have as the shell's child: it
+	   passes on the shell's wrapping, and a notice after it keeps the space of one under the bar. */
+	:global(.hx-shell) > .hx-header {
+		overflow-wrap: inherit;
+	}
+	:global(.hx-shell) > .hx-header + .hc-notice {
+		margin-top: 20px;
+	}
+</style>

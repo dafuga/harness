@@ -1,16 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { explorerRoutePath, type ExplorerLocation } from '../../../../../../src/utils/explorer-ui/explorerRoute';
+	import {
+		explorerRoutePath,
+		type ExplorerLocation
+	} from '../../../../../../src/utils/explorer-ui/explorerRoute';
 	import type { ExplorerScreen } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import type { HarnessIndex, HarnessRevision } from '../../../models/explorer-ui/Harness.types';
-	import { correctedLocation, compactHelperLocation } from '../../../utils/development-tooling/correctedLocation';
+	import {
+		correctedLocation,
+		compactHelperLocation
+	} from '../../../utils/development-tooling/correctedLocation';
 	import { explorerEntities } from '../../../utils/explorer-ui/explorerEntities';
 	import { explorerSearchEntries } from '../../../utils/explorer-ui/explorerSearchEntries';
 	import { branchCommits } from './harness-navbar/harnessAncestry';
 	import { retainedBranch } from '../../../utils/explorer-ui/harnessAncestry';
 	import { harnessClient } from '../../../utils/explorer-ui/harnessClient';
 	import { harnessPage } from '../../../utils/explorer-ui/harness-page/harnessPage';
-	import { consoleRelations, consoleView, type ConsoleAnswer } from '../../harness/harness-console/consoleView';
+	import {
+		consoleRelations,
+		consoleView,
+		type ConsoleAnswer
+	} from '../../harness/harness-console/consoleView';
 	import HarnessHeader from './HarnessHeader.svelte';
 	let {
 		base,
@@ -161,7 +171,7 @@
 	});
 </script>
 
-<div class="hx-shell">
+<div class="hx-shell" data-harness-component="harness-harness-console">
 	<HarnessHeader
 		{base}
 		{problem}

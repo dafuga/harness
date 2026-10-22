@@ -21,3 +21,14 @@ export const catalogViewports = [
 	{ id: 'tablet', width: 768, height: 900 },
 	{ id: 'mobile', width: 390, height: 844 }
 ];
+
+/** The normal capture test fails when a new active component lacks a declared preview state. */
+export const catalogScenario = JSON.parse(
+	readFileSync(
+		new URL(
+			'../../../../../../specification/scenarios/component-catalog-previews.json',
+			import.meta.url
+		),
+		'utf8'
+	)
+) as { units: string[]; states: Array<{ id: string; units: string[] }> };

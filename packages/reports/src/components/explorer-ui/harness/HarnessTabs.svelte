@@ -48,7 +48,13 @@
 	});
 </script>
 
-<div class={tabs ? 'hx-tabs' : 'hc-tabs'} role="tablist" aria-label={label} bind:this={strip}>
+<div
+	class={tabs ? 'hx-tabs' : 'hc-tabs'}
+	role="tablist"
+	aria-label={label}
+	data-harness-component="harness-harness-tabs"
+	bind:this={strip}
+>
 	{#each tabs ?? views as item (item.id)}
 		{#if item.href && !item.disabled}
 			<a

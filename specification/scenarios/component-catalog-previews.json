@@ -15,10 +15,29 @@
 		"desktop.component.composer",
 		"desktop.component.contract-panel",
 		"desktop.component.coverage-panel",
+		"desktop.component.deployment-activity",
+		"desktop.component.deployment-details",
+		"desktop.component.deployment-dialog",
+		"desktop.component.deployment-progress",
+		"desktop.component.deployment-route",
 		"desktop.component.design-panel",
 		"desktop.component.details-panel",
 		"desktop.component.entity-card",
 		"desktop.component.entity-view",
+		"desktop.component.environment-picker",
+		"desktop.component.game-authoring-game-graph-fit",
+		"desktop.component.game-checkpoint-editor",
+		"desktop.component.game-checkpoint-image",
+		"desktop.component.game-checkpoint-pane",
+		"desktop.component.game-create",
+		"desktop.component.game-graph",
+		"desktop.component.game-live-video",
+		"desktop.component.game-mechanics",
+		"desktop.component.game-preview",
+		"desktop.component.game-text-field",
+		"desktop.component.game-trace",
+		"desktop.component.game-view-fields",
+		"desktop.component.game-workspace",
 		"desktop.component.history-panel",
 		"desktop.component.hosted-connection",
 		"desktop.component.icon",
@@ -96,7 +115,11 @@
 		"reports.component.evidence-grid",
 		"reports.component.evidence-provenance",
 		"reports.component.evidence-viewer",
+		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-function-card",
+		"reports.component.explorer-ui-explorer-module-card",
+		"reports.component.explorer-usage",
+		"reports.component.explorer-usage-link",
 		"reports.component.filter-dialog",
 		"reports.component.floating-chat",
 		"reports.component.gameplay-replay",
@@ -166,19 +189,15 @@
 		"reports.component.report-view",
 		"reports.component.select",
 		"reports.component.site-activity",
+		"reports.component.source-code-action",
+		"reports.component.source-content",
+		"reports.component.source-dialog",
+		"reports.component.source-file-list",
+		"reports.component.source-viewer",
 		"reports.component.status-badge",
 		"reports.component.upload-audio",
 		"reports.component.upload-comparison",
-		"reports.component.usage-examples-usage-examples",
-		"desktop.component.deployment-progress",
-		"desktop.component.deployment-details",
-		"desktop.component.deployment-activity",
-		"desktop.component.deployment-dialog",
-		"desktop.component.environment-picker",
-		"desktop.component.deployment-route",
-		"reports.component.explorer-catalog-items",
-		"reports.component.explorer-usage",
-		"reports.component.explorer-usage-link"
+		"reports.component.usage-examples-usage-examples"
 	],
 	"states": [
 		{
@@ -248,6 +267,36 @@
 			"units": ["desktop.component.coverage-panel"]
 		},
 		{
+			"id": "desktop-component-deployment-activity",
+			"title": "DeploymentActivity",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-activity"]
+		},
+		{
+			"id": "desktop-component-deployment-details",
+			"title": "DeploymentDetails",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-details"]
+		},
+		{
+			"id": "desktop-component-deployment-dialog",
+			"title": "DeploymentDialog",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-dialog"]
+		},
+		{
+			"id": "desktop-component-deployment-progress",
+			"title": "DeploymentProgress",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-progress"]
+		},
+		{
+			"id": "desktop-component-deployment-route",
+			"title": "DeploymentRoute",
+			"coverage": "required",
+			"units": ["desktop.component.deployment-route"]
+		},
+		{
 			"id": "desktop-component-design-panel",
 			"title": "Design panel",
 			"coverage": "required",
@@ -270,6 +319,90 @@
 			"title": "Entity view",
 			"coverage": "required",
 			"units": ["desktop.component.entity-view"]
+		},
+		{
+			"id": "desktop-component-environment-picker",
+			"title": "EnvironmentPicker",
+			"coverage": "required",
+			"units": ["desktop.component.environment-picker"]
+		},
+		{
+			"id": "desktop-component-game-authoring-game-graph-fit",
+			"title": "GameGraphFit",
+			"coverage": "required",
+			"units": ["desktop.component.game-authoring-game-graph-fit"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-editor",
+			"title": "GameCheckpointEditor",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-editor"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-image",
+			"title": "GameCheckpointImage",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-image"]
+		},
+		{
+			"id": "desktop-component-game-checkpoint-pane",
+			"title": "GameCheckpointPane",
+			"coverage": "required",
+			"units": ["desktop.component.game-checkpoint-pane"]
+		},
+		{
+			"id": "desktop-component-game-create",
+			"title": "GameCreate",
+			"coverage": "required",
+			"units": ["desktop.component.game-create"]
+		},
+		{
+			"id": "desktop-component-game-graph",
+			"title": "GameGraph",
+			"coverage": "required",
+			"units": ["desktop.component.game-graph"]
+		},
+		{
+			"id": "desktop-component-game-live-video",
+			"title": "GameLiveVideo",
+			"coverage": "required",
+			"units": ["desktop.component.game-live-video"]
+		},
+		{
+			"id": "desktop-component-game-mechanics",
+			"title": "GameMechanics",
+			"coverage": "required",
+			"units": ["desktop.component.game-mechanics"]
+		},
+		{
+			"id": "desktop-component-game-preview",
+			"title": "GamePreview",
+			"coverage": "required",
+			"units": ["desktop.component.game-preview"]
+		},
+		{
+			"id": "desktop-component-game-text-field",
+			"title": "GameTextField",
+			"coverage": "required",
+			"units": ["desktop.component.game-text-field"]
+		},
+		{
+			"id": "desktop-component-game-trace",
+			"title": "GameTrace",
+			"coverage": "required",
+			"units": ["desktop.component.game-trace"]
+		},
+		{
+			"id": "desktop-component-game-view-fields",
+			"title": "GameViewFields",
+			"coverage": "required",
+			"units": ["desktop.component.game-view-fields"]
+		},
+		{
+			"id": "desktop-component-game-workspace",
+			"title": "GameWorkspace",
+			"coverage": "required",
+			"units": ["desktop.component.game-workspace"]
 		},
 		{
 			"id": "desktop-component-history-panel",
@@ -734,10 +867,34 @@
 			"units": ["reports.component.evidence-viewer"]
 		},
 		{
+			"id": "reports-component-explorer-catalog-items",
+			"title": "ExplorerCatalogItems",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
 			"id": "reports-component-explorer-function-card",
 			"title": "Function card",
 			"coverage": "required",
 			"units": ["reports.component.explorer-function-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card",
+			"title": "ExplorerModuleCard",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-usage",
+			"title": "ExplorerUsage",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link",
+			"title": "ExplorerUsageLink",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
 		},
 		{
 			"id": "reports-component-filter-dialog",
@@ -1095,7 +1252,7 @@
 		},
 		{
 			"id": "reports-component-provider-picker-cards",
-			"title": "Model Cards",
+			"title": "Active and queued model cards",
 			"coverage": "required",
 			"units": ["reports.component.provider-picker-cards"]
 		},
@@ -1154,6 +1311,36 @@
 			"units": ["reports.component.site-activity"]
 		},
 		{
+			"id": "reports-component-source-code-action",
+			"title": "SourceCodeAction",
+			"coverage": "required",
+			"units": ["reports.component.source-code-action"]
+		},
+		{
+			"id": "reports-component-source-content",
+			"title": "SourceContent",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-dialog",
+			"title": "SourceDialog",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-file-list",
+			"title": "Source file list",
+			"coverage": "required",
+			"units": ["reports.component.source-file-list"]
+		},
+		{
+			"id": "reports-component-source-viewer",
+			"title": "SourceViewer",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-status-badge",
 			"title": "Report status badge",
 			"coverage": "required",
@@ -1176,60 +1363,6 @@
 			"title": "Function usage examples",
 			"coverage": "required",
 			"units": ["reports.component.usage-examples-usage-examples"]
-		},
-		{
-			"id": "desktop-component-deployment-progress",
-			"title": "Deployment progress",
-			"coverage": "required",
-			"units": ["desktop.component.deployment-progress"]
-		},
-		{
-			"id": "desktop-component-deployment-details",
-			"title": "Deployment details",
-			"coverage": "required",
-			"units": ["desktop.component.deployment-details"]
-		},
-		{
-			"id": "desktop-component-deployment-activity",
-			"title": "Deployment activity",
-			"coverage": "required",
-			"units": ["desktop.component.deployment-activity"]
-		},
-		{
-			"id": "desktop-component-deployment-dialog",
-			"title": "Deployment dialog",
-			"coverage": "required",
-			"units": ["desktop.component.deployment-dialog"]
-		},
-		{
-			"id": "desktop-component-environment-picker",
-			"title": "Environment picker",
-			"coverage": "required",
-			"units": ["desktop.component.environment-picker"]
-		},
-		{
-			"id": "desktop-component-deployment-route",
-			"title": "Deployment route",
-			"coverage": "required",
-			"units": ["desktop.component.deployment-route"]
-		},
-		{
-			"id": "reports-component-explorer-catalog-items",
-			"title": "ExplorerCatalogItems",
-			"coverage": "required",
-			"units": ["reports.component.explorer-catalog-items"]
-		},
-		{
-			"id": "reports-component-explorer-usage",
-			"title": "ExplorerUsage",
-			"coverage": "required",
-			"units": ["reports.component.explorer-usage"]
-		},
-		{
-			"id": "reports-component-explorer-usage-link",
-			"title": "ExplorerUsageLink",
-			"coverage": "required",
-			"units": ["reports.component.explorer-usage-link"]
 		}
 	],
 	"viewports": [
@@ -1256,7 +1389,7 @@
 			"runner": "command",
 			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts",
 			"cwd": "packages/reports",
-			"timeoutMs": 300000
+			"timeoutMs": 600000
 		}
 	],
 	"evidence": [
@@ -1275,10 +1408,29 @@
 				"desktop-component-composer",
 				"desktop-component-contract-panel",
 				"desktop-component-coverage-panel",
+				"desktop-component-deployment-activity",
+				"desktop-component-deployment-details",
+				"desktop-component-deployment-dialog",
+				"desktop-component-deployment-progress",
+				"desktop-component-deployment-route",
 				"desktop-component-design-panel",
 				"desktop-component-details-panel",
 				"desktop-component-entity-card",
 				"desktop-component-entity-view",
+				"desktop-component-environment-picker",
+				"desktop-component-game-authoring-game-graph-fit",
+				"desktop-component-game-checkpoint-editor",
+				"desktop-component-game-checkpoint-image",
+				"desktop-component-game-checkpoint-pane",
+				"desktop-component-game-create",
+				"desktop-component-game-graph",
+				"desktop-component-game-live-video",
+				"desktop-component-game-mechanics",
+				"desktop-component-game-preview",
+				"desktop-component-game-text-field",
+				"desktop-component-game-trace",
+				"desktop-component-game-view-fields",
+				"desktop-component-game-workspace",
 				"desktop-component-history-panel",
 				"desktop-component-hosted-connection",
 				"desktop-component-icon",
@@ -1356,7 +1508,11 @@
 				"reports-component-evidence-grid",
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-viewer",
+				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-function-card",
+				"reports-component-explorer-ui-explorer-module-card",
+				"reports-component-explorer-usage",
+				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",
 				"reports-component-floating-chat",
 				"reports-component-gameplay-replay",
@@ -1426,19 +1582,15 @@
 				"reports-component-report-view",
 				"reports-component-select",
 				"reports-component-site-activity",
+				"reports-component-source-code-action",
+				"reports-component-source-content",
+				"reports-component-source-dialog",
+				"reports-component-source-file-list",
+				"reports-component-source-viewer",
 				"reports-component-status-badge",
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
-				"reports-component-usage-examples-usage-examples",
-				"desktop-component-deployment-progress",
-				"desktop-component-deployment-details",
-				"desktop-component-deployment-activity",
-				"desktop-component-deployment-dialog",
-				"desktop-component-environment-picker",
-				"desktop-component-deployment-route",
-				"reports-component-explorer-catalog-items",
-				"reports-component-explorer-usage",
-				"reports-component-explorer-usage-link"
+				"reports-component-usage-examples-usage-examples"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

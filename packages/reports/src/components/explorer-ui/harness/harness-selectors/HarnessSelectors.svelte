@@ -1,5 +1,8 @@
 <script lang="ts">
-	import type { HarnessIndex, HarnessRevisionSummary } from '../../../../models/explorer-ui/Harness.types';
+	import type {
+		HarnessIndex,
+		HarnessRevisionSummary
+	} from '../../../../models/explorer-ui/Harness.types';
 	import { branchNames } from '../../../../utils/explorer-ui/harnessAncestry';
 	import { revisionLabel } from './harnessAncestry';
 	import Select from '../../../shared-primitives/Select.svelte';
@@ -36,7 +39,7 @@
 	} = $props();
 </script>
 
-<div class={tip ? 'hx-revision' : 'hc-controls'}>
+<div class={tip ? 'hx-revision' : 'hc-controls'} data-harness-component="harness-harness-selectors">
 	<label
 		><span
 			>{#if tip}<HarnessIcon name="branch" size={18} />{/if}<span class="revision-name">Branch</span

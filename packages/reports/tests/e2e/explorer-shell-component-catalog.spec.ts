@@ -1,6 +1,11 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture } from './support/shellFixture';
-import { catalogUnits, catalogViewports } from './support/component-previews/catalogUnits';
+import {
+	catalogUnits,
+	catalogViewports,
+	catalogScenario,
+	previewState
+} from './support/component-previews/catalogUnits';
 import {
 	openPreview,
 	readyPreview,
@@ -13,6 +18,15 @@ test.beforeAll(async () => {
 	home = buildShellFixture(['catalog']);
 });
 test.afterAll(() => removeShellFixture(home));
+test('every active visual component has its own required capture state', () => {
+	const expected = catalogUnits.map((unit) => unit.id);
+	expect([...catalogScenario.units].sort()).toEqual(expected);
+	expect(catalogScenario.states).toEqual(
+		catalogUnits.map((unit) =>
+			expect.objectContaining({ id: previewState(unit.id), units: [unit.id] })
+		)
+	);
+});
 for (const viewport of catalogViewports) {
 	for (const unit of catalogUnits) {
 		test(`${unit.id} at ${viewport.id}`, async ({ page }) => {
@@ -24,11 +38,9 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.component.explorer-function-card') {
 				await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
 				await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');
+				await expect(component.getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();
 				await expect(
-					component.getByRole('link', { name: 'Order list', exact: true })
-				).toBeVisible();
-				await expect(
-					component.getByRole('link', { name: 'Order store', exact: true })
+					component.getByRole('link', { name: 'OrderStore', exact: true })
 				).toBeVisible();
 			}
 			if (unit.id === 'reports.component.usage-examples-usage-examples')
@@ -72,7 +84,7 @@ for (const viewport of catalogViewports) {
 				await expect(component.locator('img')).toHaveCSS('object-fit', 'contain');
 				await expect(component.locator('img')).toHaveAttribute('src', /synthetic-card-input\.svg$/);
 				await expect(
-					component.getByRole('link', { name: 'Open Order card', exact: true })
+					component.getByRole('link', { name: 'Open OrderCard', exact: true })
 				).toHaveAttribute('title', /Synthetic preview input/);
 			}
 			await expect
