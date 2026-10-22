@@ -61,7 +61,7 @@ test.each([false, true])(
 		const program = `
 		const { default: entry } = await import('./playwright.config.ts');
 		const { default: owner } = await import('./src/config/development-tooling/desktopPlaywrightConfig.ts');
-		console.log(JSON.stringify({ same: entry === owner, url: entry.use.baseURL, reuse: entry.webServer.reuseExistingServer }));
+		console.log(JSON.stringify({ same: entry === owner, url: entry.use.baseURL, reuse: entry.webServer.reuseExistingServer, serverPort: entry.webServer.env?.HARNESS_DESKTOP_TEST_PORT ?? null }));
 	`;
 		const cold = await new Promise<{ code: number; output: string }>((done) => {
 			execFile('bun', ['--eval', program], { cwd: desktop, env }, (error, stdout, stderr) =>
@@ -72,7 +72,8 @@ test.each([false, true])(
 		expect(JSON.parse(cold.output), 'Every browser mode must honor its owned port').toEqual({
 			same: true,
 			url: `http://127.0.0.1:${other.port}`,
-			reuse: false
+			reuse: false,
+			serverPort: other.port
 		});
 		const run = await ordinaryRun(other.port, verifying);
 		expect(browsers(other.agents)).toEqual([]);

@@ -6,7 +6,7 @@
 	"name": "desktop-verification-port",
 	"goal": "Give each verified browser run its own port while honoring overrides and refusing foreign servers",
 	"createdAt": "2026-10-22T03:42:38.452Z",
-	"updatedAt": "2026-10-22T03:43:33.345Z",
+	"updatedAt": "2026-10-22T03:46:15.999Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -31,7 +31,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:46:15.999Z",
+			"evidence": "Sealed b4b3e0c9 at eb9868ed5: the cold verified configuration chooses 5797 instead of its named owned port; ordinary mode and foreign-server refusal pass."
 		},
 		{
 			"id": "implement",
