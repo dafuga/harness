@@ -41,6 +41,7 @@ function tabQuery(location: ExplorerLocation, search: string): string | null | u
 
 /** The tab a query names, when the shown section has it and it is not the default one. */
 export function tabOf(location: ExplorerLocation, search: string): ExplorerTab | undefined {
+	if (location.category === 'platforms') return undefined;
 	if (!location.entity && !location.helper) return undefined;
 	const [, ...others] = explorerTabs[location.section ?? 'overview'] as readonly ExplorerTab[];
 	const asked = tabQuery(location, search);

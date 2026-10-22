@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-explorer-platforms-platform-status",
+	"kind": "function",
+	"title": "platformStatus",
+	"responsibility": "Maps platform declarations to labels and icons for the two platform views.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/utils/explorer-ui/explorer-platforms/platformStatus.ts"],
+		"symbols": ["platformViews", "unrecorded", "platformStatus"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "platformStatus.platform",
+				"type": "PlatformEntry"
+			}
+		],
+		"outputs": [
+			{
+				"name": "platformViews",
+				"type": "readonly PlatformView[]"
+			},
+			{
+				"name": "unrecorded",
+				"type": "unknown"
+			},
+			{
+				"name": "platformStatus",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-ui-platform-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-icons",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-ui/explorer-platforms/platformStatus.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-ui/explorer-platforms/platformStatus.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

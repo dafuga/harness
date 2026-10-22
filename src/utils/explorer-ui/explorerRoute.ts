@@ -2,7 +2,7 @@ import { tabOf, type ExplorerTab } from '../explorer-route/explorerTabs';
 export { explorerTabs, type ExplorerTab } from '../explorer-route/explorerTabs';
 
 /** The seven kinds of entity the explorer shows, in the order of its navigation. */
-export const explorerCategories = [
+export const explorerEntityCategories = [
 	'pages',
 	'shells',
 	'components',
@@ -11,6 +11,7 @@ export const explorerCategories = [
 	'services',
 	'models'
 ] as const;
+export const explorerCategories = [...explorerEntityCategories, 'platforms'] as const;
 export type ExplorerCategory = (typeof explorerCategories)[number];
 
 /** The kinds of unit a product is made of, each under the one category it is listed in. */
@@ -120,14 +121,15 @@ function scope(parts: string[]): Scope | undefined {
 	return { branch, commit, rest: commit === null ? after : after.slice(2) };
 }
 
-/** The entity and section the parts after a category name; null when they name neither. */
-function selection(rest: string[]): Pick<ExplorerLocation, 'entity' | 'section'> | null {
+type Selection = Pick<ExplorerLocation, 'entity' | 'section'> | null;
+/** The entity and supported section after a category name. */
+function selection(rest: string[], allowSections = true): Selection {
 	const [id, section, ...extra] = rest;
 	if (id === undefined) return {};
 	const entity = decoded(id);
 	if (!entity || extra.length > 0) return null;
 	if (section === undefined) return { entity };
-	return isSection(section) ? { entity, section } : null;
+	return allowSections && isSection(section) ? { entity, section } : null;
 }
 
 /**
@@ -141,7 +143,7 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	if (!found) return undefined;
 	const [category = 'pages', ...after] = found.rest;
 	if (category === 'helpers') return helperSelection(found, after);
-	const selected = isCategory(category) ? selection(after) : null;
+	const selected = isCategory(category) ? selection(after, category !== 'platforms') : null;
 	if (!isCategory(category) || !selected) return undefined;
 	const { branch, commit } = found;
 	const location: ExplorerLocation = { branch, commit, category, ...selected };

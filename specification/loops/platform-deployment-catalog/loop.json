@@ -2,11 +2,9 @@
 	"name": "platform-deployment-catalog",
 	"goal": "Expose supported app platforms and their revision-bound deployment configurations through a Platforms list and detail pages.",
 	"createdAt": "2026-10-22T19:56:05.374Z",
-	"updatedAt": "2026-10-22T20:00:43.127Z",
+	"updatedAt": "2026-10-22T20:36:29.872Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:36:28.949Z",
+			"evidence": "Implemented four revision-bound platform pages with shared navigation and filter controls; Opus authored the frontend edits."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:36:29.872Z",
+			"evidence": "78 focused root checks, 67 Reports checks, 4 platform browser tests and 38 navbar browser checks pass; types, lint, builds, registry and audits checked. Final immutable capture follows. Full CLI/native suites deferred by Daniel."
 		},
 		{
 			"id": "verify",

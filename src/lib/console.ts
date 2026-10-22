@@ -40,6 +40,7 @@ export { type IndexedHistory } from '../utils/projects-sessions/console-canonica
 export { explorerLegacy } from '../utils/projects-sessions/console-canonical/explorerLegacy';
 export {
 	explorerCategories,
+	explorerEntityCategories,
 	explorerKindCategory,
 	explorerRoute,
 	explorerRoutePath,
