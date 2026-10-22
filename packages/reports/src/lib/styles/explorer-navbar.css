@@ -1,4 +1,4 @@
-/* The bar every explorer route shares: the brand, seven categories, the revision that is viewed. */
+/* The bar every explorer route shares: the brand, navigation, and the revision that is viewed. */
 .hx-nav {
 	--hx-nav-gap: clamp(10px, 1.1vw, 22px);
 	display: flex;
@@ -150,7 +150,7 @@
 		margin-left: calc(-40px - var(--hx-nav-gap));
 	}
 }
-/* A phone: the brand and the search, the seven categories across the screen, then the fields. */
+/* A phone: the brand and search, navigation across the screen, then the revision fields. */
 @media (max-width: 720px) {
 	.hx-nav {
 		min-height: 0;

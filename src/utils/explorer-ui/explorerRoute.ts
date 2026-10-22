@@ -12,6 +12,7 @@ export const explorerCategories = [
 	'models'
 ] as const;
 export type ExplorerCategory = (typeof explorerCategories)[number];
+export type ExplorerScreen = 'styles';
 
 /** The kinds of unit a product is made of, each under the one category it is listed in. */
 const kinds = new Map<string, ExplorerCategory>([
@@ -67,6 +68,8 @@ export interface ExplorerLocation {
 	/** The full hash of a selected commit; null shows the branch at whatever its tip is. */
 	commit: string | null;
 	category: ExplorerCategory;
+	/** A design-system screen, separate from the entity categories. */
+	screen?: ExplorerScreen;
 	/** The id of a unit; absent on the index of a category. */
 	entity?: string;
 	/** A callable within its owning unit, resolved at the selected revision. */
@@ -141,6 +144,8 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	if (!found) return undefined;
 	const [category = 'pages', ...after] = found.rest;
 	if (category === 'helpers') return helperSelection(found, after);
+	if (category === 'styles' && after.length === 0)
+		return { branch: found.branch, commit: found.commit, category: 'pages', screen: 'styles' };
 	const selected = isCategory(category) ? selection(after) : null;
 	if (!isCategory(category) || !selected) return undefined;
 	const { branch, commit } = found;
@@ -166,6 +171,7 @@ export function explorerRoutePath(location: ExplorerLocation): string {
 	location = canonicalExplorerLocation(location);
 	const branch = location.branch === null ? '' : `/branch/${encodeURIComponent(location.branch)}`;
 	const commit = location.commit === null ? '' : `/commit/${location.commit}`;
+	if (location.screen === 'styles') return `${branch}${commit}/styles`;
 	const callable = helperPath(location);
 	if (callable) return `${branch}${commit}${callable}`;
 	const entity = location.entity ? `/${encodeURIComponent(location.entity)}` : '';

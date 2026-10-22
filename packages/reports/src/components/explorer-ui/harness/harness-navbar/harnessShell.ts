@@ -11,16 +11,17 @@ import type {
 } from '../../../../models/explorer-ui/Explorer.types';
 import { branchCommits } from './harnessAncestry';
 import { retainedBranch } from '../../../../utils/explorer-ui/harnessAncestry';
-import { categoryIcon } from '../../../../utils/explorer-ui/harnessIcons';
+import { categoryIcon, type HarnessIconName } from '../../../../utils/explorer-ui/harnessIcons';
 
-const labels: Array<[ExplorerCategory, string]> = [
+const labels: Array<[ExplorerCategory | 'styles', string]> = [
 	['pages', 'Pages'],
 	['shells', 'Shells'],
 	['components', 'Components'],
 	['functions', 'Helpers'],
 	['configs', 'Configs'],
 	['services', 'Services'],
-	['models', 'Models']
+	['models', 'Models'],
+	['styles', 'Styles']
 ];
 
 function viewed(scope: ExplorerScope): string {
@@ -66,9 +67,22 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
 	const categories = labels.map(([id, label]) => {
-		const to = place ? { branch: place.branch, commit: place.commit, category: id } : null;
-		const active = place?.category === id;
-		return { id, label, icon: categoryIcon[id], active, href: to ? input.href(to) : null, to };
+		const to = place
+			? id === 'styles'
+				? {
+						branch: place.branch,
+						commit: place.commit,
+						category: 'pages' as const,
+						screen: 'styles' as const
+					}
+				: { branch: place.branch, commit: place.commit, category: id }
+			: null;
+		const active =
+			id === 'styles'
+				? place?.screen === 'styles'
+				: place?.screen !== 'styles' && place?.category === id;
+		const icon: HarnessIconName = id === 'styles' ? 'styles' : categoryIcon[id];
+		return { id, label, icon, active, href: to ? input.href(to) : null, to };
 	});
 	return {
 		home: { href: tip ? input.href(tip) : input.base, to: tip },

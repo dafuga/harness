@@ -96,7 +96,7 @@ test('local CPU API returns the real server process sample', async ({ request })
 	);
 });
 
-test('the root fits mobile, has six categories and offers no way to analytics', async ({
+test('the root fits mobile, shows the Harness navigation and offers no way to analytics', async ({
 	page
 }) => {
 	await page.setViewportSize({ width: 390, height: 844 });

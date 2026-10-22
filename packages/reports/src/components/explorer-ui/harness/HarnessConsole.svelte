@@ -24,7 +24,7 @@
 		path: string;
 		/** Goes to another page; `replace` when the address only becomes more exact. */
 		navigate: (path: string, replace: boolean) => void;
-		/** Accepted from earlier hosts and not drawn: the explorer has six categories and no more. */
+		/** Accepted from earlier hosts and not drawn: the explorer's navigation is rendered here. */
 		links?: Array<{ label: string; href: string }>;
 		/** False where the host serves no export endpoint, so no dead link is offered. */
 		exportable?: boolean;
@@ -64,7 +64,7 @@
 		navigate(next, false);
 		const from = shown?.scope.location ?? scope?.location;
 		if (
-			['category', 'entity', 'helper', 'section'].some(
+			['category', 'screen', 'entity', 'helper', 'section'].some(
 				(key) => to[key as keyof ExplorerLocation] !== from?.[key as keyof ExplorerLocation]
 			)
 		)
@@ -94,6 +94,7 @@
 			at?.branch,
 			at?.commit,
 			at?.category,
+			at?.screen,
 			at?.entity,
 			at?.helper,
 			at?.section

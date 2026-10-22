@@ -19,11 +19,20 @@ import {
 	shellOrigin
 } from './support/shellFixture';
 /**
- * The bar of the explorer, looked at alone over a made-up history: the brand, seven categories
+ * The bar of the explorer, looked at alone over a made-up history: the brand, seven entity categories
  * and the revision that is viewed. Its page is built by this run and answered from its own
  * files; no server is started.
  */
-const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
+const categories = [
+	'Pages',
+	'Shells',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models',
+	'Styles'
+];
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;
@@ -61,7 +70,7 @@ async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 }
 
 for (const [screen, width, height] of screens) {
-	test(`the bar shows six categories with an icon above each label at ${screen} width`, async ({
+	test(`the bar shows its navigation with an icon above each label at ${screen} width`, async ({
 		page
 	}) => {
 		const bar = await opened(page, width, height);
