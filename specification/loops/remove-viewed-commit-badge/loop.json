@@ -1,0 +1,56 @@
+{
+	"name": "remove-viewed-commit-badge",
+	"goal": "History rows highlight the selected commit without showing a redundant Viewed commit badge.",
+	"createdAt": "2026-10-22T11:35:31.607Z",
+	"updatedAt": "2026-10-22T11:36:21.956Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-22T11:36:21.155Z",
+			"evidence": "Acceptance: remove the redundant Viewed commit pill from entity history rows while preserving the selected row highlight; applies to all entity history pages."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-22T11:36:21.956Z",
+			"evidence": "Coverage gap: entity-history.test.ts asserts Viewed commit is present; harness-explorer-routes.spec.ts redirects the legacy history URL to the service history page but checks only its URL. Extend that existing route flow with absence and selected-row assertions after a screenshot checkpoint."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
