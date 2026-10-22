@@ -13,4 +13,4 @@ createServer(async (request, response) => {
 		response.writeHead(500);
 		response.end('Compiled renderer unavailable');
 	}
-}).listen(5797, '127.0.0.1');
+}).listen(Number(process.env.HARNESS_DESKTOP_TEST_PORT ?? '5797'), '127.0.0.1');
