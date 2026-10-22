@@ -60,6 +60,10 @@ for (const [name, size] of Object.entries(viewports)) {
 			});
 			await capture(tab, `grid-${category}-${name}`);
 			const cards = tab.getByRole('article');
+			for (const usage of await cards.getByRole('group', { name: 'Used In', exact: true }).all())
+				expect
+					.soft(await usage.getByRole('link').count(), 'At most three consumers per card')
+					.toBeLessThanOrEqual(3);
 			await expect(
 				cards,
 				'collections use cards; helpers and models require two distinct visible consumers'
