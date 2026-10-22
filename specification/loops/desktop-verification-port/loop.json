@@ -6,11 +6,9 @@
 	"name": "desktop-verification-port",
 	"goal": "Give each verified browser run its own port while honoring overrides and refusing foreign servers",
 	"createdAt": "2026-10-22T03:42:38.452Z",
-	"updatedAt": "2026-10-22T03:46:15.999Z",
+	"updatedAt": "2026-10-22T03:49:46.592Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -38,12 +36,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:49:45.196Z",
+			"evidence": "Both browser modes honor explicit ports, otherwise select a free loopback port. The static fixture receives that same port; existing-server refusal remains enabled."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:49:46.592Z",
+			"evidence": "Sealed 527eff29 red and 2dc43319 green at 62a3f47f3: unchanged four-case ownership matrix proves both modes use the named port and refuse foreign content."
 		},
 		{
 			"id": "verify",
