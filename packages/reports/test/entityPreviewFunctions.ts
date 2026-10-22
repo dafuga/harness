@@ -98,6 +98,12 @@ export async function reviewModelCard(page: Page, viewport: string): Promise<voi
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage.getByRole('link', { name: 'OrderList', exact: true })).toHaveCount(1);
 		await expect(usage.getByRole('link', { name: 'OrderStore', exact: true })).toHaveCount(1);
+		await expect(usage.getByRole('list'), 'model consumers share one flat list').toHaveCount(1);
+		for (const label of ['Components', 'Services'])
+			await expect(
+				usage.getByText(label, { exact: true }),
+				'model cards omit category headings'
+			).toHaveCount(0);
 		await page.getByRole('searchbox', { name: 'Search models' }).fill('absent-model');
 		await expect(page.getByRole('article')).toHaveCount(0);
 		await page.getByRole('button', { name: 'Show all models', exact: true }).click();

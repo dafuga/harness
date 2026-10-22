@@ -70,6 +70,15 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 			expect(await fits(tab)).toBe(true);
 			if (category === 'models') {
+				for (const modelCard of await cards.all()) {
+					const usage = modelCard.getByRole('group', { name: 'Used In', exact: true });
+					await expect(usage.getByRole('list'), 'model consumers use one flat list').toHaveCount(1);
+					for (const label of ['Pages', 'Components', 'Services'])
+						await expect(
+							usage.getByText(label, { exact: true }),
+							'model cards omit category headings'
+						).toHaveCount(0);
+				}
 				await reviewModelCard(tab, name);
 				expect(browserErrors, 'the model browser flow has no console or page errors').toEqual([]);
 			}
