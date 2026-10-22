@@ -8,7 +8,7 @@ import {
 } from '../scripts/ios-acceptance-guards';
 import { readPairingOffer } from '../../remote/src/index';
 import { AcceptanceRecord } from '../scripts/ios-acceptance-record';
-import { mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { GitAdapter } from '../../../src/adapters/GitAdapter';
@@ -109,3 +109,48 @@ async function refusedSource(metadata: string, commit = 'unselected') {
 	expect(result.exitCode).toBe(1);
 	return result.stderr;
 }
+
+test('native snapshot inventories include the actual renderer, shell and fixture source', async () => {
+	const root = resolve(import.meta.dirname, '../../..');
+	const source = new GitAdapter(root);
+	const commit = process.env.HARNESS_VERIFY_REVISION ?? (await source.run(['rev-parse', 'HEAD']));
+	const objects =
+		process.env.HARNESS_VERIFY_GIT_OBJECTS ??
+		(await source.run(['rev-parse', '--path-format=absolute', '--git-path', 'objects']));
+	const format =
+		process.env.HARNESS_VERIFY_GIT_OBJECT_FORMAT ??
+		(await source.run(['rev-parse', '--show-object-format']));
+	const metadata = await mkdtemp(join(root, '.cache/native-inventory-'));
+	try {
+		const git = new GitAdapter(metadata);
+		await git.run(['init', '--bare', `--object-format=${format}`, '.']);
+		await writeFile(join(metadata, 'objects/info/alternates'), objects + '\n');
+		await git.run(['update-ref', '--no-deref', 'HEAD', commit]);
+		await git.run(['read-tree', 'HEAD']);
+		const tree = await git.run(['rev-parse', 'HEAD^{tree}']);
+		const program =
+			'const { readSources } = await import(process.argv[1]); console.log(JSON.stringify(Object.fromEntries(Object.entries(readSources()).map(([key, files]) => [key, files.size]))));';
+		const result = await runCommand(
+			[
+				'bun',
+				'--eval',
+				program,
+				resolve(import.meta.dirname, '../scripts/ios-acceptance-source.ts')
+			],
+			resolve(import.meta.dirname, '..'),
+			true,
+			{
+				HARNESS_NATIVE_SOURCE_GIT_DIR: metadata,
+				HARNESS_VERIFY_REVISION: commit,
+				HARNESS_VERIFY_TREE: tree
+			}
+		);
+		const sizes = JSON.parse(result.stdout);
+		for (const kind of ['renderer', 'native', 'fixtureComputer'])
+			expect(sizes[kind], 'Native snapshot inventories must contain actual source').toBeGreaterThan(
+				0
+			);
+	} finally {
+		await rm(metadata, { recursive: true, force: true });
+	}
+});
