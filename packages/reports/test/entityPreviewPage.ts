@@ -13,7 +13,7 @@ import {
 	reviewProfileRows
 } from './entityPreviewOverview';
 import { commits, ids } from './entityUnits';
-import { capture, ready } from './entityPreviewCapture';
+import { capture, ready, previewIdentity } from './entityPreviewCapture';
 export { capture, ready } from './entityPreviewCapture';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
@@ -31,19 +31,17 @@ const types: Record<string, string> = {
 	'.wav': 'audio/wav',
 	'.json': 'application/json'
 };
-function shell(home: string, variant: PreviewVariant = ''): string {
+async function shell(home: string, variant: PreviewVariant = ''): Promise<string> {
 	const sheets = readdirSync(home).filter((name) => name.endsWith('.css'));
 	const hashes = readFileSync(join(home, 'hashes.json'), 'utf8');
 	const links = sheets.map((name) => `<link rel="stylesheet" href="/${name}">`).join('');
+	const build = JSON.stringify(await previewIdentity());
 	return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">${links}</head>
 <body><div class="hx-shell"><main class="hx-main" id="app"></main></div>
-<script>window.artifactHashes=${hashes};window.previewVariant=${JSON.stringify(variant)}</script><script src="/preview.iife.js"></script></body></html>`;
+<script>window.previewBuild=${build};window.previewInitialUrl=location.href;window.artifactHashes=${hashes};window.previewVariant=${JSON.stringify(variant)}</script><script src="/preview.iife.js"></script></body></html>`;
 }
-/**
- * Opens the content at an address, served from the built preview and from nowhere else. A
- * variant asks for the selected commit with a state uncaptured or with reasons at old length.
- */
+/** Opens a compiled fixture at its requested address and synthetic history variant. */
 export async function open(
 	page: Page,
 	route: Partial<ExplorerLocation> = {},
@@ -54,11 +52,14 @@ export async function open(
 	// Keep asset routes installed while this page switches views, including pending lazy reads.
 	await page.goto('about:blank');
 	if (!served.has(page)) {
-		await page.route(`${origin}/**`, (request) => {
+		await page.route(`${origin}/**`, async (request) => {
 			const path = new URL(request.request().url()).pathname;
 			const file = join(home, path.replace(/^\/harness\/media\//, 'media/'));
 			if (path === '/' || /^\/harness\/(branch|commit)\//.test(path))
-				return request.fulfill({ contentType: 'text/html', body: shell(home, variants.get(page)) });
+				return request.fulfill({
+					contentType: 'text/html',
+					body: await shell(home, variants.get(page))
+				});
 			if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
 			return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });
 		});
