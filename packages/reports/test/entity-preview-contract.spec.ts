@@ -45,7 +45,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await capture(
 				tab,
 				`page-models-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`,
-				modelUnits
+				['reports.component.harness-entity-overview']
 			);
 			await expect(tab.getByRole('tab', { name: 'Contract', exact: true })).toHaveCount(0);
 			await tab.getByRole('tab', { name: 'Models', exact: true }).click();
