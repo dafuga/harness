@@ -1,0 +1,68 @@
+{
+	"completion": {
+		"version": 1,
+		"kind": "coding"
+	},
+	"name": "native-card-navigation",
+	"goal": "Keep native acceptance navigation aligned with the actual compact planned-page card accessibility contract",
+	"createdAt": "2026-10-22T02:35:11.130Z",
+	"updatedAt": "2026-10-22T02:36:28.275Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-22T02:36:27.252Z",
+			"evidence": "Actual simulator runs at 926b52ce7 and 271d5ecac pass pairing and project opening but stop at the next pressed assertion. The compact page card from 64ee5cbb9 removed Review designs and exposes the Open page accessible link."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-22T02:36:28.275Z",
+			"evidence": "Browser tests click current card controls directly and never execute the authored native openDesign helper. Extend the existing phone corpus to run its actual expressions against the rendered phone UI and assert the design route and decoded image."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
