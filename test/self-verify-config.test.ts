@@ -5,6 +5,7 @@ import { verifyConfigSchema } from '../src/core/verifyTypes';
 import { scenarioManifestSchema, type ScenarioManifest } from '../src/core/unitTypes';
 import { verificationTarget } from './verification-targets';
 import { taskProfile } from './support/taskProfiles';
+import { declaredOutput } from '../src/adapters/snapshot-adapter/snapshotAdditions';
 
 interface Manifest {
 	owns: { source: string[] };
@@ -46,6 +47,11 @@ test('this repository requires profiling and declares no source as something a c
 	for (const build of config.builds) {
 		expect(config.outputs.some((declared) => covers(declared, `${build.directory}/x`))).toBe(true);
 	}
+	const generated = 'packages/desktop/ios/capacitor-cordova-ios-plugins/';
+	for (const file of ['CordovaPluginsResources.podspec', 'resources/.gitkeep', 'sources/.gitkeep'])
+		expect(declaredOutput(generated + file, config.outputs), file).toBe(true);
+	for (const source of ['sources/Plugin.swift', 'resources/native-source.json'])
+		expect(declaredOutput(generated + source, config.outputs), source).toBe(false);
 });
 
 function registeredStates(scenario: ScenarioManifest) {
