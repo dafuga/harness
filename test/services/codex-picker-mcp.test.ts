@@ -1,3 +1,4 @@
+import { observedTaskOperation } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
@@ -26,7 +27,11 @@ test('MCP exposes a thread panel and explicit pending switch tools, with no appl
 			mimeType: 'text/html;profile=mcp-app',
 			text: '<html>Panel fixture</html>'
 		});
-		const opened = await client.callTool({ name: 'open_model_picker', arguments: {} });
+		const opened = await observedTaskOperation(
+			'service.codex-picker-mcp',
+			'read-picker-through-in-memory-mcp',
+			() => client.callTool({ name: 'open_model_picker', arguments: {} })
+		);
 		expect(opened.structuredContent).toMatchObject({
 			sessionId: null,
 			active: null,

@@ -1,3 +1,4 @@
+import { observedTaskOperation } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
 import { CpuUsageService } from '../../src/services/cpu-usage-service/CpuUsageService';
 test('concurrent CPU requests share one sampler', async () => {
@@ -13,7 +14,13 @@ test('concurrent CPU requests share one sampler', async () => {
 		}
 	};
 	const service = new CpuUsageService(adapter);
-	const [a, b] = await Promise.all([service.snapshot(), service.snapshot()]);
+	const first = service.snapshot(),
+		second = service.snapshot();
+	expect(first).toBe(second);
+	const [a, b] = await Promise.all([
+		observedTaskOperation('service.cpu-usage', 'shared-snapshot-synthetic-counters', () => first),
+		second
+	]);
 	expect(a).toBe(b);
 	expect(calls).toBe(2);
 	expect(a.machinePercent).toBe(50);

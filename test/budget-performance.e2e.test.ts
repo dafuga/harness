@@ -1,3 +1,4 @@
+import { observedTaskOperation } from './support/taskProfiles';
 import { UnitBenchmarkService } from '../src/services/UnitBenchmarkService';
 import type { ComponentManifest } from '../src/core/unitTypes';
 import { runCommand } from './support/cli';
@@ -196,10 +197,15 @@ async function assertBenchmarkDriver(repo: VerifyRepo, expectedDigest: string) {
 	);
 	const manifest = await repo.json<ComponentManifest>('specification/units/function.rank.json');
 	const target = { kind: 'module' as const, entry, handler: 'rank' };
-	const driver = await new UnitBenchmarkService(repo.root).measure(
-		{ ...manifest, runtime: { ...target, targets: [target] } },
-		{ ...rankWorkload, schemaVersion: 1, rounds: 3, iterations: 10 },
-		'module'
+	const driver = await observedTaskOperation(
+		'service.unit-benchmark',
+		'measure-compiled-rank-module',
+		() =>
+			new UnitBenchmarkService(repo.root).measure(
+				{ ...manifest, runtime: { ...target, targets: [target] } },
+				{ ...rankWorkload, schemaVersion: 1, rounds: 3, iterations: 10 },
+				'module'
+			)
 	);
 	expect(driver.responseDigest).toBe(expectedDigest);
 	const rss = driver.measurements.find((metric) => metric.metric === 'process-peak-rss-bytes');
