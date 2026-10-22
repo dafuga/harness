@@ -145,6 +145,27 @@ async function observations(page: Page, workload: string) {
 		}
 	];
 }
+/** Keeps one evidence region without unrelated page previews around it. */
+export async function captureRegion(
+	page: Page,
+	selector: string,
+	name: string,
+	units = ['reports.component.harness-explorer-content']
+): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== '1') return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await new Promise(requestAnimationFrame);
+		await new Promise(requestAnimationFrame);
+	});
+	await ready(page);
+	const region = page.locator(selector);
+	await expect(region).toBeVisible();
+	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
+	mkdirSync(directory, { recursive: true });
+	const pixels = await region.screenshot({ path: join(directory, `${name}.png`) });
+	await retain(page, { name, units, pixels });
+}
 /** Wait for the visible capture to render without forcing offscreen lazy images to load. */
 export async function ready(page: Page): Promise<void> {
 	await page.evaluate(async () => {
@@ -153,6 +174,15 @@ export async function ready(page: Page): Promise<void> {
 			const box = image.getBoundingClientRect();
 			return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
 		});
-		await Promise.all(visible.map((image) => image.decode()));
+		await Promise.all(
+			visible.map(async (image) => {
+				const deadline = Date.now() + 10_000;
+				while (!image.complete && Date.now() < deadline)
+					await new Promise((resolve) => setTimeout(resolve, 50));
+				await image.decode?.();
+				if (!image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0)
+					throw new Error(`Image not ready: ${image.currentSrc || image.src || image.alt}`);
+			})
+		);
 	});
 }

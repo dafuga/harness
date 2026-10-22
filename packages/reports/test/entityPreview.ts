@@ -82,7 +82,7 @@ if (variant === 'declared') {
 	for (const [commit, detail] of Object.entries(stored)) {
 		const { registry } = detail;
 		const units = registry.units.map((unit) => {
-			if (unit.id === ids.page) return { ...unit, contract: declaredContract };
+			if (unit.id === ids.settings) return { ...unit, contract: declaredContract };
 			return unit.id === ids.filter ? callableFixture(unit) : unit;
 		});
 		stored[commit] = withServiceContracts({ ...detail, registry: { ...registry, units } });
