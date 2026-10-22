@@ -106,6 +106,7 @@ function methodContract(
 	const returns = under(unit.contract.outputs, true).map((item) =>
 		returnField(item, typeLabel(item.type), owner, unit)
 	);
+	const errors = under(unit.contract.errors, true);
 	const groups: ContractGroup[] = [
 		{
 			id: 'inputs',
@@ -119,15 +120,16 @@ function methodContract(
 			title: 'Returns',
 			none: method === 'constructor' ? 'Creates the service.' : 'No return value declared.',
 			fields: returns
-		},
-		{
+		}
+	];
+	if (errors.length > 0)
+		groups.push({
 			id: 'errors',
 			title: 'Throws',
 			none: 'No errors declared for this method.',
-			fields: under(unit.contract.errors, true).map((item) => fieldOf(item, unit)),
+			fields: errors.map((item) => fieldOf(item, unit)),
 			hideNames: true
-		}
-	];
+		});
 	const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
 	const type = returns[0]?.type;
 	return { name, signature: `${name}(${args})${type ? `: ${type}` : ''}`, groups };

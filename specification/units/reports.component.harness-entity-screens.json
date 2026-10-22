@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-screens",
 	"kind": "component",
 	"title": "Entity screenshots",
-	"responsibility": "Displays recorded screenshots with viewport selection and revision comparison context. Images open their full-size viewer, which retains capture provenance without a full verdict.",
+	"responsibility": "Displays recorded screenshots with viewport selection and their capture commit. Images open their full-size viewer, which retains capture provenance without a full verdict.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -56,7 +56,7 @@
 			{
 				"name": "EntityScreens",
 				"type": "markup",
-				"description": "Revision-only capture captions and viewport buttons. Activating an image opens its full-size viewer with provenance. No duplicate viewer buttons, status captions, scenario/state selectors or current-commit action. Rejected or absent captures remain explicit gaps."
+				"description": "Captions show the revision that recorded each screenshot; a comparison retains Before/After labels with each capture's revision. Viewport buttons change only the viewport. Activating an image opens its full-size viewer with provenance. Rejected or absent captures remain explicit gaps."
 			}
 		],
 		"errors": []
