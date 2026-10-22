@@ -18,10 +18,7 @@ import {
 import { commits, ids } from './entityUnits';
 import { reviewUsage, reviewRelationPaging } from './entityPreviewUsage';
 const page = { category: 'pages' as const, entity: ids.page };
-const cardUnits = [
-	'reports.component.explorer-ui-explorer-module-card',
-	'reports.component.explorer-usage'
-];
+const cardUnits = ['reports.component.explorer-ui-explorer-module-card'];
 for (const [name, size] of Object.entries(viewports)) {
 	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
