@@ -3,11 +3,12 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Reads selected-revision helper contracts, service exports, concrete class proof and actual runtime consumers.",
+	"responsibility": "Reads selected-revision config values, helper contracts, service class proof and actual runtime consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/configValues.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelperCalls.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelpers.ts",
 			"src/services/explorer-ui/revision-detail-service/unitMetadata.ts",
@@ -18,6 +19,7 @@
 			"src/utils/unitMetadata.ts"
 		],
 		"symbols": [
+			"configValues",
 			"pureGlobals",
 			"pureHelperCalls",
 			"pureHelpers",
@@ -29,6 +31,7 @@
 			"PublicHelper",
 			"PublicServiceClass",
 			"UnitMetadata",
+			"ConfigVariable",
 			"SourceFileSnapshot",
 			"unitMetadata",
 			"unitMetadata"
@@ -45,14 +48,14 @@
 			{
 				"name": "unitMetadata.units",
 				"type": "Unit[]",
-				"description": "Registered entities to enrich with their documentation and exported shared helpers."
+				"description": "Registered entities to enrich with revision-bound config values, documentation and exported shared helpers."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitMetadata",
 				"type": "Promise<void>",
-				"description": "Attaches helper contracts and per-class declaration, instance-method, construction and consumer facts from the selected revision. Missing source is never replaced from another revision."
+				"description": "Attaches committed config initializers, helper contracts and service facts from the selected revision. Missing source never borrows values from another revision."
 			}
 		],
 		"errors": []

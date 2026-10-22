@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
 	"title": "Entity catalog table",
-	"responsibility": "Lists shell, function, config, service and model entities with columns for their category; pages and components use the shared visual card.",
+	"responsibility": "Lists config variables and source values in two columns, and remaining nonvisual entities with their category columns.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -24,7 +24,7 @@
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
-				"description": "Required catalog rows in display order. Used-by text falls back to pages where no direct users exist."
+				"description": "Required catalog rows in display order. Config rows contain variable names and committed source values, with links to their owning config."
 			},
 			{
 				"name": "ExplorerTable.nav",
@@ -34,7 +34,7 @@
 			{
 				"name": "ExplorerTable.verification",
 				"type": "boolean",
-				"description": "Defaults to true in catalogs; false in relationship tabs to omit verification indicators."
+				"description": "Defaults to true for module catalogs. Configs always show only Variable and Value columns; relationship tabs omit verification indicators."
 			},
 			{
 				"name": "ExplorerTable.lens",
@@ -51,7 +51,7 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "Catalog item using the shared Used In consumer links and screenshot previews, with navigation and captures bound to the selected revision. Other item facts and verification follow the category."
+				"description": "A two-column Variable/Value table for configs. Other nonvisual categories retain their module facts and shared usage links. All links remain scoped to the selected revision."
 			}
 		],
 		"errors": []

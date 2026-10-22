@@ -1,9 +1,33 @@
-import { expect, test } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports } from './entityPreviewPage';
+import { expect, test, type Page } from '../../../test/support/browserTest';
+import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 
 test.setTimeout(90_000);
+const configUnits = [
+	'reports.component.harness-explorer-table',
+	'reports.component.harness-explorer-content'
+];
+
+async function configVariables(page: Page, viewport: string): Promise<void> {
+	const table = page.getByRole('table', { name: 'Configs', exact: true });
+	await expect(table.getByRole('columnheader'), 'only variable and value columns').toHaveText([
+		'Variable',
+		'Value'
+	]);
+	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
+		'25'
+	);
+	await page.getByRole('searchbox').fill('newest');
+	await expect(table.getByRole('row')).toHaveCount(2);
+	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
+	await expect(page.getByRole('heading', { name: 'orderSettings', exact: true })).toBeVisible();
+	await open(page, { category: 'configs', commit: commits.first }, 'groups');
+	await capture(page, `groups-configs-historical-${viewport}`, configUnits);
+	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
+		'10'
+	);
+}
 
 for (const [viewport, size] of Object.entries(viewports)) {
 	test(`category folders group every collection and filter together at ${viewport}`, async ({
@@ -20,25 +44,19 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			'models'
 		] as const) {
 			await open(page, { category, commit: commits.middle }, 'groups');
-			await page.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all(
-					[...document.images]
-						.filter(
-							(image) =>
-								image.getBoundingClientRect().top < innerHeight &&
-								image.getBoundingClientRect().bottom > 0
-						)
-						.map((image) => image.decode())
-				);
-			});
-			await capture(page, `groups-${category}-${viewport}`);
+			await ready(page);
+			await capture(
+				page,
+				`groups-${category}-${viewport}`,
+				category === 'configs' ? configUnits : ['reports.component.harness-explorer-content']
+			);
 			await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(0);
 			await expect(page.getByRole('searchbox')).toBeVisible();
 			await expect
 				.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
 				.toBeVisible();
 			expect(await fits(page)).toBe(true);
+			if (category === 'configs') await configVariables(page, viewport);
 		}
 		await open(page, { category: 'components', commit: commits.middle }, 'groups');
 		await page.getByRole('searchbox').fill('SearchBox');
