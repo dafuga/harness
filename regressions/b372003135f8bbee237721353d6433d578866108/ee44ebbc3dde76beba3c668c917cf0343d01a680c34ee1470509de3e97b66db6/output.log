@@ -1,0 +1,28 @@
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+[WebServer] ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/zod/v4/core/core.js -> ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/zod/v4/core/util.js -> ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/smol-toml/dist/struct.js -> ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/smol-toml/dist/extract.js -> ../../../../../Users/danielfugere/.codex/worktrees/regression-commit-history/harness/node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+
+Running 1 test using 1 worker
+
+  ✓  1 tests/e2e/harness-explorer-evidence.spec.ts:143:1 › a component screenshot keeps one 4:3 frame across desktop, tablet and mobile captures (509ms)
+
+  1 passed (1.9m)
