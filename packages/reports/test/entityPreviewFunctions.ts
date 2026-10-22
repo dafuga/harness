@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
-import { capture, chooseCatalogFilter, fits, open, where } from './entityPreviewPage';
+import { capture, fits, open, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 
 /** Private functions stay reachable from their owner at the tip and a historical commit. */
@@ -102,7 +102,7 @@ export async function reviewModelCard(page: Page, viewport: string): Promise<voi
 		await page.getByRole('searchbox', { name: 'Search models' }).fill('absent-model');
 		await expect(page.getByRole('article')).toHaveCount(0);
 		await page.getByRole('button', { name: 'Show all models', exact: true }).click();
-		await chooseCatalogFilter(page, 'Usage filter', 'shared');
+		await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(0);
 		await expect(card).toHaveCount(1);
 		expect(await fits(page)).toBe(true);
 		await usage.getByRole('link', { name: 'OrderList', exact: true }).press('Enter');

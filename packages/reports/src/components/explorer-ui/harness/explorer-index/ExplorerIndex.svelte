@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { ExplorerCategory } from '../../../../models/explorer-ui/Explorer.types';
 	import { catalogFilter } from './entityCatalog';
-	import { catalogGroups, catalogSections } from './catalogGroups';
+	import { catalogSections } from './catalogGroups';
 	import { type CatalogFilter, type CatalogRow } from '../../../../utils/explorer-ui/entityCatalog';
 	import { entityLabels } from '../../../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../../../utils/explorer-ui/harnessIcons';
@@ -40,22 +40,11 @@
 	});
 	let label = $derived(entityLabels[category]);
 	let noun = $derived(label.title.toLowerCase());
-	let groups = $derived(grouped.has(category) ? catalogGroups(rows) : []);
-	/** The chosen categories this revision still has, so one that is gone hides nothing. */
-	let chosen = $derived(
-		(filter.groups ?? []).filter((id) => groups.some((group) => group.id === id))
-	);
-	let listed = $derived(catalogFilter(rows, { ...filter, groups: chosen }));
+	let listed = $derived(catalogFilter(rows, filter));
 	let sections = $derived(
 		grouped.has(category) ? catalogSections(listed).filter((section) => section.rows.length) : []
 	);
-	let filtered = $derived(
-		Boolean(filter.search.trim()) ||
-			filter.changedOnly ||
-			filter.verification !== 'all' ||
-			filter.usage !== 'all' ||
-			chosen.length > 0
-	);
+	let filtered = $derived(Boolean(filter.search.trim()));
 </script>
 
 <section class="ex-index" aria-labelledby="ex-index-title">
@@ -72,7 +61,7 @@
 	{:else if category === 'shells'}
 		<p class="ex-soft">A shell frames the pages of a host and holds the components they show.</p>
 	{/if}
-	<ExplorerControls {noun} {groups} bind:filter />
+	<ExplorerControls {noun} bind:filter />
 	<p class="ex-hidden" role="status">{listed.length} of {rows.length} {noun} shown</p>
 	{#if rows.length === 0}
 		<p class="ex-empty">No {noun} are in the registry of this revision.</p>
