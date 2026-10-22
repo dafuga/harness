@@ -1,4 +1,5 @@
 import { SnapshotAdapter } from '../../../../adapters/verification-evidence/snapshot-adapter/SnapshotAdapter';
+import { GitAdapter } from '../../../../adapters/git-source-history/GitAdapter';
 import {
 	verifyConfigFile,
 	type VerifyConfig
@@ -60,7 +61,8 @@ export class SnapshotRunService {
 		};
 		try {
 			for (const path of config.link) await snapshot.link(root, path);
-			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory });
+			const env = await this.sourceEnvironment();
+			const runner = new CheckRunService({ ...context, env, snapshot: snapshot.directory });
 			const misdeclared = snapshot.misdeclared().map(describeOutput);
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner);
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
@@ -81,6 +83,21 @@ export class SnapshotRunService {
 		} finally {
 			await snapshot.remove();
 		}
+	}
+
+	/** Read-only objects let native checks inventory the selected commit, never the live source. */
+	private async sourceEnvironment(): Promise<RunContext['env']> {
+		const git = new GitAdapter(this.run.root);
+		return {
+			...this.run.context.env,
+			HARNESS_VERIFY_GIT_OBJECTS: await git.run([
+				'rev-parse',
+				'--path-format=absolute',
+				'--git-path',
+				'objects'
+			]),
+			HARNESS_VERIFY_GIT_OBJECT_FORMAT: await git.run(['rev-parse', '--show-object-format'])
+		};
 	}
 
 	/** A declared tool that cannot say what it is counts as failed setup: nothing runs after it. */
