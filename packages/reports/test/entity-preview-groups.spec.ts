@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports, chooseCatalogFilter } from './entityPreviewPage';
+import { capture, fits, open, viewports, chooseCatalogFilter, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 
@@ -41,18 +41,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			'models'
 		] as const) {
 			await open(page, { category, commit: commits.middle }, 'groups');
-			await page.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all(
-					[...document.images]
-						.filter(
-							(image) =>
-								image.getBoundingClientRect().top < innerHeight &&
-								image.getBoundingClientRect().bottom > 0
-						)
-						.map((image) => image.decode())
-				);
-			});
+			await ready(page);
 			await capture(
 				page,
 				`groups-${category}-${viewport}`,
