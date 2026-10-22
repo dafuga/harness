@@ -6,7 +6,7 @@
 	"name": "kernel-memory-samples",
 	"goal": "Retain actual native and Wasm memory sample counts in kernel benchmark evidence",
 	"createdAt": "2026-10-22T00:37:35.612Z",
-	"updatedAt": "2026-10-22T00:37:37.028Z",
+	"updatedAt": "2026-10-22T00:48:15.915Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -31,17 +31,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T00:48:13.734Z",
+			"evidence": "Sealed red 89a0ec8a at f06c9b92f fails the unchanged normal kernel bench assertion: wasm memory sample count is undefined, expected 1."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T00:48:14.807Z",
+			"evidence": "f601012f9 counts actual memory snapshots. Follow-up 90bc2e243 keeps unavailable native observations uncounted. Tests retain the same counted-memory assertion."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T00:48:15.915Z",
+			"evidence": "Paired sealed green 7a68b25f at f601012f9 passes the same kernel bench test and frozen inputs. Current-source verification remains pending."
 		},
 		{
 			"id": "verify",
