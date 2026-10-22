@@ -21,7 +21,8 @@ export const categories = [
 	'Helpers',
 	'Configs',
 	'Services',
-	'Models'
+	'Models',
+	'Platforms'
 ];
 export const nav = (page: Page) => page.getByRole('navigation', { name: 'Harness categories' });
 export const branch = (page: Page) => page.getByRole('combobox', { name: 'Branch' });

@@ -89,3 +89,14 @@ export function shellHref(to: ExplorerLocation): string {
 	];
 	return `${shellMount}/${parts.join('/')}${to.tab ? `?tab=${to.tab}` : ''}`;
 }
+
+export const shellCategories = [
+	'Pages',
+	'Shells',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models',
+	'Platforms'
+];

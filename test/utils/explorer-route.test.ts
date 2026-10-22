@@ -59,7 +59,8 @@ test('has exactly seven categories, pages then shells first', () => {
 		'functions',
 		'configs',
 		'services',
-		'models'
+		'models',
+		'platforms'
 	]);
 });
 test.each(shapes)('current branch %s', (tail, selected) => {

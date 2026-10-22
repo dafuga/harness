@@ -35,7 +35,7 @@ const historical: ExplorerLocation = {
 const canonical = { ...historical };
 delete canonical.section;
 
-test('the bar has exactly seven categories, pages then shells first, each scoped to the branch and commit that are viewed', () => {
+test('the bar has exactly eight sections, pages then shells first, each scoped to the branch and commit that are viewed', () => {
 	const { categories } = view(historical);
 	expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 		['pages', 'Pages', 'pages'],
@@ -44,13 +44,21 @@ test('the bar has exactly seven categories, pages then shells first, each scoped
 		['functions', 'Helpers', 'functions'],
 		['configs', 'Configs', 'configs'],
 		['services', 'Services', 'services'],
-		['models', 'Models', 'database']
+		['models', 'Models', 'database'],
+		['platforms', 'Platforms', 'platforms']
 	]);
 	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
 	expect(categories.map((item) => item.href)).toEqual(
-		['pages', 'shells', 'components', 'functions', 'configs', 'services', 'models'].map(
-			(category) => `${scoped}/commit/${sha(4)}/${category}`
-		)
+		[
+			'pages',
+			'shells',
+			'components',
+			'functions',
+			'configs',
+			'services',
+			'models',
+			'platforms'
+		].map((category) => `${scoped}/commit/${sha(4)}/${category}`)
 	);
 	expect(categories[5].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
 	// Details of a function keep Functions active, and nothing else is.
@@ -136,7 +144,7 @@ test('a commit no branch reaches has no tip, says so, and is listed although no 
 	});
 });
 
-test('without a resolved address the bar keeps its seven categories and offers no revision', () => {
+test('without a resolved address the bar keeps its eight sections and offers no revision', () => {
 	const { revision, categories, home } = view(null);
 	expect(revision).toBeNull();
 	expect(home).toEqual({ href: shellMount, to: null });
@@ -147,7 +155,8 @@ test('without a resolved address the bar keeps its seven categories and offers n
 		'Helpers',
 		'Configs',
 		'Services',
-		'Models'
+		'Models',
+		'Platforms'
 	]);
 	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
 		true

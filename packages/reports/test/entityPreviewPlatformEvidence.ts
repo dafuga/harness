@@ -42,12 +42,9 @@ export async function capturePlatformEvidence(
 	const [, state, viewport] = match;
 	const served = await new BuildIdentityService().identify(previewHome());
 	if (!served) throw new Error('The platform preview build is missing.');
-	const units =
-		state === 'entry'
-			? ['reports.component.harness-harness-navbar']
-			: ['list', 'status-filter'].includes(state)
-				? listUnits
-				: detailUnits;
+	let units = detailUnits;
+	if (state === 'entry') units = ['reports.component.harness-harness-navbar'];
+	else if (['list', 'status-filter'].includes(state)) units = listUnits;
 	recordCapture(
 		{
 			evidence: state === 'status-filter' ? 'platform-filter-screen' : 'platform-screens',

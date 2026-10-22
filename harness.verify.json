@@ -14,6 +14,10 @@
 			"timeoutMs": 300000
 		},
 		{
+			"command": "cd packages/reports && ENTITY_PREVIEW_HOME=output/entity-preview bun -e \"import setup from './test/entityPreviewSetup'; await setup()\"",
+			"timeoutMs": 300000
+		},
+		{
 			"command": "bun run build:desktop",
 			"timeoutMs": 600000
 		},
@@ -272,6 +276,10 @@
 		{
 			"path": "packages/reports/test/entity-preview-groups.spec.ts",
 			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
+		},
+		{
+			"path": "packages/reports/test/entity-preview-platforms.spec.ts",
+			"command": "ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts {target}"
 		}
 	],
 	"tools": [
@@ -331,6 +339,10 @@
 		{
 			"id": "shell-fixture",
 			"directory": "packages/reports/output/shell-fixture"
+		},
+		{
+			"id": "entity-preview",
+			"directory": "packages/reports/output/entity-preview"
 		}
 	],
 	"writing": 2

@@ -1,3 +1,4 @@
+import type { PlatformCatalog } from '../../../src/core/explorer-ui/Platform.types';
 /** Deployment settings belonging to the synthetic Orders project, never the Harness app. */
 export const platformFixture = {
 	entries: [
@@ -42,4 +43,4 @@ export const platformFixture = {
 			sources: ['electron.config.ts']
 		}
 	]
-};
+} satisfies PlatformCatalog;
