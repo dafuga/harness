@@ -72,6 +72,15 @@ async function reviewAgentActivity(page: Page, viewport: string): Promise<void> 
 	await expect(built.getByText('Creates the service.')).toBeVisible();
 	// What no one method declares, and how the class runs, are said once beside the methods.
 	await expect(pane.getByText('ExpectedCliError', { exact: true })).toHaveCount(1);
+	expect(
+		await pane.evaluate((root) => {
+			const methods = root.querySelectorAll('[aria-label$=" method"]');
+			const errors = [...root.querySelectorAll('dt')].find(
+				(node) => node.textContent === 'Errors not tied to a method'
+			)!;
+			return Boolean(methods[methods.length - 1].compareDocumentPosition(errors) & 4);
+		})
+	).toBe(true);
 	await expect(pane.getByText('Runs as', { exact: true })).toHaveCount(1);
 	expect(await fits(page)).toBe(true);
 }

@@ -122,6 +122,9 @@ test('AgentActivityService shows each method it declares now, its class-wide err
 	expect(mirrored, 'the browser fixture shows the same methods').toEqual(declared);
 	expect(words(methodOf(body, 'roster'))).toContain('No parameters.');
 	expect(words(body)).toContain('Errors not tied to a method');
+	expect(body.indexOf('Errors not tied to a method')).toBeGreaterThan(
+		body.indexOf('aria-label="roster method"')
+	);
 	expect(words(body).split('ExpectedCliError')).toHaveLength(2);
 	for (const group of ['Inputs', 'Outputs', 'Errors'])
 		expect(body).not.toContain(`aria-label="${group}"`);
