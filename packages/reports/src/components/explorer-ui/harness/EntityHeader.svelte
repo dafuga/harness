@@ -32,7 +32,8 @@
 	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
 	let evidenceTab: 'states' | 'examples' | 'tests' = $derived.by(() => {
 		if (visual) return 'states';
-		return entity.category === 'functions' ? 'examples' : 'tests';
+		// Functions and services are shown by their authored uses; other kinds by their tests.
+		return ['functions', 'services'].includes(entity.category) ? 'examples' : 'tests';
 	});
 	const evidenceLabels = { states: 'States', examples: 'Examples', tests: 'Tests' };
 	const at = (place: Place = {}) =>

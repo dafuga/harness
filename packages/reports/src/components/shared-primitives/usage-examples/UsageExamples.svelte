@@ -1,11 +1,23 @@
 <script lang="ts">
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
 	import { usageExamples } from './usageExamples';
-	let { examples, setup }: { examples: UsageExample[]; setup?: string } = $props();
-	let snippets = $derived(usageExamples(examples, setup));
+	let {
+		examples,
+		setup,
+		setupTitle
+	}: { examples: UsageExample[]; setup?: string; setupTitle?: string } = $props();
+	// A titled setup leads once instead of preceding every call.
+	let lead = $derived(setupTitle ? setup : undefined);
+	let snippets = $derived(usageExamples(examples, lead ? undefined : setup));
 </script>
 
 <div class="examples">
+	{#if lead}
+		<article>
+			<h3>{setupTitle}</h3>
+			<pre><code>{lead}</code></pre>
+		</article>
+	{/if}
 	{#each examples as example, position (position)}
 		<article>
 			<h3>{example.name}</h3>

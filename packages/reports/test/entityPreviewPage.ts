@@ -69,15 +69,22 @@ export async function open(
 	await page.goto(`${origin}/${asked}#${encodeURIComponent(JSON.stringify(address))}`);
 	await page.locator('.ex-content').waitFor();
 }
-/** The address the content is at, as the preview keeps it. */
+/** Opens an address and the verification kept apart from its examples or states. */
+export async function openVerification(
+	page: Page,
+	route: Partial<ExplorerLocation> = {},
+	variant: PreviewVariant = ''
+): Promise<void> {
+	await open(page, route, variant);
+	const summary = page.locator('[role="tabpanel"] > details > summary');
+	await summary.filter({ hasText: 'Verification details' }).first().click();
+}
 export const where = (page: Page): Promise<ExplorerLocation> =>
 	page.evaluate(() => JSON.parse(decodeURIComponent(location.hash.slice(1))) as ExplorerLocation);
-/** What a locator shows as text, as a person reads it: nothing hidden, each space once. */
 export const shown = async (page: Page, selector: string): Promise<string[]> =>
 	page
 		.locator(selector)
 		.evaluateAll((all) => all.map((found) => (found as HTMLElement).innerText.trim()));
-/** True when nothing makes the page wider than its window. */
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
 function visualTabs(category: ExplorerLocation['category']): string[] {

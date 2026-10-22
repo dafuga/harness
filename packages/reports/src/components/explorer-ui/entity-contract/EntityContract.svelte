@@ -3,7 +3,13 @@
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 	import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 	import type { ContractRow } from '../../../utils/explorer-ui/entityContract';
-	import { callableContracts, contractFacts, contractFields } from './contractFields';
+	import {
+		callableContracts,
+		contractFacts,
+		contractFields,
+		type CallableContract
+	} from './contractFields';
+	import { serviceContract } from './serviceMethods';
 	import { type ContractField } from '../../../utils/explorer-ui/contractFields';
 	import ContractExample from '../../shared-primitives/ContractExample.svelte';
 	import ContractTable from '../../shared-primitives/ContractTable.svelte';
@@ -24,8 +30,16 @@
 	} = $props();
 	// A function's callables each show their own signature; whole-module facts say nothing of them.
 	let callables = $derived(category === 'functions' ? callableContracts(unit) : []);
-	let groups = $derived(callables.length > 0 ? [] : contractFields(unit, category));
-	let facts = $derived(callables.length > 0 ? [] : contractFacts(contract, unit, category));
+	// A service shows each declared method apart; what no one method declares is said once.
+	let service = $derived(
+		category === 'services' ? serviceContract(unit) : { methods: [], facts: [] }
+	);
+	let groups = $derived(
+		callables.length > 0 || service.methods.length > 0 ? [] : contractFields(unit, category)
+	);
+	let facts = $derived(
+		callables.length > 0 ? [] : [...contractFacts(contract, unit, category), ...service.facts]
+	);
 	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
 	let chosen = $state<{ field: ContractField; title: string } | null>(null);
 	let opener: HTMLButtonElement | null = null;
@@ -61,26 +75,33 @@
 		</dl>
 	{/if}
 	{#each callables as callable, position (position)}
-		<section class="callable" aria-label={`${callable.name} contract`}>
-			<h3><code>{callable.signature}</code></h3>
-			{#each callable.groups as group (group.id)}
-				<ContractTable
-					{group}
-					plain
-					onexample={(field, button) => openExample(field, button, callable.name)}
-				/>
-			{/each}
-		</section>
+		{@render callableSection(callable, `${callable.name} contract`)}
 	{:else}
 		<p class="ex-note">
 			Declared examples are written in the contract. Illustrative ones are placeholders shaped by
 			the type alone. Neither is the result of a test.
 		</p>
-		{#each groups as group (group.id)}
-			<ContractTable {group} onexample={openExample} />
+		{#each service.methods as method (method.name)}
+			{@render callableSection(method, `${method.name} method`)}
+		{:else}
+			{#each groups as group (group.id)}
+				<ContractTable {group} onexample={openExample} />
+			{/each}
 		{/each}
 	{/each}
 </section>
+{#snippet callableSection(callable: CallableContract, label: string)}
+	<section class="callable" aria-label={label}>
+		<h3><code>{callable.signature}</code></h3>
+		{#each callable.groups as group (group.id)}
+			<ContractTable
+				{group}
+				plain
+				onexample={(field, button) => openExample(field, button, callable.name)}
+			/>
+		{/each}
+	</section>
+{/snippet}
 <Modal open={chosen !== null} title={chosen?.title ?? ''} variant="text" onClose={closeExample}>
 	{#if chosen}<ContractExample field={chosen.field} />{/if}
 </Modal>
@@ -91,7 +112,7 @@
 		gap: 16px;
 		min-width: 0;
 	}
-	/* One compact section per callable, separated by a rule; a long signature wraps in place. */
+	/* One compact section per callable or method, separated by a rule; a long signature wraps. */
 	.callable {
 		display: grid;
 		gap: 10px;

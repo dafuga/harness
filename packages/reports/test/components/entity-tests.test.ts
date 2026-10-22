@@ -11,6 +11,12 @@ const row = (body: string, state: string) => {
 	return rows.find((part) => part.includes(`<th scope="row">${state}</th>`)) ?? '';
 };
 const missing = 'No capture of Orders page over synthetic orders: empty at mobile.';
+type Kind = 'pages' | 'functions' | 'services' | 'configs';
+/** The evidence labels read on an entity screen opened at its former Tests address. */
+const labels = (category: Kind, entity: string) => {
+	const shown = words(content('commit', { category, entity, tab: 'tests' }));
+	return shown.match(/\b(?:Examples|States|Tests)\b/g) ?? [];
+};
 
 test('tests show the verdict, each scenario with its states, and the checks that ran', () => {
 	const body = content('commit', page);
@@ -94,4 +100,18 @@ test('what the commit no longer declares is shown as gone, with a result before 
 	expect(disclosed(body)).toContain('No longer declared at bbbbbbb');
 	expect(disclosed(body)).toContain('Orders page over synthetic orders: the state empty.');
 	expect(words(content('commit', page))).not.toContain('No longer declared');
+});
+
+test('services and functions say Examples, visual entities States and other kinds Tests', () => {
+	for (const [category, entity] of [
+		['services', ids.store],
+		['functions', ids.filter]
+	] as const) {
+		expect(labels(category, entity)).toContain('Examples');
+		expect(labels(category, entity)).not.toContain('Tests');
+	}
+	expect(labels('pages', ids.page)).toContain('States');
+	expect(labels('pages', ids.page)).not.toContain('Tests');
+	expect(labels('configs', ids.settings)).toContain('Tests');
+	expect(labels('configs', ids.settings)).not.toContain('Examples');
 });
