@@ -10,7 +10,13 @@ import { execFileSync } from 'node:child_process';
 import { once } from 'node:events';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { capture, launch, imageProvider, catalogNavigation } from './game-native-fixture';
+import {
+	capture,
+	launch,
+	imageProvider,
+	catalogNavigation,
+	fitEveryCheckpoint
+} from './game-native-fixture';
 import { beginGameFlow, recordRuntime, recordStartup } from './game-runtime-fixture';
 import { nativeImageFixture } from './native-image-fixture';
 import type { GameDocument } from '../../../game/src/models/game-authoring/Game.types';
@@ -55,6 +61,7 @@ async function author(page: Page, dimension: string) {
 	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeInViewport({
 		ratio: 1
 	});
+	await fitEveryCheckpoint(page, 5);
 	await page.getByText('Collect the key', { exact: true }).first().click();
 	await page
 		.getByLabel('Checkpoint image direction', { exact: true })

@@ -42,6 +42,29 @@ export async function catalogNavigation(page: Page) {
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Authored courtyard');
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeVisible();
 }
+/**
+ * Fit View shows every checkpoint at each canvas width from the declared viewport down to a classic
+ * 15 px scrollbar gutter narrower, then fits the declared size again.
+ */
+export async function fitEveryCheckpoint(page: Page, checkpoints: number) {
+	const viewport = page.viewportSize()!;
+	const fit = page.getByRole('button', { name: 'Fit View', exact: true });
+	const nodes = page
+		.getByRole('region', { name: 'Checkpoint graph', exact: true })
+		.locator('[aria-roledescription="node"]');
+	for (let gutter = 0; gutter <= 15; gutter++) {
+		await page.setViewportSize({ width: viewport.width - gutter, height: viewport.height });
+		await fit.click();
+		await expect(nodes).toHaveCount(checkpoints);
+		for (const node of await nodes.all())
+			await expect(
+				node,
+				`Fit View must show every checkpoint ${gutter} px narrower`
+			).toBeInViewport({ ratio: 1 });
+	}
+	await page.setViewportSize(viewport);
+	await fit.click();
+}
 export async function capture(page: Page, state: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true' && !process.env.HARNESS_EVIDENCE_DIR) return;
 	await page.evaluate(async () => {
