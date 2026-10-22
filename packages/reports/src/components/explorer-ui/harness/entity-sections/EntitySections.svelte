@@ -3,6 +3,7 @@
 	import type { ExplorerEntity } from '../../../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../../../models/explorer-ui/ExplorerScreen.types';
 	import type { EntityNav } from '../../../../utils/explorer-ui/entityLens';
+	import { entityMetricComparison } from '../../../../utils/explorer-ui/entityMetricComparison';
 	import { entityShown } from './entityShown';
 	import EntityContract from '../../entity-contract/EntityContract.svelte';
 	import EntitySource from '../EntitySource.svelte';
@@ -25,6 +26,9 @@
 		pane: Snippet;
 	} = $props();
 	let summary = $derived(entityShown(host, entity));
+	let comparison = $derived(
+		entityMetricComparison(host, entity, summary.measure, host.route.helper)
+	);
 	const said = { 'used-in': 'used in', uses: 'uses' } as const;
 	let direction = $derived(
 		(host.route.tab === 'used-in' && entity.category !== 'pages') || host.route.tab === 'uses'
@@ -100,7 +104,7 @@
 		<EntityContract unit={entity.unit} category={entity.category} {contract} last={entity.lastAt} />
 	</div>
 {:else}
-	<EntityOverview {entity} measure={summary.measure}>
+	<EntityOverview {entity} measure={summary.measure} {comparison}>
 		{@render pane()}
 	</EntityOverview>
 {/if}
