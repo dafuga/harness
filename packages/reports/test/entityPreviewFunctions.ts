@@ -141,7 +141,7 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
 		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
 		for (const kind of ['Components', 'Services', 'Models'])
-			await expect(usage.getByRole('list', { name: kind, exact: true })).toBeVisible();
+			await expect(usage.getByRole('list', { name: kind, exact: true })).toHaveCount(0);
 		await reviewConsumerPreview(page, usage, commit, viewport);
 		const sizes = await card.evaluate((node) => [
 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
