@@ -1,5 +1,5 @@
 import { expect, type Page } from '@playwright/test';
-import { at, explorer, measured, tip, verdict } from './explorer';
+import { at, explorer, measured, sourceUnavailable, tip, verdict } from './explorer';
 import { screenStates } from './explorerScreens';
 import { searchStates } from './explorerSearch';
 import { shellStates } from './explorerShells';
@@ -119,15 +119,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	// This synthetic Git history has no GitHub remote; Source states that boundary explicitly.
 	async source(page) {
 		await page.goto(at('main', commits.approved, `functions/${units.slugify}/details?tab=source`));
-		await expect(page.getByRole('tab', { name: 'Source', exact: true })).toHaveAttribute(
-			'aria-selected',
-			'true'
-		);
-		const source = content(page).getByRole('region', { name: 'GitHub source', exact: true });
-		await expect(
-			source.getByText('GitHub source unavailable for this revision.', { exact: true })
-		).toBeVisible();
-		await expect(source.getByRole('link')).toHaveCount(0);
+		await sourceUnavailable(page);
 	},
 	// The commits that changed a function, with its growth and the approval of it.
 	async history(page) {

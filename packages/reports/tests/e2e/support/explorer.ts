@@ -173,3 +173,18 @@ export async function measured(page: Page, emitted = true): Promise<void> {
 	if (emitted) await expect(profile).toContainText('Emitted size');
 	else await expect(profile).not.toContainText('Emitted size');
 }
+
+/** No repository origin means an explicit unavailable state, never an invented source link. */
+export async function sourceUnavailable(page: Page): Promise<void> {
+	await expect(page.getByRole('tab', { name: 'Source', exact: true })).toHaveAttribute(
+		'aria-selected',
+		'true'
+	);
+	const source = page
+		.locator('.ex-content')
+		.getByRole('region', { name: 'GitHub source', exact: true });
+	await expect(
+		source.getByText('GitHub source unavailable for this revision.', { exact: true })
+	).toBeVisible();
+	await expect(source.getByRole('link')).toHaveCount(0);
+}
