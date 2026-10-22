@@ -86,6 +86,24 @@ test('library projects include Bun TypeScript test structure', () => {
 });
 
 test.each(['app', 'lib'] as const)(
+	'generated %s guidance keeps component measurements inside their own boundary',
+	(kind) => {
+		const skill = fileContents(
+			projectFiles({ kind, name: 'component-measurement' }),
+			'.codex/skills/harness/SKILL.md'
+		);
+
+		expect(skill).toContain('mounts the production component through its standard behavior test');
+		expect(skill).toContain('measurement boundary (mount, interaction or update)');
+		expect(skill).toContain(
+			'distinct from whole-route navigation timing, whole-page heap and process RSS'
+		);
+		expect(skill).toContain('never copy them to each rendered component');
+		expect(skill).toContain('record an explicit `unavailable` reason and keep that check open');
+	}
+);
+
+test.each(['app', 'lib'] as const)(
 	'generated %s code and configuration obey their formatter settings',
 	async (kind) => {
 		const files = projectFiles({ kind, name: 'format-proof' });

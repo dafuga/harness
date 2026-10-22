@@ -1,0 +1,41 @@
+{
+	"name": "component-performance-values",
+	"goal": "Collect truthful latency and memory observations for every component with a representative measured workload, and improve Harness guidance so component and route evidence retain correct boundaries and unavailable values stay explicit.",
+	"createdAt": "2026-10-22T10:00:07.182Z",
+	"updatedAt": "2026-10-22T10:00:37.074Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-22T10:00:37.074Z",
+			"evidence": "At origin/main 54e157c42845945bb1fc1fa4e802d96983f7e584, the catalog has 181 kind=component units; 57 declare scenarios and all 181 have empty performance budgets. The existing page benchmark records whole Explorer route navigation and whole-page heap, including shared code, and cannot populate component-level metrics. Acceptance: inventory every component; record only measured component workloads with exact revision, target, profile, boundary, samples and provenance; retain an explicit unavailable reason where a representative workload or safe memory attribution is absent; improve the Harness measurement guidance and verify all changed instructions/tests."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
