@@ -68,7 +68,7 @@ for (const viewport of viewports) {
 		).toHaveCount(1);
 		await expect(card.locator('.ex-card-shot img, .ex-card-shot .ex-thumb-gap')).toBeVisible();
 		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
-		await expect(card.getByRole('link', { name: 'Open Titles', exact: true })).toBeVisible();
+		await expect(card.getByRole('link', { name: 'Titles', exact: true })).toBeVisible();
 	});
 }
 
