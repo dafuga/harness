@@ -2,7 +2,7 @@
 	"name": "remove-viewed-commit-badge",
 	"goal": "History rows highlight the selected commit without showing a redundant Viewed commit badge.",
 	"createdAt": "2026-10-22T11:35:31.607Z",
-	"updatedAt": "2026-10-22T11:36:21.956Z",
+	"updatedAt": "2026-10-22T11:48:57.248Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T11:48:55.923Z",
+			"evidence": "At failing-test commit be264503, Playwright service-history route failed the unchanged badge assertion: expected 0, received 1. The checkpoint screenshot shows Viewed commit beside the selected service commit while the viewed row highlight remains."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T11:48:57.248Z",
+			"evidence": "The regression commits the exact history row behavior: remove the conditional badge, retain the viewed row class, and revise the EntityHistoryRow contract accordingly."
 		},
 		{
 			"id": "green",
