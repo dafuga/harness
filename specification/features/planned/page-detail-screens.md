@@ -16,6 +16,7 @@ and state selection belong in States; the overview has no commit-change action o
 - Page headers omit purpose prose and app-route metadata; other entity headers retain them.
 - Page Overview shows its registered description before screenshot evidence, at current and selected commits.
 - Screenshot overviews omit Scenario and State dropdowns, repeated explanatory text and View commit changes.
+- Screenshot comparisons show Before/After with commit hashes and omit Parent commit and Selected commit badges.
 - A declared page preview selects its own scenario and state; viewport buttons keep that identity.
 - Validated unchanged captures remain visible with their original commit; rejected or missing media remains a gap.
 - Pages expose Overview, Contract, Uses, States, History and Source. Other entity types retain Used In.

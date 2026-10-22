@@ -34,8 +34,10 @@ test('a page at a selected commit shows the parent and the commit for one state 
 		body.indexOf('Commit comparison')
 	);
 	expect(words(body)).toContain('Commit comparison');
-	expect(words(body)).toContain('Before · aaaaaaa Parent commit');
-	expect(words(body)).toContain('After · bbbbbbb Selected commit');
+	expect(words(body)).toContain('Before · aaaaaaa');
+	expect(words(body)).toContain('After · bbbbbbb');
+	expect(words(body)).not.toContain('Parent commit');
+	expect(words(body)).not.toContain('Selected commit');
 	expect(shots(body)).toEqual(['aaaaaaa-default-desktop.png', 'bbbbbbb-default-desktop.png']);
 	// The later tip is never a side of the comparison.
 	expect(body).not.toContain('ccccccc');
@@ -66,7 +68,7 @@ test('a side with no capture of the state is a stated gap, never the other side 
 	expect(verdicts(body)).toContainEqual({ passed: false, name: 'No capture', reasons: [] });
 	// Why there is none is read on the page, in the pane of the side that lacks it.
 	expect(words(body)).toContain(
-		'Before · aaaaaaa Parent commit No verification record is attached to this commit.'
+		'Before · aaaaaaa No verification record is attached to this commit.'
 	);
 	const focused = content('commit', page, {
 		head: withFocused(revision(commits.middle, [])),
@@ -113,8 +115,8 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 	expect(words(body)).toContain('Commit comparison');
 	expect(words(body)).not.toContain('End-to-end');
 	const gap = 'No scenario with a viewport names this entity, so no screenshot of it is recorded';
-	expect(words(body)).toContain(`Before · aaaaaaa Parent commit ${gap} at aaaaaaa.`);
-	expect(words(body)).toContain(`After · bbbbbbb Selected commit ${gap} at bbbbbbb.`);
+	expect(words(body)).toContain(`Before · aaaaaaa ${gap} at aaaaaaa.`);
+	expect(words(body)).toContain(`After · bbbbbbb ${gap} at bbbbbbb.`);
 	expect(shots(body)).toEqual([]);
 	const tip = content('current', card, { head: { ...head, commit: commits.tip } });
 	expect(words(tip)).toContain(`Branch tip · ccccccc ${gap} at ccccccc.`);

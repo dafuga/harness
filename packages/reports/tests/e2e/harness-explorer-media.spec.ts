@@ -31,6 +31,8 @@ test('a state is shown as it was recorded before and after, each side from its o
 	const [parent, selected] = [commits.paired, commits.twin];
 	await page.goto(at(keptBranch, selected, page_));
 	await checkpoint(page, 'media-pair');
+	await expect(before(page, parent)).not.toContainText('Parent commit');
+	await expect(after(page, selected)).not.toContainText('Selected commit');
 	const where = { scenario: 'titles-page', state: 'empty', viewport: 'desktop' };
 	expect(await file(before(page, parent))).toBe(recordedShot(parent, where));
 	expect(await file(after(page, selected))).toBe(recordedShot(selected, where));
@@ -42,10 +44,10 @@ test('a state is shown as it was recorded before and after, each side from its o
 		.getByRole('button', { name: 'Mobile' })
 		.click();
 	const moved = { scenario: 'titles-page', state: 'empty', viewport: 'mobile' };
+	await expect(before(page, parent)).not.toContainText('Parent commit');
+	await expect(after(page, selected)).not.toContainText('Selected commit');
 	await expect.poll(() => file(after(page, selected))).toBe(recordedShot(selected, moved));
 	expect(await file(before(page, parent))).toBe(recordedShot(parent, moved));
-	await expect(before(page, parent)).toContainText('Parent commit');
-	await expect(after(page, selected)).toContainText('Selected commit');
 });
 
 test('a branch tip shows the capture of the tip alone, and it is the one the tip recorded', async ({
