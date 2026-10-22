@@ -1,7 +1,19 @@
 import { expect, test } from 'vitest';
 import { categoryIcon, harnessIcons, solidIcons } from '../../src/utils/harnessIcons';
+import { profilePublicEntry } from '../../../../test/support/taskProfiles';
 
 const names = Object.keys(harnessIcons);
+
+test('the public icon entry cold-loads the complete shared data contract', async () => {
+	const exports = ['harnessIcons', 'solidIcons', 'categoryIcon'];
+	expect(
+		await profilePublicEntry(
+			'reports.function.harness-icons',
+			new URL('../../src/utils/harnessIcons.ts', import.meta.url).href,
+			exports
+		)
+	).toEqual(exports);
+});
 
 test('one icon set covers the categories, the two verdicts, contracts, metrics and controls', () => {
 	const needed = [

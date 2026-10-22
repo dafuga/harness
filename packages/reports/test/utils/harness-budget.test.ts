@@ -1,7 +1,61 @@
 import { expect, test } from 'vitest';
 import { harnessBudget } from '../../src/utils/harnessBudget';
+import { harnessGrowth, unitTimings } from '../../src/utils/harnessGrowth';
+import { history, sha, summary } from '../explorerFixture';
 
 const base = { unit: 'kernel.counter', workload: null, profile: null };
+
+test('growth is chronological and unavailable values never produce invented zero deltas', () => {
+	const index = history({
+		revisions: [summary(sha('c')), summary(sha('b')), summary(sha('a'))],
+		units: [
+			{
+				id: 'component.list',
+				growth: [
+					{ commit: sha('c'), record: 'c', 'source-bytes': 90, complexity: 2 },
+					{ commit: sha('a'), record: 'a', 'source-bytes': 100, complexity: 0 },
+					{ commit: sha('b'), record: 'b', 'source-bytes': 120 }
+				]
+			}
+		],
+		benchmarks: [
+			{
+				unit: 'component.list',
+				workload: 'cold',
+				metric: 'latency',
+				target: 'module',
+				incompatible: false,
+				series: []
+			},
+			{
+				unit: 'component.list',
+				workload: 'warm',
+				metric: 'latency',
+				target: 'module',
+				incompatible: true,
+				series: []
+			},
+			{
+				unit: 'component.other',
+				workload: 'cold',
+				metric: 'latency',
+				target: 'module',
+				incompatible: false,
+				series: []
+			}
+		]
+	});
+	const rows = harnessGrowth(index, 'component.list');
+	expect(rows.map((row) => row.commit)).toEqual([sha('a'), sha('b'), sha('c')]);
+	expect(rows.map((row) => row.deltas['source-bytes'])).toEqual([undefined, 20, -30]);
+	expect(rows.map((row) => row.deltas.complexity)).toEqual([undefined, undefined, undefined]);
+	expect(
+		unitTimings(index, 'component.list').map((item) => [item.workload, item.incompatible])
+	).toEqual([
+		['cold', false],
+		['warm', true]
+	]);
+});
 const measured = (value: number | null, extra: object = {}) => ({
 	...base,
 	metric: 'complexity',
