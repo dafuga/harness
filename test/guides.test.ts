@@ -11,10 +11,16 @@ test('model guidance is available for agents', () => {
 
 test('guidance covers every non-model scaffold topic', () => {
 	const topics = new Set(guides.map((guide) => guide.topic));
+	const gameNames: Record<string, string> = {
+		'game-view': '<camelName>ViewConfig.ts',
+		mechanic: '<camelName>.ts',
+		checkpoint: '<camelName>CheckpointConfig.ts'
+	};
 
 	for (const kind of scaffoldKinds) {
 		expect(topics.has(kind), kind).toBe(true);
 		expect(findGuide(kind)?.rules.join('\n'), kind).toContain('Naming:');
+		if (gameNames[kind]) expect(findGuide(kind)?.rules.join('\n'), kind).toContain(gameNames[kind]);
 	}
 });
 
