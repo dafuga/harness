@@ -106,8 +106,9 @@ export async function captureScreen(
 	page: Page,
 	state: string,
 	viewport: Viewport,
-	directory = evidenceDirectory
+	destination: string | { directory: string; evidence: string } = evidenceDirectory
 ): Promise<void> {
+	const directory = typeof destination === 'string' ? destination : destination.directory;
 	await settled(page);
 	const bytes = await page.screenshot({
 		animations: 'disabled',
