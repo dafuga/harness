@@ -3,6 +3,7 @@
 	import type { Connection, Edge, Node } from '@xyflow/svelte';
 	import '@xyflow/svelte/dist/style.css';
 	import { SvelteSet } from 'svelte/reactivity';
+	import GameGraphFit from './GameGraphFit.svelte';
 	import { checkpointEligible } from '../../../../game/src/utils/game-authoring/checkpointGraph';
 	import type { Checkpoint, GameRun } from '../../../../game/src/models/game-authoring/Game.types';
 	/**
@@ -130,7 +131,9 @@
 			onconnect={connect}
 		>
 			<Background variant={BackgroundVariant.Dots} gap={28} />
-			<Controls showLock={false} fitViewOptions={{ minZoom: 0.1, maxZoom: 1 }} />
+			<Controls showLock={false} showFitView={false}>
+				<GameGraphFit />
+			</Controls>
 		</SvelteFlow>
 	</div>
 </section>

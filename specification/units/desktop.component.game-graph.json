@@ -55,6 +55,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.game-authoring-game-graph-fit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "game.function.checkpoint-graph",
 			"via": "import",
 			"origin": "derived"
