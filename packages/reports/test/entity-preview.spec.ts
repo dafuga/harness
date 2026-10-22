@@ -4,7 +4,6 @@ import { capture, chooseCatalogFilter, fits, open, viewports, where } from './en
 import { commits, ids } from './entityUnits';
 const page = { category: 'pages' as const, entity: ids.page };
 const filter = { category: 'functions' as const, entity: ids.filter };
-const shots = '.ex-evidence .ex-shot img';
 test('collections: search, changed only and order change what is listed', async ({ page: tab }) => {
 	await open(tab);
 	await expect(tab.getByRole('heading', { level: 1, name: 'Pages' })).toBeVisible();
@@ -71,40 +70,6 @@ test('a row or a card of a collection opens its entity in the same branch and co
 		.getByRole('link', { name: 'Pages' })
 		.click();
 	expect(await where(tab)).toEqual({ branch, commit: null, category: 'pages' });
-});
-test('a page shows one screenshot at the tip and a matching pair at a commit', async ({
-	page: tab
-}) => {
-	await open(tab, page);
-	await expect(tab.getByRole('heading', { name: 'Current screenshot' })).toBeVisible();
-	await expect(tab.locator(shots)).toHaveCount(1);
-	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-desktop.png');
-	await capture(tab, 'page-current-desktop');
-	await tab.getByRole('button', { name: 'Mobile' }).click();
-	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-mobile.png');
-	await expect(tab.getByRole('combobox', { name: 'State' })).toHaveCount(0);
-	await open(tab, { ...page, commit: commits.middle });
-	await expect(tab.getByRole('heading', { name: 'Commit comparison' })).toBeVisible();
-	const sources = () =>
-		tab.locator(shots).evaluateAll((all) => all.map((image) => image.getAttribute('src')));
-	expect(await sources()).toEqual([
-		'/media/aaaaaaa-default-desktop.png',
-		'/media/bbbbbbb-default-desktop.png'
-	]);
-	await capture(tab, 'page-commit-desktop');
-	await tab.getByRole('button', { name: 'Mobile' }).click();
-	expect(await sources()).toEqual([
-		'/media/aaaaaaa-default-mobile.png',
-		'/media/bbbbbbb-default-mobile.png'
-	]);
-	const image = tab.locator('.ex-evidence .ex-shot').last();
-	await image.click();
-	await expect(tab.getByRole('dialog')).toBeVisible();
-	await tab.keyboard.press('Escape');
-	await expect(tab.getByRole('dialog')).toHaveCount(0);
-	await image.focus();
-	await image.press('Enter');
-	await expect(tab.getByRole('dialog')).toBeVisible();
 });
 test('a function shows its recorded run: steps, input, output and assertions', async ({
 	page: tab

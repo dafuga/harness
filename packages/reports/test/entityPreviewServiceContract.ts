@@ -58,7 +58,7 @@ async function reviewAgentActivity(page: Page, viewport: string): Promise<void> 
 	for (const [name, signature] of agentMethods) {
 		const method = methodIn(pane, name);
 		await expect(method.getByRole('heading', { level: 3 })).toHaveText(signature);
-		await expect(method.getByText('No errors declared for this method.')).toBeVisible();
+		await expect(method.getByRole('table', { name: 'Throws', exact: true })).toHaveCount(0);
 	}
 	const heartbeat = methodIn(pane, 'heartbeat');
 	const parameters = heartbeat.getByRole('table', { name: 'Parameters', exact: true });
@@ -100,7 +100,9 @@ async function reviewInitialize(page: Page, viewport: string): Promise<void> {
 	await expect(returned).toContainText('Promise<void>');
 	const thrown = initialize.getByRole('table', { name: 'Throws', exact: true });
 	await expect(thrown).toContainText('TimeoutError');
-	await expect(methodIn(pane, 'latest')).not.toContainText('TimeoutError');
+	const latest = methodIn(pane, 'latest');
+	await expect(latest).not.toContainText('TimeoutError');
+	await expect(latest.getByRole('table', { name: 'Throws', exact: true })).toHaveCount(0);
 	const example = parameters.getByRole('button', { name: 'View example for timeoutMs' });
 	await example.click();
 	const dialog = page.getByRole('dialog', { name: 'Example for initialize · timeoutMs' });

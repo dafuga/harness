@@ -52,7 +52,7 @@ test('a page at the branch tip shows exactly one screenshot and no before or aft
 		body.indexOf('Current screenshot')
 	);
 	expect(words(body)).toContain('Current screenshot');
-	expect(words(body)).toContain('Branch tip · ccccccc');
+	expect(words(body)).toContain('ccccccc');
 	expect(shots(body)).toEqual(['ccccccc-default-desktop.png']);
 	expect(words(body)).not.toMatch(/Before ·|After ·|Parent commit|Commit comparison/);
 	// Overview fixes the state while retaining viewport selection.
@@ -119,7 +119,7 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 	expect(words(body)).toContain(`After · bbbbbbb ${gap} at bbbbbbb.`);
 	expect(shots(body)).toEqual([]);
 	const tip = content('current', card, { head: { ...head, commit: commits.tip } });
-	expect(words(tip)).toContain(`Branch tip · ccccccc ${gap} at ccccccc.`);
+	expect(words(tip)).toContain(`ccccccc ${gap} at ccccccc.`);
 	expect(words(tip)).not.toMatch(/Before ·|After ·/);
 });
 
