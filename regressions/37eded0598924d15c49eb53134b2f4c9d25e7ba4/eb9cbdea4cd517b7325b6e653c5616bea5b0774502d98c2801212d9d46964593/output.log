@@ -1,0 +1,103 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [10.08s]
+
+Running 3 tests using 1 worker
+
+(node:88510) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-captures.spec.ts:20:1 › preview captures retain decoded pixels and measured workloads with their served identity (644ms)
+(node:88603) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 test/entity-preview-captures.spec.ts:75:1 › screenshots use their capture commit and comparisons show their paired revisions (876ms)
+  ✘  3 test/entity-preview-captures.spec.ts:122:1 › legacy device-qualified captures remain selectable without changing their origin (5.4s)
+
+
+  1) test/entity-preview-captures.spec.ts:20:1 › preview captures retain decoded pixels and measured workloads with their served identity 
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -3,8 +3,8 @@
+        "provenance": "actual-capture",
+        "server": Object {
+          "buildId": "85354bcaee7163ed0350f55dafb76e3b011059638fdc4515205b0f9caded6a74",
+          "revision": "37eded0598924d15c49eb53134b2f4c9d25e7ba4",
+        },
+    -   "state": "page-current",
+    +   "state": "page-current-desktop",
+        "viewport": "desktop",
+      }
+
+      39 | 			const rows = gathered.filter((item) => item.line.viewport === viewport);
+      40 | 			const screenshot = rows.find(({ line }) => line.kind === 'screenshot')!;
+    > 41 | 			expect(screenshot.line).toMatchObject({
+         | 			                        ^
+      42 | 				evidence: 'reports.component.harness-explorer-content',
+      43 | 				state: 'page-current',
+      44 | 				viewport,
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CRa9HL/packages/reports/test/entity-preview-captures.spec.ts:41:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-captures-pr-14c0a--with-their-served-identity/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-captures-pr-14c0a--with-their-served-identity/error-context.md
+
+  2) test/entity-preview-captures.spec.ts:122:1 › legacy device-qualified captures remain selectable without changing their origin 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.ex-evidence .ex-shot img')
+    Expected: "/media/ccccccc-default-tablet.png"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('.ex-evidence .ex-shot img') with timeout 5000ms
+      - waiting for locator('.ex-evidence .ex-shot img')
+
+
+      128 | 		await ready(tab);
+      129 | 		await capture(tab, `legacy-device-${label.toLowerCase()}`);
+    > 130 | 		await expect(tab.locator(shots)).toHaveAttribute(
+          | 		                                 ^
+      131 | 			'src',
+      132 | 			`/media/ccccccc-default-${label.toLowerCase()}.png`
+      133 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CRa9HL/packages/reports/test/entity-preview-captures.spec.ts:130:36
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-captures-le-8ea78-thout-changing-their-origin/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-captures-le-8ea78-thout-changing-their-origin/error-context.md
+
+  2 failed
+    test/entity-preview-captures.spec.ts:20:1 › preview captures retain decoded pixels and measured workloads with their served identity 
+    test/entity-preview-captures.spec.ts:122:1 › legacy device-qualified captures remain selectable without changing their origin 
+  1 passed (11.8s)
