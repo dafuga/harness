@@ -69,6 +69,21 @@ for (const viewport of viewports) {
 		await expect(card.locator('.ex-card-shot img, .ex-card-shot .ex-thumb-gap')).toBeVisible();
 		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
 		await expect(card.getByRole('link', { name: 'Titles', exact: true })).toBeVisible();
+
+		// The name is a link inside its heading, and the screenshot is a second way to the same page.
+		const title = card
+			.getByRole('heading', { level: 2, name: 'TitleList', exact: true })
+			.getByRole('link', { name: 'TitleList', exact: true });
+		await expect(title).toBeVisible();
+		const shot = card.getByRole('link', { name: 'Open TitleList', exact: true });
+		await expect(
+			shot
+				.getByRole('img', { name: 'Screenshot of TitleList', exact: true })
+				.or(shot.getByText('No screenshot is recorded at this revision', { exact: true }))
+		).toBeVisible();
+		const detail = await title.getAttribute('href');
+		expect(detail).toBeTruthy();
+		await expect(shot).toHaveAttribute('href', detail!);
 	});
 }
 
