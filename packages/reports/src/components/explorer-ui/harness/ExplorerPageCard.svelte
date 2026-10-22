@@ -1,20 +1,23 @@
 <script lang="ts">
 	import type { Evidence } from '../../../models/reports-media/Report.types';
-	import { listed, type CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
-	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import type { CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
+	import {
+		entityLens,
+		shortCommit,
+		type EntityLens,
+		type EntityNav
+	} from '../../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../../ExplorerUsage.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
-	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		row,
 		shot,
 		mediaBase,
 		nav,
 		lens,
-		category = 'pages',
-		verification = true
+		category = 'pages'
 	}: {
 		row: CatalogRow;
 		/** The entity's own screenshot at the shown revision, or null for its gap; never another's. */
@@ -22,9 +25,9 @@
 		mediaBase: string;
 		nav: EntityNav;
 		lens: EntityLens;
-		/** A page counts its components; a component tells where it is used and what it contains. */
+		/** A page or a component card: its name, its own screenshot and where it is used. */
 		category?: 'pages' | 'components';
-		/** Relationship cards keep verification on the entity detail page. */
+		/** Still accepted, never shown: every card keeps verification on the entity detail page. */
 		verification?: boolean;
 	} = $props();
 	let to = $derived(entityLens(nav.route, { category, entity: row.id }));
@@ -39,7 +42,7 @@
 	let taken = $derived(shot?.standing === 'Fresh capture' ? 'Captured at' : 'Reused from');
 	let origin = $derived(`${taken} ${shortCommit(shot?.source ?? '')}`);
 	let page = $derived(category === 'pages');
-	let open = $derived(page ? 'Open page' : 'Open component');
+	let provenance = $derived(pictured && shot ? `${shot.title} · ${origin}` : undefined);
 </script>
 
 {#snippet picture()}
@@ -61,44 +64,21 @@
 
 <article class="ex-page-card" class:ex-page-minimal={page} aria-label={row.name}>
 	{#if page}
-		<EntityLink
-			{to}
-			{nav}
-			class="ex-page-open"
-			label={`Open ${row.name}`}
-			title={pictured && shot ? `${shot.title} · ${origin}` : undefined}
-		>
+		<EntityLink {to} {nav} class="ex-page-open" label={`Open ${row.name}`} title={provenance}>
 			<h2>{row.name}</h2>
 			<span class="ex-thumb">{@render picture()}</span>
 		</EntityLink>
 		<!-- Beside the page's link, never inside it: a link holds no other link. -->
 		<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
 	{:else}
+		<!-- Its name, its own screenshot and where it is used; the rest stays on its detail page. -->
 		<figure class="ex-card-shot">
 			<EntityLink {to} {nav} class="ex-thumb" label={`Open ${row.name}`}>
 				{@render picture()}
 			</EntityLink>
-			{#if pictured && shot}
-				<figcaption title={shot.note}>
-					<span>In context · {shot.title}</span><span>{origin}</span>
-				</figcaption>
-			{/if}
 		</figure>
 		<div class="ex-page-body">
 			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
-			<p class="ex-soft">{row.summary}</p>
-			<p class="ex-fact">
-				<HarnessIcon name="layers" size={22} />
-				<span><strong>Contains</strong> {listed(row.contains, 2)}</span>
-				{#if row.changed}<span class="ex-pill gold">Changed</span>{/if}
-			</p>
-			{#if verification}<p class="ex-fact">
-					<HarnessIcon name="tests" size={22} />
-					<HarnessVerdict {...row.verdict} framed />
-				</p>{/if}
-			<EntityLink {to} {nav} class="hx-action gold ex-open-page" label={open} title={open}>
-				<HarnessIcon name="arrow-right" size={18} />
-			</EntityLink>
 			<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
 		</div>
 	{/if}
@@ -121,13 +101,5 @@
 	:global(.ex-page-open:focus-visible) {
 		outline: 2px solid var(--ex-gold);
 		outline-offset: 6px;
-	}
-
-	.ex-page-body > :global(.ex-open-page) {
-		justify-self: end;
-		width: 36px;
-		height: 36px;
-		min-height: 36px;
-		padding: 8px;
 	}
 </style>

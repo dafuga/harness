@@ -48,7 +48,7 @@ test('visual component cards show the selected revision, never the parent or ano
 	}
 });
 
-test('component previews retain the origin of validated unchanged evidence', () => {
+test('component cards keep reused screenshots revision-bound without extra source text', () => {
 	const taken = record(commits.tip);
 	taken.scenarios[0] = {
 		...record(commits.middle).scenarios[0],
@@ -61,7 +61,7 @@ test('component previews retain the origin of validated unchanged evidence', () 
 	const body = screen(ExplorerCatalogScreen, 'current', { category: 'components' }, { head });
 	expect(count(body, /<img\b/g)).toBe(3);
 	expect(body).toContain('src="/harness/media/bbbbbbb-default-desktop.png"');
-	expect(words(body)).toContain('Reused from bbbbbbb');
+	expect(words(body)).not.toContain('Reused from bbbbbbb');
 	expect(body).not.toContain('src="/harness/media/ccccccc-');
 });
 
