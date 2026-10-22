@@ -33,6 +33,7 @@ import { withFocused } from './entityStates';
 import { withHelpers } from './entityPreviewHelpers';
 import { withRelationGroups } from './entityRelationFixtures';
 import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
+import { platformFixture } from './platformFixture';
 
 const variant = ((window as unknown as { previewVariant?: PreviewVariant }).previewVariant ??
 	new URLSearchParams(location.search).get('variant')) as PreviewVariant | null;
@@ -45,6 +46,10 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'platforms') {
+	for (const commit of [commits.middle, commits.tip])
+		stored[commit] = { ...stored[commit], ...{ platforms: platformFixture } };
+}
 if (variant === 'groups')
 	for (const commit of Object.keys(stored)) stored[commit] = withGroups(stored[commit]);
 if (variant === 'measurements')
@@ -141,7 +146,7 @@ function asked(): ExplorerLocation {
 	);
 }
 window.addEventListener('hashchange', () => show(asked()));
-if (variant === 'console') {
+if (variant === 'console' || variant === 'platforms') {
 	const fetcher = window.fetch;
 	window.fetch = Object.assign(
 		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
@@ -154,6 +159,7 @@ if (variant === 'console') {
 				path.endsWith(`/revisions/${commit}.json`)
 			)?.[1];
 			if (!data) return fetcher(input, init);
+			if (variant === 'platforms') return Promise.resolve(Response.json(data));
 			const scaled = withScale(data);
 			const units = scaled.registry.units.map((unit) =>
 				unit.id === ids.filter ? callableFixture(unit) : unit
