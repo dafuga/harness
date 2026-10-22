@@ -62,11 +62,12 @@
 		const known = declared?.viewports.find((item) => item.id === viewport);
 		return { ...fixed, viewport: known?.id ?? fixed.viewport };
 	}
-	/** Who a pane is: the parent, the selected commit, or the branch tip the section names. */
+	/** A capture is named by the revision it was recorded from, including an inherited image. */
 	function heading(item: Evidence): string {
-		if (item.phase === 'before') return `Before · ${shortCommit(scope.parent ?? '')}`;
-		const at = shortCommit(scope.commit);
-		return paired ? `After · ${at}` : `Branch tip · ${at}`;
+		const revision = item.source ?? (item.phase === 'before' ? scope.parent : scope.commit) ?? '';
+		const at = shortCommit(revision);
+		if (item.phase === 'before') return `Before · ${at}`;
+		return paired ? `After · ${at}` : at;
 	}
 </script>
 

@@ -94,12 +94,13 @@ export function contractFields(unit: HarnessUnit, category: ExplorerCategory): C
 			none: provides ? 'Nothing provided is declared.' : 'No outputs declared.',
 			fields: fields(outputs)
 		});
-	groups.push({
-		id: 'errors',
-		title: 'Errors',
-		none: 'No errors declared.',
-		fields: fields(errors)
-	});
+	if (errors.length > 0)
+		groups.push({
+			id: 'errors',
+			title: 'Errors',
+			none: 'No errors declared.',
+			fields: fields(errors)
+		});
 	return groups;
 }
 
@@ -153,15 +154,16 @@ export function callableContracts(unit: HarnessUnit): CallableContract[] {
 				fields: parameters,
 				keepEmpty: true
 			},
-			{ id: 'outputs', title: 'Returns', none: '', fields: [returned] },
-			{
+			{ id: 'outputs', title: 'Returns', none: '', fields: [returned] }
+		];
+		if (errors.length > 0)
+			groups.push({
 				id: 'errors',
 				title: 'Throws',
 				none: 'No errors declared.',
 				fields: errors.map((field) => fieldOf(field, unit)),
 				hideNames: true
-			}
-		];
+			});
 		const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
 		return { name: helper.name, signature: `${helper.name}(${args}): ${type}`, groups };
 	});
