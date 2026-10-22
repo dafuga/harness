@@ -62,6 +62,25 @@ export interface View {
 	parent: HarnessRevision | null;
 }
 
+const parents: Record<string, string | null> = {
+	[commits.first]: null,
+	[commits.middle]: commits.first,
+	[commits.tip]: commits.middle
+};
+/** The tip alone, or a selected commit beside the first parent the history gives it. */
+export function viewOf(route: ExplorerLocation, stored: Record<string, HarnessRevision>): View {
+	if (route.commit === null) {
+		return { scope: scope('current', route), head: stored[commits.tip], parent: null };
+	}
+	const parent = parents[route.commit] ?? null;
+	const at = { ...scope('commit', route), commit: route.commit, parent };
+	return {
+		scope: { ...at, atTip: route.commit === commits.tip },
+		head: stored[route.commit],
+		parent: parent ? stored[parent] : null
+	};
+}
+
 /** A selected commit beside its recorded parent, or the recorded tip alone. */
 export function view(mode: 'current' | 'commit', changed: Partial<View> = {}): View {
 	const at = scope(mode);

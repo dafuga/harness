@@ -11,6 +11,11 @@ import { previewHome } from './entityPreviewSetup';
 
 const page = { category: 'pages' as const, entity: ids.page };
 const shots = '.ex-evidence .ex-shot img';
+const devices = [
+	['desktop', 1440, 900],
+	['tablet', 920, 800],
+	['mobile', 390, 844]
+] as const;
 
 test('preview captures retain decoded pixels and measured workloads with their served identity', async ({
 	page: tab
@@ -20,36 +25,43 @@ test('preview captures retain decoded pixels and measured workloads with their s
 	try {
 		process.env.TAKE_SCREENSHOT = '1';
 		process.env.HARNESS_EVIDENCE_DIR = directory;
-		await open(tab, page);
-		await capture(tab, 'page-current-desktop');
+		for (const [viewport, width, height] of devices) {
+			await tab.setViewportSize({ width, height });
+			await open(tab, page);
+			await capture(tab, `page-current-${viewport}`);
+		}
 		const { gathered, failures } = gatherCaptures(directory, 'evidence');
 		expect(failures).toEqual([]);
-		expect(gathered, 'preview captures enter the durable Harness protocol').toHaveLength(2);
-		const screenshot = gathered.find(({ line }) => line.kind === 'screenshot')!;
+		expect(gathered, 'each device retains its own screenshot and measurements').toHaveLength(6);
+		expect(new Set(gathered.map((item) => item.line.file)).size).toBe(6);
 		const built = await new BuildIdentityService().identify(previewHome());
-		expect(screenshot.line).toMatchObject({
-			evidence: 'reports.component.harness-explorer-content',
-			state: 'page-current-desktop',
-			viewport: 'desktop',
-			provenance: 'actual-capture',
-			server: {
-				buildId: built!.buildId,
-				revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
+		for (const [viewport, width, height] of devices) {
+			const rows = gathered.filter((item) => item.line.viewport === viewport);
+			const screenshot = rows.find(({ line }) => line.kind === 'screenshot')!;
+			expect(screenshot.line).toMatchObject({
+				evidence: 'reports.component.harness-explorer-content',
+				state: 'page-current',
+				viewport,
+				provenance: 'actual-capture',
+				server: {
+					buildId: built!.buildId,
+					revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
+				}
+			});
+			expect(screenshot.facts).toMatchObject({ kind: 'image', width });
+			const metrics = rows.find(({ line }) => line.kind === 'benchmark')!;
+			const measurements = benchmarkCaptureSchema.parse(metrics.benchmark).measurements;
+			expect(measurements.map(({ metric }) => metric).sort()).toEqual([
+				'browser-js-heap-bytes',
+				'browser-navigation-ms'
+			]);
+			for (const row of measurements) {
+				expect(row.unit).toBe(screenshot.line.evidence);
+				expect(row.value).toBeGreaterThan(0);
+				expect(row.samples).toBe(1);
+				expect(row.method).toMatch(/whole (?:fixture|page)/i);
+				expect(row.workload).toBe(`page-current-${width}x${height}`);
 			}
-		});
-		expect(screenshot.facts).toMatchObject({ kind: 'image', width: 1440 });
-		const metrics = gathered.find(({ line }) => line.kind === 'benchmark')!;
-		const rows = benchmarkCaptureSchema.parse(metrics.benchmark).measurements;
-		expect(rows.map(({ metric }) => metric).sort()).toEqual([
-			'browser-js-heap-bytes',
-			'browser-navigation-ms'
-		]);
-		for (const row of rows) {
-			expect(row.unit).toBe(screenshot.line.evidence);
-			expect(row.value).toBeGreaterThan(0);
-			expect(row.samples).toBe(1);
-			expect(row.method).toMatch(/whole (?:fixture|page)/i);
-			expect(row.workload).toBe('page-current-desktop-1440x900');
 		}
 	} finally {
 		for (const key of ['TAKE_SCREENSHOT', 'HARNESS_EVIDENCE_DIR']) {
@@ -105,4 +117,21 @@ test('screenshots use their capture commit and comparisons show their paired rev
 	await image.focus();
 	await image.press('Enter');
 	await expect(tab.getByRole('dialog')).toBeVisible();
+});
+
+test('legacy device-qualified captures remain selectable without changing their origin', async ({
+	page: tab
+}) => {
+	await open(tab, page, 'viewport-states');
+	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+		await tab.getByRole('button', { name: label, exact: true }).click();
+		await ready(tab);
+		await capture(tab, `legacy-device-${label.toLowerCase()}`);
+		await expect(tab.locator(shots)).toHaveAttribute(
+			'src',
+			`/media/ccccccc-default-${label.toLowerCase()}.png`
+		);
+		await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('ccccccc');
+		await expect(tab.locator(shots)).toBeVisible();
+	}
 });

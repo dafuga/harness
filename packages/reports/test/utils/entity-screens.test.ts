@@ -12,12 +12,11 @@ import { withInherited } from '../entityPreviewData';
 import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
-
+import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 const page = units.find((unit) => unit.id === ids.page)!;
 const head = revision(commits.middle, [record(commits.middle)]);
 const base = revision(commits.first, [record(commits.first, false)]);
 const tip = revision(commits.tip, [record(commits.tip)]);
-
 test('source-identical squash previews retain origin and reject a changed source tree', () => {
 	const captured = withFocused(head, ids.page);
 	const sourceTree = 'e'.repeat(40);
@@ -38,6 +37,30 @@ test('source-identical squash previews retain origin and reject a changed source
 		catalogShot(evidence(page, { ...squashed, side: `sides/${'f'.repeat(40)}.json` }))
 	).toBeNull();
 });
+test('device states share a picker while original metadata and missing-device gaps remain intact', () => {
+	expect(withoutViewportSuffix('choose-mobile', 'desktop')).toBe('choose-mobile');
+	const captured = withFocused(tip, ids.page, {}, true);
+	const found = evidence(page, captured);
+	const opts = screenOptions(found.scenarios);
+	for (const viewport of ['desktop', 'tablet', 'mobile']) {
+		expect(
+			entityScreens(found, screenPick(opts, { scenario: 'focused', viewport })!).after.file
+		).toBe(`ccccccc-default-${viewport}.png`);
+	}
+	expect(found.after.captures.map((item) => item.state)).toEqual(['default', 'default', 'default']);
+	expect(found.after.captures.map((item) => item.capture.state)).toEqual([
+		'default-desktop',
+		'default-tablet',
+		'default-mobile'
+	]);
+	captured.regressions![0].green!.captures = captured.regressions![0].green!.captures!.slice(0, 1);
+	const alone = evidence(page, captured);
+	expect(alone.after.captures[0].state).toBe('default-desktop');
+	expect(
+		entityScreens(alone, { scenario: 'focused', state: 'default-desktop', viewport: 'mobile' })
+			.after.missing
+	).toBe(true);
+});
 const options = screenOptions(scenarios.filter((item) => item.units.includes(ids.page)));
 type Revision = typeof head;
 /** What the host gives for the page: the tip alone, or a commit beside the parent it names. */
@@ -47,7 +70,6 @@ function evidence(_unit: typeof page, shown: Revision, parent?: Revision | null)
 	const at = { ...scope('commit'), parent: parent ? parent.commit : null };
 	return explorerEvidence(at, { head: shown, parent }, page);
 }
-
 test('a visual entity offers the states and viewports its scenario declares; a function offers none', () => {
 	expect(options).toEqual([
 		{
@@ -62,7 +84,6 @@ test('a visual entity offers the states and viewports its scenario declares; a f
 	]);
 	expect(screenOptions(scenarios.filter((item) => item.units.includes(ids.filter)))).toEqual([]);
 });
-
 test('the first state and viewport are shown until a person picks; an unknown pick is not kept', () => {
 	expect(screenPick(options, {})).toEqual({
 		scenario: 'orders-page',

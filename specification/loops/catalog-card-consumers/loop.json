@@ -47,7 +47,7 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
 			"status": "pending",
-			"evidence": "Original red/green refs and proof remain preserved. Integration c6ca5d453 passed 208 component tests, 11 browser cases, 22 card/footer cases and captured 181 Git-backed images. Capture prerequisite #58 has landed at ff91d603c. Refresh on that main is pending focused verification. History device switching retains a desktop-specific state; coordinator assigned that aggregate gap to Fixing data. CLI/native suites remain deferred. Pages #52 owns the next conditional landing slot; this test-only supplement stays held behind it."
+			"evidence": "PR56 is merged at dd3749b428ac9163cac7780af9c8d40bc1829860 after PR52, PR61, PR60 and metadata62. All imported source, canonical contracts, AGENTS checkpoint and assertions are preserved. This supplement changes only an SSR workload wrapper and historical loop metadata. Final scoped checks, immutable capture and merged-tree readback will be attached externally to this frozen source. Full CLI/native suites remain explicitly deferred; no full verification verdict is claimed."
 		}
 	],
 	"evaluators": [
