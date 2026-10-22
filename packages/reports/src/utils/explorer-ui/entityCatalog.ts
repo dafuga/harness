@@ -10,6 +10,7 @@ import type {
 type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
 export interface CatalogRow {
+	setting?: NonNullable<ExplorerEntity['unit']['configValues']>[number];
 	group?: { id: string; title: string };
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
 	/** Revision-scoped consumers for linked usage previews; helper rows keep the first three eligible consumers. */
@@ -101,6 +102,22 @@ export function functionName(unit: CatalogRow['entity']['unit']): string {
 
 const sortName = (row: CatalogRow) => row.helper?.name ?? row.name;
 
+function configRows(row: CatalogRow): CatalogRow[] {
+	const values =
+		row.entity.unit.configValues ??
+		row.entity.unit.contract.outputs.map(({ name }) => ({
+			name,
+			value: 'Not recorded at this revision',
+			source: ''
+		}));
+	return values.map((setting, index) => ({
+		...row,
+		id: `${row.entity.id}#config:${index}`,
+		name: setting.name,
+		setting
+	}));
+}
+
 /** Global collections need shared owners; owner relationships retain one owner. */
 function hasRequiredServiceOwners(count: number, options: { related?: boolean }): boolean {
 	return count >= 2 || Boolean(options.related && count === 1);
@@ -179,6 +196,7 @@ export function entityCatalog(
 				}))
 				.filter((item) => options.related || item.usedIn.length >= 2);
 		})
+		.flatMap((row) => (category === 'configs' ? configRows(row) : [row]))
 		.sort(byName);
 }
 
