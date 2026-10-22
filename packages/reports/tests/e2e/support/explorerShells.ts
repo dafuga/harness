@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 import { shellUnit as unit, shellsBranch } from '../../../scripts/harness-shells-seed';
-import { at, expectPath, nav, tip } from './explorer';
+import { at, expectPath, nav, sourceUnavailable, tip } from './explorer';
 import { seeded } from './harnessHistory';
 
 const { commits } = seeded();
@@ -56,7 +56,7 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	async 'shell-redirect'(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `components/${unit}/details?tab=source`));
 		await expectPath(page, at(shellsBranch, commits.shelled, `shells/${unit}?tab=source`));
-		await expect(content(page).getByText('src/components/TitleFrame.svelte').first()).toBeVisible();
+		await sourceUnavailable(page);
 		await active(page, 'Shells');
 	},
 	// Where its own manifest still recorded a component, it stays a component.
