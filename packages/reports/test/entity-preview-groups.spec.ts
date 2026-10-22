@@ -6,7 +6,7 @@ import { frameId } from './entityPreviewData';
 test.setTimeout(90_000);
 const configUnits = [
 	'reports.component.harness-explorer-table',
-	'reports.page.harness-branch-branch-at-configs'
+	'reports.component.harness-explorer-content'
 ];
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
