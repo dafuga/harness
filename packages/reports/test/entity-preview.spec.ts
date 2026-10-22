@@ -80,7 +80,7 @@ test('a row or a card of a collection opens its entity in the same branch and co
 		.click();
 	expect(await where(tab)).toEqual({ branch, commit: null, category: 'pages' });
 });
-test('a page shows one screenshot at the tip and a matching pair at a commit', async ({
+test('screenshots use their capture commit and comparisons show their paired revisions', async ({
 	page: tab
 }) => {
 	await open(tab, page);
@@ -92,15 +92,16 @@ test('a page shows one screenshot at the tip and a matching pair at a commit', a
 	await tab.getByRole('button', { name: 'Mobile' }).click();
 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-mobile.png');
 	await expect(tab.getByRole('combobox', { name: 'State' })).toHaveCount(0);
-	await open(tab, page, 'inherited');
+	await open(tab, { category: 'components', entity: ids.card }, 'inherited');
+	await expect(tab.getByRole('heading', { name: 'Current screenshot' })).toBeVisible();
 	await ready(tab);
 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
 	await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('bbbbbbb');
-	await capture(tab, 'page-current-inherited-desktop');
+	await capture(tab, 'component-current-inherited-desktop');
 	await tab.getByRole('button', { name: 'Mobile' }).click();
 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/bbbbbbb-default-mobile.png');
 	await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('bbbbbbb');
-	await capture(tab, 'page-current-inherited-mobile');
+	await capture(tab, 'component-current-inherited-mobile');
 	await open(tab, { ...page, commit: commits.middle });
 	await expect(tab.getByRole('heading', { name: 'Commit comparison' })).toBeVisible();
 	const sources = () =>
