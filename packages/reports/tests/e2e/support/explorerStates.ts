@@ -92,7 +92,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async component(page) {
 		await page.goto(at('main', commits.approved, `components/${units.list}`));
-		await titled(page, 'Title list');
+		await titled(page, 'TitleList');
 	},
 	// A function whose recorded end-to-end result changed against its parent.
 	async function(page) {
@@ -103,11 +103,11 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async service(page) {
 		await page.goto(at('main', commits.approved, 'services/service.clock'));
-		await titled(page, 'Clock service');
+		await titled(page, 'ClockService');
 	},
 	async config(page) {
 		await page.goto(at('main', commits.approved, `configs/${units.config}`));
-		await titled(page, 'Titles config');
+		await titled(page, 'titlesConfig');
 	},
 	// Details open on the contract; no file of the unit is shown.
 	async details(page) {

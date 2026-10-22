@@ -164,8 +164,8 @@ const directDetails = [
 	['components', units.list, 'TitleList', 'main', commits.approved],
 	['functions', units.slugify, 'slugify', 'main', commits.approved],
 	['configs', units.config, 'titlesConfig', 'main', commits.approved],
-	['services', 'service.clock', 'Clock service', 'main', commits.approved],
-	['shells', shellUnit, 'Title frame', shellsBranch, commits.shelled]
+	['services', 'service.clock', 'ClockService', 'main', commits.approved],
+	['shells', shellUnit, 'TitleFrame', shellsBranch, commits.shelled]
 ] as const;
 
 for (const [kind, id, title, namedBranch, revision] of directDetails)
