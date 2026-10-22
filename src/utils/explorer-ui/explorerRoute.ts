@@ -49,15 +49,11 @@ const kinds = new Map<string, ExplorerCategory>([
 	['mailer', 'services']
 ]);
 
-/**
- * The category a kind of unit is listed under. Null for a kind that is none of the six: a rule,
- * a guide, a template, a script or anything unknown is not presented as a function.
- */
+/** Unknown kinds, rules, guides, templates and scripts have no catalog category. */
 export function explorerKindCategory(kind: string): ExplorerCategory | null {
 	return kinds.get(kind) ?? null;
 }
 
-/** What is shown of one entity; an address without a section shows its overview. */
 export const explorerSections = ['details', 'history'] as const;
 export type ExplorerSection = (typeof explorerSections)[number];
 
@@ -133,27 +129,27 @@ function selection(rest: string[]): Pick<ExplorerLocation, 'entity' | 'section'>
 	return isSection(section) ? { entity, section } : null;
 }
 
-/**
- * Reads an address of the explorer, the part after the route it is served under:
- * `/branch/<name>[/commit/<sha>]/<category>[/<entity>[/details|/history]]`. A branch is one
- * encoded segment, and a commit that no branch reaches has the form without one. A branch or a
- * commit alone stands for its Pages. Undefined when the path names no address.
- */
+/** Reads a scoped explorer address; branch or commit alone opens Pages. */
 export function explorerRoute(path: string, search = ''): ExplorerLocation | undefined {
 	const found = scope(path.replace(/\/+$/, '').split('/').slice(1));
 	if (!found) return undefined;
 	const [category = 'pages', ...after] = found.rest;
 	if (category === 'helpers') return helperSelection(found, after);
-	if (category === 'styles' && after.length === 0)
-		return { branch: found.branch, commit: found.commit, category: 'pages', screen: 'styles' };
-	const selected = isCategory(category) ? selection(after) : null;
-	if (!isCategory(category) || !selected) return undefined;
+	if (category === 'styles') return stylesSelection(found);
+	if (!isCategory(category)) return undefined;
+	const selected = selection(after);
+	if (!selected) return undefined;
 	const { branch, commit } = found;
 	const location: ExplorerLocation = { branch, commit, category, ...selected };
 	const helper = helperOf(location, new URLSearchParams(search).get('helper'));
 	if (helper) location.helper = helper;
 	const tab = tabOf(location, search);
 	return tab ? { ...location, tab } : location;
+}
+
+function stylesSelection(found: Scope): ExplorerLocation | undefined {
+	if (found.rest.length !== 1) return undefined;
+	return { branch: found.branch, commit: found.commit, category: 'pages', screen: 'styles' };
 }
 
 /** Legacy Details links keep their scope and open a tab of the existing entity page. */
@@ -171,8 +167,7 @@ export function explorerRoutePath(location: ExplorerLocation): string {
 	location = canonicalExplorerLocation(location);
 	const branch = location.branch === null ? '' : `/branch/${encodeURIComponent(location.branch)}`;
 	const commit = location.commit === null ? '' : `/commit/${location.commit}`;
-	if (location.screen === 'styles') return `${branch}${commit}/styles`;
-	const callable = helperPath(location);
+	const callable = specialPath(location);
 	if (callable) return `${branch}${commit}${callable}`;
 	const entity = location.entity ? `/${encodeURIComponent(location.entity)}` : '';
 	const section = location.entity && location.section ? `/${location.section}` : '';
@@ -213,7 +208,8 @@ function helperPane(location: ExplorerLocation, pane?: string): ExplorerLocation
 	return tab ? { ...location, tab } : undefined;
 }
 
-function helperPath(location: ExplorerLocation): string | undefined {
+function specialPath(location: ExplorerLocation): string | undefined {
+	if (location.screen === 'styles') return '/styles';
 	if (location.category !== 'functions' || !location.helper) return undefined;
 	const helper = encodeURIComponent(location.helper);
 	const owner = location.entity ? `/in/${encodeURIComponent(location.entity)}` : '';
