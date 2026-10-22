@@ -5,6 +5,50 @@ import { join } from 'node:path';
 import { expect } from 'vitest';
 import { runCommand, runHarness } from '../cli';
 
+export async function expectFailedCapture(root: string): Promise<void> {
+	const result = await runHarness(
+		[
+			'loop',
+			'record',
+			'repair',
+			'--phase',
+			'capture',
+			'--test',
+			'proof.ts',
+			'--unit',
+			'function.sample',
+			'--command',
+			'bun proof.ts && exit 2',
+			'--json'
+		],
+		root,
+		false
+	);
+	expect(result.exitCode).toBe(1);
+	expect(result.stdout, 'partial captures survive a failed evidence command').toContain(
+		'"captures"'
+	);
+	const record = JSON.parse(result.stdout);
+	expect(record).toMatchObject({ phase: 'capture', status: 'failed', exitCode: 2 });
+	expect(record.red).toBeUndefined();
+	await runHarness(['history', 'build', '--out', 'partial-history', '--limit', '3'], root);
+	const detail = JSON.parse(
+		await readFile(join(root, 'partial-history/revisions', record.source.commit + '.json'), 'utf8')
+	);
+	expect(detail.regressions).toContainEqual(
+		expect.objectContaining({
+			red: null,
+			green: expect.objectContaining({
+				id: record.id,
+				status: 'failed',
+				captures: expect.any(Array)
+			})
+		})
+	);
+	const status = await runHarness(['history', 'status', '--json'], root);
+	expect(JSON.parse(status.stdout).verified).toBe(false);
+}
+
 /** Squash landing preserves identical pixels with their original revision, never a new verdict. */
 export async function expectSquashedScreens(root: string, source: string): Promise<void> {
 	const tree = (await runCommand(['git', 'rev-parse', source + '^{tree}'], root)).stdout.trim();
