@@ -99,7 +99,10 @@
 		"packages/hub/.wrangler/state/",
 		"packages/desktop/ios/App/App/public/",
 		"packages/desktop/ios/App/App/capacitor.config.json",
-		"packages/desktop/ios/App/App/config.xml"
+		"packages/desktop/ios/App/App/config.xml",
+		"packages/desktop/ios/capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec",
+		"packages/desktop/ios/capacitor-cordova-ios-plugins/resources/.gitkeep",
+		"packages/desktop/ios/capacitor-cordova-ios-plugins/sources/.gitkeep"
 	],
 	"runners": {
 		"vitest": "bun x vitest run {target}",

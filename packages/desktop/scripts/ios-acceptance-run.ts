@@ -1,4 +1,5 @@
 import { resolve } from 'node:path';
+import { writeFile } from 'node:fs/promises';
 import { localOrigin, loopbackArgument, scanArgument } from './ios-acceptance-guards';
 import type { SimulatorPage } from './ios-acceptance-page';
 import type { AcceptanceRecord } from './ios-acceptance-record';
@@ -109,6 +110,7 @@ export async function openDesign(run: Acceptance): Promise<string> {
 			)
 			.catch(() => 'The stopped page could not be inspected.');
 		const reason = error instanceof Error ? error.message : String(error);
+		await writeFile(resolve(run.output, 'project-opener-failed.json'), run.record.safe(state));
 		throw new Error(run.record.safe(`${reason}; project opener state: ${state}`));
 	}
 	await page.until('return document.title;', project.name);
