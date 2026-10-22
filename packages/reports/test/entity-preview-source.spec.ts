@@ -109,7 +109,9 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(dialog).toHaveCount(0);
 			await expect(action).toBeFocused();
 			expect(await where(page)).toEqual(address);
-			await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+			await page
+				.getByRole('tab', { name: category === 'pages' ? 'Models' : 'Contract', exact: true })
+				.click();
 			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
 			await historicalFile(page, { category, id, path });
 		});

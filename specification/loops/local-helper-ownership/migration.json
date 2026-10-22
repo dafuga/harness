@@ -4875,9 +4875,9 @@
 		{
 			"unit": "reports.function.entity-shown",
 			"name": "entityShown",
-			"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-			"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
-			"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e",
+			"commit": "5d44d45c1870b184e34f3a4898bf2002e0ac24ee",
+			"reason": "Keep verification states out of contract facts while preserving selected-revision verdicts and identical-tree focused measurements.",
+			"definition": "87ce5070b7af2d6d7b8a19f77db4cf359af462f116d94c7a5e294c78864f06b1",
 			"previousDefinitions": [
 				{
 					"unit": "reports.function.entity-shown",
@@ -4885,6 +4885,13 @@
 					"commit": "cd36c21c5b2e593e2e30ea549146c519f246a2f8",
 					"reason": "Review main-branch derivation of unit measurements from the current record and matching regression proofs.",
 					"definition": "f6de7fca7ef306650d26d58e0fbd3d3357b74b63383585560ba8bbd27fab28f2"
+				},
+				{
+					"unit": "reports.function.entity-shown",
+					"name": "entityShown",
+					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			]
 		},
@@ -4901,6 +4908,27 @@
 			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
 			"reason": "Read source size and complexity from the exact historical revision alongside existing evidence.",
 			"definition": "efd95649c13e63d700372d38417c274df8a18bfb1a955447ee974d61261b679b"
+		},
+		{
+			"unit": "function.history-series",
+			"name": "historySeries",
+			"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+			"reason": "Include distinct, non-gapped focused workload observations at their original tested revision without granting a verification verdict.",
+			"definition": "84610fd59c3deb65877e1d8c15133dbc07ccd0c7b311277141394765f59e272c"
+		},
+		{
+			"unit": "reports.function.contract-fields",
+			"name": "contractFields",
+			"commit": "17192fb8f8a3ade93c1b49adcdf8511cb4219ebb",
+			"reason": "Show component Props without derived outputs; omit empty error groups while retaining declared field types and examples.",
+			"definition": "1c01800c390be6754a38e669d381495f57991079333d7f81419630bf0cc3aea6"
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"name": "entityContract",
+			"commit": "17192fb8f8a3ade93c1b49adcdf8511cb4219ebb",
+			"reason": "Review component Props and conditional failure rows, preserving page routes, config provisions and service runtime facts.",
+			"definition": "25a934bb1bb8ea144fe0a2e32c8cd92109dff89e98a8ad9b01fcf00ff8e5c666"
 		}
 	]
 }

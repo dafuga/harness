@@ -1,6 +1,10 @@
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, open, ready, viewports, where } from './entityPreviewPage';
-import { ids } from './entityUnits';
+import { commits, ids } from './entityUnits';
+const modelUnits = [
+	'reports.component.explorer-ui-explorer-module-card',
+	'reports.component.harness-entity-relations'
+];
 
 test('component contracts expose Props and keep verification states on States', async ({
 	page: tab
@@ -30,3 +34,53 @@ test('component contracts expose Props and keep verification states on States', 
 	await expect(states).toContainText('Empty');
 	expect(await where(tab)).toMatchObject({ ...route, tab: 'states' });
 });
+
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`page sections show used models instead of a contract at ${viewport} width`, async ({
+		page: tab
+	}) => {
+		await tab.setViewportSize(size);
+		for (const commit of [null, commits.middle]) {
+			await open(tab, { category: 'pages', entity: ids.page, commit }, 'groups');
+			await capture(
+				tab,
+				`page-models-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`,
+				['reports.component.harness-entity-overview']
+			);
+			await expect(tab.getByRole('tab', { name: 'Contract', exact: true })).toHaveCount(0);
+			await tab.getByRole('tab', { name: 'Models', exact: true }).click();
+			const panel = tab.getByRole('tabpanel', { name: 'Orders page models', exact: true });
+			await expect(panel).toBeVisible();
+			await capture(
+				tab,
+				`page-models-content-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`,
+				modelUnits
+			);
+			const card = panel.getByRole('article', { name: 'Order', exact: true });
+			await expect(card).toHaveAttribute('data-harness-component', 'explorer-module-card');
+			await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
+			await expect(panel.getByRole('article')).toHaveCount(1);
+			await expect(panel).not.toContainText('Order.types');
+			const consumer = card.getByRole('link', { name: 'OrderStore', exact: true });
+			await consumer.hover();
+			await expect(tab.getByRole('tooltip', { name: 'Preview of OrderStore' })).toBeVisible();
+			await tab.keyboard.press('Escape');
+			const model = panel.getByRole('link', { name: 'Order', exact: true });
+			await expect(model).toBeVisible();
+			await model.click();
+			expect(await where(tab)).toMatchObject({
+				category: 'models',
+				entity: 'app.model.order',
+				commit
+			});
+		}
+		await open(
+			tab,
+			{ category: 'pages', entity: ids.page, commit: commits.first, tab: 'models' },
+			'groups'
+		);
+		await expect(
+			tab.getByRole('tabpanel', { name: 'Orders page models', exact: true })
+		).toContainText('No data models are recorded for this page.');
+	});
+}

@@ -161,6 +161,10 @@ async function expectSavedScreens(root: string, commit: string): Promise<void> {
 	await expectSquashedScreens(root, commit);
 	const out = join(root, 'history');
 	await runHarness(['history', 'build', '--out', out, '--limit', '3'], root);
+	const index = JSON.parse(await readFile(join(out, 'index.json'), 'utf8'));
+	expect(index.benchmarks, 'history retains focused performance observations').toContainEqual(
+		expect.objectContaining({ unit: 'function.sample', metric: 'latency-warm-ms' })
+	);
 	const detail = JSON.parse(await readFile(join(out, 'revisions', commit + '.json'), 'utf8'));
 	expect(detail.regressions[0].green.captures).toContainEqual(
 		expect.objectContaining({

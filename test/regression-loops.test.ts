@@ -6,6 +6,22 @@ import { searchLoops } from '../src/workflows/loopSearch';
 import { resolveLoopTemplate } from '../src/workflows/loopTemplates';
 import { projectFiles } from '../src/templates/project';
 import { findGuide } from '../src/guides/guide';
+import { environmentProfile } from '../src/workflows/verification-evidence/record-regression/RegressionProofService';
+
+test('regression profiles ignore volatile macOS launcher identity while retaining workload settings', () => {
+	const source = {
+		PATH: '/pinned/runtime',
+		FEATURE_FLAG: 'enabled',
+		XPC_SERVICE_NAME: 'launcher-one'
+	};
+	const first = environmentProfile(source);
+	expect(
+		environmentProfile({ ...source, XPC_SERVICE_NAME: 'launcher-two' }),
+		'macOS launch identity is not workload configuration'
+	).toBe(first);
+	expect(environmentProfile({ ...source, PATH: '/another/runtime' })).not.toBe(first);
+	expect(environmentProfile({ ...source, FEATURE_FLAG: 'disabled' })).not.toBe(first);
+});
 
 const orders = {
 	'bug-fix': ['spec', 'coverage', 'red', 'implement', 'green', 'verify'],

@@ -51,6 +51,9 @@ if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
 if (variant === 'focused')
 	for (const commit of Object.keys(stored)) stored[commit] = withFocused(stored[commit]);
+if (variant === 'viewport-states')
+	for (const commit of Object.keys(stored))
+		stored[commit] = withFocused(stored[commit], ids.page, {}, true);
 if (variant === 'relations')
 	for (const commit of Object.keys(stored)) stored[commit] = withRelationGroups(stored[commit]);
 if (variant === 'helpers')
@@ -79,7 +82,7 @@ if (variant === 'declared') {
 	for (const [commit, detail] of Object.entries(stored)) {
 		const { registry } = detail;
 		const units = registry.units.map((unit) => {
-			if (unit.id === ids.page) return { ...unit, contract: declaredContract };
+			if (unit.id === ids.settings) return { ...unit, contract: declaredContract };
 			return unit.id === ids.filter ? callableFixture(unit) : unit;
 		});
 		stored[commit] = withServiceContracts({ ...detail, registry: { ...registry, units } });

@@ -12,6 +12,7 @@ import { withInherited } from '../entityPreviewData';
 import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
+import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 
 const page = units.find((unit) => unit.id === ids.page)!;
 const head = revision(commits.middle, [record(commits.middle)]);
@@ -37,6 +38,30 @@ test('source-identical squash previews retain origin and reject a changed source
 	expect(
 		catalogShot(evidence(page, { ...squashed, side: `sides/${'f'.repeat(40)}.json` }))
 	).toBeNull();
+});
+test('device states share a picker while original metadata and missing-device gaps remain intact', () => {
+	expect(withoutViewportSuffix('choose-mobile', 'desktop')).toBe('choose-mobile');
+	const captured = withFocused(tip, ids.page, {}, true);
+	const found = evidence(page, captured);
+	const opts = screenOptions(found.scenarios);
+	for (const viewport of ['desktop', 'tablet', 'mobile']) {
+		expect(
+			entityScreens(found, screenPick(opts, { scenario: 'focused', viewport })!).after.file
+		).toBe(`ccccccc-default-${viewport}.png`);
+	}
+	expect(found.after.captures.map((item) => item.state)).toEqual(['default', 'default', 'default']);
+	expect(found.after.captures.map((item) => item.capture.state)).toEqual([
+		'default-desktop',
+		'default-tablet',
+		'default-mobile'
+	]);
+	captured.regressions![0].green!.captures = captured.regressions![0].green!.captures!.slice(0, 1);
+	const alone = evidence(page, captured);
+	expect(alone.after.captures[0].state).toBe('default-desktop');
+	expect(
+		entityScreens(alone, { scenario: 'focused', state: 'default-desktop', viewport: 'mobile' })
+			.after.missing
+	).toBe(true);
 });
 const options = screenOptions(scenarios.filter((item) => item.units.includes(ids.page)));
 type Revision = typeof head;
