@@ -1,3 +1,5 @@
+import { taskProfile } from './support/taskProfiles';
+import { historyIndexSchema } from '../src/core/historyIndexTypes';
 import { existsSync } from 'node:fs';
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -41,6 +43,9 @@ test('the index is deterministic and names every commit, verified or not', async
 	expect(await directoryDigest(one)).toBe(await directoryDigest(two));
 	expect(sha256(await readFile(join(one, 'index.json')))).toBe(built.digest);
 	const { index } = built;
+	await taskProfile('function.history-index-types', 'parse-built-multi-revision-history', () =>
+		historyIndexSchema.parse(index)
+	);
 	expect([index.schemaVersion, index.problems, index.branches]).toEqual([
 		1,
 		[],

@@ -1,5 +1,10 @@
+import { taskProfile } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
-import type { BudgetEvent, PerformanceBaselineEntry } from '../../src/core/budgetTypes';
+import {
+	budgetEventSchema,
+	type BudgetEvent,
+	type PerformanceBaselineEntry
+} from '../../src/core/budgetTypes';
 import { BudgetService } from '../../src/services/budget-service/BudgetService';
 import { comparisonContext } from '../../src/utils/comparison-context/comparisonContext';
 
@@ -36,12 +41,15 @@ const approval = (performance: PerformanceBaselineEntry[]): BudgetEvent => ({
 	performance
 });
 
-test('an approval replaces only the baseline of its own workload, target and profile', () => {
+test('an approval replaces only the baseline of its own workload, target and profile', async () => {
 	const events: BudgetEvent[] = [
 		{ type: 'baseline', ...signed, metrics, performance: [entry('p1', 4)] },
 		approval([entry('p2', 9)]),
 		approval([entry('p1', 0.001, cheaper)])
 	];
+	await taskProfile('function.budget-types', 'parse-workload-baseline-and-approvals', () =>
+		events.map((event) => budgetEventSchema.parse(event))
+	);
 	const before = JSON.stringify(events);
 	const current = new BudgetService().baselines(events, []).get('function.rank');
 	expect(current?.performance).toEqual([entry('p2', 9), entry('p1', 0.001, cheaper)]);

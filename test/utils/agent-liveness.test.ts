@@ -1,4 +1,10 @@
+import { taskProfile } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
+import {
+	agentRegistrationSchema,
+	agentBeatSchema,
+	agentEndSchema
+} from '../../src/core/activityTypes';
 import { agentLiveness } from '../../src/services/agent-activity-service/agentLiveness';
 import { type AgentFacts, type ProcessFacts } from '../../src/utils/agentLiveness';
 
@@ -56,4 +62,41 @@ test('a process that ended, or a number that now belongs to another process, is 
 		return running;
 	});
 	expect(asked).toBe(0);
+});
+
+test('activity schemas validate actual registration, beat and terminal records', async () => {
+	const records = [
+		{
+			schema: agentRegistrationSchema,
+			value: {
+				schemaVersion: 1,
+				id: 'fixture-agent',
+				label: 'Fixture',
+				provider: null,
+				model: null,
+				pid: null,
+				processStartedAt: null,
+				registeredAt: ago(3600),
+				ttlSeconds: 900
+			}
+		},
+		{
+			schema: agentBeatSchema,
+			value: {
+				at: ago(30),
+				branch: 'main',
+				task: 'Validate fixture',
+				loop: null,
+				units: ['function.activity-types']
+			}
+		},
+		{ schema: agentEndSchema, value: { at: ago(1), status: 'completed', outcome: 'Validated' } }
+	];
+	for (const { schema, value } of records) expect(schema.parse(value)).toEqual(value);
+	expect(agentRegistrationSchema.safeParse({ ...records[0].value, ttlSeconds: 0 }).success).toBe(
+		false
+	);
+	await taskProfile('function.activity-types', 'parse-agent-lifecycle-records', () =>
+		records.map(({ schema, value }) => schema.parse(value))
+	);
 });

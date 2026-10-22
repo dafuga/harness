@@ -1,3 +1,4 @@
+import { taskProfile } from '../support/taskProfiles';
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
@@ -71,9 +72,12 @@ test('recordFiles lists the captures this run produced and its logs, not inherit
 	]);
 });
 
-test('evidenceManifest states the original hash, size and storage of every file', () => {
+test('evidenceManifest states the original hash, size and storage of every file', async () => {
 	const bytes = Buffer.from('{"record":true}\n');
 	const manifest = evidenceManifest(record, bytes);
+	await taskProfile('function.history-types', 'parse-immutable-evidence-manifest', () =>
+		evidenceManifestSchema.parse(manifest)
+	);
 	expect(evidenceManifestSchema.safeParse(manifest).success).toBe(true);
 	expect(manifest.files).toEqual([
 		{

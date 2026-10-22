@@ -1,3 +1,4 @@
+import { taskProfile } from '../support/taskProfiles';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -5,6 +6,7 @@ import { join } from 'node:path';
 import { afterAll, expect, test } from 'vitest';
 import type { WritingVersion } from '../../src/utils/writing-limits/writingLimits';
 import {
+	explanationSchema,
 	explanationsFile,
 	type Explanation,
 	type RequiredReason
@@ -143,4 +145,13 @@ test('a date that cannot be read is never later than one that can; equal ones ag
 	const other = reason(15, later, 'Shouts every title, a later note.');
 	const answers = await Promise.all(across(2).map((places) => held([twin, other], places)));
 	expect(new Set(answers.map((answer) => JSON.stringify(answer))).size).toBe(1);
+});
+
+test('explanation schemas parse the reviewed change and reject an absent exact-source fingerprint', async () => {
+	const reviewed = reason(3, earlier, 'Shouts every title.');
+	expect(explanationSchema.parse(reviewed)).toEqual(reviewed);
+	expect(explanationSchema.safeParse({ ...reviewed, to: undefined }).success).toBe(false);
+	await taskProfile('function.explanation-types', 'parse-reviewed-explanation', () =>
+		explanationSchema.parse(reviewed)
+	);
 });

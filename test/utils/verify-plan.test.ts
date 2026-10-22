@@ -1,3 +1,4 @@
+import { taskProfile } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
 import { unitsConfigSchema } from '../../src/core/unitsConfig';
 import { defaultVerifyConfig, verifyConfigSchema } from '../../src/core/verifyTypes';
@@ -47,7 +48,7 @@ test('a selected test file runs under the runner its name implies, in its worksp
 	]);
 });
 
-test('a test file that needs its own command gets it, and every other file keeps its runner', () => {
+test('a test file that needs its own command gets it, and every other file keeps its runner', async () => {
 	const config = verifyConfigSchema.parse({
 		...defaultVerifyConfig,
 		checks: [
@@ -58,6 +59,9 @@ test('a test file that needs its own command gets it, and every other file keeps
 			}
 		]
 	});
+	await taskProfile('function.verify-types', 'parse-workspace-check-config', () =>
+		verifyConfigSchema.parse(config)
+	);
 	const [hub, own, unit] = planned(config);
 	expect(own).toEqual({
 		id: picker,

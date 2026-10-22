@@ -1,3 +1,4 @@
+import { taskProfile } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
 import { kernelBenchmarkSchema } from '../../src/core/benchmarkTypes';
 import { VerificationRecordValidator } from '../../src/validators/VerificationRecordValidator';
@@ -30,8 +31,11 @@ function calibration() {
 	};
 }
 
-test('a benchmark run is calibration and can never claim to be verified', () => {
+test('a benchmark run is calibration and can never claim to be verified', async () => {
 	const run = calibration();
+	await taskProfile('function.benchmark-types', 'parse-kernel-calibration', () =>
+		kernelBenchmarkSchema.parse(run)
+	);
 	expect(kernelBenchmarkSchema.safeParse(run).success).toBe(true);
 	const promoted = { ...run, provenance: { ...run.provenance, verified: true } };
 	expect(kernelBenchmarkSchema.safeParse(promoted).success).toBe(false);

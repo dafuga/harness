@@ -1,8 +1,10 @@
+import { taskProfile } from './support/taskProfiles';
 import { appendFile, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { CheckRunService } from '../src/services/check-run-service/CheckRunService';
+import { browserDiagnosticSchema } from '../src/core/browserDiagnostics';
 import { verificationRecordSchema } from '../src/core/verificationTypes';
 import { recordView } from '../src/utils/recordView';
 import { verificationSample } from './support/verificationSample';
@@ -137,3 +139,11 @@ async function runDiagnosticCheck(root: string, timeoutMs: number) {
 		timeoutMs
 	});
 }
+
+test('diagnostic schemas retain expected error reasons and reject negative retry counts', async () => {
+	expect(browserDiagnosticSchema.parse(diagnostics)).toEqual(diagnostics);
+	expect(browserDiagnosticSchema.safeParse({ ...diagnostics, retry: -1 }).success).toBe(false);
+	await taskProfile('function.browser-diagnostics', 'parse-browser-attempt-diagnostics', () =>
+		browserDiagnosticSchema.parse(diagnostics)
+	);
+});
