@@ -30,7 +30,7 @@ export class RegressionProofRepository {
 		const candidates = [
 			...new Set(
 				regressionNotes(notes)
-					.filter((note) => note.phase === 'green' && note.commit !== commit)
+					.filter((note) => note.phase !== 'red' && note.commit !== commit)
 					.map((note) => note.commit)
 			)
 		];
