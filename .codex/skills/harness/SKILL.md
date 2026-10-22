@@ -178,6 +178,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 - Source-profile lifecycle coverage must reset the runner module cache and verify retained sample counts. Teardown must flush collectors created after resets into their original evidence directories; failed imports, declaration collection and explicit benchmark exclusions remain unchanged.
 
+- Automatically selected browser ports must be published to the runner environment before worker startup. Exercise fresh parent and worker configuration imports and a real ordinary browser smoke flow; a named-port refusal test alone cannot prove worker inheritance.
+
 ## Hard Limits
 
 - Files: 220 lines.

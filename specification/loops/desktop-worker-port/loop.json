@@ -6,7 +6,7 @@
 	"name": "desktop-worker-port",
 	"goal": "Keep one automatically selected Desktop browser port across the runner, server and worker processes without adopting another server",
 	"createdAt": "2026-10-22T06:00:18.248Z",
-	"updatedAt": "2026-10-22T06:03:05.252Z",
+	"updatedAt": "2026-10-22T06:05:07.229Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -45,7 +45,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T06:05:07.229Z",
+			"evidence": "Publish the chosen port to process.env before workers start; child configs and the server inherit it. Both-mode cross-process guards, foreign-server refusal and the real ordinary read-only smoke flow pass; scenario matrix 10 cases."
 		},
 		{
 			"id": "green",

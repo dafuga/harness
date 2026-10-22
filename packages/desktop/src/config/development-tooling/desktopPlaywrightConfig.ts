@@ -15,6 +15,8 @@ async function previewPort(): Promise<number> {
 	throw new Error(`HARNESS_DESKTOP_TEST_PORT must be a port from 1024 to 65535, not "${named}".`);
 }
 const port = await previewPort();
+// Playwright reloads configuration in workers; inherit this run's port instead of choosing again.
+process.env.HARNESS_DESKTOP_TEST_PORT = String(port);
 const url = `http://127.0.0.1:${port}`;
 
 export const desktopPlaywrightConfig = defineConfig({
