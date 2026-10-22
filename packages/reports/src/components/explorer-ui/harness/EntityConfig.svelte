@@ -21,7 +21,11 @@
 	const kind = (type: string) => (type.length <= 48 ? type : 'structured value');
 </script>
 
-<section class="ex-card ex-evidence" aria-labelledby="ex-config-title">
+<section
+	class="ex-card ex-evidence"
+	aria-labelledby="ex-config-title"
+	data-harness-component="harness-entity-config"
+>
 	<header class="ex-evidence-head">
 		<div>
 			<h2 id="ex-config-title">{current ? 'Current configuration' : 'Configuration'}</h2>

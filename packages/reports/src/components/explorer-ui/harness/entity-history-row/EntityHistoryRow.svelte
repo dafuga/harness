@@ -43,7 +43,7 @@
 	let complexity = $derived(row.measured?.complexity ?? detail?.sourceComplexity ?? null);
 </script>
 
-<tr class:viewed>
+<tr class:viewed data-harness-component="harness-entity-history-row">
 	<td><time datetime={row.committedAt} title={row.committedAt}>{timeAgo(row.committedAt, Date.now(), 'always')}</time></td>
 	<td>
 		<EntityLink {to} {nav} class="ex-hash">{hash}</EntityLink>

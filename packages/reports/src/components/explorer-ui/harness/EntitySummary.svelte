@@ -32,7 +32,7 @@
 </script>
 
 <!-- Size and timings share one profile; the contract keeps its own tab and Details section. -->
-<div class="ex-summary" class:compact>
+<div class="ex-summary" class:compact data-harness-component="harness-entity-summary">
 	<section class="ex-card" aria-label="Performance profile">
 		<h2><HarnessIcon name="gauge" size={24} /> Performance profile</h2>
 		{#if measure.size.length > 0 || !tabled}

@@ -70,7 +70,12 @@
 		(timings.get(row.commit) ?? []).find((item) => item.profile === shown);
 </script>
 
-<div role="tabpanel" aria-label={`${entity.name} history`} class="ex-stack">
+<div
+	role="tabpanel"
+	aria-label={`${entity.name} history`}
+	class="ex-stack"
+	data-harness-component="harness-entity-history"
+>
 	<RegressionProof
 		items={read.get(scope.commit)?.regressions ?? []}
 		unit={entity.id}

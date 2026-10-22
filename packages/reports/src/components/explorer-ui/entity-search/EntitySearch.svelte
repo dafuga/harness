@@ -76,7 +76,7 @@
 {/snippet}
 
 <svelte:window onkeydown={shortcut} />
-<div class="entity-search">
+<div class="entity-search" data-harness-component="entity-search">
 	<button
 		bind:this={trigger}
 		type="button"

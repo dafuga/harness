@@ -89,14 +89,19 @@
 {/snippet}
 
 {#if !cell.capture}
-	<p class="ex-soft">Not recorded</p>
+	<p class="ex-soft" data-harness-component="harness-entity-artifact">Not recorded</p>
 {:else if cell.capture.media === null}
-	<p class="ex-gap">
+	<p class="ex-gap" data-harness-component="harness-entity-artifact">
 		<HarnessVerdict passed={false} label="Not stored" />
 		<span>{cell.capture.gap ?? 'Its bytes are not in this history.'}</span>
 	</p>
 {:else}
-	<div class="ex-artifact" role="group" aria-label={label}>
+	<div
+		class="ex-artifact"
+		role="group"
+		aria-label={label}
+		data-harness-component="harness-entity-artifact"
+	>
 		{#if cell.read === undefined && !lost}
 			<p class="ex-soft" role="status">Reading what it holds…</p>
 		{:else if !cell.read || !cell.read.verified}

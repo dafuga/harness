@@ -62,7 +62,12 @@
 	{/if}
 {/snippet}
 
-<article class="ex-page-card" class:ex-page-minimal={page} aria-label={row.name}>
+<article
+	class="ex-page-card"
+	class:ex-page-minimal={page}
+	aria-label={row.name}
+	data-harness-component="harness-explorer-page-card"
+>
 	{#if page}
 		<EntityLink {to} {nav} class="ex-page-open" label={`Open ${row.name}`} title={provenance}>
 			<h2>{row.name}</h2>

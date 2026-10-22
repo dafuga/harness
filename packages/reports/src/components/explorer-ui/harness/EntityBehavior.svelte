@@ -83,7 +83,11 @@
 	);
 </script>
 
-<section class="ex-card ex-evidence" aria-labelledby="ex-behavior-title">
+<section
+	class="ex-card ex-evidence"
+	aria-labelledby="ex-behavior-title"
+	data-harness-component="harness-entity-behavior"
+>
 	<header class="ex-evidence-head">
 		<div>
 			<h2 id="ex-behavior-title">

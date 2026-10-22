@@ -98,7 +98,7 @@
 		{/if}
 	</ol>
 </nav>
-<header class="ex-head">
+<header class="ex-head" data-harness-component="harness-entity-header">
 	<span class="ex-tile"><HarnessIcon name={categoryIcon[entity.category]} size={30} /></span>
 	<div class="ex-head-main">
 		<div class="ex-head-title">

@@ -26,4 +26,10 @@
 	}
 </script>
 
-<a aria-label={label} {...rest} href={nav.href(to)} onclick={follow}>{@render children()}</a>
+<a
+	aria-label={label}
+	{...rest}
+	href={nav.href(to)}
+	onclick={follow}
+	data-harness-component="harness-entity-link">{@render children()}</a
+>

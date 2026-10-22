@@ -33,7 +33,7 @@
 	);
 </script>
 
-<section class="ex-pane" aria-label={title}>
+<section class="ex-pane" aria-label={title} data-harness-component="harness-entity-run">
 	<header class="ex-pane-head">
 		<strong>{title}</strong>
 		<span class="ex-pill">{role}</span>

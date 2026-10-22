@@ -21,7 +21,7 @@
 	}
 </script>
 
-<header class="hx-nav">
+<header class="hx-nav" data-harness-component="harness-harness-navbar">
 	<a class="hx-brand" href={view.home.href} onclick={(event) => follow(event, view.home.to)}>
 		<span class="hx-mark"><BrandMark size={30} /></span>
 		<span>Harness</span>

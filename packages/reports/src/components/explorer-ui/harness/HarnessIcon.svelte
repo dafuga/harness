@@ -16,6 +16,7 @@
 <svg
 	class="hx-icon"
 	class:solid={solidIcons.has(name)}
+	data-harness-component="harness-harness-icon"
 	viewBox="0 0 24 24"
 	width={size}
 	height={size}

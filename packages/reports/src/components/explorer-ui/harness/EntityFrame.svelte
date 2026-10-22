@@ -59,59 +59,68 @@
 	});
 </script>
 
-<ExplorerFrame {host}>
-	{#snippet children(nav)}
-		<!-- A component keeps the screenshots of its revision between its name and every row of tabs. -->
-		{#snippet screens()}
-			{#if entity?.category === 'components'}
-				{@const evidence = host.lens.evidence(entity.unit)}
-				<EntityScreens
-					options={screenOptions(evidence.scenarios)}
-					preview={entity.unit.preview}
-					{evidence}
-					scope={host.scope}
-					mediaBase={host.mediaBase}
+<!-- The marker of the entity's frame draws no box. -->
+<div class="ex-entity" data-harness-component="harness-entity-frame">
+	<ExplorerFrame {host}>
+		{#snippet children(nav)}
+			<!-- A component keeps the screenshots of its revision between its name and every row of tabs. -->
+			{#snippet screens()}
+				{#if entity?.category === 'components'}
+					{@const evidence = host.lens.evidence(entity.unit)}
+					<EntityScreens
+						options={screenOptions(evidence.scenarios)}
+						preview={entity.unit.preview}
+						{evidence}
+						scope={host.scope}
+						mediaBase={host.mediaBase}
+						{nav}
+						reasons={entityChanged(host, entity.id)}
+					/>
+				{/if}
+			{/snippet}
+			{#if choosing && moduleEntity}
+				<section class="ex-card">
+					<h1>{moduleEntity.name}</h1>
+					<p>Choose a helper to open its own detail page.</p>
+					<ul class="ex-links">
+						{#each moduleEntity.unit.helpers ?? [] as helper}
+							<li>
+								<EntityLink
+									{nav}
+									to={entityLens(host.route, {
+										entity: moduleEntity.id,
+										helper: helper.name,
+										tab: 'contract'
+									})}><code>{helper.name}()</code></EntityLink
+								>
+							</li>
+						{/each}
+					</ul>
+				</section>
+			{:else if entity}
+				<EntityHeader
+					{entity}
+					{owner}
 					{nav}
-					reasons={entityChanged(host, entity.id)}
+					preview={screens}
+				/>
+				{@render screen(entity, nav)}
+			{:else}
+				<EntityMissing
+					title="Not at this revision"
+					message={host.route.helper && !host.route.entity
+						? `The name ${host.route.helper} does not identify exactly one helper at this revision. Choose its owner from Helpers.`
+						: `Nothing named ${host.route.helper ?? host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
+					{nav}
+					to={entityLens(host.route, { category: host.route.category })}
 				/>
 			{/if}
 		{/snippet}
-		{#if choosing && moduleEntity}
-			<section class="ex-card">
-				<h1>{moduleEntity.name}</h1>
-				<p>Choose a helper to open its own detail page.</p>
-				<ul class="ex-links">
-					{#each moduleEntity.unit.helpers ?? [] as helper}
-						<li>
-							<EntityLink
-								{nav}
-								to={entityLens(host.route, {
-									entity: moduleEntity.id,
-									helper: helper.name,
-									tab: 'contract'
-								})}><code>{helper.name}()</code></EntityLink
-							>
-						</li>
-					{/each}
-				</ul>
-			</section>
-		{:else if entity}
-			<EntityHeader
-				{entity}
-				{owner}
-				{nav}
-				preview={screens}
-			/>
-			{@render screen(entity, nav)}
-		{:else}
-			<EntityMissing
-				title="Not at this revision"
-				message={host.route.helper && !host.route.entity
-					? `The name ${host.route.helper} does not identify exactly one helper at this revision. Choose its owner from Helpers.`
-					: `Nothing named ${host.route.helper ?? host.route.entity} is in the registry at ${shortCommit(host.scope.commit)}.`}
-				{nav}
-				to={entityLens(host.route, { category: host.route.category })}
-			/>
-		{/if}
-	{/snippet}
-</ExplorerFrame>
+	</ExplorerFrame>
+</div>
+
+<style>
+	.ex-entity {
+		display: contents;
+	}
+</style>

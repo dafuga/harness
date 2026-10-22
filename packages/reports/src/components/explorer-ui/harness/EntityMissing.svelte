@@ -19,7 +19,11 @@
 	} = $props();
 </script>
 
-<section class="ex-card ex-missing" aria-labelledby="ex-missing-title">
+<section
+	class="ex-card ex-missing"
+	aria-labelledby="ex-missing-title"
+	data-harness-component="harness-entity-missing"
+>
 	<h1 id="ex-missing-title">{title}</h1>
 	<p><HarnessVerdict passed={false} label="Not shown" /></p>
 	<p class="ex-lead">{message}</p>

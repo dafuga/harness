@@ -65,7 +65,7 @@
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.id });
 </script>
 
-<div class="ex-scroll">
+<div class="ex-scroll" data-harness-component="harness-explorer-table">
 	<table class="ex-table" aria-label={entityLabels[category].title}>
 		<thead>
 			<tr>

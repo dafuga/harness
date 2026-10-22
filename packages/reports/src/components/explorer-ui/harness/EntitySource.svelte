@@ -33,7 +33,11 @@
 	}
 </script>
 
-<section class="ex-card" aria-labelledby="ex-source-title">
+<section
+	class="ex-card"
+	aria-labelledby="ex-source-title"
+	data-harness-component="harness-entity-source"
+>
 	<h2 id="ex-source-title">Source files</h2>
 	<SourceFileList {files} href={sourceLink}>
 		{#snippet children(path)}

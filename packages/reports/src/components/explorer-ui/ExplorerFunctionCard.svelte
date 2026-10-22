@@ -46,7 +46,11 @@
 	let call = $derived(row.helper ? invocation(row.entity.unit) : row.name);
 </script>
 
-<article class="ex-function-tile" aria-label={row.name}>
+<article
+	class="ex-function-tile"
+	aria-label={row.name}
+	data-harness-component="explorer-function-card"
+>
 	<EntityLink
 		{to}
 		{nav}
