@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { benchmarkCaptureSchema } from '../../../src/core/verifyTypes';
 import { BuildIdentityService } from '../../../src/services/BuildIdentityService';
 import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { previewHome } from './entityPreviewSetup';
@@ -69,7 +70,7 @@ export async function capturePlatformEvidence(
 			file: `${name}-measurements.json`,
 			mediaType: 'application/json'
 		},
-		JSON.stringify({ measurements })
+		JSON.stringify(benchmarkCaptureSchema.parse({ measurements }))
 	);
 }
 
@@ -81,7 +82,7 @@ async function platformMeasurements(page: Page, units: string[], state: string, 
 	const session = await page.context().newCDPSession(page);
 	const heap = await session.send('Runtime.getHeapUsage');
 	await session.detach();
-	const context = { workload: `platform-${state}-${viewport}`, target: 'browser', samples: 1 };
+	const context = { workload: `platform-${state}-${viewport}`, target: 'module', samples: 1 };
 	return units.flatMap((unit) => [
 		{
 			...context,
