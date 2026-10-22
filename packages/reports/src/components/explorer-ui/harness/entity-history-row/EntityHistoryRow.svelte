@@ -6,7 +6,11 @@
 		ExplorerLocation,
 		ExplorerVerdict
 	} from '../../../../models/explorer-ui/Explorer.types';
-	import { signedBytes, signedCount, type HistoryTiming } from '../../../../utils/explorer-ui/entityHistory';
+	import {
+		signedBytes,
+		signedCount,
+		type HistoryTiming
+	} from '../../../../utils/explorer-ui/entityHistory';
 	import { shortCommit, type EntityNav } from '../../../../utils/explorer-ui/entityLens';
 	import { byteSize, notMeasured } from '../../../../utils/explorer-ui/entityMeasure';
 	import { boundedText, entityReasons } from '../../../../utils/explorer-ui/entityReasons';
@@ -44,10 +48,13 @@
 </script>
 
 <tr class:viewed>
-	<td><time datetime={row.committedAt} title={row.committedAt}>{timeAgo(row.committedAt, Date.now(), 'always')}</time></td>
+	<td
+		><time datetime={row.committedAt} title={row.committedAt}
+			>{timeAgo(row.committedAt, Date.now(), 'always')}</time
+		></td
+	>
 	<td>
 		<EntityLink {to} {nav} class="ex-hash">{hash}</EntityLink>
-		{#if viewed}<span class="ex-pill gold">Viewed commit</span>{/if}
 		<EntityReasons {reasons} />
 	</td>
 	<td class="ex-said">

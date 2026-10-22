@@ -34,7 +34,7 @@
 			{
 				"name": "EntityHistoryRow.viewed",
 				"type": "boolean",
-				"description": "Required flag marking this as the currently viewed commit and adding its badge."
+				"description": "Required flag marking this as the currently viewed commit and highlighting its history row."
 			},
 			{
 				"name": "EntityHistoryRow.to",
@@ -51,7 +51,7 @@
 			{
 				"name": "EntityHistoryRow",
 				"type": "markup",
-				"description": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control. Registry lifecycle badges are omitted because they do not establish helper introduction dates."
+				"description": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. The current commit row is highlighted without a Viewed commit badge. Long reasons use an inline disclosure; no verdict or duplicate revision control. Registry lifecycle badges are omitted because they do not establish helper introduction dates."
 			}
 		],
 		"errors": []
