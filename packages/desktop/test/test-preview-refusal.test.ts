@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process';
+import { readdirSync, readFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { resolve } from 'node:path';
@@ -61,6 +62,16 @@ test('a port override that is no port is refused by its name before anything sta
 /** Whether a project's pattern takes a spec, matched as Playwright does on its absolute path. */
 const takes = (pattern: unknown, spec: string) =>
 	pattern instanceof RegExp && pattern.test(resolve(desktop, playwright.testDir ?? '', spec));
+const e2e = resolve(desktop, playwright.testDir ?? '');
+
+/** Whether a spec launches the Electron app, itself or through a local fixture it imports. */
+function launchesElectron(spec: string): boolean {
+	const source = readFileSync(resolve(e2e, spec), 'utf8');
+	const fixtures = [...source.matchAll(/from '\.\/([\w-]+)'/g)].map(([, name]) =>
+		readFileSync(resolve(e2e, `${name}.ts`), 'utf8')
+	);
+	return [source, ...fixtures].some((text) => /\b_electron\b/.test(text));
+}
 
 test('test:e2e runs headless chromium without the Electron spec, which only test:native runs', () => {
 	const project = (name: string) => playwright.projects?.find((item) => item.name === name);
@@ -69,8 +80,10 @@ test('test:e2e runs headless chromium without the Electron spec, which only test
 	expect(manifest.scripts['test:e2e']).toBe('playwright test --project=chromium');
 	expect(manifest.scripts['test:native']).toBe('playwright test --project=native');
 	expect(chromium?.use).toMatchObject({ browserName: 'chromium', headless: true });
-	for (const spec of ['native-desktop.spec.ts', 'ui-hosted.spec.ts']) {
-		const electron = spec === 'native-desktop.spec.ts';
+	expect(launchesElectron('native-desktop.spec.ts')).toBe(true);
+	expect(launchesElectron('ui-hosted.spec.ts')).toBe(false);
+	for (const spec of readdirSync(e2e).filter((file) => file.endsWith('.spec.ts'))) {
+		const electron = launchesElectron(spec);
 		expect(takes(chromium?.testIgnore, spec), `chromium ignores ${spec}`).toBe(electron);
 		expect(takes(native?.testMatch, spec), `native matches ${spec}`).toBe(electron);
 	}
