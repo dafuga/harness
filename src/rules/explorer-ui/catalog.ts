@@ -1,3 +1,5 @@
+import type { PieceKind } from '../../templates/development-tooling/scaffoldTypes';
+
 export interface HarnessRuleLimits {
 	maxFileLines: number;
 	maxFunctionLines: number;
@@ -42,12 +44,18 @@ export const harnessClassFileRules = [
 
 /** Naming is about actual source declarations, never a recased descriptive label. */
 export const harnessNamingRules: Record<string, string> = {
-	...Object.fromEntries(
+	...(Object.fromEntries(
 		harnessClassFileRules.map(({ kind, suffix }) => [
 			kind,
 			`Naming: ${suffix} classes use <PascalName>${suffix}.ts and export the matching class, including inside an owner's folder.`
 		])
-	),
+	) as Record<(typeof harnessClassFileRules)[number]['kind'], string>),
+	'game-view':
+		'Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.',
+	mechanic:
+		'Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.',
+	checkpoint:
+		'Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.',
 	service:
 		'Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.',
 	model:
@@ -82,7 +90,7 @@ export const harnessNamingRules: Record<string, string> = {
 	migration: 'Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.',
 	resource:
 		'Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.'
-};
+} satisfies Record<PieceKind, string> & Record<string, string>;
 
 export const harnessModuleGroupRules = [
 	'Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.',
