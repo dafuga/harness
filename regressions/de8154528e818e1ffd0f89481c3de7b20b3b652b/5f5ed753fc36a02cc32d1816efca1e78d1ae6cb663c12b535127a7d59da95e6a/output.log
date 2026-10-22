@@ -1,0 +1,15 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [50.00ms]
+$ playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-search-fit.spec.ts --grep "at (834|768|390|1440) pixels the search"
+
+Running 4 tests using 1 worker
+
+(node:25630) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 1440 pixels the search, closed, focused or open, leaves the revision controls whole (436ms)
+  ✓  2 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 834 pixels the search, closed, focused or open, leaves the revision controls whole (345ms)
+  ✓  3 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 768 pixels the search, closed, focused or open, leaves the revision controls whole (336ms)
+  ✓  4 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 390 pixels the search, closed, focused or open, leaves the revision controls whole (320ms)
+
+  4 passed (3.0s)
