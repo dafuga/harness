@@ -25,7 +25,7 @@ export const searchStates: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(tip(shellsBranch, 'shells'));
 		await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 		await field(page).fill('title');
-		await expect(found(page).filter({ hasText: 'Title frame' })).toContainText('Shell');
+		await expect(found(page).filter({ hasText: 'TitleFrame' })).toContainText('Shell');
 		await expect(found(page).first()).toHaveAttribute('aria-selected', 'true');
 	},
 	async 'search-pinned'(page) {
@@ -37,6 +37,6 @@ export const searchStates: Record<string, (page: Page) => Promise<void>> = {
 		);
 		await field(page).fill('title');
 		await expect(found(page).first()).toBeVisible();
-		await expect(found(page).filter({ hasText: 'Title frame' })).toHaveCount(0);
+		await expect(found(page).filter({ hasText: 'TitleFrame' })).toHaveCount(0);
 	}
 };

@@ -100,8 +100,8 @@ test('a phone is approved on the desktop for chosen local projects, and can be r
 	await expect(request.getByRole('button', { name: 'Deny', exact: true })).toBeEnabled();
 	await expect(request.getByRole('checkbox', { name: 'Beta', exact: true })).toBeVisible();
 	await expect(request.getByRole('checkbox', { name: 'Gamma', exact: true })).toHaveCount(0);
-	const permission = request.getByRole('combobox', { name: 'Device access' });
-	await expect(permission).toHaveValue('comment');
+	const deviceAccess = request.getByRole('combobox', { name: 'Device access', exact: true });
+	await expect(deviceAccess).toHaveValue('comment');
 	await request.getByRole('checkbox', { name: 'Alpha', exact: true }).check();
 	await request.scrollIntoViewIfNeeded();
 	await remoteEvidence(page, testInfo, 'desktop-approval');
@@ -112,8 +112,8 @@ test('a phone is approved on the desktop for chosen local projects, and can be r
 			pairingId: pairing.pairingId,
 			deviceId: phone.deviceId,
 			projectIds: [alpha],
-			comments: true,
-			agents: false
+			agents: false,
+			comments: true
 		}
 	]);
 	const phones = panel.getByRole('list', { name: 'Approved phones' });

@@ -1,4 +1,4 @@
-/* The bar every explorer route shares: the brand, six categories, the revision that is viewed. */
+/* The bar every explorer route shares: the brand, seven categories, the revision that is viewed. */
 .hx-nav {
 	--hx-nav-gap: clamp(10px, 1.1vw, 22px);
 	display: flex;
@@ -150,7 +150,7 @@
 		margin-left: calc(-40px - var(--hx-nav-gap));
 	}
 }
-/* A phone: the brand and the search, the six categories across the screen, then the fields. */
+/* A phone: the brand and the search, the seven categories across the screen, then the fields. */
 @media (max-width: 720px) {
 	.hx-nav {
 		min-height: 0;
@@ -185,5 +185,22 @@
 		min-height: 60px;
 		padding: 6px;
 		font-size: 0.78rem;
+	}
+}
+/* A narrow phone: seven do not fit across, so they wrap four over three, the shorter row centred.
+   Each takes at least a quarter of the row and grows for a longer label rather than cutting it. */
+@media (max-width: 480px) {
+	.hx-categories {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	.hx-categories a,
+	.hx-category {
+		flex: 0 0 auto;
+		box-sizing: border-box;
+		min-width: 25%;
+		min-height: 52px;
+		gap: 6px;
+		padding: 4px;
 	}
 }

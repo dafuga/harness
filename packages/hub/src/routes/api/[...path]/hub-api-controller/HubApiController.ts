@@ -39,12 +39,15 @@ export class HubApiController {
 		const { api, projection } = this.runtime.connect(),
 			projectId = parts[2] ?? '';
 		if (!projectId) return collection({ api, request, actor });
-		if (!/^[a-f0-9-]{36}$/.test(projectId)) return hubFail('invalid-input');
 		const context = { api, projection, actor, request, projectId, executor: this.runtime.agent };
+		return this.project(context, parts);
+	}
+	private async project(context: Context, parts: string[]) {
+		if (!/^[a-f0-9-]{36}$/.test(context.projectId)) return hubFail('invalid-input');
 		if (parts[3] === 'agent')
 			return new HubAgentController({ ...context, executor: this.runtime.agent }).handle();
 		if (['evidence', 'artifact'].includes(parts[3])) return hubEvidenceRead(context, parts[3]);
-		if (request.method === 'GET') return readProject(context, parts[3] ?? '');
+		if (context.request.method === 'GET') return readProject(context, parts[3] ?? '');
 		return mutateProject(context, parts.slice(3));
 	}
 }

@@ -15,6 +15,7 @@ the bottom-right corner. The existing entity thread remains the place for scoped
   committed plan and its original request becomes the first entity-thread message.
 - No caller-supplied source path or model text may become a write instruction. Invalid
   proposals, unavailable models, cancelled preparations and historical views cannot create.
+- Read-only, pinned and unbound views name the launcher Open project chat; only a view that can use the agent names it Work with agent.
 - Creation is Plan only. Change uses an existing entity's exact approved design. A new plan
   never claims code changed or tests passed. Visual plans use the existing image pipeline;
   functions use behavior notes, with no design images.

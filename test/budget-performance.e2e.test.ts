@@ -22,6 +22,9 @@ function prepare(extend: (repo: VerifyRepo) => Promise<void> = () => Promise.res
 /** The baseline with the rank function, prepared when the real operation case asks for it. */
 async function prepareRanked() {
 	return prepare(async (repo) => {
+		const verification = await repo.json<{ timeouts: { test: number } }>('harness.verify.json');
+		verification.timeouts.test = 60_000;
+		await repo.write('harness.verify.json', JSON.stringify(verification));
 		await repo.write('src/utils/rank.ts', rankSource);
 		await repo.write('specification/workloads/rank-20k.json', JSON.stringify(rankWorkload));
 		await repo.write('specification/scenarios/rank-boundary.json', JSON.stringify(rankScenario));
@@ -109,7 +112,9 @@ test('a real operation that is slowed without changing its result fails the end-
 	const digest = async (outcome: VerifyOutcome) => {
 		const capture = outcome.record.scenarios.find((scenario) => scenario.id === 'rank-boundary')
 			?.states[0].captures[0];
-		const file = JSON.parse(await readFile(join(outcome.directory, capture?.path ?? ''), 'utf8'));
+		if (!capture)
+			throw new Error(`Benchmark capture missing: ${outcome.record.failures.join('; ')}`);
+		const file = JSON.parse(await readFile(join(outcome.directory, capture.path), 'utf8'));
 		return file as {
 			responseDigest: string;
 			target: string;

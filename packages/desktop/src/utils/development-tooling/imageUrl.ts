@@ -35,7 +35,7 @@ export function imageUrl(
 			});
 	return () => {
 		disposed = true;
-		// The old image remains in the DOM until Svelte flushes the new selection.
+		// An effect tears down before its old image binding is removed from the DOM.
 		if (url) void tick().then(() => URL.revokeObjectURL(url));
 	};
 }

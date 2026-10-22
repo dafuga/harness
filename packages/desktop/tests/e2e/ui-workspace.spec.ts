@@ -51,7 +51,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await page.getByLabel('Commit', { exact: true }).selectOption('b'.repeat(40));
 	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/commit\/b{40}\/pages/);
-	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	await page.getByRole('button', { name: 'Open project chat', exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
 	await page.keyboard.press('Escape');
 	await expect(page.getByRole('link', { name: 'Open Activity' })).toHaveAttribute(
@@ -97,7 +97,7 @@ test('Go to tip exits both historical and explicitly pinned tip revisions', asyn
 		await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 		await page.keyboard.press('Escape');
 		await expect(page).toHaveURL(new RegExp(`/commit/${commit}/pages$`));
-		await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+		await page.getByRole('button', { name: 'Open project chat', exact: true }).click();
 		await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);
 		await page.keyboard.press('Escape');
 		if (process.env.TAKE_SCREENSHOT === 'true') {

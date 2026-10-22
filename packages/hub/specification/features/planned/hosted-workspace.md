@@ -9,6 +9,7 @@ The hosted app shows the Harness workspace of shared projects in a browser. Peop
 - Sign-in uses the Google Identity Services script from `https://accounts.google.com/gsi/client` with the nonce of a fresh challenge. The credential and the CSRF value are posted in a request body; no credential is put in a URL.
 - When sign-in is not configured the page says so and offers no substitute login. Signed in without projects, it explains that an owner connects a GitHub repository or sends an invitation.
 - The project switcher lists the projects the API returns. It offers no local project.
+- Collection and individual-project API routing retain the same authentication, validation and response behavior while staying within the controller complexity limit.
 - Workspace links are `/projects/{projectId}/harness/branch/{encodedBranch}/...`, with `/commit/{fullSha}` for a pinned commit.
 - The bridge reads `snapshot`, `entity`, `source`, `image` and `threads` under `/api/projects/{id}` and returns the desktop models; image bytes are a `Uint8Array`.
 - A comment is posted without an author: the server binds the signed-in person. The answer is shown with the collaboration commit that acknowledged it.

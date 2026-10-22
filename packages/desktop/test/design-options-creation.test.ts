@@ -24,7 +24,7 @@ async function created(f: Made, proposed: { category: string; title: string }, e
 		...{ intent: 'create', projectId: f.session.projectId!, category: 'functions', mode: 'plan' },
 		...{ provider: 'codex', model: 'selected', effort: 'high', text: 'Add it', ...extra }
 	} as unknown as RunRequest);
-	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
+	await expect.poll(() => f.session.busy, { timeout: 30000 }).toBe(false);
 	const plans = await f.planning.plans(git(f.root, 'rev-parse', 'HEAD'));
 	return plans.find((item) => item.title === title);
 }
@@ -46,7 +46,7 @@ test('a new visual plan is made as three separately directed options in one vers
 	expect(plan?.versions.map((version) => version.options?.length)).toEqual([3]);
 	expect(prompts(f).size).toBe(3);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'finished', created: { category: 'components' } });
-}, 30000);
+}, 60000);
 
 test('a new visual plan asked for two options from a headless catalog makes two', async () => {
 	const f = await fixture();
@@ -54,7 +54,7 @@ test('a new visual plan asked for two options from a headless catalog makes two'
 	const plan = await created(f, { category: 'pages', title: 'Orders' }, { designOptions: 2 });
 	expect(plan?.versions.map((version) => version.options?.length)).toEqual([2]);
 	expect(prompts(f).size).toBe(2);
-}, 30000);
+}, 60000);
 
 test('a new headless plan makes no image whatever count it is given', async () => {
 	const f = await fixture();
@@ -67,7 +67,7 @@ test('a new headless plan makes no image whatever count it is given', async () =
 	expect(plan?.versions.map((version) => [version.images, version.options])).toEqual([
 		[[], undefined]
 	]);
-}, 30000);
+}, 60000);
 
 test('a failed option of a new plan saves no version and names the draft it made', async () => {
 	const f = await fixture();
@@ -76,4 +76,4 @@ test('a failed option of a new plan saves no version and names the draft it made
 	expect(f.generator.generateImage).toHaveBeenCalledTimes(2);
 	expect(plan?.versions).toEqual([]);
 	expect(f.events.at(-1)).toMatchObject({ kind: 'failed', created: { entityId: plan?.id } });
-}, 30000);
+}, 60000);

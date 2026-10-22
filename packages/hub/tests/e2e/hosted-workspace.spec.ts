@@ -76,6 +76,9 @@ test('the hosted workspace has no agent control and a comment never calls a run'
 test('a comment on a historical commit names that commit', async ({ page }) => {
 	const state = await hostedFixture(page);
 	await page.goto(designs(atlas, `main/commit/${earlier}`));
+	await expect(page.getByLabel('Viewed context', { exact: true }).locator('strong')).toHaveText(
+		earlier.slice(0, 7)
+	);
 	await expect(page.getByRole('contentinfo')).toContainText('Historical commit · comments only');
 	await expect(page.getByRole('contentinfo')).toContainText(earlier.slice(0, 7));
 	await expect(page.getByRole('button', { name: 'Go to tip', exact: true })).toBeVisible();

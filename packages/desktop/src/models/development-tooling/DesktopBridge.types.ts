@@ -1,3 +1,6 @@
+import type { RunEvent } from './RunContext.types';
+export type { CreatedEntity, RunPhase, RunEvent } from './RunContext.types';
+import type { GameDesktopBridge } from '../game-authoring/GameDesktopBridge.types';
 import type { DeploymentEnvironment, DeploymentBridge } from '../Deployment.types';
 import type { ProjectTaskRequest } from '../projects-sessions/ProjectTask.types';
 export type { ProjectTaskRequest } from '../projects-sessions/ProjectTask.types';
@@ -20,7 +23,6 @@ import type {
 	ApprovalInfo,
 	Category,
 	ContractField,
-	DesignImage,
 	EntityDetail,
 	HistoryEvent,
 	ProjectSnapshot,
@@ -28,11 +30,16 @@ import type {
 	ProviderState,
 	Region,
 	RunMode,
-	SourceChange,
 	ThreadInfo,
 	ThreadMessage
 } from './Desktop.types';
 export const channels = {
+	gameCreate: 'game:create',
+	gameImageGenerate: 'game:image-generate',
+	gameImageRead: 'game:image-read',
+	gameRead: 'game:read',
+	gameSave: 'game:save',
+	gameRender: 'game:render',
 	deploymentStatus: 'deployment:status',
 	deploymentActivities: 'deployment:activities',
 	startDeployment: 'deployment:start',
@@ -153,38 +160,8 @@ export interface ProjectRunRequest extends ProjectContext {
 	/** Separately generated design options when the plan is visual, 1 to 10; 3 if left out. */
 	designOptions?: number;
 }
-/**
- * The plan a creation request became, named so that what asked for it can open it. A run that
- * failed or was cancelled after a draft was written names that draft too, however far it got.
- */
-export interface CreatedEntity {
-	category: Category;
-	entityId: string;
-	/** Null while the draft has no thread. */
-	threadId: string | null;
-	/** True once the original request is written in that thread; only then does it stand for it. */
-	requestSaved: boolean;
-}
-
-export type RunPhase = 'queued' | 'prompting' | 'generating' | 'saving' | 'changing' | 'recording';
-
-/**
- * Public progress of a run: status words, the agent's public text and results. Host checks
- * and deployment do not grant registered unit verification; `verified` remains false.
- */
-export type RunEvent = { runId: string } & (
-	| { kind: 'status'; phase: RunPhase; detail: string }
-	| { kind: 'text'; text: string }
-	| { kind: 'replay'; text: string; detail: string }
-	| { kind: 'design'; version: string; images: DesignImage[] }
-	| { kind: 'changes'; files: SourceChange[] }
-	| { kind: 'failed'; message: string; created?: CreatedEntity }
-	| { kind: 'cancelled'; created?: CreatedEntity }
-	| { kind: 'finished'; summary: string; verified: false; created?: CreatedEntity }
-);
-
 /** What the preload script exposes as `window.harness`. Without it a page is a preview. */
-export interface DesktopBridge extends DeploymentBridge {
+export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }

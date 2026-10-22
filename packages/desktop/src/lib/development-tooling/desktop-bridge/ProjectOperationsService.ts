@@ -13,6 +13,8 @@ export class ProjectOperationsService {
 		return this.session.registry.list();
 	}
 	async selectProject(input: { projectId: string }) {
+		if (input.projectId === this.session.projectId && !this.session.selecting)
+			return this.session.snapshot({ projectId: input.projectId, branch: null, commit: null });
 		const project = await this.session.registry.get(input.projectId);
 		return this.session.open(project.root!);
 	}

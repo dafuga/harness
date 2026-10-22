@@ -43,12 +43,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "template.browser-test",
+			"unit": "template.format-config",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "template.format-config",
+			"unit": "template.game-project",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -59,6 +59,11 @@
 		},
 		{
 			"unit": "template.project-guidance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.project-tests",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -3,6 +3,53 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { servedBuild } from './harnessCapture';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
+import { benchmarkCaptureSchema } from '../../../../../src/core/verification-evidence/verifyTypes';
+import type { Gathered } from '../../../../../src/utils/verification-evidence/gatherCaptures';
+
+/** Every rendered page has real navigation and heap observations at each required viewport. */
+export function expectPageMeasurements(
+	gathered: Gathered[],
+	pages: string[],
+	viewports: Array<{ width: number; height: number }>
+): void {
+	const benchmarks = gathered.filter((item) => item.line.kind === 'benchmark');
+	const rows = benchmarks.flatMap(
+		(item) => benchmarkCaptureSchema.parse(item.benchmark).measurements
+	);
+	const capturedStates = new Set(
+		gathered
+			.filter((item) => item.line.kind !== 'benchmark')
+			.map(({ line }) =>
+				line.kind === 'screenshot' ? `${line.state}-${line.viewport}` : line.state
+			)
+	);
+	for (const item of benchmarks)
+		expect(capturedStates.has(item.line.state), item.line.file).toBe(true);
+	if (!process.env.HARNESS_VERIFY_REVISION || process.env.TAKE_SCREENSHOT !== '1') {
+		expect(benchmarks).toHaveLength(0);
+		return;
+	}
+	for (const row of rows) {
+		expect(['browser-navigation-ms', 'browser-js-heap-bytes']).toContain(row.metric);
+		expect(row.unitOfMeasure).toBe(row.metric === 'browser-navigation-ms' ? 'ms' : 'bytes');
+		expect(row.value).toBeGreaterThan(0);
+		expect(row.target).toBe('http');
+		expect(row.samples).toBeGreaterThan(0);
+		expect(row.method).toMatch(/whole (?:route|page)/i);
+	}
+	for (const viewport of viewports)
+		for (const unit of new Set(pages))
+			for (const metric of ['browser-navigation-ms', 'browser-js-heap-bytes'])
+				expect(
+					rows.some(
+						(row) =>
+							row.unit === unit &&
+							row.metric === metric &&
+							row.workload?.endsWith(`-${viewport.width}x${viewport.height}`)
+					),
+					`${unit} ${metric} ${viewport.width}x${viewport.height}`
+				).toBe(true);
+}
 /** Runtime observations of the real route, never of a later client-side destination. */
 export async function pageBenchmark(page: Page, state: string, unit?: string): Promise<void> {
 	if (!unit) return;
@@ -84,6 +131,8 @@ function includedUnits(page: string): string[] {
 
 /** The registered framework page of this exact route. */
 export function pageUnit(address: string): string | undefined {
+	if (/^\/harness\/commit\/[a-f0-9]{40}(?:\/|$)/.test(new URL(address).pathname))
+		return 'reports.page.harness-view';
 	const match =
 		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
 			new URL(address).pathname

@@ -1,15 +1,27 @@
 import { test } from 'vitest';
-import { spawnSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
 import { resolve } from 'node:path';
 import { expect } from '../../../test/verificationExpect';
 
 /** Real Swift checks on macOS. Other platforms have an explicit native coverage gap. */
-function nativeCheck(script: string) {
-	const result = spawnSync('bun', ['run', script], {
-		cwd: resolve(import.meta.dirname, '..'),
-		encoding: 'utf8',
-		timeout: 120000,
-		maxBuffer: 2_000_000
+async function nativeCheck(script: string) {
+	const result = await new Promise<{
+		error: Error | null;
+		status: number | string;
+		stdout: string;
+		stderr: string;
+	}>((done) => {
+		execFile(
+			'bun',
+			['run', script],
+			{
+				cwd: resolve(import.meta.dirname, '..'),
+				encoding: 'utf8',
+				timeout: 120000,
+				maxBuffer: 2_000_000
+			},
+			(error, stdout, stderr) => done({ error, status: error?.code ?? 0, stdout, stderr })
+		);
 	});
 	const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
 	console.info(output);
@@ -20,8 +32,8 @@ function nativeCheck(script: string) {
 
 test.skipIf(process.platform !== 'darwin')(
 	'Swift reproduces the backend encrypted protocol vectors',
-	() => {
-		const output = nativeCheck('ios:check:vectors');
+	async () => {
+		const output = await nativeCheck('ios:check:vectors');
 		expect(output).toContain('All vectors reproduced.');
 		expect(output).not.toContain('FAIL');
 	},
@@ -30,16 +42,25 @@ test.skipIf(process.platform !== 'darwin')(
 
 test.skipIf(process.platform !== 'darwin')(
 	'native Debug and Release verify authority, redirects, caching and replay',
-	() => {
-		const output = nativeCheck('ios:check:native');
-		expect(output).toMatch(/Debug: \d+ passed, 0 failed\./);
-		expect(output).toMatch(/Release: \d+ passed, 0 failed\./);
-		expect(output).not.toContain('FAIL');
+	async () => {
+		let responsive = false;
+		const timer = setTimeout(() => {
+			responsive = true;
+		}, 0);
+		try {
+			const output = await nativeCheck('ios:check:native');
+			expect(responsive, 'Native checks must let the test worker process events').toBe(true);
+			expect(output).toMatch(/Debug: \d+ passed, 0 failed\./);
+			expect(output).toMatch(/Release: \d+ passed, 0 failed\./);
+			expect(output).not.toContain('FAIL');
+		} finally {
+			clearTimeout(timer);
+		}
 	},
 	120000
 );
 
-test('Swift source remains within the declared native shape limits', () => {
-	const output = nativeCheck('ios:check:limits');
+test('Swift source remains within the declared native shape limits', async () => {
+	const output = await nativeCheck('ios:check:limits');
 	expect(output).toMatch(/\d+ Swift files checked; 0 findings\./);
 }, 20000);

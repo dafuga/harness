@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-mechanics",
+	"kind": "component",
+	"title": "GameMechanics",
+	"responsibility": "Edit independent mechanic definitions, inputs and emitted events without changing checkpoints.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/GameMechanics.svelte"],
+		"symbols": ["GameMechanics"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameMechanics.mechanics",
+				"type": "MechanicDefinition[]",
+				"description": "Authored mechanic definitions, input names, events and implementation guidance."
+			},
+			{
+				"name": "GameMechanics.change",
+				"type": "(list: MechanicDefinition[]) => void",
+				"description": "Callback publishing the replacement mechanic list."
+			},
+			{
+				"name": "GameMechanics.readonly",
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameMechanics",
+				"type": "markup",
+				"description": "Edit independent mechanic definitions, inputs and emitted events without changing checkpoints. Renders reactive UI and publishes edits through its callbacks."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-text-field",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameMechanics.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameMechanics.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

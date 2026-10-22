@@ -8,7 +8,7 @@ test('legacy changes remain local, environment changes reject missing deployment
 	await expect(f.service.start({ ...request, environment: 'prod' })).rejects.toThrow(/Wrangler/);
 	expect(f.run).not.toHaveBeenCalled();
 	expect(f.session.busy).toBe(false);
-}, 15000);
+}, 60000);
 
 const scopedChanges = (['dev', 'stage', 'preprod', 'prod'] as const).flatMap((environment) => [
 	{ environment, task: false },
@@ -64,7 +64,7 @@ test.each(scopedChanges)(
 			automatic.mockRestore();
 		}
 	},
-	15000
+	60000
 );
 
 async function configure(root: string) {

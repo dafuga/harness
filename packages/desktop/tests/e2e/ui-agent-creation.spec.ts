@@ -69,7 +69,7 @@ for (const category of ['components', 'functions']) {
 		await page.goto(route(category));
 		await expect(
 			page.getByRole('heading', {
-				name: category === 'functions' ? 'Helpers' : 'Components',
+				name: new RegExp('^' + (category === 'functions' ? 'helpers' : category) + '$', 'i'),
 				level: 1
 			})
 		).toBeVisible();

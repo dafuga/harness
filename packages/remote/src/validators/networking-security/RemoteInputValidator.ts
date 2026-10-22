@@ -91,14 +91,12 @@ export class RemoteInputValidator {
 		if (typeof item.agents !== 'boolean') throw new RemoteFailure('invalid-message');
 		const { pairingId } = this.pairing({ pairingId: item.pairingId }),
 			{ deviceId } = this.device({ deviceId: item.deviceId });
-		if (withComments && (typeof item.comments !== 'boolean' || (item.agents && !item.comments)))
-			throw new RemoteFailure('invalid-message');
 		return {
 			pairingId,
 			deviceId,
 			projectIds,
 			agents: item.agents,
-			...(withComments ? { comments: item.comments as boolean } : {})
+			...validatedApprovalComments(item)
 		};
 	}
 	pairing(input: unknown): { pairingId: string } {
@@ -109,4 +107,12 @@ export class RemoteInputValidator {
 		const item = exact(input, 'deviceId');
 		return { deviceId: matching(item.deviceId, remotePatterns.deviceId, 'invalid-message') };
 	}
+}
+
+function validatedApprovalComments(item: Fields): { comments?: boolean } {
+	if (!Object.hasOwn(item, 'comments')) return {};
+	const { comments, agents } = item;
+	if (typeof comments !== 'boolean' || (agents && !comments))
+		throw new RemoteFailure('invalid-message');
+	return { comments };
 }

@@ -183,15 +183,12 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, components);
 	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
-	const title = tab.getByRole('link', { name: 'OrderList', exact: true });
+	const card = tab.getByRole('article', { name: 'OrderList', exact: true });
+	const title = card.getByRole('link', { name: 'OrderList', exact: true });
 	await title.scrollIntoViewIfNeeded();
-	const box = (await title.boundingBox()) as {
-		x: number;
-		y: number;
-		width: number;
-		height: number;
-	};
+	const box = (await title.boundingBox())!;
 	const line = await title.evaluate((link) => parseFloat(getComputedStyle(link).lineHeight));
+	await capture(tab, 'wrapped-card-title-mobile');
 	expect(box.height).toBeGreaterThan(line * 1.5);
 	await tab.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
 	expect(await where(tab)).toEqual({

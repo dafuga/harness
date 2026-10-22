@@ -55,12 +55,32 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.game-desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.deployment",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.service.desktop-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.game-image",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.game-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.game-render",
 			"via": "import",
 			"origin": "derived"
 		},

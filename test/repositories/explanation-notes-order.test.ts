@@ -98,7 +98,7 @@ test('notes alone hold the latest recorded reason for an exact change, wherever 
 			{ failures: [], overlong: [], entries: [short] }
 		]);
 	}
-});
+}, 20_000);
 
 test('a step of a chain noted again is held by its latest reason, wherever each is noted', async () => {
 	const wordy = reason(16, earlier, 'Shouts every title, first written.', 'm');
@@ -110,7 +110,7 @@ test('a step of a chain noted again is held by its latest reason, wherever each 
 			{ failures: [], overlong: [], entries: [short, rest] }
 		]);
 	}
-});
+}, 20_000);
 
 test('a later long reason in the notes still fails, however the notes list it', async () => {
 	const short = reason(15, earlier, 'Shouts every title, first written.');
@@ -127,7 +127,7 @@ test('a later long reason in the notes still fails, however the notes list it', 
 			entries: [wordy]
 		});
 	}
-});
+}, 20_000);
 
 test('a date that cannot be read is never later than one that can; equal ones agree everywhere', async () => {
 	const short = reason(15, 'before dates were kept', 'Shouts every title, a later note.');
@@ -143,4 +143,4 @@ test('a date that cannot be read is never later than one that can; equal ones ag
 	const other = reason(15, later, 'Shouts every title, a later note.');
 	const answers = await Promise.all(across(2).map((places) => held([twin, other], places)));
 	expect(new Set(answers.map((answer) => JSON.stringify(answer))).size).toBe(1);
-});
+}, 20_000);

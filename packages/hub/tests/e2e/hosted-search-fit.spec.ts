@@ -2,9 +2,9 @@ import { expect, test, type Locator, type Page } from '../../../../test/support/
 import { atlas, hostedFixture } from './hosted-fixture';
 
 /**
- * The search trigger fits beside the revision and account controls at every supported width.
- * Its dialog gives the field room without moving those controls. Both the field and its results
- * stay inside the window, and a result opens in place.
+ * The search in the bar of the hosted workspace, beside its account area, at every supported
+ * width. The trigger and its focus ring meet neither revision field nor the account controls.
+ * Its dialog keeps the search field and results inside the viewport. A result opens in place.
  */
 type Box = { x: number; y: number; width: number; height: number };
 const pages = `/projects/${atlas}/harness/branch/main/pages`;
@@ -13,10 +13,9 @@ const bar = (page: Page) => page.getByRole('banner', { includeHidden: true });
 const trigger = (page: Page) =>
 	bar(page).getByRole('button', { name: 'Search entities', exact: true, includeHidden: true });
 const field = (page: Page) =>
-	page.getByRole('dialog', { name: 'Search project' }).getByRole('combobox', {
-		name: 'Search entities',
-		exact: true
-	});
+	page
+		.getByRole('dialog', { name: 'Search project' })
+		.getByRole('combobox', { name: 'Search entities', exact: true });
 const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found', exact: true });
 const controls = (page: Page): Locator[] => [
 	bar(page).getByRole('button', { name: 'Choose branch', exact: true, includeHidden: true }),
@@ -49,7 +48,7 @@ async function apart(page: Page, width: number): Promise<void> {
 for (const width of widths) {
 	test(`at ${width} pixels the search, the revision fields and the account fit the bar apart`, async ({
 		page
-	}) => {
+	}, info) => {
 		await hostedFixture(page);
 		await page.setViewportSize({ width, height: 900 });
 		await page.goto(`/projects/${atlas}/harness/pages`);
@@ -61,10 +60,22 @@ for (const width of widths) {
 		await apart(page, width);
 		await trigger(page).click();
 		await expect(field(page)).toBeFocused();
-		expect((await box(field(page))).width).toBeGreaterThanOrEqual(120);
+		const input = await box(field(page));
+		expect(input.width).toBeGreaterThanOrEqual(120);
+		expect([input.x >= 0, input.x + input.width <= width]).toEqual([true, true]);
 		await field(page).fill('atlas');
 		await expect(found(page).getByRole('option')).toHaveText([/Page.*Atlas activity/]);
 		const list = await box(found(page));
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await page.evaluate(async () => {
+				await document.fonts.ready;
+				await Promise.all([...document.images].map((image) => image.decode()));
+			});
+			await page.screenshot({
+				path: info.outputPath(`hosted-search-${width}.png`),
+				fullPage: true
+			});
+		}
 		expect([list.x >= 0, list.x + list.width <= width]).toEqual([true, true]);
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			width

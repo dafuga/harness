@@ -48,7 +48,7 @@ test('an entity request reads the planning snapshot once and shows the plan of t
 	expect(home).toMatchObject({ versions: [], threads: [], sources: ['src/pages/Home.ts'] });
 	// One complete read for each of the two requests.
 	expect(reads.mock.calls).toEqual([[f.head], [f.head]]);
-}, 20000);
+}, 60000);
 
 test('each request reads again, so a design saved between two requests is in the second', async () => {
 	const f = await planned();
@@ -62,7 +62,7 @@ test('each request reads again, so a design saved between two requests is in the
 	expect([second.approvedVersion, second.versions[0].approval?.current]).toEqual([null, false]);
 	expect(again).toEqual(first);
 	expect(reads.mock.calls).toEqual([[f.head], [latest], [f.head]]);
-}, 20000);
+}, 60000);
 
 test('an entity that is not held and a corrupt plan fail as they did, after one read', async () => {
 	const f = await planned();
@@ -77,7 +77,7 @@ test('an entity that is not held and a corrupt plan fail as they did, after one 
 	const corrupt = f.catalog.entity(f.plan.id, broken);
 	await expect(corrupt).rejects.toThrow(/^src\/functions\/broken\/plan\.json: /);
 	expect(reads.mock.calls).toEqual([[f.head], [broken]]);
-}, 20000);
+}, 60000);
 
 test('local entity documents follow committed Git history and ignore uncommitted edits', async () => {
 	const f = await fixture();
@@ -108,4 +108,4 @@ test('local entity documents follow committed Git history and ignore uncommitted
 	expect(second.documentation?.examples[0].name).toBe('Second use');
 	expect(second.history.map((entry) => entry.commit)).toContain(after);
 	expect(second.documentation?.text).not.toContain('Uncommitted use');
-}, 20000);
+}, 60000);

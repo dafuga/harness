@@ -1,11 +1,14 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
+import { readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { exampleDocument } from '../../game/src/utils/game-authoring/keyDoor';
 import { remoteLimits } from '../../remote/src/index';
 import type { RemoteBinary, WirePart } from '../../remote/src/index';
 import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { remoteBinary } from '../src/utils/remoteBinary';
-import { largeImage, localFixture } from './local-transport-fixture';
+import { largeGame, largeImage, localFixture } from './local-transport-fixture';
 import { deferred } from './remote-fixture';
 import { git } from './run-fixture';
 
@@ -158,6 +161,32 @@ test('a reload keeps the session of its window; closing the window ends its sock
 	const other = f.connect(f.window());
 	expect(await other.request('remote.status')).toEqual(f.control.status);
 	expect(f.control.calls).toEqual([['status', undefined]]);
+}, 40000);
+
+test('a game of nearly a mebibyte crosses to the main process in bounded frames and reopens', async () => {
+	const f = await localFixture(),
+		client = f.connect(f.window()),
+		file = join(f.root, 'game.json'),
+		document = largeGame();
+	await writeFile(file, JSON.stringify(exampleDocument()));
+	const projectId = (await client.request<ProjectSnapshot>('openProject')).project.id,
+		{ revision } = await client.request<{ revision: string }>('gameRead', { projectId });
+	expect(Buffer.byteLength(JSON.stringify(document, null, '\t') + '\n')).toBeLessThanOrEqual(
+		1048576
+	);
+	expect(Buffer.byteLength(JSON.stringify(document))).toBeGreaterThan(
+		remoteLimits.requestBytes * 15
+	);
+	const saved = await client.request<{ revision: string }>('gameSave', {
+		projectId,
+		document,
+		expectedRevision: revision
+	});
+	expect(await client.request('gameRead', { projectId })).toEqual({ document, ...saved });
+	const beyond = { projectId, document: { pad: 'x'.repeat(1048576 + remoteLimits.requestBytes) } };
+	await expect(client.request('gameSave', beyond)).rejects.toMatchObject({ code: 'too-large' });
+	expect(JSON.parse(await readFile(file, 'utf8'))).toEqual(document);
+	expect(f.transport.connections).toBe(1);
 }, 40000);
 
 test('the control port travels over the same socket, with exactly what the page gave', async () => {
