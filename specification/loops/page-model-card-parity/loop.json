@@ -2,7 +2,7 @@
 	"name": "page-model-card-parity",
 	"goal": "Page Models use unchanged catalog cards and exclude type collections at every revision",
 	"createdAt": "2026-10-22T20:40:54.283Z",
-	"updatedAt": "2026-10-22T20:44:15.947Z",
+	"updatedAt": "2026-10-22T20:48:24.676Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,17 +46,22 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:47:15.557Z",
+			"evidence": "a4c95e9d3: unchanged category/relationship tests pass in a clean installed snapshot with the same controlled environment; current/historical Page Models browser flows pass at desktop/tablet/mobile, including consumer hover previews."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:48:24.676Z",
+			"evidence": "At a4c95e9d3, isolated committed snapshot rejects each restored defect independently: classifier restoration fails Type collections are not data models; UI restoration fails Page Models keep the complete catalog card. Restored snapshot passes all 18 tests. Logs and snapshot path retained in /tmp/harness-model-correction-guard.json."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Focused verification passes: 668 Reports unit tests, 54 browser cases across desktop/tablet/mobile, Reports/root type checks, format/lint/build, root audit and units check. Reports audit remains blocked by unchanged entityPreviewFunctions.ts at 232 lines against 220. Full CLI/native suites are explicitly deferred; main merge remains held. Actual page empty state and synthetic real-model cards inspected."
 		}
 	],
 	"evaluators": [
