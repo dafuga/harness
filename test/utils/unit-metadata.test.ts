@@ -35,6 +35,11 @@ test('revision metadata derives project categories from the same committed sourc
 	);
 	for (const unit of registry.units)
 		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Payments' });
+	const settings = registry.units.find((unit) => unit.kind === 'config')!;
+	expect(settings, 'configs record their committed variable values').toHaveProperty(
+		'configValues',
+		[{ name: 'example', value: '1', source: paths[4] }]
+	);
 	await unitMetadata(
 		memoryTree({ ...files, 'harness.groups.json': config('Billing') }),
 		registry.units
@@ -43,6 +48,11 @@ test('revision metadata derives project categories from the same committed sourc
 		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Billing' });
 	await unitMetadata(memoryTree(files), registry.units);
 	for (const unit of registry.units) expect(unit).not.toHaveProperty('group');
+	await unitMetadata(memoryTree({}), registry.units);
+	expect(settings, 'missing source cannot keep a previous revision value').toHaveProperty(
+		'configValues',
+		[]
+	);
 });
 
 test('revision metadata lists standalone shared exports without requiring callers', async () => {

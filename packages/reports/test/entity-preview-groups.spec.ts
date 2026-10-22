@@ -1,9 +1,29 @@
-import { expect, test } from '../../../test/support/browserTest';
+import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, chooseCatalogFilter } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 
 test.setTimeout(90_000);
+
+async function configVariables(page: Page, viewport: string): Promise<void> {
+	const table = page.getByRole('table', { name: 'Configs', exact: true });
+	await expect(table.getByRole('columnheader'), 'only variable and value columns').toHaveText([
+		'Variable',
+		'Value'
+	]);
+	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
+		'25'
+	);
+	await page.getByRole('searchbox').fill('newest');
+	await expect(table.getByRole('row')).toHaveCount(2);
+	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
+	await expect(page.getByRole('heading', { name: 'orderSettings', exact: true })).toBeVisible();
+	await open(page, { category: 'configs', commit: commits.first }, 'groups');
+	await capture(page, `groups-configs-historical-${viewport}`);
+	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
+		'10'
+	);
+}
 
 for (const [viewport, size] of Object.entries(viewports)) {
 	test(`category folders group every collection and filter together at ${viewport}`, async ({
@@ -37,6 +57,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
 				.toBeVisible();
 			expect(await fits(page)).toBe(true);
+			if (category === 'configs') await configVariables(page, viewport);
 		}
 		await open(page, { category: 'components', commit: commits.middle }, 'groups');
 		await page.getByRole('button', { name: 'Filters', exact: true }).click();
