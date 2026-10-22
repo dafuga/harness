@@ -6,7 +6,7 @@
 	"name": "desktop-worker-port",
 	"goal": "Keep one automatically selected Desktop browser port across the runner, server and worker processes without adopting another server",
 	"createdAt": "2026-10-22T06:00:18.248Z",
-	"updatedAt": "2026-10-22T06:05:07.229Z",
+	"updatedAt": "2026-10-22T06:14:06.019Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -52,12 +52,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T06:11:36.995Z",
+			"evidence": "Exact repair 4e5369479 passes six unchanged configuration cases, including the real auto-port browser smoke. Seal f4a64e943ee171180824e4d3af0f729619dbafb936fb8f6466efd15e517d335d pairs red 806f19d98543fe3208c4b0a3a3dfd8a69e3cecd4c3a9c017e430a7dd52b65024."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T06:14:06.019Z",
+			"evidence": "An isolated Harness export of 4e5369479 rejects the unchanged cross-process guard when only the old configuration is restored. Restoring the repair passes all six cases and real ordinary browser smoke; restored source drift is empty."
 		},
 		{
 			"id": "verify",
