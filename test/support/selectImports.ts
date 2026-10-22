@@ -2,7 +2,10 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { scanImports } from '../../src/services/source-index-service/scanImports';
 import type { SourceFile } from '../../src/core/sourceTypes';
-export const select = 'packages/reports/src/components/Select.svelte';
+export const publicSelect = 'packages/reports/src/components/Select.svelte';
+/** The implementation changes; the forwarding entry stays an independent importer. */
+export const select = 'packages/reports/src/components/shared-primitives/Select.svelte';
+const selectSources = new Set([select, publicSelect]);
 export interface Written {
 	from: string;
 	specifier: string;
@@ -31,7 +34,7 @@ export function imports(
 		if (!item.specifier) return [];
 		if (!alias || !target) {
 			const to = join(dirname(from), item.specifier);
-			return to === select ? [{ from, specifier: item.specifier, to }] : [];
+			return selectSources.has(to) ? [{ from, specifier: item.specifier, to }] : [];
 		}
 		const path = join('packages', name, target, item.specifier.slice(alias.length + 1));
 		const to = [path, `${path}.ts`].find((candidate) => files.has(candidate));

@@ -7,7 +7,7 @@ import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
-import { aliases, imports, select, type Written } from './support/selectImports';
+import { aliases, imports, publicSelect, select, type Written } from './support/selectImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /** Exercise real cross-package aliases and impact by changing only the Select content hash. */
@@ -51,7 +51,11 @@ function changed(path: string): Promise<ImpactReport> {
 const owner = (path: string | undefined) =>
 	loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path ?? ''))
 		?.id;
-const consumers = () => written.filter((item) => item.to === select && owner(item.from));
+const consumers = () =>
+	written.filter(
+		(item) =>
+			owner(item.to) === owner(select) && owner(item.from) && owner(item.from) !== owner(select)
+	);
 
 test('no import written through a build alias of any package is left as a package from outside', () => {
 	const declared = Object.fromEntries(
@@ -100,6 +104,7 @@ test('the registry stores Select as a derived dependency of each registered cons
 			'harness-harness-selectors',
 			'provider-picker',
 			'replay-controls',
+			'source-viewer',
 			'upload-audio',
 			'upload-comparison'
 		].map((name) => `reports.component.${name}`)
@@ -189,7 +194,7 @@ test('declaring the Select imports moves those references alone: packages and un
 				: [[file.path, was?.external, now.path]];
 		})
 	);
-	expect(moved.filter(([, was, to]) => was !== shared || to !== select)).toEqual([]);
+	expect(moved.filter(([, was, to]) => was !== shared || to !== publicSelect)).toEqual([]);
 	expect(moved.map(([from]) => from).sort()).toEqual(
 		consumers()
 			.filter((item) => item.specifier.startsWith(`${shared}/`))

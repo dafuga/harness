@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { relocatedSource } from './memoryTree';
+import { dirname } from 'node:path';
 
 interface ReviewedFile {
 	from: string;
@@ -50,8 +51,17 @@ function committed(commit: string, path: string): string {
 	if (!/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(commit))
 		throw new Error('Review needs a full commit');
 	const read = (args: string[]) =>
-		execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+		execFileSync('git', objectSource(args), {
+			encoding: 'utf8',
+			stdio: ['ignore', 'pipe', 'pipe']
+		});
 	if (read(['rev-parse', '--verify', `${commit}^{commit}`]).trim() !== commit)
 		throw new Error('Review does not resolve to its stated commit');
 	return read(['show', `${commit}:${path}`]);
+}
+
+/** These two immutable-object reads need no checkout, index, source files or writable ref. */
+function objectSource(args: string[]): string[] {
+	const objects = process.env.HARNESS_VERIFY_GIT_OBJECTS;
+	return objects ? ['--git-dir', dirname(objects), ...args] : args;
 }

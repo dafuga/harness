@@ -2728,7 +2728,14 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740"
+			"definition": "45867296a23c304ed096c22aa8b41014694e41521e7894fe61efad914a0212ff",
+			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
+			"review": {
+				"commit": "83a9c973930b68baeb3b0792588765693369103d",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+				"definition": "45867296a23c304ed096c22aa8b41014694e41521e7894fe61efad914a0212ff",
+				"reason": "Supply the selected immutable Git objects to snapshot checks while retaining the original workflow ownership, source export, output bounds and build identity gates."
+			}
 		},
 		{
 			"unit": "service.check-run",

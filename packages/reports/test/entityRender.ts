@@ -134,7 +134,11 @@ export function verificationPanel(...given: Given): string {
 			evidence: host.lens.evidence(entity.unit),
 			behavior: host.lens.behavior(entity.unit),
 			mediaBase: host.mediaBase,
-			nav: { route: host.route, href: (to) => '/harness' + explorerRoutePath(to), go: host.onroute }
+			nav: {
+				route: host.route,
+				href: (to: ExplorerLocation) => '/harness' + explorerRoutePath(to),
+				go: host.onroute
+			}
 		}
 	}).body;
 }
