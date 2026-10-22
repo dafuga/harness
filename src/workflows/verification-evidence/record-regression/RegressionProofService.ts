@@ -80,7 +80,9 @@ async function snapshotConfig(root: string, commit: string) {
 	return { ...config, scenarios: scenarios.manifests };
 }
 
-export function environmentProfile(source: NodeJS.ProcessEnv = process.env): string {
+export function environmentProfile(
+	source: Record<string, string | undefined> = process.env
+): string {
 	const volatile =
 		/^(PWD|OLDPWD|_|SHLVL|XPC_SERVICE_NAME|HARNESS_AGENT_ID|HARNESS_VERIFY_REVISION|HARNESS_VERIFY_TREE|HARNESS_EVIDENCE_DIR|SCREENSHOT_LABEL)$/;
 	const env = Object.fromEntries(
@@ -100,8 +102,6 @@ function checkResult(
 		fail('A timeout, missing executable or unfinished process is not regression proof.');
 	if (input.phase === 'green' && result.status !== 'passed')
 		fail(`The unchanged regression must pass on the fix commit.\n${output.slice(-8000)}`);
-	if (input.phase === 'capture' && result.status !== 'passed')
-		fail(`The evidence capture command must pass.\n${output.slice(-8000)}`);
 	if (input.phase === 'red' && (result.exitCode === 0 || !output.includes(input.assertion)))
 		fail(
 			'The committed failing test must fail with the named assertion; setup errors do not prove the defect.'
@@ -174,7 +174,7 @@ async function sealRegression(
 		schemaVersion: 1,
 		loop: input.loop,
 		phase: input.phase,
-		status: input.phase === 'red' ? 'failed' : 'passed',
+		status: recordedStatus(input.phase, observed.result.exitCode),
 		source: await sourceIdentity(root, input.commit),
 		tests: input.tests,
 		units: input.units,
@@ -191,6 +191,11 @@ async function sealRegression(
 		...(input.red ? { red: { commit: input.red.source.commit, record: input.red.id } } : {})
 	};
 	return { ...draft, id: regressionHash(canonicalJson(draft)) };
+}
+
+function recordedStatus(phase: RegressionPhase, exitCode: number | null): 'passed' | 'failed' {
+	if (phase === 'capture') return exitCode === 0 ? 'passed' : 'failed';
+	return phase === 'red' ? 'failed' : 'passed';
 }
 
 function invalidExecution(result: Awaited<ReturnType<typeof runIsolated>>): boolean {

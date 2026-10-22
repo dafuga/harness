@@ -141,6 +141,7 @@ function registerRegressionCommand(command: Command): void {
 						? JSON.stringify(record, null, 2)
 						: `${record.phase}: ${record.status} at ${record.source.commit}`
 				);
+				if (record.phase === 'capture' && record.status !== 'passed') process.exitCode = 1;
 			}
 		);
 }

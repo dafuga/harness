@@ -182,7 +182,8 @@ function validPhase(record: RegressionRecord, log: Buffer): boolean {
 
 function validCapture(record: RegressionRecord): boolean {
 	const observed = (record.captures?.length ?? 0) + (record.measurements?.length ?? 0);
-	return record.status === 'passed' && record.exitCode === 0 && !record.red && observed > 0;
+	const finished = record.status === (record.exitCode === 0 ? 'passed' : 'failed');
+	return finished && !record.red && observed > 0;
 }
 
 async function regressionCaptures(
