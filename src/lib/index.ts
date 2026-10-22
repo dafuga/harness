@@ -3,3 +3,5 @@ export * from './contracts';
 export * from './runtime';
 export * from './verification';
 export * from './history';
+export * from './development-tooling/sqlite';
+export * from './git-source-history/catalog';

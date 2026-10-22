@@ -1,6 +1,7 @@
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
+	reviewModelCard,
 	reviewPrivateFunctions,
 	reviewServiceCard
 } from './entityPreviewFunctions';
@@ -41,11 +42,16 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 		await reviewRelationPaging(tab, name);
 	});
-	test(`component, helper and service lists use a card grid at ${name} width`, async ({
+	test(`models, components, helpers and services use a card grid at ${name} width`, async ({
 		page: tab
 	}) => {
 		await tab.setViewportSize(size);
-		for (const category of ['components', 'functions', 'services'] as const) {
+		const browserErrors: string[] = [];
+		tab.on('pageerror', (error) => browserErrors.push(error.message));
+		tab.on('console', (message) => {
+			if (message.type() === 'error') browserErrors.push(message.text());
+		});
+		for (const category of ['models', 'components', 'functions', 'services'] as const) {
 			await open(tab, { category }, 'helpers');
 			await tab.evaluate(async () => {
 				await document.fonts.ready;
@@ -55,14 +61,18 @@ for (const [name, size] of Object.entries(viewports)) {
 			const cards = tab.getByRole('article');
 			await expect(
 				cards,
-				'collections use cards; helpers require two distinct visible consumers'
-			).toHaveCount({ components: 3, functions: 1, services: 1 }[category]);
+				'collections use cards; helpers and models require two distinct visible consumers'
+			).toHaveCount({ models: 2, components: 3, functions: 1, services: 1 }[category]);
 			const card = (await cards.first().boundingBox())!;
 			const available = (await tab.locator('.ex-index').boundingBox())!;
 			if (name !== 'mobile') {
 				expect(card.width, 'cards leave room for neighbors').toBeLessThan(available.width * 0.6);
 			}
 			expect(await fits(tab)).toBe(true);
+			if (category === 'models') {
+				await reviewModelCard(tab, name);
+				expect(browserErrors, 'the model browser flow has no console or page errors').toEqual([]);
+			}
 			if (category === 'functions') {
 				await reviewHelperCard(tab, cards);
 				await reviewHelperUsage(tab, name);

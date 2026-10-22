@@ -1,8 +1,8 @@
 {
-	"name": "reports-concurrent-runs-ci-timeout",
-	"goal": "The concurrent Reports E2E completes under the 15 minute CI test timeout while still proving two runs keep isolated histories and media through the other run's cleanup.",
-	"createdAt": "2026-10-22T14:09:18.210Z",
-	"updatedAt": "2026-10-22T14:10:27.207Z",
+	"name": "reports-concurrent-run-timeout",
+	"goal": "Prove concurrent report runs keep separate history and media through peer teardown within the CI time limit.",
+	"createdAt": "2026-10-22T13:28:20.953Z",
+	"updatedAt": "2026-10-22T13:45:40.357Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -12,25 +12,29 @@
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
 			"status": "complete",
-			"completedAt": "2026-10-22T14:10:26.491Z",
-			"evidence": "PR #39 GitHub Harness verify run 39777141955 on 2ff6d35 annotated test/reports-concurrent-runs.e2e.test.ts:65: Test timed out in 900000ms. Expected behavior is the same two-run history and media isolation proof completing under the CI test timeout; the same test passed locally on dc05acd in 575811ms."
+			"completedAt": "2026-10-22T13:28:29.256Z",
+			"evidence": "CI run 39777141955 at 8d779bcb6 failed the unchanged concurrency E2E after its 900-second timeout."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
 			"status": "complete",
-			"completedAt": "2026-10-22T14:10:27.207Z",
-			"evidence": "The existing standardized scenario already asserts distinct history homes and commits, media in both histories, first-run cleanup leaving the other history unchanged, 404 for a foreign commit, and final cleanup. The gap is runtime overhead: lasting=60 repeats the whole four-spec run although RunGate already holds teardown and fixture state during the short run. Keep the assertions and use the gate to preserve overlap with fewer repeated browser runs."
+			"completedAt": "2026-10-22T13:28:30.225Z",
+			"evidence": "The existing isolation assertions already cover separate histories, media and teardown; 60 full-suite repeats made CI exceed its limit."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T13:45:39.178Z",
+			"evidence": "Harness regression 52c72466 recorded the unchanged E2E failing on the 180-second teardown assertion at a7a376e."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T13:45:40.357Z",
+			"evidence": "Reduce the repeated full suite from 60 runs to one; both run gates continue to hold their own history until checked."
 		},
 		{
 			"id": "green",

@@ -66,6 +66,16 @@
 			"unit": "function.picker-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.provider-switch",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

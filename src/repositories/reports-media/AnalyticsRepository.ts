@@ -6,6 +6,8 @@ import { join } from 'node:path';
 import { realpath } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
+import { AnalyticsEvent as AnalyticsEventModel } from '../../models/reports-media/AnalyticsEvent';
+import { sqliteTableSql } from '../../utils/development-tooling/sqliteTableSql';
 
 export class AnalyticsRepository {
 	private readonly db: Database;
@@ -17,9 +19,7 @@ export class AnalyticsRepository {
 		chmodSync(path, 0o600);
 		this.db.exec('PRAGMA busy_timeout=5000;');
 		this.initialize();
-		this.db.exec(
-			'CREATE TABLE IF NOT EXISTS events (id TEXT PRIMARY KEY, timestamp TEXT NOT NULL, data TEXT NOT NULL); PRAGMA user_version=1;'
-		);
+		this.db.exec(`${sqliteTableSql(AnalyticsEventModel.definition)}; PRAGMA user_version=1;`);
 	}
 	private initialize(): void {
 		const version = this.db.query('PRAGMA user_version').get() as { user_version: number };

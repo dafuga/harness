@@ -4,7 +4,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import {
+	beforeDeadline,
 	browserRun,
+	concurrentBrowserRunRepetitions,
 	eventually,
 	runPassed as passed,
 	seededHistories,
@@ -67,11 +69,15 @@ test('two runs at once each keep their own history, media and results, through t
 	};
 	const secondGate = await gated('second');
 	const second = await browserRun('second', scratch, longer, {
-		repeat: 1,
+		repeat: concurrentBrowserRunRepetitions,
 		gate: secondGate.path
 	});
 	runs.push(second);
 	await histories(1, 'the longer run to seed its history');
+	const reachedTeardown = await beforeDeadline(secondGate.reached, 600_000);
+	if (!reachedTeardown) {
+		throw new Error('Concurrent report run did not reach teardown within 600000ms.');
+	}
 	const firstGate = await gated('first');
 	const first = await browserRun('first', scratch, quick, { repeat: 1, gate: firstGate.path });
 	runs.push(first);
