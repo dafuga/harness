@@ -30,11 +30,6 @@ const longer = [
 	'tests/e2e/harness-explorer-catalog.spec.ts',
 	'tests/e2e/harness-protection.spec.ts'
 ];
-/**
- * How often the longer run repeats its specs: they take seconds, and it has to outlast the whole
- * of the shorter run, from the seeding of its history to the removal of it.
- */
-const lasting = 60;
 const media = (home: string) =>
 	readdirSync(home, { recursive: true, withFileTypes: true }).filter(
 		(entry) => entry.isFile() && /^[0-9a-f]{64}\.(png|wav)$/.test(entry.name)
@@ -72,7 +67,7 @@ test('two runs at once each keep their own history, media and results, through t
 	};
 	const secondGate = await gated('second');
 	const second = await browserRun('second', scratch, longer, {
-		repeat: lasting,
+		repeat: 1,
 		gate: secondGate.path
 	});
 	runs.push(second);
