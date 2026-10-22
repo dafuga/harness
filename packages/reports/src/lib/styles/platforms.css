@@ -1,4 +1,13 @@
 /* The platform catalog shares the Explorer's navy, gold and field primitives. */
+.ex-content .pf-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.ex-content .pf-controls .ex-controls {
+	flex: 1;
+	min-width: 0;
+}
 /* Four across a desktop, two on a tablet, one on a phone. */
 .ex-content .pf-grid {
 	display: grid;

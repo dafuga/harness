@@ -16,7 +16,6 @@ import {
 import { commits, ids } from './entityUnits';
 import { capture, ready } from './entityPreviewCapture';
 export { capture, ready } from './entityPreviewCapture';
-// A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
 	desktop: { width: 1440, height: 900 },
@@ -32,10 +31,7 @@ const types: Record<string, string> = {
 	'.wav': 'audio/wav',
 	'.json': 'application/json'
 };
-/**
- * Opens the content at an address, served from the built preview and from nowhere else. A
- * variant asks for the selected commit with a state uncaptured or with reasons at old length.
- */
+/** Opens a compiled fixture at its requested address and synthetic history variant. */
 export async function open(
 	page: Page,
 	route: Partial<ExplorerLocation> = {},
@@ -46,13 +42,13 @@ export async function open(
 	// Keep asset routes installed while this page switches views, including pending lazy reads.
 	await page.goto('about:blank');
 	if (!served.has(page)) {
-		await page.route(`${origin}/**`, (request) => {
+		await page.route(`${origin}/**`, async (request) => {
 			const path = new URL(request.request().url()).pathname;
 			const file = join(home, path.replace(/^\/harness\/media\//, 'media/'));
 			if (path === '/' || /^\/harness\/(branch|commit)\//.test(path))
 				return request.fulfill({
 					contentType: 'text/html',
-					body: previewShell(home, variants.get(page))
+					body: await previewShell(home, variants.get(page))
 				});
 			if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
 			return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });
@@ -170,15 +166,6 @@ export async function reviewStates(
 		panel.getByRole('article', { name: 'Error', exact: true }).getByRole('img').last()
 	).toHaveAttribute('src', `/media/${commit ? 'bbbbbbb' : 'ccccccc'}-error-mobile.png`);
 	expect(await fits(page)).toBe(true);
-}
-/** Choose through the same filter dialog used by every catalog, retaining keyboard focus. */
-export async function chooseCatalogFilter(page: Page, name: string, value: string | boolean) {
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	const dialog = page.getByRole('dialog', { name: 'Filters', exact: true });
-	if (typeof value === 'boolean') await dialog.getByLabel(name, { exact: true }).setChecked(value);
-	else await dialog.getByRole('combobox', { name, exact: true }).selectOption(value);
-	await dialog.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeFocused();
 }
 
 export async function reviewMeasurements(tab: Page, name: string): Promise<void> {

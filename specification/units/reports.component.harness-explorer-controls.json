@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-controls",
 	"kind": "component",
 	"title": "Catalog controls",
-	"responsibility": "Filters a catalog by search, changes, verification and shared usage.",
+	"responsibility": "Searches the entities on each catalog list page.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -24,51 +24,21 @@
 			{
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
-				"description": "Bindable query, changed-only, verification, shared usage and ordering choices."
-			},
-			{
-				"name": "ExplorerControls.groups",
-				"type": "Array<{ id: string; title: string; count: number }> | undefined",
-				"description": "Optional category counts for the existing unit filters."
-			},
-			{
-				"name": "ExplorerControls.customFilters",
-				"type": "Snippet | undefined",
-				"description": "Optional collection-specific fields rendered in the shared filter modal."
-			},
-			{
-				"name": "ExplorerControls.activeFilters",
-				"type": "number | undefined",
-				"description": "Number of active collection-specific filter choices."
-			},
-			{
-				"name": "ExplorerControls.onreset",
-				"type": "(() => void) | undefined",
-				"description": "Resets collection-specific fields when supplied."
+				"description": "Bindable catalog state; this component edits only its search query."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerControls",
 				"type": "markup",
-				"description": "Local search and one filter icon above the catalog. The shared modal holds filters and ordering."
+				"description": "A full-width local search field above the catalog."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.filter-dialog",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.harness-harness-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.select",
 			"via": "import",
 			"origin": "derived"
 		},

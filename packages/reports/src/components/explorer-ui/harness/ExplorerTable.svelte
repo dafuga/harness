@@ -14,7 +14,8 @@
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
-	type Kind = Exclude<ExplorerCategory, 'pages'>;
+	/** Pages and components are only ever the shared visual card, never a table row. */
+	type Kind = Exclude<ExplorerCategory, 'pages' | 'components'>;
 	let {
 		category,
 		rows,
@@ -33,14 +34,12 @@
 	/** A column's words for a row; null for what uses the row, shown as the shared usage footer. */
 	type Column = [string, ((row: CatalogRow) => string) | null];
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
-	const composed: Column[] = [
-		['Used on', null],
-		['Contains', (row) => listed(row.contains, 2)]
-	];
 	const columns: Record<Kind, Column[]> = {
 		platforms: [],
-		shells: composed,
-		components: composed,
+		shells: [
+			['Used on', null],
+			['Contains', (row) => listed(row.contains, 2)]
+		],
 		functions: [
 			['Responsibility', (row) => row.summary],
 			['Used by', null]
@@ -62,8 +61,8 @@
 	};
 	let shown = $derived(columns[category]);
 	let one = $derived(entityLabels[category].one);
-	// A shell or a component is described under its name; the other kinds have a column for it.
-	let described = $derived(category === 'shells' || category === 'components');
+	// A shell is described under its name; the other kinds have a column for it.
+	let described = $derived(category === 'shells');
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.id });
 </script>
 

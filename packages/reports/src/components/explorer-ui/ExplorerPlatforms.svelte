@@ -10,6 +10,7 @@
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import '../../lib/styles/platforms.css';
 	import Select from '../shared-primitives/Select.svelte';
+	import FilterDialog from '../shared-primitives/FilterDialog.svelte';
 	import EntityLink from './harness/EntityLink.svelte';
 	import ExplorerControls from './harness/ExplorerControls.svelte';
 	import ExplorerFrame from './harness/ExplorerFrame.svelte';
@@ -135,13 +136,12 @@
 				{#if gap}
 					<p class="pf-notice"><HarnessIcon name="info" size={18} /><span>{gap}</span></p>
 				{/if}
-				<ExplorerControls
-					noun="platforms"
-					bind:filter
-					customFilters={statusFilter}
-					activeFilters={Number(status !== 'all')}
-					onreset={() => (status = 'all')}
-				/>
+				<div class="pf-controls">
+					<ExplorerControls noun="platforms" bind:filter />
+					<FilterDialog active={Number(status !== 'all')} onreset={() => (status = 'all')}>
+						{@render statusFilter()}
+					</FilterDialog>
+				</div>
 				<p class="ex-hidden" role="status">{listed.length} of {cards.length} platforms shown</p>
 				{#if listed.length}
 					<div class="pf-grid">

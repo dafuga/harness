@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-catalog-items",
 	"kind": "component",
 	"title": "ExplorerCatalogItems",
-	"responsibility": "Renders catalog rows through the existing page/component cards, helper cards or category table in list pages and relationship tabs.",
+	"responsibility": "Lays catalog rows in their grid through the shared page/component card, helper cards or category table in list pages and relationship tabs; each card owns its layout.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,7 +19,7 @@
 			{
 				"name": "ExplorerCatalogItems.category",
 				"type": "ExplorerCategory",
-				"description": "Required catalog category choosing screenshot cards, helper cards or the category table."
+				"description": "Required catalog category: pages and components use the shared screenshot card, functions, models and services helper cards, and shells and configs the category table."
 			},
 			{
 				"name": "ExplorerCatalogItems.rows",
@@ -45,6 +45,16 @@
 				"name": "ExplorerCatalogItems.verification",
 				"type": "boolean",
 				"description": "Optional verification visibility, defaulting to true; relationship tabs pass false."
+			},
+			{
+				"name": "ExplorerCatalogItems.batch",
+				"type": "number",
+				"description": "Optional rows shown per View More step, defaulting to 0 for all rows; relationship tabs pass 4."
+			},
+			{
+				"name": "ExplorerCatalogItems.label",
+				"type": "string",
+				"description": "Optional accessible name of a batched group and its View More action, defaulting to the category."
 			}
 		],
 		"outputs": [
@@ -58,12 +68,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.explorer-function-card",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-explorer-page-card",
+			"unit": "reports.component.explorer-ui-explorer-module-card",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -84,11 +89,6 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},

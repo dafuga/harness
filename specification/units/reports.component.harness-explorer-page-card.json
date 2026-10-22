@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
 	"title": "Visual catalog card",
-	"responsibility": "Shows page or component screenshots and facts with a shared linked consumer footer.",
+	"responsibility": "Legacy visual card entry delegating every catalog and relationship rendering to ExplorerModuleCard.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,12 +19,12 @@
 			{
 				"name": "ExplorerPageCard.row",
 				"type": "CatalogRow",
-				"description": "Facts for one page or visual component: its name, purpose, usages, contained components, changed flag and verification."
+				"description": "One page or visual component: its id, name and Used In consumers. Its other row facts stay on its detail page."
 			},
 			{
 				"name": "ExplorerPageCard.shot",
 				"type": "Evidence | null",
-				"description": "A usable screenshot or null. Includes its original captured commit and whether the shown revision reuses validated unchanged evidence. Missing media or image-load failure shows an explicit gap."
+				"description": "The entity's own usable screenshot or null, never another's. Missing media or image-load failure shows an explicit no-screenshot gap. A page's link title names its captured or reused commit; a component card shows no provenance."
 			},
 			{
 				"name": "ExplorerPageCard.mediaBase",
@@ -39,12 +39,12 @@
 			{
 				"name": "ExplorerPageCard.category",
 				"type": "'pages' | 'components'",
-				"description": "Pages keep their title and screenshot, plus the same shared usage footer. Components also show purpose, contained components and verification."
+				"description": "Pages keep their title and screenshot as one link, plus the shared grouped usage footer. Components show their screenshot, linked title and the same footer as one unheaded list of at most three consumer links, ending in an ellipsis only when more exist, with identical layout in catalogs and relationship tabs."
 			},
 			{
 				"name": "ExplorerPageCard.verification",
 				"type": "boolean",
-				"description": "Defaults to true in catalogs; false in relationship tabs to omit verification indicators."
+				"description": "Still accepted, never shown: every card keeps verification on the entity detail page."
 			},
 			{
 				"name": "ExplorerPageCard.lens",
@@ -56,24 +56,14 @@
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "Catalog item using the shared Used In consumer links and screenshot previews, with navigation and captures bound to the selected revision. Other item facts and verification follow the category."
+				"description": "One shared module card with revision-scoped visual evidence and at most three flat Used In links."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.explorer-usage",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-icon",
+			"unit": "reports.component.explorer-ui-explorer-module-card",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -84,11 +74,6 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.harness-icons",
 			"via": "import",
 			"origin": "derived"
 		},
