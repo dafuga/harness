@@ -1,0 +1,73 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [12.34s]
+
+Running 9 tests using 1 worker
+
+(node:60432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell.spec.ts:64:2 › the bar shows six categories with an icon above each label at desktop width (337ms)
+  ✓  2 tests/e2e/explorer-shell.spec.ts:132:2 › the branch with its tip and the viewed commit are told apart at desktop width (250ms)
+  ✓  3 tests/e2e/explorer-shell.spec.ts:179:2 › Go to tip, back, a reload and another branch each keep their place at desktop width (203ms)
+  ✓  4 tests/e2e/explorer-shell.spec.ts:64:2 › the bar shows six categories with an icon above each label at tablet width (265ms)
+  ✓  5 tests/e2e/explorer-shell.spec.ts:132:2 › the branch with its tip and the viewed commit are told apart at tablet width (227ms)
+  ✓  6 tests/e2e/explorer-shell.spec.ts:179:2 › Go to tip, back, a reload and another branch each keep their place at tablet width (192ms)
+  ✘  7 tests/e2e/explorer-shell.spec.ts:64:2 › the bar shows six categories with an icon above each label at mobile width (165ms)
+(node:60881) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  8 tests/e2e/explorer-shell.spec.ts:132:2 › the branch with its tip and the viewed commit are told apart at mobile width (292ms)
+  ✓  9 tests/e2e/explorer-shell.spec.ts:179:2 › Go to tip, back, a reload and another branch each keep their place at mobile width (216ms)
+
+
+  1) tests/e2e/explorer-shell.spec.ts:64:2 › the bar shows six categories with an icon above each label at mobile width 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 390
+    Received:    432.078125
+
+       at support/shellChecks.ts:17
+
+      15 | 	expect(place.height).toBeGreaterThanOrEqual(32);
+      16 | 	expect(place.x).toBeGreaterThanOrEqual(0);
+    > 17 | 	expect(place.x + place.width).toBeLessThanOrEqual(width);
+         | 	                              ^
+      18 | }
+      19 |
+      20 | /** Revision controls stay one small row, with native options and a readable closed value. */
+        at reachable (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-H4SS8t/packages/reports/tests/e2e/support/shellChecks.ts:17:32)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-H4SS8t/packages/reports/tests/e2e/explorer-shell.spec.ts:82:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-8503f--each-label-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-8503f--each-label-at-mobile-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-8503f--each-label-at-mobile-width/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell.spec.ts:64:2 › the bar shows six categories with an icon above each label at mobile width 
+  8 passed (6.1s)
