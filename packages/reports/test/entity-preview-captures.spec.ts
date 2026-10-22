@@ -12,7 +12,8 @@ test('screenshots use their capture commit and comparisons show their paired rev
 	await expect(tab.getByRole('heading', { name: 'Current screenshot' })).toBeVisible();
 	await expect(tab.locator(shots)).toHaveCount(1);
 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-desktop.png');
-	await expect(tab.locator('.ex-pane figcaption strong')).toHaveText('ccccccc');
+	await expect(tab.locator('.ex-pane figcaption strong')).toContainText('ccccccc');
+	await expect(tab.locator('.ex-pane figcaption strong')).not.toContainText('Branch tip');
 	await capture(tab, 'page-current-desktop');
 	await tab.getByRole('button', { name: 'Mobile' }).click();
 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-mobile.png');
