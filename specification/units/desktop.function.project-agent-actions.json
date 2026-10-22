@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/projectAgentActions.ts"],
-		"symbols": ["projectAgentActions", "projectAgentComment"]
+		"source": [
+			"packages/desktop/src/utils/agents-providers/projectAgentActions.ts",
+			"packages/desktop/src/utils/projectAgentActions.ts"
+		],
+		"symbols": [
+			"projectAgentActions",
+			"projectAgentComment",
+			"projectAgentActions",
+			"projectAgentComment"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -94,11 +102,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/projectAgentActions.ts",
+		"entry": "packages/desktop/src/utils/agents-providers/projectAgentActions.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/projectAgentActions.ts"
+				"entry": "packages/desktop/src/utils/agents-providers/projectAgentActions.ts"
 			}
 		]
 	},

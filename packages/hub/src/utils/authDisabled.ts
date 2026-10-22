@@ -1,1 +1,1 @@
-export { authDisabled } from '../lib/server/auth/authDisabled';
+export { authDisabled } from '../lib/verification-evidence/server/auth/authDisabled';

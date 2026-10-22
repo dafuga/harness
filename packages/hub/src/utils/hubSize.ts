@@ -1,1 +1,1 @@
-export { hubSize } from '../services/hub-projection-service/hubSize';
+export { hubSize } from '../routes/api/[...path]/hub-projection-service/hubSize';

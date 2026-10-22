@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/components/native-approval/nativeScope.ts",
+			"packages/hub/src/components/shared-primitives/native-approval/nativeScope.ts",
 			"packages/hub/src/utils/nativeScope.ts"
 		],
-		"symbols": ["nativeScope", "nativeScope"]
+		"symbols": ["nativeScope", "nativeScope", "nativeScope"]
 	},
 	"contract": {
 		"origin": "declared",

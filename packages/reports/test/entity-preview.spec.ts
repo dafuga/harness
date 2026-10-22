@@ -33,17 +33,17 @@ test('collections: search, changed only and order change what is listed', async 
 	await tab.mouse.move(1, 1);
 	await tab.getByRole('searchbox', { name: 'Search components' }).fill('card');
 	await expect(rows).toHaveCount(1);
-	await expect(rows.first()).toContainText('Order card');
+	await expect(rows.first()).toContainText('OrderCard');
 	await tab.getByRole('searchbox', { name: 'Search components' }).fill('zzz');
 	await expect(tab.getByText('No components match this search.')).toBeVisible();
 	await tab.getByRole('button', { name: 'Show all components' }).click();
 	await expect(rows).toHaveCount(3);
 	await chooseCatalogFilter(tab, 'Changed only', true);
 	await expect(rows).toHaveCount(1);
-	await expect(rows.first()).toContainText('Order list');
+	await expect(rows.first()).toContainText('OrderList');
 	await chooseCatalogFilter(tab, 'Changed only', false);
 	await chooseCatalogFilter(tab, 'Order', 'name-desc');
-	await expect(rows.first()).toContainText('Search box');
+	await expect(rows.first()).toContainText('SearchBox');
 });
 test('a row or a card of a collection opens its entity in the same branch and commit', async ({
 	page: tab
@@ -52,16 +52,16 @@ test('a row or a card of a collection opens its entity in the same branch and co
 	await open(tab, { category: 'functions', commit: commits.middle });
 	await tab.getByRole('link', { name: 'filterOrders(orders, "SERVICE")', exact: true }).click();
 	expect(await where(tab)).toEqual({ branch, commit: commits.middle, ...filter });
-	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
+	await expect(tab.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 	await open(tab, { category: 'components' });
-	await tab.getByRole('link', { name: 'Open Order card' }).click();
+	await tab.getByRole('link', { name: 'Open OrderCard' }).click();
 	expect(await where(tab)).toEqual({
 		branch,
 		commit: null,
 		category: 'components',
 		entity: ids.card
 	});
-	await expect(tab.getByRole('heading', { level: 1, name: 'Order card' })).toBeVisible();
+	await expect(tab.getByRole('heading', { level: 1, name: 'OrderCard' })).toBeVisible();
 	await open(tab);
 	await tab.getByRole('link', { name: 'Open Orders page' }).click();
 	expect(await where(tab)).toEqual({ branch, commit: null, ...page });
@@ -149,7 +149,7 @@ test('links walk page to component to function, and keep the branch and the comm
 		commit: commits.middle
 	});
 	await capture(tab, 'page-uses-desktop');
-	await tab.getByRole('link', { name: 'Order list' }).click();
+	await tab.getByRole('link', { name: 'OrderList' }).click();
 	expect(await where(tab)).toEqual({
 		branch: 'feature/orders',
 		commit: commits.middle,
@@ -157,13 +157,13 @@ test('links walk page to component to function, and keep the branch and the comm
 		entity: ids.list
 	});
 	await tab.getByRole('tab', { name: 'Uses', exact: true }).click();
-	await tab.getByRole('link', { name: 'Filter orders' }).click();
+	await tab.getByRole('link', { name: 'filterOrders' }).click();
 	expect(await where(tab)).toMatchObject({
 		category: 'functions',
 		entity: ids.filter,
 		commit: commits.middle
 	});
-	await expect(tab.getByRole('heading', { level: 1, name: 'Filter orders' })).toBeVisible();
+	await expect(tab.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 });
 test('one entity page keeps source optional without a duplicate Details page', async ({
 	page: tab

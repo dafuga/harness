@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/project.ts"],
-		"symbols": ["ProjectKind", "ProjectTemplateInput", "projectFiles"]
+		"source": ["src/templates/project.ts", "src/templates/projects-sessions/project.ts"],
+		"symbols": ["projectFiles", "ProjectKind", "ProjectTemplateInput", "projectFiles"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/project.ts",
+		"entry": "src/templates/projects-sessions/project.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/project.ts"
+				"entry": "src/templates/projects-sessions/project.ts"
 			}
 		]
 	},

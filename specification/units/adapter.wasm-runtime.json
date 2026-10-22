@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/WasmRuntimeAdapter.ts"],
-		"symbols": ["WasmRuntimeAdapter", "WasmRuntimeAdapter.constructor"]
+		"source": [
+			"src/adapters/WasmRuntimeAdapter.ts",
+			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter.ts",
+			"src/adapters/wasm-runtime-adapter/WasmRuntimeAdapter.ts"
+		],
+		"symbols": [
+			"WasmRuntimeAdapter",
+			"WasmRuntimeAdapter",
+			"WasmRuntimeAdapter.constructor",
+			"WasmRuntimeAdapter"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -39,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/WasmRuntimeAdapter.ts",
+		"entry": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/WasmRuntimeAdapter.ts"
+				"entry": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter.ts"
 			}
 		]
 	},

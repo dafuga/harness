@@ -7,8 +7,22 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/history-media-service/mediaPlace.ts", "src/utils/mediaPlace.ts"],
-		"symbols": ["mediaPlace", "MediaFile", "MediaPlacer", "checkedMedia", "mediaPlace"]
+		"source": [
+			"src/cli/program/history-index-service/history-media-service/mediaPlace.ts",
+			"src/services/history-media-service/mediaPlace.ts",
+			"src/utils/development-tooling/mediaPlace.ts",
+			"src/utils/mediaPlace.ts"
+		],
+		"symbols": [
+			"mediaPlace",
+			"mediaPlace",
+			"MediaFile",
+			"MediaPlacer",
+			"checkedMedia",
+			"mediaPlace",
+			"mediaPlace",
+			"checkedMedia"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +66,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/mediaPlace.ts",
+		"entry": "src/utils/development-tooling/mediaPlace.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/mediaPlace.ts"
+				"entry": "src/utils/development-tooling/mediaPlace.ts"
 			}
 		]
 	},

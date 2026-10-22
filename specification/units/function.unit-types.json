@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/unitTypes.ts"],
+		"source": ["src/core/development-tooling/unitTypes.ts", "src/core/unitTypes.ts"],
 		"symbols": [
 			"unitIdPattern",
 			"dependencyVias",
@@ -27,7 +27,19 @@
 			"ComponentManifest",
 			"ScenarioManifest",
 			"RuntimeKind",
-			"ExecutionTarget"
+			"ExecutionTarget",
+			"unitIdPattern",
+			"dependencyVias",
+			"runtimeKinds",
+			"performanceMetrics",
+			"performanceTolerance",
+			"contractItemSchema",
+			"helperContractSchema",
+			"unitDependencySchema",
+			"performanceBudgetSchema",
+			"executionTargetSchema",
+			"componentManifestSchema",
+			"scenarioManifestSchema"
 		]
 	},
 	"contract": {
@@ -95,11 +107,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/unitTypes.ts",
+		"entry": "src/core/development-tooling/unitTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/unitTypes.ts"
+				"entry": "src/core/development-tooling/unitTypes.ts"
 			}
 		]
 	},

@@ -1,4 +1,4 @@
 export {
 	hubEvidenceQuery,
 	hubArtifactQuery
-} from '../controllers/hub-api-controller/hubEvidenceQuery';
+} from '../routes/api/[...path]/hub-api-controller/hubEvidenceQuery';

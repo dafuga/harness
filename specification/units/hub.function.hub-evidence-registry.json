@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceRegistry.ts",
-			"packages/hub/src/utils/hubEvidenceRegistry.ts"
+			"packages/hub/src/utils/hubEvidenceRegistry.ts",
+			"packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRegistry.ts"
 		],
-		"symbols": ["hubEvidenceRegistry", "hubEvidenceRegistry"]
+		"symbols": ["hubEvidenceRegistry", "hubEvidenceRegistry", "hubEvidenceRegistry"]
 	},
 	"contract": {
 		"origin": "declared",

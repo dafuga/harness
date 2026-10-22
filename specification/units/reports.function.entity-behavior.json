@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityBehavior.ts"],
+		"source": [
+			"packages/reports/src/utils/entityBehavior.ts",
+			"packages/reports/src/utils/explorer-ui/entityBehavior.ts"
+		],
 		"symbols": [
+			"entityBehavior",
+			"behaviorDuration",
 			"BehaviorOutcome",
 			"BehaviorCell",
 			"BehaviorLine",
@@ -65,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/entityBehavior.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/entityBehavior.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/entityBehavior.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/entityBehavior.ts"
 			}
 		]
 	},

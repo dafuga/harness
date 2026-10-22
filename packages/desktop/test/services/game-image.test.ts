@@ -2,10 +2,10 @@ import { expect, test, vi } from 'vitest';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fixture } from '../project-fixture';
-import { GameImageService } from '../../src/services/GameImageService';
-import { GameDocumentRepository } from '../../../game/src/repositories/GameDocumentRepository';
-import { exampleDocument } from '../../../game/src/utils/keyDoor';
-import { IpcRequestValidator } from '../../src/validators/IpcRequestValidator';
+import { GameImageService } from '../../src/lib/development-tooling/desktop-bridge/GameImageService';
+import { GameDocumentRepository } from '../../../game/src/repositories/game-authoring/GameDocumentRepository';
+import { exampleDocument } from '../../../game/src/utils/game-authoring/keyDoor';
+import { IpcRequestValidator } from '../../src/validators/development-tooling/IpcRequestValidator';
 const png = Buffer.from(
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=',
 	'base64'

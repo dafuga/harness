@@ -8,14 +8,21 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-navbar/harnessAncestry.ts",
+			"packages/reports/src/components/explorer-ui/harness/harness-selectors/harnessAncestry.ts",
 			"packages/reports/src/components/harness/harness-navbar/harnessAncestry.ts",
 			"packages/reports/src/components/harness/harness-selectors/harnessAncestry.ts",
 			"packages/reports/src/utils/explorer-history/harnessAncestry.ts",
+			"packages/reports/src/utils/explorer-ui/explorer-history/harnessAncestry.ts",
+			"packages/reports/src/utils/explorer-ui/harnessAncestry.ts",
 			"packages/reports/src/utils/harnessAncestry.ts"
 		],
 		"symbols": [
 			"branchCommits",
 			"revisionLabel",
+			"branchCommits",
+			"revisionLabel",
+			"harnessAncestry",
 			"harnessAncestry",
 			"retainedBranch",
 			"branchNames",
@@ -23,7 +30,14 @@
 			"branchOf",
 			"harnessAncestry",
 			"branchCommits",
-			"revisionLabel"
+			"revisionLabel",
+			"harnessAncestry",
+			"branchCommits",
+			"revisionLabel",
+			"retainedBranch",
+			"branchNames",
+			"defaultCommit",
+			"branchOf"
 		]
 	},
 	"contract": {
@@ -128,11 +142,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessAncestry.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/harnessAncestry.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harnessAncestry.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/harnessAncestry.ts"
 			}
 		]
 	},

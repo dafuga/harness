@@ -1,5 +1,5 @@
 import { expect, test, vi, afterEach } from 'vitest';
-import { connectDecart } from '../../src/adapters/DecartStreamAdapter';
+import { connectDecart } from '../../src/adapters/agents-providers/DecartStreamAdapter';
 const mocked = vi.hoisted(() => ({ connect: vi.fn() }));
 afterEach(() => {
 	vi.useRealTimers();

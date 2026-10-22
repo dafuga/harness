@@ -8,10 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-failures/harnessFailures.ts",
 			"packages/reports/src/components/harness/harness-failures/harnessFailures.ts",
+			"packages/reports/src/utils/explorer-ui/harnessFailures.ts",
 			"packages/reports/src/utils/harnessFailures.ts"
 		],
-		"symbols": ["harnessFailures", "FailureCause", "FailureSummary", "harnessFailures"]
+		"symbols": [
+			"harnessFailures",
+			"harnessFailures",
+			"FailureCause",
+			"FailureSummary",
+			"harnessFailures",
+			"harnessFailures"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,11 +43,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessFailures.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/harnessFailures.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harnessFailures.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/harnessFailures.ts"
 			}
 		]
 	},

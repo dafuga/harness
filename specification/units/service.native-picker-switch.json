@@ -7,11 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/NativePickerSwitchService.ts"],
+		"source": [
+			"src/services/NativePickerSwitchService.ts",
+			"src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts",
+			"src/services/native-picker-bridge-service/NativePickerSwitchService.ts"
+		],
 		"symbols": [
 			"NativePickerSwitchService",
+			"NativePickerSwitchService",
 			"NativePickerSwitchService.constructor",
-			"NativePickerSwitchService.apply"
+			"NativePickerSwitchService.apply",
+			"NativePickerSwitchService"
 		]
 	},
 	"contract": {
@@ -61,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/NativePickerSwitchService.ts",
+		"entry": "src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/NativePickerSwitchService.ts"
+				"entry": "src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService.ts"
 			}
 		]
 	},

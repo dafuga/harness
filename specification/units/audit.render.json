@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/render.ts"],
-		"symbols": ["renderAudit", "renderAuditCoverage"]
+		"source": ["src/audit/development-tooling/render.ts", "src/audit/render.ts"],
+		"symbols": ["renderAudit", "renderAuditCoverage", "renderAudit", "renderAuditCoverage"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -43,11 +43,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/render.ts",
+		"entry": "src/audit/development-tooling/render.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/render.ts"
+				"entry": "src/audit/development-tooling/render.ts"
 			}
 		]
 	},

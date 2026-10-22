@@ -38,9 +38,9 @@ test('Used In and Uses are sections of their own, from the navigation and by add
 	page
 }) => {
 	await page.goto(main(`components/${units.list}`));
-	await expect(heading(page, 'Title list')).toBeVisible();
+	await expect(heading(page, 'TitleList')).toBeVisible();
 	await checkpoint(page, 'usage-component-overview');
-	await expect(sectionsOf(page, 'Title list')).toHaveText(named);
+	await expect(sectionsOf(page, 'TitleList')).toHaveText(named);
 	await page.getByRole('tab', { name: 'Used In' }).click();
 	await expectPath(page, main(`components/${units.list}?tab=used-in`));
 	await checkpoint(page, 'usage-used-in');
@@ -58,21 +58,21 @@ test('Used In and Uses are sections of their own, from the navigation and by add
 	await expect(card(page, 'Uses').getByRole('heading', { name: /^Components/ })).toBeVisible();
 	await expect(card(page, 'Used In')).toHaveCount(0);
 	await expect(card(page, 'Uses')).not.toContainText('src/');
-	await card(page, 'Uses').getByRole('link', { name: 'Title row', exact: true }).click();
+	await card(page, 'Uses').getByRole('link', { name: 'TitleRow', exact: true }).click();
 	await expectPath(page, main(`components/${units.row}`));
 });
 
 test('a function says where it is used, down from the page that shows it', async ({ page }) => {
 	await page.goto(main(`functions/${units.slugify}`));
-	await expect(heading(page, 'Slugify')).toBeVisible();
+	await expect(heading(page, 'slugify')).toBeVisible();
 	await checkpoint(page, 'usage-function-overview');
 	await expect(card(page, 'Used In')).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Used In', exact: true }).click();
 	await expectPath(page, main(`functions/${units.slugify}?tab=used-in`));
 	const used = card(page, 'Used In');
 	await expect(used.getByRole('link', { name: 'Open Titles', exact: true })).toHaveCount(1);
-	await expect(used.getByRole('link', { name: 'Title row', exact: true })).toHaveCount(1);
+	await expect(used.getByRole('link', { name: 'TitleRow', exact: true })).toHaveCount(1);
 	await expect(card(page, 'Uses')).toHaveCount(0);
-	await used.getByRole('link', { name: 'Title row', exact: true }).click();
+	await used.getByRole('link', { name: 'TitleRow', exact: true }).click();
 	await expectPath(page, main(`components/${units.row}`));
 });

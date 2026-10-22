@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RuntimeArtifact.svelte"],
-		"symbols": ["RuntimeArtifact"]
+		"source": [
+			"packages/desktop/src/components/RuntimeArtifact.svelte",
+			"packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte"
+		],
+		"symbols": ["RuntimeArtifact", "RuntimeArtifact"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RuntimeArtifact.svelte",
+		"entry": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RuntimeArtifact.svelte"
+				"entry": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte"
 			}
 		]
 	},

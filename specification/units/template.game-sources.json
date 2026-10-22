@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/gameSources.ts"],
+		"source": ["src/templates/game-authoring/gameSources.ts"],
 		"symbols": ["gameSources"]
 	},
 	"contract": {
@@ -24,11 +24,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/gameSources.ts",
+		"entry": "src/templates/game-authoring/gameSources.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/gameSources.ts"
+				"entry": "src/templates/game-authoring/gameSources.ts"
 			}
 		]
 	},

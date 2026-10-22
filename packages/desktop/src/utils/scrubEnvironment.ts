@@ -1,1 +1,1 @@
-export { scrubEnvironment } from './cli-environment/scrubEnvironment';
+export { scrubEnvironment } from './development-tooling/cli-environment/scrubEnvironment';

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/DecartAdapter.ts"],
+		"source": ["packages/game/src/adapters/agents-providers/DecartAdapter.ts"],
 		"symbols": [
 			"DecartAdapter",
 			"DecartAdapter.constructor",
@@ -74,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/adapters/DecartAdapter.ts",
+		"entry": "packages/game/src/adapters/agents-providers/DecartAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/adapters/DecartAdapter.ts"
+				"entry": "packages/game/src/adapters/agents-providers/DecartAdapter.ts"
 			}
 		]
 	},

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameTrace.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameTrace.svelte"],
 		"symbols": ["GameTrace"]
 	},
 	"contract": {
@@ -42,11 +42,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameTrace.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameTrace.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameTrace.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameTrace.svelte"
 			}
 		]
 	},

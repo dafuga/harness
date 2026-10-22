@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '../../../../test/support/browserTest';
-import type { GameDocument } from '../../../game/src/models/Game.types';
+import type { GameDocument } from '../../../game/src/models/game-authoring/Game.types';
 
 /** A canceled app navigation or reload retains the authoring document. */
 export async function keepEdits(page: Page) {

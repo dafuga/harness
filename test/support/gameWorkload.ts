@@ -1,7 +1,10 @@
 import { beforeEach, afterEach } from 'vitest';
 import { createHash, randomUUID } from 'node:crypto';
-import { captureLineSchema } from '../../src/core/verifyTypes';
-import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
+import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../src/utils/reports-media/record-capture/recordCapture';
 const owners: Record<string, string> = {
 	'game/test/index': 'game.entry.index',
 	'game/test/adapters/canvas2d': 'game.function.draw2d',

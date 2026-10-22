@@ -9,13 +9,21 @@
 	"owns": {
 		"source": [
 			"src/utils/regressionFiles.ts",
-			"src/workflows/record-regression/regressionFiles.ts"
+			"src/utils/verification-evidence/regressionFiles.ts",
+			"src/workflows/record-regression/regressionFiles.ts",
+			"src/workflows/verification-evidence/record-regression/regressionFiles.ts"
 		],
 		"symbols": [
+			"regressionTestCommit",
 			"testPath",
 			"metadata",
 			"regressionFiles",
 			"regressionFixCommit",
+			"testPath",
+			"metadata",
+			"regressionFiles",
+			"regressionFixCommit",
+			"regressionTestCommit",
 			"regressionTestCommit",
 			"regressionTestCommit"
 		]
@@ -83,11 +91,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/regressionFiles.ts",
+		"entry": "src/utils/verification-evidence/regressionFiles.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/regressionFiles.ts"
+				"entry": "src/utils/verification-evidence/regressionFiles.ts"
 			}
 		]
 	},

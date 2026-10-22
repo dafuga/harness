@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedAddress.ts"],
-		"symbols": ["hostedAddress"]
+		"source": [
+			"packages/desktop/src/utils/development-tooling/hostedAddress.ts",
+			"packages/desktop/src/utils/hostedAddress.ts"
+		],
+		"symbols": ["hostedAddress", "hostedAddress"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/hostedAddress.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/hostedAddress.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/hostedAddress.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/hostedAddress.ts"
 			}
 		]
 	},

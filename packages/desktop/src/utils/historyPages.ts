@@ -1,1 +1,1 @@
-export { historyPages } from '../components/history-panel/historyPages';
+export { historyPages } from '../components/git-source-history/history-panel/historyPages';

@@ -1,1 +1,1 @@
-export { projectionCachePurge } from '../services/projection-cache-service/projectionCachePurge';
+export { projectionCachePurge } from '../lib/development-tooling/desktop-initialization/projection-cache-service/projectionCachePurge';

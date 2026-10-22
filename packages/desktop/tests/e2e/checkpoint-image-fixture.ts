@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { exampleDocument } from '../../../game/src/utils/keyDoor';
+import { exampleDocument } from '../../../game/src/utils/game-authoring/keyDoor';
 export const projectId = 'local-' + 'a'.repeat(64);
 export const tiny =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=';

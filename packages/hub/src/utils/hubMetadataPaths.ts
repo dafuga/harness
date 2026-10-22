@@ -1,1 +1,1 @@
-export { hubMetadataPaths } from './hub-metadata/hubMetadataPaths';
+export { hubMetadataPaths } from './development-tooling/hub-metadata/hubMetadataPaths';

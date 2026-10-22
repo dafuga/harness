@@ -1,5 +1,7 @@
 <script lang="ts">
-	let { label = 'Plan' }: { label?: string } = $props();
+	import CategoryImplementation from './planning-collaboration/PlanBadge.svelte';
+	import type { ComponentProps } from 'svelte';
+	let props: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
 
-<span class="plan-badge">{label}</span>
+<CategoryImplementation {...props} />

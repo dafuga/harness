@@ -9,9 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/server/auth/authConfig.ts",
-			"packages/hub/src/utils/authConfig.ts"
+			"packages/hub/src/lib/verification-evidence/server/auth/authConfig.ts",
+			"packages/hub/src/utils/authConfig.ts",
+			"packages/hub/src/utils/verification-evidence/authConfig.ts"
 		],
-		"symbols": ["authConfig", "CollaborationScope", "GithubAppConfig", "AuthConfig", "authConfig"]
+		"symbols": [
+			"authConfig",
+			"authConfig",
+			"authConfig",
+			"CollaborationScope",
+			"GithubAppConfig",
+			"AuthConfig",
+			"authConfig"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/authConfig.ts",
+		"entry": "packages/hub/src/utils/verification-evidence/authConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/authConfig.ts"
+				"entry": "packages/hub/src/utils/verification-evidence/authConfig.ts"
 			}
 		]
 	},

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameViewFields.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameViewFields.svelte"],
 		"symbols": ["GameViewFields"]
 	},
 	"contract": {
@@ -67,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameViewFields.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameViewFields.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameViewFields.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameViewFields.svelte"
 			}
 		]
 	},

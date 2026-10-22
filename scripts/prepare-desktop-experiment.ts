@@ -1,10 +1,10 @@
 import { join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { access, mkdir, rename } from 'node:fs/promises';
-import { DesktopArchiveAdapter } from '../src/adapters/DesktopArchiveAdapter';
-import { DesktopExperimentService } from '../src/services/DesktopExperimentService';
-import { desktopPatchConfig } from '../src/config/desktopPatchConfig';
-import { DesktopIntegrityAdapter } from '../src/adapters/DesktopIntegrityAdapter';
+import { DesktopArchiveAdapter } from './prepare-desktop-experiment/DesktopArchiveAdapter';
+import { DesktopExperimentService } from './prepare-desktop-experiment/DesktopExperimentService';
+import { desktopPatchConfig } from '../src/config/development-tooling/desktopPatchConfig';
+import { DesktopIntegrityAdapter } from './prepare-desktop-experiment/DesktopIntegrityAdapter';
 
 const source = '/Applications/ChatGPT.app';
 const target = join(homedir(), 'Applications/Codex Harness Experimental.app');
@@ -26,7 +26,12 @@ const changes = new DesktopExperimentService().plan(
 	}
 );
 const build = await Bun.build({
-	entrypoints: [join(import.meta.dir, '../src/services/NativePickerBridgeService.ts')],
+	entrypoints: [
+		join(
+			import.meta.dir,
+			'../src/services/native-picker-bridge-service/NativePickerBridgeService.ts'
+		)
+	],
 	target: 'browser',
 	format: 'esm'
 });

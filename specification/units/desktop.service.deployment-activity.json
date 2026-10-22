@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/DeploymentActivityService.ts"],
+		"source": [
+			"packages/desktop/src/services/DeploymentActivityService.ts",
+			"packages/desktop/src/services/development-tooling/DeploymentActivityService.ts"
+		],
 		"symbols": [
 			"DeploymentActivityService",
 			"DeploymentActivityService.list",
@@ -102,11 +105,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/DeploymentActivityService.ts",
+		"entry": "packages/desktop/src/services/development-tooling/DeploymentActivityService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/DeploymentActivityService.ts"
+				"entry": "packages/desktop/src/services/development-tooling/DeploymentActivityService.ts"
 			}
 		]
 	},

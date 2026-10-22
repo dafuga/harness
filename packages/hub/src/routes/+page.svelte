@@ -2,11 +2,11 @@
 	import { resolve } from '$app/paths';
 	import type { ProjectSummary } from 'collaboration';
 	import { ProjectSyncService } from '$desktop/services/ProjectSyncService';
-	import HubFrame from '../components/HubFrame.svelte';
-	import LoginPanel from '../components/login-panel/LoginPanel.svelte';
-	import ProjectCreate from '../components/ProjectCreate.svelte';
-	import ProjectList from '../components/ProjectList.svelte';
-	import { browserContext } from '../utils/browserContext';
+	import HubFrame from '../components/shared-primitives/HubFrame.svelte';
+	import LoginPanel from '../components/accounts-access/login-panel/LoginPanel.svelte';
+	import ProjectCreate from '../components/projects-sessions/ProjectCreate.svelte';
+	import ProjectList from '../components/projects-sessions/ProjectList.svelte';
+	import { browserContext } from '../utils/development-tooling/browserContext';
 	const { session, projects } = browserContext();
 	let list = $state<ProjectSummary[] | null>(null);
 	let error = $state('');

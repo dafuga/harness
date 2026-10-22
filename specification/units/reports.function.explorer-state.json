@@ -8,6 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerState.ts",
+			"packages/reports/src/utils/explorer-ui/explorerState.ts",
 			"packages/reports/src/utils/explorer-verdict/explorerState.ts",
 			"packages/reports/src/utils/explorerState.ts"
 		],
@@ -20,7 +22,14 @@
 			"scenarioFor",
 			"coverageWorst",
 			"captureUnbound",
-			"explorerState"
+			"explorerState",
+			"captureUnbound",
+			"explorerState",
+			"captureUnbound",
+			"explorerState",
+			"reasonText",
+			"scenarioFor",
+			"coverageWorst"
 		]
 	},
 	"contract": {
@@ -120,11 +129,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorerState.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/explorerState.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/explorerState.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/explorerState.ts"
 			}
 		]
 	},

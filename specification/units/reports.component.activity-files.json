@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ActivityFiles.svelte"],
-		"symbols": ["ActivityFiles"]
+		"source": [
+			"packages/reports/src/components/ActivityFiles.svelte",
+			"packages/reports/src/components/projects-sessions/ActivityFiles.svelte"
+		],
+		"symbols": ["ActivityFiles", "ActivityFiles"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ActivityFiles.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/ActivityFiles.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ActivityFiles.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/ActivityFiles.svelte"
 			}
 		]
 	},

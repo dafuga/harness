@@ -22,14 +22,16 @@ import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
  */
 const web = 'hub.component.hosted-workspace';
 const page = 'hub.page.projects-project-id-harness-path';
-const hosted = 'packages/hub/src/components/HostedWorkspace.svelte';
+const sourceOf = (id: string): string =>
+	JSON.parse(readFileSync(`specification/units/${id}.json`, 'utf8')).runtime.entry;
+const hosted = sourceOf(web);
 /** What the Web workspace imports of the shared workspace, by the unit that owns each file. */
 const shared: Record<string, string> = {
-	'desktop.component.workspace-shell': 'packages/desktop/src/components/WorkspaceShell.svelte',
-	'desktop.function.cache-status': 'packages/desktop/src/utils/cache-status/cacheStatus.ts',
-	'desktop.function.workspace-route': 'packages/desktop/src/utils/workspaceRoute.ts',
-	'desktop.service.project-sync': 'packages/desktop/src/services/ProjectSyncService.ts',
-	'desktop.store.workspace': 'packages/desktop/src/lib/stores/workspace.svelte.ts'
+	'desktop.component.workspace-shell': sourceOf('desktop.component.workspace-shell'),
+	'desktop.function.cache-status': sourceOf('desktop.function.cache-status'),
+	'desktop.function.workspace-route': sourceOf('desktop.function.workspace-route'),
+	'desktop.service.project-sync': sourceOf('desktop.service.project-sync'),
+	'desktop.store.workspace': sourceOf('desktop.store.workspace')
 };
 const indexer = new SourceIndexService();
 let loaded: LoadedUnits;

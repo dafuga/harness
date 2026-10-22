@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/codexState.ts",
 			"packages/desktop/src/adapters/codex-app-server-adapter/codexState.ts",
 			"packages/desktop/src/utils/codexState.ts"
 		],
-		"symbols": ["codexState", "codexState"]
+		"symbols": ["codexState", "codexState", "codexState"]
 	},
 	"contract": {
 		"origin": "declared",

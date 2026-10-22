@@ -1,1 +1,1 @@
-export { gatewayOptions } from '../services/claude-query-service/gatewayOptions';
+export { gatewayOptions } from '../cli/program/codex-gateway-service/claude-query-service/gatewayOptions';

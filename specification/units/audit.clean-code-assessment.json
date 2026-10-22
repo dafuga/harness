@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/cleanCodeAssessment.ts"],
-		"symbols": ["assessCleanCode", "fileReviewStatus", "reportReviewStatus"]
+		"source": [
+			"src/audit/cleanCodeAssessment.ts",
+			"src/audit/development-tooling/cleanCodeAssessment.ts"
+		],
+		"symbols": [
+			"assessCleanCode",
+			"fileReviewStatus",
+			"reportReviewStatus",
+			"assessCleanCode",
+			"fileReviewStatus",
+			"reportReviewStatus"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -60,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/cleanCodeAssessment.ts",
+		"entry": "src/audit/development-tooling/cleanCodeAssessment.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/cleanCodeAssessment.ts"
+				"entry": "src/audit/development-tooling/cleanCodeAssessment.ts"
 			}
 		]
 	},

@@ -9,9 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/design-panel/priorImage.ts",
+			"packages/desktop/src/components/planning-collaboration/design-panel/priorImage.ts",
+			"packages/desktop/src/utils/planning-collaboration/priorImage.ts",
 			"packages/desktop/src/utils/priorImage.ts"
 		],
-		"symbols": ["priorImage", "PriorImage", "priorImage"]
+		"symbols": ["priorImage", "priorImage", "PriorImage", "priorImage", "priorImage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/priorImage.ts",
+		"entry": "packages/desktop/src/utils/planning-collaboration/priorImage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/priorImage.ts"
+				"entry": "packages/desktop/src/utils/planning-collaboration/priorImage.ts"
 			}
 		]
 	},

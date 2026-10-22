@@ -8,10 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/development-tooling/recorded-answer/recordedProjection.ts",
+			"packages/desktop/src/utils/development-tooling/recordedProjection.ts",
 			"packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
 			"packages/desktop/src/utils/recordedProjection.ts"
 		],
-		"symbols": ["recordedProjection", "side", "recordedProjection"]
+		"symbols": [
+			"recordedProjection",
+			"side",
+			"recordedProjection",
+			"recordedProjection",
+			"recordedProjection",
+			"side"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/recordedProjection.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/recordedProjection.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/recordedProjection.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/recordedProjection.ts"
 			}
 		]
 	},

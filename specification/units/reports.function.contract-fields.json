@@ -9,13 +9,23 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/entity-contract/contractFields.ts",
-			"packages/reports/src/utils/contractFields.ts"
+			"packages/reports/src/components/explorer-ui/entity-contract/contractFields.ts",
+			"packages/reports/src/utils/contractFields.ts",
+			"packages/reports/src/utils/explorer-ui/contractFields.ts"
 		],
 		"symbols": [
 			"typeLabel",
 			"contractFields",
 			"contractFacts",
 			"callableContracts",
+			"typeLabel",
+			"contractFields",
+			"contractFacts",
+			"callableContracts",
+			"typeLabel",
+			"contractFields",
+			"contractFacts",
+			"guess",
 			"ContractExample",
 			"ContractField",
 			"ContractGroup",
@@ -107,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/contractFields.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/contractFields.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/contractFields.ts"
 			}
 		]
 	},

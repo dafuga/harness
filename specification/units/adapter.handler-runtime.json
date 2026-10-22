@@ -7,12 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/HandlerRuntimeAdapter.ts"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-compare/HandlerRuntimeAdapter.ts",
+			"packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts",
+			"src/adapters/HandlerRuntimeAdapter.ts"
+		],
 		"symbols": [
 			"HandlerRuntimeAdapter",
 			"HandlerRuntimeAdapter.constructor",
 			"HandlerRuntimeAdapter.invoke",
-			"HandlerRuntimeAdapter.close"
+			"HandlerRuntimeAdapter.close",
+			"HandlerRuntimeAdapter",
+			"HandlerRuntimeAdapter"
 		]
 	},
 	"contract": {
@@ -62,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/HandlerRuntimeAdapter.ts",
+		"entry": "packages/reports/src/components/explorer-ui/harness/harness-compare/HandlerRuntimeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/HandlerRuntimeAdapter.ts"
+				"entry": "packages/reports/src/components/explorer-ui/harness/harness-compare/HandlerRuntimeAdapter.ts"
 			}
 		]
 	},

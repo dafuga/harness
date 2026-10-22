@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/gameProject.ts"],
+		"source": ["src/templates/game-authoring/gameProject.ts"],
 		"symbols": ["gameFiles"]
 	},
 	"contract": {
@@ -54,11 +54,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/gameProject.ts",
+		"entry": "src/templates/game-authoring/gameProject.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/gameProject.ts"
+				"entry": "src/templates/game-authoring/gameProject.ts"
 			}
 		]
 	},

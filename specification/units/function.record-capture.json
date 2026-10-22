@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/record-capture/recordCapture.ts", "src/utils/recordCapture.ts"],
-		"symbols": ["evidenceRequested", "recordCapture", "evidenceRequested", "recordCapture"]
+		"source": [
+			"src/utils/record-capture/recordCapture.ts",
+			"src/utils/recordCapture.ts",
+			"src/utils/reports-media/record-capture/recordCapture.ts"
+		],
+		"symbols": [
+			"evidenceRequested",
+			"recordCapture",
+			"evidenceRequested",
+			"recordCapture",
+			"evidenceRequested",
+			"recordCapture"
+		]
 	},
 	"contract": {
 		"origin": "declared",

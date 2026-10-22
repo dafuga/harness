@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fixture } from '../project-fixture';
-import { ProjectGameCredentialAdapter } from '../../src/adapters/ProjectGameCredentialAdapter';
+import { ProjectGameCredentialAdapter } from '../../src/adapters/game-authoring/ProjectGameCredentialAdapter';
 
 test('ProjectGameCredentialAdapter reads quoted project keys and hides unexpected Git failures', async () => {
 	const name = 'HARNESS_GAME_OPENAI_API_KEY';

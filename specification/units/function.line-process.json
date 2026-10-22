@@ -7,14 +7,23 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/process-runtime-adapter/lineProcess.ts", "src/utils/lineProcess.ts"],
+		"source": [
+			"src/adapters/execution-runtimes/process-runtime-adapter/lineProcess.ts",
+			"src/adapters/process-runtime-adapter/lineProcess.ts",
+			"src/utils/execution-runtimes/lineProcess.ts",
+			"src/utils/lineProcess.ts"
+		],
 		"symbols": [
+			"lineProcess",
 			"lineProcess",
 			"ProcessReply",
 			"LineProcess",
 			"unavailable",
 			"exited",
-			"lineProcess"
+			"lineProcess",
+			"lineProcess",
+			"unavailable",
+			"exited"
 		]
 	},
 	"contract": {
@@ -79,11 +88,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/lineProcess.ts",
+		"entry": "src/utils/execution-runtimes/lineProcess.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/lineProcess.ts"
+				"entry": "src/utils/execution-runtimes/lineProcess.ts"
 			}
 		]
 	},

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/utils/gameStep.ts"],
+		"source": ["packages/game/src/utils/game-authoring/gameStep.ts"],
 		"symbols": ["createRun", "stepGame", "gameStep", "enterView"]
 	},
 	"contract": {
@@ -98,11 +98,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/utils/gameStep.ts",
+		"entry": "packages/game/src/utils/game-authoring/gameStep.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/utils/gameStep.ts"
+				"entry": "packages/game/src/utils/game-authoring/gameStep.ts"
 			}
 		]
 	},

@@ -70,6 +70,8 @@ test('ecosystem adapters report app and library rule violations', async () => {
 	try {
 		await mkdir(join(root, 'db/migrations'), { recursive: true });
 		await mkdir(join(root, 'src/components'), { recursive: true });
+		await mkdir(join(root, 'src/lib/checkout'), { recursive: true });
+		await writeFile(join(root, 'src/lib/checkout/payment.ts'), 'export class PaymentService {}\n');
 		await mkdir(join(root, 'scripts'), { recursive: true });
 		await writeFile(join(root, 'db/migrations/drop_users.sql'), 'DROP TABLE users;\n');
 		await writeFile(
@@ -85,6 +87,11 @@ test('ecosystem adapters report app and library rule violations', async () => {
 			(finding) => finding.rule
 		);
 
+		expect((await auditProject(root, { profile: 'app' })).findings).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({ path: 'src/lib/checkout/payment.ts', rule: 'file-name-pattern' })
+			])
+		);
 		expect(appRules).toEqual(
 			expect.arrayContaining(['sql-dangerous-migration', 'svelte-script-lang'])
 		);

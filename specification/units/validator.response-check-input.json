@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/ResponseCheckInputValidator.ts"],
-		"symbols": ["ResponseCheckInputValidator", "ResponseCheckInputValidator.validateCriteria"]
+		"source": [
+			"src/validators/ResponseCheckInputValidator.ts",
+			"src/validators/verification-evidence/ResponseCheckInputValidator.ts"
+		],
+		"symbols": [
+			"ResponseCheckInputValidator",
+			"ResponseCheckInputValidator",
+			"ResponseCheckInputValidator.validateCriteria"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/ResponseCheckInputValidator.ts",
+		"entry": "src/validators/verification-evidence/ResponseCheckInputValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/ResponseCheckInputValidator.ts"
+				"entry": "src/validators/verification-evidence/ResponseCheckInputValidator.ts"
 			}
 		]
 	},

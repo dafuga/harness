@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityArtifact.svelte"],
-		"symbols": ["EntityArtifact"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntityArtifact.svelte",
+			"packages/reports/src/components/harness/EntityArtifact.svelte"
+		],
+		"symbols": ["EntityArtifact", "EntityArtifact"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,11 +85,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityArtifact.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntityArtifact.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityArtifact.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntityArtifact.svelte"
 			}
 		]
 	},

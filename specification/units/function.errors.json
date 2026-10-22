@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/errors.ts"],
-		"symbols": ["ExpectedCliError", "fail", "isExpectedCliError"]
+		"source": ["src/core/development-tooling/errors.ts", "src/core/errors.ts"],
+		"symbols": [
+			"ExpectedCliError",
+			"fail",
+			"isExpectedCliError",
+			"ExpectedCliError",
+			"fail",
+			"isExpectedCliError"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,11 +54,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/errors.ts",
+		"entry": "src/core/development-tooling/errors.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/errors.ts"
+				"entry": "src/core/development-tooling/errors.ts"
 			}
 		]
 	},

@@ -1,5 +1,5 @@
 import scenario from '../../../../specification/scenarios/game-authoring.json' with { type: 'json' };
-import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import type { Page, ElectronApplication } from '../../../../test/support/browserTest';
 import { mkdir, appendFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';

@@ -1,5 +1,5 @@
-import type { ExplorerSide } from '../../../reports/src/models/Explorer.types';
-import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
+import type { ExplorerSide } from '../../../reports/src/models/explorer-ui/Explorer.types';
+import type { EntityEvidenceResult } from '../../src/models/verification-evidence/DesktopEvidence.types';
 type Mode = 'current' | 'commit';
 
 /** What binds one request for bytes: every field the bridge is given, in one fixed order. */

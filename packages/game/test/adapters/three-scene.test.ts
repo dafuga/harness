@@ -13,7 +13,7 @@ vi.mock('three', async (original) => ({
 
 test('public create3d selects the owner Three.js source when WebGL2 exists', async () => {
 	vi.resetModules();
-	const owner = await import('../../src/adapters/ThreeSceneAdapter');
+	const owner = await import('../../src/adapters/game-authoring/ThreeSceneAdapter');
 	const entry = await import('../../src/index');
 	expect(entry.create3d).toBe(owner.create3d);
 	const canvas = { width: 1280, height: 704, dataset: {}, getContext: () => ({}) };

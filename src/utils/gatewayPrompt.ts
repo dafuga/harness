@@ -1,1 +1,1 @@
-export { gatewayPrompt } from '../services/claude-query-service/gatewayPrompt';
+export { gatewayPrompt } from '../cli/program/codex-gateway-service/claude-query-service/gatewayPrompt';

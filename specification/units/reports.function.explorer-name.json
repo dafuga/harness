@@ -3,12 +3,15 @@
 	"id": "reports.function.explorer-name",
 	"kind": "function",
 	"title": "Readable entity names",
-	"responsibility": "Derives display names and page addresses from declared titles and ownership.",
+	"responsibility": "Keeps canonical recorded code names consistent across catalogs, related units and detail pages; derives readable route screen labels separately.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorerName.ts"],
-		"symbols": ["explorerName", "explorerAppRoute"]
+		"source": [
+			"packages/reports/src/utils/explorer-ui/explorerName.ts",
+			"packages/reports/src/utils/explorerName.ts"
+		],
+		"symbols": ["explorerName", "explorerAppRoute", "explorerName", "explorerAppRoute"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -16,7 +19,7 @@
 			{
 				"name": "explorerName.unit",
 				"type": "Named",
-				"description": "Unit identifier, kind and title used for display naming."
+				"description": "Unit identity, kind and title with optional owned source and declared symbols from the viewed revision."
 			},
 			{
 				"name": "explorerAppRoute.unit",
@@ -28,7 +31,7 @@
 			{
 				"name": "explorerName",
 				"type": "string",
-				"description": "Preserves a human-written multiword title when it passes the title rules; otherwise uses route screen words, identifier words or the final identifier segment. Known initialisms stay uppercase; an empty result becomes Unnamed."
+				"description": "Recorded primary symbol or owned module stem for code units, preserving exact casing and type collection suffixes. Route screens retain readable names; absent code metadata retains the explicit readable fallback. No unit ID or route changes."
 			},
 			{
 				"name": "explorerAppRoute",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorerName.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/explorerName.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/explorerName.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/explorerName.ts"
 			}
 		]
 	},

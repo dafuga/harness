@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/utils/checkpointGraph.ts"],
+		"source": ["packages/game/src/utils/game-authoring/checkpointGraph.ts"],
 		"symbols": ["conditionMatches", "checkpointEligible", "checkpointGraph"]
 	},
 	"contract": {
@@ -72,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/utils/checkpointGraph.ts",
+		"entry": "packages/game/src/utils/game-authoring/checkpointGraph.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/utils/checkpointGraph.ts"
+				"entry": "packages/game/src/utils/game-authoring/checkpointGraph.ts"
 			}
 		]
 	},

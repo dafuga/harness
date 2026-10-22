@@ -3,7 +3,9 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 
 const source = join(import.meta.dirname, '../../src');
-const shared = 'components/Select.svelte';
+const shared: string = JSON.parse(
+	readFileSync(join(source, '../../../specification/units/reports.component.select.json'), 'utf8')
+).runtime.entry.replace('packages/reports/src/', '');
 const sources = (readdirSync(source, { recursive: true }) as string[])
 	.filter((name) => /\.(svelte|ts|html)$/.test(name))
 	.map((name) => name.replaceAll('\\', '/'))

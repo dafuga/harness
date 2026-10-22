@@ -9,10 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts",
+			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserBridge.ts",
 			"packages/hub/src/utils/browser-bridge/browserBridge.ts",
 			"packages/hub/src/utils/browserBridge.ts"
 		],
-		"symbols": ["browserBridge", "browserBridge", "browserBridge"]
+		"symbols": ["browserBridge", "browserBridge", "browserBridge", "browserBridge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +78,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts",
+		"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserBridge.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/browser-project-adapter/browserBridge.ts"
+				"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserBridge.ts"
 			}
 		]
 	},

@@ -8,15 +8,44 @@
 	"status": "active",
 	"owns": {
 		"source": ["scripts/sync-game-sources.ts"],
-		"symbols": []
+		"symbols": ["gameSourceLayout", "embeddedSource"]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
-		"errors": []
+		"inputs": [
+			{
+				"name": "embeddedSource.destination",
+				"type": "string"
+			},
+			{
+				"name": "embeddedSource.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "gameSourceLayout",
+				"type": "Readonly<Record<string, string>>"
+			},
+			{
+				"name": "embeddedSource",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "template.format-config",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "scripts/sync-game-sources.ts",

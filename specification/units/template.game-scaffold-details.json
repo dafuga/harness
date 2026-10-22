@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/gameScaffoldDetails.ts"],
+		"source": ["src/templates/game-authoring/gameScaffoldDetails.ts"],
 		"symbols": ["gameScaffoldDetails"]
 	},
 	"contract": {
@@ -30,11 +30,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/gameScaffoldDetails.ts",
+		"entry": "src/templates/game-authoring/gameScaffoldDetails.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/gameScaffoldDetails.ts"
+				"entry": "src/templates/game-authoring/gameScaffoldDetails.ts"
 			}
 		]
 	},

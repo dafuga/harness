@@ -12,7 +12,7 @@ import { join } from 'node:path';
 import { capture, launch, imageProvider, catalogNavigation } from './game-native-fixture';
 import { beginGameFlow, recordRuntime, recordStartup } from './game-runtime-fixture';
 import { nativeImageFixture } from './native-image-fixture';
-import type { GameDocument } from '../../../game/src/models/Game.types';
+import type { GameDocument } from '../../../game/src/models/game-authoring/Game.types';
 test.setTimeout(120_000);
 async function create(page: Page, name: string, dimension: string) {
 	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();

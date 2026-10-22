@@ -1,7 +1,11 @@
-export type * from './models/Game.types';
-export { createRun, stepGame, enterView } from './utils/gameStep';
-export { exampleDocument, keyDoor } from './utils/keyDoor';
-export { checkpointGraph, checkpointEligible, conditionMatches } from './utils/checkpointGraph';
-export { validateDocument, assertDocument } from './validators/gameDocument';
-export { draw2d, create2d } from './adapters/Canvas2dAdapter';
-export { create3d } from './adapters/ThreeSceneAdapter';
+export type * from './models/game-authoring/Game.types';
+export { createRun, stepGame, enterView } from './utils/game-authoring/gameStep';
+export { exampleDocument, keyDoor } from './utils/game-authoring/keyDoor';
+export {
+	checkpointGraph,
+	checkpointEligible,
+	conditionMatches
+} from './utils/game-authoring/checkpointGraph';
+export { validateDocument, assertDocument } from './validators/game-authoring/gameDocument';
+export { draw2d, create2d } from './adapters/game-authoring/Canvas2dAdapter';
+export { create3d } from './adapters/game-authoring/ThreeSceneAdapter';

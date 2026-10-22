@@ -9,11 +9,18 @@
 	"owns": {
 		"source": [
 			"src/services/commit-message-service/commitMessage.ts",
-			"src/utils/commitMessage.ts"
+			"src/services/git-source-history/commit-message-service/commitMessage.ts",
+			"src/utils/commitMessage.ts",
+			"src/utils/git-source-history/commitMessage.ts"
 		],
 		"symbols": [
 			"writtenMessage",
 			"commitMessage",
+			"writtenMessage",
+			"commitMessage",
+			"writtenMessage",
+			"commitMessage",
+			"commitPrefixes",
 			"commitPrefixes",
 			"MessageCleanup",
 			"writtenMessage",
@@ -67,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/commitMessage.ts",
+		"entry": "src/utils/git-source-history/commitMessage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/commitMessage.ts"
+				"entry": "src/utils/git-source-history/commitMessage.ts"
 			}
 		]
 	},

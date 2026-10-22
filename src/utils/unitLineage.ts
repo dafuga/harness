@@ -1,6 +1,2 @@
-export interface LineageSubject {
-	id: string;
-	symbols: string[];
-}
-
-export { unitLineage } from '../services/unit-index-service/unitLineage';
+export { unitLineage } from './development-tooling/unitLineage';
+export * from './development-tooling/unitLineage';

@@ -1,1 +1,1 @@
-export { hubEntityContract } from '../services/hub-projection-service/hubEntityContract';
+export { hubEntityContract } from '../routes/api/[...path]/hub-projection-service/hubEntityContract';

@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/JevAdapter.ts"],
-		"symbols": ["JevAdapterConfig", "JevAdapter", "JevAdapter.constructor", "JevAdapter.evaluate"]
+		"source": ["src/adapters/JevAdapter.ts", "src/adapters/agents-providers/JevAdapter.ts"],
+		"symbols": [
+			"JevAdapter",
+			"JevAdapterConfig",
+			"JevAdapter",
+			"JevAdapter.constructor",
+			"JevAdapter.evaluate"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -53,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/JevAdapter.ts",
+		"entry": "src/adapters/agents-providers/JevAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/JevAdapter.ts"
+				"entry": "src/adapters/agents-providers/JevAdapter.ts"
 			}
 		]
 	},

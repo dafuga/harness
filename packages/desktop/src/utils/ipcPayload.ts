@@ -5,4 +5,4 @@ export {
 	creationPayload,
 	runPayload,
 	ipcPayload
-} from './ipc-payload/ipcPayload';
+} from './development-tooling/ipc-payload/ipcPayload';

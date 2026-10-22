@@ -3,19 +3,24 @@
 	"id": "function.helper-references",
 	"kind": "function",
 	"title": "helperReferences",
-	"responsibility": "Reads helper import bindings, runtime references and forwarding exports from committed source.",
+	"responsibility": "Reads runtime references, construction sites, class declarations, instance methods and forwarding bindings from committed source.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/helperReferences.ts",
 			"src/services/revision-detail-service/helperReferences.ts",
+			"src/utils/explorer-ui/helperReferences.ts",
 			"src/utils/helperReferences.ts"
 		],
 		"symbols": [
 			"helperReferences",
+			"helperReferences",
 			"HelperBinding",
 			"HelperReference",
+			"ClassFacts",
 			"HelperFacts",
+			"helperReferences",
 			"helperReferences"
 		]
 	},
@@ -40,7 +45,7 @@
 			{
 				"name": "helperReferences",
 				"type": "HelperFacts",
-				"description": "Binding references with their named callers, plus forwarded export bindings. The facts contain names and module specifiers, not retained syntax trees."
+				"description": "Runtime references and forwarding bindings, with actual new-expression flags and named class declarations, public instance methods and base-class bindings. Types and unused imports are not runtime references."
 			}
 		],
 		"errors": []
@@ -59,11 +64,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/helperReferences.ts",
+		"entry": "src/utils/explorer-ui/helperReferences.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/helperReferences.ts"
+				"entry": "src/utils/explorer-ui/helperReferences.ts"
 			}
 		]
 	},

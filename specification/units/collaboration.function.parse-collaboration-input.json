@@ -7,8 +7,26 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/parseCollaborationInput.ts"],
+		"source": [
+			"packages/collaboration/src/utils/parseCollaborationInput.ts",
+			"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts"
+		],
 		"symbols": [
+			"parse",
+			"id",
+			"sha",
+			"hash",
+			"label",
+			"email",
+			"actorSchema",
+			"repositorySchema",
+			"branch",
+			"entityId",
+			"anchorSchema",
+			"fail",
+			"parseCollaborationInput",
+			"digest",
+			"safePath",
 			"id",
 			"sha",
 			"hash",
@@ -149,11 +167,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/parseCollaborationInput.ts",
+		"entry": "packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/parseCollaborationInput.ts"
+				"entry": "packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts"
 			}
 		]
 	},

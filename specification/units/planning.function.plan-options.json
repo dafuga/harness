@@ -8,13 +8,31 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planOptions.ts",
+			"packages/planning/src/lib/planning/planning-service/planOptions.ts",
 			"packages/planning/src/services/planning-service/planOptions.ts",
 			"packages/planning/src/utils/plan-design/heldBy.ts",
 			"packages/planning/src/utils/plan-read/checkOptions.ts",
-			"packages/planning/src/utils/planOptions.ts"
+			"packages/planning/src/utils/planOptions.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-design/heldBy.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-read/checkOptions.ts",
+			"packages/planning/src/utils/planning-collaboration/planOptions.ts"
 		],
 		"symbols": [
 			"planOptions",
+			"planOptions",
+			"planOptions",
+			"heldBy",
+			"checkOptions",
+			"planOptions",
+			"checkOptions",
+			"heldBy",
+			"most",
+			"id",
+			"binding",
+			"provenance",
+			"optionOf",
+			"approvable",
 			"heldBy",
 			"checkOptions",
 			"WriteImages",
@@ -157,11 +175,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/utils/planOptions.ts",
+		"entry": "packages/planning/src/utils/planning-collaboration/planOptions.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/utils/planOptions.ts"
+				"entry": "packages/planning/src/utils/planning-collaboration/planOptions.ts"
 			}
 		]
 	},

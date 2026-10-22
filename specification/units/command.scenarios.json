@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/ScenariosCommand.ts"],
+		"source": ["src/cli/program/ScenariosCommand.ts"],
 		"symbols": ["registerScenariosCommand"]
 	},
 	"contract": {
@@ -45,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/ScenariosCommand.ts",
+		"entry": "src/cli/program/ScenariosCommand.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/ScenariosCommand.ts"
+				"entry": "src/cli/program/ScenariosCommand.ts"
 			}
 		]
 	},

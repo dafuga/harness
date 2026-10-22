@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/block-spans/blockSpans.ts", "src/utils/blockSpans.ts"],
-		"symbols": ["BlockSpan", "blockSpans", "BlockSpan", "blockSpans"]
+		"source": [
+			"src/utils/block-spans/blockSpans.ts",
+			"src/utils/blockSpans.ts",
+			"src/utils/development-tooling/block-spans/blockSpans.ts"
+		],
+		"symbols": ["blockSpans", "BlockSpan", "blockSpans", "BlockSpan", "blockSpans"]
 	},
 	"contract": {
 		"origin": "declared",

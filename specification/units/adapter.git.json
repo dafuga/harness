@@ -7,8 +7,9 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/GitAdapter.ts"],
+		"source": ["src/adapters/GitAdapter.ts", "src/adapters/git-source-history/GitAdapter.ts"],
 		"symbols": [
+			"GitAdapter",
 			"GitRunOptions",
 			"GitResult",
 			"GitAdapter",
@@ -92,11 +93,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/GitAdapter.ts",
+		"entry": "src/adapters/git-source-history/GitAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/GitAdapter.ts"
+				"entry": "src/adapters/git-source-history/GitAdapter.ts"
 			}
 		]
 	},

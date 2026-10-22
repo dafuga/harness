@@ -9,10 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/browser-project-adapter/browserArtifact.ts",
+			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserArtifact.ts",
 			"packages/hub/src/utils/browser-bridge/browserArtifact.ts",
 			"packages/hub/src/utils/browserArtifact.ts"
 		],
-		"symbols": ["browserArtifact", "browserArtifact", "browserArtifact"]
+		"symbols": ["browserArtifact", "browserArtifact", "browserArtifact", "browserArtifact"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,11 +58,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/browser-project-adapter/browserArtifact.ts",
+		"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserArtifact.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/browser-project-adapter/browserArtifact.ts"
+				"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserArtifact.ts"
 			}
 		]
 	},

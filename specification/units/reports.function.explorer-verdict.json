@@ -8,10 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
 			"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
 			"packages/reports/src/utils/explorerVerdict.ts"
 		],
 		"symbols": [
+			"verdictRecord",
+			"verdictCoverage",
+			"explorerVerdict",
 			"verdictRecord",
 			"verdictCoverage",
 			"explorerVerdict",

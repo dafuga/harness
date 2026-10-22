@@ -1,7 +1,7 @@
 // The package tsconfig replaces SvelteKit's `include`, so its generated `$env` modules are named here.
 /// <reference path="../.svelte-kit/ambient.d.ts" />
 import type { D1Database, DurableObjectNamespace, R2Bucket } from '@cloudflare/workers-types';
-import type { AuthEnv } from './models/HubAuth.types';
+import type { AuthEnv } from './models/accounts-access/HubAuth.types';
 
 declare global {
 	namespace App {

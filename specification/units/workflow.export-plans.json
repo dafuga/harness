@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/exportPlans.ts"],
-		"symbols": ["modelExportPlans", "adapterExportPlan", "pieceExportPlans"]
+		"source": [
+			"src/workflows/generate-code/exportPlans.ts",
+			"src/workflows/projects-sessions/generate-code/exportPlans.ts"
+		],
+		"symbols": [
+			"modelExportPlans",
+			"adapterExportPlan",
+			"pieceExportPlans",
+			"modelExportPlans",
+			"adapterExportPlan",
+			"pieceExportPlans"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -70,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/exportPlans.ts",
+		"entry": "src/workflows/projects-sessions/generate-code/exportPlans.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/exportPlans.ts"
+				"entry": "src/workflows/projects-sessions/generate-code/exportPlans.ts"
 			}
 		]
 	},

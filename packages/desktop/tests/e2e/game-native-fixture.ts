@@ -1,6 +1,6 @@
 import scenario from '../../../../specification/scenarios/game-authoring.json' with { type: 'json' };
-import { buildStamp } from '../../../../src/utils/buildStamp';
-import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
+import { buildStamp } from '../../../../src/utils/development-tooling/buildStamp';
+import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import {
 	_electron,
 	expect,

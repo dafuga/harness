@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/persistReasons.ts"],
+		"source": ["src/cli/program/persistReasons.ts"],
 		"symbols": ["PersistedReasons", "persistReasons", "renderReasons"]
 	},
 	"contract": {
@@ -63,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/persistReasons.ts",
+		"entry": "src/cli/program/persistReasons.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/persistReasons.ts"
+				"entry": "src/cli/program/persistReasons.ts"
 			}
 		]
 	},

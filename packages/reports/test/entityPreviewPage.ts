@@ -132,7 +132,7 @@ export async function reviewStates(
 	await expect(states, 'visual entities expose a States tab').toHaveCount(1);
 	await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
 	await states.click();
-	const panel = page.getByRole('tabpanel', { name: 'Order list states', exact: true });
+	const panel = page.getByRole('tabpanel', { name: 'OrderList states', exact: true });
 	await expect(panel).toBeVisible();
 	expect(await where(page)).toMatchObject({ ...route, commit, tab: 'states' });
 	for (const state of ['Default', 'Empty', 'Error']) {

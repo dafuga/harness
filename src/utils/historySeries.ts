@@ -1,1 +1,1 @@
-export { unitGrowth, historySeries } from '../services/history-index-service/historySeries';
+export { unitGrowth, historySeries } from '../cli/program/history-index-service/historySeries';

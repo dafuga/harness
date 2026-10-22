@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/HarnessAnalyticsService.ts"],
-		"symbols": ["AnalyticsSnapshot", "HarnessAnalyticsService", "HarnessAnalyticsService.snapshot"]
+		"source": [
+			"packages/reports/src/services/HarnessAnalyticsService.ts",
+			"packages/reports/src/services/explorer-ui/HarnessAnalyticsService.ts"
+		],
+		"symbols": [
+			"HarnessAnalyticsService",
+			"AnalyticsSnapshot",
+			"HarnessAnalyticsService",
+			"HarnessAnalyticsService.snapshot"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -45,11 +53,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/HarnessAnalyticsService.ts",
+		"entry": "packages/reports/src/services/explorer-ui/HarnessAnalyticsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/HarnessAnalyticsService.ts"
+				"entry": "packages/reports/src/services/explorer-ui/HarnessAnalyticsService.ts"
 			}
 		]
 	},

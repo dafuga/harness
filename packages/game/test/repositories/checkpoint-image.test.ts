@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { CheckpointImageRepository } from '../../src/repositories/CheckpointImageRepository';
+import { CheckpointImageRepository } from '../../src/repositories/game-authoring/CheckpointImageRepository';
 const png = Buffer.from(
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=',
 	'base64'

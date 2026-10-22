@@ -1,8 +1,8 @@
 import { afterEach } from 'vitest';
 import { randomFillSync } from 'node:crypto';
 import { PNG } from 'pngjs';
-import { exampleDocument } from '../../game/src/utils/keyDoor';
-import type { GameDocument } from '../../game/src/models/Game.types';
+import { exampleDocument } from '../../game/src/utils/game-authoring/keyDoor';
+import type { GameDocument } from '../../game/src/models/game-authoring/Game.types';
 import { WebSocket as SocketClient } from 'ws';
 import type { RemoteHostStatus } from '../../remote/src/index';
 import type { AgentTurn } from '../src/models/AgentRunner.types';

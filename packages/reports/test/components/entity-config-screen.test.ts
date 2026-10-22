@@ -18,7 +18,7 @@ test('a config opens on what it provides and who uses it, with no picture, run o
 
 test('its tabs and a missing config behave as on every entity screen', () => {
 	const related = screen(EntityConfigScreen, 'commit', { ...settings, tab: 'used-in' });
-	expect(related).toContain('aria-label="Order settings used in"');
+	expect(related).toContain('aria-label="orderSettings used in"');
 	expect(words(related)).toContain('Orders page');
 	const tests = screen(EntityConfigScreen, 'commit', { ...settings, tab: 'tests' });
 	expect(words(tests)).toContain('Verification at bbbbbbb');

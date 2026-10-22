@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/create-git-hub-source/githubHistory.ts",
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubHistory.ts",
+			"packages/collaboration/src/utils/git-source-history/githubHistory.ts",
 			"packages/collaboration/src/utils/githubHistory.ts"
 		],
-		"symbols": ["githubHistory", "ensureAncestry", "githubHistory"]
+		"symbols": [
+			"githubHistory",
+			"githubHistory",
+			"ensureAncestry",
+			"githubHistory",
+			"githubHistory",
+			"ensureAncestry"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -96,11 +105,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubHistory.ts",
+		"entry": "packages/collaboration/src/utils/git-source-history/githubHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/githubHistory.ts"
+				"entry": "packages/collaboration/src/utils/git-source-history/githubHistory.ts"
 			}
 		]
 	},

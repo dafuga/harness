@@ -1,5 +1,6 @@
-import { readFileSync } from 'node:fs';
-import { posix } from 'node:path';
+import { scanExports } from '../../src/utils/scanExports';
+import { existsSync, readFileSync } from 'node:fs';
+import { posix, resolve } from 'node:path';
 import ts from 'typescript';
 import { createHash } from 'node:crypto';
 import type { SourceTree } from '../../src/core/sourceTypes';
@@ -82,4 +83,103 @@ export function movedDefinition(path: string, name: string): string {
 		tokens.push(`${token}:${value}`);
 	}
 	return createHash('sha256').update(tokens.join('\0')).digest('hex');
+}
+
+/** Canonical source tokens keep relocation proof independent of import spelling. */
+export function relocatedSource(
+	path: string,
+	moves: Record<string, string>,
+	code = readFileSync(path, 'utf8')
+): string {
+	const reverse = new Map(Object.entries(moves).map(([from, to]) => [to, from]));
+	const source = ts.createSourceFile(path, code, ts.ScriptTarget.Latest, true);
+	const text = source.statements
+		.filter((node) => !ts.isImportDeclaration(node) && !ts.isExportDeclaration(node))
+		.map((node) => node.getText(source))
+		.join('\n')
+		.replace(
+			/new URL\((['"])(\.[^'"]*)\1,\s*import\.meta\.url\)/g,
+			(match, quote: string, specifier: string) => {
+				// Bundled-output addresses remain output-relative rather than source-relative.
+				if (specifier.endsWith('.js')) return match;
+				const target = posix.normalize(posix.join(posix.dirname(path), specifier));
+				return `new URL(${quote}${reverse.get(target) ?? target}${quote}, import.meta.url)`;
+			}
+		);
+	const parsed = ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true);
+	const tokens: string[] = [];
+	const visit = (node: ts.Node) => {
+		tokens.push(String(node.kind));
+		if (node.kind <= ts.SyntaxKind.LastToken && 'text' in node) tokens.push(String(node.text));
+		if (ts.isVariableDeclarationList(node))
+			tokens.push(String(node.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const)));
+		ts.forEachChild(node, visit);
+	};
+	visit(parsed);
+	return createHash('sha256').update(tokens.join('\0')).digest('hex');
+}
+
+export function helperMoveGaps(
+	root: string,
+	moves: Array<{ unit: string; name: string; to: string; ownerSource: string; definition: string }>,
+	followUps: Array<{ unit: string; name: string; definition: string }>
+): string[] {
+	const gaps: string[] = [];
+	for (const move of moves) {
+		const target = resolve(root, move.to);
+		if (!existsSync(target)) {
+			gaps.push(`${move.name}: owner-local source is missing`);
+			continue;
+		}
+		if (posix.dirname(move.to) !== posix.dirname(move.ownerSource))
+			gaps.push(`${move.name}: different owner folder`);
+		if (!existsSync(resolve(root, move.ownerSource)))
+			gaps.push(`${move.name}: owner source is missing`);
+		const reviewed = followUps.find((item) => item.unit === move.unit && item.name === move.name);
+		if (movedDefinition(move.to, move.name) !== (reviewed?.definition ?? move.definition))
+			gaps.push(`${move.name}: definition changed`);
+		const unit = JSON.parse(
+			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
+		) as ComponentManifest;
+		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
+			gaps.push(`${move.name}: registered identity lost`);
+	}
+
+	return gaps;
+}
+
+export function serviceMoveGaps(services: {
+	moves: Record<string, string>;
+	files: Array<{ to: string; unit: string; definition: string }>;
+	services: Array<{ id: string; ownerFolder: string }>;
+}): string[] {
+	const gaps: string[] = [];
+	for (const file of services.files) {
+		if (!existsSync(file.to)) {
+			gaps.push(`${file.to}: missing`);
+			continue;
+		}
+		if (relocatedSource(file.to, services.moves) !== file.definition)
+			gaps.push(`${file.to}: definition changed`);
+		const unit = JSON.parse(
+			readFileSync(`specification/units/${file.unit}.json`, 'utf8')
+		) as ComponentManifest;
+		if (!unit.owns.source.includes(file.to)) gaps.push(`${file.unit}: identity lost`);
+	}
+	for (const service of services.services) {
+		const unit = JSON.parse(
+			readFileSync(`specification/units/${service.id}.json`, 'utf8')
+		) as ComponentManifest;
+		if (
+			unit.owns.source.some(
+				(path) =>
+					!path.startsWith(service.ownerFolder + '/') &&
+					scanExports(readFileSync(path, 'utf8')).symbols.some((symbol) =>
+						['class', 'function', 'const'].includes(symbol.kind)
+					)
+			)
+		)
+			gaps.push(`${service.id}: outside owner`);
+	}
+	return gaps;
 }

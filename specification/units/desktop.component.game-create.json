@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameCreate.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameCreate.svelte"],
 		"symbols": ["GameCreate"]
 	},
 	"contract": {
@@ -63,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameCreate.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameCreate.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameCreate.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameCreate.svelte"
 			}
 		]
 	},

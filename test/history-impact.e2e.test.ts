@@ -32,7 +32,10 @@ const title = 'src/services/TitleService.ts';
 
 test.each([
 	['src/utils/sideImpact.ts', 'storedSide'],
-	['src/services/source-impact-service/sideImpact.ts', 'storedSide'],
+	[
+		'src/services/explorer-ui/revision-detail-service/source-impact-service/sideImpact.ts',
+		'storedSide'
+	],
 	['src/utils/sideImpact.ts', 'sideImpact'],
 	['packages/reports/src/components/harness/harness-compare/sideImpact.ts', 'sideImpact']
 ])('stored history runtime cold-imports %s and calls %s', (entry, symbol) => {

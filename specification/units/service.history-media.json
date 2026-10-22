@@ -7,7 +7,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/history-media-service/HistoryMediaService.ts"],
+		"source": [
+			"src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts"
+		],
 		"symbols": [
 			"HistoryMediaService",
 			"HistoryMediaService.constructor",
@@ -56,11 +58,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/history-media-service/HistoryMediaService.ts",
+		"entry": "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/history-media-service/HistoryMediaService.ts"
+				"entry": "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts"
 			}
 		]
 	},

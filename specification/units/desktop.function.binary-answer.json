@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/binaryAnswer.ts"],
-		"symbols": ["binaryAnswer"]
+		"source": [
+			"packages/desktop/src/utils/binaryAnswer.ts",
+			"packages/desktop/src/utils/development-tooling/binaryAnswer.ts"
+		],
+		"symbols": ["binaryAnswer", "binaryAnswer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/binaryAnswer.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/binaryAnswer.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/binaryAnswer.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/binaryAnswer.ts"
 			}
 		]
 	},

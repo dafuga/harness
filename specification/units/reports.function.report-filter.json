@@ -9,10 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/evidence-grid/reportFilter.ts",
-			"packages/reports/src/utils/reportFilter.ts"
+			"packages/reports/src/components/verification-evidence/evidence-grid/reportFilter.ts",
+			"packages/reports/src/utils/reportFilter.ts",
+			"packages/reports/src/utils/verification-evidence/reportFilter.ts"
 		],
 		"symbols": [
 			"reportFilter",
+			"reportFilter",
+			"reportFilter",
+			"screenSize",
+			"galleryEvidence",
+			"projectFilter",
 			"ScreenSize",
 			"screenSize",
 			"galleryEvidence",
@@ -113,11 +120,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportFilter.ts",
+		"entry": "packages/reports/src/utils/verification-evidence/reportFilter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportFilter.ts"
+				"entry": "packages/reports/src/utils/verification-evidence/reportFilter.ts"
 			}
 		]
 	},

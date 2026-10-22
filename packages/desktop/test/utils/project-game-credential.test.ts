@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 import { writeFile, unlink, symlink, mkdir, rmdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fixture, git } from '../project-fixture';
-import { GameRenderService } from '../../src/services/GameRenderService';
+import { GameRenderService } from '../../src/lib/development-tooling/desktop-bridge/GameRenderService';
 test('game credentials require the current project ignored regular file', async () => {
 	const { root, session } = await fixture();
 	const name = 'HARNESS_GAME_DECART_API_KEY';

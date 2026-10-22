@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/ScenarioRepository.ts"],
+		"source": [
+			"src/repositories/ScenarioRepository.ts",
+			"src/repositories/verification-evidence/ScenarioRepository.ts"
+		],
 		"symbols": [
+			"ScenarioRepository",
 			"ScenarioRead",
 			"ScenarioRepository",
 			"ScenarioRepository.constructor",
@@ -78,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/ScenarioRepository.ts",
+		"entry": "src/repositories/verification-evidence/ScenarioRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/ScenarioRepository.ts"
+				"entry": "src/repositories/verification-evidence/ScenarioRepository.ts"
 			}
 		]
 	},

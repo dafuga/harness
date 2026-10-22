@@ -1,1 +1,1 @@
-export { derivedResponsibility } from '../services/unit-index-service/derivedResponsibility';
+export { derivedResponsibility } from '../workflows/development-tooling/load-units/unit-index-service/derivedResponsibility';

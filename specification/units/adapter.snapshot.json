@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/snapshot-adapter/SnapshotAdapter.ts"],
+		"source": [
+			"src/adapters/snapshot-adapter/SnapshotAdapter.ts",
+			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
+		],
 		"symbols": [
+			"SnapshotAdapter",
 			"SnapshotDrift",
 			"SnapshotAdapter",
 			"SnapshotAdapter.create",
@@ -104,11 +108,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/snapshot-adapter/SnapshotAdapter.ts",
+		"entry": "src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/snapshot-adapter/SnapshotAdapter.ts"
+				"entry": "src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
 			}
 		]
 	},

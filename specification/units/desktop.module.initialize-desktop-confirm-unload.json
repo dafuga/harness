@@ -7,7 +7,9 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/initialize-desktop/confirmUnload.ts"],
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/confirmUnload.ts"
+		],
 		"symbols": ["confirmUnload"]
 	},
 	"contract": {
@@ -33,11 +35,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/lib/initialize-desktop/confirmUnload.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/confirmUnload.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/lib/initialize-desktop/confirmUnload.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/confirmUnload.ts"
 			}
 		]
 	},

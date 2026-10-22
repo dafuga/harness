@@ -1,1 +1,1 @@
-export { hubEvidenceRead } from '../controllers/hub-api-controller/hubEvidenceRead';
+export { hubEvidenceRead } from '../routes/api/[...path]/hub-api-controller/hubEvidenceRead';

@@ -7,13 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/loopSearch.ts"],
+		"source": ["src/cli/program/loopSearch.ts", "src/workflows/loopSearch.ts"],
 		"symbols": [
 			"LoopSearchKind",
 			"LoopSearchResult",
 			"SearchLoopsInput",
 			"searchLoops",
-			"renderLoopSearchResults"
+			"renderLoopSearchResults",
+			"searchLoops",
+			"renderLoopSearchResults",
+			"LoopSearchKind",
+			"LoopSearchResult",
+			"SearchLoopsInput"
 		]
 	},
 	"contract": {
@@ -54,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/loopSearch.ts",
+		"entry": "src/cli/program/loopSearch.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/loopSearch.ts"
+				"entry": "src/cli/program/loopSearch.ts"
 			}
 		]
 	},

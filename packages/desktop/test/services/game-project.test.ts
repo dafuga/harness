@@ -3,10 +3,10 @@ import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fixture, git } from '../project-fixture';
-import { GameProjectService } from '../../src/services/GameProjectService';
-import { GameRenderService } from '../../src/services/GameRenderService';
-import { exampleDocument } from '../../../game/src/utils/keyDoor';
-import { IpcRequestValidator } from '../../src/validators/IpcRequestValidator';
+import { GameProjectService } from '../../src/lib/development-tooling/desktop-bridge/GameProjectService';
+import { GameRenderService } from '../../src/lib/development-tooling/desktop-bridge/GameRenderService';
+import { exampleDocument } from '../../../game/src/utils/game-authoring/keyDoor';
+import { IpcRequestValidator } from '../../src/validators/development-tooling/IpcRequestValidator';
 
 test('game operations bind project identity, retain historical graphs and reject stale writes', async () => {
 	const { session, root } = await fixture();

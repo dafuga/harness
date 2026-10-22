@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/canonicalJson.ts"],
-		"symbols": ["canonicalJson"]
+		"source": ["src/utils/canonicalJson.ts", "src/utils/development-tooling/canonicalJson.ts"],
+		"symbols": ["canonicalJson", "canonicalJson"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +31,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/canonicalJson.ts",
+		"entry": "src/utils/development-tooling/canonicalJson.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/canonicalJson.ts"
+				"entry": "src/utils/development-tooling/canonicalJson.ts"
 			}
 		]
 	},

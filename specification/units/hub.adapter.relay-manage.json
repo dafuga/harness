@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/adapters/RelayManageAdapter.ts"],
+		"source": [
+			"packages/hub/src/adapters/RelayManageAdapter.ts",
+			"packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts"
+		],
 		"symbols": [
+			"RelayManageAdapter",
+			"RelayManageAdapterConfig",
 			"RelayManageAdapterConfig",
 			"RelayManageAdapter",
 			"RelayManageAdapter.constructor",
@@ -81,11 +86,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/adapters/RelayManageAdapter.ts",
+		"entry": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/adapters/RelayManageAdapter.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts"
 			}
 		]
 	},

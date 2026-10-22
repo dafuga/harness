@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
 			"src/services/claude-query-service/gatewayOptions.ts",
 			"src/utils/gatewayOptions.ts"
 		],
-		"symbols": ["gatewayOptions", "gatewayOptions"]
+		"symbols": ["gatewayOptions", "gatewayOptions", "gatewayOptions"]
 	},
 	"contract": {
 		"origin": "declared",

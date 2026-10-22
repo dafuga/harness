@@ -6,4 +6,4 @@ export {
 	explorerExact,
 	explorerAddress,
 	consoleCanonical
-} from './console-canonical/consoleCanonical';
+} from './projects-sessions/console-canonical/consoleCanonical';

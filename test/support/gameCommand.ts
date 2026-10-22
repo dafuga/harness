@@ -1,8 +1,14 @@
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { captureLineSchema, benchmarkCaptureSchema } from '../../src/core/verifyTypes';
-import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
+import {
+	captureLineSchema,
+	benchmarkCaptureSchema
+} from '../../src/core/verification-evidence/verifyTypes';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../src/utils/reports-media/record-capture/recordCapture';
 
 interface Scope {
 	units: string[];

@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/DeviceConnectionService.ts"],
+		"source": [
+			"packages/remote/src/services/DeviceConnectionService.ts",
+			"packages/remote/src/services/networking-security/DeviceConnectionService.ts"
+		],
 		"symbols": [
+			"DeviceConnectionService",
 			"RemoteSocket",
 			"DeviceStatus",
 			"DeviceConnectionOptions",
@@ -106,11 +110,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/DeviceConnectionService.ts",
+		"entry": "packages/remote/src/services/networking-security/DeviceConnectionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/DeviceConnectionService.ts"
+				"entry": "packages/remote/src/services/networking-security/DeviceConnectionService.ts"
 			}
 		]
 	},

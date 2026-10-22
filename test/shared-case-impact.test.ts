@@ -15,11 +15,13 @@ const path: string = JSON.parse(
 	readFileSync('specification/units/reports.component.entity-cases.json', 'utf8')
 ).runtime.entry;
 const unit = 'reports.component.entity-cases';
+const sourceOf = (id: string): string =>
+	JSON.parse(readFileSync(`specification/units/${id}.json`, 'utf8')).runtime.entry;
 
 test('the shared case table is an actual dependency of both artifact viewers, without an external alias', () => {
 	for (const source of [
-		'packages/reports/src/components/harness/EntityArtifact.svelte',
-		'packages/desktop/src/components/RuntimeArtifact.svelte'
+		sourceOf('reports.component.harness-entity-artifact'),
+		sourceOf('desktop.component.runtime-artifact')
 	]) {
 		const references = loaded.index.files.get(source)!.references;
 		expect(references.filter((reference) => reference.path === path)).toHaveLength(1);

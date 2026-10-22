@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/hub-catalog/hubApproval.ts",
-			"packages/hub/src/utils/hubApproval.ts"
+			"packages/hub/src/utils/hubApproval.ts",
+			"packages/hub/src/utils/networking-security/hub-catalog/hubApproval.ts"
 		],
-		"symbols": ["hubApproval", "hubApproval"]
+		"symbols": ["hubApproval", "hubApproval", "hubApproval"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,1 +1,1 @@
-export { reportPdf } from '../services/report-export-service/reportPdf';
+export { reportPdf } from '../services/reports-media/report-export-service/reportPdf';

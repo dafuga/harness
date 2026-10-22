@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/validators/ManageBodyValidator.ts"],
+		"source": [
+			"packages/relay/src/validators/ManageBodyValidator.ts",
+			"packages/relay/src/validators/development-tooling/ManageBodyValidator.ts"
+		],
 		"symbols": [
+			"ManageBodyValidator",
 			"ManageBodyValidator",
 			"ManageBodyValidator.owner",
 			"ManageBodyValidator.register",
@@ -66,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/validators/ManageBodyValidator.ts",
+		"entry": "packages/relay/src/validators/development-tooling/ManageBodyValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/validators/ManageBodyValidator.ts"
+				"entry": "packages/relay/src/validators/development-tooling/ManageBodyValidator.ts"
 			}
 		]
 	},

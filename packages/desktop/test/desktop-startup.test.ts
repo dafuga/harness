@@ -50,7 +50,7 @@ vi.mock('electron', () => ({
 	safeStorage: { isEncryptionAvailable: () => false },
 	shell: { openExternal: vi.fn() }
 }));
-vi.mock('../src/services/remote-host-service/RemoteHostService', () => ({
+vi.mock('../src/services/networking-security/remote-host-service/RemoteHostService', () => ({
 	RemoteHostService: function RemoteHostService() {
 		return {
 			devices: {},

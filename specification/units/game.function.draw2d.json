@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/Canvas2dAdapter.ts"],
+		"source": ["packages/game/src/adapters/game-authoring/Canvas2dAdapter.ts"],
 		"symbols": [
 			"Canvas2dAdapter",
 			"Canvas2dAdapter.constructor",
@@ -89,11 +89,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/adapters/Canvas2dAdapter.ts",
+		"entry": "packages/game/src/adapters/game-authoring/Canvas2dAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/adapters/Canvas2dAdapter.ts"
+				"entry": "packages/game/src/adapters/game-authoring/Canvas2dAdapter.ts"
 			}
 		]
 	},

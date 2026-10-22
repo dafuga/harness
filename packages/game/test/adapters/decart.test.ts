@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { DecartAdapter } from '../../src/adapters/DecartAdapter';
+import { DecartAdapter } from '../../src/adapters/agents-providers/DecartAdapter';
 
 test('tokens have model and duration limits and concurrent starts are refused', async () => {
 	const create = vi.fn(async () => ({ apiKey: 'test-ephemeral', expiresAt: '2099-01-01' }));

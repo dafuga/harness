@@ -4,7 +4,7 @@ import type * as fs from 'node:fs/promises';
 import { chmod, mkdtemp, writeFile, readFile, readdir, rm, stat, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { GameDocumentRepository } from '../../src/repositories/GameDocumentRepository';
+import { GameDocumentRepository } from '../../src/repositories/game-authoring/GameDocumentRepository';
 import { exampleDocument } from '../../src/index';
 import type { GameDocument } from '../../src/index';
 

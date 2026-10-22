@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ScreenshotUploadService.ts"],
+		"source": [
+			"packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
+			"packages/reports/src/services/ScreenshotUploadService.ts"
+		],
 		"symbols": [
 			"ScreenshotUploadInput",
 			"ScreenshotUploadService",
 			"ScreenshotUploadService.constructor",
-			"ScreenshotUploadService.upload"
+			"ScreenshotUploadService.upload",
+			"ScreenshotUploadService",
+			"ScreenshotUploadInput"
 		]
 	},
 	"contract": {
@@ -77,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ScreenshotUploadService.ts",
+		"entry": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ScreenshotUploadService.ts"
+				"entry": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts"
 			}
 		]
 	},

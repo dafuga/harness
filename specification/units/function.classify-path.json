@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/classify-path/classifyPath.ts", "src/utils/classifyPath.ts"],
-		"symbols": ["PathClass", "classifyPath", "PathClass", "classifyPath"]
+		"source": [
+			"src/utils/accounts-access/classify-path/classifyPath.ts",
+			"src/utils/classify-path/classifyPath.ts",
+			"src/utils/classifyPath.ts"
+		],
+		"symbols": ["PathClass", "classifyPath", "classifyPath", "PathClass", "classifyPath"]
 	},
 	"contract": {
 		"origin": "declared",

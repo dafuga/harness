@@ -1,39 +1,21 @@
+import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
-import { indexFiles, retire, unitOf, movedDefinition } from '../support/memoryTree';
+import { indexFiles, retire, unitOf, helperMoveGaps, serviceMoveGaps } from '../support/memoryTree';
+import { resolve } from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
-import { posix, resolve } from 'node:path';
+import services from '../../specification/loops/shared-service-ownership/migration.json';
+import { serviceMoveReviews } from '../support/serviceMoveReviews';
 import migration from '../../specification/loops/local-helper-ownership/migration.json';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
 
 test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
-	const root = resolve(import.meta.dirname, '../..');
-	const gaps: string[] = [];
-	for (const move of migration.helpers) {
-		const target = resolve(root, move.to);
-		if (!existsSync(target)) {
-			gaps.push(`${move.name}: owner-local source is missing`);
-			continue;
-		}
-		if (posix.dirname(move.to) !== posix.dirname(move.ownerSource))
-			gaps.push(`${move.name}: different owner folder`);
-		if (!existsSync(resolve(root, move.ownerSource)))
-			gaps.push(`${move.name}: owner source is missing`);
-		const reviewed = migration.followUps.find(
-			(item) => item.unit === move.unit && item.name === move.name
-		);
-		if (movedDefinition(move.to, move.name) !== (reviewed?.definition ?? move.definition))
-			gaps.push(`${move.name}: definition changed`);
-		const unit = JSON.parse(
-			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
-		) as ComponentManifest;
-		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
-			gaps.push(`${move.name}: registered identity lost`);
-	}
+	const root = import.meta.dirname + '/../..';
+	const gaps = helperMoveGaps(root, migration.helpers, migration.followUps);
 
 	expect(migration.helpers).toHaveLength(411);
 	expect(
@@ -43,7 +25,7 @@ test('recorded source moves retain definitions, owner-local placement and regist
 });
 
 test('public route filenames retain their registered ownership', () => {
-	const root = resolve(import.meta.dirname, '../..');
+	const root = import.meta.dirname + '/../..';
 	const gaps: string[] = [];
 	for (const route of migration.publicRoutes) {
 		if (!existsSync(resolve(root, route.source)))
@@ -212,4 +194,23 @@ test('several owned files produce identical metadata after one indexing pass', a
 	expect(again.result.updated, 'one-pass source indexing must be idempotent').toEqual([]);
 	expect(again.result.manifests).toEqual(once.result.manifests);
 	expect([...once.index.files.keys()]).toEqual(Object.keys(files));
+});
+
+test('recorded service moves preserve implementations and registered owner-local placement', () => {
+	expect(
+		new Set(services.files.map((file) => file.to)).size,
+		'Each moved source has one proof'
+	).toBe(services.files.length);
+	const gaps = [...serviceMoveGaps(services), ...serviceMoveReviews(services)];
+	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
+		[]
+	);
+	const owner = services.files.find((file) => file.unit === 'service.unit-index')!.to;
+	for (const entry of ['src/services/unit-index-service/UnitIndexService.ts', owner]) {
+		const code = `const {UnitIndexService} = await import(${JSON.stringify(resolve(entry))}); console.log(JSON.stringify(new UnitIndexService().index({files: new Map()}, []).manifests));`;
+		expect(
+			execFileSync('bun', ['-e', code], { encoding: 'utf8', timeout: 10000 }).trim(),
+			entry
+		).toBe('[]');
+	}
 });

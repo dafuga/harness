@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameTextField.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameTextField.svelte"],
 		"symbols": ["GameTextField"]
 	},
 	"contract": {
@@ -51,11 +51,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameTextField.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameTextField.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameTextField.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameTextField.svelte"
 			}
 		]
 	},

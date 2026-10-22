@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/utils/keyDoor.ts"],
+		"source": ["packages/game/src/utils/game-authoring/keyDoor.ts"],
 		"symbols": ["keyDoor", "exampleDocument"]
 	},
 	"contract": {
@@ -52,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/utils/keyDoor.ts",
+		"entry": "packages/game/src/utils/game-authoring/keyDoor.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/utils/keyDoor.ts"
+				"entry": "packages/game/src/utils/game-authoring/keyDoor.ts"
 			}
 		]
 	},

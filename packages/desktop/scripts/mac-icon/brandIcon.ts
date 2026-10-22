@@ -1,4 +1,4 @@
-import type { BrandIconVariant } from '../../src/utils/brandIcon';
+import type { BrandIconVariant } from '../../src/utils/development-tooling/brandIcon';
 import { deflateSync } from 'node:zlib';
 import { brandColors, brandGrid, brandTiles } from '../../../reports/src/utils/brandMark';
 

@@ -59,7 +59,7 @@ for (const dimension of ['2d', '3d'])
 test('saved graph edits persist, invalid references block saves and history is read-only', async ({
 	page
 }) => {
-	const { exampleDocument } = await import('../../../game/src/utils/keyDoor');
+	const { exampleDocument } = await import('../../../game/src/utils/game-authoring/keyDoor');
 	await page.addInitScript(
 		({ document }) => {
 			let revision = 'a'.repeat(64);
@@ -164,7 +164,7 @@ test('3D remains playable when the browser cannot provide WebGL', async ({ page 
 });
 
 test('project creation sends the chosen game type and dimension', async ({ page }) => {
-	const { exampleDocument } = await import('../../../game/src/utils/keyDoor');
+	const { exampleDocument } = await import('../../../game/src/utils/game-authoring/keyDoor');
 	await fakeProject(page);
 	await page.addInitScript(
 		({ document, id }) => {

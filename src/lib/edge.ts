@@ -5,7 +5,7 @@
  *
  * A native process target is not offered here; it belongs to the Bun and Node entry.
  */
-export { defaultRuntimeTimeoutMs, runtimeFailure } from '../core/runtimeTypes';
+export { defaultRuntimeTimeoutMs, runtimeFailure } from '../core/execution-runtimes/runtimeTypes';
 export type {
 	RuntimeFailure,
 	RuntimeHandler,
@@ -14,12 +14,15 @@ export type {
 	RuntimeResponse,
 	TransportFailure,
 	UnitRuntime
-} from '../core/runtimeTypes';
-export { HandlerRuntimeAdapter } from '../adapters/HandlerRuntimeAdapter';
-export { HttpRuntimeAdapter } from '../adapters/HttpRuntimeAdapter';
-export { WasmModuleRuntimeAdapter } from '../adapters/WasmModuleRuntimeAdapter';
-export type { WasmLoader, WasmSource } from '../adapters/WasmModuleRuntimeAdapter';
-export { runtimeFetch } from '../utils/runtimeFetch';
-export { runtimeReply } from '../utils/runtimeReply';
-export type { RuntimeReply } from '../utils/runtimeReply';
-export { runtimeResponse, runtimeResponseText } from '../utils/runtimeResponse';
+} from '../core/execution-runtimes/runtimeTypes';
+export { HandlerRuntimeAdapter } from '../../packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter';
+export { HttpRuntimeAdapter } from '../adapters/execution-runtimes/HttpRuntimeAdapter';
+export { WasmModuleRuntimeAdapter } from '../adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter';
+export type {
+	WasmLoader,
+	WasmSource
+} from '../adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter';
+export { runtimeFetch } from '../utils/execution-runtimes/runtimeFetch';
+export { runtimeReply } from '../utils/execution-runtimes/runtimeReply';
+export type { RuntimeReply } from '../utils/execution-runtimes/runtimeReply';
+export { runtimeResponse, runtimeResponseText } from '../utils/execution-runtimes/runtimeResponse';

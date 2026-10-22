@@ -21,6 +21,14 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
 11. Helpers are pure synchronous value transformations with explicit reviewed `@pure` contracts and no I/O, mutation, hidden state, clocks or randomness. Service classes and models have separate catalog categories. A shared helper needs at least two distinct component, service or named-function consumers. Keep a single-consumer helper in its owner's folder. Preserve unit identity/history and update imports, tests and owned source when moving it; split mixed shared/private modules. Check public API and runtime references before changing an unused export. When moving definitions behind forwarding exports, extend the owning standardized test to cold-import and call both public and owner entries in fresh runtimes; a warm test-module graph does not prove initialization safety. For moved import.meta.url code, test source and packaged layouts separately; bundled output-relative addresses must keep their artifact paths. Before a broad suite for moves reachable from public SDK exports, run `bun scripts/build-api.ts --types-only`; retain the published import and type-entry addresses.
 
+## Service Ownership
+
+A shared service needs at least two distinct active runtime owner units. Single-consumer implementations and their private helpers live inside the owner code area. Count runtime references to exported operations or classes; exclude types, unused imports, repeated references by one owner, forwarding modules and indirect page reachability. Keep public entry and route contracts stable, preserve registered identity and source history, and review dynamic/runtime use before relocating an export with no statically proven owner.
+
+Before committing a cross-workspace relocation, run every affected workspace structure audit as well as the root audit. Use supported owner areas such as `src/lib/<owner>` when the original owner folder enforces another scaffold shape, and retain framework or store entry filenames as named forwards.
+
+When relocating source, rewrite module specifiers and source-layout URLs only. Ordinary string literals, including traversal checks, stay identical. Compare declaration ASTs before and after; template contents and operators are part of that proof.
+
 ## Helper Naming Review
 
 Before adding, cataloging or accepting a helper, read its implementation, state the
@@ -111,6 +119,27 @@ must not accept a row that contradicts the collection's inclusion rule.
 - Nesting: 4 levels.
 - Parameters: 4.
 - Classes per file: 1.
+
+## Module Naming
+
+Read `harness info naming` and the scaffold guide before naming a module. Classes keep PascalCase and their role suffix; models and components keep PascalCase; functions, pure helpers and value modules keep their actual camelCase name. Match source filenames and primary declarations, preserve framework entries and stable registered IDs, and keep descriptive responsibilities separate from code names. Use the same canonical code identity on cards, usage links and detail headings. Standard catalog coverage compares those surfaces for class, callable, component and model consumers at current and historical revisions; card-only naming overrides are not allowed.
+
+Before freezing a naming regression, format and lint the strengthened tests and shared fixtures. Record the failing assertion only after that preflight so green can use the unchanged test inputs.
+
+Keep registered test titles stable when extending naming coverage; verification records bind to those names.
+
+Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.
+
+## Responsibility Categories
+
+Place every module type in `src/<kind>/<category>/` using the project taxonomy in
+`harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
+new code; a new explicit group extends the taxonomy. Reuse an existing category
+when its responsibility fits. Unambiguous names or declared responsibilities can
+select it automatically; ambiguity requires a deliberate category choice. Keep
+private helpers and single-owner services inside their owner category. Preserve
+registered IDs, framework entries and public URLs. The explorer reads category
+folders and titles from the selected source revision for every collection.
 
 ## Callable usage examples
 

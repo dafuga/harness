@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hubRemote.ts",
-			"packages/hub/src/utils/hubRemote.ts"
+			"packages/hub/src/utils/hubRemote.ts",
+			"packages/hub/src/utils/networking-security/hubRemote.ts"
 		],
-		"symbols": ["hubRemote", "HubRemoteRuntime", "hubRemote"]
+		"symbols": ["hubRemote", "hubRemote", "HubRemoteRuntime", "hubRemote"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,11 +46,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubRemote.ts",
+		"entry": "packages/hub/src/utils/networking-security/hubRemote.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubRemote.ts"
+				"entry": "packages/hub/src/utils/networking-security/hubRemote.ts"
 			}
 		]
 	},

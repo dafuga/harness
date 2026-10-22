@@ -10,11 +10,21 @@
 		"source": [
 			"packages/reports/src/components/gameplay-replay/reportDisplay.ts",
 			"packages/reports/src/components/report-summary/reportDisplay.ts",
-			"packages/reports/src/utils/reportDisplay.ts"
+			"packages/reports/src/components/reports-media/gameplay-replay/reportDisplay.ts",
+			"packages/reports/src/components/reports-media/report-summary/reportDisplay.ts",
+			"packages/reports/src/utils/reportDisplay.ts",
+			"packages/reports/src/utils/reports-media/reportDisplay.ts"
 		],
 		"symbols": [
 			"reportDisplay",
 			"dateLabel",
+			"reportDisplay",
+			"dateLabel",
+			"reportDisplay",
+			"dateLabel",
+			"reportStale",
+			"timeAgo",
+			"evidenceAnchor",
 			"reportStale",
 			"timeAgo",
 			"evidenceAnchor",
@@ -104,11 +114,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportDisplay.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportDisplay.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportDisplay.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportDisplay.ts"
 			}
 		]
 	},

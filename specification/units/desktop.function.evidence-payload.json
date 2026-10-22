@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/evidencePayload.ts"],
-		"symbols": ["evidencePayload"]
+		"source": [
+			"packages/desktop/src/utils/evidencePayload.ts",
+			"packages/desktop/src/utils/verification-evidence/evidencePayload.ts"
+		],
+		"symbols": ["evidencePayload", "evidencePayload"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/evidencePayload.ts",
+		"entry": "packages/desktop/src/utils/verification-evidence/evidencePayload.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/evidencePayload.ts"
+				"entry": "packages/desktop/src/utils/verification-evidence/evidencePayload.ts"
 			}
 		]
 	},

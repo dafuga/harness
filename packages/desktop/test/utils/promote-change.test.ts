@@ -21,7 +21,8 @@ test.each(scopedChanges)(
 		const { writeFile } = await import('node:fs/promises');
 		const { join } = await import('node:path');
 		const { git } = await import('../run-fixture');
-		const commands = await import('../../src/utils/deploymentCommand');
+		// Spy on the declaration imported by the subject; its legacy entry only forwards it.
+		const commands = await import('../../src/utils/development-tooling/deploymentCommand');
 		const { DeploymentService } = await import('../../src/services/DeploymentService');
 		const f = await fixture(async (turn) => {
 			await writeFile(join(turn.cwd, 'src/owned.ts'), 'verified change');

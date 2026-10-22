@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/recordLineage.ts"],
-		"symbols": ["LineageSource", "recordLineage"]
+		"source": ["src/utils/development-tooling/recordLineage.ts", "src/utils/recordLineage.ts"],
+		"symbols": ["LineageSource", "recordLineage", "recordLineage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/recordLineage.ts",
+		"entry": "src/utils/development-tooling/recordLineage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/recordLineage.ts"
+				"entry": "src/utils/development-tooling/recordLineage.ts"
 			}
 		]
 	},

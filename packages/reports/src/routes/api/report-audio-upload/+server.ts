@@ -1,6 +1,6 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
-import { AudioUploadService } from '../../../services/AudioUploadService';
-import { repository } from '../../../utils/reportHttp';
+import { AudioUploadService } from '../../../services/reports-media/AudioUploadService';
+import { repository } from '../../../utils/reports-media/reportHttp';
 function requestProblem(request: Request, url: URL) {
 	if (request.headers.get('origin') !== url.origin)
 		return json({ error: 'Same-origin upload required' }, { status: 403 });

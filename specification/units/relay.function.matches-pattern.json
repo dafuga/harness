@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/utils/matchesPattern.ts"],
-		"symbols": ["matchesPattern"]
+		"source": [
+			"packages/relay/src/utils/development-tooling/matchesPattern.ts",
+			"packages/relay/src/utils/matchesPattern.ts"
+		],
+		"symbols": ["matchesPattern", "matchesPattern"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -36,11 +39,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/utils/matchesPattern.ts",
+		"entry": "packages/relay/src/utils/development-tooling/matchesPattern.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/utils/matchesPattern.ts"
+				"entry": "packages/relay/src/utils/development-tooling/matchesPattern.ts"
 			}
 		]
 	},

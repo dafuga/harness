@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import GameTextField from '../../src/components/GameTextField.svelte';
+import GameTextField from '../../src/components/game-authoring/GameTextField.svelte';
 
 const drawn = (props: Record<string, unknown>) =>
 	render(GameTextField, { props: { value: '', change: () => undefined, ...props } }).body;

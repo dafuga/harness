@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/gamePieces.ts"],
+		"source": ["src/templates/game-authoring/gamePieces.ts"],
 		"symbols": ["gameViewFiles", "mechanicFiles", "checkpointFiles"]
 	},
 	"contract": {
@@ -75,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/gamePieces.ts",
+		"entry": "src/templates/game-authoring/gamePieces.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/gamePieces.ts"
+				"entry": "src/templates/game-authoring/gamePieces.ts"
 			}
 		]
 	},

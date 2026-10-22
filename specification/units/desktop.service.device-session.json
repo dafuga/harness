@@ -7,12 +7,19 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/device-session-service/DeviceSessionService.ts"],
+		"source": [
+			"packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
+			"packages/desktop/src/services/remote-host-service/device-session-service/DeviceSessionService.ts"
+		],
 		"symbols": [
+			"DeviceSessionService",
+			"DeviceSessionOptions",
 			"DeviceSessionOptions",
 			"DeviceSessionService",
 			"DeviceSessionService.constructor",
-			"DeviceSessionService.end"
+			"DeviceSessionService.end",
+			"DeviceSessionService"
 		]
 	},
 	"contract": {
@@ -55,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
+		"entry": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts"
+				"entry": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts"
 			}
 		]
 	},

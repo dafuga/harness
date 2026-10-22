@@ -7,13 +7,24 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/loopTemplates.ts"],
+		"source": [
+			"src/workflows/development-tooling/loop-templates/loopTemplates.ts",
+			"src/workflows/loop-templates/loopTemplates.ts",
+			"src/workflows/loopTemplates.ts"
+		],
 		"symbols": [
 			"LoopTemplateStep",
 			"LoopTemplate",
 			"ResolvedLoopTemplate",
 			"listLoopTemplates",
-			"resolveLoopTemplate"
+			"resolveLoopTemplate",
+			"listLoopTemplates",
+			"resolveLoopTemplate",
+			"listLoopTemplates",
+			"resolveLoopTemplate",
+			"LoopTemplateStep",
+			"LoopTemplate",
+			"ResolvedLoopTemplate"
 		]
 	},
 	"contract": {
@@ -68,11 +79,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/loopTemplates.ts",
+		"entry": "src/workflows/development-tooling/loop-templates/loopTemplates.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/loopTemplates.ts"
+				"entry": "src/workflows/development-tooling/loop-templates/loopTemplates.ts"
 			}
 		]
 	},

@@ -1,1 +1,1 @@
-export { replayLocale } from '../components/gameplay-replay/replayLocale';
+export { replayLocale } from '../components/reports-media/gameplay-replay/replayLocale';

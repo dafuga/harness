@@ -2,7 +2,7 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { exampleDocument } from '../../game/src/utils/keyDoor';
+import { exampleDocument } from '../../game/src/utils/game-authoring/keyDoor';
 import { remoteLimits } from '../../remote/src/index';
 import type { RemoteBinary, WirePart } from '../../remote/src/index';
 import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';

@@ -8,10 +8,20 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/components/accounts-access/login-panel/googleButton.ts",
 			"packages/hub/src/components/login-panel/googleButton.ts",
+			"packages/hub/src/utils/accounts-access/googleButton.ts",
 			"packages/hub/src/utils/googleButton.ts"
 		],
-		"symbols": ["googleButton", "googleIdentityScript", "GoogleButton", "googleButton"]
+		"symbols": [
+			"googleButton",
+			"googleButton",
+			"googleIdentityScript",
+			"GoogleButton",
+			"googleButton",
+			"googleButton",
+			"googleIdentityScript"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,11 +54,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/googleButton.ts",
+		"entry": "packages/hub/src/utils/accounts-access/googleButton.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/googleButton.ts"
+				"entry": "packages/hub/src/utils/accounts-access/googleButton.ts"
 			}
 		]
 	},

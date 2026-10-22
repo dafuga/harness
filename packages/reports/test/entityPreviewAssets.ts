@@ -5,6 +5,7 @@ import { deflateSync } from 'node:zlib';
 import { audioFixture } from './audioFixture';
 import { stateRecord } from './entityPreviewData';
 import { capture, commits } from './entityUnits';
+import { sourcePaths, sourceText } from './entitySourceFixture';
 
 type Colour = [number, number, number];
 const tints: Record<string, Colour> = { a: [36, 52, 71], b: [20, 39, 58], c: [16, 44, 52] };
@@ -82,6 +83,20 @@ function run(state: string, kind: string) {
 	};
 }
 
+/** Committed text fixtures retain their original hashes and insertion order. */
+function sourceAssets(directory: string): Record<string, string> {
+	const hashes: Record<string, string> = {};
+	for (const commit of Object.values(commits)) {
+		for (const path of sourcePaths) {
+			const text = sourceText(commit, path);
+			const hash = createHash('sha256').update(text).digest('hex');
+			hashes[`source:${commit}:${path}`] = hash;
+			writeFileSync(join(directory, `media/${hash}.txt`), text);
+		}
+	}
+	return hashes;
+}
+
 /**
  * Writes the media of the synthetic history under a directory: a drawn screenshot for every
  * screenshot capture, a short tone a browser can play for every clip, and a stated run for
@@ -90,7 +105,7 @@ function run(state: string, kind: string) {
  */
 export function entityPreviewAssets(directory: string): Record<string, string> {
 	mkdirSync(join(directory, 'media'), { recursive: true });
-	const hashes: Record<string, string> = {};
+	const hashes = sourceAssets(directory);
 	for (const commit of Object.values(commits)) {
 		const states = stateRecord(commit).scenarios.flatMap((scenario) => scenario.states);
 		for (const state of states) {

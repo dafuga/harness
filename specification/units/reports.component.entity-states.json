@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EntityStates.svelte"],
-		"symbols": ["EntityStates"]
+		"source": [
+			"packages/reports/src/components/EntityStates.svelte",
+			"packages/reports/src/components/explorer-ui/EntityStates.svelte"
+		],
+		"symbols": ["EntityStates", "EntityStates"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -89,11 +92,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EntityStates.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/EntityStates.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/EntityStates.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/EntityStates.svelte"
 			}
 		]
 	},

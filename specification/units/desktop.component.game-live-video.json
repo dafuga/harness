@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameLiveVideo.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameLiveVideo.svelte"],
 		"symbols": ["GameLiveVideo"]
 	},
 	"contract": {
@@ -31,11 +31,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameLiveVideo.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameLiveVideo.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameLiveVideo.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameLiveVideo.svelte"
 			}
 		]
 	},

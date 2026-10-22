@@ -1,1 +1,4 @@
-export { legacyLink, legacyEvidence } from '../components/harness/harness-legacy/legacyEvidence';
+export {
+	legacyLink,
+	legacyEvidence
+} from '../components/explorer-ui/harness/harness-legacy/legacyEvidence';

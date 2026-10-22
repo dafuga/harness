@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/cli-environment/cliEnvironment.ts",
-			"packages/desktop/src/utils/cliEnvironment.ts"
+			"packages/desktop/src/utils/cliEnvironment.ts",
+			"packages/desktop/src/utils/development-tooling/cli-environment/cliEnvironment.ts"
 		],
-		"symbols": ["cliEnvironment", "cliEnvironment"]
+		"symbols": ["cliEnvironment", "cliEnvironment", "cliEnvironment"]
 	},
 	"contract": {
 		"origin": "declared",

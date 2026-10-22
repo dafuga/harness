@@ -1,1 +1,1 @@
-export { frameTooLarge } from '../services/socket-frame-service/frameTooLarge';
+export { frameTooLarge } from '../lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge';

@@ -1,9 +1,12 @@
 import { expect, test } from 'vitest';
-import { projectFiles } from '../src/templates/project';
-import { evidenceRequested, recordCapture } from '../src/utils/record-capture/recordCapture';
-import { machineProfile } from '../src/utils/machineProfile';
-import { exampleDocument } from '../packages/game/src/utils/keyDoor';
-import { mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises';
+import { projectFiles } from '../src/templates/projects-sessions/project';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../src/utils/reports-media/record-capture/recordCapture';
+import { machineProfile } from '../src/utils/development-tooling/machineProfile';
+import { exampleDocument } from '../packages/game/src/utils/game-authoring/keyDoor';
+import { mkdtemp, mkdir, readFile, writeFile, rm, symlink } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
@@ -83,34 +86,45 @@ function observeFactory(dimension: '2d' | '3d') {
 }
 
 test('embedded engine sources match the reusable engine exactly', async () => {
-	const { gameSources } = await import('../src/templates/gameSources');
-	const { readFile } = await import('node:fs/promises');
+	const { gameSources } = await import('../src/templates/game-authoring/gameSources');
+	const { embeddedSource, gameSourceLayout } = await import('../scripts/sync-game-sources');
+	/** Generated games keep their layout: only relative module specifiers and their wrapping differ. */
+	const unbound = (text: string) => text.replace(/'\.{1,2}\/[^']+'/g, "''").replace(/\s+/g, '');
+	expect(Object.keys(gameSources)).toEqual(Object.keys(gameSourceLayout));
 	for (const [path, contents] of Object.entries(gameSources)) {
-		expect(contents, path).toBe(
-			await readFile(new URL('../packages/game/src/' + path, import.meta.url), 'utf8')
+		const source = await readFile(
+			new URL('../packages/game/src/' + gameSourceLayout[path], import.meta.url),
+			'utf8'
 		);
+		expect(contents, path).toBe(await embeddedSource(path, source));
+		expect(unbound(contents), path).toBe(unbound(source));
 	}
 });
 
 test('game build scripts retain engine bytes and audit through the project CLI', async () => {
-	const { gameSources } = await import('../src/templates/gameSources');
+	const { gameSources } = await import('../src/templates/game-authoring/gameSources');
+	const { gameSourceLayout } = await import('../scripts/sync-game-sources');
 	const root = await mkdtemp(join(tmpdir(), 'harness-game-build-'));
 	try {
-		for (const [path, contents] of Object.entries(gameSources)) {
+		for (const path of Object.values(gameSourceLayout)) {
 			const file = join(root, 'packages/game/src', path);
 			await mkdir(dirname(file), { recursive: true });
-			await writeFile(file, contents);
+			await writeFile(file, await readFile(resolve('packages/game/src', path), 'utf8'));
 		}
-		await mkdir(join(root, 'src/templates'), { recursive: true });
+		await mkdir(join(root, 'src/templates/game-authoring'), { recursive: true });
 		const sync = observeScript(
 			'script.sync-game-sources',
 			['bun', resolve('scripts/sync-game-sources.ts')],
 			root
 		);
 		const code = `import {pathToFileURL} from 'node:url'; const output=await import(pathToFileURL(process.argv[1]).href); console.log(JSON.stringify(output.gameSources));`;
-		const output = execFileSync('bun', ['-e', code, join(root, 'src/templates/gameSources.ts')], {
-			encoding: 'utf8'
-		});
+		const output = execFileSync(
+			'bun',
+			['-e', code, join(root, 'src/templates/game-authoring/gameSources.ts')],
+			{
+				encoding: 'utf8'
+			}
+		);
 		expect(JSON.parse(output)).toEqual(gameSources);
 		const audit = observeScript(
 			'game.script.harness-audit',

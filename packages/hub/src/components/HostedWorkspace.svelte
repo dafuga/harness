@@ -1,71 +1,7 @@
 <script lang="ts">
-	import { onMount, untrack } from 'svelte';
-	import WorkspaceShell from '$desktop/components/WorkspaceShell.svelte';
-	import { createWorkspaceStore } from '$desktop/lib/stores/workspace.svelte';
-	import { ProjectSyncService } from '$desktop/services/ProjectSyncService';
-	import { everyProject, forgetShared } from '$desktop/utils/cache-status/cacheStatus';
-	import { isWorkspacePath } from '$desktop/utils/workspaceRoute';
-	import { browserBridge } from '../utils/browser-bridge/browserBridge';
-	import { browserContext } from '../utils/browserContext';
-	import AccountMenu from './AccountMenu.svelte';
-	import HubFrame from './HubFrame.svelte';
-	const { api, session } = browserContext();
-	const workspace = createWorkspaceStore();
-	/** The account whose projects are open; the route shows this only while one is signed in. */
-	let holder = session.actor?.id ?? null;
-	const show = () => {
-		if (isWorkspacePath(location.pathname)) void workspace.navigate(location.pathname, false);
-	};
-	/** Another account takes all of the last one's projects off the page; the address is read anew. */
-	function changed(id: string | null) {
-		if (id === holder) return;
-		holder = id;
-		workspace.invalidate();
-		forgetShared(workspace, everyProject, '');
-		if (!id) return;
-		void workspace.loadProjects();
-		show();
-	}
-	$effect(() => {
-		const id = session.actor?.id ?? null;
-		untrack(() => changed(id));
-	});
-	/** The account still signed in has its owned and joined projects listed again. */
-	async function refresh() {
-		const before = session.actor?.id;
-		await session.check();
-		if (before && session.actor?.id === before) await workspace.loadProjects();
-	}
-	/** The desktop workspace over the browser bridge: shared projects only, and no local folder. */
-	onMount(() => {
-		workspace.connect(browserBridge(api), { local: false });
-		const sync = new ProjectSyncService({ refresh });
-		void workspace.loadProjects();
-		show();
-		sync.start();
-		window.addEventListener('popstate', show);
-		return () => {
-			sync.stop();
-			window.removeEventListener('popstate', show);
-			workspace.connect(undefined);
-			workspace.invalidate();
-		};
-	});
+	import CategoryImplementation from './projects-sessions/HostedWorkspace.svelte';
+	import type { ComponentProps } from 'svelte';
+	let props: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
 
-<svelte:head
-	><title>Harness{workspace.snapshot ? ' · ' + workspace.snapshot.project.name : ''}</title
-	></svelte:head
->
-{#if workspace.snapshot}<WorkspaceShell {workspace}
-		>{#snippet account()}<AccountMenu
-				projectId={workspace.projectId ?? undefined}
-			/>{/snippet}</WorkspaceShell
-	>{:else}<HubFrame
-		><section class="hub-card">
-			{#if workspace.error}<h1>This project could not be opened</h1>
-				<p class="error" role="alert">{workspace.error}</p>{:else}<p class="muted">
-					Loading project…
-				</p>{/if}
-		</section></HubFrame
-	>{/if}
+<CategoryImplementation {...props} />

@@ -7,13 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/console-install-service/ConsoleInstallService.ts"],
+		"source": [
+			"src/cli/program/console-install-service/ConsoleInstallService.ts",
+			"src/services/console-install-service/ConsoleInstallService.ts"
+		],
 		"symbols": [
 			"ConsoleInstallOptions",
 			"ConsoleInstallResult",
 			"ConsoleInstallService",
 			"ConsoleInstallService.install",
-			"ConsoleInstallService.restore"
+			"ConsoleInstallService.restore",
+			"ConsoleInstallService",
+			"ConsoleInstallOptions",
+			"ConsoleInstallResult"
 		]
 	},
 	"contract": {
@@ -88,11 +94,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/console-install-service/ConsoleInstallService.ts",
+		"entry": "src/cli/program/console-install-service/ConsoleInstallService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/console-install-service/ConsoleInstallService.ts"
+				"entry": "src/cli/program/console-install-service/ConsoleInstallService.ts"
 			}
 		]
 	},

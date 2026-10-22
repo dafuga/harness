@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/RegressionProof.svelte"],
-		"symbols": ["RegressionProof"]
+		"source": [
+			"packages/reports/src/components/RegressionProof.svelte",
+			"packages/reports/src/components/verification-evidence/RegressionProof.svelte"
+		],
+		"symbols": ["RegressionProof", "RegressionProof"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,11 +51,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/RegressionProof.svelte",
+		"entry": "packages/reports/src/components/verification-evidence/RegressionProof.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/RegressionProof.svelte"
+				"entry": "packages/reports/src/components/verification-evidence/RegressionProof.svelte"
 			}
 		]
 	},

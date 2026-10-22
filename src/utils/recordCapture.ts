@@ -1,1 +1,1 @@
-export { evidenceRequested, recordCapture } from './record-capture/recordCapture';
+export { evidenceRequested, recordCapture } from './reports-media/record-capture/recordCapture';

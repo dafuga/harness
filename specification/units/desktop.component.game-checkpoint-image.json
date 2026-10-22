@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameCheckpointImage.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameCheckpointImage.svelte"],
 		"symbols": ["GameCheckpointImage"]
 	},
 	"contract": {
@@ -75,18 +75,18 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "game.model.game-types",
+			"unit": "game.entry.index",
 			"via": "import",
 			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameCheckpointImage.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameCheckpointImage.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameCheckpointImage.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameCheckpointImage.svelte"
 			}
 		]
 	},

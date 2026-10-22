@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RuntimeRun.svelte"],
-		"symbols": ["RuntimeRun"]
+		"source": [
+			"packages/desktop/src/components/RuntimeRun.svelte",
+			"packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte"
+		],
+		"symbols": ["RuntimeRun", "RuntimeRun"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RuntimeRun.svelte",
+		"entry": "packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RuntimeRun.svelte"
+				"entry": "packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte"
 			}
 		]
 	},

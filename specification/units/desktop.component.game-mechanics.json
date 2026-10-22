@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameMechanics.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameMechanics.svelte"],
 		"symbols": ["GameMechanics"]
 	},
 	"contract": {
@@ -52,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameMechanics.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameMechanics.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameMechanics.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameMechanics.svelte"
 			}
 		]
 	},

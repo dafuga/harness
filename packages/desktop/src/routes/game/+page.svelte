@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import GameWorkspace from '../../components/GameWorkspace.svelte';
-	import type { DesktopBridge } from '../../models/DesktopBridge.types';
-	import type { EnvironmentHost } from '../../models/Environment.types';
+	import GameWorkspace from '../../components/game-authoring/GameWorkspace.svelte';
+	import type { DesktopBridge } from '../../models/development-tooling/DesktopBridge.types';
+	import type { EnvironmentHost } from '../../models/development-tooling/Environment.types';
 	import '../../lib/styles/workspace.css';
 	import '../../lib/styles/design.css';
 	const title = 'Game Views';

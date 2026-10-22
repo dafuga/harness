@@ -8,12 +8,21 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/cli/program/history-index-service/budgetReviews.ts",
 			"src/services/history-index-service/budgetReviews.ts",
 			"src/utils/budgetReviews.ts",
-			"src/utils/revision-registry/frozenLimits.ts"
+			"src/utils/revision-registry/frozenLimits.ts",
+			"src/utils/verification-evidence/budgetReviews.ts",
+			"src/utils/verification-evidence/revision-registry/frozenLimits.ts"
 		],
 		"symbols": [
 			"budgetReviews",
+			"budgetReviews",
+			"budgetReviews",
+			"frozenLimits",
+			"emittedLimits",
+			"frozenLimits",
+			"emittedLimits",
 			"BudgetReview",
 			"EmittedLimits",
 			"FrozenLimits",
@@ -101,11 +110,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/budgetReviews.ts",
+		"entry": "src/utils/verification-evidence/budgetReviews.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/budgetReviews.ts"
+				"entry": "src/utils/verification-evidence/budgetReviews.ts"
 			}
 		]
 	},

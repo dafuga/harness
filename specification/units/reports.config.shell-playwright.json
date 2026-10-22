@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/config/shellPlaywrightConfig.ts"],
-		"symbols": ["default"]
+		"source": [
+			"packages/reports/src/config/development-tooling/shellPlaywrightConfig.ts",
+			"packages/reports/src/config/shellPlaywrightConfig.ts"
+		],
+		"symbols": ["default", "default"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -19,11 +22,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/config/shellPlaywrightConfig.ts",
+		"entry": "packages/reports/src/config/development-tooling/shellPlaywrightConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				"entry": "packages/reports/src/config/development-tooling/shellPlaywrightConfig.ts"
 			}
 		]
 	},

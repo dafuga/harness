@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/utils/relayResponse.ts"],
-		"symbols": ["relayResponse", "relayError"]
+		"source": [
+			"packages/relay/src/utils/networking-security/relayResponse.ts",
+			"packages/relay/src/utils/relayResponse.ts"
+		],
+		"symbols": ["relayResponse", "relayError", "relayResponse", "relayError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/utils/relayResponse.ts",
+		"entry": "packages/relay/src/utils/networking-security/relayResponse.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/utils/relayResponse.ts"
+				"entry": "packages/relay/src/utils/networking-security/relayResponse.ts"
 			}
 		]
 	},

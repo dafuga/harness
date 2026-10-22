@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/validators/AuthRecordValidator.ts"],
+		"source": [
+			"packages/hub/src/validators/AuthRecordValidator.ts",
+			"packages/hub/src/validators/accounts-access/AuthRecordValidator.ts"
+		],
 		"symbols": [
+			"AuthRecordValidator",
 			"AuthRecordValidator",
 			"AuthRecordValidator.challenge",
 			"AuthRecordValidator.session",
@@ -111,11 +115,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/validators/AuthRecordValidator.ts",
+		"entry": "packages/hub/src/validators/accounts-access/AuthRecordValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/validators/AuthRecordValidator.ts"
+				"entry": "packages/hub/src/validators/accounts-access/AuthRecordValidator.ts"
 			}
 		]
 	},

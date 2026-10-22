@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/ThreeSceneAdapter.ts"],
+		"source": ["packages/game/src/adapters/game-authoring/ThreeSceneAdapter.ts"],
 		"symbols": [
 			"ThreeSceneAdapter",
 			"ThreeSceneAdapter.constructor",
@@ -78,11 +78,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/adapters/ThreeSceneAdapter.ts",
+		"entry": "packages/game/src/adapters/game-authoring/ThreeSceneAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/adapters/ThreeSceneAdapter.ts"
+				"entry": "packages/game/src/adapters/game-authoring/ThreeSceneAdapter.ts"
 			}
 		]
 	},

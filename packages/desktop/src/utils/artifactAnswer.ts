@@ -1,1 +1,1 @@
-export { artifactAnswer } from './artifact-answer/artifactAnswer';
+export { artifactAnswer } from './development-tooling/artifact-answer/artifactAnswer';

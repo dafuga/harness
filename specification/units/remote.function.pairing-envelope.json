@@ -7,11 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/utils/pairingEnvelope.ts"],
+		"source": [
+			"packages/remote/src/utils/networking-security/pairingEnvelope.ts",
+			"packages/remote/src/utils/pairingEnvelope.ts"
+		],
 		"symbols": [
 			"PairingContext",
 			"PairingKind",
 			"PairingKeys",
+			"pairingEnvelope",
+			"sealPairing",
+			"openPairing",
 			"pairingEnvelope",
 			"sealPairing",
 			"openPairing"
@@ -89,11 +95,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/utils/pairingEnvelope.ts",
+		"entry": "packages/remote/src/utils/networking-security/pairingEnvelope.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/utils/pairingEnvelope.ts"
+				"entry": "packages/remote/src/utils/networking-security/pairingEnvelope.ts"
 			}
 		]
 	},

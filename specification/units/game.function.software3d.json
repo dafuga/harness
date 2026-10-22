@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/Software3dAdapter.ts"],
+		"source": ["packages/game/src/adapters/game-authoring/Software3dAdapter.ts"],
 		"symbols": [
 			"Software3dAdapter",
 			"Software3dAdapter.constructor",
@@ -63,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/adapters/Software3dAdapter.ts",
+		"entry": "packages/game/src/adapters/game-authoring/Software3dAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/adapters/Software3dAdapter.ts"
+				"entry": "packages/game/src/adapters/game-authoring/Software3dAdapter.ts"
 			}
 		]
 	},

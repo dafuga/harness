@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 
 test('public and owner 2D entries share one detachable frame source in a cold graph', async () => {
 	vi.resetModules();
-	const owner = await import('../../src/adapters/Canvas2dAdapter');
+	const owner = await import('../../src/adapters/game-authoring/Canvas2dAdapter');
 	const entry = await import('../../src/index');
 	expect(entry.create2d).toBe(owner.create2d);
 	expect(entry.draw2d).toBe(owner.draw2d);

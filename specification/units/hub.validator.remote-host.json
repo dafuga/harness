@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/validators/RemoteHostValidator.ts"],
+		"source": [
+			"packages/hub/src/validators/RemoteHostValidator.ts",
+			"packages/hub/src/validators/networking-security/RemoteHostValidator.ts"
+		],
 		"symbols": [
+			"RemoteHostValidator",
 			"RemoteHostValidator",
 			"RemoteHostValidator.registration",
 			"RemoteHostValidator.hostId",
@@ -66,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/validators/RemoteHostValidator.ts",
+		"entry": "packages/hub/src/validators/networking-security/RemoteHostValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/validators/RemoteHostValidator.ts"
+				"entry": "packages/hub/src/validators/networking-security/RemoteHostValidator.ts"
 			}
 		]
 	},

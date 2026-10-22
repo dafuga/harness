@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/inspectUnits.ts"],
-		"symbols": ["UnitDetail", "unitSchema", "listUnits", "unitsGraph", "showUnit", "renderUnit"]
+		"source": ["src/cli/program/inspectUnits.ts", "src/workflows/inspectUnits.ts"],
+		"symbols": [
+			"UnitDetail",
+			"unitSchema",
+			"listUnits",
+			"unitsGraph",
+			"showUnit",
+			"renderUnit",
+			"unitSchema",
+			"listUnits",
+			"unitsGraph",
+			"showUnit",
+			"renderUnit",
+			"UnitDetail"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -111,11 +124,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/inspectUnits.ts",
+		"entry": "src/cli/program/inspectUnits.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/inspectUnits.ts"
+				"entry": "src/cli/program/inspectUnits.ts"
 			}
 		]
 	},

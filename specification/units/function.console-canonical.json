@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/console-canonical/consoleCanonical.ts", "src/utils/consoleCanonical.ts"],
+		"source": [
+			"src/utils/console-canonical/consoleCanonical.ts",
+			"src/utils/consoleCanonical.ts",
+			"src/utils/projects-sessions/console-canonical/consoleCanonical.ts"
+		],
 		"symbols": [
+			"defaultCommit",
+			"commitBranch",
+			"explorerHome",
+			"explorerExact",
+			"explorerAddress",
+			"consoleCanonical",
 			"IndexedHistory",
 			"defaultCommit",
 			"commitBranch",

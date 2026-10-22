@@ -1,16 +1,7 @@
 <script lang="ts">
-	let {
-		value = $bindable(''),
-		options,
-		label
-	}: { value?: string; options: string[]; label: string } = $props();
+	import CategoryImplementation from './shared-primitives/SegmentedChoice.svelte';
+	import type { ComponentProps } from 'svelte';
+	let { value = $bindable(''), ...props }: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
 
-<div class="segmented-choice" role="group" aria-label={label}>
-	{#each options as option (option)}<button
-			type="button"
-			class:active={value === option}
-			aria-pressed={value === option}
-			onclick={() => (value = option)}>{option}</button
-		>{/each}
-</div>
+<CategoryImplementation {...props} bind:value />

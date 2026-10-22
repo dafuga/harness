@@ -1,1 +1,1 @@
-export { hostedImage } from '../adapters/remote-http-project-adapter/hostedImage';
+export { hostedImage } from '../lib/development-tooling/desktop-initialization/remote-http-project-adapter/hostedImage';

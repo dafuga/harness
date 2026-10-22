@@ -8,10 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/console-install-service/installableHost.ts",
+			"src/cli/program/console-install-service/installableHost.ts",
+			"src/utils/development-tooling/installableHost.ts",
 			"src/utils/installableHost.ts"
 		],
-		"symbols": ["installableHost", "hostWarnings", "HostRequest", "installableHost", "hostWarnings"]
+		"symbols": [
+			"installableHost",
+			"hostWarnings",
+			"HostRequest",
+			"installableHost",
+			"hostWarnings",
+			"installableHost",
+			"hostWarnings"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -61,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/installableHost.ts",
+		"entry": "src/utils/development-tooling/installableHost.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/installableHost.ts"
+				"entry": "src/utils/development-tooling/installableHost.ts"
 			}
 		]
 	},

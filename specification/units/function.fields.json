@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/fields.ts", "src/core/fields/fields.ts"],
-		"symbols": ["FieldType", "Field", "parseFields", "FieldType", "Field", "parseFields"]
+		"source": [
+			"src/core/development-tooling/fields/fields.ts",
+			"src/core/fields.ts",
+			"src/core/fields/fields.ts"
+		],
+		"symbols": [
+			"FieldType",
+			"Field",
+			"parseFields",
+			"FieldType",
+			"Field",
+			"parseFields",
+			"parseFields"
+		]
 	},
 	"contract": {
 		"origin": "declared",

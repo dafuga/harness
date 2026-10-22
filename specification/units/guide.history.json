@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/history.ts"],
-		"symbols": ["historyGuides"]
+		"source": ["src/guides/git-source-history/history.ts", "src/guides/history.ts"],
+		"symbols": ["historyGuides", "historyGuides"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,11 +30,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/guides/history.ts",
+		"entry": "src/guides/git-source-history/history.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/guides/history.ts"
+				"entry": "src/guides/git-source-history/history.ts"
 			}
 		]
 	},

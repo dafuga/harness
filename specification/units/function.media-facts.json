@@ -7,8 +7,26 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/check-run-service/mediaFacts.ts", "src/utils/mediaFacts.ts"],
-		"symbols": ["pngChecksum", "mediaFacts", "MediaFacts", "pngChecksum", "mediaFacts"]
+		"source": [
+			"src/services/check-run-service/mediaFacts.ts",
+			"src/utils/mediaFacts.ts",
+			"src/utils/verification-evidence/mediaFacts.ts",
+			"src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts.ts"
+		],
+		"symbols": [
+			"pngChecksum",
+			"mediaFacts",
+			"pngChecksum",
+			"mediaFacts",
+			"MediaFacts",
+			"pngChecksum",
+			"mediaFacts",
+			"pngChecksum",
+			"mediaFacts",
+			"pngChecksum",
+			"mediaFacts"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -46,11 +64,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/mediaFacts.ts",
+		"entry": "src/utils/verification-evidence/mediaFacts.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/mediaFacts.ts"
+				"entry": "src/utils/verification-evidence/mediaFacts.ts"
 			}
 		]
 	},

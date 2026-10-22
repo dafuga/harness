@@ -7,11 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/services/SocketAcceptService.ts"],
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
+			"packages/relay/src/lib/host-runtime/SocketAcceptService.ts"
+		],
 		"symbols": [
 			"SocketAcceptService",
 			"SocketAcceptService.constructor",
-			"SocketAcceptService.accept"
+			"SocketAcceptService.accept",
+			"SocketAcceptService"
 		]
 	},
 	"contract": {
@@ -95,11 +99,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/services/SocketAcceptService.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/SocketAcceptService.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts"
 			}
 		]
 	},

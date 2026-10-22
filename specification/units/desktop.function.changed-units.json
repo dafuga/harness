@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/changedUnits.ts"],
-		"symbols": ["changedUnits"]
+		"source": [
+			"packages/desktop/src/utils/changedUnits.ts",
+			"packages/desktop/src/utils/development-tooling/changedUnits.ts"
+		],
+		"symbols": ["changedUnits", "changedUnits"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/changedUnits.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/changedUnits.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/changedUnits.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/changedUnits.ts"
 			}
 		]
 	},

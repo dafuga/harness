@@ -1,1 +1,1 @@
-export { scanComponent } from '../services/source-index-service/scanComponent';
+export { scanComponent } from '../services/development-tooling/source-index-service/scanComponent';

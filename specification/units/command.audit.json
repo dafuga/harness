@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/audit.ts"],
+		"source": ["src/cli/program/audit.ts"],
 		"symbols": ["registerAuditCommand"]
 	},
 	"contract": {
@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/audit.ts",
+		"entry": "src/cli/program/audit.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/audit.ts"
+				"entry": "src/cli/program/audit.ts"
 			}
 		]
 	},

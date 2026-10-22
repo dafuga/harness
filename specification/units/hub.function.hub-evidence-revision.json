@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceRevision.ts",
-			"packages/hub/src/utils/hubEvidenceRevision.ts"
+			"packages/hub/src/utils/hubEvidenceRevision.ts",
+			"packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision.ts"
 		],
-		"symbols": ["hubEvidenceRevision", "hubEvidenceRevision"]
+		"symbols": ["hubEvidenceRevision", "hubEvidenceRevision", "hubEvidenceRevision"]
 	},
 	"contract": {
 		"origin": "declared",

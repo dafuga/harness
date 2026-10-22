@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/planning/src/index.ts", "packages/planning/src/lib/planning/index.ts"],
+		"source": [
+			"packages/planning/src/index.ts",
+			"packages/planning/src/lib/planning-collaboration/planning/index.ts",
+			"packages/planning/src/lib/planning/index.ts"
+		],
 		"symbols": [
 			"default",
 			"createPlanning",
@@ -17,7 +21,15 @@
 			"planCommit",
 			"planIdentity",
 			"planOptions",
-			"planReads"
+			"planReads",
+			"planImageCodec",
+			"planCommit",
+			"planIdentity",
+			"planOptions",
+			"planReads",
+			"createPlanning",
+			"handlePlanningRequest",
+			"default"
 		]
 	},
 	"contract": {
@@ -108,11 +120,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/planning/src/lib/planning/index.ts",
+		"entry": "packages/planning/src/lib/planning-collaboration/planning/index.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/planning/src/lib/planning/index.ts"
+				"entry": "packages/planning/src/lib/planning-collaboration/planning/index.ts"
 			}
 		]
 	},

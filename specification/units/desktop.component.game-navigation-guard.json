@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameNavigationGuard.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameNavigationGuard.svelte"],
 		"symbols": ["GameNavigationGuard"]
 	},
 	"contract": {
@@ -31,11 +31,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameNavigationGuard.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameNavigationGuard.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameNavigationGuard.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameNavigationGuard.svelte"
 			}
 		]
 	},

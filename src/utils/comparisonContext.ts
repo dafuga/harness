@@ -1,1 +1,4 @@
-export { requestDigest, comparisonContext } from './comparison-context/comparisonContext';
+export {
+	requestDigest,
+	comparisonContext
+} from './development-tooling/comparison-context/comparisonContext';

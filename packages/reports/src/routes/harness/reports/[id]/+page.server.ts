@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
-import type { HarnessIndex } from '../../../../models/Harness.types';
-import { consoleData } from '../../../../utils/console-server/consoleServer';
-import { repository } from '../../../../utils/reportHttp';
+import type { HarnessIndex } from '../../../../models/explorer-ui/Harness.types';
+import { consoleData } from '../../../../utils/explorer-ui/console-server/consoleServer';
+import { repository } from '../../../../utils/reports-media/reportHttp';
 import { reportDestination } from './reportDestination';
 
 /**

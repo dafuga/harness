@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/UploadComparison.svelte"],
-		"symbols": ["UploadComparison"]
+		"source": [
+			"packages/reports/src/components/UploadComparison.svelte",
+			"packages/reports/src/components/shared-primitives/UploadComparison.svelte"
+		],
+		"symbols": ["UploadComparison", "UploadComparison"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,11 +56,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/UploadComparison.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/UploadComparison.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/UploadComparison.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/UploadComparison.svelte"
 			}
 		]
 	},

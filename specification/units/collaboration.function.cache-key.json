@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/collaboration/src/utils/cacheKey.ts"],
-		"symbols": ["cacheKey", "readCache", "writeCache"]
+		"source": [
+			"packages/collaboration/src/utils/cacheKey.ts",
+			"packages/collaboration/src/utils/development-tooling/cacheKey.ts"
+		],
+		"symbols": ["cacheKey", "readCache", "writeCache", "cacheKey", "readCache", "writeCache"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -88,11 +91,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/cacheKey.ts",
+		"entry": "packages/collaboration/src/utils/development-tooling/cacheKey.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/cacheKey.ts"
+				"entry": "packages/collaboration/src/utils/development-tooling/cacheKey.ts"
 			}
 		]
 	},

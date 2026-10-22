@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"src/services/agent-activity-service/agentStatement.ts",
-			"src/utils/agentStatement.ts"
+			"src/services/agents-providers/agent-activity-service/agentStatement.ts",
+			"src/utils/agentStatement.ts",
+			"src/utils/agents-providers/agentStatement.ts"
 		],
-		"symbols": ["agentStatement", "AgentInput", "AgentStatement", "agentStatement"]
+		"symbols": [
+			"agentStatement",
+			"agentStatement",
+			"agentStatement",
+			"AgentInput",
+			"AgentStatement",
+			"agentStatement"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -46,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/agentStatement.ts",
+		"entry": "src/utils/agents-providers/agentStatement.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/agentStatement.ts"
+				"entry": "src/utils/agents-providers/agentStatement.ts"
 			}
 		]
 	},

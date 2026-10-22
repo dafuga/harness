@@ -3,16 +3,27 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists helpers with at least two distinct visible component, service or model consumers, retaining per-export links and other entity catalogs.",
+	"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/explorer-index/entityCatalog.ts",
 			"packages/reports/src/components/harness/explorer-index/entityCatalog.ts",
-			"packages/reports/src/utils/entityCatalog.ts"
+			"packages/reports/src/utils/entityCatalog.ts",
+			"packages/reports/src/utils/explorer-ui/entityCatalog.ts"
 		],
 		"symbols": [
 			"catalogFilter",
+			"catalogFilter",
+			"catalogFilter",
+			"catalogOrders",
+			"orderLabels",
+			"isShared",
+			"functionName",
+			"byName",
+			"entityCatalog",
+			"listed",
 			"CatalogRow",
 			"catalogOrders",
 			"CatalogOrder",
@@ -48,6 +59,11 @@
 				"name": "entityCatalog.relations",
 				"type": "(id: string) => ExplorerRelations",
 				"description": "Lookup called once for each entity in the requested category."
+			},
+			{
+				"name": "entityCatalog.options",
+				"type": "{ related?: boolean; consumers?: ExplorerEntity[] }",
+				"description": "Relationships retain instantiated classes with one active owner; global collections require two. Resolve usage against the full revision consumer set."
 			},
 			{
 				"name": "catalogFilter.rows",
@@ -138,11 +154,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/entityCatalog.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/entityCatalog.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/entityCatalog.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/entityCatalog.ts"
 			}
 		]
 	},

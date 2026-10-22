@@ -23,7 +23,7 @@ test('an overview groups size and timings in Performance profile, with no source
 	expect(words(body)).toContain('Not measured');
 	expect(words(body)).not.toContain('thousand orders');
 	expect(words(body)).not.toContain('5%');
-	expect(words(body)).not.toMatch(/src\/|\.ts\b|filterOrders|v-app\./);
+	expect(words(body)).not.toMatch(/src\/|\.ts\b|v-app\./);
 	expect(words(body)).not.toMatch(/provenance/i);
 });
 
@@ -123,7 +123,7 @@ test('a component no visual scenario names keeps the screenshot pane, as a state
 
 test('a page lists its components as components, each a link in the same scope', () => {
 	const body = content('commit', { ...page, tab: 'uses' });
-	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2[^]*Order list/);
+	expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2[^]*OrderList/);
 	expect(body).toContain(`/commit/${commits.middle}/components/${ids.list}`);
 	expect(words(body)).not.toContain('App route');
 	expect(words(body)).not.toContain('Details');

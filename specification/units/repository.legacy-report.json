@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/LegacyReportRepository.ts"],
+		"source": ["src/cli/program/legacy-import-service/LegacyReportRepository.ts"],
 		"symbols": [
 			"LegacyRun",
 			"LegacyReportRepository",
@@ -47,11 +47,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/LegacyReportRepository.ts",
+		"entry": "src/cli/program/legacy-import-service/LegacyReportRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/LegacyReportRepository.ts"
+				"entry": "src/cli/program/legacy-import-service/LegacyReportRepository.ts"
 			}
 		]
 	},

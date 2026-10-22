@@ -6,13 +6,23 @@
 	"responsibility": "Determines which registered agents a sampled roster can still describe as working.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
-	"documentation": "packages/reports/src/utils/activityReading.md",
+	"documentation": "packages/reports/src/utils/projects-sessions/activityReading.md",
 	"owns": {
 		"source": [
 			"packages/reports/src/components/activity-agents/activityReading.ts",
-			"packages/reports/src/utils/activityReading.ts"
+			"packages/reports/src/components/projects-sessions/activity-agents/activityReading.ts",
+			"packages/reports/src/utils/activityReading.ts",
+			"packages/reports/src/utils/projects-sessions/activityReading.ts"
 		],
-		"symbols": ["activityReading", "readingAge", "ActivityReading", "activityReading"]
+		"symbols": [
+			"activityReading",
+			"activityReading",
+			"activityReading",
+			"readingAge",
+			"readingAge",
+			"ActivityReading",
+			"activityReading"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/activityReading.ts",
+		"entry": "packages/reports/src/utils/projects-sessions/activityReading.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/activityReading.ts"
+				"entry": "packages/reports/src/utils/projects-sessions/activityReading.ts"
 			}
 		]
 	},

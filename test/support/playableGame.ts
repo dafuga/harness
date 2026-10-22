@@ -3,7 +3,7 @@ import { stripVTControlCharacters } from 'node:util';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { execFileSync, spawn } from 'node:child_process';
-import type { GameDocument } from '../../packages/game/src/models/Game.types';
+import type { GameDocument } from '../../packages/game/src/models/game-authoring/Game.types';
 import { freePort } from './workers';
 
 /** The ordinary CLI matrix also plays its emitted page in the shared browser fixture. */

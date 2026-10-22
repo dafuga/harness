@@ -1,0 +1,20 @@
+export interface HostFile {
+	/** Path inside the host project. */
+	path: string;
+	contents: string;
+}
+
+export interface ConsoleHostOptions {
+	/** Route the console is served under, for example `/harness`. */
+	base: string;
+	/** Module of the host that exports its admin policy, for example `$lib/server/harnessPolicy`. */
+	policyModule: string;
+	policyExport: string;
+	/** A private object store binding the history is read from, instead of the server bundle. */
+	bucket?: { binding: string; prefix: string };
+}
+
+/** Where the generated server module and the data modules live in the host. */
+export const consoleServerDirectory = 'src/lib/server/harness';
+
+export { consoleHostFiles } from '../../cli/program/console-install-service/consoleHostFiles';

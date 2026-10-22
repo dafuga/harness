@@ -1,7 +1,11 @@
-export { type PlanningContext, planRecord, planVersion } from './planning-reads/planRecord';
+export {
+	type PlanningContext,
+	planRecord,
+	planVersion
+} from './projects-sessions/planning-reads/planRecord';
 export {
 	planningReads,
 	readPlanMessages,
 	readPlanImage,
 	readPlanHistory
-} from '../adapters/planning-facade-adapter/planningReads';
+} from '../services/projects-sessions/project-session-service/planning-facade-adapter/planningReads';

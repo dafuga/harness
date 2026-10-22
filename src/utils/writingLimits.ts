@@ -11,5 +11,5 @@ export {
 	writingProblems,
 	type WrittenReason,
 	explanationProblems
-} from './writing-limits/writingLimits';
-export { writingDeclared } from '../services/commit-message-service/writingLimits';
+} from './git-source-history/writing-limits/writingLimits';
+export { writingDeclared } from '../services/git-source-history/commit-message-service/writingLimits';

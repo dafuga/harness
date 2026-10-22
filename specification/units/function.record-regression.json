@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/record-regression/recordRegression.ts"],
+		"source": [
+			"src/workflows/record-regression/recordRegression.ts",
+			"src/workflows/verification-evidence/record-regression/recordRegression.ts"
+		],
 		"symbols": [
+			"recordRegression",
+			"requireRegressionProof",
+			"enforceRegressionStep",
 			"RecordRegressionInput",
 			"recordRegression",
 			"requireRegressionProof",
@@ -98,11 +104,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/record-regression/recordRegression.ts",
+		"entry": "src/workflows/verification-evidence/record-regression/recordRegression.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/record-regression/recordRegression.ts"
+				"entry": "src/workflows/verification-evidence/record-regression/recordRegression.ts"
 			}
 		]
 	},

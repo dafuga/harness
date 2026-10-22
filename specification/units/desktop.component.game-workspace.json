@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameWorkspace.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameWorkspace.svelte"],
 		"symbols": ["GameWorkspace"]
 	},
 	"contract": {
@@ -77,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameWorkspace.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameWorkspace.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameWorkspace.svelte"
 			}
 		]
 	},

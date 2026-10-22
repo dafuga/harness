@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/AgentSettings.svelte"],
-		"symbols": ["AgentSettings"]
+		"source": [
+			"packages/desktop/src/components/AgentSettings.svelte",
+			"packages/desktop/src/components/agents-providers/AgentSettings.svelte"
+		],
+		"symbols": ["AgentSettings", "AgentSettings"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,11 +44,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/AgentSettings.svelte",
+		"entry": "packages/desktop/src/components/agents-providers/AgentSettings.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/AgentSettings.svelte"
+				"entry": "packages/desktop/src/components/agents-providers/AgentSettings.svelte"
 			}
 		]
 	},

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/repositories/GameDocumentRepository.ts"],
+		"source": ["packages/game/src/repositories/game-authoring/GameDocumentRepository.ts"],
 		"symbols": [
 			"GameDocumentRepository",
 			"GameDocumentRepository.constructor",
@@ -66,11 +66,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/repositories/GameDocumentRepository.ts",
+		"entry": "packages/game/src/repositories/game-authoring/GameDocumentRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/repositories/GameDocumentRepository.ts"
+				"entry": "packages/game/src/repositories/game-authoring/GameDocumentRepository.ts"
 			}
 		]
 	},

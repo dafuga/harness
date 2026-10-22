@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/BuildIdentityService.ts"],
+		"source": [
+			"src/services/BuildIdentityService.ts",
+			"src/services/verification-evidence/BuildIdentityService.ts"
+		],
 		"symbols": [
+			"BuildIdentityService",
 			"IdentifiedBuild",
 			"DeclaredBuild",
 			"BuiltIdentity",
@@ -91,11 +95,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/BuildIdentityService.ts",
+		"entry": "src/services/verification-evidence/BuildIdentityService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/BuildIdentityService.ts"
+				"entry": "src/services/verification-evidence/BuildIdentityService.ts"
 			}
 		]
 	},

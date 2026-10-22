@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/models/RunContext.types.ts"],
+		"source": [
+			"packages/desktop/src/models/RunContext.types.ts",
+			"packages/desktop/src/models/development-tooling/RunContext.types.ts"
+		],
 		"symbols": ["RunContext", "CreatedEntity", "RunPhase", "RunEvent"]
 	},
 	"contract": {
@@ -45,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/models/RunContext.types.ts",
+		"entry": "packages/desktop/src/models/development-tooling/RunContext.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/models/RunContext.types.ts"
+				"entry": "packages/desktop/src/models/development-tooling/RunContext.types.ts"
 			}
 		]
 	},

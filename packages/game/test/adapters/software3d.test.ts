@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest';
 
 test('public create3d falls back to the owner software source without WebGL2', async () => {
 	vi.resetModules();
-	const { Software3dAdapter } = await import('../../src/adapters/Software3dAdapter');
+	const { Software3dAdapter } = await import('../../src/adapters/game-authoring/Software3dAdapter');
 	const { create3d } = await import('../../src/index');
 	const blank = { width: 4, height: 2, dataset: {}, getContext: () => null };
 	expect(() => new Software3dAdapter(blank as unknown as HTMLCanvasElement)).toThrow(

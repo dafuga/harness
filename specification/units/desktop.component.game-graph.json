@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/GameGraph.svelte"],
+		"source": ["packages/desktop/src/components/game-authoring/GameGraph.svelte"],
 		"symbols": ["GameGraph"]
 	},
 	"contract": {
@@ -67,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/GameGraph.svelte",
+		"entry": "packages/desktop/src/components/game-authoring/GameGraph.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/GameGraph.svelte"
+				"entry": "packages/desktop/src/components/game-authoring/GameGraph.svelte"
 			}
 		]
 	},

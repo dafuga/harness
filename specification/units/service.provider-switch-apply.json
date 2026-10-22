@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/ProviderSwitchApplyService.ts"],
+		"source": [
+			"src/services/ProviderSwitchApplyService.ts",
+			"src/services/agents-providers/ProviderSwitchApplyService.ts"
+		],
 		"symbols": [
+			"ProviderSwitchApplyService",
 			"ProviderSwitchApplyService",
 			"ProviderSwitchApplyService.constructor",
 			"ProviderSwitchApplyService.apply"
@@ -57,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/ProviderSwitchApplyService.ts",
+		"entry": "src/services/agents-providers/ProviderSwitchApplyService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/ProviderSwitchApplyService.ts"
+				"entry": "src/services/agents-providers/ProviderSwitchApplyService.ts"
 			}
 		]
 	},

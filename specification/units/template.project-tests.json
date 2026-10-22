@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/projectTests.ts"],
+		"source": ["src/templates/projects-sessions/projectTests.ts"],
 		"symbols": ["appTestFiles"]
 	},
 	"contract": {
@@ -35,11 +35,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/templates/projectTests.ts",
+		"entry": "src/templates/projects-sessions/projectTests.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/templates/projectTests.ts"
+				"entry": "src/templates/projects-sessions/projectTests.ts"
 			}
 		]
 	},

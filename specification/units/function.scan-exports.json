@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/scanExports.ts"],
-		"symbols": ["ExportScan", "scanExports"]
+		"source": ["src/utils/development-tooling/scanExports.ts", "src/utils/scanExports.ts"],
+		"symbols": ["ExportScan", "scanExports", "scanExports"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/scanExports.ts",
+		"entry": "src/utils/development-tooling/scanExports.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/scanExports.ts"
+				"entry": "src/utils/development-tooling/scanExports.ts"
 			}
 		]
 	},

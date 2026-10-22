@@ -8,10 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/report-command-service/report-publish-service/reportPages.ts",
 			"packages/reports/src/services/report-publish-service/reportPages.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-publish-service/reportPages.ts",
 			"packages/reports/src/utils/reportPages.ts"
 		],
-		"symbols": ["reportPages", "reportPages"]
+		"symbols": ["reportPages", "reportPages", "reportPages", "reportPages"]
 	},
 	"contract": {
 		"origin": "declared",

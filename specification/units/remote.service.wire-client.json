@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/services/WireClientService.ts"],
+		"source": [
+			"packages/remote/src/services/WireClientService.ts",
+			"packages/remote/src/services/networking-security/WireClientService.ts"
+		],
 		"symbols": [
+			"WireClientService",
 			"WireClientOptions",
 			"WireClientService",
 			"WireClientService.constructor",
@@ -99,11 +103,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/services/WireClientService.ts",
+		"entry": "packages/remote/src/services/networking-security/WireClientService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/services/WireClientService.ts"
+				"entry": "packages/remote/src/services/networking-security/WireClientService.ts"
 			}
 		]
 	},

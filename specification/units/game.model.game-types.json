@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/models/Game.types.ts"],
+		"source": ["packages/game/src/models/game-authoring/Game.types.ts"],
 		"symbols": [
 			"Dimension",
 			"Value",
@@ -38,11 +38,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/models/Game.types.ts",
+		"entry": "packages/game/src/models/game-authoring/Game.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/models/Game.types.ts"
+				"entry": "packages/game/src/models/game-authoring/Game.types.ts"
 			}
 		]
 	},

@@ -1,1 +1,1 @@
-export { hostedArtifact } from '../adapters/browser-project-adapter/hostedArtifact';
+export { hostedArtifact } from '../adapters/explorer-ui/browser-project-adapter/hostedArtifact';

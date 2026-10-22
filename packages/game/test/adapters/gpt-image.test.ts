@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { GptImageAdapter } from '../../src/adapters/GptImageAdapter';
+import { GptImageAdapter } from '../../src/adapters/agents-providers/GptImageAdapter';
 const png =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=';
 test('GPT Image sends one bounded generation with header auth and decodes PNG', async () => {

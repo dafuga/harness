@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"src/utils/comparison-context/comparisonContext.ts",
-			"src/utils/comparisonContext.ts"
+			"src/utils/comparisonContext.ts",
+			"src/utils/development-tooling/comparison-context/comparisonContext.ts"
 		],
-		"symbols": ["requestDigest", "comparisonContext", "requestDigest", "comparisonContext"]
+		"symbols": [
+			"requestDigest",
+			"comparisonContext",
+			"requestDigest",
+			"comparisonContext",
+			"requestDigest",
+			"comparisonContext"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/DecartStreamAdapter.ts"],
+		"source": ["packages/game/src/adapters/agents-providers/DecartStreamAdapter.ts"],
 		"symbols": [
 			"VideoConnection",
 			"VideoConnector",
@@ -96,11 +96,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/game/src/adapters/DecartStreamAdapter.ts",
+		"entry": "packages/game/src/adapters/agents-providers/DecartStreamAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/game/src/adapters/DecartStreamAdapter.ts"
+				"entry": "packages/game/src/adapters/agents-providers/DecartStreamAdapter.ts"
 			}
 		]
 	},

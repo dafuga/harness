@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/cleanCodeFiles.ts"],
-		"symbols": ["ReviewInputFile", "reviewHash", "readReviewInput", "reviewInputsCurrent"]
+		"source": ["src/audit/cleanCodeFiles.ts", "src/audit/development-tooling/cleanCodeFiles.ts"],
+		"symbols": [
+			"reviewHash",
+			"readReviewInput",
+			"reviewInputsCurrent",
+			"ReviewInputFile",
+			"reviewHash",
+			"readReviewInput",
+			"reviewInputsCurrent"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -58,11 +66,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/cleanCodeFiles.ts",
+		"entry": "src/audit/development-tooling/cleanCodeFiles.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/cleanCodeFiles.ts"
+				"entry": "src/audit/development-tooling/cleanCodeFiles.ts"
 			}
 		]
 	},
