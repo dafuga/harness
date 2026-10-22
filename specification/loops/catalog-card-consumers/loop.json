@@ -2,7 +2,7 @@
 	"name": "catalog-card-consumers",
 	"goal": "Catalog cards show at most three distinct consumers across module types while full usage remains on detail pages.",
 	"createdAt": "2026-10-22T20:17:48.696Z",
-	"updatedAt": "2026-10-22T20:17:50.561Z",
+	"updatedAt": "2026-10-22T20:22:16.609Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:22:16.609Z",
+			"evidence": "At test commit 4c17b8a9b the unchanged standard grid matrix fails at desktop, tablet and mobile: model and component footers contain nine links against the three-consumer limit. Both shared-footer unit cases fail with six links instead of three."
 		},
 		{
 			"id": "implement",
