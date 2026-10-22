@@ -14,6 +14,8 @@ function previewPort(): number {
 }
 const port = verifying ? 5797 : previewPort();
 const url = `http://127.0.0.1:${port}`;
+// The Electron acceptance launches the built app itself; only `test:native` names its project.
+const native = /[\\/]native-desktop\.spec\.ts$/;
 
 export default defineConfig({
 	testDir: 'tests/e2e',
@@ -28,5 +30,9 @@ export default defineConfig({
 	use: {
 		baseURL: url,
 		viewport: { width: 1440, height: 900 }
-	}
+	},
+	projects: [
+		{ name: 'chromium', testIgnore: native, use: { browserName: 'chromium', headless: true } },
+		{ name: 'native', testMatch: native }
+	]
 });

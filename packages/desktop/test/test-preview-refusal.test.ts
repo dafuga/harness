@@ -1,8 +1,11 @@
 import { execFile } from 'node:child_process';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, expect, test } from 'vitest';
+import manifest from '../package.json' with { type: 'json' };
+import playwright from '../playwright.config';
 
 /**
  * An ordinary browser run owns its preview. The real configuration is run here against a port
@@ -54,3 +57,21 @@ test('a port override that is no port is refused by its name before anything sta
 	expect(run.said).not.toContain('Running');
 	expect(run.code).not.toBe(0);
 }, 120_000);
+
+/** Whether a project's pattern takes a spec, matched as Playwright does on its absolute path. */
+const takes = (pattern: unknown, spec: string) =>
+	pattern instanceof RegExp && pattern.test(resolve(desktop, playwright.testDir ?? '', spec));
+
+test('test:e2e runs headless chromium without the Electron spec, which only test:native runs', () => {
+	const project = (name: string) => playwright.projects?.find((item) => item.name === name);
+	const chromium = project('chromium');
+	const native = project('native');
+	expect(manifest.scripts['test:e2e']).toBe('playwright test --project=chromium');
+	expect(manifest.scripts['test:native']).toBe('playwright test --project=native');
+	expect(chromium?.use).toMatchObject({ browserName: 'chromium', headless: true });
+	for (const spec of ['native-desktop.spec.ts', 'ui-hosted.spec.ts']) {
+		const electron = spec === 'native-desktop.spec.ts';
+		expect(takes(chromium?.testIgnore, spec), `chromium ignores ${spec}`).toBe(electron);
+		expect(takes(native?.testMatch, spec), `native matches ${spec}`).toBe(electron);
+	}
+});
