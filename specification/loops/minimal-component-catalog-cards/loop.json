@@ -2,7 +2,7 @@
 	"name": "minimal-component-catalog-cards",
 	"goal": "Component catalog cards show their title, screenshot and Used In links only at desktop, tablet and phone widths, with no summary, contents, status, verification or open action",
 	"createdAt": "2026-10-22T10:05:37.515Z",
-	"updatedAt": "2026-10-22T10:22:19.942Z",
+	"updatedAt": "2026-10-22T10:38:13.576Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T10:38:13.576Z",
+			"evidence": "Harness loop record --phase red failed on test commit 572295474fb32aa49988105c7339ada77e5da255 for the forbidden Contains label at desktop, tablet and phone widths; the unchanged recorded test passed on fix commit fdb057370ab7245dfe1b793be77c896fb97ad388. Checkpoint screenshots were captured by the same test."
 		},
 		{
 			"id": "verify",
