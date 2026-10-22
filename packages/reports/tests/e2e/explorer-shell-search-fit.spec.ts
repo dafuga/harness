@@ -8,7 +8,7 @@ import {
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { box } from './support/shellChecks';
-import { shellMount } from './support/shellData';
+import { shellMount, shellCategories } from './support/shellData';
 import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
 import {
 	buildShellFixture,
@@ -42,6 +42,8 @@ async function opened(page: Page, width: number): Promise<void> {
 	await openShellPage(page, home, 'navbar');
 	await expect(trigger(page)).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
+	const destinations = bar(page).getByRole('navigation', { name: 'Harness categories' });
+	await expect(destinations.getByRole('link')).toHaveText(shellCategories);
 }
 async function fits(page: Page, width: number): Promise<void> {
 	const search = await box(trigger(page));
