@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/exports.ts", "src/workflows/generate-code/exports.ts"],
-		"symbols": ["ExportPlan", "applyExports", "appendMissingExports", "ExportPlan"]
+		"source": [
+			"src/core/exports.ts",
+			"src/core/projects-sessions/exports.ts",
+			"src/workflows/generate-code/exports.ts",
+			"src/workflows/projects-sessions/generate-code/exports.ts"
+		],
+		"symbols": [
+			"ExportPlan",
+			"applyExports",
+			"appendMissingExports",
+			"applyExports",
+			"appendMissingExports",
+			"ExportPlan"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -51,11 +63,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/generate-code/exports.ts",
+		"entry": "src/workflows/projects-sessions/generate-code/exports.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/generate-code/exports.ts"
+				"entry": "src/workflows/projects-sessions/generate-code/exports.ts"
 			}
 		]
 	},

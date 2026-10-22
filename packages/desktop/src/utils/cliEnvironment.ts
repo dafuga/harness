@@ -1,1 +1,1 @@
-export { cliEnvironment } from './cli-environment/cliEnvironment';
+export { cliEnvironment } from './development-tooling/cli-environment/cliEnvironment';

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ContractPanel.svelte"],
-		"symbols": ["ContractPanel"]
+		"source": [
+			"packages/desktop/src/components/ContractPanel.svelte",
+			"packages/desktop/src/components/shared-primitives/ContractPanel.svelte"
+		],
+		"symbols": ["ContractPanel", "ContractPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ContractPanel.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/ContractPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/ContractPanel.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/ContractPanel.svelte"
 			}
 		]
 	},

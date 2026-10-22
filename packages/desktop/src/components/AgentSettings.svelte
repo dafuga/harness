@@ -1,61 +1,6 @@
 <script lang="ts">
-	import Select from '$shared/Select.svelte';
-	import { onMount } from 'svelte';
-	import { agentSettings } from '../lib/stores/agentSettings.svelte';
-	import { designCounts } from '../utils/composeModes';
-	/** Preferences of this device, the same for every project and composer on it. */
-	onMount(() => agentSettings.load());
+	import CategoryImplementation from './agents-providers/AgentSettings.svelte';
+	let props: Record<string, never> = $props();
 </script>
 
-<section class="agent-settings" data-harness-component="agent-settings">
-	<h2>Agents</h2>
-	<label class="agent-setting">
-		<span>Design options</span>
-		<Select
-			label="Design options"
-			bind:value={
-				() => String(agentSettings.designOptions),
-				(value) => agentSettings.setDesignOptions(Number(value))
-			}
-			>{#each designCounts as item (item)}<option value={String(item)}
-					>{item} {item === 1 ? 'design' : 'designs'}</option
-				>{/each}</Select
-		>
-	</label>
-	<small>How many designs a Plan of a page, shell or component asks for. Kept on this device.</small
-	>
-	{#if !agentSettings.saved}<p class="agent-settings-error" role="alert">
-			Not saved; this choice resets when the page reloads.
-		</p>{/if}
-</section>
-
-<style>
-	.agent-settings {
-		display: grid;
-		gap: 10px;
-		max-width: 420px;
-		padding: 18px;
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		background: var(--panel);
-	}
-	h2 {
-		margin: 0;
-		font-size: 16px;
-	}
-	.agent-setting {
-		display: grid;
-		gap: 6px;
-	}
-	.agent-setting span {
-		color: var(--gold);
-		font-size: 13px;
-	}
-	small {
-		color: var(--muted);
-	}
-	.agent-settings-error {
-		margin: 0;
-		color: #ff8a8a;
-	}
-</style>
+<CategoryImplementation {...props} />

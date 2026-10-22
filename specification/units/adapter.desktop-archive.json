@@ -7,11 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/DesktopArchiveAdapter.ts"],
+		"source": [
+			"scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
+			"src/adapters/DesktopArchiveAdapter.ts"
+		],
 		"symbols": [
 			"DesktopArchiveAdapter",
 			"DesktopArchiveAdapter.read",
-			"DesktopArchiveAdapter.patch"
+			"DesktopArchiveAdapter.patch",
+			"DesktopArchiveAdapter"
 		]
 	},
 	"contract": {
@@ -58,11 +62,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/DesktopArchiveAdapter.ts",
+		"entry": "scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/DesktopArchiveAdapter.ts"
+				"entry": "scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts"
 			}
 		]
 	},

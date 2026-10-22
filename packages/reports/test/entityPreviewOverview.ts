@@ -112,6 +112,15 @@ export async function reviewOverviewControls(page: Page, category: string): Prom
 		'overview has no state controls'
 	).toHaveCount(0);
 	await expect(page.getByRole('link', { name: 'View commit changes', exact: true })).toHaveCount(0);
+	await expect
+		.soft(
+			page.locator('.ex-pane figcaption .ex-standing'),
+			'captions contain only revision identity'
+		)
+		.toHaveCount(0);
+	await expect
+		.soft(page.getByRole('button', { name: 'Open full size', exact: true }), 'images open directly')
+		.toHaveCount(0);
 	await expect(
 		page.locator('.ex-evidence-head p'),
 		'screenshot heading has no explanatory paragraph'
@@ -131,7 +140,7 @@ export async function reviewFocusedScreens(
 	await expect
 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
 		.toHaveCount(2);
-	await expect.soft(panel).toContainText('Focused capture');
+	await expect.soft(panel).not.toContainText('Focused capture');
 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
 		const button = panel.getByRole('button', { name: label, exact: true });
 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);

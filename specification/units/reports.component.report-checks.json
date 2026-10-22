@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ReportChecks.svelte"],
-		"symbols": ["ReportChecks"]
+		"source": [
+			"packages/reports/src/components/ReportChecks.svelte",
+			"packages/reports/src/components/verification-evidence/ReportChecks.svelte"
+		],
+		"symbols": ["ReportChecks", "ReportChecks"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ReportChecks.svelte",
+		"entry": "packages/reports/src/components/verification-evidence/ReportChecks.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ReportChecks.svelte"
+				"entry": "packages/reports/src/components/verification-evidence/ReportChecks.svelte"
 			}
 		]
 	},

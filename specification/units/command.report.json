@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/ReportCommand.ts"],
+		"source": ["src/cli/program/ReportCommand.ts"],
 		"symbols": ["registerReportCommand"]
 	},
 	"contract": {
@@ -35,11 +35,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/ReportCommand.ts",
+		"entry": "src/cli/program/ReportCommand.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/ReportCommand.ts"
+				"entry": "src/cli/program/ReportCommand.ts"
 			}
 		]
 	},

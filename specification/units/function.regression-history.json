@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/regressionHistory.ts"],
-		"symbols": ["regressionHash", "regressionHistory", "sameRegression", "readRegression"]
+		"source": [
+			"src/utils/git-source-history/regressionHistory.ts",
+			"src/utils/regressionHistory.ts"
+		],
+		"symbols": [
+			"regressionHash",
+			"regressionHistory",
+			"sameRegression",
+			"readRegression",
+			"regressionHash",
+			"regressionHistory",
+			"sameRegression",
+			"readRegression"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,11 +85,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/regressionHistory.ts",
+		"entry": "src/utils/git-source-history/regressionHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/regressionHistory.ts"
+				"entry": "src/utils/git-source-history/regressionHistory.ts"
 			}
 		]
 	},

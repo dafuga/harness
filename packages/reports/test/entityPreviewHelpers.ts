@@ -1,5 +1,6 @@
 import type { HarnessRevision } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
+import { serviceClassProof, relationServiceMetadata, relationSource } from './entityClassFixtures';
 
 const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
 	'no-visible': [{ unit: ids.page }, { unit: ids.filter }],
@@ -17,7 +18,7 @@ const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
 
 /** Source-derived helper metadata distinguishes callable utilities from implementation units. */
 export function withHelpers(detail: HarnessRevision): HarnessRevision {
-	detail = withConsumers(detail);
+	detail = withServices(withConsumers(detail));
 	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
 	const hidden = [
 		'no-visible',
@@ -48,6 +49,7 @@ export function withHelpers(detail: HarnessRevision): HarnessRevision {
 			...template,
 			id: `function.${kind}`,
 			title: kind,
+			owns: { source: [`src/utils/${kind}.ts`], symbols: [kind] },
 			helpers
 		};
 	});
@@ -105,6 +107,60 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 	};
 }
 
+/** Private services stay linked to their owners but never enter the shared catalog. */
+function withServices(detail: HarnessRevision): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.id === ids.store)!;
+	const variants = privateServiceUsers;
+	return {
+		...detail,
+		registry: {
+			...detail.registry,
+			units: [
+				...detail.registry.units,
+				{
+					...template,
+					id: 'app.workflow.record-analytics',
+					kind: 'workflow',
+					title: 'Analytics recording',
+					owns: {
+						source: ['src/workflows/recordAnalytics.ts'],
+						symbols: ['AnalyticsInput', 'recordAnalytics']
+					},
+					serviceConsumers: [{ unit: ids.list }, { unit: ids.store }],
+					...{ serviceClasses: [] }
+				},
+				...variants.map((serviceConsumers, index) => ({
+					...template,
+					id: `app.service.private-${index}`,
+					title: `Private${index}`,
+					serviceConsumers,
+					...{
+						serviceClasses: [
+							serviceClassProof(
+								`Private${index}`,
+								`src/components/order-list/Private${index}.ts`,
+								serviceConsumers ?? []
+							)
+						]
+					},
+					owns: {
+						source: [`src/components/order-list/Private${index}.ts`],
+						symbols: [`Private${index}`]
+					}
+				}))
+			]
+		}
+	};
+}
+
+export const privateServiceUsers = [
+	[],
+	[{ unit: ids.list }],
+	[{ unit: ids.list }, { unit: ids.list }],
+	[{ unit: ids.list }, { unit: 'missing' }],
+	undefined
+];
+
 /** Mixed module groups exceed one and two batches, with an uneven final batch. */
 export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 	const kinds = ['page', 'shell', 'component', 'function', 'config', 'service', 'model'];
@@ -119,6 +175,7 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 				id,
 				kind,
 				title: `Consumer ${kind} ${offset + 1}`,
+				...relationServiceMetadata(kind, offset, ids.page),
 				helpers:
 					kind === 'function'
 						? [
@@ -133,11 +190,7 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 						: [],
 				dependencies: [{ unit: ids.filter, via: 'import' }],
 				owns: {
-					source: [
-						kind === 'page'
-							? `src/routes/consumers/${offset + 1}/+page.svelte`
-							: `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`
-					],
+					source: [relationSource(kind, offset)],
 					symbols: []
 				},
 				version: id

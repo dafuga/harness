@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/SegmentedChoice.svelte"],
-		"symbols": ["SegmentedChoice"]
+		"source": [
+			"packages/desktop/src/components/SegmentedChoice.svelte",
+			"packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte"
+		],
+		"symbols": ["SegmentedChoice", "SegmentedChoice"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,11 +44,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/SegmentedChoice.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/SegmentedChoice.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte"
 			}
 		]
 	},

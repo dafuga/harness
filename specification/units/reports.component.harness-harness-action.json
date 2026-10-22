@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/HarnessAction.svelte"],
-		"symbols": ["HarnessAction"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/HarnessAction.svelte",
+			"packages/reports/src/components/harness/HarnessAction.svelte"
+		],
+		"symbols": ["HarnessAction", "HarnessAction"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,11 +85,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/HarnessAction.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/HarnessAction.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/HarnessAction.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/HarnessAction.svelte"
 			}
 		]
 	},

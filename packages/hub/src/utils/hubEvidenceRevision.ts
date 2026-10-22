@@ -1,1 +1,1 @@
-export { hubEvidenceRevision } from './hub-evidence-revision/hubEvidenceRevision';
+export { hubEvidenceRevision } from './verification-evidence/hub-evidence-revision/hubEvidenceRevision';

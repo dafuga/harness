@@ -9,9 +9,16 @@
 	"owns": {
 		"source": [
 			"src/services/check-run-service/readBrowserDiagnostics.ts",
-			"src/utils/readBrowserDiagnostics.ts"
+			"src/utils/readBrowserDiagnostics.ts",
+			"src/workflows/run-verify/verification-service/check-run-service/readBrowserDiagnostics.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics.ts"
 		],
-		"symbols": ["readBrowserDiagnostics", "readBrowserDiagnostics"]
+		"symbols": [
+			"readBrowserDiagnostics",
+			"readBrowserDiagnostics",
+			"readBrowserDiagnostics",
+			"readBrowserDiagnostics"
+		]
 	},
 	"contract": {
 		"origin": "declared",

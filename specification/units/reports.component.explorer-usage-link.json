@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ExplorerUsageLink.svelte"],
-		"symbols": ["ExplorerUsageLink"]
+		"source": [
+			"packages/reports/src/components/ExplorerUsageLink.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerUsageLink.svelte"
+		],
+		"symbols": ["ExplorerUsageLink", "ExplorerUsageLink"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ExplorerUsageLink.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerUsageLink.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ExplorerUsageLink.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerUsageLink.svelte"
 			}
 		]
 	},

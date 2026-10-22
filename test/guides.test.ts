@@ -16,6 +16,7 @@ test('guidance covers every non-model scaffold topic', () => {
 
 	for (const kind of scaffoldKinds) {
 		expect(topics.has(kind), kind).toBe(true);
+		expect(findGuide(kind)?.rules.join('\n'), kind).toContain('Naming:');
 	}
 });
 
@@ -24,6 +25,12 @@ test('code-rules guidance exposes hard Harness limits', () => {
 
 	expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
 	expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');
+	const naming = findGuide('naming');
+	expect(naming?.rules.join('\n')).toContain('<PascalName>Service.ts');
+	expect(naming?.rules.join('\n')).toContain('<PascalName>.svelte');
+	expect(naming?.rules.join('\n')).toContain('<camelName>.ts');
+	expect(naming?.rules.join('\n')).toContain('<PascalName>.types.ts');
+	expect(findGuide('service')?.rules.join('\n')).toContain('instantiated classes');
 });
 
 test('loop guidance describes loop driven development', () => {

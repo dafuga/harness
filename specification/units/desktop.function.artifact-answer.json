@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/artifact-answer/artifactAnswer.ts",
-			"packages/desktop/src/utils/artifactAnswer.ts"
+			"packages/desktop/src/utils/artifactAnswer.ts",
+			"packages/desktop/src/utils/development-tooling/artifact-answer/artifactAnswer.ts"
 		],
-		"symbols": ["artifactAnswer", "artifactAnswer"]
+		"symbols": ["artifactAnswer", "artifactAnswer", "artifactAnswer"]
 	},
 	"contract": {
 		"origin": "declared",

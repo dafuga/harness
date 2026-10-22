@@ -6,8 +6,10 @@ import type {
 } from '../src/models/Harness.types';
 import { record } from './entityFixture';
 import { capture, ids, units } from './entityUnits';
+import { categorySources } from './entityPreviewGroups';
 import { withSourceMeasures } from './entityStates';
 export type PreviewVariant =
+	| 'source'
 	| ''
 	| 'legacy'
 	| 'partial'
@@ -18,6 +20,7 @@ export type PreviewVariant =
 	| 'states'
 	| 'documented'
 	| 'helpers'
+	| 'groups'
 	| 'relations'
 	| 'measurements'
 	| 'focused';
@@ -188,3 +191,8 @@ export function withMeasurements(detail: HarnessRevision): HarnessRevision {
 }
 
 export { withDocumentation } from './entityPreviewDocumentation';
+
+/** Category metadata is synthetic selected-revision data, like contracts and measurements. */
+export function withGroups(detail: HarnessRevision): HarnessRevision {
+	return categorySources(withFrame(detail, 'shell'));
+}

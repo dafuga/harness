@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/report-command-service/reportCli.ts",
-			"packages/reports/src/utils/reportCli.ts"
+			"packages/reports/src/services/reports-media/report-command-service/reportCli.ts",
+			"packages/reports/src/utils/reportCli.ts",
+			"packages/reports/src/utils/reports-media/reportCli.ts"
 		],
 		"symbols": [
+			"reportCli",
+			"inputData",
+			"required",
+			"reportCli",
+			"inputData",
+			"required",
 			"reportCli",
 			"inputData",
 			"required",
@@ -73,11 +81,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportCli.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportCli.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportCli.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportCli.ts"
 			}
 		]
 	},

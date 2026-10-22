@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RuntimeEvidence.svelte"],
-		"symbols": ["RuntimeEvidence"]
+		"source": [
+			"packages/desktop/src/components/RuntimeEvidence.svelte",
+			"packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte"
+		],
+		"symbols": ["RuntimeEvidence", "RuntimeEvidence"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -92,11 +95,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RuntimeEvidence.svelte",
+		"entry": "packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RuntimeEvidence.svelte"
+				"entry": "packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte"
 			}
 		]
 	},

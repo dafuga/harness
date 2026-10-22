@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/cleanCodeSnapshot.ts"],
-		"symbols": ["maxReviewStateBytes", "ReviewSnapshot", "snapshotCleanCodeFile"]
+		"source": [
+			"src/audit/cleanCodeSnapshot.ts",
+			"src/audit/verification-evidence/cleanCodeSnapshot.ts"
+		],
+		"symbols": [
+			"maxReviewStateBytes",
+			"snapshotCleanCodeFile",
+			"maxReviewStateBytes",
+			"ReviewSnapshot",
+			"snapshotCleanCodeFile"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -59,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/cleanCodeSnapshot.ts",
+		"entry": "src/audit/verification-evidence/cleanCodeSnapshot.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/cleanCodeSnapshot.ts"
+				"entry": "src/audit/verification-evidence/cleanCodeSnapshot.ts"
 			}
 		]
 	},

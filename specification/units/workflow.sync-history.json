@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/syncHistory.ts"],
+		"source": ["src/cli/program/syncHistory.ts"],
 		"symbols": ["SyncAction", "syncHistory", "renderSync"]
 	},
 	"contract": {
@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/workflows/syncHistory.ts",
+		"entry": "src/cli/program/syncHistory.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/workflows/syncHistory.ts"
+				"entry": "src/cli/program/syncHistory.ts"
 			}
 		]
 	},

@@ -6,7 +6,7 @@ import { runCommand } from '../support/cli';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { benchmarkCaptureSchema } from '../../src/core/verifyTypes';
-import { benchmarkMeasurements } from '../../src/services/record-assembly-service/sealRecord';
+import { benchmarkMeasurements } from '../../src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord';
 import type { Gathered } from '../../src/utils/gatherCaptures';
 
 const input = { unit: 'function.schema-fixture', workload: 'initialize-fields' };

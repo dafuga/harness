@@ -1,4 +1,4 @@
-import { hubHttp } from '../../../utils/hub-http/hubHttp';
+import { hubHttp } from '../../../utils/networking-security/hub-http/hubHttp';
 
 const limits: Record<string, number> = {
 	'/api/auth/challenge': 10,

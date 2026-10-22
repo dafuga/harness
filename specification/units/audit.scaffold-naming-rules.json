@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/scaffoldNamingRules.ts"],
-		"symbols": ["auditScaffoldTypeScriptNaming"]
+		"source": [
+			"src/audit/development-tooling/scaffoldNamingRules.ts",
+			"src/audit/scaffoldNamingRules.ts"
+		],
+		"symbols": ["auditScaffoldTypeScriptNaming", "auditScaffoldTypeScriptNaming"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -51,15 +54,20 @@
 			"unit": "function.case",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.catalog",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/scaffoldNamingRules.ts",
+		"entry": "src/audit/development-tooling/scaffoldNamingRules.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/scaffoldNamingRules.ts"
+				"entry": "src/audit/development-tooling/scaffoldNamingRules.ts"
 			}
 		]
 	},

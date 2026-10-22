@@ -4,24 +4,24 @@ import { unit } from '../explorerFixture';
 
 const named = (id: string, kind: string, title: string) => explorerName(unit(id, kind, { title }));
 
-test('a name is the words of the title, in sentence case', () => {
-	expect(named('function.console-route', 'function', 'consoleRoute')).toBe('Console route');
+test('code names retain their declared identifier casing', () => {
+	expect(named('function.console-route', 'function', 'consoleRoute')).toBe('consoleRoute');
 	expect(named('reports.component.harness-harness-console', 'component', 'HarnessConsole')).toBe(
-		'Harness console'
+		'HarnessConsole'
 	);
-	expect(named('service.title', 'service', 'TitleService')).toBe('Title service');
-	expect(named('function.slugify', 'function', 'slugify')).toBe('Slugify');
+	expect(named('service.title', 'service', 'TitleService')).toBe('TitleService');
+	expect(named('function.slugify', 'function', 'slugify')).toBe('slugify');
 });
 
-test('initials a reader knows stay as they are written', () => {
-	expect(named('reports.function.report-pdf', 'function', 'reportPdf')).toBe('Report PDF');
+test('code initialisms keep the exact source spelling', () => {
+	expect(named('reports.function.report-pdf', 'function', 'reportPdf')).toBe('reportPdf');
 	expect(named('reports.component.analytics-cpu', 'component', 'AnalyticsCpu')).toBe(
-		'Analytics CPU'
+		'AnalyticsCpu'
 	);
 	expect(named('reports.function.r2-evidence-config', 'function', 'r2EvidenceConfig')).toBe(
-		'R2 evidence config'
+		'r2EvidenceConfig'
 	);
-	expect(named('function.e2e-fixtures', 'function', 'e2eFixtures')).toBe('E2E fixtures');
+	expect(named('function.e2e-fixtures', 'function', 'e2eFixtures')).toBe('e2eFixtures');
 });
 
 test('a title that is an address or a file is not a name; the id gives the words', () => {
@@ -101,3 +101,41 @@ test('only a collection of the explorer is named in the singular before a parame
 	expect(route(`${mount}/components/[entity]/details`)).toBe('Component details');
 	expect(route(`${mount}/configs/[entity]`)).toBe('Config');
 });
+
+// One standard naming matrix covers every kind of code unit, including owner-local files.
+test.each([
+	[
+		'service',
+		'CheckoutService',
+		'src/lib/checkout/CheckoutService.ts',
+		['CheckoutOptions', 'CheckoutService', 'CheckoutResult']
+	],
+	[
+		'adapter',
+		'AgentHttpAdapter',
+		'src/adapters/agent-http/AgentHttpAdapter.ts',
+		['AgentHttpOptions', 'AgentHttpAdapter']
+	],
+	['repository', 'OrderRepository', 'src/repositories/OrderRepository.ts', ['OrderRepository']],
+	[
+		'workflow',
+		'recordAnalytics',
+		'src/cli/program/recordAnalytics.ts',
+		['AnalyticsInput', 'recordAnalytics']
+	],
+	['function', 'formatDuration', 'src/utils/formatDuration.ts', ['formatDuration']],
+	['module', 'orderRules', 'src/lib/orders/orderRules.ts', ['validateOrder', 'sortOrders']],
+	['component', 'OrderList', 'src/components/order-list/OrderList.svelte', []],
+	['model', 'Order', 'src/models/Order.ts', ['OrderFields', 'Order']],
+	['model', 'Order.types', 'src/models/Order.types.ts', ['OrderInput', 'OrderResult']],
+	['config', 'orderConfig', 'src/config/orderConfig.ts', ['OrderConfig', 'orderConfig']]
+])(
+	'%s names use the recorded code identity %s across descriptive titles',
+	(kind, name, source, symbols) => {
+		const record = unit(`app.${kind}.orders`, kind, {
+			title: 'A descriptive title for orders',
+			owns: { source: [source], symbols }
+		});
+		expect(explorerName(record)).toBe(name);
+	}
+);

@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/serializers/CodexResponsesSerializer.ts"],
+		"source": [
+			"src/serializers/CodexResponsesSerializer.ts",
+			"src/serializers/agents-providers/CodexResponsesSerializer.ts"
+		],
 		"symbols": [
+			"CodexResponsesSerializer",
 			"CodexResponsesSerializer",
 			"CodexResponsesSerializer.constructor",
 			"CodexResponsesSerializer.start",
@@ -76,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/serializers/CodexResponsesSerializer.ts",
+		"entry": "src/serializers/agents-providers/CodexResponsesSerializer.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/serializers/CodexResponsesSerializer.ts"
+				"entry": "src/serializers/agents-providers/CodexResponsesSerializer.ts"
 			}
 		]
 	},

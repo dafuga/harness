@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/AnnotatedImage.svelte"],
-		"symbols": ["AnnotatedImage"]
+		"source": [
+			"packages/desktop/src/components/AnnotatedImage.svelte",
+			"packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte"
+		],
+		"symbols": ["AnnotatedImage", "AnnotatedImage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/AnnotatedImage.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/AnnotatedImage.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte"
 			}
 		]
 	},

@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/replay-video-service/replayVideo.ts",
-			"packages/reports/src/utils/replayVideo.ts"
+			"packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
+			"packages/reports/src/utils/replayVideo.ts",
+			"packages/reports/src/utils/reports-media/replayVideo.ts"
 		],
-		"symbols": ["replayVideo", "replayVideoKey", "replayVideo"]
+		"symbols": ["replayVideo", "replayVideo", "replayVideoKey", "replayVideoKey", "replayVideo"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -76,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/replayVideo.ts",
+		"entry": "packages/reports/src/utils/reports-media/replayVideo.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/replayVideo.ts"
+				"entry": "packages/reports/src/utils/reports-media/replayVideo.ts"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ReplayControls.svelte"],
-		"symbols": ["ReplayControls"]
+		"source": [
+			"packages/reports/src/components/ReplayControls.svelte",
+			"packages/reports/src/components/reports-media/ReplayControls.svelte"
+		],
+		"symbols": ["ReplayControls", "ReplayControls"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -117,11 +120,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ReplayControls.svelte",
+		"entry": "packages/reports/src/components/reports-media/ReplayControls.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ReplayControls.svelte"
+				"entry": "packages/reports/src/components/reports-media/ReplayControls.svelte"
 			}
 		]
 	},

@@ -2,6 +2,11 @@ import { expect, test } from 'vitest';
 import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
+import { withGroups } from '../entityPreviewData';
+import { explorerEntities } from '../../src/utils/explorerEntities';
+import { render } from 'svelte/server';
+import EntitySource from '../../src/components/harness/EntitySource.svelte';
+import type { HarnessUnit } from '../../src/models/Harness.types';
 
 const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };
 const owned = /src\/|\+page\.svelte|\.ts\b|OrdersPage|OrderStore\b/;
@@ -50,7 +55,7 @@ test('source is shown only when the source tab is the open one', () => {
 		expect(body, 'GitHub source links use the selected commit').toContain(
 			`href="https://github.com/example/orders/blob/${commit}/src/routes/orders/%2Bpage.svelte"`
 		);
-		expect(words(body)).not.toMatch(/Source ownership|Symbols|Execution targets|Identity /);
+		expect(words(body)).not.toMatch(/Symbols|Execution targets|Identity /);
 	}
 	for (const sourceRepository of [
 		undefined,
@@ -61,7 +66,72 @@ test('source is shown only when the source tab is the open one', () => {
 		expect(words(body)).toContain('GitHub source unavailable');
 		expect(body).not.toContain('href="https://github.com/');
 	}
+	const body = content('commit', { ...page, tab: 'source' });
+	expect(words(body)).toContain('Source files');
+	expect(words(body)).toContain('src/routes/orders/+page.svelte');
+	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=source`);
+	const head = withGroups(revision(commits.middle, []));
+	sourceAdmission(head.registry.units.find((unit) => unit.id === ids.store)!);
+	for (const entity of explorerEntities(head)) {
+		const source = content(
+			'commit',
+			{
+				category: entity.category,
+				entity: entity.id,
+				tab: 'source'
+			},
+			{ head }
+		);
+		const section = /<section[^>]*aria-labelledby="ex-source-title"[^>]*>(.*?)<\/section>/s.exec(
+			source
+		)![1];
+		expect(words(section)).not.toMatch(/Symbols|Execution targets|Identity .*version/);
+		const grouped = entity.unit.owns.source.filter((path) =>
+			path.includes(`/${entity.unit.group!.id}/`)
+		);
+		const files = grouped.length ? grouped : entity.unit.owns.source;
+		expect(
+			[...section.matchAll(/<li\b[^>]*>(.*?)<\/li>/gs)].map((match) =>
+				words(/<(?:a|code)\b[^>]*>(.*?)<\/(?:a|code)>/s.exec(match[1])?.[1] ?? match[1]).trim()
+			)
+		).toEqual(files);
+		expect((section.match(/aria-label="View code for /g) ?? []).length).toBe(files.length);
+	}
 });
+
+/** Source accepts indexed arrays before serialization without invoking custom iteration/species. */
+function sourceAdmission(unit: HarnessUnit): void {
+	const paths = [...unit.owns.source];
+	const first = paths[0];
+	const reads = { indexed: 0, iterated: 0, species: 0 };
+	Object.defineProperty(paths, '0', {
+		get() {
+			reads.indexed++;
+			return first;
+		}
+	});
+	Object.defineProperty(paths, Symbol.iterator, {
+		value() {
+			reads.iterated++;
+			return [][Symbol.iterator]();
+		}
+	});
+	Object.defineProperty(paths, 'constructor', {
+		value: {
+			get [Symbol.species]() {
+				reads.species++;
+				return Array;
+			}
+		}
+	});
+	const body = render(EntitySource, {
+		props: { unit: { ...unit, owns: { ...unit.owns, source: paths } } }
+	}).body;
+	expect(words(body)).toContain('src/services/orders/OrderStore.ts');
+	expect(reads.indexed).toBeGreaterThan(0);
+	expect(reads.iterated).toBe(0);
+	expect(reads.species).toBe(0);
+}
 
 test('measurements name the limit each figure is frozen at, or that none is recorded', () => {
 	const body = content('commit', {

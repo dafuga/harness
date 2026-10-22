@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/evidenceReading.ts"],
-		"symbols": ["EvidenceRead", "evidenceReading"]
+		"source": [
+			"packages/desktop/src/utils/evidenceReading.ts",
+			"packages/desktop/src/utils/verification-evidence/evidenceReading.ts"
+		],
+		"symbols": ["evidenceReading", "EvidenceRead", "evidenceReading"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/evidenceReading.ts",
+		"entry": "packages/desktop/src/utils/verification-evidence/evidenceReading.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/evidenceReading.ts"
+				"entry": "packages/desktop/src/utils/verification-evidence/evidenceReading.ts"
 			}
 		]
 	},

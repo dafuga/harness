@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/timeLabel.ts"],
-		"symbols": ["timeLabel"]
+		"source": [
+			"packages/desktop/src/utils/development-tooling/timeLabel.ts",
+			"packages/desktop/src/utils/timeLabel.ts"
+		],
+		"symbols": ["timeLabel", "timeLabel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/timeLabel.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/timeLabel.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/timeLabel.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/timeLabel.ts"
 			}
 		]
 	},

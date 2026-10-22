@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/AnalyticsTasks.svelte"],
-		"symbols": ["AnalyticsTasks"]
+		"source": [
+			"packages/reports/src/components/AnalyticsTasks.svelte",
+			"packages/reports/src/components/reports-media/AnalyticsTasks.svelte"
+		],
+		"symbols": ["AnalyticsTasks", "AnalyticsTasks"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/AnalyticsTasks.svelte",
+		"entry": "packages/reports/src/components/reports-media/AnalyticsTasks.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/AnalyticsTasks.svelte"
+				"entry": "packages/reports/src/components/reports-media/AnalyticsTasks.svelte"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/harness-map/HarnessMap.svelte"],
-		"symbols": ["HarnessMap"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-map/HarnessMap.svelte",
+			"packages/reports/src/components/harness/harness-map/HarnessMap.svelte"
+		],
+		"symbols": ["HarnessMap", "HarnessMap"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/harness-map/HarnessMap.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/harness-map/HarnessMap.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/harness-map/HarnessMap.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/harness-map/HarnessMap.svelte"
 			}
 		]
 	},

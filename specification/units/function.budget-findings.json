@@ -7,9 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/budget-service/budgetFindings.ts", "src/utils/budgetFindings.ts"],
+		"source": [
+			"src/services/budget-service/budgetFindings.ts",
+			"src/services/verification-evidence/budget-service/budgetFindings.ts",
+			"src/utils/budgetFindings.ts",
+			"src/utils/verification-evidence/budgetFindings.ts"
+		],
 		"symbols": [
 			"budgetFindings",
+			"budgetFindings",
+			"budgetFindings",
+			"frozenMetrics",
+			"isFrozen",
+			"higherIsBetter",
+			"performanceLimit",
 			"frozenMetrics",
 			"isFrozen",
 			"higherIsBetter",
@@ -103,11 +114,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/budgetFindings.ts",
+		"entry": "src/utils/verification-evidence/budgetFindings.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/budgetFindings.ts"
+				"entry": "src/utils/verification-evidence/budgetFindings.ts"
 			}
 		]
 	},

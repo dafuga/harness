@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/audit/development-tooling/structure-rules/planningArtifactPaths.ts",
 			"src/audit/structure-rules/planningArtifactPaths.ts",
 			"src/utils/planningArtifactPaths.ts"
 		],
-		"symbols": ["planningArtifactPaths", "planningArtifactPaths"]
+		"symbols": ["planningArtifactPaths", "planningArtifactPaths", "planningArtifactPaths"]
 	},
 	"contract": {
 		"origin": "declared",

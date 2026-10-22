@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import { readFile } from 'node:fs/promises';
 import { commandOutput, runCommand, runHarness } from './support/cli';
 
 test('generated projects reject bad Harness structure through audit', async () => {
@@ -81,4 +82,77 @@ function expectRules(output: string, rules: string[]): void {
 	for (const rule of rules) {
 		expect(output, rule).toContain(rule);
 	}
+}
+
+test('categorized projects generate dynamic folders and audit rejects flat implementations', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-category-structure-'));
+	try {
+		await runHarness(['new', 'lib', 'categorized'], root);
+		const project = join(root, 'categorized');
+		await runHarness(
+			['generate', 'unit', 'Invoice', '--kind', 'service', '--group', 'billing'],
+			project
+		);
+		const category = await readFile(join(project, 'harness.groups.json'), 'utf8');
+		expect(JSON.parse(category).groups).toEqual(
+			expect.arrayContaining([expect.objectContaining({ id: 'billing' })])
+		);
+		await runHarness(['units', 'index', '--write'], project);
+		const indexed = await runHarness(['units', 'check'], project);
+		expect(indexed.exitCode).toBe(0);
+		const accepted = await runHarness(['audit', '.'], project);
+		expect(accepted.exitCode).toBe(0);
+		await writeFile(
+			join(project, 'src/services/FlatService.ts'),
+			'export class FlatService { run() {} }\n'
+		);
+		const rejected = await runHarness(['audit', '.'], project, false);
+		expect(rejected.exitCode).toBe(1);
+		expect(commandOutput(rejected)).toContain('module-category-folder');
+		await expectCategoryForwarding(project, JSON.parse(category));
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 60_000);
+
+/** Supported entries forward props; an implementation cannot hide in their script. */
+async function expectCategoryForwarding(project: string, taxonomy: object) {
+	const entry = 'src/components/Entry.svelte';
+	await mkdir(join(project, 'src/components'), { recursive: true });
+	await writeFile(
+		join(project, 'harness.groups.json'),
+		JSON.stringify({ ...taxonomy, legacy: [entry] })
+	);
+	const script =
+		"import CategoryImplementation from './billing/Entry.svelte'; let props = $props();";
+	const markup = '<CategoryImplementation {...props} />';
+	await writeFile(join(project, entry), `<script lang="ts">${script}</script>${markup}`);
+	const proxy = JSON.parse((await runHarness(['audit', '.', '--json'], project, false)).stdout);
+	const categoryFindings = (report: { findings: Array<{ path: string; rule: string }> }) =>
+		report.findings.filter(
+			(finding) => finding.path === entry && finding.rule === 'module-category-folder'
+		);
+	expect(categoryFindings(proxy)).toEqual([]);
+	for (const module of [
+		"export { archivedSource } from './billing/Entry.svelte';",
+		'export function archivedSource() { return 1; }'
+	]) {
+		await writeFile(
+			join(project, entry),
+			`<script lang="ts" module>${module}</script><script lang="ts">${script}</script>${markup}`
+		);
+		const report = JSON.parse((await runHarness(['audit', '.', '--json'], project, false)).stdout);
+		expect(
+			categoryFindings(report),
+			'module scripts preserve exports, never implementation'
+		).toHaveLength(module.startsWith('export {') ? 0 : 1);
+	}
+	await writeFile(
+		join(project, entry),
+		`<script lang="ts">${script} function localLogic() { return 1; }</script>${markup}`
+	);
+	const implementation = JSON.parse(
+		(await runHarness(['audit', '.', '--json'], project, false)).stdout
+	);
+	expect(categoryFindings(implementation)).toHaveLength(1);
 }

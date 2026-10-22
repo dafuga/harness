@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedResponse.ts"],
-		"symbols": ["hostedResponse"]
+		"source": [
+			"packages/desktop/src/utils/development-tooling/hostedResponse.ts",
+			"packages/desktop/src/utils/hostedResponse.ts"
+		],
+		"symbols": ["hostedResponse", "hostedResponse"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/hostedResponse.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/hostedResponse.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/hostedResponse.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/hostedResponse.ts"
 			}
 		]
 	},

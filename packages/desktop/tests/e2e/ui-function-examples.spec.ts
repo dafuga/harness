@@ -35,7 +35,7 @@ test('a function is listed and opened without a design picture, and no image is 
 	await expect(card).not.toContainText(/design/i);
 	await expect(card.locator('img, .thumbnail')).toHaveCount(0);
 	await card.getByRole('link').click();
-	await expect(heading(page, 'Filter orders')).toBeVisible();
+	await expect(heading(page, 'filterOrders')).toBeVisible();
 	await expect(tabs(page).getByRole('button')).toHaveText([
 		'Overview',
 		'Plan',
@@ -47,7 +47,7 @@ test('a function is listed and opened without a design picture, and no image is 
 	]);
 	await expect(current(page)).toHaveText('Plan');
 	await page.goto(`${filter}/designs`);
-	await expect(heading(page, 'Filter orders')).toBeVisible();
+	await expect(heading(page, 'filterOrders')).toBeVisible();
 	await pictured(page, info, 'function-former-designs-address');
 	await expect(current(page)).toHaveText('Plan');
 	await expect(page.getByText('Returns the orders whose name contains the search')).toBeVisible();
@@ -60,7 +60,7 @@ test('a function shows what its tests observed, an input beside the output, one 
 	page
 }, info) => {
 	await opened(page, filter);
-	await expect(heading(page, 'Filter orders')).toBeVisible();
+	await expect(heading(page, 'filterOrders')).toBeVisible();
 	await expect(runtime(page).getByRole('group', { name: /^Current snapshot/ })).toBeVisible();
 	await pictured(page, info, 'function-rows');
 	const tables = runtime(page).getByRole('table');
@@ -86,7 +86,7 @@ test('at a selected commit the parent and the commit each have their own rows, o
 	page
 }, info) => {
 	await opened(page, `${root}/commit/${commits.middle}/functions/${ids.filter}`);
-	await expect(heading(page, 'Filter orders')).toBeVisible();
+	await expect(heading(page, 'filterOrders')).toBeVisible();
 	const sides = [`Before · ${short(commits.first)}`, `After · ${short(commits.middle)}`];
 	for (const name of sides) await expect(runtime(page).getByRole('group', { name })).toBeVisible();
 	await pictured(page, info, 'function-commit');
@@ -115,7 +115,7 @@ for (const viewport of [
 	}, info) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await opened(page, filter, { shared: true });
-		await expect(heading(page, 'Filter orders')).toBeVisible();
+		await expect(heading(page, 'filterOrders')).toBeVisible();
 		await expect(runtime(page).getByRole('group', { name: /^Current snapshot/ })).toBeVisible();
 		await pictured(page, info, `function-rows-${viewport.id}`);
 		await expect(runtime(page).getByRole('table').first()).toBeVisible();

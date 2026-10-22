@@ -3,11 +3,14 @@
 	"id": "reports.model.harness-types",
 	"kind": "model",
 	"title": "Harness",
-	"responsibility": "Describes the parts of the history index and revision details the console reads.",
+	"responsibility": "Describes history indexes and revision details, including opaque whole-tree identity for entity projections without cache filenames.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/models/Harness.types.ts"],
+		"source": [
+			"packages/reports/src/models/Harness.types.ts",
+			"packages/reports/src/models/explorer-ui/Harness.types.ts"
+		],
 		"symbols": [
 			"HarnessRecordSummary",
 			"HarnessRevisionSummary",
@@ -64,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/models/Harness.types.ts",
+		"entry": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/models/Harness.types.ts"
+				"entry": "packages/reports/src/models/explorer-ui/Harness.types.ts"
 			}
 		]
 	},

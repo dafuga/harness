@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/utils/readJsonBody.ts"],
-		"symbols": ["readJsonBody"]
+		"source": [
+			"packages/relay/src/utils/development-tooling/readJsonBody.ts",
+			"packages/relay/src/utils/readJsonBody.ts"
+		],
+		"symbols": ["readJsonBody", "readJsonBody"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/utils/readJsonBody.ts",
+		"entry": "packages/relay/src/utils/development-tooling/readJsonBody.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/utils/readJsonBody.ts"
+				"entry": "packages/relay/src/utils/development-tooling/readJsonBody.ts"
 			}
 		]
 	},

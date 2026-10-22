@@ -8,12 +8,22 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/services/hub-projection-service/hubDesigns.ts",
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesigns.ts",
 			"packages/hub/src/utils/hub-catalog/hubDesigns.ts",
 			"packages/hub/src/utils/hub-designs/design.ts",
-			"packages/hub/src/utils/hubDesigns.ts"
+			"packages/hub/src/utils/hubDesigns.ts",
+			"packages/hub/src/utils/networking-security/hub-catalog/hubDesigns.ts",
+			"packages/hub/src/utils/networking-security/hub-designs/design.ts"
 		],
-		"symbols": ["hubDesignImage", "hubDesigns", "design", "hubDesigns", "hubDesignImage"]
+		"symbols": [
+			"hubDesignImage",
+			"hubDesigns",
+			"design",
+			"hubDesigns",
+			"hubDesignImage",
+			"hubDesigns",
+			"design"
+		]
 	},
 	"contract": {
 		"origin": "declared",

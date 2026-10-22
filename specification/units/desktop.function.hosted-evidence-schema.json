@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/hostedEvidenceSchema.ts"],
-		"symbols": ["hostedEvidenceSchema"]
+		"source": [
+			"packages/desktop/src/utils/hostedEvidenceSchema.ts",
+			"packages/desktop/src/utils/verification-evidence/hostedEvidenceSchema.ts"
+		],
+		"symbols": ["hostedEvidenceSchema", "hostedEvidenceSchema"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,11 +44,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/hostedEvidenceSchema.ts",
+		"entry": "packages/desktop/src/utils/verification-evidence/hostedEvidenceSchema.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/hostedEvidenceSchema.ts"
+				"entry": "packages/desktop/src/utils/verification-evidence/hostedEvidenceSchema.ts"
 			}
 		]
 	},

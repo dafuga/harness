@@ -2,7 +2,11 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 
-const home = 'src/components/harness';
+const home: string = JSON.parse(
+	readFileSync('../../specification/units/reports.component.harness-explorer-content.json', 'utf8')
+)
+	.runtime.entry.replace('packages/reports/', '')
+	.replace(/\/[^/]+$/, '');
 const routes = 'src/routes/harness/branch/[branch]/[...at]';
 const categories = ['pages', 'components', 'functions', 'configs', 'services'];
 const entries = {
@@ -36,10 +40,21 @@ const imported = (file: string): string[] =>
 const files = readdirSync(home, { recursive: true, encoding: 'utf8' }).filter((file) =>
 	file.endsWith('.svelte')
 );
+const registered = readdirSync('../../specification/units').flatMap(
+	(file): Array<[string, string]> => {
+		const entry = JSON.parse(readFileSync(join('../../specification/units', file), 'utf8')).runtime
+			.entry as string;
+		return entry.startsWith('packages/reports/') && entry.endsWith('.svelte')
+			? [[entry.split('/').at(-1)!.replace('.svelte', ''), entry.replace('packages/reports/', '')]]
+			: [];
+	}
+);
+const implementations = new Map(registered);
 const own = (name: string) =>
-	files.some((file) => file.split('/').at(-1) === `${name}.svelte`)
+	implementations.get(name) ??
+	(files.some((file) => file.split('/').at(-1) === `${name}.svelte`)
 		? join(home, files.find((file) => file.split('/').at(-1) === `${name}.svelte`)!)
-		: join('src/components', `${name}.svelte`);
+		: join('src/components', `${name}.svelte`));
 const direct = (name: string) => imported(own(name));
 
 /** Every component of the explorer that one reaches through what it imports. */
@@ -65,6 +80,10 @@ test('no entry reaches the content that shows every screen, or the host that mou
 	for (const entry of Object.values(entries)) {
 		expect(has(entry, ['ExplorerContent', 'HarnessConsole', 'HarnessShell']), entry).toEqual([]);
 	}
+	const panes = direct('ExplorerFrame').filter(
+		(name) => name.startsWith('Entity') && name !== 'EntityMissing'
+	);
+	expect(panes, 'shared frames must not import entity-specific panes').toEqual([]);
 });
 
 test('collections reuse visual cards and tables without loading entity detail panes', () => {

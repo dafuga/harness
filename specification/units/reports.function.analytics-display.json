@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/analyticsDisplay.ts"],
-		"symbols": ["analyticsDisplay", "analyticsCount"]
+		"source": [
+			"packages/reports/src/utils/analyticsDisplay.ts",
+			"packages/reports/src/utils/reports-media/analyticsDisplay.ts"
+		],
+		"symbols": ["analyticsDisplay", "analyticsCount", "analyticsDisplay", "analyticsCount"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,11 +44,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/analyticsDisplay.ts",
+		"entry": "packages/reports/src/utils/reports-media/analyticsDisplay.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/analyticsDisplay.ts"
+				"entry": "packages/reports/src/utils/reports-media/analyticsDisplay.ts"
 			}
 		]
 	},

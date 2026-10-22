@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/Select.svelte"],
-		"symbols": ["Select"]
+		"source": [
+			"packages/reports/src/components/Select.svelte",
+			"packages/reports/src/components/shared-primitives/Select.svelte"
+		],
+		"symbols": ["Select", "Select"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -76,11 +79,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/Select.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/Select.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/Select.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/Select.svelte"
 			}
 		]
 	},

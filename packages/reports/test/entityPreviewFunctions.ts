@@ -9,7 +9,7 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		await open(page, { category: 'components', entity: ids.list, tab: 'uses', commit }, 'helpers');
 		await page
 			.getByRole('region', { name: 'Uses', exact: true })
-			.getByRole('link', { name: 'Single', exact: true })
+			.getByRole('link', { name: 'single', exact: true })
 			.click();
 		await page.evaluate(async () => {
 			await document.fonts.ready;
@@ -22,12 +22,12 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		await expect(breadcrumb, 'Private functions have no Helpers breadcrumb').not.toContainText(
 			'Helpers'
 		);
-		await expect(breadcrumb.getByRole('link', { name: 'Order list', exact: true })).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'Single', exact: true })).toBeVisible();
+		await expect(breadcrumb.getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'single', exact: true })).toBeVisible();
 		await page.getByRole('tab', { name: 'Examples', exact: true }).click();
-		await expect(page.getByRole('tabpanel', { name: 'Single examples' })).toBeVisible();
+		await expect(page.getByRole('tabpanel', { name: 'single examples' })).toBeVisible();
 		await page.getByRole('tab', { name: 'Source', exact: true }).click();
-		await expect(page.getByRole('tabpanel', { name: 'Single source' })).toBeVisible();
+		await expect(page.getByRole('tabpanel', { name: 'single source' })).toBeVisible();
 		await page.getByRole('tab', { name: 'History', exact: true }).click();
 		await expect(breadcrumb).not.toContainText('Helpers');
 		expect(await where(page)).toMatchObject({
@@ -38,7 +38,6 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		expect(await fits(page)).toBe(true);
 	}
 }
-
 /** A shared helper card opens the same callable's contract without extra detail panels. */
 export async function reviewHelperCard(page: Page, cards: Locator): Promise<void> {
 	await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
@@ -61,7 +60,6 @@ export async function reviewHelperCard(page: Page, cards: Locator): Promise<void
 	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
 	await expect(page.getByRole('table', { name: 'Parameters', exact: true })).toBeVisible();
 }
-
 /** Consumer links are limited to three eligible units and retain current or selected-commit scope. */
 export async function reviewHelperUsage(page: Page, viewport: string): Promise<void> {
 	for (const commit of [null, commits.middle]) {
@@ -73,7 +71,7 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		const card = page.getByRole('article');
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
-		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store', 'Order']);
+		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
 		for (const kind of ['Components', 'Services', 'Models'])
 			await expect(usage.getByRole('list', { name: kind, exact: true })).toBeVisible();
 		await reviewConsumerPreview(page, usage, commit, viewport);
@@ -84,8 +82,8 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		expect(sizes[1], 'usage is smaller than the function call').toBeLessThan(sizes[0]);
 		expect(await fits(page)).toBe(true);
 		for (const [label, category, entity] of [
-			['Order list', 'components', ids.list],
-			['Order store', 'services', ids.store],
+			['OrderList', 'components', ids.list],
+			['OrderStore', 'services', ids.store],
 			['Order', 'models', 'app.model.order']
 		] as const) {
 			await page
@@ -103,19 +101,18 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		}
 	}
 }
-
 async function reviewConsumerPreview(
 	page: Page,
 	usage: Locator,
 	commit: string | null,
 	viewport: string
 ): Promise<void> {
-	const consumer = usage.getByRole('link', { name: 'Order list', exact: true });
+	const consumer = usage.getByRole('link', { name: 'OrderList', exact: true });
 	await consumer.hover();
 	await capture(page, `usage-preview-${commit ? 'commit' : 'tip'}-${viewport}`);
-	const preview = page.getByRole('tooltip', { name: 'Preview of Order list', exact: true });
+	const preview = page.getByRole('tooltip', { name: 'Preview of OrderList', exact: true });
 	await expect(preview, 'consumer links show screenshot previews').toBeVisible();
-	const image = preview.getByRole('img', { name: 'Screenshot of Order list', exact: true });
+	const image = preview.getByRole('img', { name: 'Screenshot of OrderList', exact: true });
 	await expect(image).toHaveAttribute(
 		'src',
 		`/media/${(commit ?? commits.tip).slice(0, 7)}-default-desktop.png`
@@ -130,16 +127,15 @@ async function reviewConsumerPreview(
 	await expect(preview, 'keyboard focus shows the same preview').toBeVisible();
 	await page.keyboard.press('Escape');
 	await expect(preview).toHaveCount(0);
-	const missing = usage.getByRole('link', { name: 'Order store', exact: true });
+	const missing = usage.getByRole('link', { name: 'OrderStore', exact: true });
 	await missing.hover();
 	await capture(page, `nonvisual-preview-${commit ? 'commit' : 'tip'}-${viewport}`);
-	const service = page.getByRole('tooltip', { name: 'Preview of Order store', exact: true });
+	const service = page.getByRole('tooltip', { name: 'Preview of OrderStore', exact: true });
 	await expect(service.locator('code')).toHaveText('OrderStore');
 	await expect(service).not.toContainText('No screenshot');
 	await expect(service.locator('img')).toHaveCount(0);
 	await page.mouse.move(1, 1);
 }
-
 /** Source navigation stays bound to the selected repository and full commit. */
 export async function reviewHelperSource(page: Page, viewport: string): Promise<void> {
 	const filter = { category: 'functions' as const, entity: ids.filter };
@@ -162,47 +158,6 @@ export async function reviewHelperSource(page: Page, viewport: string): Promise<
 		expect(await where(page)).toEqual({ branch: 'feature/orders', commit, ...filter });
 	}
 }
+export { reviewUsageCards } from './entityPreviewUsage';
 
-/** Usage tabs use the same cards as their collections without widening the page. */
-export async function reviewUsageCards(
-	page: Page,
-	category: string,
-	direction: string,
-	commit: string | null = commits.middle
-): Promise<void> {
-	await reviewConsumerKinds(page, category, direction);
-	const cards = page.locator('.ex-relations article');
-	for (const card of await cards.all()) {
-		await expect(
-			card.getByRole('group', { name: 'Used In', exact: true }),
-			'every relationship card includes its usage footer'
-		).toBeVisible();
-	}
-	if (category === 'components' && direction === 'uses') {
-		const card = page.getByRole('article', { name: 'Order card', exact: true });
-		await expect(
-			card
-				.getByRole('group', { name: 'Used In', exact: true })
-				.getByRole('link', { name: 'Order list', exact: true })
-		).toHaveAttribute(
-			'href',
-			`/harness/branch/feature%2Forders${commit ? `/commit/${commit}` : ''}/components/${ids.list}`
-		);
-	}
-	if (category === 'pages' && direction === 'uses')
-		await expect(
-			page.getByRole('region', { name: 'Uses', exact: true }).locator('article.ex-page-card'),
-			'Relationships reuse catalog cards'
-		).toHaveCount(2);
-	if (category === 'components' && direction === 'uses')
-		await expect(page.locator('.ex-relations .ex-function-tile')).toHaveCount(1);
-	expect(await fits(page)).toBe(true);
-}
-
-/** Reverse dependencies name every populated module type. */
-async function reviewConsumerKinds(page: Page, category: string, direction: string): Promise<void> {
-	if (direction !== 'used-in' || category !== 'functions') return;
-	const used = page.getByRole('region', { name: 'Used In', exact: true });
-	for (const kind of ['Pages', 'Components'])
-		await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
-}
+export { reviewServiceCard } from './entityPreviewUsage';

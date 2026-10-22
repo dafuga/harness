@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EvidenceViewer.svelte"],
-		"symbols": ["EvidenceViewer"]
+		"source": [
+			"packages/reports/src/components/EvidenceViewer.svelte",
+			"packages/reports/src/components/verification-evidence/EvidenceViewer.svelte"
+		],
+		"symbols": ["EvidenceViewer", "EvidenceViewer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -87,11 +90,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EvidenceViewer.svelte",
+		"entry": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/EvidenceViewer.svelte"
+				"entry": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte"
 			}
 		]
 	},

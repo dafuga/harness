@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RelationshipsPanel.svelte"],
-		"symbols": ["RelationshipsPanel"]
+		"source": [
+			"packages/desktop/src/components/RelationshipsPanel.svelte",
+			"packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte"
+		],
+		"symbols": ["RelationshipsPanel", "RelationshipsPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RelationshipsPanel.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RelationshipsPanel.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte"
 			}
 		]
 	},

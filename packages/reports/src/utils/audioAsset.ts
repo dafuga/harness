@@ -1,1 +1,1 @@
-export { audioAsset } from './audio-asset/audioAsset';
+export { audioAsset } from './reports-media/audio-asset/audioAsset';

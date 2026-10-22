@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/impact-kernel/kernelClosure.ts", "src/utils/kernelClosure.ts"],
-		"symbols": ["kernelClosure", "kernelClosure"]
+		"source": [
+			"src/utils/execution-runtimes/impact-kernel/kernelClosure.ts",
+			"src/utils/impact-kernel/kernelClosure.ts",
+			"src/utils/kernelClosure.ts"
+		],
+		"symbols": ["kernelClosure", "kernelClosure", "kernelClosure"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -11,7 +11,7 @@ import { commits, ids } from './entityUnits';
 const label = process.env.SCREENSHOT_LABEL ?? 'run';
 const content = (page: Page) => page.locator('.ex-content');
 const frame = (page: Page) =>
-	content(page).locator('.ex-row-name, h2').getByRole('link', { name: 'Order frame', exact: true });
+	content(page).locator('.ex-row-name, h2').getByRole('link', { name: 'OrderFrame', exact: true });
 
 /** Fonts drawn and every image decoded before a picture is kept. */
 async function settled(page: Page, name: string): Promise<void> {
@@ -35,7 +35,7 @@ for (const [viewport, size] of [
 		await expect(frame(page)).toBeVisible();
 		expect(await fits(page)).toBe(true);
 		await open(page, { category: 'components' }, 'shells');
-		await expect(content(page).getByText('Order list', { exact: true }).first()).toBeVisible();
+		await expect(content(page).getByText('OrderList', { exact: true }).first()).toBeVisible();
 		await expect(frame(page)).toHaveCount(0);
 	});
 }
@@ -60,7 +60,7 @@ test('the shell says it is a Shell, uses the order list and is used in the order
 		content(page).getByRole('link', { name: 'Open Orders page', exact: true })
 	).toBeVisible();
 	await open(page, { category: 'shells', entity: frameId, tab: 'uses' }, 'shells');
-	await expect(content(page).getByRole('link', { name: 'Order list', exact: true })).toBeVisible();
+	await expect(content(page).getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();
 	await open(page, { commit: commits.first, category: 'components', entity: frameId }, 'shells');
 	await expect(content(page).getByText('Component', { exact: true }).first()).toBeVisible();
 	await expect(content(page).getByText('Shell', { exact: true })).toHaveCount(0);

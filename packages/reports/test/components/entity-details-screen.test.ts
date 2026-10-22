@@ -3,7 +3,7 @@ import EntityDetailsScreen from '../../src/components/harness/EntityDetailsScree
 import { content, drawn, screen, words } from '../entityRender';
 import { ids, units } from '../entityUnits';
 
-const owned = /src\/|\+page\.svelte|\.ts\b|OrdersPage|OrderStore\b/;
+const owned = /src\/|\+page\.svelte|\.ts\b|OrdersPage/;
 const places = [
 	{ category: 'pages' as const, entity: ids.page },
 	{ category: 'components' as const, entity: ids.list },

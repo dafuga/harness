@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/cleanCode.ts"],
-		"symbols": ["cleanCodeGuide"]
+		"source": ["src/guides/cleanCode.ts", "src/guides/development-tooling/cleanCode.ts"],
+		"symbols": ["cleanCodeGuide", "cleanCodeGuide"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,11 +30,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/guides/cleanCode.ts",
+		"entry": "src/guides/development-tooling/cleanCode.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/guides/cleanCode.ts"
+				"entry": "src/guides/development-tooling/cleanCode.ts"
 			}
 		]
 	},

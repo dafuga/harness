@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/ProjectCreate.svelte"],
-		"symbols": ["ProjectCreate"]
+		"source": [
+			"packages/hub/src/components/ProjectCreate.svelte",
+			"packages/hub/src/components/projects-sessions/ProjectCreate.svelte"
+		],
+		"symbols": ["ProjectCreate", "ProjectCreate"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/ProjectCreate.svelte",
+		"entry": "packages/hub/src/components/projects-sessions/ProjectCreate.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/ProjectCreate.svelte"
+				"entry": "packages/hub/src/components/projects-sessions/ProjectCreate.svelte"
 			}
 		]
 	},

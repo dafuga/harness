@@ -1,1 +1,1 @@
-export { planReads } from '../services/planning-service/planReads';
+export { planReads } from '../lib/planning-collaboration/planning/planning-service/planReads';

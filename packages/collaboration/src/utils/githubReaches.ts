@@ -1,1 +1,1 @@
-export { githubReaches } from './create-git-hub-source/githubReaches';
+export { githubReaches } from './git-source-history/create-git-hub-source/githubReaches';

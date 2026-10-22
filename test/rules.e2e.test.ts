@@ -37,6 +37,7 @@ test('generated projects reject bad code through lint, check, and Harness audit'
 		const auditFailure = await runHarness(['audit', '.'], project, false);
 		expect(auditFailure.exitCode).toBe(1);
 		expectRules(commandOutput(auditFailure), auditRuleIds);
+		expect(commandOutput(auditFailure)).toContain('src/lib/checkout/payment.ts');
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
@@ -78,6 +79,8 @@ function expectLintRules(output: string, rules: string[]): void {
 
 async function writeBadRuleFixtures(project: string): Promise<void> {
 	await mkdir(join(project, 'src/core'), { recursive: true });
+	await mkdir(join(project, 'src/lib/checkout'), { recursive: true });
+	await writeFile(join(project, 'src/lib/checkout/payment.ts'), 'export class PaymentService {}\n');
 	await mkdir(join(project, 'src/services'), { recursive: true });
 	await mkdir(join(project, 'src/templates'), { recursive: true });
 	await mkdir(join(project, 'src/utils'), { recursive: true });

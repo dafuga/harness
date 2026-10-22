@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/verificationNoteIdentity.ts"],
-		"symbols": ["verificationNoteIdentity"]
+		"source": [
+			"src/utils/verification-evidence/verificationNoteIdentity.ts",
+			"src/utils/verificationNoteIdentity.ts"
+		],
+		"symbols": ["verificationNoteIdentity", "verificationNoteIdentity"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/verificationNoteIdentity.ts",
+		"entry": "src/utils/verification-evidence/verificationNoteIdentity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/verificationNoteIdentity.ts"
+				"entry": "src/utils/verification-evidence/verificationNoteIdentity.ts"
 			}
 		]
 	},

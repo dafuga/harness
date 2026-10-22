@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/cleanCodeRubric.ts"],
+		"source": ["src/audit/cleanCodeRubric.ts", "src/audit/development-tooling/cleanCodeRubric.ts"],
 		"symbols": [
+			"cleanCodeRubricVersion",
+			"cleanCodePrinciples",
+			"cleanCodeQuestions",
 			"cleanCodeRubricVersion",
 			"CleanCodePrinciple",
 			"cleanCodePrinciples",
@@ -43,11 +46,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/cleanCodeRubric.ts",
+		"entry": "src/audit/development-tooling/cleanCodeRubric.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/cleanCodeRubric.ts"
+				"entry": "src/audit/development-tooling/cleanCodeRubric.ts"
 			}
 		]
 	},

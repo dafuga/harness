@@ -1,1 +1,1 @@
-export { reportPublicationVerify } from '../services/report-publish-service/reportPublicationVerify';
+export { reportPublicationVerify } from '../services/reports-media/report-command-service/report-publish-service/reportPublicationVerify';

@@ -9,15 +9,23 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/entity-view/createdThread.ts",
+			"packages/desktop/src/components/explorer-ui/entity-view/createdThread.ts",
 			"packages/desktop/src/utils/createdThread.ts",
+			"packages/desktop/src/utils/explorer-ui/createdThread.ts",
+			"packages/desktop/src/utils/explorer-ui/project-agent-events/rememberCreatedThread.ts",
 			"packages/desktop/src/utils/project-agent-events/rememberCreatedThread.ts"
 		],
 		"symbols": [
 			"createdThread",
+			"createdThread",
+			"rememberCreatedThread",
+			"createdThread",
+			"pending",
 			"Aim",
 			"pending",
 			"rememberCreatedThread",
 			"createdThread",
+			"rememberCreatedThread",
 			"rememberCreatedThread"
 		]
 	},
@@ -73,11 +81,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/createdThread.ts",
+		"entry": "packages/desktop/src/utils/explorer-ui/createdThread.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/createdThread.ts"
+				"entry": "packages/desktop/src/utils/explorer-ui/createdThread.ts"
 			}
 		]
 	},

@@ -8,10 +8,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/shared-primitives/usage-examples/UsageExamples.svelte",
+			"packages/reports/src/components/shared-primitives/usage-examples/usageExamples.ts",
 			"packages/reports/src/components/usage-examples/UsageExamples.svelte",
 			"packages/reports/src/components/usage-examples/usageExamples.ts"
 		],
-		"symbols": ["UsageExamples", "compact", "usageExamples"]
+		"symbols": [
+			"UsageExamples",
+			"compact",
+			"usageExamples",
+			"UsageExamples",
+			"compact",
+			"usageExamples"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,11 +79,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/usage-examples/UsageExamples.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/usage-examples/UsageExamples.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/usage-examples/UsageExamples.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/usage-examples/UsageExamples.svelte"
 			}
 		]
 	},

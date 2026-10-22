@@ -1,1 +1,1 @@
-export { githubCommitFacts } from './create-git-hub-source/githubCommitFacts';
+export { githubCommitFacts } from './git-source-history/create-git-hub-source/githubCommitFacts';

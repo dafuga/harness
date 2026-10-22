@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/remote/src/models/RemoteControl.types.ts"],
+		"source": [
+			"packages/remote/src/models/RemoteControl.types.ts",
+			"packages/remote/src/models/networking-security/RemoteControl.types.ts"
+		],
 		"symbols": [
+			"remoteScanFailures",
 			"RemoteGrant",
 			"RemotePairingOffer",
 			"RemotePairingRequest",
@@ -41,11 +45,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/models/RemoteControl.types.ts",
+		"entry": "packages/remote/src/models/networking-security/RemoteControl.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/models/RemoteControl.types.ts"
+				"entry": "packages/remote/src/models/networking-security/RemoteControl.types.ts"
 			}
 		]
 	},

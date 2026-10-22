@@ -1,7 +1,7 @@
 import { profileMissingMeasurements, taskProfile } from './support/taskProfiles';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
-import { verifyRun } from '../src/workflows/runVerify';
+import { verifyRun } from '../src/workflows/verification-evidence/run-verify/runVerify';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {

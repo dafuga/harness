@@ -1,1 +1,1 @@
-export { activityClient } from '../components/site-activity/activityClient';
+export { activityClient } from '../components/projects-sessions/site-activity/activityClient';

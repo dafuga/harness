@@ -1,1 +1,1 @@
-export { deviceCapabilities } from '../services/device-operations-service/deviceCapabilities';
+export { deviceCapabilities } from '../services/networking-security/remote-host-service/device-session-service/device-operations-service/deviceCapabilities';

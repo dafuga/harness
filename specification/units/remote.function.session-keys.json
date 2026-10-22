@@ -8,10 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/remote/src/services/networking-security/secure-channel-service/sessionKeys.ts",
 			"packages/remote/src/services/secure-channel-service/sessionKeys.ts",
+			"packages/remote/src/utils/networking-security/sessionKeys.ts",
 			"packages/remote/src/utils/sessionKeys.ts"
 		],
-		"symbols": ["sessionKeys", "SessionKeyInput", "sessionKeys"]
+		"symbols": ["sessionKeys", "sessionKeys", "SessionKeyInput", "sessionKeys", "sessionKeys"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/utils/sessionKeys.ts",
+		"entry": "packages/remote/src/utils/networking-security/sessionKeys.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/utils/sessionKeys.ts"
+				"entry": "packages/remote/src/utils/networking-security/sessionKeys.ts"
 			}
 		]
 	},

@@ -1,2 +1,5 @@
-export { readImage } from './plan-design/readImage';
-export { planDesign, approve } from '../services/planning-service/planDesign';
+export { readImage } from './planning-collaboration/plan-design/readImage';
+export {
+	planDesign,
+	approve
+} from '../lib/planning-collaboration/planning/planning-service/planDesign';

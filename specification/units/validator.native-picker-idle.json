@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/NativePickerIdleValidator.ts"],
+		"source": [
+			"src/validators/NativePickerIdleValidator.ts",
+			"src/validators/development-tooling/NativePickerIdleValidator.ts"
+		],
 		"symbols": [
+			"NativePickerIdleValidator",
 			"NativePickerIdleValidatorResult",
 			"NativePickerIdleValidator",
 			"NativePickerIdleValidator.validate"
@@ -43,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/NativePickerIdleValidator.ts",
+		"entry": "src/validators/development-tooling/NativePickerIdleValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/NativePickerIdleValidator.ts"
+				"entry": "src/validators/development-tooling/NativePickerIdleValidator.ts"
 			}
 		]
 	},

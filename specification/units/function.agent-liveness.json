@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"src/services/agent-activity-service/agentLiveness.ts",
-			"src/utils/agentLiveness.ts"
+			"src/services/agents-providers/agent-activity-service/agentLiveness.ts",
+			"src/utils/agentLiveness.ts",
+			"src/utils/agents-providers/agentLiveness.ts"
 		],
-		"symbols": ["agentLiveness", "AgentFacts", "ProcessFacts", "agentLiveness"]
+		"symbols": [
+			"agentLiveness",
+			"agentLiveness",
+			"agentLiveness",
+			"AgentFacts",
+			"ProcessFacts",
+			"agentLiveness"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/agentLiveness.ts",
+		"entry": "src/utils/agents-providers/agentLiveness.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/agentLiveness.ts"
+				"entry": "src/utils/agents-providers/agentLiveness.ts"
 			}
 		]
 	},

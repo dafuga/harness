@@ -9,9 +9,15 @@
 	"owns": {
 		"source": [
 			"src/adapters/snapshot-adapter/snapshotAdditions.ts",
-			"src/utils/snapshotAdditions.ts"
+			"src/adapters/verification-evidence/snapshot-adapter/snapshotAdditions.ts",
+			"src/utils/snapshotAdditions.ts",
+			"src/utils/verification-evidence/snapshotAdditions.ts"
 		],
 		"symbols": [
+			"declaredOutput",
+			"snapshotAdditions",
+			"declaredOutput",
+			"snapshotAdditions",
 			"declaredOutput",
 			"snapshotAdditions",
 			"SnapshotBounds",
@@ -71,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/snapshotAdditions.ts",
+		"entry": "src/utils/verification-evidence/snapshotAdditions.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/snapshotAdditions.ts"
+				"entry": "src/utils/verification-evidence/snapshotAdditions.ts"
 			}
 		]
 	},

@@ -1,11 +1,2 @@
-import type { PlanDetail } from '../../../../planning/src/lib/planning/index';
-import type { EntityContract } from '../../models/Desktop.types';
-
-export function planningConvert(plan: PlanDetail): EntityContract {
-	return {
-		inputs: plan.contract.inputs,
-		outputs: plan.contract.outputs,
-		errors: plan.contract.errors.map((name) => ({ name, type: 'error' })),
-		hash: plan.contractHash
-	};
-}
+export { planningConvert } from '../projects-sessions/planning-reads/planningConvert';
+export * from '../projects-sessions/planning-reads/planningConvert';

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/VerifyCommand.ts"],
+		"source": ["src/cli/program/VerifyCommand.ts"],
 		"symbols": ["registerVerifyCommand"]
 	},
 	"contract": {
@@ -45,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/VerifyCommand.ts",
+		"entry": "src/cli/program/VerifyCommand.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/VerifyCommand.ts"
+				"entry": "src/cli/program/VerifyCommand.ts"
 			}
 		]
 	},

@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/services/RemoteLifecycleService.ts"],
+		"source": [
+			"packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteLifecycleService.ts",
+			"packages/desktop/src/services/RemoteLifecycleService.ts"
+		],
 		"symbols": [
+			"RemoteLifecycleService",
 			"PowerEvent",
 			"PowerPort",
 			"RemoteLifecycleOptions",
@@ -16,7 +21,11 @@
 			"RemoteLifecycleService.constructor",
 			"RemoteLifecycleService.start",
 			"RemoteLifecycleService.windowsClosed",
-			"RemoteLifecycleService.quit"
+			"RemoteLifecycleService.quit",
+			"RemoteLifecycleService",
+			"PowerEvent",
+			"PowerPort",
+			"RemoteLifecycleOptions"
 		]
 	},
 	"contract": {
@@ -46,11 +55,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/services/RemoteLifecycleService.ts",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteLifecycleService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/services/RemoteLifecycleService.ts"
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteLifecycleService.ts"
 			}
 		]
 	},

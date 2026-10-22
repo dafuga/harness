@@ -104,6 +104,8 @@ test('CLI reports edge errors cleanly', async () => {
 
 	const scaffoldInfo = await runHarness(['info', 'scaffold'], project);
 	expect(scaffoldInfo.stdout).toContain('# scaffolds');
+	const namingInfo = await runHarness(['info', 'naming', '--json'], project);
+	expect(JSON.parse(namingInfo.stdout).rules.join('\n')).toContain('<PascalName>Service.ts');
 	const controllerInfo = await runHarness(['info', 'controllers'], project);
 	expect(controllerInfo.stdout).toContain('# controller');
 

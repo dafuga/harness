@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/validators/ProjectContextValidator.ts"],
+		"source": [
+			"packages/desktop/src/validators/ProjectContextValidator.ts",
+			"packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts"
+		],
 		"symbols": [
+			"ProjectContextValidator",
 			"ProjectContextValidator",
 			"ProjectContextValidator.operation",
 			"ProjectContextValidator.context",
@@ -70,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/validators/ProjectContextValidator.ts",
+		"entry": "packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/validators/ProjectContextValidator.ts"
+				"entry": "packages/desktop/src/validators/projects-sessions/ProjectContextValidator.ts"
 			}
 		]
 	},

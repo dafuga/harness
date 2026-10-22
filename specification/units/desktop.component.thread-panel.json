@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/thread-panel/ThreadPanel.svelte"],
-		"symbols": ["ThreadPanel"]
+		"source": [
+			"packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"packages/desktop/src/components/thread-panel/ThreadPanel.svelte"
+		],
+		"symbols": ["ThreadPanel", "ThreadPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -142,11 +145,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/thread-panel/ThreadPanel.svelte",
+		"entry": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/thread-panel/ThreadPanel.svelte"
+				"entry": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte"
 			}
 		]
 	},

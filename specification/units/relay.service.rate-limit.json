@@ -7,12 +7,19 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/services/RateLimitService.ts"],
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.ts",
+			"packages/relay/src/lib/host-runtime/RateLimitService.ts",
+			"packages/relay/src/services/RateLimitService.ts"
+		],
 		"symbols": [
 			"RateStore",
 			"RateLimitService",
 			"RateLimitService.constructor",
-			"RateLimitService.hit"
+			"RateLimitService.hit",
+			"RateLimitService",
+			"RateLimitService",
+			"RateStore"
 		]
 	},
 	"contract": {
@@ -53,11 +60,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/services/RateLimitService.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/services/RateLimitService.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.ts"
 			}
 		]
 	},

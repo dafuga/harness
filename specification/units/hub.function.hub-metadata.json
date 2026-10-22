@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/hub/src/utils/development-tooling/hub-metadata/hubMetadata.ts",
 			"packages/hub/src/utils/hub-metadata/hubMetadata.ts",
 			"packages/hub/src/utils/hubMetadata.ts"
 		],
-		"symbols": ["hubMetadata", "hubMetadata"]
+		"symbols": ["hubMetadata", "hubMetadata", "hubMetadata"]
 	},
 	"contract": {
 		"origin": "declared",

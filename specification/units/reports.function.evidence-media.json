@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/evidenceMedia.ts"],
-		"symbols": ["mediaMime", "evidenceMedia", "formatDuration"]
+		"source": [
+			"packages/reports/src/utils/evidenceMedia.ts",
+			"packages/reports/src/utils/verification-evidence/evidenceMedia.ts"
+		],
+		"symbols": [
+			"mediaMime",
+			"evidenceMedia",
+			"formatDuration",
+			"mediaMime",
+			"evidenceMedia",
+			"formatDuration"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -59,7 +69,7 @@
 	"helperContracts": [
 		{
 			"name": "formatDuration",
-			"source": "packages/reports/src/utils/evidenceMedia.ts",
+			"source": "packages/reports/src/utils/verification-evidence/evidenceMedia.ts",
 			"inputs": [
 				{
 					"name": "formatDuration.seconds",
@@ -103,11 +113,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/evidenceMedia.ts",
+		"entry": "packages/reports/src/utils/verification-evidence/evidenceMedia.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/evidenceMedia.ts"
+				"entry": "packages/reports/src/utils/verification-evidence/evidenceMedia.ts"
 			}
 		]
 	},

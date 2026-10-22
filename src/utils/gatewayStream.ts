@@ -1,1 +1,1 @@
-export { gatewayStream } from '../services/codex-gateway-service/gatewayStream';
+export { gatewayStream } from '../cli/program/codex-gateway-service/gatewayStream';

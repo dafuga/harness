@@ -1,5 +1,5 @@
 import { observedTaskOperation } from './support/taskProfiles';
-import { UnitBenchmarkService } from '../src/services/UnitBenchmarkService';
+import { UnitBenchmarkService } from '../src/workflows/verification-evidence/run-budget/UnitBenchmarkService';
 import type { ComponentManifest } from '../src/core/unitTypes';
 import { runCommand } from './support/cli';
 import { profileCodingCompletion } from './support/completionProfiles';

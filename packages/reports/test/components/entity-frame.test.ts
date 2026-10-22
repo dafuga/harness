@@ -20,10 +20,10 @@ const framed = (entity: string) =>
 
 test('an entity screen is headed by the entity, and is handed the entity it shows', () => {
 	const body = framed(ids.list);
-	expect(body).toMatch(/<h1[^>]*>Order list<\/h1>/);
+	expect(body).toMatch(/<h1[^>]*>OrderList<\/h1>/);
 	expect(verdicts(body)[0]).toMatchObject({ passed: true, name: 'Full coverage passed' });
 	expect(words(body)).toContain(`screen of ${ids.list}`);
-	expect(body).toContain('aria-label="Order list sections"');
+	expect(body).toContain('aria-label="OrderList sections"');
 });
 
 test('an entity the revision does not hold has no header and no screen, only that it is missing', () => {

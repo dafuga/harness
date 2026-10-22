@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportSite.ts"],
-		"symbols": ["ReportSite", "reportSite", "ownedBySite"]
+		"source": [
+			"packages/reports/src/utils/reportSite.ts",
+			"packages/reports/src/utils/reports-media/reportSite.ts"
+		],
+		"symbols": ["reportSite", "ownedBySite", "ReportSite", "reportSite", "ownedBySite"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportSite.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportSite.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportSite.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportSite.ts"
 			}
 		]
 	},

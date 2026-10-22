@@ -3,7 +3,7 @@ import {
 	consoleCanonical,
 	explorerExact
 } from '../../../../../../src/utils/console-canonical/consoleCanonical';
-import { consoleData } from '../../../utils/console-server/consoleServer';
+import { consoleData } from '../../../utils/explorer-ui/console-server/consoleServer';
 
 /**
  * The root of the console, a branch or a commit alone, and every earlier address lead to the

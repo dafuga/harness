@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/ProviderCatalogAdapter.ts"],
+		"source": [
+			"src/adapters/ProviderCatalogAdapter.ts",
+			"src/adapters/agents-providers/ProviderCatalogAdapter.ts"
+		],
 		"symbols": [
+			"ProviderCatalogAdapter",
 			"ProviderCatalogAdapter",
 			"ProviderCatalogAdapter.constructor",
 			"ProviderCatalogAdapter.list"
@@ -39,11 +43,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/adapters/ProviderCatalogAdapter.ts",
+		"entry": "src/adapters/agents-providers/ProviderCatalogAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/adapters/ProviderCatalogAdapter.ts"
+				"entry": "src/adapters/agents-providers/ProviderCatalogAdapter.ts"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/native-approval/NativeApproval.svelte"],
-		"symbols": ["NativeApproval"]
+		"source": [
+			"packages/hub/src/components/native-approval/NativeApproval.svelte",
+			"packages/hub/src/components/shared-primitives/native-approval/NativeApproval.svelte"
+		],
+		"symbols": ["NativeApproval", "NativeApproval"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -47,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/native-approval/NativeApproval.svelte",
+		"entry": "packages/hub/src/components/shared-primitives/native-approval/NativeApproval.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/native-approval/NativeApproval.svelte"
+				"entry": "packages/hub/src/components/shared-primitives/native-approval/NativeApproval.svelte"
 			}
 		]
 	},

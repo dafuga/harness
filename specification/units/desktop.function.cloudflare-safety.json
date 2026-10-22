@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/cloudflareSafety.ts"],
-		"symbols": ["cloudflareSafety"]
+		"source": [
+			"packages/desktop/src/utils/cloudflareSafety.ts",
+			"packages/desktop/src/utils/development-tooling/cloudflareSafety.ts"
+		],
+		"symbols": ["cloudflareSafety", "cloudflareSafety"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,11 +51,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/cloudflareSafety.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/cloudflareSafety.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/cloudflareSafety.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/cloudflareSafety.ts"
 			}
 		]
 	},

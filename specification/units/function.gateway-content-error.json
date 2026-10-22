@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/gatewayContentError.ts"],
-		"symbols": ["gatewayContentError"]
+		"source": [
+			"src/utils/development-tooling/gatewayContentError.ts",
+			"src/utils/gatewayContentError.ts"
+		],
+		"symbols": ["gatewayContentError", "gatewayContentError"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/gatewayContentError.ts",
+		"entry": "src/utils/development-tooling/gatewayContentError.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/gatewayContentError.ts"
+				"entry": "src/utils/development-tooling/gatewayContentError.ts"
 			}
 		]
 	},

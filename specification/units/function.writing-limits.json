@@ -9,10 +9,13 @@
 	"owns": {
 		"source": [
 			"src/services/commit-message-service/writingLimits.ts",
+			"src/services/git-source-history/commit-message-service/writingLimits.ts",
+			"src/utils/git-source-history/writing-limits/writingLimits.ts",
 			"src/utils/writing-limits/writingLimits.ts",
 			"src/utils/writingLimits.ts"
 		],
 		"symbols": [
+			"writingDeclared",
 			"writingDeclared",
 			"WritingLimit",
 			"writingVersions",
@@ -25,6 +28,14 @@
 			"writingCount",
 			"writingProblems",
 			"WrittenReason",
+			"explanationProblems",
+			"writingVersions",
+			"writingVersion",
+			"writingLimits",
+			"writingPolicy",
+			"writingHeld",
+			"writingCount",
+			"writingProblems",
 			"explanationProblems",
 			"WritingLimit",
 			"writingVersions",

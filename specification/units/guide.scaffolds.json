@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/scaffolds.ts"],
-		"symbols": ["scaffoldGuides", "scaffoldsGuide"]
+		"source": ["src/guides/development-tooling/scaffolds.ts", "src/guides/scaffolds.ts"],
+		"symbols": [
+			"scaffoldGuides",
+			"scaffoldsGuide",
+			"namingGuide",
+			"scaffoldGuides",
+			"scaffoldsGuide",
+			"namingGuide"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -21,11 +28,20 @@
 			{
 				"name": "scaffoldsGuide",
 				"type": "Guide"
+			},
+			{
+				"name": "namingGuide",
+				"type": "Guide"
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.catalog",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "guide.guide",
 			"via": "import",
@@ -39,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/guides/scaffolds.ts",
+		"entry": "src/guides/development-tooling/scaffolds.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/guides/scaffolds.ts"
+				"entry": "src/guides/development-tooling/scaffolds.ts"
 			}
 		]
 	},

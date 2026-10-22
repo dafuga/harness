@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/EvidenceCard.svelte"],
-		"symbols": ["EvidenceCard"]
+		"source": [
+			"packages/reports/src/components/EvidenceCard.svelte",
+			"packages/reports/src/components/verification-evidence/EvidenceCard.svelte"
+		],
+		"symbols": ["EvidenceCard", "EvidenceCard"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -93,11 +96,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/EvidenceCard.svelte",
+		"entry": "packages/reports/src/components/verification-evidence/EvidenceCard.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/EvidenceCard.svelte"
+				"entry": "packages/reports/src/components/verification-evidence/EvidenceCard.svelte"
 			}
 		]
 	},

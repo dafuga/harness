@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/services/ScreenshotRetentionService.ts"],
+		"source": [
+			"packages/reports/src/services/ScreenshotRetentionService.ts",
+			"packages/reports/src/services/reports-media/ScreenshotRetentionService.ts"
+		],
 		"symbols": [
+			"ScreenshotRetentionService",
 			"ScreenshotRetentionService",
 			"ScreenshotRetentionService.constructor",
 			"ScreenshotRetentionService.run"
@@ -78,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/services/ScreenshotRetentionService.ts",
+		"entry": "packages/reports/src/services/reports-media/ScreenshotRetentionService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/services/ScreenshotRetentionService.ts"
+				"entry": "packages/reports/src/services/reports-media/ScreenshotRetentionService.ts"
 			}
 		]
 	},

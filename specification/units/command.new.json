@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/new.ts"],
+		"source": ["src/cli/program/new.ts"],
 		"symbols": ["registerNewCommand"]
 	},
 	"contract": {
@@ -35,11 +35,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/new.ts",
+		"entry": "src/cli/program/new.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/new.ts"
+				"entry": "src/cli/program/new.ts"
 			}
 		]
 	},

@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/captureProvenance.ts"],
-		"symbols": ["CaptureStanding", "CaptureProvenance", "captureProvenance", "scenarioOrigin"]
+		"source": [
+			"packages/reports/src/utils/captureProvenance.ts",
+			"packages/reports/src/utils/reports-media/captureProvenance.ts"
+		],
+		"symbols": [
+			"captureProvenance",
+			"scenarioOrigin",
+			"CaptureStanding",
+			"CaptureProvenance",
+			"captureProvenance",
+			"scenarioOrigin"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/captureProvenance.ts",
+		"entry": "packages/reports/src/utils/reports-media/captureProvenance.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/captureProvenance.ts"
+				"entry": "packages/reports/src/utils/reports-media/captureProvenance.ts"
 			}
 		]
 	},

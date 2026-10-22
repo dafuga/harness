@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/GatewayImageValidator.ts"],
-		"symbols": ["GatewayImage", "GatewayImageValidator", "GatewayImageValidator.parse"]
+		"source": [
+			"src/validators/GatewayImageValidator.ts",
+			"src/validators/development-tooling/GatewayImageValidator.ts"
+		],
+		"symbols": [
+			"GatewayImageValidator",
+			"GatewayImage",
+			"GatewayImageValidator",
+			"GatewayImageValidator.parse"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -35,11 +43,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/GatewayImageValidator.ts",
+		"entry": "src/validators/development-tooling/GatewayImageValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/GatewayImageValidator.ts"
+				"entry": "src/validators/development-tooling/GatewayImageValidator.ts"
 			}
 		]
 	},

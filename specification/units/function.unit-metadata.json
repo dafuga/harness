@@ -3,14 +3,18 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Reads source contracts and callable signatures, accepting only explicitly declared pure helpers that pass the conservative effect guard.",
+	"responsibility": "Reads selected-revision helper contracts, service exports, concrete class proof and actual runtime consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/pureHelperCalls.ts",
+			"src/services/explorer-ui/revision-detail-service/pureHelpers.ts",
+			"src/services/explorer-ui/revision-detail-service/unitMetadata.ts",
 			"src/services/revision-detail-service/pureHelperCalls.ts",
 			"src/services/revision-detail-service/pureHelpers.ts",
 			"src/services/revision-detail-service/unitMetadata.ts",
+			"src/utils/explorer-ui/unitMetadata.ts",
 			"src/utils/unitMetadata.ts"
 		],
 		"symbols": [
@@ -18,8 +22,15 @@
 			"pureHelperCalls",
 			"pureHelpers",
 			"unitMetadata",
+			"pureGlobals",
+			"pureHelperCalls",
+			"pureHelpers",
+			"unitMetadata",
 			"PublicHelper",
+			"PublicServiceClass",
 			"UnitMetadata",
+			"SourceFileSnapshot",
+			"unitMetadata",
 			"unitMetadata"
 		]
 	},
@@ -41,14 +52,24 @@
 			{
 				"name": "unitMetadata",
 				"type": "Promise<void>",
-				"description": "Updates each entity in place. Missing source leaves an explicit gap; another revision is never substituted."
+				"description": "Attaches helper contracts and per-class declaration, instance-method, construction and consumer facts from the selected revision. Missing source is never replaced from another revision."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.helper-consumers",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.module-group",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -76,15 +97,20 @@
 			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.module-category",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/unitMetadata.ts",
+		"entry": "src/utils/explorer-ui/unitMetadata.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/unitMetadata.ts"
+				"entry": "src/utils/explorer-ui/unitMetadata.ts"
 			}
 		]
 	},

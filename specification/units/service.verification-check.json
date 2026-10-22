@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/VerificationCheckService.ts"],
+		"source": [
+			"src/services/VerificationCheckService.ts",
+			"src/services/verification-evidence/VerificationCheckService.ts"
+		],
 		"symbols": [
+			"VerificationCheckService",
 			"CheckReport",
 			"VerificationCheckService",
 			"VerificationCheckService.constructor",
@@ -115,11 +119,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/VerificationCheckService.ts",
+		"entry": "src/services/verification-evidence/VerificationCheckService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/VerificationCheckService.ts"
+				"entry": "src/services/verification-evidence/VerificationCheckService.ts"
 			}
 		]
 	},

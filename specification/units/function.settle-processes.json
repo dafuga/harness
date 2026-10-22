@@ -7,13 +7,22 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/run-isolated/settleProcesses.ts", "src/utils/settleProcesses.ts"],
+		"source": [
+			"src/utils/reports-media/run-isolated/settleProcesses.ts",
+			"src/utils/reports-media/settleProcesses.ts",
+			"src/utils/run-isolated/settleProcesses.ts",
+			"src/utils/settleProcesses.ts"
+		],
 		"symbols": [
 			"haltProcesses",
 			"settleProcesses",
 			"Settlement",
 			"Watched",
 			"SettleTiming",
+			"haltProcesses",
+			"settleProcesses",
+			"haltProcesses",
+			"settleProcesses",
 			"haltProcesses",
 			"settleProcesses"
 		]
@@ -90,11 +99,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/settleProcesses.ts",
+		"entry": "src/utils/reports-media/settleProcesses.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/settleProcesses.ts"
+				"entry": "src/utils/reports-media/settleProcesses.ts"
 			}
 		]
 	},

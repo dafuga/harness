@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/sql.ts"],
-		"symbols": ["sqlAdapter"]
+		"source": ["src/audit/adapters/sql.ts", "src/audit/development-tooling/adapters/sql.ts"],
+		"symbols": ["sqlAdapter", "sqlAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/adapters/sql.ts",
+		"entry": "src/audit/development-tooling/adapters/sql.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/adapters/sql.ts"
+				"entry": "src/audit/development-tooling/adapters/sql.ts"
 			}
 		]
 	},

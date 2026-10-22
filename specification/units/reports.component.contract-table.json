@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ContractTable.svelte"],
-		"symbols": ["ContractTable"]
+		"source": [
+			"packages/reports/src/components/ContractTable.svelte",
+			"packages/reports/src/components/shared-primitives/ContractTable.svelte"
+		],
+		"symbols": ["ContractTable", "ContractTable"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ContractTable.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/ContractTable.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ContractTable.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/ContractTable.svelte"
 			}
 		]
 	},

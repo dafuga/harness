@@ -26,11 +26,11 @@ export const screenStates: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async 'component-details'(page) {
 		await page.goto(at('main', commits.approved, `components/${units.list}/details`));
-		await titled(page, 'Title list');
+		await titled(page, 'TitleList');
 	},
 	async 'component-history'(page) {
 		await page.goto(at('main', commits.approved, `components/${units.list}/history`));
-		await titled(page, 'Title list');
+		await titled(page, 'TitleList');
 	},
 	async configs(page) {
 		await page.goto(at('main', commits.approved, 'configs'));
@@ -38,11 +38,11 @@ export const screenStates: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async 'config-details'(page) {
 		await page.goto(at('main', commits.approved, `configs/${units.config}/details`));
-		await titled(page, 'Titles config');
+		await titled(page, 'titlesConfig');
 	},
 	async 'config-history'(page) {
 		await page.goto(at('main', commits.approved, `configs/${units.config}/history`));
-		await titled(page, 'Titles config');
+		await titled(page, 'titlesConfig');
 	},
 	async services(page) {
 		await page.goto(at('main', commits.approved, 'services'));
@@ -50,11 +50,11 @@ export const screenStates: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async 'service-details'(page) {
 		await page.goto(at('main', commits.approved, `services/${units.service}/details`));
-		await titled(page, 'Title service');
+		await titled(page, 'TitleService');
 	},
 	async 'service-history'(page) {
 		await page.goto(at('main', commits.reordered, `services/${units.service}/history`));
-		await titled(page, 'Title service');
+		await titled(page, 'TitleService');
 	},
 	// A commit that no branch reaches: its address has no branch, and none is invented.
 	async retained(page) {

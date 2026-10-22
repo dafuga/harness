@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/adapters/ConsoleBridgeAdapter.ts"],
+		"source": [
+			"packages/reports/src/adapters/ConsoleBridgeAdapter.ts",
+			"packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts",
+			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts"
+		],
 		"symbols": [
+			"ConsoleBridgeAdapter",
+			"ConsoleBridgeAdapter",
 			"ConsoleBridgeAdapter",
 			"ConsoleBridgeAdapter.connect",
 			"ConsoleBridgeAdapter.bridge",
@@ -58,11 +64,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/adapters/ConsoleBridgeAdapter.ts",
+		"entry": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/adapters/ConsoleBridgeAdapter.ts"
+				"entry": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts"
 			}
 		]
 	},

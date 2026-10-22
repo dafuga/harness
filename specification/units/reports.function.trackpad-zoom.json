@@ -9,15 +9,22 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/image-zoom/trackpadZoom.ts",
+			"packages/reports/src/components/shared-primitives/image-zoom/trackpadZoom.ts",
+			"packages/reports/src/utils/shared-primitives/trackpadZoom.ts",
 			"packages/reports/src/utils/trackpadZoom.ts"
 		],
 		"symbols": [
 			"imageAnchor",
 			"keepPointerInPlace",
+			"imageAnchor",
+			"keepPointerInPlace",
 			"Point",
 			"trackpadZoom",
 			"imageAnchor",
-			"keepPointerInPlace"
+			"keepPointerInPlace",
+			"imageAnchor",
+			"keepPointerInPlace",
+			"trackpadZoom"
 		]
 	},
 	"contract": {
@@ -86,11 +93,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/trackpadZoom.ts",
+		"entry": "packages/reports/src/utils/shared-primitives/trackpadZoom.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/trackpadZoom.ts"
+				"entry": "packages/reports/src/utils/shared-primitives/trackpadZoom.ts"
 			}
 		]
 	},

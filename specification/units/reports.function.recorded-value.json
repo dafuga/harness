@@ -9,9 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/recorded-value/recordedValue.ts",
-			"packages/reports/src/utils/recordedValue.ts"
+			"packages/reports/src/components/shared-primitives/recorded-value/recordedValue.ts",
+			"packages/reports/src/utils/recordedValue.ts",
+			"packages/reports/src/utils/shared-primitives/recordedValue.ts"
 		],
-		"symbols": ["recordedValue", "RecordedNode", "read", "recordedValue"]
+		"symbols": [
+			"recordedValue",
+			"recordedValue",
+			"recordedValue",
+			"read",
+			"RecordedNode",
+			"read",
+			"recordedValue"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,11 +44,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/recordedValue.ts",
+		"entry": "packages/reports/src/utils/shared-primitives/recordedValue.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/recordedValue.ts"
+				"entry": "packages/reports/src/utils/shared-primitives/recordedValue.ts"
 			}
 		]
 	},

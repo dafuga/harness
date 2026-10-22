@@ -3,12 +3,15 @@
 	"id": "reports.component.explorer-function-card",
 	"kind": "component",
 	"title": "Function card",
-	"responsibility": "Shows a linked helper invocation and a smaller Used In row linking up to three consumers.",
+	"responsibility": "Shows a linked helper invocation or service name and a smaller Used In row linking up to three consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ExplorerFunctionCard.svelte"],
-		"symbols": ["ExplorerFunctionCard"]
+		"source": [
+			"packages/reports/src/components/ExplorerFunctionCard.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerFunctionCard.svelte"
+		],
+		"symbols": ["ExplorerFunctionCard", "ExplorerFunctionCard"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -16,12 +19,12 @@
 			{
 				"name": "ExplorerFunctionCard.row",
 				"type": "CatalogRow",
-				"description": "The function at the viewed revision, including sample arguments and up to three distinct component, service or model consumer links."
+				"description": "The helper or service at the viewed revision, including its recorded name and up to three consumer links."
 			},
 			{
 				"name": "ExplorerFunctionCard.nav",
 				"type": "EntityNav",
-				"description": "Navigation that keeps the selected branch and commit when opening the function or a consumer."
+				"description": "Navigation that retains branch and commit when opening the helper, service or consumer."
 			},
 			{
 				"name": "ExplorerFunctionCard.lens",
@@ -67,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ExplorerFunctionCard.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerFunctionCard.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ExplorerFunctionCard.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerFunctionCard.svelte"
 			}
 		]
 	},

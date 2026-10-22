@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/models/PlanningPort.types.ts"],
+		"source": [
+			"packages/desktop/src/models/PlanningPort.types.ts",
+			"packages/desktop/src/models/planning-collaboration/PlanningPort.types.ts"
+		],
 		"symbols": [
 			"PlanRecord",
 			"DesignDraft",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/models/PlanningPort.types.ts",
+		"entry": "packages/desktop/src/models/planning-collaboration/PlanningPort.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/models/PlanningPort.types.ts"
+				"entry": "packages/desktop/src/models/planning-collaboration/PlanningPort.types.ts"
 			}
 		]
 	},

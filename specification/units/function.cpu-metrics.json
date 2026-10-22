@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/cpu-usage-service/cpuMetrics.ts", "src/utils/cpuMetrics.ts"],
-		"symbols": ["cpuMetrics", "CpuReading", "CpuGroup", "CpuSnapshot", "cpuMetrics"]
+		"source": [
+			"src/services/cpu-usage-service/cpuMetrics.ts",
+			"src/services/development-tooling/cpu-usage-service/cpuMetrics.ts",
+			"src/utils/cpuMetrics.ts",
+			"src/utils/development-tooling/cpuMetrics.ts"
+		],
+		"symbols": [
+			"cpuMetrics",
+			"cpuMetrics",
+			"cpuMetrics",
+			"CpuReading",
+			"CpuGroup",
+			"CpuSnapshot",
+			"cpuMetrics"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +55,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/cpuMetrics.ts",
+		"entry": "src/utils/development-tooling/cpuMetrics.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/cpuMetrics.ts"
+				"entry": "src/utils/development-tooling/cpuMetrics.ts"
 			}
 		]
 	},

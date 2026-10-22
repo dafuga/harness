@@ -9,10 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
+			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserEvidenceReads.ts",
 			"packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts",
 			"packages/hub/src/utils/browserEvidenceReads.ts"
 		],
-		"symbols": ["browserEvidenceReads", "browserEvidenceReads", "browserEvidenceReads"]
+		"symbols": [
+			"browserEvidenceReads",
+			"browserEvidenceReads",
+			"browserEvidenceReads",
+			"browserEvidenceReads"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -71,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts",
+		"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserEvidenceReads.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/browser-project-adapter/browserEvidenceReads.ts"
+				"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserEvidenceReads.ts"
 			}
 		]
 	},

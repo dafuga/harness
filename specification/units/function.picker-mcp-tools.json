@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/pickerMcpTools.ts"],
-		"symbols": ["pickerSessionSchema", "pickerSwitchSchema", "pickerCancelSchema", "pickerMcpTools"]
+		"source": ["src/utils/development-tooling/pickerMcpTools.ts", "src/utils/pickerMcpTools.ts"],
+		"symbols": [
+			"pickerSessionSchema",
+			"pickerSwitchSchema",
+			"pickerCancelSchema",
+			"pickerMcpTools",
+			"pickerSessionSchema",
+			"pickerSwitchSchema",
+			"pickerCancelSchema",
+			"pickerMcpTools"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -68,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/pickerMcpTools.ts",
+		"entry": "src/utils/development-tooling/pickerMcpTools.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/pickerMcpTools.ts"
+				"entry": "src/utils/development-tooling/pickerMcpTools.ts"
 			}
 		]
 	},

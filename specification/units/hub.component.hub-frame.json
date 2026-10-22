@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/HubFrame.svelte"],
-		"symbols": ["HubFrame"]
+		"source": [
+			"packages/hub/src/components/HubFrame.svelte",
+			"packages/hub/src/components/shared-primitives/HubFrame.svelte"
+		],
+		"symbols": ["HubFrame", "HubFrame"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/HubFrame.svelte",
+		"entry": "packages/hub/src/components/shared-primitives/HubFrame.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/HubFrame.svelte"
+				"entry": "packages/hub/src/components/shared-primitives/HubFrame.svelte"
 			}
 		]
 	},

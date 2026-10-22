@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ImageThumbnail.svelte"],
-		"symbols": ["ImageThumbnail"]
+		"source": [
+			"packages/desktop/src/components/ImageThumbnail.svelte",
+			"packages/desktop/src/components/shared-primitives/ImageThumbnail.svelte"
+		],
+		"symbols": ["ImageThumbnail", "ImageThumbnail"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -62,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ImageThumbnail.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/ImageThumbnail.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/ImageThumbnail.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/ImageThumbnail.svelte"
 			}
 		]
 	},

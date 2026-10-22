@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/comparisonTypes.ts"],
+		"source": ["src/core/comparisonTypes.ts", "src/core/development-tooling/comparisonTypes.ts"],
 		"symbols": [
+			"roundsProtocol",
+			"warmupCalls",
+			"measurementBoundaries",
+			"metricUnits",
+			"comparisonSchema",
 			"roundsProtocol",
 			"warmupCalls",
 			"measurementBoundaries",
@@ -52,11 +57,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/comparisonTypes.ts",
+		"entry": "src/core/development-tooling/comparisonTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/comparisonTypes.ts"
+				"entry": "src/core/development-tooling/comparisonTypes.ts"
 			}
 		]
 	},

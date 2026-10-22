@@ -9,9 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/repositories/report-repository/reportState.ts",
-			"packages/reports/src/utils/reportState.ts"
+			"packages/reports/src/repositories/reports-media/report-repository/reportState.ts",
+			"packages/reports/src/utils/reportState.ts",
+			"packages/reports/src/utils/reports-media/reportState.ts"
 		],
-		"symbols": ["reportState", "resultStatus", "interrupted", "reportState"]
+		"symbols": [
+			"reportState",
+			"reportState",
+			"reportState",
+			"resultStatus",
+			"interrupted",
+			"resultStatus",
+			"interrupted",
+			"reportState"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -71,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportState.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportState.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportState.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportState.ts"
 			}
 		]
 	},

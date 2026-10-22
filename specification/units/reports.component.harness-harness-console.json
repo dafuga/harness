@@ -8,10 +8,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/explorer-ui/harness/HarnessConsole.svelte",
+			"packages/reports/src/components/explorer-ui/harness/harness-console/consoleView.ts",
 			"packages/reports/src/components/harness/HarnessConsole.svelte",
 			"packages/reports/src/components/harness/harness-console/consoleView.ts"
 		],
-		"symbols": ["HarnessConsole", "ConsoleAnswer", "consoleRelations", "consoleView"]
+		"symbols": [
+			"HarnessConsole",
+			"ConsoleAnswer",
+			"consoleRelations",
+			"consoleView",
+			"HarnessConsole"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -140,11 +148,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/HarnessConsole.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/HarnessConsole.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/HarnessConsole.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/HarnessConsole.svelte"
 			}
 		]
 	},

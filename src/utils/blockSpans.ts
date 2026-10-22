@@ -1,1 +1,1 @@
-export { type BlockSpan, blockSpans } from './block-spans/blockSpans';
+export { type BlockSpan, blockSpans } from './development-tooling/block-spans/blockSpans';

@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { generateModel, generatePiece } from '../src/workflows/generate-code/generateCode';
+import { scaffoldKinds } from '../src/templates/scaffoldTypes';
 
 test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();
@@ -50,3 +51,84 @@ async function libProject(): Promise<string> {
 	await writeFile(join(root, 'package.json'), JSON.stringify({ harness: { kind: 'lib' } }));
 	return root;
 }
+
+test('generation keeps category folders, imports and package exports in agreement', async () => {
+	const root = await libProject();
+	try {
+		await writeFile(
+			join(root, 'harness.groups.json'),
+			JSON.stringify({
+				schemaVersion: 1,
+				groups: [
+					{
+						id: 'verification-evidence',
+						title: 'Verification & evidence',
+						terms: ['budget', 'proof']
+					}
+				]
+			})
+		);
+		const grouped = { root, group: 'verification-evidence' };
+		for (const kind of ['service', 'repository', 'adapter', 'util', 'config', 'helper'] as const) {
+			const result = await generatePiece({ ...grouped, kind, name: 'Proof' });
+			expect(
+				result.writes.some(
+					(file) => file.path.startsWith(`src/`) && file.path.includes('/verification-evidence/')
+				)
+			).toBe(true);
+		}
+		await generateModel({
+			...grouped,
+			name: 'Proof',
+			rawFields: ['name:string'],
+			adapter: 'sqlite'
+		});
+		await generatePiece({ root, kind: 'service', name: 'BudgetLedger' });
+		const index = await readFile(join(root, 'src/index.ts'), 'utf8');
+		expect(index).toContain("from './services/verification-evidence/ProofService'");
+		expect(index).toContain("from './models/verification-evidence/Proof'");
+		expect(index).toContain("from './services/verification-evidence/BudgetLedgerService'");
+		const testFile = await readFile(
+			join(root, 'test/services/verification-evidence/proof.test.ts'),
+			'utf8'
+		);
+		expect(testFile).toContain('../../../src/services/verification-evidence/ProofService');
+		const model = await readFile(join(root, 'src/models/verification-evidence/Proof.ts'), 'utf8');
+		expect(model).toContain("from '../adapters/types'");
+		await expect(generatePiece({ root, kind: 'service', name: 'Mystery' })).rejects.toThrow(
+			'--group'
+		);
+		await expect(
+			generatePiece({ ...grouped, kind: 'service', name: 'Proof', group: '../escape' })
+		).rejects.toThrow();
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+});
+
+test('the same category works for every source scaffold and can be extended', async () => {
+	const root = await libProject();
+	try {
+		await writeFile(join(root, 'package.json'), JSON.stringify({ harness: { kind: 'app' } }));
+		for (const kind of scaffoldKinds.filter(
+			(kind) => !['test', 'e2e', 'feature', 'migration'].includes(kind)
+		)) {
+			const result = await generatePiece({ root, kind, name: `${kind}Example`, group: 'commerce' });
+			expect(
+				result.writes.some(
+					(file) =>
+						/^(?:src|db)\//.test(file.path) && /\/(?:\(commerce\)|commerce)\//.test(file.path)
+				),
+				kind
+			).toBe(true);
+		}
+		await generatePiece({ root, kind: 'service', name: 'Login', group: 'identity' });
+		const config = JSON.parse(await readFile(join(root, 'harness.groups.json'), 'utf8'));
+		expect(config.groups.map((group: { id: string }) => group.id)).toEqual([
+			'commerce',
+			'identity'
+		]);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+});

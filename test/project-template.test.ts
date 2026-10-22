@@ -69,6 +69,12 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
 	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain('bun run check');
 	expect(auditConfig(files).limits.maxFileLines).toBe(220);
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain('harness info naming');
+		expect(fileContents(files, path)).toContain('<PascalName>Service.ts');
+		expect(fileContents(files, path)).toContain('<camelName>.ts');
+		expect(fileContents(files, path)).toContain('instantiated classes');
+	}
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');

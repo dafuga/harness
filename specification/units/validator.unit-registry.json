@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/validators/UnitRegistryValidator.ts"],
-		"symbols": ["UnitRegistryValidator", "UnitRegistryValidator.validate"]
+		"source": [
+			"src/validators/UnitRegistryValidator.ts",
+			"src/validators/development-tooling/UnitRegistryValidator.ts"
+		],
+		"symbols": ["UnitRegistryValidator", "UnitRegistryValidator", "UnitRegistryValidator.validate"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -44,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/validators/UnitRegistryValidator.ts",
+		"entry": "src/validators/development-tooling/UnitRegistryValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/validators/UnitRegistryValidator.ts"
+				"entry": "src/validators/development-tooling/UnitRegistryValidator.ts"
 			}
 		]
 	},

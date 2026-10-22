@@ -8,10 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/projection-cache-service/projectionCacheDiscard.ts",
+			"packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCacheDiscard.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/projection-cache-service/projectionCacheDiscard.ts",
 			"packages/desktop/src/utils/projectionCacheDiscard.ts"
 		],
-		"symbols": ["projectionCacheDiscard", "projectionCacheDiscard"]
+		"symbols": ["projectionCacheDiscard", "projectionCacheDiscard", "projectionCacheDiscard"]
 	},
 	"contract": {
 		"origin": "declared",

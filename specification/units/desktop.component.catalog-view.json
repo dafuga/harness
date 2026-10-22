@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/CatalogView.svelte"],
-		"symbols": ["CatalogView"]
+		"source": [
+			"packages/desktop/src/components/CatalogView.svelte",
+			"packages/desktop/src/components/explorer-ui/CatalogView.svelte"
+		],
+		"symbols": ["CatalogView", "CatalogView"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -73,11 +76,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/CatalogView.svelte",
+		"entry": "packages/desktop/src/components/explorer-ui/CatalogView.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/CatalogView.svelte"
+				"entry": "packages/desktop/src/components/explorer-ui/CatalogView.svelte"
 			}
 		]
 	},

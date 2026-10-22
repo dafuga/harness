@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/designPrompt.ts"],
-		"symbols": ["designPrompt"]
+		"source": [
+			"packages/desktop/src/utils/designPrompt.ts",
+			"packages/desktop/src/utils/planning-collaboration/designPrompt.ts"
+		],
+		"symbols": ["designPrompt", "designPrompt"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/designPrompt.ts",
+		"entry": "packages/desktop/src/utils/planning-collaboration/designPrompt.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/designPrompt.ts"
+				"entry": "packages/desktop/src/utils/planning-collaboration/designPrompt.ts"
 			}
 		]
 	},

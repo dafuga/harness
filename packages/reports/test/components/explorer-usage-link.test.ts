@@ -15,7 +15,7 @@ test('preview triggers are real entity links without eager screenshot payloads',
 			nav: { route: host.route, href: host.lens.href, go: host.onroute }
 		}
 	}).body;
-	expect(words(body).trim()).toBe('Order list');
+	expect(words(body).trim()).toBe('OrderList');
 	expect(body).toContain('/components/app.component.order-list');
 	expect(body).not.toMatch(/<img|role="tooltip"/);
 });

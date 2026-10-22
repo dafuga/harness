@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/unit-index-service/UnitIndexService.ts"],
-		"symbols": ["UnitMove", "UnitIndexResult", "UnitIndexService", "UnitIndexService.index"]
+		"source": [
+			"src/services/unit-index-service/UnitIndexService.ts",
+			"src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+			"src/workflows/load-units/unit-index-service/UnitIndexService.ts"
+		],
+		"symbols": [
+			"UnitIndexService",
+			"UnitMove",
+			"UnitIndexResult",
+			"UnitMove",
+			"UnitIndexResult",
+			"UnitIndexService",
+			"UnitIndexService.index",
+			"UnitIndexService"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -64,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/unit-index-service/UnitIndexService.ts",
+		"entry": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/unit-index-service/UnitIndexService.ts"
+				"entry": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts"
 			}
 		]
 	},

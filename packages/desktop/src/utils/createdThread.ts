@@ -1,12 +1,3 @@
-import type { Workspace } from '../lib/stores/workspace.svelte';
-
-export interface Aim {
-	projectId?: string;
-	entityId: string;
-	threadId: string | null;
-}
-
-export const pending = new WeakMap<Workspace, Aim>();
-
-export { rememberCreatedThread } from './project-agent-events/rememberCreatedThread';
-export { createdThread } from '../components/entity-view/createdThread';
+export { rememberCreatedThread, createdThread } from './explorer-ui/createdThread';
+export { pending } from './explorer-ui/createdThread';
+export * from './explorer-ui/createdThread';

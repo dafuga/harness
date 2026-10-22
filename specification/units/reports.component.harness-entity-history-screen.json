@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityHistoryScreen.svelte"],
-		"symbols": ["EntityHistoryScreen"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntityHistoryScreen.svelte",
+			"packages/reports/src/components/harness/EntityHistoryScreen.svelte"
+		],
+		"symbols": ["EntityHistoryScreen", "EntityHistoryScreen"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -98,11 +101,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityHistoryScreen.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntityHistoryScreen.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityHistoryScreen.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntityHistoryScreen.svelte"
 			}
 		]
 	},

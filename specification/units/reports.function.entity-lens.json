@@ -7,8 +7,14 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/entityLens.ts"],
+		"source": [
+			"packages/reports/src/utils/entityLens.ts",
+			"packages/reports/src/utils/explorer-ui/entityLens.ts"
+		],
 		"symbols": [
+			"entityLabels",
+			"entityLens",
+			"shortCommit",
 			"EntityLens",
 			"EntityNav",
 			"EntityLabel",
@@ -70,7 +76,7 @@
 	"helperContracts": [
 		{
 			"name": "shortCommit",
-			"source": "packages/reports/src/utils/entityLens.ts",
+			"source": "packages/reports/src/utils/explorer-ui/entityLens.ts",
 			"inputs": [
 				{
 					"name": "shortCommit.commit",
@@ -135,11 +141,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/entityLens.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/entityLens.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/entityLens.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/entityLens.ts"
 			}
 		]
 	},

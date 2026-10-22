@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/adapters/R2ScreenshotStoreAdapter.ts"],
+		"source": [
+			"packages/reports/src/adapters/R2ScreenshotStoreAdapter.ts",
+			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.ts"
+		],
 		"symbols": [
+			"screenshotObjectPrefix",
+			"r2ScreenshotConfig",
+			"r2ObjectKey",
+			"R2ScreenshotStoreAdapter",
 			"R2ScreenshotStoreAdapterConfig",
 			"screenshotObjectPrefix",
 			"r2ScreenshotConfig",
@@ -114,11 +121,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/adapters/R2ScreenshotStoreAdapter.ts",
+		"entry": "packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/adapters/R2ScreenshotStoreAdapter.ts"
+				"entry": "packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.ts"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/ExplorerUsage.svelte"],
-		"symbols": ["ExplorerUsage"]
+		"source": [
+			"packages/reports/src/components/ExplorerUsage.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerUsage.svelte"
+		],
+		"symbols": ["ExplorerUsage", "ExplorerUsage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/ExplorerUsage.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerUsage.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/ExplorerUsage.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerUsage.svelte"
 			}
 		]
 	},

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntityBehaviorScreen.svelte"],
-		"symbols": ["EntityBehaviorScreen"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntityBehaviorScreen.svelte",
+			"packages/reports/src/components/harness/EntityBehaviorScreen.svelte"
+		],
+		"symbols": ["EntityBehaviorScreen", "EntityBehaviorScreen"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -118,11 +121,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntityBehaviorScreen.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntityBehaviorScreen.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntityBehaviorScreen.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntityBehaviorScreen.svelte"
 			}
 		]
 	},

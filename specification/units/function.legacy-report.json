@@ -7,8 +7,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/legacy-import-service/legacyReport.ts", "src/utils/legacyReport.ts"],
-		"symbols": ["legacyReport", "LegacyReport", "legacyReport"]
+		"source": [
+			"src/cli/program/legacy-import-service/legacyReport.ts",
+			"src/services/legacy-import-service/legacyReport.ts",
+			"src/utils/legacyReport.ts",
+			"src/utils/reports-media/legacyReport.ts"
+		],
+		"symbols": ["legacyReport", "legacyReport", "legacyReport", "LegacyReport", "legacyReport"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,11 +42,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/legacyReport.ts",
+		"entry": "src/utils/reports-media/legacyReport.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/legacyReport.ts"
+				"entry": "src/utils/reports-media/legacyReport.ts"
 			}
 		]
 	},

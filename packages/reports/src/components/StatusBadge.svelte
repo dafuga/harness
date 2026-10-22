@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { t } from '../utils/reportLocale';
-  import type { Status } from '../models/Report.types';
-  let {status}: {status: Status} = $props();
+	import CategoryImplementation from './shared-primitives/StatusBadge.svelte';
+	import type { ComponentProps } from 'svelte';
+	let props: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
-<span class="badge {status}"><span aria-hidden="true">●</span> {$t(status)}</span>
+
+<CategoryImplementation {...props} />

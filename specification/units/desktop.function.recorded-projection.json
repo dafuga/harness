@@ -3,15 +3,24 @@
 	"id": "desktop.function.recorded-projection",
 	"kind": "function",
 	"title": "Keep an entity’s evidence detail",
-	"responsibility": "Reduces revision and record details to what belongs to one entity while preserving its evidence sides.",
+	"responsibility": "Reduces revision and record details to one entity while preserving evidence sides and opaque source-tree identity without cache filenames.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/development-tooling/recorded-answer/recordedProjection.ts",
+			"packages/desktop/src/utils/development-tooling/recordedProjection.ts",
 			"packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
 			"packages/desktop/src/utils/recordedProjection.ts"
 		],
-		"symbols": ["recordedProjection", "side", "recordedProjection"]
+		"symbols": [
+			"recordedProjection",
+			"side",
+			"recordedProjection",
+			"recordedProjection",
+			"recordedProjection",
+			"side"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,7 +40,7 @@
 			{
 				"name": "recordedProjection",
 				"type": "ExplorerEvidence",
-				"description": "A new evidence object with each detailed side reduced to the entity and its covered scenario states. Keeps all tests, existing captures and coverage, and the corresponding judging record; removes unrelated units, graph edges, changed-file lists and uncertainty lists. A side without detail is retained unchanged. The supplied evidence is not mutated."
+				"description": "Entity-scoped sides preserve captures, coverage, tests, judging records and the opaque source-tree hash needed to re-derive identical-tree screenshots. Unrelated units, graph edges, changed files, uncertainty lists and cache filenames are excluded. A side without detail stays unchanged. The input is not mutated."
 			}
 		],
 		"errors": []
@@ -50,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/recordedProjection.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/recordedProjection.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/recordedProjection.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/recordedProjection.ts"
 			}
 		]
 	},

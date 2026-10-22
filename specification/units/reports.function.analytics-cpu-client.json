@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/analytics-cpu/analyticsCpuClient.ts",
-			"packages/reports/src/utils/analyticsCpuClient.ts"
+			"packages/reports/src/components/reports-media/analytics-cpu/analyticsCpuClient.ts",
+			"packages/reports/src/utils/analyticsCpuClient.ts",
+			"packages/reports/src/utils/reports-media/analyticsCpuClient.ts"
 		],
-		"symbols": ["analyticsCpuClient", "CpuState", "analyticsCpuClient"]
+		"symbols": [
+			"analyticsCpuClient",
+			"analyticsCpuClient",
+			"analyticsCpuClient",
+			"CpuState",
+			"analyticsCpuClient"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -46,11 +54,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/analyticsCpuClient.ts",
+		"entry": "packages/reports/src/utils/reports-media/analyticsCpuClient.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/analyticsCpuClient.ts"
+				"entry": "packages/reports/src/utils/reports-media/analyticsCpuClient.ts"
 			}
 		]
 	},

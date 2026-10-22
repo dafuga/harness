@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/portableJson.ts"],
-		"symbols": ["maxJsonDepth", "portableJson", "notPortable"]
+		"source": ["src/utils/development-tooling/portableJson.ts", "src/utils/portableJson.ts"],
+		"symbols": [
+			"maxJsonDepth",
+			"portableJson",
+			"notPortable",
+			"maxJsonDepth",
+			"portableJson",
+			"notPortable"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +59,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/portableJson.ts",
+		"entry": "src/utils/development-tooling/portableJson.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/portableJson.ts"
+				"entry": "src/utils/development-tooling/portableJson.ts"
 			}
 		]
 	},

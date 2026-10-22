@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/productionPromotion.ts"],
-		"symbols": ["productionPromotion"]
+		"source": [
+			"packages/desktop/src/utils/development-tooling/productionPromotion.ts",
+			"packages/desktop/src/utils/productionPromotion.ts"
+		],
+		"symbols": ["productionPromotion", "productionPromotion"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,11 +60,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/productionPromotion.ts",
+		"entry": "packages/desktop/src/utils/development-tooling/productionPromotion.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/productionPromotion.ts"
+				"entry": "packages/desktop/src/utils/development-tooling/productionPromotion.ts"
 			}
 		]
 	},

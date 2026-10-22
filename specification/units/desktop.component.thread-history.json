@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/ThreadHistory.svelte"],
-		"symbols": ["ThreadHistory"]
+		"source": [
+			"packages/desktop/src/components/ThreadHistory.svelte",
+			"packages/desktop/src/components/git-source-history/ThreadHistory.svelte"
+		],
+		"symbols": ["ThreadHistory", "ThreadHistory"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -72,11 +75,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/ThreadHistory.svelte",
+		"entry": "packages/desktop/src/components/git-source-history/ThreadHistory.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/ThreadHistory.svelte"
+				"entry": "packages/desktop/src/components/git-source-history/ThreadHistory.svelte"
 			}
 		]
 	},

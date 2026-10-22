@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/validators/HostCommandValidator.ts"],
-		"symbols": ["HostCommandValidator", "HostCommandValidator.command"]
+		"source": [
+			"packages/relay/src/validators/HostCommandValidator.ts",
+			"packages/relay/src/validators/development-tooling/HostCommandValidator.ts"
+		],
+		"symbols": ["HostCommandValidator", "HostCommandValidator", "HostCommandValidator.command"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -50,11 +53,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/validators/HostCommandValidator.ts",
+		"entry": "packages/relay/src/validators/development-tooling/HostCommandValidator.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/validators/HostCommandValidator.ts"
+				"entry": "packages/relay/src/validators/development-tooling/HostCommandValidator.ts"
 			}
 		]
 	},

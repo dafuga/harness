@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/adapters/shell.ts"],
-		"symbols": ["shellAdapter"]
+		"source": ["src/audit/adapters/shell.ts", "src/audit/development-tooling/adapters/shell.ts"],
+		"symbols": ["shellAdapter", "shellAdapter"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -40,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/adapters/shell.ts",
+		"entry": "src/audit/development-tooling/adapters/shell.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/adapters/shell.ts"
+				"entry": "src/audit/development-tooling/adapters/shell.ts"
 			}
 		]
 	},

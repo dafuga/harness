@@ -9,10 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/browser-project-adapter/hostedArtifact.ts",
+			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/hostedArtifact.ts",
 			"packages/desktop/src/utils/hostedArtifact.ts",
 			"packages/hub/src/utils/browser-bridge/hostedArtifact.ts"
 		],
-		"symbols": ["hostedArtifact", "hostedArtifact", "hostedArtifact"]
+		"symbols": ["hostedArtifact", "hostedArtifact", "hostedArtifact", "hostedArtifact"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -57,11 +58,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/adapters/browser-project-adapter/hostedArtifact.ts",
+		"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/hostedArtifact.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/adapters/browser-project-adapter/hostedArtifact.ts"
+				"entry": "packages/desktop/src/adapters/explorer-ui/browser-project-adapter/hostedArtifact.ts"
 			}
 		]
 	},

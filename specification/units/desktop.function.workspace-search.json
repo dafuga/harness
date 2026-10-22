@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/nav-bar/workspaceSearch.ts",
+			"packages/desktop/src/components/projects-sessions/nav-bar/workspaceSearch.ts",
+			"packages/desktop/src/utils/projects-sessions/workspaceSearch.ts",
 			"packages/desktop/src/utils/workspaceSearch.ts"
 		],
-		"symbols": ["workspaceSearch", "WorkspaceSearch", "workspaceSearch"]
+		"symbols": [
+			"workspaceSearch",
+			"workspaceSearch",
+			"WorkspaceSearch",
+			"workspaceSearch",
+			"workspaceSearch"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/workspaceSearch.ts",
+		"entry": "packages/desktop/src/utils/projects-sessions/workspaceSearch.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/workspaceSearch.ts"
+				"entry": "packages/desktop/src/utils/projects-sessions/workspaceSearch.ts"
 			}
 		]
 	},

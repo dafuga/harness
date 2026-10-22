@@ -30,17 +30,17 @@ test('collections: search, changed only and order change what is listed', async 
 	await expect(tab.locator('.ex-legend')).toHaveCount(0);
 	await tab.getByRole('searchbox', { name: 'Search components' }).fill('card');
 	await expect(rows).toHaveCount(1);
-	await expect(rows.first()).toContainText('Order card');
+	await expect(rows.first()).toContainText('OrderCard');
 	await tab.getByRole('searchbox', { name: 'Search components' }).fill('zzz');
 	await expect(tab.getByText('No components match this search.')).toBeVisible();
 	await tab.getByRole('button', { name: 'Show all components' }).click();
 	await expect(rows).toHaveCount(3);
 	await chooseCatalogFilter(tab, 'Changed only', true);
 	await expect(rows).toHaveCount(1);
-	await expect(rows.first()).toContainText('Order list');
+	await expect(rows.first()).toContainText('OrderList');
 	await chooseCatalogFilter(tab, 'Changed only', false);
 	await chooseCatalogFilter(tab, 'Order', 'name-desc');
-	await expect(rows.first()).toContainText('Search box');
+	await expect(rows.first()).toContainText('SearchBox');
 });
 test('a row or a card of a collection opens its entity in the same branch and commit', async ({
 	page: tab
@@ -57,14 +57,14 @@ test('a row or a card of a collection opens its entity in the same branch and co
 	});
 	await expect(tab.getByRole('heading', { level: 1, name: 'filterOrders' })).toBeVisible();
 	await open(tab, { category: 'components' });
-	await tab.getByRole('link', { name: 'Open Order card' }).click();
+	await tab.getByRole('link', { name: 'Open OrderCard' }).click();
 	expect(await where(tab)).toEqual({
 		branch,
 		commit: null,
 		category: 'components',
 		entity: ids.card
 	});
-	await expect(tab.getByRole('heading', { level: 1, name: 'Order card' })).toBeVisible();
+	await expect(tab.getByRole('heading', { level: 1, name: 'OrderCard' })).toBeVisible();
 	await open(tab);
 	await tab.getByRole('link', { name: 'Open Orders page' }).click();
 	expect(await where(tab)).toEqual({ branch, commit: null, ...page });
@@ -99,7 +99,13 @@ test('a page shows one screenshot at the tip and a matching pair at a commit', a
 		'/media/aaaaaaa-default-mobile.png',
 		'/media/bbbbbbb-default-mobile.png'
 	]);
-	await tab.getByRole('button', { name: 'Open full size' }).last().click();
+	const image = tab.locator('.ex-evidence .ex-shot').last();
+	await image.click();
+	await expect(tab.getByRole('dialog')).toBeVisible();
+	await tab.keyboard.press('Escape');
+	await expect(tab.getByRole('dialog')).toHaveCount(0);
+	await image.focus();
+	await image.press('Enter');
 	await expect(tab.getByRole('dialog')).toBeVisible();
 });
 test('a function shows its recorded run: steps, input, output and assertions', async ({
@@ -146,7 +152,7 @@ test('links walk page to component to function, and keep the branch and the comm
 		commit: commits.middle
 	});
 	await capture(tab, 'page-uses-desktop');
-	await tab.getByRole('link', { name: 'Order list', exact: true }).click();
+	await tab.getByRole('link', { name: 'OrderList' }).click();
 	expect(await where(tab)).toEqual({
 		branch: 'feature/orders',
 		commit: commits.middle,

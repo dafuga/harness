@@ -8,10 +8,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareProjectRun.ts",
 			"packages/desktop/src/services/desktop-run-service/prepareProjectRun.ts",
+			"packages/desktop/src/utils/agents-providers/prepareProjectRun.ts",
 			"packages/desktop/src/utils/prepareProjectRun.ts"
 		],
-		"symbols": ["prepareProjectRun", "ProjectRunContext", "prepareProjectRun"]
+		"symbols": [
+			"prepareProjectRun",
+			"prepareProjectRun",
+			"ProjectRunContext",
+			"prepareProjectRun",
+			"prepareProjectRun"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -86,11 +94,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/prepareProjectRun.ts",
+		"entry": "packages/desktop/src/utils/agents-providers/prepareProjectRun.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/prepareProjectRun.ts"
+				"entry": "packages/desktop/src/utils/agents-providers/prepareProjectRun.ts"
 			}
 		]
 	},

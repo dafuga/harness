@@ -7,8 +7,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/budgetTypes.ts"],
+		"source": ["src/core/budgetTypes.ts", "src/core/verification-evidence/budgetTypes.ts"],
 		"symbols": [
+			"performanceBaselineSchema",
+			"budgetEventSchema",
 			"performanceBaselineSchema",
 			"budgetEventSchema",
 			"BudgetEvent",
@@ -46,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/budgetTypes.ts",
+		"entry": "src/core/verification-evidence/budgetTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/budgetTypes.ts"
+				"entry": "src/core/verification-evidence/budgetTypes.ts"
 			}
 		]
 	},

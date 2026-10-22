@@ -7,12 +7,15 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/AnalyticsService.ts"],
+		"source": ["src/cli/program/AnalyticsService.ts", "src/services/AnalyticsService.ts"],
 		"symbols": [
 			"AnalyticsOptions",
 			"AnalyticsService",
 			"AnalyticsService.execute",
-			"normalizeFilter"
+			"normalizeFilter",
+			"AnalyticsService",
+			"normalizeFilter",
+			"AnalyticsOptions"
 		]
 	},
 	"contract": {
@@ -87,11 +90,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/AnalyticsService.ts",
+		"entry": "src/cli/program/AnalyticsService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/AnalyticsService.ts"
+				"entry": "src/cli/program/AnalyticsService.ts"
 			}
 		]
 	},

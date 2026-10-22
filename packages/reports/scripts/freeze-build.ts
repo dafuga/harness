@@ -4,8 +4,8 @@
  * directory of the checkout, which another build may replace at any time.
  */
 import { resolve } from 'node:path';
-import { e2eFixtures } from '../src/utils/e2e-fixtures/e2eFixtures';
-import { frozenBuild } from '../src/utils/frozenBuild';
+import { e2eFixtures } from '../src/utils/development-tooling/e2e-fixtures/e2eFixtures';
+import { frozenBuild } from '../src/utils/development-tooling/frozenBuild';
 
 const source = resolve(process.argv[2] ?? 'build');
 try {

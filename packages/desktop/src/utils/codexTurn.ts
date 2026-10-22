@@ -1,1 +1,1 @@
-export { codexTurn } from '../adapters/codex-app-server-adapter/codexTurn';
+export { codexTurn } from '../adapters/agents-providers/codex-app-server-adapter/codexTurn';

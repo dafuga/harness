@@ -8,10 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge.ts",
+			"packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts",
 			"packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
 			"packages/relay/src/utils/frameTooLarge.ts"
 		],
-		"symbols": ["frameTooLarge", "frameTooLarge"]
+		"symbols": ["frameTooLarge", "frameTooLarge", "frameTooLarge", "frameTooLarge"]
 	},
 	"contract": {
 		"origin": "declared",

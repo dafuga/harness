@@ -1,1 +1,1 @@
-export { hostedPublicFailure } from '../adapters/hosted-http-adapter/hostedPublicFailure';
+export { hostedPublicFailure } from '../adapters/networking-security/hosted-http-adapter/hostedPublicFailure';

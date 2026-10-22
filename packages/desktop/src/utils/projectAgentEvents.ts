@@ -1,1 +1,1 @@
-export { projectAgentEvents } from './project-agent-events/projectAgentEvents';
+export { projectAgentEvents } from './explorer-ui/project-agent-events/projectAgentEvents';

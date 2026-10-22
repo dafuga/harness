@@ -10,11 +10,21 @@
 		"source": [
 			"packages/reports/src/components/activity-agents/activityDisplay.ts",
 			"packages/reports/src/components/project-activity/activityDisplay.ts",
-			"packages/reports/src/utils/activityDisplay.ts"
+			"packages/reports/src/components/projects-sessions/activity-agents/activityDisplay.ts",
+			"packages/reports/src/components/projects-sessions/project-activity/activityDisplay.ts",
+			"packages/reports/src/utils/activityDisplay.ts",
+			"packages/reports/src/utils/projects-sessions/activityDisplay.ts"
 		],
 		"symbols": [
 			"activityDisplay",
 			"commitHref",
+			"activityDisplay",
+			"commitHref",
+			"commitHref",
+			"activityDisplay",
+			"agentStates",
+			"activityTime",
+			"plural",
 			"agentStates",
 			"activityTime",
 			"plural",
@@ -105,7 +115,7 @@
 	"helperContracts": [
 		{
 			"name": "plural",
-			"source": "packages/reports/src/utils/activityDisplay.ts",
+			"source": "packages/reports/src/utils/projects-sessions/activityDisplay.ts",
 			"inputs": [
 				{
 					"name": "plural.count",
@@ -144,11 +154,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/activityDisplay.ts",
+		"entry": "packages/reports/src/utils/projects-sessions/activityDisplay.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/activityDisplay.ts"
+				"entry": "packages/reports/src/utils/projects-sessions/activityDisplay.ts"
 			}
 		]
 	},

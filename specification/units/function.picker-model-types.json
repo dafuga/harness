@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/pickerModelTypes.ts"],
-		"symbols": ["ProviderSelection", "PickerModel", "sameSelection", "validateSessionId"]
+		"source": ["src/core/development-tooling/pickerModelTypes.ts", "src/core/pickerModelTypes.ts"],
+		"symbols": [
+			"ProviderSelection",
+			"PickerModel",
+			"sameSelection",
+			"validateSessionId",
+			"sameSelection",
+			"validateSessionId"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,11 +59,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/core/pickerModelTypes.ts",
+		"entry": "src/core/development-tooling/pickerModelTypes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/core/pickerModelTypes.ts"
+				"entry": "src/core/development-tooling/pickerModelTypes.ts"
 			}
 		]
 	},

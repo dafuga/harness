@@ -52,10 +52,10 @@ test('a page leads to its components, those to components, and those to function
 		await expect(content(page).getByRole('heading', { name: named })).toBeVisible();
 	}
 	await expect(content(page).getByText(/sub-?components|^related/i)).toHaveCount(0);
-	await open(page, 'Title list');
+	await open(page, 'TitleList');
 	await expectPath(page, main(`components/${units.list}`));
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
-	await open(page, 'Title row');
+	await open(page, 'TitleRow');
 	await expectPath(page, main(`components/${units.row}`));
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await content(page).locator('.ex-function-call').first().click();
@@ -115,7 +115,7 @@ test('a verdict is a green check for complete passing evidence and a red cross f
 	// The newest record of this commit rejected the audio of the service: its own failure, while
 	// the page beside it, whose captures that record accepted, is judged by its own evidence.
 	await page.goto(at('main', commits.restated, `services/${units.service}`));
-	await expect(heading(page, 'Title service')).toBeVisible();
+	await expect(heading(page, 'TitleService')).toBeVisible();
 	await expect(passed(page)).toHaveCount(0);
 	// A budget the commit broke is that unit's failure.
 	await page.goto(at('main', commits.grown, `functions/${units.slugify}`));
@@ -147,7 +147,7 @@ test('a component is shown with the states that show it, not every state of its 
 	// One scenario captures the list and its row; each capture belongs to the component it shows.
 	const shots = (state: string) => content(page).locator(`img[alt*="· ${state} at"]`);
 	await page.goto(tip(explorerBranch, `components/${units.row}`));
-	await expect(heading(page, 'Title row')).toBeVisible();
+	await expect(heading(page, 'TitleRow')).toBeVisible();
 	await checkpoint(page, 'evidence-own-states');
 	await expect(shots('row')).toHaveCount(1);
 	await expect(shots('listed')).toHaveCount(0);

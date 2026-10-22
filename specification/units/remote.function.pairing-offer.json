@@ -8,12 +8,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/networking-security/remote-host-service/pairingOffer.ts",
 			"packages/desktop/src/services/remote-host-service/pairingOffer.ts",
 			"packages/remote/src/services/device-pairing-service/pairingOffer.ts",
+			"packages/remote/src/services/networking-security/device-pairing-service/pairingOffer.ts",
+			"packages/remote/src/utils/networking-security/pairingOffer.ts",
 			"packages/remote/src/utils/pairingOffer.ts"
 		],
 		"symbols": [
 			"pairingOffer",
+			"pairingOffer",
+			"readPairingOffer",
 			"readPairingOffer",
 			"PairingOffer",
 			"OfferEnvironment",
@@ -25,7 +30,13 @@
 			"offerEnvironment",
 			"written",
 			"pairingOffer",
-			"readPairingOffer"
+			"readPairingOffer",
+			"pairingOffer",
+			"readPairingOffer",
+			"offerRules",
+			"shape",
+			"offerEnvironment",
+			"written"
 		]
 	},
 	"contract": {
@@ -96,11 +107,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/remote/src/utils/pairingOffer.ts",
+		"entry": "packages/remote/src/utils/networking-security/pairingOffer.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/remote/src/utils/pairingOffer.ts"
+				"entry": "packages/remote/src/utils/networking-security/pairingOffer.ts"
 			}
 		]
 	},

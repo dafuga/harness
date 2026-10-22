@@ -1,1 +1,1 @@
-export { gatewayMessages } from '../services/claude-query-service/gatewayMessages';
+export { gatewayMessages } from '../cli/program/codex-gateway-service/claude-query-service/gatewayMessages';

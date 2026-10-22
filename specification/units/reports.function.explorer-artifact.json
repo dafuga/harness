@@ -9,15 +9,22 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-reading/explorerArtifact.ts",
+			"packages/reports/src/utils/explorer-ui/explorer-reading/explorerArtifact.ts",
+			"packages/reports/src/utils/explorer-ui/explorerArtifact.ts",
 			"packages/reports/src/utils/explorerArtifact.ts"
 		],
 		"symbols": [
 			"artifactBehavior",
 			"explorerArtifact",
+			"artifactBehavior",
+			"explorerArtifact",
 			"artifactText",
 			"ArtifactFetcher",
 			"artifactBehavior",
-			"explorerArtifact"
+			"explorerArtifact",
+			"artifactBehavior",
+			"explorerArtifact",
+			"artifactText"
 		]
 	},
 	"contract": {
@@ -87,11 +94,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/explorerArtifact.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/explorerArtifact.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/explorerArtifact.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/explorerArtifact.ts"
 			}
 		]
 	},

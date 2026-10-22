@@ -8,10 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/utils/accounts-access/repository-identity/repositoryIdentity.ts",
 			"src/utils/repository-identity/repositoryIdentity.ts",
 			"src/utils/repositoryIdentity.ts"
 		],
 		"symbols": [
+			"repositoryIdentity",
+			"sameRepository",
+			"sameSite",
 			"repositoryIdentity",
 			"sameRepository",
 			"sameSite",

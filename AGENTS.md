@@ -9,9 +9,12 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Ask `bun run dev -- info <topic>` before adding unfamiliar code or choosing a scaffold shape.
 - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 - Add or update focused unit and E2E coverage for changes to audit rules, generators, or CLI behavior.
+- When relocating modules, run their existing namespace-spy tests against the declaration module imported by the subject; retain separate coverage of supported public forwarding entries.
 - Before replacing iteration, collection construction or property access in code that takes in-memory JSON, characterize through its public entry what admission accepts before serialization: own iterators, species and getters included. A JSON round trip holds none of them, so its parity is not enough; keep those cases in the normal tests.
 - When adding shared UI imports, declare their source reference bindings and run `test/shared-select-impact.test.ts`, `test/shared-search-impact.test.ts` and `test/shared-alias-index.test.ts` before handing off the component.
+- When changing shared explorer frames or their imports, include `packages/reports/test/components/explorer-screens.test.ts` in the focused regression command. Keep data readers in data/store modules so frames do not import entity-specific panes.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
+- When changing a helper recorded by `local-helper-ownership`, keep its original migration definition and record the intentional update in `followUps` with the implementation commit and reason. Run `test/services/unit-index.test.ts` alongside the owning workspace's checks before landing.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 
@@ -70,6 +73,9 @@ These rules apply only to this Harness repository, including requests made in an
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
 - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
 - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. A feature-branch screenshot alone is not merged delivery.
+- When screenshot metadata crosses a projection or transport, run its existing isolation and re-derivation tests alongside browser captures, even when full verification is deferred. Carry opaque source-tree identity and original provenance, without prepared-history cache filenames.
+- When changing the screenshot viewer, capture the entity being reviewed as well as the viewer. Reopen that entity at the delivered revision with every device image and page workload figure present; an older selected commit does not prove current delivery.
+- Preserve focused runtime measurements across identical complete source trees, using the same identity rule as screenshots. Keep their original tested revision and focused status; source reuse does not grant a full verification verdict.
 - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
 
 ## Code Rules
@@ -78,6 +84,8 @@ These rules apply only to this Harness repository, including requests made in an
 - Reserve shared helper folders for pure callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
 - A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
 - Preserve registered identities, contracts and history when relocating helpers. Update imports, tests and owned source together. Mixed shared/private modules must be split by responsibility rather than moving a shared helper into one consumer's folder. An unused export has no proven owner; check public API contracts and dynamic/runtime use before removing or relocating it.
+
+- Shared service catalogs require two distinct active runtime owner units. A single-consumer service implementation belongs inside its owning component or code area, with its private helpers. Types, unused imports, repeated references, forwarding exports and indirect page reachability do not establish sharing. Preserve registered identities, contracts and supported public entries when relocating; inspect dynamic/runtime contracts before assigning an unused export to an owner.
 
 - Keep Harness, its coding agents and active checks below the combined 10 GB RAM target. Measure attributed process memory; report shared or unmeasurable usage separately.
 - Run one broad check, build or history prebuild at a time. Use focused standardized tests while editing and reuse running servers.
@@ -93,6 +101,23 @@ These rules apply only to this Harness repository, including requests made in an
 - A cache of Git answers keys only names proven immutable: establish the repository's object format first, since hexadecimal shape alone is not immutability. Its tests move refs named like ids of each other supported width and give a Git whose format is unknown.
 - A test or build config names each helper it owns from its own file: a workspace without a config inherits it and resolves relative paths from itself. Before a full check, run the root and each inheriting workspace's normal test entrypoint.
 - When shared browser fixture dependencies change, prove API-only tests still run with an unavailable browser executable, alongside the actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates. Monitoring must preserve lazy browser setup.
+
+## Module Naming
+
+Read `harness info naming` and the scaffold guide before naming a module. Classes keep PascalCase and their role suffix; models and components keep PascalCase; functions, pure helpers and value modules keep their actual camelCase name. Match source filenames and primary declarations, preserve framework entries and stable registered IDs, and keep descriptive responsibilities separate from code names. Use the same canonical code identity on cards, usage links and detail headings. Standard catalog coverage compares those surfaces for class, callable, component and model consumers at current and historical revisions; card-only naming overrides are not allowed.
+
+Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.
+
+## Responsibility Categories
+
+Place every module type in `src/<kind>/<category>/` using the project taxonomy in
+`harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
+new code; a new explicit group extends the taxonomy. Reuse an existing category
+when its responsibility fits. Unambiguous names or declared responsibilities can
+select it automatically; ambiguity requires a deliberate category choice. Keep
+private helpers and single-owner services inside their owner category. Preserve
+registered IDs, framework entries and public URLs. The explorer reads category
+folders and titles from the selected source revision for every collection.
 
 ## Measurement Evidence
 

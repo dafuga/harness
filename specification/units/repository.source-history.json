@@ -7,14 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/source-history-repository/SourceHistoryRepository.ts"],
+		"source": [
+			"src/repositories/git-source-history/source-history-repository/SourceHistoryRepository.ts",
+			"src/repositories/source-history-repository/SourceHistoryRepository.ts"
+		],
 		"symbols": [
 			"SourceRevision",
 			"SourceHistory",
 			"SourceHistoryRepository",
 			"SourceHistoryRepository.constructor",
 			"SourceHistoryRepository.read",
-			"SourceHistoryRepository.revision"
+			"SourceHistoryRepository.revision",
+			"SourceHistoryRepository"
 		]
 	},
 	"contract": {
@@ -68,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/repositories/source-history-repository/SourceHistoryRepository.ts",
+		"entry": "src/repositories/git-source-history/source-history-repository/SourceHistoryRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/repositories/source-history-repository/SourceHistoryRepository.ts"
+				"entry": "src/repositories/git-source-history/source-history-repository/SourceHistoryRepository.ts"
 			}
 		]
 	},

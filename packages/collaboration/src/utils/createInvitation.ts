@@ -1,1 +1,4 @@
-export { createInvitation, acceptInvitation } from './create-collaboration/createInvitation';
+export {
+	createInvitation,
+	acceptInvitation
+} from './projects-sessions/create-collaboration/createInvitation';

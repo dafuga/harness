@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/FloatingChat.svelte"],
-		"symbols": ["FloatingChat"]
+		"source": [
+			"packages/reports/src/components/FloatingChat.svelte",
+			"packages/reports/src/components/planning-collaboration/FloatingChat.svelte"
+		],
+		"symbols": ["FloatingChat", "FloatingChat"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -69,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/FloatingChat.svelte",
+		"entry": "packages/reports/src/components/planning-collaboration/FloatingChat.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/FloatingChat.svelte"
+				"entry": "packages/reports/src/components/planning-collaboration/FloatingChat.svelte"
 			}
 		]
 	},

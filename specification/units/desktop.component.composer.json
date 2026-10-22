@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/Composer.svelte"],
-		"symbols": ["Composer"]
+		"source": [
+			"packages/desktop/src/components/Composer.svelte",
+			"packages/desktop/src/components/shared-primitives/Composer.svelte"
+		],
+		"symbols": ["Composer", "Composer"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -103,11 +106,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/Composer.svelte",
+		"entry": "packages/desktop/src/components/shared-primitives/Composer.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/Composer.svelte"
+				"entry": "packages/desktop/src/components/shared-primitives/Composer.svelte"
 			}
 		]
 	},

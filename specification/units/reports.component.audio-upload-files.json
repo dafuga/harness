@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/AudioUploadFiles.svelte"],
-		"symbols": ["AudioUploadFiles"]
+		"source": [
+			"packages/reports/src/components/AudioUploadFiles.svelte",
+			"packages/reports/src/components/reports-media/AudioUploadFiles.svelte"
+		],
+		"symbols": ["AudioUploadFiles", "AudioUploadFiles"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/AudioUploadFiles.svelte",
+		"entry": "packages/reports/src/components/reports-media/AudioUploadFiles.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/AudioUploadFiles.svelte"
+				"entry": "packages/reports/src/components/reports-media/AudioUploadFiles.svelte"
 			}
 		]
 	},

@@ -1,2 +1,6 @@
-export { hubCatalog, hubAttestPlan, hubOwnedPaths } from './hub-catalog/hubCatalog';
-export { hubRelationships } from '../services/hub-projection-service/hubCatalog';
+export {
+	hubCatalog,
+	hubAttestPlan,
+	hubOwnedPaths
+} from './networking-security/hub-catalog/hubCatalog';
+export { hubRelationships } from '../routes/api/[...path]/hub-projection-service/hubCatalog';

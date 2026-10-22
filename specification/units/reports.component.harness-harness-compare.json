@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/harness-compare/HarnessCompare.svelte"],
-		"symbols": ["HarnessCompare"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/harness-compare/HarnessCompare.svelte",
+			"packages/reports/src/components/harness/harness-compare/HarnessCompare.svelte"
+		],
+		"symbols": ["HarnessCompare", "HarnessCompare"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -92,11 +95,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/harness-compare/HarnessCompare.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/harness-compare/HarnessCompare.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/harness-compare/HarnessCompare.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/harness-compare/HarnessCompare.svelte"
 			}
 		]
 	},

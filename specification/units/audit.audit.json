@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/audit.ts"],
-		"symbols": ["AuditFinding", "AuditOptions", "AuditResult", "auditPath", "auditProject"]
+		"source": ["src/audit/audit.ts", "src/audit/development-tooling/audit.ts"],
+		"symbols": [
+			"auditPath",
+			"auditProject",
+			"AuditFinding",
+			"AuditOptions",
+			"AuditResult",
+			"auditPath",
+			"auditProject"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -91,11 +99,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/audit.ts",
+		"entry": "src/audit/development-tooling/audit.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/audit.ts"
+				"entry": "src/audit/development-tooling/audit.ts"
 			}
 		]
 	},

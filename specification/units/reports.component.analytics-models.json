@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/AnalyticsModels.svelte"],
-		"symbols": ["AnalyticsModels"]
+		"source": [
+			"packages/reports/src/components/AnalyticsModels.svelte",
+			"packages/reports/src/components/reports-media/AnalyticsModels.svelte"
+		],
+		"symbols": ["AnalyticsModels", "AnalyticsModels"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/AnalyticsModels.svelte",
+		"entry": "packages/reports/src/components/reports-media/AnalyticsModels.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/AnalyticsModels.svelte"
+				"entry": "packages/reports/src/components/reports-media/AnalyticsModels.svelte"
 			}
 		]
 	},

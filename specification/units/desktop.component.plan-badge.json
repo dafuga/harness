@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/PlanBadge.svelte"],
-		"symbols": ["PlanBadge"]
+		"source": [
+			"packages/desktop/src/components/PlanBadge.svelte",
+			"packages/desktop/src/components/planning-collaboration/PlanBadge.svelte"
+		],
+		"symbols": ["PlanBadge", "PlanBadge"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +34,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/PlanBadge.svelte",
+		"entry": "packages/desktop/src/components/planning-collaboration/PlanBadge.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/PlanBadge.svelte"
+				"entry": "packages/desktop/src/components/planning-collaboration/PlanBadge.svelte"
 			}
 		]
 	},

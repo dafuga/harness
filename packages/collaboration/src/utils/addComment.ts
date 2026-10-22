@@ -1,1 +1,1 @@
-export { addComment } from './create-collaboration/addComment';
+export { addComment } from './projects-sessions/create-collaboration/addComment';

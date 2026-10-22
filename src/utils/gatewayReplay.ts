@@ -1,1 +1,1 @@
-export { gatewayReplay } from '../services/codex-gateway-service/gatewayReplay';
+export { gatewayReplay } from '../cli/program/codex-gateway-service/gatewayReplay';

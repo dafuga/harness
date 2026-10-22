@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/BrandMark.svelte"],
-		"symbols": ["BrandMark"]
+		"source": [
+			"packages/reports/src/components/BrandMark.svelte",
+			"packages/reports/src/components/shared-primitives/BrandMark.svelte"
+		],
+		"symbols": ["BrandMark", "BrandMark"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/BrandMark.svelte",
+		"entry": "packages/reports/src/components/shared-primitives/BrandMark.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/BrandMark.svelte"
+				"entry": "packages/reports/src/components/shared-primitives/BrandMark.svelte"
 			}
 		]
 	},

@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/models/RelayHost.types.ts"],
+		"source": [
+			"packages/relay/src/models/RelayHost.types.ts",
+			"packages/relay/src/models/networking-security/RelayHost.types.ts"
+		],
 		"symbols": [
 			"RelayEnv",
 			"HostScope",
@@ -40,11 +43,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/models/RelayHost.types.ts",
+		"entry": "packages/relay/src/models/networking-security/RelayHost.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/models/RelayHost.types.ts"
+				"entry": "packages/relay/src/models/networking-security/RelayHost.types.ts"
 			}
 		]
 	},

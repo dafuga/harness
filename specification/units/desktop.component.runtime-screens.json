@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/RuntimeScreens.svelte"],
-		"symbols": ["RuntimeScreens"]
+		"source": [
+			"packages/desktop/src/components/RuntimeScreens.svelte",
+			"packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte"
+		],
+		"symbols": ["RuntimeScreens", "RuntimeScreens"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,11 +85,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/components/RuntimeScreens.svelte",
+		"entry": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/components/RuntimeScreens.svelte"
+				"entry": "packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte"
 			}
 		]
 	},

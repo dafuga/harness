@@ -2,13 +2,16 @@
 	"schemaVersion": 1,
 	"id": "reports.component.harness-entity-source",
 	"kind": "component",
-	"title": "GitHub source",
-	"responsibility": "Links to the owned source files on GitHub at the selected commit.",
+	"title": "Source ownership",
+	"responsibility": "Lists real category implementation files and opens exact committed text in the shared read-only modal.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/harness/EntitySource.svelte"],
-		"symbols": ["EntitySource"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"packages/reports/src/components/harness/EntitySource.svelte"
+		],
+		"symbols": ["EntitySource", "archivedSource", "EntitySource", "archivedSource"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -16,42 +19,77 @@
 			{
 				"name": "EntitySource.unit",
 				"type": "HarnessUnit",
-				"description": "Entity with owned source files."
+				"description": "Required unit with recorded owned source paths and optional revision-bound responsibility category."
+			},
+			{
+				"name": "EntitySource.entity",
+				"type": "ExplorerEntity | undefined",
+				"description": "Entity identity supplied by the host for per-file code actions."
+			},
+			{
+				"name": "EntitySource.nav",
+				"type": "EntityNav | undefined",
+				"description": "Revision-scoped modal callback; an unhosted source list remains read-only."
 			},
 			{
 				"name": "EntitySource.repository",
 				"type": "string | undefined",
-				"description": "Canonical GitHub repository URL, when available."
+				"description": "Public GitHub repository used for commit-pinned file links; unsupported values remain plain paths."
 			},
 			{
 				"name": "EntitySource.commit",
-				"type": "string",
-				"description": "Full commit hash for the viewed entity revision."
+				"type": "string | undefined",
+				"description": "Full commit hash supplying the displayed files and GitHub links."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySource",
 				"type": "markup",
-				"description": "GitHub file links pinned to the selected commit, or an explicit unavailable message. No internal ownership metadata."
+				"description": "Actual category implementation paths with per-file View code controls. The modal reads archived committed text only on request; legacy histories state gaps. Symbols, execution targets and identity metadata stay absent."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.source-code-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.source-file-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.store.source-reader",
 			"via": "import",
 			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/harness/EntitySource.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/harness/EntitySource.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte"
 			}
 		]
 	},

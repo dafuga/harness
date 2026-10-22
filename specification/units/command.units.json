@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/UnitsCommand.ts"],
+		"source": ["src/cli/program/UnitsCommand.ts"],
 		"symbols": ["registerUnitsCommand"]
 	},
 	"contract": {
@@ -50,11 +50,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/UnitsCommand.ts",
+		"entry": "src/cli/program/UnitsCommand.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/UnitsCommand.ts"
+				"entry": "src/cli/program/UnitsCommand.ts"
 			}
 		]
 	},

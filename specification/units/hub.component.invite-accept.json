@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/InviteAccept.svelte"],
-		"symbols": ["InviteAccept"]
+		"source": [
+			"packages/hub/src/components/InviteAccept.svelte",
+			"packages/hub/src/components/shared-primitives/InviteAccept.svelte"
+		],
+		"symbols": ["InviteAccept", "InviteAccept"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/InviteAccept.svelte",
+		"entry": "packages/hub/src/components/shared-primitives/InviteAccept.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/InviteAccept.svelte"
+				"entry": "packages/hub/src/components/shared-primitives/InviteAccept.svelte"
 			}
 		]
 	},

@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/kernelArtifacts.ts"],
-		"symbols": ["Environment", "KernelBuild", "KernelFile", "KernelArtifacts", "kernelArtifacts"]
+		"source": ["src/utils/execution-runtimes/kernelArtifacts.ts", "src/utils/kernelArtifacts.ts"],
+		"symbols": [
+			"Environment",
+			"KernelBuild",
+			"KernelFile",
+			"KernelArtifacts",
+			"kernelArtifacts",
+			"kernelArtifacts"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,11 +51,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/kernelArtifacts.ts",
+		"entry": "src/utils/execution-runtimes/kernelArtifacts.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/kernelArtifacts.ts"
+				"entry": "src/utils/execution-runtimes/kernelArtifacts.ts"
 			}
 		]
 	},

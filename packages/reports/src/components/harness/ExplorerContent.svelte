@@ -1,38 +1,7 @@
 <script lang="ts">
-	import type { Component } from 'svelte';
-	import type { ExplorerCategory } from '../../models/Explorer.types';
-	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
-	import EntityBehaviorScreen from './EntityBehaviorScreen.svelte';
-	import EntityConfigScreen from './EntityConfigScreen.svelte';
-	import EntityDetailsScreen from './EntityDetailsScreen.svelte';
-	import EntityHistoryScreen from './EntityHistoryScreen.svelte';
-	import EntityVisualScreen from './EntityVisualScreen.svelte';
-	import ExplorerCatalogScreen from './ExplorerCatalogScreen.svelte';
-	import ExplorerPagesScreen from './ExplorerPagesScreen.svelte';
-	let host: ExplorerScreenProps = $props();
-	type Screen = Component<ExplorerScreenProps>;
-	const overviews: Record<ExplorerCategory, Screen> = {
-		pages: EntityVisualScreen,
-		shells: EntityVisualScreen,
-		components: EntityVisualScreen,
-		functions: EntityBehaviorScreen,
-		services: EntityBehaviorScreen,
-		configs: EntityConfigScreen,
-		models: EntityConfigScreen
-	};
-	// An entity opens as the kind it is at this revision, whatever its address calls it.
-	let kind = $derived(
-		host.entities.find((item) => item.id === host.route.entity)?.category ?? host.route.category
-	);
-	/** The one screen an address is; this content holds none of its own. */
-	let Shown = $derived.by((): Screen => {
-		const { category, entity, section } = host.route;
-		if (!entity && !host.route.helper)
-			return category === 'pages' ? ExplorerPagesScreen : ExplorerCatalogScreen;
-		if (section === 'details') return EntityDetailsScreen;
-		return section === 'history' ? EntityHistoryScreen : overviews[kind];
-	});
+	import CategoryImplementation from '../explorer-ui/harness/ExplorerContent.svelte';
+	import type { ComponentProps } from 'svelte';
+	let props: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
 
-<!-- Any address of the explorer, for a host without a page of its own for each screen. -->
-<Shown {...host} />
+<CategoryImplementation {...props} />

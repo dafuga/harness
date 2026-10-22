@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/report-export-service/reportPdf.ts",
+			"packages/reports/src/services/reports-media/report-export-service/reportPdf.ts",
 			"packages/reports/src/utils/reportPdf.ts"
 		],
-		"symbols": ["reportPdf", "reportPdf"]
+		"symbols": ["reportPdf", "reportPdf", "reportPdf"]
 	},
 	"contract": {
 		"origin": "declared",

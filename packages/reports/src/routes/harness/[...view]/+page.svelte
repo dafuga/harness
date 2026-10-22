@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ExplorerContent from '../../../components/harness/ExplorerContent.svelte';
-	import HarnessScreen from '../../../components/HarnessScreen.svelte';
+	import ExplorerContent from '../../../components/explorer-ui/harness/ExplorerContent.svelte';
+	import HarnessScreen from '../../../components/explorer-ui/HarnessScreen.svelte';
 </script>
 
 <!-- An address no page of its own serves: the host corrects or refuses it, and what it may yet

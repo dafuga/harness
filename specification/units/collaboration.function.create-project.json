@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/create-collaboration/createProject.ts",
-			"packages/collaboration/src/utils/createProject.ts"
+			"packages/collaboration/src/utils/createProject.ts",
+			"packages/collaboration/src/utils/projects-sessions/create-collaboration/createProject.ts"
 		],
-		"symbols": ["createProject", "removeMember", "createProject", "removeMember"]
+		"symbols": [
+			"createProject",
+			"removeMember",
+			"createProject",
+			"removeMember",
+			"createProject",
+			"removeMember"
+		]
 	},
 	"contract": {
 		"origin": "declared",

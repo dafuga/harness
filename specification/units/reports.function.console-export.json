@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/console-server/consoleExport.ts",
-			"packages/reports/src/utils/consoleExport.ts"
+			"packages/reports/src/utils/consoleExport.ts",
+			"packages/reports/src/utils/explorer-ui/console-server/consoleExport.ts",
+			"packages/reports/src/utils/explorer-ui/consoleExport.ts"
 		],
-		"symbols": ["consoleExport", "ConsoleExportInput", "consoleExport"]
+		"symbols": [
+			"consoleExport",
+			"consoleExport",
+			"consoleExport",
+			"ConsoleExportInput",
+			"consoleExport"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,11 +63,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/consoleExport.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/consoleExport.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/consoleExport.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/consoleExport.ts"
 			}
 		]
 	},

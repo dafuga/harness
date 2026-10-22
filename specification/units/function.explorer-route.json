@@ -7,10 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/explorer-route/explorerTabs.ts", "src/utils/explorerRoute.ts"],
+		"source": [
+			"src/utils/development-tooling/explorer-route/explorerTabs.ts",
+			"src/utils/explorer-route/explorerTabs.ts",
+			"src/utils/explorer-ui/explorerRoute.ts",
+			"src/utils/explorerRoute.ts"
+		],
 		"symbols": [
 			"explorerTabs",
 			"ExplorerTab",
+			"tabOf",
+			"explorerTabs",
 			"tabOf",
 			"explorerTabs",
 			"ExplorerTab",
@@ -20,6 +27,13 @@
 			"explorerSections",
 			"ExplorerSection",
 			"ExplorerLocation",
+			"explorerRoute",
+			"canonicalExplorerLocation",
+			"explorerRoutePath",
+			"explorerCategories",
+			"explorerKindCategory",
+			"explorerSections",
+			"explorerTabs",
 			"explorerRoute",
 			"canonicalExplorerLocation",
 			"explorerRoutePath"
@@ -86,11 +100,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/explorerRoute.ts",
+		"entry": "src/utils/explorer-ui/explorerRoute.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/explorerRoute.ts"
+				"entry": "src/utils/explorer-ui/explorerRoute.ts"
 			}
 		]
 	},

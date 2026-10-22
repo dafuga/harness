@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/AccountMenu.svelte"],
-		"symbols": ["AccountMenu"]
+		"source": [
+			"packages/hub/src/components/AccountMenu.svelte",
+			"packages/hub/src/components/accounts-access/AccountMenu.svelte"
+		],
+		"symbols": ["AccountMenu", "AccountMenu"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,11 +40,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/AccountMenu.svelte",
+		"entry": "packages/hub/src/components/accounts-access/AccountMenu.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/AccountMenu.svelte"
+				"entry": "packages/hub/src/components/accounts-access/AccountMenu.svelte"
 			}
 		]
 	},

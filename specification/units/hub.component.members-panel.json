@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/MembersPanel.svelte"],
-		"symbols": ["MembersPanel"]
+		"source": [
+			"packages/hub/src/components/MembersPanel.svelte",
+			"packages/hub/src/components/shared-primitives/MembersPanel.svelte"
+		],
+		"symbols": ["MembersPanel", "MembersPanel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +45,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/MembersPanel.svelte",
+		"entry": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/MembersPanel.svelte"
+				"entry": "packages/hub/src/components/shared-primitives/MembersPanel.svelte"
 			}
 		]
 	},

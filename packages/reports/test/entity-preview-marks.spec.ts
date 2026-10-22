@@ -178,9 +178,9 @@ test('a title that wraps onto two lines is one solid area to press', async ({ pa
 	await open(tab, components);
 	await tab.addStyleTag({ content: '.ex-page-body h2 a { width: 3em; display: block; }' });
 	const title = tab
-		.getByRole('article', { name: 'Order list', exact: true })
+		.getByRole('article', { name: 'OrderList', exact: true })
 		.locator('h2')
-		.getByRole('link', { name: 'Order list', exact: true });
+		.getByRole('link', { name: 'OrderList', exact: true });
 	await title.scrollIntoViewIfNeeded();
 	const box = (await title.boundingBox()) as {
 		x: number;

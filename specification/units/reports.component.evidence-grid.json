@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/evidence-grid/EvidenceGrid.svelte"],
-		"symbols": ["EvidenceGrid"]
+		"source": [
+			"packages/reports/src/components/evidence-grid/EvidenceGrid.svelte",
+			"packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte"
+		],
+		"symbols": ["EvidenceGrid", "EvidenceGrid"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -107,11 +110,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/evidence-grid/EvidenceGrid.svelte",
+		"entry": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/evidence-grid/EvidenceGrid.svelte"
+				"entry": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte"
 			}
 		]
 	},

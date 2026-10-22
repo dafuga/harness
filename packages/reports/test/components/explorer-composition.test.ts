@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { explorerCategories } from '../../../../src/utils/explorerRoute';
 import { resolveImport } from '../../../../src/utils/resolveImport';
@@ -14,6 +14,17 @@ const under = (directory: string): string[] =>
 		entry.isDirectory() ? under(`${directory}/${entry.name}`) : [`${directory}/${entry.name}`]
 	);
 const files = new Set([...under('src'), ...under(`${workspaceRoot}/src`)]);
+const units = readdirSync(join(repo, 'specification/units'))
+	.filter((file) => file.endsWith('.json'))
+	.map((file) => JSON.parse(readFileSync(join(repo, 'specification/units', file), 'utf8')));
+/** Follow a registered forwarding entry to the same component's implementation. */
+const entry = (path: string): string =>
+	units.find(
+		(unit) =>
+			unit.status === 'active' &&
+			unit.owns.source.includes(path) &&
+			basename(unit.runtime.entry) === basename(path)
+	)?.runtime.entry ?? path;
 const components = `${workspaceRoot}/src/components`;
 const routes = `${workspaceRoot}/src/routes/harness`;
 const isComponent = (path: string) => path.endsWith('.svelte');
@@ -21,6 +32,7 @@ const named = (path: string) => path.slice(path.lastIndexOf('/') + 1).replace('.
 
 /** The files one file refers to: all of them, or only those it needs when it runs. */
 function refers(path: string, runs: boolean): string[] {
+	path = entry(path);
 	const script = path.endsWith('.ts') ? 'ts' : 'other';
 	const language = isComponent(path) ? 'svelte' : script;
 	const code = readFileSync(join(repo, path), 'utf8');
@@ -59,11 +71,11 @@ test('the host of a screen names no renderer, not even to read the type of its p
 });
 
 test('the renderer of any screen is named only where the screen is not known', () => {
-	const generic = [...files].filter(
+	const generic = [...new Set([...files].map(entry))].filter(
 		(path) => isComponent(path) && mounts(path, false).includes('ExplorerContent')
 	);
 	expect(generic.sort()).toEqual([
-		`${components}/harness/HarnessShell.svelte`,
+		entry(`${components}/harness/HarnessShell.svelte`),
 		`${routes}/[...view]/+page.svelte`
 	]);
 });

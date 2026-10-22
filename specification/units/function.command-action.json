@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/commandAction.ts"],
-		"symbols": ["commandAction"]
+		"source": ["src/utils/commandAction.ts", "src/utils/development-tooling/commandAction.ts"],
+		"symbols": ["commandAction", "commandAction"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,11 +31,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/commandAction.ts",
+		"entry": "src/utils/development-tooling/commandAction.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/commandAction.ts"
+				"entry": "src/utils/development-tooling/commandAction.ts"
 			}
 		]
 	},

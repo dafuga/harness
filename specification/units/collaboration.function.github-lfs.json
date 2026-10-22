@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts",
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubLfs.ts",
 			"packages/collaboration/src/utils/githubLfs.ts"
 		],
-		"symbols": ["githubLfs", "githubLfs"]
+		"symbols": ["githubLfs", "githubLfs", "githubLfs"]
 	},
 	"contract": {
 		"origin": "declared",

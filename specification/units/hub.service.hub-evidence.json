@@ -7,7 +7,9 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts"],
+		"source": [
+			"packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts"
+		],
 		"symbols": [
 			"HubEvidenceService",
 			"HubEvidenceService.constructor",
@@ -139,11 +141,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+		"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts"
 			}
 		]
 	},

@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/ConsoleCommand.ts"],
+		"source": ["src/cli/program/ConsoleCommand.ts"],
 		"symbols": ["registerConsoleCommand"]
 	},
 	"contract": {
@@ -35,11 +35,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/commands/ConsoleCommand.ts",
+		"entry": "src/cli/program/ConsoleCommand.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/commands/ConsoleCommand.ts"
+				"entry": "src/cli/program/ConsoleCommand.ts"
 			}
 		]
 	},

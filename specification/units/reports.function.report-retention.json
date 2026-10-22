@@ -7,8 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/reportRetention.ts"],
-		"symbols": ["reportLifetimeMs", "reportCloudPrefixes", "reportRetention"]
+		"source": [
+			"packages/reports/src/utils/reportRetention.ts",
+			"packages/reports/src/utils/reports-media/reportRetention.ts"
+		],
+		"symbols": [
+			"reportLifetimeMs",
+			"reportCloudPrefixes",
+			"reportRetention",
+			"reportLifetimeMs",
+			"reportCloudPrefixes",
+			"reportRetention"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -58,11 +68,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportRetention.ts",
+		"entry": "packages/reports/src/utils/reports-media/reportRetention.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportRetention.ts"
+				"entry": "packages/reports/src/utils/reports-media/reportRetention.ts"
 			}
 		]
 	},

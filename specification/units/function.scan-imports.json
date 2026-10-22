@@ -7,14 +7,22 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/source-index-service/scanImports.ts", "src/utils/scanImports.ts"],
+		"source": [
+			"src/services/development-tooling/source-index-service/scanImports.ts",
+			"src/services/source-index-service/scanImports.ts",
+			"src/utils/development-tooling/scanImports.ts",
+			"src/utils/scanImports.ts"
+		],
 		"symbols": [
+			"scanImports",
 			"scanImports",
 			"ReferenceVia",
 			"SourceLanguage",
 			"SourceReference",
 			"svelteScripts",
-			"scanImports"
+			"scanImports",
+			"scanImports",
+			"svelteScripts"
 		]
 	},
 	"contract": {
@@ -59,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/scanImports.ts",
+		"entry": "src/utils/development-tooling/scanImports.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/scanImports.ts"
+				"entry": "src/utils/development-tooling/scanImports.ts"
 			}
 		]
 	},

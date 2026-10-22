@@ -53,7 +53,6 @@ Page workloads retain the registered page's module target and release their insp
 
 Long native compiler/check commands use asynchronous child execution with their original timeout and output bounds. The normal native matrix asserts that the test event loop advances while the real command runs; passing Swift output cannot excuse an unhandled Vitest RPC timeout. Preserve all output and exit assertions and failed-operation profile rejection.
 
-Projection acceptance must preserve the original internal media-side identifier when present,
-while stripping unrelated units and changed source paths. Cover absent side identities too.
-An internal portable media pointer is required to resolve owned screenshots; do not retain an
-obsolete assertion that removes it. Run the normal projection and capture-binding tests together.
+Projection acceptance carries opaque source-tree identity and original capture provenance while
+dropping prepared-history cache filenames. Run the normal isolation, re-derivation and capture-binding
+tests together. Missing tree identity stays absent; it cannot be invented to resolve another image.

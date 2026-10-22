@@ -1,26 +1,7 @@
 <script lang="ts">
-	import { entityCatalog } from '../../utils/entityCatalog';
-	import type { ExplorerScreenProps } from '../../models/ExplorerScreen.types';
-	import ExplorerFrame from './ExplorerFrame.svelte';
-	import ExplorerIndex from './explorer-index/ExplorerIndex.svelte';
-	import ExplorerCatalogItems from '../ExplorerCatalogItems.svelte';
-	let host: ExplorerScreenProps = $props();
-	let rows = $derived(entityCatalog(host.entities, 'pages', host.lens.relations));
+	import CategoryImplementation from '../explorer-ui/harness/ExplorerPagesScreen.svelte';
+	import type { ComponentProps } from 'svelte';
+	let props: ComponentProps<typeof CategoryImplementation> = $props();
 </script>
 
-<!-- The pages of the app as cards: where a person starts, each with its own screenshot. -->
-<ExplorerFrame {host}>
-	{#snippet children(nav)}
-		<ExplorerIndex category="pages" {rows}>
-			{#snippet list(listed)}
-				<ExplorerCatalogItems
-					category="pages"
-					rows={listed}
-					{nav}
-					lens={host.lens}
-					mediaBase={host.mediaBase}
-				/>
-			{/snippet}
-		</ExplorerIndex>
-	{/snippet}
-</ExplorerFrame>
+<CategoryImplementation {...props} />

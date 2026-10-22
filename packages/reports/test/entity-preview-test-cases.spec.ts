@@ -20,7 +20,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 	test(`service Tests show recorded input and output at ${viewport} width`, async ({ page }) => {
 		await page.setViewportSize(size);
 		await open(page, entity);
-		const pane = page.getByRole('tabpanel', { name: 'Order store tests' });
+		const pane = page.getByRole('tabpanel', { name: 'OrderStore tests' });
 		await expect(pane.getByRole('heading', { name: 'Current end-to-end behavior' })).toBeVisible();
 		await expect(pane.getByRole('status').filter({ hasText: 'Current behavior' })).toBeVisible();
 		await capture(page, `${process.env.SCREENSHOT_LABEL ?? 'run'}-tests-current-${viewport}`);
@@ -35,7 +35,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 
 test('service Tests keep parent and selected-commit cases separate', async ({ page }) => {
 	await open(page, { ...entity, commit: commits.middle });
-	const pane = page.getByRole('tabpanel', { name: 'Order store tests' });
+	const pane = page.getByRole('tabpanel', { name: 'OrderStore tests' });
 	await expect(pane.getByRole('status').filter({ hasText: 'Behavior unchanged' })).toBeVisible();
 	await capture(page, `${process.env.SCREENSHOT_LABEL ?? 'run'}-tests-commit-desktop`);
 	for (const name of ['Before · aaaaaaa', 'After · bbbbbbb']) {
@@ -154,7 +154,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(examples, 'functions expose Examples instead of Tests').toHaveCount(1);
 			await expect(page.getByRole('tab', { name: 'Tests', exact: true })).toHaveCount(0);
 			await examples.click();
-			const pane = page.getByRole('tabpanel', { name: 'Filter orders examples', exact: true });
+			const pane = page.getByRole('tabpanel', { name: 'filterOrders examples', exact: true });
 			await expect(pane).toBeVisible();
 			await capture(
 				page,
@@ -178,7 +178,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			expect(await fits(page)).toBe(true);
 		}
 		await open(page, { category: 'functions', entity: ids.filter, tab: 'tests' });
-		const pane = page.getByRole('tabpanel', { name: 'Filter orders examples', exact: true });
+		const pane = page.getByRole('tabpanel', { name: 'filterOrders examples', exact: true });
 		await expect(pane).toContainText('No usage examples are documented at this commit.');
 		await expect(pane.locator('.cases')).toHaveCount(0);
 		await expect(pane.locator('details')).toHaveCount(0);

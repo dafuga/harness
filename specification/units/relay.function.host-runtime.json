@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/relay/src/utils/hostRuntime.ts"],
-		"symbols": ["HostRuntime", "hostRuntime"]
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.ts",
+			"packages/relay/src/lib/host-runtime/hostRuntime.ts",
+			"packages/relay/src/utils/hostRuntime.ts"
+		],
+		"symbols": ["HostRuntime", "hostRuntime", "hostRuntime", "hostRuntime", "HostRuntime"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -117,11 +121,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/utils/hostRuntime.ts",
+		"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/utils/hostRuntime.ts"
+				"entry": "packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.ts"
 			}
 		]
 	},
