@@ -5,6 +5,7 @@ import { entityCatalog } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
+import { withGroups } from '../entityPreviewData';
 import { commits, ids } from '../entityUnits';
 
 const sections = (body: string) =>
@@ -118,5 +119,44 @@ test('a page leads to its components and a component to the components inside it
 	const tabs = [...page.matchAll(/role="tab"[^>]*>(.*?)<\/(?:a|button)>/gs)].map((match) =>
 		words(match[1]).trim()
 	);
-	expect(tabs).toEqual(['Overview', 'Contract', 'Uses', 'States', 'History', 'Source']);
+	expect(tabs).toEqual(['Overview', 'Models', 'Uses', 'States', 'History', 'Source']);
+});
+
+test('page models include models reached through services and remain bound to the revision', async () => {
+	await measureWorkload('reports.function.explorer-relations', 'page-model-dependencies', () => {
+		const head = withGroups(hostProps('current').head);
+		const model = head.registry.units.find((unit) => unit.id === 'app.model.order')!;
+		head.registry.units.push({ ...model, id: 'app.model.unrelated', title: 'Unrelated' });
+		const store = head.registry.units.find((unit) => unit.id === ids.store)!;
+		store.dependencies.push({ unit: model.id, via: 'import' }, { unit: ids.page, via: 'import' });
+		head.registry.units.push({ ...model, id: 'app.model.retired', status: 'removed' });
+		store.dependencies.push({ unit: 'app.model.retired', via: 'import' });
+		const relations = explorerRelations(head, ids.page);
+		expect(relations.models?.map((item) => item.id)).toEqual(['app.model.order']);
+		const body = content(
+			'current',
+			{ category: 'pages', entity: ids.page, tab: 'models' },
+			{ head }
+		);
+		expect(body).toContain('aria-label="Orders page models"');
+		expect(body).toContain('/models/app.model.order');
+		expect(words(body)).not.toContain('Unrelated');
+		const catalog = content('current', { category: 'models' }, { head });
+		const card = (html: string) => drawn(/<article[^]*?<\/article>/.exec(html)![0]);
+		expect(card(body), 'Page Models keep the complete catalog card').toBe(card(catalog));
+		expect(words(body)).toContain('Used In');
+		expect(words(body)).not.toContain('Order.types');
+		const legacy = content(
+			'current',
+			{ category: 'pages', entity: ids.page, tab: 'contract' },
+			{ head }
+		);
+		expect(legacy).toContain('aria-label="Orders page models"');
+		expect(legacy).not.toContain('aria-label="Orders page contract"');
+		const old = withGroups(hostProps('commit').head);
+		old.registry.units = old.registry.units.map((unit) =>
+			unit.id === ids.store ? { ...unit, dependencies: [] } : unit
+		);
+		expect(explorerRelations(old, ids.page).models).toEqual([]);
+	});
 });
