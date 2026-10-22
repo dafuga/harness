@@ -3,6 +3,43 @@ import { resolve } from 'node:path';
 import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
 import { runCommand } from '../../../test/support/cli';
 
+test.each(['src/config/shellViteConfig.ts', 'src/config/development-tooling/shellViteConfig.ts'])(
+	'the %s component fixture aliases resolve to actual source owners',
+	async (entry) => {
+		const program = `import assert from 'node:assert/strict';
+import {existsSync} from 'node:fs';
+import {resolve} from 'node:path';
+const {default: configure} = await import(${JSON.stringify(resolve(entry))});
+const config = await configure({command: 'build', mode: 'test'});
+const expected = {
+  '$app/navigation': 'tests/e2e/support/component-previews/router.svelte.ts',
+  '$app/state': 'tests/e2e/support/component-previews/router.svelte.ts',
+  '$desktop': '../desktop/src',
+  '$shared': 'src/components',
+  '$app/paths': 'tests/e2e/support/shell/hubPaths.ts'
+};
+for (const [alias, path] of Object.entries(expected)) {
+  assert.equal(config.resolve.alias[alias], resolve(path), alias);
+  assert.ok(existsSync(config.resolve.alias[alias]), alias + ' must exist');
+}
+console.log(JSON.stringify({aliases: Object.keys(expected).length}));`;
+		const result = await measureProcess(
+			{
+				units: ['reports.config.shell-vite'],
+				workload: 'cold-component-fixture-config-alias-resolution',
+				target: 'module',
+				command: ['bun', '--eval', program],
+				cwd: process.cwd(),
+				env: { SHELL_FIXTURE_PAGE: 'components', HARNESS_RUNTIME_PROFILE_BOUNDARY: 'benchmark' },
+				partial:
+					'Actual configuration evaluation and alias validation; bundling and browser rendering are measured by their registered scenarios.'
+			},
+			runCommand
+		);
+		expect(JSON.parse(result.stdout)).toEqual({ aliases: 5 });
+	}
+);
+
 /** Each data configuration initializes in its own fresh runtime; no bundler cost is inferred. */
 test.each([
 	['report', 'viewer', 'src/lib/portable.ts'],
