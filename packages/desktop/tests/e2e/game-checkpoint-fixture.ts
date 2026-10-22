@@ -102,6 +102,7 @@ async function imageProject(page: Page) {
 /** Real page timing and renderer heap; never described as isolated component measurements. */
 export async function recordGameCapture(page: Page, name: string, bytes: Buffer) {
 	const state = [
+		'checkpoint-advanced-rules',
 		'checkpoint-map',
 		'checkpoint-modal',
 		'checkpoint-image-first',
@@ -139,7 +140,6 @@ export async function recordGameCapture(page: Page, name: string, bytes: Buffer)
 	];
 	await keepGameCapture({ state, viewport, timing, size, measurements }, bytes);
 }
-
 function observations(input: { units: string[]; elapsed: number; heap: number; workload: string }) {
 	return input.units.flatMap((unit) => [
 		{

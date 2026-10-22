@@ -155,3 +155,25 @@ export async function captureGame(page: import('@playwright/test').Page, name: s
 	const bytes = await page.screenshot({ path, fullPage: true });
 	await recordGameCapture(page, name, bytes);
 }
+
+/** Compact creation, image review and optional rule editing at each scenario viewport. */
+export async function captureCheckpointViewports(
+	page: Page,
+	capture: (page: Page, name: string) => Promise<void>
+) {
+	const { checkpointModal } = await import('./game-checkpoint-fixture');
+	for (const [width, height] of [
+		[1440, 900],
+		[920, 1180],
+		[390, 844]
+	]) {
+		await page.setViewportSize({ width, height });
+		await checkpointModal(page, capture);
+		await openCheckpoint(page, 'Collect the key');
+		const condition = page.getByLabel('Condition 1 field', { exact: true });
+		await condition.scrollIntoViewIfNeeded();
+		await expect(condition).toBeInViewport();
+		await capture(page, 'checkpoint-advanced-rules');
+		await doneCheckpoint(page);
+	}
+}

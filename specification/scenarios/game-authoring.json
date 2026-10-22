@@ -270,10 +270,7 @@
 				"desktop.page.game",
 				"desktop.component.game-workspace",
 				"desktop.component.game-view-fields",
-				"desktop.component.game-graph",
-				"desktop.component.game-checkpoint-pane",
-				"desktop.component.game-checkpoint-image",
-				"desktop.component.game-checkpoint-editor"
+				"desktop.component.game-graph"
 			]
 		},
 		{
@@ -283,11 +280,8 @@
 			"units": [
 				"desktop.page.game",
 				"desktop.component.game-workspace",
-				"desktop.component.game-view-fields",
-				"desktop.component.game-graph",
 				"desktop.component.game-checkpoint-pane",
-				"desktop.component.game-checkpoint-image",
-				"desktop.component.game-checkpoint-editor"
+				"desktop.component.game-checkpoint-image"
 			]
 		},
 		{
@@ -297,11 +291,8 @@
 			"units": [
 				"desktop.page.game",
 				"desktop.component.game-workspace",
-				"desktop.component.game-view-fields",
-				"desktop.component.game-graph",
 				"desktop.component.game-checkpoint-pane",
-				"desktop.component.game-checkpoint-image",
-				"desktop.component.game-checkpoint-editor"
+				"desktop.component.game-checkpoint-image"
 			]
 		},
 		{
@@ -311,8 +302,17 @@
 			"units": [
 				"desktop.page.game",
 				"desktop.component.game-workspace",
-				"desktop.component.game-view-fields",
-				"desktop.component.game-graph",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image"
+			]
+		},
+		{
+			"id": "checkpoint-advanced-rules",
+			"title": "Expanded checkpoint rules",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
 				"desktop.component.game-checkpoint-pane",
 				"desktop.component.game-checkpoint-image",
 				"desktop.component.game-checkpoint-editor"
@@ -457,7 +457,8 @@
 				"checkpoint-map",
 				"checkpoint-modal",
 				"checkpoint-image-first",
-				"checkpoint-image-review"
+				"checkpoint-image-review",
+				"checkpoint-advanced-rules"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -472,7 +473,8 @@
 				"checkpoint-map",
 				"checkpoint-modal",
 				"checkpoint-image-first",
-				"checkpoint-image-review"
+				"checkpoint-image-review",
+				"checkpoint-advanced-rules"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true

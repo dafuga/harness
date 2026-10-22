@@ -4,6 +4,7 @@ import {
 	viewSettings,
 	doneCheckpoint,
 	advancedCheckpoint,
+	captureCheckpointViewports,
 	captureGame as capture
 } from './game-unsaved-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
@@ -12,16 +13,8 @@ if (process.env.TAKE_SCREENSHOT === 'true') test.use({ video: 'on' });
 test('game authoring exposes independent mechanics and executable checkpoint graph', async ({
 	page
 }) => {
-	const { checkpointModal } = await import('./game-checkpoint-fixture');
 	test.setTimeout(90_000);
-	for (const [width, height] of [
-		[1440, 900],
-		[920, 1180],
-		[390, 844]
-	]) {
-		await page.setViewportSize({ width, height });
-		await checkpointModal(page, capture);
-	}
+	await captureCheckpointViewports(page, capture);
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await expect(page.getByRole('textbox', { name: 'Title', exact: true })).toHaveValue(
 		'Movement and collision'
