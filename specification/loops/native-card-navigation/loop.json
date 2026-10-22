@@ -6,7 +6,7 @@
 	"name": "native-card-navigation",
 	"goal": "Keep native acceptance navigation aligned with the actual compact planned-page card accessibility contract",
 	"createdAt": "2026-10-22T02:35:11.130Z",
-	"updatedAt": "2026-10-22T02:52:56.315Z",
+	"updatedAt": "2026-10-22T02:58:34.718Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -57,7 +57,9 @@
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T02:58:34.718Z",
+			"evidence": "After the fix passed, isolated snapshots reintroduced the original 04ea94168 source: guard red 3a656841 again fails all three captured navigation assertions. Restoring the unchanged 2d51f714b repair yields guard green e739288c with six valid labeled observations."
 		},
 		{
 			"id": "verify",
