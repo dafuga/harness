@@ -4,7 +4,7 @@ import { captureSchema, measurementSchema } from './verificationTypes';
 const commit = z.string().regex(/^[a-f0-9]{40}$/);
 const hash = z.string().regex(/^[a-f0-9]{64}$/);
 const text = z.string().min(1);
-export const regressionPhaseSchema = z.enum(['red', 'green']);
+export const regressionPhaseSchema = z.enum(['red', 'green', 'capture']);
 const focusedCaptureSchema = z.strictObject({
 	unit: text,
 	capture: captureSchema.extend({ path: z.string().regex(/^focused\/[\w.-]+$/) }),

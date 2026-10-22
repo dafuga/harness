@@ -49,6 +49,8 @@ export class RegressionProofService {
 			if (snapshot.misdeclared().length) fail('Regression outputs may not cover tracked files.');
 			for (const path of config.link) await snapshot.link(this.root, path);
 			const observed = await observeRegression(snapshot, directory, input, config.scenarios);
+			if (input.phase === 'capture' && !observed.captures.length && !observed.measurements.length)
+				fail('A capture run must retain screenshots or benchmark observations.');
 			const record = await sealRegression(this.root, input, observed);
 			await new RegressionProofRepository(this.root).save(record, observed.output, observed.files);
 			return record;
@@ -98,6 +100,8 @@ function checkResult(
 		fail('A timeout, missing executable or unfinished process is not regression proof.');
 	if (input.phase === 'green' && result.status !== 'passed')
 		fail(`The unchanged regression must pass on the fix commit.\n${output.slice(-8000)}`);
+	if (input.phase === 'capture' && result.status !== 'passed')
+		fail(`The evidence capture command must pass.\n${output.slice(-8000)}`);
 	if (input.phase === 'red' && (result.exitCode === 0 || !output.includes(input.assertion)))
 		fail(
 			'The committed failing test must fail with the named assertion; setup errors do not prove the defect.'
