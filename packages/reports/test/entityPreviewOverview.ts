@@ -19,6 +19,14 @@ export async function reviewMeasuredSources(
 	for (const route of routes) {
 		await visit(route);
 		const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+		if (route.category === 'pages') {
+			const table = profile.getByRole('table', { name: 'Performance metric changes' });
+			const source = table.locator('tbody tr').filter({ hasText: 'Source size' });
+			const complexity = table.locator('tbody tr').filter({ hasText: 'Complexity' });
+			await expect(source, 'page diff retains the measured source size').toContainText('12.3 KB');
+			await expect(complexity, 'page diff retains the measured complexity').toContainText('21');
+			continue;
+		}
 		const rows = await profile
 			.locator('dl > div')
 			.evaluateAll((rows) =>
@@ -38,15 +46,15 @@ export async function reviewMeasuredSources(
 
 /** Equal rows also keep equal spacing across size and timing facts, even when notes wrap. */
 export async function reviewProfileRows(page: Page): Promise<void> {
-	const rows = await page
-		.getByRole('region', { name: 'Performance profile', exact: true })
-		.locator('dl > div')
-		.evaluateAll((rows) =>
+	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
+	const details = profile.locator('dl > div');
+	const rows = await ((await details.count()) ? details : profile.locator('tbody tr')).evaluateAll(
+		(rows) =>
 			rows.map((row) => {
 				const box = row.getBoundingClientRect();
 				return { top: box.top, height: box.height };
 			})
-		);
+	);
 	const heights = rows.map((row) => row.height);
 	const spacing = rows.slice(1).map((row, index) => row.top - rows[index].top);
 	expect

@@ -9,6 +9,7 @@ export const explorerTabs = {
 	overview: [
 		'overview',
 		'contract',
+		'models',
 		'used-in',
 		'uses',
 		'relationships',
@@ -18,7 +19,7 @@ export const explorerTabs = {
 		'states',
 		'source'
 	],
-	details: ['contract', 'measurements', 'source'],
+	details: ['contract', 'models', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
 export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][number];
@@ -27,12 +28,23 @@ function invalidAudioTab(asked: string | null, location: ExplorerLocation): bool
 	return asked === 'audio' && location.category !== 'components';
 }
 
+/** Page-only tabs and the legacy Contract address retain their category rules. */
+function pageQueryTab(asked: string | null, category: ExplorerLocation['category']) {
+	if (asked === 'models' && category !== 'pages') return undefined;
+	if (category === 'pages') {
+		if (asked === 'contract') return 'models';
+		if (asked === 'used-in') return undefined;
+	}
+	return asked;
+}
+
 /** Keep the category checks in their original order while selecting a query tab. */
 function tabQuery(location: ExplorerLocation, search: string): string | null | undefined {
-	let asked = new URLSearchParams(search).get('tab');
+	const requested = new URLSearchParams(search).get('tab');
 	const visual = ['pages', 'components', 'shells'].includes(location.category);
-	if (invalidAudioTab(asked, location)) return undefined;
-	if (location.category === 'pages' && asked === 'used-in') return undefined;
+	if (invalidAudioTab(requested, location)) return undefined;
+	let asked = pageQueryTab(requested, location.category);
+	if (asked === undefined) return undefined;
 	if (visual && asked === 'tests') asked = 'states';
 	if (location.category === 'functions' && asked === 'tests') asked = 'examples';
 	if (!visual && asked === 'states') return undefined;
