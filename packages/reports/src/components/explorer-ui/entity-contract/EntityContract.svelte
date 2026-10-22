@@ -37,8 +37,16 @@
 	let groups = $derived(
 		callables.length > 0 || service.methods.length > 0 ? [] : contractFields(unit, category)
 	);
+	let serviceErrors = $derived(
+		service.facts.filter((row) => row.label === 'Errors not tied to a method')
+	);
 	let facts = $derived(
-		callables.length > 0 ? [] : [...contractFacts(contract, unit, category), ...service.facts]
+		callables.length > 0
+			? []
+			: [
+					...contractFacts(contract, unit, category),
+					...service.facts.filter((row) => !serviceErrors.includes(row))
+				]
 	);
 	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
 	let chosen = $state<{ field: ContractField; title: string } | null>(null);
@@ -64,16 +72,7 @@
 	{#if last}
 		<p class="ex-note">Removed at the shown commit; this is what its parent held.</p>
 	{/if}
-	{#if facts.length > 0}
-		<dl class="ex-rows">
-			{#each facts as row, position (position)}
-				<div>
-					<dt>{row.label}</dt>
-					<dd>{row.value}</dd>
-				</div>
-			{/each}
-		</dl>
-	{/if}
+	{@render summaryRows(facts)}
 	{#each callables as callable, position (position)}
 		{@render callableSection(callable, `${callable.name} contract`)}
 	{:else}
@@ -89,7 +88,20 @@
 			{/each}
 		{/each}
 	{/each}
+	{@render summaryRows(serviceErrors)}
 </section>
+{#snippet summaryRows(rows: ContractRow[])}
+	{#if rows.length > 0}
+		<dl class="ex-rows">
+			{#each rows as row, position (position)}
+				<div>
+					<dt>{row.label}</dt>
+					<dd>{row.value}</dd>
+				</div>
+			{/each}
+		</dl>
+	{/if}
+{/snippet}
 {#snippet callableSection(callable: CallableContract, label: string)}
 	<section class="callable" aria-label={label}>
 		<h3><code>{callable.signature}</code></h3>
