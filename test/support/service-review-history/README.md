@@ -9,13 +9,10 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
 
 ## What it holds
 
-- The SHA-1 object format, 67 objects: 4 commits, 43 trees and 20 blobs. There are no refs and no
-  parents.
-- For the ledger's `originalProof` and each file's `review`, it holds the commit, its root tree,
-  every tree down the path and the blob at that path.
-- The commits: `16ab6fdf66c235918411bf42bb02e39653653a05` (original proof),
-  `0816efe0e469ca8c3963f583590289d253961a79`, `9fb0505ef04992cc5b1716d2b7b5280d4f866036` and
-  `0f968c6c98050fb14bf7f7a29d174352755a87d2`.
+- SHA-1 objects: 105 objects, including 7 commits, 67 trees and 31 blobs. No refs or parent traversal are needed.
+- The original pack is retained, with the paths named by current and previous reviews added.
+- Each review has its exact commit, root tree, every tree down its path and the source blob.
+- The current capture/history changes are reviewed at main `ff91d603c94486efdaddde9cd5e5288703cf38e2`.
 
 ## Regenerating it
 
