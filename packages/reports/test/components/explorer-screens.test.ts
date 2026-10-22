@@ -136,6 +136,16 @@ test('an overview names its evidence; audio stays in the shared component-tab na
 	}
 });
 
+test('the entity header contract omits the removed Shared badge input', () => {
+	const contract = JSON.parse(
+		readFileSync('../../specification/units/reports.component.harness-entity-header.json', 'utf8')
+	).contract;
+	expect(contract.inputs.map(({ name }: { name: string }) => name)).not.toContain(
+		'EntityHeader.shared'
+	);
+	expect(JSON.stringify(contract)).not.toContain('Shared badge');
+});
+
 test('details and history share component captures while keeping their own screen content', () => {
 	const evidence = ['EntityBehavior', 'EntityTests', 'EntityRelations'];
 	expect(has(entries.details, ['EntitySummary', 'EntityMeasures', 'EntitySource'])).toHaveLength(3);

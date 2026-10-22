@@ -27,11 +27,6 @@
 				"description": "The branch, commit and selected tab, with functions for links and navigation."
 			},
 			{
-				"name": "EntityHeader.shared",
-				"type": "boolean",
-				"description": "Optional flag, false by default, displaying a Shared badge."
-			},
-			{
 				"name": "EntityHeader.preview",
 				"type": "Snippet",
 				"description": "Optional component screenshot shown above every tab."
