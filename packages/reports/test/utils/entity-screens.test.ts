@@ -13,12 +13,10 @@ import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
 import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
-
 const page = units.find((unit) => unit.id === ids.page)!;
 const head = revision(commits.middle, [record(commits.middle)]);
 const base = revision(commits.first, [record(commits.first, false)]);
 const tip = revision(commits.tip, [record(commits.tip)]);
-
 test('source-identical squash previews retain origin and reject a changed source tree', () => {
 	const captured = withFocused(head, ids.page);
 	const sourceTree = 'e'.repeat(40);
@@ -72,7 +70,6 @@ function evidence(_unit: typeof page, shown: Revision, parent?: Revision | null)
 	const at = { ...scope('commit'), parent: parent ? parent.commit : null };
 	return explorerEvidence(at, { head: shown, parent }, page);
 }
-
 test('a visual entity offers the states and viewports its scenario declares; a function offers none', () => {
 	expect(options).toEqual([
 		{
@@ -87,7 +84,6 @@ test('a visual entity offers the states and viewports its scenario declares; a f
 	]);
 	expect(screenOptions(scenarios.filter((item) => item.units.includes(ids.filter)))).toEqual([]);
 });
-
 test('the first state and viewport are shown until a person picks; an unknown pick is not kept', () => {
 	expect(screenPick(options, {})).toEqual({
 		scenario: 'orders-page',
