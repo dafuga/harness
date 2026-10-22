@@ -37,7 +37,9 @@ const unique = new Set([
 	'row.id',
 	'row.key',
 	'row.commit',
-	'group.id'
+	'group.id',
+	'group.name',
+	'token.name'
 ]);
 
 test('console lists are keyed only by what cannot repeat, never by recorded text', () => {

@@ -40,7 +40,7 @@ export interface HarnessShellLink {
 }
 
 export interface HarnessShellCategory {
-	id: ExplorerCategory;
+	id: ExplorerCategory | 'styles';
 	label: string;
 	icon: HarnessIconName;
 	active: boolean;
