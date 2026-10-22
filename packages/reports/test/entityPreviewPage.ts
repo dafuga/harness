@@ -14,7 +14,8 @@ import {
 } from './entityPreviewOverview';
 import { commits, ids } from './entityUnits';
 import { capture, ready, previewIdentity } from './entityPreviewCapture';
-export { capture, ready } from './entityPreviewCapture';
+export { capture, captureRegion, ready } from './entityPreviewCapture';
+// A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
 	desktop: { width: 1440, height: 900 },
@@ -90,7 +91,7 @@ export const fits = (page: Page): Promise<boolean> =>
 function visualTabs(category: ExplorerLocation['category']): string[] {
 	return [
 		'Overview',
-		'Contract',
+		category === 'pages' ? 'Models' : 'Contract',
 		'Used In',
 		'Uses',
 		...(category === 'components' ? ['Audio'] : []),
