@@ -6,7 +6,7 @@
 	"name": "native-snapshot-source",
 	"goal": "Run actual native acceptance from the selected Harness snapshot without borrowing live source or inventing revision identity",
 	"createdAt": "2026-10-22T03:12:09.517Z",
-	"updatedAt": "2026-10-22T03:13:39.604Z",
+	"updatedAt": "2026-10-22T03:14:57.478Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -31,7 +31,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:14:57.478Z",
+			"evidence": "Sealed failing selected-source inventory assertion at 1d07fecf3; native source objects are absent in the exported check."
 		},
 		{
 			"id": "implement",
