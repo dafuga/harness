@@ -52,6 +52,24 @@ for (const mode of ['current', 'commit'] as const) {
 		expect(body).toContain(`href="${base}/components/${ids.list}"`);
 		expect(body).toContain(`href="${base}/services/${ids.store}"`);
 		expect(body).not.toContain('<img');
+		const dense = [
+			ids.store,
+			ids.list,
+			ids.settings,
+			ids.search,
+			ids.list,
+			ids.page,
+			ids.filter
+		].map((id) => host.entities.find((item) => item.id === id)!);
+		const footer = render(ExplorerUsage, {
+			props: { ...props, consumers: dense, layout: 'flat', limit: 3 }
+		}).body;
+		const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map((match) => match[1]);
+		expect(links, 'Only the first three distinct consumers in supplied order').toEqual([
+			`${base}/services/${ids.store}`,
+			`${base}/components/${ids.list}`,
+			`${base}/configs/${ids.settings}`
+		]);
 		const empty = render(ExplorerUsage, { props: { ...props, consumers: [] } }).body;
 		expect(words(empty).trim()).toBe('Used In —');
 		expect(empty).not.toContain('<a');
