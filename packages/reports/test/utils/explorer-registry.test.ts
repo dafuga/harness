@@ -98,7 +98,7 @@ test('a screen is recorded on the pages that mount it and on no other route page
 
 test('a page is under its own states, and a screen under the states of the pages that mount it', () => {
 	expect(statesOf(`${at}pages`)).toEqual(['pages', 'catalog-filters']);
-	expect(statesOf(`${at}configs-entity`)).toEqual(['config']);
+	expect(statesOf(`${at}configs-entity`)).toEqual(['config', 'config-details']);
 	expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
 	// The page of no screen can draw any of them, so its one state shows every screen too.
 	expect(statesOf(`${part}explorer-pages-screen`)).toEqual([
@@ -107,7 +107,12 @@ test('a page is under its own states, and a screen under the states of the pages
 		'shell-retained',
 		'catalog-filters'
 	]);
-	expect(statesOf(`${part}entity-config-screen`)).toEqual(['config', 'retained', 'shell-retained']);
+	expect(statesOf(`${part}entity-config-screen`)).toEqual([
+		'config',
+		'config-details',
+		'retained',
+		'shell-retained'
+	]);
 	expect(statesOf(`${part}entity-history-screen`)).toEqual([
 		'history',
 		'page-history',
@@ -128,9 +133,9 @@ const shellStates: Array<[string, string[]]> = [
 	['shells', [`${at}shells`]],
 	['shells-tip', [`${at}shells`]],
 	['shell', [`${at}shells-entity`]],
-	['shell-details', [`${at}shells-entity-details`]],
+	['shell-details', [`${at}shells-entity`]],
 	['shell-history', [`${at}shells-entity-history`]],
-	['shell-redirect', [`${at}shells-entity-details`, corrected]],
+	['shell-redirect', [`${at}shells-entity`, corrected]],
 	['shell-earlier', [`${at}components-entity`, corrected]],
 	['shell-retained', ['reports.page.harness-view']]
 ];
