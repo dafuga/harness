@@ -13,6 +13,8 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 				'Release refuses fixture exceptions before a build can start': 'native-build'
 			},
 			'test/ios-native-profile.test.ts': {
+				'actual simulator verifies pairing, cached views, reconnect and revocation':
+					'native-acceptance',
 				'Swift reproduces the backend encrypted protocol vectors': 'native-profile',
 				'native Debug and Release verify authority, redirects, caching and replay':
 					'native-profile',

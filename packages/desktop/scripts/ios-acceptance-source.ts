@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { contents, desktopRoot, fileDigest, tool, tried } from './ios-products';
 
@@ -10,6 +10,24 @@ import { contents, desktopRoot, fileDigest, tool, tried } from './ios-products';
  * moved meanwhile says so, and never borrows the name of a revision.
  */
 const repository = resolve(desktopRoot, '../..');
+const sourceRepository = sourceArguments();
+
+/** Snapshot metadata is local scratch, backed only by the actual selected commit objects. */
+function sourceArguments(): string[] {
+	const metadata = process.env.HARNESS_NATIVE_SOURCE_GIT_DIR;
+	if (!metadata) return ['-C', repository];
+	const cache = realpathSync(resolve(repository, '.cache'));
+	if (!realpathSync(metadata).startsWith(`${cache}/`))
+		throw new Error('Native source metadata must stay inside this snapshot cache');
+	const args = [`--git-dir=${metadata}`, `--work-tree=${repository}`];
+	const read = (revision: string) => tool(['git', ...args, 'rev-parse', revision]).trim();
+	if (
+		read('HEAD') !== process.env.HARNESS_VERIFY_REVISION ||
+		read('HEAD^{tree}') !== process.env.HARNESS_VERIFY_TREE
+	)
+		throw new Error('Native source metadata does not match the selected Harness commit and tree');
+	return args;
+}
 
 /** What the renderer in the products is bundled from, with the versions it depends on. */
 export const rendererSources = [
@@ -34,7 +52,7 @@ export const computerSources = [
 ];
 
 function git(...args: string[]): string {
-	return tool(['git', '-C', repository, ...args]).trim();
+	return tool(['git', ...sourceRepository, ...args]).trim();
 }
 
 /** Every file under the named paths that Git does not ignore, with the digest of its bytes. */

@@ -6,11 +6,9 @@
 	"name": "native-snapshot-source",
 	"goal": "Run actual native acceptance from the selected Harness snapshot without borrowing live source or inventing revision identity",
 	"createdAt": "2026-10-22T03:12:09.517Z",
-	"updatedAt": "2026-10-22T03:14:57.478Z",
+	"updatedAt": "2026-10-22T03:23:20.935Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -38,12 +36,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:23:19.213Z",
+			"evidence": "SnapshotRunService supplies immutable object location and exact object format; exports retain ordinary source and output isolation."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:23:20.935Z",
+			"evidence": "Sealed paired proof d89879b0 red and c1c8a14e green: unchanged snapshot inventory check passes at 0a03ef352 without checkout metadata or snapshot drift."
 		},
 		{
 			"id": "verify",

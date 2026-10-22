@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "remote-mobile-native",
-	"title": "Native Swift cache authority and late-response refusal",
+	"title": "Native authority, signed simulator products and actual acceptance",
 	"kind": "headless",
 	"units": [
 		"desktop.adapter.capacitor-bridge",
@@ -15,7 +15,22 @@
 		"desktop.script.check-ios-limits",
 		"desktop.script.build-ios-simulator",
 		"desktop.script.ios-products",
-		"desktop.script.ios-build-options"
+		"desktop.script.ios-build-options",
+		"desktop.script.ios-acceptance-guards",
+		"desktop.script.ios-acceptance-layout",
+		"desktop.script.ios-acceptance-page",
+		"desktop.script.ios-acceptance-pairing",
+		"desktop.script.ios-acceptance-prelude",
+		"desktop.script.ios-acceptance-products",
+		"desktop.script.ios-acceptance-quiet",
+		"desktop.script.ios-acceptance-record",
+		"desktop.script.ios-acceptance-release",
+		"desktop.script.ios-acceptance-run",
+		"desktop.script.ios-acceptance-scanning",
+		"desktop.script.ios-acceptance-simulator",
+		"desktop.script.ios-acceptance-source",
+		"desktop.script.ios-acceptance-workspace",
+		"desktop.script.ios-acceptance"
 	],
 	"states": [
 		{
@@ -31,6 +46,11 @@
 		{
 			"id": "native-build",
 			"title": "Clean compiled iOS shell and ad hoc simulator signatures",
+			"coverage": "required"
+		},
+		{
+			"id": "native-acceptance",
+			"title": "Actual task-owned simulator verifies pairing, cache, reconnect and revocation",
 			"coverage": "required"
 		}
 	],
@@ -58,7 +78,7 @@
 			"runner": "command",
 			"target": "bun ../../test/verification-output.ts vitest test/ios-native-profile.test.ts",
 			"cwd": "packages/desktop",
-			"timeoutMs": 360000
+			"timeoutMs": 1500000
 		},
 		{
 			"id": "native-build",
@@ -73,14 +93,14 @@
 		{
 			"id": "remote-mobile-native-output",
 			"kind": "output",
-			"states": ["native-authority", "native-profile", "native-build"],
+			"states": ["native-authority", "native-profile", "native-build", "native-acceptance"],
 			"viewports": [],
 			"required": true
 		},
 		{
 			"id": "remote-mobile-native-assertions",
 			"kind": "assertions",
-			"states": ["native-authority", "native-profile", "native-build"],
+			"states": ["native-authority", "native-profile", "native-build", "native-acceptance"],
 			"viewports": [],
 			"required": true
 		}

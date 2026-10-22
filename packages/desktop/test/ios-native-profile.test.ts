@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { expect } from '../../../test/verificationExpect';
 import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
 import { runCommand } from '../../../test/support/cli';
+import { nativeAcceptance } from './native-acceptance-fixture';
 
 /** Real Swift checks on macOS. Other platforms have an explicit native coverage gap. */
 async function nativeCheck(script: string) {
@@ -85,6 +86,20 @@ test('Swift source remains within the declared native shape limits', async () =>
 	const output = await nativeCheck('ios:check:limits');
 	expect(output).toMatch(/\d+ Swift files checked; 0 findings\./);
 }, 20000);
+
+test.skipIf(process.platform !== 'darwin')(
+	'actual simulator verifies pairing, cached views, reconnect and revocation',
+	async () => {
+		const result = await nativeAcceptance();
+		expect(result.report.failed).toBe(0);
+		expect(result.report.passed).toBeGreaterThanOrEqual(78);
+		expect(result.report.source.revision).toBe(result.commit);
+		expect(result.report.source.renderer.files).toBeGreaterThan(0);
+		expect(result.report.checks.every((check: { passed: boolean }) => check.passed)).toBe(true);
+		expect(result.drift).toEqual({ mutated: [], added: [] });
+	},
+	1200000
+);
 
 function nativeCommand(command: string[], cwd: string) {
 	return new Promise<{ error: Error | null; status: number; stdout: string; stderr: string }>(

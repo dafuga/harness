@@ -46,6 +46,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.snapshot",
 			"via": "import",
 			"origin": "derived"
