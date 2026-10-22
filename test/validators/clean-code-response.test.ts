@@ -1,3 +1,4 @@
+import { taskProfile } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
 import { CleanCodeResponseValidator } from '../../src/validators/CleanCodeResponseValidator';
 import { cleanCodeQuestions } from '../../src/audit/cleanCodeRubric';
@@ -7,8 +8,13 @@ const questions = cleanCodeQuestions();
 const request = { state: '', questions };
 const validator = new CleanCodeResponseValidator();
 
-test('accepts and normalizes the exact typed answer contract', () => {
+test('accepts and normalizes the exact typed answer contract', async () => {
 	const response = fixtureEvaluation(request);
+	await taskProfile(
+		'validator.clean-code-response',
+		'validate-typed-review-through-public-alias',
+		() => validator.validate(response, questions)
+	);
 	expect(validator.validate({ ...response, extra: 'discarded' }, questions)).toEqual(response);
 });
 

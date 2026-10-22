@@ -1,5 +1,10 @@
+import { taskProfile } from './support/taskProfiles';
 import { expect, test } from 'vitest';
-import { harnessRuleLimits, harnessRuleSummaries } from '../src/rules/catalog';
+import {
+	harnessRuleLimits,
+	harnessRuleSummaries,
+	harnessRuleSummariesFor
+} from '../src/rules/catalog';
 
 test('Harness rule catalog defines Small Harness thresholds', () => {
 	expect(harnessRuleLimits).toMatchObject({
@@ -13,4 +18,12 @@ test('Harness rule catalog defines Small Harness thresholds', () => {
 		maxClassesPerFile: 1
 	});
 	expect(harnessRuleSummaries.length).toBeGreaterThan(8);
+});
+
+test('rule summaries describe the supplied limits rather than a cached default', async () => {
+	const limits = { ...harnessRuleLimits, maxFileLines: 180 };
+	expect(harnessRuleSummariesFor(limits)[0]).toBe('Files stay at or below 180 lines.');
+	await taskProfile('function.catalog', 'describe-custom-audit-limits', () =>
+		harnessRuleSummariesFor(limits)
+	);
 });

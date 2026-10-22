@@ -1,3 +1,5 @@
+import { taskProfile } from '../support/taskProfiles';
+import { peakMemory } from '../../src/utils/peakMemory';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { RuntimeRequest, UnitRuntime } from '../../src/core/runtimeTypes';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
@@ -121,4 +123,16 @@ test('under verification the comparison is recorded as evidence for each built k
 			JSON.stringify({ ...compared, runtime: state }, null, 2)
 		);
 	}
+});
+
+test('the public peak-memory entry observes an actual native kernel child', async () => {
+	const command = artifacts.native;
+	expect(command).toBeDefined();
+	const request = JSON.stringify(kernelWorkload(1000, 7));
+	const peak = peakMemory(command!, [], request);
+	expect(peak).toMatchObject({ bytes: expect.any(Number) });
+	expect('bytes' in peak && peak.bytes).toBeGreaterThan(0);
+	await taskProfile('function.peak-memory', 'observe-native-graph-1000-child', () =>
+		peakMemory(command!, [], request)
+	);
 });

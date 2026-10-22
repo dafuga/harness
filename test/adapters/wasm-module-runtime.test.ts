@@ -1,3 +1,4 @@
+import { observedTaskOperation } from '../support/taskProfiles';
 import { readFile } from 'node:fs/promises';
 import { beforeAll, expect, test } from 'vitest';
 import { WasmModuleRuntimeAdapter } from '../../src/adapters/WasmModuleRuntimeAdapter';
@@ -13,7 +14,11 @@ beforeAll(async () => {
 });
 
 test('a precompiled module, its bytes and a loader all run the same unit as the file adapter', async () => {
-	const expected = await new WasmRuntimeAdapter(file).invoke(request);
+	const expected = await observedTaskOperation(
+		'adapter.wasm-runtime',
+		'read-file-and-invoke-json-abi',
+		() => new WasmRuntimeAdapter(file).invoke(request)
+	);
 	expect(expected.ok).toBe(true);
 	const precompiled = new WasmModuleRuntimeAdapter(new WebAssembly.Module(bytes));
 	expect(precompiled.kind).toBe('wasm');

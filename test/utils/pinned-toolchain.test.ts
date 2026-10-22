@@ -1,3 +1,5 @@
+import { measureProcess } from '../support/cli-measurement/measureHarness';
+import { runCommand } from '../support/cli';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -178,24 +180,29 @@ test('a nested cwd finds its ancestor pin; missing and malformed pins fail befor
 
 test.skipIf(!installed)(
 	'the real entry point ignores an unavailable override and preserves tool exit codes',
-	() => {
+	async () => {
 		const childEnv = {
-			...process.env,
 			RUSTUP_TOOLCHAIN: 'review-nonexistent-toolchain',
 			RUSTC: '/wrong/rustc',
 			RUSTC_WRAPPER: '/wrong/wrapper',
 			RUSTC_WORKSPACE_WRAPPER: '/wrong/workspace'
 		};
-		const version = spawnSync('bun', ['scripts/rust.ts', 'cargo', '--version'], {
-			cwd: root,
-			env: childEnv,
-			encoding: 'utf8'
-		});
-		expect(version.status, version.stderr).toBe(0);
+		const version = await measureProcess(
+			{
+				units: ['script.rust'],
+				workload: 'cold-pinned-cargo-version',
+				target: 'module',
+				command: ['bun', 'scripts/rust.ts', 'cargo', '--version'],
+				cwd: root,
+				env: childEnv
+			},
+			runCommand
+		);
+		expect(version.exitCode, version.stderr).toBe(0);
 		expect(version.stdout).toContain(`cargo ${channel}`);
 		const invalid = spawnSync('bun', ['scripts/rust.ts', 'rustc', '--review-invalid-argument'], {
 			cwd: root,
-			env: childEnv
+			env: { ...process.env, ...childEnv }
 		});
 		expect(invalid.status).toBe(1);
 	}

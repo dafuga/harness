@@ -1,5 +1,6 @@
 import { taskProfile } from '../support/taskProfiles';
 import { expect, test } from 'vitest';
+import { benchMeasurement } from '../../src/utils/benchMeasurement';
 import { kernelBenchmarkSchema } from '../../src/core/benchmarkTypes';
 import { VerificationRecordValidator } from '../../src/validators/VerificationRecordValidator';
 import { verificationSample } from '../support/verificationSample';
@@ -53,4 +54,33 @@ test('a measurement without a tested revision cannot enter a verification record
 	}).errors;
 	expect(errors).toHaveLength(1);
 	expect(errors[0]).toContain('record-1: measurements.0.testedRevision');
+});
+
+test('measurement construction retains counts and explicit unavailable values', async () => {
+	const context = { profile: 'fixture-profile', commit: 'a'.repeat(40) };
+	const entry = {
+		target: 'wasm' as const,
+		metric: 'memory-bytes',
+		unitOfMeasure: 'bytes',
+		value: 65536,
+		method: 'Synthetic input for constructor behavior only.',
+		workload: 'fixture',
+		samples: 1
+	};
+	expect(benchMeasurement(context, entry)).toMatchObject({
+		unit: 'kernel.impact-kernel',
+		value: 65536,
+		samples: 1,
+		target: 'wasm'
+	});
+	expect(
+		benchMeasurement(context, {
+			...entry,
+			value: { unavailable: 'Fixture unavailable' },
+			samples: undefined
+		})
+	).toMatchObject({ value: null, unavailable: 'Fixture unavailable' });
+	await taskProfile('function.bench-measurement', 'construct-counted-memory-entry', () =>
+		benchMeasurement(context, entry)
+	);
 });

@@ -1,3 +1,4 @@
+import { measureProcess } from './support/cli-measurement/measureHarness';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -192,3 +193,20 @@ async function waitForUrl(url: string): Promise<void> {
 
 	throw new Error(`Timed out waiting for ${url}`);
 }
+
+test('the actual source CLI cold entry reports its declared version', async () => {
+	const result = await measureProcess(
+		{
+			units: ['entry.index'],
+			workload: 'cold-source-cli-version',
+			target: 'module',
+			command: ['bun', 'src/index.ts', '--version'],
+			cwd: process.cwd()
+		},
+		runCommand
+	);
+	expect(result.stdout.trim()).toBe(
+		JSON.parse(await import('node:fs/promises').then((fs) => fs.readFile('package.json', 'utf8')))
+			.version
+	);
+});
