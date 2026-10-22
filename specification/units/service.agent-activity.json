@@ -6,6 +6,7 @@
 	"responsibility": "Registers agents, records their heartbeats and ends, and lists the agents of a repository with whether each is working now.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"documentation": "specification/examples/service.agent-activity.md",
 	"owns": {
 		"source": [
 			"src/services/agent-activity-service/AgentActivityService.ts",

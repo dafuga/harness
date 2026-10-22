@@ -1,12 +1,14 @@
 import type { Locator } from '@playwright/test';
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, fits, open, viewports } from './entityPreviewPage';
+import { capture, fits, open, openVerification, viewports } from './entityPreviewPage';
+import { reviewServiceContract } from './entityPreviewServiceContract';
+import { reviewServiceExamples } from './entityPreviewServiceExamples';
 import { commits, ids } from './entityUnits';
 
 const entity = { category: 'services' as const, entity: ids.store, tab: 'tests' as const };
 
 test('the default test view explains input and output without requiring JSON', async ({ page }) => {
-	await open(page, entity);
+	await openVerification(page, entity);
 	const item = page.locator('.cases > table > tbody > tr').first();
 	await expect(item.locator('dt')).toHaveText(['Search text']);
 	await expect(item.locator('dd')).toHaveText('TextSERVICE');
@@ -19,7 +21,7 @@ test('the default test view explains input and output without requiring JSON', a
 for (const [viewport, size] of Object.entries(viewports)) {
 	test(`service Tests show recorded input and output at ${viewport} width`, async ({ page }) => {
 		await page.setViewportSize(size);
-		await open(page, entity);
+		await openVerification(page, entity);
 		const pane = page.getByRole('tabpanel', { name: 'OrderStore tests' });
 		await expect(pane.getByRole('heading', { name: 'Current end-to-end behavior' })).toBeVisible();
 		await expect(pane.getByRole('status').filter({ hasText: 'Current behavior' })).toBeVisible();
@@ -34,7 +36,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 }
 
 test('service Tests keep parent and selected-commit cases separate', async ({ page }) => {
-	await open(page, { ...entity, commit: commits.middle });
+	await openVerification(page, { ...entity, commit: commits.middle });
 	const pane = page.getByRole('tabpanel', { name: 'OrderStore tests' });
 	await expect(pane.getByRole('status').filter({ hasText: 'Behavior unchanged' })).toBeVisible();
 	await capture(page, `${process.env.SCREENSHOT_LABEL ?? 'run'}-tests-commit-desktop`);
@@ -49,7 +51,7 @@ test('service Tests keep parent and selected-commit cases separate', async ({ pa
 
 test('mobile test values have readable columns without widening the page', async ({ page }) => {
 	await page.setViewportSize(viewports.mobile);
-	await open(page, entity);
+	await openVerification(page, entity);
 	const cases = page.locator('.cases').first();
 	await expect(cases).toBeVisible();
 	await capture(page, `${process.env.SCREENSHOT_LABEL ?? 'run'}-tests-readability-mobile`);
@@ -73,7 +75,7 @@ test('mobile test values have readable columns without widening the page', async
 test('the full recorded result is available even when it has no input and output pair', async ({
 	page
 }) => {
-	await open(page, entity);
+	await openVerification(page, entity);
 	const artifact = page
 		.locator('.ex-artifact')
 		.filter({ hasText: 'This result records no input and output.' })
@@ -88,7 +90,7 @@ test('the full recorded result is available even when it has no input and output
 
 test('the mobile output panel is visible beneath its input', async ({ page }) => {
 	await page.setViewportSize(viewports.mobile);
-	await open(page, entity);
+	await openVerification(page, entity);
 	const cases = page.locator('.cases').first();
 	await expect(cases).toBeVisible();
 	const row = cases.locator('tbody tr').first();
@@ -114,7 +116,7 @@ test('the mobile output panel is visible beneath its input', async ({ page }) =>
 for (const [viewport, size] of Object.entries(viewports)) {
 	test(`case names lead roomy input and output panels at ${viewport} width`, async ({ page }) => {
 		await page.setViewportSize(size);
-		await open(page, entity);
+		await openVerification(page, entity);
 		const cases = page.locator('.cases').first();
 		const row = cases.locator('tbody tr').first();
 		await row.scrollIntoViewIfNeeded();
@@ -184,6 +186,16 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await expect(pane.locator('details')).toHaveCount(0);
 	});
 }
+
+// Services lead authored usage with construction; verification stays apart and others keep Tests.
+for (const [viewport, size] of Object.entries(viewports)) {
+	test(`service Examples lead with construction at ${viewport} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await reviewServiceExamples(page, viewport);
+	});
+}
+// Service contracts are read by method, initialize included, at desktop and phone widths.
+test('service Contract groups each declared method', ({ page }) => reviewServiceContract(page));
 
 /** Examples contain only short titles and literal calls with output comments. */
 async function reviewFunctionCalls(pane: Locator): Promise<void> {

@@ -27,6 +27,8 @@ import {
 	type PreviewVariant
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
+import { withServiceDocumentation } from './entityPreviewServiceDocs';
+import { withServiceContracts } from './entityServiceContract';
 import { withFocused } from './entityStates';
 import { withHelpers } from './entityPreviewHelpers';
 import { withRelationGroups } from './entityRelationFixtures';
@@ -57,7 +59,8 @@ if (variant === 'helpers')
 if (variant === 'inherited')
 	stored[commits.tip] = withInherited(stored[commits.tip], commits.middle);
 if (variant === 'documented')
-	for (const commit of Object.keys(stored)) stored[commit] = withDocumentation(stored[commit]);
+	for (const commit of Object.keys(stored))
+		stored[commit] = withServiceDocumentation(withDocumentation(stored[commit]));
 if (variant === 'states')
 	for (const commit of Object.keys(stored)) stored[commit] = withStates(stored[commit]);
 const hashes = (window as unknown as { artifactHashes?: Record<string, string> }).artifactHashes;
@@ -80,7 +83,7 @@ if (variant === 'declared') {
 			if (unit.id === ids.page) return { ...unit, contract: declaredContract };
 			return unit.id === ids.filter ? callableFixture(unit) : unit;
 		});
-		stored[commit] = { ...detail, registry: { ...registry, units } };
+		stored[commit] = withServiceContracts({ ...detail, registry: { ...registry, units } });
 	}
 }
 if (variant === 'shells') {
@@ -146,9 +149,8 @@ if (variant === 'console') {
 			const path = String(input);
 			if (path.endsWith('/data/index.json'))
 				return Promise.resolve(Response.json({ ...index, truncated: true }));
-			if (path.endsWith('/data/activity.json')) {
+			if (path.endsWith('/data/activity.json'))
 				return Promise.resolve(Response.json({ repository: { name: 'Synthetic orders' } }));
-			}
 			const data = Object.entries(stored).find(([commit]) =>
 				path.endsWith(`/revisions/${commit}.json`)
 			)?.[1];

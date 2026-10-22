@@ -58,7 +58,7 @@ function nameOf(item: Item, unit: HarnessUnit): string {
 	return words ? words[0].toUpperCase() + words.slice(1) : 'Unnamed';
 }
 
-function fieldOf(item: Item, unit: HarnessUnit): ContractField {
+export function fieldOf(item: Item, unit: HarnessUnit): ContractField {
 	const type = typeLabel(item.type);
 	const description = item.description?.trim();
 	return {
@@ -106,12 +106,15 @@ export function contractFacts(
 	return [...facts, { label: 'Runs as', value: [...new Set(kinds)].join(', ') || fallback }];
 }
 
-/** Each recorded callable keeps its own literal parameters and returned value. */
-export function callableContracts(unit: HarnessUnit): Array<{
+/** One callable as its contract shows it: its signature, parameters, return and errors. */
+export interface CallableContract {
 	name: string;
 	signature: string;
 	groups: ContractGroup[];
-}> {
+}
+
+/** Each recorded callable keeps its own literal parameters and returned value. */
+export function callableContracts(unit: HarnessUnit): CallableContract[] {
 	const helpers = unit.helpers ?? [];
 	return helpers.map((helper) => {
 		const parameters = helper.inputs.map((input) => {
@@ -152,7 +155,7 @@ export function callableContracts(unit: HarnessUnit): Array<{
 }
 
 /** A return value has its own declared name, distinct from the callable that produces it. */
-function returnField(
+export function returnField(
 	declared: Item | undefined,
 	type: string,
 	callable: string,
