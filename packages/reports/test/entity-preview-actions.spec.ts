@@ -1,8 +1,7 @@
+import { reviewModelCard, reviewFlatModelUsage } from './entityPreviewModels';
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
-	reviewModelCard,
-	reviewFlatModelUsage,
 	reviewPrivateFunctions,
 	reviewServiceCard
 } from './entityPreviewFunctions';
