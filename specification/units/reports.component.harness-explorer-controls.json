@@ -25,6 +25,26 @@
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
 				"description": "Bindable query, changed-only, verification, shared usage and ordering choices."
+			},
+			{
+				"name": "ExplorerControls.groups",
+				"type": "Array<{ id: string; title: string; count: number }> | undefined",
+				"description": "Optional category counts for the existing unit filters."
+			},
+			{
+				"name": "ExplorerControls.customFilters",
+				"type": "Snippet | undefined",
+				"description": "Optional collection-specific fields rendered in the shared filter modal."
+			},
+			{
+				"name": "ExplorerControls.activeFilters",
+				"type": "number | undefined",
+				"description": "Number of active collection-specific filter choices."
+			},
+			{
+				"name": "ExplorerControls.onreset",
+				"type": "(() => void) | undefined",
+				"description": "Resets collection-specific fields when supplied."
 			}
 		],
 		"outputs": [

@@ -20,7 +20,8 @@ const labels: Array<[ExplorerCategory, string]> = [
 	['functions', 'Helpers'],
 	['configs', 'Configs'],
 	['services', 'Services'],
-	['models', 'Models']
+	['models', 'Models'],
+	['platforms', 'Platforms']
 ];
 
 function viewed(scope: ExplorerScope): string {

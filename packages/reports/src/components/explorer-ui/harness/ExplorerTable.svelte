@@ -38,6 +38,7 @@
 		['Contains', (row) => listed(row.contains, 2)]
 	];
 	const columns: Record<Kind, Column[]> = {
+		platforms: [],
 		shells: composed,
 		components: composed,
 		functions: [

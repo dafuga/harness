@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import {
 		catalogOrders,
 		orderLabels,
@@ -11,13 +12,22 @@
 	let {
 		noun,
 		filter = $bindable(),
-		groups = []
+		groups = [],
+		customFilters,
+		activeFilters = 0,
+		onreset
 	}: {
 		/** What is searched, in the plural and lower case: `pages`, `components`. */
 		noun: string;
 		filter: CatalogFilter;
 		/** The categories of every entity before any filter, each with how many it holds. */
 		groups?: Array<{ id: string; title: string; count: number }>;
+		/** Fields shown in place of the fixed unit filters, for a collection of another kind. */
+		customFilters?: Snippet;
+		/** How many of the custom fields differ from their defaults. */
+		activeFilters?: number;
+		/** Restores the custom fields; the fixed filters reset themselves. */
+		onreset?: () => void;
 	} = $props();
 	const verifications = [
 		['all', 'All verification'],
@@ -32,11 +42,13 @@
 	/** Only the chosen categories still offered count; none chosen shows every category. */
 	const chosen = $derived(groups.filter((group) => filter.groups?.includes(group.id)).length);
 	const active = $derived(
-		Number(filter.changedOnly) +
-			Number((filter.verification ?? 'all') !== 'all') +
-			Number((filter.usage ?? 'all') !== 'all') +
-			Number(filter.order !== 'name') +
-			chosen
+		customFilters
+			? activeFilters
+			: Number(filter.changedOnly) +
+					Number((filter.verification ?? 'all') !== 'all') +
+					Number((filter.usage ?? 'all') !== 'all') +
+					Number(filter.order !== 'name') +
+					chosen
 	);
 	function resetFilters() {
 		filter = {
@@ -64,60 +76,65 @@
 			bind:value={filter.search}
 		/>
 	</label>
-	<FilterDialog {active} onreset={resetFilters}>
-		<label class="ex-toggle">
-			<input type="checkbox" role="switch" bind:checked={filter.changedOnly} />
-			<span class="ex-toggle-track" aria-hidden="true"></span>
-			<span>Changed only</span>
-		</label>
-		<label class="filter-field"
-			><span>Verification</span>
-			<Select
-				label="Verification filter"
-				bind:value={() => filter.verification ?? 'all', (chosen) => (filter.verification = chosen)}
-			>
-				{#each verifications as [id, text] (id)}<option value={id}>{text}</option>{/each}
-			</Select>
-		</label>
-		<label class="filter-field"
-			><span>Usage</span>
-			<Select
-				label="Usage filter"
-				bind:value={() => filter.usage ?? 'all', (chosen) => (filter.usage = chosen)}
-			>
-				{#each usages as [id, text] (id)}<option value={id}>{text}</option>{/each}
-			</Select>
-		</label>
-		<label class="filter-field"
-			><span>Order</span>
-			<Select
-				label="Order"
-				bind:value={() => filter.order, (chosen) => (filter.order = chosen as CatalogOrder)}
-			>
-				{#each catalogOrders as id (id)}<option value={id}>Order: {orderLabels[id]}</option>{/each}
-			</Select>
-		</label>
-		{#if groups.length}
-			<fieldset class="ex-group-filter">
-				<legend>Categories</legend>
-				<div class="ex-group-list">
-					{#each groups as group (group.id)}
-						<label class="ex-group-option">
-							<input
-								type="checkbox"
-								value={group.id}
-								checked={filter.groups?.includes(group.id) ?? false}
-								onchange={(event) => choose(group.id, event.currentTarget.checked)}
-							/>
-							<span class="ex-group-title">{group.title}</span>
-							<span class="ex-group-count">{group.count}</span>
-						</label>
-					{/each}
-				</div>
-			</fieldset>
-		{/if}
+	<FilterDialog {active} onreset={onreset ?? resetFilters}>
+		{@render (customFilters ?? fixedFilters)()}
 	</FilterDialog>
 </div>
+
+<!-- The filters every unit collection shares; a collection of another kind brings its own. -->
+{#snippet fixedFilters()}
+	<label class="ex-toggle">
+		<input type="checkbox" role="switch" bind:checked={filter.changedOnly} />
+		<span class="ex-toggle-track" aria-hidden="true"></span>
+		<span>Changed only</span>
+	</label>
+	<label class="filter-field"
+		><span>Verification</span>
+		<Select
+			label="Verification filter"
+			bind:value={() => filter.verification ?? 'all', (chosen) => (filter.verification = chosen)}
+		>
+			{#each verifications as [id, text] (id)}<option value={id}>{text}</option>{/each}
+		</Select>
+	</label>
+	<label class="filter-field"
+		><span>Usage</span>
+		<Select
+			label="Usage filter"
+			bind:value={() => filter.usage ?? 'all', (chosen) => (filter.usage = chosen)}
+		>
+			{#each usages as [id, text] (id)}<option value={id}>{text}</option>{/each}
+		</Select>
+	</label>
+	<label class="filter-field"
+		><span>Order</span>
+		<Select
+			label="Order"
+			bind:value={() => filter.order, (chosen) => (filter.order = chosen as CatalogOrder)}
+		>
+			{#each catalogOrders as id (id)}<option value={id}>Order: {orderLabels[id]}</option>{/each}
+		</Select>
+	</label>
+	{#if groups.length}
+		<fieldset class="ex-group-filter">
+			<legend>Categories</legend>
+			<div class="ex-group-list">
+				{#each groups as group (group.id)}
+					<label class="ex-group-option">
+						<input
+							type="checkbox"
+							value={group.id}
+							checked={filter.groups?.includes(group.id) ?? false}
+							onchange={(event) => choose(group.id, event.currentTarget.checked)}
+						/>
+						<span class="ex-group-title">{group.title}</span>
+						<span class="ex-group-count">{group.count}</span>
+					</label>
+				{/each}
+			</div>
+		</fieldset>
+	{/if}
+{/snippet}
 
 <style>
 	:global(.ex-content .ex-controls) {
@@ -172,7 +189,7 @@
 	.ex-group-option:has(:checked) {
 		background: rgba(243, 195, 59, 0.08);
 	}
-	:global(.ex-content) .ex-group-option input[type="checkbox"] {
+	:global(.ex-content) .ex-group-option input[type='checkbox'] {
 		width: 18px;
 		min-width: 18px;
 		max-width: 18px;
