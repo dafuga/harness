@@ -136,6 +136,11 @@
 			"id": "tablet-desktop-approval",
 			"title": "tablet desktop approval",
 			"coverage": "required"
+		},
+		{
+			"id": "native-card-navigation",
+			"title": "Native helper opens the compact planned-page card",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -224,7 +229,8 @@
 				"phone-connected",
 				"phone-workspace",
 				"phone-offline",
-				"phone-revoked"
+				"phone-revoked",
+				"native-card-navigation"
 			],
 			"viewports": ["mobile"],
 			"provenance": "actual-capture",
@@ -240,7 +246,8 @@
 				"desktop-approval",
 				"desktop-access",
 				"desktop-code-hidden",
-				"desktop-code-expired"
+				"desktop-code-expired",
+				"native-card-navigation"
 			],
 			"viewports": ["desktop"],
 			"provenance": "actual-capture",
@@ -251,7 +258,7 @@
 		{
 			"id": "remote-screens-tablet",
 			"kind": "screenshot",
-			"states": ["tablet-phone-workspace", "tablet-desktop-approval"],
+			"states": ["tablet-phone-workspace", "tablet-desktop-approval", "native-card-navigation"],
 			"viewports": ["tablet"],
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",

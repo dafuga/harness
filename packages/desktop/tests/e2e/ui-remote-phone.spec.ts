@@ -1,30 +1,13 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { remoteEvidence } from './remote-evidence';
-import { alpha, deviceName, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
+import { remoteEvidence, observedNativeNavigation } from './remote-evidence';
+import {
+	alpha,
+	deviceName,
+	hostName,
+	remotePhoneFixture,
+	nativePage
+} from './ui-remote-phone-fixture';
 import { openDesign, type Acceptance } from '../../scripts/ios-acceptance-run';
-import { pagePrelude } from '../../scripts/ios-acceptance-prelude';
-
-/** Run the native navigation expressions against the actual browser-rendered phone UI. */
-function nativePage(page: Page): Acceptance['page'] {
-	const evaluate = (expression: string) =>
-		page.evaluate(({ prelude, expression }) => Function(prelude + expression)(), {
-			prelude: pagePrelude,
-			expression
-		});
-	return {
-		evaluate,
-		until: async (expression: string, wanted: string) => {
-			let actual = '';
-			await expect
-				.poll(async () => (actual = String(await evaluate(expression))), {
-					timeout: 3000,
-					message: 'Native acceptance navigation must use the rendered card controls'
-				})
-				.toContain(wanted);
-			return actual;
-		}
-	} as Acceptance['page'];
-}
 
 type Call = Record<string, unknown>;
 type Phone = { __remotePhone: { set: (state: string) => void } };
@@ -43,20 +26,31 @@ const field = (page: Page, name: string) =>
 const fits = (page: Page) =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
 
-test('native acceptance opens the compact planned-page card through its actual control', async ({
-	page
-}) => {
-	await remotePhoneFixture(page, 'online');
-	await page.goto('/');
-	const run = { page: nativePage(page), project: { id: alpha, name: 'Alpha' } } as Acceptance;
-	expect(await openDesign(run, 'Alpha activity')).toBe('loaded');
-	await expect(page).toHaveURL(
-		new RegExp(`/projects/${alpha}/harness/branch/feat%2Falpha/pages/.+/designs$`)
-	);
-	await expect(
-		page.getByRole('img', { name: 'Alpha activity v002 desktop default' })
-	).toBeVisible();
-});
+for (const size of [
+	{ width: 1440, height: 900 },
+	{ width: 390, height: 844 },
+	{ width: 820, height: 1180 }
+]) {
+	test(`native acceptance opens the compact planned-page card at ${size.width}px`, async ({
+		page
+	}, info) => {
+		await page.setViewportSize(size);
+		await remotePhoneFixture(page, 'online');
+		await page.goto('/');
+		const run = { page: nativePage(page), project: { id: alpha, name: 'Alpha' } } as Acceptance;
+		const result = await observedNativeNavigation(() => openDesign(run, 'Alpha activity')).catch(
+			(error: Error) => error.message
+		);
+		await remoteEvidence(page, info, 'native-card-navigation');
+		expect(result, 'Native acceptance navigation must reach the planned design').toBe('loaded');
+		await expect(page).toHaveURL(
+			new RegExp(`/projects/${alpha}/harness/branch/feat%2Falpha/pages/.+/designs$`)
+		);
+		await expect(
+			page.getByRole('img', { name: 'Alpha activity v002 desktop default' })
+		).toBeVisible();
+	});
+}
 const kept = (page: Page) =>
 	page.evaluate(() =>
 		[document.cookie, ...Object.values(localStorage), ...Object.values(sessionStorage)].join(' ')

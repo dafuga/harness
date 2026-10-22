@@ -1,3 +1,6 @@
+import { randomUUID } from 'node:crypto';
+import { PerformanceProfileService } from '../../../../src/services/PerformanceProfileService';
+import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
 import { expect, type Locator, type Page, type TestInfo } from '@playwright/test';
 import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/buildStamp';
@@ -73,4 +76,39 @@ export async function remoteEvidence(page: Page, info: TestInfo, state: string):
 		await page.screenshot({ animations: 'disabled', caret: 'hide' }),
 		{ HARNESS_EVIDENCE_DIR: process.env.HARNESS_EVIDENCE_DIR, TAKE_SCREENSHOT: '1' }
 	);
+}
+
+/** Actual native navigation over browser DOM transport; native plugins remain synthetic here. */
+export async function observedNativeNavigation(operation: () => Promise<string>): Promise<string> {
+	if (!evidenceRequested()) return operation();
+	let result = '';
+	const measurements = await new PerformanceProfileService().measure(
+		{
+			unit: 'desktop.script.ios-acceptance-run',
+			workload: 'native-navigation-browser-adapter',
+			rounds: 1,
+			iterations: 1,
+			warmups: 0
+		},
+		async () => {
+			result = await operation();
+		}
+	);
+	recordCapture(
+		{
+			evidence: 'native-navigation',
+			kind: 'benchmark',
+			state: 'representative',
+			file: `native-navigation-${randomUUID()}.json`,
+			mediaType: 'application/json'
+		},
+		JSON.stringify({
+			measurements: measurements.map((item) => ({
+				...item,
+				partial:
+					'Actual native helper through browser DOM and a synthetic phone bridge. Includes Playwright transport and Node runner RSS; excludes native plugins, WebKit and physical-device performance.'
+			}))
+		})
+	);
+	return result;
 }

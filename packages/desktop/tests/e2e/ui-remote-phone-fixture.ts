@@ -1,4 +1,6 @@
-import type { Page } from '@playwright/test';
+import type { Acceptance } from '../../scripts/ios-acceptance-run';
+import { pagePrelude } from '../../scripts/ios-acceptance-prelude';
+import { expect, type Page } from '@playwright/test';
 import { alpha, beta, projectFixture } from './ui-project-fixture';
 import { pairing, phone, relayOrigin } from './ui-remote-host-fixture';
 export * from './ui-project-fixture';
@@ -169,4 +171,26 @@ export async function remotePhoneFixture(page: Page, state = 'unpaired') {
 	await page.addInitScript(installPhoneRequests);
 	await page.addInitScript(installPhonePlugin);
 	return outbox;
+}
+
+/** Run the native navigation expressions against the actual browser-rendered phone UI. */
+export function nativePage(page: Page): Acceptance['page'] {
+	const evaluate = (expression: string) =>
+		page.evaluate(({ prelude, expression }) => Function(prelude + expression)(), {
+			prelude: pagePrelude,
+			expression
+		});
+	return {
+		evaluate,
+		until: async (expression: string, wanted: string) => {
+			let actual = '';
+			await expect
+				.poll(async () => (actual = String(await evaluate(expression))), {
+					timeout: 3000,
+					message: 'Native acceptance navigation must use the rendered card controls'
+				})
+				.toContain(wanted);
+			return actual;
+		}
+	} as Acceptance['page'];
 }
