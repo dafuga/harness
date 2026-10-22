@@ -21,7 +21,7 @@ function expectCapturedMeasurements(state: string, viewport: string): void {
 	);
 	expect(screenshot?.server).toMatchObject({ revision: process.env.HARNESS_VERIFY_REVISION });
 	const benchmark = benchmarkCaptureSchema.parse(
-		JSON.parse(readFileSync(join(directory, `${state}-benchmark.json`), 'utf8'))
+		JSON.parse(readFileSync(join(directory, `${state}-${viewport}-benchmark.json`), 'utf8'))
 	);
 	for (const unit of [pageUnit, screenUnit, styleUnit]) {
 		for (const metric of ['browser-navigation-ms', 'browser-js-heap-bytes']) {
