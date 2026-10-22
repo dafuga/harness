@@ -51,6 +51,9 @@ if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
 if (variant === 'focused')
 	for (const commit of Object.keys(stored)) stored[commit] = withFocused(stored[commit]);
+if (variant === 'viewport-states')
+	for (const commit of Object.keys(stored))
+		stored[commit] = withFocused(stored[commit], ids.page, {}, true);
 if (variant === 'relations')
 	for (const commit of Object.keys(stored)) stored[commit] = withRelationGroups(stored[commit]);
 if (variant === 'helpers')
