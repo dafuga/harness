@@ -2,7 +2,7 @@
 	"name": "mobile-catalog-destinations",
 	"goal": "Keep every catalog destination visible and usable on a phone after the shared module catalog grows.",
 	"createdAt": "2026-10-22T04:22:31.186Z",
-	"updatedAt": "2026-10-22T04:27:06.791Z",
+	"updatedAt": "2026-10-22T04:33:12.116Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T04:33:10.280Z",
+			"evidence": "Opus5.5 implements a narrow-phone CSS wrap: four destinations over three, centered, readable labels/icons,52px targets, all seven visible initially. Desktop/tablet rules unchanged. Removed the rejected scrolling workaround before the frozen red; no regression test or fixture changed in the repair commit."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T04:33:12.116Z",
+			"evidence": "Paired red0f0a1e105 recordad1454c83d41(8pass1fail) to green4d7925c8e record30449dcfadbe(9pass), identical frozen inputs and runtime profile. Both retain9 original screenshots/189bindings. Restored and inspected current-mobile pixels: Models is visible in the second row without scrolling. Fullshellmatrix76/76 also passed."
 		},
 		{
 			"id": "verify",
