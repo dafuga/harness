@@ -2,7 +2,7 @@
 	"name": "mobile-catalog-destinations",
 	"goal": "Keep every catalog destination visible and usable on a phone after the shared module catalog grows.",
 	"createdAt": "2026-10-22T04:22:31.186Z",
-	"updatedAt": "2026-10-22T04:22:32.261Z",
+	"updatedAt": "2026-10-22T04:27:06.791Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T04:27:06.791Z",
+			"evidence": "Sealed red0f0a1e105 recordad1454c83d41: standard navbar matrix8pass1fail; Models right432.08 exceeds390 at unchanged reachable assertion. Capture moved before geometry, retaining all189 screenshot bindings(9 physical states). No source repair or scrolling is present."
 		},
 		{
 			"id": "implement",
