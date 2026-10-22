@@ -6,11 +6,9 @@
 	"name": "native-source-inventory",
 	"goal": "Reject empty native source inventories and resolve metadata-backed Git paths from the selected repository root",
 	"createdAt": "2026-10-22T03:33:50.559Z",
-	"updatedAt": "2026-10-22T03:36:51.272Z",
+	"updatedAt": "2026-10-22T03:40:57.497Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -45,17 +43,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:39:10.697Z",
+			"evidence": "Git now resolves path filters from the selected repository root; readSources refuses any empty renderer, shell or fixture inventory before a native build."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:39:12.493Z",
+			"evidence": "Unchanged six-case guard corpus: sealed d0cc50cc red and 771c4552 green at 1bc96a09d. All actual source inventories are nonempty."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:40:57.497Z",
+			"evidence": "Isolated reintroduction of 9340358c6 failed again, record affbca22; restored 1bc96a09d passed, record e3f8399f. Same six-case corpus, commands and selected-object context."
 		},
 		{
 			"id": "verify",
