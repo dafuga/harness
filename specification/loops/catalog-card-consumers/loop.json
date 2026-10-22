@@ -47,7 +47,7 @@
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
 			"status": "pending",
-			"evidence": "Historical focused pair and source refs are retained. Fresh shared-renderer integration checks and captures are pending. CLI/native suites are explicitly deferred; verification and main landing remain open until the capture-protocol prerequisite and coordinator landing."
+			"evidence": "Original red/green refs and proof remain preserved. Integration c6ca5d453 passed 208 component tests, 11 browser cases, 22 card/footer cases and captured 181 Git-backed images. Capture prerequisite #58 has landed at ff91d603c. Refresh on that main is pending focused verification. History device switching retains a desktop-specific state; coordinator assigned that aggregate gap to Fixing data. CLI/native suites remain deferred. Pages #52 owns the next conditional landing slot; this test-only supplement stays held behind it."
 		}
 	],
 	"evaluators": [

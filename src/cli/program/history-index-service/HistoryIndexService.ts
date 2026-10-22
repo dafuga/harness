@@ -108,7 +108,7 @@ export class HistoryIndexService {
 			branches: source.branches,
 			revisions: summaries(built, entries),
 			units: unitGrowth(sound, budgetReviews(built.map((item) => item.result.ledger).reverse())),
-			benchmarks: historySeries(sound),
+			benchmarks: historySeries(sound, focusedRuns(built)),
 			profiles: profiles(sound),
 			legacy: entries,
 			truncated: source.truncated,
@@ -141,6 +141,10 @@ function detailPath(commit: string): string {
 }
 
 type Built = Array<{ revision: SourceRevision; result: BuiltRevision }>;
+
+function focusedRuns(built: Built) {
+	return built.flatMap(({ result }) => result.detail.regressions ?? []);
+}
 
 /** Each built revision as the index lists it, with what its commit changed against its parent. */
 function summaries(built: Built, legacy: LegacyEntry[]): IndexedRevision[] {
