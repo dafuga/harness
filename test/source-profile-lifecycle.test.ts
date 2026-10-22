@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { runIsolated } from '../src/utils/run-isolated/runIsolated';
 import { pathToFileURL } from 'node:url';
 import { runnerFixture, runnerCaptures, preload } from './support/sourceProfileRunners';
 
@@ -139,3 +140,43 @@ console.log(new TextDecoder().decode(child.stdout).trim());\n`
 		await fixture.remove();
 	}
 }, 30_000);
+
+test('profiling its own project crosses public schema forwarding entries without a bootstrap cycle', async () => {
+	const fixture = await runnerFixture();
+	const sourceRoot = resolve(import.meta.dirname, '..');
+	const program = `import {componentManifestSchema} from ${JSON.stringify(pathToFileURL(join(sourceRoot, 'src/core/unitTypes.ts')).href)};
+import {explorerRoute} from ${JSON.stringify(pathToFileURL(join(sourceRoot, 'src/utils/explorerRoute.ts')).href)};
+if(componentManifestSchema.safeParse({}).success) throw Error('Invalid schema admitted');
+if(explorerRoute('/branch/main/components')?.category!=='components') throw Error('Actual route operation failed');
+console.log('owned-loader-ready');`;
+	try {
+		const result = await runIsolated({
+			command: 'bun',
+			args: ['--preload', preload, '--eval', program],
+			cwd: fixture.root,
+			env: { ...process.env, ...fixture.environment, HARNESS_RUNTIME_PROFILE_ROOT: sourceRoot },
+			timeoutMs: 30000,
+			log: join(fixture.root, 'owned-loader.log')
+		});
+		expect(result.status, 'profiling tool inside its own project must finish bootstrap').toBe(
+			'passed'
+		);
+		const measurements = await runnerCaptures(fixture.directory);
+		expect(
+			measurements.some(
+				(item) =>
+					item.unit === 'function.explorer-route' && item.unitOfMeasure === 'ms' && item.value > 0
+			)
+		).toBe(true);
+		expect(
+			measurements.some(
+				(item) =>
+					item.unit === 'function.explorer-route' &&
+					item.unitOfMeasure === 'bytes' &&
+					item.value > 0
+			)
+		).toBe(true);
+	} finally {
+		await fixture.remove();
+	}
+}, 60000);
