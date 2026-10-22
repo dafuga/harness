@@ -49,6 +49,8 @@ export class RegressionProofService {
 			if (snapshot.misdeclared().length) fail('Regression outputs may not cover tracked files.');
 			for (const path of config.link) await snapshot.link(this.root, path);
 			const observed = await observeRegression(snapshot, directory, input, config.scenarios);
+			if (input.phase === 'capture' && !observed.captures.length && !observed.measurements.length)
+				fail('A capture run must retain screenshots or benchmark observations.');
 			const record = await sealRegression(this.root, input, observed);
 			await new RegressionProofRepository(this.root).save(record, observed.output, observed.files);
 			return record;
@@ -82,7 +84,7 @@ export function environmentProfile(
 	source: Record<string, string | undefined> = process.env
 ): string {
 	const volatile =
-		/^(PWD|OLDPWD|_|SHLVL|HARNESS_AGENT_ID|HARNESS_VERIFY_REVISION|HARNESS_VERIFY_TREE|HARNESS_EVIDENCE_DIR|SCREENSHOT_LABEL)$/;
+		/^(PWD|OLDPWD|_|SHLVL|XPC_SERVICE_NAME|HARNESS_AGENT_ID|HARNESS_VERIFY_REVISION|HARNESS_VERIFY_TREE|HARNESS_EVIDENCE_DIR|SCREENSHOT_LABEL)$/;
 	const env = Object.fromEntries(
 		Object.entries(source)
 			.filter(([key]) => !volatile.test(key))
@@ -172,7 +174,7 @@ async function sealRegression(
 		schemaVersion: 1,
 		loop: input.loop,
 		phase: input.phase,
-		status: input.phase === 'red' ? 'failed' : 'passed',
+		status: recordedStatus(input.phase, observed.result.exitCode),
 		source: await sourceIdentity(root, input.commit),
 		tests: input.tests,
 		units: input.units,
@@ -189,6 +191,11 @@ async function sealRegression(
 		...(input.red ? { red: { commit: input.red.source.commit, record: input.red.id } } : {})
 	};
 	return { ...draft, id: regressionHash(canonicalJson(draft)) };
+}
+
+function recordedStatus(phase: RegressionPhase, exitCode: number | null): 'passed' | 'failed' {
+	if (phase === 'capture') return exitCode === 0 ? 'passed' : 'failed';
+	return phase === 'red' ? 'failed' : 'passed';
 }
 
 function invalidExecution(result: Awaited<ReturnType<typeof runIsolated>>): boolean {
