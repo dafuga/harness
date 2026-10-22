@@ -4,6 +4,7 @@ import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 
 test.setTimeout(90_000);
+const configUnits = ['reports.component.harness-explorer-table', 'reports.function.entity-catalog'];
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'Configs', exact: true });
@@ -19,7 +20,7 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'orderSettings', exact: true })).toBeVisible();
 	await open(page, { category: 'configs', commit: commits.first }, 'groups');
-	await capture(page, `groups-configs-historical-${viewport}`);
+	await capture(page, `groups-configs-historical-${viewport}`, configUnits);
 	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
 		'10'
 	);
@@ -52,7 +53,11 @@ for (const [viewport, size] of Object.entries(viewports)) {
 						.map((image) => image.decode())
 				);
 			});
-			await capture(page, `groups-${category}-${viewport}`);
+			await capture(
+				page,
+				`groups-${category}-${viewport}`,
+				category === 'configs' ? configUnits : []
+			);
 			await expect
 				.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
 				.toBeVisible();
