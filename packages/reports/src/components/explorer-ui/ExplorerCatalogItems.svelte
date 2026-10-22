@@ -89,7 +89,7 @@
 		gap: 18px;
 		min-width: 0;
 	}
-	/* A component card of this grid only: its capture above its words, its open action at the foot. */
+	/* A component card: its own capture above its title and Used In list. */
 	.ex-catalog-grid :global(.ex-page-card) {
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-rows: auto 1fr;
@@ -104,9 +104,5 @@
 	}
 	.ex-catalog-grid :global(.ex-page-body h2) {
 		font-size: 1.2rem;
-	}
-	.ex-catalog-grid :global(.ex-page-body > .ex-open-page) {
-		align-self: flex-end;
-		margin-top: auto;
 	}
 </style>

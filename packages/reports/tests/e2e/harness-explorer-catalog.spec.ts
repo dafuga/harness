@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { generatedUnits } from '../../scripts/harness-scale-data';
 import { at, branch, checkpoint, commit, expectPath, explorer, tip } from './support/explorer';
+import { viewports } from './support/harnessCapture';
 import { seeded } from './support/harnessHistory';
 import { fits, screens, sharedField, typed } from './support/sharedSelect';
 
@@ -46,6 +47,45 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(page.getByRole('heading', { level: 1, name: 'Services' })).toBeVisible();
 	await expect(commit(page)).toHaveValue(commits.approved);
 });
+
+for (const viewport of viewports) {
+	test(`component cards show their title, screenshot and Used In links at ${viewport.id} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize({ width: viewport.width, height: viewport.height });
+		await page.goto(at('main', commits.approved, 'components'));
+		const card = named(page, 'TitleList');
+		await expect(card).toBeVisible();
+		await checkpoint(page, `component-cards-${viewport.id}`);
+
+		await expect(card.getByText('Contains', { exact: true })).toHaveCount(0);
+		await expect(card.locator('p')).toHaveCount(0);
+		await expect(card.locator('figcaption')).toHaveCount(0);
+		await expect(card.getByRole('button')).toHaveCount(0);
+		await expect(card.getByRole('link', { name: 'Open component', exact: true })).toHaveCount(0);
+		await expect(
+			card.getByRole('heading', { level: 2, name: 'TitleList', exact: true })
+		).toHaveCount(1);
+		await expect(card.locator('.ex-card-shot img, .ex-card-shot .ex-thumb-gap')).toBeVisible();
+		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
+		await expect(card.getByRole('link', { name: 'Titles', exact: true })).toBeVisible();
+
+		// The name is a link inside its heading, and the screenshot is a second way to the same page.
+		const title = card
+			.getByRole('heading', { level: 2, name: 'TitleList', exact: true })
+			.getByRole('link', { name: 'TitleList', exact: true });
+		await expect(title).toBeVisible();
+		const shot = card.getByRole('link', { name: 'Open TitleList', exact: true });
+		await expect(
+			shot
+				.getByRole('img', { name: 'Screenshot of TitleList', exact: true })
+				.or(shot.getByText('No screenshot is recorded at this revision', { exact: true }))
+		).toBeVisible();
+		const detail = await title.getAttribute('href');
+		expect(detail).toBeTruthy();
+		await expect(shot).toHaveAttribute('href', detail!);
+	});
+}
 
 test('the keyboard reaches the controls, changes the order and opens an entity', async ({
 	page
