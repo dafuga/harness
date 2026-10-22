@@ -32,7 +32,12 @@ test('platform configuration exposes declared values and explicitly reports miss
 		await measureWorkload(
 			'service.explorer-ui-revision-detail-service-platform-catalog',
 			'read-platform-manifest',
-			() => readPlatformCatalog(snapshot(manifest()))
+			() =>
+				measureWorkload(
+					'function.explorer-ui-platform-types',
+					'validate-platform-identities-through-reader',
+					() => readPlatformCatalog(snapshot(manifest()))
+				)
 		)
 	).toEqual({ entries: [web] });
 	expect(await readPlatformCatalog(snapshot())).toEqual({
