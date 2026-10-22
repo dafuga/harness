@@ -2,7 +2,7 @@
 	"name": "platforms-navbar-fit",
 	"goal": "Keep nine navbar destinations reachable and search aligned to the right edge at every supported width.",
 	"createdAt": "2026-10-22T23:36:41.256Z",
-	"updatedAt": "2026-10-22T23:56:45.703Z",
+	"updatedAt": "2026-10-22T23:58:20.746Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T23:58:18.639Z",
+			"evidence": "Checkpoint 5a321aff6ceed768ca30bfcbdb2399f69b02ef9ac68d0a905835fba1aa863047: unchanged search geometry fails at 834px and 768px; six original navbar captures retained."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T23:58:19.590Z",
+			"evidence": "Opus 5.5 authored the shared responsive navbar repair: search stays with the brand, destinations take the next row, and compact revision controls remain below their divider."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T23:58:20.746Z",
+			"evidence": "Checkpoint 5f5ed753fc36a02cc32d1816efca1e78d1ae6cb663c12b535127a7d59da95e6a: unchanged regression passes in the identical environment. Eight original captures retained and inspected; full navbar matrix passes 76 cases and Explorer matrix passes 113."
 		},
 		{
 			"id": "verify",
