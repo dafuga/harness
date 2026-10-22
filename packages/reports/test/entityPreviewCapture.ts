@@ -64,6 +64,15 @@ export async function ready(page: Page): Promise<void> {
 			const box = image.getBoundingClientRect();
 			return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
 		});
-		await Promise.all(visible.map((image) => image.decode()));
+		await Promise.all(
+			visible.map(async (image) => {
+				const deadline = Date.now() + 10_000;
+				while (!image.complete && Date.now() < deadline)
+					await new Promise((resolve) => setTimeout(resolve, 50));
+				await image.decode?.();
+				if (!image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0)
+					throw new Error(`Image not ready: ${image.currentSrc || image.src || image.alt}`);
+			})
+		);
 	});
 }
