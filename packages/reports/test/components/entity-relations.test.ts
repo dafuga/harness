@@ -21,6 +21,8 @@ test('component cards have identical content in catalogs and every relationship 
 		const cards = (body: string) =>
 			[...body.matchAll(/<article\b[^]*?<\/article>/g)].map((m) => drawn(m[0]));
 		const originals = cards(catalog);
+		for (const card of originals)
+			expect(card).toContain('data-harness-component="explorer-module-card"');
 		const routes = [
 			{ category: 'pages', entity: ids.page, tab: 'uses' },
 			{ category: 'components', entity: ids.list, tab: 'uses' },
@@ -29,6 +31,8 @@ test('component cards have identical content in catalogs and every relationship 
 			{ category: 'functions', entity: ids.filter, tab: 'used-in' }
 		] as const;
 		for (const route of routes) {
+			for (const card of cards(content(mode, route)))
+				expect(card).toContain('data-harness-component="explorer-module-card"');
 			const related = cards(content(mode, route)).filter((card) => card.includes('ex-card-shot'));
 			expect(related.length, JSON.stringify(route)).toBeGreaterThan(0);
 			for (const card of related) {
@@ -48,7 +52,7 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 		expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
 		expect(uses, 'Relationships reuse catalog cards').toContain('ex-function-tile');
 		expect(uses).toContain('ex-page-card');
-		expect(uses).toContain('aria-label="Services"');
+		expect(uses).toContain('aria-label="Services uses"');
 		expect(used).toContain('ex-page-card');
 		expect(words(used)).toMatch(/Used In\s+1\s+Pages\s+1[^]*Orders page/);
 		expect(used).toContain('aria-label="Used In"');

@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-usage",
 	"kind": "component",
 	"title": "ExplorerUsage",
-	"responsibility": "Lists revision-scoped consumers through shared navigable screenshot-preview links.",
+	"responsibility": "Shows up to three distinct revision-scoped consumers in one flat Used In footer with linked previews.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -39,14 +39,19 @@
 			{
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
-				"description": "Optional consumer presentation; defaults to category headings, while flat keeps the same links without category labels."
+				"description": "Compatibility input; every module-card footer is now flat, without consumer category labels."
+			},
+			{
+				"name": "ExplorerUsage.limit",
+				"type": "number",
+				"description": "Optional lower limit; every footer shows at most three distinct consumers, with an accessible overflow ellipsis."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerUsage",
 				"type": "markup",
-				"description": "Compact Used In links or a dash; grouped by default, with a flat layout for model cards using the same preview links."
+				"description": "One flat Used In list in provided consumer order, capped at three distinct links; overflow has an accessible ellipsis."
 			}
 		],
 		"errors": []
@@ -59,11 +64,6 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-usage",
 			"via": "import",
 			"origin": "derived"
 		},

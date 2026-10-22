@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-page-card",
 	"kind": "component",
 	"title": "Visual catalog card",
-	"responsibility": "Shows a page or component by its own screenshot and linked name with the shared linked Used In footer, owning its layout in every list.",
+	"responsibility": "Legacy visual card entry delegating every catalog and relationship rendering to ExplorerModuleCard.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -39,7 +39,7 @@
 			{
 				"name": "ExplorerPageCard.category",
 				"type": "'pages' | 'components'",
-				"description": "Pages keep their title and screenshot as one link, plus the shared usage footer. Components show their screenshot, linked title and the same footer, with identical layout in catalogs and relationship tabs."
+				"description": "Pages keep their title and screenshot as one link, plus the shared grouped usage footer. Components show their screenshot, linked title and the same footer as one unheaded list of at most three consumer links, ending in an ellipsis only when more exist, with identical layout in catalogs and relationship tabs."
 			},
 			{
 				"name": "ExplorerPageCard.verification",
@@ -56,24 +56,14 @@
 			{
 				"name": "ExplorerPageCard",
 				"type": "markup",
-				"description": "One card with the entity's own screenshot or gap, linked name and shared Used In consumer links and previews, bound to the selected revision. No description, Contains, status, verification, provenance caption or Open button."
+				"description": "One shared module card with revision-scoped visual evidence and at most three flat Used In links."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.explorer-usage",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-entity-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-icon",
+			"unit": "reports.component.explorer-ui-explorer-module-card",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -84,11 +74,6 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.harness-icons",
 			"via": "import",
 			"origin": "derived"
 		},
