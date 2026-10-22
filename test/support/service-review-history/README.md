@@ -9,13 +9,16 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
 
 ## What it holds
 
-- The SHA-1 object format, 67 objects: 4 commits, 43 trees and 20 blobs. There are no refs and no
-  parents.
-- For the ledger's `originalProof` and each file's `review`, it holds the commit, its root tree,
+- The SHA-1 object format, 105 objects: 7 commits, 67 trees and 31 blobs. There are no refs;
+  parent history is not traversed.
+- For the ledger's `originalProof` and each file's current and previous reviews, it holds the commit, its root tree,
   every tree down the path and the blob at that path.
 - The commits: `16ab6fdf66c235918411bf42bb02e39653653a05` (original proof),
   `0816efe0e469ca8c3963f583590289d253961a79`, `9fb0505ef04992cc5b1716d2b7b5280d4f866036` and
-  `0f968c6c98050fb14bf7f7a29d174352755a87d2`.
+  `0f968c6c98050fb14bf7f7a29d174352755a87d2`,
+  `1bf1e0acb343c3894a34781787bd67cd41c57317`, `acb1a676d2a5186986369c5a4fb52ec1eabdaae9` and
+  `ff91d603c94486efdaddde9cd5e5288703cf38e2`. Earlier reviewed objects remain present. The original HistoryIndexService implementation
+  is retained alongside its migration record.
 
 ## Regenerating it
 
@@ -28,10 +31,17 @@ const d = JSON.parse(
 );
 const reads = [
 	[d.originalProof, 'specification/loops/shared-service-ownership/migration.json'],
-	...d.files.filter((f) => f.review).map((f) => [f.review.commit, f.review.path])
+	[d.originalProof, 'src/cli/program/history-index-service/HistoryIndexService.ts'],
+	...d.files.flatMap((f) =>
+		[...(f.review ? [f.review] : []), ...(f.previousReviews ?? [])].map((r) => [r.commit, r.path])
+	)
 ];
 const ids = new Set();
-const id = (name) => Bun.spawnSync(['git', 'rev-parse', '--verify', name]).stdout.toString().trim();
+const id = (name) => {
+	const result = Bun.spawnSync(['git', 'rev-parse', '--verify', name]);
+	if (result.exitCode !== 0) throw new Error(`Missing committed source: ${name}`);
+	return result.stdout.toString().trim();
+};
 for (const [commit, path] of reads) {
 	const parts = path.split('/');
 	for (const name of [
@@ -41,7 +51,7 @@ for (const [commit, path] of reads) {
 	])
 		ids.add(id(name));
 }
-console.log([...ids].join('\n'));
+console.log([...ids].sort().join('\n'));
 ```
 
 ```sh
