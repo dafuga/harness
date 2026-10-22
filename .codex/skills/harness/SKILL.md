@@ -1,6 +1,13 @@
 ---
 name: harness
+description: Use this repository's Harness generators, audits, loops and revision-bound evidence when changing its code or verification.
+---
+
+---
+
+name: harness
 description: Apply Harness generators, contracts, regression loops and source-bound verification when changing this Harness CLI project.
+
 ---
 
 # Harness Project Discipline
@@ -214,3 +221,12 @@ weaken the original acceptance state. A control required to fit at first paint m
 still fit before scrolling. When catalog destinations grow, update the existing
 navbar matrix and run its unchanged geometry and keyboard checks at every viewport;
 do not treat a newly hidden destination as a stale fixture.
+
+## Visual Evidence in This Project
+
+- Classify what the module actually does. TypeScript support functions and lifecycle controllers are nonvisual even when they live beside UI; redirect-only routes have no settled screen of their own.
+- A visual component or shell needs a representative fixture in the existing component preview catalog, its own required scenario state, and desktop, tablet and mobile captures. Keep `test/shared-workspace-registry.test.ts` and the catalog browser checks passing when adding a visual unit. New pages also need their own settled route coverage; a redirect destination is not a screenshot of a different page.
+- Use the exact registered component ID suffix in `data-harness-component`. Attribute a route capture only to the UI it actually rendered. Imports and dependency ancestry cannot prove that a component was visible. Keep source-tag assertions tolerant of additional attributes while preserving their behavior and accessibility checks.
+- Use `harness loop record --phase capture` for independent capture and historical backfill. Do not manufacture a failing test or a full verification verdict to retain evidence. An external historical fixture driver must be pinned and recorded; the product source and served revision must remain the selected historical revision.
+- Retain original build, source, measurement method, workload, profile and outcome. Keep failures visible alongside valid partial captures. Measure size and complexity from tracked source, and runtime figures from actual executions; contextual route or fixture measurements must not claim isolated component cost or budget approval.
+- Inspect decoded, hash-matching images from the retained record. Do not fill a missing device or revision with another image. State an unreproducible historical gap explicitly and keep required verification pending until it is resolved or reported as blocked.
