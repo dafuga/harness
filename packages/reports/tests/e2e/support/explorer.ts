@@ -165,10 +165,11 @@ export function recordedShot(
 }
 
 /** Overview exposes actual source size and whatever runtime observations were recorded. */
-export async function measured(page: Page): Promise<void> {
+export async function measured(page: Page, emitted = true): Promise<void> {
 	await expect(page.getByRole('region', { name: 'Size', exact: true })).toHaveCount(0);
 	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
 	await expect(profile).toBeVisible();
-	for (const label of ['Source size', 'Emitted size', 'Complexity'])
-		await expect(profile).toContainText(label);
+	for (const label of ['Source size', 'Complexity']) await expect(profile).toContainText(label);
+	if (emitted) await expect(profile).toContainText('Emitted size');
+	else await expect(profile).not.toContainText('Emitted size');
 }

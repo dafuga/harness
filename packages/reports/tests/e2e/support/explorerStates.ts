@@ -173,7 +173,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(
 			at(keptBranch, commits.measured, 'functions/kernel.counter/details?tab=measurements')
 		);
-		await measured(page);
+		await measured(page, false);
 	},
 	// Each emitted size with the limit of its own target.
 	async emitted(page) {
