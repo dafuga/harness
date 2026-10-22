@@ -50,8 +50,11 @@ function sourceAdapter(root: string): Promise<SourceProfileAdapter | null> {
 /** Bootstrap imports must never await the adapter that is loading those same imports. */
 function bootstrapSource(path: string): boolean {
 	const directory = fileURLToPath(new URL('./', import.meta.url));
-	const schema = fileURLToPath(new URL('../../core/unitTypes.ts', import.meta.url));
-	return path.startsWith(realpathSync(directory) + '/') || path === realpathSync(schema);
+	const schemas = ['../../core/unitTypes.ts', '../../core/development-tooling/unitTypes.ts'];
+	return (
+		path.startsWith(realpathSync(directory) + '/') ||
+		schemas.some((schema) => path === realpathSync(fileURLToPath(new URL(schema, import.meta.url))))
+	);
 }
 
 function benchmarkBoundary(): boolean {
