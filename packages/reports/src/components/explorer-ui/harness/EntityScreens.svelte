@@ -66,8 +66,7 @@
 	function heading(item: Evidence): string {
 		if (item.phase === 'before') return `Before · ${shortCommit(scope.parent ?? '')}`;
 		const at = shortCommit(scope.commit);
-		if (paired) return `After · ${at}`;
-		return `Branch tip · ${at}`;
+		return paired ? `After · ${at}` : `Branch tip · ${at}`;
 	}
 </script>
 
@@ -108,10 +107,10 @@
 	{/if}
 	<div class="ex-panes" class:paired>
 		{#each panes as item (item.id)}
-			{@const title = heading(item)}
-			<figure class="ex-pane" aria-label={title}>
+			{@const named = heading(item)}
+			<figure class="ex-pane" aria-label={named}>
 				<figcaption>
-					<strong>{title}</strong>
+					<strong>{named}</strong>
 				</figcaption>
 				{#if item.missing}
 					<p class="ex-gap">
