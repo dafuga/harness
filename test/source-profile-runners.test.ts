@@ -100,6 +100,7 @@ test('unowned source and fixture copies never borrow a registered unit identity'
 }, 30_000);
 
 const initializedModules = [
+	['effect only', 'globalThis.fixtureStarted = 7;', 'globalThis.fixtureStarted', '7', 2],
 	['Map data', 'export const fields = new Map([["id", 7]]);', "fields.get('id')", '7', 2],
 	['nested data', 'export const fields = { nested: { id: 7 } };', 'fields.nested.id', '7', 2],
 	[
@@ -168,7 +169,7 @@ test.each(
 		try {
 			await fixture.write(
 				'run.ts',
-				`import {fields} from './subject'; console.log(${operation});\n`
+				`import * as subject from './subject'; const {fields}=subject; console.log(${operation});\n`
 			);
 			const ran = await fixture.run(['bun', '--preload', preload, 'run.ts'], fixture.environment);
 			expect(ran.stdout.trim()).toBe(expected);
@@ -189,6 +190,7 @@ test.each(
 
 test('failed initialization and type-only modules never gain successful scope observations', async () => {
 	for (const source of [
+		'globalThis.fixtureStarted = 7; throw new Error("failed init");\n',
 		'export const fields = new Map([["id", 7]]); throw new Error("failed init");\n',
 		'export type Fields = { id: number };\n'
 	]) {
