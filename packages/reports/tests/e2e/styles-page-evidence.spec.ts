@@ -23,7 +23,17 @@ function expectCapturedMeasurements(state: string, viewport: string): void {
 	const benchmark = benchmarkCaptureSchema.parse(
 		JSON.parse(readFileSync(join(directory, `${state}-${viewport}-benchmark.json`), 'utf8'))
 	);
-	for (const unit of [pageUnit, screenUnit, styleUnit]) {
+	for (const unit of [
+		pageUnit,
+		screenUnit,
+		styleUnit,
+		'function.explorer-route',
+		'reports.component.harness-harness-console',
+		'reports.function.harness-icons',
+		'reports.function.harness-shell',
+		'reports.style.explorer',
+		'reports.style.explorer-navbar'
+	]) {
 		for (const metric of ['browser-navigation-ms', 'browser-js-heap-bytes']) {
 			const observation = benchmark.measurements.find(
 				(item) => item.unit === unit && item.metric === metric

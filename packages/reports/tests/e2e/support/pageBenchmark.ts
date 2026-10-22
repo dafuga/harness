@@ -119,11 +119,18 @@ function includedUnits(page: string): string[] {
 		'reports.function.explorer-evidence-focused-captures'
 	];
 	if (page === 'reports.page.harness-branch-branch-at-styles')
-		units.push(
+		return [
+			page,
+			'function.explorer-route',
 			'reports.component.harness-screen',
+			'reports.component.harness-harness-console',
 			'reports.component.explorer-ui-harness-explorer-styles-screen',
+			'reports.function.harness-icons',
+			'reports.function.harness-shell',
+			'reports.style.explorer',
+			'reports.style.explorer-navbar',
 			'reports.style.explorer-styles'
-		);
+		];
 	if (/-(pages|shells|components)-entity$/.test(page))
 		units.push(
 			'reports.component.harness-entity-screens',
