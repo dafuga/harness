@@ -13,7 +13,8 @@ test('history lists the commits that changed the entity through the viewed commi
 	expect(hashes(body)).toEqual(['bbbbbbb', 'aaaaaaa']);
 	expect(words(body)).toContain('Changes to this entity through bbbbbbb, newest first.');
 	expect(body).toContain('title="2026-10-09T09:00:00.000Z"');
-	expect(words(body)).toContain('Viewed commit');
+	expect(words(body)).not.toContain('Viewed commit');
+	expect(body).toContain('class="viewed"');
 	// The later tip is not part of the history of an earlier commit.
 	expect(body).not.toContain('ccccccc');
 });

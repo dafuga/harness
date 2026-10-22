@@ -134,6 +134,15 @@ test('earlier addresses, reports and analytics all lead into the explorer', asyn
 		await page.goto(from);
 		await expect(page, from).toHaveURL(new RegExp(`${to.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`));
 		await expect(nav(page).getByRole('link'), from).toHaveText(categories);
+		if (from.includes('view=history')) {
+			const selectedHistory = at('main', commits.unbaselined, `services/${units.service}/history`);
+			await page.goto(selectedHistory);
+			await expect(page).toHaveURL(new RegExp(`${selectedHistory}$`));
+			await checkpoint(page, 'routes-history-row');
+			const history = page.locator('.ex-content');
+			await expect(history.getByText('Viewed commit', { exact: true })).toHaveCount(0);
+			await expect(history.locator('tbody tr.viewed')).toHaveCount(1);
+		}
 	}
 	await checkpoint(page, 'routes-earlier-addresses');
 });

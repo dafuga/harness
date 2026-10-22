@@ -33,7 +33,7 @@ const read = (changed: Partial<ExplorerHistoryDetail> = {}): ExplorerHistoryDeta
 	...changed
 });
 const to = place({ category: 'functions', entity: ids.filter });
-const shown = (of: ExplorerHistoryRow, detail?: ExplorerHistoryDetail) =>
+const shown = (of: ExplorerHistoryRow, detail?: ExplorerHistoryDetail, viewed = false) =>
 	render(EntityHistoryRow, {
 		props: {
 			row: of,
@@ -41,7 +41,7 @@ const shown = (of: ExplorerHistoryRow, detail?: ExplorerHistoryDetail) =>
 			timing: undefined,
 			verdict: { passed: false, label: 'Evidence missing', reasons: ['No record judges it.'] },
 			selected: false,
-			viewed: false,
+			viewed,
 			to,
 			nav: nav(to),
 			onselect: () => {}
@@ -73,9 +73,11 @@ test('commit rows omit lifecycle badges from index and revision change metadata'
 });
 
 test('the commit itself opens the revision without evidence or a duplicate action', () => {
-	const body = shown(row());
+	const body = shown(row(), undefined, true);
 	expect(verdicts(body), 'Compact commit history').toEqual([]);
 	expect(body).not.toContain('View revision');
+	expect(words(body)).not.toContain('Viewed commit');
+	expect(body).toContain('class="viewed"');
 	expect(body).toContain(`href="${nav(to).href(to)}"`);
 	expect(body).toContain('title="2026-10-09T09:00:00.000Z"');
 	expect(words(body)).toMatch(/ago|yesterday|today|just now/);
