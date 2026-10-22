@@ -61,15 +61,15 @@ test('what a page or a component draws is called rendered markup, not by the nam
 		contract: { ...list.contract, outputs: [{ name: 'OrderList', type: 'markup' }] }
 	};
 	const told = entityContract(named, { category: 'components' });
-	expect(told.find((item) => item.label === 'Output')?.value).toBe('rendered markup');
+	expect(row(told, 'Props')).toBe('orders, search text');
+	expect(row(told, 'Inputs')).toBeUndefined();
+	expect(row(told, 'Output')).toBeUndefined();
 	// A contract that declares what is drawn keeps the name it was given.
 	const declared = {
 		...list,
 		contract: { ...list.contract, outputs: [{ name: 'OrderList.searchableList', type: 'markup' }] }
 	};
-	expect(row(entityContract(declared, { category: 'components' }), 'Output')).toBe(
-		'searchable list'
-	);
+	expect(row(entityContract(declared, { category: 'components' }), 'Output')).toBeUndefined();
 });
 
 test('a declared contract says what each item is, and a derived one only names it', () => {

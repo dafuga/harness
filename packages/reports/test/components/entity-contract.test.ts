@@ -4,7 +4,7 @@ import { record, revision } from '../entityFixture';
 import { commits, ids } from '../entityUnits';
 
 const route = { category: 'components' as const, entity: ids.list, tab: 'contract' as const };
-test('a dedicated contract lists types and example previews with full details behind info buttons', () => {
+test('a component contract lists prop types and examples without an output section', () => {
 	for (const mode of ['current', 'commit'] as const) {
 		const commit = mode === 'current' ? commits.tip : commits.middle;
 		const head = revision(commit, [record(commit)]);
@@ -33,8 +33,9 @@ test('a dedicated contract lists types and example previews with full details be
 		const body = content(mode, route, { head });
 		for (const text of ['boolean', 'number', 'false', '0', 'null'])
 			expect(words(body)).toContain(text);
-		expect(body).toContain('aria-label="Inputs"');
-		expect(body).toContain('aria-label="Outputs"');
+		expect(body).toContain('aria-label="Props"');
+		expect(body).not.toContain('aria-label="Inputs"');
+		expect(body).not.toContain('aria-label="Outputs"');
 		expect(body).toMatch(/<table\b/);
 		expect(body).toContain('aria-haspopup="dialog"');
 		expect(body).toContain('View example for Enabled');
