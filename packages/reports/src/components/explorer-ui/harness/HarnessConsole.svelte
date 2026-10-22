@@ -1,16 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { explorerRoutePath, type ExplorerLocation } from '../../../../../../src/utils/explorer-ui/explorerRoute';
+	import {
+		explorerRoutePath,
+		type ExplorerLocation
+	} from '../../../../../../src/utils/explorer-ui/explorerRoute';
 	import type { ExplorerScreen } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import type { HarnessIndex, HarnessRevision } from '../../../models/explorer-ui/Harness.types';
-	import { correctedLocation, compactHelperLocation } from '../../../utils/development-tooling/correctedLocation';
+	import {
+		correctedLocation,
+		compactHelperLocation
+	} from '../../../utils/development-tooling/correctedLocation';
 	import { explorerEntities } from '../../../utils/explorer-ui/explorerEntities';
 	import { explorerSearchEntries } from '../../../utils/explorer-ui/explorerSearchEntries';
 	import { branchCommits } from './harness-navbar/harnessAncestry';
 	import { retainedBranch } from '../../../utils/explorer-ui/harnessAncestry';
 	import { harnessClient } from '../../../utils/explorer-ui/harnessClient';
 	import { harnessPage } from '../../../utils/explorer-ui/harness-page/harnessPage';
-	import { consoleRelations, consoleView, type ConsoleAnswer } from '../../harness/harness-console/consoleView';
+	import {
+		consoleRelations,
+		consoleView,
+		type ConsoleAnswer
+	} from '../../harness/harness-console/consoleView';
 	import HarnessHeader from './HarnessHeader.svelte';
 	let {
 		base,
@@ -24,9 +34,7 @@
 		path: string;
 		/** Goes to another page; `replace` when the address only becomes more exact. */
 		navigate: (path: string, replace: boolean) => void;
-		/** Accepted from earlier hosts and not drawn: the explorer has six categories and no more. */
 		links?: Array<{ label: string; href: string }>;
-		/** False where the host serves no export endpoint, so no dead link is offered. */
 		exportable?: boolean;
 		/** What renders the screen. The host has no renderer of its own: whoever mounts it names one. */
 		content: ExplorerScreen;
@@ -64,7 +72,7 @@
 		navigate(next, false);
 		const from = shown?.scope.location ?? scope?.location;
 		if (
-			['category', 'entity', 'helper', 'section'].some(
+			['category', 'screen', 'entity', 'helper', 'section'].some(
 				(key) => to[key as keyof ExplorerLocation] !== from?.[key as keyof ExplorerLocation]
 			)
 		)
@@ -94,6 +102,7 @@
 			at?.branch,
 			at?.commit,
 			at?.category,
+			at?.screen,
 			at?.entity,
 			at?.helper,
 			at?.section

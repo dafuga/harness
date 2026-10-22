@@ -17,7 +17,7 @@ const { commits, keptBranch } = seeded();
 const { explorerBranch, explorerUnits: units } = explorer();
 const dropped = /^(reports?|project reports|analytics|activity|growth|compare|component map)$/i;
 
-test('the explorer has exactly six categories, pages first, and nothing else to go to', async ({
+test('the explorer has its expected navigation, pages first, and no unrelated destinations', async ({
 	page
 }) => {
 	await page.goto('/harness');

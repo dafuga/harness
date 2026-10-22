@@ -9,8 +9,10 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { box } from './support/shellChecks';
 import { shellMount } from './support/shellData';
+import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
 import {
 	buildShellFixture,
+	captureShell,
 	openShellPage,
 	removeShellFixture,
 	shellOrigin
@@ -52,7 +54,13 @@ async function fits(page: Page, width: number): Promise<void> {
 	);
 }
 async function remember(page: Page, info: TestInfo, name: string): Promise<void> {
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	if (!evidenceRequested()) return;
+	const width = page.viewportSize()!.width;
+	await captureShell(page, home, {
+		state: name,
+		viewport: width >= 1200 ? 'desktop' : width <= 480 ? 'mobile' : 'tablet',
+		slot: 'reports.component.harness-harness-navbar'
+	});
 	const folder = process.env.SEARCH_SHOTS ?? info.outputDir;
 	mkdirSync(folder, { recursive: true });
 	const file = `${process.env.SCREENSHOT_LABEL ?? 'run'}-${name}.png`;

@@ -22,6 +22,7 @@ export const categories = [
 	'Configs',
 	'Services',
 	'Models',
+	'Styles',
 	'Platforms'
 ];
 export const nav = (page: Page) => page.getByRole('navigation', { name: 'Harness categories' });

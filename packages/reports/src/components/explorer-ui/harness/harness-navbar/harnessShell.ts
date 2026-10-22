@@ -11,9 +11,9 @@ import type {
 } from '../../../../models/explorer-ui/Explorer.types';
 import { branchCommits } from './harnessAncestry';
 import { retainedBranch } from '../../../../utils/explorer-ui/harnessAncestry';
-import { categoryIcon } from '../../../../utils/explorer-ui/harnessIcons';
+import { categoryIcon, type HarnessIconName } from '../../../../utils/explorer-ui/harnessIcons';
 
-const labels: Array<[ExplorerCategory, string]> = [
+const labels: Array<[ExplorerCategory | 'styles', string]> = [
 	['pages', 'Pages'],
 	['shells', 'Shells'],
 	['components', 'Components'],
@@ -21,6 +21,7 @@ const labels: Array<[ExplorerCategory, string]> = [
 	['configs', 'Configs'],
 	['services', 'Services'],
 	['models', 'Models'],
+	['styles', 'Styles'],
 	['platforms', 'Platforms']
 ];
 
@@ -54,6 +55,20 @@ function revision(input: HarnessNavbarInput, scope: ExplorerScope): HarnessShell
 	};
 }
 
+function categoryTarget(
+	place: ExplorerLocation | null,
+	id: ExplorerCategory | 'styles'
+): ExplorerLocation | null {
+	if (!place) return null;
+	const target: ExplorerLocation = {
+		branch: place.branch,
+		commit: place.commit,
+		category: id === 'styles' ? 'pages' : id
+	};
+	if (id === 'styles') target.screen = 'styles';
+	return target;
+}
+
 /**
  * What the bar of the explorer shows for an address: where the brand leads, the five
  * categories inside the branch and commit that are viewed, and the revision controls. Every
@@ -67,9 +82,13 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
 	const categories = labels.map(([id, label]) => {
-		const to = place ? { branch: place.branch, commit: place.commit, category: id } : null;
-		const active = place?.category === id;
-		return { id, label, icon: categoryIcon[id], active, href: to ? input.href(to) : null, to };
+		const to = categoryTarget(place, id);
+		const active =
+			id === 'styles'
+				? place?.screen === 'styles'
+				: place?.screen !== 'styles' && place?.category === id;
+		const icon: HarnessIconName = id === 'styles' ? 'styles' : categoryIcon[id];
+		return { id, label, icon, active, href: to ? input.href(to) : null, to };
 	});
 	return {
 		home: { href: tip ? input.href(tip) : input.base, to: tip },

@@ -11,6 +11,7 @@ import {
 	revisionDivider
 } from './support/shellChecks';
 import { sha, shellBranch, shellMount, longBranch } from './support/shellData';
+import { shellCategories as categories } from './support/shellData';
 import {
 	buildShellFixture,
 	captureShell,
@@ -18,12 +19,7 @@ import {
 	removeShellFixture,
 	shellOrigin
 } from './support/shellFixture';
-/**
- * The bar of the explorer, looked at alone over a made-up history: the brand, eight categories
- * and the revision that is viewed. Its page is built by this run and answered from its own
- * files; no server is started.
- */
-import { shellCategories as categories } from './support/shellData';
+/** The bar, its navigation and revision selectors across three viewports. */
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;
@@ -61,7 +57,7 @@ async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 }
 
 for (const [screen, width, height] of screens) {
-	test(`the bar shows six categories with an icon above each label at ${screen} width`, async ({
+	test(`the bar shows its navigation with an icon above each label at ${screen} width`, async ({
 		page
 	}) => {
 		const bar = await opened(page, width, height);
@@ -89,9 +85,9 @@ for (const [screen, width, height] of screens) {
 		const line = await underline(links.nth(0));
 		expect(line?.[0]).toBeGreaterThanOrEqual(2);
 		expect(line?.[1]).toBe(colours[0]);
-		for (const other of [1, 2, 3, 4, 5, 6, 7]) {
-			await expect(links.nth(other)).not.toHaveAttribute('aria-current', 'page');
-			expect(await underline(links.nth(other))).toBeNull();
+		for (const other of (await links.all()).slice(1)) {
+			await expect(other).not.toHaveAttribute('aria-current', 'page');
+			expect(await underline(other)).toBeNull();
 		}
 		const brand = bar.getByRole('link', { name: 'Harness', exact: true });
 		await expect(brand).toHaveAttribute('href', `${scoped}/pages`);
@@ -103,8 +99,8 @@ for (const [screen, width, height] of screens) {
 		for (const name of categories) {
 			await page.keyboard.press('Tab');
 			await expect(links.filter({ hasText: name })).toBeFocused();
+			expect(await styled(links.filter({ hasText: name }), 'outline-style')).not.toBe('none');
 		}
-		expect(await styled(links.nth(7), 'outline-style')).not.toBe('none');
 		for (const name of ['Branch', 'Commit']) {
 			await page.keyboard.press('Tab');
 			await expect(combo(bar, name)).toBeFocused();
@@ -128,6 +124,12 @@ for (const [screen, width, height] of screens) {
 			expect(first.x).toBeLessThan((await box(combo(bar, 'Branch'))).x);
 		}
 		expect(await fits(page)).toBe(true);
+		await links.filter({ hasText: 'Styles' }).click();
+		await expect(page).toHaveURL(at(`${scoped}/styles`));
+		await links.filter({ hasText: 'Platforms' }).click();
+		await expect(page).toHaveURL(at(`${scoped}/platforms`));
+		await links.filter({ hasText: 'Helpers' }).click();
+		await expect(page).toHaveURL(at(`${scoped}/functions`));
 	});
 	test(`the branch with its tip and the viewed commit are told apart at ${screen} width`, async ({
 		page

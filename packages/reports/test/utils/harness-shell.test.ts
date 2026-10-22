@@ -35,7 +35,7 @@ const historical: ExplorerLocation = {
 const canonical = { ...historical };
 delete canonical.section;
 
-test('the bar has exactly eight sections, pages then shells first, each scoped to the branch and commit that are viewed', () => {
+test('the bar has seven entity categories and a Styles screen scoped to the viewed branch and commit', () => {
 	const { categories } = view(historical);
 	expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 		['pages', 'Pages', 'pages'],
@@ -45,21 +45,17 @@ test('the bar has exactly eight sections, pages then shells first, each scoped t
 		['configs', 'Configs', 'configs'],
 		['services', 'Services', 'services'],
 		['models', 'Models', 'database'],
+		['styles', 'Styles', 'styles'],
 		['platforms', 'Platforms', 'platforms']
 	]);
 	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
-	expect(categories.map((item) => item.href)).toEqual(
-		[
-			'pages',
-			'shells',
-			'components',
-			'functions',
-			'configs',
-			'services',
-			'models',
-			'platforms'
-		].map((category) => `${scoped}/commit/${sha(4)}/${category}`)
-	);
+	expect(categories.map((item) => item.href)).toEqual([
+		...['pages', 'shells', 'components', 'functions', 'configs', 'services', 'models'].map(
+			(category) => `${scoped}/commit/${sha(4)}/${category}`
+		),
+		`${scoped}/commit/${sha(4)}/styles`,
+		`${scoped}/commit/${sha(4)}/platforms`
+	]);
 	expect(categories[5].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
 	// Details of a function keep Functions active, and nothing else is.
 	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['functions']);
@@ -144,7 +140,7 @@ test('a commit no branch reaches has no tip, says so, and is listed although no 
 	});
 });
 
-test('without a resolved address the bar keeps its eight sections and offers no revision', () => {
+test('without a resolved address the bar keeps its navigation and offers no revision', () => {
 	const { revision, categories, home } = view(null);
 	expect(revision).toBeNull();
 	expect(home).toEqual({ href: shellMount, to: null });
@@ -156,11 +152,29 @@ test('without a resolved address the bar keeps its eight sections and offers no 
 		'Configs',
 		'Services',
 		'Models',
+		'Styles',
 		'Platforms'
 	]);
 	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
 		true
 	);
+});
+
+test('Styles stays active across branch and commit selection without becoming an entity category', () => {
+	const styles: ExplorerLocation = {
+		branch: shellBranch,
+		commit: sha(4),
+		category: 'pages',
+		screen: 'styles'
+	};
+	const { categories, revision } = view(styles);
+	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['styles']);
+	expect(categories[7]).toMatchObject({
+		href: `${scoped}/commit/${sha(4)}/styles`,
+		to: styles
+	});
+	expect(revision?.branchTo('main')).toEqual({ ...styles, branch: 'main', commit: null });
+	expect(revision?.commitTo(sha(3))).toEqual({ ...styles, commit: sha(3) });
 });
 
 test('only a plain left click is followed inside the application', () => {
