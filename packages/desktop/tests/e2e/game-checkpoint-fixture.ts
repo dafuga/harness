@@ -1,4 +1,4 @@
-import { gameSourceMeasurements } from './game-source-fixture';
+import { gameSourceMeasurements, gameRuntimeMeasurements } from './game-measurements-fixture';
 import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/development-tooling/buildStamp';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -123,48 +123,25 @@ export async function recordGameCapture(page: Page, name: string, bytes: Buffer)
 	].map((s) => 'desktop.component.' + s);
 	const timing = await page.evaluate(() => ({
 		elapsed: performance.now(),
-		navigation: performance.getEntriesByType('navigation')[0]?.duration ?? null,
+		navigation:
+			performance.getEntriesByType('navigation').find((entry) => entry.name === location.href)
+				?.duration ?? null,
 		stamp: document.querySelector('meta[name="harness-build"]')?.getAttribute('content')
 	}));
 	const cdp = await page.context().newCDPSession(page);
 	const heap = await cdp.send('Runtime.getHeapUsage');
 	await cdp.detach();
 	const measurements = [
-		...observations({
+		...gameRuntimeMeasurements({
 			units: [...units, 'desktop.page.game'],
 			elapsed: timing.elapsed,
 			heap: heap.usedSize,
+			navigation: timing.navigation,
 			workload: state + '-' + viewport
 		}),
 		...(await gameSourceMeasurements(process.env.HARNESS_VERIFY_REVISION))
 	];
 	await keepGameCapture({ state, viewport, timing, size, measurements }, bytes);
-}
-function observations(input: { units: string[]; elapsed: number; heap: number; workload: string }) {
-	return input.units.flatMap((unit) => [
-		{
-			unit,
-			metric: 'document-to-state-ready-ms',
-			unitOfMeasure: 'ms',
-			value: input.elapsed,
-			workload: input.workload,
-			target: 'process',
-			samples: 1,
-			method:
-				'Cumulative time from this document navigation to the settled authoring state, including previous test actions and fixture generation; not isolated component latency or provider inference.'
-		},
-		{
-			unit,
-			metric: 'renderer-js-heap-bytes',
-			unitOfMeasure: 'bytes',
-			value: input.heap,
-			workload: input.workload,
-			target: 'process',
-			samples: 1,
-			method:
-				'Whole Chromium renderer V8 heap after fonts and image decoding, including shared app code and the synthetic provider fixture. Excludes GPU and Electron main memory; not isolated component memory.'
-		}
-	]);
 }
 
 type CaptureFacts = {
@@ -172,7 +149,7 @@ type CaptureFacts = {
 	viewport: string;
 	timing: { navigation: number | null; stamp?: string | null };
 	size: { width: number; height: number };
-	measurements: ReturnType<typeof observations>;
+	measurements: ReturnType<typeof gameRuntimeMeasurements>;
 };
 async function keepGameCapture(facts: CaptureFacts, bytes: Buffer) {
 	const { state, viewport, timing, size, measurements } = facts;

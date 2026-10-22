@@ -69,3 +69,63 @@ async function measuredSource(revision: string): Promise<Observation[]> {
 		})
 	);
 }
+
+type RuntimeInput = {
+	units: string[];
+	elapsed: number;
+	heap: number;
+	workload: string;
+	navigation: number | null;
+};
+/** Keep real fresh-document navigation separately from later modal-state timing. */
+export function gameRuntimeMeasurements(input: RuntimeInput): Observation[] {
+	const navigation = input.navigation;
+	if (navigation === null || !Number.isFinite(navigation) || navigation <= 0)
+		throw new Error('Game page evidence needs fresh navigation timing for its current URL.');
+	return [
+		...rendererObservations(input),
+		{
+			unit: 'desktop.page.game',
+			metric: 'browser-navigation-ms',
+			unitOfMeasure: 'ms',
+			value: navigation,
+			workload: input.workload,
+			target: 'http',
+			samples: 1,
+			method:
+				'NavigationTiming of the fresh document that opened this flow, retained after fonts and images settle. Modal states keep that same document entry; a different client route cannot borrow it. Not modal-transition or provider latency.'
+		}
+	];
+}
+
+function rendererObservations(input: {
+	units: string[];
+	elapsed: number;
+	heap: number;
+	workload: string;
+}) {
+	return input.units.flatMap((unit) => [
+		{
+			unit,
+			metric: 'document-to-state-ready-ms',
+			unitOfMeasure: 'ms',
+			value: input.elapsed,
+			workload: input.workload,
+			target: 'process',
+			samples: 1,
+			method:
+				'Cumulative time from this document navigation to the settled authoring state, including previous test actions and fixture generation; not isolated component latency or provider inference.'
+		},
+		{
+			unit,
+			metric: 'renderer-js-heap-bytes',
+			unitOfMeasure: 'bytes',
+			value: input.heap,
+			workload: input.workload,
+			target: 'process',
+			samples: 1,
+			method:
+				'Whole Chromium renderer V8 heap after fonts and image decoding, including shared app code and the synthetic provider fixture. Excludes GPU and Electron main memory; not isolated component memory.'
+		}
+	]);
+}
