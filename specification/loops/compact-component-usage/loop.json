@@ -2,7 +2,7 @@
 	"name": "compact-component-usage",
 	"goal": "Component cards show one uncategorized Used In list of at most three consumer links, followed by an ellipsis only when more consumers exist.",
 	"createdAt": "2026-10-22T20:10:32.345Z",
-	"updatedAt": "2026-10-22T20:16:40.999Z",
+	"updatedAt": "2026-10-22T20:18:48.625Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:18:48.625Z",
+			"evidence": "Immutable red 406b2b324 fails and green a12679956 passes the identical regression under the same explicit environment profile. All 208 component tests pass; typecheck has zero errors. The unchanged browser matrix passes 3/3 at desktop/tablet/mobile; before and after checkpoint screenshots inspected. Actual AccountMenu preview shows exactly the original first three links and an ellipsis for four omitted usages."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Focused checks pass: 208 component tests, 3 browser tests, typecheck and build. Full CLI suite remains deferred at Daniel's request. Existing package audit small-file finding remains in test/entityPreviewFunctions.ts (232 lines). Prior hosted formatting failure in three loop metadata files is repaired; root format check now includes metadata."
 		}
 	],
 	"evaluators": [
