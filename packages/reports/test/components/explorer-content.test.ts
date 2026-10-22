@@ -37,7 +37,7 @@ test('configs keep columns; component, helper and service collections use cards'
 	const headers = (body: string) =>
 		[...body.matchAll(/<th scope="col">(.*?)<\/th>/gs)].map((match) => words(match[1]).trim());
 	const expected = {
-		configs: ['Config', 'Purpose', 'Used by', 'Changed', 'Verification', 'Open']
+		configs: ['Variable', 'Value']
 	};
 	for (const [category, columns] of Object.entries(expected)) {
 		const body = content('commit', { category: category as keyof typeof expected });
