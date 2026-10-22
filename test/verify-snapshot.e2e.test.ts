@@ -108,3 +108,37 @@ test('an output declaration cannot cover tracked source', async () => {
 	expect(broad.record.tests).toEqual([]);
 	await broad.repo.dispose();
 }, 180_000);
+
+test('snapshot checks can inventory the selected Git source without a live checkout', async () => {
+	const probe = String.raw`
+import { execFileSync } from 'node:child_process';
+const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
+if (process.argv[2] === 'page') {
+	const objects = process.env.HARNESS_VERIFY_GIT_OBJECTS;
+	const format = process.env.HARNESS_VERIFY_GIT_OBJECT_FORMAT;
+	if (!objects || !format) throw Error('Selected source Git objects were not supplied');
+	const metadata = '.cache/selected-source.git';
+	mkdirSync(metadata, { recursive: true });
+	git('init', '--bare', '--object-format=' + format, metadata);
+	writeFileSync(metadata + '/objects/info/alternates', objects + '\n');
+	const selected = (...args) => git('--git-dir=' + metadata, '--work-tree=' + process.cwd(), ...args);
+	selected('update-ref', '--no-deref', 'HEAD', process.env.HARNESS_VERIFY_REVISION);
+	selected('read-tree', 'HEAD');
+	if (selected('rev-parse', 'HEAD^{tree}') !== process.env.HARNESS_VERIFY_TREE)
+		throw Error('Selected source tree does not match');
+	if (selected('show', 'HEAD:src/utils/slugify.ts') !== read('src/utils/slugify.ts').trim())
+		throw Error('Snapshot source does not match the selected Git object');
+	if (existsSync('.git')) throw Error('Snapshot gained checkout metadata');
+}
+`;
+	const { repo, record } = await verifyWith({}, async (repo) => {
+		await declareOutputs(repo, ['.cache/']);
+		await repo.write('scripts/fixture.mjs', fixtureSources['scripts/fixture.mjs'] + probe);
+	});
+	expect(
+		record.tests.find((check) => check.id === 'titles-page:page')?.status,
+		'Snapshot checks require selected Git source without borrowing a checkout'
+	).toBe('passed');
+	expect(record.gates.snapshot).toBe('passed');
+	await repo.dispose();
+}, 180_000);

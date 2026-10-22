@@ -1,0 +1,62 @@
+{
+	"completion": {
+		"version": 1,
+		"kind": "coding"
+	},
+	"name": "native-snapshot-source",
+	"goal": "Run actual native acceptance from the selected Harness snapshot without borrowing live source or inventing revision identity",
+	"createdAt": "2026-10-22T03:12:09.517Z",
+	"updatedAt": "2026-10-22T03:14:57.478Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-22T03:13:38.842Z",
+			"evidence": "Actual acceptance needs Git inventories, but clean Harness exports contain no Git metadata. Supply selected immutable objects and give native builds their own export."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-22T03:13:39.604Z",
+			"evidence": "The standard snapshot matrix covers drift and output bounds but not selected Git source inventory. Extend it with a cold real Git object read inside the exported check."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-22T03:14:57.478Z",
+			"evidence": "Sealed failing selected-source inventory assertion at 1d07fecf3; native source objects are absent in the exported check."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
