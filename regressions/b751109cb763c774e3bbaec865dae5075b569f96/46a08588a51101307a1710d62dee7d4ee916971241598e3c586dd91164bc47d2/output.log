@@ -1,0 +1,80 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [5.79s]
+$ playwright test --project=chromium game-authoring.spec.ts -g "game authoring exposes independent mechanics and executable checkpoint graph"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:14433) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:14658) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+
+(node:15120) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/e2e/game-authoring.spec.ts:16:1 › game authoring exposes independent mechanics and executable checkpoint graph (5.9s)
+
+
+  1) [chromium] › tests/e2e/game-authoring.spec.ts:16:1 › game authoring exposes independent mechanics and executable checkpoint graph 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('dialog', { name: 'Add checkpoint', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('dialog', { name: 'Add checkpoint', exact: true }) with timeout 5000ms
+      - waiting for getByRole('dialog', { name: 'Add checkpoint', exact: true })
+
+
+       at game-checkpoint-fixture.ts:25
+
+      23 | 	await capture(page, 'checkpoint-image-first-' + (process.env.SCREENSHOT_LABEL ?? 'proof'));
+      24 | 	await modal
+    > 25 | 		.getByRole('textbox', { name: 'Request changes', exact: true })
+         | 		                    ^
+      26 | 		.fill('Make the bridge mossy and add warm lanterns.');
+      27 | 	await modal.getByRole('button', { name: 'Generate changes', exact: true }).click();
+      28 | 	await expect
+        at checkpointModal (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NLJsFu/packages/desktop/tests/e2e/game-checkpoint-fixture.ts:25:23)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NLJsFu/packages/desktop/tests/e2e/game-authoring.spec.ts:20:2
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/game-authoring-game-author-6d576-executable-checkpoint-graph-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/game-authoring-game-author-6d576-executable-checkpoint-graph-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/e2e/game-authoring.spec.ts:16:1 › game authoring exposes independent mechanics and executable checkpoint graph 
+error: script "test:e2e" exited with code 1
