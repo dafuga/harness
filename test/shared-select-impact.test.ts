@@ -10,8 +10,6 @@ import { SourceGraphService } from '../src/services/SourceGraphService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
-
-/** Exercise real cross-package aliases and impact by changing only the Select content hash. */
 const select = 'packages/reports/src/components/Select.svelte';
 const shared = '$shared';
 const indexer = new sourceIndex.SourceIndexService();
@@ -103,7 +101,7 @@ test('no import written through a build alias of any package is left as a packag
 	);
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
-test('the registry stores Select as a derived dependency of each of its ten consumers, and is not stale', () => {
+test('the registry stores Select as a derived dependency of each of its consumers, and is not stale', () => {
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
 		...[
@@ -111,7 +109,11 @@ test('the registry stores Select as a derived dependency of each of its ten cons
 			'agent-settings',
 			'catalog-view',
 			'design-panel',
-			'environment-picker'
+			'environment-picker',
+			'game-checkpoint-editor',
+			'game-create',
+			'game-preview',
+			'game-view-fields'
 		].map((name) => `desktop.component.${name}`),
 		...['project-switcher', 'remote-approval', 'revision-picker', 'runtime-screens'].map(
 			(name) => `desktop.component.${name}`

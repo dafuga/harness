@@ -2,6 +2,7 @@
 	import BrandMark from '$shared/BrandMark.svelte';
 	import type { Snippet } from 'svelte';
 	import type { DesktopProject } from '../../models/projects-sessions/ProjectContext.types';
+	import GameCreate from '../game-authoring/GameCreate.svelte';
 	let {
 		available,
 		local = true,
@@ -38,6 +39,8 @@
 			>Open Project</button
 		>{/if}
 	<p class="muted">{hint}</p>
+	<!-- A new project is made on this device, so a phone or a browser preview offers none. -->
+	{#if available && local}<GameCreate />{/if}
 	{#if projects.length}<section class="recent-projects" aria-label="Recent projects">
 			<h2>Recent projects</h2>
 			{#each projects as item (item.id)}<button

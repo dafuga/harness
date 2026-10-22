@@ -111,7 +111,7 @@ bun run build && TAKE_SCREENSHOT=true bun run test:native
 HARNESS_CLI_PATH=../../src/index.ts bun run check
 ```
 
-`bun run test:e2e` runs every browser suite in headless Chromium against the web renderer and launches no Electron app; the root `check:desktop` runs only this. `native-desktop.spec.ts` runs only through `bun run test:native`, against the built Electron bundles, and no normal check invokes it: a passing `test:e2e` says nothing about preload, IPC, sandboxing or native navigation.
+`bun run test:e2e` runs every browser suite in headless Chromium against the web renderer and launches no Electron app; the root `check:desktop` runs only this. The Electron suites, `native-desktop.spec.ts` and `game-native.spec.ts`, run only through `bun run test:native`, against the built Electron bundles, and no normal check invokes them: a passing `test:e2e` says nothing about preload, IPC, sandboxing or native navigation.
 
 The UI suites inject a deterministic bridge only into their test pages. The native suite launches its own Electron process/profile, stubs only the directory chooser, uses a disposable real Git/LFS repository and the public planning API, verifies native IPC, approval and history, and closes only that test-owned app. It checks sandboxing and blocked remote navigation/popups. It does not run coding or image-generation jobs. Actual CLI adapter smoke evidence is separate from these fixtures.
 

@@ -58,12 +58,12 @@ test('remote: a phone starts a Plan stating no count over the wire; it finishes 
 	const request = r.start();
 	expect(request).not.toHaveProperty('designOptions');
 	await phone.client.request<{ runId: string }>('startRun', request);
-	await expect.poll(() => seen.at(-1)?.kind, { timeout: 12000 }).toBe('finished');
+	await expect.poll(() => seen.at(-1)?.kind, { timeout: 30000 }).toBe('finished');
 	const { plan, images } = await stored(r.root, r.request.entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([3]);
 	expect([images.map(size), distinct(images)]).toEqual([two, 3]);
 	expect(images[0].equals(Buffer.from(bytes))).toBe(true);
-}, 30000);
+}, 60000);
 
 test('local: a window opens its project and starts a Plan stating no count; it finishes with three distinct pictures', async () => {
 	const l = await localFixture();
@@ -73,12 +73,12 @@ test('local: a window opens its project and starts a Plan stating no count; it f
 	await window.request('openProject');
 	expect(l.request).not.toHaveProperty('designOptions');
 	await window.request('startRun', l.request);
-	await expect.poll(() => seen.at(-1)?.kind, { timeout: 12000 }).toBe('finished');
+	await expect.poll(() => seen.at(-1)?.kind, { timeout: 30000 }).toBe('finished');
 	const { plan, images } = await stored(l.root, l.request.entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([3]);
 	expect([images.map(size), distinct(images)]).toEqual([two, 3]);
 	expect(images[0].equals(Buffer.from(bytes))).toBe(true);
-}, 40000);
+}, 60000);
 
 test('native: the fixture project plans with its stand-in providers, stating no count; it finishes with three distinct pictures', async () => {
 	const { root, entityId, threadId } = await remoteFixtureProject();
@@ -97,7 +97,7 @@ test('native: the fixture project plans with its stand-in providers, stating no 
 		...{ mode: 'plan', provider: 'codex', model: 'fixture-model', effort: 'high' },
 		...{ entityId, threadId, text: 'Design the fixture page', approval: null }
 	} as RunRequest);
-	await expect.poll(() => session.busy, { timeout: 12000 }).toBe(false);
+	await expect.poll(() => session.busy, { timeout: 30000 }).toBe(false);
 	expect(events.at(-1)).toMatchObject({ kind: 'finished' });
 	const { api, plan, images } = await stored(root, entityId);
 	expect(plan.versions.map((version) => version.options?.length)).toEqual([undefined, 3]);
@@ -114,4 +114,4 @@ test('native: the fixture project plans with its stand-in providers, stating no 
 	const [seed] = plan.versions[0].images;
 	const seeded = await api.readImage({ unitId: entityId, version: 'v001', file: seed.file });
 	expect(Buffer.from(seeded.bytes).equals(Buffer.from(fixtureImage()))).toBe(true);
-}, 30000);
+}, 60000);

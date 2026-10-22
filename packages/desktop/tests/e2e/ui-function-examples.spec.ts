@@ -26,9 +26,9 @@ test('a function is listed and opened without a design picture, and no image is 
 	page
 }, info) => {
 	await opened(page, `${root}/functions`);
-	const card = page
-		.locator('main.catalog article')
-		.filter({ hasText: 'filterOrders(orders, searchText)' });
+	const card = page.locator('main.catalog article').filter({
+		has: page.getByRole('heading', { name: 'filterOrders(orders, searchText)', exact: true })
+	});
 	await expect(card).toBeVisible();
 	await pictured(page, info, 'function-card');
 	await expect(card.getByRole('link')).toHaveText(/Review plan/);
@@ -150,7 +150,7 @@ for (const viewport of [
 			});
 			await page.goto(`${filter}/examples`);
 			await expect(current(page)).toHaveText('Examples');
-			const examples = page.locator('.examples article');
+			const examples = page.locator('.examples > article');
 			await expect(examples).toHaveCount(2);
 			await expect(examples.getByRole('heading')).toHaveText(['Search by name', 'No match']);
 			await expect(examples.nth(0).locator('code')).toContainText('"search": "SERVICE"');

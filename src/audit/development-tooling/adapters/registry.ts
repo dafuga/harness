@@ -58,7 +58,7 @@ function detectAuditProfile(root: string): Exclude<AuditProfile, 'auto'> {
 	const hasContracts = hasContractWorkspace(root);
 	if (packageKind === 'lib') return 'lib';
 	if (packageKind === 'dapp' || (packageKind === 'app' && hasContracts)) return 'dapp';
-	if (packageKind === 'app') return 'app';
+	if (packageKind === 'app' || packageKind === 'game') return 'app';
 	return detectUnconfiguredProfile(root, hasContracts);
 }
 

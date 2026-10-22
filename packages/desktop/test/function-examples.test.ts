@@ -122,7 +122,7 @@ test('the card of a function has no design picture or placeholder, and opens its
 	expect(words(plain)).not.toMatch(/design/i);
 	expect(plain).toContain('href="/harness/functions/function.filter"');
 	expect(plain).toContain('aria-label="Open filterOrders"');
-	expect(words(plain)).toContain('filterOrders');
+	expect(words(plain)).toBe('filterOrders');
 });
 
 test('the card of a planned page keeps its design picture and its designs link', () => {

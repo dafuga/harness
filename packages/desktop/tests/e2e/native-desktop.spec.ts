@@ -1,12 +1,7 @@
 import { nativeImageFixture } from './native-image-fixture';
 import { nativeCapture } from './native-capture';
-import {
-	test,
-	expect,
-	_electron,
-	type ElectronApplication,
-	type Page
-} from '../../../../test/support/browserTest';
+import { test, expect, _electron } from '../../../../test/support/browserTest';
+import type { ElectronApplication, Page } from '../../../../test/support/browserTest';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
@@ -39,7 +34,10 @@ async function project(root: string) {
 }
 async function isolation(app: ElectronApplication, page: Page) {
 	const preferences = await app.evaluate(({ BrowserWindow }) => {
-		const options = BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences();
+		const contents = BrowserWindow.getAllWindows()[0].webContents;
+		// Electron exposes this diagnostic getter without a public type declaration.
+		const read = Reflect.get(contents, 'getLastWebPreferences') as () => Electron.WebPreferences;
+		const options = read.call(contents);
 		return {
 			sandbox: options?.sandbox,
 			contextIsolation: options?.contextIsolation,
@@ -133,7 +131,8 @@ async function historical(page: Page, commit: string, unitId: string) {
 	await page.getByLabel('Commit', { exact: true }).selectOption(commit);
 	await page.keyboard.press('Escape');
 	await expect(page).toHaveURL(new RegExp(`/branch/feat%2Fnative/commit/${commit}/pages$`));
-	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
+	await page.getByRole('button', { name: 'Open project chat', exact: true }).click();
 	const chat = page.getByRole('complementary', { name: 'Project agent', exact: true });
 	await expect(chat.getByRole('button', { name: /^(Plan|Ask|Change)$/ })).toHaveCount(0);
 	await chat.getByRole('button', { name: 'Close chat', exact: true }).click();

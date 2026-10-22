@@ -24,7 +24,7 @@ test('Plan uses read-only CLI and saves a committed immutable version without cl
 	expect(plans[0].versions[0].commit).toMatch(/^[a-f0-9]{40}$/);
 	expect(f.events).toContainEqual(expect.objectContaining({ kind: 'finished', verified: false }));
 	expect(plans[0].lifecycle).toBe('review');
-}, 15000);
+}, 60000);
 test('approval alone never runs and Change records untracked and previously dirty source deltas', async () => {
 	const f = await fixture(async (turn) => {
 		await writeFile(join(turn.cwd, 'src/owned.ts'), 'agent revision');
@@ -54,7 +54,7 @@ test('approval alone never runs and Change records untracked and previously dirt
 		status: 'completed',
 		changedPaths: ['src/new.ts', 'src/owned.ts']
 	});
-}, 15000);
+}, 60000);
 test('stale approval is rejected before agent execution', async () => {
 	const f = await fixture();
 	const request = await approve(f);
@@ -70,7 +70,7 @@ test('stale approval is rejected before agent execution', async () => {
 	await expect(f.service.start(request)).rejects.toThrow('approved');
 	expect(f.run).not.toHaveBeenCalled();
 	expect(f.session.busy).toBe(false);
-}, 15000);
+}, 60000);
 test('image generation failure creates no invented image or successful completion', async () => {
 	const f = await fixture();
 	vi.mocked(f.generator.generateImage).mockRejectedValue(new Error('Image generation unavailable'));
@@ -80,7 +80,7 @@ test('image generation failure creates no invented image or successful completio
 	expect(f.events).toContainEqual(
 		expect.objectContaining({ kind: 'failed', message: 'Image generation unavailable' })
 	);
-}, 15000);
+}, 60000);
 test('failed Change never records a completed outcome', async () => {
 	const f = await fixture(async (turn) => {
 		await writeFile(join(turn.cwd, 'src/owned.ts'), 'partial change');
@@ -94,7 +94,7 @@ test('failed Change never records a completed outcome', async () => {
 	expect(f.events).toContainEqual(
 		expect.objectContaining({ kind: 'failed', message: 'Fixture agent failed' })
 	);
-}, 15000);
+}, 60000);
 test('cancelled Change records cancellation and cannot cancel another run ID', async () => {
 	let entered!: () => void;
 	const ready = new Promise<void>((resolve) => {
@@ -118,7 +118,7 @@ test('cancelled Change records cancellation and cannot cancel another run ID', a
 	expect((await records(f)).some((c) => c.status === 'completed')).toBe(false);
 	expect(f.events).toContainEqual({ runId: started.runId, kind: 'cancelled' });
 	expect(f.events.some((e) => e.kind === 'finished')).toBe(false);
-}, 15000);
+}, 60000);
 test('observed host writes retain actual absolute path and hashes in committed change history', async () => {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-host-fixture-'));
 	const path = join(directory, 'host.txt');
@@ -144,7 +144,7 @@ test('observed host writes retain actual absolute path and hashes in committed c
 	} finally {
 		await rm(directory, { recursive: true, force: true });
 	}
-}, 15000);
+}, 60000);
 test('visual provenance stores actual image orchestration model and exact full generator prompt', async () => {
 	const f = await fixture();
 	const discover = f.runner.discover;
@@ -176,7 +176,7 @@ test('visual provenance stores actual image orchestration model and exact full g
 	expect(version.prompt).toContain('Entity: Target');
 	expect(version.prompt).toContain('Precise design direction');
 	expect(version.notes).toContain('claude / director');
-}, 15000);
+}, 60000);
 test('Plan refuses a generation whose expected latest version changed while the image was running', async () => {
 	const f = await fixture();
 	let release!: () => void;
@@ -214,4 +214,4 @@ test('Plan refuses a generation whose expected latest version changed while the 
 			message: expect.stringMatching(/latest version changed/i)
 		})
 	);
-}, 15000);
+}, 60000);

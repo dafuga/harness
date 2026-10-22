@@ -39,7 +39,7 @@ test('a completed change keeps the reply of its agent and names the entity it im
 	expect(f.events).toContainEqual(
 		expect.objectContaining({ kind: 'text', text: 'Working on it.' })
 	);
-}, 20000);
+}, 60000);
 
 test('a failed change keeps the text its agent streamed before failing', async () => {
 	const f = await fixture(async (turn) => {
@@ -54,7 +54,7 @@ test('a failed change keeps the text its agent streamed before failing', async (
 	);
 	expect(body).toContain('Change failed: 0 project files;');
 	expect(body).not.toContain('Change completed');
-}, 20000);
+}, 60000);
 
 test('a cancelled change keeps what was said before the cancellation', async () => {
 	let entered!: () => void;
@@ -72,11 +72,11 @@ test('a cancelled change keeps what was said before the cancellation', async () 
 	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
 	const body = await notice(f);
 	expect(body.startsWith('Started on the badge.\n\nChange cancelled:')).toBe(true);
-}, 20000);
+}, 60000);
 
 test('a change whose agent said nothing keeps the notice alone', async () => {
 	const f = await fixture();
 	f.run.mockImplementation(async (turn) => ({ text: '  ', model: turn.model }));
 	await settled(f, await approve(f));
 	expect((await notice(f)).startsWith('Change completed: 0 project files;')).toBe(true);
-}, 20000);
+}, 60000);

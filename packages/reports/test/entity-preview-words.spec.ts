@@ -25,14 +25,18 @@ test('a long word in a narrow column of a collection stays whole, and the table 
 	page: tab
 }) => {
 	await tab.setViewportSize(viewports.mobile);
-	await open(tab, { category: 'services', commit: commits.middle });
+	await open(tab, { category: 'configs', commit: commits.middle });
 	const cells = tab.locator('.ex-table tbody tr').first().locator('td');
 	for (const position of [0, 1]) {
 		await cells.nth(position).evaluate((cell, text) => (cell.textContent = text), long);
 	}
+	await capture(tab, 'collection-long-words-mobile');
 	expect(await broken(cells.nth(0))).toBe(0);
 	expect(await broken(cells.nth(1))).toBe(0);
 	// The table is wider than the window and scrolls inside its own frame; the page does not.
+	expect(
+		await tab.locator('.ex-scroll').evaluate((frame) => frame.scrollWidth > frame.clientWidth)
+	).toBe(true);
 	expect(await fits(tab)).toBe(true);
 });
 

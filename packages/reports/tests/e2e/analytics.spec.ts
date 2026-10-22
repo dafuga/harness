@@ -1,10 +1,11 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { mkdir } from 'node:fs/promises';
 import { expectRetired } from './support/portableReport';
+import { categories as expectedCategories } from './support/explorer';
 const evidence = '/tmp/harness-analytics-evidence';
 
 // The analytics dashboard is gone. Its address must lead somewhere and never show a dead page:
-// it leads into the explorer, which has six categories and no analytics among them.
+// it leads into the explorer's current categories, with no analytics among them.
 test('the analytics address leads into the explorer, which has no analytics screen', async ({
 	page
 }) => {
@@ -22,14 +23,7 @@ test('the analytics address leads into the explorer, which has no analytics scre
 	await expect(page.getByRole('heading', { name: /Analytics/ })).toHaveCount(0);
 	await expect(page.getByText('Response first try', { exact: true })).toHaveCount(0);
 	const categories = page.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
-	await expect(categories).toHaveText([
-		'Pages',
-		'Shells',
-		'Components',
-		'Functions',
-		'Configs',
-		'Services'
-	]);
+	await expect(categories).toHaveText(expectedCategories);
 	await expect(page.getByRole('link', { name: /analytics|reports|activity/i })).toHaveCount(0);
 });
 

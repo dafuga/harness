@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-checkpoint-pane",
+	"kind": "component",
+	"title": "GameCheckpointPane",
+	"responsibility": "Keep the selected checkpoint image and executable rule editor bound to the same document context.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/GameCheckpointPane.svelte"],
+		"symbols": ["GameCheckpointPane"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameCheckpointPane.context",
+				"type": "{ checkpoint: Checkpoint; view: GameView; document: GameDocument; projectId?: string | null; revision?: string; commit?: string; bridge?: DesktopBridge; }",
+				"description": "Selected checkpoint, view, document, project identity, revision and host bridge used by both editors."
+			},
+			{
+				"name": "GameCheckpointPane.readonly",
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
+			},
+			{
+				"name": "GameCheckpointPane.change",
+				"type": "(node: Checkpoint) => void",
+				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameCheckpointPane",
+				"type": "markup",
+				"description": "Keep the selected checkpoint image and executable rule editor bound to the same document context. Renders reactive UI and publishes edits through its callbacks."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-checkpoint-editor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-checkpoint-image",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameCheckpointPane.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameCheckpointPane.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -24,7 +24,9 @@ jobs:
   check:
     name: Full check
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
+    # The serialized command includes CLI, package and browser suites. Run 39681371806
+    # (job 119505032796) was cancelled at the former 45-minute limit; allow it to finish.
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:

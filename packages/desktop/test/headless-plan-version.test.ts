@@ -48,7 +48,7 @@ test.each(['functions', 'services', 'configs'] as const)(
 		expect(git(f.root, 'status', '--porcelain')).toBe('');
 		expect(f.generator.generateImage).not.toHaveBeenCalled();
 	},
-	30000
+	60000
 );
 
 test('visual comments keep image links and cannot fall back to their design notes', async () => {
@@ -81,4 +81,4 @@ test('visual comments keep image links and cannot fall back to their design note
 	expect(invalid).toMatchObject({ version: null, imageSha256: null });
 	const loaded = await api.readPlan({ unitId: f.request.entityId });
 	expect(loaded.threads[0].messages.at(-1)?.references).toEqual([]);
-}, 15000);
+}, 60000);

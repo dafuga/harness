@@ -1572,7 +1572,14 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b"
+			"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
+			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
+				"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
+				"reason": "Retain the game branch’s unload confirmation and quit-time window and backend guards."
+			}
 		},
 		{
 			"unit": "desktop.service.native-connection",
@@ -1678,14 +1685,22 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
+			"definition": "b46a6eeefb79f68661eaeae18ae934b919ca30dc5812ed7f3e1e02ef247453d0",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "packages/desktop/src/utils/desktopBridge.ts",
-				"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
-				"reason": "Retain main’s deployment operations and active project scoping."
-			}
+				"definition": "b46a6eeefb79f68661eaeae18ae934b919ca30dc5812ed7f3e1e02ef247453d0",
+				"reason": "Retain the game branch’s game operations and project-independent game creation."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/desktop/src/utils/desktopBridge.ts",
+					"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
+					"reason": "Retain main’s deployment operations and active project scoping."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.recorded-evidence",
@@ -1709,7 +1724,14 @@
 			"unit": "desktop.service.hosted-project",
 			"from": "packages/desktop/src/services/HostedProjectService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-			"definition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d"
+			"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
+			"relocationDefinition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "packages/desktop/src/services/HostedProjectService.ts",
+				"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
+				"reason": "Retain the game branch’s local game creation and reread of the open project."
+			}
 		},
 		{
 			"unit": "command.loop",
@@ -1751,14 +1773,22 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
+			"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
-				"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
-				"reason": "Retain main’s measurement-aware hosted API replies."
-			}
+				"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
+				"reason": "Retain the game branch’s project request extraction within method limits."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
+					"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
+					"reason": "Retain main’s measurement-aware hosted API replies."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.hub-evidence-query",
@@ -1896,7 +1926,14 @@
 			"unit": "command.new",
 			"from": "src/commands/new.ts",
 			"to": "src/cli/program/new.ts",
-			"definition": "5b23218644999fd41e1610c4f710030dfce37b2977a2c3b8e31db18a8c97a2ee"
+			"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
+			"relocationDefinition": "5b23218644999fd41e1610c4f710030dfce37b2977a2c3b8e31db18a8c97a2ee",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "src/commands/new.ts",
+				"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
+				"reason": "Retain the game branch’s game project command and dimension option."
+			}
 		},
 		{
 			"unit": "hub.service.hub-projection",
@@ -2178,7 +2215,14 @@
 			"unit": "desktop.service.project-session",
 			"from": "packages/desktop/src/services/ProjectSessionService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-			"definition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e"
+			"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
+			"relocationDefinition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "packages/desktop/src/services/ProjectSessionService.ts",
+				"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
+				"reason": "Retain the game branch’s selection state and game project identity."
+			}
 		},
 		{
 			"unit": "desktop.service.catalog",
@@ -2202,7 +2246,14 @@
 			"unit": "desktop.service.project-operations",
 			"from": "packages/desktop/src/services/ProjectOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectOperationsService.ts",
-			"definition": "8d0441fb6f610462198b107ee9a3517285b6b96143c340361063e994a2c94a5c"
+			"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
+			"relocationDefinition": "8d0441fb6f610462198b107ee9a3517285b6b96143c340361063e994a2c94a5c",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "packages/desktop/src/services/ProjectOperationsService.ts",
+				"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
+				"reason": "Retain the game branch’s snapshot of the already open project."
+			}
 		},
 		{
 			"unit": "relay.controller.public-relay",
@@ -2823,20 +2874,35 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
+			"definition": "392af9b941403a4de6f0df55e32810b357f07816e287a7eff6c4b50ef191e2ee",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "packages/desktop/src/initializers/initializePreload.ts",
-				"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
-				"reason": "Retain main’s deployment bridge methods in the isolated preload."
-			}
+				"definition": "392af9b941403a4de6f0df55e32810b357f07816e287a7eff6c4b50ef191e2ee",
+				"reason": "Retain the game branch’s game bridge methods in the isolated preload."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/desktop/src/initializers/initializePreload.ts",
+					"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
+					"reason": "Retain main’s deployment bridge methods in the isolated preload."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.local-transport-client",
 			"from": "packages/desktop/src/services/LocalTransportClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
-			"definition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af"
+			"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
+			"relocationDefinition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "packages/desktop/src/services/LocalTransportClientService.ts",
+				"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
+				"reason": "Retain the game branch’s local transport request bound for full-size game documents."
+			}
 		},
 		{
 			"unit": "workflow.run-kernel-boundary",
@@ -3414,7 +3480,14 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765"
+			"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
+			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "packages/desktop/src/services/LocalClientService.ts",
+				"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
+				"reason": "Retain the game branch’s local transport request bound for full-size game documents."
+			}
 		},
 		{
 			"unit": "desktop.service.local-operations",
@@ -3504,7 +3577,14 @@
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1"
+			"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
+			"relocationDefinition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1",
+			"review": {
+				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+				"path": "src/workflows/create-project/createProject.ts",
+				"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
+				"reason": "Retain the game branch’s dimension, parent folder and partial-creation handling."
+			}
 		},
 		{
 			"unit": "function.validation",

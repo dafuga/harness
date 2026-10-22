@@ -21,7 +21,7 @@ export function scaffoldsGuide(): Guide {
 		],
 		rules: scaffoldKinds.map((kind) => {
 			const detail = scaffoldDetails[kind];
-			return `${detail.kind}: ${detail.summary}${detail.appOnly ? ' App-only.' : ''}`;
+			return `${detail.kind}: ${detail.summary}${scopeLabel(detail)}`;
 		}),
 		antiPatterns: ['Do not guess a scaffold shape when harness info can describe it.'],
 		exampleCommands: ['harness info scaffolds', 'harness info mailer --json']
@@ -67,12 +67,22 @@ function scaffoldGuide(detail: ScaffoldDetail): Guide {
 			'Generated code is a starting shape.',
 			...harnessModuleGroupRules,
 			'Keep public behavior covered by focused tests.',
-			detail.appOnly
-				? 'This scaffold belongs in Harness app projects.'
-				: 'This scaffold is package-safe.'
+			eligibility(detail)
 		],
 		antiPatterns: ['Do not hide unrelated workflow inside the generated file.'],
 		exampleCommands: [detail.exampleCommand],
 		contains: detail.contains
 	};
+}
+
+function eligibility(detail: ScaffoldDetail): string {
+	if (detail.gameOnly) return 'This scaffold belongs in Harness game projects.';
+	return detail.appOnly
+		? 'This scaffold belongs in Harness app projects.'
+		: 'This scaffold is package-safe.';
+}
+
+function scopeLabel(detail: ScaffoldDetail): string {
+	if (detail.gameOnly) return ' Game-only.';
+	return detail.appOnly ? ' App-only.' : '';
 }

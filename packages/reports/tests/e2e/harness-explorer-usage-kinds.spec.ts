@@ -44,9 +44,9 @@ test('a service keeps its contract and both usage directions in dedicated tabs',
 	page
 }) => {
 	await page.goto(main('services/service.clock'));
-	await expect(heading(page, 'Clock service')).toBeVisible();
+	await expect(heading(page, 'ClockService')).toBeVisible();
 	await checkpoint(page, 'kinds-service-overview');
-	const tabs = page.getByRole('tablist', { name: 'Clock service sections' }).getByRole('tab');
+	const tabs = page.getByRole('tablist', { name: 'ClockService sections' }).getByRole('tab');
 	await expect(tabs).toHaveText(named);
 	for (const name of ['Contract', 'Used In', 'Uses']) await expect(card(page, name)).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Contract', exact: true }).click();

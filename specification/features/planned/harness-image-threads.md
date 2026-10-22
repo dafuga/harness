@@ -17,6 +17,7 @@ Daniel approved the final image concepts and authorized implementation on Octobe
 - Use a native project picker and show only the selected repository's entities and history.
 - Keep draft plans separate from active unit manifests until real implementation exists.
 - Preserve immutable designs, approvals and threads across branches and full commit paths.
+- Switching a design or option releases its object URL after the DOM has dropped the prior image binding, with no failed-resource errors or retained URLs.
 - Run the selected Codex or Claude CLI with its selected model; discover available models and report provider failures without substitution.
 - Generate Plan images through the signed-in Codex image capability, using the referenced image and highlighted region when revising.
 - Make approval bind the current image hash and contract; a new version needs approval again.

@@ -1,8 +1,7 @@
 import {
 	WireClientService,
 	WireFramingService,
-	localTransport,
-	remoteLimits
+	localTransport
 } from '../../../../../remote/src/index';
 import type { LocalBootstrap, RemoteMethod, WireChannel } from '../../../../../remote/src/index';
 
@@ -73,7 +72,7 @@ export class LocalTransportClientService {
 			socket = this.options.open(`ws://127.0.0.1:${port}${localTransport.path}`, protocols);
 		const framing = new WireFramingService({
 			write: (frame) => socket.send(frame),
-			outgoingBytes: remoteLimits.requestBytes
+			outgoingBytes: localTransport.requestBytes
 		});
 		await new Promise<void>((resolve, reject) => {
 			socket.onopen = () => resolve();

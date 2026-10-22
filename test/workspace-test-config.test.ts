@@ -30,7 +30,15 @@ function project(config?: string): string {
 		copyFileSync(join(repository, file), join(root, file));
 	}
 	symlinkSync(join(repository, 'node_modules'), join(root, 'node_modules'));
+	mkdirSync(join(root, 'test/support'), { recursive: true });
+	symlinkSync(
+		join(repository, 'test/support/gameWorkload.ts'),
+		join(root, 'test/support/gameWorkload.ts')
+	);
 	samples(root, 'root', '');
+	const disposable = join(root, '.cache', 'generated-game', 'node_modules', 'dependency');
+	mkdirSync(join(disposable, 'test'), { recursive: true });
+	samples(disposable, 'dependency', '');
 	const nested = join(root, 'packages', 'nested');
 	mkdirSync(join(nested, 'test'), { recursive: true });
 	writeFileSync(join(nested, 'package.json'), '{ "name": "nested", "private": true }\n');
@@ -154,7 +162,7 @@ test('the root runs its own tests and still leaves the workspaces to theirs', ()
 	]);
 }, 60_000);
 
-test.each(['collaboration', 'remote', 'relay'])(
+test.each(['collaboration', 'remote', 'relay', 'game'])(
 	'%s keeps its own configuration within one worker',
 	(config) => {
 		const root = project(config);

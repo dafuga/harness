@@ -11,7 +11,7 @@
 			"packages/desktop/src/models/RunContext.types.ts",
 			"packages/desktop/src/models/development-tooling/RunContext.types.ts"
 		],
-		"symbols": ["RunContext"]
+		"symbols": ["RunContext", "CreatedEntity", "RunPhase", "RunEvent"]
 	},
 	"contract": {
 		"origin": "derived",

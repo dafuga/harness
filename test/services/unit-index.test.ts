@@ -7,7 +7,7 @@ import { indexFiles, retire, unitOf, helperMoveGaps, serviceMoveGaps } from '../
 import { resolve } from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
 import services from '../../specification/loops/shared-service-ownership/migration.json';
-import { serviceMoveReviews } from '../support/serviceMoveReviews';
+import { rejectedTampering, serviceMoveReviews } from '../support/serviceMoveReviews';
 import migration from '../../specification/loops/local-helper-ownership/migration.json';
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
@@ -205,6 +205,8 @@ test('recorded service moves preserve implementations and registered owner-local
 	expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0, 6).join('; ')}`).toEqual(
 		[]
 	);
+	const tampered = ['corrupted pack', 'foreign commit', 'other path'];
+	expect(rejectedTampering(services), 'review history admits no tampering').toEqual(tampered);
 	const owner = services.files.find((file) => file.unit === 'service.unit-index')!.to;
 	for (const entry of ['src/services/unit-index-service/UnitIndexService.ts', owner]) {
 		const code = `const {UnitIndexService} = await import(${JSON.stringify(resolve(entry))}); console.log(JSON.stringify(new UnitIndexService().index({files: new Map()}, []).manifests));`;

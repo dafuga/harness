@@ -9,7 +9,7 @@ import {
 	writePlannedFiles,
 	type FileWriteResult
 } from '../../../core/development-tooling/files';
-import { detectProjectKind } from './project';
+import { detectGameDimension, detectProjectKind } from './project';
 import { validateCodeName } from '../../../core/development-tooling/validation';
 import { parseFields } from '../../../core/development-tooling/fields/fields';
 import { adapterTypeFiles } from '../../../templates/development-tooling/adapterTypes';
@@ -18,6 +18,7 @@ import { modelFiles, type AdapterName } from '../../../templates/development-too
 import { pieceFiles, type PieceKind } from '../../../templates/development-tooling/pieces';
 import {
 	isAppOnlyScaffold,
+	scaffoldDetails,
 	scaffoldKinds
 } from '../../../templates/development-tooling/scaffoldTypes';
 import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportPlans';
@@ -84,17 +85,15 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const root = input.root ?? process.cwd();
 	const name = validateCodeName(input.name);
 	const projectKind = await detectProjectKind(root);
-
-	if (isAppOnlyScaffold(input.kind) && projectKind !== 'app') {
-		fail(`The ${input.kind} scaffold is only available in Harness app projects.`);
-	}
+	assertScaffoldEligible(input.kind, projectKind);
 
 	const support = ['e2e', 'resource'].includes(input.kind)
 		? browserTestFiles().filter((file) => !existsSync(join(root, file.path)))
 		: [];
 	const source = !['test', 'e2e', 'feature', 'migration'].includes(input.kind);
 	const selection = source ? generationGroup(root, input) : undefined;
-	const grouped = groupedFiles(pieceFiles(input.kind, name), selection?.group.id);
+	const dimension = projectKind === 'game' ? await detectGameDimension(root) : undefined;
+	const grouped = groupedFiles(pieceFiles(input.kind, name, { dimension }), selection?.group.id);
 	const files = [...grouped.files, ...support];
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
@@ -107,6 +106,17 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 			: false;
 
 	return { kind: input.kind, name, writes, exportsUpdated };
+}
+
+/** Game scaffolds need a game project; app scaffolds also serve games, which are app projects. */
+function assertScaffoldEligible(kind: PieceKind, projectKind: string): void {
+	if (scaffoldDetails[kind].gameOnly && projectKind !== 'game') {
+		fail('Game scaffolds require a Harness game project.');
+	}
+
+	if (isAppOnlyScaffold(kind) && !['app', 'game'].includes(projectKind)) {
+		fail(`The ${kind} scaffold is only available in Harness app projects.`);
+	}
 }
 
 export function renderGenerateResult(result: GenerateResult): string {

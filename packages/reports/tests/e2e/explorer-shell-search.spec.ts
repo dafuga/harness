@@ -28,7 +28,7 @@ const listed = [
 	['Page', 'Orders'],
 	['Shell', 'Order frame'],
 	['Component', 'Order list'],
-	['Function', 'Order totals'],
+	['Helper', 'Order totals'],
 	['Config', 'Order limits'],
 	['Service', 'Order refunds']
 ];

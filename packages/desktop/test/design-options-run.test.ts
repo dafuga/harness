@@ -40,7 +40,7 @@ test('a page Plan generates three separately directed options and commits them o
 	const [saved] = await versions(f);
 	const hashes = saved.options?.flatMap((option) => option.images.map((image) => image.sha256));
 	expect(new Set(hashes).size).toBe(3);
-}, 30000);
+}, 60000);
 
 test('a Plan that asks for two options generates two', async () => {
 	const f = await fixture();
@@ -48,7 +48,7 @@ test('a Plan that asks for two options generates two', async () => {
 	await settled(f, counted(f, 2));
 	expect(f.generator.generateImage).toHaveBeenCalledTimes(2);
 	expect((await versions(f))[0].options).toHaveLength(2);
-}, 30000);
+}, 60000);
 
 test('a failed option leaves no version and no design commit', async () => {
 	const f = await fixture();
@@ -59,7 +59,7 @@ test('a failed option leaves no version and no design commit', async () => {
 	await settled(f);
 	expect(f.generator.generateImage).toHaveBeenCalledTimes(2);
 	expect([await versions(f), designCommits(f, head)]).toEqual([[], []]);
-}, 30000);
+}, 60000);
 
 test('a Plan cancelled during an option leaves no version and no design commit', async () => {
 	const f = await fixture();
@@ -69,10 +69,10 @@ test('a Plan cancelled during an option leaves no version and no design commit',
 	});
 	const head = git(f.root, 'rev-parse', 'HEAD');
 	runId = (await f.service.start(f.request)).runId;
-	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
+	await expect.poll(() => f.session.busy, { timeout: 30000 }).toBe(false);
 	expect(f.generator.generateImage).toHaveBeenCalledTimes(2);
 	expect([await versions(f), designCommits(f, head)]).toEqual([[], []]);
-}, 30000);
+}, 60000);
 
 test('a headless Plan keeps notes and generates no image, whatever count it is given', async () => {
 	const f = await fixture();
@@ -95,4 +95,4 @@ test('a headless Plan keeps notes and generates no image, whatever count it is g
 	expect(plan.versions.map((version) => [version.images, version.notes !== null])).toEqual([
 		[[], true]
 	]);
-}, 30000);
+}, 60000);

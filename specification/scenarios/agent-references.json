@@ -67,6 +67,12 @@
 			"id": "agent-reply",
 			"title": "Project agent public reply with linked units",
 			"coverage": "required"
+		},
+		{
+			"id": "project-change-boundary",
+			"title": "A scoped project change is refused before any agent runs",
+			"coverage": "required",
+			"units": ["desktop.service.project-task", "desktop.function.prepare-project-task"]
 		}
 	],
 	"viewports": [
@@ -228,7 +234,8 @@
 				"stream",
 				"pinned",
 				"hosted-comment",
-				"agent-reply"
+				"agent-reply",
+				"project-change-boundary"
 			],
 			"viewports": [],
 			"required": true
@@ -236,7 +243,12 @@
 		{
 			"id": "references-assertions",
 			"kind": "assertions",
-			"states": ["reference-functions", "change-notice", "creation-reply"],
+			"states": [
+				"reference-functions",
+				"change-notice",
+				"creation-reply",
+				"project-change-boundary"
+			],
 			"viewports": [],
 			"required": true
 		},

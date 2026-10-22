@@ -13,6 +13,7 @@
 	import RevisionPicker from '../../shared-primitives/RevisionPicker.svelte';
 	import WorkspaceLink from '../WorkspaceLink.svelte';
 	import { workspaceSearch } from './workspaceSearch';
+	import { workspaceGameViews } from '../../../utils/projects-sessions/workspaceRoute';
 	/** `account` is the place of a host app for who is signed in; the desktop app has none. */
 	let { workspace, account }: { workspace: Workspace; account?: Snippet } = $props();
 	// Results open only from the projection that listed them; one left from another is refused.
@@ -29,6 +30,7 @@
 		if (!tabs || !shown || !row) return;
 		tabs.scrollLeft += shown.left - row.left - (row.width - shown.width) / 2;
 	});
+	const gameViews = $derived(workspaceGameViews(workspace));
 </script>
 
 <!-- Focus follows the rows: project, environment and revision, categories, then search. -->
@@ -51,6 +53,8 @@
 						: category[0].toUpperCase() + category.slice(1)}</span
 				></WorkspaceLink
 			>{/each}
+		<!-- On a phone, Game Views starts a row of its own, which search and settings then end. -->
+		{#if gameViews}<a href={resolve(gameViews as '/')} style:grid-column="1">Game Views</a>{/if}
 	</nav>
 	<div class="topbar-search">
 		<EntitySearch

@@ -16,7 +16,7 @@ const at = (text: string): number => verify.indexOf(text);
 
 test('the full check stays on Linux with its display and dependency setup', () => {
 	expect(check, 'The full check must have time to finish every required stage').toContain(
-		'name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 90'
+		'name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 120'
 	);
 	const checkout = check.slice(check.indexOf('actions/checkout@'), check.indexOf('- name:'));
 	expect(checkout).toContain('ref: ${{ env.COMMIT }}');

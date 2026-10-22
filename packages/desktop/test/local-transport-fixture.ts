@@ -1,6 +1,8 @@
 import { afterEach } from 'vitest';
 import { randomFillSync } from 'node:crypto';
 import { PNG } from 'pngjs';
+import { exampleDocument } from '../../game/src/utils/game-authoring/keyDoor';
+import type { GameDocument } from '../../game/src/models/game-authoring/Game.types';
 import { WebSocket as SocketClient } from 'ws';
 import type { RemoteHostStatus } from '../../remote/src/index';
 import type { AgentTurn } from '../src/models/AgentRunner.types';
@@ -54,6 +56,20 @@ export function largeImage(): Uint8Array {
 	const png = new PNG({ width: 640, height: 640 });
 	randomFillSync(png.data);
 	return PNG.sync.write(png);
+}
+/** A valid game just under its 1 MiB file cap: two views of 117 long checkpoints each. */
+export function largeGame(): GameDocument {
+	const document = exampleDocument(),
+		[view] = document.views,
+		[first] = view.checkpoints;
+	view.checkpoints = Array.from({ length: 117 }, (_, index) => ({
+		...first,
+		id: 'step-' + index,
+		requires: [],
+		description: String(index).padEnd(4000, ' authored guidance')
+	}));
+	document.views.push({ ...view, id: 'cellar', title: 'The cellar' });
+	return document;
 }
 /** The control port of remote access, recording what reached it. */
 export function fakeControl() {

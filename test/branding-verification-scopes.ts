@@ -18,17 +18,17 @@ export const brandingVerificationScopes: Record<string, VerificationScope> = {
 			'test/components/brand-mark.test.ts': {
 				'the mark is five square tiles in the current colour, decorative by default': 'shared-mark',
 				'a labelled mark is an image with that name': 'shared-mark',
-				'desktop/src/components/NavBar.svelte compiles to the shared mark, not the old one':
+				'desktop/src/components/projects-sessions/nav-bar/NavBar.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'desktop/src/components/ProjectGate.svelte compiles to the shared mark, not the old one':
+				'desktop/src/components/projects-sessions/ProjectGate.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'hub/src/components/HubFrame.svelte compiles to the shared mark, not the old one':
+				'hub/src/components/shared-primitives/HubFrame.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'reports/src/components/harness/HarnessNavbar.svelte compiles to the shared mark, not the old one':
+				'reports/src/components/explorer-ui/harness/harness-navbar/HarnessNavbar.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'reports/src/components/harness/HarnessHeader.svelte compiles to the shared mark, not the old one':
+				'reports/src/components/explorer-ui/harness/HarnessHeader.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'reports/src/components/ReportView.svelte compiles to the shared mark, not the old one':
+				'reports/src/components/reports-media/ReportView.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces'
 			}
 		},

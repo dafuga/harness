@@ -151,7 +151,8 @@ const scopes: Record<string, VerificationScope> = {
 				'IPC refuses unknown operations, invalid regions and unapproved changes': 'project-scope',
 				'subscription subprocesses omit API overrides without changing the parent':
 					'cli-boundaries',
-				'private reasoning is never forwarded to the renderer': 'cli-boundaries'
+				'private reasoning is never forwarded to the renderer': 'cli-boundaries',
+				'portable workspace sources must not depend on the Hub app': 'project-scope'
 			}
 		},
 		playwright: {}
