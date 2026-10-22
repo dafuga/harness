@@ -3,8 +3,8 @@
 	"id": "function.sqlite-types",
 	"kind": "function",
 	"title": "sqliteTypes",
-	"responsibility": "Owns the sqliteTypes shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines SQLite statement and database interfaces, supported values and model fields, and the persistence adapter contract.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/development-tooling/sqliteTypes.ts"],
@@ -18,7 +18,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": []

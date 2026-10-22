@@ -3,32 +3,41 @@
 	"id": "function.sqlite-row",
 	"kind": "function",
 	"title": "sqliteRow",
-	"responsibility": "Owns the sqliteRow shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Decodes a SQLite result row into model properties, restoring JSON values and booleans.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/development-tooling/sqliteRow.ts"],
 		"symbols": ["sqliteRow"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sqliteRow.model",
-				"type": "SqliteModel"
+				"type": "SqliteModel",
+				"description": "The table model that maps stored columns back to application properties and types."
 			},
 			{
 				"name": "sqliteRow.row",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A row returned by SQLite, or null or undefined when no row was found."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sqliteRow",
-				"type": "T | null"
+				"type": "T | null",
+				"description": "A record keyed by model properties with JSON and boolean columns decoded, or null for an absent row."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "A malformed stored JSON value cannot be decoded and raises a parse error."
+			}
+		]
 	},
 	"dependencies": [
 		{

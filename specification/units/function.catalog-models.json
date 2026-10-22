@@ -3,20 +3,21 @@
 	"id": "function.catalog-models",
 	"kind": "function",
 	"title": "catalogModels",
-	"responsibility": "Owns the catalogModels shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lists all eight declared Catalog models used by the Git-derived SQLite query catalog.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/core/git-source-history/catalogModels.ts"],
 		"symbols": ["catalogModels"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "catalogModels",
-				"type": "unknown"
+				"type": "readonly [typeof CatalogMetadata, typeof CatalogBranch, typeof CatalogRevision, typeof CatalogEntity, typeof CatalogRevisionEntity, typeof CatalogDependency, typeof CatalogRecord, typeof CatalogScenario]",
+				"description": "The model constructors for every application table in the query catalog."
 			}
 		],
 		"errors": []

@@ -2,11 +2,9 @@
 	"name": "sqlite-catalog-contracts-history-review",
 	"goal": "SQLite catalog units declare accurate readable contracts, and history-index source changes retain committed relocation review evidence.",
 	"createdAt": "2026-10-22T12:29:22.049Z",
-	"updatedAt": "2026-10-22T12:29:37.903Z",
+	"updatedAt": "2026-10-22T12:30:16.076Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T12:30:16.076Z",
+			"evidence": "Committed red checkpoint 96cdc762b: the unchanged unit-index guard reports two moved-source definition gaps, the new review test reports the missing buildHistory review, and the SQLite contract checks report 32 metadata gaps. The isolated Vitest command installs dependencies from the committed lockfile first."
 		},
 		{
 			"id": "implement",
