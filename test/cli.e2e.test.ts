@@ -5,11 +5,13 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { freePort } from './support/workers';
+import { sqliteRuntimePackage } from './support/sqliteRuntimePackage';
 
 test('CLI scaffolds and checks a lib project', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-lib-'));
 	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
+	await sqliteRuntimePackage(project);
 
 	await runHarness(['generate', 'model', 'Post', 'title:string', '--adapter', 'sqlite'], project);
 	await runHarness(['generate', 'model', 'Event', 'startsAt:date', '--adapter', 'd1'], project);
@@ -33,6 +35,7 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-app-'));
 	await runHarness(['new', 'app', 'demo-app'], root);
 	const project = join(root, 'demo-app');
+	await sqliteRuntimePackage(project);
 
 	await runHarness(['generate', 'model', 'Post', 'title:string'], project);
 	await runHarness(['generate', 'view', 'Dashboard'], project);

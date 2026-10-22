@@ -24,6 +24,7 @@ import {
 import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportPlans';
 import { groupedFiles, groupedExports, assertUniqueGroupedNames } from './groupedFiles';
 import { generationGroup, saveGenerationGroup } from './generationGroup';
+import { ModelDependencyService } from '../../../services/development-tooling/ModelDependencyService';
 
 export { scaffoldKinds };
 
@@ -71,6 +72,7 @@ export async function generateModel(input: GenerateModelInput): Promise<Generate
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
 	writes.push(...(await saveGenerationGroup(root, selection)));
+	if (adapter === 'sqlite') writes.push(...(await new ModelDependencyService().ensure(root)));
 	const exportsUpdated = await maybeExport(
 		root,
 		groupedExports([...modelExportPlans(name), adapterExportPlan(adapter)], paths)
@@ -97,6 +99,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
 	writes.push(...(await saveGenerationGroup(root, selection)));
+	if (input.kind === 'resource') writes.push(...(await new ModelDependencyService().ensure(root)));
 	const exportsUpdated =
 		projectKind === 'lib'
 			? await maybeExport(root, groupedExports(pieceExportPlans(input.kind, name), grouped.paths))

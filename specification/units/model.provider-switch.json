@@ -1,0 +1,120 @@
+{
+	"schemaVersion": 1,
+	"id": "model.provider-switch",
+	"kind": "model",
+	"title": "ProviderSwitch",
+	"responsibility": "Owns the ProviderSwitch data model.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/models/agents-providers/ProviderSwitch.ts"],
+		"symbols": [
+			"ProviderSwitch",
+			"ProviderSwitch.find",
+			"ProviderSwitch.findBy",
+			"ProviderSwitch.create",
+			"ProviderSwitch.update",
+			"ProviderSwitch.delete"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProviderSwitch.find.adapter",
+				"type": "PersistenceAdapter"
+			},
+			{
+				"name": "ProviderSwitch.find.id",
+				"type": "string"
+			},
+			{
+				"name": "ProviderSwitch.findBy.adapter",
+				"type": "PersistenceAdapter"
+			},
+			{
+				"name": "ProviderSwitch.findBy.fields",
+				"type": "Partial<ProviderSwitchAttributes>"
+			},
+			{
+				"name": "ProviderSwitch.create.adapter",
+				"type": "PersistenceAdapter"
+			},
+			{
+				"name": "ProviderSwitch.create.input",
+				"type": "ProviderSwitchCreateInput"
+			},
+			{
+				"name": "ProviderSwitch.update.adapter",
+				"type": "PersistenceAdapter"
+			},
+			{
+				"name": "ProviderSwitch.update.id",
+				"type": "string"
+			},
+			{
+				"name": "ProviderSwitch.update.input",
+				"type": "ProviderSwitchUpdateInput"
+			},
+			{
+				"name": "ProviderSwitch.delete.adapter",
+				"type": "PersistenceAdapter"
+			},
+			{
+				"name": "ProviderSwitch.delete.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProviderSwitch.find",
+				"type": "Promise<ProviderSwitchAttributes | null>"
+			},
+			{
+				"name": "ProviderSwitch.findBy",
+				"type": "Promise<ProviderSwitchAttributes[]>"
+			},
+			{
+				"name": "ProviderSwitch.create",
+				"type": "Promise<ProviderSwitchAttributes>"
+			},
+			{
+				"name": "ProviderSwitch.update",
+				"type": "Promise<ProviderSwitchAttributes | null>"
+			},
+			{
+				"name": "ProviderSwitch.delete",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.provider-switch-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/models/agents-providers/ProviderSwitch.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/models/agents-providers/ProviderSwitch.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

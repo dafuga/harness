@@ -2319,7 +2319,14 @@
 			"unit": "workflow.build-history",
 			"from": "src/workflows/buildHistory.ts",
 			"to": "src/cli/program/buildHistory.ts",
-			"definition": "f3772641c01fa9fc01230cef507cf61d269c7ae4c1f468ce8466ad9f813344f0"
+			"definition": "e9818ce1c29b9ee4cc797e14fec7b41c1cebee52013edf57e9feb81f41c3ddfd",
+			"relocationDefinition": "f3772641c01fa9fc01230cef507cf61d269c7ae4c1f468ce8466ad9f813344f0",
+			"review": {
+				"commit": "acb1a676d2a5186986369c5a4fb52ec1eabdaae9",
+				"path": "src/cli/program/buildHistory.ts",
+				"definition": "e9818ce1c29b9ee4cc797e14fec7b41c1cebee52013edf57e9feb81f41c3ddfd",
+				"reason": "Report the SQLite catalog output with the existing history build summary."
+			}
 		},
 		{
 			"unit": "relay.service.socket-frame",
@@ -3075,13 +3082,13 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "5b06f79a7a2276858b3d6dd7055d31159a99e83069efd3cb8b0611ebac079dbd",
+			"definition": "4d4532d584d85b0c2d3504d5f5cb536118f9bd7baa021fd2d05b7eb5c41dcec0",
 			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
 			"review": {
-				"commit": "16ab6fdf66c235918411bf42bb02e39653653a05",
+				"commit": "acb1a676d2a5186986369c5a4fb52ec1eabdaae9",
 				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
-				"definition": "5b06f79a7a2276858b3d6dd7055d31159a99e83069efd3cb8b0611ebac079dbd",
-				"reason": "Archive owned committed text before writing revision details."
+				"definition": "4d4532d584d85b0c2d3504d5f5cb536118f9bd7baa021fd2d05b7eb5c41dcec0",
+				"reason": "Persist the catalog from the captured Git revision while retaining JSON history compatibility."
 			}
 		},
 		{

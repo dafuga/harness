@@ -4,6 +4,8 @@ import { mkdirSync, chmodSync } from 'node:fs';
 import { join } from 'node:path';
 import type { SwitchRequest, SwitchStore } from '../../core/development-tooling/pickerTypes';
 import { switchRevision } from '../../core/development-tooling/pickerTypes';
+import { ProviderSwitch } from '../../models/agents-providers/ProviderSwitch';
+import { sqliteTableSql } from '../../utils/development-tooling/sqliteTableSql';
 
 const require = createRequire(import.meta.url);
 
@@ -15,9 +17,7 @@ export class ProviderSwitchRepository implements SwitchStore {
 		const { Database: Sqlite } = require('bun:sqlite') as { Database: typeof Database };
 		this.db = new Sqlite(path, { create: true });
 		chmodSync(path, 0o600);
-		this.db.exec(
-			'PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS switches (session TEXT PRIMARY KEY, id TEXT NOT NULL, data TEXT NOT NULL);'
-		);
+		this.db.exec(`PRAGMA busy_timeout=5000; ${sqliteTableSql(ProviderSwitch.definition)};`);
 	}
 
 	get(sessionId: string): SwitchRequest | null {

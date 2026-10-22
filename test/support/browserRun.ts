@@ -200,3 +200,20 @@ export async function eventually<Found>(
 	}
 	throw new Error(`Timed out after ${seconds} s waiting for ${wanted}.`);
 }
+
+export const concurrentBrowserRunRepetitions = 1;
+
+export async function beforeDeadline<Value>(
+	promise: Promise<Value>,
+	milliseconds: number
+): Promise<Value | undefined> {
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	return Promise.race([
+		promise,
+		new Promise<undefined>((resolve) => {
+			timer = setTimeout(() => resolve(undefined), milliseconds);
+		})
+	]).finally(() => {
+		if (timer) clearTimeout(timer);
+	});
+}
