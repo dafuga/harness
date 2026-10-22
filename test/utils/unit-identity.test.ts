@@ -8,6 +8,11 @@ test('unitIdentity derives kind and name from Harness scaffold folders', () => {
 		['src/core/files.ts', 'function.files'],
 		['src/audit/adapters/cpp.ts', 'audit.adapters-cpp'],
 		['src/components/EvidenceGrid.svelte', 'component.evidence-grid'],
+		[
+			'src/components/entity-contract/serviceMethods.ts',
+			'function.entity-contract-service-methods'
+		],
+		['src/components/entity-contract/store.svelte.ts', 'function.entity-contract-store'],
 		['src/routes/+page.svelte', 'page.root'],
 		['src/routes/+page.server.ts', 'page.root'],
 		['src/routes/reports/[id]/+page.svelte', 'page.reports-id'],
