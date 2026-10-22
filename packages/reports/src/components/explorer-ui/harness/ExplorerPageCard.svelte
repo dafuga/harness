@@ -79,7 +79,15 @@
 		</figure>
 		<div class="ex-page-body">
 			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
-			<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
+			<!-- Its first three consumers in one unheaded list; an ellipsis stands for the rest. -->
+			<ExplorerUsage
+				consumers={row.usedIn ?? []}
+				{nav}
+				{lens}
+				{mediaBase}
+				layout="flat"
+				limit={3}
+			/>
 		</div>
 	{/if}
 </article>
