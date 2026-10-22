@@ -1,0 +1,50 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [158.00ms]
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-6y4uGB/packages/reports
+
+ ❯ test/utils/explorer-drawn.test.ts (6 tests | 1 failed) 6ms
+   ✓ a component is shown by the states of the pages that draw it, through any depth 2ms
+   ✓ what every page draws is under every state, and so is what no page draws 0ms
+   ✓ a component is proven by the states that draw it and needs no other 1ms
+   ✓ an import graph change cannot assign another screen to a component 0ms
+   ✓ a state that names a component says so itself: where else it is drawn adds nothing 0ms
+   × a page-only state cannot prove an imported component was drawn 3ms
+     → expected [ 'catalog' ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-drawn.test.ts > a page-only state cannot prove an imported component was drawn
+AssertionError: expected [ 'catalog' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "catalog",
++ ]
+
+ ❯ test/utils/explorer-drawn.test.ts:157:44
+    155|  });
+    156|  const head = at(['catalog', 'entity'], pageOnly);
+    157|  expect(statesOf('component.table', head)).toEqual([]);
+       |                                            ^
+    158|  expect(shown('component.table', head).after.captures).toEqual([]);
+    159|  const unscoped = declared({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  00:37:28
+   Duration  223ms (transform 37ms, setup 0ms, collect 43ms, tests 6ms, environment 0ms, prepare 33ms)
+
