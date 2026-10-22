@@ -12,6 +12,7 @@ export const explorerTabs = {
 		'used-in',
 		'uses',
 		'relationships',
+		'audio',
 		'tests',
 		'examples',
 		'states',
@@ -26,6 +27,7 @@ export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][numbe
 function tabQuery(location: ExplorerLocation, search: string): string | null | undefined {
 	let asked = new URLSearchParams(search).get('tab');
 	const visual = ['pages', 'components', 'shells'].includes(location.category);
+	if (asked === 'audio' && location.category !== 'components') return undefined;
 	if (location.category === 'pages' && asked === 'used-in') return undefined;
 	if (visual && asked === 'tests') asked = 'states';
 	if (location.category === 'functions' && asked === 'tests') asked = 'examples';

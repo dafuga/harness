@@ -11,6 +11,7 @@
 	import EntityTests from '../entity-tests/EntityTests.svelte';
 	import EntityStates from '../../EntityStates.svelte';
 	import EntityExamples from '../../EntityExamples.svelte';
+	import EntityAudio from '../EntityAudio.svelte';
 	let {
 		host,
 		entity,
@@ -50,6 +51,15 @@
 {:else if entity.category === 'functions' && (host.route.tab === 'examples' || host.route.tab === 'tests')}
 	<div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">
 		<EntityExamples documentation={entity.unit.documentation} />
+	</div>
+{:else if entity.category === 'components' && host.route.tab === 'audio'}
+	<div role="tabpanel" aria-label={`${entity.name} audio`}>
+		<EntityAudio
+			evidence={host.lens.evidence(entity.unit)}
+			scope={host.scope}
+			mediaBase={host.mediaBase}
+			empty
+		/>
 	</div>
 {:else if host.route.tab === 'states' || host.route.tab === 'tests'}
 	{#if visual}

@@ -6,6 +6,9 @@
 	"responsibility": "Presents a recording with playback, transcript, provenance and download controls.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/AudioEvidence.svelte",

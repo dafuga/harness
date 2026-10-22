@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { ExplorerEntity, ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';
+	import type {
+		ExplorerEntity,
+		ExplorerLocation
+	} from '../../../models/explorer-ui/Explorer.types';
 	import { explorerCategory } from '../../../utils/explorer-ui/explorerCategory';
 	import { entityLabels, entityLens, type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../../utils/explorer-ui/harnessIcons';
@@ -41,16 +44,21 @@
 		contract: { tab: 'contract' },
 		'used-in': { tab: 'used-in' },
 		uses: { tab: 'uses' },
+		audio: { tab: 'audio' },
 		tests: { tab: 'tests' },
 		examples: { tab: 'examples' },
 		states: { tab: 'states' },
 		history: { section: 'history' },
 		source: { tab: 'source' }
 	};
-	const labels = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
+	const labels = ['Overview', 'Contract', 'Used In', 'Uses', 'Audio', 'Tests', 'History', 'Source'];
 	let tabs = $derived(
 		labels
-			.filter((label) => entity.category !== 'pages' || label !== 'Used In')
+			.filter(
+				(label) =>
+					(entity.category !== 'pages' || label !== 'Used In') &&
+					(label !== 'Audio' || entity.category === 'components')
+			)
 			.map((label) => {
 				const title = label === 'Tests' ? evidenceLabels[evidenceTab] : label;
 				const id = title.toLowerCase().replace(' ', '-');

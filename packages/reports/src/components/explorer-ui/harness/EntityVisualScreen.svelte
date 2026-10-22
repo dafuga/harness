@@ -9,8 +9,8 @@
 	let host: ExplorerScreenProps = $props();
 </script>
 
-<!-- What is seen: a page or a shell opens on its screenshots, which a component keeps above its
-	tabs instead; a clip of it is heard below. -->
+<!-- Pages and shells keep recordings in Overview; components keep them in Audio beside their
+	screenshots, which stay above every tab. -->
 <EntityFrame {host}>
 	{#snippet children(entity, nav)}
 		<EntitySections {host} {entity} {nav}>
@@ -27,7 +27,9 @@
 						reasons={entityChanged(host, entity.id)}
 					/>
 				{/if}
-				<EntityAudio {evidence} scope={host.scope} mediaBase={host.mediaBase} />
+				{#if entity.category !== 'components'}
+					<EntityAudio {evidence} scope={host.scope} mediaBase={host.mediaBase} />
+				{/if}
 			{/snippet}
 		</EntitySections>
 	{/snippet}

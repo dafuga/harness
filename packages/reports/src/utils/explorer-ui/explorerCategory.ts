@@ -5,7 +5,7 @@ import {
 } from '../../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../../models/explorer-ui/Harness.types';
 
-type Classified = Pick<HarnessUnit, 'kind' | 'owns' | 'helpers'>;
+type Classified = Pick<HarnessUnit, 'kind' | 'owns' | 'helpers' | 'catalog'>;
 
 /** What a unit of each kind is called; a kind that is not here is called by its own words. */
 const roles = new Map<string, string>([
@@ -42,6 +42,7 @@ const compatibility = (unit: Classified) =>
  * presented as a function, and stays reachable from what depends on it under its own role.
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {
+	if (unit.catalog?.visibility === 'internal') return null;
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	const category = explorerKindCategory(unit.kind);

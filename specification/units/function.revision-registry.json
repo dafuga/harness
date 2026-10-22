@@ -48,7 +48,7 @@
 			{
 				"name": "revisionRegistry",
 				"type": "RevisionRegistry",
-				"description": "Registry view containing units, scenarios and declared dependency/coverage edges, with per-unit version hashes and applicable reviewed limits. Available is false with a gap when there are no units."
+				"description": "Registry view containing units, scenarios and declared dependency/coverage edges, with per-unit version hashes, catalog visibility and applicable reviewed limits. Available is false with a gap when there are no units."
 			}
 		],
 		"errors": []

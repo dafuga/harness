@@ -37,6 +37,7 @@ export interface RevisionRegistry {
 		/** Static observations from this source commit; not a verification verdict. */
 		sourceMeasurements?: Measurement[];
 		documentation?: UnitDocumentation;
+		catalog?: ComponentManifest['catalog'];
 		preview?: ComponentManifest['preview'];
 		runtime: { kind: string; targets: Array<{ kind: string; entry: string }> };
 		budgets: ComponentManifest['budgets'];
@@ -140,6 +141,7 @@ function unitView(
 		owns: unit.owns,
 		contract: { inputs, outputs, errors },
 		...(unit.helperContracts ? { helpers: unit.helperContracts } : {}),
+		...(unit.catalog ? { catalog: unit.catalog } : {}),
 		...(unit.preview ? { preview: unit.preview } : {}),
 		...(unit.documentation
 			? { documentation: { path: unit.documentation, examples: [], gap: 'Document not loaded.' } }
