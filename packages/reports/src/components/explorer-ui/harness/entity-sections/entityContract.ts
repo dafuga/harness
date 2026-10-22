@@ -80,9 +80,9 @@ function pageRows(unit: HarnessUnit, facts: ContractFacts): ContractRow[] {
 }
 
 /**
- * The contract of an entity as a person reads it: what it takes, what it gives and how it may
- * fail, in words. A page adds its purpose and web address; a config says what it provides; a
- * service says how it runs. Verification states belong to evidence views, not contract rows.
+ * The contract of an entity as a person reads it: component props, callable inputs and outputs,
+ * and how it may fail, in words. A page adds its purpose and web address; a config says what it
+ * provides; a service says how it runs. Verification states belong to evidence views, not rows.
  * No row holds a file, a symbol or a type expression.
  */
 export function entityContract(unit: HarnessUnit, facts: ContractFacts): ContractRow[] {
@@ -94,6 +94,8 @@ export function entityContract(unit: HarnessUnit, facts: ContractFacts): Contrac
 			row('Provides', outputs, 'Nothing declared', unit)
 		];
 	}
+	if (facts.category === 'components')
+		return [row('Props', inputs, 'None'), row('Fails with', errors, 'Nothing declared')];
 	const rows: ContractRow[] = [
 		row('Inputs', inputs, 'None'),
 		row('Output', outputs, 'Nothing declared', unit),
