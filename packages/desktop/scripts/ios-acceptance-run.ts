@@ -95,7 +95,22 @@ export async function shot(run: Acceptance, name: string): Promise<void> {
 export async function openDesign(run: Acceptance): Promise<string> {
 	const { page, project } = run;
 	const open = JSON.stringify(`Open ${project.name}`);
-	await page.until(`return press(${open}) ? 'pressed' : '';`, 'pressed');
+	try {
+		await page.until(`return press(${open}) ? 'pressed' : '';`, 'pressed');
+	} catch (error) {
+		await shot(run, 'project-opener-failed');
+		const state = await page
+			.evaluate(
+				`return JSON.stringify({
+			path: location.pathname, title: document.title,
+			openerLabels: [...document.querySelectorAll('button[aria-label^="Open "]')]
+				.map((item) => item.getAttribute('aria-label'))
+		});`
+			)
+			.catch(() => 'The stopped page could not be inspected.');
+		const reason = error instanceof Error ? error.message : String(error);
+		throw new Error(run.record.safe(`${reason}; project opener state: ${state}`));
+	}
 	await page.until('return document.title;', project.name);
 	await page.until("return pressLink('Review designs') ? 'pressed' : '';", 'pressed');
 	const image = "const image = document.querySelector('.image-canvas img');";
