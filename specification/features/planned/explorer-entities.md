@@ -34,7 +34,7 @@ props name; the host decides the address and supplies the data.
 - Visual overviews show their screenshot or commit comparison first, followed by one Performance
   profile card containing size, complexity and performance measurements. Standalone Size cards are
   omitted in both overview and details. Contract, Used In and Uses appear only in their dedicated tabs, never embedded
-  in any overview. The Contract tab shows each field’s data type, description and examples. Declared examples remain distinct from illustrative primitive examples; opaque types without examples state the gap. Details retain the same typed contract and measurements. A metric nothing measured
+  in any overview. The Contract tab shows API fields and category-specific contract facts only; verification states appear only in dedicated States/Tests/evidence views, never as Contract rows. It shows each field’s data type, description and examples. Declared examples remain distinct from illustrative primitive examples; opaque types without examples state the gap. Details retain the same typed contract and measurements. A metric nothing measured
   reads `Not measured`; it is never a zero. Timings taken under different profiles or targets are
   separate rows and are never joined or averaged. A declared tolerance is shown as the
   percentage that is recorded; one above the 5% policy is marked as above it, not clamped.

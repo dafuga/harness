@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-contract",
 	"kind": "function",
 	"title": "Readable entity contracts",
-	"responsibility": "Converts declared interfaces and applicable scenario states into readable contract rows.",
+	"responsibility": "Converts declared interfaces and category-specific context into readable contract rows.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -59,7 +59,7 @@
 			{
 				"name": "entityContract.facts",
 				"type": "ContractFacts",
-				"description": "Display category plus optional app route and applicable states."
+				"description": "Display category plus an optional app route."
 			}
 		],
 		"outputs": [
@@ -76,7 +76,7 @@
 			{
 				"name": "entityContract",
 				"type": "ContractRow[]",
-				"description": "Category-specific rows: pages include purpose, address and required states; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime and supplied states. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
+				"description": "Category-specific rows: pages include purpose and address; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime. Verification states appear only in evidence views. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
 			}
 		],
 		"errors": []

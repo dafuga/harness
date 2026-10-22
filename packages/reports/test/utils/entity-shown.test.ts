@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { entityShown } from '../../src/components/harness/entity-sections/entityShown';
 import { record, revision } from '../entityFixture';
 import { hostProps } from '../entityRender';
-import { both, namedRevision, namedUnits, otherPage, withFocused } from '../entityStates';
+import { withFocused } from '../entityStates';
 import { commits, ids, scenarios } from '../entityUnits';
 
 const value = (rows: Array<{ label: string; value: string }>, label: string) =>
@@ -68,43 +68,14 @@ test.each([
 	}
 );
 
-test('an entity the commit removed keeps the states its parent required of it', () => {
+test('a removed entity does not mix parent verification states into its last contract', () => {
 	const head = revision(commits.middle, [record(commits.middle)]);
 	const kept = scenarios.map((scenario) => ({ ...scenario, states: [] }));
 	head.registry = { ...head.registry, scenarios: kept };
 	const host = hostProps('commit', { category: 'pages', entity: ids.page }, { head });
 	const page = host.entities.find((item) => item.id === ids.page)!;
-	// At the commit the page has no state left; removed, its last contract is the parent's.
-	expect(value(entityShown(host, page).contract, 'Required states')).toBe('None declared');
+	// State coverage belongs to verification and never appears among contract fields.
+	expect(value(entityShown(host, page).contract, 'Required states')).toBeUndefined();
 	const removed = { ...page, change: 'removed' as const, lastAt: commits.first };
-	expect(value(entityShown(host, removed).contract, 'Required states')).toBe('default, empty');
-});
-
-const states = (host: ReturnType<typeof hostProps>, id: string, changed = {}) => {
-	const entity = { ...host.entities.find((item) => item.id === id)!, ...changed };
-	return value(
-		entityShown(host, entity).contract,
-		entity.category === 'pages' ? 'Required states' : 'States'
-	);
-};
-
-test('a page and what it is made of are required in the states of that page only', () => {
-	const host = hostProps('commit', { category: 'pages', entity: ids.page }, both());
-	// The scenario also has a required state of another page; it is no requirement of this one.
-	expect(states(host, ids.page)).toBe('default, empty');
-	expect(states(host, ids.list)).toBe('default, empty');
-	expect(states(host, ids.card)).toBe('default, empty');
-	expect(states(host, otherPage)).toBe('returns');
-});
-
-test('an entity the commit removed is required as the registry of its parent says', () => {
-	// At the commit nothing uses the list any more, so its own registry cannot place it.
-	const unused = namedUnits.map((unit) =>
-		unit.id === ids.page ? { ...unit, dependencies: [] } : unit
-	);
-	const head = namedRevision(commits.middle, { units: unused });
-	const host = hostProps('commit', { category: 'components' }, { ...both(), head });
-	expect(states(host, ids.list)).toBe('default, empty, returns');
-	const removed = { change: 'removed' as const, lastAt: commits.first };
-	expect(states(host, ids.list, removed)).toBe('default, empty');
+	expect(value(entityShown(host, removed).contract, 'Required states')).toBeUndefined();
 });

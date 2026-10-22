@@ -16,25 +16,18 @@ test('a contract reads as inputs and output in plain words, without the symbol t
 	expect(JSON.stringify(rows)).not.toMatch(/filterOrders|src\/|\.ts/);
 });
 
-test('a page contract has its purpose, its web address and the states it must be proven in', () => {
-	const states = requiredStates(find(ids.page), scenarios, units);
-	const rows = entityContract(find(ids.page), { category: 'pages', appRoute: '/orders', states });
-	expect(rows.map((item) => item.label)).toEqual([
-		'Purpose',
-		'App route',
-		'Inputs',
-		'Output',
-		'Required states'
-	]);
+test('a page contract has its purpose and web address, without verification states', () => {
+	const rows = entityContract(find(ids.page), { category: 'pages', appRoute: '/orders' });
+	expect(rows.map((item) => item.label)).toEqual(['Purpose', 'App route', 'Inputs', 'Output']);
 	expect(row(rows, 'Purpose')).toBe('Lists the orders of an account.');
 	expect(row(rows, 'App route')).toBe('/orders');
-	expect(row(rows, 'Required states')).toBe('default, empty');
+	expect(row(rows, 'Required states')).toBeUndefined();
 });
 
 test('a page whose address is not recorded says so instead of showing a file', () => {
-	const rows = entityContract(find(ids.page), { category: 'pages', appRoute: null, states: [] });
+	const rows = entityContract(find(ids.page), { category: 'pages', appRoute: null });
 	expect(row(rows, 'App route')).toBe('Not recorded');
-	expect(row(rows, 'Required states')).toBe('None declared');
+	expect(row(rows, 'Required states')).toBeUndefined();
 });
 
 test('a config says what it provides and a service how it runs', () => {
@@ -43,6 +36,7 @@ test('a config says what it provides and a service how it runs', () => {
 	expect(row(config, 'Inputs')).toBeUndefined();
 	const service = entityContract(find(ids.store), { category: 'services' });
 	expect(row(service, 'Runs as')).toBe('Module, Wasm, Native process');
+	expect(row(service, 'States')).toBeUndefined();
 });
 
 test('names of any casing become words, and required states leave out the unproven ones', () => {
