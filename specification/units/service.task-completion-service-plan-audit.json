@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/task-completion-service/planAudit.ts"],
+		"source": [
+			"src/services/development-tooling/task-completion-service/planAudit.ts",
+			"src/services/task-completion-service/planAudit.ts"
+		],
 		"symbols": ["TaskCheck", "planAudit"]
 	},
 	"contract": {

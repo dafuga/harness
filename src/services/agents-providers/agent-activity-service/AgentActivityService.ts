@@ -15,7 +15,7 @@ import type { Checkout } from '../../../repositories/projects-sessions/ProjectWo
 import { agentLiveness } from './agentLiveness';
 import { type ProcessFacts } from '../../../utils/agents-providers/agentLiveness';
 import { agentStatement } from './agentStatement';
-import { requireTaskCompletion } from '../../agent-activity-service/requireTaskCompletion';
+import { requireTaskCompletion } from './requireTaskCompletion';
 import {
 	type AgentInput,
 	type AgentStatement

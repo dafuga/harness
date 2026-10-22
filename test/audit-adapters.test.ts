@@ -11,7 +11,7 @@ import {
 	adaptersForProfile,
 	resolveAuditProfile
 } from '../src/audit/adapters/registry';
-import { observedTaskOperation, profileWorkspaceAudit } from './support/taskProfiles';
+import { observedTaskOperation } from './support/taskProfiles';
 import { harnessRuleLimits } from '../src/rules/catalog';
 
 test('audit profiles select ecosystem adapters', () => {
@@ -40,15 +40,6 @@ test('audit profiles select ecosystem adapters', () => {
 		'wasm'
 	]);
 });
-
-test.each(['reports', 'planning', 'desktop', 'collaboration', 'hub', 'remote', 'relay'])(
-	'the %s workspace launcher audits through the current repository CLI',
-	async (workspace) => {
-		const result = await profileWorkspaceAudit(workspace);
-		expect(result.exitCode, result.stderr).toBe(0);
-		expect(result.stdout).toContain('Harness audit passed.');
-	}
-);
 
 test('auto profile detects Svelte apps and Harness libs', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-profile-'));

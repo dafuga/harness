@@ -156,7 +156,8 @@ console.log('owned-loader-ready');`;
 			cwd: fixture.root,
 			env: { ...process.env, ...fixture.environment, HARNESS_RUNTIME_PROFILE_ROOT: sourceRoot },
 			timeoutMs: 30000,
-			log: join(fixture.root, 'owned-loader.log')
+			log: join(fixture.root, 'owned-loader.log'),
+			maxLogBytes: 2_000_000
 		});
 		expect(result.status, 'profiling tool inside its own project must finish bootstrap').toBe(
 			'passed'
@@ -165,7 +166,10 @@ console.log('owned-loader-ready');`;
 		expect(
 			measurements.some(
 				(item) =>
-					item.unit === 'function.explorer-route' && item.unitOfMeasure === 'ms' && item.value > 0
+					item.unit === 'function.explorer-route' &&
+					item.unitOfMeasure === 'ms' &&
+					typeof item.value === 'number' &&
+					item.value > 0
 			)
 		).toBe(true);
 		expect(
@@ -173,6 +177,7 @@ console.log('owned-loader-ready');`;
 				(item) =>
 					item.unit === 'function.explorer-route' &&
 					item.unitOfMeasure === 'bytes' &&
+					typeof item.value === 'number' &&
 					item.value > 0
 			)
 		).toBe(true);

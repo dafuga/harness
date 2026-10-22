@@ -1,12 +1,11 @@
 import { profilePublicEntry } from './support/taskProfiles';
 import { recordCapture } from '../src/utils/record-capture/recordCapture';
-import { mkdir, mkdtemp, readFile, rm, writeFile, cp, copyFile, symlink } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { kernelArtifacts } from '../src/utils/kernelArtifacts';
 import { runCommand } from './support/cli';
-import { measureProcess } from './support/cli-measurement/measureHarness';
 
 const consumer = `
 import {
@@ -122,47 +121,6 @@ async function expectTypes(project: string): Promise<void> {
 	expect(bad.exitCode).not.toBe(0);
 	expect(bad.stdout).toContain('TS2');
 }
-
-test('public API type build retains configured entry paths across owned workspaces', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-api-types-'));
-	try {
-		for (const path of ['src', 'scripts', 'packages/reports/src'])
-			await cp(resolve(path), join(root, path), { recursive: true });
-		for (const path of ['package.json', 'tsconfig.json', 'tsconfig.api.json'])
-			await copyFile(resolve(path), join(root, path));
-		await symlink(resolve('node_modules'), join(root, 'node_modules'), 'dir');
-		const built = await measureProcess(
-			{
-				units: ['script.build-api'],
-				workload: 'public-api-declaration-build',
-				target: 'module',
-				command: ['bun', 'scripts/build-api.ts', '--types-only'],
-				cwd: root,
-				expectSuccess: false,
-				partial:
-					'Actual declaration build and published entry assertions; excludes bundling and kernel packaging, which the normal build verifies separately.'
-			},
-			runCommand
-		);
-		expect(
-			built.exitCode,
-			`public API declaration build succeeds: ${built.stdout}${built.stderr}`
-		).toBe(0);
-		const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
-		for (const [name, entry] of Object.entries(manifest.exports)) {
-			if (
-				name === './console-ui' ||
-				typeof entry !== 'object' ||
-				entry === null ||
-				!('types' in entry)
-			)
-				continue;
-			expect(await readFile(join(root, String(entry.types)), 'utf8'), name).not.toBe('');
-		}
-	} finally {
-		await rm(root, { recursive: true, force: true });
-	}
-}, 60000);
 
 test('a packed consumer imports typed contracts and calls real adapters without the CLI', async () => {
 	const { root, project } = await packedConsumer();

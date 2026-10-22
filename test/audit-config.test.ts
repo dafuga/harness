@@ -1,3 +1,4 @@
+import { profileWorkspaceAudit } from './support/taskProfiles';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -58,3 +59,12 @@ function bigMethodFixture(): string {
 		'}'
 	].join('\n')}\n`;
 }
+
+test.each(['reports', 'planning', 'desktop', 'collaboration', 'hub', 'remote', 'relay'])(
+	'the %s workspace launcher audits through the current repository CLI',
+	async (workspace) => {
+		const result = await profileWorkspaceAudit(workspace);
+		expect(result.exitCode, result.stderr).toBe(0);
+		expect(result.stdout).toContain('Harness audit passed.');
+	}
+);

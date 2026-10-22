@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/loop-state/newLoopState.ts"],
+		"source": [
+			"src/workflows/development-tooling/loop-state/newLoopState.ts",
+			"src/workflows/loop-state/newLoopState.ts"
+		],
 		"symbols": ["newLoopState"]
 	},
 	"contract": {

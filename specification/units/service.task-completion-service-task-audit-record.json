@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/task-completion-service/taskAuditRecord.ts"],
+		"source": [
+			"src/services/development-tooling/task-completion-service/taskAuditRecord.ts",
+			"src/services/task-completion-service/taskAuditRecord.ts"
+		],
 		"symbols": ["taskAuditRecord"]
 	},
 	"contract": {

@@ -1,4 +1,4 @@
-import { unmeasured } from '../../../../../services/record-assembly-service/unmeasured';
+import { unmeasured } from './unmeasured';
 import { sdkPackage } from '../../../../../utils/buildStamp';
 import type { ImpactReport } from '../../../../../core/impactTypes';
 import type { ComponentManifest } from '../../../../../core/unitTypes';

@@ -8,6 +8,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/adapters/development-tooling/source-profile-adapter/SourceProfileAdapter.ts",
+			"src/adapters/development-tooling/source-profile-adapter/bunPreload.ts",
+			"src/adapters/development-tooling/source-profile-adapter/instrumentSource.ts",
+			"src/adapters/development-tooling/source-profile-adapter/moduleInitialization.ts",
+			"src/adapters/development-tooling/source-profile-adapter/profileRuntime.ts",
+			"src/adapters/development-tooling/source-profile-adapter/runnerConfig.ts",
+			"src/adapters/development-tooling/source-profile-adapter/runnerPlugins.js",
+			"src/adapters/development-tooling/source-profile-adapter/runnerSelection.ts",
+			"src/adapters/development-tooling/source-profile-adapter/vitestSetup.ts",
 			"src/adapters/source-profile-adapter/SourceProfileAdapter.ts",
 			"src/adapters/source-profile-adapter/bunPreload.ts",
 			"src/adapters/source-profile-adapter/instrumentSource.ts",
@@ -33,7 +42,9 @@
 			"runnerConfiguration",
 			"nativeProfilePlugins",
 			"profileSelection",
-			"profileEnvironment"
+			"profileEnvironment",
+			"default",
+			"default"
 		]
 	},
 	"contract": {

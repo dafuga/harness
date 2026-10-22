@@ -1853,6 +1853,26 @@
 		"src/workflows/runExplain.ts",
 		"src/workflows/runHistory.ts",
 		"src/workflows/runImpact.ts",
-		"src/workflows/runResponseCheck.ts"
+		"src/workflows/runResponseCheck.ts",
+		"src/adapters/source-profile-adapter/runnerPlugins.js",
+		"src/adapters/source-profile-adapter/vitestSetup.ts",
+		"src/adapters/source-profile-adapter/runnerConfig.ts",
+		"src/adapters/source-profile-adapter/instrumentSource.ts",
+		"src/adapters/source-profile-adapter/SourceProfileAdapter.ts",
+		"src/adapters/source-profile-adapter/moduleInitialization.ts",
+		"src/adapters/source-profile-adapter/profileRuntime.ts",
+		"src/adapters/source-profile-adapter/runnerSelection.ts",
+		"src/adapters/source-profile-adapter/bunPreload.ts",
+		"src/services/task-completion-service/sourceAudit.ts",
+		"src/services/task-completion-service/taskAuditRecord.ts",
+		"src/services/task-completion-service/codeAudit.ts",
+		"src/services/task-completion-service/planAudit.ts",
+		"src/services/record-assembly-service/unmeasured.ts",
+		"src/services/agent-activity-service/requireTaskCompletion.ts",
+		"src/workflows/loop-state/newLoopState.ts",
+		"src/commands/TaskCommand.ts",
+		"src/validators/PerformanceEvidenceValidator.ts",
+		"src/services/PerformanceProfileService.ts",
+		"src/services/TaskCompletionService.ts"
 	]
 }

@@ -53,14 +53,14 @@
 		]
 	},
 	"scenarios": ["component-catalog-previews"],
-	"budgets": {
-		"size": "frozen",
-		"complexity": "frozen",
-		"performance": []
-	},
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "reports-component-source-file-list",
 		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
 	}
 }

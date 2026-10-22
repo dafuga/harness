@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/commands/TaskCommand.ts"],
+		"source": ["src/commands/TaskCommand.ts", "src/commands/development-tooling/TaskCommand.ts"],
 		"symbols": [
 			"TaskCommand",
 			"TaskCommand.constructor",

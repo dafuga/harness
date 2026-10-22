@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/record-assembly-service/unmeasured.ts"],
+		"source": [
+			"src/services/record-assembly-service/unmeasured.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/unmeasured.ts"
+		],
 		"symbols": ["unmeasured"]
 	},
 	"contract": {
