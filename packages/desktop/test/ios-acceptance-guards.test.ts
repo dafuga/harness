@@ -8,6 +8,11 @@ import {
 } from '../scripts/ios-acceptance-guards';
 import { readPairingOffer } from '../../remote/src/index';
 import { AcceptanceRecord } from '../scripts/ios-acceptance-record';
+import { mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { GitAdapter } from '../../../src/adapters/GitAdapter';
+import { runCommand } from '../../../test/support/cli';
 
 test('the run talks only to plain http on this machine, by number and with a port', () => {
 	expect(localOrigin('http://127.0.0.1:8892')).toBe(true);
@@ -58,3 +63,49 @@ test('the record counts every assertion and never prints or keeps a code it was 
 	expect(everything).not.toContain('stack');
 	expect(printed).toContain('FAIL nothing reached the relay');
 });
+
+test('native source inventories refuse external metadata and mismatched selected trees', async () => {
+	const cache = resolve(import.meta.dirname, '../../../.cache');
+	await mkdir(cache, { recursive: true });
+	const outside = await mkdtemp(join(tmpdir(), 'native-source-refusal-'));
+	const inside = await mkdtemp(join(cache, 'native-source-refusal-'));
+	try {
+		expect(await refusedSource(outside)).toContain('must stay inside this snapshot cache');
+		const git = new GitAdapter(inside);
+		await git.run(['init', '--bare', '-q', '.']);
+		const tree = await git.run(['mktree'], { input: '' });
+		const commit = await git.run([
+			'-c',
+			'user.name=Harness Fixture',
+			'-c',
+			'user.email=fixture@harness.invalid',
+			'commit-tree',
+			tree,
+			'-m',
+			'Fixture source'
+		]);
+		await git.run(['update-ref', '--no-deref', 'HEAD', commit]);
+		expect(await refusedSource(inside, commit)).toContain(
+			'does not match the selected Harness commit and tree'
+		);
+	} finally {
+		await rm(outside, { recursive: true, force: true });
+		await rm(inside, { recursive: true, force: true });
+	}
+});
+
+async function refusedSource(metadata: string, commit = 'unselected') {
+	const source = resolve(import.meta.dirname, '../scripts/ios-acceptance-source.ts');
+	const result = await runCommand(
+		['bun', '--eval', 'const { revision } = await import(process.argv[1]); revision();', source],
+		resolve(import.meta.dirname, '..'),
+		false,
+		{
+			HARNESS_NATIVE_SOURCE_GIT_DIR: metadata,
+			HARNESS_VERIFY_REVISION: commit,
+			HARNESS_VERIFY_TREE: 'different-tree'
+		}
+	);
+	expect(result.exitCode).toBe(1);
+	return result.stderr;
+}

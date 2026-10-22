@@ -139,6 +139,6 @@ if (process.argv[2] === 'page') {
 		record.tests.find((check) => check.id === 'titles-page:page')?.status,
 		'Snapshot checks require selected Git source without borrowing a checkout'
 	).toBe('passed');
-	expect(record.gates.snapshot).toBe('passed');
+	expect(record.gates?.snapshot).toBe('passed');
 	await repo.dispose();
 }, 180_000);
