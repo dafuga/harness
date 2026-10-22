@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { RequestEvent } from '@sveltejs/kit';
+import { isRedirect, type RequestEvent } from '@sveltejs/kit';
 import { observedTaskOperation } from '../../../test/support/taskProfiles';
 
 const roots: string[] = [];
@@ -19,6 +19,7 @@ async function site() {
 	await mkdir(join(root, 'site'));
 	vi.stubEnv('PROJECT_REPORTS_HOME', join(root, 'reports'));
 	vi.stubEnv('HARNESS_SITE_ROOT', join(root, 'site'));
+	vi.stubEnv('HARNESS_CONSOLE_DATA', join(root, 'history'));
 	vi.stubEnv('PROJECT_REPORTS_ASSET_STORAGE', 'local');
 	vi.stubEnv('HARNESS_OWNER_MODE', 'loopback');
 	vi.stubEnv('HARNESS_BIND', '127.0.0.1');
@@ -92,8 +93,16 @@ test('the real server hook admits loopback reads and protects every history hand
 	const { GET: data } = await import('../src/routes/harness/data/[...path]/+server');
 	const { GET: media } = await import('../src/routes/harness/media/[file]/+server');
 	const { GET: exportReport } = await import('../src/routes/harness/export/[commit]/+server');
-	for (const handler of [data, media, exportReport])
-		expect((await handler(denied)).status).toBe(403);
+	for (const [unit, handler] of [
+		['reports.endpoint.harness-data-path', data],
+		['reports.endpoint.harness-media-file', media],
+		['reports.endpoint.harness-export-commit', exportReport]
+	] as const) {
+		const response = await observedTaskOperation(unit, 'source-denied-history-request', () =>
+			handler(denied)
+		);
+		expect(response.status).toBe(403);
+	}
 });
 
 test('activity reports only the disposable site with no invented repository history', async () => {
@@ -109,3 +118,54 @@ test('activity reports only the disposable site with no invented repository hist
 	]);
 	expect(response.headers.get('cache-control')).toBe('no-store');
 });
+
+const redirects = [
+	['reports.page.root', () => import('../src/routes/+page.server'), '/harness', 308],
+	['reports.page.analytics', () => import('../src/routes/analytics/+page.server'), '/harness', 308],
+	[
+		'reports.page.harness-analytics',
+		() => import('../src/routes/harness/analytics/+page.server'),
+		'/harness',
+		308
+	],
+	[
+		'reports.page.harness-reports',
+		() => import('../src/routes/harness/reports/+page.server'),
+		'/harness',
+		308
+	],
+	[
+		'reports.page.harness-reports-id',
+		() => import('../src/routes/harness/reports/[id]/+page.server'),
+		'/harness',
+		307
+	],
+	[
+		'reports.page.reports-id',
+		() => import('../src/routes/reports/[id]/+page.server'),
+		'/harness/reports/fixture-id',
+		308
+	]
+] as const;
+
+test.each(redirects)(
+	'%s preserves its actual earlier address redirect',
+	async (unit, read, target, status) => {
+		await site();
+		const { load } = await read();
+		const response = await observedTaskOperation(
+			unit,
+			'source-legacy-redirect-request',
+			async () => {
+				try {
+					await load({ params: { id: 'fixture-id' } });
+				} catch (error) {
+					if (!isRedirect(error)) throw error;
+					return error;
+				}
+				throw Error('The earlier address did not redirect');
+			}
+		);
+		expect(response).toMatchObject({ status, location: target });
+	}
+);
