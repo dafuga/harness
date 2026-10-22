@@ -82,7 +82,8 @@
 			"PerformanceProfileService",
 			"TaskCompletionService",
 			"PerformanceEvidenceValidator",
-			"TaskCommand"
+			"TaskCommand",
+			"BrowserProfileAdapter"
 		]
 	},
 	"contract": {
@@ -109,6 +110,11 @@
 		},
 		{
 			"unit": "adapter.desktop-integrity",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.development-tooling-browser-profile",
 			"via": "reexport",
 			"origin": "derived"
 		},

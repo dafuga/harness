@@ -109,3 +109,4 @@ export { PerformanceProfileService } from './services/PerformanceProfileService'
 export { TaskCompletionService } from './services/TaskCompletionService';
 export { PerformanceEvidenceValidator } from './validators/PerformanceEvidenceValidator';
 export { TaskCommand } from './commands/TaskCommand';
+export { BrowserProfileAdapter } from './adapters/development-tooling/BrowserProfileAdapter';
