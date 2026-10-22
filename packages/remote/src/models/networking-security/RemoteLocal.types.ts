@@ -14,7 +14,13 @@ export const localTransport = {
 	tickets: 8,
 	clients: 4,
 	/** Messages one side may have in flight, partly sent. */
-	streams: 8
+	streams: 8,
+	/**
+	 * The largest request of the app page: a game document of at most 1 MiB, with an envelope no
+	 * larger than any request of a phone. Phones keep `remoteLimits.requestBytes`; frames do not
+	 * grow, the request only has more of them.
+	 */
+	requestBytes: 1048576 + 65536
 } as const;
 /** What the preload is given over IPC to open its socket. Valid once, for a few seconds. */
 export interface LocalBootstrap {

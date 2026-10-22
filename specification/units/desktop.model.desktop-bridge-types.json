@@ -15,6 +15,9 @@
 			"channels",
 			"runEventChannel",
 			"cacheEventChannel",
+			"CreatedEntity",
+			"RunPhase",
+			"RunEvent",
 			"ProjectTaskRequest",
 			"channels",
 			"ChannelName",
@@ -32,9 +35,6 @@
 			"ApprovalDraft",
 			"RunRequest",
 			"ProjectRunRequest",
-			"CreatedEntity",
-			"RunPhase",
-			"RunEvent",
 			"DesktopBridge"
 		]
 	},
@@ -74,12 +74,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.game-desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.project-context-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.model.project-task-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.run-context-types",
 			"via": "import",
 			"origin": "derived"
 		},

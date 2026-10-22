@@ -63,22 +63,43 @@ function declaredSpans(scope: Scope): BlockSpan[] {
 function assignedSpans(scope: Scope, pattern: RegExp): BlockSpan[] {
 	return candidates(scope, pattern).flatMap((match) => {
 		const start = scope.from + match.index;
-		const end = statementEnd(scope.masked, scope.nesting, start + match[0].length);
+		const end = statementEnd(scope.masked, scope.nesting, start);
 		if (!isFunctionValue(scope, start, end)) return [];
 		return [span(scope, match, scope.prefix ? 'method' : 'function', end)];
 	});
 }
 
 function isFunctionValue(scope: Scope, start: number, end: number): boolean {
-	const text = scope.masked.slice(start, end + 1);
-	if (/=\s*(?:async\s+)?function\b/.test(text)) return true;
+	const assigned = initializerAt(scope, start, end);
+	if (assigned === -1) return false;
+	const text = scope.masked.slice(assigned + 1, end + 1);
+	if (/^\s*(?:async\s+)?function\b/.test(text)) return true;
 	const group = scope.nesting.group[start];
 	const brace = scope.nesting.brace[start];
 	for (let index = text.indexOf('=>'); index !== -1; index = text.indexOf('=>', index + 2)) {
-		const at = start + index;
+		const at = assigned + 1 + index;
 		if (scope.nesting.group[at] === group && scope.nesting.brace[at] === brace) return true;
 	}
 	return false;
+}
+
+/** Assignment at declaration depth, excluding type arrows and generic parameter defaults. */
+function initializerAt(scope: Scope, start: number, end: number): number {
+	const { masked, nesting } = scope;
+	let angles = 0;
+	for (let at = start; at <= end; at += 1) {
+		if (nesting.group[at] !== nesting.group[start] || nesting.brace[at] !== nesting.brace[start])
+			continue;
+		const pair = masked.slice(at, at + 2);
+		if (pair === '=>') {
+			at += 1;
+			continue;
+		}
+		if (masked[at] === '<') angles += 1;
+		if (masked[at] === '>') angles = Math.max(0, angles - 1);
+		if (angles === 0 && /^=(?!=)/.test(pair)) return at;
+	}
+	return -1;
 }
 
 function classSpans(scope: Scope, match: RegExpExecArray): BlockSpan[] {

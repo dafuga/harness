@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-checkpoint-editor",
+	"kind": "component",
+	"title": "GameCheckpointEditor",
+	"responsibility": "Edit checkpoint prerequisites, conditions, actions and agent guidance without changing mechanics.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/GameCheckpointEditor.svelte"],
+		"symbols": ["GameCheckpointEditor"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameCheckpointEditor.checkpoint",
+				"type": "Checkpoint | null",
+				"description": "Selected checkpoint whose guidance, rules or saved image are being edited."
+			},
+			{
+				"name": "GameCheckpointEditor.change",
+				"type": "(node: Checkpoint) => void",
+				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+			},
+			{
+				"name": "GameCheckpointEditor.readonly",
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameCheckpointEditor",
+				"type": "markup",
+				"description": "Edit checkpoint prerequisites, conditions, actions and agent guidance without changing mechanics. Renders reactive UI and publishes edits through its callbacks."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-text-field",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameCheckpointEditor.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameCheckpointEditor.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

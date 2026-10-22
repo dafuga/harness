@@ -97,7 +97,7 @@ export class WireSessionService {
 		if (this.over || !sink.open) return;
 		let request: WireRequest;
 		try {
-			request = this.messages.request(text);
+			request = this.messages.request(text, this.limits.requestBytes);
 		} catch (error) {
 			return this.refuse(sink, error);
 		}

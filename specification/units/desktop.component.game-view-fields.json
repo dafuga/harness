@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-view-fields",
+	"kind": "component",
+	"title": "GameViewFields",
+	"responsibility": "Select and edit a game view title, dimension and visual direction with a read-only historical mode.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/GameViewFields.svelte"],
+		"symbols": ["GameViewFields"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameViewFields.view",
+				"type": "GameView",
+				"description": "Active game view containing scene direction and executable checkpoints."
+			},
+			{
+				"name": "GameViewFields.views",
+				"type": "GameView[]",
+				"description": "Available game views displayed by the view selector."
+			},
+			{
+				"name": "GameViewFields.readonly",
+				"type": "boolean",
+				"description": "Disable editing and generation for historical or otherwise immutable views."
+			},
+			{
+				"name": "GameViewFields.select",
+				"type": "(id: string) => void",
+				"description": "Callback selecting the requested view or checkpoint identity without saving the document."
+			},
+			{
+				"name": "GameViewFields.create",
+				"type": "() => void",
+				"description": "Callback creating an additional game view in the current document."
+			},
+			{
+				"name": "GameViewFields.change",
+				"type": "(patch: Partial<GameView>) => void",
+				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameViewFields",
+				"type": "markup",
+				"description": "Select and edit a game view title, dimension and visual direction with a read-only historical mode. Renders reactive UI and publishes edits through its callbacks."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameViewFields.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameViewFields.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

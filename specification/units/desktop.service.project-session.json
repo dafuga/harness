@@ -18,6 +18,7 @@
 			"ProjectSessionService",
 			"ProjectSessionService.constructor",
 			"ProjectSessionService.assertProject",
+			"ProjectSessionService.selecting",
 			"ProjectSessionService.open",
 			"ProjectSessionService.snapshot",
 			"ProjectSessionService.requireProject",
@@ -53,6 +54,10 @@
 			{
 				"name": "ProjectSessionService.assertProject",
 				"type": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.selecting",
+				"type": "boolean"
 			},
 			{
 				"name": "ProjectSessionService.open",

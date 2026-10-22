@@ -1,3 +1,6 @@
+import { GameImageService } from './GameImageService';
+import { GameProjectService } from './GameProjectService';
+import { GameRenderService } from './GameRenderService';
 import { DeploymentService } from '../../../services/DeploymentService';
 import { repositoryLease } from '../../../utils/development-tooling/repositoryLease';
 import { ProjectImageCacheService } from './ProjectImageCacheService';
@@ -6,6 +9,7 @@ import { RecordedEvidenceService } from './RecordedEvidenceService';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import type { DeploymentBridge } from '../../../models/Deployment.types';
+import type { GameDesktopBridge } from '../../../models/game-authoring/GameDesktopBridge.types';
 import type { ProviderDiscoveryService } from '../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import type { DesktopRunService } from '../../../services/agents-providers/desktop-run-service/DesktopRunService';
 interface BridgeContext {
@@ -16,6 +20,13 @@ interface BridgeContext {
 	/** False once the client this bridge serves has ended: nothing more is written for it. */
 	alive?: () => boolean;
 }
+const projectIndependentMethods: Array<keyof DesktopBridge> = [
+	'openProject',
+	'selectProject',
+	'listProjects',
+	'deploymentActivities',
+	'gameCreate'
+];
 async function writable(context: BridgeContext) {
 	const { session } = context;
 	if (session.busy || session.arbiter.held(session.root))
@@ -81,6 +92,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 	const recorded = new RecordedEvidenceService(session);
 	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
 		...deploymentOperations(session),
+		...gameOperations(session),
 		...authentication(session),
 		listProjects: () => operations.listProjects(),
 		selectProject: (input) => operations.selectProject(input),
@@ -111,10 +123,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		get(target, property: keyof typeof bridge) {
 			const operation = target[property];
 			if (typeof operation !== 'function') return operation;
-			if (
-				['openProject', 'selectProject', 'listProjects', 'deploymentActivities'].includes(property)
-			)
-				return operation;
+			if (projectIndependentMethods.includes(property)) return operation;
 			return async (input?: { projectId?: string }) => {
 				session.assertProject(input?.projectId);
 				session.pending++;
@@ -136,5 +145,19 @@ function deploymentOperations(session: ProjectSessionService): DeploymentBridge 
 		deploymentProgress: (input) => deployments.progress(input),
 		planDeployment: (input) => deployments.plan(input),
 		deploy: (input) => deployments.deploy(input)
+	};
+}
+
+function gameOperations(session: ProjectSessionService): Required<GameDesktopBridge> {
+	const images = new GameImageService(session);
+	const game = new GameProjectService(session),
+		render = new GameRenderService(session);
+	return {
+		gameCreate: (input) => game.create(input),
+		gameImageGenerate: (input) => images.generate(input),
+		gameImageRead: (input) => images.read(input),
+		gameRead: (input) => game.read(input),
+		gameSave: (input) => game.save(input),
+		gameRender: (input) => render.start(input)
 	};
 }

@@ -30,6 +30,12 @@ const call =
 	(input?: Input): Promise<T> =>
 		transport.request<T>(method, { ...input });
 const bridge: DesktopBridge = {
+	gameCreate: call('gameCreate'),
+	gameImageGenerate: call('gameImageGenerate'),
+	gameImageRead: call('gameImageRead'),
+	gameRead: call('gameRead'),
+	gameSave: call('gameSave'),
+	gameRender: call('gameRender'),
 	deploymentStatus: call('deploymentStatus'),
 	deploymentActivities: call('deploymentActivities'),
 	startDeployment: call('startDeployment'),

@@ -171,3 +171,42 @@ When changing a previously relocated helper's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in
 the existing follow-up ledger, then run the standardized unit-index guard.
+
+## Native Unload Verification
+
+Whenever a change adds, removes or alters unload prevention (`beforeNavigate` cancel, `beforeunload`), verify it in the native host: close, reload and quit each offer Stay or Discard; Stay keeps the document and a working backend; shutdown starts only after every window accepted closing. Browser-only or automation-intercepted dialogs do not prove this.
+
+## Authoring Failure Coverage
+
+When a form protects unsaved work, type in each affected control without blurring it, including partial numbers and comma-separated lists. Verify dirty state immediately, cancel keyboard reload or native close, retain the focused draft, and save the exact parsed values. A blur-before-save case alone is insufficient.
+
+When a project-creation flow owns a new directory, test failure after files were written or Git initialization began, then retry the same name. Remove only that attempt's partial target; preserve existing paths and a completed project if only opening it fails.
+
+## Concurrent Main Integration
+
+Pin head, main and their merge base before reviewing removals. A behind-main diff is not proof that the branch deleted a feature. When integrating new main work, preserve its source behavior and original assertions alongside branch changes. Review conflicted tests against the merged source; never select an older implementation together with weaker expectations to obtain green checks.
+
+When reconciling changed assertions, map each expected state to its selected fixture revision and manifest status. Run every reconciled standardized test before broad verification; active, retired and never-present entities have different history behavior.
+
+Before a broad run after importing main changes, run the existing standard tests owned by each imported source change, including unchanged test files. Check their expectations against the imported contract before retaining or revising them.
+
+When integrating project-specific navigation into a changed shared header, exercise each project variant at the declared viewports. The standard acceptance test must assert separation from reserved search/settings controls and activate the added entry and a retained control; visibility alone does not prove usable navigation.
+
+## CI Configuration Review
+
+Before pushing a CI configuration change or starting broad verification, find and run
+the existing workflow policy tests, including assertions on changed limits. Keep
+execution commands, permissions and environment boundaries covered when revising
+those expectations; formatting alone does not verify a workflow change.
+
+## Acceptance Fixture Review
+
+After editing acceptance fixtures, run their owning workspace typecheck, formatting
+and audit before a broad check, even when only imports or casts changed. Test files
+share the workspace size limits; a passing runtime case does not prove that audit.
+
+Review fixture actions as well as assertions: adding scroll, focus or navigation can
+weaken the original acceptance state. A control required to fit at first paint must
+still fit before scrolling. When catalog destinations grow, update the existing
+navbar matrix and run its unchanged geometry and keyboard checks at every viewport;
+do not treat a newly hidden destination as a stale fixture.

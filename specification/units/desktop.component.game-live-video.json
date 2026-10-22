@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-live-video",
+	"kind": "component",
+	"title": "GameLiveVideo",
+	"responsibility": "Attach an explicitly supplied remote video stream to its preview and clear it when replaced.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/game-authoring/GameLiveVideo.svelte"],
+		"symbols": ["GameLiveVideo"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameLiveVideo.stream",
+				"type": "MediaStream",
+				"description": "Remote video stream explicitly provided by a running optional AI connection."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameLiveVideo",
+				"type": "markup",
+				"description": "Attach an explicitly supplied remote video stream to its preview and clear it when replaced. Renders reactive UI and publishes edits through its callbacks."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameLiveVideo.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameLiveVideo.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

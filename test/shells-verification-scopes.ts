@@ -6,7 +6,7 @@ export const shellsVerificationScopes: Record<string, VerificationScope> = {
 		package: 'desktop',
 		vitest: {
 			'test/shells-category.test.ts': {
-				'the shared app has six categories, Shells after Pages': 'shells-routing',
+				'the shared app has seven categories, Shells after Pages': 'shells-routing',
 				'a unit declared a shell is a Shell, and every other kind stays where it was':
 					'shells-routing',
 				'a shell has a workspace address with its project, branch, commit and section':

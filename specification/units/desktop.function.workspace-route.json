@@ -20,6 +20,7 @@
 			"isWorkspacePath",
 			"workspaceRoute",
 			"workspacePath",
+			"workspaceGameViews",
 			"routeSuffixes",
 			"workspaceSections",
 			"isWorkspacePath",
@@ -79,6 +80,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"
 		}

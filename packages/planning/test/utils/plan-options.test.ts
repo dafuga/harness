@@ -1,5 +1,7 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import { resolve } from 'node:path';
 import type { AddDesignInput, DesignImageInput } from '../../src/models/PlanningBridge.types';
 import type { DesignImage, DesignVersion } from '../../src/models/Planning.types';
 import { hash } from '../../src/utils/planData';
@@ -12,6 +14,41 @@ import { planOptions } from '../../src/services/planning-service/planOptions';
  * must differ in, what flat images beside them must be, and what a stored version must hold.
  */
 const generator = { provider: 'codex', model: 'selected' };
+
+test.each([
+	['src/utils/planOptions.ts', 'planOptions'],
+	['src/services/planning-service/planOptions.ts', 'planOptions'],
+	['src/utils/planOptions.ts', 'checkOptions'],
+	['src/utils/plan-read/checkOptions.ts', 'checkOptions'],
+	['src/utils/planOptions.ts', 'heldBy'],
+	['src/utils/plan-design/heldBy.ts', 'heldBy']
+])('design option runtime cold-imports %s and calls %s', (entry, symbol) => {
+	const code = `
+import {pathToFileURL} from 'node:url';
+const api = await import(pathToFileURL(process.argv[1]).href);
+const symbol = process.argv[2], sha256 = 'a'.repeat(64);
+const image = {state:'default',viewport:'desktop',bytes:new Uint8Array([1])};
+const write = (images,prefix) => images.map(item => ({file:prefix+'default-desktop.png',sha256,state:item.state,viewport:item.viewport}));
+const generator = {provider:'codex',model:'selected'};
+const binding = {file:'o1-default-desktop.png',sha256};
+const version = {images:[binding],options:[{id:'o1',direction:'One option',prompt:null,revisedPrompt:null,generator,images:[binding]}]};
+let result;
+if (symbol === 'planOptions') {
+ const output = api.planOptions({generator,options:[{direction:'One option',images:[image]}]},'base',{},write);
+ result = {files:output.images.map(item => item.file),ids:output.options.map(item => item.id)};
+} else if (symbol === 'checkOptions') {api.checkOptions(version);result = {valid:true};}
+else result = api.heldBy(version,binding.file,'o1');
+console.log(JSON.stringify(result));`;
+	const output = JSON.parse(
+		execFileSync('bun', ['-e', code, resolve(entry), symbol], { encoding: 'utf8' })
+	);
+	const expected = {
+		planOptions: { files: ['o1-default-desktop.png'], ids: ['o1'] },
+		checkOptions: { valid: true },
+		heldBy: { option: 'o1' }
+	};
+	expect(output).toEqual(expected[symbol as keyof typeof expected]);
+});
 const image = (n: number): DesignImageInput => ({
 	state: 'default',
 	viewport: 'desktop',

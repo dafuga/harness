@@ -79,7 +79,7 @@ function installPhoneRequests() {
 	const local = ['openProject', 'selectProject', 'hostedStatus', 'connectHosted'];
 	const fail = (code: string, message: string) => Object.assign(new Error(message), { code });
 	const binary = async (bytes: Uint8Array) => {
-		const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+		const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', Uint8Array.from(bytes)));
 		const sha256 = [...digest].map((value) => value.toString(16).padStart(2, '0')).join('');
 		const data = btoa(String.fromCharCode(...bytes));
 		return { encoding: 'base64', mediaType: 'image/png', byteLength: bytes.length, sha256, data };

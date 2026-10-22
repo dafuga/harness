@@ -69,7 +69,7 @@ test('while the host still holds the tip, a selected commit offers none of its r
 		/Component.*Order list/,
 		/Config.*Order limits/,
 		/Service.*Order refunds/,
-		/Function.*Legacy totals/
+		/Helper.*Legacy totals/
 	]);
 	await field(page).press('Escape');
 	await expect(found(page)).toBeHidden();

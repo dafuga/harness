@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/templates/development-tooling/pieces.ts", "src/templates/pieces.ts"],
-		"symbols": ["PieceKind", "pieceFiles", "pieceFiles"]
+		"symbols": ["PieceKind", "PieceContext", "pieceFiles", "pieceFiles"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -20,6 +20,10 @@
 			{
 				"name": "pieceFiles.name",
 				"type": "string"
+			},
+			{
+				"name": "pieceFiles.context",
+				"type": "PieceContext"
 			}
 		],
 		"outputs": [
@@ -43,6 +47,11 @@
 		},
 		{
 			"unit": "template.app-pieces",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.game-pieces",
 			"via": "import",
 			"origin": "derived"
 		},

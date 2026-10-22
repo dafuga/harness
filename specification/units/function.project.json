@@ -3,7 +3,7 @@
 	"id": "function.project",
 	"kind": "function",
 	"title": "Project kind detection",
-	"responsibility": "Infers whether a directory is a Harness app or library from explicit metadata and conventional local files.",
+	"responsibility": "Read project kind and declared game dimension for scaffold eligibility and configuration.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -17,6 +17,7 @@
 			"DetectedProjectKind",
 			"detectProjectKind",
 			"detectProjectKind",
+			"detectGameDimension",
 			"DetectedProjectKind"
 		]
 	},
@@ -27,6 +28,11 @@
 				"name": "detectProjectKind.root",
 				"type": "string",
 				"description": "Project directory to inspect for package.json, svelte.config.js and src/index.ts."
+			},
+			{
+				"name": "detectGameDimension.root",
+				"type": "string",
+				"description": "Project root whose package.json supplies the game dimension."
 			}
 		],
 		"outputs": [
@@ -34,6 +40,11 @@
 				"name": "detectProjectKind",
 				"type": "Promise<DetectedProjectKind>",
 				"description": "App or lib from explicit package harness.kind first; otherwise app for Svelte configuration/dependency/check script, lib for a readable package and src/index.ts, or unknown. Read/parse/access failures are treated as missing evidence."
+			},
+			{
+				"name": "detectGameDimension",
+				"type": "Promise<'2d' | '3d' | undefined>",
+				"description": "Supported declared game dimension, or undefined when absent or invalid."
 			}
 		],
 		"errors": []

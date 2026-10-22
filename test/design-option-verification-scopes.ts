@@ -63,6 +63,7 @@ export const designOptionVerificationScopes: Record<string, VerificationScope> =
 			],
 			'tests/e2e/ui-design-options-review.spec.ts': [
 				'options',
+				'selected-option',
 				'approve',
 				'option-thread',
 				'pinned',
@@ -84,6 +85,18 @@ export const designOptionVerificationScopes: Record<string, VerificationScope> =
 				'a single design written without options reads and approves as before': 'option-binding'
 			},
 			'test/utils/plan-options.test.ts': {
+				'design option runtime cold-imports src/utils/planOptions.ts and calls planOptions':
+					'option-storage',
+				'design option runtime cold-imports src/services/planning-service/planOptions.ts and calls planOptions':
+					'option-storage',
+				'design option runtime cold-imports src/utils/planOptions.ts and calls checkOptions':
+					'option-storage',
+				'design option runtime cold-imports src/utils/plan-read/checkOptions.ts and calls checkOptions':
+					'option-storage',
+				'design option runtime cold-imports src/utils/planOptions.ts and calls heldBy':
+					'option-storage',
+				'design option runtime cold-imports src/utils/plan-design/heldBy.ts and calls heldBy':
+					'option-storage',
 				'a single design is written as before, with no options and unprefixed files':
 					'option-storage',
 				'options are numbered within the version and keep direction, prompt and provenance':

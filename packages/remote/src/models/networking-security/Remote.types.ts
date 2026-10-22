@@ -1,5 +1,5 @@
-import type { RemoteGrant, RemoteHostStatus } from './RemoteControl.types';
-export type { RemoteGrant } from './RemoteControl.types';
+import type { RemoteGrant } from './RemoteControl.types';
+export type { RemoteConnectionEvent, RemoteGrant, RemoteRevision } from './RemoteControl.types';
 
 /** Wire v1. A host answers no other protocol number. */
 export const REMOTE_PROTOCOL = 1;
@@ -46,6 +46,12 @@ export const commentMethods = ['addComment', 'openThread'] as const;
 export const agentMethods = ['createPlan', 'approve', 'startRun', 'cancelRun'] as const;
 /** Never available to a remote device: folders and hosted credentials stay on the computer. */
 export const localMethods = [
+	'gameCreate',
+	'gameRead',
+	'gameImageRead',
+	'gameSave',
+	'gameRender',
+	'gameImageGenerate',
 	'deploymentStatus',
 	'deploymentActivities',
 	'startDeployment',
@@ -96,6 +102,10 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 export const mutationMethods: readonly RemoteMethod[] = [
 	...commentMethods,
 	...agentMethods,
+	'gameCreate',
+	'gameSave',
+	'gameRender',
+	'gameImageGenerate',
 	'deploy',
 	'planDeployment',
 	'startDeployment',
@@ -172,11 +182,6 @@ export interface WireEvent {
 }
 export type WireMessage = WireRequest | WireResponse | WireEvent;
 
-/** The checked-out branch and its tip, as the client last saw them. */
-export interface RemoteRevision {
-	branch: string;
-	commit: string;
-}
 export interface RemoteResume {
 	epoch: string;
 	sequence: number;
@@ -207,10 +212,3 @@ export interface RemoteBinary {
 	sha256: string;
 	data: string;
 }
-/** `resync` is raised by a client itself after a `gap`; a host never sends it. */
-export type RemoteConnectionEvent =
-	| { kind: 'grant'; grant: RemoteGrant }
-	| { kind: 'revoked' }
-	| { kind: 'host'; state: 'suspending' | 'locked' | 'unlocked' }
-	| { kind: 'remote-status'; status: RemoteHostStatus }
-	| { kind: 'resync' };

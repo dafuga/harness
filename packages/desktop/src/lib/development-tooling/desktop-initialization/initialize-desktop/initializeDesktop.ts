@@ -28,6 +28,7 @@ import { NativeSessionAdapter } from '../../../../adapters/networking-security/N
 import { RelaySocketAdapter } from '../../../../adapters/networking-security/RelaySocketAdapter';
 import { RemoteHostStoreAdapter } from '../../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { RemoteRegistrationAdapter } from '../RemoteRegistrationAdapter';
+import { confirmUnload } from './confirmUnload';
 import { desktopIpc } from './desktopIpc';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
@@ -131,16 +132,19 @@ function desktopBackend() {
 	return { shared: { ...stores, ...connection }, remote, lifecycle, transport };
 }
 
-/** Closing the window keeps an enabled remote backend alive. Quit ends it and every run. */
+/**
+ * Closing the window keeps an enabled remote backend alive. Quit ends it and every run, but only
+ * once every window agreed to close: one that keeps unsaved work cancels the quit, backend intact.
+ */
 function appLifecycle(backend: Backend): void {
 	let quitting = false;
 	app.on('window-all-closed', () => {
 		if (backend.lifecycle.windowsClosed() === 'quit') app.quit();
 	});
 	app.on('activate', () => {
-		if (!windows.current) void openWindow(backend);
+		if (!windows.current && !quitting) void openWindow(backend);
 	});
-	app.on('before-quit', (event) => {
+	app.on('will-quit', (event) => {
 		if (quitting) return;
 		quitting = true;
 		event.preventDefault();
@@ -181,6 +185,7 @@ async function openWindow(backend: Backend): Promise<BrowserWindow> {
 		}
 	});
 	window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+	confirmUnload(window, dialog);
 	const gate = new NavigationValidator();
 	window.webContents.on('will-navigate', (event, url) => {
 		if (!gate.validate(url)) event.preventDefault();

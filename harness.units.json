@@ -32,6 +32,10 @@
 		{
 			"name": "relay",
 			"root": "packages/relay"
+		},
+		{
+			"name": "game",
+			"root": "packages/game"
 		}
 	],
 	"tests": ["test/", "tests/"],
@@ -338,6 +342,30 @@
 			"specifier": "../../../lib/explorer-ui/stores/sourceReader.svelte",
 			"to": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
 			"reason": "Source sessions and category paths use the registered reader store without importing a screen-specific pane."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameCreate.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameCheckpointEditor.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameViewFields.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Desktop build alias resolves this shared UI component to the reports package."
 		}
 	]
 }

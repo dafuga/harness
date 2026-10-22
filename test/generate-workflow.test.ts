@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { generateModel, generatePiece } from '../src/workflows/generate-code/generateCode';
-import { scaffoldKinds } from '../src/templates/scaffoldTypes';
+import { scaffoldDetails, scaffoldKinds } from '../src/templates/scaffoldTypes';
 
 test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();
@@ -111,18 +111,29 @@ test('generation keeps category folders, imports and package exports in agreemen
 test('the same category works for every source scaffold and can be extended', async () => {
 	const root = await libProject();
 	try {
-		await writeFile(join(root, 'package.json'), JSON.stringify({ harness: { kind: 'app' } }));
-		for (const kind of scaffoldKinds.filter(
+		const sources = scaffoldKinds.filter(
 			(kind) => !['test', 'e2e', 'feature', 'migration'].includes(kind)
-		)) {
-			const result = await generatePiece({ root, kind, name: `${kind}Example`, group: 'commerce' });
-			expect(
-				result.writes.some(
-					(file) =>
-						/^(?:src|db)\//.test(file.path) && /\/(?:\(commerce\)|commerce)\//.test(file.path)
-				),
-				kind
-			).toBe(true);
+		);
+		/** Game pieces are refused outside game projects, so they use the same category in one. */
+		for (const harness of [{ kind: 'app' }, { kind: 'game', dimension: '2d' }]) {
+			await writeFile(join(root, 'package.json'), JSON.stringify({ harness }));
+			for (const kind of sources.filter(
+				(kind) => !!scaffoldDetails[kind].gameOnly === (harness.kind === 'game')
+			)) {
+				const result = await generatePiece({
+					root,
+					kind,
+					name: `${kind}Example`,
+					group: 'commerce'
+				});
+				expect(
+					result.writes.some(
+						(file) =>
+							/^(?:src|db)\//.test(file.path) && /\/(?:\(commerce\)|commerce)\//.test(file.path)
+					),
+					kind
+				).toBe(true);
+			}
 		}
 		await generatePiece({ root, kind: 'service', name: 'Login', group: 'identity' });
 		const config = JSON.parse(await readFile(join(root, 'harness.groups.json'), 'utf8'));

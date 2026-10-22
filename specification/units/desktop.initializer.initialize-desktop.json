@@ -73,6 +73,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.initialize-desktop-confirm-unload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.comment-outbox",
 			"via": "import",
 			"origin": "derived"

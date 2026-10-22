@@ -209,13 +209,13 @@
 			"id": "details",
 			"title": "Details of an entity on its contract, with no file shown",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
 			"id": "source",
 			"title": "Source ownership, shown only after it was asked for",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
 			"id": "history",
@@ -243,9 +243,9 @@
 		},
 		{
 			"id": "removed",
-			"title": "A unit a commit removed, listed from its parent where it last was",
+			"title": "A removed private helper at its historical entity page",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions"]
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
 			"id": "missing",
@@ -257,19 +257,19 @@
 			"id": "unavailable",
 			"title": "Complexity that is not counted: unavailable and not frozen",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
 			"id": "emitted",
 			"title": "Each emitted size with the limit of its own target",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
 			"id": "emitted-gone",
 			"title": "An output that is no longer built: unavailable with its reason, never zero",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
 		},
 		{
 			"id": "hundreds",
@@ -281,7 +281,7 @@
 			"id": "page-details",
 			"title": "Details of a page on its contract",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-pages-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-pages-entity"]
 		},
 		{
 			"id": "page-history",
@@ -299,7 +299,7 @@
 			"id": "component-details",
 			"title": "Details of a component",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-components-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-components-entity"]
 		},
 		{
 			"id": "component-history",
@@ -317,7 +317,7 @@
 			"id": "config-details",
 			"title": "Details of a config",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-configs-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-configs-entity"]
 		},
 		{
 			"id": "config-history",
@@ -335,7 +335,7 @@
 			"id": "service-details",
 			"title": "Details of a service",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-services-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-services-entity"]
 		},
 		{
 			"id": "service-history",
@@ -371,7 +371,7 @@
 			"id": "shell-details",
 			"title": "Details of a shell on its contract",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-shells-entity-details"]
+			"units": ["reports.page.harness-branch-branch-at-shells-entity"]
 		},
 		{
 			"id": "shell-history",
@@ -384,7 +384,7 @@
 			"title": "The Components address of a shell, led to Shells with its branch, commit, section and tab",
 			"coverage": "required",
 			"units": [
-				"reports.page.harness-branch-branch-at-shells-entity-details",
+				"reports.page.harness-branch-branch-at-shells-entity",
 				"reports.function.corrected-location"
 			]
 		},

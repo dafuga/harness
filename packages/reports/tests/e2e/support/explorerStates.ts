@@ -10,11 +10,11 @@ const scale = `http://127.0.0.1:${Number(process.env.HARNESS_CONSOLE_E2E_SCALE_P
 const content = (page: Page) => page.locator('.ex-content');
 const titled = (page: Page, name: string) =>
 	expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
-const measured = async (page: Page) => {
+const measured = async (page: Page, emitted = false) => {
 	await expect(page.getByRole('region', { name: 'Size', exact: true })).toHaveCount(0);
 	const profile = page.getByRole('region', { name: 'Performance profile', exact: true });
 	await expect(profile).toBeVisible();
-	for (const label of ['Source size', 'Emitted size', 'Complexity'])
+	for (const label of ['Source size', 'Complexity', ...(emitted ? ['Emitted size'] : [])])
 		await expect(profile).toContainText(label);
 };
 /**
@@ -77,15 +77,15 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 			page.getByRole('figure', { name: `After · ${short(commits.twin)}` })
 		).toBeVisible();
 	},
-	// The former address opens Overview; each direction is offered as its own tab.
+	// The former address opens Overview; a page shows Uses and has no Used In direction.
 	async relationships(page) {
 		await page.goto(at('main', commits.approved, `pages/${units.page}?tab=relationships`));
 		await expect(page.getByRole('tab', { name: 'Overview', exact: true })).toHaveAttribute(
 			'aria-selected',
 			'true'
 		);
-		for (const name of ['Used In', 'Uses'])
-			await expect(page.getByRole('tab', { name, exact: true })).toBeVisible();
+		await expect(page.getByRole('tab', { name: 'Used In', exact: true })).toHaveCount(0);
+		await expect(page.getByRole('tab', { name: 'Uses', exact: true })).toBeVisible();
 	},
 	// What uses a component, the page that shows it too, in a section of its own.
 	async 'used-in'(page) {
@@ -99,7 +99,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async component(page) {
 		await page.goto(at('main', commits.approved, `components/${units.list}`));
-		await titled(page, 'Title list');
+		await titled(page, 'TitleList');
 	},
 	// A function whose recorded end-to-end result changed against its parent.
 	async function(page) {
@@ -110,11 +110,11 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async service(page) {
 		await page.goto(at('main', commits.approved, 'services/service.clock'));
-		await titled(page, 'Clock service');
+		await titled(page, 'ClockService');
 	},
 	async config(page) {
 		await page.goto(at('main', commits.approved, `configs/${units.config}`));
-		await titled(page, 'Titles config');
+		await titled(page, 'titlesConfig');
 	},
 	// Details open on the contract; no file of the unit is shown.
 	async details(page) {
@@ -152,10 +152,12 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(tip('main', `functions/${units.slugify}`));
 		await expect(verdict(page, 'Evidence missing').first()).toBeVisible();
 	},
-	// What a commit removed is listed from its parent, where it last was.
+	// What a commit removed is shown from its parent; a private helper at its own address.
 	async removed(page) {
-		await page.goto(at('main', commits.removed, 'functions'));
-		await expect(content(page).getByRole('article', { name: 'Extra', exact: true })).toBeVisible();
+		await page.goto(at('main', commits.removed, 'functions/function.extra'));
+		await expect(page.getByRole('button', { name: 'Removed at this commit' })).toBeVisible();
+		await titled(page, 'extra');
+		await expect(page.getByRole('heading', { name: 'Not at this revision' })).toHaveCount(0);
 	},
 	// An entity that is not at a revision stays absent; no other revision is shown.
 	async missing(page) {
@@ -176,14 +178,14 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(
 			at(keptBranch, commits.packed, 'functions/function.packer/details?tab=measurements')
 		);
-		await measured(page);
+		await measured(page, true);
 	},
 	// An output that is no longer built: unavailable with its reason.
 	async 'emitted-gone'(page) {
 		await page.goto(
 			at(keptBranch, commits.vanished, 'functions/function.packer/details?tab=measurements')
 		);
-		await measured(page);
+		await measured(page, true);
 	},
 	...screenStates,
 	...shellStates,
@@ -191,7 +193,7 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	// A catalog of several hundred generated units.
 	async hundreds(page) {
 		await page.goto(`${scale}${tip('main', 'functions')}`);
-		await titled(page, 'Functions');
+		await titled(page, 'Helpers');
 		await expect(content(page).getByRole('article').first()).toBeVisible();
 		expect(await content(page).getByRole('article').count()).toBeGreaterThan(400);
 	}

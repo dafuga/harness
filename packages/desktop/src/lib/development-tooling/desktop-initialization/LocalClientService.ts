@@ -4,7 +4,7 @@ import {
 	WireFramingService,
 	WireSessionService
 } from '../../../../../remote/src/index';
-import { remoteLimits } from '../../../../../remote/src/index';
+import { localTransport } from '../../../../../remote/src/index';
 import type { WireChannel, WireLink } from '../../../../../remote/src/index';
 import type { ImageGenerator } from '../../../models/agents-providers/AgentRunner.types';
 import type { RemoteProjectPort } from '../../../models/projects-sessions/ProjectContext.types';
@@ -39,7 +39,12 @@ export interface LocalClientOptions {
 }
 /** A person may leave a dialog open, so nothing here ends an operation early. */
 const patient = 6 * 60 * 60 * 1000;
-const limits = { pendingRequests: 512, requestDeadlineMs: patient, mutationDeadlineMs: patient };
+const limits = {
+	pendingRequests: 512,
+	requestDeadlineMs: patient,
+	mutationDeadlineMs: patient,
+	requestBytes: localTransport.requestBytes
+};
 const closeCodes: Record<string, number> = { 'too-large': 4413, 'too-many-requests': 4429 };
 const isEvent = (text: string) => text.startsWith('{"type":"event"');
 const soon = (step: () => void) => void setImmediate(step);
@@ -90,7 +95,7 @@ export class LocalClientService {
 		const framing = new WireFramingService({
 			write: (frame) => socket.send(frame),
 			defer: this.options.defer ?? soon,
-			incomingBytes: remoteLimits.requestBytes
+			incomingBytes: localTransport.requestBytes
 		});
 		const link = this.wire.connect(
 			(text) => {

@@ -33,10 +33,19 @@ import {
 	resourceFiles
 } from './railsPieces';
 import type { PieceKind } from './scaffoldTypes';
+import { gameViewFiles, mechanicFiles, checkpointFiles } from '../game-authoring/gamePieces';
 
 export type { PieceKind } from './scaffoldTypes';
 
-const pieceBuilders: Record<PieceKind, (name: string) => PlannedFile[]> = {
+/** Project facts a scaffold needs beyond its name, read once by the generate workflow. */
+export interface PieceContext {
+	dimension?: '2d' | '3d';
+}
+
+const pieceBuilders: Record<PieceKind, (name: string, context: PieceContext) => PlannedFile[]> = {
+	'game-view': gameViewFiles,
+	mechanic: mechanicFiles,
+	checkpoint: checkpointFiles,
 	controller: controllerFiles,
 	service: (name) => classFiles('services', name, 'Service'),
 	decorator: (name) => classFiles('decorators', name, 'Decorator'),
@@ -72,8 +81,12 @@ const pieceBuilders: Record<PieceKind, (name: string) => PlannedFile[]> = {
 	middleware: middlewareFiles
 };
 
-export function pieceFiles(kind: PieceKind, name: string): PlannedFile[] {
-	return pieceBuilders[kind](name);
+export function pieceFiles(
+	kind: PieceKind,
+	name: string,
+	context: PieceContext = {}
+): PlannedFile[] {
+	return pieceBuilders[kind](name, context);
 }
 
 function testFiles(name: string): PlannedFile[] {

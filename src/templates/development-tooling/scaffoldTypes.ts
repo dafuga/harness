@@ -1,4 +1,7 @@
 export const scaffoldKinds = [
+	'game-view',
+	'mechanic',
+	'checkpoint',
 	'controller',
 	'service',
 	'decorator',
@@ -34,15 +37,12 @@ export const scaffoldKinds = [
 	'middleware'
 ] as const;
 export type PieceKind = (typeof scaffoldKinds)[number];
-export interface ScaffoldDetail {
-	kind: PieceKind;
-	summary: string;
-	appOnly: boolean;
-	contains: string[];
-	exampleCommand: string;
-}
+import type { ScaffoldDetail } from './scaffoldDetailTypes';
+export type { ScaffoldDetail } from './scaffoldDetailTypes';
+import { gameScaffoldDetails } from '../game-authoring/gameScaffoldDetails';
 
 export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
+	...gameScaffoldDetails,
 	controller: detail('controller', 'Request handling as a thin coordinator.', false, [
 		'Controller class under src/controllers.',
 		'Focused action method returning a response.',

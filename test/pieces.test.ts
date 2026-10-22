@@ -2,16 +2,22 @@ import { expect, test } from 'vitest';
 import { pieceFiles } from '../src/templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../src/templates/scaffoldTypes';
 
-test('every scaffold kind creates at least one file', () => {
-	for (const kind of scaffoldKinds) {
-		const files = pieceFiles(kind, 'BlogPost');
-		expect(files.length, kind).toBeGreaterThan(0);
-		expect(
-			files.every((file) => file.path.length > 0 && file.contents.length > 0),
-			kind
-		).toBe(true);
+test.each(['2d', '3d'] as const)(
+	'every scaffold kind creates at least one file in a %s project',
+	(dimension) => {
+		for (const kind of scaffoldKinds) {
+			const files = pieceFiles(kind, 'BlogPost', { dimension });
+			expect(files.length, kind).toBeGreaterThan(0);
+			expect(
+				files.every((file) => file.path.length > 0 && file.contents.length > 0),
+				kind
+			).toBe(true);
+		}
+		const [view] = pieceFiles('game-view', 'BlogPost', { dimension });
+		expect(view.contents).toContain(`dimension: '${dimension}'`);
+		expect(() => pieceFiles('game-view', 'BlogPost')).toThrow('harness.dimension');
 	}
-});
+);
 
 test('view, layout, and api scaffolds use SvelteKit route files', () => {
 	expect(pieceFiles('view', 'BlogPost').map((file) => file.path)).toContain(

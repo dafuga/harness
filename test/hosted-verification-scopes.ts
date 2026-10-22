@@ -27,7 +27,9 @@ export const hostedVerificationScopes: Record<string, VerificationScope> = {
 				'the same identity is listed in the tree of the commit where it renders, as it is there':
 					'hosted-history',
 				'a snapshot that was cached with a loader listed is not what the hosted catalog shows':
-					'hosted-cache'
+					'hosted-cache',
+				'hosted entities read their committed usage document through the source cache':
+					'hosted-detail'
 			}
 		},
 		playwright: {}

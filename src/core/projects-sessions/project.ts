@@ -1,1 +1,1 @@
-export type DetectedProjectKind = 'app' | 'lib' | 'unknown';
+export type DetectedProjectKind = 'app' | 'lib' | 'game' | 'unknown';

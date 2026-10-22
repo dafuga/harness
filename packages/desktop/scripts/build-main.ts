@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
 const jsoncParser: Bun.BunPlugin = {
 	name: 'bundle-jsonc-parser-module',
@@ -24,6 +25,7 @@ async function buildDesktopMain() {
 	]) {
 		const result = await Bun.build({ ...desktopNodeOptions, entrypoints: [entry], naming: out });
 		if (!result.success) throw new Error(result.logs.map(String).join('\n'));
+		execFileSync('node', ['--check', 'dist/' + out], { stdio: 'inherit' });
 	}
 }
 if (import.meta.main) await buildDesktopMain();
