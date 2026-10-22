@@ -16,22 +16,8 @@ async function capture(page: import('@playwright/test').Page, name: string) {
 test('game authoring exposes independent mechanics and executable checkpoint graph', async ({
 	page
 }) => {
-	await page.goto('/game');
-	await capture(page, 'game-authoring-before');
-	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
-	await expect(page.getByText(/Demo/).first()).toBeVisible();
-	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
-	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeVisible();
-	await page.getByText('Collect the key', { exact: true }).first().click();
-	await expect(page.getByLabel('Checkpoint title', { exact: true })).toHaveValue('Collect the key');
-	await page.getByLabel('Checkpoint title', { exact: true }).fill('Find the brass key');
-	await expect(page.getByText('Find the brass key', { exact: true }).first()).toBeVisible();
-	await capture(page, 'game-checkpoint-graph');
-	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
-	await expect(page.getByRole('textbox', { name: 'Title', exact: true })).toHaveValue(
-		'Movement and collision'
-	);
-	await capture(page, 'game-mechanics');
+	const { checkpointModal } = await import('./game-checkpoint-fixture');
+	await checkpointModal(page, capture);
 });
 
 for (const dimension of ['2d', '3d'])
