@@ -40,6 +40,9 @@ const typeCollection = (unit: Classified) =>
 	unit.owns.source.length > 0 &&
 	unit.owns.source.every((path) => /\.(?:types|d)\.[cm]?tsx?$/.test(path));
 
+const unlisted = (unit: Classified) =>
+	unit.catalog?.visibility === 'internal' || typeCollection(unit);
+
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
@@ -48,7 +51,7 @@ const typeCollection = (unit: Classified) =>
  * presented as a function, and stays reachable from what depends on it under its own role.
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {
-	if (unit.catalog?.visibility === 'internal' || typeCollection(unit)) return null;
+	if (unlisted(unit)) return null;
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	const category = explorerKindCategory(unit.kind);
