@@ -20,6 +20,7 @@ function expectCapturedMeasurements(state: string, viewport: string): void {
 		(line) => line.kind === 'screenshot' && line.state === state && line.viewport === viewport
 	);
 	expect(screenshot?.server).toMatchObject({ revision: process.env.HARNESS_VERIFY_REVISION });
+	expect(screenshot?.evidence).toBe(`${state}-screen`);
 	const benchmark = benchmarkCaptureSchema.parse(
 		JSON.parse(readFileSync(join(directory, `${state}-${viewport}-benchmark.json`), 'utf8'))
 	);
@@ -62,7 +63,10 @@ for (const viewport of viewports) {
 		await expect(page.locator('[data-style-token]')).toHaveCount(35);
 		await expectNoOverflow(page);
 		const state = `catalog-${viewport.id}`;
-		await captureScreen(page, state, viewport, evidenceDirectory);
+		await captureScreen(page, state, viewport, {
+			directory: evidenceDirectory,
+			evidence: `${state}-screen`
+		});
 		expectCapturedMeasurements(state, viewport.id);
 	});
 }
