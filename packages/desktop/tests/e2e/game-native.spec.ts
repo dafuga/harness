@@ -33,6 +33,10 @@ async function author(page: Page, dimension: string) {
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await page.getByRole('textbox', { name: 'Title', exact: true }).first().fill('Authored movement');
 	await capture(page, `${dimension}-mechanics`);
+	expect(
+		await page.evaluate(() => document.documentElement.scrollWidth),
+		'Mechanics must fit the viewport without horizontal overflow'
+	).toBeLessThanOrEqual(page.viewportSize()!.width);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByRole('button', { name: 'Add checkpoint', exact: true }).click();
 	await page.getByLabel('Checkpoint title', { exact: true }).fill('After the garden');
