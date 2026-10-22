@@ -1,58 +1,31 @@
-import { expect, type Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { servedBuild } from './harnessCapture';
-import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
+import { BrowserProfileAdapter } from '../../../../../src/adapters/development-tooling/BrowserProfileAdapter';
 /** Runtime observations of the real route, never of a later client-side destination. */
 export async function pageBenchmark(page: Page, state: string, unit?: string): Promise<void> {
 	if (!unit) return;
 	const server = await servedBuild(page);
 	if (!server || server.revision !== process.env.HARNESS_VERIFY_REVISION) return;
-	const navigation = await page.evaluate(() => {
-		const entry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-		return entry ? { name: entry.name, duration: entry.duration } : null;
+	const browser = new BrowserProfileAdapter({
+		navigation: () =>
+			page.evaluate(() => {
+				const entry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+				return entry ? { name: entry.name, duration: entry.duration } : null;
+			}),
+		url: () => page.url(),
+		heap: async () => (await pageHeap(page)).usedSize,
+		viewport: () => page.viewportSize()!
 	});
-	// A soft navigation has no new NavigationTiming entry; do not borrow its predecessor's time.
-	if (!navigation || navigation.name !== page.url()) return;
-	const heap = await pageHeap(page);
-	expect(navigation.duration).toBeGreaterThan(0);
-	expect(heap.usedSize).toBeGreaterThan(0);
 	const viewport = page.viewportSize()!;
-	const context = {
-		unit,
+	await browser.capture({
+		units: [unit],
+		state,
 		workload: `${state}-${viewport.width}x${viewport.height}`,
-		target: 'module',
-		samples: 1
-	};
-	const measurements = [
-		{
-			...context,
-			metric: 'browser-navigation-ms',
-			unitOfMeasure: 'ms',
-			value: navigation.duration,
-			method: `Whole route Chromium NavigationTiming through loadEventEnd, including shared units without isolated attribution; ${viewport.width}x${viewport.height}; build ${server.buildId}.`
-		},
-		{
-			...context,
-			metric: 'browser-js-heap-bytes',
-			unitOfMeasure: 'bytes',
-			value: heap.usedSize,
-			method:
-				'Chromium Runtime.getHeapUsage after fonts and images settled; whole page JavaScript heap including shared code, not isolated unit memory or browser-process RSS.'
-		}
-	];
-	recordCapture(
-		{
-			evidence: 'page-benchmarks',
-			state,
-			kind: 'benchmark',
-			file: `${state}-benchmark.json`,
-			mediaType: 'application/json'
-		},
-		JSON.stringify({
-			measurements
-		})
-	);
+		file: `${state}-benchmark.json`,
+		buildId: server.buildId
+	});
 }
 
 async function pageHeap(page: Page) {
