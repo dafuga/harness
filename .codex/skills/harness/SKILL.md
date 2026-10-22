@@ -149,6 +149,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## Integration Checkpoints
 
+- When shared cards change their clickable surface or accessible names, include authored simulator/native navigation helpers in the normal browser acceptance corpus. Execute the same helper expressions against the real rendered component with representative fixture parameters; browser tests that independently copy the new selector cannot establish the native helper contract.
+
 - Run the ordinary full check without `HARNESS_VERIFY`, `HARNESS_EVIDENCE_DIR` or `TAKE_SCREENSHOT`: it rebuilds outputs during the command. Source profiling may use its separate sink. Use `harness verify run` for stamped compiled capture evidence; its snapshot service identifies builds after setup. A custom launcher that mixes these modes cannot establish a full-check failure in the app, and must not lead to weakening build identity assertions.
 
 - After integrating changes to module taxonomy or source indexing, run root registry validation and the root audit before starting broad verification. Relocate new branch implementations into the current categories, keep private helpers with their real owners, and admit legacy paths only as explicitly listed forwarding entries.

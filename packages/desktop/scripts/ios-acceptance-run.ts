@@ -93,7 +93,7 @@ export async function shot(run: Acceptance, name: string): Promise<void> {
 }
 
 /** Opens the synthetic project and its design entity, and waits for the image to be there. */
-export async function openDesign(run: Acceptance): Promise<string> {
+export async function openDesign(run: Acceptance, title = 'Fixture page'): Promise<string> {
 	const { page, project } = run;
 	const open = JSON.stringify(`Open ${project.name}`);
 	try {
@@ -114,7 +114,8 @@ export async function openDesign(run: Acceptance): Promise<string> {
 		throw new Error(run.record.safe(`${reason}; project opener state: ${state}`));
 	}
 	await page.until('return document.title;', project.name);
-	await page.until("return pressLink('Review designs') ? 'pressed' : '';", 'pressed');
+	const design = JSON.stringify(`Open ${title}`);
+	await page.until(`return press(${design}) ? 'pressed' : '';`, 'pressed');
 	const image = "const image = document.querySelector('.image-canvas img');";
 	return page.until(`${image} return image?.naturalWidth ? 'loaded' : '';`, 'loaded', 90);
 }
