@@ -111,7 +111,8 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 							dependencies: [
 								...unit.dependencies,
 								{ unit: model.id, via: 'import' },
-								{ unit: secondModel.id, via: 'import' }
+								{ unit: secondModel.id, via: 'import' },
+								...(unit.id === ids.store ? [{ unit: ids.card, via: 'import' }] : [])
 							]
 						};
 					return unit;

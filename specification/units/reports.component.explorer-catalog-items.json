@@ -68,12 +68,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.explorer-function-card",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-explorer-page-card",
+			"unit": "reports.component.explorer-ui-explorer-module-card",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -94,11 +89,6 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-screens",
 			"via": "import",
 			"origin": "derived"
 		},
