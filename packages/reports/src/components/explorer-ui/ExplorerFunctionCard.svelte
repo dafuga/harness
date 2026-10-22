@@ -57,7 +57,13 @@
 	>
 		<code>{call}</code>
 	</EntityLink>
-	<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
+	<ExplorerUsage
+		consumers={row.usedIn ?? []}
+		{nav}
+		{lens}
+		{mediaBase}
+		layout={row.entity.category === 'models' ? 'flat' : 'grouped'}
+	/>
 </article>
 
 <style>

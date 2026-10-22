@@ -2,11 +2,9 @@
 	"name": "model-card-flat-used-in",
 	"goal": "Model cards show only their name and flat Used In links while helper cards retain consumer categories.",
 	"createdAt": "2026-10-22T16:05:02.206Z",
-	"updatedAt": "2026-10-22T16:06:31.903Z",
+	"updatedAt": "2026-10-22T16:16:06.366Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T16:09:49.615Z",
+			"evidence": "Red checkpoint fb7da79bd7be2eaa64b11bef289c1a6a54520694, proof 82c5285c687b50d14c7e19bf72b93e34c9e85e9699f5d76f1bca1cb80d89e6a0: the unchanged catalog matrix fails at desktop, tablet and mobile because the model footer has 3 lists where the regression requires 1."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T16:16:06.366Z",
+			"evidence": "ExplorerUsage now supports a grouped default and a flat layout selected only for model rows; component contracts describe the variant."
 		},
 		{
 			"id": "green",
