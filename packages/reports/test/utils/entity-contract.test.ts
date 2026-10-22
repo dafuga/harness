@@ -163,11 +163,7 @@ const made = (id: string, uses: string[] = []): HarnessUnit => ({
 	id,
 	kind: id.startsWith('page.')
 		? 'page'
-		: id === 'shared'
-			? 'component'
-			: id === 'endpoint'
-				? 'endpoint'
-				: 'function',
+		: ({ shared: 'component', endpoint: 'endpoint' }[id] ?? 'function'),
 	dependencies: uses.map((unit) => ({ unit, via: 'import' }))
 });
 // Three pages: two are made of one shared component, and an endpoint is behind none of them.

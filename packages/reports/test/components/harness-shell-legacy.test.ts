@@ -52,7 +52,7 @@ const tabs = (changes: object = {}) =>
 		render(HarnessTabs, { props: { view: 'map', onview: () => {}, ...changes } } as never).body
 	);
 const notices = (html: string) =>
-	[...html.matchAll(/<p class="hc-notice[^\"]*" role="alert">(.*?)<\/p>/gs)].map(
+	[...html.matchAll(/<p class="hc-notice[^"]*" role="alert">(.*?)<\/p>/gs)].map(
 		([, inner]) => inner
 	);
 
@@ -77,7 +77,7 @@ test('the header with a navbar is the unified bar, and the notices it always sho
 		onroute: () => {}
 	};
 	const html = header({ navbar });
-	expect(html).toMatch(/^\s*<div class="hx-header[^\"]*"[^>]*>\s*<header class="hx-nav"/);
+	expect(html).toMatch(/^\s*<div class="hx-header[^"]*"[^>]*>\s*<header class="hx-nav"/);
 	expect(
 		text(/<nav\b[^>]*aria-label="Harness categories"[^>]*>(.*?)<\/nav>/s.exec(html)?.[1] ?? '')
 	).toBe('Pages Shells Components Helpers Configs Services Models');
