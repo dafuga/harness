@@ -8,7 +8,8 @@
 		nav,
 		lens,
 		mediaBase,
-		layout = 'grouped'
+		layout = 'grouped',
+		limit = Infinity
 	}: {
 		/** What uses the entity at the shown revision, each once. */
 		consumers: ExplorerEntity[];
@@ -17,9 +18,13 @@
 		mediaBase: string;
 		/** Grouped under kind headings, or one unheaded list in the same order. */
 		layout?: 'grouped' | 'flat';
+		/** The most links the flat list shows, then an ellipsis; every one by default. */
+		limit?: number;
 	} = $props();
 	let groups = $derived(usageGroups(consumers));
 	let items = $derived(groups.flatMap((group) => group.items));
+	let shown = $derived(items.slice(0, limit));
+	let omitted = $derived(items.length - shown.length);
 </script>
 
 <!-- One footer for every card and table row: each consumer a link with its own preview. -->
@@ -28,9 +33,15 @@
 	{#if layout === 'flat'}
 		{#if items.length > 0}
 			<ul>
-				{#each items as item (item.id)}
+				{#each shown as item (item.id)}
 					<li><ExplorerUsageLink entity={item} {nav} {lens} {mediaBase} /></li>
 				{/each}
+				{#if omitted > 0}
+					<li>
+						<span aria-hidden="true">…</span>
+						<span class="ex-usage-more">{omitted} more {omitted === 1 ? 'usage' : 'usages'}</span>
+					</li>
+				{/if}
 			</ul>
 		{/if}
 	{:else}
@@ -66,5 +77,14 @@
 	}
 	.ex-usage-kind {
 		flex-basis: 100%;
+	}
+	/* Read out in place of the ellipsis, never shown. */
+	.ex-usage-more {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 </style>
