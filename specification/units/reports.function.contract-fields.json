@@ -86,7 +86,7 @@
 			{
 				"name": "contractFields",
 				"type": "ContractGroup[]",
-				"description": "Input, output and error groups with descriptions and declared examples. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
+				"description": "Input, output and declared-error groups with descriptions and examples. Empty error groups are omitted. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
 			},
 			{
 				"name": "contractFacts",
@@ -96,7 +96,7 @@
 			{
 				"name": "callableContracts",
 				"type": "{ name: string; signature: string; groups: ContractGroup[] }[]",
-				"description": "Callable signatures and Parameters/Returns groups with literal parameter names and declared return value names; Throws uses a table only when errors are declared. Missing errors are stated as text."
+				"description": "Callable signatures and Parameters/Returns groups with literal parameter names and declared return value names; a Throws table appears only when errors are declared."
 			}
 		],
 		"errors": []

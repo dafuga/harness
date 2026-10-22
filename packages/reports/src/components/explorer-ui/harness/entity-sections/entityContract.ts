@@ -95,11 +95,14 @@ export function entityContract(unit: HarnessUnit, facts: ContractFacts): Contrac
 		];
 	}
 	if (facts.category === 'components')
-		return [row('Props', inputs, 'None'), row('Fails with', errors, 'Nothing declared')];
+		return [
+			row('Props', inputs, 'None'),
+			...(errors.length > 0 ? [row('Fails with', errors, 'Nothing declared')] : [])
+		];
 	const rows: ContractRow[] = [
 		row('Inputs', inputs, 'None'),
 		row('Output', outputs, 'Nothing declared', unit),
-		row('Fails with', errors, 'Nothing declared')
+		...(errors.length > 0 ? [row('Fails with', errors, 'Nothing declared')] : [])
 	];
 	if (facts.category === 'services') rows.push({ label: 'Runs as', value: runsAs(unit) });
 	return rows;
