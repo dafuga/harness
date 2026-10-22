@@ -1,5 +1,5 @@
 import { EvidenceTreeAdapter } from '../adapters/EvidenceTreeAdapter';
-import { evidenceRef, type HistoryNote } from '../core/historyTypes';
+import { evidenceRef, sourceArchivePrefix, type HistoryNote } from '../core/historyTypes';
 import { fail } from '../core/errors';
 import type { RegressionRecord } from '../core/regressionTypes';
 import { readRegression, regressionHash, regressionHistory } from '../utils/regressionHistory';
@@ -99,9 +99,7 @@ export class RegressionProofRepository {
 		const candidates = regressionNotes(notes).filter(
 			(note) => note.loop === loop && note.phase === phase
 		);
-		const history = (await new EvidenceTreeAdapter(this.root).git.run(['rev-list', commit])).split(
-			'\n'
-		);
+		const history = await checkpointHistory(this.root, commit, candidates);
 		const ancestor = history.find((hash) => candidates.some((note) => note.commit === hash));
 		let latest: { note: RegressionNote; at: string } | undefined;
 		for (const note of candidates.filter((item) => item.commit === ancestor)) {
@@ -132,4 +130,36 @@ function regressionNote(
 		record: record.id,
 		evidence: { commit: evidence, path, manifest: regressionHash(manifest) }
 	};
+}
+
+/** Original ancestry wins; equivalent complete source trees retain their archived lineage. */
+async function checkpointHistory(root: string, commit: string, candidates: RegressionNote[]) {
+	if (!candidates.length) return [];
+	const git = new EvidenceTreeAdapter(root).git;
+	const direct = (await git.run(['rev-list', commit])).split('\n');
+	if (direct.some((hash) => candidates.some((note) => note.commit === hash))) return direct;
+	const trees = new Set((await git.run(['log', '--format=%T', commit])).split('\n'));
+	const listed = await git.run([
+		'for-each-ref',
+		'--format=%(objecttype) %(objectname) %(refname)',
+		sourceArchivePrefix
+	]);
+	const archives = listed.split('\n').flatMap((row) => {
+		const [kind, id, ref] = row.split(' ');
+		return kind === 'commit' && ref === sourceArchiveRef(id) ? [id] : [];
+	});
+	if (!archives.length) return direct;
+	const checked = (
+		await git.run(['cat-file', '--batch-check=%(objectname) %(objecttype)'], {
+			input: archives.map((id) => `${id}^{tree}\n`).join('')
+		})
+	).split('\n');
+	const same = archives.filter((_, index) => {
+		const [tree, kind] = checked[index].split(' ');
+		return kind === 'tree' && trees.has(tree);
+	});
+	const inherited = same.length
+		? await git.run(['rev-list', '--stdin'], { input: same.join('\n') + '\n' })
+		: '';
+	return [...direct, ...inherited.split('\n').filter(Boolean)];
 }
