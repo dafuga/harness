@@ -3,13 +3,6 @@ name: harness
 description: Use this repository's Harness generators, audits, loops and revision-bound evidence when changing its code or verification.
 ---
 
----
-
-name: harness
-description: Apply Harness generators, contracts, regression loops and source-bound verification when changing this Harness CLI project.
-
----
-
 # Harness Project Discipline
 
 Use this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness CLI project.
