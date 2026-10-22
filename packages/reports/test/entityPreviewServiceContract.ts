@@ -46,7 +46,7 @@ const methodIn = (pane: Locator, name: string) =>
 
 /** The former rendering had one table of each for the whole class; it would fail here. */
 async function withoutClassGroups(pane: Locator): Promise<void> {
-	for (const name of ['Inputs', 'Outputs', 'Errors'])
+	for (const name of ['Inputs', 'Outputs'])
 		await expect(pane.getByRole('table', { name, exact: true })).toHaveCount(0);
 }
 
@@ -71,13 +71,15 @@ async function reviewAgentActivity(page: Page, viewport: string): Promise<void> 
 	await expect(built.getByRole('table', { name: 'Returns', exact: true })).toHaveCount(0);
 	await expect(built.getByText('Creates the service.')).toBeVisible();
 	// What no one method declares, and how the class runs, are said once beside the methods.
-	await expect(pane.getByText('ExpectedCliError', { exact: true })).toHaveCount(1);
+	await expect(pane.getByRole('table', { name: 'Errors', exact: true })).toContainText(
+		'ExpectedCliError'
+	);
+	await expect(pane.getByText('Errors not tied to a method', { exact: true })).toHaveCount(0);
 	expect(
 		await pane.evaluate((root) => {
 			const methods = root.querySelectorAll('[aria-label$=" method"]');
-			const errors = [...root.querySelectorAll('dt')].find(
-				(node) => node.textContent === 'Errors not tied to a method'
-			)!;
+			const errors = root.querySelector('table[aria-label="Errors"]');
+			if (!errors) return false;
 			return Boolean(methods[methods.length - 1].compareDocumentPosition(errors) & 4);
 		})
 	).toBe(true);
@@ -107,7 +109,9 @@ async function reviewInitialize(page: Page, viewport: string): Promise<void> {
 	await expect(parameters.getByRole('rowheader')).toHaveText(['timeoutMs']);
 	const returned = initialize.getByRole('table', { name: 'Returns', exact: true });
 	await expect(returned).toContainText('Promise<void>');
-	const thrown = initialize.getByRole('table', { name: 'Throws', exact: true });
+	const thrown = pane.getByRole('table', { name: 'Errors', exact: true });
+	await expect(pane.getByRole('table', { name: 'Throws', exact: true })).toHaveCount(0);
+	await expect(thrown).toContainText('OrderFeed.initialize.timeout');
 	await expect(thrown).toContainText('TimeoutError');
 	const latest = methodIn(pane, 'latest');
 	await expect(latest).not.toContainText('TimeoutError');

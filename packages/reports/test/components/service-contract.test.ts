@@ -34,15 +34,18 @@ test('service contracts group parameters, return and errors by method, with init
 	const body = contractOf(orderFeed.id);
 	expect(methodsIn(body)).toEqual(['constructor', 'initialize', 'latest']);
 	// The former rendering had one class-wide table of each; none of them is left.
-	for (const group of ['Inputs', 'Outputs', 'Errors'])
-		expect(body).not.toContain(`aria-label="${group}"`);
+	for (const group of ['Inputs', 'Outputs']) expect(body).not.toContain(`aria-label="${group}"`);
 	const initialize = methodOf(body, 'initialize');
 	expect(read(initialize)).toContain('initialize(timeoutMs: number): Promise<void>');
 	for (const group of ['Parameters', 'Returns'])
 		expect(initialize).toContain(`aria-label="${group}"`);
-	expect(initialize).toContain('aria-label="Throws"');
+	expect(initialize).not.toContain('aria-label="Throws"');
+	expect(body.indexOf('aria-label="Errors"')).toBeGreaterThan(
+		body.indexOf('aria-label="latest method"')
+	);
+	expect(words(body)).toContain('TimeoutError');
 	expect(initialize).toContain('View example for timeoutMs');
-	expect(words(initialize)).toContain('TimeoutError');
+	expect(words(initialize)).not.toContain('TimeoutError');
 	const constructed = methodOf(body, 'constructor');
 	expect(read(constructed)).toContain('constructor(accountId: string)');
 	expect(constructed).not.toContain('aria-label="Returns"');
@@ -121,13 +124,12 @@ test('AgentActivityService shows each method it declares now, its class-wide err
 	const mirrored = methodsIn(contractOf(agentActivity.id));
 	expect(mirrored, 'the browser fixture shows the same methods').toEqual(declared);
 	expect(words(methodOf(body, 'roster'))).toContain('No parameters.');
-	expect(words(body)).toContain('Errors not tied to a method');
-	expect(body.indexOf('Errors not tied to a method')).toBeGreaterThan(
+	expect(words(body)).not.toContain('Errors not tied to a method');
+	expect(body.indexOf('aria-label="Errors"')).toBeGreaterThan(
 		body.indexOf('aria-label="roster method"')
 	);
 	expect(words(body).split('ExpectedCliError')).toHaveLength(2);
-	for (const group of ['Inputs', 'Outputs', 'Errors'])
-		expect(body).not.toContain(`aria-label="${group}"`);
+	for (const group of ['Inputs', 'Outputs']) expect(body).not.toContain(`aria-label="${group}"`);
 });
 
 test('a service contract that names no method keeps its fields together', () => {
