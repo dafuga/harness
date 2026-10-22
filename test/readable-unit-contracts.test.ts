@@ -28,3 +28,32 @@ test('every active function and component explains its contract without requirin
 		[]
 	);
 });
+
+test('SQLite catalog functions publish declared human-readable contracts', () => {
+	const directory = resolve(import.meta.dirname, '../specification/units');
+	const ids = [
+		'function.catalog-models',
+		'function.sqlite-binding',
+		'function.sqlite-input',
+		'function.sqlite-row',
+		'function.sqlite-table-sql',
+		'function.sqlite-types'
+	];
+	const gaps: string[] = [];
+	for (const id of ids) {
+		const unit = componentManifestSchema.parse(
+			JSON.parse(readFileSync(resolve(directory, `${id}.json`), 'utf8'))
+		);
+		if (unit.responsibilityOrigin !== 'declared' || /^Owns the\b/.test(unit.responsibility))
+			gaps.push(`${id}: responsibility is not declared`);
+		if (unit.contract.origin !== 'declared') gaps.push(`${id}: contract is not declared`);
+		for (const group of ['inputs', 'outputs', 'errors'] as const)
+			for (const field of unit.contract[group])
+				if (!described(field.description))
+					gaps.push(`${id}: ${group}.${field.name} is undescribed`);
+	}
+	expect(
+		gaps,
+		`SQLite catalog units require declared readable contracts: ${gaps.slice(0, 12).join('; ')}`
+	).toEqual([]);
+});
