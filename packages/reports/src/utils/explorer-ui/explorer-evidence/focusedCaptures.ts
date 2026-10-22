@@ -47,12 +47,37 @@ export function focusedCaptures(detail: HarnessRevision, unit: string): Explorer
 			];
 		});
 	});
+	return projectedCaptures(found);
+}
+
+/** @pure The logical capture state supplied by the producer, independent of its storage path. */
+export function withoutViewportSuffix(state: string, _viewport: string): string {
+	return state;
+}
+
+/** Preserve original capture metadata while grouping compatible device-qualified display states. */
+function projectedCaptures(captures: ExplorerCapture[]): ExplorerCapture[] {
+	const found = captures.map((item) => ({ ...item, state: sharedState(item, captures) }));
 	return found.filter(
 		(item, index) =>
 			found.findIndex(
 				(other) => other.state === item.state && other.capture.viewport === item.capture.viewport
 			) === index
 	);
+}
+
+function sharedState(item: ExplorerCapture, captures: ExplorerCapture[]): string {
+	const viewport = item.capture.viewport ?? '';
+	const state = withoutViewportSuffix(item.state, viewport);
+	if (state === item.state) return state;
+	const sibling = captures.some(
+		(other) =>
+			other.capture.viewport !== viewport &&
+			other.focused?.record === item.focused?.record &&
+			other.capture.server?.revision === item.capture.server?.revision &&
+			withoutViewportSuffix(other.state, other.capture.viewport ?? '') === state
+	);
+	return sibling ? state : item.state;
 }
 
 /** @pure Describe a focused gallery independently of declared full-verification scenarios. */
