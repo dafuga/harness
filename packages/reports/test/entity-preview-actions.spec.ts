@@ -90,10 +90,9 @@ for (const [name, size] of Object.entries(viewports)) {
 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
 			await expect(cards.first()).toContainText('Used In');
 			expect(await fits(tab)).toBe(true);
-			const action = cards.first().getByRole('link', { name: 'Open component', exact: true });
-			expect((await action.innerText()).trim()).toBe('');
-			expect(await action.boundingBox()).toMatchObject({ width: 36, height: 36 });
-			await action.press('Enter');
+			const title = cards.first().getByRole('heading').getByRole('link');
+			await expect(title).toBeVisible();
+			await title.press('Enter');
 			expect(await where(tab)).toMatchObject({ commit, category: 'components', entity: ids.card });
 		}
 	});
@@ -163,15 +162,14 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 	});
 }
-test('the component catalog labels reused screenshots with their original commit', async ({
+test('the component catalog keeps reused screenshots revision-bound without extra source text', async ({
 	page: tab
 }) => {
 	await open(tab, { category: 'components' }, 'inherited');
 	await capture(tab, 'component-cards-reused-desktop');
 	const card = tab.getByRole('article', { name: 'OrderCard', exact: true });
 	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
-	await expect(card).toContainText('Reused from bbbbbbb');
-	await expect(card).not.toContainText('Captured at ccccccc');
+	await expect(card).not.toContainText(/Reused from|Captured at/);
 });
 test('branch and commit selection replace component screenshots with that revision', async ({
 	page: tab
