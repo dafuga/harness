@@ -217,18 +217,3 @@ test('shared helper rows require source exports, list every callable and keep ow
 		'second'
 	]);
 });
-
-test('component usage links are distinct current consumers capped at three', () => {
-	const all = explorerEntities(head);
-	const owner = all.find((entity) => entity.id === ids.card)!;
-	const using = all.filter((entity) => entity.id !== ids.card);
-	const retired = { ...using[0], id: 'retired', change: 'removed' as const };
-	const [row] = entityCatalog([owner], 'components', () => ({
-		pages: [using[0]],
-		usedBy: [using[0], using[0], retired, ...using.slice(1)],
-		components: []
-	}));
-	expect(row.usedIn?.map((entity) => entity.id)).toEqual(
-		using.slice(0, 3).map((entity) => entity.id)
-	);
-});

@@ -1,3 +1,4 @@
+import { sourceText } from '../../../../test/entitySourceFixture';
 import type { PreviewCases } from './shared';
 import { children, noop, text } from './shared';
 import * as d from './explorerData';
@@ -11,7 +12,37 @@ const seen = {
 	role: 'Selected commit',
 	mediaBase: '/media/'
 };
+const sourcePath = d.entity.unit.owns.source[0];
+const source = sourceText(d.commits.middle, sourcePath);
+const sourceReader = {
+	files: async () => [sourcePath],
+	read: async () => source,
+	commit: d.commits.middle
+};
 export const explorerCases: PreviewCases = {
+	'reports.component.source-viewer': {
+		state: { files: [sourcePath], path: sourcePath, text: source, loading: false, error: '' },
+		commit: d.commits.middle,
+		onSelect: noop
+	},
+	'reports.component.source-content': sourceReader,
+	'reports.component.source-dialog': {
+		...sourceReader,
+		open: true,
+		title: d.entity.name,
+		onClose: noop
+	},
+	'reports.component.source-code-action': {
+		entity: d.entity,
+		nav: { ...d.navigation, source: noop },
+		path: sourcePath
+	},
+	'reports.component.source-file-list': {
+		files: [sourcePath],
+		href: () => undefined,
+		children: text('<span>Archived source</span>')
+	},
+
 	'reports.component.harness-entity-artifact': {
 		cell: d.cell,
 		label: 'Assertions',

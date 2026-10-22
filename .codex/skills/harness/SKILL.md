@@ -149,6 +149,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## Integration Checkpoints
 
+- When moving build configurations, evaluate both their public entry and canonical declaration in fresh runtimes. Assert every source-layout alias against the actual owner path and existence, then run the registered browser build. Rewriting static imports alone does not repair `new URL(..., import.meta.url)` aliases.
+
 - When relocating a schema used by a compiler or loader, run the existing source-profile lifecycle matrix with the profiling tool inside its own selected project root as well as outside it. Bypass both the public forwarding entry and the actual bootstrap declaration; neither may await the adapter that is loading it. Keep schema parsing workloads explicit and retain successful time and memory observations from the real subsequent operation.
 
 - Before adopting runtime hooks, run the standard loader lifecycle and sampling cases: verify lazy foreign-process startup, type-only and live side-effect imports, declaration-only collection, owned-preload removal for benchmark children, and bounded observations that preserve every application call. Rerun the original timing guards with profiling requested; a focused loader pass alone is insufficient.

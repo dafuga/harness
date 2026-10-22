@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "reports.component.source-file-list",
 	"kind": "component",
-	"title": "Source file list",
+	"title": "SourceFileList",
 	"responsibility": "Renders source file rows with optional external links and a supplied per-file action.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
@@ -52,10 +52,15 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-source-file-list",
+		"viewport": "desktop"
 	}
 }

@@ -14,7 +14,8 @@ export const previewUnits = Object.values(manifests)
 	.map((unit) => ({
 		id: unit.id,
 		title: unit.title,
-		source: unit.owns.source.find((path) => path.endsWith('.svelte'))!
+		source: unit.owns.source.find((path) => path.endsWith('.svelte'))!,
+		sources: unit.owns.source
 	}))
 	.sort((a, b) => a.id.localeCompare(b.id));
 const sources = [

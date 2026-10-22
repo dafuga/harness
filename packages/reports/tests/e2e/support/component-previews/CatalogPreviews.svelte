@@ -12,7 +12,7 @@
 	const Component = previewComponent(unit.source);
 	const fullFrame = /harness-(navbar|header|console|shell)$/.test(id);
 	const explorer =
-		unit.source.includes('/components/harness/') ||
+		unit.sources.some((source) => /\/components\/(?:harness|explorer-ui)\//.test(source)) ||
 		[
 			'explorer-catalog-items',
 			'explorer-function-card',

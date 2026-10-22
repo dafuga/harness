@@ -6,11 +6,9 @@
 	"name": "shell-fixture-aliases",
 	"goal": "Resolve component fixture aliases correctly through both public and canonical build config entries",
 	"createdAt": "2026-10-22T01:34:18.203Z",
-	"updatedAt": "2026-10-22T01:34:39.419Z",
+	"updatedAt": "2026-10-22T01:37:08.996Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -31,17 +29,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T01:37:06.118Z",
+			"evidence": "Sealed red b8a7675b at d2077b68d fails the exact source owner assertion for both cold config entrypoints."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T01:37:07.496Z",
+			"evidence": "773af8472 fixes the five URL aliases relative to the canonical folder while preserving the public entry."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T01:37:08.996Z",
+			"evidence": "Sealed green f54fbbe8 passes both unchanged cold alias cases at 773af8472; all seven normal config cases pass too."
 		},
 		{
 			"id": "verify",

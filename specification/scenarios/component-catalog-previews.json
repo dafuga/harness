@@ -178,7 +178,12 @@
 		"desktop.component.deployment-route",
 		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-usage",
-		"reports.component.explorer-usage-link"
+		"reports.component.explorer-usage-link",
+		"reports.component.source-viewer",
+		"reports.component.source-content",
+		"reports.component.source-code-action",
+		"reports.component.source-dialog",
+		"reports.component.source-file-list"
 	],
 	"states": [
 		{
@@ -1230,6 +1235,36 @@
 			"title": "ExplorerUsageLink",
 			"coverage": "required",
 			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-source-viewer",
+			"title": "SourceViewer",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-content",
+			"title": "SourceContent",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-code-action",
+			"title": "SourceCodeAction",
+			"coverage": "required",
+			"units": ["reports.component.source-code-action"]
+		},
+		{
+			"id": "reports-component-source-dialog",
+			"title": "SourceDialog",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-file-list",
+			"title": "SourceFileList",
+			"coverage": "required",
+			"units": ["reports.component.source-file-list"]
 		}
 	],
 	"viewports": [
@@ -1438,7 +1473,12 @@
 				"desktop-component-deployment-route",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-usage",
-				"reports-component-explorer-usage-link"
+				"reports-component-explorer-usage-link",
+				"reports-component-source-viewer",
+				"reports-component-source-content",
+				"reports-component-source-code-action",
+				"reports-component-source-dialog",
+				"reports-component-source-file-list"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

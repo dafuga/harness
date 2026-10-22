@@ -22,15 +22,21 @@ for (const viewport of catalogViewports) {
 			await openPreview(page, home, unit.id);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
+			if (
+				['source-viewer', 'source-content', 'source-dialog'].some(
+					(name) => unit.id === `reports.component.${name}`
+				)
+			) {
+				await expect(component.locator('pre')).toContainText('Synthetic committed file:');
+				await expect(component).toHaveClass(/ex-content/);
+			}
 			await capturePreview(page, home, unit.id, viewport.id);
 			if (unit.id === 'reports.component.explorer-function-card') {
 				await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
 				await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');
+				await expect(component.getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();
 				await expect(
-					component.getByRole('link', { name: 'Order list', exact: true })
-				).toBeVisible();
-				await expect(
-					component.getByRole('link', { name: 'Order store', exact: true })
+					component.getByRole('link', { name: 'OrderStore', exact: true })
 				).toBeVisible();
 			}
 			if (unit.id === 'reports.component.usage-examples-usage-examples')
@@ -74,7 +80,7 @@ for (const viewport of catalogViewports) {
 				await expect(component.locator('img')).toHaveCSS('object-fit', 'contain');
 				await expect(component.locator('img')).toHaveAttribute('src', /synthetic-card-input\.svg$/);
 				await expect(
-					component.getByRole('link', { name: 'Open Order card', exact: true })
+					component.getByRole('link', { name: 'Open OrderCard', exact: true })
 				).toHaveAttribute('title', /Synthetic preview input/);
 			}
 			await expect

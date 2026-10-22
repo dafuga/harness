@@ -28,7 +28,7 @@ export async function readyPreview(page: Page, id: string) {
 	await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 	await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
 	await expect(content).not.toContainText(
-		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Sampling CPU…|Checking sign-in…|Reading the request…/
+		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Sampling CPU…|Checking sign-in…|Reading the request…|Loading source…/
 	);
 	await expect(content).not.toContainText(
 		/Preview unavailable|Screenshot unavailable|could not be read|not listed by the evidence|Not verified|Reading the clip…|No screenshot (?:is )?recorded|TypeError:|ReferenceError:|Checking the GitHub connection…/

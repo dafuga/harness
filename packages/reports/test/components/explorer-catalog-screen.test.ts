@@ -1,3 +1,4 @@
+import { explorerEntities } from '../../src/utils/explorerEntities';
 import { entityCatalog } from '../../src/utils/entityCatalog';
 import { PerformanceProfileService } from '../../../../src/services/PerformanceProfileService';
 import { afterAll, expect, test } from 'vitest';
@@ -123,4 +124,19 @@ afterAll(async () => {
 			screen(ExplorerCatalogScreen, 'current', { category: 'components' })
 		);
 	}
+});
+
+test('component usage links are distinct current consumers capped at three', () => {
+	const all = explorerEntities(revision(commits.middle, [record(commits.middle)]));
+	const owner = all.find((entity) => entity.id === ids.card)!;
+	const using = all.filter((entity) => entity.id !== ids.card);
+	const retired = { ...using[0], id: 'retired', change: 'removed' as const };
+	const [row] = entityCatalog([owner], 'components', () => ({
+		pages: [using[0]],
+		usedBy: [using[0], using[0], retired, ...using.slice(1)],
+		components: []
+	}));
+	expect(row.usedIn?.map((entity) => entity.id)).toEqual(
+		using.slice(0, 3).map((entity) => entity.id)
+	);
 });
