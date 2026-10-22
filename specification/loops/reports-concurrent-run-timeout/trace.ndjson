@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-22T13:28:20.953Z","name":"reports-concurrent-run-timeout","goal":"Prove concurrent report runs keep separate history and media through peer teardown within the CI time limit.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-22T13:28:29.256Z","loop":"reports-concurrent-run-timeout","step":"spec","evidence":"CI run 39777141955 at 8d779bcb6 failed the unchanged concurrency E2E after its 900-second timeout."}
+{"event":"step.completed","timestamp":"2026-10-22T13:28:30.225Z","loop":"reports-concurrent-run-timeout","step":"coverage","evidence":"The existing isolation assertions already cover separate histories, media and teardown; 60 full-suite repeats made CI exceed its limit."}
