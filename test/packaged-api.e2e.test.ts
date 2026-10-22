@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { kernelArtifacts } from '../src/utils/kernelArtifacts';
 import { runCommand } from './support/cli';
+import { measureProcess } from './support/cli-measurement/measureHarness';
 
 const consumer = `
 import {
@@ -130,7 +131,19 @@ test('public API type build retains configured entry paths across owned workspac
 		for (const path of ['package.json', 'tsconfig.json', 'tsconfig.api.json'])
 			await copyFile(resolve(path), join(root, path));
 		await symlink(resolve('node_modules'), join(root, 'node_modules'), 'dir');
-		const built = await runCommand(['bun', 'scripts/build-api.ts', '--types-only'], root, false);
+		const built = await measureProcess(
+			{
+				units: ['script.build-api'],
+				workload: 'public-api-declaration-build',
+				target: 'module',
+				command: ['bun', 'scripts/build-api.ts', '--types-only'],
+				cwd: root,
+				expectSuccess: false,
+				partial:
+					'Actual declaration build and published entry assertions; excludes bundling and kernel packaging, which the normal build verifies separately.'
+			},
+			runCommand
+		);
 		expect(
 			built.exitCode,
 			`public API declaration build succeeds: ${built.stdout}${built.stderr}`

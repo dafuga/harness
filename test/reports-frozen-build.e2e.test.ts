@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path';
 import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import { ownEnvironment, runCommand } from './support/cli';
 import { freePort } from './support/workers';
+import { measureProcess } from './support/cli-measurement/measureHarness';
 
 /**
  * What a rebuild does to a built server: the files it has not loaded yet are replaced under
@@ -80,7 +81,17 @@ test('a server on the build directory itself answers a refused page with an erro
 test('a run serves its own copy of the build, which a rebuild of the directory does not reach', async () => {
 	standInBuild();
 	const env = { HARNESS_E2E_ROOT: run };
-	const frozen = await runCommand(['bun', 'scripts/freeze-build.ts', standIn], reports, true, env);
+	const frozen = await measureProcess(
+		{
+			units: ['reports.script.freeze-build'],
+			workload: 'freeze-built-report-server',
+			target: 'module',
+			command: ['bun', 'scripts/freeze-build.ts', standIn],
+			cwd: reports,
+			env
+		},
+		runCommand
+	);
 	const copy = (JSON.parse(frozen.stdout) as { build: string; buildId: string }).build;
 	expect(copy).not.toBe(standIn);
 	expect(readdirSync(copy)).toEqual(readdirSync(standIn));
