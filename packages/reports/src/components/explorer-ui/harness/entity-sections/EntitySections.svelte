@@ -47,7 +47,17 @@
 </script>
 
 <!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
-{#if direction}
+{#if entity.category === 'pages' && (host.route.tab === 'models' || host.route.tab === 'contract')}
+	<div role="tabpanel" aria-label={`${entity.name} models`}>
+		<EntityRelations
+			{host}
+			relations={host.lens.relations(entity.id)}
+			{nav}
+			show="models"
+			{removed}
+		/>
+	</div>
+{:else if direction}
 	<div role="tabpanel" aria-label={`${entity.name} ${said[direction]}`}>
 		<EntityRelations
 			{host}

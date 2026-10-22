@@ -90,7 +90,7 @@ export const fits = (page: Page): Promise<boolean> =>
 function visualTabs(category: ExplorerLocation['category']): string[] {
 	return [
 		'Overview',
-		'Contract',
+		category === 'pages' ? 'Models' : 'Contract',
 		'Used In',
 		'Uses',
 		...(category === 'components' ? ['Audio'] : []),

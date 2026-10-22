@@ -30,6 +30,7 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		id: 'app.model.order',
 		kind: 'model',
 		title: 'Order',
+		responsibility: 'An order placed by an account.',
 		dependencies: [],
 		owns: { source: ['src/models/orders/Order.ts'], symbols: ['Order'] }
 	};

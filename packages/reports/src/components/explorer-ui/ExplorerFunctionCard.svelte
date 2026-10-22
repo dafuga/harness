@@ -7,8 +7,15 @@
 		row,
 		nav,
 		lens,
-		mediaBase
-	}: { row: CatalogRow; nav: EntityNav; lens: EntityLens; mediaBase: string } = $props();
+		mediaBase,
+		showUsage = true
+	}: {
+		row: CatalogRow;
+		nav: EntityNav;
+		lens: EntityLens;
+		mediaBase: string;
+		showUsage?: boolean;
+	} = $props();
 	let to = $derived(
 		entityLens(nav.route, {
 			category: row.entity.category,
@@ -57,13 +64,15 @@
 	>
 		<code>{call}</code>
 	</EntityLink>
-	<ExplorerUsage
-		consumers={row.usedIn ?? []}
-		{nav}
-		{lens}
-		{mediaBase}
-		layout={row.entity.category === 'models' ? 'flat' : 'grouped'}
-	/>
+	{#if showUsage}
+		<ExplorerUsage
+			consumers={row.usedIn ?? []}
+			{nav}
+			{lens}
+			{mediaBase}
+			layout={row.entity.category === 'models' ? 'flat' : 'grouped'}
+		/>
+	{/if}
 </article>
 
 <style>

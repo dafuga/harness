@@ -15,6 +15,7 @@
 		lens,
 		mediaBase,
 		verification = true,
+		showUsage = true,
 		batch = 0,
 		label = category
 	}: {
@@ -24,6 +25,7 @@
 		lens: EntityLens;
 		mediaBase: string;
 		verification?: boolean;
+		showUsage?: boolean;
 		batch?: number;
 		label?: string;
 	} = $props();
@@ -55,7 +57,7 @@
 						{verification}
 						shot={catalogShot(lens.evidence(row.entity.unit), row.entity.unit.preview)}
 					/>
-				{:else}<ExplorerFunctionCard {row} {nav} {lens} {mediaBase} />{/if}
+				{:else}<ExplorerFunctionCard {row} {nav} {lens} {mediaBase} {showUsage} />{/if}
 			{/each}
 		</div>
 	{:else}

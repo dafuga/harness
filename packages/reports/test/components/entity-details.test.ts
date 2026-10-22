@@ -17,7 +17,7 @@ const tabs = (body: string) =>
 
 test('details opens on the contract with size and performance, and shows no source', () => {
 	const body = content('commit', page);
-	expect(tabs(body)).toEqual(['Overview', 'Contract', 'Uses', 'States', 'History', 'Source']);
+	expect(tabs(body)).toEqual(['Overview', 'Models', 'Uses', 'States', 'History', 'Source']);
 	expect(words(body)).toContain('Lists the orders of an account.');
 	for (const heading of ['Contract', 'Performance profile']) {
 		expect(body).toContain(`aria-label="${heading}"`);
@@ -179,13 +179,17 @@ test('a declared contract explains each item in its dedicated tab and details', 
 		errors: [{ name: 'not-at-revision', type: 'notice', description: 'A missing page is said.' }]
 	};
 	const units = head.registry.units.map((unit) =>
-		unit.id === ids.page ? { ...unit, contract: told } : unit
+		unit.id === ids.settings ? { ...unit, contract: told } : unit
 	);
 	head.registry = { ...head.registry, units };
-	const details = content('commit', page, { head });
+	const details = content(
+		'commit',
+		{ category: 'configs', entity: ids.settings, section: 'details' },
+		{ head }
+	);
 	const contract = content(
 		'commit',
-		{ category: 'pages', entity: ids.page, tab: 'contract' },
+		{ category: 'configs', entity: ids.settings, tab: 'contract' },
 		{ head }
 	);
 	for (const body of [details, contract]) {
