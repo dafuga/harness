@@ -143,6 +143,7 @@ export class KernelBenchmarkService {
 			return benchMeasurement(this.context, {
 				...base,
 				value: await runtime.memoryBytes(),
+				samples: 1,
 				method
 			});
 		}
@@ -150,7 +151,7 @@ export class KernelBenchmarkService {
 			const peak = peakMemory(this.artifacts.native, [], JSON.stringify(run.request));
 			const value = 'bytes' in peak ? peak.bytes : peak;
 			const method = 'Peak resident set size of one native process run, from /usr/bin/time.';
-			return benchMeasurement(this.context, { ...base, value, method });
+			return benchMeasurement(this.context, { ...base, value, samples: 1, method });
 		}
 		const unavailable =
 			target === 'http'
