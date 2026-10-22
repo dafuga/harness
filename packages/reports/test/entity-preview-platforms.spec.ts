@@ -1,6 +1,7 @@
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, ready, viewports } from './entityPreviewPage';
 import { commits } from './entityUnits';
+import { startRoute } from './entityPreviewPlatformEvidence';
 
 const platforms = [
 	['Web', 'web', 'orders-web'],
@@ -19,6 +20,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await capture(page, `platforms-entry-${viewport}`);
 		const navigation = page.getByRole('navigation', { name: 'Harness categories' });
 		await expect(navigation.getByRole('link', { name: 'Platforms', exact: true })).toBeVisible();
+		await startRoute(page);
 		await navigation.getByRole('link', { name: 'Platforms', exact: true }).click();
 		await ready(page);
 		await capture(page, `platforms-list-${viewport}`);
@@ -27,6 +29,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		).toBeVisible();
 		await expect(page.getByRole('main').getByRole('article')).toHaveCount(4);
 		for (const [name, id, value] of platforms) {
+			await startRoute(page);
 			await page.getByRole('link', { name: `View ${name} configuration`, exact: true }).click();
 			await ready(page);
 			await capture(page, `platforms-${id}-${viewport}`);
@@ -42,12 +45,14 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(page.getByRole('heading', { level: 1, name, exact: true })).toBeVisible();
 			await page.getByRole('link', { name: 'Platforms', exact: true }).last().click();
 		}
+		await startRoute(page);
 		await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);
 		await page.getByRole('link', { name: 'View Web configuration', exact: true }).click();
 		await expect(page.getByRole('main')).toContainText(
 			'No platform configuration is recorded at this revision.'
 		);
 		await expect(page.getByRole('main')).not.toContainText('orders-web');
+		await capture(page, `platforms-missing-${viewport}`);
 	});
 }
 

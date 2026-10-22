@@ -2,6 +2,7 @@ import { expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
+import { capturePlatformEvidence } from './entityPreviewPlatformEvidence';
 
 /** Keeps what the page shows, when a run asks for screenshots; the name says what and how wide. */
 export async function capture(page: Page, name: string): Promise<void> {
@@ -16,6 +17,7 @@ export async function capture(page: Page, name: string): Promise<void> {
 	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
 	mkdirSync(directory, { recursive: true });
 	const pixels = await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
+	await capturePlatformEvidence(page, name, pixels);
 	const observed = await page.evaluate(() => {
 		const navigation = performance.getEntriesByType('navigation')[0] as
 			| PerformanceNavigationTiming
