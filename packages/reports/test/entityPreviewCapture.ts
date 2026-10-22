@@ -1,11 +1,28 @@
 import { expect, type Page } from '@playwright/test';
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
-import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { BuildIdentityService } from '../../../src/services/BuildIdentityService';
+import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { unitIdPattern } from '../../../src/core/unitTypes';
+import { previewHome } from './entityPreviewSetup';
+
+/** The compiled fixture files served by entityPreviewPage, independently of its synthetic history. */
+export async function previewIdentity() {
+	const built = await new BuildIdentityService().identify(previewHome());
+	if (!built) throw new Error('The entity preview build is missing.');
+	return {
+		buildId: built.buildId,
+		revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
+	};
+}
 
 /** Keeps what the page shows, when a run asks for screenshots; the name says what and how wide. */
-export async function capture(page: Page, name: string, units: string[] = []): Promise<void> {
+export async function capture(
+	page: Page,
+	name: string,
+	units = ['reports.component.harness-explorer-content']
+): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
 	await page.evaluate(async () => {
 		await document.fonts.ready;
@@ -17,6 +34,7 @@ export async function capture(page: Page, name: string, units: string[] = []): P
 	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
 	mkdirSync(directory, { recursive: true });
 	const pixels = await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
+	await retain(page, { name, units, pixels });
 	const observed = await page.evaluate(() => {
 		const navigation = performance.getEntriesByType('navigation')[0] as
 			| PerformanceNavigationTiming
@@ -40,61 +58,85 @@ export async function capture(page: Page, name: string, units: string[] = []): P
 			...observed
 		})
 	);
-	keepCapture(pixels, name, units, observed);
 }
 
-function keepCapture(
-	pixels: Uint8Array,
-	name: string,
-	units: string[],
-	observed: { navigationMs: number | null; rendererJsHeapBytes: number | null }
-): void {
-	if (!evidenceRequested() || !units.length) return;
-	const revision = process.env.HARNESS_VERIFY_REVISION;
-	if (!/^[a-f0-9]{40}$/.test(revision ?? '')) throw new Error('Missing captured source revision');
-	const home = process.env.ENTITY_PREVIEW_HOME ?? '/tmp/harness-entity-preview';
-	const buildId = createHash('sha256')
-		.update(readFileSync(join(home, 'preview.iife.js')))
-		.digest('hex');
-	for (const unit of units)
+/** Explicit units are the real UI exercised by the caller, never the synthetic entities pictured. */
+async function retain(page: Page, capture: { name: string; units: string[]; pixels: Buffer }) {
+	if (!process.env.HARNESS_EVIDENCE_DIR) return;
+	const server = await page.evaluate(
+		() =>
+			(window as unknown as { previewBuild?: { buildId: string; revision: string } }).previewBuild
+	);
+	expect(server, 'the page reports the compiled fixture it actually served').toEqual(
+		await previewIdentity()
+	);
+	const state = capture.name.toLowerCase().replace(/[^a-z0-9.-]+/g, '-');
+	const size = page.viewportSize()!;
+	let viewport = 'tablet';
+	if (size.width >= 1200) viewport = 'desktop';
+	if (size.width <= 480) viewport = 'mobile';
+	const measurements = await observations(page, `${state}-${size.width}x${size.height}`);
+	for (const unit of new Set(capture.units)) {
+		assertVisualUnit(unit);
+		const line = { evidence: unit, state, viewport, server };
 		recordCapture(
 			{
-				evidence: unit,
+				...line,
 				kind: 'screenshot',
-				state: name,
-				file: `${name}.png`,
+				file: `${unit}-${state}.png`,
 				mediaType: 'image/png',
 				provenance: 'actual-capture',
-				server: { buildId, revision: revision! },
-				note: 'Actual shared explorer UI over the standard synthetic orders history; not a live project run.'
+				note: 'Real shared UI over a synthetic history; not a capture of the fictional entity.'
 			},
-			pixels
+			capture.pixels
 		);
-	const measurements = units.flatMap((unit) =>
-		Object.entries(observed)
-			.filter(([, value]) => value !== null)
-			.map(([metric, value]) => ({
-				unit,
-				workload: name,
-				target: 'module',
-				samples: 1,
-				metric: metric === 'navigationMs' ? 'navigation-ms' : 'renderer-js-heap-bytes',
-				unitOfMeasure: metric === 'navigationMs' ? 'ms' : 'bytes',
-				value,
-				method:
-					'Browser Navigation Timing and whole-renderer JavaScript heap after fonts and images settle; includes shared code and fixtures, not isolated component allocation.'
-			}))
-	);
-	recordCapture(
+		recordCapture(
+			{ ...line, kind: 'benchmark', file: `${unit}-${state}.json`, mediaType: 'application/json' },
+			JSON.stringify({ measurements: measurements.map((row) => ({ ...row, unit })) })
+		);
+	}
+}
+
+function assertVisualUnit(unit: string) {
+	if (!unitIdPattern.test(unit)) throw new Error(`Invalid capture unit: ${unit}`);
+	const path = join(import.meta.dirname, '../../../specification/units', `${unit}.json`);
+	const registered = JSON.parse(readFileSync(path, 'utf8')) as { kind: string; status: string };
+	if (registered.status !== 'active' || !['page', 'component', 'shell'].includes(registered.kind))
+		throw new Error(`Capture unit must be an active visual module: ${unit}`);
+}
+
+/** Document navigation and current renderer heap are contextual workloads, not isolated allocations. */
+async function observations(page: Page, workload: string) {
+	const timing = await page.evaluate(() => {
+		const first = (window as unknown as { previewInitialUrl: string }).previewInitialUrl;
+		const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+		return first === location.href ? navigation?.duration : undefined;
+	});
+	const session = await page.context().newCDPSession(page);
+	const heap = await session.send('Runtime.getHeapUsage');
+	await session.detach();
+	const context = { workload, target: 'http', samples: 1 };
+	return [
 		{
-			evidence: 'entity-preview-workloads',
-			kind: 'benchmark',
-			state: name,
-			file: `${name}.json`,
-			mediaType: 'application/json'
+			...context,
+			metric: 'browser-navigation-ms',
+			unitOfMeasure: 'ms',
+			value: timing && timing > 0 ? timing : null,
+			...(!(timing && timing > 0)
+				? { unavailable: 'No fresh document navigation for this UI state.' }
+				: {}),
+			method:
+				'Whole fixture document NavigationTiming; shared code included, not isolated component latency.'
 		},
-		JSON.stringify({ measurements })
-	);
+		{
+			...context,
+			metric: 'browser-js-heap-bytes',
+			unitOfMeasure: 'bytes',
+			value: heap.usedSize,
+			method:
+				'Whole page Chromium Runtime.getHeapUsage after images and fonts settled; shared code included, not isolated component allocation.'
+		}
+	];
 }
 /** Wait for the visible capture to render without forcing offscreen lazy images to load. */
 export async function ready(page: Page): Promise<void> {
