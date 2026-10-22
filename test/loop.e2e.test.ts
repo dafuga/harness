@@ -133,25 +133,24 @@ test.each(['bug-fix', 'fix', 'regression-prevention'])(
 	120_000
 );
 
+const captureCommit = [
+	'git',
+	'-c',
+	'user.name=Fixture',
+	'-c',
+	'user.email=fixture@harness.invalid',
+	'commit',
+	'-qm',
+	'fix: capture existing behavior'
+];
+
 test('standalone evidence capture preserves images and measurements without inventing a regression or full verdict', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-capture-cli-'));
 	try {
 		await prepareRepair(root, 'bug-fix');
 		await writeFile(join(root, 'source.ts'), 'export const value = 3;');
 		await runCommand(['git', 'add', 'source.ts'], root);
-		await runCommand(
-			[
-				'git',
-				'-c',
-				'user.name=Fixture',
-				'-c',
-				'user.email=fixture@harness.invalid',
-				'commit',
-				'-qm',
-				'fix: capture existing behavior'
-			],
-			root
-		);
+		await runCommand(captureCommit, root);
 		const result = await runHarness(
 			[
 				'loop',
