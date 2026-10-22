@@ -84,6 +84,8 @@ function includedUnits(page: string): string[] {
 
 /** The registered framework page of this exact route. */
 export function pageUnit(address: string): string | undefined {
+	if (/^\/harness\/commit\/[a-f0-9]{40}(?:\/|$)/.test(new URL(address).pathname))
+		return 'reports.page.harness-view';
 	const match =
 		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
 			new URL(address).pathname

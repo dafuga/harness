@@ -90,13 +90,13 @@ test('private helpers stay off the shared catalog while their historical pages r
 	await expect(page.getByText(/Nothing named function.extra is in the registry/)).toBeVisible();
 	await checkpoint(page, 'catalog-missing');
 	await page.goto(at('main', commits.added, 'functions/function.extra'));
-	await expect(page.getByRole('heading', { level: 1, name: 'Extra', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'extra', exact: true })).toBeVisible();
 	await page.goto(at('main', commits.removed, 'functions/function.extra'));
 	await checkpoint(page, 'catalog-removed');
 	await expect(
 		page.getByRole('button', { name: 'Removed at this commit', exact: true })
 	).toBeVisible();
-	await expect(page.getByRole('heading', { level: 1, name: 'Extra', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 1, name: 'extra', exact: true })).toBeVisible();
 	await expect(
 		page.getByRole('heading', { name: 'Not at this revision', exact: true })
 	).toHaveCount(0);

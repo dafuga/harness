@@ -8,7 +8,7 @@ const content = (page: Page) => page.locator('.ex-content');
 const titled = (page: Page, name: string) =>
 	expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
 const listed = (page: Page) =>
-	expect(content(page).getByRole('link', { name: 'Title frame', exact: true })).toBeVisible();
+	expect(content(page).getByRole('link', { name: 'TitleFrame', exact: true })).toBeVisible();
 const active = (page: Page, name: string) =>
 	expect(nav(page).getByRole('link', { name, exact: true })).toHaveAttribute(
 		'aria-current',
@@ -34,7 +34,7 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	// Its overview, what it uses and that nothing uses it yet.
 	async shell(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}`));
-		await titled(page, 'Title frame');
+		await titled(page, 'TitleFrame');
 		await expect(page.getByRole('tab', { name: 'Overview', exact: true })).toHaveAttribute(
 			'aria-selected',
 			'true'
@@ -50,7 +50,7 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	},
 	async 'shell-history'(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}/history`));
-		await titled(page, 'Title frame');
+		await titled(page, 'TitleFrame');
 	},
 	// The address of a component leads a shell to Shells, with its branch, commit, section and tab.
 	async 'shell-redirect'(page) {
@@ -63,14 +63,14 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	async 'shell-earlier'(page) {
 		const earlier = at(shellsBranch, commits.framed, `components/${unit}`);
 		await page.goto(earlier);
-		await titled(page, 'Title frame');
+		await titled(page, 'TitleFrame');
 		await expectPath(page, earlier);
 		await active(page, 'Components');
 	},
 	// A commit no branch keeps: its address has no branch, and none is invented.
 	async 'shell-retained'(page) {
 		await page.goto(`/harness/commit/${commits.shellRetained}/shells/${unit}/history`);
-		await titled(page, 'Title frame');
+		await titled(page, 'TitleFrame');
 		await active(page, 'Shells');
 	}
 };

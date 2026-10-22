@@ -16,6 +16,11 @@ import {
 	type Viewport
 } from './support/harnessCapture';
 import { fixtures } from './support/fixtures';
+import { pageUnit } from './support/pageBenchmark';
+
+const scenario = scenarioManifestSchema.parse(
+	JSON.parse(readFileSync('../../specification/scenarios/harness-console.json', 'utf8'))
+);
 
 const built = `http://127.0.0.1:${Number(process.env.HARNESS_CONSOLE_E2E_EXPOSED_PORT || 5592)}`;
 test.use({ baseURL: built });
@@ -28,6 +33,11 @@ for (const viewport of viewports) {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		for (const [state, reach] of Object.entries(states)) {
 			await reach(page);
+			const actualPage = pageUnit(page.url());
+			expect(actualPage, state).toBeDefined();
+			expect(scenario.states.find((entry) => entry.id === state)?.units, state).toContain(
+				actualPage
+			);
 			await captureScreen(page, state, viewport as Viewport);
 			// What a flow asked for and what the application then showed is recorded once.
 			const flow = viewport.id === 'desktop' ? explorerFlows[state] : undefined;
@@ -47,9 +57,6 @@ test('the recorded tone plays through the explorer player and is captured as it 
 test('what was captured satisfies the scenario contract, and another build would not', async ({
 	page
 }) => {
-	const scenario = scenarioManifestSchema.parse(
-		JSON.parse(readFileSync('../../specification/scenarios/harness-console.json', 'utf8'))
-	);
 	const { gathered, failures } = gatherCaptures(evidenceDirectory, 'evidence');
 	expect(failures).toEqual([]);
 	const flows = Object.keys(explorerFlows).length * 2;
