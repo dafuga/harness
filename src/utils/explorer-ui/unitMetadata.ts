@@ -21,6 +21,8 @@ export interface PublicServiceClass {
 }
 
 export interface UnitMetadata {
+	/** Committed initializer expressions, never values read from the host environment. */
+	configValues?: ConfigVariable[];
 	sourceFiles?: SourceFileSnapshot[];
 	catalog?: { visibility: 'public' | 'internal' };
 	group?: { id: string; title: string };
@@ -32,6 +34,12 @@ export interface UnitMetadata {
 	/** Concrete declarations, instance methods and constructor references from this revision. */
 	serviceClasses?: PublicServiceClass[];
 	helperGap?: string;
+}
+
+export interface ConfigVariable {
+	name: string;
+	value: string;
+	source: string;
 }
 
 export interface SourceFileSnapshot {
