@@ -28,9 +28,10 @@ async function foreign() {
 }
 
 /** One real spec file as `bun run test:e2e` runs it outside a verification, on a named port. */
-function ordinaryRun(port: string) {
+function ordinaryRun(port: string, verifying = false) {
 	const env: NodeJS.ProcessEnv = { ...process.env, HARNESS_DESKTOP_TEST_PORT: port, NO_COLOR: '1' };
-	delete env.HARNESS_VERIFY;
+	if (verifying) env.HARNESS_VERIFY = '1';
+	else delete env.HARNESS_VERIFY;
 	const args = ['run', 'test:e2e', 'ui-hosted.spec.ts', '-x'];
 	return new Promise<{ code: number; said: string }>((resolve) => {
 		execFile('bun', args, { cwd: desktop, env }, (error, stdout, stderr) =>
@@ -47,6 +48,39 @@ test('a server that already answers on the preview port is refused, and no test 
 	expect(run.said).toContain(`http://127.0.0.1:${other.port} is already used`);
 	expect(run.code).not.toBe(0);
 }, 120_000);
+
+test.each([false, true])(
+	'public and owner config honor the named port in verification=%s',
+	async (verifying) => {
+		const other = await foreign();
+		const env = {
+			...process.env,
+			HARNESS_DESKTOP_TEST_PORT: other.port,
+			HARNESS_VERIFY: verifying ? '1' : ''
+		};
+		const program = `
+		const { default: entry } = await import('./playwright.config.ts');
+		const { default: owner } = await import('./src/config/development-tooling/desktopPlaywrightConfig.ts');
+		console.log(JSON.stringify({ same: entry === owner, url: entry.use.baseURL, reuse: entry.webServer.reuseExistingServer }));
+	`;
+		const cold = await new Promise<{ code: number; output: string }>((done) => {
+			execFile('bun', ['--eval', program], { cwd: desktop, env }, (error, stdout, stderr) =>
+				done({ code: error ? 1 : 0, output: stdout + stderr })
+			);
+		});
+		expect(cold.code, cold.output).toBe(0);
+		expect(JSON.parse(cold.output), 'Every browser mode must honor its owned port').toEqual({
+			same: true,
+			url: `http://127.0.0.1:${other.port}`,
+			reuse: false
+		});
+		const run = await ordinaryRun(other.port, verifying);
+		expect(browsers(other.agents)).toEqual([]);
+		expect(run.said).toContain(`http://127.0.0.1:${other.port} is already used`);
+		expect(run.code).not.toBe(0);
+	},
+	120_000
+);
 
 test('a port override that is no port is refused by its name before anything starts', async () => {
 	const run = await ordinaryRun('5796x');
