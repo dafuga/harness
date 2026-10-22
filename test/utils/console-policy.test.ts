@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { observedTaskOperation } from '../support/taskProfiles';
 import {
 	consolePolicy,
 	loopbackAddress
@@ -35,7 +36,11 @@ test('consolePolicy is off unless owner mode, a loopback bind and a real peer ad
 	expect(await consolePolicy({ mode: 'loopback', bind: '0.0.0.0' })(local)).toBe(false);
 	expect(await consolePolicy({ mode: 'on', bind: '127.0.0.1' })(local)).toBe(false);
 	expect(await consolePolicy({ ...owner, addressHeader: 'x-forwarded-for' })(local)).toBe(false);
-	expect(await denyAll(local)).toBe(false);
+	expect(
+		await observedTaskOperation('function.console-policy', 'default-denies-loopback-request', () =>
+			denyAll(local)
+		)
+	).toBe(false);
 	const throwing = {
 		...local,
 		getClientAddress: () => {

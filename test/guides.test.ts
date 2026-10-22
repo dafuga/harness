@@ -1,4 +1,6 @@
 import { expect, test } from 'vitest';
+import { resolve } from 'node:path';
+import { profilePublicEntry } from './support/taskProfiles';
 import { availableGuideTopics, findGuide, guides } from '../src/guides/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
 
@@ -54,4 +56,20 @@ test('available guide topics are unique for CLI error output', () => {
 
 	expect(topics).toEqual([...new Set(topics)]);
 	expect(topics.filter((topic) => topic === 'controller')).toHaveLength(1);
+});
+
+test.each([
+	['console', 'consoleGuides'],
+	['history', 'historyGuides'],
+	['loop', 'loopGuide'],
+	['runtimes', 'runtimeGuides'],
+	['units', 'unitGuides'],
+	['verification', 'verificationGuides']
+])('the %s guide data cold-loads through its actual public entry', async (file, exported) => {
+	const names = await profilePublicEntry(
+		`guide.${file}`,
+		resolve(import.meta.dirname, `../src/guides/${file}.ts`),
+		[exported]
+	);
+	expect(names).toEqual([exported]);
 });

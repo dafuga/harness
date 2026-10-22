@@ -1,3 +1,4 @@
+import { profilePublicEntry } from './support/taskProfiles';
 import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { mkdir, mkdtemp, readFile, rm, writeFile, cp, copyFile, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -190,3 +191,22 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	);
 	await rm(root, { recursive: true, force: true });
 }, 240_000);
+
+test.each([
+	['console', 'consolePolicy'],
+	['contracts', 'componentManifestSchema'],
+	['edge', 'HandlerRuntimeAdapter'],
+	['history', 'evidenceRef'],
+	['index', 'ComponentManifestValidator'],
+	['runtime', 'UnitRuntimeService']
+])(
+	'public source entry %s cold-loads its declared API without starting the CLI',
+	async (entry, exported) => {
+		const names = await profilePublicEntry(
+			`module.${entry}`,
+			resolve(import.meta.dirname, `../src/lib/${entry}.ts`),
+			[exported]
+		);
+		expect(names).toEqual([exported]);
+	}
+);
