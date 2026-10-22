@@ -1,0 +1,118 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [6.15s]
+$ vitest run --exclude "test/**/*.e2e.test.ts" --exclude "test/packaged-reports.e2e.test.ts" test/utils/unit-metadata.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-SM10ha
+
+ ❯ test/utils/unit-metadata.test.ts (42 tests | 1 failed) 106ms
+   × revision metadata derives project categories from the same committed source tree 19ms
+     → configs record their committed variable values: expected { Object (id, kind, ...) } to have property "configValues" with value [ { name: 'example', …(2) } ]
+   ✓ revision metadata lists standalone shared exports without requiring callers 10ms
+   ✓ revision metadata counts distinct actual consumers: 2 11ms
+   ✓ revision metadata counts distinct actual consumers: 2 2ms
+   ✓ revision metadata counts distinct actual consumers: 1 1ms
+   ✓ revision metadata counts distinct actual consumers: 2 2ms
+   ✓ revision metadata counts distinct actual consumers: 2 6ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 2ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function env() { return process.env.MODE; } 2ms
+   ✓ helper purity is an explicit, checked source contract: let state = 0;
+/** @pure */
+export function captured() { return state; } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function writeFile() { console.log("side effect"); return 1; } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function formatDate(iso: string) { return new Date(iso).toISOString(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: export function shared(value: string) { return value.trim(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export async function load() { return fetch("/api"); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function now() { return Date.now(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function random() { return Math.random(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function mutate(input: number[]) { return input.sort(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function write(input: {value: number}) { input.value++; return input; } 1ms
+   ✓ helper purity is an explicit, checked source contract: export function fake() { return "/** @pure */"; } 0ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: 1 1ms
+   ✓ revision metadata counts distinct runtime service owners: 1 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 3ms
+   ✓ revision metadata counts distinct runtime service owners: +0 1ms
+   ✓ revision metadata counts distinct runtime service owners: +0 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 2ms
+   ✓ revision metadata proves service class declarations and construction: 'concrete' 6ms
+   ✓ revision metadata proves service class declarations and construction: 'function' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'object' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'static' 3ms
+   ✓ revision metadata proves service class declarations and construction: 'private' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'abstract' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'callback' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'inherited' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'default' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'forward' 3ms
+   ✓ revision metadata proves service class declarations and construction: 'registry' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'factory' 3ms
+   ✓ revision metadata proves service class declarations and construction: 'shadow' 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata derives project categories from the same committed source tree
+AssertionError: configs record their committed variable values: expected { Object (id, kind, ...) } to have property "configValues" with value [ { name: 'example', …(2) } ]
+
+- Expected: 
+[
+  {
+    "name": "example",
+    "source": "src/config/payments/Example.ts",
+    "value": "1",
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:39:69
+     37|   expect(unit).toHaveProperty('group', { id: 'payments', title: 'Payme…
+     38|  const settings = registry.units.find((unit) => unit.kind === 'config'…
+     39|  expect(settings, 'configs record their committed variable values').to…
+       |                                                                     ^
+     40|   'configValues',
+     41|   [{ name: 'example', value: '1', source: paths[4] }]
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 41 passed (42)
+   Start at  21:18:20
+   Duration  6.37s (transform 246ms, setup 118ms, collect 682ms, tests 106ms, environment 0ms, prepare 54ms)
+
+error: script "test:unit" exited with code 1
