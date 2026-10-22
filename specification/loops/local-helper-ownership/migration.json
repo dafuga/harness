@@ -4796,9 +4796,9 @@
 		{
 			"unit": "function.unit-metadata",
 			"name": "unitMetadata",
-			"definition": "f550da3c5fa65567ed1ceeb81488e17bf3a7939065053b8a27e79396ac7a2ddd",
-			"reason": "Preserve committed examples while deriving revision categories and concrete shared service proofs.",
-			"commit": "16ab6fdf66c235918411bf42bb02e39653653a05",
+			"definition": "4ff008eef84c519795231a6e506ceb4bb6182aa5152c1bea1f09258a08f323f0",
+			"reason": "Read committed config initializers alongside helper metadata without executing modules or borrowing values across revisions.",
+			"commit": "6847bb6128e3fe7bc85aead4517951cbd48d5b13",
 			"previousDefinitions": [
 				{
 					"unit": "function.unit-metadata",
@@ -4806,14 +4806,30 @@
 					"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65",
 					"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
 					"commit": "132d82b5342d010c3431ef40d94a80d02622776d"
+				},
+				{
+					"unit": "function.unit-metadata",
+					"name": "unitMetadata",
+					"definition": "f550da3c5fa65567ed1ceeb81488e17bf3a7939065053b8a27e79396ac7a2ddd",
+					"reason": "Preserve committed examples while deriving revision categories and concrete shared service proofs.",
+					"commit": "16ab6fdf66c235918411bf42bb02e39653653a05"
 				}
 			]
 		},
 		{
 			"unit": "reports.function.entity-catalog",
 			"name": "catalogFilter",
-			"definition": "02c7f4bfe0d1462f76004757ca75e3a934f025d9e18301cd40ce9115e244e130",
-			"reason": "Keep spaced descriptive-title search compatible while every catalog surface displays canonical code names."
+			"definition": "7e14ba1e4fbc322cebec9460d1199b7c13b71d4e9b35243cc67c9e4cd9437276",
+			"reason": "Include config variable source values in the existing revision-scoped catalog search.",
+			"commit": "6847bb6128e3fe7bc85aead4517951cbd48d5b13",
+			"previousDefinitions": [
+				{
+					"unit": "reports.function.entity-catalog",
+					"name": "catalogFilter",
+					"definition": "02c7f4bfe0d1462f76004757ca75e3a934f025d9e18301cd40ce9115e244e130",
+					"reason": "Keep spaced descriptive-title search compatible while every catalog surface displays canonical code names."
+				}
+			]
 		},
 		{
 			"unit": "function.helper-references",

@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "reports.component.explorer-ui-entity-contract-service-methods",
 	"kind": "function",
-	"title": "serviceMethods",
-	"responsibility": "Builds the owning contract component\u2019s service method rows from declared callable contracts.",
+	"title": "serviceContract",
+	"responsibility": "Builds constructor-first service method contracts and unscoped facts for the owning contract view.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,17 +11,19 @@
 		"symbols": ["serviceContract"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "serviceContract.unit",
-				"type": "HarnessUnit"
+				"type": "HarnessUnit",
+				"description": "The viewed service unit, including recorded classes and methods, owned symbols, and declared parameter, return and error fields."
 			}
 		],
 		"outputs": [
 			{
 				"name": "serviceContract",
-				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }"
+				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
+				"description": "Constructor-first callable signatures with parameter, return and error groups, plus facts outside discovered methods. Multiple classes keep qualified method names; no discovered methods returns empty arrays."
 			}
 		],
 		"errors": []

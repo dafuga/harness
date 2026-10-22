@@ -12,7 +12,7 @@ import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { HarnessUnit, HarnessRevision } from '../src/models/Harness.types';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { index, revision } from './entityFixture';
-import { lens, place, scope, type View } from './entityPlaces';
+import { lens, place, viewOf } from './entityPlaces';
 import {
 	declaredContract,
 	legacyReasons,
@@ -93,29 +93,11 @@ if (variant === 'shells') {
 	stored[commits.middle] = withFrame(stored[commits.middle], 'component');
 	stored[commits.tip] = withFrame(stored[commits.tip], 'shell');
 }
-const parents: Record<string, string | null> = {
-	[commits.first]: null,
-	[commits.middle]: commits.first,
-	[commits.tip]: commits.middle
-};
-/** The tip alone, or a selected commit beside the first parent the history gives it. */
-function viewOf(route: ExplorerLocation): View {
-	if (route.commit === null) {
-		return { scope: scope('current', route), head: stored[commits.tip], parent: null };
-	}
-	const parent = parents[route.commit] ?? null;
-	const at = { ...scope('commit', route), commit: route.commit, parent };
-	return {
-		scope: { ...at, atTip: route.commit === commits.tip },
-		head: stored[route.commit],
-		parent: parent ? stored[parent] : null
-	};
-}
 const target = document.getElementById('app') as HTMLElement;
 let mounted: ReturnType<typeof mount> | undefined;
 function show(route: ExplorerLocation) {
 	if (mounted) void unmount(mounted);
-	const shown = viewOf(route);
+	const shown = viewOf(route, stored);
 	history.replaceState(null, '', `#${encodeURIComponent(JSON.stringify(route))}`);
 	mounted = mount(ExplorerContent, {
 		target,

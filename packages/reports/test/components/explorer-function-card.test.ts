@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogScreen.svelte';
 import { revision } from '../entityFixture';
 import { count, drawn, screen, words } from '../entityRender';
@@ -103,34 +104,40 @@ test('documented parameters belong to the displayed revision; missing values sta
 	);
 });
 
-test('helper usage selects three distinct eligible consumers before truncating', () => {
-	const head = withHelpers(revision(commits.tip, []));
-	const body = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
-	const card = /<article\b.*?<\/article>/s.exec(body)![0];
-	expect(words(card)).toContain('Used In');
-	expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
-	expect(card).not.toContain('aria-label="Components"');
-	expect(card).not.toContain('aria-label="Services"');
-	expect(count(card, /<a\b/g)).toBe(4);
-	for (const target of [
-		`components/${ids.list}`,
-		`services/${ids.store}`,
-		'models/app.model.order'
-	])
-		expect(card).toContain(`/branch/feature%2Forders/${target}`);
-	for (const excluded of [ids.page, ids.card, 'missing']) expect(card).not.toContain(excluded);
-	const helper = head.registry.units.find((unit) => unit.id === ids.filter)!;
-	for (const consumers of [
-		[{ unit: ids.page }, { unit: ids.filter }],
-		[{ unit: ids.list }, { unit: ids.filter }],
-		[{ unit: ids.list }, { unit: 'missing' }],
-		[
-			{ unit: ids.list, symbol: 'first' },
-			{ unit: ids.list, symbol: 'second' }
-		]
-	]) {
-		helper.helpers![0].consumers = consumers;
-		const empty = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
-		expect(count(empty, /<article\b/g), 'zero or one visible consumer is private').toBe(0);
-	}
+test('helper usage selects three distinct eligible consumers before truncating', async () => {
+	await measureWorkload(
+		'reports.component.explorer-ui-explorer-module-card',
+		'catalog-card-consumers',
+		() => {
+			const head = withHelpers(revision(commits.tip, []));
+			const body = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
+			const card = /<article\b.*?<\/article>/s.exec(body)![0];
+			expect(words(card)).toContain('Used In');
+			expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
+			expect(card).not.toContain('aria-label="Components"');
+			expect(card).not.toContain('aria-label="Services"');
+			expect(count(card, /<a\b/g)).toBe(4);
+			for (const target of [
+				`components/${ids.list}`,
+				`services/${ids.store}`,
+				'models/app.model.order'
+			])
+				expect(card).toContain(`/branch/feature%2Forders/${target}`);
+			for (const excluded of [ids.page, ids.card, 'missing']) expect(card).not.toContain(excluded);
+			const helper = head.registry.units.find((unit) => unit.id === ids.filter)!;
+			for (const consumers of [
+				[{ unit: ids.page }, { unit: ids.filter }],
+				[{ unit: ids.list }, { unit: ids.filter }],
+				[{ unit: ids.list }, { unit: 'missing' }],
+				[
+					{ unit: ids.list, symbol: 'first' },
+					{ unit: ids.list, symbol: 'second' }
+				]
+			]) {
+				helper.helpers![0].consumers = consumers;
+				const empty = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
+				expect(count(empty, /<article\b/g), 'zero or one visible consumer is private').toBe(0);
+			}
+		}
+	);
 });

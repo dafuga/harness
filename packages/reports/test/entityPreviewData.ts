@@ -211,9 +211,7 @@ export function withMeasurements(detail: HarnessRevision): HarnessRevision {
 	}
 	return detail;
 }
-
 export { withDocumentation } from './entityPreviewDocumentation';
-
 /** Category metadata is synthetic selected-revision data, like contracts and measurements. */
 export function withGroups(detail: HarnessRevision): HarnessRevision {
 	return categorySources(withFrame(detail, 'shell'));

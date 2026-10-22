@@ -3,19 +3,29 @@ import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogS
 import { record, revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 
 const kinds = { configs: ['Configs', 'orderSettings'] } as const;
 
-test('nonvisual collections are tables of their own kind, never image cards', () => {
-	for (const [category, [title, name]] of Object.entries(kinds)) {
-		const at = { category: category as keyof typeof kinds };
-		const body = screen(ExplorerCatalogScreen, 'commit', at);
-		expect(body, category).toContain(`<table class="ex-table" aria-label="${title}"`);
-		expect(words(body), category).toContain(name);
-		expect(count(body, /<article\b/g), category).toBe(0);
-		expect(drawn(body), category).toBe(drawn(content('commit', at)));
-	}
-});
+test('nonvisual collections are tables of their own kind, never image cards', () =>
+	measureWorkload('reports.function.entity-catalog', 'config-catalog-render', () => {
+		for (const [category, [title, name]] of Object.entries(kinds)) {
+			const at = { category: category as keyof typeof kinds };
+			const body = screen(ExplorerCatalogScreen, 'commit', at);
+			expect(body, category).toMatch(
+				new RegExp(`<table class="ex-table(?: [^"]*)?" aria-label="${title}"`)
+			);
+			expect(words(body), category).toContain(name);
+			expect(words(body), 'configs list variable names and source values').toContain(
+				'orderSettings.pageSize 25'
+			);
+			expect(count(body, /scope="col"/g), 'only variable and value columns').toBe(2);
+			expect(words(body)).not.toMatch(/Purpose|Used by|Changed|Verification/);
+			for (const value of ['false', '0', 'null', '""']) expect(words(body)).toContain(value);
+			expect(count(body, /<article\b/g), category).toBe(0);
+			expect(drawn(body), category).toBe(drawn(content('commit', at)));
+		}
+	}));
 
 test('service cards show only the class name and revision-scoped consumer links', () => {
 	for (const mode of ['current', 'commit'] as const) {

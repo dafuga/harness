@@ -9,6 +9,7 @@ import { scanExports } from '../../../utils/development-tooling/scanExports';
 import { hydrateUnitDocumentation } from './unitDocumentation';
 import { ModuleCategoryService } from '../../development-tooling/ModuleCategoryService';
 import { moduleGroup } from '../../../utils/development-tooling/moduleGroup';
+import { configValues } from './configValues';
 
 type Unit = RevisionRegistry['units'][number];
 
@@ -71,6 +72,7 @@ async function servicesAt(tree: HelperTree, unit: Unit): Promise<void> {
 /** Enrich the selected revision from its own source; absent historical files stay absent. */
 export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<void> {
 	await categoriesAt(tree, units);
+	await configurationsAt(tree, units);
 	await hydrateUnitDocumentation(tree, units);
 	const paths = [
 		...new Set(
@@ -105,6 +107,21 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 	for (let start = 0; start < units.length; start += 64)
 		await Promise.all(units.slice(start, start + 64).map((unit) => servicesAt(tree, unit)));
 	await helperConsumers(tree, units);
+}
+
+async function configurationsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): Promise<void> {
+	for (const unit of units) {
+		if (unit.kind !== 'config') continue;
+		unit.configValues = [];
+		for (const source of unit.owns.source) {
+			if (!/\.(?:[cm]?[jt]s|json)$/.test(source)) continue;
+			try {
+				unit.configValues.push(...configValues(await tree.read(source), source));
+			} catch {
+				// A missing historical file cannot retain values from another revision.
+			}
+		}
+	}
 }
 
 async function categoriesAt(tree: HelperTree, units: Unit[]): Promise<void> {
