@@ -2,6 +2,7 @@ import {
 	reviewHelperCard,
 	reviewHelperUsage,
 	reviewModelCard,
+	reviewFlatModelUsage,
 	reviewPrivateFunctions,
 	reviewServiceCard
 } from './entityPreviewFunctions';
@@ -70,6 +71,10 @@ for (const [name, size] of Object.entries(viewports)) {
 			}
 			expect(await fits(tab)).toBe(true);
 			if (category === 'models') {
+				for (const modelCard of await cards.all())
+					await reviewFlatModelUsage(
+						modelCard.getByRole('group', { name: 'Used In', exact: true })
+					);
 				await reviewModelCard(tab, name);
 				expect(browserErrors, 'the model browser flow has no console or page errors').toEqual([]);
 			}

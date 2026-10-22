@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-function-card",
 	"kind": "component",
 	"title": "Function card",
-	"responsibility": "Shows a linked helper invocation or service name and a smaller Used In row linking up to three consumers.",
+	"responsibility": "Shows a linked helper invocation or catalog entity name and a smaller Used In row; model consumers use flat links.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,7 +19,7 @@
 			{
 				"name": "ExplorerFunctionCard.row",
 				"type": "CatalogRow",
-				"description": "The helper or service at the viewed revision, including its recorded name and up to three consumer links."
+				"description": "The helper, service or model at the viewed revision, including its recorded name and consumer links."
 			},
 			{
 				"name": "ExplorerFunctionCard.nav",
@@ -41,7 +41,7 @@
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "Catalog item using the shared Used In consumer links and screenshot previews, with navigation and captures bound to the selected revision. Other item facts and verification follow the category."
+				"description": "Catalog item using revision-scoped Used In links and previews. Model cards show one flat consumer list; helpers and services retain category groups. Other facts and verification follow the category."
 			}
 		],
 		"errors": []

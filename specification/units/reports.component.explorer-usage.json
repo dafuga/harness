@@ -35,13 +35,18 @@
 				"name": "ExplorerUsage.mediaBase",
 				"type": "string",
 				"description": "URL prefix resolving the referenced screenshot file."
+			},
+			{
+				"name": "ExplorerUsage.layout",
+				"type": "'grouped' | 'flat'",
+				"description": "Optional consumer presentation; defaults to category headings, while flat keeps the same links without category labels."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerUsage",
 				"type": "markup",
-				"description": "Compact Used In links or a dash, using the same preview component in catalogs and relationship cards."
+				"description": "Compact Used In links or a dash; grouped by default, with a flat layout for model cards using the same preview links."
 			}
 		],
 		"errors": []
