@@ -1,5 +1,8 @@
 <script lang="ts">
-	import type { ExplorerEntity, ExplorerRelations } from '../../../../models/explorer-ui/Explorer.types';
+	import type {
+		ExplorerEntity,
+		ExplorerRelations
+	} from '../../../../models/explorer-ui/Explorer.types';
 	import { explorerKindCategory } from '../../../../../../../src/utils/explorerRoute';
 	import { entityLens, type EntityNav } from '../../../../utils/explorer-ui/entityLens';
 	import { entityUsage } from './entityUsage';
@@ -19,7 +22,7 @@
 		host: ExplorerScreenProps;
 		nav: EntityNav;
 		/** Which of the two sections is drawn; an overview draws both. */
-		show?: 'both' | 'used-in' | 'uses';
+		show?: 'both' | 'used-in' | 'uses' | 'models';
 		/** The shown commit removed the entity: its revision holds no relation of it. */
 		removed?: boolean;
 	} = $props();
@@ -59,7 +62,27 @@
 
 <!-- What uses the entity and what it uses are two sections; neither names a file. -->
 <div class="ex-relations">
-	{#if show !== 'uses'}
+	{#if show === 'models'}
+		<section class="ex-card" aria-label="Models">
+			<h2>
+				<HarnessIcon name="database" size={22} /> Models
+				<span class="ex-count">{relations.models?.length ?? 0}</span>
+			</h2>
+			<p class="ex-soft">
+				Data models used by this page, including through its components and services.
+			</p>
+			{#if !relations.models?.length}
+				<p class="ex-soft">
+					{removed
+						? `${gone}models are unavailable at this revision.`
+						: 'No data models are recorded for this page.'}
+				</p>
+			{:else}
+				{@render cards(relations.models, 'Models')}
+			{/if}
+		</section>
+	{/if}
+	{#if show === 'both' || show === 'used-in'}
 		<section class="ex-card" aria-label="Used In">
 			<h2>
 				<HarnessIcon name="relationships" size={22} /> Used In
@@ -81,7 +104,7 @@
 			{/each}
 		</section>
 	{/if}
-	{#if show !== 'used-in'}
+	{#if show === 'both' || show === 'uses'}
 		<section class="ex-card" aria-label="Uses">
 			<h2>
 				<HarnessIcon name="layers" size={22} /> Uses

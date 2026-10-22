@@ -14,16 +14,66 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ExplorerStylesScreen.host",
-				"type": "ExplorerScreenProps",
-				"description": "The branch, commit and shared explorer navigation context."
+				"name": "index",
+				"type": "HarnessIndex",
+				"description": "Available project branches and revisions used by the shared explorer frame."
+			},
+			{
+				"name": "head",
+				"type": "HarnessRevision",
+				"description": "Selected revision shown by the shared navigation and revision controls."
+			},
+			{
+				"name": "parent",
+				"type": "HarnessRevision | null",
+				"description": "First parent for selected-commit comparisons; null at branch tip or without a parent."
+			},
+			{
+				"name": "scope",
+				"type": "ExplorerScope",
+				"description": "Selected branch, commit and resolved address for scoped navigation."
+			},
+			{
+				"name": "route",
+				"type": "ExplorerLocation",
+				"description": "Current Styles address, including its selected branch and optional commit."
+			},
+			{
+				"name": "entities",
+				"type": "ExplorerEntity[]",
+				"description": "Revision-scoped entity catalog supplied to the shared explorer frame."
+			},
+			{
+				"name": "lens",
+				"type": "EntityLens",
+				"description": "Host readers for entity contracts, measurements and captured evidence."
+			},
+			{
+				"name": "client",
+				"type": "Pick<HarnessClient, 'revision'>",
+				"description": "Loads revision data when the shared frame needs historical navigation."
+			},
+			{
+				"name": "mediaBase",
+				"type": "string",
+				"description": "Base URL from which the shared frame resolves captured media."
+			},
+			{
+				"name": "onroute",
+				"type": "(to: ExplorerLocation) => void",
+				"description": "Requests navigation while preserving the selected explorer scope."
+			},
+			{
+				"name": "exportHref",
+				"type": "string",
+				"description": "Project export URL; empty when the host provides no export."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerStylesScreen",
 				"type": "markup",
-				"description": "The discovered color, font, type-scale, text-style and layout tokens with their computed CSS values and specimens."
+				"description": "Grouped same-origin CSS variables computed from the running explorer, with color, typography and layout specimens."
 			}
 		],
 		"errors": []

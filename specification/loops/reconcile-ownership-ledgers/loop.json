@@ -2,7 +2,7 @@
 	"name": "reconcile-ownership-ledgers",
 	"goal": "Preserve original relocation proof while recording reviewed main behavior in current ownership guards",
 	"createdAt": "2026-10-21T19:42:49.219Z",
-	"updatedAt": "2026-10-21T19:42:49.219Z",
+	"updatedAt": "2026-10-22T21:28:16.254Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T21:28:14.839Z",
+			"evidence": "Review intentional main definitions, preserve original relocation proof, and restore the genuine committed-source review pack."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T21:28:16.254Z",
+			"evidence": "The unchanged ownership guard already catches the missing follow-ups and pack commits; retain all assertions and three tamper-rejection cases."
 		},
 		{
 			"id": "red",

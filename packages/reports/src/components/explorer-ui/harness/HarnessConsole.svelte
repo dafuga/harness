@@ -34,9 +34,7 @@
 		path: string;
 		/** Goes to another page; `replace` when the address only becomes more exact. */
 		navigate: (path: string, replace: boolean) => void;
-		/** Accepted from earlier hosts and not drawn: the explorer's navigation is rendered here. */
 		links?: Array<{ label: string; href: string }>;
-		/** False where the host serves no export endpoint, so no dead link is offered. */
 		exportable?: boolean;
 		/** What renders the screen. The host has no renderer of its own: whoever mounts it names one. */
 		content: ExplorerScreen;
