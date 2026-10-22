@@ -6,6 +6,7 @@ import { BuildIdentityService } from '../../../src/services/BuildIdentityService
 import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { unitIdPattern } from '../../../src/core/unitTypes';
 import { previewHome } from './entityPreviewSetup';
+import { withoutViewportSuffix } from '../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 
 /** The compiled fixture files served by entityPreviewPage, independently of its synthetic history. */
 export async function previewIdentity() {
@@ -70,11 +71,12 @@ async function retain(page: Page, capture: { name: string; units: string[]; pixe
 	expect(server, 'the page reports the compiled fixture it actually served').toEqual(
 		await previewIdentity()
 	);
-	const state = capture.name.toLowerCase().replace(/[^a-z0-9.-]+/g, '-');
+	const namedState = capture.name.toLowerCase().replace(/[^a-z0-9.-]+/g, '-');
 	const size = page.viewportSize()!;
 	let viewport = 'tablet';
 	if (size.width >= 1200) viewport = 'desktop';
 	if (size.width <= 480) viewport = 'mobile';
+	const state = withoutViewportSuffix(namedState, viewport);
 	const measurements = await observations(page, `${state}-${size.width}x${size.height}`);
 	for (const unit of new Set(capture.units)) {
 		assertVisualUnit(unit);
@@ -83,7 +85,7 @@ async function retain(page: Page, capture: { name: string; units: string[]; pixe
 			{
 				...line,
 				kind: 'screenshot',
-				file: `${unit}-${state}.png`,
+				file: `${unit}-${state}-${viewport}.png`,
 				mediaType: 'image/png',
 				provenance: 'actual-capture',
 				note: 'Real shared UI over a synthetic history; not a capture of the fictional entity.'
@@ -91,7 +93,12 @@ async function retain(page: Page, capture: { name: string; units: string[]; pixe
 			capture.pixels
 		);
 		recordCapture(
-			{ ...line, kind: 'benchmark', file: `${unit}-${state}.json`, mediaType: 'application/json' },
+			{
+				...line,
+				kind: 'benchmark',
+				file: `${unit}-${state}-${viewport}.json`,
+				mediaType: 'application/json'
+			},
 			JSON.stringify({ measurements: measurements.map((row) => ({ ...row, unit })) })
 		);
 	}
