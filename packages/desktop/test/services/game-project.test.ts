@@ -71,10 +71,20 @@ test('invalid game requests fail at the transport boundary', () => {
 test('project creation initializes a game without overwriting an existing directory', async () => {
 	const { session, root } = await fixture();
 	const service = new GameProjectService(session, join(root, 'projects'));
-	const created = await service.create({ name: 'test-game', kind: 'game', dimension: '3d' });
+	// The fixture's Git identity is local to its repository, so the created child gets its own.
+	const identity = { NAME: 'Game Author', EMAIL: 'game@example.invalid' };
+	for (const [name, value] of Object.entries(identity)) {
+		vi.stubEnv('GIT_AUTHOR_' + name, value);
+		vi.stubEnv('GIT_COMMITTER_' + name, value);
+	}
+	const created = await service
+		.create({ name: 'test-game', kind: 'game', dimension: '3d' })
+		.finally(() => vi.unstubAllEnvs());
 	expect(created.project.kind).toBe('game');
 	expect(created.project.dimension).toBe('3d');
 	expect(created.writable).toBe(true);
+	const log = git(join(root, 'projects', 'test-game'), 'log', '-1', '--format=%an %ae|%cn %ce');
+	expect(log).toBe('Game Author game@example.invalid|Game Author game@example.invalid');
 	await expect(
 		service.create({ name: 'test-game', kind: 'game', dimension: '2d' })
 	).rejects.toThrow('already exists');
