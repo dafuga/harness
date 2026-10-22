@@ -92,7 +92,7 @@ async function expandUsageGroups(
 			page,
 			`relations-${kind.toLowerCase()}-initial-${commit ? 'commit' : 'tip'}-${viewport}`
 		);
-		await expect(items, 'shared cards use four-entry batches').toHaveCount(4);
+		await expect(items, 'relationship card groups use four-entry batches').toHaveCount(4);
 		await more.click();
 		await expect(items).toHaveCount(8);
 		await more.press('Enter');
@@ -116,6 +116,7 @@ export async function reviewUsageCards(
 	await reviewConsumerKinds(page, category, direction);
 	const cards = page.locator('.ex-relations article');
 	for (const card of await cards.all()) {
+		await expect(card).toHaveAttribute('data-harness-component', 'explorer-module-card');
 		await expect(
 			card.getByRole('group', { name: 'Used In', exact: true }),
 			'every relationship card includes its usage footer'
@@ -171,13 +172,11 @@ export async function reviewServiceCard(page: Page, viewport: string): Promise<v
 			'only instantiated shared classes with multiple methods are services'
 		).toHaveCount(1);
 		await expect(card, 'service cards show only name and usage').toHaveText(
-			/^\s*OrderStore\s*Used In\s*Components\s*OrderList\s*SearchBox\s*$/
+			/^\s*OrderStore\s*Used In\s*OrderList\s*SearchBox\s*$/
 		);
 		await expect(card.locator('h2, p, img, button, svg, .hx-verdict')).toHaveCount(0);
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
-		await expect(
-			usage.getByRole('list', { name: 'Components', exact: true }).getByRole('link')
-		).toHaveText(['OrderList', 'SearchBox']);
+		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'SearchBox']);
 		for (const search of ['OrderStore', 'OrderStore']) {
 			await page.getByRole('searchbox', { name: 'Search services' }).fill(search);
 			await expect(card).toHaveCount(1);

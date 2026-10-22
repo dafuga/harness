@@ -1,6 +1,10 @@
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, open, ready, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
+const modelUnits = [
+	'reports.component.explorer-ui-explorer-module-card',
+	'reports.component.harness-entity-relations'
+];
 
 test('component contracts expose Props and keep verification states on States', async ({
 	page: tab
@@ -40,7 +44,8 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await open(tab, { category: 'pages', entity: ids.page, commit }, 'groups');
 			await capture(
 				tab,
-				`page-models-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`
+				`page-models-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`,
+				modelUnits
 			);
 			await expect(tab.getByRole('tab', { name: 'Contract', exact: true })).toHaveCount(0);
 			await tab.getByRole('tab', { name: 'Models', exact: true }).click();
@@ -48,9 +53,11 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(panel).toBeVisible();
 			await capture(
 				tab,
-				`page-models-content-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`
+				`page-models-content-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`,
+				modelUnits
 			);
 			const card = panel.getByRole('article', { name: 'Order', exact: true });
+			await expect(card).toHaveAttribute('data-harness-component', 'explorer-module-card');
 			await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
 			await expect(panel.getByRole('article')).toHaveCount(1);
 			await expect(panel).not.toContainText('Order.types');

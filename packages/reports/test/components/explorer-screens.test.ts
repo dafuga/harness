@@ -91,12 +91,12 @@ test('collections reuse visual cards and tables without loading entity detail pa
 		expect(has(entry, ['ExplorerCatalogItems']), 'collections share one item renderer').toEqual([
 			'ExplorerCatalogItems'
 		]);
-	expect(has(entries.cards, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
-		'ExplorerPageCard',
+	expect(has(entries.cards, ['ExplorerModuleCard', 'ExplorerTable'])).toEqual([
+		'ExplorerModuleCard',
 		'ExplorerTable'
 	]);
-	expect(has(entries.table, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
-		'ExplorerPageCard',
+	expect(has(entries.table, ['ExplorerModuleCard', 'ExplorerTable'])).toEqual([
+		'ExplorerModuleCard',
 		'ExplorerTable'
 	]);
 	for (const entry of [entries.cards, entries.table]) {
@@ -130,7 +130,7 @@ test('an overview names its evidence; audio stays in the shared component-tab na
 		expect(has(entry, tabs), entry).toHaveLength(6);
 		expect(has(entry, ['EntityHistory']), entry).toEqual([]);
 		expect(
-			has(entry, ['ExplorerCatalogItems', 'ExplorerPageCard', 'ExplorerTable']),
+			has(entry, ['ExplorerCatalogItems', 'ExplorerModuleCard', 'ExplorerTable']),
 			entry
 		).toHaveLength(3);
 	}

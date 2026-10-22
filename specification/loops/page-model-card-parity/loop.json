@@ -61,7 +61,7 @@
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
 			"status": "pending",
-			"evidence": "Focused verification passes: 668 Reports unit tests, 54 browser cases across desktop/tablet/mobile, Reports/root type checks, format/lint/build, root audit and units check. Reports audit remains blocked by unchanged entityPreviewFunctions.ts at 232 lines against 220. Full CLI/native suites are explicitly deferred; main merge remains held. Actual page empty state and synthetic real-model cards inspected."
+			"evidence": "Integrated main 11fafdf2c (#51): helper split clears the previous Reports audit blocker. Integrated PR #53 at 947af8dd6: all catalog/relationship cards use ExplorerModuleCard; retained Page Models source classification, transitive revision scope, original assertions, region capture and readiness guards. Focused component/category matrix passes 222 tests, Reports typecheck and audit pass. Final combined Reports/browser capture verification pending; CLI/native suites deferred and main landing held."
 		}
 	],
 	"evaluators": [

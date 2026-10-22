@@ -20,7 +20,8 @@ test('a selected page diff shows before, after and performance metric changes', 
 			await captureRegion(
 				tab,
 				'[aria-label="Performance profile"]',
-				`performance-metric-diff-${process.env.SCREENSHOT_LABEL ?? 'run'}`
+				`performance-metric-diff-${process.env.SCREENSHOT_LABEL ?? 'run'}`,
+				['reports.component.harness-entity-overview']
 			);
 		}
 		const profile = tab.getByRole('region', { name: 'Performance profile', exact: true });
