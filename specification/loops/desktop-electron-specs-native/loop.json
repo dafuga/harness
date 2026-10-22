@@ -2,7 +2,7 @@
 	"name": "desktop-electron-specs-native",
 	"goal": "Desktop test:e2e stays headless Chromium; every Electron-launching spec runs only through test:native",
 	"createdAt": "2026-10-22T14:35:15.240Z",
-	"updatedAt": "2026-10-22T14:36:31.481Z",
+	"updatedAt": "2026-10-22T14:37:13.274Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,7 +32,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T14:37:13.274Z",
+			"evidence": "Fix 3ee370c: the native project pattern also takes game-native.spec.ts, so chromium ignores it; README names both Electron suites. Unchanged refusal test passes 3/3 locally. Sealed green refused: runner configuration is a frozen regression input."
 		},
 		{
 			"id": "green",
