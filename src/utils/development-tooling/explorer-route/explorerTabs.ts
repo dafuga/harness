@@ -9,6 +9,7 @@ export const explorerTabs = {
 	overview: [
 		'overview',
 		'contract',
+		'models',
 		'used-in',
 		'uses',
 		'relationships',
@@ -18,7 +19,7 @@ export const explorerTabs = {
 		'states',
 		'source'
 	],
-	details: ['contract', 'measurements', 'source'],
+	details: ['contract', 'models', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
 export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][number];
@@ -32,6 +33,8 @@ function tabQuery(location: ExplorerLocation, search: string): string | null | u
 	let asked = new URLSearchParams(search).get('tab');
 	const visual = ['pages', 'components', 'shells'].includes(location.category);
 	if (invalidAudioTab(asked, location)) return undefined;
+	if (asked === 'models' && location.category !== 'pages') return undefined;
+	if (asked === 'contract' && location.category === 'pages') asked = 'models';
 	if (location.category === 'pages' && asked === 'used-in') return undefined;
 	if (visual && asked === 'tests') asked = 'states';
 	if (location.category === 'functions' && asked === 'tests') asked = 'examples';
