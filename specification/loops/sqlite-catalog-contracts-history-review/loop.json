@@ -2,7 +2,7 @@
 	"name": "sqlite-catalog-contracts-history-review",
 	"goal": "SQLite catalog units declare accurate readable contracts, and history-index source changes retain committed relocation review evidence.",
 	"createdAt": "2026-10-22T12:29:22.049Z",
-	"updatedAt": "2026-10-22T12:30:16.076Z",
+	"updatedAt": "2026-10-22T12:33:52.247Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T12:31:07.980Z",
+			"evidence": "The six SQLite/catalog manifests now carry declared responsibilities and field descriptions. Both changed history implementations are linked to full source commit hashes, with current definitions recorded and original move proofs preserved."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T12:33:52.247Z",
+			"evidence": "The unchanged portable manifest and review-ledger regressions passed at fix commit 288d69edb in the same isolated runtime fingerprint as red 96cdc762b. The broader unit-index ownership test passed separately in the repository worktree; an earlier snapshot attempt could not run it because exported snapshots have no .git directory."
 		},
 		{
 			"id": "verify",
