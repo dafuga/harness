@@ -79,7 +79,15 @@
 		</figure>
 		<div class="ex-page-body">
 			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
-			<ExplorerUsage consumers={row.usedIn ?? []} {nav} {lens} {mediaBase} />
+			<!-- Its first three consumers in one unheaded list; an ellipsis stands for the rest. -->
+			<ExplorerUsage
+				consumers={row.usedIn ?? []}
+				{nav}
+				{lens}
+				{mediaBase}
+				layout="flat"
+				limit={3}
+			/>
 		</div>
 	{/if}
 </article>
@@ -88,6 +96,22 @@
 	.ex-page-card.ex-page-minimal {
 		grid-template-columns: minmax(0, 1fr);
 		gap: 12px;
+	}
+	/* A component card, wherever it is listed: its own capture above its title and Used In list. */
+	.ex-page-card:not(.ex-page-minimal) {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: auto 1fr;
+		gap: 14px;
+		min-width: 0;
+	}
+	.ex-page-card .ex-page-body {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+	.ex-page-card .ex-page-body h2 {
+		font-size: 1.2rem;
 	}
 	:global(.ex-page-open) {
 		display: grid;

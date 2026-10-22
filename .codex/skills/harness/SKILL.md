@@ -96,6 +96,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 - After a squash landing, verify the actual remote base commit's prepared history and visible previews. Feature-commit screenshots alone do not prove merged delivery. Reuse focused pixels only for an identical complete Git source tree, retain their original commit and focused status, and require fresh captures for any different tree. Include sibling squash commits and changed-tree rejection in the standard Git-backed history tests.
 - Apply the same complete-tree identity rule to focused runtime measurements. A source-identical squash may display the original observations with their tested revision intact; it must neither discard those figures nor promote focused evidence into a full verification verdict.
 - Complete and format tracked loop metadata before the final capture run. Keep the captured tree unchanged through landing; further tracked changes require fresh captures.
+- When scoping formatting checks to changed files, include loop and contract metadata after the final evidence update; source-only formatting misses generated metadata changes.
 - For screenshot metadata crossing projections or transports, run the directly changed units' existing isolation and re-derivation tests alongside browser captures, even if full verification is deferred. Carry opaque source-tree identity and original provenance without forwarding prepared-history cache filenames. A browser-only result does not cover that boundary.
 - For a screenshot-viewer change, include the entity being reviewed in the capture command even when its app source is unchanged. Reopen it at the delivered revision and verify every required device image and page workload figure. A current renderer over historical evidence is not proof of current-commit delivery.
 - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
@@ -161,8 +162,10 @@ Include empty usage and missing screenshots. A class-name or entity-name asserti
 alone does not prove interaction parity. Keep screenshot evidence at the failing
 and passing checkpoints; do not substitute another entity or revision's image.
 
-Consumer views must group references by declared module type in both relationship
-sections and shared card footers. Screenshot UI belongs to visual pages, shells
+Relationship sections group references by declared module type. Component card
+footers show one flat list of the first three consumer links, then an ellipsis only
+when more exist; never add category labels to those footers. Other shared card
+footers retain their declared layout. Screenshot UI belongs to visual pages, shells
 and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.

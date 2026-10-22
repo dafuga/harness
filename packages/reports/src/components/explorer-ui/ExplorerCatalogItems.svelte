@@ -89,20 +89,4 @@
 		gap: 18px;
 		min-width: 0;
 	}
-	/* A component card: its own capture above its title and Used In list. */
-	.ex-catalog-grid :global(.ex-page-card) {
-		grid-template-columns: minmax(0, 1fr);
-		grid-template-rows: auto 1fr;
-		gap: 14px;
-		min-width: 0;
-	}
-	.ex-catalog-grid :global(.ex-page-body) {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 10px;
-	}
-	.ex-catalog-grid :global(.ex-page-body h2) {
-		font-size: 1.2rem;
-	}
 </style>
