@@ -41,6 +41,7 @@ test('the sections of an entity are named Used In and Uses, and none is a relati
 			'Contract',
 			...(entity.category === 'pages' ? [] : ['Used In']),
 			'Uses',
+			...(entity.category === 'components' ? ['Audio'] : []),
 			entity.category === 'functions' ? 'Examples' : 'States',
 			'History',
 			'Source'
@@ -120,6 +121,14 @@ test('a former relationships address opens the overview without embedded usage s
 		expect(sections(legacy).filter((name) => /^Use/.test(name))).toEqual([]);
 		expect(legacy).toMatch(/aria-selected="true"[^>]*>\s*Overview/);
 	}
+});
+
+test('the audio section is available only on component details', () => {
+	const at = (category: string) =>
+		explorerRoute(`/branch/main/${category}/TitleList`, '?tab=audio');
+	expect(at('components')?.tab).toBe('audio');
+	for (const category of ['functions', 'configs', 'services'])
+		expect(at(category)?.tab).toBeUndefined();
 });
 
 test('an entity nothing uses, one that uses nothing and one that was removed each say so', () => {

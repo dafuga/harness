@@ -97,7 +97,16 @@ export async function reviewVisual(
 	expect((await evidence.boundingBox())!.y).toBeLessThan((await profile.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
 	await reviewOverviewControls(page, route.category);
-	const tabs = ['Overview', 'Contract', 'Used In', 'Uses', 'States', 'History', 'Source'];
+	const tabs = [
+		'Overview',
+		'Contract',
+		'Used In',
+		'Uses',
+		...(route.category === 'components' ? ['Audio'] : []),
+		'States',
+		'History',
+		'Source'
+	];
 	for (const name of tabs.filter((tab) => route.category !== 'pages' || tab !== 'Used In')) {
 		await page.getByRole('tab', { name, exact: true }).click();
 		if (name === 'Used In') await page.getByRole('tab', { name, exact: true }).press('Shift+Tab');

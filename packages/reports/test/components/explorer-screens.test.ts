@@ -105,7 +105,7 @@ test('collections reuse visual cards and tables without loading entity detail pa
 	}
 });
 
-test('an overview names the evidence of its kind itself, and no pane of another kind', () => {
+test('an overview names its evidence; audio stays in the shared component-tab navigation', () => {
 	const panes = ['EntityScreens', 'EntityBehavior', 'EntityConfig', 'EntityAudio'];
 	const named = (entry: string) =>
 		direct(entry)
@@ -114,8 +114,8 @@ test('an overview names the evidence of its kind itself, and no pane of another 
 	expect(named(entries.visual)).toEqual(['EntityAudio', 'EntityScreens']);
 	expect(named(entries.behavior)).toEqual(['EntityAudio', 'EntityBehavior']);
 	expect(named(entries.config)).toEqual(['EntityConfig']);
-	// The shared frame reaches component captures; each overview still owns only its kind of evidence.
-	expect(has(entries.config, ['EntityAudio'])).toEqual([]);
+	// Shared sections provide the optional Audio tab, while route checks keep it component-only.
+	expect(has(entries.config, ['EntityAudio'])).toEqual(['EntityAudio']);
 	expect(has(entries.behavior, ['EntityConfig'])).toEqual([]);
 	expect(has(entries.visual, ['EntityConfig'])).toEqual([]);
 	for (const entry of [entries.visual, entries.behavior, entries.config]) {
