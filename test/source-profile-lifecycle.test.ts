@@ -78,43 +78,50 @@ export function greet(value: Shape): string { return [marker,value.name,globalTh
 	}
 }, 30_000);
 
-test('declaration collection never substitutes for runtime execution evidence', async () => {
-	const fixture = await runnerFixture(
-		'export const fields=new Map([["id",7]]);',
-		'fields',
-		'Map<string,number>'
-	);
-	try {
-		await fixture.write(
-			'subject.test.ts',
-			`import {expect,test} from 'vitest';
-import {fields} from './subject'; test('real data',()=>expect(fields.size).toBe(1));`
+test.each([0, 2])(
+	'declaration collection and %i module resets preserve runtime evidence',
+	async (resets) => {
+		const fixture = await runnerFixture(
+			'export const fields=new Map([["id",7]]);',
+			'fields',
+			'Map<string,number>'
 		);
-		const script = `import {createVitest} from 'vitest/node';
+		try {
+			await fixture.write(
+				'subject.test.ts',
+				`import {expect,test,vi} from 'vitest';
+import {fields} from './subject'; test('real data',async()=>{
+expect(fields.size).toBe(1);
+for(let index=0;index<${resets};index++){vi.resetModules();const fresh=await import('./subject');expect(fresh.fields.size).toBe(1);}
+});`
+			);
+			const script = `import {createVitest} from 'vitest/node';
 const context=await createVitest('test',{watch:false,run:true});
 try{const result=await context.collect(['subject.test.ts']);
 if(result.unhandledErrors.length)throw new AggregateError(result.unhandledErrors);
 const transformed=await context.vite.transformRequest('/subject.ts',{ssr:true});
 console.log(JSON.stringify({declared:result.testModules.length,observed:transformed.code.includes('__harnessWatch_')}));
 }finally{await context.close();}`;
-		const collected = await fixture.run(['node', '--input-type=module', '--eval', script], {
-			...fixture.environment,
-			HARNESS_COLLECT_FILES: '["subject.test.ts"]'
-		});
-		expect(collected.stdout).toContain('"declared":1,"observed":false');
-		expect(
-			await runnerCaptures(fixture.directory),
-			'declaration-only collection is not a runtime profile'
-		).toEqual([]);
-		await fixture.run(['bun', 'x', 'vitest', 'run'], {
-			...fixture.environment,
-			HARNESS_COLLECT_FILES: ''
-		});
-		expect(await runnerCaptures(fixture.directory)).toHaveLength(2);
-	} finally {
-		await fixture.remove();
-	}
-}, 30_000);
+			const collected = await fixture.run(['node', '--input-type=module', '--eval', script], {
+				...fixture.environment,
+				HARNESS_COLLECT_FILES: '["subject.test.ts"]'
+			});
+			expect(collected.stdout).toContain('"declared":1,"observed":false');
+			expect(
+				await runnerCaptures(fixture.directory),
+				'declaration-only collection is not a runtime profile'
+			).toEqual([]);
+			await fixture.run(['bun', 'x', 'vitest', 'run'], {
+				...fixture.environment,
+				HARNESS_COLLECT_FILES: ''
+			});
+			expect(await runnerCaptures(fixture.directory)).toHaveLength((1 + resets) * 2);
+		} finally {
+			await fixture.remove();
+		}
+	},
+	30_000
+);
 
 test('explicit benchmark children keep user flags and remove only the owned preload', async () => {
 	const fixture = await runnerFixture();
