@@ -8,7 +8,7 @@ import {
 	tip,
 	verdict
 } from './support/explorer';
-import { capturePhase, viewports } from './support/harnessCapture';
+import { capturePhase, settled, viewports } from './support/harnessCapture';
 import { seeded, short } from './support/harnessHistory';
 
 const { commits } = seeded();

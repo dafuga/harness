@@ -28,7 +28,8 @@ import {
 } from './entityPreviewData';
 import { commits, ids } from './entityUnits';
 import { withFocused } from './entityStates';
-import { withHelpers, withRelationGroups } from './entityPreviewHelpers';
+import { withHelpers } from './entityPreviewHelpers';
+import { withRelationGroups } from './entityRelationFixtures';
 import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
 
 /** The synthetic history in a browser, for the checks that need one; no server and no real data. */

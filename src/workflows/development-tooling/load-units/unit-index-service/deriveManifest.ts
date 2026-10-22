@@ -16,6 +16,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 	const kept = input.previous ?? defaults(input);
 	const preview = kept.preview;
 	const documentation = kept.documentation;
+	const catalog = kept.catalog;
 	return {
 		schemaVersion: 1,
 		id: input.id,
@@ -28,6 +29,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		responsibilityOrigin: kept.responsibilityOrigin,
 		status: 'active',
 		...(documentation ? { documentation } : {}),
+		...(catalog ? { catalog } : {}),
 		...lineage(input),
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
 		contract: kept.contract.origin === 'declared' ? kept.contract : derivedContract(files),
@@ -51,6 +53,7 @@ type Declared = Pick<
 	| 'preview'
 	| 'helperContracts'
 	| 'documentation'
+	| 'catalog'
 	| 'budgets'
 >;
 

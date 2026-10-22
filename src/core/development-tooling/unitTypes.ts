@@ -107,6 +107,8 @@ export const componentManifestSchema = z.strictObject({
 		.string()
 		.regex(/^(?!\/)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[a-zA-Z0-9_./-]+\.md$/)
 		.optional(),
+	/** Internal implementation units stay addressable as dependencies but out of public catalogs. */
+	catalog: z.strictObject({ visibility: z.enum(['public', 'internal']) }).optional(),
 	retired: z.strictObject({ reason: text, at: text }).optional(),
 	/** Retired identities this unit continues; their baselines and history carry over. */
 	lineage: z.strictObject({ predecessors: z.array(identifier).min(1) }).optional(),

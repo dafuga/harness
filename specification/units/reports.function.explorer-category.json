@@ -31,7 +31,7 @@
 			{
 				"name": "explorerCategory",
 				"type": "ExplorerCategory | null",
-				"description": "Pages for rendering routes; Helpers only for explicitly pure functions with two distinct runtime consumers. Private or unproven callables have no collection category; other kinds keep their existing category."
+				"description": "Pages for rendering routes; Helpers only for explicitly pure functions with two distinct runtime consumers. Private, unproven and explicitly internal catalog units have no collection category; other kinds keep their existing category."
 			},
 			{
 				"name": "explorerRole",

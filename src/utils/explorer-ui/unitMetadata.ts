@@ -22,6 +22,7 @@ export interface PublicServiceClass {
 
 export interface UnitMetadata {
 	sourceFiles?: SourceFileSnapshot[];
+	catalog?: { visibility: 'public' | 'internal' };
 	group?: { id: string; title: string };
 	documentation?: UnitDocumentation;
 	helpers?: PublicHelper[];

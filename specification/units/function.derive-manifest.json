@@ -34,7 +34,7 @@
 			{
 				"name": "deriveManifest",
 				"type": "ComponentManifest",
-				"description": "Active manifest with sorted source paths, exported symbols, derived or preserved contract, source-based dependencies plus declared dependencies, merged predecessor lineage, runtime, scenarios, preview and budgets. This function returns data without writing the registry."
+				"description": "Derived unit manifest that refreshes source ownership and dependency facts while preserving declared catalog visibility, contract, scenarios, preview, documentation, budgets and lineage."
 			}
 		],
 		"errors": []

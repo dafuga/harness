@@ -41,7 +41,7 @@
 			{
 				"name": "EntitySections.entityTabPanel",
 				"type": "markup",
-				"description": "Only the selected section: overview evidence and summary, consumers in Used In for non-page entities, dependencies in Uses, or recorded test results. A page addressed with Used In shows Overview."
+				"description": "Only the selected section: overview evidence and summary, consumers in Used In for non-page entities, dependencies in Uses, component recordings in Audio, or recorded test results. A page addressed with Used In shows Overview."
 			}
 		],
 		"errors": []
@@ -59,6 +59,11 @@
 		},
 		{
 			"unit": "reports.component.entity-states",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-entity-audio",
 			"via": "import",
 			"origin": "derived"
 		},

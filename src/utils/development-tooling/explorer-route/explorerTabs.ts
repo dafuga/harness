@@ -12,6 +12,7 @@ export const explorerTabs = {
 		'used-in',
 		'uses',
 		'relationships',
+		'audio',
 		'tests',
 		'examples',
 		'states',
@@ -22,10 +23,15 @@ export const explorerTabs = {
 } as const satisfies Record<string, readonly string[]>;
 export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][number];
 
+function invalidAudioTab(asked: string | null, location: ExplorerLocation): boolean {
+	return asked === 'audio' && location.category !== 'components';
+}
+
 /** Keep the category checks in their original order while selecting a query tab. */
 function tabQuery(location: ExplorerLocation, search: string): string | null | undefined {
 	let asked = new URLSearchParams(search).get('tab');
 	const visual = ['pages', 'components', 'shells'].includes(location.category);
+	if (invalidAudioTab(asked, location)) return undefined;
 	if (location.category === 'pages' && asked === 'used-in') return undefined;
 	if (visual && asked === 'tests') asked = 'states';
 	if (location.category === 'functions' && asked === 'tests') asked = 'examples';

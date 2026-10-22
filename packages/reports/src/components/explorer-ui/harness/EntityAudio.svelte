@@ -8,8 +8,14 @@
 	let {
 		evidence,
 		scope,
-		mediaBase
-	}: { evidence: ExplorerEvidence; scope: ExplorerScope; mediaBase: string } = $props();
+		mediaBase,
+		empty = false
+	}: {
+		evidence: ExplorerEvidence;
+		scope: ExplorerScope;
+		mediaBase: string;
+		empty?: boolean;
+	} = $props();
 	let clips = $derived(galleryItems(evidence).filter((item) => item.mediaType === 'audio'));
 	let paired = $derived(evidence.mode === 'commit');
 	interface Pair {
@@ -69,5 +75,10 @@
 				{/each}
 			</div>
 		{/each}
+	</section>
+{:else if empty}
+	<section class="ex-card ex-evidence" aria-labelledby="ex-audio-title">
+		<h2 id="ex-audio-title">Audio evidence</h2>
+		<p class="ex-soft">No audio evidence is recorded for this component at this revision.</p>
 	</section>
 {/if}

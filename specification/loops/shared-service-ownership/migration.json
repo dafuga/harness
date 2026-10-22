@@ -1643,7 +1643,14 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65"
+			"definition": "0e5adf8e0023141a2105822aa0343dfac0d8586df26d217c66c2746decdbacb3",
+			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
+			"review": {
+				"commit": "1bf1e0acb343c3894a34781787bd67cd41c57317",
+				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+				"definition": "0e5adf8e0023141a2105822aa0343dfac0d8586df26d217c66c2746decdbacb3",
+				"reason": "Preserve declared catalog assignments when re-indexing module manifests."
+			}
 		},
 		{
 			"unit": "function.derived-responsibility",

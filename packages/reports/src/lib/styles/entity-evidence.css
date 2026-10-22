@@ -83,10 +83,13 @@
 	margin-left: auto;
 	font-size: 0.92rem;
 }
+/* One 4:3 frame for every viewport; each capture sits whole and centred in it, never cut or stretched. */
 .ex-content .ex-shot {
-	display: block;
+	display: grid;
+	grid-template: minmax(0, 1fr) / minmax(0, 1fr);
 	width: 100%;
-	padding: 0;
+	aspect-ratio: 4 / 3;
+	padding: 12px clamp(16px, 6%, 48px);
 	border: 1px solid var(--ex-line);
 	border-radius: 6px;
 	background: var(--ex-surface);
@@ -96,7 +99,8 @@
 .ex-content .ex-shot img {
 	display: block;
 	width: 100%;
-	height: auto;
+	height: 100%;
+	object-fit: contain;
 }
 .ex-content .ex-standing {
 	color: var(--ex-muted);

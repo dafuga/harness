@@ -84,7 +84,6 @@
 							<span class="ex-tile small"><HarnessIcon name={categoryIcon[category]} /></span>
 							<span>
 								<EntityLink to={open(row)} {nav}>{row.name}</EntityLink>
-								{#if row.shared}<span class="ex-pill gold">Shared</span>{/if}
 								{#if described}<span class="ex-soft ex-block">{row.summary}</span>{/if}
 							</span>
 						</span>

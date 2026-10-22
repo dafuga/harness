@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { content, hostProps, verdicts, words } from '../entityRender';
-import { withRelationGroups } from '../entityPreviewHelpers';
+import { withRelationGroups } from '../entityRelationFixtures';
 import { entityCatalog } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
