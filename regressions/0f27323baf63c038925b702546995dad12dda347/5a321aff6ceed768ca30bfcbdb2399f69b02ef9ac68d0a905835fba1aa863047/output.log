@@ -1,0 +1,74 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [153.00ms]
+$ playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-search-fit.spec.ts --grep "at (834|768|390|1440) pixels the search"
+
+Running 4 tests using 1 worker
+
+(node:24867) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 1440 pixels the search, closed, focused or open, leaves the revision controls whole (424ms)
+  ✘  2 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 834 pixels the search, closed, focused or open, leaves the revision controls whole (167ms)
+(node:24939) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 768 pixels the search, closed, focused or open, leaves the revision controls whole (177ms)
+(node:24988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 390 pixels the search, closed, focused or open, leaves the revision controls whole (343ms)
+
+
+  1) tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 834 pixels the search, closed, focused or open, leaves the revision controls whole 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 774
+    Received:   8.34375
+
+      50 | 	expect(search.width).toBeGreaterThanOrEqual(40);
+      51 | 	expect(search.width).toBeLessThanOrEqual(48);
+    > 52 | 	expect(search.x + search.width).toBeGreaterThan(width - 60);
+         | 	                                ^
+      53 | 	expect(search.x + search.width).toBeLessThanOrEqual(width);
+      54 | 	if (width < 1420) {
+      55 | 		const revision = await box(bar(page).locator('.hx-revision'));
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kDm7Vp/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:52:34)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kDm7Vp/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:84:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-search-fit--da24c-the-revision-controls-whole/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--da24c-the-revision-controls-whole/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--da24c-the-revision-controls-whole/error-context.md
+
+  2) tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 768 pixels the search, closed, focused or open, leaves the revision controls whole 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 708
+    Received:   6.890625
+
+      50 | 	expect(search.width).toBeGreaterThanOrEqual(40);
+      51 | 	expect(search.width).toBeLessThanOrEqual(48);
+    > 52 | 	expect(search.x + search.width).toBeGreaterThan(width - 60);
+         | 	                                ^
+      53 | 	expect(search.x + search.width).toBeLessThanOrEqual(width);
+      54 | 	if (width < 1420) {
+      55 | 		const revision = await box(bar(page).locator('.hx-revision'));
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kDm7Vp/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:52:34)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kDm7Vp/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:84:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-search-fit--2ff96-the-revision-controls-whole/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--2ff96-the-revision-controls-whole/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--2ff96-the-revision-controls-whole/error-context.md
+
+  2 failed
+    tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 834 pixels the search, closed, focused or open, leaves the revision controls whole 
+    tests/e2e/explorer-shell-search-fit.spec.ts:79:2 › at 768 pixels the search, closed, focused or open, leaves the revision controls whole 
+  2 passed (5.3s)
+error: script "test:shell" exited with code 1
