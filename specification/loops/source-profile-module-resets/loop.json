@@ -6,7 +6,7 @@
 	"name": "source-profile-module-resets",
 	"goal": "Retain actual source observations across test module-cache resets without fabricating, replaying or mixing unrelated sinks",
 	"createdAt": "2026-10-22T05:22:33.849Z",
-	"updatedAt": "2026-10-22T05:22:35.503Z",
+	"updatedAt": "2026-10-22T05:29:30.305Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -31,12 +31,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:29:29.284Z",
+			"evidence": "Corrected sample-count corpus at 4c6f03b1d fails with [1,1] instead of [3,3]; exact red seal 45b411cd5915cc2cd5a02b327a6a53071e35923e2696bcfe84af63b721c02a0e."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:29:30.305Z",
+			"evidence": "Retain collectors across module resets, keyed by their original evidence directory and source runtime. Teardown flushes them without replay, cross-sink reassignment or successful samples for failures."
 		},
 		{
 			"id": "implement",
