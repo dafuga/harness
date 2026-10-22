@@ -3,7 +3,7 @@
 	"id": "desktop.component.game-checkpoint-editor",
 	"kind": "component",
 	"title": "GameCheckpointEditor",
-	"responsibility": "Edit checkpoint prerequisites, conditions, actions and agent guidance without changing mechanics.",
+	"responsibility": "Edit advanced checkpoint prerequisites, repeatability, conditions and actions without changing independent mechanics.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -33,7 +33,7 @@
 			{
 				"name": "GameCheckpointEditor",
 				"type": "markup",
-				"description": "Edit checkpoint prerequisites, conditions, actions and agent guidance without changing mechanics. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Edit advanced checkpoint prerequisites, repeatability, conditions and actions without changing independent mechanics."
 			}
 		],
 		"errors": []
