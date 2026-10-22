@@ -2,7 +2,7 @@
 	"name": "desktop-electron-specs-native",
 	"goal": "Desktop test:e2e stays headless Chromium; every Electron-launching spec runs only through test:native",
 	"createdAt": "2026-10-22T14:35:15.240Z",
-	"updatedAt": "2026-10-22T14:35:21.359Z",
+	"updatedAt": "2026-10-22T14:36:31.481Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T14:36:31.481Z",
+			"evidence": "Sealed red d52e370 record d7dbe83b2d07: strengthened refusal test fails 'chromium ignores game-native.spec.ts: expected false to be true'; preview-port refusal cases pass. Command: frozen install, desktop sync, vitest on test/test-preview-refusal.test.ts."
 		},
 		{
 			"id": "implement",
