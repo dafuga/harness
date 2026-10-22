@@ -63,12 +63,27 @@ function madeOf(units: HarnessUnit[], unit: string): Set<string> {
 	return seen;
 }
 
+const visualKinds = new Set(['page', 'shell', 'component']);
+
+/**
+ * Whether the states of a scenario say what they draw: one names a piece together with what it is
+ * drawn in, and not only the page it is a state of.
+ */
+function namesPieces(declared: HarnessScenario, units: HarnessUnit[]): boolean {
+	const direct = users(units);
+	return declared.states.some(({ units: named = [] }) =>
+		named.some((id) => direct.get(id)?.some((user) => named.includes(user)))
+	);
+}
+
 /**
  * A scenario as it applies to one unit: with the states that show that unit. A state names what
  * it is a state of, a page as a rule, and so shows what that is made of in the registry of the
  * revision. A unit is shown by the states that name it and by no other; a unit no state names,
  * by the states that name something made of it; and a unit that nothing named is made of, as an
- * endpoint behind every screen is, stays under every state.
+ * endpoint behind every screen is, stays under every state. Where the states say what they draw,
+ * a page, shell or component none of them names is drawn by none: what imports it lends it no
+ * capture, and only a state that names nothing may still show it.
  */
 export function scenarioFor(
 	declared: HarnessScenario,
@@ -77,6 +92,10 @@ export function scenarioFor(
 ): HarnessScenario {
 	const own = declared.states.filter((state) => state.units?.includes(unit));
 	if (own.length > 0) return { ...declared, states: own };
+	const kind = units.find((item) => item.id === unit)?.kind ?? '';
+	if (visualKinds.has(kind) && namesPieces(declared, units)) {
+		return { ...declared, states: declared.states.filter((state) => !state.units?.length) };
+	}
 	const made = madeOf(units, unit);
 	const drawn = declared.states.filter((state) => state.units?.some((id) => made.has(id)));
 	return drawn.length > 0 ? { ...declared, states: drawn } : declared;
