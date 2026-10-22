@@ -70,7 +70,7 @@
 		},
 		{
 			"id": "project-change-boundary",
-			"title": "Scoped project changes require deployment configuration before an agent writes",
+			"title": "A scoped project change is refused before any agent runs",
 			"coverage": "required",
 			"units": ["desktop.service.project-task", "desktop.function.prepare-project-task"]
 		}
