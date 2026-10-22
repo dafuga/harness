@@ -6,11 +6,9 @@
 	"name": "browser-workflow-profiles",
 	"goal": "Profile one actual browser workflow and its settled renderer heap without borrowing a previous navigation or replaying the action",
 	"createdAt": "2026-10-22T04:52:54.587Z",
-	"updatedAt": "2026-10-22T04:56:23.030Z",
+	"updatedAt": "2026-10-22T05:00:09.810Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -38,12 +36,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:00:08.134Z",
+			"evidence": "The Harness adapter measures one actual action with zero warmups or replays, then reads settled browser heap and build identity. It preserves execute-once behavior when evidence is off and records no success on rejection."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:00:09.810Z",
+			"evidence": "Sealed unchanged ten-case corpus: 80e2169e red and a1e1b450 green at 13c45ac51. Prior navigation refusal and inspector cleanup cases remain passing."
 		},
 		{
 			"id": "verify",
