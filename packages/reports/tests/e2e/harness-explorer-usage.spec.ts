@@ -45,6 +45,9 @@ for (const viewport of viewports) {
 			});
 			expect(layout).toEqual({ stacked: true, fits: true });
 			await checkpoint(page, `shared-cards-${label}-${viewport.id}`);
+			const footer = related.getByRole('group', { name: 'Used In', exact: true });
+			await expect(footer.locator('.ex-usage-kind')).toHaveCount(0);
+			expect(await footer.getByRole('link').count()).toBeLessThanOrEqual(3);
 		}
 	});
 }

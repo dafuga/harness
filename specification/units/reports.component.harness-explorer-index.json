@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-index",
 	"kind": "component",
 	"title": "Entity catalog",
-	"responsibility": "Frames and filters a category’s entities with accessible status and empty-state guidance.",
+	"responsibility": "Groups and searches a category\u2019s entities with accessible status and empty-state guidance.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -45,7 +45,7 @@
 			{
 				"name": "ExplorerIndex",
 				"type": "markup",
-				"description": "Catalog with search empty, changed-only off and name ordering initially. Shows count status, distinct no-registry/no-match states and Show all clearing search/changed-only but preserving order. Adds verification legend and category-specific guidance."
+				"description": "Catalog with a local search field and alphabetical ordering. Shows count status, distinct no-registry/no-match states and a Show all action that clears search. Adds verification legend and category-specific guidance."
 			}
 		],
 		"errors": []
