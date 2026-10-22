@@ -7,6 +7,7 @@ import {
 } from '../../../../test/support/browserTest';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
+import { once } from 'node:events';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { capture, launch, imageProvider, catalogNavigation } from './game-native-fixture';
@@ -192,7 +193,11 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 			finished = true;
 		} finally {
 			if (finished) await app?.close();
-			else app?.process().kill();
+			else if (app && app.process().exitCode === null && app.process().signalCode === null) {
+				const exited = once(app.process(), 'exit');
+				app.process().kill('SIGKILL');
+				await exited;
+			}
 			await rm(profile, { recursive: true, force: true });
 			await rm(root, { recursive: true, force: true });
 		}
