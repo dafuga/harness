@@ -34,17 +34,30 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		dependencies: [],
 		owns: { source: ['src/models/orders/Order.ts'], symbols: ['Order'] }
 	};
+	const types = {
+		...model,
+		id: 'app.model.order-types',
+		title: 'Order.types',
+		owns: { source: ['src/models/orders/Order.types.ts'], symbols: ['OrderInput'] }
+	};
 	return {
 		...detail,
 		registry: {
 			...detail.registry,
 			units: [
 				...detail.registry.units,
-				...(detail.registry.units.some((unit) => unit.id === model.id) ? [] : [model])
+				...(detail.registry.units.some((unit) => unit.id === model.id) ? [] : [model, types])
 			].map((unit) =>
 				categoryUnit(
 					unit.id === ids.store && detail.commit !== 'a'.repeat(40)
-						? { ...unit, dependencies: [...unit.dependencies, { unit: model.id, via: 'import' }] }
+						? {
+								...unit,
+								dependencies: [
+									...unit.dependencies,
+									{ unit: model.id, via: 'import' },
+									{ unit: types.id, via: 'import' }
+								]
+							}
 						: unit,
 					detail.commit
 				)

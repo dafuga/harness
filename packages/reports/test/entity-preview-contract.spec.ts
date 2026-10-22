@@ -50,6 +50,14 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				tab,
 				`page-models-content-${process.env.SCREENSHOT_LABEL ?? 'run'}-${viewport}-${commit ? 'commit' : 'tip'}`
 			);
+			const card = panel.getByRole('article', { name: 'Order', exact: true });
+			await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
+			await expect(panel.getByRole('article')).toHaveCount(1);
+			await expect(panel).not.toContainText('Order.types');
+			const consumer = card.getByRole('link', { name: 'OrderStore', exact: true });
+			await consumer.focus();
+			await expect(tab.getByRole('tooltip', { name: 'Preview of OrderStore' })).toBeVisible();
+			await tab.keyboard.press('Escape');
 			const model = panel.getByRole('link', { name: 'Order', exact: true });
 			await expect(model).toBeVisible();
 			await model.click();

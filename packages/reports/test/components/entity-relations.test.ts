@@ -137,7 +137,11 @@ test('page models include models reached through services and remain bound to th
 		expect(body).toContain('aria-label="Orders page models"');
 		expect(body).toContain('/models/app.model.order');
 		expect(words(body)).not.toContain('Unrelated');
-		expect(body.slice(body.indexOf('aria-label="Orders page models"'))).not.toContain('Used In');
+		const catalog = content('current', { category: 'models' }, { head });
+		const card = (html: string) => drawn(/<article[^]*?<\/article>/.exec(html)![0]);
+		expect(card(body), 'Page Models keep the complete catalog card').toBe(card(catalog));
+		expect(words(body)).toContain('Used In');
+		expect(words(body)).not.toContain('Order.types');
 		const legacy = content(
 			'current',
 			{ category: 'pages', entity: ids.page, tab: 'contract' },
