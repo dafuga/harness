@@ -162,10 +162,11 @@ Include empty usage and missing screenshots. A class-name or entity-name asserti
 alone does not prove interaction parity. Keep screenshot evidence at the failing
 and passing checkpoints; do not substitute another entity or revision's image.
 
-Relationship sections group references by declared module type. Component card
-footers show one flat list of the first three consumer links, then an ellipsis only
-when more exist; never add category labels to those footers. Other shared card
-footers retain their declared layout. Screenshot UI belongs to visual pages, shells
+Relationship sections group references by declared module type. Every catalog and
+relationship module card uses `ExplorerModuleCard`, including visual and nonvisual
+variants; legacy card entries only forward to it. Its sole metadata field is Used In:
+the first three distinct consumer links in provided order, then an ellipsis when more
+exist. Never add consumer category labels or a second card implementation. Screenshot UI belongs to visual pages, shells
 and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.

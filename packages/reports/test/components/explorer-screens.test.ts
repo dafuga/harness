@@ -91,12 +91,12 @@ test('collections reuse visual cards and tables without loading entity detail pa
 		expect(has(entry, ['ExplorerCatalogItems']), 'collections share one item renderer').toEqual([
 			'ExplorerCatalogItems'
 		]);
-	expect(has(entries.cards, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
-		'ExplorerPageCard',
+	expect(has(entries.cards, ['ExplorerModuleCard', 'ExplorerTable'])).toEqual([
+		'ExplorerModuleCard',
 		'ExplorerTable'
 	]);
-	expect(has(entries.table, ['ExplorerPageCard', 'ExplorerTable'])).toEqual([
-		'ExplorerPageCard',
+	expect(has(entries.table, ['ExplorerModuleCard', 'ExplorerTable'])).toEqual([
+		'ExplorerModuleCard',
 		'ExplorerTable'
 	]);
 	for (const entry of [entries.cards, entries.table]) {

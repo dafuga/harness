@@ -26,7 +26,6 @@
 		label?: string;
 	} = $props();
 	// Configs and shells stay tables; every other collection is a grid of the one module card.
-	const cards: ExplorerCategory[] = ['pages', 'components', 'functions', 'models', 'services'];
 	let pages = $state(1);
 	let root = $state<HTMLDivElement>();
 	let visible = $derived(batch > 0 ? rows.slice(0, pages * batch) : rows);
@@ -42,7 +41,7 @@
 </script>
 
 {#snippet items(rows: CatalogRow[])}
-	{#if cards.includes(category)}
+	{#if category !== 'configs' && category !== 'shells'}
 		<div class={category === 'pages' ? 'ex-page-grid' : 'ex-catalog-grid'}>
 			{#each rows as row (row.id)}
 				<ExplorerModuleCard {row} {category} {nav} {lens} {mediaBase} />

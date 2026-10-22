@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-function-card",
 	"kind": "component",
 	"title": "Function card",
-	"responsibility": "Shows a linked helper invocation or catalog entity name and a smaller Used In row; model consumers use flat links.",
+	"responsibility": "Legacy nonvisual card entry delegating helpers, services and models to ExplorerModuleCard.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -41,19 +41,14 @@
 			{
 				"name": "ExplorerFunctionCard",
 				"type": "markup",
-				"description": "Catalog item using revision-scoped Used In links and previews. Model cards show one flat consumer list; helpers and services retain category groups. Other facts and verification follow the category."
+				"description": "One shared module card with the helper invocation or entity name and at most three flat Used In links."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.explorer-usage",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-entity-link",
+			"unit": "reports.component.explorer-ui-explorer-module-card",
 			"via": "import",
 			"origin": "derived"
 		},
