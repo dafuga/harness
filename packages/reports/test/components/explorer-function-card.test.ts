@@ -19,8 +19,9 @@ test('function catalog cards stay concise and retain revision links without deta
 		expect(count(body, /class="hx-verdict/g)).toBe(0);
 		expect(count(card, /<a\b/g), 'function call and its two consumer links').toBe(3);
 		expect(words(card)).toContain('Used In');
-		expect(card).toContain('aria-label="Components"');
-		expect(card).toContain('aria-label="Services"');
+		expect(card).toContain('data-harness-component="explorer-module-card"');
+		expect(card).not.toContain('aria-label="Components"');
+		expect(card).not.toContain('aria-label="Services"');
 		expect(words(card)).toContain('OrderList');
 		expect(words(card)).toContain('OrderStore');
 		expect(card).toContain(
@@ -107,8 +108,9 @@ test('helper usage selects three distinct eligible consumers before truncating',
 	const body = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
 	const card = /<article\b.*?<\/article>/s.exec(body)![0];
 	expect(words(card)).toContain('Used In');
-	expect(card).toContain('aria-label="Components"');
-	expect(card).toContain('aria-label="Services"');
+	expect(card).toContain('data-harness-component="explorer-module-card"');
+	expect(card).not.toContain('aria-label="Components"');
+	expect(card).not.toContain('aria-label="Services"');
 	expect(count(card, /<a\b/g)).toBe(4);
 	for (const target of [
 		`components/${ids.list}`,
