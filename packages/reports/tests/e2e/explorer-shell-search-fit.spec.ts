@@ -51,6 +51,12 @@ async function fits(page: Page, width: number): Promise<void> {
 	expect(search.width).toBeLessThanOrEqual(48);
 	expect(search.x + search.width).toBeGreaterThan(width - 60);
 	expect(search.x + search.width).toBeLessThanOrEqual(width);
+	if (width < 1420) {
+		const revision = await box(bar(page).locator('.hx-revision'));
+		expect(search.y + search.height, 'search stays above the branch divider').toBeLessThanOrEqual(
+			revision.y
+		);
+	}
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
 	);
