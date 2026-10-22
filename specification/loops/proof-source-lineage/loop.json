@@ -6,11 +6,9 @@
 	"name": "proof-source-lineage",
 	"goal": "Preserve original sealed regression pairs across message-only history repairs using exact full-tree archive lineage, while rejecting changed trees and requiring fresh current-source completion.",
 	"createdAt": "2026-10-22T00:06:34.143Z",
-	"updatedAt": "2026-10-22T00:07:52.380Z",
+	"updatedAt": "2026-10-22T00:17:21.632Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -23,12 +21,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T00:17:20.966Z",
+			"evidence": "a91e5b241 preserves original sealed proof ancestry only through complete ancestor-tree equality and correctly named commit archive refs. Existing direct ancestry wins. Original record identities and all paired-input/source checks remain unchanged; current-source task verification is still mandatory."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T00:17:21.632Z",
+			"evidence": "All 14 standard loop/CLI cases pass. Frozen red 119e9f88 at ee570bda8 fails lookup; paired green 70e19343 at a91e5b241 passes identical inputs. Controls reject changed sibling trees and misnamed archive refs, preserve original checkpoint identities and leave unverified coding completion pending. Root types, full lint and audit pass."
 		},
 		{
 			"id": "verify",
