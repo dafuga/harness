@@ -55,7 +55,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect(panel.getByRole('article')).toHaveCount(1);
 			await expect(panel).not.toContainText('Order.types');
 			const consumer = card.getByRole('link', { name: 'OrderStore', exact: true });
-			await consumer.focus();
+			await consumer.hover();
 			await expect(tab.getByRole('tooltip', { name: 'Preview of OrderStore' })).toBeVisible();
 			await tab.keyboard.press('Escape');
 			const model = panel.getByRole('link', { name: 'Order', exact: true });
