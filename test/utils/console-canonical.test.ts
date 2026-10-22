@@ -115,6 +115,18 @@ test('an explorer address is left alone, with its tab', () => {
 		'/harness/branch/main/pages/page.titles?tab=models'
 	);
 	expect(canonical('/harness/branch/main/pages/page.titles?tab=models')).toBeUndefined();
+	const page = `/harness/branch/feature%2Fkept%231/commit/${id('b')}/pages/page.titles`;
+	for (const [legacy, query] of [
+		['/details', '?tab=models'],
+		['/details?tab=contract', '?tab=models'],
+		['/details?tab=nothing', '?tab=models'],
+		['/details?tab=source', '?tab=source'],
+		['/details?tab=measurements', ''],
+		['?tab=contract', '?tab=models'],
+		['?tab=nothing', '']
+	]) {
+		expect(canonical(page + legacy)).toBe(page + query);
+	}
 	for (const category of ['components', 'shells', 'functions', 'services', 'configs', 'models']) {
 		const path = `/harness/branch/feature%2Fkept%231/commit/${id('b')}/${category}/sample.unit`;
 		expect(canonical(`${path}?tab=contract`)).toBeUndefined();
