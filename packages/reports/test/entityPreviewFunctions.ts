@@ -96,6 +96,7 @@ export async function reviewModelCard(page: Page, viewport: string): Promise<voi
 		await expect(page.locator('.ex-legend')).toHaveCount(0);
 		expect(await appearance()).toEqual(helperAppearance);
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+		await reviewFlatModelUsage(usage);
 		await expect(usage.getByRole('link', { name: 'OrderList', exact: true })).toHaveCount(1);
 		await expect(usage.getByRole('link', { name: 'OrderStore', exact: true })).toHaveCount(1);
 		await page.getByRole('searchbox', { name: 'Search models' }).fill('absent-model');
@@ -116,6 +117,17 @@ export async function reviewModelCard(page: Page, viewport: string): Promise<voi
 		await expect(page.getByRole('heading', { level: 1, name: 'Order', exact: true })).toBeVisible();
 	}
 }
+
+/** Model cards keep their consumers while omitting their module-category headings. */
+export async function reviewFlatModelUsage(usage: Locator): Promise<void> {
+	await expect(usage.getByRole('list'), 'model consumers use one flat list').toHaveCount(1);
+	for (const label of ['Pages', 'Components', 'Services'])
+		await expect(
+			usage.getByText(label, { exact: true }),
+			'model cards omit category headings'
+		).toHaveCount(0);
+}
+
 /** Consumer links are limited to three eligible units and retain current or selected-commit scope. */
 export async function reviewHelperUsage(page: Page, viewport: string): Promise<void> {
 	for (const commit of [null, commits.middle]) {
