@@ -1,0 +1,219 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [13.14s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 434 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 521 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                            0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                          6.00 kB │ gzip:   0.91 kB
+.svelte-kit/output/client/_app/immutable/assets/5.BYAcUGNB.css         0.63 kB │ gzip:   0.30 kB
+.svelte-kit/output/client/_app/immutable/assets/design.eb-nmLUB.css   24.04 kB │ gzip:   5.65 kB
+.svelte-kit/output/client/_app/immutable/assets/2.CpEaU_S2.css        40.22 kB │ gzip:   8.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/VSLUXCty.js            0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.CsxSwzwU.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.CsxSwzwU.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/DXG9lAIF.js            0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.Dr2WxwBc.js           0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/Di19e2cT.js            0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.CovgPC5c.js           0.48 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js            1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/DTxFRjAL.js            1.39 kB │ gzip:   0.77 kB
+.svelte-kit/output/client/_app/immutable/chunks/BdJBNrm0.js            1.81 kB │ gzip:   0.91 kB
+.svelte-kit/output/client/_app/immutable/chunks/BlRrITwN.js            2.19 kB │ gzip:   1.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/DQKLTlxJ.js            2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.DihvAb1o.js           2.74 kB │ gzip:   1.42 kB
+.svelte-kit/output/client/_app/immutable/chunks/CHeTlq7K.js            3.16 kB │ gzip:   1.47 kB
+.svelte-kit/output/client/_app/immutable/chunks/BokPEzq8.js            6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.BcRizWog.js         7.07 kB │ gzip:   3.14 kB
+.svelte-kit/output/client/_app/immutable/chunks/C4E-GIXR.js            9.23 kB │ gzip:   3.83 kB
+.svelte-kit/output/client/_app/immutable/chunks/C07VvdnK.js           14.25 kB │ gzip:   6.38 kB
+.svelte-kit/output/client/_app/immutable/entry/start.yqUT2449.js      21.30 kB │ gzip:   8.20 kB
+.svelte-kit/output/client/_app/immutable/chunks/CsRil1Jo.js           29.47 kB │ gzip:  11.28 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CVRfEuDJ.js         374.28 kB │ gzip: 127.08 kB
+✓ built in 1.03s
+.svelte-kit/output/server/.vite/manifest.json                                                     4.64 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BYAcUGNB.css                                0.63 kB
+.svelte-kit/output/server/_app/immutable/assets/design.CN0zSRpg.css                              23.83 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.JFKgN1Lw.css                               36.82 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       1.02 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/design.js                                                        3.66 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.28 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         291.72 kB
+✓ built in 2.79s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+$ bun run src/index.ts verify stamp packages/desktop/build
+4803779bdc5853feb6ee39f9d0bb467008435509ad4f6b4a26796b5c148d9e8e
+$ playwright test --grep "native acceptance opens the compact"
+Downloading Electron binary...
+
+Running 3 tests using 1 worker
+
+(node:19811) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 1440px (3.3s)
+(node:20041) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 390px (3.1s)
+(node:20301) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 820px (3.2s)
+
+
+  1) tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 1440px 
+
+    Error: Native acceptance navigation must reach the planned design
+
+    expect(received).toBe(expected) // Object.is equality
+
+    - Expected  -  1
+    + Received  + 11
+
+    - loaded
+    + Native acceptance navigation must use the rendered card controls
+    +
+    + Native acceptance navigation must use the rendered card controls
+    +
+    + \x1b[2mexpect(\x1b[22m\x1b[31mreceived\x1b[39m\x1b[2m).\x1b[22mtoContain\x1b[2m(\x1b[22m\x1b[32mexpected\x1b[39m\x1b[2m) // indexOf\x1b[22m
+    +
+    + Expected substring: \x1b[32m"pressed"\x1b[39m
+    + Received string:    \x1b[31m""\x1b[39m
+    +
+    + Call Log:
+    + - Timeout 3000ms exceeded while waiting on the predicate
+
+      43 | 		);
+      44 | 		await remoteEvidence(page, info, 'native-card-navigation');
+    > 45 | 		expect(result, 'Native acceptance navigation must reach the planned design').toBe('loaded');
+         | 		                                                                             ^
+      46 | 		await expect(page).toHaveURL(
+      47 | 			new RegExp(`/projects/${alpha}/harness/branch/feat%2Falpha/pages/.+/designs$`)
+      48 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Q9vwdY/packages/desktop/tests/e2e/ui-remote-phone.spec.ts:45:80
+
+    Error Context: test-results/ui-remote-phone-native-acc-5cc2a-planned-page-card-at-1440px/error-context.md
+
+  2) tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 390px 
+
+    Error: Native acceptance navigation must reach the planned design
+
+    expect(received).toBe(expected) // Object.is equality
+
+    - Expected  -  1
+    + Received  + 11
+
+    - loaded
+    + Native acceptance navigation must use the rendered card controls
+    +
+    + Native acceptance navigation must use the rendered card controls
+    +
+    + \x1b[2mexpect(\x1b[22m\x1b[31mreceived\x1b[39m\x1b[2m).\x1b[22mtoContain\x1b[2m(\x1b[22m\x1b[32mexpected\x1b[39m\x1b[2m) // indexOf\x1b[22m
+    +
+    + Expected substring: \x1b[32m"pressed"\x1b[39m
+    + Received string:    \x1b[31m""\x1b[39m
+    +
+    + Call Log:
+    + - Timeout 3000ms exceeded while waiting on the predicate
+
+      43 | 		);
+      44 | 		await remoteEvidence(page, info, 'native-card-navigation');
+    > 45 | 		expect(result, 'Native acceptance navigation must reach the planned design').toBe('loaded');
+         | 		                                                                             ^
+      46 | 		await expect(page).toHaveURL(
+      47 | 			new RegExp(`/projects/${alpha}/harness/branch/feat%2Falpha/pages/.+/designs$`)
+      48 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Q9vwdY/packages/desktop/tests/e2e/ui-remote-phone.spec.ts:45:80
+
+    Error Context: test-results/ui-remote-phone-native-acc-52d29--planned-page-card-at-390px/error-context.md
+
+  3) tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 820px 
+
+    Error: Native acceptance navigation must reach the planned design
+
+    expect(received).toBe(expected) // Object.is equality
+
+    - Expected  -  1
+    + Received  + 11
+
+    - loaded
+    + Native acceptance navigation must use the rendered card controls
+    +
+    + Native acceptance navigation must use the rendered card controls
+    +
+    + \x1b[2mexpect(\x1b[22m\x1b[31mreceived\x1b[39m\x1b[2m).\x1b[22mtoContain\x1b[2m(\x1b[22m\x1b[32mexpected\x1b[39m\x1b[2m) // indexOf\x1b[22m
+    +
+    + Expected substring: \x1b[32m"pressed"\x1b[39m
+    + Received string:    \x1b[31m""\x1b[39m
+    +
+    + Call Log:
+    + - Timeout 3000ms exceeded while waiting on the predicate
+
+      43 | 		);
+      44 | 		await remoteEvidence(page, info, 'native-card-navigation');
+    > 45 | 		expect(result, 'Native acceptance navigation must reach the planned design').toBe('loaded');
+         | 		                                                                             ^
+      46 | 		await expect(page).toHaveURL(
+      47 | 			new RegExp(`/projects/${alpha}/harness/branch/feat%2Falpha/pages/.+/designs$`)
+      48 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Q9vwdY/packages/desktop/tests/e2e/ui-remote-phone.spec.ts:45:80
+
+    Error Context: test-results/ui-remote-phone-native-acc-9f9ba--planned-page-card-at-820px/error-context.md
+
+  3 failed
+    tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 1440px 
+    tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 390px 
+    tests/e2e/ui-remote-phone.spec.ts:34:2 › native acceptance opens the compact planned-page card at 820px 
+error: script "test:e2e" exited with code 1
