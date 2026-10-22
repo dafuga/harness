@@ -43,9 +43,9 @@ test('device states share a picker while original metadata and missing-device ga
 	const found = evidence(page, captured);
 	const opts = screenOptions(found.scenarios);
 	for (const viewport of ['desktop', 'tablet', 'mobile']) {
-		expect(entityScreens(found, screenPick(opts, { viewport })!).after.file).toBe(
-			`bbbbbbb-default-${viewport}.png`
-		);
+		expect(
+			entityScreens(found, screenPick(opts, { scenario: 'focused', viewport })!).after.file
+		).toBe(`bbbbbbb-default-${viewport}.png`);
 	}
 	expect(found.after.captures.map((item) => item.state)).toEqual(['default', 'default', 'default']);
 	expect(found.after.captures.map((item) => item.capture.state)).toEqual([
