@@ -204,3 +204,9 @@ those expectations; formatting alone does not verify a workflow change.
 After editing acceptance fixtures, run their owning workspace typecheck, formatting
 and audit before a broad check, even when only imports or casts changed. Test files
 share the workspace size limits; a passing runtime case does not prove that audit.
+
+Review fixture actions as well as assertions: adding scroll, focus or navigation can
+weaken the original acceptance state. A control required to fit at first paint must
+still fit before scrolling. When catalog destinations grow, update the existing
+navbar matrix and run its unchanged geometry and keyboard checks at every viewport;
+do not treat a newly hidden destination as a stale fixture.
