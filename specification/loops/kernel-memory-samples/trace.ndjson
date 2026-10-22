@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-22T00:37:35.612Z","name":"kernel-memory-samples","goal":"Retain actual native and Wasm memory sample counts in kernel benchmark evidence","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-22T00:37:36.442Z","loop":"kernel-memory-samples","step":"spec","evidence":"Kernel memory observations contain actual values but omit samples, so mandatory performance validation correctly rejects them."}
+{"event":"step.completed","timestamp":"2026-10-22T00:37:37.028Z","loop":"kernel-memory-samples","step":"coverage","evidence":"The normal kernel bench acceptance checks positive memory and runtime identity but never asserts memory sample counts. Extend those exact assertions before repair."}

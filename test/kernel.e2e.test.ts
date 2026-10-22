@@ -106,6 +106,8 @@ test('kernel bench measures identical workloads fairly and records unavailable v
 	}
 	const memory = (target: string) => find(bench, target, 'memory-bytes')[0];
 	expect(memory('wasm').value).toBeGreaterThan(0);
+	for (const target of ['wasm', 'process'])
+		expect(memory(target).samples, `${target} memory sample count`).toBe(1);
 	expect(memory('module')).toMatchObject({ value: null });
 	expect(memory('module').unavailable).toMatch(/cannot be attributed/);
 	expect(find(bench, 'wasm', 'artifact-bytes')[0].artifacts[0].sha256).toMatch(/^[0-9a-f]{64}$/);
