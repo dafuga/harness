@@ -41,6 +41,7 @@
 	const row: Record<string, Place> = {
 		overview: {},
 		contract: { tab: 'contract' },
+		models: { tab: 'models' },
 		'used-in': { tab: 'used-in' },
 		uses: { tab: 'uses' },
 		audio: { tab: 'audio' },
@@ -59,18 +60,30 @@
 					(label !== 'Audio' || entity.category === 'components')
 			)
 			.map((label) => {
-				const title = label === 'Tests' ? evidenceLabels[evidenceTab] : label;
+				const title =
+					label === 'Contract' && entity.category === 'pages'
+						? 'Models'
+						: label === 'Tests'
+							? evidenceLabels[evidenceTab]
+							: label;
 				const id = title.toLowerCase().replace(' ', '-');
 				return { id, label: title, href: nav.href(at(row[id])) };
 			})
 	);
 	// A tab the row does not have, as the former one of both lists, is shown on the first.
 	let asked = $derived(
-		tabs.find((tab) => tab.id === (nav.route.tab === 'tests' ? evidenceTab : nav.route.tab))?.id ??
-			tabs[0].id
+		tabs.find(
+			(tab) =>
+				tab.id ===
+				(nav.route.tab === 'tests'
+					? evidenceTab
+					: entity.category === 'pages' && nav.route.tab === 'contract'
+						? 'models'
+						: nav.route.tab)
+		)?.id ?? tabs[0].id
 	);
 	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
-	// A page is named by its screenshot; its purpose and app route are read in its Contract.
+	// A page keeps its purpose in Overview and data relationships in Models.
 	let concise = $derived(entity.category === 'pages');
 </script>
 

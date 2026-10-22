@@ -43,7 +43,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-ui-metric-changes",
 			"via": "import",
 			"origin": "derived"
 		}

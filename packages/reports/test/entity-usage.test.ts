@@ -38,7 +38,7 @@ test('the sections of an entity are named Used In and Uses, and none is a relati
 		const body = content('commit', entity);
 		expect(tabs(body)).toEqual([
 			'Overview',
-			'Contract',
+			entity.category === 'pages' ? 'Models' : 'Contract',
 			...(entity.category === 'pages' ? [] : ['Used In']),
 			'Uses',
 			...(entity.category === 'components' ? ['Audio'] : []),

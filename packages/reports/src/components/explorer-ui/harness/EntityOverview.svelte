@@ -2,14 +2,17 @@
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
 	import type { EntityMeasure } from '../../../utils/explorer-ui/entityMeasure';
+	import type { MetricComparison } from '../../../utils/explorer-ui/metricChanges';
 	import EntitySummary from './EntitySummary.svelte';
 	let {
 		entity,
 		measure,
+		comparison = null,
 		children
 	}: {
 		entity: ExplorerEntity;
 		measure: EntityMeasure;
+		comparison?: MetricComparison | null;
 		/** The evidence of the kind of the entity: what is seen, what is run, or what is set. */
 		children: Snippet;
 	} = $props();
@@ -30,6 +33,6 @@
 		<p class="ex-lead">{entity.purpose}</p>
 	{/if}
 	{#if first}{@render children()}{/if}
-	<EntitySummary {measure} compact />
+	<EntitySummary {measure} {comparison} compact />
 	{#if !first}{@render children()}{/if}
 </div>

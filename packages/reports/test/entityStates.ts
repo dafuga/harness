@@ -93,13 +93,15 @@ export function withSourceMeasures(detail: HarnessRevision): HarnessRevision {
 export function withFocused(
 	detail: HarnessRevision,
 	target = ids.page,
-	viewports: Record<string, { width: number; height: number }> = {}
+	viewports: Record<string, { width: number; height: number }> = {},
+	deviceStates = false
 ): HarnessRevision {
 	const captures = ['desktop', 'tablet', 'mobile'].map((viewport) => ({
 		unit: target,
 		viewport: viewports[viewport],
 		capture: {
 			...capture(detail.commit, { kind: 'screenshot', state: 'default', viewport }),
+			state: deviceStates ? `default-${viewport}` : 'default',
 			kind: 'screenshot' as const,
 			status: 'passed' as const,
 			bytes: 1,

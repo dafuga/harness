@@ -3,6 +3,7 @@
 	import type { ExplorerEntity } from '../../../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../../../models/explorer-ui/ExplorerScreen.types';
 	import type { EntityNav } from '../../../../utils/explorer-ui/entityLens';
+	import { entityMetricComparison } from '../../../../utils/explorer-ui/entityMetricComparison';
 	import { entityShown } from './entityShown';
 	import EntityContract from '../../entity-contract/EntityContract.svelte';
 	import EntitySource from '../EntitySource.svelte';
@@ -25,6 +26,9 @@
 		pane: Snippet;
 	} = $props();
 	let summary = $derived(entityShown(host, entity));
+	let comparison = $derived(
+		entityMetricComparison(host, entity, summary.measure, host.route.helper)
+	);
 	const said = { 'used-in': 'used in', uses: 'uses' } as const;
 	let direction = $derived(
 		(host.route.tab === 'used-in' && entity.category !== 'pages') || host.route.tab === 'uses'
@@ -42,10 +46,19 @@
 	let contract = $derived(summary.contract.filter((row) => row.label !== 'Purpose'));
 </script>
 
-<!-- The tab of the address decides what an entity screen shows; any other shows its overview.
-	The marker of the sections draws no box: each panel stays an item of the content. -->
 <div class="ex-sections" data-harness-component="harness-entity-sections">
-	{#if direction}
+	<!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
+	{#if entity.category === 'pages' && (host.route.tab === 'models' || host.route.tab === 'contract')}
+		<div role="tabpanel" aria-label={`${entity.name} models`}>
+			<EntityRelations
+				{host}
+				relations={host.lens.relations(entity.id)}
+				{nav}
+				show="models"
+				{removed}
+			/>
+		</div>
+	{:else if direction}
 		<div role="tabpanel" aria-label={`${entity.name} ${said[direction]}`}>
 			<EntityRelations
 				{host}
@@ -99,10 +112,15 @@
 		</div>
 	{:else if host.route.tab === 'contract'}
 		<div role="tabpanel" aria-label={`${entity.name} contract`}>
-			<EntityContract unit={entity.unit} category={entity.category} {contract} last={entity.lastAt} />
+			<EntityContract
+				unit={entity.unit}
+				category={entity.category}
+				{contract}
+				last={entity.lastAt}
+			/>
 		</div>
 	{:else}
-		<EntityOverview {entity} measure={summary.measure}>
+		<EntityOverview {entity} measure={summary.measure} {comparison}>
 			{@render pane()}
 		</EntityOverview>
 	{/if}
