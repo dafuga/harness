@@ -38,6 +38,7 @@ test('the index is deterministic and names every commit, verified or not', async
 	expect(built.index.sourceRepository, 'GitHub source links retain the repository').toBe(
 		'https://github.com/example/orders'
 	);
+	expect(existsSync(join(one, 'catalog.sqlite'))).toBe(true);
 	expect(await directoryDigest(one)).toBe(await directoryDigest(two));
 	expect(sha256(await readFile(join(one, 'index.json')))).toBe(built.digest);
 	const { index } = built;

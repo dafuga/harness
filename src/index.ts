@@ -105,3 +105,69 @@ export { helperScopes } from './utils/development-tooling/helperScopes';
 export { helperTemplates } from './services/explorer-ui/revision-detail-service/helperTemplates';
 export { helperReferences } from './services/explorer-ui/revision-detail-service/helperReferences';
 export { helperConsumers } from './services/explorer-ui/revision-detail-service/helperConsumers';
+export { SqliteAdapter } from './adapters/development-tooling/SqliteAdapter';
+export { CatalogRepository } from './repositories/git-source-history/CatalogRepository';
+export { CatalogIndexService } from './services/git-source-history/CatalogIndexService';
+export { CatalogEntity } from './models/git-source-history/CatalogEntity';
+export type {
+	CatalogEntityAttributes,
+	CatalogEntityCreateInput,
+	CatalogEntityUpdateInput
+} from './models/git-source-history/CatalogEntity.types';
+export { createSqliteAdapter } from './models/adapters/sqlite';
+export { CatalogRevision } from './models/git-source-history/CatalogRevision';
+export type {
+	CatalogRevisionAttributes,
+	CatalogRevisionCreateInput,
+	CatalogRevisionUpdateInput
+} from './models/git-source-history/CatalogRevision.types';
+export { CatalogRevisionEntity } from './models/git-source-history/CatalogRevisionEntity';
+export type {
+	CatalogRevisionEntityAttributes,
+	CatalogRevisionEntityCreateInput,
+	CatalogRevisionEntityUpdateInput
+} from './models/git-source-history/CatalogRevisionEntity.types';
+export { CatalogDependency } from './models/git-source-history/CatalogDependency';
+export type {
+	CatalogDependencyAttributes,
+	CatalogDependencyCreateInput,
+	CatalogDependencyUpdateInput
+} from './models/git-source-history/CatalogDependency.types';
+export { CatalogBranch } from './models/git-source-history/CatalogBranch';
+export type {
+	CatalogBranchAttributes,
+	CatalogBranchCreateInput,
+	CatalogBranchUpdateInput
+} from './models/git-source-history/CatalogBranch.types';
+export { CatalogRecord } from './models/git-source-history/CatalogRecord';
+export type {
+	CatalogRecordAttributes,
+	CatalogRecordCreateInput,
+	CatalogRecordUpdateInput
+} from './models/git-source-history/CatalogRecord.types';
+export { CatalogMetadata } from './models/git-source-history/CatalogMetadata';
+export type {
+	CatalogMetadataAttributes,
+	CatalogMetadataCreateInput,
+	CatalogMetadataUpdateInput
+} from './models/git-source-history/CatalogMetadata.types';
+export { AnalyticsEvent } from './models/reports-media/AnalyticsEvent';
+export type {
+	AnalyticsEventAttributes,
+	AnalyticsEventCreateInput,
+	AnalyticsEventUpdateInput
+} from './models/reports-media/AnalyticsEvent.types';
+export { ProviderSwitch } from './models/agents-providers/ProviderSwitch';
+export type {
+	ProviderSwitchAttributes,
+	ProviderSwitchCreateInput,
+	ProviderSwitchUpdateInput
+} from './models/agents-providers/ProviderSwitch.types';
+export { CatalogWriteService } from './services/git-source-history/CatalogWriteService';
+export { CatalogScenario } from './models/git-source-history/CatalogScenario';
+export type {
+	CatalogScenarioAttributes,
+	CatalogScenarioCreateInput,
+	CatalogScenarioUpdateInput
+} from './models/git-source-history/CatalogScenario.types';
+export { ModelDependencyService } from './services/development-tooling/ModelDependencyService';

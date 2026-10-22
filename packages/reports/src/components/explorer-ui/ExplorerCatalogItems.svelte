@@ -42,7 +42,7 @@
 </script>
 
 {#snippet items(rows: CatalogRow[])}
-	{#if category === 'pages' || category === 'components' || category === 'functions' || category === 'services'}
+	{#if category === 'pages' || category === 'components' || category === 'functions' || category === 'models' || category === 'services'}
 		<div class={category === 'pages' ? 'ex-page-grid' : 'ex-catalog-grid'}>
 			{#each rows as row (row.id)}
 				{#if category === 'pages' || category === 'components'}
