@@ -1715,7 +1715,14 @@
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2"
+			"definition": "54c23ac90de19fcb09ce6c15b617b24d5b0095528f41fc540ffb5c23e94d4307",
+			"relocationDefinition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/cli/program/loop.ts",
+				"definition": "54c23ac90de19fcb09ce6c15b617b24d5b0095528f41fc540ffb5c23e94d4307",
+				"reason": "Expose coding and planning completion contracts when creating loops while preserving existing loop commands."
+			}
 		},
 		{
 			"unit": "workflow.loop-evaluate",
@@ -1751,13 +1758,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
+			"definition": "d972b1748af873971324c998cc733c146d51a4410d57e981746a939f3392b5cc",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
-				"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
-				"reason": "Retain main’s measurement-aware hosted API replies."
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+				"definition": "d972b1748af873971324c998cc733c146d51a4410d57e981746a939f3392b5cc",
+				"reason": "Validate the planning proposal with the shared Harness planning gate before accepting the hosted response."
 			}
 		},
 		{
@@ -1878,7 +1885,14 @@
 			"unit": "service.unit-benchmark",
 			"from": "src/services/UnitBenchmarkService.ts",
 			"to": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
-			"definition": "95a44da0ce4a824fca16a7832ee41fc64d683116aa168143555a0a9180adaffb"
+			"definition": "f17b63eaed2c290b523b7cedbffe1d083c8e70ad9d7d51750b4355ad5a3b38da",
+			"relocationDefinition": "95a44da0ce4a824fca16a7832ee41fc64d683116aa168143555a0a9180adaffb",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
+				"definition": "f17b63eaed2c290b523b7cedbffe1d083c8e70ad9d7d51750b4355ad5a3b38da",
+				"reason": "Record normalized whole-process memory with module benchmark results without changing the invocation boundary."
+			}
 		},
 		{
 			"unit": "command.budget",
@@ -1986,7 +2000,14 @@
 			"unit": "service.kernel-benchmark",
 			"from": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"definition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f"
+			"definition": "da815f449e114e7a303287943af9adea8dcd0928e49c949c512da8f74275d680",
+			"relocationDefinition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+				"definition": "da815f449e114e7a303287943af9adea8dcd0928e49c949c512da8f74275d680",
+				"reason": "Retain the actual memory sample count only for available Wasm and native readings."
+			}
 		},
 		{
 			"unit": "function.bench-samples",
@@ -2052,13 +2073,27 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38"
+			"definition": "b2a6d37283a65b21ba0b0328c45f04c0f3db1efa6a97f38c0d3f7782f7cb294f",
+			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+				"definition": "b2a6d37283a65b21ba0b0328c45f04c0f3db1efa6a97f38c0d3f7782f7cb294f",
+				"reason": "Carry mandatory performance requirements from the CLI and committed configuration into exact-source verification."
+			}
 		},
 		{
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9"
+			"definition": "518f13a31504f443d2f38ad4cac4e5c49a6e49d87bd047d5562f35a26c19ecce",
+			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+				"definition": "518f13a31504f443d2f38ad4cac4e5c49a6e49d87bd047d5562f35a26c19ecce",
+				"reason": "Pass the performance requirement into snapshot execution and record assembly while retaining proven-base provenance."
+			}
 		},
 		{
 			"unit": "function.scenario-coverage",
@@ -2082,7 +2117,14 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936"
+			"definition": "5d1db607fc0615728f3e46b3bf3c3dd89440c9f55d62315757d7b49c55359526",
+			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+				"definition": "5d1db607fc0615728f3e46b3bf3c3dd89440c9f55d62315757d7b49c55359526",
+				"reason": "Judge mandatory runtime profiles and retain source observations independently of missing budget baselines or full verification outcomes."
+			}
 		},
 		{
 			"unit": "function.recorded-builds",
@@ -2587,13 +2629,27 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502"
+			"definition": "0b26f9fb60e7ce4bbaefc2a3e9a88971178e92fef7cfbdaca18d195724ae8d88",
+			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+				"definition": "0b26f9fb60e7ce4bbaefc2a3e9a88971178e92fef7cfbdaca18d195724ae8d88",
+				"reason": "Validate plan completeness and pass explicit completion contracts through the project creation workflow."
+			}
 		},
 		{
 			"unit": "desktop.function.project-proposal",
 			"from": "packages/desktop/src/services/project-run-service/projectProposal.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
-			"definition": "c5dbabc19a9f02002c27313d9fe1ee9e5f47ce026dd70ecd610d9d4841c4a00c"
+			"definition": "e3dc28d7f7baf738461983088bd8a84b2c597736fbc1c90d78603910a63d1018",
+			"relocationDefinition": "c5dbabc19a9f02002c27313d9fe1ee9e5f47ce026dd70ecd610d9d4841c4a00c",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/projectProposal.ts",
+				"definition": "e3dc28d7f7baf738461983088bd8a84b2c597736fbc1c90d78603910a63d1018",
+				"reason": "Require acceptance, dependency, verification and performance plans in the generated planning proposal."
+			}
 		},
 		{
 			"unit": "desktop.function.proposal-units",
@@ -2708,7 +2764,14 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc"
+			"definition": "9e8fc9e497e542be28d2742354af313c06ae00d0e8a9c320e10a4d339505cc17",
+			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/cli/program/VerifyCommand.ts",
+				"definition": "9e8fc9e497e542be28d2742354af313c06ae00d0e8a9c320e10a4d339505cc17",
+				"reason": "Expose the mandatory performance option without changing ordinary exact-source verification arguments."
+			}
 		},
 		{
 			"unit": "workflow.analytics-html",
@@ -2841,7 +2904,14 @@
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe"
+			"definition": "4f7e4b94711c4b836b74ef3ac2c2060b2b1f965bff12105af637964994a9de25",
+			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "src/cli/program/manageLoop.ts",
+				"definition": "4f7e4b94711c4b836b74ef3ac2c2060b2b1f965bff12105af637964994a9de25",
+				"reason": "Require current task completion for final loop acceptance while retaining original sealed regression checkpoints."
+			}
 		},
 		{
 			"unit": "service.legacy-history",
@@ -2961,7 +3031,14 @@
 			"unit": "desktop.service.plan-run",
 			"from": "packages/desktop/src/services/PlanRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
-			"definition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8"
+			"definition": "7980703725b5aabfbcae663e2b38139dadeb74015dd11c31b6cb818a4c934692",
+			"relocationDefinition": "efa5aeed6c9be2c1a74d7f9a7cf08cbb3b31bf7a61c504518418a0d81d498da8",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+				"definition": "7980703725b5aabfbcae663e2b38139dadeb74015dd11c31b6cb818a4c934692",
+				"reason": "Require a structurally complete planning audit before accepting the plan, without implementing its runtime work."
+			}
 		},
 		{
 			"unit": "relay.service.device-revocation",
@@ -3515,13 +3592,13 @@
 			"unit": "desktop.service.project-task",
 			"from": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
-			"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
+			"definition": "97d5d68b5aaf288f23c589f0ba9e8ae26766f11fccdf25c6ff3ca8c05fa4f007",
 			"relocationDefinition": "73959fb2b3c38f25589fe1b5ba676292ada0f9cc0799254885488e8680b3b573",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
-				"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
-				"reason": "Retain main’s verified change promotion after approved project tasks."
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
+				"definition": "97d5d68b5aaf288f23c589f0ba9e8ae26766f11fccdf25c6ff3ca8c05fa4f007",
+				"reason": "Require Harness coding completion and measured verification before promoting an approved project task."
 			}
 		},
 		{
@@ -3534,20 +3611,27 @@
 			"unit": "desktop.service.change-run",
 			"from": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/ChangeRunService.ts",
-			"definition": "3ba2a6fd8c7b69de3f0a3a15db0efb9dfa49c820fbe8cd08536ec3f5cf81a3c5",
+			"definition": "176191165db1fea1566339f0e3039317e373416bb461d9606862545962e774ee",
 			"relocationDefinition": "0e7b44a91393721aec86b5823c9e30b365650d9a0e47fe4c2f050aa079c8684d",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
-				"definition": "3ba2a6fd8c7b69de3f0a3a15db0efb9dfa49c820fbe8cd08536ec3f5cf81a3c5",
-				"reason": "Retain main’s verified change promotion after approved entity runs."
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/ChangeRunService.ts",
+				"definition": "176191165db1fea1566339f0e3039317e373416bb461d9606862545962e774ee",
+				"reason": "Require intact current-source task verification and runtime profiles before accepting the generated change."
 			}
 		},
 		{
 			"unit": "desktop.function.change-execute",
 			"from": "packages/desktop/src/services/change-run-service/changeExecute.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
-			"definition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61"
+			"definition": "7bca76f15408c31c31ede9f5e03e397f9e9e3e616fba922b0f9b2ffb557072ae",
+			"relocationDefinition": "8868058332251dc94177b77eff212cd8160482724a686ee437713773a8fa6f61",
+			"review": {
+				"commit": "616da61469e83a4707e1abd4e5d084a6f57fdb55",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+				"definition": "7bca76f15408c31c31ede9f5e03e397f9e9e3e616fba922b0f9b2ffb557072ae",
+				"reason": "Carry the completion contract and complete planning criteria through the owned execution workflow."
+			}
 		},
 		{
 			"unit": "reports.store.console-workspace",

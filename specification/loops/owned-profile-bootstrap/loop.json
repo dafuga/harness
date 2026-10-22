@@ -6,7 +6,7 @@
 	"name": "owned-profile-bootstrap",
 	"goal": "Profile project source when the adapter and forwarded schema are inside that same project",
 	"createdAt": "2026-10-22T01:13:35.183Z",
-	"updatedAt": "2026-10-22T01:13:36.719Z",
+	"updatedAt": "2026-10-22T01:21:40.480Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -29,17 +29,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T01:21:37.933Z",
+			"evidence": "Sealed red 21db0e67 at 57e69da72 records the real own-project loader timing out after 30 seconds at the bootstrap completion assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T01:21:39.077Z",
+			"evidence": "1f3fcf1bf bypasses the relocated schema and its public forwarding entry during bootstrap. All other source observation boundaries remain enforced."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T01:21:40.480Z",
+			"evidence": "Paired green 9bf8bce7 at 1f3fcf1bf passes the identical frozen test with actual route timing and memory observations. All six normal lifecycle cases also pass."
 		},
 		{
 			"id": "verify",
