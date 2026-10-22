@@ -12,7 +12,7 @@ const manifests = import.meta.glob<PreviewUnit>(
 );
 // The registered entry is the implementation; a forwarding file of the same unit draws the same.
 export const previewUnits = Object.values(manifests)
-	.filter((unit) => unit.kind === 'component' && unit.status === 'active')
+	.filter((unit) => ['component', 'shell'].includes(unit.kind) && unit.status === 'active')
 	.map((unit) => ({
 		id: unit.id,
 		title: unit.title,
@@ -49,6 +49,7 @@ const modules = Object.fromEntries(
 );
 export function previewComponent(source: string | undefined) {
 	const component = source ? modules[source] : undefined;
-	if (!component) throw new Error(`No Svelte component to preview at ${source ?? 'any owned path'}`);
+	if (!component)
+		throw new Error(`No Svelte component to preview at ${source ?? 'any owned path'}`);
 	return component as import('svelte').Component<Record<string, unknown>>;
 }

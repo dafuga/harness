@@ -2,6 +2,7 @@ import { children, noop } from './shared';
 import type { PreviewCases } from './shared';
 import * as d from './explorerData';
 import ExplorerContent from '../../../../src/components/harness/ExplorerContent.svelte';
+const components = '/branch/feature%2Forders/components';
 const navbar = {
 	base: '/harness',
 	repository: 'Preview project',
@@ -33,7 +34,7 @@ export const legacyCases: PreviewCases = {
 	},
 	'reports.component.harness-harness-console': {
 		base: '/harness',
-		path: '/branch/feature%2Forders/components',
+		path: components,
 		navigate: noop,
 		content: ExplorerContent
 	},
@@ -135,4 +136,8 @@ export const legacyCases: PreviewCases = {
 	},
 	'reports.component.harness-harness-verdict': { passed: true, label: 'Required checks passed' },
 	'reports.component.harness-screen': { title: 'Components', content: ExplorerContent }
+};
+/** The standalone shell reads its address from the browser: it opens where the console case is. */
+export const legacyAddresses: Record<string, string> = {
+	'reports.component.harness-harness-shell': `/harness${components}`
 };

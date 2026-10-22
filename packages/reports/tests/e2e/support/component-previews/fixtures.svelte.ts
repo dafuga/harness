@@ -1,5 +1,5 @@
 import { explorerCases } from './explorer';
-import { legacyCases } from './legacy';
+import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
 import { activityCases, activity } from './activity';
 import { analyticsCases } from './analytics';
@@ -12,8 +12,10 @@ import { hubPreview } from './hub.svelte';
 import type { PreviewCases } from './shared';
 export function previewFixture(id: string) {
 	const desktop = createDesktopData(id);
+	// The shell opens at Pages, where its store starts and where the web workspace opens too.
+	if (id === 'desktop.component.workspace-shell') desktop.workspace.category = 'pages';
 	const remote = remotePreview();
-	const hub = hubPreview(id);
+	const hub = hubPreview(id, desktop.workspace.snapshot!);
 	const desktopCases = Object.fromEntries(
 		Object.entries({ ...desktopControls, ...desktopRuntime, ...deploymentCases }).map(
 			([id, props]) => [id, props(desktop)]
@@ -42,6 +44,9 @@ export function previewFixture(id: string) {
 		'desktop.component.remote-connection': { workspace: desktop.workspace }
 	};
 	if (!cases[id]) throw new Error(`No representative fixture for ${id}`);
+	// A shell that reads its place from the browser is opened where its host serves it.
+	const address = { ...legacyAddresses, ...hub.addresses }[id];
+	if (address) history.replaceState(history.state, '', address);
 	return {
 		props: cases[id],
 		remote,

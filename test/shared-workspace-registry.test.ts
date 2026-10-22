@@ -116,3 +116,21 @@ test('declaring those imports changes them alone: no other reference or uncertai
 	expect(was.filter((item) => item.external === '$desktop')).toHaveLength(written().length);
 	expect(side(loaded.index).graph.uncertain).toEqual(side(undeclared).graph.uncertain);
 }, 60_000);
+
+test('every active visual component and shell has its own required capture state', () => {
+	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
+	const visual = loaded.stored
+		.filter((unit) => unit.status === 'active' && ['component', 'shell'].includes(unit.kind))
+		.map((unit) => unit.id)
+		.sort();
+	expect(catalog?.units.slice().sort()).toEqual(visual);
+	for (const id of visual) {
+		const states = catalog!.states.filter((state) => state.units?.includes(id));
+		expect(states, id).toHaveLength(1);
+		expect(states[0], id).toMatchObject({
+			id: id.replaceAll('.', '-'),
+			coverage: 'required',
+			units: [id]
+		});
+	}
+});

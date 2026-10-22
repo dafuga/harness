@@ -170,5 +170,7 @@ export const desktopControls: Record<string, DesktopCase> = {
 		workspace: d.workspace,
 		to: '/projects/preview/components',
 		children: text('<span>Components</span>')
-	})
+	}),
+	// The desktop app supplies no account controls; a host app passes its own.
+	'desktop.component.workspace-shell': (d) => ({ workspace: d.workspace })
 };

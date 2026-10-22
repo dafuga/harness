@@ -31,7 +31,7 @@ export async function readyPreview(page: Page, id: string) {
 		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Sampling CPU…|Checking sign-in…|Reading the request…/
 	);
 	await expect(content).not.toContainText(
-		/Preview unavailable|Screenshot unavailable|could not be read|not listed by the evidence|Not verified|Reading the clip…|No screenshot (?:is )?recorded|TypeError:|ReferenceError:|Checking the GitHub connection…/
+		/This project could not be opened|Loading project…|Design preview unavailable|Preview unavailable|Screenshot unavailable|could not be read|not listed by the evidence|Not verified|Reading the clip…|No screenshot (?:is )?recorded|TypeError:|ReferenceError:|Checking the GitHub connection…/
 	);
 	for (const img of await content.locator('img').all()) {
 		await img.scrollIntoViewIfNeeded();

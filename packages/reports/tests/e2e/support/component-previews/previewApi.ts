@@ -28,7 +28,7 @@ export async function servePreview(route: Route, home: string) {
 			contentType: file.endsWith('css') ? 'text/css' : 'text/javascript',
 			body: readFileSync(join(home, 'catalog', file))
 		});
-	if (url.pathname.startsWith('/media/')) return media(route, url.pathname);
+	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
 	const given: Record<string, unknown> = {
 		'/api/analytics-cpu': cpu,
 		'/api/project-activity': { activity, live },

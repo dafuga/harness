@@ -75,8 +75,10 @@
 		"desktop.component.thread-links",
 		"desktop.component.thread-panel",
 		"desktop.component.workspace-link",
+		"desktop.component.workspace-shell",
 		"hub.component.account-menu",
 		"hub.component.email-proof-panel",
+		"hub.component.hosted-workspace",
 		"hub.component.hub-frame",
 		"hub.component.invitation-form",
 		"hub.component.invite-accept",
@@ -162,6 +164,7 @@
 		"reports.component.harness-harness-activity",
 		"reports.component.harness-harness-compare",
 		"reports.component.harness-harness-compare-media",
+		"reports.component.harness-harness-console",
 		"reports.component.harness-harness-emitted-growth",
 		"reports.component.harness-harness-failures",
 		"reports.component.harness-harness-growth",
@@ -172,9 +175,11 @@
 		"reports.component.harness-harness-map",
 		"reports.component.harness-harness-navbar",
 		"reports.component.harness-harness-selectors",
+		"reports.component.harness-harness-shell",
 		"reports.component.harness-harness-tabs",
 		"reports.component.harness-harness-unit",
 		"reports.component.harness-harness-verdict",
+		"reports.component.harness-screen",
 		"reports.component.image-zoom",
 		"reports.component.modal",
 		"reports.component.project-activity",
@@ -627,6 +632,12 @@
 			"units": ["desktop.component.workspace-link"]
 		},
 		{
+			"id": "desktop-component-workspace-shell",
+			"title": "Shared workspace shell",
+			"coverage": "required",
+			"units": ["desktop.component.workspace-shell"]
+		},
+		{
 			"id": "hub-component-account-menu",
 			"title": "Account menu",
 			"coverage": "required",
@@ -637,6 +648,12 @@
 			"title": "Email proof panel",
 			"coverage": "required",
 			"units": ["hub.component.email-proof-panel"]
+		},
+		{
+			"id": "hub-component-hosted-workspace",
+			"title": "Web workspace",
+			"coverage": "required",
+			"units": ["hub.component.hosted-workspace"]
 		},
 		{
 			"id": "hub-component-hub-frame",
@@ -1149,6 +1166,12 @@
 			"units": ["reports.component.harness-harness-compare-media"]
 		},
 		{
+			"id": "reports-component-harness-harness-console",
+			"title": "Explorer console",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-console"]
+		},
+		{
 			"id": "reports-component-harness-harness-emitted-growth",
 			"title": "Build output size history",
 			"coverage": "required",
@@ -1209,6 +1232,12 @@
 			"units": ["reports.component.harness-harness-selectors"]
 		},
 		{
+			"id": "reports-component-harness-harness-shell",
+			"title": "Standalone explorer shell",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-shell"]
+		},
+		{
 			"id": "reports-component-harness-harness-tabs",
 			"title": "Explorer section tabs",
 			"coverage": "required",
@@ -1225,6 +1254,12 @@
 			"title": "Verification verdict indicator",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-verdict"]
+		},
+		{
+			"id": "reports-component-harness-screen",
+			"title": "Explorer route screen",
+			"coverage": "required",
+			"units": ["reports.component.harness-screen"]
 		},
 		{
 			"id": "reports-component-image-zoom",
@@ -1468,8 +1503,10 @@
 				"desktop-component-thread-links",
 				"desktop-component-thread-panel",
 				"desktop-component-workspace-link",
+				"desktop-component-workspace-shell",
 				"hub-component-account-menu",
 				"hub-component-email-proof-panel",
+				"hub-component-hosted-workspace",
 				"hub-component-hub-frame",
 				"hub-component-invitation-form",
 				"hub-component-invite-accept",
@@ -1555,6 +1592,7 @@
 				"reports-component-harness-harness-activity",
 				"reports-component-harness-harness-compare",
 				"reports-component-harness-harness-compare-media",
+				"reports-component-harness-harness-console",
 				"reports-component-harness-harness-emitted-growth",
 				"reports-component-harness-harness-failures",
 				"reports-component-harness-harness-growth",
@@ -1565,9 +1603,11 @@
 				"reports-component-harness-harness-map",
 				"reports-component-harness-harness-navbar",
 				"reports-component-harness-harness-selectors",
+				"reports-component-harness-harness-shell",
 				"reports-component-harness-harness-tabs",
 				"reports-component-harness-harness-unit",
 				"reports-component-harness-harness-verdict",
+				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-modal",
 				"reports-component-project-activity",

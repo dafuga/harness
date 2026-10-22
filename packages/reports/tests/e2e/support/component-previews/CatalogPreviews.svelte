@@ -12,7 +12,10 @@
 	if (!unit) throw new Error(`Unknown preview component ${id}`);
 	const fixture = previewFixture(id);
 	const Component = previewComponent(unit.source);
-	const fullFrame = /harness-(navbar|header|console|shell)$/.test(id);
+	const fullFrame =
+		/(?:harness-(navbar|header|console|shell)|harness-screen|workspace-shell|hosted-workspace)$/.test(
+			id
+		);
 	// What the explorer draws inside its content, as it is drawn there.
 	const explorer =
 		Boolean(unit.source?.includes('/components/explorer-ui/harness/')) ||

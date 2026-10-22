@@ -13,7 +13,7 @@ export const catalogUnits = readdirSync(directory)
 				owns: { source: string[] };
 			}
 	)
-	.filter((unit) => unit.kind === 'component' && unit.status === 'active')
+	.filter((unit) => ['component', 'shell'].includes(unit.kind) && unit.status === 'active')
 	.sort((a, b) => a.id.localeCompare(b.id));
 export const previewState = (id: string) => id.replaceAll('.', '-');
 export const catalogViewports = [
