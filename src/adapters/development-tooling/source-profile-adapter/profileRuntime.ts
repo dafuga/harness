@@ -13,13 +13,35 @@ interface Boundary {
 	inferredName?: string;
 }
 
-const profiler = new PerformanceProfileService();
-let flushing = false;
+interface RuntimeProfiles {
+	collectors: Map<string, PerformanceProfileService>;
+	flushing: boolean;
+	exitRegistered: boolean;
+}
+// Vitest resets module caches, but its teardown still holds the original flush function.
+// Keep only collector state on this runtime's global, scoped to the actual source URL.
+const key = Symbol.for(`harness.source-profiles:${import.meta.url}`);
+const globals = globalThis as unknown as Record<symbol, RuntimeProfiles | undefined>;
+const profiles = (globals[key] ??= {
+	collectors: new Map(),
+	flushing: false,
+	exitRegistered: false
+});
+
+function currentProfiler(): PerformanceProfileService | undefined {
+	const directory = process.env.HARNESS_RUNTIME_PROFILE_DIR;
+	if (!directory || profiles.flushing) return undefined;
+	let collector = profiles.collectors.get(directory);
+	if (!collector) {
+		collector = new PerformanceProfileService();
+		profiles.collectors.set(directory, collector);
+	}
+	return collector;
+}
 
 /** A failed import never reaches its finishing statement and therefore emits no success sample. */
 export function beginSourceScope(boundary: Boundary): () => void {
-	if (!process.env.HARNESS_RUNTIME_PROFILE_DIR || flushing) return () => {};
-	return profiler.beginScope(observationInput(boundary, 'initialization'));
+	return currentProfiler()?.beginScope(observationInput(boundary, 'initialization')) ?? (() => {});
 }
 
 /** Metadata describes source boundaries only; values and arguments never enter the collector. */
@@ -37,7 +59,8 @@ export function watchOperation<T extends (...args: never[]) => unknown>(
 		unsupported = false;
 	return new Proxy(operation, {
 		apply(target, receiver, args) {
-			if (flushing || unsupported || completed + pending >= sourceSampleLimit)
+			const profiler = currentProfiler();
+			if (!profiler || unsupported || completed + pending >= sourceSampleLimit)
 				return Reflect.apply(target, receiver, args);
 			const call = () => Reflect.apply(target, receiver, args);
 			pending++;
@@ -92,21 +115,25 @@ function observationInput(boundary: Boundary, selection: string): ObservationInp
 
 /** The test runner owns a separate sink; verification-context isolation remains intact. */
 export function flushSourceProfiles(): void {
-	const directory = process.env.HARNESS_RUNTIME_PROFILE_DIR;
-	if (!directory || flushing) return;
+	if (profiles.flushing) return;
 	const previous = [process.env.HARNESS_EVIDENCE_DIR, process.env.TAKE_SCREENSHOT];
-	flushing = true;
+	profiles.flushing = true;
 	try {
-		process.env.HARNESS_EVIDENCE_DIR = directory;
-		process.env.TAKE_SCREENSHOT = '1';
-		profiler.flush();
+		for (const [directory, collector] of profiles.collectors) {
+			process.env.HARNESS_EVIDENCE_DIR = directory;
+			process.env.TAKE_SCREENSHOT = '1';
+			collector.flush();
+		}
 	} finally {
 		for (const [index, name] of ['HARNESS_EVIDENCE_DIR', 'TAKE_SCREENSHOT'].entries()) {
 			if (previous[index] === undefined) delete process.env[name];
 			else process.env[name] = previous[index];
 		}
-		flushing = false;
+		profiles.flushing = false;
 	}
 }
 
-process.once('exit', flushSourceProfiles);
+if (!profiles.exitRegistered) {
+	process.once('exit', flushSourceProfiles);
+	profiles.exitRegistered = true;
+}
