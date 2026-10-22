@@ -72,7 +72,7 @@ async function imageProject(page: Page) {
 						)!;
 						return {
 							image: {
-								path: 'game-assets/' + String(calls.length).repeat(64) + '.png',
+								path: 'static/game/checkpoints/' + String(calls.length).repeat(64) + '.png',
 								model: 'gpt-image-2',
 								createdAt: '2026-10-22T20:00:00.000Z',
 								prompt: node.description + '\n' + node.imagePrompt
