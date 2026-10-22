@@ -106,14 +106,16 @@ Creating a plan in an existing Harness project atomically adds scoped artifact e
 bun run typecheck
 bun run lint
 bun run test:unit
-bunx playwright test ui-workspace.spec.ts ui-designs.spec.ts
-TAKE_SCREENSHOT=true bunx playwright test native-desktop.spec.ts
+bun run test:e2e ui-workspace.spec.ts ui-designs.spec.ts
+bun run build && TAKE_SCREENSHOT=true bun run test:native
 HARNESS_CLI_PATH=../../src/index.ts bun run check
 ```
 
+`bun run test:e2e` runs every browser suite in headless Chromium against the web renderer and launches no Electron app; the root `check:desktop` runs only this. `native-desktop.spec.ts` runs only through `bun run test:native`, against the built Electron bundles, and no normal check invokes it: a passing `test:e2e` says nothing about preload, IPC, sandboxing or native navigation.
+
 The UI suites inject a deterministic bridge only into their test pages. The native suite launches its own Electron process/profile, stubs only the directory chooser, uses a disposable real Git/LFS repository and the public planning API, verifies native IPC, approval and history, and closes only that test-owned app. It checks sandboxing and blocked remote navigation/popups. It does not run coding or image-generation jobs. Actual CLI adapter smoke evidence is separate from these fixtures.
 
-Outside a verification the browser suites start their own preview on `127.0.0.1:5796` and refuse a server that is already there; `HARNESS_DESKTOP_TEST_PORT=<port>` names another free port. Screenshots are opt-in with `TAKE_SCREENSHOT=true` and go to `test-results/`; do not commit generated visual evidence. The browser preview has no writable mock backend.
+Outside a verification both commands start their own preview on `127.0.0.1:5796` and refuse a server that is already there; `HARNESS_DESKTOP_TEST_PORT=<port>` names another free port. Screenshots are opt-in with `TAKE_SCREENSHOT=true` and go to `test-results/`; do not commit generated visual evidence. The browser preview has no writable mock backend.
 
 Recorded runtime evidence is read for local projects and for shared ones, and is shown in Overview and Evidence. A branch view shows what is recorded for its tip; an explicit commit is compared with its actual first parent. Evidence that is missing, invalid or incompatible is shown as that gap, and a connection that cannot read evidence says so. A passing test, a design approval, a readable PNG or agent completion does not stand in for recorded evidence.
 
