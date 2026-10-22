@@ -6,11 +6,9 @@
 	"name": "effect-only-profiles",
 	"goal": "Measure actual effect-only module initialization without treating deferred callables or failed imports as successful runtime work",
 	"createdAt": "2026-10-22T03:52:41.854Z",
-	"updatedAt": "2026-10-22T03:54:42.120Z",
+	"updatedAt": "2026-10-22T03:57:47.768Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -38,12 +36,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:57:46.218Z",
+			"evidence": "The source adapter measures completed effect-only initialization with no callable body; throws never reach the finishing sample, and deferred-callable exclusions remain intact."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T03:57:47.768Z",
+			"evidence": "Unchanged initializedModules corpus sealed c23970a9 red and df1d6881 green at a7100cde4. Both success and throwing effect inputs pass the 15-case runner matrix; lifecycle matrix also passes."
 		},
 		{
 			"id": "verify",

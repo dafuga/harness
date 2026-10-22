@@ -5,6 +5,7 @@ import { expect } from '../../../test/verificationExpect';
 import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
 import { runCommand } from '../../../test/support/cli';
 import { nativeAcceptance } from './native-acceptance-fixture';
+import nativeScenario from '../../../specification/scenarios/remote-mobile-native.json' with { type: 'json' };
 
 /** Real Swift checks on macOS. Other platforms have an explicit native coverage gap. */
 async function nativeCheck(script: string) {
@@ -95,6 +96,15 @@ test.skipIf(process.platform !== 'darwin')(
 		expect(result.report.passed).toBeGreaterThanOrEqual(78);
 		expect(result.report.source.revision).toBe(result.commit);
 		expect(result.report.source.renderer.files).toBeGreaterThan(0);
+		expect(result.report.source.native.files).toBeGreaterThan(0);
+		expect(result.report.source.fixtureComputer.files).toBeGreaterThan(0);
+		for (const unit of nativeScenario.units.filter((unit) =>
+			unit.startsWith('desktop.script.ios-acceptance-')
+		))
+			expect(
+				result.profileUnits,
+				`Actual native helper requires timing and memory: ${unit}`
+			).toContain(unit);
 		expect(result.report.checks.every((check: { passed: boolean }) => check.passed)).toBe(true);
 		expect(result.drift).toEqual({ mutated: [], added: [] });
 	},

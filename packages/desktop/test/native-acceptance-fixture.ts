@@ -6,6 +6,10 @@ import { SnapshotAdapter } from '../../../src/adapters/snapshot-adapter/Snapshot
 import { profileEnvironment } from '../../../src/adapters/source-profile-adapter/runnerSelection';
 import { runIsolated } from '../../../src/utils/run-isolated/runIsolated';
 import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
+import { gatherCaptures } from '../../../src/utils/gatherCaptures';
+import { benchmarkCaptureSchema } from '../../../src/core/verifyTypes';
+import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { randomUUID } from 'node:crypto';
 
 const repository = resolve(import.meta.dirname, '../../..');
 
@@ -26,6 +30,7 @@ async function sourceSnapshot() {
 		await selected.run(['init', '--bare', `--object-format=${format}`, '.']);
 		await writeFile(join(metadata, 'objects/info/alternates'), objects + '\n');
 		await selected.run(['update-ref', '--no-deref', 'HEAD', commit]);
+		await selected.run(['read-tree', 'HEAD']);
 		const tree = await selected.run(['rev-parse', 'HEAD^{tree}']);
 		if (process.env.HARNESS_VERIFY_TREE && process.env.HARNESS_VERIFY_TREE !== tree)
 			throw new Error('Native acceptance selected a different source tree');
@@ -51,10 +56,7 @@ export async function nativeAcceptance() {
 		HARNESS_VERIFY_REVISION: source.commit,
 		HARNESS_VERIFY_TREE: source.tree,
 		HARNESS_NATIVE_SOURCE_GIT_DIR: source.metadata,
-		...profileEnvironment(
-			source.snapshot.directory,
-			process.env.HARNESS_RUNTIME_PROFILE_DIR ?? evidence
-		)
+		...profileEnvironment(source.snapshot.directory, join(evidence, 'profiles'))
 	};
 	try {
 		for (const [name, command] of [
@@ -68,10 +70,49 @@ export async function nativeAcceptance() {
 		const report = JSON.parse(await readFile(join(evidence, 'artifacts/report.json'), 'utf8'));
 		const drift = await source.snapshot.drift();
 		await writeFile(join(evidence, 'drift.json'), JSON.stringify(drift));
-		return { report, drift, commit: source.commit, tree: source.tree };
+		const profileUnits = await retainProfiles(join(evidence, 'profiles'));
+		return { report, drift, profileUnits, commit: source.commit, tree: source.tree };
 	} finally {
 		await source.snapshot.remove();
 	}
+}
+
+/** Forward unchanged observations from the same-commit child, keeping its raw sink as well. */
+async function retainProfiles(directory: string) {
+	const found = gatherCaptures(directory, 'native-profiles');
+	if (found.failures.length) throw new Error(found.failures.join('; '));
+	const complete = new Set<string>();
+	const destination = process.env.HARNESS_RUNTIME_PROFILE_DIR ?? process.env.HARNESS_EVIDENCE_DIR;
+	for (const capture of found.gathered.filter((item) => item.line.kind === 'benchmark')) {
+		const { measurements } = benchmarkCaptureSchema.parse(capture.benchmark);
+		for (const reading of measurements.filter((item) => item.unitOfMeasure === 'ms'))
+			if (
+				measurements.some(
+					(item) =>
+						item.unit === reading.unit &&
+						item.workload === reading.workload &&
+						item.unitOfMeasure === 'bytes'
+				)
+			)
+				complete.add(reading.unit);
+		if (destination)
+			recordCapture(
+				{
+					evidence: 'native-source-profiles',
+					state: 'native-profile',
+					kind: 'benchmark',
+					file: `native-source-${randomUUID()}.json`,
+					mediaType: 'application/json'
+				},
+				await readFile(join(directory, capture.line.file)),
+				{
+					...process.env,
+					TAKE_SCREENSHOT: '1',
+					HARNESS_EVIDENCE_DIR: destination
+				}
+			);
+	}
+	return [...complete].sort();
 }
 
 async function prepare(

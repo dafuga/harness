@@ -150,6 +150,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 ## Integration Checkpoints
 
 - Native checks that inventory Git source use the selected snapshot's immutable objects and contained scratch metadata. Run native acceptance that rebuilds the renderer in its own exact-commit export; retain source drift, assertions, screenshots and runtime profiles through the normal scenario. Never borrow the live working source or alter the parent verification's stamped build.
+- Test-only Node tools use the profiling-enabled runner mode. The native scenario asserts actual time and memory observations for every owned helper script; a whole-command profile cannot replace missing helper observations. Retain the child's raw sink and forward only unchanged observations from its same-commit export. Effect-only initialization may be measured after it completes; failed imports and deferred callables never gain successful initialization samples.
 
 - When shared cards change their clickable surface or accessible names, include authored simulator/native navigation helpers in the normal browser acceptance corpus. Execute the same helper expressions against the real rendered component with representative fixture parameters; browser tests that independently copy the new selector cannot establish the native helper contract.
 

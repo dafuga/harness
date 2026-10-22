@@ -30,7 +30,7 @@
 		"test:e2e": "playwright test",
 		"remote:fixture": "bun run sync:shared && vite-node scripts/remote-fixture.ts",
 		"ios:check:limits": "bun scripts/check-ios-limits.ts",
-		"ios:acceptance": "bun run sync:shared && vite-node scripts/ios-acceptance.ts"
+		"ios:acceptance": "bun run sync:shared && vite-node --mode test scripts/ios-acceptance.ts"
 	},
 	"dependencies": {
 		"@capacitor/core": "7.4.5",
