@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-explorer-module-card",
+	"kind": "component",
+	"title": "ExplorerModuleCard",
+	"responsibility": "Renders catalog and relationship cards with optional revision-scoped images and up to three flat Used In links.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte"],
+		"symbols": ["ExplorerModuleCard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerModuleCard.row",
+				"type": "CatalogRow",
+				"description": "Selected module, helper identity, linked title and revision-scoped consumers."
+			},
+			{
+				"name": "ExplorerModuleCard.nav",
+				"type": "EntityNav",
+				"description": "Navigation preserving branch, commit, entity and selected helper."
+			},
+			{
+				"name": "ExplorerModuleCard.lens",
+				"type": "EntityLens",
+				"description": "Revision-scoped evidence and consumer previews."
+			},
+			{
+				"name": "ExplorerModuleCard.mediaBase",
+				"type": "string",
+				"description": "URL prefix for the selected evidence assets."
+			},
+			{
+				"name": "ExplorerModuleCard.shot",
+				"type": "Evidence | null",
+				"description": "Optional own visual capture. Nonvisual modules omit the image region; missing visual captures remain explicit."
+			},
+			{
+				"name": "ExplorerModuleCard.category",
+				"type": "ExplorerCategory",
+				"description": "Module category, defaulting to the row category. Visual and nonvisual cards share this renderer."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerModuleCard",
+				"type": "markup",
+				"description": "One linked name or helper invocation, an optional visual capture, and one Used In footer with at most three distinct linked consumers; no consumer category labels."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

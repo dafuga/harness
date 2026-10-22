@@ -52,7 +52,7 @@ test('what an entity uses is one section of kinds of their own, and what uses it
 		expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
 		expect(uses, 'Relationships reuse catalog cards').toContain('ex-function-tile');
 		expect(uses).toContain('ex-page-card');
-		expect(uses).toContain('aria-label="Services"');
+		expect(uses).toContain('aria-label="Services uses"');
 		expect(used).toContain('ex-page-card');
 		expect(words(used)).toMatch(/Used In\s+1\s+Pages\s+1[^]*Orders page/);
 		expect(used).toContain('aria-label="Used In"');

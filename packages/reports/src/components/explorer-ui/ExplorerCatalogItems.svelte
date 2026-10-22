@@ -3,9 +3,7 @@
 	import type { ExplorerCategory } from '../../models/Explorer.types';
 	import type { CatalogRow } from '../../utils/entityCatalog';
 	import type { EntityLens, EntityNav } from '../../utils/entityLens';
-	import { catalogShot } from '../../utils/entityScreens';
-	import ExplorerFunctionCard from '../ExplorerFunctionCard.svelte';
-	import ExplorerPageCard from '../harness/ExplorerPageCard.svelte';
+	import ExplorerModuleCard from './ExplorerModuleCard.svelte';
 	import ExplorerTable from '../harness/ExplorerTable.svelte';
 	import HarnessAction from '../harness/HarnessAction.svelte';
 	let {
@@ -27,6 +25,8 @@
 		batch?: number;
 		label?: string;
 	} = $props();
+	// Configs and shells stay tables; every other collection is a grid of the one module card.
+	const cards: ExplorerCategory[] = ['pages', 'components', 'functions', 'models', 'services'];
 	let pages = $state(1);
 	let root = $state<HTMLDivElement>();
 	let visible = $derived(batch > 0 ? rows.slice(0, pages * batch) : rows);
@@ -42,20 +42,10 @@
 </script>
 
 {#snippet items(rows: CatalogRow[])}
-	{#if category === 'pages' || category === 'components' || category === 'functions' || category === 'models' || category === 'services'}
+	{#if cards.includes(category)}
 		<div class={category === 'pages' ? 'ex-page-grid' : 'ex-catalog-grid'}>
 			{#each rows as row (row.id)}
-				{#if category === 'pages' || category === 'components'}
-					<ExplorerPageCard
-						{row}
-						{category}
-						{nav}
-						{lens}
-						{mediaBase}
-						{verification}
-						shot={catalogShot(lens.evidence(row.entity.unit), row.entity.unit.preview)}
-					/>
-				{:else}<ExplorerFunctionCard {row} {nav} {lens} {mediaBase} />{/if}
+				<ExplorerModuleCard {row} {category} {nav} {lens} {mediaBase} />
 			{/each}
 		</div>
 	{:else}

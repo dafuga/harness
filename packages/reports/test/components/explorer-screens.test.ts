@@ -130,7 +130,7 @@ test('an overview names its evidence; audio stays in the shared component-tab na
 		expect(has(entry, tabs), entry).toHaveLength(6);
 		expect(has(entry, ['EntityHistory']), entry).toEqual([]);
 		expect(
-			has(entry, ['ExplorerCatalogItems', 'ExplorerPageCard', 'ExplorerTable']),
+			has(entry, ['ExplorerCatalogItems', 'ExplorerModuleCard', 'ExplorerTable']),
 			entry
 		).toHaveLength(3);
 	}
