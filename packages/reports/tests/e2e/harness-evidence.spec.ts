@@ -108,8 +108,11 @@ test('what was captured satisfies the scenario contract, and another build would
 	expect(other.failures[0]).toMatch(
 		/was served by build [0-9a-f]{12}, not the reports build f{12}/
 	);
-	// Each visual unit a screenshot showed has that screenshot, and the figures of its route too.
-	expectPageMeasurements(gathered, await expectShownAttribution(gathered), viewports);
+	// Each visual unit keeps its own screenshots. Navigation measures belong to hard-loaded pages;
+	// components reached only by tab changes receive remount measurements in the component catalog.
+	const rendered = await expectShownAttribution(gathered);
+	const pages = rendered.filter((id) => registry.find((unit) => unit.id === id)?.kind === 'page');
+	expectPageMeasurements(gathered, pages, viewports);
 });
 
 /**
