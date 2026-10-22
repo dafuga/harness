@@ -85,9 +85,9 @@ for (const [screen, width, height] of screens) {
 		const line = await underline(links.nth(0));
 		expect(line?.[0]).toBeGreaterThanOrEqual(2);
 		expect(line?.[1]).toBe(colours[0]);
-		for (const other of [1, 2, 3, 4, 5, 6]) {
-			await expect(links.nth(other)).not.toHaveAttribute('aria-current', 'page');
-			expect(await underline(links.nth(other))).toBeNull();
+		for (const other of (await links.all()).slice(1)) {
+			await expect(other).not.toHaveAttribute('aria-current', 'page');
+			expect(await underline(other)).toBeNull();
 		}
 		const brand = bar.getByRole('link', { name: 'Harness', exact: true });
 		await expect(brand).toHaveAttribute('href', `${scoped}/pages`);
@@ -99,8 +99,8 @@ for (const [screen, width, height] of screens) {
 		for (const name of categories) {
 			await page.keyboard.press('Tab');
 			await expect(links.filter({ hasText: name })).toBeFocused();
+			expect(await styled(links.filter({ hasText: name }), 'outline-style')).not.toBe('none');
 		}
-		expect(await styled(links.nth(6), 'outline-style')).not.toBe('none');
 		for (const name of ['Branch', 'Commit']) {
 			await page.keyboard.press('Tab');
 			await expect(combo(bar, name)).toBeFocused();
@@ -124,6 +124,10 @@ for (const [screen, width, height] of screens) {
 			expect(first.x).toBeLessThan((await box(combo(bar, 'Branch'))).x);
 		}
 		expect(await fits(page)).toBe(true);
+		await links.filter({ hasText: 'Styles' }).click();
+		await expect(page).toHaveURL(at(`${scoped}/styles`));
+		await links.filter({ hasText: 'Helpers' }).click();
+		await expect(page).toHaveURL(at(`${scoped}/functions`));
 	});
 	test(`the branch with its tip and the viewed commit are told apart at ${screen} width`, async ({
 		page
