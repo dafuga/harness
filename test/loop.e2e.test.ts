@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
+import { expectFailedCapture } from './support/loop-repair/captureFixture';
 import { prepareRepair, exerciseRepair, expectPendingVerification } from './support/loopRepair';
 test('loop CLI traces work and remains audit-safe in generated projects', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-loop-e2e-'));
@@ -185,6 +186,7 @@ test('standalone evidence capture preserves images and measurements without inve
 		);
 		const status = await runHarness(['history', 'status', '--json'], root);
 		expect(JSON.parse(status.stdout).verified).toBe(false);
+		await expectFailedCapture(root);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
