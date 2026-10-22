@@ -2,7 +2,7 @@
 	"name": "platforms-navbar-fit",
 	"goal": "Keep nine navbar destinations reachable and search aligned to the right edge at every supported width.",
 	"createdAt": "2026-10-22T23:36:41.256Z",
-	"updatedAt": "2026-10-22T23:36:41.256Z",
+	"updatedAt": "2026-10-22T23:56:45.703Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T23:56:45.016Z",
+			"evidence": "Nine destinations remain reachable on first paint; global search stays at the upper-right above the compact revision row."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T23:56:45.703Z",
+			"evidence": "The existing search-fit matrix exposed the new nine-destination wrap boundary. Preserve its geometry assertions and add explicit destination and above-divider checks; retain screenshots through the normal fixture."
 		},
 		{
 			"id": "red",
