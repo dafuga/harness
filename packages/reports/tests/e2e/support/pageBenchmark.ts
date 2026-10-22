@@ -1,7 +1,9 @@
 import type { Page } from '@playwright/test';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { servedBuild } from './harnessCapture';
+import { servedBuild, settled } from './harnessCapture';
+import { randomUUID } from 'node:crypto';
+import { evidenceRequested } from '../../../../../src/utils/record-capture/recordCapture';
 import { BrowserProfileAdapter } from '../../../../../src/adapters/development-tooling/BrowserProfileAdapter';
 /** Runtime observations of the real route, never of a later client-side destination. */
 export async function pageBenchmark(page: Page, state: string, unit?: string): Promise<void> {
@@ -26,6 +28,53 @@ export async function pageBenchmark(page: Page, state: string, unit?: string): P
 		file: `${state}-benchmark.json`,
 		buildId: server.buildId
 	});
+}
+
+/** Measure one actual route workflow; redirects retain both executed page entries and shared hosts. */
+export async function pageWorkflow(
+	page: Page,
+	address: string,
+	state: string,
+	operation: () => Promise<void>
+) {
+	const origin = pageUnit(new URL(address, 'http://registered-route.invalid').href);
+	if (!origin) throw Error(`No registered framework entry for ${address}`);
+	const units = [
+		origin,
+		'reports.entry.app-html',
+		'reports.layout.root',
+		'reports.component.harness-screen',
+		'reports.component.harness-harness-console'
+	];
+	const browser = new BrowserProfileAdapter({
+		navigation: async () => null,
+		url: () => page.url(),
+		viewport: () => page.viewportSize()!,
+		heap: async () => (await pageHeap(page)).usedSize,
+		identity: async () => {
+			const build = await servedBuild(page);
+			return build && build.revision === process.env.HARNESS_VERIFY_REVISION ? build.buildId : null;
+		}
+	});
+	const viewport = page.viewportSize()!;
+	await browser.capture(
+		{
+			units,
+			state,
+			workload: `${state}-${viewport.width}x${viewport.height}`,
+			file: `${state}-${randomUUID()}.json`,
+			note: 'Actual compiled viewer using synthetic Git history, including explicit missing-record cases. Shared route and readiness time plus browser protocol overhead; whole renderer heap, no isolated entry cost or backend memory.'
+		},
+		async () => {
+			await operation();
+			const destination = pageUnit(page.url());
+			if (destination && !units.includes(destination)) units.push(destination);
+			if (evidenceRequested()) {
+				await settled(page);
+				await page.mouse.move(0, 0);
+			}
+		}
+	);
 }
 
 async function pageHeap(page: Page) {

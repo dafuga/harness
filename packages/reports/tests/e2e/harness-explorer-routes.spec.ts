@@ -12,6 +12,8 @@ import {
 	tip
 } from './support/explorer';
 import { seeded } from './support/harnessHistory';
+import { pageWorkflow } from './support/pageBenchmark';
+import { shellUnit, shellsBranch } from '../../scripts/harness-shells-seed';
 
 const { commits, keptBranch } = seeded();
 const { explorerBranch, explorerUnits: units } = explorer();
@@ -155,4 +157,56 @@ test('what the history does not hold is said, and no other revision is shown in 
 	).toBeVisible();
 	expect(pathOf(page)).toBe(absent);
 	await expect(commit(page)).toHaveValue(commits.baseline);
+});
+
+const directDetails = [
+	['pages', units.page, 'Titles', 'main', commits.approved],
+	['components', units.list, 'TitleList', 'main', commits.approved],
+	['functions', units.slugify, 'slugify', 'main', commits.approved],
+	['configs', units.config, 'titlesConfig', 'main', commits.approved],
+	['services', 'service.clock', 'Clock service', 'main', commits.approved],
+	['shells', shellUnit, 'Title frame', shellsBranch, commits.shelled]
+] as const;
+
+for (const [kind, id, title, namedBranch, revision] of directDetails)
+	test(`${kind} earlier detail entry renders its real entity contract`, async ({ page }) => {
+		await page.setViewportSize({ width: 1440, height: 900 });
+		const address = at(namedBranch, revision, `${kind}/${id}/details`);
+		await pageWorkflow(page, address, `direct-details-${kind}`, async () => {
+			await page.goto(address);
+			await expect(page.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+			await expect(page.getByRole('region', { name: 'Contract', exact: true })).toBeVisible();
+		});
+		await checkpoint(page, `routes-direct-details-${kind}`);
+	});
+
+for (const section of ['', '/details', '/history'])
+	test(`a missing model stays explicit at its ${section || 'overview'} entry`, async ({ page }) => {
+		await page.setViewportSize({ width: 1440, height: 900 });
+		const address = at('main', commits.approved, `models/model.not-recorded${section}`);
+		await pageWorkflow(
+			page,
+			address,
+			`model-missing-${section.slice(1) || 'overview'}`,
+			async () => {
+				await page.goto(address);
+				await expect(
+					page.getByText('Nothing from another revision is shown in its place.')
+				).toBeVisible();
+			}
+		);
+		await checkpoint(page, `routes-model-missing-${section.slice(1) || 'overview'}`);
+	});
+
+test('the model collection keeps an empty synthetic history explicit', async ({ page }) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	const address = at('main', commits.approved, 'models');
+	await pageWorkflow(page, address, 'models-empty-catalog', async () => {
+		await page.goto(address);
+		await expect(
+			page.getByRole('heading', { level: 1, name: 'Models', exact: true })
+		).toBeVisible();
+		await expect(page.getByRole('main').getByRole('article')).toHaveCount(0);
+	});
+	await checkpoint(page, 'routes-empty-models');
 });
