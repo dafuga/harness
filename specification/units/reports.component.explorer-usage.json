@@ -40,13 +40,18 @@
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
 				"description": "Optional consumer presentation; defaults to category headings, while flat keeps the same links without category labels."
+			},
+			{
+				"name": "ExplorerUsage.limit",
+				"type": "number",
+				"description": "Optional most links the flat list shows, in its canonical order; unbounded by default. Omitted consumers end the list with a visible ellipsis and read-out count."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerUsage",
 				"type": "markup",
-				"description": "Compact Used In links or a dash; grouped by default, with a flat layout for model cards using the same preview links."
+				"description": "Compact Used In links or a dash; grouped by default, with a flat layout for model and component cards using the same preview links. A limited flat list adds an ellipsis only when consumers are omitted."
 			}
 		],
 		"errors": []
