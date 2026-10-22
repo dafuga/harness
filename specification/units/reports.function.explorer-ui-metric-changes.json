@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-metric-changes",
+	"kind": "function",
+	"title": "metricChanges",
+	"responsibility": "Owns the metricChanges shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorer-ui/metricChanges.ts"],
+		"symbols": ["MetricChangeRow", "MetricSide", "MetricComparison", "metricChanges"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "metricChanges.before",
+				"type": "EntityMeasure"
+			},
+			{
+				"name": "metricChanges.after",
+				"type": "EntityMeasure"
+			}
+		],
+		"outputs": [
+			{
+				"name": "metricChanges",
+				"type": "MetricChangeRow[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.entity-measure",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-ui/metricChanges.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-ui/metricChanges.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
