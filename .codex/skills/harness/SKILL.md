@@ -176,6 +176,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 - Browser workflow profiles use Harness `BrowserProfileAdapter`: execute the actual action once, include readiness assertions, and read the settled renderer heap. Declare observed participant units and benchmark slots in the scenario. Keep synthetic transport and shared renderer costs explicit; never assign a predecessor document navigation to a soft destination. Verify the public packed SDK entry when exposing a new collector.
 
+- Source-profile lifecycle coverage must reset the runner module cache and verify retained sample counts. Teardown must flush collectors created after resets into their original evidence directories; failed imports, declaration collection and explicit benchmark exclusions remain unchanged.
+
 ## Hard Limits
 
 - Files: 220 lines.
