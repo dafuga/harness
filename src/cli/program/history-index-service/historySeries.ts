@@ -10,6 +10,7 @@ import { frozenMetrics } from '../../../utils/verification-evidence/budgetFindin
 import type { BudgetReview } from '../../../utils/verification-evidence/budgetReviews';
 import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
 import { emittedKey, emittedSizes } from '../../../utils/development-tooling/emittedSizes';
+import type { RegressionView } from '../../../core/verification-evidence/regressionTypes';
 
 type Growth = HistoryIndex['units'];
 
@@ -93,9 +94,12 @@ function timed(
  * only when profile, unit of measure, method and comparison context are identical; anything
  * else is another series, and a group with more than one is marked incompatible.
  */
-export function historySeries(records: VerificationRecord[]): BenchmarkSeries[] {
+export function historySeries(
+	records: Array<Pick<VerificationRecord, 'id' | 'measurements'>>,
+	focused: RegressionView[] = []
+): BenchmarkSeries[] {
 	const groups = new Map<string, { head: Head; lines: Map<string, Line> }>();
-	for (const record of records) {
+	for (const record of [...records, ...focusedMeasurements(focused)]) {
 		for (const item of record.measurements.filter(timed)) {
 			const { unit, workload, metric, profile, unitOfMeasure, method } = item;
 			const head = { unit, workload, metric, target: item.target ?? null };
@@ -119,4 +123,22 @@ export function historySeries(records: VerificationRecord[]): BenchmarkSeries[] 
 		const series = [...group.lines.keys()].sort().flatMap((name) => group.lines.get(name) ?? []);
 		return [{ ...group.head, incompatible: series.length > 1, series }];
 	});
+}
+
+/** Focused observations keep their original tested revision and never establish a verdict. */
+function focusedMeasurements(runs: RegressionView[]) {
+	const points = runs.filter((run) => !run.gap).flatMap((run) => [run.red, run.green]);
+	const records = points.flatMap((point) =>
+		point?.id
+			? [
+					{
+						id: point.id,
+						measurements: (point.measurements ?? []).filter(
+							(item) => item.testedRevision === point.commit
+						)
+					}
+				]
+			: []
+	);
+	return [...new Map(records.map((record) => [record.id, record])).values()];
 }

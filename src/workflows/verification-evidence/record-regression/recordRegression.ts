@@ -40,7 +40,7 @@ export async function recordRegression(input: RecordRegressionInput) {
 	const loop = validateLoopId(input.loop, 'Loop name');
 	await readLoop(loopPaths(root, loop).state);
 	const phase = regressionPhaseSchema.safeParse(input.phase);
-	if (!phase.success) return fail('Regression phase must be red or green.');
+	if (!phase.success) return fail('Evidence phase must be red, green or capture.');
 	const commit = await new GitAdapter(root).run([
 		'rev-parse',
 		'--verify',
@@ -52,11 +52,11 @@ export async function recordRegression(input: RecordRegressionInput) {
 	const red = note ? (await repository.load(note)).record : undefined;
 	if (phase.data === 'green' && !red)
 		return fail('First record the committed failing test with loop record --phase red.');
-	const request = regressionRequest(input, red);
+	const request = regressionRequest(evidenceRequest(input), red);
 	await declaredUnits(root, commit, request.units);
 	await regressionFiles(root, commit, request.tests);
 	if (red) await regressionFixCommit(root, commit, red);
-	else await regressionTestCommit(root, commit, request.tests);
+	else if (phase.data === 'red') await regressionTestCommit(root, commit, request.tests);
 	return new RegressionProofService(root).run({
 		...request,
 		commit,
@@ -65,6 +65,12 @@ export async function recordRegression(input: RecordRegressionInput) {
 		timeoutMs: regressionTimeout(input.timeout),
 		red
 	});
+}
+
+function evidenceRequest(input: RecordRegressionInput): RecordRegressionInput {
+	return input.phase === 'capture'
+		? { ...input, assertion: input.assertion ?? 'Focused evidence capture completed.' }
+		: input;
 }
 
 /** New regression loops cannot replace recorded observations with free-text evidence. */

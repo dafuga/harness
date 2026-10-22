@@ -56,7 +56,7 @@ export const historyNoteSchema = z.discriminatedUnion('kind', [
 		kind: z.literal('regression'),
 		commit,
 		loop: text,
-		phase: z.enum(['red', 'green']),
+		phase: z.enum(['red', 'green', 'capture']),
 		record: sha256,
 		evidence: evidencePointerSchema
 	})
