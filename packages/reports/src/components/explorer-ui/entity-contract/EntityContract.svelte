@@ -35,17 +35,30 @@
 		category === 'services' ? serviceContract(unit) : { methods: [], facts: [] }
 	);
 	let groups = $derived(
-		callables.length > 0 || service.methods.length > 0 ? [] : contractFields(unit, category)
+		(callables.length > 0 || service.methods.length > 0
+			? []
+			: contractFields(unit, category)
+		).filter((group) => category !== 'services' || group.id !== 'errors')
 	);
-	let serviceErrors = $derived(
-		service.facts.filter((row) => row.label === 'Errors not tied to a method')
-	);
+	let serviceErrors = $derived.by(() => {
+		if (category !== 'services') return undefined;
+		const group = contractFields(unit, category).find((group) => group.id === 'errors');
+		return (
+			group && {
+				...group,
+				fields: group.fields.map((field, index) => ({
+					...field,
+					name: unit.contract.errors[index].name
+				}))
+			}
+		);
+	});
 	let facts = $derived(
 		callables.length > 0
 			? []
 			: [
 					...contractFacts(contract, unit, category),
-					...service.facts.filter((row) => !serviceErrors.includes(row))
+					...service.facts.filter((row) => row.label !== 'Errors not tied to a method')
 				]
 	);
 	let title = $derived(last ? `Last contract · ${last.slice(0, 7)}` : 'Contract');
@@ -88,7 +101,7 @@
 			{/each}
 		{/each}
 	{/each}
-	{@render summaryRows(serviceErrors)}
+	{#if serviceErrors}<ContractTable group={serviceErrors} onexample={openExample} />{/if}
 </section>
 {#snippet summaryRows(rows: ContractRow[])}
 	{#if rows.length > 0}
@@ -105,7 +118,7 @@
 {#snippet callableSection(callable: CallableContract, label: string)}
 	<section class="callable" aria-label={label}>
 		<h3><code>{callable.signature}</code></h3>
-		{#each callable.groups as group (group.id)}
+		{#each callable.groups.filter((group) => category !== 'services' || group.id !== 'errors') as group (group.id)}
 			<ContractTable
 				{group}
 				plain
