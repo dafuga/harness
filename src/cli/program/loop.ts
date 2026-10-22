@@ -123,16 +123,16 @@ function registerRegressionCommand(command: Command): void {
 		.command('record <loop>')
 		.requiredOption(
 			'--phase <phase>',
-			'red for the failing-test commit; green for its separate fix.'
+			'red for a failing test; green for its fix; capture for independent evidence.'
 		)
 		.option('--commit <revision>', 'Committed source to test in a clean snapshot.', 'HEAD')
-		.option('--test <path...>', 'Tracked regression tests; red phase only.')
-		.option('--unit <id...>', 'Units whose behavior the regression proves; red phase only.')
+		.option('--test <path...>', 'Tracked tests; red or capture phase only.')
+		.option('--unit <id...>', 'Units covered by the run; red or capture phase only.')
 		.option('--command <command>', 'Exact test command; inherited unchanged by green.')
 		.option('--assertion <text>', 'Actual failed assertion that red output must contain.')
 		.option('--timeout <ms>', 'Hard limit for this regression command.', '600000')
 		.option('--json', 'Print the immutable checkpoint.')
-		.description('Run and preserve a committed failing test or its unchanged passing fix.')
+		.description('Preserve a committed regression or an independent evidence capture.')
 		.action(
 			async (loop: string, options: Omit<RecordRegressionInput, 'loop'> & { json?: boolean }) => {
 				const record = await recordRegression({ ...options, loop });

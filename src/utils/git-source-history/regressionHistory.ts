@@ -54,6 +54,7 @@ async function pairedRegression(
 	const current = await regressionPoint(own, media),
 		units = own.record.units;
 	if (own.record.phase === 'red') return { loop: note.loop, units, red: current };
+	if (own.record.phase === 'capture') return { loop: note.loop, units, red: null, green: current };
 	const origin = own.record.red;
 	if (!origin) return fail('The failing-test checkpoint is missing.');
 	const entries = context.notes.get(origin.commit)?.entries ?? [];
@@ -168,6 +169,7 @@ function assertIdentity(record: RegressionRecord, note: RegressionNote, log: Buf
 		fail('Regression output does not match its recorded hash.');
 }
 function validPhase(record: RegressionRecord, log: Buffer): boolean {
+	if (record.phase === 'capture') return validCapture(record);
 	if (record.phase === 'red')
 		return (
 			record.status === 'failed' &&
@@ -176,6 +178,11 @@ function validPhase(record: RegressionRecord, log: Buffer): boolean {
 			log.includes(record.assertion)
 		);
 	return record.status === 'passed' && record.exitCode === 0 && Boolean(record.red);
+}
+
+function validCapture(record: RegressionRecord): boolean {
+	const observed = (record.captures?.length ?? 0) + (record.measurements?.length ?? 0);
+	return record.status === 'passed' && record.exitCode === 0 && !record.red && observed > 0;
 }
 
 async function regressionCaptures(
