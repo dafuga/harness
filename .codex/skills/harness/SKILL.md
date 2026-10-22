@@ -174,6 +174,8 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 - Native build cleanup must recognize each vetted Xcode service by the selected canonical bundle, exact path, running signature and system adoption. Extend the standard signed-service matrix when a new service appears, including wrong signatures and lookalikes. Never accept arbitrary descendants or signal shared services to obtain a passing build.
 
+- Browser workflow profiles use Harness `BrowserProfileAdapter`: execute the actual action once, include readiness assertions, and read the settled renderer heap. Declare observed participant units and benchmark slots in the scenario. Keep synthetic transport and shared renderer costs explicit; never assign a predecessor document navigation to a soft destination. Verify the public packed SDK entry when exposing a new collector.
+
 ## Hard Limits
 
 - Files: 220 lines.

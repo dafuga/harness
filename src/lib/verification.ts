@@ -52,6 +52,11 @@ export type {
 	BuiltIdentity,
 	IdentifiedBuild
 } from '../services/verification-evidence/BuildIdentityService';
+export { BrowserProfileAdapter } from '../adapters/development-tooling/BrowserProfileAdapter';
+export type {
+	BrowserProfileSurface,
+	BrowserProfileInput
+} from '../adapters/development-tooling/BrowserProfileAdapter';
 export { PerformanceProfileService } from '../services/PerformanceProfileService';
 export type { ProfileInput } from '../services/PerformanceProfileService';
 export { TaskCompletionService } from '../services/TaskCompletionService';

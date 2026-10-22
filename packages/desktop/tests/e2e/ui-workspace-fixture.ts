@@ -1,3 +1,5 @@
+import { expect, type Page } from '../../../../test/support/browserTest';
+import { workflowWorkload } from './page-workload';
 import { installDeploymentFixture } from './ui-deployment-fixture';
 const hash = 'a'.repeat(40);
 const item = {
@@ -130,4 +132,69 @@ export async function fakeProject(page: import('@playwright/test').Page, identif
 		: snapshot;
 	await page.addInitScript(installProject, { snapshot: shown, item, providers, thread });
 	await installDeploymentFixture(page);
+}
+
+const rootUnits = ['desktop.page.root', 'desktop.layout.root', 'desktop.entry.app-html'];
+
+export async function readOnlyStart(page: Page) {
+	await workflowWorkload(page, { units: rootUnits, name: 'read-only-start' }, async () => {
+		await page.goto('/');
+		await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeDisabled();
+		await expect(page.getByText(/Browser preview · read-only/)).toBeVisible();
+	});
+}
+
+export async function openProjectCatalog(page: Page) {
+	await workflowWorkload(
+		page,
+		{
+			units: [...rootUnits, 'desktop.component.workspace-shell'],
+			name: 'open-project-catalog'
+		},
+		async () => {
+			await page.goto('/');
+			await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+			await expect(
+				page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
+			).toHaveCount(7);
+		}
+	);
+}
+
+export async function openLegacyWorkspace(page: Page) {
+	await workflowWorkload(
+		page,
+		{
+			units: [...rootUnits, 'desktop.page.harness-path', 'desktop.component.workspace-shell'],
+			name: 'legacy-workspace-open'
+		},
+		async () => {
+			await page.goto('/harness/branch/feat%2Factivity/pages');
+			const open = page.getByRole('button', { name: 'Open Project', exact: true });
+			const categories = page.getByRole('navigation', { name: 'Catalog categories' });
+			await expect
+				.poll(async () => (await open.isVisible()) || (await categories.isVisible()))
+				.toBe(true);
+			if (await open.isVisible()) await open.click();
+			await expect(categories.getByRole('link')).toHaveCount(7);
+		}
+	);
+}
+
+export async function previewScreenshot(page: Page) {
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.waitForFunction(() => Boolean(document.querySelector('h1')));
+		await page.evaluate(() => document.fonts.ready);
+		await page.screenshot({ path: 'test-results/ui-preview.png', fullPage: true });
+	}
+}
+
+export async function planScreenshot(page: Page) {
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			await Promise.all([...document.images].map((image) => image.decode().catch(() => {})));
+		});
+		await page.screenshot({ path: 'test-results/ui-initial-plan.png', fullPage: true });
+	}
 }

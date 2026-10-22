@@ -41,6 +41,9 @@
 			"BuildIdentityService",
 			"BuiltIdentity",
 			"IdentifiedBuild",
+			"BrowserProfileAdapter",
+			"BrowserProfileSurface",
+			"BrowserProfileInput",
 			"PerformanceProfileService",
 			"ProfileInput",
 			"TaskCompletionService",
@@ -73,6 +76,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.development-tooling-browser-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.budget-findings",
 			"via": "reexport",

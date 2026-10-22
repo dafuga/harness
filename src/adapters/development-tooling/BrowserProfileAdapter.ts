@@ -19,6 +19,7 @@ export interface BrowserProfileInput {
 	viewport?: string;
 	buildId?: string;
 	evidence?: string;
+	note?: string;
 }
 
 /** Shared renderer measurements retain their actual workload and never claim isolated unit cost. */
@@ -47,6 +48,7 @@ export class BrowserProfileAdapter {
 			state: input.state,
 			file: input.file,
 			mediaType: 'application/json',
+			note: input.note,
 			...(input.viewport ? { viewport: input.viewport } : {})
 		});
 		recordCapture(line, JSON.stringify({ measurements }));
@@ -67,7 +69,13 @@ function browserReadings(
 ) {
 	const { width, height } = viewport;
 	return input.units.flatMap((unit) => {
-		const common = { unit, workload: input.workload, target: 'module', samples: 1 };
+		const common = {
+			unit,
+			workload: input.workload,
+			target: 'module',
+			samples: 1,
+			...(input.note ? { partial: input.note } : {})
+		};
 		return [
 			{
 				...common,

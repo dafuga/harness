@@ -78,7 +78,7 @@
 			}
 		]
 	},
-	"scenarios": ["shared-test-cases", "agent-creation", "shells-shared-app"],
+	"scenarios": ["shared-test-cases", "agent-creation", "shells-shared-app", "desktop-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -39,6 +39,14 @@ const sdkAccess = consoleAccess({ policy: sdkPolicy, data: { json: async () => u
 const sdkRoute: string = consoleRoutePath({ branch: null, commit: 'a', view: 'map' });
 void [sdkAccess, sdkRoute];
 
+let browserActions = 0;
+await new root.BrowserProfileAdapter({
+	navigation: async () => { throw Error('Inactive browser driver was read'); },
+	url: () => '', viewport: () => ({ width: 1, height: 1 }),
+	heap: async () => { throw Error('Inactive browser heap was read'); }
+}).capture({ units: [], state: 'packed', workload: 'sdk-operation', file: 'unused.json' },
+	async () => { browserActions++; });
+
 const request: RuntimeRequest = { operation: 'version' };
 const manifest: ComponentManifest = componentManifestSchema.parse(JSON.parse(process.argv[2]));
 const scenario: ScenarioManifest | undefined = scenarioManifestSchema.safeParse({}).data;
@@ -66,6 +74,7 @@ console.log(JSON.stringify({
 	kinds: runtimes.map((runtime) => runtime.kind),
 	responses,
 	rootExports: Object.keys(root).sort(),
+	browserActions,
 	cli: typeof (globalThis as { harnessCliRan?: boolean }).harnessCliRan
 }));
 `;
@@ -141,6 +150,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 			tolerance: 0.05,
 			kinds: ['module', 'wasm', 'process', 'http'],
 			responses: [expected, expected, expected, expected],
+			browserActions: 1,
 			cli: 'undefined'
 		});
 		expect(result.rootExports).toEqual(

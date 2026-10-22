@@ -45,7 +45,11 @@
 		"desktop.style.workspace-1",
 		"reports.component.brand-mark",
 		"reports.component.entity-cases",
-		"reports.function.artifact-cases"
+		"reports.function.artifact-cases",
+		"desktop.entry.app-html",
+		"desktop.component.workspace-shell",
+		"desktop.page.projects-project-id-harness-path",
+		"adapter.development-tooling-browser-profile"
 	],
 	"states": [
 		{
@@ -426,6 +430,13 @@
 			"required": true,
 			"build": "desktop-renderer",
 			"capture": "viewport"
+		},
+		{
+			"id": "desktop-workflow-benchmarks",
+			"kind": "benchmark",
+			"states": ["renderer-fixtures"],
+			"viewports": [],
+			"required": true
 		}
 	]
 }

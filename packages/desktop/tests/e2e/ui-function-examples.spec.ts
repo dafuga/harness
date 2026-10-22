@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { earlierDesign, imagesAsked, pictured } from './ui-function-examples-fixture';
 import { branch, commits, evidenceFixture, ids, sharedProject } from './ui-evidence-fixture';
+import { workflowWorkload } from './page-workload';
 
 /**
  * A function in the workspace is shown by what its tests recorded, input beside observed output,
@@ -19,7 +20,37 @@ const gap = /records no input and output|Not recorded|not in this history|could 
 async function opened(page: Page, address: string, options: { shared?: boolean } = {}) {
 	await earlierDesign(page);
 	await evidenceFixture(page, options);
-	await page.goto(address);
+	await workflowWorkload(
+		page,
+		{
+			units: [
+				'desktop.page.root',
+				'desktop.layout.root',
+				'desktop.entry.app-html',
+				'desktop.page.projects-project-id-harness-path',
+				'desktop.component.workspace-shell'
+			],
+			name: address.includes('/pages/')
+				? 'page-entity-open'
+				: address.includes('/functions/')
+					? 'function-entity-open'
+					: 'function-catalog-open'
+		},
+		async () => {
+			await page.goto(address);
+			await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
+			if (address.includes('/functions/'))
+				await expect(heading(page, 'filterOrders')).toBeVisible();
+			else if (address.includes('/pages/'))
+				await expect(heading(page, 'Orders page')).toBeVisible();
+			else
+				await expect(
+					page
+						.locator('main.catalog article')
+						.filter({ hasText: 'filterOrders(orders, searchText)' })
+				).toBeVisible();
+		}
+	);
 }
 
 test('a function is listed and opened without a design picture, and no image is read for it', async ({

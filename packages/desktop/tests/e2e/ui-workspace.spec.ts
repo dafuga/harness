@@ -1,19 +1,24 @@
-import { fakeProject } from './ui-workspace-fixture';
+import {
+	fakeProject,
+	readOnlyStart,
+	openProjectCatalog,
+	openLegacyWorkspace,
+	previewScreenshot,
+	planScreenshot
+} from './ui-workspace-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
+
+test('legacy workspace routes open the selected project', async ({ page }) => {
+	await fakeProject(page);
+	await openLegacyWorkspace(page);
+});
 test('browser preview exposes no writable backend', async ({ page }) => {
-	await page.goto('/');
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await page.waitForFunction(() => Boolean(document.querySelector('h1')));
-		await page.evaluate(() => document.fonts.ready);
-		await page.screenshot({ path: 'test-results/ui-preview.png', fullPage: true });
-	}
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeDisabled();
-	await expect(page.getByText(/Browser preview · read-only/)).toBeVisible();
+	await readOnlyStart(page);
+	await previewScreenshot(page);
 });
 test('designless Plan preserves truthful status and branch/commit paths', async ({ page }) => {
 	await fakeProject(page);
-	await page.goto('/');
-	await page.getByRole('button', { name: 'Open Project', exact: true }).click();
+	await openProjectCatalog(page);
 	for (const name of ['Choose branch', 'Choose commit']) {
 		const icon = page.getByRole('button', { name, exact: true });
 		expect((await icon.boundingBox())!.height).toBeLessThanOrEqual(36);
@@ -26,13 +31,7 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 		'/harness/branch/feat%2Factivity/pages/page%3Aactivity/designs'
 	);
 	await page.getByRole('link', { name: 'Open Activity' }).click();
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await page.evaluate(async () => {
-			await document.fonts.ready;
-			await Promise.all([...document.images].map((image) => image.decode().catch(() => {})));
-		});
-		await page.screenshot({ path: 'test-results/ui-initial-plan.png', fullPage: true });
-	}
+	await planScreenshot(page);
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/pages\/page%3Aactivity\/designs$/);
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Change', exact: true })).toBeDisabled();

@@ -26,6 +26,10 @@
 			{
 				"name": "BrowserProfileAdapter.capture.input",
 				"type": "BrowserProfileInput"
+			},
+			{
+				"name": "BrowserProfileAdapter.capture.operation",
+				"type": "() => Promise<void>"
 			}
 		],
 		"outputs": [
@@ -51,6 +55,11 @@
 			"unit": "function.verify-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.performance-profile",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -63,7 +72,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["desktop-renderer"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

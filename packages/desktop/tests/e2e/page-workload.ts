@@ -3,6 +3,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ScenarioManifest, ComponentManifest } from '../../../../src/core/unitTypes';
 import { BrowserProfileAdapter } from '../../../../src/adapters/development-tooling/BrowserProfileAdapter';
+import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
+import { buildStamp } from '../../../../src/utils/buildStamp';
+import { randomUUID } from 'node:crypto';
 
 /** Observe a document navigation and its settled renderer heap for the matching page. */
 export async function pageWorkload(
@@ -33,6 +36,46 @@ export async function pageWorkload(
 		viewport: capture.viewport,
 		buildId: capture.buildId
 	});
+}
+
+/** Observe the declared participants of one real UI action, including its readiness assertions. */
+export async function workflowWorkload(
+	page: Page,
+	shown: { units: string[]; name: string; state?: string },
+	operation: () => Promise<void>
+) {
+	const size = page.viewportSize()!;
+	const browser = new BrowserProfileAdapter({
+		navigation: async () => null,
+		url: () => page.url(),
+		viewport: () => size,
+		heap: async () => (await pageHeap(page)).usedSize,
+		identity: async () =>
+			buildStamp(
+				(await page.locator('meta[name="harness-build"]').getAttribute('content')) ?? undefined
+			)
+	});
+	await browser.capture(
+		{
+			units: shown.units,
+			evidence: 'desktop-workflow-benchmarks',
+			state: shown.state ?? 'renderer-fixtures',
+			workload: `${shown.name}-${size.width}x${size.height}`,
+			file: `${shown.name}-${size.width}x${size.height}-${randomUUID()}.json`,
+			note: 'Actual compiled viewer over the test fixture bridge. Shared browser workflow time and renderer JavaScript heap include fixture, readiness and protocol overhead; no isolated component cost or backend performance.'
+		},
+		async () => {
+			await operation();
+			if (!evidenceRequested()) return;
+			await page.evaluate(async () => {
+				await document.fonts.ready;
+				await Promise.all([...document.images].map((image) => image.decode()));
+				await new Promise(requestAnimationFrame);
+				await new Promise(requestAnimationFrame);
+			});
+			await page.mouse.move(0, 0);
+		}
+	);
 }
 
 /** A settings slot on a project screen cannot time Settings; the declared route must match. */
