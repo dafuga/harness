@@ -1,5 +1,6 @@
-import { recordCapture } from '../../utils/record-capture/recordCapture';
+import { evidenceRequested, recordCapture } from '../../utils/record-capture/recordCapture';
 import { captureLineSchema } from '../../core/verifyTypes';
+import { PerformanceProfileService } from '../../services/PerformanceProfileService';
 
 /** The browser driver supplies actual observations; no browser package enters the SDK. */
 export interface BrowserProfileSurface {
@@ -7,6 +8,7 @@ export interface BrowserProfileSurface {
 	url(): string;
 	heap(): Promise<number>;
 	viewport(): { width: number; height: number };
+	identity?(): Promise<string | null>;
 }
 
 export interface BrowserProfileInput {
@@ -15,7 +17,7 @@ export interface BrowserProfileInput {
 	workload: string;
 	file: string;
 	viewport?: string;
-	buildId: string;
+	buildId?: string;
 	evidence?: string;
 }
 
@@ -23,16 +25,21 @@ export interface BrowserProfileInput {
 export class BrowserProfileAdapter {
 	constructor(private readonly browser: BrowserProfileSurface) {}
 
-	async capture(input: BrowserProfileInput): Promise<void> {
-		const navigation = await this.browser.navigation();
-		if (navigation?.name !== this.browser.url()) return;
-		if (!input.units.length) return;
+	async capture(input: BrowserProfileInput, operation?: () => Promise<void>): Promise<void> {
+		if (!evidenceRequested() || !input.units.length) {
+			await operation?.();
+			return;
+		}
+		const duration = await browserDuration(this.browser, input, operation);
+		if (duration === null) return;
 		const heap = await this.browser.heap();
-		if (!(navigation.duration > 0) || !(heap > 0))
+		if (!(duration > 0) || !(heap > 0))
 			throw new Error('A required page workload has no positive navigation and heap readings.');
-		const measurements = browserReadings(input, this.browser.viewport(), {
-			duration: navigation.duration,
-			heap
+		const buildId = await browserIdentity(this.browser, input);
+		const measurements = browserReadings({ ...input, buildId }, this.browser.viewport(), {
+			duration,
+			heap,
+			workflow: Boolean(operation)
 		});
 		const line = captureLineSchema.parse({
 			evidence: input.evidence ?? 'page-benchmarks',
@@ -46,11 +53,17 @@ export class BrowserProfileAdapter {
 	}
 }
 
+async function browserIdentity(browser: BrowserProfileSurface, input: BrowserProfileInput) {
+	const buildId = (await browser.identity?.()) ?? input.buildId;
+	if (!buildId) throw new Error('Browser workload has no compiled build identity');
+	return buildId;
+}
+
 /** A shared document workload is associated only with its supplied, observed participants. */
 function browserReadings(
 	input: BrowserProfileInput,
 	viewport: { width: number; height: number },
-	values: { duration: number; heap: number }
+	values: { duration: number; heap: number; workflow: boolean }
 ) {
 	const { width, height } = viewport;
 	return input.units.flatMap((unit) => {
@@ -58,10 +71,12 @@ function browserReadings(
 		return [
 			{
 				...common,
-				metric: 'browser-navigation-ms',
+				metric: values.workflow ? 'latency-browser-workflow-ms' : 'browser-navigation-ms',
 				unitOfMeasure: 'ms',
 				value: values.duration,
-				method: `Whole compiled renderer NavigationTiming through loadEventEnd, including shared code; ${width}x${height}; build ${input.buildId}.`
+				method: values.workflow
+					? `One actual browser workflow, including shared code, readiness assertions and browser-protocol overhead, without replay or isolated unit attribution; ${width}x${height}; build ${input.buildId}.`
+					: `Whole compiled renderer NavigationTiming through loadEventEnd, including shared code; ${width}x${height}; build ${input.buildId}.`
 			},
 			{
 				...common,
@@ -73,4 +88,27 @@ function browserReadings(
 			}
 		];
 	});
+}
+
+/** Explicit actions have their own elapsed time; a soft destination never borrows NavigationTiming. */
+async function browserDuration(
+	browser: BrowserProfileSurface,
+	input: BrowserProfileInput,
+	operation?: () => Promise<void>
+): Promise<number | null> {
+	if (operation) {
+		const readings = await new PerformanceProfileService().measure(
+			{
+				unit: input.units[0],
+				workload: input.workload,
+				rounds: 1,
+				iterations: 1,
+				warmups: 0
+			},
+			operation
+		);
+		return readings[0].value;
+	}
+	const navigation = await browser.navigation();
+	return navigation?.name === browser.url() ? navigation.duration : null;
 }

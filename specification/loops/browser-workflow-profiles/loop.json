@@ -6,7 +6,7 @@
 	"name": "browser-workflow-profiles",
 	"goal": "Profile one actual browser workflow and its settled renderer heap without borrowing a previous navigation or replaying the action",
 	"createdAt": "2026-10-22T04:52:54.587Z",
-	"updatedAt": "2026-10-22T04:53:32.871Z",
+	"updatedAt": "2026-10-22T04:56:23.030Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -31,7 +31,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T04:56:23.030Z",
+			"evidence": "Sealed be16166f at 73d27fc79: old navigation capture never executes the workflow callback, including when evidence is off; failed-action control also exposes an incorrect success."
 		},
 		{
 			"id": "implement",
