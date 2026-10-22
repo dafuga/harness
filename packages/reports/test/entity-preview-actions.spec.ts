@@ -65,7 +65,10 @@ for (const [name, size] of Object.entries(viewports)) {
 				'collections use cards; helpers and models require two distinct visible consumers'
 			).toHaveCount({ models: 2, components: 3, functions: 1, services: 1 }[category]);
 			for (const item of await cards.all()) {
-				await expect(item).toHaveAttribute('data-harness-component', 'explorer-module-card');
+				await expect(item).toHaveAttribute(
+					'data-harness-component',
+					'explorer-ui-explorer-module-card'
+				);
 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
 				expect(await footer.getByRole('link').count()).toBeLessThanOrEqual(3);
 				await expect(footer.locator('.ex-usage-kind')).toHaveCount(0);

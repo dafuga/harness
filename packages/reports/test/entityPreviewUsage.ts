@@ -116,7 +116,10 @@ export async function reviewUsageCards(
 	await reviewConsumerKinds(page, category, direction);
 	const cards = page.locator('.ex-relations article');
 	for (const card of await cards.all()) {
-		await expect(card).toHaveAttribute('data-harness-component', 'explorer-module-card');
+		await expect(card).toHaveAttribute(
+			'data-harness-component',
+			'explorer-ui-explorer-module-card'
+		);
 		await expect(
 			card.getByRole('group', { name: 'Used In', exact: true }),
 			'every relationship card includes its usage footer'

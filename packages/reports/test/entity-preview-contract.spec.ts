@@ -57,7 +57,10 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				modelUnits
 			);
 			const card = panel.getByRole('article', { name: 'Order', exact: true });
-			await expect(card).toHaveAttribute('data-harness-component', 'explorer-module-card');
+			await expect(card).toHaveAttribute(
+				'data-harness-component',
+				'explorer-ui-explorer-module-card'
+			);
 			await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
 			await expect(panel.getByRole('article')).toHaveCount(1);
 			await expect(panel).not.toContainText('Order.types');
