@@ -1,3 +1,4 @@
+import { viewSettings, doneCheckpoint } from './game-unsaved-fixture';
 import scenario from '../../../../specification/scenarios/game-authoring.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/development-tooling/buildStamp';
 import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
@@ -169,4 +170,34 @@ function watchHost(app: ElectronApplication, profile: string) {
 		page.on('crash', () => log('renderer-crash', page.url()));
 		page.on('close', () => log('page-close', page.url()));
 	}
+}
+
+export async function createNativeGame(page: Page, name: string, dimension: string) {
+	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();
+	await page.getByLabel('Project type', { exact: true }).selectOption('game');
+	await page.getByLabel('Dimension', { exact: true }).selectOption(dimension);
+	await page.getByRole('textbox', { name: 'Name', exact: true }).fill(name);
+	await capture(page, `${dimension}-creation`);
+	await page.getByRole('button', { name: 'Create project', exact: true }).click();
+	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
+	await viewSettings(page);
+	await expect(page.getByLabel('Dimension', { exact: true })).toHaveValue(dimension);
+	await expect(page.getByText('Demo', { exact: true })).toHaveCount(0);
+}
+
+/** The candidate is explicitly accepted before the real image reference is saved. */
+export async function approveCheckpointImage(page: Page) {
+	await page
+		.getByLabel('Describe your checkpoint', { exact: true })
+		.fill('A golden key beside the courtyard explorer');
+	await page.getByRole('button', { name: 'Generate image', exact: true }).click();
+	await expect(
+		page.getByRole('img', { name: 'New checkpoint image for Collect the key', exact: true })
+	).toBeVisible();
+	await page.getByRole('button', { name: 'Use this image', exact: true }).click();
+	await page.getByText('Collect the key', { exact: true }).first().click();
+	await expect(
+		page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
+	).toBeVisible();
+	await doneCheckpoint(page);
 }
