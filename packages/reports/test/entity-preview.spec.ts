@@ -1,6 +1,14 @@
 import { reviewHelperSource } from './entityPreviewFunctions';
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, chooseCatalogFilter, fits, open, viewports, where } from './entityPreviewPage';
+import {
+	capture,
+	chooseCatalogFilter,
+	fits,
+	open,
+	ready,
+	viewports,
+	where
+} from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 const page = { category: 'pages' as const, entity: ids.page };
 const filter = { category: 'functions' as const, entity: ids.filter };
