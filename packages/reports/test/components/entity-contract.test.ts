@@ -36,6 +36,8 @@ test('a component contract lists prop types and examples without an output secti
 		expect(body).toContain('aria-label="Props"');
 		expect(body).not.toContain('aria-label="Inputs"');
 		expect(body).not.toContain('aria-label="Outputs"');
+		expect(body).not.toContain('aria-label="Errors"');
+		expect(words(body)).not.toContain('No errors declared.');
 		expect(body).toMatch(/<table\b/);
 		expect(body).toContain('aria-haspopup="dialog"');
 		expect(body).toContain('View example for Enabled');
@@ -106,7 +108,7 @@ test('callable contracts preserve actual parameters and associate their returns'
 		'View example for wordCount'
 	);
 	expect(body).not.toContain('aria-label="Throws"');
-	expect(words(body)).toContain('No errors declared.');
+	expect(words(body)).not.toContain('No errors declared.');
 	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });
 
@@ -144,6 +146,7 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 			);
 			expect(body).toContain(`View example for ${helper === 'first' ? 'greeting' : 'answer'}`);
 			expect(body.includes('aria-label="Throws"')).toBe(helper === 'second');
+			expect(words(body).includes('No errors declared.')).toBe(false);
 			expect(words(body).includes('TypeError')).toBe(helper === 'second');
 		}
 		const missing = content(

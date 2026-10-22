@@ -12,7 +12,7 @@ test('a contract reads as inputs and output in plain words, without the symbol t
 	const rows = entityContract(find(ids.filter), { category: 'functions' });
 	expect(row(rows, 'Inputs')).toBe('orders, search text');
 	expect(row(rows, 'Output')).toBe('matching orders');
-	expect(row(rows, 'Fails with')).toBe('Nothing declared');
+	expect(row(rows, 'Fails with')).toBeUndefined();
 	expect(JSON.stringify(rows)).not.toMatch(/filterOrders|src\/|\.ts/);
 });
 
@@ -36,6 +36,7 @@ test('a config says what it provides and a service how it runs', () => {
 	expect(row(config, 'Inputs')).toBeUndefined();
 	const service = entityContract(find(ids.store), { category: 'services' });
 	expect(row(service, 'Runs as')).toBe('Module, Wasm, Native process');
+	expect(row(service, 'Fails with')).toBeUndefined();
 	expect(row(service, 'States')).toBeUndefined();
 });
 
@@ -64,6 +65,7 @@ test('what a page or a component draws is called rendered markup, not by the nam
 	expect(row(told, 'Props')).toBe('orders, search text');
 	expect(row(told, 'Inputs')).toBeUndefined();
 	expect(row(told, 'Output')).toBeUndefined();
+	expect(row(told, 'Fails with')).toBeUndefined();
 	// A contract that declares what is drawn keeps the name it was given.
 	const declared = {
 		...list,

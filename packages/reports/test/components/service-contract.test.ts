@@ -38,8 +38,9 @@ test('service contracts group parameters, return and errors by method, with init
 		expect(body).not.toContain(`aria-label="${group}"`);
 	const initialize = methodOf(body, 'initialize');
 	expect(read(initialize)).toContain('initialize(timeoutMs: number): Promise<void>');
-	for (const group of ['Parameters', 'Returns', 'Throws'])
+	for (const group of ['Parameters', 'Returns'])
 		expect(initialize).toContain(`aria-label="${group}"`);
+	expect(initialize).toContain('aria-label="Throws"');
 	expect(initialize).toContain('View example for timeoutMs');
 	expect(words(initialize)).toContain('TimeoutError');
 	const constructed = methodOf(body, 'constructor');
@@ -49,7 +50,8 @@ test('service contracts group parameters, return and errors by method, with init
 	const latest = methodOf(body, 'latest');
 	expect(read(latest)).toContain('latest(): Promise<Order[]>');
 	expect(words(latest)).toContain('No parameters.');
-	expect(words(latest)).toContain('No errors declared for this method.');
+	expect(latest).not.toContain('aria-label="Throws"');
+	expect(words(latest)).not.toContain('No errors declared for this method.');
 	expect(words(latest)).not.toContain('TimeoutError');
 	expect(words(body)).toContain('Runs as');
 	expect(words(body)).not.toContain('not tied to a method');
