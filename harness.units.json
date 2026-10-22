@@ -366,6 +366,12 @@
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
 			"reason": "Desktop build alias resolves this shared UI component to the reports package."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameCheckpointPane.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Checkpoint authoring reuses the shared accessible modal rather than a separate dialog primitive."
 		}
 	]
 }

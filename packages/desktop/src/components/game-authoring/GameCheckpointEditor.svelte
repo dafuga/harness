@@ -2,7 +2,7 @@
 	import Select from '$shared/Select.svelte';
 	import GameTextField from './GameTextField.svelte';
 	import type { Checkpoint, Condition, GameAction } from '../../../../game/src/index';
-	/** Checkpoint edits return new values to the parent. */
+	/** The executable rules of a checkpoint; every edit returns a new checkpoint to the parent. */
 	interface Props {
 		checkpoint: Checkpoint | null;
 		change: (node: Checkpoint) => void;
@@ -44,26 +44,11 @@
 	}
 </script>
 
-<section class="editor" data-harness-component="game-checkpoint-editor" aria-label="Checkpoint">
+<section class="editor" data-harness-component="game-checkpoint-editor" aria-label="Rules">
 	{#if checkpoint}
 		{@const node = checkpoint}
 		{#key node.id}
 			<fieldset disabled={readonly}>
-				<label>
-					<span>Title</span>
-					<input
-						aria-label="Checkpoint title"
-						value={node.title}
-						oninput={(e) => update({ title: e.currentTarget.value })}
-					/>
-				</label>
-				<label>
-					<span>AI guidance</span>
-					<textarea
-						value={node.description}
-						oninput={(e) => update({ description: e.currentTarget.value })}
-					></textarea>
-				</label>
 				<label>
 					<span>Prerequisites</span>
 					<GameTextField
@@ -158,7 +143,7 @@
 	.editor,
 	fieldset {
 		display: grid;
-		gap: 20px;
+		gap: 16px;
 	}
 	fieldset {
 		min-width: 0;
@@ -178,12 +163,7 @@
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 	}
-	textarea {
-		min-height: 112px;
-		resize: vertical;
-	}
-	input:focus-visible,
-	textarea:focus-visible {
+	input:focus-visible {
 		outline: 2px solid var(--gold);
 	}
 	.check {
@@ -205,6 +185,11 @@
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
 		gap: 8px;
+	}
+	@media (max-width: 560px) {
+		.row {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 	}
 	button:hover:not(:disabled) {
 		border-color: var(--gold);
