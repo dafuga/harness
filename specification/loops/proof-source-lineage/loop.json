@@ -1,0 +1,47 @@
+{
+	"completion": {
+		"version": 1,
+		"kind": "coding"
+	},
+	"name": "proof-source-lineage",
+	"goal": "Preserve original sealed regression pairs across message-only history repairs using exact full-tree archive lineage, while rejecting changed trees and requiring fresh current-source completion.",
+	"createdAt": "2026-10-22T00:06:34.143Z",
+	"updatedAt": "2026-10-22T00:07:52.380Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-22T00:07:52.380Z",
+			"evidence": "Correct seven feature-only test-prefixed subjects without changing any source tree or relabelling seals. Extend the standard Git-backed loop fixture with same-tree sibling, archived bookkeeping lineage, wrong archive-name and changed-tree controls. Original paired proof remains immutable; current-source task verification and profiles remain mandatory."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

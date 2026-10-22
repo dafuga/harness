@@ -1,3 +1,6 @@
+import { EvidenceTreeAdapter } from '../../../src/adapters/EvidenceTreeAdapter';
+import { RegressionProofRepository } from '../../../src/repositories/RegressionProofRepository';
+import { sourceArchiveRef } from '../../../src/utils/historyRefs';
 import { ScenarioRepository } from '../../../src/repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../src/repositories/UnitRegistryRepository';
 import { readFile } from 'node:fs/promises';
@@ -41,6 +44,7 @@ export async function expectSquashedScreens(root: string, source: string): Promi
 			})
 		})
 	);
+	await expectArchivedProof(root, source, squash, parent);
 }
 
 /** Both explicit unit names and canonical scenario slots use the same standard proof fixture. */
@@ -104,3 +108,49 @@ if (directory) {
  writeFileSync(directory+'/captures.ndjson', [JSON.stringify({evidence:'sample', kind:'benchmark', state:'sample', file:'sample.json', mediaType:'application/json'}),JSON.stringify(screen),JSON.stringify({...screen,evidence:'sample-screen',file:'slot.png'})].join('\\n')+'\\n');
 }
 assert.equal(value, 3);`;
+
+/** Whole-tree equality, validated archive names and original checkpoint identity stay explicit. */
+async function expectArchivedProof(root: string, source: string, squash: string, parent: string) {
+	const tree = new EvidenceTreeAdapter(root),
+		proofs = new RegressionProofRepository(root);
+	expect(
+		(await proofs.latest('repair', 'green', squash))?.commit,
+		'source-identical history must retain the original sealed checkpoint'
+	).toBe(source);
+	const changed = await tree.commit({
+		parents: [parent],
+		message: 'chore: unrelated changed tree',
+		files: [{ path: 'checkpoint.md', content: { bytes: 'foreign tree' } }]
+	});
+	expect(await proofs.latest('repair', 'green', changed)).toBeUndefined();
+	const origin = await tree.commit({
+		parents: [source],
+		message: 'chore: retain proof bookkeeping',
+		files: [{ path: 'checkpoint.md', content: { bytes: 'bookkeeping tree' } }]
+	});
+	const files = [...(await tree.list(origin))].map(([path, blob]) => ({ path, content: { blob } }));
+	const landed = await tree.commit({
+		parents: [parent],
+		files,
+		message: 'chore: collapse same complete source'
+	});
+	expect(await tree.git.run(['rev-parse', `${landed}^{tree}`])).toBe(
+		await tree.git.run(['rev-parse', `${origin}^{tree}`])
+	);
+	await tree.git.run(['update-ref', sourceArchiveRef('f'.repeat(40)), origin]);
+	expect(
+		await proofs.latest('repair', 'green', landed),
+		'a mismatched archive name grants no lineage'
+	).toBeUndefined();
+	await tree.git.run(['update-ref', sourceArchiveRef(origin), origin]);
+	expect(
+		(await proofs.latest('repair', 'green', landed))?.commit,
+		'an identical archived source retains its actual original green ancestor'
+	).toBe(source);
+	const retained = await proofs.latest('repair', 'green', landed);
+	expect((await proofs.load(retained!)).record.source.commit).toBe(source);
+	expect(
+		await proofs.latest('repair', 'green', changed),
+		'a sibling changed tree cannot borrow that archive'
+	).toBeUndefined();
+}
