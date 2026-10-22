@@ -52,3 +52,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 Page workloads retain the registered page's module target and release their inspector in a finally block. The standard collector protocol matrix must reject another route, soft navigation, absent or zero readings and failed heap reads. Keep protocol fixture values in removed isolated sinks; actual browser observations must come from a verified build. Every required screenshot viewport names its compiled build in the scenario.
 
 Long native compiler/check commands use asynchronous child execution with their original timeout and output bounds. The normal native matrix asserts that the test event loop advances while the real command runs; passing Swift output cannot excuse an unhandled Vitest RPC timeout. Preserve all output and exit assertions and failed-operation profile rejection.
+
+Projection acceptance must preserve the original internal media-side identifier when present,
+while stripping unrelated units and changed source paths. Cover absent side identities too.
+An internal portable media pointer is required to resolve owned screenshots; do not retain an
+obsolete assertion that removes it. Run the normal projection and capture-binding tests together.

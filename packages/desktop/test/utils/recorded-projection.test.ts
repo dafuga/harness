@@ -32,7 +32,7 @@ test('a side keeps what judges this entity and nothing of another', () => {
 	]);
 });
 
-test('what a commit changed is kept for this entity alone, and no file is named', () => {
+test('changed source stays scoped while the original media-side identity survives', () => {
 	const { detail } = recordedProjection(full(feed), feed).after;
 	const units = { direct: [], indirect: [feed], added: [], removed: [] };
 	expect(detail?.comparison).toEqual({
@@ -50,7 +50,8 @@ test('what a commit changed is kept for this entity alone, and no file is named'
 		uncertain: [],
 		changed: []
 	});
-	expect(detail).not.toHaveProperty('side');
+	expect(detail?.side).toBe('sides/tree.json');
+	expect(detail?.registry.units.every((unit) => unit.id === feed)).toBe(true);
 	expect(detail).not.toHaveProperty('rangeReasons');
 });
 
@@ -109,4 +110,10 @@ test('regression proof reaches each transport for its own entity and exact side'
 	expect(result.before?.detail?.regressions).toEqual([before]);
 	expect(result.before?.detail?.regressions?.[0].green).toBeUndefined();
 	expect(evidence).toEqual(untouched);
+});
+
+test('a revision with no stored media side receives no invented side identity', () => {
+	const evidence = full(feed);
+	delete evidence.after.detail!.side;
+	expect(recordedProjection(evidence, feed).after.detail).not.toHaveProperty('side');
 });
