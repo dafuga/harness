@@ -18,7 +18,7 @@ const targets: Record<string, string> = {
 };
 
 /** The rows shown as groups of fields; every other row says something of the whole contract. */
-const grouped = new Set(['Inputs', 'Output', 'Fails with', 'Provides']);
+const grouped = new Set(['Inputs', 'Props', 'Output', 'Fails with', 'Provides']);
 
 /** A type as it is declared, without the module path an inferred type is imported from. */
 export function typeLabel(type: string): string {
@@ -77,17 +77,30 @@ function fieldOf(item: Item, unit: HarnessUnit): ContractField {
 export function contractFields(unit: HarnessUnit, category: ExplorerCategory): ContractGroup[] {
 	const { inputs, outputs, errors } = unit.contract;
 	const fields = (items: Item[]) => items.map((item) => fieldOf(item, unit));
+	const component = category === 'components';
 	const provides = category === 'configs';
-	return [
-		{ id: 'inputs', title: 'Inputs', none: 'No inputs declared.', fields: fields(inputs) },
+	const groups: ContractGroup[] = [
 		{
+			id: 'inputs',
+			title: component ? 'Props' : 'Inputs',
+			none: component ? 'No props declared.' : 'No inputs declared.',
+			fields: fields(inputs)
+		}
+	];
+	if (!component)
+		groups.push({
 			id: 'outputs',
 			title: provides ? 'Provides' : 'Outputs',
 			none: provides ? 'Nothing provided is declared.' : 'No outputs declared.',
 			fields: fields(outputs)
-		},
-		{ id: 'errors', title: 'Errors', none: 'No errors declared.', fields: fields(errors) }
-	];
+		});
+	groups.push({
+		id: 'errors',
+		title: 'Errors',
+		none: 'No errors declared.',
+		fields: fields(errors)
+	});
+	return groups;
 }
 
 /**
