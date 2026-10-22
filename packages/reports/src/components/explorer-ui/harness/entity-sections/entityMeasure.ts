@@ -27,10 +27,24 @@ function own(measured: Measurement[], metric: string): Measurement | undefined {
 
 function ownRow(measured: Measurement[], metric: string, label: string): MeasureRow {
 	const found = own(measured, metric);
-	if (!found) return { label, value: notMeasured };
-	if (found.value === null) return { label, value: notMeasured, note: told(found.unavailable) };
+	const unitOfMeasure = metric === 'source-bytes' ? 'bytes' : undefined;
+	if (!found) return { label, value: notMeasured, rawValue: null, unitOfMeasure };
+	if (found.value === null)
+		return {
+			label,
+			value: notMeasured,
+			rawValue: null,
+			unitOfMeasure,
+			note: told(found.unavailable)
+		};
 	const value = metric === 'source-bytes' ? byteSize(found.value!) : String(found.value);
-	return { label, value, ...(found.partial ? { note: `Partial: ${told(found.partial)}` } : {}) };
+	return {
+		label,
+		value,
+		rawValue: found.value,
+		unitOfMeasure,
+		...(found.partial ? { note: `Partial: ${told(found.partial)}` } : {})
+	};
 }
 
 /** One line per execution target: its bytes, or that there are none and why. */
@@ -43,6 +57,8 @@ function emittedRows(unit: HarnessUnit, record: HarnessRecord | null): MeasureRo
 				label,
 				target: line.target,
 				value: byteSize(Number(bytes[1])),
+				rawValue: Number(bytes[1]),
+				unitOfMeasure: 'bytes',
 				note: told(line.note)
 			};
 		// A line without a size says why after its first word; that reason is the note.
@@ -50,6 +66,8 @@ function emittedRows(unit: HarnessUnit, record: HarnessRecord | null): MeasureRo
 			label,
 			target: line.target,
 			value: notMeasured,
+			rawValue: null,
+			unitOfMeasure: 'bytes',
 			note: told(/^\w+: (.+)$/s.exec(line.value)?.[1])
 		};
 	});
@@ -59,6 +77,12 @@ function observedValue(found: Measurement | undefined): string {
 	if (!found || found.value === null) return notMeasured;
 	if (found.unitOfMeasure === 'bytes') return byteSize(found.value);
 	return `${Number(found.value.toPrecision(4))} ${found.unitOfMeasure}`;
+}
+
+function rawMeasurement(
+	found: Measurement | undefined
+): Pick<PerformanceRow, 'rawValue' | 'unitOfMeasure'> {
+	return { rawValue: found?.value ?? null, unitOfMeasure: found?.unitOfMeasure };
 }
 
 function metricLabel(metric: string): string {
@@ -80,6 +104,7 @@ function timing(
 		target: found?.target ?? budget.target ?? '',
 		profile: found?.profile ?? '',
 		value: observedValue(found),
+		...rawMeasurement(found),
 		note: found?.method,
 		tolerance: tolerance === undefined ? '—' : `${Math.round(tolerance * 100)}%`,
 		over: tolerance !== undefined && tolerance > tolerancePolicy

@@ -2,7 +2,7 @@
 	"name": "performance-metric-diff",
 	"goal": "Show before and after values and the change for each performance profile metric on commit diff pages",
 	"createdAt": "2026-10-22T16:45:11.631Z",
-	"updatedAt": "2026-10-22T17:26:00.204Z",
+	"updatedAt": "2026-10-22T21:48:30.509Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -31,7 +31,9 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T21:48:30.509Z",
+			"evidence": "Unchanged red/green browser checks prove the before/after metric table and signed changes. Reports check 668 tests and allowed root checks pass. Final retained captures and exact-tree provenance checked before landing. Full CLI/native suites explicitly deferred."
 		}
 	],
 	"evaluators": [

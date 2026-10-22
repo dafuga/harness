@@ -2,7 +2,7 @@
 	"name": "page-models-tab",
 	"goal": "Pages show a Models tab instead of Contract, with revision-bound data models reached through page dependencies",
 	"createdAt": "2026-10-22T20:12:44.995Z",
-	"updatedAt": "2026-10-22T20:19:26.376Z",
+	"updatedAt": "2026-10-22T21:48:29.975Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -31,7 +31,9 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T21:48:29.975Z",
+			"evidence": "Revision-bound Models, type-collection exclusions and shared cards pass the matched final corpus. Reports check 668 tests and allowed root checks pass. Final capture readback and remote main provenance are landing gates. Full CLI/native suites remain deferred."
 		}
 	],
 	"evaluators": [

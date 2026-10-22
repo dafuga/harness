@@ -2,7 +2,7 @@
 	"name": "page-model-card-parity",
 	"goal": "Page Models use unchanged catalog cards and exclude type collections at every revision",
 	"createdAt": "2026-10-22T20:40:54.283Z",
-	"updatedAt": "2026-10-22T20:48:24.676Z",
+	"updatedAt": "2026-10-22T21:48:29.430Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -60,8 +60,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending",
-			"evidence": "Integrated main 11fafdf2c (#51): helper split clears the previous Reports audit blocker. Integrated PR #53 at 947af8dd6: all catalog/relationship cards use ExplorerModuleCard; retained Page Models source classification, transitive revision scope, original assertions, region capture and readiness guards. Focused component/category matrix passes 222 tests, Reports typecheck and audit pass. Final combined Reports/browser capture verification pending; CLI/native suites deferred and main landing held."
+			"status": "complete",
+			"evidence": "Allowed verification passes: Reports check with 668 tests, root typecheck/lint/audit/registry, 95 focused root tests and a matched immutable replay. Final captures are retained and decoded before landing. Full CLI/native suites remain explicitly deferred; no production deployment.",
+			"completedAt": "2026-10-22T21:48:29.430Z"
 		}
 	],
 	"evaluators": [
