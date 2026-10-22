@@ -35,6 +35,7 @@ const unique = new Set([
 	"edge.from + '>' + edge.to",
 	// An explorer list of entities is keyed by the entity, and a history by its commit.
 	'row.id',
+	'row.key',
 	'row.commit',
 	'group.id'
 ]);

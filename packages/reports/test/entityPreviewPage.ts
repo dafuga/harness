@@ -14,7 +14,7 @@ import {
 } from './entityPreviewOverview';
 import { commits, ids } from './entityUnits';
 import { capture, ready } from './entityPreviewCapture';
-export { capture, ready } from './entityPreviewCapture';
+export { capture, captureRegion, ready } from './entityPreviewCapture';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {

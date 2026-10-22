@@ -40,6 +40,22 @@ export async function capture(page: Page, name: string): Promise<void> {
 		})
 	);
 }
+
+/** Keeps one evidence region without unrelated page previews around it. */
+export async function captureRegion(page: Page, selector: string, name: string): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== '1') return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await new Promise(requestAnimationFrame);
+		await new Promise(requestAnimationFrame);
+	});
+	await ready(page);
+	const region = page.locator(selector);
+	await expect(region).toBeVisible();
+	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
+	mkdirSync(directory, { recursive: true });
+	await region.screenshot({ path: join(directory, `${name}.png`) });
+}
 /** Wait for the visible capture to render without forcing offscreen lazy images to load. */
 export async function ready(page: Page): Promise<void> {
 	await page.evaluate(async () => {
