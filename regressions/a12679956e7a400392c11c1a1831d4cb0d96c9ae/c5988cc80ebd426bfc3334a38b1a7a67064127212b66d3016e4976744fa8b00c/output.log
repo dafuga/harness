@@ -1,0 +1,16 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-vdLC8M/packages/reports
+
+ ✓ test/components/explorer-usage.test.ts (12 tests) 23ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  21:18:30
+   Duration  2.63s (transform 1.41s, setup 0ms, collect 2.25s, tests 23ms, environment 0ms, prepare 78ms)
+
