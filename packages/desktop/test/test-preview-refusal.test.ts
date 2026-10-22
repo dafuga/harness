@@ -4,6 +4,7 @@ import type { AddressInfo } from 'node:net';
 import { fileURLToPath } from 'node:url';
 import { afterEach, expect, test } from 'vitest';
 import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
+import { ownEnvironment } from '../../../test/support/cli';
 
 /**
  * An ordinary browser run owns its preview. The real configuration is run here against a port
@@ -29,11 +30,23 @@ async function foreign() {
 }
 
 /** One real spec file as `bun run test:e2e` runs it outside a verification, on a named port. */
-function ordinaryRun(port: string, verifying = false) {
-	const env: NodeJS.ProcessEnv = { ...process.env, HARNESS_DESKTOP_TEST_PORT: port, NO_COLOR: '1' };
+function ordinaryRun(port?: string, verifying = false) {
+	const env: NodeJS.ProcessEnv = { ...ownEnvironment(), NO_COLOR: '1' };
+	if (port === undefined) delete env.HARNESS_DESKTOP_TEST_PORT;
+	else env.HARNESS_DESKTOP_TEST_PORT = port;
 	if (verifying) env.HARNESS_VERIFY = '1';
 	else delete env.HARNESS_VERIFY;
-	const args = ['run', 'test:e2e', 'ui-hosted.spec.ts', '-x'];
+	const args =
+		port === undefined
+			? [
+					'run',
+					'test:e2e',
+					'ui-workspace.spec.ts',
+					'--grep',
+					'browser preview exposes no writable backend',
+					'-x'
+				]
+			: ['run', 'test:e2e', 'ui-hosted.spec.ts', '-x'];
 	return new Promise<{ code: number; said: string }>((resolve) => {
 		execFile('bun', args, { cwd: desktop, env }, (error, stdout, stderr) =>
 			resolve({ code: error ? 1 : 0, said: stdout + stderr })
@@ -78,6 +91,31 @@ test.each([false, true])(
 		expect(run.code).not.toBe(0);
 	},
 	120_000
+);
+
+test.each([false, true])(
+	'automatic port reaches child workers in verification=%s',
+	async (verifying) => {
+		const env: NodeJS.ProcessEnv = { ...process.env, HARNESS_VERIFY: verifying ? '1' : '' };
+		delete env.HARNESS_DESKTOP_TEST_PORT;
+		const worker = `const {default: config}=await import('./playwright.config.ts'); console.log(JSON.stringify({url:config.use.baseURL,port:process.env.HARNESS_DESKTOP_TEST_PORT}));`;
+		const program = `const {default: config}=await import('./playwright.config.ts');
+const worker=Bun.spawnSync(['bun','--eval',${JSON.stringify(worker)}],{env:process.env});
+if(worker.exitCode!==0)throw Error(new TextDecoder().decode(worker.stderr));
+console.log(JSON.stringify({url:config.use.baseURL,port:process.env.HARNESS_DESKTOP_TEST_PORT,serverPort:config.webServer.env.HARNESS_DESKTOP_TEST_PORT,worker:JSON.parse(new TextDecoder().decode(worker.stdout))}));`;
+		const cold = await measuredConfiguration(program, env, verifying);
+		expect(cold.exitCode, cold.stderr).toBe(0);
+		const shown = JSON.parse(cold.stdout);
+		expect(shown.worker.url, 'One auto-selected port must reach every worker').toBe(shown.url);
+		expect(shown.port).toBe(shown.serverPort);
+		expect(shown.worker.port).toBe(shown.port);
+		if (!verifying) {
+			const run = await ordinaryRun();
+			expect(run.code, run.said).toBe(0);
+			expect(run.said).toContain('1 passed');
+		}
+	},
+	120000
 );
 
 test('a port override that is no port is refused by its name before anything starts', async () => {
