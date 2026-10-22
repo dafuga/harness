@@ -16,7 +16,9 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 				'Change reports actual registered source owners rather than the requested subject':
 					'reference-functions',
 				'an unexpected Ask write fails and preserves the changed file for review':
-					'reference-functions'
+					'reference-functions',
+				'a scoped project change refuses missing deployment configuration before an agent writes':
+					'project-change-boundary'
 			},
 
 			'test/entity-references.test.ts': {
@@ -79,7 +81,15 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 				'a message written before references renders exactly its words': 'reference-functions'
 			},
 			'test/run-context-references.test.ts': {
-				'a plan or change prompt asks for references and lists the entity and its relationships once':
+				'a undefined plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a dev plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a stage plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a preprod plan or change prompt names references and its exact promotion boundary':
+					'reference-functions',
+				'a prod plan or change prompt names references and its exact promotion boundary':
 					'reference-functions',
 				'the creation prompt asks the notes to name existing units by registered id':
 					'reference-functions'

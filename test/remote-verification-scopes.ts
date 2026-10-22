@@ -75,7 +75,9 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 					'local-authority',
 				'a ticket is short-lived, and the number of sockets is bounded': 'local-authority',
 				'frames that break the bounds close the socket and reach no operation': 'local-authority',
-				'a request that never completes is never performed': 'local-authority'
+				'a request that never completes is never performed': 'local-authority',
+				'the app page may send more than a phone request, up to the local bound, and is answered':
+					'local-authority'
 			},
 			'test/local-transport.test.ts': {
 				'the bridge works over a socket that only this machine can reach': 'local-socket',
@@ -87,8 +89,11 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 					'local-socket',
 				'a reload keeps the session of its window; closing the window ends its socket and its run only':
 					'local-socket',
+				'a game of nearly a mebibyte crosses to the main process in bounded frames and reopens':
+					'local-socket',
 				'the control port travels over the same socket, with exactly what the page gave':
-					'local-socket'
+					'local-socket',
+				'repeated concurrent listens reuse one listener and closing releases it': 'local-socket'
 			},
 			'test/local-transport-teardown.test.ts': {
 				'a page socket whose handshake is never answered is still connecting when its test ends':

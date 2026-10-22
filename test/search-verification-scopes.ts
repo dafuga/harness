@@ -19,7 +19,8 @@ export const searchVerificationScopes: Record<string, VerificationScope> = {
 		},
 		playwright: {
 			'tests/e2e/ui-search.spec.ts': ['search-ui'],
-			'tests/e2e/ui-search-scope.spec.ts': ['search-ui']
+			'tests/e2e/ui-search-scope.spec.ts': ['search-ui'],
+			'tests/e2e/ui-search-fit.spec.ts': ['search-ui']
 		}
 	}
 };
