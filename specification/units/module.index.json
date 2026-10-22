@@ -18,6 +18,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "module.catalog",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "module.contracts",
 			"via": "reexport",
 			"origin": "derived"
@@ -29,6 +34,11 @@
 		},
 		{
 			"unit": "module.runtime",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "module.sqlite",
 			"via": "reexport",
 			"origin": "derived"
 		},

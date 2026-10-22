@@ -32,9 +32,9 @@
 	}
 	.source-files li {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		justify-content: space-between;
-		gap: 12px;
+		gap: 8px 16px;
 		padding: 14px 0;
 	}
 	.source-files li + li {
@@ -52,6 +52,7 @@
 	}
 	.source-files a {
 		color: inherit;
+		text-decoration: underline;
 		text-underline-offset: 3px;
 	}
 	.source-files :global(.hx-action) {

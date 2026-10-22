@@ -80,6 +80,16 @@
 			"unit": "function.analytics-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "model.analytics-event",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

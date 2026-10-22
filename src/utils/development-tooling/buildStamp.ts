@@ -4,7 +4,7 @@ const marker = 'harness-build:';
 export const buildStampPattern = /harness-build:[0-9a-f]{64}/g;
 
 /** The package a console answers from; a test keeps it equal to package.json. */
-export const sdkPackage = { name: '@dafuga01/harness', version: '0.1.3' };
+export const sdkPackage = { name: '@dafuga01/harness', version: '0.1.4' };
 
 /**
  * A slot as generated code holds it until `harness verify stamp` writes the identity of the
