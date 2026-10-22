@@ -6,7 +6,7 @@
 	"name": "native-card-navigation",
 	"goal": "Keep native acceptance navigation aligned with the actual compact planned-page card accessibility contract",
 	"createdAt": "2026-10-22T02:35:11.130Z",
-	"updatedAt": "2026-10-22T02:36:28.275Z",
+	"updatedAt": "2026-10-22T02:52:56.315Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -29,22 +29,30 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T02:52:52.731Z",
+			"evidence": "Sealed red d964abf3 fails all three unchanged browser cases at 04ea94168 after the authored native helper waits for the removed Review designs control; actual listing pixels are retained."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T02:52:53.444Z",
+			"evidence": "Use the current Open page accessible label with an explicit representative page title. Invoke the same native helper through the ordinary phone browser fixture at all required viewports and capture before the final result assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T02:52:54.659Z",
+			"evidence": "2d51f714b routes the helper through the actual compact page link and registers its typed parameter and screenshot/profile scenario. The skill now requires authored native navigation helpers in shared-control browser acceptance."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T02:52:56.315Z",
+			"evidence": "Sealed green e160fed0 at 2d51f714b passes the same frozen command, test corpus, fixtures and scenario. Three actual captures and six labeled browser-adapter timing/memory observations are retained."
 		},
 		{
 			"id": "guard",
