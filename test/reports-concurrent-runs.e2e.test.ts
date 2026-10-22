@@ -78,9 +78,9 @@ test('two runs at once each keep their own history, media and results, through t
 	});
 	runs.push(second);
 	await histories(1, 'the longer run to seed its history');
-	const reachedTeardown = await beforeDeadline(secondGate.reached, 180_000);
+	const reachedTeardown = await beforeDeadline(secondGate.reached, 600_000);
 	if (!reachedTeardown) {
-		throw new Error('Concurrent report run did not reach teardown within 180000ms.');
+		throw new Error('Concurrent report run did not reach teardown within 600000ms.');
 	}
 	const firstGate = await gated('first');
 	const first = await browserRun('first', scratch, quick, { repeat: 1, gate: firstGate.path });

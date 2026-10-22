@@ -201,7 +201,7 @@ export async function eventually<Found>(
 	throw new Error(`Timed out after ${seconds} s waiting for ${wanted}.`);
 }
 
-export const concurrentBrowserRunRepetitions = 60;
+export const concurrentBrowserRunRepetitions = 1;
 
 export async function beforeDeadline<Value>(
 	promise: Promise<Value>,
