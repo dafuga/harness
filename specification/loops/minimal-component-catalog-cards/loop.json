@@ -2,7 +2,7 @@
 	"name": "minimal-component-catalog-cards",
 	"goal": "Component catalog cards show their title, screenshot and Used In links only at desktop, tablet and phone widths, with no summary, contents, status, verification or open action",
 	"createdAt": "2026-10-22T10:05:37.515Z",
-	"updatedAt": "2026-10-22T10:05:54.060Z",
+	"updatedAt": "2026-10-22T10:22:19.942Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T10:12:35.504Z",
+			"evidence": "Harness loop record red failed on committed test e7fead75d74853f515dc7cdbf7792006cb4df9c7. The unchanged catalog E2E at desktop, tablet and mobile received 1 for the forbidden Contains label; checkpoint screenshots were captured before the assertions."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T10:22:19.942Z",
+			"evidence": "Opus 5.5 reduced component cards to their own screenshot or existing gap, linked title, and revision-scoped Used In links. Removed summary, Contains, badges, verification, provenance caption and redundant action; kept page cards unchanged. Updated the shared card-grid comment and removed its dead action style, with related reports tests following the title link and hiding source copy."
 		},
 		{
 			"id": "green",
