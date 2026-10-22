@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { content, hostProps, verdicts, words } from '../entityRender';
+import { content, drawn, hostProps, verdicts, words } from '../entityRender';
 import { withRelationGroups } from '../entityRelationFixtures';
 import { entityCatalog } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
@@ -14,6 +14,30 @@ const list = { category: 'components', entity: ids.list } as const;
 /** The section of what a component uses, then the section of what uses it. */
 const both = (mode: 'commit' | 'current' = 'commit') =>
 	[content(mode, { ...list, tab: 'uses' }), content(mode, { ...list, tab: 'used-in' })] as const;
+
+test('component cards have identical content in catalogs and every relationship host', () => {
+	for (const mode of ['current', 'commit'] as const) {
+		const catalog = content(mode, { category: 'components' });
+		const cards = (body: string) =>
+			[...body.matchAll(/<article\b[^]*?<\/article>/g)].map((m) => drawn(m[0]));
+		const originals = cards(catalog);
+		const routes = [
+			{ category: 'pages', entity: ids.page, tab: 'uses' },
+			{ category: 'components', entity: ids.list, tab: 'uses' },
+			{ category: 'components', entity: ids.card, tab: 'used-in' },
+			{ category: 'services', entity: ids.store, tab: 'used-in' },
+			{ category: 'functions', entity: ids.filter, tab: 'used-in' }
+		] as const;
+		for (const route of routes) {
+			const related = cards(content(mode, route)).filter((card) => card.includes('ex-card-shot'));
+			expect(related.length, JSON.stringify(route)).toBeGreaterThan(0);
+			for (const card of related) {
+				expect(originals, JSON.stringify(route)).toContain(card);
+				expect(card).not.toMatch(/<p\b|<button|<figcaption|hx-verdict/);
+			}
+		}
+	}
+});
 
 test('what an entity uses is one section of kinds of their own, and what uses it is another', () => {
 	for (const mode of ['current', 'commit'] as const) {

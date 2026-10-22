@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
 	"title": "Entity catalog table",
-	"responsibility": "Lists non-page entities with columns appropriate to their category.",
+	"responsibility": "Lists shell, function, config, service and model entities with columns for their category; pages and components use the shared visual card.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,7 +19,7 @@
 			{
 				"name": "ExplorerTable.category",
 				"type": "Kind",
-				"description": "Required non-page category: shells, components, functions, configs or services. Determines columns and labels."
+				"description": "Required category other than pages and components: shells, functions, configs, services or models. Determines columns and labels; only a shell is described under its name."
 			},
 			{
 				"name": "ExplorerTable.rows",
