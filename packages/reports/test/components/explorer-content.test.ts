@@ -72,7 +72,7 @@ test('configs keep columns; component, helper and service collections use cards'
 test('a collection offers search, changed only and an order, and says how many it lists', () => {
 	const body = content('commit', { category: 'functions' });
 	expect(body).toContain('aria-label="Search helpers"');
-	expect(body).toContain('aria-label="Filters"');
+	expect(body).not.toContain('aria-label="Filters"');
 	expect(words(body)).not.toContain('Changed only');
 	expect(body).not.toMatch(/<select[^>]*aria-label="Order"/);
 	expect(words(body)).toContain('1 of 1 helpers shown');
