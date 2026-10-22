@@ -16,7 +16,7 @@ import {
 	type Viewport
 } from './support/harnessCapture';
 import { fixtures } from './support/fixtures';
-import { pageUnit } from './support/pageBenchmark';
+import { expectPageMeasurements, pageUnit } from './support/pageBenchmark';
 
 const scenario = scenarioManifestSchema.parse(
 	JSON.parse(readFileSync('../../specification/scenarios/harness-console.json', 'utf8'))
@@ -60,7 +60,15 @@ test('what was captured satisfies the scenario contract, and another build would
 	const { gathered, failures } = gatherCaptures(evidenceDirectory, 'evidence');
 	expect(failures).toEqual([]);
 	const flows = Object.keys(explorerFlows).length * 2;
-	expect(gathered).toHaveLength(Object.keys(states).length * viewports.length + flows + 1);
+	const captures = gathered.filter((item) => item.line.kind !== 'benchmark');
+	expect(captures).toHaveLength(Object.keys(states).length * viewports.length + flows + 1);
+	expectPageMeasurements(
+		gathered,
+		scenario.states
+			.flatMap((state) => state.units ?? [])
+			.filter((unit) => unit.startsWith('reports.page.')),
+		viewports
+	);
 	// The server reports the digest of the very files it was started from.
 	const served = await servedBuild(page);
 	// The server reports the digest of the very files it was started from: this run's own copy.
@@ -87,7 +95,7 @@ test('what was captured satisfies the scenario contract, and another build would
 	});
 	// The same captures judged against the files of any other build are all rejected.
 	const other = judge('f'.repeat(64));
-	expect(other.failures).toHaveLength(gathered.length);
+	expect(other.failures).toHaveLength(captures.length);
 	expect(other.failures[0]).toMatch(
 		/was served by build [0-9a-f]{12}, not the reports build f{12}/
 	);
