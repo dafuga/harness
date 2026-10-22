@@ -5,6 +5,7 @@ import { entityCatalog } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
+import { withGroups } from '../entityPreviewData';
 import { commits, ids } from '../entityUnits';
 
 const sections = (body: string) =>
@@ -90,5 +91,22 @@ test('a page leads to its components and a component to the components inside it
 	const tabs = [...page.matchAll(/role="tab"[^>]*>(.*?)<\/(?:a|button)>/gs)].map((match) =>
 		words(match[1]).trim()
 	);
-	expect(tabs).toEqual(['Overview', 'Contract', 'Uses', 'States', 'History', 'Source']);
+	expect(tabs).toEqual(['Overview', 'Models', 'Uses', 'States', 'History', 'Source']);
+});
+
+test('page models include models reached through services and remain bound to the revision', () => {
+	const head = withGroups(hostProps('current').head);
+	const model = head.registry.units.find((unit) => unit.id === 'app.model.order')!;
+	head.registry.units.push({ ...model, id: 'app.model.unrelated', title: 'Unrelated' });
+	const relations = explorerRelations(head, ids.page);
+	expect(relations.models?.map((item) => item.id)).toEqual(['app.model.order']);
+	const body = content('current', { category: 'pages', entity: ids.page, tab: 'models' }, { head });
+	expect(body).toContain('aria-label="Orders page models"');
+	expect(body).toContain('/models/app.model.order');
+	expect(words(body)).not.toContain('Unrelated');
+	const old = withGroups(hostProps('commit').head);
+	old.registry.units = old.registry.units.map((unit) =>
+		unit.id === ids.store ? { ...unit, dependencies: [] } : unit
+	);
+	expect(explorerRelations(old, ids.page).models).toEqual([]);
 });

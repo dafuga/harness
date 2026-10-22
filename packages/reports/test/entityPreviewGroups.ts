@@ -30,6 +30,7 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		id: 'app.model.order',
 		kind: 'model',
 		title: 'Order',
+		dependencies: [],
 		owns: { source: ['src/models/orders/Order.ts'], symbols: ['Order'] }
 	};
 	return {
@@ -39,7 +40,14 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 			units: [
 				...detail.registry.units,
 				...(detail.registry.units.some((unit) => unit.id === model.id) ? [] : [model])
-			].map((unit) => categoryUnit(unit, detail.commit))
+			].map((unit) =>
+				categoryUnit(
+					unit.id === ids.store && detail.commit !== 'a'.repeat(40)
+						? { ...unit, dependencies: [...unit.dependencies, { unit: model.id, via: 'import' }] }
+						: unit,
+					detail.commit
+				)
+			)
 		}
 	};
 }
