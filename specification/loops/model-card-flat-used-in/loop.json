@@ -2,7 +2,7 @@
 	"name": "model-card-flat-used-in",
 	"goal": "Model cards show only their name and flat Used In links while helper cards retain consumer categories.",
 	"createdAt": "2026-10-22T16:05:02.206Z",
-	"updatedAt": "2026-10-22T16:16:06.366Z",
+	"updatedAt": "2026-10-22T16:19:06.740Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T16:18:52.030Z",
+			"evidence": "Red 749883bdb9ebe9c153c54e3ab9f5dc3a531aa9a41b1db287c6f79c351fabd426 at 393cedd; unchanged test passed as fabddea76e71f6da51832a79b6c81c72e6242d07db4567b0020de4baba8e6fe3 at fix aa60e746c63c. Desktop, tablet and mobile passed."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T16:19:06.740Z",
+			"evidence": "Reports lint, focused Svelte typecheck, 12 component tests and units check pass. The unchanged browser flow passes with inspected desktop/tablet/mobile captures and no browser errors. The full CLI suite was skipped as Daniel requested."
 		}
 	],
 	"evaluators": [
