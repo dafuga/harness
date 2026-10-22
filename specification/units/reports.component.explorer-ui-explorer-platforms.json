@@ -11,17 +11,69 @@
 		"symbols": ["ExplorerPlatforms"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ExplorerPlatforms.props",
-				"type": "ExplorerScreenProps"
+				"name": "ExplorerPlatforms.index",
+				"type": "HarnessIndex",
+				"description": "Project and branch history supplied by the Explorer host."
+			},
+			{
+				"name": "ExplorerPlatforms.head",
+				"type": "HarnessRevision",
+				"description": "Selected immutable revision; its platforms field supplies every displayed deployment declaration."
+			},
+			{
+				"name": "ExplorerPlatforms.parent",
+				"type": "HarnessRevision | null",
+				"description": "Optional comparison revision accepted by the shared screen interface; it never supplies missing platform settings."
+			},
+			{
+				"name": "ExplorerPlatforms.scope",
+				"type": "ExplorerScope",
+				"description": "Selected branch, commit and availability context used by the shared frame."
+			},
+			{
+				"name": "ExplorerPlatforms.route",
+				"type": "ExplorerLocation",
+				"description": "Current Platforms list or target detail address, including the selected branch and commit."
+			},
+			{
+				"name": "ExplorerPlatforms.entities",
+				"type": "ExplorerEntity[]",
+				"description": "Source-unit context accepted by the shared Explorer screen interface."
+			},
+			{
+				"name": "ExplorerPlatforms.lens",
+				"type": "EntityLens",
+				"description": "Revision-bound entity information accepted by the shared screen interface."
+			},
+			{
+				"name": "ExplorerPlatforms.client",
+				"type": "Pick<HarnessClient, \"revision\">",
+				"description": "Host revision loader accepted by the shared Explorer screen interface."
+			},
+			{
+				"name": "ExplorerPlatforms.mediaBase",
+				"type": "string",
+				"description": "Host media prefix accepted by the common screen interface."
+			},
+			{
+				"name": "ExplorerPlatforms.onroute",
+				"type": "(to: ExplorerLocation) => void",
+				"description": "Client navigation callback used by links while preserving branch and commit context."
+			},
+			{
+				"name": "ExplorerPlatforms.exportHref",
+				"type": "string",
+				"description": "Host export URL, or an empty string when no export is served."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPlatforms",
-				"type": "markup"
+				"type": "markup",
+				"description": "The four-target catalog or selected platform details, with search, a status dialog and explicit missing-data states."
 			}
 		],
 		"errors": []

@@ -14,25 +14,29 @@
 		"symbols": ["platformViews", "unrecorded", "platformStatus"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "platformStatus.platform",
-				"type": "PlatformEntry"
+				"type": "PlatformEntry | undefined",
+				"description": "The selected revision’s platform declaration; undefined yields the Not recorded state."
 			}
 		],
 		"outputs": [
 			{
 				"name": "platformViews",
-				"type": "readonly PlatformView[]"
+				"type": "readonly PlatformView[]",
+				"description": "Stable target identifiers, display names and icons for Web, iOS, Android and Desktop (Electron)."
 			},
 			{
 				"name": "unrecorded",
-				"type": "unknown"
+				"type": "string",
+				"description": "Notice used when a revision has no recorded platform configuration."
 			},
 			{
 				"name": "platformStatus",
-				"type": "unknown"
+				"type": "{ id: \"configured\" | \"setup-required\" | \"not-configured\" | \"not-recorded\"; label: string }",
+				"description": "The declaration’s status identifier and human-readable label. This describes repository configuration, not a live deployment verdict."
 			}
 		],
 		"errors": []
