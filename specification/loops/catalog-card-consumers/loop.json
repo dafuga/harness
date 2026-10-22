@@ -2,7 +2,7 @@
 	"name": "catalog-card-consumers",
 	"goal": "Catalog cards show at most three distinct consumers across module types while full usage remains on detail pages.",
 	"createdAt": "2026-10-22T20:17:48.696Z",
-	"updatedAt": "2026-10-22T20:26:58.646Z",
+	"updatedAt": "2026-10-22T20:31:06.125Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,15 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:31:06.125Z",
+			"evidence": "At red 1401be6a6 the grid matrix fails with nine model consumers. The identical command passes at fix 0a6cda86e on desktop, tablet and mobile, followed by twelve footer and ten card unit cases. Records include fresh behavior timing and worker RSS."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Focused typecheck, lint, registry validation, 26 unit tests and all three relation-pagination viewports pass. Final committed captures remain required. Reports audit is blocked by the unchanged 232-line entityPreviewFunctions.ts. CLI/native suites are deferred by Daniel; main merge is held for the coordinator."
 		}
 	],
 	"evaluators": [
