@@ -76,7 +76,7 @@ function keepCapture(
 			.map(([metric, value]) => ({
 				unit,
 				workload: name,
-				target: 'browser',
+				target: 'module',
 				samples: 1,
 				metric: metric === 'navigationMs' ? 'navigation-ms' : 'renderer-js-heap-bytes',
 				unitOfMeasure: metric === 'navigationMs' ? 'ms' : 'bytes',
