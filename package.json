@@ -1,6 +1,6 @@
 {
 	"name": "@dafuga01/harness",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"description": "An opinionated CLI that helps humans and agents code in small, Rails-inspired harnesses.",
 	"type": "module",
 	"bin": {
@@ -27,6 +27,14 @@
 		"./history": {
 			"types": "./dist/types/lib/history.d.ts",
 			"default": "./dist/api/history.js"
+		},
+		"./sqlite": {
+			"types": "./dist/types/lib/sqlite.d.ts",
+			"default": "./dist/api/sqlite.js"
+		},
+		"./catalog": {
+			"types": "./dist/types/lib/catalog.d.ts",
+			"default": "./dist/api/catalog.js"
 		},
 		"./edge": {
 			"types": "./dist/types/lib/edge.d.ts",

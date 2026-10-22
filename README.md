@@ -40,6 +40,69 @@ bun run check
 - `dapp` audits SvelteKit dApps with Antelope or Harbor smart-contract folders.
 - `lib` scaffolds a Bun TypeScript package.
 
+## Local SQLite models and queries
+
+`harness history build --out .cache/history` also writes a rebuildable
+`.cache/history/catalog.sqlite`. Its eight tables have explicit models: metadata,
+branches, revisions, entity versions, revision membership, dependencies,
+verification records and scenarios. Unchanged entity snapshots are stored once.
+The query index records the same commits and evidence gaps as the portable JSON;
+rebuild it after changes to Git history. It is separate from analytics and user data.
+
+```ts
+import { Database } from 'bun:sqlite';
+import { CatalogRepository } from '@dafuga01/harness/catalog';
+
+const db = new Database('.cache/history/catalog.sqlite', { readonly: true });
+const catalog = new CatalogRepository(db, false);
+const models = catalog.entities({ kind: 'model', limit: 100 });
+const uses = catalog.dependencies('service.posts');
+const usedIn = catalog.consumers('model.post');
+const history = catalog.history('model.post');
+db.close();
+```
+
+Reads default to `main` when present, otherwise the first branch by name. Pass a
+full `commit` in the query options or relationship method to select a revision.
+`entities` supports `kind`, literal substring `search`, `limit` (1–10,000) and `offset`.
+`records` and `scenarios` return their recorded summaries at the selected commit.
+Direct SQL joins are available through `catalog.adapter.query(sql, bindings)`.
+
+Other projects can use the same adapter with their own models in Harness 0.1.4.
+The generator adds Harness as a runtime dependency and preserves explicit local
+package specifiers. For an unreleased checkout, install its packed tarball with
+`bun add ./harness.tgz`. Generate a model, apply its SQL migration, and register
+the model's definition:
+
+```sh
+harness generate model Post title:string published:boolean metadata:json --adapter sqlite
+```
+
+```ts
+import { Database } from 'bun:sqlite';
+import { createSqliteAdapter } from '@dafuga01/harness/sqlite';
+import { Post } from './src/models/Post';
+
+const db = new Database('app.sqlite');
+const adapter = createSqliteAdapter(db, [Post.definition]);
+adapter.assertModels(); // Checks every application table and its declared columns.
+const post = await Post.create(adapter, {
+	title: 'Local data',
+	published: true,
+	metadata: { tags: ['sqlite'] }
+});
+const found = await Post.find(adapter, post.id);
+db.close();
+```
+
+The driver is injected: Node's `DatabaseSync` from `node:sqlite` works too on
+Node 22.13 or later. The adapter binds values, maps camelCase properties to SQL
+columns, round trips JSON/booleans, and supports string or numeric primary keys.
+`createTables()` creates missing tables from explicit definitions; it does not
+migrate existing schemas. Transactions accept synchronous callbacks and support
+nested savepoints. Database lifetime and runtime-specific journal settings belong
+to the caller. Importing the package does not open a database or start the CLI.
+
 ## Harness Rules
 
 - One file should have one reason to change.

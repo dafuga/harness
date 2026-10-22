@@ -81,6 +81,12 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 		title: 'Order',
 		owns: { source: ['src/models/Order.ts'], symbols: ['Order'] }
 	};
+	const secondModel = {
+		...model,
+		id: 'app.model.invoice',
+		title: 'Invoice',
+		owns: { source: ['src/models/Invoice.ts'], symbols: ['Invoice'] }
+	};
 	const consumers = [
 		ids.page,
 		ids.filter,
@@ -96,12 +102,22 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 		registry: {
 			...detail.registry,
 			units: [
-				...detail.registry.units.map((unit) =>
-					unit.id === ids.filter
-						? { ...unit, helpers: unit.helpers?.map((helper) => ({ ...helper, consumers })) }
-						: unit
-				),
-				model
+				...detail.registry.units.map((unit) => {
+					if (unit.id === ids.filter)
+						return { ...unit, helpers: unit.helpers?.map((helper) => ({ ...helper, consumers })) };
+					if (unit.id === ids.list || unit.id === ids.store)
+						return {
+							...unit,
+							dependencies: [
+								...unit.dependencies,
+								{ unit: model.id, via: 'import' },
+								{ unit: secondModel.id, via: 'import' }
+							]
+						};
+					return unit;
+				}),
+				model,
+				secondModel
 			]
 		}
 	};

@@ -25,6 +25,7 @@ import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { HistoryMediaService } from './history-media-service/HistoryMediaService';
 import { HistoryStatusService } from '../../../services/verification-evidence/history-status-service/HistoryStatusService';
 import { ProjectActivityService } from '../../../services/projects-sessions/project-activity-service/ProjectActivityService';
+import { CatalogIndexService } from '../../../services/git-source-history/CatalogIndexService';
 import {
 	RevisionDetailService,
 	type BuiltRevision
@@ -37,6 +38,8 @@ export interface BuiltHistory {
 	media: { resolved: number; missing: number };
 	problems: string[];
 	index: HistoryIndex;
+	/** Rebuildable local SQLite query index; portable consoles may keep using JSON. */
+	catalog: string;
 }
 
 export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]>;
@@ -118,7 +121,9 @@ export class HistoryIndexService {
 		const activity = await new ProjectActivityService(this.root).recorded(source, details);
 		await writeFile(join(out, 'activity.json'), stableJson(activity));
 		const digest = createHash('sha256').update(text).digest('hex');
-		return { out, digest, media: media.counts, problems: index.problems, index };
+		const snapshots = built.map(({ result }) => result.detail);
+		const catalog = await new CatalogIndexService().write(out, index, snapshots);
+		return { out, digest, media: media.counts, problems: index.problems, index, catalog };
 	}
 }
 
