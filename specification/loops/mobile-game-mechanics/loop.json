@@ -2,7 +2,7 @@
 	"name": "mobile-game-mechanics",
 	"goal": "Keep game mechanics editing within the device viewport while preserving every editable field and action",
 	"createdAt": "2026-10-22T05:47:02.828Z",
-	"updatedAt": "2026-10-22T05:47:03.901Z",
+	"updatedAt": "2026-10-22T05:52:31.126Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T05:52:31.126Z",
+			"evidence": "Sealed red17a6a9d09 record7333d0817f83: the unchanged standard six-case native matrix rejects mobile mechanics width439 vs390.584 workload measurements and242 screenshot bindings retained. Test-owned failure cleanup now reaps Electron; earlier unfinished attempt was rejected and excluded."
 		},
 		{
 			"id": "implement",

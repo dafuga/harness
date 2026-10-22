@@ -139,11 +139,16 @@
 	}
 	.head {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: flex-end;
 		gap: 12px;
 	}
 	.title {
-		flex: 1;
+		flex: 1 1 220px;
+		min-width: 0;
+	}
+	.title input {
+		min-width: 0;
 	}
 	label {
 		display: grid;
@@ -159,9 +164,11 @@
 		resize: vertical;
 	}
 	code {
+		min-width: 0;
 		padding-bottom: 12px;
 		color: var(--muted);
 		font-size: 12px;
+		overflow-wrap: anywhere;
 	}
 	.contract {
 		display: grid;
@@ -174,5 +181,14 @@
 		height: 1px;
 		overflow: hidden;
 		clip-path: inset(50%);
+	}
+	/* On a phone the title has the row to itself; the id and Remove share the line below it. */
+	@media (max-width: 560px) {
+		.title {
+			flex-basis: 100%;
+		}
+		.head button {
+			margin-left: auto;
+		}
 	}
 </style>
