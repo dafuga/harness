@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.config.development-tooling-desktop-playwright",
+	"kind": "config",
+	"title": "desktopPlaywrightConfig",
+	"responsibility": "Owns the desktopPlaywrightConfig typed configuration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/config/development-tooling/desktopPlaywrightConfig.ts"],
+		"symbols": ["desktopPlaywrightConfig", "default"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "desktopPlaywrightConfig",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/config/development-tooling/desktopPlaywrightConfig.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/config/development-tooling/desktopPlaywrightConfig.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
