@@ -1,0 +1,60 @@
+{
+	"completion": {
+		"version": 1,
+		"kind": "coding"
+	},
+	"name": "browser-workflow-profiles",
+	"goal": "Profile one actual browser workflow and its settled renderer heap without borrowing a previous navigation or replaying the action",
+	"createdAt": "2026-10-22T04:52:54.587Z",
+	"updatedAt": "2026-10-22T04:53:32.871Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-22T04:53:32.250Z",
+			"evidence": "NavigationTiming correctly rejects soft destinations, leaving completed browser workflows without runtime profiles. The existing collector has no action boundary and never invokes a supplied workflow."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-22T04:53:32.871Z",
+			"evidence": "Extend the same seven-case page-workload protocol with execute-once, failed-action and evidence-off cases. Protocol numbers stay isolated and removed; actual app observations must come from the real browser workload."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
