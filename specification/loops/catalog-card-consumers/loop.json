@@ -2,7 +2,7 @@
 	"name": "catalog-card-consumers",
 	"goal": "Catalog cards show at most three distinct consumers across module types while full usage remains on detail pages.",
 	"createdAt": "2026-10-22T20:17:48.696Z",
-	"updatedAt": "2026-10-22T20:22:16.609Z",
+	"updatedAt": "2026-10-22T20:26:58.646Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,7 +32,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:26:58.646Z",
+			"evidence": "Reuse the flat-footer limit API from main f65d56d45: ExplorerFunctionCard passes limit 3 for model rows. Existing helper and service caps and all detail relationships stay intact."
 		},
 		{
 			"id": "green",
