@@ -7,14 +7,12 @@
 		row,
 		nav,
 		lens,
-		mediaBase,
-		showUsage = true
+		mediaBase
 	}: {
 		row: CatalogRow;
 		nav: EntityNav;
 		lens: EntityLens;
 		mediaBase: string;
-		showUsage?: boolean;
 	} = $props();
 	let to = $derived(
 		entityLens(nav.route, {
@@ -64,15 +62,13 @@
 	>
 		<code>{call}</code>
 	</EntityLink>
-	{#if showUsage}
-		<ExplorerUsage
-			consumers={row.usedIn ?? []}
-			{nav}
-			{lens}
-			{mediaBase}
-			layout={row.entity.category === 'models' ? 'flat' : 'grouped'}
-		/>
-	{/if}
+	<ExplorerUsage
+		consumers={row.usedIn ?? []}
+		{nav}
+		{lens}
+		{mediaBase}
+		layout={row.entity.category === 'models' ? 'flat' : 'grouped'}
+	/>
 </article>
 
 <style>

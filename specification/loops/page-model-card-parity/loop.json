@@ -2,7 +2,7 @@
 	"name": "page-model-card-parity",
 	"goal": "Page Models use unchanged catalog cards and exclude type collections at every revision",
 	"createdAt": "2026-10-22T20:40:54.283Z",
-	"updatedAt": "2026-10-22T20:41:39.794Z",
+	"updatedAt": "2026-10-22T20:44:15.947Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:44:14.307Z",
+			"evidence": "c98931909 committed tests fail in a clean installed snapshot on both classification and full card equality; all three browser viewports also fail on the missing Used In footer. Before captures inspected."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:44:15.038Z",
+			"evidence": "Restore the canonical catalog card without context overrides. Apply the existing model-versus-type-collection naming contract in the shared classifier. Extend standardized category/card acceptance matrices with paired sources and complete card equality."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-22T20:44:15.947Z",
+			"evidence": "Removed showUsage from the shared API and Page Models caller. Type collections become uncategorized Type definitions while real model sources retain identity. Standard tests now compare full catalog cards and reject sibling type collections at current and historical revisions."
 		},
 		{
 			"id": "green",

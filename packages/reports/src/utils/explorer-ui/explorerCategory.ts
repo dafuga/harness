@@ -34,6 +34,12 @@ const compatibility = (unit: Classified) =>
 			path.endsWith('/[entity]/details/+page.svelte')
 	);
 
+/** Type collections describe API shapes; they are not data models. */
+const typeCollection = (unit: Classified) =>
+	unit.kind === 'model' &&
+	unit.owns.source.length > 0 &&
+	unit.owns.source.every((path) => /\.(?:types|d)\.[cm]?tsx?$/.test(path));
+
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
@@ -42,7 +48,7 @@ const compatibility = (unit: Classified) =>
  * presented as a function, and stays reachable from what depends on it under its own role.
  */
 export function explorerCategory(unit: Classified): ExplorerCategory | null {
-	if (unit.catalog?.visibility === 'internal') return null;
+	if (unit.catalog?.visibility === 'internal' || typeCollection(unit)) return null;
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	const category = explorerKindCategory(unit.kind);
@@ -54,6 +60,7 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 
 /** What a unit is, in words a reader knows: `Page`, `Route loader`, `Audit rule`. */
 export function explorerRole(unit: Classified): string {
+	if (typeCollection(unit)) return 'Type definitions';
 	if (compatibility(unit)) return 'Route alias';
 	if (renders(unit)) return 'Page';
 	if (explorerKindCategory(unit.kind) === 'pages') return 'Route loader';

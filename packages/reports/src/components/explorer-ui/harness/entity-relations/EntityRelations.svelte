@@ -49,7 +49,6 @@
 				lens={host.lens}
 				mediaBase={host.mediaBase}
 				verification={false}
-				showUsage={show !== 'models'}
 				batch={4}
 				{label}
 				rows={entityCatalog(items, category, host.lens.relations, {
