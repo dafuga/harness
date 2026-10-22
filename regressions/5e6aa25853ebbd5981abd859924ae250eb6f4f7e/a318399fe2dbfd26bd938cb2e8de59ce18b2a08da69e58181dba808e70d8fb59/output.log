@@ -1,0 +1,124 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [12.95s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-96q7OO
+
+ ❯ test/shared-workspace-registry.test.ts (5 tests | 1 failed | 4 skipped) 4013ms
+   ↓ the source index resolves what the Web workspace imports of the shared workspace
+   ↓ the registry names the Web workspace beside the Electron and iOS one as a consumer of the shell
+   ↓ a change of the shared shell reaches the Web workspace and its page, and the Electron and iOS one
+   ↓ declaring those imports changes them alone: no other reference or uncertainty moves
+   × every active visual module has its own required capture state 5ms
+     → expected [ …(199) ] to deeply equal [ …(233) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/shared-workspace-registry.test.ts > every active visual module has its own required capture state
+AssertionError: expected [ …(199) ] to deeply equal [ …(233) ]
+
+- Expected
++ Received
+
+@@ -69,15 +69,10 @@
+    "desktop.component.thread-history",
+    "desktop.component.thread-links",
+    "desktop.component.thread-panel",
+    "desktop.component.workspace-link",
+    "desktop.component.workspace-shell",
+-   "desktop.page.game",
+-   "desktop.page.harness-path",
+-   "desktop.page.projects-project-id-harness-path",
+-   "desktop.page.root",
+-   "desktop.page.settings",
+    "hub.component.account-menu",
+    "hub.component.email-proof-panel",
+    "hub.component.hosted-workspace",
+    "hub.component.hub-frame",
+    "hub.component.invitation-form",
+@@ -85,16 +80,10 @@
+    "hub.component.login-panel",
+    "hub.component.members-panel",
+    "hub.component.native-approval",
+    "hub.component.project-create",
+    "hub.component.project-list",
+-   "hub.layout.root",
+-   "hub.page.invite-project-id-invitation-id",
+-   "hub.page.native-handoff-id",
+-   "hub.page.projects-project-id-harness-path",
+-   "hub.page.projects-project-id-members",
+-   "hub.page.root",
+    "reports.component.activity-agents",
+    "reports.component.activity-files",
+    "reports.component.activity-list",
+    "reports.component.activity-loops",
+    "reports.component.activity-work",
+@@ -207,29 +196,6 @@
+    "reports.component.source-viewer",
+    "reports.component.status-badge",
+    "reports.component.upload-audio",
+    "reports.component.upload-comparison",
+    "reports.component.usage-examples-usage-examples",
+-   "reports.layout.root",
+-   "reports.page.harness-branch-branch-at-components",
+-   "reports.page.harness-branch-branch-at-components-entity",
+-   "reports.page.harness-branch-branch-at-components-entity-history",
+-   "reports.page.harness-branch-branch-at-configs",
+-   "reports.page.harness-branch-branch-at-configs-entity",
+-   "reports.page.harness-branch-branch-at-configs-entity-history",
+-   "reports.page.harness-branch-branch-at-functions",
+-   "reports.page.harness-branch-branch-at-functions-entity",
+-   "reports.page.harness-branch-branch-at-functions-entity-history",
+-   "reports.page.harness-branch-branch-at-models",
+-   "reports.page.harness-branch-branch-at-models-entity",
+-   "reports.page.harness-branch-branch-at-models-entity-history",
+-   "reports.page.harness-branch-branch-at-pages",
+-   "reports.page.harness-branch-branch-at-pages-entity",
+-   "reports.page.harness-branch-branch-at-pages-entity-history",
+-   "reports.page.harness-branch-branch-at-services",
+-   "reports.page.harness-branch-branch-at-services-entity",
+-   "reports.page.harness-branch-branch-at-services-entity-history",
+-   "reports.page.harness-branch-branch-at-shells",
+-   "reports.page.harness-branch-branch-at-shells-entity",
+-   "reports.page.harness-branch-branch-at-shells-entity-history",
+-   "reports.page.harness-view",
+  ]
+
+ ❯ test/shared-workspace-registry.test.ts:137:40
+    135|   .map((unit) => unit.id)
+    136|   .sort();
+    137|  expect(catalog?.units.slice().sort()).toEqual(visual);
+       |                                        ^
+    138|  for (const id of visual) {
+    139|   const states = catalog!.states.filter((state) => state.units?.includ…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  00:32:43
+   Duration  6.81s (transform 162ms, setup 61ms, collect 431ms, tests 4.01s, environment 0ms, prepare 25ms)
+
