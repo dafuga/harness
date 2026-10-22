@@ -109,7 +109,10 @@ test('an explorer address is left alone, with its tab', () => {
 		'/harness/branch/main/pages/page.titles?tab=source'
 	);
 	expect(canonical('/harness/branch/main/pages/page.titles/details?tab=nothing')).toBe(
-		'/harness/branch/main/pages/page.titles?tab=contract'
+		'/harness/branch/main/pages/page.titles?tab=models'
+	);
+	expect(canonical('/harness/branch/main/components/component.card/details?tab=nothing')).toBe(
+		'/harness/branch/main/components/component.card?tab=contract'
 	);
 });
 
