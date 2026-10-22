@@ -34,7 +34,6 @@ import { withHelpers } from './entityPreviewHelpers';
 import { withRelationGroups } from './entityRelationFixtures';
 import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
 
-/** The synthetic history in a browser, for the checks that need one; no server and no real data. */
 const variant = ((window as unknown as { previewVariant?: PreviewVariant }).previewVariant ??
 	new URLSearchParams(location.search).get('variant')) as PreviewVariant | null;
 const recorded = (commit: string, whole = true) => revision(commit, [previewRecord(commit, whole)]);

@@ -2,7 +2,7 @@
 	"name": "service-examples",
 	"goal": "Service detail pages provide source-true method-level contracts, including initialize, and representative instance-method examples, with clear missing-documentation states and revision-correct links.",
 	"createdAt": "2026-10-22T13:16:46.804Z",
-	"updatedAt": "2026-10-22T15:18:29.310Z",
+	"updatedAt": "2026-10-22T15:56:58.225Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -34,6 +34,20 @@
 			"status": "complete",
 			"completedAt": "2026-10-22T15:18:29.310Z",
 			"evidence": "Harness units check passed. Reports format, typecheck, lint, 650 unit tests, build, and audit passed. Full E2E was omitted at Daniel request."
+		},
+		{
+			"id": "rebase-check",
+			"title": "Verify the rebased feature against current main within the focused test scope.",
+			"status": "complete",
+			"completedAt": "2026-10-22T15:56:12.454Z",
+			"evidence": "Rebased head passed format, lint, 650 reports unit tests, build, audit, units check, and 4 focused browser cases. Reports typecheck still fails on two untouched origin/main files: missing @decartai/sdk in packages/game/src/adapters/agents-providers/DecartAdapter.ts and implicit any in packages/desktop/src/lib/development-tooling/desktop-bridge/GameRenderService.ts. Full E2E omitted at Daniel request."
+		},
+		{
+			"id": "dependency-sync",
+			"title": "Install pinned dependencies and rerun reports typecheck.",
+			"status": "complete",
+			"completedAt": "2026-10-22T15:56:58.225Z",
+			"evidence": "bun install --frozen-lockfile installed the lockfile dependencies; reports typecheck then passed with 0 errors and 0 warnings. No full E2E was run."
 		}
 	],
 	"evaluators": [

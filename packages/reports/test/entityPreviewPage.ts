@@ -79,15 +79,12 @@ export async function openVerification(
 	const summary = page.locator('[role="tabpanel"] > details > summary');
 	await summary.filter({ hasText: 'Verification details' }).first().click();
 }
-/** The address the content is at, as the preview keeps it. */
 export const where = (page: Page): Promise<ExplorerLocation> =>
 	page.evaluate(() => JSON.parse(decodeURIComponent(location.hash.slice(1))) as ExplorerLocation);
-/** What a locator shows as text, as a person reads it: nothing hidden, each space once. */
 export const shown = async (page: Page, selector: string): Promise<string[]> =>
 	page
 		.locator(selector)
 		.evaluateAll((all) => all.map((found) => (found as HTMLElement).innerText.trim()));
-/** True when nothing makes the page wider than its window. */
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
 function visualTabs(category: ExplorerLocation['category']): string[] {
