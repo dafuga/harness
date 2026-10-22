@@ -3,6 +3,7 @@ import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { fileURLToPath } from 'node:url';
 import { afterEach, expect, test } from 'vitest';
+import { measureProcess } from '../../../test/support/cli-measurement/measureHarness';
 
 /**
  * An ordinary browser run owns its preview. The real configuration is run here against a port
@@ -63,13 +64,9 @@ test.each([false, true])(
 		const { default: owner } = await import('./src/config/development-tooling/desktopPlaywrightConfig.ts');
 		console.log(JSON.stringify({ same: entry === owner, url: entry.use.baseURL, reuse: entry.webServer.reuseExistingServer, serverPort: entry.webServer.env?.HARNESS_DESKTOP_TEST_PORT ?? null }));
 	`;
-		const cold = await new Promise<{ code: number; output: string }>((done) => {
-			execFile('bun', ['--eval', program], { cwd: desktop, env }, (error, stdout, stderr) =>
-				done({ code: error ? 1 : 0, output: stdout + stderr })
-			);
-		});
-		expect(cold.code, cold.output).toBe(0);
-		expect(JSON.parse(cold.output), 'Every browser mode must honor its owned port').toEqual({
+		const cold = await measuredConfiguration(program, env, verifying);
+		expect(cold.exitCode, cold.stderr).toBe(0);
+		expect(JSON.parse(cold.stdout), 'Every browser mode must honor its owned port').toEqual({
 			same: true,
 			url: `http://127.0.0.1:${other.port}`,
 			reuse: false,
@@ -89,3 +86,36 @@ test('a port override that is no port is refused by its name before anything sta
 	expect(run.said).not.toContain('Running');
 	expect(run.code).not.toBe(0);
 }, 120_000);
+
+function measuredConfiguration(
+	program: string,
+	environment: NodeJS.ProcessEnv,
+	verifying: boolean
+) {
+	const env = Object.fromEntries(
+		Object.entries(environment).filter(
+			(entry): entry is [string, string] => typeof entry[1] === 'string'
+		)
+	);
+	return measureProcess(
+		{
+			units: ['desktop.config.development-tooling-desktop-playwright'],
+			workload: `cold-browser-configuration-${verifying ? 'verified' : 'ordinary'}`,
+			target: 'module',
+			command: ['bun', '--eval', program],
+			cwd: desktop,
+			env,
+			partial:
+				'Actual cold public and canonical configuration imports in Bun, including Playwright and dependency startup and whole-child OS RSS. Excludes browser, app and isolated configuration memory.'
+		},
+		(command, cwd) =>
+			new Promise((done) => {
+				execFile(
+					command[0],
+					command.slice(1),
+					{ cwd, env, timeout: 60000 },
+					(error, stdout, stderr) => done({ exitCode: error ? 1 : 0, stdout, stderr })
+				);
+			})
+	);
+}

@@ -17,7 +17,10 @@ import { projectProposal, proposalPrompt } from './projectProposal';
 import { type ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
 import { proposalUnits } from './proposalUnits';
 import { sourceChanges } from '../../../../utils/development-tooling/sourceChanges';
-import { sourceSnapshot, type SourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
+import {
+	sourceSnapshot,
+	type SourceSnapshot
+} from '../../../../utils/verification-evidence/sourceSnapshot';
 import { catalogUnit } from '../../../../utils/catalogUnit';
 
 /** The draft a run had written when it failed or was cancelled, by the error it ended with. */
