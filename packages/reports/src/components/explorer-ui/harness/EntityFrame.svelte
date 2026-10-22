@@ -2,7 +2,6 @@
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
 	import { explorerEntity } from '../../../utils/explorer-ui/explorerEntities';
-	import { isShared } from '../../../utils/explorer-ui/entityCatalog';
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import { entityLens, shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { screenOptions } from '../../../utils/explorer-ui/entityScreens';
@@ -101,7 +100,6 @@
 				{entity}
 				{owner}
 				{nav}
-				shared={isShared(host.lens.relations(entity.id), entity.unit)}
 				preview={screens}
 			/>
 			{@render screen(entity, nav)}

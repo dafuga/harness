@@ -15,14 +15,12 @@
 		entity,
 		owner,
 		nav,
-		shared = false,
 		preview
 	}: {
 		entity: ExplorerEntity;
 		/** The sole owner of a private function, when the revision records one. */
 		owner?: ExplorerEntity;
 		nav: EntityNav;
-		shared?: boolean;
 		/** What stays between the identity and the tabs on every tab: the screenshots of a component. */
 		preview?: Snippet;
 	} = $props();
@@ -105,7 +103,6 @@
 		<div class="ex-head-title">
 			<h1>{entity.name}</h1>
 			<span class="ex-pill">{entity.role}</span>
-			{#if shared}<span class="ex-pill gold">Shared</span>{/if}
 			{#if entity.change === 'removed'}<span class="ex-pill">Removed at this commit</span>{/if}
 			<HarnessVerdict {...entity.verdict} />
 		</div>

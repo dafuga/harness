@@ -90,7 +90,6 @@
 			<p class="ex-fact">
 				<HarnessIcon name="layers" size={22} />
 				<span><strong>Contains</strong> {listed(row.contains, 2)}</span>
-				{#if row.shared}<span class="ex-pill gold">Shared</span>{/if}
 				{#if row.changed}<span class="ex-pill gold">Changed</span>{/if}
 			</p>
 			{#if verification}<p class="ex-fact">
