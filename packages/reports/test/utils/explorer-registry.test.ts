@@ -102,7 +102,7 @@ const naming = (id: string) =>
 	scenario.states.filter((state) => state.units?.includes(id)).map((state) => state.id);
 
 test('a visual unit is under exactly the states that name it, and never under another screen', () => {
-	expect(statesOf(`${at}pages`)).toEqual(['pages', 'catalog-filters']);
+	expect(statesOf(`${at}pages`)).toEqual(['pages']);
 	expect(statesOf(`${at}configs-entity`)).toEqual(['config', 'config-details']);
 	expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
 	// Each page, shell and component the scenario covers is named by a state whose capture shows it.
@@ -162,16 +162,11 @@ const contractStates: Array<[string, string[]]> = [
 		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
 	]
 ];
-const written: Array<[string, string[]]> = [
-	...shellStates,
-	...searchStates,
-	...contractStates,
-	['catalog-filters', ['reports.component.filter-dialog', `${part}explorer-controls`, `${at}pages`]]
-];
+const written: Array<[string, string[]]> = [...shellStates, ...searchStates, ...contractStates];
 
 test('each state names the one page it is reached on, and the code written for it', () => {
 	const every = scenario.states.map((state) => state.id);
-	expect(every).toHaveLength(49);
+	expect(every).toHaveLength(48);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));
 	const named = new Map(written);
 	// The pieces a state shows are judged against its captures; its page and code are written here.

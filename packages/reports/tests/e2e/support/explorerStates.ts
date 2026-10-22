@@ -68,7 +68,9 @@ const reaches: Record<string, (page: Page) => Promise<void>> = {
 	// One current screenshot of a page at a branch tip that was verified.
 	async 'page-current'(page) {
 		await page.goto(tip(explorerBranch, `pages/${units.page}`));
-		await expect(content(page).getByText(`Branch tip · ${short(commits.approved)}`)).toBeVisible();
+		await expect(content(page).locator('.ex-pane figcaption strong')).toHaveText(
+			short(commits.approved)
+		);
 	},
 	// The parent's and the selected commit's screenshots of the same state and viewport.
 	async 'page-commit'(page) {
