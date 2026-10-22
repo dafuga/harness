@@ -42,7 +42,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports typecheck, lint, registry and build passed in the preserved first handoff. The final snapshot must rerun the complete card and relation matrix. Reports audit has an unchanged 232-line helper-file blocker. CLI/native suites are deferred; main merge is held for the coordinator."
 		}
 	],
 	"evaluators": [
