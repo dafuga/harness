@@ -4762,9 +4762,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "e8f8e3a5",
-			"reason": "Preserve committed pure helper contracts during re-indexing.",
-			"definition": "54a2de0bf239061c8c216711397e915fdf667ee3da34345d430ccc3ad486182f"
+			"commit": "1bf1e0acb",
+			"reason": "Preserve declared catalog assignments when re-indexing module manifests.",
+			"definition": "4e12ef104588f51efedb9dc6ac149fc67cdf8fae4fd7367f9e4870889bd9d5a4"
 		},
 		{
 			"unit": "hub.function.hub-snapshot",

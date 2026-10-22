@@ -80,6 +80,18 @@ export const shown = async (page: Page, selector: string): Promise<string[]> =>
 /** True when nothing makes the page wider than its window. */
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
+function visualTabs(category: ExplorerLocation['category']): string[] {
+	return [
+		'Overview',
+		'Contract',
+		'Used In',
+		'Uses',
+		...(category === 'components' ? ['Audio'] : []),
+		'States',
+		'History',
+		'Source'
+	];
+}
 /** Visual evidence leads its overview; a component retains it above every row of tabs. */
 export async function reviewVisual(
 	page: Page,
@@ -97,17 +109,9 @@ export async function reviewVisual(
 	expect((await evidence.boundingBox())!.y).toBeLessThan((await profile.boundingBox())!.y);
 	expect(await fits(page)).toBe(true);
 	await reviewOverviewControls(page, route.category);
-	const tabs = [
-		'Overview',
-		'Contract',
-		'Used In',
-		'Uses',
-		...(route.category === 'components' ? ['Audio'] : []),
-		'States',
-		'History',
-		'Source'
-	];
-	for (const name of tabs.filter((tab) => route.category !== 'pages' || tab !== 'Used In')) {
+	for (const name of visualTabs(route.category).filter(
+		(tab) => route.category !== 'pages' || tab !== 'Used In'
+	)) {
 		await page.getByRole('tab', { name, exact: true }).click();
 		if (name === 'Used In') await page.getByRole('tab', { name, exact: true }).press('Shift+Tab');
 		await ready(page);
