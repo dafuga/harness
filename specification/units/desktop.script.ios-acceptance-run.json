@@ -78,6 +78,10 @@
 			{
 				"name": "openDesign.run",
 				"type": "Acceptance"
+			},
+			{
+				"name": "openDesign.title",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -161,7 +165,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["remote-mobile-ui"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

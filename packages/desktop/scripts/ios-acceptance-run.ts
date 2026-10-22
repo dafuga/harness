@@ -93,7 +93,7 @@ export async function shot(run: Acceptance, name: string): Promise<void> {
 }
 
 /** Opens the synthetic project and its design entity, and waits for the image to be there. */
-export async function openDesign(run: Acceptance, title = 'Fixture page'): Promise<string> {
+export async function openDesign(run: Acceptance, title: string = 'Fixture page'): Promise<string> {
 	const { page, project } = run;
 	const open = JSON.stringify(`Open ${project.name}`);
 	try {
