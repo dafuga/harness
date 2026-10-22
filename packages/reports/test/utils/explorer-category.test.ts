@@ -27,6 +27,16 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 	expect(explorerCategory(unit('reports.config.report-vite', 'config'))).toBe('configs');
 	expect(explorerCategory(unit('service.title', 'service'))).toBe('services');
 	expect(explorerCategory(unit('model.order', 'model'))).toBe('models');
+	for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
+		const types = owning('model.order-types', 'model', source);
+		expect(explorerCategory(types), 'Type collections are not data models').toBeNull();
+		expect(explorerRole(types)).toBe('Type definitions');
+	}
+	expect(
+		explorerCategory(
+			owning('model.order', 'model', ['src/models/Order.types.ts', 'src/models/Order.ts'])
+		)
+	).toBe('models');
 	expect(explorerCategory(unit('reports.endpoint.harness-data-path', 'endpoint'))).toBe('services');
 	expect(explorerCategory(unit('adapter.git', 'adapter'))).toBe('services');
 	expect(explorerCategory(unit('repository.budget-ledger', 'repository'))).toBe('services');

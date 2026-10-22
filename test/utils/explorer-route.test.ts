@@ -67,13 +67,17 @@ test.each(shapes)('current branch %s', (tail, selected) => {
 	const location = { branch, commit: null, ...selected } as ExplorerLocation;
 	const path = `/branch/${encoded}${tail}`;
 	expect(explorerRoute(path)).toEqual(location);
-	expect(explorerRoutePath(location)).toBe(path.replace(/\/details$/, '?tab=contract'));
+	expect(explorerRoutePath(location)).toBe(
+		path.replace(/\/details$/, location.category === 'pages' ? '?tab=models' : '?tab=contract')
+	);
 });
 test.each(shapes)('selected commit %s', (tail, selected) => {
 	const location = { branch, commit: sha, ...selected } as ExplorerLocation;
 	const path = `/branch/${encoded}/commit/${sha}${tail}`;
 	expect(explorerRoute(path)).toEqual(location);
-	expect(explorerRoutePath(location)).toBe(path.replace(/\/details$/, '?tab=contract'));
+	expect(explorerRoutePath(location)).toBe(
+		path.replace(/\/details$/, location.category === 'pages' ? '?tab=models' : '?tab=contract')
+	);
 });
 test('there are nineteen designed shapes in each scope, and a Page has a history too', () => {
 	expect(shapes).toHaveLength(19);
@@ -175,4 +179,15 @@ test.each([
 test('a trailing slash names the same address', () => {
 	const expected = { branch: 'main', commit: null, category: 'pages' };
 	expect(explorerRoute('/branch/main/pages/')).toEqual(expected);
+});
+
+test('Models is a page tab and legacy page Contract links open Models in the same scope', () => {
+	const path = `/branch/main/commit/${sha}/pages/page.orders`;
+	for (const tab of ['models', 'contract']) {
+		const route = explorerRoute(path, `?tab=${tab}`)!;
+		expect(route.tab).toBe('models');
+		expect(explorerRoutePath(route)).toBe(`${path}?tab=models`);
+	}
+	expect(explorerRoute('/branch/main/components/card', '?tab=models')?.tab).toBeUndefined();
+	expect(explorerRoute('/branch/main/components/card', '?tab=contract')?.tab).toBe('contract');
 });

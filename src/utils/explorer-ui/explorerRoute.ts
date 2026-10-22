@@ -1,61 +1,17 @@
-import { tabOf, type ExplorerTab } from '../explorer-route/explorerTabs';
-export { explorerTabs, type ExplorerTab } from '../explorer-route/explorerTabs';
-
-/** The seven kinds of entity the explorer shows, in the order of its navigation. */
-export const explorerEntityCategories = [
-	'pages',
-	'shells',
-	'components',
-	'functions',
-	'configs',
-	'services',
-	'models'
-] as const;
-export const explorerCategories = [...explorerEntityCategories, 'platforms'] as const;
-export type ExplorerCategory = (typeof explorerCategories)[number];
-
-/** The kinds of unit a product is made of, each under the one category it is listed in. */
-const kinds = new Map<string, ExplorerCategory>([
-	['page', 'pages'],
-	['view', 'pages'],
-	// Only a unit whose manifest declares it a shell: nothing is read from an id or a file name.
-	['shell', 'shells'],
-	['component', 'components'],
-	['partial', 'components'],
-	['layout', 'components'],
-	['function', 'functions'],
-	['validator', 'functions'],
-	['serializer', 'functions'],
-	['kernel', 'functions'],
-	['helper', 'functions'],
-	['decorator', 'functions'],
-	['policy', 'functions'],
-	['form', 'functions'],
-	['config', 'configs'],
-	['initializer', 'configs'],
-	['model', 'models'],
-	['service', 'services'],
-	['endpoint', 'services'],
-	['api', 'services'],
-	['adapter', 'services'],
-	['repository', 'services'],
-	['workflow', 'services'],
-	['command', 'services'],
-	['controller', 'services'],
-	['job', 'services'],
-	['channel', 'services'],
-	['middleware', 'services'],
-	['hook', 'services'],
-	['mailer', 'services']
-]);
-
-/**
- * The category a kind of unit is listed under. Null for a kind that is none of the six: a rule,
- * a guide, a template, a script or anything unknown is not presented as a function.
- */
-export function explorerKindCategory(kind: string): ExplorerCategory | null {
-	return kinds.get(kind) ?? null;
-}
+import {
+	tabOf,
+	explorerCategories,
+	type ExplorerCategory,
+	type ExplorerTab
+} from '../explorer-route/explorerTabs';
+export {
+	explorerTabs,
+	explorerKindCategory,
+	explorerEntityCategories,
+	explorerCategories,
+	type ExplorerCategory,
+	type ExplorerTab
+} from '../explorer-route/explorerTabs';
 
 /** What is shown of one entity; an address without a section shows its overview. */
 export const explorerSections = ['details', 'history'] as const;
@@ -159,7 +115,8 @@ export function canonicalExplorerLocation(location: ExplorerLocation): ExplorerL
 	const canonical = { ...location };
 	delete canonical.section;
 	if (location.tab === 'measurements') delete canonical.tab;
-	else canonical.tab = location.tab === 'source' ? 'source' : 'contract';
+	else if (location.tab === 'source') canonical.tab = 'source';
+	else canonical.tab = location.category === 'pages' ? 'models' : 'contract';
 	return canonical;
 }
 

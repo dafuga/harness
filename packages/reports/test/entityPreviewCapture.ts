@@ -7,6 +7,7 @@ import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { unitIdPattern } from '../../../src/core/unitTypes';
 import { previewHome } from './entityPreviewSetup';
 import { capturePlatformEvidence } from './entityPreviewPlatformEvidence';
+import { withoutViewportSuffix } from '../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 
 /** The compiled fixture files served by entityPreviewPage, independently of its synthetic history. */
 export async function previewIdentity() {
@@ -72,11 +73,12 @@ async function retain(page: Page, capture: { name: string; units: string[]; pixe
 	expect(server, 'the page reports the compiled fixture it actually served').toEqual(
 		await previewIdentity()
 	);
-	const state = capture.name.toLowerCase().replace(/[^a-z0-9.-]+/g, '-');
+	const namedState = capture.name.toLowerCase().replace(/[^a-z0-9.-]+/g, '-');
 	const size = page.viewportSize()!;
 	let viewport = 'tablet';
 	if (size.width >= 1200) viewport = 'desktop';
 	if (size.width <= 480) viewport = 'mobile';
+	const state = withoutViewportSuffix(namedState, viewport);
 	const measurements = await observations(page, `${state}-${size.width}x${size.height}`);
 	for (const unit of new Set(capture.units)) {
 		assertVisualUnit(unit);
@@ -85,7 +87,7 @@ async function retain(page: Page, capture: { name: string; units: string[]; pixe
 			{
 				...line,
 				kind: 'screenshot',
-				file: `${unit}-${state}.png`,
+				file: `${unit}-${state}-${viewport}.png`,
 				mediaType: 'image/png',
 				provenance: 'actual-capture',
 				note: 'Real shared UI over a synthetic history; not a capture of the fictional entity.'
@@ -93,7 +95,12 @@ async function retain(page: Page, capture: { name: string; units: string[]; pixe
 			capture.pixels
 		);
 		recordCapture(
-			{ ...line, kind: 'benchmark', file: `${unit}-${state}.json`, mediaType: 'application/json' },
+			{
+				...line,
+				kind: 'benchmark',
+				file: `${unit}-${state}-${viewport}.json`,
+				mediaType: 'application/json'
+			},
 			JSON.stringify({ measurements: measurements.map((row) => ({ ...row, unit })) })
 		);
 	}
@@ -140,6 +147,27 @@ async function observations(page: Page, workload: string) {
 		}
 	];
 }
+/** Keeps one evidence region without unrelated page previews around it. */
+export async function captureRegion(
+	page: Page,
+	selector: string,
+	name: string,
+	units = ['reports.component.harness-explorer-content']
+): Promise<void> {
+	if (process.env.TAKE_SCREENSHOT !== '1') return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await new Promise(requestAnimationFrame);
+		await new Promise(requestAnimationFrame);
+	});
+	await ready(page);
+	const region = page.locator(selector);
+	await expect(region).toBeVisible();
+	const directory = process.env.ENTITY_PREVIEW_SHOTS ?? '/tmp/harness-entity-preview-shots';
+	mkdirSync(directory, { recursive: true });
+	const pixels = await region.screenshot({ path: join(directory, `${name}.png`) });
+	await retain(page, { name, units, pixels });
+}
 /** Wait for the visible capture to render without forcing offscreen lazy images to load. */
 export async function ready(page: Page): Promise<void> {
 	await page.evaluate(async () => {
@@ -148,6 +176,15 @@ export async function ready(page: Page): Promise<void> {
 			const box = image.getBoundingClientRect();
 			return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
 		});
-		await Promise.all(visible.map((image) => image.decode()));
+		await Promise.all(
+			visible.map(async (image) => {
+				const deadline = Date.now() + 10_000;
+				while (!image.complete && Date.now() < deadline)
+					await new Promise((resolve) => setTimeout(resolve, 50));
+				await image.decode?.();
+				if (!image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0)
+					throw new Error(`Image not ready: ${image.currentSrc || image.src || image.alt}`);
+			})
+		);
 	});
 }

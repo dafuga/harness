@@ -20,6 +20,8 @@ const planned = (path: string) =>
 	}));
 const preview = (spec: string) =>
 	`ENTITY_PREVIEW_HOME=output/entity-preview bun x playwright test --config test/entityPreviewPlaywright.ts test/${spec}`;
+const plannedPreview = (spec: string) =>
+	spec === 'entity-preview-contract.spec.ts' ? `bun x playwright test test/${spec}` : preview(spec);
 const previews = readdirSync('packages/reports/test')
 	.filter((name) => /^entity-preview[\w-]*\.spec\.ts$/.test(name))
 	.sort();
@@ -41,8 +43,12 @@ test('the Shells preview spec runs once, in the reports package, under the entit
 test('every entity preview spec of the reports package is run by the config that finds it', () => {
 	expect(previews).toEqual([
 		'entity-preview-actions.spec.ts',
+		'entity-preview-captures.spec.ts',
+		'entity-preview-contract.spec.ts',
 		'entity-preview-groups.spec.ts',
 		'entity-preview-marks.spec.ts',
+		'entity-preview-metric-diff.spec.ts',
+		'entity-preview-platforms.spec.ts',
 		'entity-preview-shells.spec.ts',
 		'entity-preview-source.spec.ts',
 		'entity-preview-test-cases.spec.ts',
@@ -52,7 +58,7 @@ test('every entity preview spec of the reports package is run by the config that
 	for (const spec of previews)
 		expect([spec, planned(`packages/reports/test/${spec}`)[0].command]).toEqual([
 			spec,
-			preview(spec)
+			plannedPreview(spec)
 		]);
 });
 

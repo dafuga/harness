@@ -15,7 +15,8 @@ import {
 } from './entityPreviewOverview';
 import { commits, ids } from './entityUnits';
 import { capture, ready } from './entityPreviewCapture';
-export { capture, ready } from './entityPreviewCapture';
+export { capture, captureRegion, ready } from './entityPreviewCapture';
+// A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
 export const viewports = {
 	desktop: { width: 1440, height: 900 },
@@ -78,10 +79,19 @@ export const shown = async (page: Page, selector: string): Promise<string[]> =>
 		.evaluateAll((all) => all.map((found) => (found as HTMLElement).innerText.trim()));
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
+
+/** Clean cards lead to the detail header, where the full verdict remains interactive. */
+export async function componentVerdict(page: Page) {
+	const row = page.getByRole('article', { name: 'OrderList', exact: true });
+	await expect(row.locator('.hx-verdict')).toHaveCount(0);
+	await row.getByRole('link', { name: 'OrderList', exact: true }).click();
+	await expect(page.getByRole('heading', { level: 1, name: 'OrderList' })).toBeVisible();
+	return page.locator('.ex-head').getByRole('button', { name: 'Coverage incomplete' });
+}
 function visualTabs(category: ExplorerLocation['category']): string[] {
 	return [
 		'Overview',
-		'Contract',
+		category === 'pages' ? 'Models' : 'Contract',
 		'Used In',
 		'Uses',
 		...(category === 'components' ? ['Audio'] : []),
