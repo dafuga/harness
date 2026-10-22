@@ -36,7 +36,9 @@ const unique = new Set([
 	// An explorer list of entities is keyed by the entity, and a history by its commit.
 	'row.id',
 	'row.commit',
-	'group.id'
+	'group.id',
+	'group.name',
+	'token.name'
 ]);
 
 test('console lists are keyed only by what cannot repeat, never by recorded text', () => {

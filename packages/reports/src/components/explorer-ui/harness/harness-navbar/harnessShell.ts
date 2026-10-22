@@ -54,6 +54,20 @@ function revision(input: HarnessNavbarInput, scope: ExplorerScope): HarnessShell
 	};
 }
 
+function categoryTarget(
+	place: ExplorerLocation | null,
+	id: ExplorerCategory | 'styles'
+): ExplorerLocation | null {
+	if (!place) return null;
+	const target: ExplorerLocation = {
+		branch: place.branch,
+		commit: place.commit,
+		category: id === 'styles' ? 'pages' : id
+	};
+	if (id === 'styles') target.screen = 'styles';
+	return target;
+}
+
 /**
  * What the bar of the explorer shows for an address: where the brand leads, the five
  * categories inside the branch and commit that are viewed, and the revision controls. Every
@@ -67,16 +81,7 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
 	const categories = labels.map(([id, label]) => {
-		const to = place
-			? id === 'styles'
-				? {
-						branch: place.branch,
-						commit: place.commit,
-						category: 'pages' as const,
-						screen: 'styles' as const
-					}
-				: { branch: place.branch, commit: place.commit, category: id }
-			: null;
+		const to = categoryTarget(place, id);
 		const active =
 			id === 'styles'
 				? place?.screen === 'styles'

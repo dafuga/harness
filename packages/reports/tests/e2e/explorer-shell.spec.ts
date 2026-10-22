@@ -18,21 +18,8 @@ import {
 	removeShellFixture,
 	shellOrigin
 } from './support/shellFixture';
-/**
- * The bar of the explorer, looked at alone over a made-up history: the brand, seven entity categories
- * and the revision that is viewed. Its page is built by this run and answered from its own
- * files; no server is started.
- */
-const categories = [
-	'Pages',
-	'Shells',
-	'Components',
-	'Helpers',
-	'Configs',
-	'Services',
-	'Models',
-	'Styles'
-];
+/** The bar, its navigation and revision selectors across three viewports. */
+const categories = 'Pages Shells Components Helpers Configs Services Models Styles'.split(' ');
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;

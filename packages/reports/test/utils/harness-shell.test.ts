@@ -45,7 +45,7 @@ test('the bar has seven entity categories and a Styles screen scoped to the view
 		['configs', 'Configs', 'configs'],
 		['services', 'Services', 'services'],
 		['models', 'Models', 'database'],
-		['styles', 'Styles', 'palette']
+		['styles', 'Styles', 'styles']
 	]);
 	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
 	expect(categories.map((item) => item.href)).toEqual([

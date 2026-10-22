@@ -46,7 +46,7 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 		['configs', 'Configs', 'configs', false],
 		['services', 'Services', 'services', false],
 		['models', 'Models', 'database', false],
-		['styles', 'Styles', 'palette', false]
+		['styles', 'Styles', 'styles', false]
 	]);
 	expect(categoryIcon.shells).not.toBe(categoryIcon.components);
 });
