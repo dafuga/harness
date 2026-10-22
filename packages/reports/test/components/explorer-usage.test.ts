@@ -38,6 +38,16 @@ for (const mode of ['current', 'commit'] as const) {
 		const consumers = host.entities.filter((item) => item.id === ids.list || item.id === ids.store);
 		const body = render(ExplorerUsage, { props: { ...props, consumers } }).body;
 		expect(words(body)).toContain('Used In');
+		expect(body).not.toMatch(/aria-label="(?:Components|Services)"|ex-usage-kind/);
+		const many = [
+			consumers[0],
+			consumers[0],
+			...host.entities.filter((item) => item.id !== consumers[0].id)
+		];
+		const capped = render(ExplorerUsage, { props: { ...props, consumers: many } }).body;
+		expect([...capped.matchAll(/<a\b/g)]).toHaveLength(3);
+		for (const item of [...new Map(many.map((item) => [item.id, item])).values()].slice(0, 3))
+			expect(capped).toContain(item.name);
 		const base = `/harness/branch/feature%2Forders${mode === 'commit' ? `/commit/${commits.middle}` : ''}`;
 		expect(body).toContain(`href="${base}/components/${ids.list}"`);
 		expect(body).toContain(`href="${base}/services/${ids.store}"`);
@@ -55,10 +65,10 @@ for (const mode of ['current', 'commit'] as const) {
 			props: { ...props, consumers: dense, layout: 'flat', limit: 3 }
 		}).body;
 		const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map((match) => match[1]);
-		expect(links, 'Only the first three distinct consumers in module order').toEqual([
-			`${base}/pages/${ids.page}`,
+		expect(links, 'Only the first three distinct consumers in supplied order').toEqual([
+			`${base}/services/${ids.store}`,
 			`${base}/components/${ids.list}`,
-			`${base}/components/${ids.search}`
+			`${base}/configs/${ids.settings}`
 		]);
 		const empty = render(ExplorerUsage, { props: { ...props, consumers: [] } }).body;
 		expect(words(empty).trim()).toBe('Used In —');
