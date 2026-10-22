@@ -4,7 +4,10 @@ import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 
 test.setTimeout(90_000);
-const configUnits = ['reports.component.harness-explorer-table', 'reports.function.entity-catalog'];
+const configUnits = [
+	'reports.component.harness-explorer-table',
+	'reports.page.harness-branch-branch-at-configs'
+];
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'Configs', exact: true });
@@ -45,7 +48,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await capture(
 				page,
 				`groups-${category}-${viewport}`,
-				category === 'configs' ? configUnits : []
+				category === 'configs' ? configUnits : ['reports.component.harness-explorer-content']
 			);
 			await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(0);
 			await expect(page.getByRole('searchbox')).toBeVisible();
