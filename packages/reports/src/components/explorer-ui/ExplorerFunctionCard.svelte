@@ -63,6 +63,7 @@
 		{lens}
 		{mediaBase}
 		layout={row.entity.category === 'models' ? 'flat' : 'grouped'}
+		limit={3}
 	/>
 </article>
 
