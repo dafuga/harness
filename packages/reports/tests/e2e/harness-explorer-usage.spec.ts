@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { at, checkpoint, expectNoOverflow, expectPath, explorer } from './support/explorer';
 import { seeded } from './support/harnessHistory';
+import { viewports } from './support/harnessCapture';
 
 /**
  * What an entity is shown with of the things around it, in the seeded history: a section named
@@ -16,6 +17,37 @@ const heading = (page: Page, name: string) => page.getByRole('heading', { level:
 const named = ['Overview', 'Contract', 'Used In', 'Uses', 'Audio', 'States', 'History', 'Source'];
 const sectionsOf = (page: Page, entity: string) =>
 	page.getByRole('tablist', { name: `${entity} sections` }).getByRole('tab');
+
+for (const viewport of viewports) {
+	test(`component cards keep the catalog layout in relationship tabs at ${viewport.id} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize({ width: viewport.width, height: viewport.height });
+		const named = () =>
+			page.getByRole('main').getByRole('article', { name: 'TitleList', exact: true });
+		await page.goto(main('components'));
+		const expected = (await named().innerText()).replace(/\s+/g, ' ').trim();
+		const detail = await named().getByRole('heading').getByRole('link').getAttribute('href');
+		for (const [host, label] of [
+			[`pages/${units.page}?tab=uses`, 'page-uses'],
+			[`components/${units.row}?tab=used-in`, 'component-used-in']
+		]) {
+			await page.goto(main(host));
+			const related = named();
+			await expect(related).toBeVisible();
+			expect((await related.innerText()).replace(/\s+/g, ' ').trim()).toBe(expected);
+			await expect(related.getByRole('heading').getByRole('link')).toHaveAttribute('href', detail!);
+			await expect(related.locator('p, figcaption, button')).toHaveCount(0);
+			const layout = await related.evaluate((el) => {
+				const image = el.querySelector('figure')!.getBoundingClientRect();
+				const title = el.querySelector('h2')!.getBoundingClientRect();
+				return { stacked: title.top >= image.bottom, fits: el.scrollWidth <= el.clientWidth };
+			});
+			expect(layout).toEqual({ stacked: true, fits: true });
+			await checkpoint(page, `shared-cards-${label}-${viewport.id}`);
+		}
+	});
+}
 
 test('a former relationships address opens the overview without embedded usage sections', async ({
 	page
