@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogScreen.svelte';
 import { record, revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
@@ -6,15 +7,21 @@ import { commits, ids } from '../entityUnits';
 
 const kinds = { configs: ['Configs', 'orderSettings'] } as const;
 
-test('nonvisual collections are tables of their own kind, never image cards', () => {
-	for (const [category, [title, name]] of Object.entries(kinds)) {
-		const at = { category: category as keyof typeof kinds };
-		const body = screen(ExplorerCatalogScreen, 'commit', at);
-		expect(body, category).toContain(`<table class="ex-table" aria-label="${title}"`);
-		expect(words(body), category).toContain(name);
-		expect(count(body, /<article\b/g), category).toBe(0);
-		expect(drawn(body), category).toBe(drawn(content('commit', at)));
-	}
+test('nonvisual collections are tables of their own kind, never image cards', async () => {
+	await measureWorkload(
+		'reports.component.harness-explorer-table',
+		'render-nonvisual-catalog-table',
+		() => {
+			for (const [category, [title, name]] of Object.entries(kinds)) {
+				const at = { category: category as keyof typeof kinds };
+				const body = screen(ExplorerCatalogScreen, 'commit', at);
+				expect(body, category).toContain(`<table class="ex-table" aria-label="${title}"`);
+				expect(words(body), category).toContain(name);
+				expect(count(body, /<article\b/g), category).toBe(0);
+				expect(drawn(body), category).toBe(drawn(content('commit', at)));
+			}
+		}
+	);
 });
 
 test('service cards show only the class name and revision-scoped consumer links', () => {
