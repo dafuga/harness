@@ -1,10 +1,36 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
 import ExplorerUsage from '../../src/components/ExplorerUsage.svelte';
+import ExplorerPageCard from '../../src/components/harness/ExplorerPageCard.svelte';
+import { entityCatalog } from '../../src/utils/entityCatalog';
 import { hostProps, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 
 for (const mode of ['current', 'commit'] as const) {
+	test.each([0, 1, 3, 4, 7])(
+		`component card usage is flat and capped with %i consumers at ${mode} scope`,
+		(total) => {
+			const host = hostProps(mode);
+			const nav = { route: host.route, href: host.lens.href, go: host.onroute };
+			const row = entityCatalog(host.entities, 'components', host.lens.relations)[0];
+			const body = render(ExplorerPageCard, {
+				props: {
+					row: { ...row, usedIn: host.entities.slice(0, total) },
+					category: 'components',
+					shot: null,
+					nav,
+					lens: host.lens,
+					mediaBase: host.mediaBase
+				}
+			}).body;
+			const footer = body.slice(body.search(/<div class="ex-usage\b/));
+			expect((footer.match(/<a\b/g) ?? []).length).toBe(Math.min(total, 3));
+			expect(footer).not.toContain('ex-usage-kind');
+			expect(words(footer).includes('…')).toBe(total > 3);
+			if (total === 0) expect(words(footer).trim()).toBe('Used In —');
+		}
+	);
+
 	test(`shared usage footers render links and empty usage at ${mode} scope`, () => {
 		const host = hostProps(mode);
 		const nav = { route: host.route, href: host.lens.href, go: host.onroute };
