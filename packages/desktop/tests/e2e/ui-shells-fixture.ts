@@ -26,7 +26,7 @@ export async function withShell(page: Page, fixture = projectFixture): Promise<v
 			project.entities.push({
 				...button,
 				id,
-				category: 'shells',
+				category: 'layouts',
 				kind: 'shell',
 				title: 'Shared workspace shell',
 				summary: 'Lays out the one workspace every Harness app shows.',

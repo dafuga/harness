@@ -7,7 +7,7 @@ export async function imageModel(
 	request: Pick<RunRequest, 'mode'>,
 	category: string
 ) {
-	if (request.mode !== 'plan' || !['pages', 'shells', 'components'].includes(category)) return '';
+	if (request.mode !== 'plan' || !['pages', 'layouts', 'components'].includes(category)) return '';
 	const state = (await preparation.providers.list()).find((p) => p.id === 'codex');
 	if (!state?.available || !state.imageGeneration)
 		throw new Error('GPT Image requires the signed-in Codex image-generation capability.');

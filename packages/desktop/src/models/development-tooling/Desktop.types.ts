@@ -5,7 +5,6 @@ import type { ProjectIdentity } from '../ProjectContext.types';
 import type { ProjectCapabilities } from '../ProjectContext.types';
 import type { CacheProvenance } from '../ProjectContext.types';
 import type { categories } from './DesktopValues';
-
 export type Category = (typeof categories)[number];
 
 export type ProviderId = 'codex' | 'claude';

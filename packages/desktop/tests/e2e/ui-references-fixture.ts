@@ -18,14 +18,14 @@ const named = [
 	{
 		project: 0,
 		id: 'app.shell.order-frame',
-		category: 'shells',
+		category: 'layouts',
 		kind: 'shell',
 		title: 'Order frame'
 	},
 	{
 		project: 2,
 		id: 'app.shell.order-frame',
-		category: 'shells',
+		category: 'layouts',
 		kind: 'shell',
 		title: 'Gamma frame'
 	}

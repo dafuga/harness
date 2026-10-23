@@ -11,7 +11,7 @@ export const explorer = (): SeededExplorer =>
 
 export const categories = [
 	'Pages',
-	'Shells',
+	'Layouts',
 	'Components',
 	'Helpers',
 	'Configs',

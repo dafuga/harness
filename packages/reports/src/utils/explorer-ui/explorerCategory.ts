@@ -29,7 +29,7 @@ const compatibility = (unit: Classified) =>
 	unit.owns.source.some(
 		(path) =>
 			path.startsWith('packages/reports/src/routes/harness/') &&
-			path.endsWith('/[entity]/details/+page.svelte')
+			(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
 	);
 
 /** Type collections describe API shapes; they are not data models. */
@@ -39,13 +39,18 @@ const typeCollection = (unit: Classified) =>
 	unit.owns.source.every((path) => /\.(?:types|d)\.[cm]?tsx?$/.test(path));
 
 const unlisted = (unit: Classified) =>
-	unit.catalog?.visibility === 'internal' || typeCollection(unit);
+	unit.catalog?.visibility === 'internal' || typeCollection(unit) || nonvisualLayout(unit);
 
 /** A SvelteKit options module configures rendering but renders no pixels itself. */
 const layoutConfiguration = (unit: Classified) =>
 	unit.kind === 'layout' &&
 	unit.owns.source.length > 0 &&
 	unit.owns.source.every((path) => /\+layout(?:\.server)?\.[cm]?[jt]s$/.test(path));
+
+const nonvisualLayout = (unit: Classified) =>
+	unit.kind === 'layout' &&
+	!layoutConfiguration(unit) &&
+	!unit.owns.source.some((path) => path.endsWith('.svelte'));
 
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page

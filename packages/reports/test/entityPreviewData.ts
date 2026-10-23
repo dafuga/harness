@@ -142,7 +142,7 @@ export function withFrame(head: HarnessRevision, kind: string): HarnessRevision 
 		kind,
 		title: 'OrderFrame',
 		responsibility: 'Frames the orders workspace: its bar, its list and its status.',
-		owns: { source: ['src/shells/OrderFrame.svelte'], symbols: ['OrderFrame'] },
+		owns: { source: ['src/layouts/OrderFrame.svelte'], symbols: ['OrderFrame'] },
 		dependencies: [{ unit: ids.list, via: 'import' }],
 		version: `v-${frameId}`
 	};
@@ -197,7 +197,7 @@ export function withMeasurements(detail: HarnessRevision): HarnessRevision {
 export { withDocumentation } from './entityPreviewDocumentation';
 /** Category metadata is synthetic selected-revision data, like contracts and measurements. */
 export function withGroups(detail: HarnessRevision): HarnessRevision {
-	return categorySources(withFrame(detail, 'shell'));
+	return categorySources(withFrame(detail, 'layout'));
 }
 
 export type { PreviewVariant } from './entityPreviewData.types';

@@ -10,7 +10,7 @@ export type {
  */
 export const categories = [
 	'pages',
-	'shells',
+	'layouts',
 	'components',
 	'functions',
 	'configs',

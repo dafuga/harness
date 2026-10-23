@@ -12,7 +12,7 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
  */
 const [tip, earlier] = ['a'.repeat(40), 'c'.repeat(40)];
 const frame = {
-	...{ id: 'app.shell.order-frame', category: 'shells', kind: 'shell', title: 'Order frame' },
+	...{ id: 'app.shell.order-frame', category: 'layouts', kind: 'shell', title: 'Order frame' },
 	...{ summary: 'Frames the order pages.', changed: false, planned: false, hasPlan: false },
 	...{ lifecycle: null, verification: 'unverified', verificationNote: '', latestVersion: null },
 	...{ approvedVersion: null, threadCount: 0, thumbnail: null }
@@ -31,7 +31,7 @@ test('at the tip every entity is an entry of that commit, with its display name 
 	const search = read(tip);
 	expect(search.entries).toEqual([
 		{
-			...{ id: 'app.shell.order-frame', category: 'shells', name: explorerName(frame) },
+			...{ id: 'app.shell.order-frame', category: 'layouts', name: explorerName(frame) },
 			...{ purpose: 'Frames the order pages.', terms: [], commit: tip }
 		}
 	]);
@@ -60,10 +60,10 @@ test('while a project or revision is read, nothing of the one shown before is of
 test('a listed result opens in the project, branch and commit it was read at', () =>
 	measureWorkload('desktop.function.workspace-search', 'workspace-result-routing', () => {
 		const atTip = read(tip);
-		expect(atTip.at(atTip.entries![0])).toBe(`${alpha}/shells/app.shell.order-frame`);
+		expect(atTip.at(atTip.entries![0])).toBe(`${alpha}/layouts/app.shell.order-frame`);
 		const pinned = read(earlier, true);
 		expect(pinned.at(pinned.entries![0])).toBe(
-			`${alpha}/commit/${earlier}/shells/app.shell.order-frame`
+			`${alpha}/commit/${earlier}/layouts/app.shell.order-frame`
 		);
 	}));
 

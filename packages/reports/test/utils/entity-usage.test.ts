@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { ExplorerEntity, ExplorerRelations } from '../../src/models/Explorer.types';
 import { entityUsage } from '../../src/components/explorer-ui/entity-relations/entityUsage';
@@ -7,7 +8,7 @@ const support = (id: string) =>
 	({ id, role: 'Model', name: id }) as ExplorerRelations['support'][0];
 const none: ExplorerRelations = {
 	pages: [],
-	shells: [],
+	layouts: [],
 	components: [],
 	functions: [],
 	configs: [],
@@ -17,19 +18,20 @@ const none: ExplorerRelations = {
 };
 const ids = (items: { id: string }[]) => items.map((item) => item.id);
 
-test('what uses an entity is one list, pages first, and nothing is in it twice', () => {
-	const usage = entityUsage({
-		...none,
-		pages: [entity('page.a', 'pages'), entity('page.b', 'pages')],
-		usedBy: [
-			entity('component.c', 'components'),
-			entity('page.a', 'pages'),
-			entity('component.c', 'components')
-		]
-	});
-	expect(ids(usage.usedIn)).toEqual(['page.a', 'page.b', 'component.c']);
-	expect([usage.uses, usage.other, usage.count]).toEqual([[], [], 0]);
-});
+test('what uses an entity is one list, pages first, and nothing is in it twice', () =>
+	measureWorkload('reports.function.entity-usage', 'layout-catalog-behavior', () => {
+		const usage = entityUsage({
+			...none,
+			pages: [entity('page.a', 'pages'), entity('page.b', 'pages')],
+			usedBy: [
+				entity('component.c', 'components'),
+				entity('page.a', 'pages'),
+				entity('component.c', 'components')
+			]
+		});
+		expect(ids(usage.usedIn)).toEqual(['page.a', 'page.b', 'component.c']);
+		expect([usage.uses, usage.other, usage.count]).toEqual([[], [], 0]);
+	}));
 
 test('what an entity uses stays apart by kind, without the kinds it uses nothing of', () => {
 	const usage = entityUsage({

@@ -10,7 +10,7 @@ export function visualUnit(unit: PreviewManifest): boolean {
 	if (unit.kind === 'component' || unit.kind === 'shell') return true;
 	if (unit.kind !== 'page' && unit.kind !== 'layout') return false;
 	const category = explorerCategory(unit);
-	return category === 'pages' || (unit.kind === 'layout' && category === 'components');
+	return category === 'pages' || (unit.kind === 'layout' && category === 'layouts');
 }
 /**
  * A route module whose preview opens at its own address: a Reports page or layout over the route
@@ -22,7 +22,12 @@ export const routePreview = (id: string) =>
 /** What the catalog previews so far: every visual component and shell, and those routes. */
 export function catalogVisual(unit: PreviewManifest): boolean {
 	if (!visualUnit(unit)) return false;
-	return unit.kind === 'component' || unit.kind === 'shell' || routePreview(unit.id);
+	return (
+		unit.kind === 'component' ||
+		unit.kind === 'shell' ||
+		unit.kind === 'layout' ||
+		routePreview(unit.id)
+	);
 }
 
 export type { PreviewManifest } from './visualUnits.types';

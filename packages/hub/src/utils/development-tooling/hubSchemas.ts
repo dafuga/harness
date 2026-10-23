@@ -16,7 +16,7 @@ export const hubContractSchema = z.object({
 });
 export const hubPlanSchema = z.object({
 	unitId: z.string(),
-	category: z.enum(['page', 'shell', 'component', 'function', 'config', 'service']),
+	category: z.enum(['page', 'shell', 'layout', 'component', 'function', 'config', 'service']),
 	slug: z.string(),
 	title: z.string(),
 	goal: z.string(),

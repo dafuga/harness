@@ -10,7 +10,7 @@ import { evidenced, shell, withShell } from './ui-shells-fixture';
  * it under Shells. A screenshot is kept before the checks of each place when TAKE_SCREENSHOT=true.
  */
 const route = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
-const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
+const categories = ['Pages', 'Layouts', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
 const nav = (page: Page) => page.getByRole('navigation', { name: 'Catalog categories' });
 
 /**
@@ -39,10 +39,10 @@ for (const viewport of [
 	}, info) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await withShell(page);
-		await page.goto(route('shells'));
+		await page.goto(route('layouts'));
 		await remember(page, info, `shells-catalog-${viewport.id}`);
 		await expect(nav(page).getByRole('link')).toHaveText(categories);
-		await expect(nav(page).getByRole('link', { name: 'Shells' })).toHaveClass(/active/);
+		await expect(nav(page).getByRole('link', { name: 'Layouts' })).toHaveClass(/active/);
 		await expect(page.getByText('Shared workspace shell', { exact: true })).toBeVisible();
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			viewport.width
@@ -65,7 +65,7 @@ test('an old Components address of the shell opens it under Shells, keeping its 
 		page.getByRole('heading', { level: 1, name: 'Shared workspace shell' })
 	).toBeVisible();
 	await expect(page).toHaveURL(route(`shells/${shell}/source`));
-	await expect(nav(page).getByRole('link', { name: 'Shells' })).toHaveClass(/active/);
+	await expect(nav(page).getByRole('link', { name: 'Layouts' })).toHaveClass(/active/);
 	await expect(page.locator('.chip').filter({ hasText: /^shell$/ })).toBeVisible();
 	await evidenced(page, 'shells-legacy-address');
 });

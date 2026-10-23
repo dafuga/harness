@@ -30,7 +30,7 @@
 	let privateFunction = $derived(
 		entity.category === 'functions' && explorerCategory(entity.unit) === null
 	);
-	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	let visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
 	let evidenceTab: 'states' | 'examples' | 'tests' = $derived.by(() => {
 		if (visual) return 'states';
 		// Functions and services are shown by their authored uses; other kinds by their tests.

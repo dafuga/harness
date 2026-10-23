@@ -25,7 +25,7 @@
 		batch?: number;
 		label?: string;
 	} = $props();
-	// Configs and shells stay tables; every other collection is a grid of the one module card.
+	// Configs stay a table; every other collection is a grid of the one module card.
 	let pages = $state(1);
 	let root = $state<HTMLDivElement>();
 	let visible = $derived(batch > 0 ? rows.slice(0, pages * batch) : rows);
@@ -41,7 +41,7 @@
 </script>
 
 {#snippet items(rows: CatalogRow[])}
-	{#if category !== 'configs' && category !== 'shells'}
+	{#if category !== 'configs'}
 		<div class={category === 'pages' ? 'ex-page-grid' : 'ex-catalog-grid'}>
 			{#each rows as row (row.id)}
 				<ExplorerModuleCard {row} {category} {nav} {lens} {mediaBase} />

@@ -5,7 +5,7 @@ export type PreviewVariant =
 	| 'legacy'
 	| 'partial'
 	| 'declared'
-	| 'shells'
+	| 'layouts'
 	| 'console'
 	| 'inherited'
 	| 'states'

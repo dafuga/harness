@@ -13,6 +13,9 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
 - Each reviewed source path and every tree down to it; parent history is not traversed. The original HistoryIndexService source and migration record remain present.
 - The repository-wide type migration retains prior reviews and adds committed source reviews for mechanical companion-file extraction. Later Source-tab test archiving keeps its own reviewed implementation.
 
+The Layouts update also retains implementation commit `ae9e65325` for layout design,
+planning writes and immutable formatter ignores.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git

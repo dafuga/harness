@@ -11,7 +11,7 @@ import { designDirections } from './designDirections';
 
 function draftFor(context: RunContext, prompt: string): DesignDraft {
 	const thread = context.entity.threads.find((t) => t.id === context.request.threadId),
-		visual = ['pages', 'shells', 'components'].includes(context.entity.category);
+		visual = ['pages', 'layouts', 'components'].includes(context.entity.category);
 	const draft: DesignDraft = {
 		entityId: context.entity.id,
 		prompt,

@@ -38,7 +38,7 @@
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
 	const columns: Record<Kind, Column[]> = {
 		platforms: [],
-		shells: [
+		layouts: [
 			['Used on', null],
 			['Contains', (row) => listed(row.contains, 2)]
 		],
@@ -60,7 +60,7 @@
 	let shown = $derived(columns[category]);
 	let one = $derived(entityLabels[category].one);
 	// A shell is described under its name; the other kinds have a column for it.
-	let described = $derived(category === 'shells');
+	let described = $derived(category === 'layouts');
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
 	/** A config value as written; past one line or 48 characters it is previewed, opened whole. */
 	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';

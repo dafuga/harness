@@ -4,7 +4,7 @@ import type { ExplorerLocation } from '../../explorerRoute';
 /** The seven kinds of entity the explorer shows, in the order of its navigation. */
 export const explorerEntityCategories = [
 	'pages',
-	'shells',
+	'layouts',
 	'components',
 	'functions',
 	'configs',
@@ -17,11 +17,11 @@ export const explorerCategories = [...explorerEntityCategories, 'platforms'] as 
 const kinds = new Map<string, ExplorerCategory>([
 	['page', 'pages'],
 	['view', 'pages'],
-	// Only a unit whose manifest declares it a shell: nothing is read from an id or a file name.
-	['shell', 'shells'],
+	// Layouts declare a reusable frame; application hosts remain components.
+	['shell', 'components'],
 	['component', 'components'],
 	['partial', 'components'],
-	['layout', 'components'],
+	['layout', 'layouts'],
 	['function', 'functions'],
 	['validator', 'functions'],
 	['serializer', 'functions'],
@@ -96,7 +96,7 @@ function pageQueryTab(asked: string | null, category: ExplorerLocation['category
 /** Keep the category checks in their original order while selecting a query tab. */
 function tabQuery(location: ExplorerLocation, search: string): string | null | undefined {
 	const requested = new URLSearchParams(search).get('tab');
-	const visual = ['pages', 'components', 'shells'].includes(location.category);
+	const visual = ['pages', 'components', 'layouts'].includes(location.category);
 	if (invalidAudioTab(requested, location)) return undefined;
 	let asked = pageQueryTab(requested, location.category);
 	if (asked === undefined) return undefined;

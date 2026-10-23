@@ -218,6 +218,7 @@
 		"reports.component.upload-audio",
 		"reports.component.upload-comparison",
 		"reports.component.usage-examples-usage-examples",
+		"reports.layout.explorer-layout",
 		"reports.layout.root",
 		"reports.page.harness-branch-branch-at-components",
 		"reports.page.harness-branch-branch-at-components-entity",
@@ -228,6 +229,9 @@
 		"reports.page.harness-branch-branch-at-functions",
 		"reports.page.harness-branch-branch-at-functions-entity",
 		"reports.page.harness-branch-branch-at-functions-entity-history",
+		"reports.page.harness-branch-branch-at-layouts",
+		"reports.page.harness-branch-branch-at-layouts-entity",
+		"reports.page.harness-branch-branch-at-layouts-entity-history",
 		"reports.page.harness-branch-branch-at-models",
 		"reports.page.harness-branch-branch-at-models-entity",
 		"reports.page.harness-branch-branch-at-models-entity-history",
@@ -239,9 +243,6 @@
 		"reports.page.harness-branch-branch-at-services",
 		"reports.page.harness-branch-branch-at-services-entity",
 		"reports.page.harness-branch-branch-at-services-entity-history",
-		"reports.page.harness-branch-branch-at-shells",
-		"reports.page.harness-branch-branch-at-shells-entity",
-		"reports.page.harness-branch-branch-at-shells-entity-history",
 		"reports.page.harness-branch-branch-at-styles",
 		"reports.page.harness-view"
 	],
@@ -1531,6 +1532,12 @@
 			"units": ["reports.component.usage-examples-usage-examples"]
 		},
 		{
+			"id": "reports-layout-explorer-layout",
+			"coverage": "required",
+			"units": ["reports.layout.explorer-layout"],
+			"title": "Preview reports.layout.explorer-layout with representative inputs"
+		},
+		{
 			"id": "reports-layout-root",
 			"title": "/",
 			"coverage": "required",
@@ -1589,6 +1596,24 @@
 			"title": "/harness/branch/[branch]/[...at]/functions/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-functions-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-layouts",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-layouts"],
+			"title": "Preview reports.page.harness-branch-branch-at-layouts with representative inputs"
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-layouts-entity",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-layouts-entity"],
+			"title": "Preview reports.page.harness-branch-branch-at-layouts-entity with representative inputs"
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-layouts-entity-history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-layouts-entity-history"],
+			"title": "Preview reports.page.harness-branch-branch-at-layouts-entity-history with representative inputs"
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-models",
@@ -1655,24 +1680,6 @@
 			"title": "/harness/branch/[branch]/[...at]/services/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-services-entity-history"]
-		},
-		{
-			"id": "reports-page-harness-branch-branch-at-shells",
-			"title": "/harness/branch/[branch]/[...at]/shells",
-			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-shells"]
-		},
-		{
-			"id": "reports-page-harness-branch-branch-at-shells-entity",
-			"title": "/harness/branch/[branch]/[...at]/shells/[entity]",
-			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-shells-entity"]
-		},
-		{
-			"id": "reports-page-harness-branch-branch-at-shells-entity-history",
-			"title": "/harness/branch/[branch]/[...at]/shells/[entity]/history",
-			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-shells-entity-history"]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-styles",
@@ -1933,6 +1940,7 @@
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
 				"reports-component-usage-examples-usage-examples",
+				"reports-layout-explorer-layout",
 				"reports-layout-root",
 				"reports-page-harness-branch-branch-at-components",
 				"reports-page-harness-branch-branch-at-components-entity",
@@ -1943,6 +1951,9 @@
 				"reports-page-harness-branch-branch-at-functions",
 				"reports-page-harness-branch-branch-at-functions-entity",
 				"reports-page-harness-branch-branch-at-functions-entity-history",
+				"reports-page-harness-branch-branch-at-layouts",
+				"reports-page-harness-branch-branch-at-layouts-entity",
+				"reports-page-harness-branch-branch-at-layouts-entity-history",
 				"reports-page-harness-branch-branch-at-models",
 				"reports-page-harness-branch-branch-at-models-entity",
 				"reports-page-harness-branch-branch-at-models-entity-history",
@@ -1954,9 +1965,6 @@
 				"reports-page-harness-branch-branch-at-services",
 				"reports-page-harness-branch-branch-at-services-entity",
 				"reports-page-harness-branch-branch-at-services-entity-history",
-				"reports-page-harness-branch-branch-at-shells",
-				"reports-page-harness-branch-branch-at-shells-entity",
-				"reports-page-harness-branch-branch-at-shells-entity-history",
 				"reports-page-harness-branch-branch-at-styles",
 				"reports-page-harness-view"
 			],

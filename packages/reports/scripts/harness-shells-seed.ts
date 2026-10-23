@@ -15,11 +15,11 @@ const file = 'src/components/TitleFrame.svelte';
 const frame = (heading: string) =>
 	[
 		'<script lang="ts">',
-		"\timport TitleList from './TitleList.svelte';",
-		'\tlet { titles }: { titles: string[] } = $props();',
+		"\timport type { Snippet } from 'svelte';\n\timport TitleList from './TitleList.svelte';",
+		'\tlet { titles, children }: { titles: string[]; children?: Snippet } = $props();',
 		'</script>',
 		'',
-		`<section><h2>${heading}</h2><TitleList {titles} /></section>`,
+		`<section><h2>${heading}</h2>{#if children}{@render children()}{:else}<TitleList {titles} />{/if}</section>`,
 		''
 	].join('\n');
 
@@ -48,7 +48,7 @@ export async function seedShells(
 	// Only the declared kind changes; reindexing keeps it, with the id, the source and the budget.
 	const path = `specification/units/${shellUnit}.json`;
 	const manifest = await repo.json<Record<string, unknown>>(path);
-	await repo.write(path, `${JSON.stringify({ ...manifest, kind: 'shell' }, null, '\t')}\n`);
+	await repo.write(path, `${JSON.stringify({ ...manifest, kind: 'layout' }, null, '\t')}\n`);
 	await repo.harness(['units', 'index', '--write']);
 	await explain(repo, 'Declares the title frame a shell: it composes the list into a screen.');
 	const shelled = await repo.commit('feat: declare the title frame a shell');

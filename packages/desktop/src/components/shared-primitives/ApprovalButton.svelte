@@ -22,7 +22,7 @@
 	/** What is approved: the plan of a function, the design of anything else. */
 	const named = $derived(entity.category === 'functions' ? 'Plan' : 'Design');
 	const imageless = $derived(
-		['pages', 'shells', 'components'].includes(entity.category) && !images.length
+		['pages', 'layouts', 'components'].includes(entity.category) && !images.length
 	);
 	const blocked = $derived(
 		!workspace.snapshot?.writable ||
