@@ -1,0 +1,50 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oRMqkl
+
+ ❯ test/audit-adapters.test.ts (13 tests | 1 failed) 66ms
+   ✓ audit profiles select ecosystem adapters 2ms
+   ✓ auto profile detects Svelte apps and Harness libs 6ms
+   ✓ coverage reports covered, ignored, and unknown files 12ms
+   × ecosystem adapters report app and library rule violations 20ms
+     → expected [ …(2) ] to deeply equal [ …(3) ]
+   ✓ utility runtime naming handles named alias 5ms
+   ✓ utility runtime naming handles multiline 3ms
+   ✓ utility runtime naming handles local list 2ms
+   ✓ utility runtime naming handles type clause 3ms
+   ✓ utility runtime naming handles inline type 2ms
+   ✓ utility runtime naming handles another name 2ms
+   ✓ utility runtime naming handles wildcard 2ms
+   ✓ utility runtime naming handles comment 3ms
+   ✓ utility runtime naming handles string 2ms
+ ✓ test/generate-workflow.test.ts (5 tests) 192ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit-adapters.test.ts > ecosystem adapters report app and library rule violations
+AssertionError: expected [ …(2) ] to deeply equal [ …(3) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "src/components/Payment.svelte",[22m
+[2m    "src/lib/checkout/payment.ts",[22m
+[32m-   "src/utils/runtime.types.ts",[39m
+[2m  ][22m
+
+ ❯ test/audit-adapters.test.ts:94:5
+     92|     .filter((f) => f.rule === 'separate-type-declarations')
+     93|     .map((f) => f.path)
+     94|   ).toEqual([
+       |     ^
+     95|    'src/components/Payment.svelte',
+     96|    'src/lib/checkout/payment.ts',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 17 passed (18)
+   Start at  11:54:59
+   Duration  4.65s (transform 284ms, setup 126ms, collect 740ms, tests 257ms, environment 0ms, prepare 89ms)
+
