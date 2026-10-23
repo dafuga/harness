@@ -11,6 +11,7 @@
 			"src/cli/program/hook-install-service/hookScript.ts",
 			"src/services/hook-install-service/hookScript.ts",
 			"src/utils/development-tooling/hookScript.ts",
+			"src/utils/development-tooling/hookScript.types.ts",
 			"src/utils/hookScript.ts"
 		],
 		"symbols": [
@@ -22,10 +23,11 @@
 			"chainedSuffix",
 			"enabledFile",
 			"hookStages",
-			"HookStage",
 			"stageFile",
 			"hookScript",
 			"managedHook",
+			"HookStage",
+			"HookStage",
 			"hookScript",
 			"managedHook",
 			"hookMarker",

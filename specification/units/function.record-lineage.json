@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/recordLineage.ts", "src/utils/recordLineage.ts"],
-		"symbols": ["LineageSource", "recordLineage", "recordLineage"]
+		"source": [
+			"src/utils/development-tooling/recordLineage.ts",
+			"src/utils/development-tooling/recordLineage.types.ts",
+			"src/utils/recordLineage.ts"
+		],
+		"symbols": ["recordLineage", "LineageSource", "LineageSource", "Soundness", "recordLineage"]
 	},
 	"contract": {
 		"origin": "declared",

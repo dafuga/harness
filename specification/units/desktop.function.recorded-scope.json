@@ -9,9 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/development-tooling/recordedScope.ts",
+			"packages/desktop/src/utils/development-tooling/recordedScope.types.ts",
 			"packages/desktop/src/utils/recordedScope.ts"
 		],
-		"symbols": ["ScopeFacts", "recordedTip", "recordedScope", "recordedTip", "recordedScope"]
+		"symbols": [
+			"recordedTip",
+			"recordedScope",
+			"ScopeFacts",
+			"ScopeFacts",
+			"Asked",
+			"recordedTip",
+			"recordedScope"
+		]
 	},
 	"contract": {
 		"origin": "declared",

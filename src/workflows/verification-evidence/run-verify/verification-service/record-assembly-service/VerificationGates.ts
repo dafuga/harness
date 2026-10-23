@@ -1,16 +1,7 @@
+import type { Registry } from './VerificationGates.types';
 import type { LedgerRead } from '../../../../../repositories/verification-evidence/BudgetLedgerRepository';
 import type { VerificationStoreRepository } from '../../../../../repositories/verification-evidence/VerificationStoreRepository';
-import type {
-	ComponentManifest,
-	ScenarioManifest
-} from '../../../../../core/development-tooling/unitTypes';
 import { previewBinding } from '../../../../../utils/development-tooling/previewBinding';
-
-interface Registry {
-	/** Manifests exactly as stored at the revision. */
-	stored: ComponentManifest[];
-	scenarios?: ScenarioManifest[];
-}
 
 /** An identity may be retired but never deleted: history and baselines hang off it. */
 export function registryGate(base: Registry, head: Registry): string[] {

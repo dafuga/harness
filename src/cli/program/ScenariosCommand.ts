@@ -1,10 +1,7 @@
+import type { Flags } from './ScenariosCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
 import { checkScenarios, listScenarios, showScenario } from './inspectScenarios';
-
-interface Flags {
-	json?: boolean;
-}
 
 export function registerScenariosCommand(program: Command): void {
 	const scenarios = program

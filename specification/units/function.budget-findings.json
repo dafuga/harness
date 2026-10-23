@@ -11,7 +11,8 @@
 			"src/services/budget-service/budgetFindings.ts",
 			"src/services/verification-evidence/budget-service/budgetFindings.ts",
 			"src/utils/budgetFindings.ts",
-			"src/utils/verification-evidence/budgetFindings.ts"
+			"src/utils/verification-evidence/budgetFindings.ts",
+			"src/utils/verification-evidence/budgetFindings.types.ts"
 		],
 		"symbols": [
 			"budgetFindings",
@@ -24,12 +25,17 @@
 			"frozenMetrics",
 			"isFrozen",
 			"higherIsBetter",
+			"performanceLimit",
+			"budgetFindings",
 			"PerformanceBaseline",
 			"BudgetBaseline",
 			"Measured",
 			"BudgetInput",
-			"performanceLimit",
-			"budgetFindings"
+			"Definition",
+			"PerformanceBaseline",
+			"BudgetBaseline",
+			"Measured",
+			"BudgetInput"
 		]
 	},
 	"contract": {

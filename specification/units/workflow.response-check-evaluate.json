@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"src/cli/program/responseCheckEvaluate.ts",
+			"src/cli/program/responseCheckEvaluate.types.ts",
 			"src/workflows/responseCheckEvaluate.ts"
 		],
-		"symbols": ["assessResponse", "responseStatus", "assessResponse", "responseStatus"]
+		"symbols": ["assessResponse", "responseStatus", "Evaluate", "assessResponse", "responseStatus"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -1,12 +1,6 @@
+import type { Shown, Staged, Impact } from './recordedProjection.types';
 import type { ExplorerSide } from '../../../../reports/src/models/Explorer.types';
 import type { HarnessRecord, HarnessRevision } from '../../../../reports/src/models/Harness.types';
-
-type Impact = NonNullable<HarnessRevision['sourceImpact']>;
-
-/** The scenarios that cover the entity on one side, each with the states that show it. */
-type Shown = Map<string, Set<string>>;
-
-type Staged = { id: string; states: Array<{ id: string }> };
 
 const shownOn = (side: ExplorerSide): Shown =>
 	new Map(

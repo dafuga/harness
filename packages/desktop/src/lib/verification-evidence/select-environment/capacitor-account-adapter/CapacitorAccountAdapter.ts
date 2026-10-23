@@ -1,9 +1,9 @@
+import type { CapacitorAccountAdapterConfig } from './CapacitorAccountAdapter.types';
 import { browserBridge } from '../../../../adapters/explorer-ui/browser-project-adapter/browserBridge';
 import type { BrowserApi, Query } from '../../../../models/development-tooling/BrowserApi.types';
 import type { DesktopBridge } from '../../../../models/development-tooling/DesktopBridge.types';
 import type {
 	AccountNativeCall,
-	AccountNativePlugin,
 	AccountNativeReply,
 	AccountNativeStatus
 } from '../../../../models/development-tooling/Environment.types';
@@ -27,10 +27,6 @@ import {
 	refused,
 	replyLimit
 } from './capacitorAccountCodec';
-
-export interface CapacitorAccountAdapterConfig {
-	plugin: AccountNativePlugin;
-}
 const changed = 'The account on this phone changed. Reload and try again.';
 const notMade = 'This request is not made from this phone.';
 
@@ -152,3 +148,5 @@ export class CapacitorAccountAdapter {
 		throw refused(reply);
 	}
 }
+
+export type { CapacitorAccountAdapterConfig } from './CapacitorAccountAdapter.types';

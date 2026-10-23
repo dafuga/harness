@@ -31,9 +31,8 @@ const main = (commit: string, rest: string) => `/harness/branch/main/commit/${co
 const tip = (rest: string) => `/harness/branch/main/${rest}`;
 /** The whole branch is one segment of an explorer address. */
 const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
-const categories = 'Pages,Shells,Components,Helpers,Configs,Services,Models,Styles,Platforms'.split(
-	','
-);
+const categories =
+	'Pages,Layouts,Components,Models,Services,Helpers,Configs,Styles,Platforms'.split(',');
 const pathOf = (page: Page) => new URL(page.url()).pathname;
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
@@ -105,9 +104,9 @@ test('in a browser each branch, commit and category of the installed console is 
 	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
 		0
 	);
-	await links.filter({ hasText: 'Shells' }).click();
-	await page.waitForURL(`**${tip('shells')}`);
-	await page.getByRole('heading', { level: 1, name: 'Shells' }).waitFor();
+	await links.filter({ hasText: 'Layouts' }).click();
+	await page.waitForURL(`**${tip('layouts')}`);
+	await page.getByRole('heading', { level: 1, name: 'Layouts' }).waitFor();
 	expect(await commit.inputValue()).toBe(head);
 	await links.filter({ hasText: 'Helpers' }).click();
 	await page.waitForURL(`**${tip('functions')}`);
@@ -200,7 +199,7 @@ test('the installed console names the repository of its recorded history, to the
 	};
 	expect([recorded.kind, recorded.repository.head]).toEqual(['recorded', head]);
 	const page = await adminPage();
-	// The address of the earlier activity view leads to Pages: the explorer has seven categories.
+	// The earlier activity address leads to Pages with the current category navigation.
 	await page.goto(worker.url + main(head, 'activity'));
 	await page.waitForURL(`**${main(head, 'pages')}`);
 	await bar(page).getByText(recorded.repository.name, { exact: true }).waitFor();

@@ -10,14 +10,16 @@
 		"source": [
 			"packages/reports/src/adapters/ReportPagesRetentionAdapter.ts",
 			"packages/reports/src/services/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.types.ts"
 		],
 		"symbols": [
 			"ReportPagesRetentionAdapter",
 			"ReportPagesRetentionAdapter",
 			"ReportPagesRetentionAdapter",
 			"ReportPagesRetentionAdapter.constructor",
-			"ReportPagesRetentionAdapter.purge"
+			"ReportPagesRetentionAdapter.purge",
+			"Deployment"
 		]
 	},
 	"contract": {

@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"src/utils/git-source-history/regressionHistory.ts",
+			"src/utils/git-source-history/regressionHistory.types.ts",
 			"src/utils/regressionHistory.ts"
 		],
 		"symbols": [
@@ -16,6 +17,9 @@
 			"regressionHistory",
 			"sameRegression",
 			"readRegression",
+			"RegressionNote",
+			"Loaded",
+			"Loader",
 			"regressionHash",
 			"regressionHistory",
 			"sameRegression",

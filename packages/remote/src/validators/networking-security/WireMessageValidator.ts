@@ -1,3 +1,4 @@
+import type { Fields } from './WireMessageValidator.types';
 import {
 	RemoteFailure,
 	remoteErrorMessages,
@@ -15,8 +16,6 @@ import type {
 } from '../../models/networking-security/Remote.types';
 import { remoteBytes } from '../../utils/networking-security/remoteBytes';
 import { remotePatterns } from '../../utils/networking-security/remoteIdentity';
-
-type Fields = Record<string, unknown>;
 const channels: readonly string[] = ['run', 'cache', 'connection'];
 
 function fields(value: unknown): Fields | null {

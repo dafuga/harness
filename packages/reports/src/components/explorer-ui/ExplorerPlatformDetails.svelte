@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Row } from "./ExplorerPlatformDetails.types";
+
 	import type { PlatformEntry } from '../../../../../src/core/explorer-ui/Platform.types';
 	import {
 		platformViews,
@@ -15,7 +17,6 @@
 	import HarnessIcon from './HarnessIcon.svelte';
 	import SourceFileList from './SourceFileList.svelte';
 	let { host, nav }: { host: ExplorerScreenProps; nav: EntityNav } = $props();
-	type Row = { name: string; value: string; description?: string };
 	let list = $derived<ExplorerLocation>({
 		branch: host.route.branch,
 		commit: host.route.commit,
@@ -42,6 +43,7 @@
 		if (path.includes('\\') || parts.some((part) => !part || part === '.' || part === '..')) return;
 		return `${repository}/blob/${commit}/${parts.map(encodeURIComponent).join('/')}`;
 	}
+
 </script>
 
 {#snippet table(label: string, column: string, rows: Row[])}

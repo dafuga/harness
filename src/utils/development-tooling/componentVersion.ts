@@ -1,19 +1,7 @@
+import type { ComponentVersion } from './componentVersion.types';
 import { createHash } from 'node:crypto';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { stableJson } from './stableJson';
-
-export interface ComponentVersion {
-	unit: string;
-	/** sha256 of the canonical manifest. */
-	manifest: string;
-	/** sha256 over the owned source paths and their git blob hashes. */
-	source: string;
-	/** sha256 of the canonical contract. */
-	contract: string;
-	/** sha256 of the canonical runtime: default and every execution target. */
-	runtime: string;
-	files: Array<{ path: string; hash: string }>;
-}
 
 /** Identifies exactly which version of a unit was observed, independent of any working tree. */
 export function componentVersion(
@@ -37,3 +25,5 @@ export function componentVersion(
 function digest(text: string): string {
 	return createHash('sha256').update(text).digest('hex');
 }
+
+export type { ComponentVersion } from './componentVersion.types';

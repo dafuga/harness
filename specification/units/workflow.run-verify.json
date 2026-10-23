@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"src/workflows/run-verify/runVerify.ts",
-			"src/workflows/verification-evidence/run-verify/runVerify.ts"
+			"src/workflows/verification-evidence/run-verify/runVerify.ts",
+			"src/workflows/verification-evidence/run-verify/runVerify.types.ts"
 		],
 		"symbols": [
 			"verifyRun",
@@ -17,12 +18,13 @@
 			"verifyIdentity",
 			"verifyStamp",
 			"renderVerify",
-			"VerifyOptions",
 			"verifyRun",
 			"verifyCheck",
 			"verifyIdentity",
 			"verifyStamp",
-			"renderVerify"
+			"renderVerify",
+			"VerifyOptions",
+			"VerifyOptions"
 		]
 	},
 	"contract": {

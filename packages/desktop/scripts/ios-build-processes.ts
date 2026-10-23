@@ -1,3 +1,4 @@
+import type { Row, Settling, Standing, FollowedResult } from './ios-build-processes.types';
 import { execFile, spawn } from 'node:child_process';
 import { realpathSync } from 'node:fs';
 import { basename, sep } from 'node:path';
@@ -25,26 +26,6 @@ const platformRoots = ['/Library/Developer/', '/System/Library/', '/usr/libexec/
 const verifying = process.env.HARNESS_VERIFY === '1';
 const stoppedEarly =
 	'The build was stopped while processes it started still ran; none was signalled.';
-
-interface Row {
-	started: string;
-	executable: string;
-}
-interface Settling {
-	developer: string | null;
-	/** When each of this build's own processes was first asked to end. */
-	asked: Map<number, number>;
-	/** The process group this build runs in. */
-	group: number;
-}
-/** What is read once, before any process is started and waited for: reading it blocks. */
-type Standing = Pick<Settling, 'developer' | 'group'>;
-export interface FollowedResult {
-	code: number;
-	output: string;
-	/** Why the build could not wait for what it started, when it could not. */
-	left: string | null;
-}
 
 function pause(milliseconds: number): Promise<void> {
 	return new Promise((done) => {
@@ -217,3 +198,5 @@ export async function followed(command: string[]): Promise<FollowedResult> {
 		child.once('close', (code) => void finish(code ?? 1));
 	});
 }
+
+export type { FollowedResult } from './ios-build-processes.types';

@@ -10,13 +10,13 @@
 		"source": [
 			"src/repositories/AgentRegistryRepository.ts",
 			"src/services/agent-activity-service/AgentRegistryRepository.ts",
-			"src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts"
+			"src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts",
+			"src/services/agents-providers/agent-activity-service/AgentRegistryRepository.types.ts"
 		],
 		"symbols": [
 			"AgentRegistryRepository",
 			"StoredAgent",
 			"AgentRegistryRepository",
-			"StoredAgent",
 			"AgentRegistryRepository",
 			"AgentRegistryRepository.constructor",
 			"AgentRegistryRepository.used",
@@ -25,7 +25,9 @@
 			"AgentRegistryRepository.finish",
 			"AgentRegistryRepository.read",
 			"AgentRegistryRepository.all",
-			"AgentRegistryRepository.remove"
+			"AgentRegistryRepository.remove",
+			"StoredAgent",
+			"StoredAgent"
 		]
 	},
 	"contract": {

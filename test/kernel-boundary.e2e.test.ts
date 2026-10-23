@@ -1,24 +1,10 @@
+import type { Boundary } from './kernel-boundary.e2e.test.types';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { captureLineSchema } from '../src/core/verifyTypes';
 import { runHarness } from './support/cli';
-
-interface Boundary {
-	unit: string;
-	workload: string;
-	measurements: Array<{
-		unit: string;
-		metric: string;
-		value: number;
-		target: string;
-		workload: string;
-		method: string;
-		samples: number;
-		comparison?: { request: string; boundary: string; sampling: object };
-	}>;
-}
 
 test('kernel bench --boundary measures the public invocation boundary and records it as evidence', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-boundary-'));

@@ -1,17 +1,6 @@
+import type { ObservationValue, State } from './verificationValues.types';
 import { createHash } from 'node:crypto';
 import { types } from 'node:util';
-export type ObservationValue =
-	| null
-	| boolean
-	| number
-	| string
-	| ObservationValue[]
-	| { [key: string]: ObservationValue };
-interface State {
-	depth: number;
-	seen: WeakSet<object>;
-	budget: { remaining: number };
-}
 const typedArray = Object.getPrototypeOf(Uint8Array.prototype);
 function intrinsic(target: object, prototype: object, key: string): unknown {
 	return Reflect.apply(Object.getOwnPropertyDescriptor(prototype, key)!.get!, target, []);
@@ -97,3 +86,5 @@ export function observationValue(
 	seen.add(object);
 	return fields(object, { depth, seen, budget });
 }
+
+export type { ObservationValue } from './verificationValues.types';

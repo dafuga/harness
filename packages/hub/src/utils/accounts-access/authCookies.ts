@@ -1,13 +1,9 @@
+import type { CookieOptions } from './authCookies.types';
 export const SESSION_COOKIE = '__Host-harness_session';
 export const CHALLENGE_COOKIE = '__Host-harness_challenge';
 export const EMAIL_PROOF_COOKIE = '__Host-harness_email_proof';
 
 const OPAQUE = /^[A-Za-z0-9_-]{32,128}$/;
-
-export interface CookieOptions {
-	maxAge: number;
-	sameSite: 'Lax' | 'Strict';
-}
 
 /** Reads one opaque cookie. A duplicated or malformed value reads as absent. */
 export function authCookies(request: Request, name: string): string | null {
@@ -27,3 +23,5 @@ export function issueCookie(name: string, value: string, options: CookieOptions)
 export function clearCookie(name: string, sameSite: CookieOptions['sameSite']): string {
 	return issueCookie(name, '', { maxAge: 0, sameSite });
 }
+
+export type { CookieOptions } from './authCookies.types';

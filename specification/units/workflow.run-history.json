@@ -7,13 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/git-source-history/runHistory.ts", "src/workflows/runHistory.ts"],
+		"source": [
+			"src/workflows/git-source-history/runHistory.ts",
+			"src/workflows/git-source-history/runHistory.types.ts",
+			"src/workflows/runHistory.ts"
+		],
 		"symbols": [
-			"HistoryOptions",
 			"sourceCommit",
 			"historyAttach",
 			"historyStatus",
 			"renderStatus",
+			"HistoryOptions",
+			"HistoryOptions",
 			"sourceCommit",
 			"historyAttach",
 			"historyStatus",

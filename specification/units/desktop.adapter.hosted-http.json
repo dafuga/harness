@@ -9,19 +9,22 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/hosted-http-adapter/HostedHttpAdapter.ts",
-			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.ts"
+			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.ts",
+			"packages/desktop/src/adapters/networking-security/hosted-http-adapter/HostedHttpAdapter.types.ts"
 		],
 		"symbols": [
 			"HostedHttpAdapter",
-			"NativeHostedCredential",
-			"RemoteHttpOptions",
 			"HostedHttpAdapter",
 			"HostedHttpAdapter.constructor",
 			"HostedHttpAdapter.publicStatus",
 			"HostedHttpAdapter.publicJson",
 			"HostedHttpAdapter.authorize",
 			"HostedHttpAdapter.json",
-			"HostedHttpAdapter.request"
+			"HostedHttpAdapter.request",
+			"NativeHostedCredential",
+			"RemoteHttpOptions",
+			"NativeHostedCredential",
+			"RemoteHttpOptions"
 		]
 	},
 	"contract": {

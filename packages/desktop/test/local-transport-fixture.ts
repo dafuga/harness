@@ -1,3 +1,4 @@
+import type { Attempt } from './local-transport-fixture.types';
 import { afterEach } from 'vitest';
 import { randomFillSync } from 'node:crypto';
 import { PNG } from 'pngjs';
@@ -91,12 +92,6 @@ export function fakeControl() {
 	const port = Object.fromEntries(names.map((name) => [name, answer(name)]));
 	return { calls, status, port: port as unknown as LocalControl };
 }
-export interface Attempt {
-	protocols?: string[];
-	origin?: string | null;
-	path?: string;
-	host?: string;
-}
 /** One WebSocket handshake against the transport: 101 with the socket, or the refusal status. */
 export function attempt(port: number, options: Attempt = {}) {
 	const { protocols = [], origin = appOrigin, path = '/v1/local', host } = options;
@@ -161,3 +156,5 @@ export async function localFixture(
 	];
 	return { ...f, transport, port, control, frames, sockets, window, connect, ticketed };
 }
+
+export type { Attempt } from './local-transport-fixture.types';

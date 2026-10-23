@@ -1,9 +1,7 @@
+import type { FixtureAction } from './remote-fixture-control.types';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
-
-/** One control operation: `METHOD /path` → what it answers. */
-export type FixtureAction = (body: Record<string, unknown>) => unknown;
 const loopback = ['127.0.0.1', '::1', '::ffff:127.0.0.1'];
 
 function reply(response: ServerResponse, status: number, value: unknown): void {
@@ -59,3 +57,5 @@ export async function remoteFixtureControl(port: number, actions: Record<string,
 		}
 	};
 }
+
+export type { FixtureAction } from './remote-fixture-control.types';

@@ -1,3 +1,4 @@
+import type { RunGate } from './runGate.types';
 import { createServer, type Server, type Socket } from 'node:net';
 import { join } from 'node:path';
 
@@ -5,17 +6,6 @@ import { join } from 'node:path';
 export const teardownGate = 'HARNESS_E2E_TEARDOWN_GATE';
 /** The longest line either side of a gate sends: the directory of a run, or `release`. */
 const longest = 4096;
-
-export interface RunGate {
-	/** The socket a run is given in `HARNESS_E2E_TEARDOWN_GATE`. */
-	path: string;
-	/** Resolves once the teardown of the run waits here, with the directory it would remove. */
-	reached: Promise<string>;
-	/** Lets the teardown remove its fixtures, now or as soon as it arrives. Repeating it is harmless. */
-	release(): void;
-	/** Lets every waiting teardown go and stops listening. Repeating it is harmless. */
-	close(): Promise<void>;
-}
 
 /**
  * Calls `line` with each whole line a socket sends, however its bytes arrive. A line longer than
@@ -100,3 +90,5 @@ export async function openRunGate(directory: string, name: string): Promise<RunG
 		}
 	};
 }
+
+export type { RunGate } from './runGate.types';

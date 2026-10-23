@@ -9,16 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/accounts-access/authCookies.ts",
+			"packages/hub/src/utils/accounts-access/authCookies.types.ts",
 			"packages/hub/src/utils/authCookies.ts"
 		],
 		"symbols": [
 			"SESSION_COOKIE",
 			"CHALLENGE_COOKIE",
 			"EMAIL_PROOF_COOKIE",
-			"CookieOptions",
 			"authCookies",
 			"issueCookie",
 			"clearCookie",
+			"CookieOptions",
+			"CookieOptions",
 			"SESSION_COOKIE",
 			"CHALLENGE_COOKIE",
 			"EMAIL_PROOF_COOKIE",

@@ -1,35 +1,9 @@
-import type { ImageGenerator } from '../../../../models/agents-providers/AgentRunner.types';
-import type {
-	DesktopBridge,
-	RunEvent
-} from '../../../../models/development-tooling/DesktopBridge.types';
+import type { ClientProject, ClientProjectsOptions } from './ClientProjectsService.types';
 import { desktopBridge } from '../../../../lib/development-tooling/desktop-bridge/desktopBridge';
-import type { CommentOutboxService } from '../../../projects-sessions/CommentOutboxService';
 import { DesktopRunService } from '../../../agents-providers/desktop-run-service/DesktopRunService';
-import type { ProjectRegistryService } from '../../../projects-sessions/ProjectRegistryService';
 import { ProjectSessionService } from '../../../projects-sessions/project-session-service/ProjectSessionService';
-import type { ProjectionCacheService } from '../../../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
-import type { ProviderDiscoveryService } from '../../../agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import type { RepositoryArbiterService } from '../../../projects-sessions/RepositoryArbiterService';
 
 const ended = 'This session has ended.';
-export interface ClientProjectsOptions {
-	registry: ProjectRegistryService;
-	outbox: CommentOutboxService;
-	arbiter: RepositoryArbiterService;
-	providers: ProviderDiscoveryService;
-	generator: ImageGenerator;
-	/** Run events of this client and of nobody else. */
-	emit: (event: RunEvent) => void;
-	cache?: ProjectionCacheService;
-}
-export interface ClientProject {
-	id: string;
-	root: string;
-	session: ProjectSessionService;
-	runs: DesktopRunService;
-	bridge: Omit<DesktopBridge, 'onRunEvent'>;
-}
 
 /**
  * The projects one client has open, each with its own session, revision and runs. Nothing here
@@ -81,3 +55,5 @@ export class ClientProjectsService {
 		return project;
 	}
 }
+
+export type { ClientProjectsOptions, ClientProject } from './ClientProjectsService.types';

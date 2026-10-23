@@ -1,4 +1,5 @@
 import { auditBlocks } from '../blockRules';
+import { auditTypePlacement } from '../architectureRules';
 import { auditFileLength } from '../commonRules';
 import type { AuditAdapter, AuditFile } from './types';
 
@@ -16,6 +17,7 @@ export const svelteAdapter: AuditAdapter = {
 			...auditFileLength(file.relativePath, file.lines, file.limits),
 			...auditScriptLanguage(file),
 			...auditSveltePath(file),
+			...auditTypePlacement(file),
 			...(script ? auditBlocks(file.relativePath, script.split('\n'), file.limits) : [])
 		];
 	}

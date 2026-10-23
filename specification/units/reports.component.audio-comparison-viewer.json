@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/AudioComparisonViewer.svelte",
-			"packages/reports/src/components/reports-media/AudioComparisonViewer.svelte"
+			"packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"packages/reports/src/components/reports-media/AudioComparisonViewer.types.ts"
 		],
-		"symbols": ["AudioComparisonViewer", "AudioComparisonViewer"]
+		"symbols": ["AudioComparisonViewer", "AudioComparisonViewer", "View"]
 	},
 	"contract": {
 		"origin": "declared",

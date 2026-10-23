@@ -7,15 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/agents-providers/DecartStreamAdapter.ts"],
+		"source": [
+			"packages/game/src/adapters/agents-providers/DecartStreamAdapter.ts",
+			"packages/game/src/adapters/agents-providers/DecartStreamAdapter.types.ts"
+		],
 		"symbols": [
-			"VideoConnection",
-			"VideoConnector",
 			"decartTransportReady",
 			"DecartStreamAdapter",
 			"DecartStreamAdapter.constructor",
 			"DecartStreamAdapter.connect",
-			"connectDecart"
+			"connectDecart",
+			"VideoConnection",
+			"VideoConnector",
+			"VideoConnection",
+			"VideoConnector",
+			"Prompt"
 		]
 	},
 	"contract": {

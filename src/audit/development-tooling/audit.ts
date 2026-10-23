@@ -1,3 +1,4 @@
+import type { AuditCollectedFileInput, AuditFileInput } from './audit.types';
 import { readFile } from 'node:fs/promises';
 import { relative } from 'node:path';
 import { collectAuditedFiles } from './collect';
@@ -17,25 +18,8 @@ import type {
 	AuditStructure
 } from './adapters/types';
 import type { AuditFinding } from './types';
-import type { HarnessRuleLimits } from '../../rules/explorer-ui/catalog';
 import { resolveCleanCodeSettings } from './cleanCodeConfig';
 import { reviewCleanCode } from './reviewCleanCode';
-
-interface AuditCollectedFileInput {
-	root: string;
-	path: string;
-	extension: string;
-	profile: AuditResult['coverage']['profile'];
-	limits: HarnessRuleLimits;
-}
-
-interface AuditFileInput {
-	root: string;
-	path: string;
-	extension: string;
-	contents: string;
-	limits: HarnessRuleLimits;
-}
 
 export type { AuditFinding } from './types';
 export type { AuditOptions, AuditResult } from './adapters/types';

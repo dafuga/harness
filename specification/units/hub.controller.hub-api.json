@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
-			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts"
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.types.ts"
 		],
 		"symbols": [
 			"HubApiController",
 			"HubApiController",
 			"HubApiController.constructor",
-			"HubApiController.handle"
+			"HubApiController.handle",
+			"Context"
 		]
 	},
 	"contract": {

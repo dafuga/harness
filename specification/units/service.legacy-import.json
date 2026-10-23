@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/legacy-import-service/LegacyImportService.ts"],
+		"source": [
+			"src/cli/program/legacy-import-service/LegacyImportService.ts",
+			"src/cli/program/legacy-import-service/LegacyImportService.types.ts"
+		],
 		"symbols": [
-			"LegacyImport",
 			"LegacyImportService",
 			"LegacyImportService.constructor",
-			"LegacyImportService.import"
+			"LegacyImportService.import",
+			"LegacyImport",
+			"LegacyImport"
 		]
 	},
 	"contract": {

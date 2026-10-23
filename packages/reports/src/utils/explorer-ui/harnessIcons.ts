@@ -1,3 +1,4 @@
+import type { HarnessIconName } from './harnessIcons.types';
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 
 /**
@@ -67,6 +68,12 @@ export const harnessIcons = {
 		'M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM18 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4z' +
 		'M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7',
 	clock: `${ring}M12 7.5V12l3 2`,
+	// Values as written: an object in braces, an array in brackets and any other expression.
+	object:
+		'M8.5 4H8a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h.5' +
+		'M15.5 4h.5a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-.5',
+	array: 'M8.5 4H5v16h3.5M15.5 4H19v16h-3.5',
+	code: 'M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4.5l-3 15',
 	// The revision that is viewed.
 	branch:
 		'M6 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM6 21a2 2 0 1 0 0-4a2 2 0 0 0 0 4z' +
@@ -97,8 +104,6 @@ export const harnessIcons = {
 		'M13 20h-2M8 20H5a1 1 0 0 1-1-1v-3M4 13v-2'
 } as const satisfies Record<string, string>;
 
-export type HarnessIconName = keyof typeof harnessIcons;
-
 /** The icons that are filled, not outlined: a verdict is read by its colour and its shape. */
 export const solidIcons: ReadonlySet<HarnessIconName> = new Set(['passed', 'failed']);
 
@@ -113,3 +118,5 @@ export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	models: 'database',
 	platforms: 'platforms'
 };
+
+export type { HarnessIconName } from './harnessIcons.types';

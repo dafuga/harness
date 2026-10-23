@@ -1,3 +1,4 @@
+import type { CatalogSnapshot } from './CatalogWriteService.types';
 import { createHash } from 'node:crypto';
 import type { SqliteAdapter } from '../../adapters/development-tooling/SqliteAdapter';
 import type { HistoryIndex } from '../../core/historyIndexTypes';
@@ -13,11 +14,6 @@ import { catalogModels } from '../../core/git-source-history/catalogModels';
 import type { RevisionRegistry } from '../../utils/revisionRegistry';
 import { sqliteIdentifier } from '../../utils/development-tooling/sqliteTableSql';
 import { stableJson } from '../../utils/stableJson';
-
-export interface CatalogSnapshot {
-	commit: string;
-	registry: RevisionRegistry;
-}
 
 /** Replaces only the derived query index, in one rollback-safe transaction. */
 export class CatalogWriteService {
@@ -100,3 +96,5 @@ export class CatalogWriteService {
 			});
 	}
 }
+
+export type { CatalogSnapshot } from './CatalogWriteService.types';

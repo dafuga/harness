@@ -34,8 +34,6 @@ export async function emailFixture(options: HubOptions = {}) {
 	};
 }
 
-export type EmailFixture = Awaited<ReturnType<typeof emailFixture>>;
-
 /** A request that carries only a pending-proof cookie, as a second tab or a replay would. */
 export function withProof(browser: HubBrowser, path: string, body: unknown = {}): Request {
 	const cookie = `${EMAIL_PROOF_COOKIE}=${browser.cookies.get(EMAIL_PROOF_COOKIE) ?? ''}`;
@@ -46,3 +44,5 @@ export function withProof(browser: HubBrowser, path: string, body: unknown = {})
 export function another(code: string): string {
 	return code === '00000000' ? '11111111' : '00000000';
 }
+
+export type { EmailFixture } from './emailFixture.types';

@@ -1,18 +1,8 @@
+import type { Shown, Labelled } from './units-policy.e2e.test.types';
 import { mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { slugifySource, unitProject } from './support/unitProject';
-
-interface Shown {
-	manifest: {
-		id: string;
-		contract: { inputs: Array<{ name: string; type: string; examples?: unknown[] }> };
-		runtime: { kind: string; entry: string; targets: Array<{ kind: string; entry: string }> };
-		lineage?: { predecessors: string[] };
-		budgets: { performance: unknown[] };
-	};
-	version: { unit: string; manifest: string; source: string; contract: string; runtime: string };
-}
 
 test('CLI exposes execution targets and component versions, and refuses relaxed tolerance', async () => {
 	const project = await unitProject('lib');
@@ -104,8 +94,3 @@ test('CLI labels a supplied responsibility as declared and a generated one as de
 	]);
 	await rm(join(project.root, '..'), { recursive: true, force: true });
 }, 60_000);
-
-interface Labelled {
-	responsibility: string;
-	responsibilityOrigin: string;
-}

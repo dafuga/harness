@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/entity-cases/EntityCases.svelte",
-			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte"
+			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte",
+			"packages/reports/src/components/explorer-ui/entity-cases/EntityCases.types.ts"
 		],
-		"symbols": ["EntityCases", "EntityCases"]
+		"symbols": ["EntityCases", "EntityCases", "Row"]
 	},
 	"contract": {
 		"origin": "declared",

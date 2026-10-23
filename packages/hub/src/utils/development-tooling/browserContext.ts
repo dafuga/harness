@@ -1,13 +1,8 @@
+import type { HostedBrowser } from './browserContext.types';
 import { getContext } from 'svelte';
-import { type Session } from '../../lib/stores/projects-sessions/session.svelte';
-import { type BrowserApi } from '../browserApi';
-import { type BrowserProjects } from '../projects-sessions/browserProjects';
-
-export interface HostedBrowser {
-	api: BrowserApi;
-	session: Session;
-	projects: BrowserProjects;
-}
+import {} from '../../lib/stores/projects-sessions/session.svelte';
+import {} from '../browserApi';
+import {} from '../projects-sessions/browserProjects';
 
 export const key = Symbol('hosted browser');
 
@@ -17,3 +12,5 @@ export function browserContext(): HostedBrowser {
 }
 
 export { provideBrowser } from '../../routes/browserContext';
+
+export type { HostedBrowser } from './browserContext.types';

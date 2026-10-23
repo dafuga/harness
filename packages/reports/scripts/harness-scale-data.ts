@@ -1,3 +1,4 @@
+import type { Unit, Detail } from './harness-scale-data.types';
 /**
  * Copies the console data of the synthetic history and gives its newest revision a registry
  * of several hundred generated units, so the map can be exercised at the size of a real
@@ -7,20 +8,6 @@
  */
 import { cp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-
-interface Unit {
-	id: string;
-	title: string;
-	responsibility: string;
-	dependencies: Array<{ unit: string; via: string }>;
-	owns: { source: string[]; symbols: string[] };
-	scenarios: string[];
-	helpers?: Array<{ name: string; source: string; inputs: Array<{ name: string; type: string }> }>;
-}
-interface Detail {
-	registry: { units: Unit[]; graph: { edges: Array<{ from: string; to: string; via: string }> } };
-	records: Array<{ status: string; failures: string[] }>;
-}
 
 export const generatedUnits = 480;
 const perLayer = 120;

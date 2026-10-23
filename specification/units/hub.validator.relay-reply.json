@@ -9,14 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/validators/RelayReplyValidator.ts",
-			"packages/hub/src/validators/networking-security/RelayReplyValidator.ts"
+			"packages/hub/src/validators/networking-security/RelayReplyValidator.ts",
+			"packages/hub/src/validators/networking-security/RelayReplyValidator.types.ts"
 		],
 		"symbols": [
 			"RelayReplyValidator",
 			"RelayReplyValidator",
 			"RelayReplyValidator.registered",
 			"RelayReplyValidator.summary",
-			"RelayReplyValidator.done"
+			"RelayReplyValidator.done",
+			"Fields",
+			"Device"
 		]
 	},
 	"contract": {

@@ -1,26 +1,11 @@
+import type { Claims, GoogleFixture } from './googleFixture.types';
 import { SignJWT, createLocalJWKSet, exportJWK, exportSPKI, generateKeyPair } from 'jose';
-import type { JWTPayload, JWTVerifyGetKey } from 'jose';
 
 export const CLIENT_ID = 'synthetic-client.apps.googleusercontent.com';
 export const KEY_ID = 'synthetic-google-key';
 /** A Google account on an address Google does not vouch for: no Gmail, no Workspace `hd`. */
 export const LIN = { sub: '330000000000000000003', email: 'lin@example.org', name: 'Lin Example' };
 export const START = Date.UTC(2026, 9, 12, 9, 0, 0);
-
-type Claims = JWTPayload & Record<string, unknown>;
-
-export interface GoogleFixture {
-	/** The verifier's key set: only the public half of the signing key. */
-	keys: JWTVerifyGetKey;
-	/** The same public key as a JWKS document, as Google's certs endpoint would serve it. */
-	jwks: { keys: object[] };
-	publicPem: string;
-	claims(nonce: string, overrides?: Claims): Claims;
-	/** RS256 with the key the verifier trusts. */
-	sign(claims: Claims): Promise<string>;
-	/** RS256 with another key that reuses the trusted key id. */
-	forge(claims: Claims): Promise<string>;
-}
 
 async function rs256(claims: Claims, key: CryptoKey): Promise<string> {
 	return new SignJWT(claims).setProtectedHeader({ alg: 'RS256', kid: KEY_ID }).sign(key);
@@ -59,3 +44,5 @@ export async function googleFixture(now: () => number): Promise<GoogleFixture> {
 		forge: (claims) => rs256(claims, other.privateKey)
 	};
 }
+
+export type { GoogleFixture } from './googleFixture.types';

@@ -1,3 +1,4 @@
+import type { Fixture } from './remote-fixture-script.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterAll, beforeAll, test } from 'vitest';
 import { request as httpRequest } from 'node:http';
@@ -17,9 +18,6 @@ import { RelaySocketAdapter } from '../src/adapters/RelaySocketAdapter';
 import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { remoteBinary } from '../src/utils/remoteBinary';
-
-/** The standalone fixture as root runs it, and a stand-in for the simulator's phone. */
-type Fixture = Awaited<ReturnType<typeof startRemoteFixture>>;
 const settle = { timeout: 20000 },
 	sockets = new RelaySocketAdapter(),
 	lines: string[] = [],

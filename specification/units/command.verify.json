@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/VerifyCommand.ts"],
-		"symbols": ["registerVerifyCommand"]
+		"source": ["src/cli/program/VerifyCommand.ts", "src/cli/program/VerifyCommand.types.ts"],
+		"symbols": ["registerVerifyCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

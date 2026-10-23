@@ -10,15 +10,14 @@
 		"source": [
 			"packages/hub/src/adapters/GithubApiAdapter.ts",
 			"packages/hub/src/lib/server/auth/GithubApiAdapter.ts",
-			"packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.ts"
+			"packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.types.ts"
 		],
 		"symbols": [
 			"GithubApiAdapter",
 			"GithubApiOptions",
 			"InstallationScope",
 			"GithubApiAdapter",
-			"GithubApiOptions",
-			"InstallationScope",
 			"GithubApiAdapter",
 			"GithubApiAdapter.constructor",
 			"GithubApiAdapter.userToken",
@@ -26,7 +25,12 @@
 			"GithubApiAdapter.installations",
 			"GithubApiAdapter.installationRepositories",
 			"GithubApiAdapter.repository",
-			"GithubApiAdapter.installationToken"
+			"GithubApiAdapter.installationToken",
+			"GithubApiOptions",
+			"InstallationScope",
+			"GithubApiOptions",
+			"InstallationScope",
+			"Call"
 		]
 	},
 	"contract": {

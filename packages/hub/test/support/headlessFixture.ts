@@ -1,14 +1,8 @@
+import type { Json } from './headlessFixture.types';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { author, fixture as planningFixture, git } from '../../../planning/test/planFixture';
 import { projectionFixture } from './projectionFixture';
-
-/**
- * A SYNTHETIC headless plan as the real planning package commits it: a registered function,
- * one notes-only version and its approval of those exact notes. The plan is written in a
- * temporary Git repository and the hub reads the files committed there, as checked out.
- */
-type Json = Record<string, unknown>;
 const manifest = new URL(
 	'../../../../specification/units/desktop.function.time-label.json',
 	import.meta.url

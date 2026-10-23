@@ -1,3 +1,4 @@
+import type { Reaches } from './hubEvidenceScope.types';
 import type { HubEvidenceDependencies } from '../../../../../utils/networking-security/hubEvidenceScope';
 import type { Actor } from 'collaboration';
 import type {
@@ -55,8 +56,6 @@ export async function hubEvidencePins(
 		evidenceRevision: query.evidenceRevision
 	};
 }
-
-type Reaches = (tip: string, commit: string) => Promise<boolean>;
 
 /** Record statuses read from the pinned notes, with records followed inside the pinned evidence. */
 function pinnedHistory(base: HubSourceContext, reaches: Reaches): HubRecordStatusService {

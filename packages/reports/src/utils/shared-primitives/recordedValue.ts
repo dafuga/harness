@@ -1,10 +1,4 @@
-/** A bounded reading of already-parsed evidence; original values are never rewritten. */
-export type RecordedNode =
-	| { kind: 'scalar'; type: string; text: string; shortened?: boolean }
-	| { kind: 'notice'; text: string }
-	| { kind: 'fields'; fields: Array<{ name: string; node: RecordedNode }>; remaining: number }
-	| { kind: 'list'; items: RecordedNode[]; remaining: number }
-	| { kind: 'table'; columns: string[]; rows: RecordedNode[][]; remaining: number };
+import type { RecordedNode } from './recordedValue.types';
 
 const more = (): RecordedNode => ({
 	kind: 'notice',
@@ -78,3 +72,5 @@ function list(values: unknown[], depth: number, budget: { left: number }): Recor
 }
 
 export { recordedValue } from '../../components/shared-primitives/recorded-value/recordedValue';
+
+export type { RecordedNode } from './recordedValue.types';

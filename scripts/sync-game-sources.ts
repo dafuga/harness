@@ -7,13 +7,16 @@ import { formatConfigFiles } from '../src/templates/development-tooling/formatCo
 export const gameSourceLayout: Readonly<Record<string, string>> = {
 	'models/Game.types.ts': 'models/game-authoring/Game.types.ts',
 	'validators/gameDocument.ts': 'validators/game-authoring/gameDocument.ts',
+	'validators/gameDocument.types.ts': 'validators/game-authoring/gameDocument.types.ts',
 	'utils/gameStep.ts': 'utils/game-authoring/gameStep.ts',
 	'utils/keyDoor.ts': 'utils/game-authoring/keyDoor.ts',
 	'utils/checkpointGraph.ts': 'utils/game-authoring/checkpointGraph.ts',
 	'adapters/Canvas2dAdapter.ts': 'adapters/game-authoring/Canvas2dAdapter.ts',
 	'adapters/ThreeSceneAdapter.ts': 'adapters/game-authoring/ThreeSceneAdapter.ts',
 	'adapters/Software3dAdapter.ts': 'adapters/game-authoring/Software3dAdapter.ts',
-	'adapters/DecartStreamAdapter.ts': 'adapters/agents-providers/DecartStreamAdapter.ts'
+	'adapters/Software3dAdapter.types.ts': 'adapters/game-authoring/Software3dAdapter.types.ts',
+	'adapters/DecartStreamAdapter.ts': 'adapters/agents-providers/DecartStreamAdapter.ts',
+	'adapters/DecartStreamAdapter.types.ts': 'adapters/agents-providers/DecartStreamAdapter.types.ts'
 };
 
 /** The formatting a generated project checks, so embedded sources pass its own format check. */

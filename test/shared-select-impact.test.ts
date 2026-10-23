@@ -1,3 +1,4 @@
+import type { Written } from './shared-select-impact.test.types';
 import * as sourceIndex from '../src/services/source-index-service/SourceIndexService';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -16,11 +17,6 @@ const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
-interface Written {
-	from: string;
-	specifier: string;
-	to: string | undefined;
-}
 let loaded: LoadedUnits;
 let builds: Record<string, Record<string, string>>;
 let written: Written[];

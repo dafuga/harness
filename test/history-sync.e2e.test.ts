@@ -1,3 +1,4 @@
+import type { Synced, Capture } from './history-sync.e2e.test.types';
 import { existsSync } from 'node:fs';
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -21,24 +22,12 @@ beforeAll(async () => {
 	baseline = await baselineRepo();
 }, 120_000);
 afterAll(() => baseline.dispose());
-
-interface Synced {
-	remote: string;
-	evidence: string;
-	notes: string;
-	pushed: boolean;
-}
 const sync = (repo: VerifyRepo, action: string) =>
 	harnessJson<Synced>(repo, ['history', action, 'origin']);
 const media = (record: { scenarios: Array<{ states: Array<{ captures: Capture[] }> }> }) =>
 	record.scenarios
 		.flatMap((scenario) => scenario.states.flatMap((state) => state.captures))
 		.filter((capture) => capture.kind === 'screenshot' || capture.kind === 'audio');
-interface Capture {
-	kind: string;
-	sha256: string;
-	path: string;
-}
 const remoteRef = (repo: VerifyRepo, ref: string) =>
 	repo.git(['ls-remote', 'origin', ref]).then((line) => line.split(/\s/)[0]);
 

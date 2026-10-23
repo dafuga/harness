@@ -1,3 +1,4 @@
+import type { EvidenceSide } from './artifactQuery.types';
 import { mediaFile } from '../../../../reports/src/utils/harnessEvidence';
 import type { ExplorerCapture } from '../../../../reports/src/models/ExplorerEvidence.types';
 import type {
@@ -5,8 +6,6 @@ import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../../models/verification-evidence/DesktopEvidence.types';
-
-export type EvidenceSide = 'before' | 'after';
 
 /**
  * The request for the bytes of one capture that an evidence answer lists on one of its sides,
@@ -44,3 +43,5 @@ export function artifactQuery(
 		evidenceRevision: result.identity.evidenceRevision
 	};
 }
+
+export type { EvidenceSide } from './artifactQuery.types';

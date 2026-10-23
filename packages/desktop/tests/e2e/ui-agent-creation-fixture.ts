@@ -1,7 +1,6 @@
+import type { Item } from './ui-agent-creation-fixture.types';
 import type { Page } from '@playwright/test';
 import { projectFixture } from './ui-project-fixture';
-
-type Item = Record<string, unknown>;
 const thread = {
 	id: '44444444-4444-4444-8444-444444444444',
 	pin: 1,

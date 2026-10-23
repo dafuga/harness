@@ -11,9 +11,16 @@
 			"src/services/record-assembly-service/recordedBuilds.ts",
 			"src/utils/recordedBuilds.ts",
 			"src/workflows/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.types.ts"
 		],
-		"symbols": ["recordedBuilds", "recordedBuilds", "recordedBuilds", "recordedBuilds"]
+		"symbols": [
+			"recordedBuilds",
+			"recordedBuilds",
+			"recordedBuilds",
+			"recordedBuilds",
+			"RecordedBuild"
+		]
 	},
 	"contract": {
 		"origin": "declared",

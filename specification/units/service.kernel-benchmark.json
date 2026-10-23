@@ -8,16 +8,20 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts"
+			"src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+			"src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.types.ts"
 		],
 		"symbols": [
-			"BenchPlan",
-			"WorkloadRun",
 			"KernelBenchmarkService",
 			"KernelBenchmarkService.constructor",
 			"KernelBenchmarkService.measure",
 			"KernelBenchmarkService.describe",
-			"serveKernel"
+			"serveKernel",
+			"BenchPlan",
+			"WorkloadRun",
+			"BenchPlan",
+			"WorkloadRun",
+			"Workload"
 		]
 	},
 	"contract": {

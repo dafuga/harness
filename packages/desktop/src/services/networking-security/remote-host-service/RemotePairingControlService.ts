@@ -1,3 +1,4 @@
+import type { RemoteHostAccess } from './RemotePairingControlService.types';
 import { RemoteInputValidator, offerEnvironment } from '../../../../../remote/src/index';
 import type {
 	HostPairingApproved,
@@ -6,21 +7,9 @@ import type {
 	RemoteHostStatus,
 	RemotePairingOffer
 } from '../../../../../remote/src/index';
-import type {
-	RemoteHostDevice,
-	RemoteHostState
-} from '../../../adapters/networking-security/RemoteHostStoreAdapter';
+import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import type { ProjectRegistryService } from '../../projects-sessions/ProjectRegistryService';
 import type { RemoteHostRuntimeService } from './RemoteHostRuntimeService';
-
-/** What the pairing control needs of the host: the running host, and a way to keep changes. */
-export interface RemoteHostAccess {
-	/** Throws when remote access is off. */
-	current(): { state: RemoteHostState; runtime: RemoteHostRuntimeService };
-	saved(): Promise<RemoteHostStatus>;
-	published(): Promise<RemoteHostStatus>;
-	name(): string;
-}
 const unreachable = ['The relay is not connected.', 'The relay did not answer.'];
 const replaced = 'A newer pairing code replaced this one.';
 
@@ -195,3 +184,5 @@ export class RemotePairingControlService {
 		runtime.sessions.revoke(deviceId);
 	}
 }
+
+export type { RemoteHostAccess } from './RemotePairingControlService.types';

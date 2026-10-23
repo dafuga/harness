@@ -7,15 +7,24 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/development-tooling/pickerTypes.ts", "src/core/pickerTypes.ts"],
+		"source": [
+			"src/core/development-tooling/pickerTypes.ts",
+			"src/core/development-tooling/pickerTypes.types.ts",
+			"src/core/pickerTypes.ts"
+		],
 		"symbols": [
+			"desktopControlUnavailable",
+			"switchRevision",
 			"SwitchRequest",
 			"SwitchStore",
 			"SessionObservation",
 			"SessionControl",
 			"PickerSnapshot",
-			"desktopControlUnavailable",
-			"switchRevision",
+			"SwitchRequest",
+			"SwitchStore",
+			"SessionObservation",
+			"SessionControl",
+			"PickerSnapshot",
 			"desktopControlUnavailable",
 			"switchRevision"
 		]

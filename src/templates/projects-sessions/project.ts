@@ -1,3 +1,5 @@
+import { separateTypeDeclarations } from '../development-tooling/separateTypeDeclarations';
+import type { ProjectTemplateInput } from './project.types';
 import { appTestFiles } from './projectTests';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { auditConfigFiles } from '../development-tooling/auditConfig';
@@ -6,18 +8,11 @@ import { formatConfigFiles } from '../development-tooling/formatConfig';
 import { lintConfigFiles } from '../development-tooling/lintConfig';
 import { agentRules, skillRules } from './projectGuidance';
 import { gameFiles } from '../game-authoring/gameProject';
-export type ProjectKind = 'app' | 'lib' | 'game';
-
-export interface ProjectTemplateInput {
-	name: string;
-	kind: ProjectKind;
-	dimension?: '2d' | '3d';
-}
 
 export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
-	if (input.kind === 'lib') return libFiles(input.name);
+	if (input.kind === 'lib') return separateTypeDeclarations(libFiles(input.name));
 	const app = appFiles(input.name);
-	return input.kind === 'game' ? gameFiles(input, app) : app;
+	return separateTypeDeclarations(input.kind === 'game' ? gameFiles(input, app) : app);
 }
 
 function appFiles(name: string): PlannedFile[] {
@@ -210,3 +205,5 @@ function libPackage(name: string): Record<string, unknown> {
 function specificationReadme(): string {
 	return `# Specification\n\nFeature files define delivery scope.\n\nRequired sections:\n\n1. # Feature: <name>\n2. ## Overview\n3. ## Acceptance Criteria\n4. ## Future Enhancements\n`;
 }
+
+export type { ProjectKind, ProjectTemplateInput } from './project.types';

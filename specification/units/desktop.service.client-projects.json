@@ -10,12 +10,11 @@
 		"source": [
 			"packages/desktop/src/services/ClientProjectsService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.types.ts",
 			"packages/desktop/src/services/remote-host-service/device-session-service/ClientProjectsService.ts"
 		],
 		"symbols": [
 			"ClientProjectsService",
-			"ClientProjectsOptions",
-			"ClientProject",
 			"ClientProjectsOptions",
 			"ClientProject",
 			"ClientProjectsService",
@@ -24,6 +23,10 @@
 			"ClientProjectsService.use",
 			"ClientProjectsService.ended",
 			"ClientProjectsService.end",
+			"ClientProjectsOptions",
+			"ClientProject",
+			"ClientProjectsOptions",
+			"ClientProject",
 			"ClientProjectsService"
 		]
 	},

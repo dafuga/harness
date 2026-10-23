@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Media } from "./EvidenceGrid.types";
+
 	import type { Evidence } from '../../../models/reports-media/Report.types';
 	import type { Report } from '../../../models/reports-media/Report.types';
 	import { evidenceMedia } from '../../../utils/verification-evidence/evidenceMedia';
@@ -12,7 +14,6 @@
 	import UploadAudio from '../../reports-media/UploadAudio.svelte';
 	import UploadComparison from '../../shared-primitives/UploadComparison.svelte';
 	import Select from '../../shared-primitives/Select.svelte';
-	type Media = '' | 'image' | 'audio';
 	let {
 		items,
 		assetBase,
@@ -88,6 +89,7 @@
 			viewport = size === 'other' ? '' : size;
 		}
 	}
+
 </script>
 
 <section class="gallery-section" aria-labelledby={idPrefix + 'gallery-title'}>

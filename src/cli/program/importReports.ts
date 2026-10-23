@@ -1,3 +1,4 @@
+import type { ImportOptions } from './importReports.types';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
@@ -6,14 +7,6 @@ import {
 	LegacyImportService,
 	type LegacyImport
 } from './legacy-import-service/LegacyImportService';
-
-export interface ImportOptions {
-	root?: string;
-	/** Directory of the old report store; it is only read. */
-	from?: string;
-	/** Project id or name to import when runs were made in another directory. */
-	project?: string;
-}
 
 /** Imports this repository's legacy reports into Git history, exactly as they were recorded. */
 export async function importReports(options: ImportOptions = {}): Promise<LegacyImport> {
@@ -40,3 +33,5 @@ export function renderImport(result: LegacyImport): string {
 		...skipped
 	].join('\n');
 }
+
+export type { ImportOptions } from './importReports.types';

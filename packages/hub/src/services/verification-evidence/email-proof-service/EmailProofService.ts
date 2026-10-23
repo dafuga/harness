@@ -1,21 +1,15 @@
+import type { EmailProofOptions, Pending } from './EmailProofService.types';
 import type { Actor } from 'collaboration';
 import type {
 	EmailProofDelivery,
 	EmailProofMessage,
 	EmailProofStatus
 } from '../../../models/accounts-access/HubAuth.types';
-import type {
-	AuthStore,
-	EmailProofRecord
-} from '../../../models/accounts-access/HubAuthStore.types';
-import type {
-	IssuedSession,
-	SessionRepository
-} from '../../../repositories/projects-sessions/SessionRepository';
+import type { EmailProofRecord } from '../../../models/accounts-access/HubAuthStore.types';
+import type { IssuedSession } from '../../../repositories/projects-sessions/SessionRepository';
 import { authFail } from '../../../utils/accounts-access/authFail';
 import { emailCode } from './authSecrets';
 import { randomToken } from '../../../utils/verification-evidence/authSecrets';
-import type { AuthSecrets } from '../../../utils/verification-evidence/authSecrets';
 
 export const PENDING_TTL = 10 * 60 * 1000;
 
@@ -31,20 +25,6 @@ export const DAILY_SENDS = 5;
 export const PROOF_TTL = 30 * 24 * 60 * 60 * 1000;
 
 const DAY = 24 * 60 * 60 * 1000;
-
-export interface EmailProofOptions {
-	store: Pick<AuthStore, 'emailProofs' | 'emailLedger'>;
-	sessions: SessionRepository;
-	secrets: AuthSecrets;
-	/** Null when no delivery is configured: a proof can then be opened but never started. */
-	delivery: EmailProofDelivery | null;
-	now: () => number;
-}
-
-interface Pending {
-	idHash: string;
-	record: EmailProofRecord;
-}
 
 function emailHash(options: EmailProofOptions, email: string): Promise<string> {
 	return options.secrets.hash('email-address', email);
@@ -190,3 +170,5 @@ export class EmailProofService {
 		return this.options.secrets.hash('email-code', `${idHash}\n${code}`);
 	}
 }
+
+export type { EmailProofOptions } from './EmailProofService.types';

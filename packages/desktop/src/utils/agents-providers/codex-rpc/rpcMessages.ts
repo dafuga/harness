@@ -1,10 +1,5 @@
-import type { RpcPending, RpcEvent } from '../rpcMessages';
-
-interface RpcState {
-	pending: Map<number, RpcPending>;
-	listeners: Set<(event: RpcEvent) => void>;
-	send: (value: unknown) => void;
-}
+import type { RpcState } from './rpcMessages.types';
+import type { RpcEvent } from '../rpcMessages';
 
 export function rpcMessages(state: RpcState, line: string): void {
 	let msg: Record<string, unknown>;

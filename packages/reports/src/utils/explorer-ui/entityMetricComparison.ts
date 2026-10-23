@@ -1,12 +1,10 @@
+import type { MetricHost } from './entityMetricComparison.types';
 import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
-import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 import type { EntityMeasure } from './entityMeasure';
 import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
 import { entityMeasure } from '../../components/explorer-ui/entity-sections/entityMeasure';
 import { verdictRecord } from './explorer-verdict/explorerVerdict';
 import type { MetricComparison } from './metricChanges';
-
-type MetricHost = Pick<ExplorerScreenProps, 'head' | 'parent' | 'route'>;
 
 function observations(revision: HarnessRevision) {
 	return (revision.regressions ?? []).flatMap(({ green }) =>

@@ -9,10 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/networking-security/secure-channel-service/SecureChannelService.ts",
+			"packages/remote/src/services/networking-security/secure-channel-service/SecureChannelService.types.ts",
 			"packages/remote/src/services/secure-channel-service/SecureChannelService.ts"
 		],
 		"symbols": [
-			"SecureChannelOptions",
 			"SecureChannelService",
 			"SecureChannelService.constructor",
 			"SecureChannelService.ready",
@@ -21,6 +21,8 @@
 			"SecureChannelService.accept",
 			"SecureChannelService.seal",
 			"SecureChannelService.open",
+			"SecureChannelOptions",
+			"SecureChannelOptions",
 			"SecureChannelService"
 		]
 	},

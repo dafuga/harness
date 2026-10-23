@@ -1,14 +1,5 @@
+import type { PreviewManifest } from './visualUnits.types';
 import { explorerCategory } from '../../../../src/utils/explorer-ui/explorerCategory';
-/** A unit manifest, as far as choosing and mounting its preview reads it. */
-export interface PreviewManifest {
-	id: string;
-	title: string;
-	kind: string;
-	status: string;
-	owns: { source: string[]; symbols: string[] };
-	runtime: { entry: string };
-	catalog?: { visibility: 'public' | 'internal' };
-}
 /**
  * Whether the catalog draws a unit: an active component or shell, a page that renders its address
  * and a layout that frames pages. The explorer's own category decides route files, so a former
@@ -38,3 +29,5 @@ export function catalogVisual(unit: PreviewManifest): boolean {
 		routePreview(unit.id)
 	);
 }
+
+export type { PreviewManifest } from './visualUnits.types';

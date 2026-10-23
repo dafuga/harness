@@ -13,6 +13,7 @@
 			"src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
 			"src/workflows/run-verify/verification-service/sealRecord.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.types.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/sealRecord.ts"
 		],
 		"symbols": [
@@ -31,6 +32,7 @@
 			"referencedScenario",
 			"recordComponents",
 			"benchmarkMeasurements",
+			"Side",
 			"referencedScenario"
 		]
 	},

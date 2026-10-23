@@ -1,7 +1,5 @@
-import type {
-	BenchmarkSeries,
-	HistoryIndex
-} from '../../../core/git-source-history/historyIndexTypes';
+import type { Growth, Point, Head, Line } from './historySeries.types';
+import type { BenchmarkSeries } from '../../../core/git-source-history/historyIndexTypes';
 import type {
 	Measurement,
 	VerificationRecord
@@ -11,10 +9,6 @@ import type { BudgetReview } from '../../../utils/verification-evidence/budgetRe
 import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
 import { emittedKey, emittedSizes } from '../../../utils/development-tooling/emittedSizes';
 import type { RegressionView } from '../../../core/verification-evidence/regressionTypes';
-
-type Growth = HistoryIndex['units'];
-
-type Point = Growth[number]['growth'][number];
 
 /** A figure of the unit itself: it names no workload and no machine, unlike a benchmark's. */
 const own = (item: Measurement) => !item.workload && !item.profile;
@@ -77,10 +71,6 @@ function seriesKey(item: Measurement): string {
 	const { profile, unitOfMeasure, method, comparison } = item;
 	return canonicalJson({ profile, unitOfMeasure, method, comparison: comparison ?? null });
 }
-
-type Line = BenchmarkSeries['series'][number];
-
-type Head = Pick<BenchmarkSeries, 'unit' | 'workload' | 'metric' | 'target'>;
 
 /** A measurement that can be plotted: a value, taken on a workload, on a known profile. */
 function timed(

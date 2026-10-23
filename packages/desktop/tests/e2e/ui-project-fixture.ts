@@ -1,22 +1,7 @@
+import type { Input, Project, Host } from './ui-project-fixture.types';
 import type { Page } from '@playwright/test';
 import { projectData, type ProjectData } from './ui-project-data';
 export * from './ui-project-data';
-
-type Input = Record<string, unknown> & { projectId?: string; commit?: string | null };
-type Project = ProjectData['projects'][number];
-interface Host {
-	harness: Record<string, unknown>;
-	__calls: Input[];
-	__outbox: (op: 'save' | 'list', value?: unknown) => Promise<Record<string, unknown>[]>;
-	__projects: {
-		data: ProjectData;
-		selected: string | null;
-		delay: Record<string, number>;
-		/** Like the main process: an operation for a project that is not selected is refused. */
-		own: (op: string, input?: Input) => Project;
-		snapshot: (project: Project, commit?: string | null) => unknown;
-	};
-}
 
 function installState(data: ProjectData) {
 	const calls: Input[] = [];

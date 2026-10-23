@@ -2,17 +2,21 @@
 	import type { Snippet } from 'svelte';
 	let {
 		files,
+		label = 'Source files',
+		empty = 'No source files recorded at this revision.',
 		href,
 		children
 	}: {
 		files: string[];
+		label?: string;
+		empty?: string;
 		href: (path: string) => string | undefined;
 		children: Snippet<[string]>;
 	} = $props();
 </script>
 
 {#if files.length}
-	<ul class="source-files" aria-label="Source files">
+	<ul class="source-files" aria-label={label}>
 		{#each files as path, position (position)}
 			{@const url = href(path)}
 			<li>
@@ -22,7 +26,7 @@
 			</li>
 		{/each}
 	</ul>
-{:else}<p class="source-empty">No source files recorded at this revision.</p>{/if}
+{:else}<p class="source-empty">{empty}</p>{/if}
 
 <style>
 	.source-files {

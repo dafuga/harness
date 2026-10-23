@@ -1,13 +1,11 @@
+import type { BenchPlan, WorkloadRun, Workload } from './KernelBenchmarkService.types';
 import { spawn, spawnSync } from 'node:child_process';
 import { HttpRuntimeAdapter } from '../../../../adapters/execution-runtimes/HttpRuntimeAdapter';
 import { ProcessRuntimeAdapter } from '../../../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
 import { WasmRuntimeAdapter } from '../../../../adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
-import type {
-	BenchMeasurement,
-	KernelBenchmark
-} from '../../../../core/development-tooling/benchmarkTypes';
+import type { BenchMeasurement } from '../../../../core/development-tooling/benchmarkTypes';
 import { fail } from '../../../../core/development-tooling/errors';
-import type { RuntimeRequest, UnitRuntime } from '../../../../core/execution-runtimes/runtimeTypes';
+import type { UnitRuntime } from '../../../../core/execution-runtimes/runtimeTypes';
 import type { RuntimeKind } from '../../../../core/development-tooling/unitTypes';
 import {
 	benchMeasurement,
@@ -23,22 +21,6 @@ import {
 } from '../../../../utils/execution-runtimes/kernelArtifacts';
 import { peakMemory } from './peakMemory';
 import { UnitRuntimeService } from '../../../../services/execution-runtimes/UnitRuntimeService';
-
-export interface BenchPlan {
-	/** Command line that starts this CLI, used for fresh-process samples and the HTTP server. */
-	cli: string[];
-	coldSamples: number;
-	warmIterations: number;
-}
-
-export interface WorkloadRun {
-	id: string;
-	nodes: number;
-	seed: number;
-	request: RuntimeRequest;
-}
-
-type Workload = KernelBenchmark['workloads'][number];
 
 const runtimes: RuntimeKind[] = ['module', 'wasm', 'process', 'http'];
 
@@ -188,3 +170,5 @@ export function serveKernel(cli: string[]): Promise<{ url: string; stop(): void 
 		});
 	});
 }
+
+export type { BenchPlan, WorkloadRun } from './KernelBenchmarkService.types';

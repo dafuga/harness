@@ -1,28 +1,7 @@
+import type { TurnOptions, TurnResult, TurnItem } from './codexTurn.types';
 import type { AgentTurn, CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 import { codexRpc } from '../../../utils/agents-providers/codex-rpc/codexRpc';
-
-interface TurnItem {
-	type: string;
-	text?: string;
-	result?: string;
-	status?: string;
-	savedPath?: string;
-	revisedPrompt?: string | null;
-	failure?: unknown;
-	changes?: { path: string }[];
-}
-
-interface TurnResult {
-	text: string;
-	model: string;
-	images: TurnItem[];
-}
-
-interface TurnOptions extends AgentTurn {
-	reference?: string | null;
-	image?: boolean;
-}
 
 export async function codexTurn(command: CliCommand, turn: TurnOptions): Promise<TurnResult> {
 	if (turn.signal.aborted) throw new RunCancelled();

@@ -1,14 +1,5 @@
+import type { SourceState, SourceRead, SourceFiles } from './sourceReader.svelte.types';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
-
-export interface SourceState {
-	files: string[];
-	path: string;
-	text: string;
-	loading: boolean;
-	error: string;
-}
-export type SourceFiles = () => Promise<string[]>;
-export type SourceRead = (path: string) => Promise<string>;
 
 function sourceError(cause: unknown): string {
 	return cause instanceof Error ? cause.message : String(cause);
@@ -74,24 +65,43 @@ export function implementationFiles(unit: HarnessUnit): string[] {
 	return categorized.length ? categorized : source;
 }
 
+/** Preserve indexed paths without invoking a caller's iterator or array species. */
+export function testFiles(unit: HarnessUnit): string[] {
+	const paths: string[] = [];
+	for (let index = 0; index < (unit.testFiles?.length ?? 0); index++)
+		paths.push(unit.testFiles![index].path);
+	return paths;
+}
+
 /** Read only text archived with this revision; never substitute a working-copy file. */
 export function archivedSource(unit: HarnessUnit, mediaBase: string, filePath?: string) {
-	const archived = unit.sourceFiles;
+	const archived = [unit.sourceFiles, unit.testFiles];
+	const recorded = Boolean(archived[0] || archived[1]);
 	const files: SourceFiles = async () => {
-		const paths = archived ? implementationFiles(unit) : [];
+		const paths = recorded ? [...new Set([...implementationFiles(unit), ...testFiles(unit)])] : [];
 		return filePath && paths.includes(filePath)
 			? [filePath, ...paths.filter((path) => path !== filePath)]
 			: paths;
 	};
-	const read: SourceRead = async (path) => {
-		const file = archived?.find((entry) => entry.path === path);
-		if (!file?.media) throw new Error(file?.gap ?? `${path} is not archived at this revision.`);
-		if (!/^media\/[a-f0-9]{64}\.txt$/.test(file.media))
-			throw new Error('The recorded source reference is invalid.');
-		const response = await fetch(mediaBase + file.media.slice('media/'.length));
-		if (!response.ok) throw new Error(`${path} could not be read (${response.status}).`);
-		return await response.text();
-	};
-	const empty = archived ? undefined : 'Source contents are not recorded for this revision.';
+	const read: SourceRead = (path) => readArchivedFile(archived, mediaBase, path);
+	const empty = recorded ? undefined : 'Source contents are not recorded for this revision.';
 	return { files, read, empty };
 }
+
+async function readArchivedFile(
+	archived: Array<HarnessUnit['sourceFiles']>,
+	mediaBase: string,
+	path: string
+): Promise<string> {
+	const file =
+		archived[0]?.find((entry) => entry.path === path) ??
+		archived[1]?.find((entry) => entry.path === path);
+	if (!file?.media) throw new Error(file?.gap ?? `${path} is not archived at this revision.`);
+	if (!/^media\/[a-f0-9]{64}\.txt$/.test(file.media))
+		throw new Error('The recorded source reference is invalid.');
+	const response = await fetch(mediaBase + file.media.slice('media/'.length));
+	if (!response.ok) throw new Error(`${path} could not be read (${response.status}).`);
+	return await response.text();
+}
+
+export type { SourceState, SourceFiles, SourceRead } from './sourceReader.svelte.types';

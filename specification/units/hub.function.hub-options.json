@@ -12,7 +12,8 @@
 			"packages/hub/src/utils/hub-designs/hubOptions.ts",
 			"packages/hub/src/utils/hubOptions.ts",
 			"packages/hub/src/utils/networking-security/hub-catalog/hubImageOption.ts",
-			"packages/hub/src/utils/networking-security/hub-designs/hubOptions.ts"
+			"packages/hub/src/utils/networking-security/hub-designs/hubOptions.ts",
+			"packages/hub/src/utils/networking-security/hub-designs/hubOptions.types.ts"
 		],
 		"symbols": [
 			"hubImageOption",
@@ -26,7 +27,8 @@
 			"hubImageOption",
 			"hubOptionInfos",
 			"hubRevision",
-			"hubOptions"
+			"hubOptions",
+			"Options"
 		]
 	},
 	"contract": {

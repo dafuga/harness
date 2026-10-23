@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/validators/AuthRecordValidator.ts",
-			"packages/hub/src/validators/accounts-access/AuthRecordValidator.ts"
+			"packages/hub/src/validators/accounts-access/AuthRecordValidator.ts",
+			"packages/hub/src/validators/accounts-access/AuthRecordValidator.types.ts"
 		],
 		"symbols": [
 			"AuthRecordValidator",
@@ -21,7 +22,8 @@
 			"AuthRecordValidator.emailProof",
 			"AuthRecordValidator.verifiedEmail",
 			"AuthRecordValidator.grantState",
-			"AuthRecordValidator.exchange"
+			"AuthRecordValidator.exchange",
+			"Row"
 		]
 	},
 	"contract": {

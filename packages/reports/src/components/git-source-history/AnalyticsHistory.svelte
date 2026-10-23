@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { Props } from "./AnalyticsHistory.types";
+
 	import type { AnalyticsSnapshot } from '../../services/explorer-ui/HarnessAnalyticsService';
 	import { analyticsCount, analyticsDisplay } from '../../utils/reports-media/analyticsDisplay';
-	type Props = { summary: AnalyticsSnapshot['summary']; loops: AnalyticsSnapshot['loops'] };
 	let { summary, loops }: Props = $props();
 	const stamp = (value?: string) => (value ? value.slice(0, 16).replace('T', ' ') : '—');
 	function duration(ms?: number) {
@@ -33,6 +34,7 @@
 		{ title: 'Evaluator outcomes', rows: frequencies(summary.evaluatorOutcomes) },
 		{ title: 'Daily activity', rows: frequencies(summary.daily, true) }
 	]);
+
 </script>
 
 <section class="analytics-section" data-harness-component="analytics-history">

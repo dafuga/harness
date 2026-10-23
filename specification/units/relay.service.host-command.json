@@ -9,12 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
+			"packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.types.ts",
 			"packages/relay/src/lib/host-runtime/HostCommandService.ts"
 		],
 		"symbols": [
 			"HostCommandService",
 			"HostCommandService.constructor",
 			"HostCommandService.handle",
+			"Acknowledged",
+			"Address",
 			"HostCommandService"
 		]
 	},

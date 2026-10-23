@@ -9,11 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/models/RemoteRelay.types.ts",
-			"packages/remote/src/models/networking-security/RemoteRelay.types.ts"
+			"packages/remote/src/models/networking-security/RemoteRelay.types.ts",
+			"packages/remote/src/models/networking-security/RemoteRelayValues.ts"
 		],
 		"symbols": [
-			"relayCloseCodes",
-			"relayHeaders",
 			"relayCloseCodes",
 			"relayHeaders",
 			"RelayErrorCode",
@@ -31,7 +30,11 @@
 			"RelayRegistered",
 			"RemoteHostRegistration",
 			"RemoteHostRegisterInput",
-			"RemoteHostSummary"
+			"RemoteHostSummary",
+			"relayCloseCodes",
+			"relayHeaders",
+			"relayCloseCodes",
+			"relayHeaders"
 		]
 	},
 	"contract": {

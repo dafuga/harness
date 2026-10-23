@@ -11,6 +11,7 @@
 			"packages/desktop/src/lib/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"packages/desktop/src/lib/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.types.ts",
 			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts"
 		],
 		"symbols": [
@@ -26,10 +27,11 @@
 			"publicStatus",
 			"accountIdentity",
 			"principal",
-			"CapacitorAccountAdapterConfig",
 			"CapacitorAccountAdapter",
 			"CapacitorAccountAdapter.constructor",
 			"CapacitorAccountAdapter.connect",
+			"CapacitorAccountAdapterConfig",
+			"CapacitorAccountAdapterConfig",
 			"replyLimit",
 			"failure",
 			"refusal",

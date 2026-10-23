@@ -1,21 +1,7 @@
+import type { RemoteHttpOptions, NativeHostedCredential } from './HostedHttpAdapter.types';
 import { hostedPublicFailure } from './hostedPublicFailure';
 import { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';
 import { RemoteProjectResponseValidator } from '../../../validators/projects-sessions/RemoteProjectResponseValidator';
-
-export interface NativeHostedCredential {
-	origin: string;
-	principalId: string;
-	token: string;
-}
-
-export interface RemoteHttpOptions {
-	origin: string;
-	/** Main-process OS-backed session store, never renderer-supplied identity or bearer tokens. */
-	credentials: () => Promise<NativeHostedCredential | null>;
-	fetch?: typeof fetch;
-	authorityVersion?: () => number;
-	onDenied?: (principalId: string, projectId?: string) => Promise<void>;
-}
 
 function hostedOrigin(value: string): string {
 	const url = new URL(value);
@@ -116,3 +102,5 @@ export class HostedHttpAdapter {
 				: new HostedFailureValidator(denied ? 'denied' : 'failed', response.status);
 	}
 }
+
+export type { NativeHostedCredential, RemoteHttpOptions } from './HostedHttpAdapter.types';

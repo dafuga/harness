@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/runAudit.ts"],
-		"symbols": ["AuditCommandOptions", "runAudit"]
+		"source": ["src/cli/program/runAudit.ts", "src/cli/program/runAudit.types.ts"],
+		"symbols": ["runAudit", "AuditCommandOptions", "AuditCommandOptions"]
 	},
 	"contract": {
 		"origin": "derived",

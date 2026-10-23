@@ -1,3 +1,4 @@
+import type { UnitsConfig } from './unitsConfig.types';
 import { z } from 'zod';
 
 export const unitsConfigFile = 'harness.units.json';
@@ -25,8 +26,6 @@ export const unitsConfigSchema = z.strictObject({
 		})
 	)
 });
-
-export type UnitsConfig = z.infer<typeof unitsConfigSchema>;
 
 /** Files whose change can affect every unit and therefore every test. */
 export const defaultGlobalFiles = [
@@ -76,3 +75,5 @@ export function pathMatches(path: string, pattern: string): boolean {
 function escapePattern(value: string): string {
 	return value.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
 }
+
+export type { UnitsConfig } from './unitsConfig.types';

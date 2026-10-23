@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/generateUnit.ts"],
-		"symbols": ["GenerateUnitInput", "generateUnit"]
+		"source": ["src/cli/program/generateUnit.ts", "src/cli/program/generateUnit.types.ts"],
+		"symbols": ["generateUnit", "GenerateUnitInput", "GenerateUnitInput"]
 	},
 	"contract": {
 		"origin": "derived",

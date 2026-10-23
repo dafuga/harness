@@ -1,15 +1,6 @@
-import type {
-	JevEvaluation,
-	JevQuestions,
-	PrincipleAssessment,
-	ReviewLocation
-} from './cleanCodeTypes';
+import type { LocationPlan } from './cleanCodeLocations.types';
+import type { JevEvaluation, PrincipleAssessment, ReviewLocation } from './cleanCodeTypes';
 import { maxReviewStateBytes } from '../verification-evidence/cleanCodeSnapshot';
-
-export interface LocationPlan {
-	questions: JevQuestions;
-	spans: Record<string, ReviewLocation>;
-}
 
 export function planReviewLocations(
 	code: string,
@@ -65,3 +56,5 @@ export function applyReviewLocations(
 			item.location = plan.spans[answer.choice];
 	}
 }
+
+export type { LocationPlan } from './cleanCodeLocations.types';

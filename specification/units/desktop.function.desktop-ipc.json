@@ -12,7 +12,8 @@
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc.ts",
 			"packages/desktop/src/lib/initialize-desktop/desktopIpc.ts",
 			"packages/desktop/src/utils/desktopIpc.ts",
-			"packages/desktop/src/utils/development-tooling/desktopIpc.ts"
+			"packages/desktop/src/utils/development-tooling/desktopIpc.ts",
+			"packages/desktop/src/utils/development-tooling/desktopIpc.types.ts"
 		],
 		"symbols": [
 			"desktopIpc",
@@ -21,8 +22,9 @@
 			"desktopIpc",
 			"bootstrapChannel",
 			"bootstrapChannel",
+			"desktopIpc",
 			"DesktopIpcPort",
-			"desktopIpc"
+			"DesktopIpcPort"
 		]
 	},
 	"contract": {

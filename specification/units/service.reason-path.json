@@ -9,15 +9,18 @@
 	"owns": {
 		"source": [
 			"src/services/ReasonPathService.ts",
-			"src/services/development-tooling/ReasonPathService.ts"
+			"src/services/development-tooling/ReasonPathService.ts",
+			"src/services/development-tooling/ReasonPathService.types.ts"
 		],
 		"symbols": [
 			"ReasonPathService",
-			"ReasonRange",
-			"SideLoader",
 			"ReasonPathService",
 			"ReasonPathService.constructor",
-			"ReasonPathService.report"
+			"ReasonPathService.report",
+			"ReasonRange",
+			"SideLoader",
+			"ReasonRange",
+			"SideLoader"
 		]
 	},
 	"contract": {

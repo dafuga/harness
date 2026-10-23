@@ -1,3 +1,4 @@
+import type { DeviceOperationsOptions, Fields, Operation } from './DeviceOperationsService.types';
 import {
 	RemoteFailure,
 	RemoteInputValidator,
@@ -7,7 +8,7 @@ import {
 	readMethods,
 	revisionMethods
 } from '../../../../../../../remote/src/index';
-import type { RemoteGrant, RemoteMethod, WireRequest } from '../../../../../../../remote/src/index';
+import type { RemoteMethod, WireRequest } from '../../../../../../../remote/src/index';
 import type { ProjectSnapshot } from '../../../../../models/development-tooling/Desktop.types';
 import { channels } from '../../../../../models/development-tooling/DesktopBridge.types';
 import type { EvidenceArtifactResult as Artifact } from '../../../../../models/verification-evidence/DesktopEvidence.types';
@@ -15,21 +16,7 @@ import { binaryAnswer } from '../../../../../utils/development-tooling/binaryAns
 import { deviceCapabilities } from './deviceCapabilities';
 import { gitRead } from '../../../../../utils/projects-sessions/gitRead';
 import { IpcRequestValidator } from '../../../../../validators/development-tooling/IpcRequestValidator';
-import type { ClientProject, ClientProjectsService } from '../ClientProjectsService';
-import type { ProviderDiscoveryService } from '../../../../agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import type { RepositoryArbiterService } from '../../../../projects-sessions/RepositoryArbiterService';
-
-export interface DeviceOperationsOptions {
-	projects: ClientProjectsService;
-	providers: ProviderDiscoveryService;
-	arbiter: RepositoryArbiterService;
-	/** The current grant of the device. Read again for every request. */
-	grant: () => RemoteGrant;
-}
-
-type Fields = Record<string, unknown>;
-
-type Operation = (input: unknown) => Promise<unknown>;
+import type { ClientProject } from '../ClientProjectsService';
 
 function ancestor(root: string, commit: string, tip: string): Promise<boolean> {
 	return gitRead(root, ['merge-base', '--is-ancestor', commit, tip]).then(
@@ -137,3 +124,5 @@ export class DeviceOperationsService {
 		};
 	}
 }
+
+export type { DeviceOperationsOptions } from './DeviceOperationsService.types';

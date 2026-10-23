@@ -8,24 +8,6 @@ import { record } from './entityFixture';
 import { capture, commits, ids, units } from './entityUnits';
 import { categorySources, projectPageSources } from './entityPreviewGroups';
 import { withSourceMeasures } from './entityStates';
-export type PreviewVariant =
-	| 'platforms'
-	| 'source'
-	| ''
-	| 'legacy'
-	| 'partial'
-	| 'declared'
-	| 'layouts'
-	| 'console'
-	| 'inherited'
-	| 'states'
-	| 'documented'
-	| 'helpers'
-	| 'groups'
-	| 'relations'
-	| 'measurements'
-	| 'focused'
-	| 'viewport-states';
 export function stateRecord(commit: string): HarnessRecord {
 	const taken = previewRecord(commit);
 	taken.scenarios[0].states.push({
@@ -217,3 +199,5 @@ export { withDocumentation } from './entityPreviewDocumentation';
 export function withGroups(detail: HarnessRevision): HarnessRevision {
 	return projectPageSources(categorySources(withFrame(detail, 'layout')));
 }
+
+export type { PreviewVariant } from './entityPreviewData.types';

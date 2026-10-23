@@ -1,6 +1,4 @@
-interface TopicEntry {
-	topic: string;
-}
+import type { TopicEntry } from './topics.types';
 
 export function availableGuideTopics(entries: TopicEntry[]): string[] {
 	return [...new Set(entries.map((entry) => entry.topic))];

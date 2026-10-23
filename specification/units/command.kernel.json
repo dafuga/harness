@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/KernelCommand.ts"],
-		"symbols": ["registerKernelCommand"]
+		"source": ["src/cli/program/KernelCommand.ts", "src/cli/program/KernelCommand.types.ts"],
+		"symbols": ["registerKernelCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

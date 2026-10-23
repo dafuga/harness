@@ -7,15 +7,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/cleanCodeCache.ts", "src/audit/development-tooling/cleanCodeCache.ts"],
+		"source": [
+			"src/audit/cleanCodeCache.ts",
+			"src/audit/development-tooling/cleanCodeCache.ts",
+			"src/audit/development-tooling/cleanCodeCache.types.ts"
+		],
 		"symbols": [
 			"reviewCacheKey",
 			"readReviewCache",
 			"writeReviewCache",
-			"CachedEvaluation",
 			"reviewCacheKey",
 			"readReviewCache",
-			"writeReviewCache"
+			"writeReviewCache",
+			"CachedEvaluation",
+			"CachedEvaluation"
 		]
 	},
 	"contract": {

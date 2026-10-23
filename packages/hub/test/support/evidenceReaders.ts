@@ -1,10 +1,9 @@
+import type { Pins } from './evidenceReaders.types';
 import { HubAttachedService } from '../../src/services/hub-attached-service/HubAttachedService';
 import { HubRecordStatusService } from '../../src/services/HubRecordStatusService';
 import { hubNotes } from '../../src/services/hub-evidence-service/hubNotes';
 import type { HubSourceContext } from '../../src/utils/hubSource';
 import { reachesIn, type EvidenceFixture } from './evidenceFixture';
-
-type Pins = EvidenceFixture['pins'];
 
 /** The records of a fixture as the hub loads them at one pinned evidence commit. */
 export function attachedAt(f: EvidenceFixture, base: HubSourceContext, within: string | null) {

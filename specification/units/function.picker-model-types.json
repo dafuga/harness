@@ -7,12 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/development-tooling/pickerModelTypes.ts", "src/core/pickerModelTypes.ts"],
+		"source": [
+			"src/core/development-tooling/pickerModelTypes.ts",
+			"src/core/development-tooling/pickerModelTypes.types.ts",
+			"src/core/pickerModelTypes.ts"
+		],
 		"symbols": [
-			"ProviderSelection",
-			"PickerModel",
 			"sameSelection",
 			"validateSessionId",
+			"ProviderSelection",
+			"PickerModel",
+			"ProviderSelection",
+			"PickerModel",
 			"sameSelection",
 			"validateSessionId"
 		]

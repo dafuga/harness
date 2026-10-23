@@ -11,6 +11,7 @@
 			"src/utils/deriveManifest.ts",
 			"src/utils/development-tooling/deriveManifest.ts",
 			"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+			"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.types.ts",
 			"src/workflows/load-units/unit-index-service/deriveManifest.ts"
 		],
 		"symbols": [
@@ -18,6 +19,7 @@
 			"DeriveInput",
 			"deriveManifest",
 			"deriveManifest",
+			"Declared",
 			"deriveManifest"
 		]
 	},

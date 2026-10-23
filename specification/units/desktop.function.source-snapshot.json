@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/sourceSnapshot.ts",
-			"packages/desktop/src/utils/verification-evidence/sourceSnapshot.ts"
+			"packages/desktop/src/utils/verification-evidence/sourceSnapshot.ts",
+			"packages/desktop/src/utils/verification-evidence/sourceSnapshot.types.ts"
 		],
-		"symbols": ["fileHash", "sourceSnapshot", "SourceSnapshot", "fileHash", "sourceSnapshot"]
+		"symbols": [
+			"fileHash",
+			"sourceSnapshot",
+			"fileHash",
+			"sourceSnapshot",
+			"SourceSnapshot",
+			"SourceSnapshot"
+		]
 	},
 	"contract": {
 		"origin": "declared",

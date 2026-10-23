@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/evidenceQuery.ts",
-			"packages/desktop/src/utils/verification-evidence/evidenceQuery.ts"
+			"packages/desktop/src/utils/verification-evidence/evidenceQuery.ts",
+			"packages/desktop/src/utils/verification-evidence/evidenceQuery.types.ts"
 		],
-		"symbols": ["evidenceQuery", "EvidenceView", "evidenceQuery"]
+		"symbols": ["evidenceQuery", "evidenceQuery", "EvidenceView", "EvidenceView"]
 	},
 	"contract": {
 		"origin": "declared",

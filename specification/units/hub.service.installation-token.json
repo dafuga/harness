@@ -10,16 +10,19 @@
 		"source": [
 			"packages/hub/src/lib/server/auth/installation-token-service/InstallationTokenService.ts",
 			"packages/hub/src/lib/verification-evidence/server/auth/installation-token-service/InstallationTokenService.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/installation-token-service/InstallationTokenService.types.ts",
 			"packages/hub/src/services/installation-token-service/InstallationTokenService.ts"
 		],
 		"symbols": [
 			"InstallationTokenService",
-			"CachedInstallationToken",
-			"InstallationTokenOptions",
 			"InstallationTokenService",
 			"InstallationTokenService.constructor",
 			"InstallationTokenService.token",
 			"InstallationTokenService.resolve",
+			"CachedInstallationToken",
+			"InstallationTokenOptions",
+			"CachedInstallationToken",
+			"InstallationTokenOptions",
 			"InstallationTokenService",
 			"CachedInstallationToken",
 			"InstallationTokenOptions"

@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/harnessIcons.ts",
+			"packages/reports/src/utils/explorer-ui/harnessIcons.types.ts",
 			"packages/reports/src/utils/harnessIcons.ts"
 		],
 		"symbols": [
 			"harnessIcons",
-			"HarnessIconName",
 			"solidIcons",
 			"categoryIcon",
+			"HarnessIconName",
+			"HarnessIconName",
 			"harnessIcons",
 			"solidIcons",
 			"categoryIcon"
@@ -28,7 +30,7 @@
 			{
 				"name": "harnessIcons",
 				"type": "unknown",
-				"description": "Named SVG path data on a 24-by-24 grid for categories, verdicts, evidence and controls."
+				"description": "Named SVG paths on a 24-by-24 grid for categories, verdicts, evidence and controls, including distinct object and array inspection icons."
 			},
 			{
 				"name": "solidIcons",
@@ -38,7 +40,7 @@
 			{
 				"name": "categoryIcon",
 				"type": "Record<ExplorerCategory, HarnessIconName>",
-				"description": "Icon name for each of the six explorer categories."
+				"description": "Icon name for each supported Explorer category."
 			}
 		],
 		"errors": []

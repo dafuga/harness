@@ -9,16 +9,20 @@
 	"owns": {
 		"source": [
 			"src/services/budget-service/BudgetService.ts",
-			"src/services/verification-evidence/budget-service/BudgetService.ts"
+			"src/services/verification-evidence/budget-service/BudgetService.ts",
+			"src/services/verification-evidence/budget-service/BudgetService.types.ts"
 		],
 		"symbols": [
 			"BudgetService",
+			"BudgetService",
+			"BudgetService.baselines",
+			"BudgetService.evaluate",
 			"UnitBaseline",
 			"BudgetSubject",
 			"BudgetReport",
-			"BudgetService",
-			"BudgetService.baselines",
-			"BudgetService.evaluate"
+			"UnitBaseline",
+			"BudgetSubject",
+			"BudgetReport"
 		]
 	},
 	"contract": {

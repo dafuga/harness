@@ -1,8 +1,7 @@
+import type { Seed, ReferenceHost, Entity } from './ui-references-fixture.types';
 import type { Page } from '@playwright/test';
 import { alphaThread, gammaThread, projectFixture } from './ui-project-fixture';
 export * from './ui-project-fixture';
-
-type Entity = Record<string, unknown>;
 /** The agent's stored question: two registered units, one unknown id and one hostile reference. */
 export const question =
 	'Should [[unit:app.shell.order-frame]] call [[unit:app.function.format-time]]? Not [[unit:app.function.missing]] or [[unit:javascript:alert(1)]].';
@@ -31,22 +30,6 @@ const named = [
 		title: 'Gamma frame'
 	}
 ];
-
-interface Seed {
-	named: typeof named;
-	question: string;
-	remark: string;
-	threads: { alpha: string; gamma: string };
-}
-
-interface ReferenceHost {
-	harness: Record<string, unknown>;
-	__emitRun: (event: Record<string, unknown>) => void;
-	__projects: {
-		data: { projects: Array<{ entities: Entity[]; messages: Record<string, Entity[]> }> };
-		own: (op: string, input: Entity) => unknown;
-	};
-}
 
 function install(input: Seed) {
 	const host = window as unknown as ReferenceHost;
@@ -112,3 +95,5 @@ export const emitRun = (page: Page, event: Record<string, unknown>) =>
 		(value) => (window as unknown as { __emitRun: (e: unknown) => void }).__emitRun(value),
 		event
 	);
+
+export type { named };

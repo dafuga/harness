@@ -1,37 +1,17 @@
+import type { Loaded, BenchInput } from './runBudget.types';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { WorkingTreeAdapter } from '../../../adapters/git-source-history/WorkingTreeAdapter';
 import type { BudgetEvent } from '../../../core/verification-evidence/budgetTypes';
 import { fail } from '../../../core/development-tooling/errors';
-import { runtimeKinds, type ComponentManifest } from '../../../core/development-tooling/unitTypes';
+import { runtimeKinds } from '../../../core/development-tooling/unitTypes';
 import { workloadSchema } from '../../../core/verification-evidence/verifyTypes';
 import { BudgetLedgerRepository } from '../../../repositories/verification-evidence/BudgetLedgerRepository';
-import {
-	BudgetService,
-	type UnitBaseline
-} from '../../../services/verification-evidence/budget-service/BudgetService';
+import { BudgetService } from '../../../services/verification-evidence/budget-service/BudgetService';
 import { UnitBenchmarkService, type UnitBenchmark } from './UnitBenchmarkService';
 import { recordCapture } from '../../../utils/reports-media/record-capture/recordCapture';
 import { unitMeasurements } from '../../../utils/development-tooling/unitMeasurements';
 import { loadUnits } from '../../development-tooling/load-units/loadUnits';
-
-export interface SignedInput {
-	root?: string;
-	units: string[];
-	all?: boolean;
-	record: string;
-	reviewer?: string;
-	reason?: string;
-	now?: () => string;
-}
-
-interface Loaded {
-	root: string;
-	manifests: ComponentManifest[];
-	events: BudgetEvent[];
-	baselines: Map<string, UnitBaseline>;
-	ledger: BudgetLedgerRepository;
-}
 
 /** The registry, the ledger and the limits it currently implies, for the working tree. */
 export async function loadBudgets(root = process.cwd()): Promise<Loaded> {
@@ -89,14 +69,6 @@ export async function budgetStatus(root?: string) {
 	};
 }
 
-export interface BenchInput {
-	unit: string;
-	workload: string;
-	target?: string;
-	evidence?: string;
-	state?: string;
-}
-
 /** Benchmarks one unit through its declared target and records it as evidence when asked. */
 export async function budgetBench(input: BenchInput, root = process.cwd()): Promise<UnitBenchmark> {
 	const loaded = await loadUnits(resolve(root));
@@ -126,3 +98,5 @@ export async function budgetBench(input: BenchInput, root = process.cwd()): Prom
 	);
 	return benchmark;
 }
+
+export type { SignedInput, BenchInput } from './runBudget.types';

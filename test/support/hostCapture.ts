@@ -1,3 +1,4 @@
+import type { HostCapture } from './hostCapture.types';
 import { chromium, type Page } from '@playwright/test';
 import { browserErrorCollector } from './browserTest';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -33,12 +34,6 @@ const hostScenario: ScenarioManifest = {
 		}
 	]
 };
-
-export interface HostCapture {
-	/** What the running server said about itself when it was captured. */
-	reported: { buildId: string | null; sdk: { version: string }; host: { revision: string | null } };
-	screenshot: Buffer;
-}
 
 /**
  * Captures the console of one running host as a scenario check does: the administrator's page as
@@ -170,3 +165,5 @@ export async function keepCapture(
 	const stated = { ...facts, reported: capture.reported };
 	await writeFile(join(directory, `${name}.json`), `${JSON.stringify(stated, null, 2)}\n`);
 }
+
+export type { HostCapture } from './hostCapture.types';

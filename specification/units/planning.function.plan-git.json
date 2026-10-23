@@ -13,7 +13,8 @@
 			"packages/planning/src/utils/plan-read/containing.ts",
 			"packages/planning/src/utils/planGit.ts",
 			"packages/planning/src/utils/planning-collaboration/plan-read/containing.ts",
-			"packages/planning/src/utils/planning-collaboration/planGit.ts"
+			"packages/planning/src/utils/planning-collaboration/planGit.ts",
+			"packages/planning/src/utils/planning-collaboration/planGit.types.ts"
 		],
 		"symbols": [
 			"planGit",
@@ -27,14 +28,15 @@
 			"imageBlob",
 			"safePath",
 			"containing",
-			"Git",
 			"revision",
 			"paths",
 			"blob",
 			"imageBlob",
 			"safePath",
 			"planGit",
-			"containing"
+			"containing",
+			"Git",
+			"Git"
 		]
 	},
 	"contract": {

@@ -1,3 +1,4 @@
+import type { Graph, Edges, Reached, Entity, RelationsReader } from './explorerRelations.types';
 import type {
 	ExplorerCategory,
 	ExplorerEntity,
@@ -8,23 +9,6 @@ import type { HarnessRevision, HarnessUnit } from '../../models/explorer-ui/Harn
 import { explorerCategory, explorerRole } from './explorerCategory';
 import { explorerEntity } from './explorerEntities';
 import { explorerName } from './explorerName';
-
-type Edges = Map<string, string[]>;
-/** The units reached from one, each once: those of the five kinds, and those of none. */
-interface Reached {
-	listed: HarnessUnit[];
-	support: HarnessUnit[];
-}
-/** The active units of one revision and the edges between them both ways, each built once. */
-interface Graph {
-	units: Map<string, HarnessUnit>;
-	uses: Edges;
-	consumers: Edges;
-	category(unit: HarnessUnit): ExplorerCategory | null;
-}
-type Entity = (unit: HarnessUnit) => ExplorerEntity | null;
-/** What an entity contains and what contains it at one revision, asked by its id. */
-export type RelationsReader = (id: string) => ExplorerRelations;
 
 /**
  * Each unit reached from one along the edges, once and nearest first. `onward` is shown each and
@@ -212,3 +196,5 @@ export function explorerRelationsReader(
 export function explorerRelations(head: HarnessRevision, id: string): ExplorerRelations {
 	return explorerRelationsReader(head)(id);
 }
+
+export type { RelationsReader } from './explorerRelations.types';

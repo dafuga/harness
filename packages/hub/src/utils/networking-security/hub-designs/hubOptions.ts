@@ -1,7 +1,6 @@
+import type { Options } from './hubOptions.types';
 import { hubFail } from '../../development-tooling/hubJson';
 import type { HubDesign } from '../../development-tooling/hubSchemas';
-
-type Options = NonNullable<HubDesign['options']>;
 
 /**
  * Whether the options keep what planning enforces when it writes them: directions that differ

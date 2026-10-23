@@ -78,4 +78,6 @@ class SessionState {
 export function createSessionStore(auth: BrowserAuth) {
 	return new SessionState(auth);
 }
-export type Session = SessionState;
+
+export type { Session } from './session.svelte.types';
+export type { SessionState };

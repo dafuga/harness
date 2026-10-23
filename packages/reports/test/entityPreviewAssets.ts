@@ -1,3 +1,4 @@
+import type { Colour } from './entityPreviewAssets.types';
 import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -6,8 +7,6 @@ import { audioFixture } from './audioFixture';
 import { stateRecord } from './entityPreviewData';
 import { capture, commits } from './entityUnits';
 import { sourcePaths, sourceText } from './entitySourceFixture';
-
-type Colour = [number, number, number];
 const tints: Record<string, Colour> = { a: [36, 52, 71], b: [20, 39, 58], c: [16, 44, 52] };
 const sizes: Record<string, [number, number]> = {
 	desktop: [1440, 900],

@@ -1,16 +1,7 @@
+import type { CurrentRefs, PinnedRevisions } from './EvidenceRefsAdapter.types';
 import { createHash } from 'node:crypto';
 import { commitPattern } from '../../../utils/development-tooling/ipcFields';
 import { gitRead } from '../../../utils/projects-sessions/gitRead';
-
-/** The notes commit and the evidence commit of one read; null where there is no such ref. */
-export interface PinnedRevisions {
-	notesRevision: string | null;
-	evidenceRevision: string | null;
-}
-export interface CurrentRefs extends PinnedRevisions {
-	/** Changes whenever a note, the evidence or an archived source of the repository does. */
-	digest: string;
-}
 
 export const notesRef = 'refs/notes/harness';
 export const evidenceRef = 'refs/heads/harness-evidence';
@@ -70,3 +61,5 @@ export class EvidenceRefsAdapter {
 		);
 	}
 }
+
+export type { PinnedRevisions, CurrentRefs } from './EvidenceRefsAdapter.types';

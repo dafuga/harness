@@ -10,6 +10,7 @@
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.types.ts",
 			"packages/desktop/src/services/RemoteArtifactCacheService.ts"
 		],
 		"symbols": [
@@ -18,6 +19,8 @@
 			"RemoteArtifactCacheService.constructor",
 			"RemoteArtifactCacheService.pin",
 			"RemoteArtifactCacheService.read",
+			"Query",
+			"Media",
 			"RemoteArtifactCacheService"
 		]
 	},

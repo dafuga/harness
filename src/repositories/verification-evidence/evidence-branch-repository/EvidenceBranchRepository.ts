@@ -1,3 +1,4 @@
+import type { StoredDirectory } from './EvidenceBranchRepository.types';
 import { setTimeout as delay } from 'node:timers/promises';
 import {
 	EvidenceTreeAdapter,
@@ -6,13 +7,6 @@ import {
 import { fail } from '../../../core/development-tooling/errors';
 import { evidenceMarker, evidenceRef } from '../../../core/git-source-history/historyTypes';
 import { lfsAttributes } from './lfsPointer';
-
-export interface StoredDirectory {
-	/** The evidence commit that added the directory. */
-	commit: string;
-	/** False when the directory was already there with identical content. */
-	created: boolean;
-}
 
 const marker = `${JSON.stringify({ schemaVersion: 1, kind: 'harness-evidence' })}\n`;
 
@@ -92,3 +86,5 @@ export class EvidenceBranchRepository {
 		return { commit: added.split('\n').filter(Boolean).pop() ?? tip, created: false };
 	}
 }
+
+export type { StoredDirectory } from './EvidenceBranchRepository.types';

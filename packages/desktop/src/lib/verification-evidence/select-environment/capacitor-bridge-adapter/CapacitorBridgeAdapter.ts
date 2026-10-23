@@ -1,3 +1,8 @@
+import type {
+	CapacitorBridgeAdapterConfig,
+	Operation,
+	Input
+} from './CapacitorBridgeAdapter.types';
 import {
 	projectlessMethods,
 	revisionMethods
@@ -8,7 +13,6 @@ import type {
 	RemoteBinary,
 	RemoteMethod,
 	RemoteNativeAnswer,
-	RemoteNativePlugin,
 	RemoteNativeStatus,
 	RemoteRevision,
 	WireChannel
@@ -17,20 +21,6 @@ import { cachedSnapshot } from './cachedSnapshot';
 import { remoteArtifact } from './remoteArtifact';
 import { remoteBinary } from '../../../../utils/networking-security/remoteBinary';
 import { remoteGrant } from './remoteGrant';
-
-export interface CapacitorBridgeAdapterConfig {
-	plugin: RemoteNativePlugin;
-}
-
-/** What this bridge reads from an input, or adds to it; `sha256` names an artifact asked for. */
-type Input = {
-	projectId?: string;
-	revision?: RemoteRevision;
-	commit?: string | null;
-	sha256?: string;
-};
-
-type Operation = (input?: object) => unknown;
 
 const noFolder = 'A phone has no folders to open. Add the project on your computer.';
 
@@ -171,3 +161,5 @@ export class CapacitorBridgeAdapter {
 		return () => void handle.then((item) => item.remove());
 	}
 }
+
+export type { CapacitorBridgeAdapterConfig } from './CapacitorBridgeAdapter.types';

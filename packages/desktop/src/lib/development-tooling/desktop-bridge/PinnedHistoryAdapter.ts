@@ -1,3 +1,4 @@
+import type { Known, Pinned, CommitFacts, PinnedRevision } from './PinnedHistoryAdapter.types';
 import { SourceHistoryRepository } from '../../../../../../src/repositories/source-history-repository/SourceHistoryRepository';
 import { HistoryStatusService } from '../../../../../../src/services/history-status-service/HistoryStatusService';
 import {
@@ -6,36 +7,9 @@ import {
 } from '../../../../../../src/services/explorer-ui/revision-detail-service/RevisionDetailService';
 import { RegressionProofRepository } from '../../../../../../src/repositories/verification-evidence/RegressionProofRepository';
 import { checkedMedia } from '../../../../../../src/utils/development-tooling/mediaPlace';
-import {
-	revisionSummary,
-	type RevisionRecords
-} from '../../../../../../src/utils/development-tooling/revisionSummary';
-import type {
-	HarnessRevision,
-	HarnessRevisionSummary
-} from '../../../../../reports/src/models/Harness.types';
+import { revisionSummary } from '../../../../../../src/utils/development-tooling/revisionSummary';
+import type { HarnessRevision } from '../../../../../reports/src/models/Harness.types';
 import type { PinnedRevisions } from '../../../adapters/EvidenceRefsAdapter';
-
-export type CommitFacts = Pick<
-	HarnessRevisionSummary,
-	'commit' | 'parents' | 'subject' | 'author' | 'committedAt'
->;
-/** Everything stored for one commit, read at one pair of pinned revisions. */
-export interface PinnedRevision {
-	/** The commit as Git states it. */
-	facts: CommitFacts;
-	/** The stored revision, as the reports explorer reads it; no capture was written anywhere. */
-	detail: HarnessRevision;
-	/** What the records attached to the commit come to. */
-	judged: RevisionRecords;
-	/** The legacy reports its note names. */
-	legacy: string[];
-}
-type Known<Value> = Map<string, Value>;
-interface Pinned {
-	history: HistoryStatusService;
-	built: Known<Promise<PinnedRevision>>;
-}
 
 /** What stays read: two pairs of revisions, and of each the commits of two views. */
 const most = { pins: 2, commits: 4 };
@@ -132,3 +106,5 @@ export class PinnedHistoryAdapter {
 		return { facts, detail: stored, judged: revisionSummary(status, detail.records), legacy };
 	}
 }
+
+export type { CommitFacts, PinnedRevision } from './PinnedHistoryAdapter.types';

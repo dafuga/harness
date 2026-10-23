@@ -9,15 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/controllers/HubAgentController.ts",
-			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts"
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.types.ts"
 		],
 		"symbols": [
 			"HubAgentController",
 			"HubAgentPort",
-			"HubAgentPort",
 			"HubAgentController",
 			"HubAgentController.constructor",
-			"HubAgentController.handle"
+			"HubAgentController.handle",
+			"HubAgentPort",
+			"HubAgentPort",
+			"Context"
 		]
 	},
 	"contract": {

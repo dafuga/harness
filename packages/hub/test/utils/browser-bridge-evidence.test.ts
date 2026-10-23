@@ -1,3 +1,4 @@
+import type { Media } from './browser-bridge-evidence.test.types';
 import { createHash } from 'node:crypto';
 import { expect, test, vi } from 'vitest';
 import type { BrowserApi } from '../../src/utils/browserApi';
@@ -21,7 +22,6 @@ const capture = {
 	notesRevision: 'c'.repeat(40),
 	evidenceRevision: null
 };
-type Media = { bytes: Uint8Array; mediaType: string };
 function apiOf(answer: unknown, media: Media = { bytes: png, mediaType: 'image/png' }) {
 	const get = vi.fn(async () => answer);
 	const read = vi.fn(async () => media);

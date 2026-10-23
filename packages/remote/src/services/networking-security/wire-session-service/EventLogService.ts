@@ -1,16 +1,11 @@
+import type { EventReplay } from './EventLogService.types';
 import { remoteLimits } from '../../../models/networking-security/Remote.types';
 import type {
-	RemoteAttachment,
 	RemoteResume,
 	WireChannel,
 	WireEvent
 } from '../../../models/networking-security/Remote.types';
 import { randomId } from '../../../utils/networking-security/remoteIdentity';
-
-export interface EventReplay {
-	replay: RemoteAttachment['replay'];
-	events: WireEvent[];
-}
 
 /** The events of one client session: one sequence, a bounded window, replay from a cursor. */
 export class EventLogService {
@@ -45,3 +40,5 @@ export class EventLogService {
 		};
 	}
 }
+
+export type { EventReplay } from './EventLogService.types';

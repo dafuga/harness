@@ -1,7 +1,7 @@
+import type { Mode, Asked, EvidenceFixture } from './evidenceFixture.types';
 import type { Actor, CollaborationCache, CollaborationRecords, Project } from 'collaboration';
 import { createCollaboration } from 'collaboration';
 import type {
-	EntityEvidenceQuery,
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../../../desktop/src/models/DesktopEvidence.types';
@@ -113,10 +113,6 @@ export function evidenceFixture(options: { screens?: Uint8Array } = {}) {
 	};
 }
 
-export type EvidenceFixture = ReturnType<typeof evidenceFixture>;
-type Mode = EntityEvidenceQuery['mode'];
-export type Asked = Omit<EntityEvidenceQuery, 'projectId'> & { projectId: string };
-
 /** An evidence read of the page, as the viewer asks for it. */
 export function asked(commit: string, branch: string, mode: Mode, entityId = page): Asked {
 	return { projectId: project.id, entityId, commit, branch, mode };
@@ -172,3 +168,5 @@ export function reachesIn(f: EvidenceFixture) {
 	return async (tip: string, commit: string) =>
 		(await f.source.reaches?.(project.sourceRepository, { tip, commit })) ?? false;
 }
+
+export type { EvidenceFixture, Asked } from './evidenceFixture.types';
