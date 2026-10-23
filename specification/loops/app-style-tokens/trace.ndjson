@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-23T11:08:02.977Z","name":"app-style-tokens","goal":"All Harness application UI uses documented shared design tokens, with missing categories visible and automated checks rejecting undocumented design values.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-23T11:15:42.361Z","loop":"app-style-tokens","step":"spec","evidence":"Daniel chose one displayed palette for Reports, Desktop/iOS and Hub. Specification records missing categories and the source-enforcement coverage gap."}
