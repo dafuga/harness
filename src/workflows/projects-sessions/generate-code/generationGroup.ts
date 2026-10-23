@@ -5,7 +5,7 @@ import {
 	moduleGroupConfig,
 	moduleGroupsFile,
 	type ModuleGroup
-} from '../../../config/development-tooling/moduleGroupsConfig';
+} from '../../../configs/development-tooling/moduleGroupsConfig';
 import { matchingGroups } from '../../../utils/development-tooling/moduleGroup';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { fail } from '../../../core/development-tooling/errors';

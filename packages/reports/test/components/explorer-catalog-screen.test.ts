@@ -7,6 +7,14 @@ import { commits, ids } from '../entityUnits';
 
 const kinds = { configs: ['Configs', 'orderSettings'] } as const;
 
+test.each(['initializer', 'entry'])('Configs exclude non-config %s modules', (kind) => {
+	const head = revision(commits.middle, [record(commits.middle)]);
+	head.registry.units.find((unit) => unit.id === ids.settings)!.kind = kind;
+	const body = screen(ExplorerCatalogScreen, 'commit', { category: 'configs' }, { head });
+	expect(count(body, /<table\b/g)).toBe(0);
+	expect(words(body)).toContain('No configs are in the registry of this revision.');
+});
+
 test('nonvisual collections are tables of their own kind, never image cards', () =>
 	measureWorkload(
 		'reports.component.harness-explorer-table',
@@ -20,7 +28,9 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 						new RegExp(`<table class="ex-table(?: [^"]*)?" aria-label="${name}"`)
 					);
 					expect(words(body), category).toContain(name);
-					expect(words(body), 'configs list variable names and source values').toContain(
+					// Inline decoration and zero-width breaks do not add characters to a code name.
+					const text = body.replace(/<\/?(?:span|code|wbr)\b[^>]*>/g, '');
+					expect(words(text), 'configs list variable names and source values').toContain(
 						'orderSettings.pageSize 25'
 					);
 					expect(count(body, /scope="col"/g), 'only variable and value columns').toBe(2);

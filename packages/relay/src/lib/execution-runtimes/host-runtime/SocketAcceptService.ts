@@ -6,7 +6,7 @@ import {
 } from '../../../../../remote/src/index';
 import type { HostSocketsAdapter } from './HostSocketsAdapter';
 import type { HostStorageAdapter } from './HostStorageAdapter';
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type {
 	ConnectClaims,
 	HostRecord

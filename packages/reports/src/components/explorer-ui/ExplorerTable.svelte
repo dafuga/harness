@@ -2,7 +2,6 @@
 	// The shared dialog's own sheet, so the desktop host draws it as the reports do.
 	import '../../lib/styles/gallery.css';
 	import { tick } from 'svelte';
-	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import { listed, type CatalogRow } from '../../utils/explorer-ui/entityCatalog';
 	import { humanize } from '../../utils/explorer-ui/entityContract';
 	import {
@@ -17,9 +16,9 @@
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
+	import type { Kind, Column } from './ExplorerTable.types';
+	import ConfigValue from './explorer-table/ConfigValue.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
-	/** Pages and components are only ever the shared visual card, never a table row. */
-	type Kind = Exclude<ExplorerCategory, 'pages' | 'components'>;
 	let {
 		category,
 		rows,
@@ -35,8 +34,6 @@
 		mediaBase: string;
 		verification?: boolean;
 	} = $props();
-	/** A column's words for a row; null for what uses the row, shown as the shared usage footer. */
-	type Column = [string, ((row: CatalogRow) => string) | null];
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
 	const columns: Record<Kind, Column[]> = {
 		platforms: [],
@@ -63,9 +60,20 @@
 	let one = $derived(entityLabels[category].one);
 	// A shell is described under its name; the other kinds have a column for it.
 	let described = $derived(category === 'shells');
+	// The variables of one source file are one table, named as the file is; a mix keeps the kind's.
+	let heading = $derived.by(() => {
+		const file = rows[0]?.configFile;
+		return category === 'configs' &&
+			file &&
+			rows.every((row) => row.configFile?.source === file.source)
+			? file.title
+			: entityLabels[category].title;
+	});
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
-	/** A config value as written; past one line or 48 characters it is previewed, opened whole. */
+	/** A config value as written, which its cell types and its dialog shows whole. */
 	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';
+	/** A name stays one text, breaking after a dot or between camel-case words, never inside one. */
+	const words = (name: string) => name.match(/.+?(?:\.|[a-z\d](?=[A-Z])|$)/g) ?? [];
 	let chosen = $state.raw<CatalogRow | null>(null);
 	let opener: HTMLElement | null = null;
 	function view(row: CatalogRow, event: MouseEvent) {
@@ -89,7 +97,7 @@
 	class:ex-config-values={category === 'configs'}
 	data-harness-component="harness-explorer-table"
 >
-	<table class="ex-table" aria-label={entityLabels[category].title}>
+	<table class="ex-table" aria-label={heading}>
 		<thead>
 			<tr>
 				{#if category === 'configs'}
@@ -106,26 +114,25 @@
 			{#each rows as row (row.id)}
 				<tr>
 					{#if category === 'configs'}
-						{@const text = value(row)}
-						{@const lines = text.split(/\r?\n/)}
-						{@const size = lines.length > 1 ? `${lines.length} lines` : `${text.length} chars`}
+						{@const key = row.name.lastIndexOf('.') + 1}
 						<th scope="row"
-							><EntityLink to={open(row)} {nav}><code>{row.name}</code></EntityLink></th
+							><EntityLink to={open(row)} {nav}
+								><code class="ex-config-name"
+									><span class="ex-config-scope"
+										>{#each words(row.name.slice(0, key)) as word, index (index)}{word}<wbr
+											/>{/each}</span
+									>{#each words(row.name.slice(key)) as word, index (index)}{word}<wbr
+										/>{/each}</code
+								></EntityLink
+							></th
 						>
 						<td>
-							{#if lines.length > 1 || text.length > 48}
-								<div class="ex-value" class:more={lines.length > 2}>
-									<code class="ex-value-preview">{lines.slice(0, 2).join('\n')}</code>
-									<span class="ex-note">{size}</span>
-									<HarnessAction
-										tone="plain"
-										label={`View value for ${row.name}`}
-										onclick={(event) => view(row, event)}>View value</HarnessAction
-									>
-								</div>
-							{:else}
-								<code>{text}</code>
-							{/if}
+							<ConfigValue
+								name={row.name}
+								source={value(row)}
+								literal={row.setting?.literal}
+								onview={(event) => view(row, event)}
+							/>
 						</td>
 					{:else}
 						<th scope="row">
@@ -169,35 +176,24 @@
 </div>
 
 <style>
+	/* Two columns at every width: the name of a variable, then its value. */
 	.ex-config-values .ex-table {
 		table-layout: fixed;
 	}
 	.ex-config-values.ex-scroll :global(:is(th, td)) {
+		padding-block: 12px;
 		vertical-align: top;
 	}
 	.ex-config-values :global(thead th:first-child) {
-		width: 17rem;
+		width: 36%;
 	}
-	.ex-config-values :global(th code),
-	.ex-config-values :global(td > code) {
-		white-space: pre-wrap;
+	.ex-config-name {
+		font-size: var(--hx-type-size-sm);
+		line-height: 1.5;
 		overflow-wrap: anywhere;
 	}
-	.ex-value {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 8px 12px;
-	}
-	/* The first lines as written: what does not fit is cut at the edge, never rewritten. */
-	.ex-value-preview {
-		flex: 1 1 14rem;
-		overflow: hidden;
-		white-space: pre;
-		text-overflow: ellipsis;
-	}
-	.more .ex-value-preview {
-		mask-image: linear-gradient(black 45%, transparent);
+	.ex-config-scope {
+		color: var(--ex-muted);
 	}
 	.ex-config-values :global(.viewer-dialog .ex-value-full) {
 		max-height: min(70dvh, 720px);
@@ -212,8 +208,11 @@
 		overflow-wrap: anywhere;
 	}
 	@media (max-width: 640px) {
+		.ex-config-values.ex-scroll :global(:is(th, td)) {
+			padding: 10px;
+		}
 		.ex-config-values :global(thead th:first-child) {
-			width: 32%;
+			width: 40%;
 		}
 	}
 </style>

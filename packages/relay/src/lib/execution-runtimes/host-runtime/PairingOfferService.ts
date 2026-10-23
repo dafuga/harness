@@ -1,7 +1,7 @@
 import { remoteLimits, safeEqual } from '../../../../../remote/src/index';
 import type { RelayErrorCode } from '../../../../../remote/src/index';
 import type { HostStorageAdapter } from './HostStorageAdapter';
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { PairingRecord } from '../../../models/networking-security/RelayHost.types';
 
 interface Approval {

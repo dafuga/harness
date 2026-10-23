@@ -96,28 +96,28 @@
 			"id": "bar",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell.spec.ts",
+			"target": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell.spec.ts",
 			"cwd": "packages/reports"
 		},
 		{
 			"id": "pieces",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-pieces.spec.ts",
+			"target": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell-pieces.spec.ts",
 			"cwd": "packages/reports"
 		},
 		{
 			"id": "verdict",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-verdict.spec.ts",
+			"target": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell-verdict.spec.ts",
 			"cwd": "packages/reports"
 		},
 		{
 			"id": "search",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-search.spec.ts",
+			"target": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell-search.spec.ts",
 			"cwd": "packages/reports"
 		}
 	],

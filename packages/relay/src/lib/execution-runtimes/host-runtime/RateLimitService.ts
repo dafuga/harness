@@ -1,4 +1,4 @@
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { RateBucket, RateRecord } from '../../../models/networking-security/RelayHost.types';
 
 /** Where the windows are kept: the storage of the host object, so that they outlive its memory. */

@@ -1,13 +1,6 @@
 import ts from 'typescript';
+import type { ConfigSource } from './configValues.types';
 import type { ConfigVariable } from '../../../utils/explorer-ui/unitMetadata';
-
-interface ConfigSource {
-	file: ts.SourceFile;
-	source: string;
-	bindings: Map<string, ts.Expression>;
-	values: Map<string, ConfigVariable>;
-	ancestors: Set<ts.Expression>;
-}
 
 /** Read committed config expressions without importing or executing their module. */
 export function configValues(text: string, source: string): ConfigVariable[] {
@@ -98,7 +91,6 @@ function propertyPath(parent: string, name: ts.PropertyName): string {
 
 function readValue(value: ts.Expression, name: string, context: ConfigSource): void {
 	const resolved = expression(value, context.bindings);
-	if (ts.isArrowFunction(resolved) || ts.isFunctionExpression(resolved)) return;
 	if (context.ancestors.has(resolved)) {
 		context.values.set(name, { name, value: value.getText(context.file), source: context.source });
 		return;
@@ -117,5 +109,36 @@ function readValue(value: ts.Expression, name: string, context: ConfigSource): v
 		}
 		return;
 	}
-	context.values.set(name, { name, value: resolved.getText(context.file), source: context.source });
+	context.values.set(name, {
+		name,
+		value: resolved.getText(context.file),
+		source: context.source,
+		...literalValue(resolved)
+	});
+}
+
+/** Decode syntax literals; never import, evaluate, or resolve the host environment. */
+function literalValue(value: ts.Expression): { literal: unknown } | undefined {
+	if (ts.isStringLiteralLike(value)) return { literal: value.text };
+	if (value.kind === ts.SyntaxKind.TrueKeyword) return { literal: true };
+	if (value.kind === ts.SyntaxKind.FalseKeyword) return { literal: false };
+	if (value.kind === ts.SyntaxKind.NullKeyword) return { literal: null };
+	if (ts.isArrayLiteralExpression(value)) {
+		const items = value.elements.map(literalValue);
+		if (items.every((item) => item !== undefined))
+			return { literal: items.map((item) => item.literal) };
+		return undefined;
+	}
+	return numericValue(value);
+}
+
+function numericValue(value: ts.Expression): { literal: number } | undefined {
+	let number: number;
+	if (ts.isNumericLiteral(value)) number = Number(value.text);
+	else if (ts.isPrefixUnaryExpression(value) && ts.isNumericLiteral(value.operand)) {
+		if (value.operator === ts.SyntaxKind.MinusToken) number = -Number(value.operand.text);
+		else if (value.operator === ts.SyntaxKind.PlusToken) number = Number(value.operand.text);
+		else return undefined;
+	} else return undefined;
+	return Number.isFinite(number) ? { literal: number } : undefined;
 }

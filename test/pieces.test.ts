@@ -1,10 +1,11 @@
 import { expect, test } from 'vitest';
 import { pieceFiles } from '../src/templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../src/templates/scaffoldTypes';
+import { measureWorkload } from './support/measureWorkload';
 
 test.each(['2d', '3d'] as const)(
 	'every scaffold kind creates at least one file in a %s project',
-	(dimension) => {
+	async (dimension) => {
 		for (const kind of scaffoldKinds) {
 			const files = pieceFiles(kind, 'BlogPost', { dimension });
 			expect(files.length, kind).toBeGreaterThan(0);
@@ -13,7 +14,9 @@ test.each(['2d', '3d'] as const)(
 				kind
 			).toBe(true);
 		}
-		const [view] = pieceFiles('game-view', 'BlogPost', { dimension });
+		const [view] = await measureWorkload('template.game-pieces', `game-view-${dimension}`, () =>
+			pieceFiles('game-view', 'BlogPost', { dimension })
+		);
 		expect(view.contents).toContain(`dimension: '${dimension}'`);
 		expect(() => pieceFiles('game-view', 'BlogPost')).toThrow('harness.dimension');
 	}
@@ -41,7 +44,7 @@ test('marks only SvelteKit scaffolds as app-only', () => {
 	expect(isAppOnlyScaffold('mailer')).toBe(false);
 });
 
-test('Rails-ish scaffolds create their expected code shapes', () => {
+test('Rails-ish scaffolds create their expected code shapes', async () => {
 	expect(pieceFiles('mailer', 'Welcome').map((file) => file.path)).toContain(
 		'src/mailers/WelcomeMailer.ts'
 	);
@@ -61,9 +64,10 @@ test('Rails-ish scaffolds create their expected code shapes', () => {
 	expect(pieceFiles('initializer', 'Cache').map((file) => file.path)).toContain(
 		'src/initializers/initializeCache.ts'
 	);
-	expect(pieceFiles('config', 'Search').map((file) => file.path)).toContain(
-		'src/configs/searchConfig.ts'
+	const config = await measureWorkload('template.rails-pieces', 'generate-config-shape', () =>
+		pieceFiles('config', 'Search')
 	);
+	expect(config.map((file) => file.path)).toContain('src/configs/searchConfig.ts');
 	expect(pieceFiles('middleware', 'Auth').map((file) => file.path)).toContain(
 		'src/middleware/AuthMiddleware.ts'
 	);

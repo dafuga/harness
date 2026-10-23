@@ -93,6 +93,7 @@ export const harnessNamingRules: Record<string, string> = {
 } satisfies Record<PieceKind, string> & Record<string, string>;
 
 export const harnessModuleGroupRules = [
+	'Config modules live in src/configs/<category>/, with one focused file per config. Keep source-based config documentation static; do not execute configuration to discover values.',
 	'Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.',
 	'Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.',
 	'Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.',

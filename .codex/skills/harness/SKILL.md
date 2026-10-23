@@ -134,6 +134,8 @@ Shared Services lists require source-proven concrete instantiated classes with m
 
 ## Responsibility Categories
 
+Config modules use the plural `src/configs/<category>/` folder, one focused source file per config. Generate new configs there and preserve stable IDs when relocating existing files. The Configs explorer shows one table per source file; responsibility grouping must not combine unrelated configs. Decode only static source literals for presentation, preserve raw expressions for inspection, and never execute configuration or read host secrets to populate the catalog. Extend the standard mixed-config browser fixture whenever grouping or value presentation changes.
+
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
 new code; a new explicit group extends the taxonomy. Reuse an existing category

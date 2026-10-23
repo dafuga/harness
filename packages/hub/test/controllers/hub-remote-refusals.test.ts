@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { HubEnv } from '../../src/config/hubEnvConfig';
+import type { HubEnv } from '../../src/configs/hubEnvConfig';
 import { project, projectionFixture } from '../support/projectionFixture';
 import {
 	DEVICE_ID,

@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"src/services/explorer-ui/revision-detail-service/configValues.ts",
+			"src/services/explorer-ui/revision-detail-service/configValues.types.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelperCalls.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelpers.ts",
 			"src/services/explorer-ui/revision-detail-service/unitMetadata.ts",
@@ -16,10 +17,12 @@
 			"src/services/revision-detail-service/pureHelpers.ts",
 			"src/services/revision-detail-service/unitMetadata.ts",
 			"src/utils/explorer-ui/unitMetadata.ts",
+			"src/utils/explorer-ui/unitMetadata.types.ts",
 			"src/utils/unitMetadata.ts"
 		],
 		"symbols": [
 			"configValues",
+			"ConfigSource",
 			"pureGlobals",
 			"pureHelperCalls",
 			"pureHelpers",
@@ -27,13 +30,13 @@
 			"pureGlobals",
 			"pureHelperCalls",
 			"pureHelpers",
+			"unitMetadata",
 			"unitMetadata",
 			"PublicHelper",
 			"PublicServiceClass",
 			"UnitMetadata",
 			"ConfigVariable",
 			"SourceFileSnapshot",
-			"unitMetadata",
 			"unitMetadata"
 		]
 	},

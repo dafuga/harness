@@ -105,6 +105,8 @@ Shared Services lists require source-proven concrete instantiated classes with m
 
 ## Responsibility Categories
 
+Application config modules belong in `src/configs/<category>/`, with one focused file per config. The Configs catalog renders one table per source file, with typed literal values and source-preserving inspection of computed expressions. Do not execute configuration to populate it. Keep framework-required entry files at their supported addresses.
+
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
 new code; a new explicit group extends the taxonomy. Reuse an existing category

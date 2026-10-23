@@ -1,44 +1,10 @@
 import { helperContract } from '../../../../../src/utils/helperContract';
 import { explorerCategory } from './explorerCategory';
-import type {
-	ExplorerCategory,
-	ExplorerEntity,
-	ExplorerRelations,
-	ExplorerVerdict
-} from '../../models/explorer-ui/Explorer.types';
-
-type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
-
-export interface CatalogRow {
-	setting?: NonNullable<ExplorerEntity['unit']['configValues']>[number];
-	group?: { id: string; title: string };
-	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** Revision-scoped consumers for linked usage previews; helper rows keep the first three eligible consumers. */
-	usedIn?: ExplorerEntity[];
-	entity: ExplorerEntity;
-	id: string;
-	name: string;
-	summary: string;
-	/** True when the shown commit changed or added the entity itself. */
-	changed: boolean;
-	/** True when more than one entity uses it itself, or more than one page shows it. */
-	shared: boolean;
-	verdict: ExplorerVerdict;
-	/** Names of the pages that show it. */
-	usedOn: string[];
-	/** Names of what uses it directly and is not a page. */
-	usedBy: string[];
-	/** Names of the components it contains. */
-	contains: string[];
-	/** The execution targets it declares. */
-	targets: string[];
-	/** How many components it contains. */
-	components: number;
-}
+import type { CatalogOrder, CatalogRow, Relations } from './entityCatalog.types';
+export type { CatalogFilter, CatalogOrder, CatalogRow } from './entityCatalog.types';
+import type { ExplorerCategory, ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 
 export const catalogOrders = ['name', 'name-desc', 'changed', 'failed'] as const;
-
-export type CatalogOrder = (typeof catalogOrders)[number];
 
 export const orderLabels: Record<CatalogOrder, string> = {
 	name: 'Name (A → Z)',
@@ -46,15 +12,6 @@ export const orderLabels: Record<CatalogOrder, string> = {
 	changed: 'Changed first',
 	failed: 'Failed first'
 };
-
-export interface CatalogFilter {
-	search: string;
-	changedOnly: boolean;
-	order: CatalogOrder;
-	verification?: string;
-	usage?: string;
-	groups?: string[];
-}
 
 const names = (entities: ExplorerEntity[]) => entities.map((entity) => entity.name);
 
@@ -110,12 +67,21 @@ function configRows(row: CatalogRow): CatalogRow[] {
 			value: 'Not recorded at this revision',
 			source: ''
 		}));
-	return values.map((setting, index) => ({
-		...row,
-		id: `${row.entity.id}#config:${index}`,
-		name: setting.name,
-		setting
-	}));
+	return values.map((setting, index) => {
+		const source = setting.source || row.entity.unit.owns.source[0] || row.entity.id;
+		const title =
+			source
+				.split('/')
+				.at(-1)
+				?.replace(/\.[^.]+$/, '') || row.entity.name;
+		return {
+			...row,
+			configFile: { source, title },
+			id: `${row.entity.id}#config:${index}`,
+			name: setting.name,
+			setting
+		};
+	});
 }
 
 /** Global collections need shared owners; owner relationships retain one owner. */
@@ -165,7 +131,10 @@ export function entityCatalog(
 ): CatalogRow[] {
 	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
 	return entities
-		.filter((entity) => entity.category === category)
+		.filter(
+			(entity) =>
+				entity.category === category && (category !== 'configs' || entity.unit.kind === 'config')
+		)
 		.flatMap((entity) => {
 			const row = rowOf(entity, relations(entity.id));
 			if (category === 'services') {

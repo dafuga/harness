@@ -1,5 +1,5 @@
 import { REMOTE_PROTOCOL } from '../../../../../remote/src/index';
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import { ConnectGuardMiddleware } from './ConnectGuardMiddleware';
 import type {
 	PairingRoute,

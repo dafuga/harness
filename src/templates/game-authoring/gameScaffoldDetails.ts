@@ -13,7 +13,7 @@ const entry = (
 });
 export const gameScaffoldDetails = {
 	'game-view': entry('game-view', 'Game scene, UI and visual direction.', [
-		'Game view config under src/config/<name>ViewConfig.ts.',
+		'Game view config under src/configs/<name>ViewConfig.ts.',
 		"View dimension taken from the project's harness.dimension."
 	]),
 	mechanic: entry('mechanic', 'Independent deterministic state/input/event behavior.', [
@@ -21,6 +21,6 @@ export const gameScaffoldDetails = {
 		'Mechanic unit test under test/<name>.test.ts.'
 	]),
 	checkpoint: entry('checkpoint', 'Executable condition/action checkpoint.', [
-		'Checkpoint config under src/config/<name>CheckpointConfig.ts.'
+		'Checkpoint config under src/configs/<name>CheckpointConfig.ts.'
 	])
 };

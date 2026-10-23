@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 	import { catalogFilter } from './entityCatalog';
-	import { catalogSections } from './catalogGroups';
+	import { catalogSections, configSections } from './catalogGroups';
 	import { type CatalogFilter, type CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
 	import { entityLabels } from '../../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../../utils/explorer-ui/harnessIcons';
@@ -41,8 +41,13 @@
 	let label = $derived(entityLabels[category]);
 	let noun = $derived(label.title.toLowerCase());
 	let listed = $derived(catalogFilter(rows, filter));
+	// Configs are one section for each source file; every other kind is grouped by responsibility.
 	let sections = $derived(
-		grouped.has(category) ? catalogSections(listed).filter((section) => section.rows.length) : []
+		grouped.has(category)
+			? (category === 'configs' ? configSections : catalogSections)(listed).filter(
+					(section) => section.rows.length
+				)
+			: []
 	);
 	let filtered = $derived(Boolean(filter.search.trim()));
 </script>
@@ -89,7 +94,13 @@
 	{:else if sections.length}
 		{#each sections as section (section.id)}
 			<section class="ex-group">
-				<h2>{section.title} <span class="ex-group-count">{section.rows.length}</span></h2>
+				<header class="ex-group-head">
+					<h2>{section.title} <span class="ex-group-count">{section.rows.length}</span></h2>
+					{#if section.source}<p class="ex-group-source">
+							{#each section.source.match(/[^/]*\/|[^/]+$/g) ?? [] as part, index (index)}{part}<wbr
+								/>{/each}
+						</p>{/if}
+				</header>
 				{@render list(section.rows)}
 			</section>
 		{/each}
@@ -127,10 +138,19 @@
 	.ex-group {
 		margin-top: 28px;
 	}
-	.ex-group h2 {
+	/* A group's name and count; a config file's path beside them, wrapping under them on a phone. */
+	.ex-group-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 4px 16px;
 		margin: 0 0 12px;
 		padding-bottom: 8px;
 		border-bottom: 1px solid var(--hx-line, #2c4259);
+	}
+	.ex-group h2 {
+		margin: 0;
 		color: var(--hx-text, #f2f5fa);
 		font-size: 17px;
 		font-weight: 600;
@@ -144,5 +164,12 @@
 		font-weight: 400;
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
+	}
+	.ex-group-source {
+		min-width: 0;
+		color: var(--hx-muted, #8fa1b8);
+		font-family: var(--hx-font-family-mono);
+		font-size: var(--hx-type-size-xs);
+		overflow-wrap: anywhere;
 	}
 </style>

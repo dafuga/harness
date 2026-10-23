@@ -3,12 +3,16 @@
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
 	"title": "Entity catalog table",
-	"responsibility": "Lists config variables with compact source values and full-value inspection, and remaining nonvisual entities with their category columns.",
+	"responsibility": "Lists each config file’s variables with typed literal values and exact source inspection; retains category columns for other nonvisual entities.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ExplorerTable.svelte"],
-		"symbols": ["ExplorerTable"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerTable.types.ts",
+			"packages/reports/src/components/explorer-ui/explorer-table/ConfigValue.svelte"
+		],
+		"symbols": ["ExplorerTable", "Kind", "Column", "ConfigValue"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -21,7 +25,7 @@
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
-				"description": "Required catalog rows in display order. Config rows contain variable names and committed source values; long values have compact previews and full-value inspection."
+				"description": "Required catalog rows in display order. A config table receives one source file’s variables, raw expressions and optional decoded literals; long values retain full source inspection."
 			},
 			{
 				"name": "ExplorerTable.nav",
@@ -48,7 +52,7 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A Variable/Value table with compact previews and read-only full-value dialogs for long config expressions. Other categories retain their columns. Links preserve the selected revision."
+				"description": "A source-named Variable/Value table with distinct scalar and array presentation and exact-source dialogs. Other categories retain their columns; links preserve the selected revision."
 			}
 		],
 		"errors": []
