@@ -192,11 +192,13 @@ function functionConsumer(owner: ReturnType<typeof revision>['registry']['units'
 		...owner,
 		id: 'function.call-filter',
 		title: 'callFilter',
+		catalog: { visibility: 'internal' as const },
 		owns: { source: [source], symbols: ['callFilter'] },
 		helpers: [
 			{
 				...owner.helpers![0],
 				name: 'callFilter',
+				pure: false,
 				source,
 				consumers: [{ unit: ids.list }, { unit: ids.store }]
 			}

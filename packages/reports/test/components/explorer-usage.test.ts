@@ -5,7 +5,7 @@ import ExplorerPageCard from '../../src/components/explorer-ui/ExplorerPageCard.
 import { entityCatalog } from '../../src/utils/entityCatalog';
 import { content, hostProps, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
-import { withHelpers } from '../entityPreviewHelpers';
+import { withHelpers, withNamedConsumers } from '../entityPreviewHelpers';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 
 for (const mode of ['current', 'commit'] as const) {
@@ -75,7 +75,34 @@ for (const mode of ['current', 'commit'] as const) {
 		const empty = render(ExplorerUsage, { props: { ...props, consumers: [] } }).body;
 		expect(words(empty).trim()).toBe('Used In —');
 		expect(empty).not.toContain('<a');
+		for (const sameOwner of [false, true]) assertNamedUsage(mode, sameOwner);
 	});
+}
+
+function assertNamedUsage(mode: 'current' | 'commit', sameOwner: boolean): void {
+	const head = withNamedConsumers(hostProps(mode).head, sameOwner);
+	const body = content(mode, { category: 'functions' }, { head });
+	const cards = [...body.matchAll(/<article\b[^]*?<\/article>/g)];
+	expect(
+		cards,
+		'Private named callers establish sharing without becoming catalog cards'
+	).toHaveLength(1);
+	const footer = cards[0][0].slice(cards[0][0].indexOf('class="ex-usage'));
+	for (const name of ['firstCall', 'secondCall', 'thirdCall'])
+		expect(words(footer)).toContain(name);
+	expect(words(footer)).not.toContain('fourthCall');
+	expect(words(footer), 'Four distinct named consumers retain overflow').toContain('…');
+	expect([...footer.matchAll(/<a\b/g)]).toHaveLength(3);
+	const helper = head.registry.units.find((unit) => unit.id === ids.filter)!.helpers![0];
+	const first = helper.consumers![0];
+	for (const consumers of [
+		[first, first],
+		[first, { unit: ids.filter, symbol: helper.name }],
+		[first, { unit: 'missing', symbol: 'notHere' }]
+	]) {
+		helper.consumers = consumers;
+		expect(content(mode, { category: 'functions' }, { head })).not.toContain('<article');
+	}
 }
 
 test('private and unclassified dependencies reuse the shared module card', () => {

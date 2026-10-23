@@ -20,28 +20,25 @@
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
 			"status": "complete",
 			"completedAt": "2026-10-23T10:21:40.877Z",
-			"evidence": "Existing shared-card assertions inspect only article elements and miss plain support rows. Helper tests asserted three links but never checked overflow indication. Strengthened the existing entity-relations, function-card, and normal responsive browser matrix. The normal matrix now includes all seven navigable module kinds, true owner self references, duplicates, private functions and unclassified type definitions."
+			"evidence": "Existing shared-card assertions inspect only article elements and miss plain support rows. Helper tests asserted three links but never checked overflow indication. Strengthened the existing entity-relations, function-card, and normal responsive browser matrix. The normal matrix now includes all seven navigable module kinds, true owner self references, duplicates, private functions and unclassified type definitions. Real-main Helpers readback additionally found private function owners missing from the collection-only lookup, and unit-only deduplication collapsing distinct named sibling callers. Extend the existing seven-kind card matrix and shared usage matrix with internal function owners, named siblings, duplicates, self references and missing owners."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "complete",
-			"completedAt": "2026-10-23T10:23:04.053Z",
-			"evidence": "Immutable red 465c198d2f49bc203d553e5afc5464ffd14c524c5241da87bbc83355348f2385 at 36cd9af6c: two focused assertions fail for missing private card and ellipsis. Same browser grid fails at desktop/tablet/mobile, screenshots /tmp/harness-all-modules-before."
+			"status": "pending",
+			"evidence": "Prior card/overflow proof remains preserved. Pending the additional full-owner-graph and distinct named-caller regression."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "complete",
-			"completedAt": "2026-10-23T10:37:39.206Z",
-			"evidence": "Opus 5.5 implemented SupportRow in the canonical card, replaced Other rows with the shared collection renderer, retained full consumer data, and carded shells and related configs. 37 focused tests and 224 component tests pass; typecheck has zero errors/warnings. Latest immutable red is 9856cfb22324added2dbad8e4f5f035be28fae61a84eab1e77eac21cd99498c9. Opus also removed the legacy consumer-kind whitelist and excluded owner self references. Layouts and actual callable-dependency behavior from main are preserved."
+			"status": "pending",
+			"evidence": "Prior card/overflow proof remains preserved. Pending the additional full-owner-graph and distinct named-caller regression."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "complete",
-			"completedAt": "2026-10-23T11:48:07.362Z",
-			"evidence": "Immutable red 725c5cdfc (b1b82519720709f6f9f9cd3faee6586f89e09f0c9b405c16444b9472d30f4c3d) and green 6792fcad7 (34e08df7b0b8e3f06685e2bdb2a7591970ee613985f43d806998eaa7598d7e2f) use identical frozen tests, fixtures, runner and environment on delivered main a34b012a0. All strengthened private/support-card, seven-kind consumer, self-reference and overflow assertions pass."
+			"status": "pending",
+			"evidence": "Prior card/overflow proof remains preserved. Pending the additional full-owner-graph and distinct named-caller regression."
 		},
 		{
 			"id": "verify",

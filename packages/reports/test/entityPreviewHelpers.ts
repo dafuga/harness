@@ -177,3 +177,35 @@ export const privateServiceUsers = [
 	[{ unit: ids.list }, { unit: 'missing' }],
 	undefined
 ];
+
+/** Actual named callers may be private functions, including siblings in the helper's unit. */
+export function withNamedConsumers(detail: HarnessRevision, sameOwner = false): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+	const ownerId = sameOwner ? ids.filter : 'function.named-users';
+	const source = 'src/functions/namedUsers.ts';
+	const names = ['firstCall', 'secondCall', 'thirdCall', 'fourthCall'];
+	const consumers = names.map((symbol) => ({ unit: ownerId, symbol }));
+	const helper = { ...template.helpers![0], consumers };
+	const owner = {
+		...template,
+		id: ownerId,
+		title: 'namedUsers',
+		...(sameOwner ? {} : { catalog: { visibility: 'internal' as const } }),
+		owns: { source: [...template.owns.source, source], symbols: [...names, 'filterOrders'] },
+		helpers: [
+			...(sameOwner ? [helper] : []),
+			...names.map((name) => ({ ...helper, name, source, pure: false, consumers: [] }))
+		]
+	};
+	const target = sameOwner ? owner : { ...template, helpers: [helper] };
+	return {
+		...detail,
+		registry: {
+			...detail.registry,
+			units: [
+				...detail.registry.units.map((unit) => (unit.id === ids.filter ? target : unit)),
+				...(sameOwner ? [] : [owner])
+			]
+		}
+	};
+}
