@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.component.game-navigation-guard",
-	"kind": "component",
+	"kind": "controller",
 	"title": "GameNavigationGuard",
 	"responsibility": "Protect unsaved game edits during app navigation, browser unload and native window lifecycle decisions.",
 	"responsibilityOrigin": "declared",

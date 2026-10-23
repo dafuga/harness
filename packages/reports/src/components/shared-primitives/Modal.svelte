@@ -42,6 +42,7 @@
 		class="viewer-dialog"
 		class:text={variant === 'text'}
 		class:lightbox={variant === 'lightbox'}
+		data-harness-component="modal"
 		aria-labelledby="viewer-dialog-title"
 	>
 		<header class="viewer-header">

@@ -58,6 +58,9 @@ test('a page is what renders an address, whatever kind it was registered as', ()
 	const layout = owning('layout.root', 'layout', ['src/routes/+layout.svelte']);
 	expect(explorerCategory(layout)).toBe('components');
 	expect(explorerRole(layout)).toBe('Layout');
+	const configuration = owning('layout.options', 'layout', ['src/routes/+layout.ts']);
+	expect(explorerCategory(configuration), 'rendering flags have no screenshot').toBe('configs');
+	expect(explorerRole(configuration)).toBe('Route configuration');
 });
 
 test('what is not one of the five product kinds has no category and says what it is', () => {

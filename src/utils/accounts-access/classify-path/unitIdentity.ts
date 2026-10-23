@@ -82,6 +82,8 @@ function sourceIdentity(
 	if (depth === 2) return named('entry', [folder.replace(/\.ts$/, '')]);
 	if (folder === 'routes') return routeIdentity(rest);
 	if (folder === 'lib') return libIdentity(rest);
+	if (folder === 'components' && /\.(?:[cm]?[jt]s)$/.test(rest.at(-1) ?? ''))
+		return named('function', rest.map(stem));
 	return folderKinds[folder] ? folderIdentity(folderKinds[folder], rest) : undefined;
 }
 

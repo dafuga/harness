@@ -4,7 +4,7 @@
 </script>
 
 {#if item.provenance?.length}
-	<dl class="evidence-provenance">
+	<dl class="evidence-provenance" data-harness-component="evidence-provenance">
 		{#each item.provenance as fact (fact.label)}
 			<div>
 				<dt>{fact.label}</dt>

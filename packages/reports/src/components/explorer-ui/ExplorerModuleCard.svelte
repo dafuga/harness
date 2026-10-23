@@ -114,7 +114,7 @@
 	class:ex-page-minimal={page}
 	class:ex-function-tile={!visual}
 	aria-label={row.name}
-	data-harness-component="explorer-module-card"
+	data-harness-component="explorer-ui-explorer-module-card"
 >
 	{#if page}
 		<EntityLink {to} {nav} class="ex-page-open" label={`Open ${row.name}`} title={provenance}>

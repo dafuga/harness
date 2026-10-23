@@ -88,6 +88,7 @@
 	class:failed={!proven && !unknown}
 	class:unknown
 	class:framed
+	data-harness-component="harness-harness-verdict"
 	bind:this={root}
 >
 	<button

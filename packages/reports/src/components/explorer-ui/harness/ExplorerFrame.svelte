@@ -69,28 +69,37 @@
 	);
 </script>
 
-<div class="ex-content" data-mode={host.scope.mode}>
-	{#if registryRequired && !registry.available}
-		<EntityMissing
-			title="No registry at this revision"
-			message={`${gap}.`}
-			{nav}
-			to={entityLens(host.route, { category: host.route.category })}
-			action="Stay on this revision"
-		/>
-	{:else}
-		{@render children(nav)}
-	{/if}
-	{#if shown && reader}
-		<!-- A removed unit's code is its parent's, so it is labelled with that commit. -->
-		<SourceDialog
-			open
-			title={shown.title}
-			files={reader.files}
-			read={reader.read}
-			empty={reader.empty}
-			commit={shown.entity.lastAt ?? shown.at}
-			onClose={closeSource}
-		/>
-	{/if}
+<!-- The marker of the frame draws no box: the content is laid out as the column holds it. -->
+<div class="ex-frame" data-harness-component="harness-explorer-frame">
+	<div class="ex-content" data-mode={host.scope.mode}>
+		{#if registryRequired && !registry.available}
+			<EntityMissing
+				title="No registry at this revision"
+				message={`${gap}.`}
+				{nav}
+				to={entityLens(host.route, { category: host.route.category })}
+				action="Stay on this revision"
+			/>
+		{:else}
+			{@render children(nav)}
+		{/if}
+		{#if shown && reader}
+			<!-- A removed unit's code is its parent's, so it is labelled with that commit. -->
+			<SourceDialog
+				open
+				title={shown.title}
+				files={reader.files}
+				read={reader.read}
+				empty={reader.empty}
+				commit={shown.entity.lastAt ?? shown.at}
+				onClose={closeSource}
+			/>
+		{/if}
+	</div>
 </div>
+
+<style>
+	.ex-frame {
+		display: contents;
+	}
+</style>

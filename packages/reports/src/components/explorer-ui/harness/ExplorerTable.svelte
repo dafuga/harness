@@ -62,7 +62,11 @@
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
 </script>
 
-<div class="ex-scroll" class:ex-config-values={category === 'configs'}>
+<div
+	class="ex-scroll"
+	class:ex-config-values={category === 'configs'}
+	data-harness-component="harness-explorer-table"
+>
 	<table class="ex-table" aria-label={entityLabels[category].title}>
 		<thead>
 			<tr>

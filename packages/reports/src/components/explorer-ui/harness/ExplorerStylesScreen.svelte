@@ -94,7 +94,11 @@
 
 <ExplorerFrame {host}>
 	{#snippet children(_nav)}
-		<section class="hx-styles-page" aria-labelledby="styles-title">
+		<section
+			data-harness-component="explorer-ui-harness-explorer-styles-screen"
+			class="hx-styles-page"
+			aria-labelledby="styles-title"
+		>
 			<header class="hx-styles-intro">
 				<p class="hx-styles-kicker">Design system</p>
 				<h1 id="styles-title">Styles</h1>

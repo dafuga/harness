@@ -47,7 +47,11 @@
 	let filtered = $derived(Boolean(filter.search.trim()));
 </script>
 
-<section class="ex-index" aria-labelledby="ex-index-title">
+<section
+	class="ex-index"
+	aria-labelledby="ex-index-title"
+	data-harness-component="harness-explorer-index"
+>
 	<nav class="ex-crumbs" aria-label="Breadcrumb">
 		<ol>
 			<li><HarnessIcon name={categoryIcon[category]} size={18} /></li>

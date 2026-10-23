@@ -30,7 +30,11 @@
 	} = $props();
 </script>
 
-<div role="tabpanel" aria-label={`${entity.name} details`}>
+<div
+	role="tabpanel"
+	aria-label={`${entity.name} details`}
+	data-harness-component="harness-entity-details"
+>
 	{#if tab === 'source'}
 		<EntitySource unit={entity.unit} {repository} {commit} {entity} {nav} />
 	{:else if tab === 'measurements'}

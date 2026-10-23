@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="catalog-filter-dialog">
+<div class="catalog-filter-dialog" data-harness-component="filter-dialog">
 	<button
 		bind:this={trigger}
 		type="button"

@@ -76,7 +76,11 @@
 	);
 </script>
 
-<section class="ex-card ex-selected" aria-labelledby="ex-change-title">
+<section
+	class="ex-card ex-selected"
+	aria-labelledby="ex-change-title"
+	data-harness-component="harness-entity-change"
+>
 	<header class="ex-evidence-head">
 		<div>
 			<h2 id="ex-change-title">

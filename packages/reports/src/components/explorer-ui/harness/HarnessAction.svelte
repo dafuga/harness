@@ -40,11 +40,18 @@
 	{#if icon}<HarnessIcon name={icon} size={18} />{/if}
 {/snippet}
 {#if href && !disabled}
-	<a class="hx-action {tone}" {href} aria-label={label} onclick={follow}>{@render inner()}</a>
+	<a
+		class="hx-action {tone}"
+		data-harness-component="harness-harness-action"
+		{href}
+		aria-label={label}
+		onclick={follow}>{@render inner()}</a
+	>
 {:else}
 	<button
 		type="button"
 		class="hx-action {tone}"
+		data-harness-component="harness-harness-action"
 		aria-label={label}
 		{disabled}
 		onclick={(event) => onclick?.(event)}>{@render inner()}</button

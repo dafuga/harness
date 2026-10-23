@@ -41,7 +41,11 @@
 </script>
 
 {#if clips.length}
-	<section class="ex-card ex-evidence" aria-labelledby="ex-audio-title">
+	<section
+		class="ex-card ex-evidence"
+		aria-labelledby="ex-audio-title"
+		data-harness-component="harness-entity-audio"
+	>
 		<header class="ex-evidence-head">
 			<div>
 				<h2 id="ex-audio-title">{paired ? 'Audio comparison' : 'Current audio'}</h2>
@@ -77,7 +81,11 @@
 		{/each}
 	</section>
 {:else if empty}
-	<section class="ex-card ex-evidence" aria-labelledby="ex-audio-title">
+	<section
+		class="ex-card ex-evidence"
+		aria-labelledby="ex-audio-title"
+		data-harness-component="harness-entity-audio"
+	>
 		<h2 id="ex-audio-title">Audio evidence</h2>
 		<p class="ex-soft">No audio evidence is recorded for this component at this revision.</p>
 	</section>

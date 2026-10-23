@@ -1,3 +1,5 @@
+import type { ComponentManifest } from '../../src/core/unitTypes';
+import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
@@ -105,7 +107,68 @@ test('every committed public helper example executes against its real implementa
 				);
 				total += 1;
 			}
+			recordHelperWorkload(unit.id, helper, source[helper.name]);
 		}
 	}
 	expect(total).toBeGreaterThan(0);
 });
+
+type Helper = NonNullable<ComponentManifest['helperContracts']>[number];
+type HelperCall = (...args: unknown[]) => unknown;
+/** Normal helper documentation checks also retain direct, feature-based workloads. */
+function recordHelperWorkload(unit: string, helper: Helper, call: HelperCall) {
+	if (!evidenceRequested()) return;
+	const slug = helper.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+	const inputs = (helper.examples ?? []).map((example) => {
+		if (!Array.isArray(example.input)) throw new Error('Helper example arguments must be an array');
+		return example.input;
+	});
+	const cases = JSON.stringify(inputs);
+	const common = {
+		unit,
+		callable: helper.name,
+		workload: `public-helper-${slug}`,
+		target: 'module',
+		samples: 5000 * inputs.length
+	};
+	const measurements = [
+		{
+			...common,
+			metric: 'latency-warm-ms',
+			unitOfMeasure: 'ms',
+			value: helperSamples(inputs, call),
+			method: `Vitest median per call across five batches of 1000 passes over documented features after warmup, including result checksumming; excludes registry I/O and imports. Inputs: ${cases}`
+		},
+		{
+			...common,
+			samples: 1,
+			metric: 'memory-bytes',
+			unitOfMeasure: 'bytes',
+			value: process.memoryUsage().heapUsed,
+			method: `Whole Vitest worker used JavaScript heap after this workload, including runner, imported modules and registry documents; not isolated helper allocation. Inputs: ${cases}`
+		}
+	];
+	recordCapture(
+		{
+			evidence: 'public-helper-workloads',
+			state: slug,
+			kind: 'benchmark',
+			file: `${unit}-${slug}-benchmark.json`,
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
+}
+/** Consume actual returned values so the benchmark cannot discard unused calls. */
+function helperSamples(inputs: unknown[][], call: HelperCall): number {
+	const samples: number[] = [];
+	let checksum = 0;
+	for (let round = 0; round < 6; round++) {
+		const start = performance.now();
+		for (let iteration = 0; iteration < 1000; iteration++)
+			for (const args of inputs) checksum += String(call(...args)).length + 1;
+		if (round > 0) samples.push((performance.now() - start) / (1000 * inputs.length));
+	}
+	expect(checksum).toBeGreaterThan(0);
+	return samples.sort((a, b) => a - b)[2];
+}

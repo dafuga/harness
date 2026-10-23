@@ -23,7 +23,12 @@
 
 <!-- Contract, Used In and Uses are tabs of their own; an overview does not repeat them. -->
 <!-- A stack, so the description, the evidence and the profile each stand 16px apart. -->
-<div role="tabpanel" class="ex-stack" aria-label={`${entity.name} overview`}>
+<div
+	role="tabpanel"
+	class="ex-stack"
+	aria-label={`${entity.name} overview`}
+	data-harness-component="harness-entity-overview"
+>
 	{#if entity.category === 'pages' && entity.purpose}
 		<p class="ex-lead">{entity.purpose}</p>
 	{/if}

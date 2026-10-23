@@ -71,7 +71,11 @@
 	}
 </script>
 
-<section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">
+<section
+	class="ex-card ex-evidence"
+	aria-labelledby="ex-screens-title"
+	data-harness-component="harness-entity-screens"
+>
 	<header class="ex-evidence-head">
 		<div>
 			<h2 id="ex-screens-title">

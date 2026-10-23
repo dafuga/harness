@@ -52,11 +52,13 @@ const tabs = (changes: object = {}) =>
 		render(HarnessTabs, { props: { view: 'map', onview: () => {}, ...changes } } as never).body
 	);
 const notices = (html: string) =>
-	[...html.matchAll(/<p class="hc-notice" role="alert">(.*?)<\/p>/gs)].map(([, inner]) => inner);
+	[...html.matchAll(/<p class="hc-notice[^"]*" role="alert">(.*?)<\/p>/gs)].map(
+		([, inner]) => inner
+	);
 
 test('the header without a navbar is the title row the console had', () => {
 	const html = header({ links: [{ label: 'Reports', href: '/harness/reports' }] });
-	expect(html).toMatch(/<header class="hc-top">.*<h1>Harness<\/h1>/s);
+	expect(html).toMatch(/<header class="hc-top"[^>]*>.*<h1>Harness<\/h1>/s);
 	expect(html).toContain('<nav aria-label="Other views"><a href="/harness/reports">Reports</a>');
 	expect(notices(html).map(text)).toEqual([
 		'The history could not be loaded.',
@@ -75,7 +77,7 @@ test('the header with a navbar is the unified bar, and the notices it always sho
 		onroute: () => {}
 	};
 	const html = header({ navbar });
-	expect(html).toMatch(/^\s*<header class="hx-nav"/);
+	expect(html).toMatch(/^\s*<div class="hx-header[^"]*"[^>]*>\s*<header class="hx-nav"/);
 	expect(
 		text(/<nav\b[^>]*aria-label="Harness categories"[^>]*>(.*?)<\/nav>/s.exec(html)?.[1] ?? '')
 	).toBe('Pages Shells Components Helpers Configs Services Models Styles Platforms');
@@ -84,7 +86,7 @@ test('the header with a navbar is the unified bar, and the notices it always sho
 	expect(header({ navbar, links: [{ label: 'Reports', href: '/harness/reports' }] })).not.toMatch(
 		/Reports|Other views/
 	);
-	expect(html.indexOf('</header>')).toBeLessThan(html.indexOf('<p class="hc-notice"'));
+	expect(html.indexOf('</header>')).toBeLessThan(html.search(/<p\b[^>]*role="alert"/));
 	expect(notices(html).map(text)).toEqual([
 		'The history could not be loaded.',
 		`${missing.message} Open the newest commit`
@@ -94,7 +96,7 @@ test('the header with a navbar is the unified bar, and the notices it always sho
 
 test('the selectors without a tip are the fields the console had', () => {
 	const html = selectors({ bases: shellCommits('main'), from: sha(2) });
-	expect(html).toMatch(/^\s*<div class="hc-controls">/);
+	expect(html).toMatch(/^\s*<div class="hc-controls"[^>]*>/);
 	expect(
 		html.match(/<select\b[^>]*aria-label="([^"]*)"/g)?.map((tag) => /"(.*)"/.exec(tag)?.[1])
 	).toEqual(['Branch', 'Commit', 'Base commit']);
@@ -109,7 +111,7 @@ test('the selectors of the bar say where the tip is, what is viewed, and lead ba
 		onfollow: () => {}
 	};
 	const html = selectors({ tip });
-	expect(html).toMatch(/^\s*<div class="hx-revision">/);
+	expect(html).toMatch(/^\s*<div class="hx-revision"[^>]*>/);
 	expect(html).not.toContain('hc-controls');
 	const labels = [...html.matchAll(/<label>(.*?)<\/label>/gs)].map(([, inner]) => inner);
 	expect(labels.map(text)).toEqual([
@@ -130,7 +132,7 @@ test('the selectors of the bar say where the tip is, what is viewed, and lead ba
 
 test('the tabs without a list are the five views the console had', () => {
 	const html = tabs({ view: 'compare' });
-	expect(html).toMatch(/^\s*<div class="hc-tabs" role="tablist" aria-label="Views">/);
+	expect(html).toMatch(/^\s*<div class="hc-tabs" role="tablist" aria-label="Views"[^>]*>/);
 	expect(
 		[...html.matchAll(/<button type="button" role="tab" aria-selected="(\w+)">([^<]*)</g)].map(
 			([, selected, label]) => [label, selected]
@@ -152,7 +154,7 @@ test('the tabs of an entity are the list they are given: links where a tab has a
 	];
 	const html = tabs({ view: 'measurements', tabs: list, label: 'Details of Page explorer' });
 	expect(html).toMatch(
-		/^\s*<div class="hx-tabs" role="tablist" aria-label="Details of Page explorer">/
+		/^\s*<div class="hx-tabs" role="tablist" aria-label="Details of Page explorer"[^>]*>/
 	);
 	expect(text(html)).toBe('Contract Measurements Source');
 	expect(html).not.toMatch(/Component map|Compare|Growth|Activity|hc-tabs/);

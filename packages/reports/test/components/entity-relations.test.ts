@@ -23,7 +23,7 @@ test('component cards have identical content in catalogs and every relationship 
 			[...body.matchAll(/<article\b[^]*?<\/article>/g)].map((m) => drawn(m[0]));
 		const originals = cards(catalog);
 		for (const card of originals)
-			expect(card).toContain('data-harness-component="explorer-module-card"');
+			expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
 		const routes = [
 			{ category: 'pages', entity: ids.page, tab: 'uses' },
 			{ category: 'components', entity: ids.list, tab: 'uses' },
@@ -33,7 +33,7 @@ test('component cards have identical content in catalogs and every relationship 
 		] as const;
 		for (const route of routes) {
 			for (const card of cards(content(mode, route)))
-				expect(card).toContain('data-harness-component="explorer-module-card"');
+				expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
 			const related = cards(content(mode, route)).filter((card) => card.includes('ex-card-shot'));
 			expect(related.length, JSON.stringify(route)).toBeGreaterThan(0);
 			for (const card of related) {

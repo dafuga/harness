@@ -61,7 +61,7 @@
 {/snippet}
 
 <!-- What uses the entity and what it uses are two sections; neither names a file. -->
-<div class="ex-relations">
+<div class="ex-relations" data-harness-component="harness-entity-relations">
 	{#if show === 'models'}
 		<section class="ex-card" aria-label="Models">
 			<h2>

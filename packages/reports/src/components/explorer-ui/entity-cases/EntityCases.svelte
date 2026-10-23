@@ -60,9 +60,9 @@
 
 <!-- Each input beside what was observed for it, or is documented to give; none says why. -->
 {#if view.gap !== undefined}
-	<p class="cases-note">{view.gap}</p>
+	<p class="cases-note" data-harness-component="entity-cases">{view.gap}</p>
 {:else}
-	<div class="cases" class:documented>
+	<div class="cases" class:documented data-harness-component="entity-cases">
 		{#if view.note}<p class="cases-note">{view.note}</p>{/if}
 		<table>
 			<thead>

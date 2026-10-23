@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { BuildIdentityService } from '../../../../../src/services/BuildIdentityService';
 import {
 	evidenceRequested,
@@ -10,7 +10,7 @@ import {
 
 /** The address the fixture pages are opened at; nothing listens there. */
 export const shellOrigin = 'http://shell.fixture';
-export type ShellPage = 'navbar' | 'primitives' | 'errors' | 'activity';
+export type ShellPage = 'navbar' | 'primitives' | 'errors' | 'activity' | 'catalog';
 const config = 'src/config/shellViteConfig.ts';
 /** Where the setup of a verification compiles the fixture: the build its captures are tied to. */
 const compiled = 'output/shell-fixture';
@@ -24,6 +24,7 @@ const types: Record<string, string> = { js: 'text/javascript', css: 'text/css' }
  */
 export function buildShellFixture(pages: ShellPage[]): string {
 	if (process.env.HARNESS_VERIFY) return compiled;
+	if (pages.includes('catalog')) prepareCatalog();
 	mkdirSync('output', { recursive: true });
 	const home = mkdtempSync(join('output', 'shell-fixture-'));
 	for (const page of pages) {
@@ -33,9 +34,17 @@ export function buildShellFixture(pages: ShellPage[]): string {
 		} catch (reason) {
 			const said = String((reason as { stderr?: Buffer }).stderr ?? reason);
 			console.warn(`the ${page} page of the shell fixture did not build:\n${said.slice(0, 600)}`);
+			if (page === 'catalog') throw reason;
 		}
 	}
 	return home;
+}
+
+/** Cross-workspace components need each application's generated SvelteKit type configuration. */
+function prepareCatalog() {
+	for (const directory of ['.', '../desktop', '../hub']) {
+		execFileSync('bun', ['x', 'svelte-kit', 'sync'], { cwd: resolve(directory), stdio: 'pipe' });
+	}
 }
 
 /** Removes what this run built; what a verification compiled is not this run's to remove. */

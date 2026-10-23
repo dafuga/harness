@@ -43,6 +43,12 @@ const typeCollection = (unit: Classified) =>
 const unlisted = (unit: Classified) =>
 	unit.catalog?.visibility === 'internal' || typeCollection(unit);
 
+/** A SvelteKit options module configures rendering but renders no pixels itself. */
+const layoutConfiguration = (unit: Classified) =>
+	unit.kind === 'layout' &&
+	unit.owns.source.length > 0 &&
+	unit.owns.source.every((path) => /\+layout(?:\.server)?\.[cm]?[jt]s$/.test(path));
+
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
@@ -54,6 +60,7 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (unlisted(unit)) return null;
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
+	if (layoutConfiguration(unit)) return 'configs';
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'functions' || unit.kind === 'module') {
 		return unit.helpers?.some(helperContract) ? 'functions' : null;
@@ -64,6 +71,7 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 /** What a unit is, in words a reader knows: `Page`, `Route loader`, `Audit rule`. */
 export function explorerRole(unit: Classified): string {
 	if (typeCollection(unit)) return 'Type definitions';
+	if (layoutConfiguration(unit)) return 'Route configuration';
 	if (compatibility(unit)) return 'Route alias';
 	if (renders(unit)) return 'Page';
 	if (explorerKindCategory(unit.kind) === 'pages') return 'Route loader';

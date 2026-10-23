@@ -9,7 +9,12 @@ export default [
 	{ ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.svelte-kit/**', 'build/**'] },
 	prettier,
 	{
-		files: ['src/**/*.ts', 'test/**/*.ts', 'db/**/*.ts'],
+		files: [
+			'src/**/*.ts',
+			'test/**/*.ts',
+			'db/**/*.ts',
+			'tests/e2e/support/component-previews/**/*.ts'
+		],
 		languageOptions: {
 			parser: tsParser,
 			parserOptions: { project: './tsconfig.json' },

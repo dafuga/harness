@@ -11,7 +11,12 @@
 	} = $props();
 </script>
 
-<div class="ex-controls" role="search" aria-label={`Find ${noun}`}>
+<div
+	class="ex-controls"
+	role="search"
+	aria-label={`Find ${noun}`}
+	data-harness-component="harness-explorer-controls"
+>
 	<label class="ex-search">
 		<HarnessIcon name="search" size={18} />
 		<input

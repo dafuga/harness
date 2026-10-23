@@ -37,5 +37,14 @@
 	});
 </script>
 
-<!-- Any address of the explorer, for a host without a page of its own for each screen. -->
-<Shown {...host} />
+<!-- Any address of the explorer, for a host without a page of its own for each screen. Its marker
+	draws no box. -->
+<div class="ex-shown" data-harness-component="harness-explorer-content">
+	<Shown {...host} />
+</div>
+
+<style>
+	.ex-shown {
+		display: contents;
+	}
+</style>

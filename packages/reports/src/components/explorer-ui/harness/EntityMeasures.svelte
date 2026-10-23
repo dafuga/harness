@@ -53,7 +53,11 @@
 	]);
 </script>
 
-<section class="ex-card" aria-labelledby="ex-measures-title">
+<section
+	class="ex-card"
+	aria-labelledby="ex-measures-title"
+	data-harness-component="harness-entity-measures"
+>
 	<h2 id="ex-measures-title">Measurements and frozen limits</h2>
 	{#if !record}
 		<p class="ex-soft">No verification record measured this revision.</p>

@@ -161,6 +161,9 @@ test('contract fields preserve admitted iterators, species and getter reads', ()
 const made = (id: string, uses: string[] = []): HarnessUnit => ({
 	...find(ids.page),
 	id,
+	kind: id.startsWith('page.')
+		? 'page'
+		: ({ shared: 'component', endpoint: 'endpoint' }[id] ?? 'function'),
 	dependencies: uses.map((unit) => ({ unit, via: 'import' }))
 });
 // Three pages: two are made of one shared component, and an endpoint is behind none of them.
@@ -192,8 +195,8 @@ test('a page that states name is required in those states, and in no state of an
 	expect(required('page.c')).toEqual(['c']);
 });
 
-test('a shared component is required in the states of every page that is made of it', () => {
-	expect(required('shared')).toEqual(['a', 'a-empty', 'b']);
+test('a visual component needs explicit states; nonvisual helpers retain execution scope', () => {
+	expect(required('shared')).toEqual([]);
 	// Through what uses what uses it, to any depth.
 	expect(required('helper')).toEqual(['a', 'a-empty', 'b']);
 });

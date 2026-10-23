@@ -116,3 +116,32 @@ test('declaring those imports changes them alone: no other reference or uncertai
 	expect(was.filter((item) => item.external === '$desktop')).toHaveLength(written().length);
 	expect(side(loaded.index).graph.uncertain).toEqual(side(undeclared).graph.uncertain);
 }, 60_000);
+
+test('every active visual module has its own required capture state', () => {
+	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
+	const visual = loaded.stored
+		.filter((unit) => {
+			if (unit.status !== 'active') return false;
+			if (['component', 'shell'].includes(unit.kind)) return true;
+			const sources = unit.owns.source;
+			if (unit.kind === 'layout') return sources.some((path) => path.endsWith('.svelte'));
+			const alias = sources.some(
+				(path) =>
+					path.startsWith('packages/reports/src/routes/harness/') &&
+					path.endsWith('/[entity]/details/+page.svelte')
+			);
+			return !alias && sources.some((path) => path.endsWith('/+page.svelte'));
+		})
+		.map((unit) => unit.id)
+		.sort();
+	expect(catalog?.units.slice().sort()).toEqual(visual);
+	for (const id of visual) {
+		const states = catalog!.states.filter((state) => state.units?.includes(id));
+		expect(states, id).toHaveLength(1);
+		expect(states[0], id).toMatchObject({
+			id: id.replaceAll('.', '-'),
+			coverage: 'required',
+			units: [id]
+		});
+	}
+});

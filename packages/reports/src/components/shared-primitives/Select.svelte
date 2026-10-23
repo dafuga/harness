@@ -28,7 +28,13 @@
 	);
 </script>
 
-<span class="report-select" class:disabled class:compact class:has-display={display !== undefined}>
+<span
+	class="report-select"
+	class:disabled
+	class:compact
+	class:has-display={display !== undefined}
+	data-harness-component="select"
+>
 	<select bind:value aria-label={label} {id} {name} {required} {disabled} title={title ?? display}>
 		{@render children()}
 	</select>

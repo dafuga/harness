@@ -37,7 +37,7 @@
 	});
 </script>
 
-<div class="entity-search-results">
+<div class="entity-search-results" data-harness-component="entity-search-results">
 	<p class="entity-search-note">{scope}</p>
 	{#if query}
 		<ul {id} role="listbox" aria-label="Entities found">
