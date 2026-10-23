@@ -1,3 +1,4 @@
+import { separateTypeDeclarations } from '../development-tooling/separateTypeDeclarations';
 import type { ProjectTemplateInput } from './project.types';
 import { appTestFiles } from './projectTests';
 import type { PlannedFile } from '../../core/development-tooling/files';
@@ -9,9 +10,9 @@ import { agentRules, skillRules } from './projectGuidance';
 import { gameFiles } from '../game-authoring/gameProject';
 
 export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
-	if (input.kind === 'lib') return libFiles(input.name);
+	if (input.kind === 'lib') return separateTypeDeclarations(libFiles(input.name));
 	const app = appFiles(input.name);
-	return input.kind === 'game' ? gameFiles(input, app) : app;
+	return separateTypeDeclarations(input.kind === 'game' ? gameFiles(input, app) : app);
 }
 
 function appFiles(name: string): PlannedFile[] {

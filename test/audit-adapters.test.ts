@@ -82,9 +82,8 @@ test('ecosystem adapters report app and library rule violations', async () => {
 
 		const appFindings = (await auditProject(root, { profile: 'app' })).findings;
 		const appRules = appFindings.map((finding) => finding.rule);
-		const libRules = (await auditProject(root, { profile: 'lib' })).findings.map(
-			(finding) => finding.rule
-		);
+		const libFindings = (await auditProject(root, { profile: 'lib' })).findings;
+		const libRules = libFindings.map((finding) => finding.rule);
 
 		expect(
 			appFindings.filter((f) => f.rule === 'separate-type-declarations').map((f) => f.path)
