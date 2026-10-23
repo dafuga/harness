@@ -91,7 +91,8 @@ test('ecosystem adapters report app and library rule violations', async () => {
 		).toEqual([
 			'src/components/Payment.svelte',
 			'src/lib/checkout/payment.ts',
-			'src/utils/runtime.types.ts'
+			'src/utils/runtime.types.ts',
+			'src/utils/state.types.ts'
 		]);
 		expect(
 			appFindings.filter((f) =>
@@ -161,6 +162,7 @@ async function writeTypePlacementFixtures(root: string): Promise<void> {
 	for (const path of ['src/utils/payment.types.ts', 'src/config/paymentConfig.types.ts'])
 		await writeFile(join(root, path), 'export interface PaymentInput { value: string }\n');
 	await writeFile(join(root, 'src/utils/runtime.types.ts'), 'export const runtime = true;\n');
+	await writeFile(join(root, 'src/utils/state.types.ts'), 'export enum State { Ready }\n');
 	await writeFile(
 		join(root, 'src/lib/checkout/payment.ts'),
 		'export interface PaymentInput { value: string }\nexport class PaymentService {}\n'
