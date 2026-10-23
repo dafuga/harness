@@ -68,7 +68,7 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(links(html)).toEqual(
 		[
 			'Pages',
-			'Shells',
+			'Layouts',
 			'Components',
 			'Models',
 			'Services',
@@ -157,7 +157,7 @@ test('both selectors are the shared select, and the bar writes no field of its o
 test('without a resolved address the bar keeps its navigation and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
 	expect(text(categories(html))).toBe(
-		'Pages Shells Components Models Services Helpers Configs Styles Platforms'
+		'Pages Layouts Components Models Services Helpers Configs Styles Platforms'
 	);
 	expect(links(html)).toEqual([]);
 	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(9);

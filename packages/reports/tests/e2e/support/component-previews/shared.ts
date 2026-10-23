@@ -24,6 +24,15 @@ export const image =
 <text x="52" y="326">Status: Ready to ship</text>
 </g><text x="52" y="480" fill="#92a6bb" font-family="sans-serif" font-size="20">Fictional input for image-viewer and card fixtures.</text></svg>`
 	);
+/** Fictional layout input, distinct from the orders page and card fixture images. */
+export const layoutImage = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
+<rect width="920" height="560" fill="#0e1c29"/>
+<text x="40" y="48" fill="#f3c33b" font-family="sans-serif" font-size="18">SYNTHETIC LAYOUT INPUT</text>
+<text x="40" y="94" fill="#f4f7fb" font-family="sans-serif" font-size="28">OrdersFrame</text>
+<path d="M0 120H920" stroke="#30495f"/>
+<rect x="40" y="152" width="840" height="368" rx="12" fill="#142b3e" stroke="#f3c33b" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="460" y="326" text-anchor="middle" fill="#f3c33b" font-family="sans-serif" font-size="32">Child content</text>
+<text x="460" y="366" text-anchor="middle" fill="#d8e4ee" font-family="sans-serif" font-size="22">Your page renders here</text></svg>`;
 export const example = {
 	name: 'Format a duration',
 	description: 'Turns seconds into display text.',

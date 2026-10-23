@@ -69,11 +69,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.harness-harness-header",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-loading-state",
 			"via": "import",
 			"origin": "derived"
@@ -130,6 +125,11 @@
 		},
 		{
 			"unit": "reports.function.harness-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.layout.explorer-layout",
 			"via": "import",
 			"origin": "derived"
 		},

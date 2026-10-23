@@ -60,7 +60,8 @@ test('a kind is one of the seven categories or none; nothing else becomes a func
 	const expected: Record<string, string[]> = {
 		pages: ['page', 'view'],
 		models: ['model'],
-		components: ['component', 'partial', 'layout'],
+		components: ['component', 'partial', 'shell'],
+		layouts: ['layout'],
 		configs: ['config', 'initializer'],
 		services: ['service', 'endpoint', 'api', 'adapter', 'repository', 'workflow', 'command'],
 		functions: ['function', 'validator', 'serializer', 'kernel']
@@ -98,7 +99,7 @@ test('the tab of a section is kept in the query and only where it exists', () =>
 	for (const [category, contractTab] of [
 		['pages', 'models'],
 		['components', 'contract'],
-		['shells', 'contract']
+		['layouts', 'contract']
 	] as const) {
 		const path = `/branch/main/${category}/visual`;
 		expect(explorerRoute(path, '?tab=states')?.tab).toBe('states');
@@ -131,7 +132,7 @@ test('the tab of a section is kept in the query and only where it exists', () =>
 
 /** Non-page modules retain Contract while Pages canonicalize it to Models. */
 function expectRetainedContracts() {
-	for (const category of ['components', 'shells', 'functions', 'services', 'configs', 'models']) {
+	for (const category of ['components', 'layouts', 'functions', 'services', 'configs', 'models']) {
 		const path = `/branch/main/${category}/example`;
 		expect(explorerRoute(path, '?tab=contract')?.tab).toBe('contract');
 		expect(explorerRoutePath(explorerRoute(path, '?tab=contract')!)).toBe(`${path}?tab=contract`);

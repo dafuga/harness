@@ -67,7 +67,7 @@ function validateContent(
 	images: DesignImage[],
 	options?: DesignOption[]
 ): void {
-	const visual = ['page', 'shell', 'component'].includes(category);
+	const visual = ['page', 'shell', 'layout', 'component'].includes(category);
 	if (options && !visual) fail('invalid-input', 'Only a visual plan has design options');
 	// A function is planned in notes and cases. Earlier versions that hold an image are still read.
 	if (category === 'function' && images.length)

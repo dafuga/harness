@@ -31,9 +31,9 @@
 		shot?: Evidence | null;
 	} = $props();
 	let kind = $derived(category ?? row.entity.category);
-	// Pages and components are pictured; helpers, services and models have no image area.
+	// Pages, layouts and components are pictured; helpers, services and models have no image area.
 	let page = $derived(kind === 'pages');
-	let visual = $derived(page || kind === 'components');
+	let visual = $derived(page || kind === 'layouts' || kind === 'components');
 	let to = $derived(
 		entityLens(nav.route, {
 			category: kind,
@@ -185,7 +185,7 @@
 		grid-template-columns: minmax(0, 1fr);
 		gap: 12px;
 	}
-	/* A component card, wherever it is listed: its own capture above its title and Used In list. */
+	/* A layout or component card, wherever listed: its own capture above its title and Used In. */
 	.ex-page-card:not(.ex-page-minimal) {
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-rows: auto 1fr;

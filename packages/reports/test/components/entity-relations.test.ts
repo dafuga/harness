@@ -160,3 +160,38 @@ test('page models include models reached through services and remain bound to th
 		expect(explorerRelations(old, ids.page).models).toEqual([]);
 	});
 });
+
+test('framework layouts list only the pages inside their recorded route tree', () =>
+	measureWorkload('reports.function.explorer-relations', 'framework-layout-page-usage', () => {
+		const { head } = hostProps('current');
+		const template = head.registry.units.find((unit) => unit.id === ids.page)!;
+		const layout = {
+			...template,
+			id: 'app.layout.root',
+			kind: 'layout',
+			title: 'Application layout',
+			owns: { source: ['src/routes/+layout.svelte'], symbols: ['+layout'] },
+			dependencies: []
+		};
+		const outside = {
+			...template,
+			id: 'other.page.orders',
+			owns: { source: ['other/src/routes/orders/+page.svelte'], symbols: ['+page'] }
+		};
+		const options = {
+			...layout,
+			id: 'app.layout.options',
+			owns: { source: ['src/routes/+layout.ts'], symbols: ['ssr'] }
+		};
+		const scoped = {
+			...head,
+			registry: { ...head.registry, units: [...head.registry.units, layout, outside, options] }
+		};
+		expect(explorerRelations(scoped, layout.id).pages.map((page) => page.id)).toEqual([ids.page]);
+		expect(explorerRelations(scoped, options.id).pages).toEqual([]);
+		const rows = entityCatalog(explorerEntities(scoped), 'layouts', (id) =>
+			explorerRelations(scoped, id)
+		);
+		expect(rows).toHaveLength(1);
+		expect(rows[0].usedIn?.map((page) => page.id)).toEqual([ids.page]);
+	}));

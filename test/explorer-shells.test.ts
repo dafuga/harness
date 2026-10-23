@@ -1,3 +1,4 @@
+import { measureWorkload } from './support/measureWorkload';
 import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -19,10 +20,10 @@ import { planningArtifactPaths } from '../src/audit/structure-rules/planningArti
 const commit = 'a'.repeat(40);
 const shell = 'desktop.component.workspace-shell';
 
-test('the explorer has seven categories, Shells after Pages', () => {
+test('the explorer has entity categories, Layouts after Pages', () => {
 	expect([...explorerCategories]).toEqual([
 		'pages',
-		'shells',
+		'layouts',
 		'components',
 		'functions',
 		'configs',
@@ -32,9 +33,9 @@ test('the explorer has seven categories, Shells after Pages', () => {
 	]);
 });
 
-test('only a unit declared a shell is listed under Shells; components, partials and layouts stay', () => {
-	expect(explorerKindCategory('shell')).toBe('shells');
-	for (const kind of ['component', 'partial', 'layout']) {
+test('layout frames have their own collection while shell hosts remain components', () => {
+	expect(explorerKindCategory('layout')).toBe('layouts');
+	for (const kind of ['component', 'partial', 'shell']) {
 		expect([kind, explorerKindCategory(kind)]).toEqual([kind, 'components']);
 	}
 });
@@ -47,61 +48,62 @@ test('a shell has an address at a branch tip and at a selected commit, with its 
 	expect(at).toEqual({
 		branch: 'feat/x',
 		commit,
-		category: 'shells',
+		category: 'layouts',
 		entity: shell,
 		section: 'details',
 		tab: 'source'
 	});
 	expect(explorerRoutePath(at!)).toBe(
-		`/branch/feat%2Fx/commit/${commit}/shells/${shell}?tab=source`
+		`/branch/feat%2Fx/commit/${commit}/layouts/${shell}?tab=source`
 	);
 	expect(explorerRoute('/branch/main/shells')).toEqual({
 		branch: 'main',
 		commit: null,
-		category: 'shells'
+		category: 'layouts'
 	});
 	expect(explorerRoute(`/commit/${commit}/shells/${shell}/history`)).toEqual({
 		branch: null,
 		commit,
-		category: 'shells',
+		category: 'layouts',
 		entity: shell,
 		section: 'history'
 	});
 });
 
-test('the plan of a new shell is a planning artifact of its own folder, as a component plan is', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-shell-plan-'));
-	const contract = {
-		responsibility: 'Frames the workspace of a host.',
-		inputs: [],
-		outputs: [],
-		errors: [],
-		states: ['default'],
-		viewports: ['desktop']
-	};
-	const plan = {
-		unitId: 'shell.host-frame',
-		category: 'shell',
-		slug: 'host-frame',
-		path: 'src/shells/host-frame',
-		title: 'Host frame',
-		goal: 'Frames the workspace of a host.',
-		createdAt: '2026-10-14T08:00:00.000Z',
-		createdBy: { kind: 'person', name: 'Local reviewer' },
-		baseRevision: commit,
-		contract,
-		contractHash: createHash('sha256').update(canonicalJson(contract)).digest('hex')
-	};
-	await mkdir(join(root, plan.path), { recursive: true });
-	await writeFile(join(root, plan.path, 'plan.json'), JSON.stringify(plan));
-	const files = [`${plan.path}/plan.json`, `${plan.path}/designs/v001/design.json`];
-	expect([...planningArtifactPaths(root, files)].sort()).toEqual([
-		'src/',
-		'src/shells/',
-		'src/shells/host-frame/',
-		'src/shells/host-frame/designs/',
-		'src/shells/host-frame/designs/v001/',
-		'src/shells/host-frame/designs/v001/design.json',
-		'src/shells/host-frame/plan.json'
-	]);
-});
+test('the plan of a new shell is a planning artifact of its own folder, as a component plan is', () =>
+	measureWorkload('function.planning-artifact-paths', 'layout-catalog-behavior', async () => {
+		const root = await mkdtemp(join(tmpdir(), 'harness-shell-plan-'));
+		const contract = {
+			responsibility: 'Frames the workspace of a host.',
+			inputs: [],
+			outputs: [],
+			errors: [],
+			states: ['default'],
+			viewports: ['desktop']
+		};
+		const plan = {
+			unitId: 'shell.host-frame',
+			category: 'shell',
+			slug: 'host-frame',
+			path: 'src/shells/host-frame',
+			title: 'Host frame',
+			goal: 'Frames the workspace of a host.',
+			createdAt: '2026-10-14T08:00:00.000Z',
+			createdBy: { kind: 'person', name: 'Local reviewer' },
+			baseRevision: commit,
+			contract,
+			contractHash: createHash('sha256').update(canonicalJson(contract)).digest('hex')
+		};
+		await mkdir(join(root, plan.path), { recursive: true });
+		await writeFile(join(root, plan.path, 'plan.json'), JSON.stringify(plan));
+		const files = [`${plan.path}/plan.json`, `${plan.path}/designs/v001/design.json`];
+		expect([...planningArtifactPaths(root, files)].sort()).toEqual([
+			'src/',
+			'src/shells/',
+			'src/shells/host-frame/',
+			'src/shells/host-frame/designs/',
+			'src/shells/host-frame/designs/v001/',
+			'src/shells/host-frame/designs/v001/design.json',
+			'src/shells/host-frame/plan.json'
+		]);
+	}));

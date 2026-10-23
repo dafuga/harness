@@ -18,7 +18,7 @@ export const added: Added[] = [
 	{
 		project: 0,
 		id: 'app.shell.order-frame',
-		category: 'shells',
+		category: 'layouts',
 		kind: 'shell',
 		title: 'Alpha order frame',
 		summary: 'Frames the Alpha order pages.'

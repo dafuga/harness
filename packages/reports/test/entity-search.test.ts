@@ -20,7 +20,7 @@ function entry(row: Row): SearchEntry {
 }
 const rows: Row[] = [
 	['app.page.orders', 'pages', 'Orders', 'Lists every order of a customer.'],
-	['app.shell.order-frame', 'shells', 'Order frame', 'Frames the order pages.'],
+	['app.shell.order-frame', 'layouts', 'Order frame', 'Frames the order pages.'],
 	['app.component.order-list', 'components', 'OrderList', 'Shows orders in a table.'],
 	[
 		'app.function.format-time',

@@ -29,11 +29,11 @@ for (const [viewport, size] of [
 		page
 	}) => {
 		await page.setViewportSize(size);
-		await open(page, { category: 'shells' }, 'shells');
+		await open(page, { category: 'layouts' }, 'layouts');
 		await settled(page, `shells-catalog-${viewport}`);
 		await expect(frame(page)).toBeVisible();
 		expect(await fits(page)).toBe(true);
-		await open(page, { category: 'components' }, 'shells');
+		await open(page, { category: 'components' }, 'layouts');
 		await expect(content(page).getByText('OrderList', { exact: true }).first()).toBeVisible();
 		// Components keeps no card of the frame; it is named only where a card lists its users.
 		await expect(
@@ -45,7 +45,7 @@ for (const [viewport, size] of [
 		expect(await asUser.count()).toBeGreaterThan(0);
 		for (const link of await asUser.all()) {
 			await expect(link).toBeVisible();
-			await expect(link).toHaveAttribute('href', new RegExp(`/shells/${frameId}$`));
+			await expect(link).toHaveAttribute('href', new RegExp(`/layouts/${frameId}$`));
 		}
 		await expect(frame(page)).toHaveCount(await asUser.count());
 	});
@@ -54,25 +54,25 @@ for (const [viewport, size] of [
 test('a commit that recorded the frame as a component lists it under Components, not Shells', async ({
 	page
 }) => {
-	await open(page, { commit: commits.first, category: 'components' }, 'shells');
+	await open(page, { commit: commits.first, category: 'components' }, 'layouts');
 	await settled(page, 'components-catalog-first-desktop');
 	await expect(frame(page).first()).toBeVisible();
-	await open(page, { commit: commits.first, category: 'shells' }, 'shells');
+	await open(page, { commit: commits.first, category: 'layouts' }, 'layouts');
 	await expect(frame(page)).toHaveCount(0);
 });
 
 test('the shell says it is a Shell, uses the order list and is used in the orders page', async ({
 	page
 }) => {
-	await open(page, { category: 'shells', entity: frameId, tab: 'used-in' }, 'shells');
+	await open(page, { category: 'layouts', entity: frameId, tab: 'used-in' }, 'layouts');
 	await settled(page, 'shell-used-in-desktop');
-	await expect(content(page).getByText('Shell', { exact: true }).first()).toBeVisible();
+	await expect(content(page).getByText('Layout', { exact: true }).first()).toBeVisible();
 	const user = content(page).getByRole('article', { name: 'Orders page', exact: true });
 	await expect(user.getByRole('link', { name: 'Open Orders page', exact: true })).toBeVisible();
-	await open(page, { category: 'shells', entity: frameId, tab: 'uses' }, 'shells');
+	await open(page, { category: 'layouts', entity: frameId, tab: 'uses' }, 'layouts');
 	await expect(content(page).getByRole('link', { name: 'OrderList', exact: true })).toBeVisible();
-	await open(page, { commit: commits.first, category: 'components', entity: frameId }, 'shells');
+	await open(page, { commit: commits.first, category: 'components', entity: frameId }, 'layouts');
 	await expect(content(page).getByText('Component', { exact: true }).first()).toBeVisible();
-	await expect(content(page).getByText('Shell', { exact: true })).toHaveCount(0);
+	await expect(content(page).getByText('Layout', { exact: true })).toHaveCount(0);
 	expect(ids.page).toBe('app.page.orders');
 });

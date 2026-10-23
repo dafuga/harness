@@ -1,17 +1,19 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { explorerAppRoute, explorerName } from '../../src/utils/explorerName';
 import { unit } from '../explorerFixture';
 
 const named = (id: string, kind: string, title: string) => explorerName(unit(id, kind, { title }));
 
-test('code names retain their declared identifier casing', () => {
-	expect(named('function.console-route', 'function', 'consoleRoute')).toBe('consoleRoute');
-	expect(named('reports.component.harness-harness-console', 'component', 'HarnessConsole')).toBe(
-		'HarnessConsole'
-	);
-	expect(named('service.title', 'service', 'TitleService')).toBe('TitleService');
-	expect(named('function.slugify', 'function', 'slugify')).toBe('slugify');
-});
+test('code names retain their declared identifier casing', () =>
+	measureWorkload('reports.function.explorer-name', 'layout-catalog-behavior', () => {
+		expect(named('function.console-route', 'function', 'consoleRoute')).toBe('consoleRoute');
+		expect(named('reports.component.harness-harness-console', 'component', 'HarnessConsole')).toBe(
+			'HarnessConsole'
+		);
+		expect(named('service.title', 'service', 'TitleService')).toBe('TitleService');
+		expect(named('function.slugify', 'function', 'slugify')).toBe('slugify');
+	}));
 
 test('code initialisms keep the exact source spelling', () => {
 	expect(named('reports.function.report-pdf', 'function', 'reportPdf')).toBe('reportPdf');

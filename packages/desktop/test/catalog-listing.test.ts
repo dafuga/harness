@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../test/support/measureWorkload';
 import { readdirSync, readFileSync } from 'node:fs';
 import { afterEach, test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
@@ -36,48 +37,49 @@ const ids = (entities: { id: string }[]) => entities.map((entity) => entity.id).
 const kept = idsOf([...ordinary, twin]);
 const redirects = ['analytics', 'harness-analytics', 'harness-reports', 'harness-reports-id'];
 
-test('implemented pages select their declared screenshot rather than an absent planning image', async () => {
-	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
-	const unit = {
-		...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
-		preview
-	} as ComponentManifest;
-	expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
-	const service = {
-		...unit,
-		kind: 'service',
-		id: 'service.payment',
-		title: 'Take payments',
-		owns: {
-			source: ['src/lib/checkout/PaymentService.ts'],
-			symbols: ['PaymentOptions', 'PaymentService']
+test('implemented pages select their declared screenshot rather than an absent planning image', () =>
+	measureWorkload('desktop.function.catalog-unit', 'layout-catalog-behavior', async () => {
+		const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
+		const unit = {
+			...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
+			preview
+		} as ComponentManifest;
+		expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+		const service = {
+			...unit,
+			kind: 'service',
+			id: 'service.payment',
+			title: 'Take payments',
+			owns: {
+				source: ['src/lib/checkout/PaymentService.ts'],
+				symbols: ['PaymentOptions', 'PaymentService']
+			}
+		};
+		expect(catalogUnit(service, new Set())?.title).toBe('PaymentService');
+		const source = { units: async () => [unit], changed: async () => new Set<string>() };
+		for (const versions of [[], [imagelessDesign]]) {
+			const plan = pagePlan(unit, versions);
+			const planning = { plans: async () => [plan] };
+			const catalog = new CatalogService(source as never, planning as never);
+			expect((await catalog.list('HEAD'))[0]).toMatchObject({
+				planned: false,
+				hasPlan: true,
+				thumbnail: { source: 'recorded', ...preview }
+			});
+			// A plan with no implementation still has no screenshot to display.
+			expect(planCatalog(plan, null, new Set()).thumbnail).toBeNull();
 		}
-	};
-	expect(catalogUnit(service, new Set())?.title).toBe('PaymentService');
-	const source = { units: async () => [unit], changed: async () => new Set<string>() };
-	for (const versions of [[], [imagelessDesign]]) {
-		const plan = pagePlan(unit, versions);
-		const planning = { plans: async () => [plan] };
-		const catalog = new CatalogService(source as never, planning as never);
-		expect((await catalog.list('HEAD'))[0]).toMatchObject({
-			planned: false,
-			hasPlan: true,
-			thumbnail: { source: 'recorded', ...preview }
+		const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 100 };
+		const designed = pagePlan(unit, [{ ...imagelessDesign, images: [image] }]);
+		expect(planCatalog(designed, catalogUnit(unit, new Set()), new Set()).thumbnail).toEqual({
+			version: 'v001',
+			sha256: image.sha256,
+			state: image.state,
+			viewport: image.viewport
 		});
-		// A plan with no implementation still has no screenshot to display.
-		expect(planCatalog(plan, null, new Set()).thumbnail).toBeNull();
-	}
-	const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 100 };
-	const designed = pagePlan(unit, [{ ...imagelessDesign, images: [image] }]);
-	expect(planCatalog(designed, catalogUnit(unit, new Set()), new Set()).thumbnail).toEqual({
-		version: 'v001',
-		sha256: image.sha256,
-		state: image.state,
-		viewport: image.viewport
-	});
-	// A backend cannot make a headless unit reserve room for a design or screenshot.
-	expect(catalogUnit({ ...unit, kind: 'function' }, new Set())?.thumbnail).toBeNull();
-});
+		// A backend cannot make a headless unit reserve room for a design or screenshot.
+		expect(catalogUnit({ ...unit, kind: 'function' }, new Set())?.thumbnail).toBeNull();
+	}));
 
 test('the tip lists every ordinary entity and no page manifest that only loads for an address', async () => {
 	const f = await project();

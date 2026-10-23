@@ -2,30 +2,33 @@
 	"schemaVersion": 1,
 	"id": "hub.layout.root",
 	"kind": "layout",
-	"title": "/",
-	"responsibility": "Owns the / route layout.",
-	"responsibilityOrigin": "derived",
+	"title": "Hub root layout",
+	"responsibility": "Provides the browser session and shared workspace styles around the current hosted page.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/routes/+layout.svelte", "packages/hub/src/routes/+layout.ts"],
 		"symbols": ["+layout", "ssr"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "+layout.children",
-				"type": "Snippet"
+				"type": "Snippet",
+				"description": "Page content rendered through the layout children snippet."
 			}
 		],
 		"outputs": [
 			{
 				"name": "+layout",
-				"type": "markup"
+				"type": "markup",
+				"description": "Rendered child page with the shared styles and session context."
 			},
 			{
 				"name": "ssr",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Disables server rendering for the browser workspace."
 			}
 		],
 		"errors": []

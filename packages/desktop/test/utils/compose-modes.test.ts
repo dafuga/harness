@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { composeModes } from '../../src/components/thread-panel/composeModes';
 import { defaultDesignCount, designCounts, visualCategory } from '../../src/utils/composeModes';
@@ -18,10 +19,11 @@ const hosted: ProjectCapabilities = {
 	source: 'github'
 };
 
-test('Comment leads wherever people may comment', () => {
-	expect(composeModes(local, true)).toEqual(['comment', 'plan', 'change']);
-	expect(composeModes(hosted, true)).toEqual(['comment']);
-});
+test('Comment leads wherever people may comment', () =>
+	measureWorkload('desktop.function.compose-modes', 'layout-catalog-behavior', () => {
+		expect(composeModes(local, true)).toEqual(['comment', 'plan', 'change']);
+		expect(composeModes(hosted, true)).toEqual(['comment']);
+	}));
 
 test('Plan and Change need agents and a writable tip', () => {
 	expect(composeModes(local, false)).toEqual(['comment']);
@@ -35,7 +37,7 @@ test('a context that allows nothing offers no mode', () => {
 });
 
 test('only pages, shells and components plan images, from one to ten options, three by default', () => {
-	expect(['pages', 'shells', 'components'].map(visualCategory)).toEqual([true, true, true]);
+	expect(['pages', 'layouts', 'components'].map(visualCategory)).toEqual([true, true, true]);
 	expect(['functions', 'configs', 'services'].map(visualCategory)).toEqual([false, false, false]);
 	expect([designCounts[0], designCounts.at(-1), designCounts.length]).toEqual([1, 10, 10]);
 	expect(defaultDesignCount).toBe(3);
