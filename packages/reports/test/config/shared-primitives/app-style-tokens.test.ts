@@ -16,6 +16,12 @@ function sources(directory: string): string[] {
 
 test.each([
 	['color: #fff', true],
+	['scrollbar-color: #123456 transparent', true],
+	['accent-color: var(--gold, #f3c33b)', true],
+	['backdrop-filter: blur(3px)', true],
+	['filter: brightness(0.95)', true],
+	['filter: var(--hx-effect-hover-dim)', false],
+	['animation: spinner var(--hx-motion-spin) linear infinite', true],
 	['--hx-style-weight-bold: 900', true],
 	['--hx-nav-gap: var(--hx-space-3)', false],
 	['color: RebeccaPurple', true],

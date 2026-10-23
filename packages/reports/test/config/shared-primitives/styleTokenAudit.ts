@@ -55,6 +55,12 @@ function literalDesign(property: string, value: string): boolean {
 	value = value.replace(/url\([^)]*\)/g, '');
 	if (/#[\da-f]{3,8}\b|\b(?:rgb|hsl|hwb|lab|lch|oklab|oklch)a?\(/i.test(value)) return true;
 	if (namedCssColors.test(value)) return true;
+	if (/filter$/.test(property) && /\(\s*[^)\s]/.test(value)) return true;
+	if (
+		/^(?:transition|animation)/.test(property) &&
+		/\b(?:linear|ease(?:-in|-out|-in-out)?|step-start|step-end)\b/.test(value)
+	)
+		return true;
 	if (
 		/(?:^|[^\w-])-?(?:\d*\.)?\d+(?:px|rem|em|ch|ms|s)\b/.test(
 			value.replace(/(?<![\d.])0(?:px|rem|em|ch|ms|s)\b/g, '0')
