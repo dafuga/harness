@@ -2,12 +2,8 @@
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
-	import {
-		entityLens,
-		shortCommit,
-		type EntityLens,
-		type EntityNav
-	} from '../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/explorer-ui/shortCommit';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../ExplorerUsage.svelte';

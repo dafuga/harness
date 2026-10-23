@@ -43,6 +43,9 @@ export function helperEntity(
 			...unit,
 			title: helperName,
 			helpers: [helper],
+			...(unit.sourceFiles
+				? { sourceFiles: unit.sourceFiles.filter((file) => file.path === helper.source) }
+				: {}),
 			owns: { source: [helper.source], symbols: [helperName] },
 			contract: helperFields(unit, helperName),
 			documentation: helperDocumentation(unit, helper)

@@ -7,7 +7,8 @@
 		ExplorerSlotCoverage as Slot,
 		ExplorerScope
 	} from '../../../models/explorer-ui/Explorer.types';
-	import { entityLens, shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../../helpers/explorer-ui/shortCommit';
 	import RegressionProof from '../../verification-evidence/RegressionProof.svelte';
 	import { entityRemoved } from './entityRemoved';
 	import { galleryItems } from '../../../utils/explorer-ui/entityScreens';

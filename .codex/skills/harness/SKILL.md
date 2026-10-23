@@ -143,6 +143,10 @@ private helpers and single-owner services inside their owner category. Preserve
 registered IDs, framework entries and public URLs. The explorer reads category
 folders and titles from the selected source revision for every collection.
 
+## Helper implementation ownership
+
+- Public shared helper implementations belong under src/helpers/<responsibility>/<camelName>.ts, with pure functions separated from component/service orchestration. Keep single-consumer helpers with their owner. Point helper source contracts and Source tabs only at the selected callable implementation, never all files of its owning module. Preserve supported import addresses with forwarding exports when needed; update active callers to the canonical helper source. Run the registry helper-source guard and the standard selected-helper Source browser test.
+
 ## Callable usage examples
 
 Every public helper needs committed examples with a real invocation, argument values and expected output or error. Execute authored examples against the actual implementation. `harness units check` rejects missing examples; indexing must preserve them and the detail page must select only the current callable and revision.

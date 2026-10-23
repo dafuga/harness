@@ -1,4 +1,4 @@
-import { toCamelCase, toKebabCase, toPascalCase } from '../../core/development-tooling/case';
+import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/development-tooling/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 
 export function componentFiles(name: string): PlannedFile[] {

@@ -14,6 +14,8 @@
 			"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
 			"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
 			"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts",
+			"packages/desktop/src/helpers/networking-security/identityLabel.ts",
+			"packages/desktop/src/helpers/networking-security/plural.ts",
 			"packages/desktop/src/utils/networking-security/remoteLabels.ts",
 			"packages/desktop/src/utils/remoteLabels.ts"
 		],
@@ -30,6 +32,8 @@
 			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
+			"identityLabel",
+			"plural",
 			"lockNote",
 			"awakeNote",
 			"lockedNote",
@@ -37,9 +41,7 @@
 			"approveNote",
 			"awayNote",
 			"revokedNote",
-			"plural",
 			"keyLabel",
-			"identityLabel",
 			"grantLabel",
 			"relayName",
 			"hostLine",
@@ -47,6 +49,8 @@
 			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
+			"plural",
+			"identityLabel",
 			"relayName",
 			"hostLine",
 			"hostSummary",
@@ -208,8 +212,42 @@
 	],
 	"helperContracts": [
 		{
+			"name": "identityLabel",
+			"source": "packages/desktop/src/helpers/networking-security/identityLabel.ts",
+			"inputs": [
+				{
+					"name": "identityLabel.deviceId",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Group the whole identity in fours, retaining the final group",
+					"call": "identityLabel(\"0123456789abcde\")",
+					"input": ["0123456789abcde"],
+					"output": "0123 4567 89ab cde"
+				},
+				{
+					"name": "Leave an empty identity blank",
+					"call": "identityLabel(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
+			"consumers": [
+				{
+					"unit": "desktop.component.remote-approval"
+				},
+				{
+					"unit": "desktop.component.remote-phone-panel"
+				}
+			]
+		},
+		{
 			"name": "plural",
-			"source": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
+			"source": "packages/desktop/src/helpers/networking-security/plural.ts",
 			"inputs": [
 				{
 					"name": "plural.count",
@@ -244,40 +282,6 @@
 				{
 					"unit": "desktop.function.remote-labels",
 					"symbol": "hostSummary"
-				}
-			]
-		},
-		{
-			"name": "identityLabel",
-			"source": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
-			"inputs": [
-				{
-					"name": "identityLabel.deviceId",
-					"type": "string"
-				}
-			],
-			"output": "string",
-			"pure": true,
-			"examples": [
-				{
-					"name": "Group the whole identity in fours, retaining the final group",
-					"call": "identityLabel(\"0123456789abcde\")",
-					"input": ["0123456789abcde"],
-					"output": "0123 4567 89ab cde"
-				},
-				{
-					"name": "Leave an empty identity blank",
-					"call": "identityLabel(\"\")",
-					"input": [""],
-					"output": ""
-				}
-			],
-			"consumers": [
-				{
-					"unit": "desktop.component.remote-approval"
-				},
-				{
-					"unit": "desktop.component.remote-phone-panel"
 				}
 			]
 		}
