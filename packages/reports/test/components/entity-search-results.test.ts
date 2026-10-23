@@ -11,7 +11,7 @@ const commit = 'a'.repeat(40);
 const found: SearchEntry[] = [
 	{
 		id: 'app.shell.order-frame',
-		category: 'shells',
+		category: 'layouts',
 		name: 'Order frame',
 		purpose: 'Frames the order pages.',
 		terms: [],
@@ -56,7 +56,7 @@ test('each result is a link with its category, name and purpose, and the active 
 			id: 'search-list-0',
 			selected: false,
 			href: '/at/app.shell.order-frame',
-			text: 'Shell Order frame Frames the order pages.'
+			text: 'Layout Order frame Frames the order pages.'
 		},
 		{
 			id: 'search-list-1',

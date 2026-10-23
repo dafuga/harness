@@ -20,9 +20,9 @@ const at: ExplorerLocation = {
 };
 
 test('a shell addressed under Components is led to Shells, keeping branch, commit, section and tab', () => {
-	expect(correctedLocation(at, listed('shells'))).toEqual({ ...at, category: 'shells' });
+	expect(correctedLocation(at, listed('layouts'))).toEqual({ ...at, category: 'layouts' });
 	const tip = { ...at, commit: null, section: undefined, tab: undefined };
-	expect(correctedLocation(tip, listed('shells'))).toEqual({ ...tip, category: 'shells' });
+	expect(correctedLocation(tip, listed('layouts'))).toEqual({ ...tip, category: 'layouts' });
 });
 
 test('where the unit is a component at that revision, or is not there, the address stays', async () => {
@@ -32,7 +32,7 @@ test('where the unit is a component at that revision, or is not there, the addre
 		() => {
 			expect(correctedLocation(at, listed('components'))).toBeNull();
 			expect(correctedLocation(at, [])).toBeNull();
-			expect(correctedLocation({ ...at, entity: undefined }, listed('shells'))).toBeNull();
+			expect(correctedLocation({ ...at, entity: undefined }, listed('layouts'))).toBeNull();
 			expect(correctedLocation({ ...at, category: 'platforms' }, listed('components'))).toBeNull();
 		}
 	);

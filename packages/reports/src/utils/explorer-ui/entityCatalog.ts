@@ -80,7 +80,7 @@ function rowOf(entity: ExplorerEntity, related: Relations): CatalogRow {
 		verdict: entity.verdict,
 		usedIn: [
 			...new Map(
-				[...related.usedBy, ...related.pages]
+				(entity.category === 'layouts' ? related.pages : [...related.usedBy, ...related.pages])
 					.filter((item) => item.change !== 'removed')
 					.map((item) => [item.id, item])
 			).values()

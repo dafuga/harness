@@ -9,7 +9,7 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
 
 ## What it holds
 
-- The SHA-1 object format, 105 objects: 7 commits, 67 trees and 31 blobs. There are no refs;
+- The SHA-1 object format with the original proof and committed behavior reviews. There are no refs;
   parent history is not traversed.
 - For the ledger's `originalProof` and each file's current and previous reviews, it holds the commit, its root tree,
   every tree down the path and the blob at that path.
@@ -19,6 +19,9 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
   `1bf1e0acb343c3894a34781787bd67cd41c57317`, `acb1a676d2a5186986369c5a4fb52ec1eabdaae9` and
   `ff91d603c94486efdaddde9cd5e5288703cf38e2`. Earlier reviewed objects remain present. The original HistoryIndexService implementation
   is retained alongside its migration record.
+
+The Layouts update also retains implementation commit `ae9e65325` for layout design,
+planning writes and immutable formatter ignores.
 
 ## Regenerating it
 

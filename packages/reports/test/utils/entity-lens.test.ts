@@ -1,32 +1,35 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { entityLabels, entityLens } from '../../src/utils/entityLens';
 import { place } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
 
-test('there are exactly seven collections and pages come first', () => {
-	expect(Object.keys(entityLabels)).toEqual([
-		'pages',
-		'shells',
-		'components',
-		'functions',
-		'configs',
-		'services',
-		'models',
-		'platforms'
-	]);
-	const words = Object.values(entityLabels).flatMap((label) => [label.title, label.subtitle]);
-	expect(words.join(' ')).not.toMatch(/sub-?components|related|reports/i);
-});
+test('there are exactly seven collections and pages come first', () =>
+	measureWorkload('reports.function.entity-lens', 'layout-catalog-behavior', () => {
+		expect(Object.keys(entityLabels)).toEqual([
+			'pages',
+			'layouts',
+			'components',
+			'functions',
+			'configs',
+			'services',
+			'models',
+			'platforms'
+		]);
+		const words = Object.values(entityLabels).flatMap((label) => [label.title, label.subtitle]);
+		expect(words.join(' ')).not.toMatch(/sub-?components|related|reports/i);
+	}));
 
-test('a link keeps the branch and the selected commit it is shown under', () => {
-	const from = place({ entity: ids.page, tab: 'tests' });
-	expect(entityLens(from, { category: 'components', entity: ids.list })).toEqual({
-		branch: 'feature/orders',
-		commit: commits.middle,
-		category: 'components',
-		entity: ids.list
-	});
-});
+test('a link keeps the branch and the selected commit it is shown under', () =>
+	measureWorkload('reports.function.entity-lens', 'layout-catalog-behavior', () => {
+		const from = place({ entity: ids.page, tab: 'tests' });
+		expect(entityLens(from, { category: 'components', entity: ids.list })).toEqual({
+			branch: 'feature/orders',
+			commit: commits.middle,
+			category: 'components',
+			entity: ids.list
+		});
+	}));
 
 test('a link from the branch tip stays at the branch tip', () => {
 	const to = entityLens(place({ commit: null }), { entity: ids.page, section: 'details' });

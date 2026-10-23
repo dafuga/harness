@@ -13,7 +13,7 @@ import { dirname, join } from 'node:path';
 /** Valid pages added in ordinary authoring order, intentionally different from lexical order. */
 export async function sveltePreviewFixture(root: string, dependencies: string) {
 	await symlink(dependencies, join(root, 'node_modules'), 'dir');
-	const routes = ['pages', 'shells', 'components', 'configs', 'functions', 'services', 'a-first'];
+	const routes = ['pages', 'layouts', 'components', 'configs', 'functions', 'services', 'a-first'];
 	const files: Record<string, string> = {
 		'package.json': '{"type":"module"}',
 		'vite.config.mjs':

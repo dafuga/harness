@@ -171,7 +171,7 @@ Relationship sections group references by declared module type. Every catalog an
 relationship module card uses `ExplorerModuleCard`, including visual and nonvisual
 variants; legacy card entries only forward to it. Its sole metadata field is Used In:
 the first three distinct consumer links in provided order, then an ellipsis when more
-exist. Never add consumer category labels or a second card implementation. Screenshot UI belongs to visual pages, shells
+exist. Never add consumer category labels or a second card implementation. Screenshot UI belongs to visual pages, layouts
 and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
@@ -245,3 +245,16 @@ Component implementations belong directly in their responsibility category, with
 For structural relocations, rewrite resolved import addresses without normalizing unrelated URL literals. Directory URLs retain their trailing slash. Review the complete URL diff and run the existing catalog-listing and preview-binding tests alongside the visual catalog before sealing final evidence.
 
 When integrating main during a relocation, reconcile the latest landed definitions and adjust newly added imports and explicit reference origins for their new depth. Preserve every landed feature and assertion; verify the final source bodies against that main before freezing test inputs and final evidence.
+
+## Layout catalog review
+
+Layouts are reusable visual frames with a real child-content slot, declared as kind `layout`.
+Routing hosts, data loaders, and options-only route modules are not visual layouts. Review the
+implementation rather than promoting everything previously called a shell. Keep stable unit IDs.
+Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pages that use them.
+Capture the actual layout with a clearly labelled Child content placeholder passed through its
+real children slot. Never substitute a full page screenshot for a layout preview.
+
+Full-frame previews own their content boundaries. Apply content-container styling inside the
+frame, never around its navigation. When changing fixture context, extend the existing standard
+acceptance assertions for affected controls and inspect retained pixels before accepting the UI.

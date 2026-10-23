@@ -76,7 +76,8 @@ export function workspaceRoute(path: string): WorkspaceRoute {
 	const { branch, commit, offset } = revision(found.rest);
 	if (commit !== null && !fullCommit.test(commit))
 		throw new Error('A commit link needs the full commit hash');
-	const category = found.rest[offset] || 'pages';
+	const requested = found.rest[offset] || 'pages';
+	const category = requested === 'shells' ? 'layouts' : requested;
 	if (!categories.includes(category as Category)) throw new Error('Unknown catalog category');
 	const entity = found.rest[offset + 1];
 	return {

@@ -1,14 +1,23 @@
 import { platformFixture } from '../../../../test/platformFixture';
+import { createHash } from 'node:crypto';
 import type {
 	HarnessIndex,
 	HarnessRecord,
 	HarnessRevision
 } from '../../../../src/models/Harness.types';
-import { index, record, revision } from '../../../../test/entityFixture';
-import { commits } from '../../../../test/entityUnits';
+import { index, record, revision, tested } from '../../../../test/entityFixture';
+import { commits, ids, scenarios } from '../../../../test/entityUnits';
 import { sealedHistory } from '../../../../../desktop/tests/e2e/ui-evidence-history';
 import { routeIds, routeUnits } from './routeUnits';
+import { layoutImage } from './shared';
 const added = Object.values(routeIds);
+const layoutScenario = {
+	...scenarios[0],
+	id: 'orders-layout',
+	title: 'Synthetic layout with its child-content slot',
+	units: [routeIds.shell],
+	states: [{ id: 'default', coverage: 'required' as const }]
+};
 /** The orders history the route previews open on; its first commit also adds the synthetic units. */
 export const routeIndex: HarnessIndex = {
 	...index,
@@ -21,23 +30,46 @@ export const routeIndex: HarnessIndex = {
 // Sealed once, when a route preview first reads a revision; importing this module seals nothing.
 let sealed: ReturnType<typeof sealedHistory> | undefined;
 /**
- * One recorded revision of that history. The shell is drawn by the orders page scenario, and the
+ * One recorded revision of that history. The layout has its own synthetic input; the
  * function results are those the sealed history keeps for the commit, the same bytes the media
  * route already serves for the desktop previews, so every artifact read matches its stated hash.
  */
 export function routeRevision(commit: string): HarnessRevision {
-	const shown = revision(commit, [results(commit, record(commit))]);
-	const scenarios = shown.registry.scenarios.map((scenario) =>
-		scenario.id === 'orders-page'
-			? { ...scenario, units: [...scenario.units, routeIds.shell] }
-			: scenario
+	const shown = revision(commit, [layoutRecord(commit, results(commit, record(commit)))]);
+	const units = shown.registry.units.map((unit) =>
+		unit.id === ids.page
+			? { ...unit, dependencies: [...unit.dependencies, { unit: routeIds.shell, via: 'import' }] }
+			: unit
 	);
-	const units = [...shown.registry.units, ...routeUnits];
 	return {
 		...shown,
 		platforms: platformFixture,
-		registry: { ...shown.registry, units, scenarios }
+		registry: {
+			...shown.registry,
+			units: [...units, ...routeUnits],
+			scenarios: [...shown.registry.scenarios, layoutScenario]
+		}
 	};
+}
+/** A labelled fixture image of the layout, never a page's screenshot attributed to it. */
+function layoutRecord(commit: string, taken: HarnessRecord): HarnessRecord {
+	const scenario = tested(commit, layoutScenario.id, [
+		{
+			id: 'default',
+			captures: layoutScenario.viewports.map(({ id }) => ({
+				kind: 'screenshot',
+				state: 'default',
+				viewport: id,
+				media: 'media/synthetic-layout-input.svg'
+			}))
+		}
+	]);
+	for (const state of scenario.states)
+		for (const capture of state.captures) {
+			capture.sha256 = createHash('sha256').update(layoutImage).digest('hex');
+			capture.mediaType = 'image/svg+xml';
+		}
+	return { ...taken, scenarios: [...taken.scenarios, scenario] };
 }
 /** A commit the sealed history did not record keeps the results of the orders fixture. */
 function results(commit: string, taken: HarnessRecord): HarnessRecord {

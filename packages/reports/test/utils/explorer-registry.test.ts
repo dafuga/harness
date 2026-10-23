@@ -18,11 +18,11 @@ const scenario = stored<HarnessScenario>('scenarios/harness-console.json');
 const head = revision(units, [scenario], []);
 const at = 'reports.page.harness-branch-branch-at-';
 const part = 'reports.component.harness-';
-const categories = ['pages', 'shells', 'components', 'functions', 'configs', 'services', 'models'];
+const categories = ['pages', 'layouts', 'components', 'functions', 'configs', 'services', 'models'];
 // What a unit is made of: the shells it mounts and the components it holds.
 const drawn = (id: string) => {
-	const { shells, components } = explorerRelations(head, id);
-	return [...shells, ...components].map((item) => item.id.replace(part, '')).sort();
+	const { layouts, components } = explorerRelations(head, id);
+	return [...layouts, ...components].map((item) => item.id.replace(part, '')).sort();
 };
 const statesOf = (id: string) => scenarioFor(scenario, id, units).states.map((state) => state.id);
 const pagesOf = (id: string) =>
@@ -33,7 +33,7 @@ const pagesOf = (id: string) =>
 test('the registry records each page as made of the host and the one screen it mounts', () => {
 	const overview: Record<string, string> = {
 		pages: 'entity-visual-screen',
-		shells: 'entity-visual-screen',
+		layouts: 'entity-visual-screen',
 		components: 'entity-visual-screen',
 		functions: 'entity-behavior-screen',
 		configs: 'entity-config-screen',
@@ -42,18 +42,21 @@ test('the registry records each page as made of the host and the one screen it m
 	};
 	for (const category of categories) {
 		const catalog = category === 'pages' ? 'explorer-pages-screen' : 'explorer-catalog-screen';
-		expect([category, drawn(at + category)]).toEqual([category, [catalog, 'screen']]);
+		expect([category, drawn(at + category)]).toEqual([
+			category,
+			[catalog, 'reports.layout.root', 'screen']
+		]);
 		expect([category, drawn(`${at}${category}-entity`)]).toEqual([
 			category,
-			[overview[category], 'screen']
+			[overview[category], 'reports.layout.root', 'screen'].sort()
 		]);
 		expect([category, drawn(`${at}${category}-entity-details`)]).toEqual([
 			category,
-			['entity-details-screen', 'screen']
+			['entity-details-screen', 'reports.layout.root', 'screen']
 		]);
 		expect([category, drawn(`${at}${category}-entity-history`)]).toEqual([
 			category,
-			['entity-history-screen', 'screen']
+			['entity-history-screen', 'reports.layout.root', 'screen']
 		]);
 	}
 });
@@ -61,10 +64,15 @@ test('the registry records each page as made of the host and the one screen it m
 test('the host uses shared frame pieces, and only the page of no screen names every screen', () => {
 	expect(drawn(`${part}screen`)).toEqual(['harness-console']);
 	expect(drawn(`${part}harness-console`)).toEqual([
-		'harness-header',
-		'reports.component.shared-primitives-loading-state'
+		'reports.component.shared-primitives-loading-state',
+		'reports.layout.explorer-layout'
 	]);
-	expect(drawn('reports.page.harness-view')).toEqual(['explorer-content', 'screen']);
+	expect(drawn('reports.layout.explorer-layout')).toEqual(['harness-header']);
+	expect(drawn('reports.page.harness-view')).toEqual([
+		'explorer-content',
+		'reports.layout.root',
+		'screen'
+	]);
 	const users = units.filter((unit) =>
 		unit.dependencies.some((used) => used.unit === `${part}explorer-content`)
 	);
@@ -84,8 +92,8 @@ test('a screen is recorded on the pages that mount it and on no other route page
 	expect(routed(`${part}entity-config-screen`)).toEqual(['configs-entity', 'models-entity']);
 	expect(routed(`${part}entity-visual-screen`)).toEqual([
 		'components-entity',
-		'pages-entity',
-		'shells-entity'
+		'layouts-entity',
+		'pages-entity'
 	]);
 	expect(routed(`${part}entity-behavior-screen`)).toEqual(['functions-entity', 'services-entity']);
 	expect(routed(`${part}entity-history-screen`)).toEqual(
@@ -96,7 +104,9 @@ test('a screen is recorded on the pages that mount it and on no other route page
 		.usedBy.filter((item) => item.role === 'Route alias')
 		.map((item) => item.id.replace(at, ''))
 		.sort();
-	expect(aliases).toEqual(entity.map((page) => `${page}-details`).sort());
+	expect(aliases).toEqual(
+		[...entity.map((page) => `${page}-details`), 'shells-entity-details'].sort()
+	);
 });
 
 const visual = (id: string) =>
@@ -128,12 +138,12 @@ test('a visual unit is under exactly the states that name it, and never under an
 // is reached on and, where an old Components address is corrected, the correction too.
 const corrected = 'reports.function.corrected-location';
 const shellStates: Array<[string, string[]]> = [
-	['shells', [`${at}shells`]],
-	['shells-tip', [`${at}shells`]],
-	['shell', [`${at}shells-entity`]],
-	['shell-details', [`${at}shells-entity`]],
-	['shell-history', [`${at}shells-entity-history`]],
-	['shell-redirect', [`${at}shells-entity`, corrected]],
+	['layouts', [`${at}layouts`]],
+	['shells-tip', [`${at}layouts`]],
+	['shell', [`${at}layouts-entity`]],
+	['shell-details', [`${at}layouts-entity`]],
+	['shell-history', [`${at}layouts-entity-history`]],
+	['shell-redirect', [`${at}layouts-entity`, corrected]],
 	['shell-earlier', [`${at}components-entity`, corrected]],
 	['shell-retained', ['reports.page.harness-view']]
 ];
@@ -147,7 +157,7 @@ const searching = [
 	'reports.component.entity-search-results'
 ];
 const searchStates: Array<[string, string[]]> = [
-	['search', [`${at}shells`, ...searching]],
+	['search', [`${at}layouts`, ...searching]],
 	['search-pinned', [`${at}functions`, ...searching]]
 ];
 const contracts = [
