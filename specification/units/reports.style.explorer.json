@@ -3,7 +3,7 @@
 	"id": "reports.style.explorer",
 	"kind": "style",
 	"title": "explorer",
-	"responsibility": "Publishes the explorer palette and sizes on its root, re-points the colours the console reads inside it, and styles the page column, notices, cards, pills, breadcrumbs, the search field and the switch.",
+	"responsibility": "Imports the shared app design tokens, forwards legacy palette aliases, and styles the explorer frame, notices, cards, breadcrumbs, search field and switch.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,13 @@
 		"outputs": [],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.style.app-tokens",
+			"via": "style-import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/lib/styles/explorer.css",

@@ -38,21 +38,17 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px 16px;
-		padding: 14px 0;
+		gap: var(--hx-space-8) var(--hx-space-16);
+		padding: var(--hx-space-14) 0;
 	}
 	.source-files li + li {
-		border-top: 1px solid var(--ex-line, var(--border));
+		border-top: var(--hx-border-thin) solid var(--ex-line, var(--border));
 	}
 	.source-files a,
 	.source-files code {
 		min-width: 0;
 		overflow-wrap: anywhere;
-		font:
-			0.9rem ui-monospace,
-			SFMono-Regular,
-			Menlo,
-			monospace;
+		font: var(--hx-type-size-sm) var(--hx-font-family-mono);
 	}
 	.source-files a {
 		color: inherit;

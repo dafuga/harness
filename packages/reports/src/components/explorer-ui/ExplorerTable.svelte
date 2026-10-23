@@ -182,7 +182,7 @@
 		table-layout: fixed;
 	}
 	.ex-config-values.ex-scroll :global(:is(th, td)) {
-		padding-block: 12px;
+		padding-block: var(--hx-space-12);
 		vertical-align: top;
 	}
 	.ex-config-values :global(thead th:first-child) {
@@ -190,7 +190,7 @@
 	}
 	.ex-config-name {
 		font-size: var(--hx-type-size-sm);
-		line-height: 1.5;
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
 	.ex-config-scope {
@@ -199,10 +199,10 @@
 	.ex-config-values :global(.viewer-dialog .ex-value-full) {
 		max-height: min(70dvh, 720px);
 		margin: 0;
-		padding: 14px 16px;
-		border-radius: 8px;
+		padding: var(--hx-space-14) var(--hx-space-16);
+		border-radius: var(--hx-radius-small);
 		background: var(--ex-raised);
-		font-size: 0.95rem;
+		font-size: var(--hx-type-size-base);
 		white-space: pre;
 	}
 	.ex-config-values :global(.viewer-header h2) {
@@ -210,7 +210,7 @@
 	}
 	@media (max-width: 640px) {
 		.ex-config-values.ex-scroll :global(:is(th, td)) {
-			padding: 10px;
+			padding: var(--hx-space-10);
 		}
 		.ex-config-values :global(thead th:first-child) {
 			width: 40%;

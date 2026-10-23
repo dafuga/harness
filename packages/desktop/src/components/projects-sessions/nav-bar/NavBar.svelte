@@ -80,7 +80,7 @@
 <style>
 	/* Settings end the search's own place, so they never take a row of their own. */
 	.topbar-search {
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	.topbar-settings {
 		display: inline-grid;
@@ -89,8 +89,8 @@
 		align-self: center;
 		width: 40px;
 		height: 40px;
-		border: 1px solid var(--line);
-		border-radius: 8px;
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-small);
 		color: inherit;
 	}
 	.topbar-settings:hover,
@@ -137,8 +137,8 @@
 				'brand project . environment revision' auto
 				'tools tools tools tools tools' auto
 				/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto;
-			gap: 8px 16px;
-			padding: 12px 26px 0;
+			gap: var(--hx-space-8) var(--hx-space-16);
+			padding: var(--hx-space-12) var(--hx-space-26) 0;
 		}
 		header.topbar.with-account,
 		header.topbar.with-activity {
@@ -198,8 +198,8 @@
 			grid-template:
 				'brand project tools . environment revision search' auto
 				/ auto minmax(0, max-content) auto 1fr max-content auto max-content;
-			column-gap: 22px;
-			padding: 0 26px;
+			column-gap: var(--hx-space-22);
+			padding: 0 var(--hx-space-26);
 		}
 		header.topbar.with-activity {
 			grid-template:

@@ -77,14 +77,14 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 6px 12px;
+		gap: var(--hx-space-6) var(--hx-space-12);
 		min-width: 0;
-		line-height: 1.5;
+		line-height: var(--hx-style-leading-normal);
 	}
 	.inspect {
 		display: inline-flex;
 		align-items: center;
-		gap: 10px;
+		gap: var(--hx-space-10);
 	}
 	.inspect :global(.hx-action) {
 		width: 44px;
@@ -93,10 +93,10 @@
 	.pill {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		padding: 0 10px 0 6px;
-		border: 1px solid var(--ex-line-strong);
-		border-radius: 999px;
+		gap: var(--hx-space-6);
+		padding: 0 var(--hx-space-10) 0 var(--hx-space-6);
+		border: var(--hx-border-thin) solid var(--ex-line-strong);
+		border-radius: var(--hx-radius-pill);
 		background: var(--ex-raised);
 		color: var(--ex-soft);
 		font-family: var(--hx-font-family-mono);
@@ -117,12 +117,12 @@
 	.items {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		min-width: 0;
 	}
 	.chip {
-		padding: 0 8px;
-		border: 1px solid var(--ex-line-strong);
+		padding: 0 var(--hx-space-8);
+		border: var(--hx-border-thin) solid var(--ex-line-strong);
 		border-radius: var(--hx-radius-small);
 		background: var(--ex-raised);
 		color: var(--ex-text);
@@ -133,7 +133,7 @@
 		border-style: dashed;
 		background: transparent;
 		color: var(--ex-muted);
-		font-style: italic;
+		font-style: var(--hx-style-font-italic);
 	}
 	.number,
 	.keyword,
@@ -143,7 +143,7 @@
 	}
 	.number {
 		color: var(--hx-accent);
-		font-variant-numeric: tabular-nums;
+		font-variant-numeric: var(--hx-style-numeric-tabular);
 	}
 	.keyword {
 		color: var(--ex-muted);

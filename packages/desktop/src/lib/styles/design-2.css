@@ -1,8 +1,8 @@
 pre {
 	overflow: auto;
-	font-size: 12px;
-	padding: 15px;
-	background: #001420;
+	font-size: var(--hx-type-size-xs);
+	padding: var(--hx-space-15);
+	background: var(--hx-bg);
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
 }
@@ -17,13 +17,13 @@ pre {
 	min-width: 90px;
 }
 .segmented-choice button:first-child {
-	border-radius: 5px 0 0 5px;
+	border-radius: var(--hx-radius-xsmall) 0 0 var(--hx-radius-xsmall);
 }
 .segmented-choice button:last-child {
-	border-radius: 0 5px 5px 0;
+	border-radius: 0 var(--hx-radius-xsmall) var(--hx-radius-xsmall) 0;
 }
 .segmented-choice button.active {
-	background: #ffd03514;
+	background: var(--hx-gold-wash);
 }
 
 .behavior-notes p {
@@ -35,10 +35,10 @@ pre {
 .app-route {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: center;
-	margin: 6px 0 0;
-	font-size: 12px;
+	margin: var(--hx-space-6) 0 0;
+	font-size: var(--hx-type-size-xs);
 	color: var(--muted);
 }
 .app-route code {
@@ -49,8 +49,8 @@ pre {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 8px 12px;
-	margin-top: 12px;
+	gap: var(--hx-space-8) var(--hx-space-12);
+	margin-top: var(--hx-space-12);
 	min-width: 0;
 }
 .option-direction {

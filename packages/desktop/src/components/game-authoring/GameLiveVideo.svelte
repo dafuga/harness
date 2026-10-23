@@ -39,8 +39,8 @@
 	video {
 		width: 100%;
 		aspect-ratio: 1280/704;
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		background: #04131d;
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
+		background: var(--hx-bg);
 	}
 </style>

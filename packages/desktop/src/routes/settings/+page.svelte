@@ -38,10 +38,10 @@
 <style>
 	.settings-page {
 		display: grid;
-		gap: 18px;
+		gap: var(--hx-space-18);
 		max-width: 720px;
 		margin: 0 auto;
-		padding: 32px 24px;
+		padding: var(--hx-space-32) var(--hx-space-24);
 	}
 	h1 {
 		margin: 0;

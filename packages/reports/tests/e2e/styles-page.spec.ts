@@ -2,6 +2,8 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { at, expectNoOverflow, expectPath, tip } from './support/explorer';
 import { capturePhase, viewports } from './support/harnessCapture';
 import { seeded } from './support/harnessHistory';
+import { appStyleTokensConfig } from '../../src/configs/shared-primitives/appStyleTokensConfig';
+import { declaredStyleTokens } from './support/styleCatalog';
 
 const { commits } = seeded();
 
@@ -25,18 +27,14 @@ for (const viewport of viewports) {
 		await expect(
 			page.getByRole('heading', { level: 1, name: 'Styles', exact: true })
 		).toBeVisible();
-		for (const heading of [
-			'Colors',
-			'Font families',
-			'Type scale',
-			'Text styles',
-			'Layout tokens'
-		]) {
+		for (const heading of appStyleTokensConfig.groups) {
 			await expect(
 				page.getByRole('heading', { level: 2, name: heading, exact: true })
 			).toBeVisible();
 		}
-		await expect(page.locator('[data-style-token]')).toHaveCount(35);
+		await expect(page.locator('[data-style-token]')).toHaveCount(declaredStyleTokens().length);
+		for (const name of declaredStyleTokens())
+			await expect(page.locator(`[data-style-token="${name}"]`)).toHaveCount(1);
 		await expect(page.getByText('--hx-bg', { exact: true })).toBeVisible();
 		await expect(page.getByText('--hx-font-family-sans', { exact: true })).toBeVisible();
 		await expectNoOverflow(page);
