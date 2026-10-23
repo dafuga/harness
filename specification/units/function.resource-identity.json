@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-identity",
+	"kind": "function",
+	"title": "resourceIdentity",
+	"responsibility": "Validates owner ancestry and process start identity, and identifies abandoned stale leases conservatively.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/execution-runtimes/resourceIdentity.ts"],
+		"symbols": ["resourceIdentity", "abandonedResources"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resourceIdentity.job",
+				"type": "ResourceJob",
+				"description": "One lease with its owner PID, start identity, reservation and heartbeat."
+			},
+			{
+				"name": "abandonedResources.jobs",
+				"type": "ResourceJob[]",
+				"description": "Ordered shared queued and running reservations, including each parent identity and requested budget."
+			},
+			{
+				"name": "abandonedResources.rows",
+				"type": "ProcessRow[]",
+				"description": "Observed process rows with parent relationships and start identities; unavailable identity is never assumed valid."
+			},
+			{
+				"name": "abandonedResources.now",
+				"type": "number",
+				"description": "Current epoch time in milliseconds for telemetry freshness, queue ordering or lease expiry."
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceIdentity",
+				"type": "Promise<boolean>",
+				"description": "Whether this process descends from the still-current owner PID and start identity."
+			},
+			{
+				"name": "abandonedResources",
+				"type": "string[]",
+				"description": "IDs with stale heartbeats whose owner and tracked worker are both proven absent."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.process-descendants",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/execution-runtimes/resourceIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/execution-runtimes/resourceIdentity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

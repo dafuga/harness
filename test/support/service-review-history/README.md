@@ -62,3 +62,5 @@ The pack's bytes can differ between Git versions; its object ids cannot. Check a
 `git index-pack --stdin` into an empty bare repository, then run `test/services/unit-index.test.ts`.
 
 Benchmark analytics retains implementation commit `9425223b3` for the additive query registration, rendering and snapshot fields.
+
+Resource admission retains implementation commit `43dacd370` for evaluator, verification and priority changes. Original relocation proofs and prior behavior reviews remain present.

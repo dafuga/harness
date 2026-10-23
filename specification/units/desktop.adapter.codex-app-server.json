@@ -28,6 +28,10 @@
 				"type": "CliCommand"
 			},
 			{
+				"name": "CodexAppServerAdapter.constructor.queue",
+				"type": "ResourceQueueService"
+			},
+			{
 				"name": "CodexAppServerAdapter.run.turn",
 				"type": "AgentTurn"
 			},
@@ -75,6 +79,11 @@
 		},
 		{
 			"unit": "desktop.validator.image-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
 			"via": "import",
 			"origin": "derived"
 		}

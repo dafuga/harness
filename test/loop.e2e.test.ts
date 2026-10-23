@@ -1,3 +1,4 @@
+import { observedLoop } from './support/loop-repair/observedLoop';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -68,12 +69,20 @@ test('loop CLI creates from templates, searches, guides next, and evaluates', as
 			root
 		);
 		const next = await runHarness(['loop', 'next', 'proof-loop', '--json'], root);
-		const evaluated = await runHarness(['loop', 'evaluate', 'proof-loop', '--json'], root);
+		const evaluated = await observedLoop(root);
+		expect(evaluated.status, evaluated.stderr).toBe(0);
 
 		expect(JSON.parse(search.stdout).map((result: { id: string }) => result.id)).toContain('proof');
 		expect(JSON.parse(next.stdout).step.id).toBe('verify');
 		expect(JSON.parse(next.stdout).evaluator.command).toBe('bun --version');
-		expect(JSON.parse(evaluated.stdout).passed).toBe(true);
+		const result = JSON.parse(evaluated.stdout);
+		expect(result.passed).toBe(true);
+		expect(result.results[0].stdout.trim()).not.toBe('');
+		expect(result.results[1]).toMatchObject({
+			exitCode: 0,
+			stdout: 'fast output\n',
+			stderr: 'fast diagnostic\n'
+		});
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
@@ -93,7 +102,15 @@ async function writeTemplate(root: string): Promise<void> {
 			title: 'Proof Loop',
 			summary: 'Proves evaluator CLI behavior.',
 			steps: [{ id: 'verify', title: 'Verify the command.' }],
-			evaluators: [{ id: 'version', title: 'Check Bun.', command: 'bun --version', step: 'verify' }]
+			evaluators: [
+				{ id: 'version', title: 'Check Bun.', command: 'bun --version', step: 'verify' },
+				{
+					id: 'streams',
+					title: 'Retain fast output.',
+					command: 'printf "fast output\\n"; printf "fast diagnostic\\n" >&2',
+					step: 'verify'
+				}
+			]
 		})
 	);
 }

@@ -1,4 +1,5 @@
 export interface VerifyOptions {
+	priority?: string;
 	root?: string;
 	/** Commit to verify; `HEAD` by default. Uncommitted changes are never part of it. */
 	commit?: string;

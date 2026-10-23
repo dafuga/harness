@@ -1,10 +1,12 @@
 import type { ProcessOptions } from './cliProcess.types';
-import { spawn } from 'node:child_process';
+export type { ProcessOptions } from './cliProcess.types';
+import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
+import { StringDecoder } from 'node:string_decoder';
+import { resourceEnvironment } from '../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
 import { cliEnvironment } from './cli-environment/cliEnvironment';
 import { streamLines } from './streamLines';
-import { StringDecoder } from 'node:string_decoder';
 export function killOwnedProcess(pid: number | undefined): void {
 	if (!pid) return;
 	try {
@@ -13,10 +15,10 @@ export function killOwnedProcess(pid: number | undefined): void {
 		/* Already exited. */
 	}
 }
-function processFor(command: CliCommand, cwd: string | undefined) {
+function processFor(command: CliCommand, options: ProcessOptions) {
 	return spawn(command.command, command.args, {
-		cwd,
-		env: cliEnvironment(),
+		cwd: options.cwd,
+		env: { ...cliEnvironment(), ...resourceEnvironment(options.resources?.env ?? {}) },
 		detached: process.platform !== 'win32',
 		stdio: 'pipe'
 	});
@@ -27,7 +29,7 @@ export async function cliProcess(
 ): Promise<string> {
 	if (options.signal?.aborted) throw new RunCancelled();
 	return new Promise((resolve, reject) => {
-		const child = processFor(command, options.cwd),
+		const child = processFor(command, options),
 			decoder = new StringDecoder('utf8');
 		let output = '',
 			error = '',
@@ -72,8 +74,18 @@ export async function cliProcess(
 			consume.end();
 			finish(code === 0 ? null : new Error('CLI failed (' + String(code) + '): ' + error));
 		});
-		child.stdin.end(options.input ?? '');
+		closeInput(child, options.input ?? '', finish);
+		if (child.pid) options.resources?.track(child.pid);
 	});
 }
 
-export type { ProcessOptions } from './cliProcess.types';
+function closeInput(
+	child: ChildProcessWithoutNullStreams,
+	input: string,
+	finish: (failure: Error | null) => void
+): void {
+	child.stdin.on('error', (error: NodeJS.ErrnoException) => {
+		if (error.code !== 'EPIPE') finish(error);
+	});
+	child.stdin.end(input);
+}

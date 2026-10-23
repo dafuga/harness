@@ -42,6 +42,8 @@ async function build(plan: IosBuildPlan): Promise<void> {
 	}
 	const built = await followed([
 		'xcodebuild',
+		'-jobs',
+		process.env.CARGO_BUILD_JOBS ?? '1',
 		'-project',
 		'ios/App/App.xcodeproj',
 		'-scheme',

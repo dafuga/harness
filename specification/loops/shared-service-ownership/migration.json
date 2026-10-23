@@ -1928,14 +1928,28 @@
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "78ac6ad38f03d0577fb8b8b3fed6b9a5ad4251def0ee8969b964a88ae1936de9",
+			"definition": "de2ebc33ef97ea1dfdb128a45f698738759bfdc6acb62a03ec4f57a9c91f19f2",
 			"relocationDefinition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
 				"path": "src/cli/program/loopEvaluate.ts",
-				"definition": "78ac6ad38f03d0577fb8b8b3fed6b9a5ad4251def0ee8969b964a88ae1936de9",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "de2ebc33ef97ea1dfdb128a45f698738759bfdc6acb62a03ec4f57a9c91f19f2",
+				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+			},
+			"previousReviews": [
+				{
+					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+					"path": "src/cli/program/loopEvaluate.ts",
+					"definition": "9ca3f4725594070b26bfbc4f7c88e9ab9601a765b696b4d201f6eec699a08db1",
+					"reason": "Admit evaluator commands under shared reservations and install child listeners before PID tracking."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/loopEvaluate.ts",
+					"definition": "78ac6ad38f03d0577fb8b8b3fed6b9a5ad4251def0ee8969b964a88ae1936de9",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "adapter.desktop-archive",
@@ -2476,14 +2490,28 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "be0462cdd4611009e66c05e818da3e783018dbcc6f4b4b1e464d67036f47053b",
+			"definition": "888e2137a33e49d4281fd5a35e1df21fca4097c88223c19db0e348b28ba8f7fe",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "be0462cdd4611009e66c05e818da3e783018dbcc6f4b4b1e464d67036f47053b",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "888e2137a33e49d4281fd5a35e1df21fca4097c88223c19db0e348b28ba8f7fe",
+				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+			},
+			"previousReviews": [
+				{
+					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "9fb96300a7e14734623313329942a45a662663c2c9ee377564f8f57aaf1cbafd",
+					"reason": "Propagate the explicit resource priority to verification without changing revision or evidence selection."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "be0462cdd4611009e66c05e818da3e783018dbcc6f4b4b1e464d67036f47053b",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "service.verification",
@@ -3487,14 +3515,28 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
+			"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
+				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+			},
+			"previousReviews": [
+				{
+					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "4c0bd01a27c1c8473719ec1c1038e107c482e03c4a851a3f9166b1fac289e5ea",
+					"reason": "Admit verification checks with bounded resources while retaining current diagnostics, captures and cleanup."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "reports.service.report-storage-sync",
@@ -3532,14 +3574,28 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "4237e0be96a290c2ca0fa2912eae5a990eeaca57041a0c7ac1ac81231a23f605",
+			"definition": "189f6724d1f0fc04e7771d4ffe0dcb488cf8d5016443c1d0ef7ee3903793ce47",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "4237e0be96a290c2ca0fa2912eae5a990eeaca57041a0c7ac1ac81231a23f605",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "189f6724d1f0fc04e7771d4ffe0dcb488cf8d5016443c1d0ef7ee3903793ce47",
+				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+			},
+			"previousReviews": [
+				{
+					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "bab61e10f282230a55e96fedc4ab5198848e3549ffdccfbe5a25b997bafa26a2",
+					"reason": "Expose the managed work priority alongside all existing verification options."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "4237e0be96a290c2ca0fa2912eae5a990eeaca57041a0c7ac1ac81231a23f605",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.analytics-html",

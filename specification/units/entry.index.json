@@ -130,7 +130,9 @@
 			"ClaudeBenchmarkAdapter",
 			"BenchmarkDefinitionValidator",
 			"BenchmarkRepository",
-			"BenchmarkService"
+			"BenchmarkService",
+			"registerResourcesCommand",
+			"ResourceQueueService"
 		]
 	},
 	"contract": {
@@ -192,6 +194,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.resources",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -627,6 +634,11 @@
 		},
 		{
 			"unit": "service.regression-proof",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
 			"via": "reexport",
 			"origin": "derived"
 		},

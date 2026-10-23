@@ -1,39 +1,41 @@
 import type { VerifyOptions } from './runVerify.types';
+export type { VerifyOptions } from './runVerify.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
+import { resourcePriority } from '../../../core/execution-runtimes/resourceTypes';
 import {
 	defaultVerifyConfig,
 	verifyConfigFile,
 	verifyConfigSchema,
 	type VerifyConfig
 } from '../../../core/verification-evidence/verifyTypes';
+import { ExplanationRepository } from '../../../repositories/verification-evidence/ExplanationRepository';
 import {
 	VerificationStoreRepository,
 	type StoredRecord
 } from '../../../repositories/verification-evidence/VerificationStoreRepository';
+import { ReasonPathService } from '../../../services/development-tooling/ReasonPathService';
+import { UnitRuntimeService } from '../../../services/execution-runtimes/UnitRuntimeService';
+import { CommitMessageService } from '../../../services/git-source-history/commit-message-service/CommitMessageService';
+import { ImpactService } from '../../../services/reports-media/impact-service/ImpactService';
 import {
 	BuildIdentityService,
 	type IdentifiedBuild
 } from '../../../services/verification-evidence/BuildIdentityService';
-import { CommitMessageService } from '../../../services/git-source-history/commit-message-service/CommitMessageService';
 import { EvidenceRestoreService } from '../../../services/verification-evidence/EvidenceRestoreService';
-import { ExplanationRepository } from '../../../repositories/verification-evidence/ExplanationRepository';
-import { ImpactService } from '../../../services/reports-media/impact-service/ImpactService';
-import { ReasonPathService } from '../../../services/development-tooling/ReasonPathService';
-import { TrustedBaseService } from './TrustedBaseService';
-import { UnitRuntimeService } from '../../../services/execution-runtimes/UnitRuntimeService';
 import {
 	VerificationCheckService,
 	type CheckReport
 } from '../../../services/verification-evidence/VerificationCheckService';
-import { VerificationService } from './verification-service/VerificationService';
 import {
 	commitLoader,
 	openRange,
 	type RevisionSide
 } from '../../development-tooling/loadRevisions';
 import { runtimeKind } from '../../development-tooling/runImpact';
+import { TrustedBaseService } from './TrustedBaseService';
+import { VerificationService } from './verification-service/VerificationService';
 
 async function resolveCommit(git: GitAdapter, reference: string): Promise<string> {
 	const commit = await git.attempt(['rev-parse', '--verify', '--quiet', `${reference}^{commit}`]);
@@ -77,7 +79,10 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		impact,
 		config: await verifyConfig(head),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
-		env: process.env,
+		env: {
+			...process.env,
+			HARNESS_RESOURCE_PRIORITY: verificationPriority(options.priority)
+		},
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () =>
@@ -153,4 +158,6 @@ export function renderVerify(stored: StoredRecord): string {
 	].join('\n');
 }
 
-export type { VerifyOptions } from './runVerify.types';
+function verificationPriority(priority: string | undefined): string {
+	return resourcePriority.parse(priority ?? process.env.HARNESS_RESOURCE_PRIORITY ?? 'environment');
+}

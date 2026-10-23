@@ -76,6 +76,9 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Code Rules
 
+- Scheduler changes must prove progress across mixed nesting depths, occupied ancestor budgets and pending siblings while preserving priority and headroom.
+- Process-runner observer changes must prove fast exit, retained output and delayed synchronous observers in both Bun and Node before broad verification.
+- Workspace verification and build entrypoints must join admission and preserve caller arguments; keep the existing workspace entrypoint inventory current. Standalone commands default to one CPU and 2 GiB; inherit supplied reservation limits.
 - Application UI design values belong in the shared app token source documented by Styles. Reports, Desktop/iOS and Hub use one palette. New colors, typography, spacing, borders, shadows, opacity, motion and layering values require named tokens and catalog coverage; do not hide them in component CSS, inline styles or literal fallbacks. Keep the standardized app-style-tokens admission checks in normal Reports verification. Data-derived image/chart geometry and structural CSS keywords remain data/layout, and third-party asset colors retain their provenance.
 
 - Before choosing component colors, consult Styles → Color roles and its definitions in `appStyleTokensConfig`. Use the documented role and shared control variant; a decorative accent does not establish an action style. Update role guidance and standardized Styles coverage when introducing a new semantic use.
