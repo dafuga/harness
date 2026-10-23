@@ -12,6 +12,9 @@ const entries = {
 };
 const edgeEntries = ['edge', 'console'];
 const entryNames = Object.keys(entries);
+const { dependencies } = JSON.parse(await readFile('package.json', 'utf8')) as {
+	dependencies: Record<string, string>;
+};
 
 /** Keep published declaration addresses stable while including their owner-local dependencies. */
 async function buildDeclarations(): Promise<void> {
@@ -37,14 +40,16 @@ if (process.argv.includes('--types-only')) {
 for (const directory of ['dist/api', 'dist/types', 'dist/kernel']) {
 	await rm(directory, { recursive: true, force: true });
 }
-// Each entry is bundled on its own: code splitting currently emits duplicate exports.
+// Keep entry exports distinct; only the opt-in code auditor needs private compiler chunks.
 for (const [entry, source] of Object.entries(entries)) {
 	const result = await Bun.build({
 		entrypoints: [`src/lib/${source}.ts`],
 		target: 'node',
 		format: 'esm',
 		outdir: 'dist/api',
-		packages: 'external'
+		packages: entry === 'verification' ? 'bundle' : 'external',
+		external: entry === 'verification' ? Object.keys(dependencies) : [],
+		splitting: entry === 'verification'
 	});
 	if (!result.success) throw new Error(`Public API bundle failed.\n${result.logs.join('\n')}`);
 }

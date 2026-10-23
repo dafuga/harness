@@ -30,6 +30,10 @@ export function registerVerifyCommand(program: Command): void {
 			'Kernel runtime for impact: default, module, wasm, process or http.'
 		)
 		.option('--test-timeout <ms>', 'Hard limit for each check, overriding the configured one.')
+		.option(
+			'--require-performance',
+			'Require current latency and memory profiling independently of budgets.'
+		)
 		.option('--json', 'Print the record and its directory.')
 		.description('Run the affected checks and scenarios and store the record, pass or fail.')
 		.action(async (flags: Flags) => {

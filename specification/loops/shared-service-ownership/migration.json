@@ -1915,14 +1915,28 @@
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "6bb0fbb6329a318b39e5e9207effb58d882f86cfe8b4293908d519f2d626dace",
+			"definition": "43bb0030439e713b3c490210dfb8711b97c169ebdee96dfaa1689e42c2369582",
 			"relocationDefinition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2",
 			"review": {
-				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 				"path": "src/cli/program/loop.ts",
-				"definition": "6bb0fbb6329a318b39e5e9207effb58d882f86cfe8b4293908d519f2d626dace",
-				"reason": "Expose independent capture arguments and return a failing exit status for failed capture commands, preserving red/green options."
-			}
+				"definition": "43bb0030439e713b3c490210dfb8711b97c169ebdee96dfaa1689e42c2369582",
+				"reason": "Expose explicit coding and planning loop options while preserving template creation and current commands."
+			},
+			"previousReviews": [
+				{
+					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
+					"path": "src/cli/program/loop.ts",
+					"definition": "43bb0030439e713b3c490210dfb8711b97c169ebdee96dfaa1689e42c2369582",
+					"reason": "Expose explicit coding and planning loop options while preserving template creation and current commands."
+				},
+				{
+					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+					"path": "src/cli/program/loop.ts",
+					"definition": "6bb0fbb6329a318b39e5e9207effb58d882f86cfe8b4293908d519f2d626dace",
+					"reason": "Expose independent capture arguments and return a failing exit status for failed capture commands, preserving red/green options."
+				}
+			]
 		},
 		{
 			"unit": "workflow.loop-evaluate",
@@ -2225,14 +2239,28 @@
 			"unit": "service.unit-benchmark",
 			"from": "src/services/UnitBenchmarkService.ts",
 			"to": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
-			"definition": "0feddcb3af3779c3c275a2a0e89a4c393f9db90f1701d601d9af498dccbd3f71",
+			"definition": "b6b670ff992ae8914c26e898a76c8818bb0accfa58907bb925d245ddfe8eeb57",
 			"relocationDefinition": "95a44da0ce4a824fca16a7832ee41fc64d683116aa168143555a0a9180adaffb",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 				"path": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
-				"definition": "0feddcb3af3779c3c275a2a0e89a4c393f9db90f1701d601d9af498dccbd3f71",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "b6b670ff992ae8914c26e898a76c8818bb0accfa58907bb925d245ddfe8eeb57",
+				"reason": "Retain benchmark responses and latency statistics while adding honest whole-process RSS only for in-process module targets."
+			},
+			"previousReviews": [
+				{
+					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
+					"path": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
+					"definition": "b6b670ff992ae8914c26e898a76c8818bb0accfa58907bb925d245ddfe8eeb57",
+					"reason": "Retain benchmark responses and latency statistics while adding honest whole-process RSS only for in-process module targets."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
+					"definition": "0feddcb3af3779c3c275a2a0e89a4c393f9db90f1701d601d9af498dccbd3f71",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "command.budget",
@@ -2490,13 +2518,13 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "888e2137a33e49d4281fd5a35e1df21fca4097c88223c19db0e348b28ba8f7fe",
+			"definition": "fba330765587bd6206fbde4233d653d7386dbfffa1b1db2a256e0df5fc2d745e",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "888e2137a33e49d4281fd5a35e1df21fca4097c88223c19db0e348b28ba8f7fe",
-				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				"definition": "fba330765587bd6206fbde4233d653d7386dbfffa1b1db2a256e0df5fc2d745e",
+				"reason": "Pass the explicit performance requirement through current snapshot verification without changing historical defaults."
 			},
 			"previousReviews": [
 				{
@@ -2510,6 +2538,18 @@
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 					"definition": "be0462cdd4611009e66c05e818da3e783018dbcc6f4b4b1e464d67036f47053b",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "886e97c93e7efa6e1976873b070cfd01618edac27eaf0befbd302b554fea1b4d",
+					"reason": "Pass the explicit performance requirement through current snapshot verification without changing historical defaults."
+				},
+				{
+					"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "888e2137a33e49d4281fd5a35e1df21fca4097c88223c19db0e348b28ba8f7fe",
+					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
 				}
 			]
 		},
@@ -2548,14 +2588,28 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
+			"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+				"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
+			},
+			"previousReviews": [
+				{
+					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+					"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.recorded-builds",
@@ -3574,13 +3628,13 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "189f6724d1f0fc04e7771d4ffe0dcb488cf8d5016443c1d0ef7ee3903793ce47",
+			"definition": "db36ea90786b7885ee7c0a55303a7469d7123de88e83abc8b63c89666184f1b2",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "189f6724d1f0fc04e7771d4ffe0dcb488cf8d5016443c1d0ef7ee3903793ce47",
-				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				"definition": "db36ea90786b7885ee7c0a55303a7469d7123de88e83abc8b63c89666184f1b2",
+				"reason": "Add the explicit performance requirement flag while retaining current verification arguments and outputs."
 			},
 			"previousReviews": [
 				{
@@ -3594,6 +3648,18 @@
 					"path": "src/cli/program/VerifyCommand.ts",
 					"definition": "4237e0be96a290c2ca0fa2912eae5a990eeaca57041a0c7ac1ac81231a23f605",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "b938379fba7099c95e78accebf18628e217d9a3bd7521b777b3370a16ce77bc5",
+					"reason": "Add the explicit performance requirement flag while retaining current verification arguments and outputs."
+				},
+				{
+					"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "189f6724d1f0fc04e7771d4ffe0dcb488cf8d5016443c1d0ef7ee3903793ce47",
+					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
 				}
 			]
 		},
@@ -3811,14 +3877,34 @@
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "e22f324c0ed193da968ea4323d97eff32fbbf3d4d3b69b49b630548ec5f96b19",
+			"definition": "5548263136affc817d03eff679c4057b1c73cca2daff10907e7940efee99bdb8",
 			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "e21854663c8120808ea89af6698a60cdd0d30117",
 				"path": "src/cli/program/manageLoop.ts",
-				"definition": "e22f324c0ed193da968ea4323d97eff32fbbf3d4d3b69b49b630548ec5f96b19",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "5548263136affc817d03eff679c4057b1c73cca2daff10907e7940efee99bdb8",
+				"reason": "Audit final completion only for explicitly typed loops and preserve default completion and paired regression guards."
+			},
+			"previousReviews": [
+				{
+					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "e1f295d380107aa8d509e3ea29f9187d881236a0b207864ae2509a923bc4419a",
+					"reason": "Audit final completion only for explicitly typed loops and preserve default completion and paired regression guards."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "e22f324c0ed193da968ea4323d97eff32fbbf3d4d3b69b49b630548ec5f96b19",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "e1f295d380107aa8d509e3ea29f9187d881236a0b207864ae2509a923bc4419a",
+					"reason": "Audit final completion only for explicitly typed loops and preserve default completion and paired regression guards."
+				}
+			]
 		},
 		{
 			"unit": "service.legacy-history",

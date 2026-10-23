@@ -24,6 +24,7 @@ test('loop CLI traces work and remains audit-safe in generated projects', async 
 		const status = await runHarness(['loop', 'status', 'newsletter-signup', '--json'], project);
 		const audit = await runHarness(['audit', '.'], project);
 
+		expect(JSON.parse(status.stdout).state.completion).toBeUndefined();
 		expect(complete.stdout).toContain('[complete] verify - Run checks and browser proof');
 		expect(JSON.parse(status.stdout).state.steps[0]).toMatchObject({
 			id: 'verify',

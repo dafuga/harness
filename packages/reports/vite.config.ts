@@ -1,9 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
-import { testWorkers } from '../../vitest.config';
+import { profilingPlugins, testWorkers } from '../../vitest.config';
 
-export default defineConfig({
-	plugins: [sveltekit()],
+export default defineConfig(async () => ({
+	plugins: [sveltekit(), ...(await profilingPlugins())],
 	server: { host: '127.0.0.1', port: 5588 },
 	test: {
 		...testWorkers,
@@ -16,4 +16,4 @@ export default defineConfig({
 			PROJECT_REPORTS_HOME: '/tmp/project-reports-unit'
 		}
 	}
-});
+}));

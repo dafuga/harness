@@ -179,3 +179,8 @@ export { BenchmarkRepository } from './repositories/agents-providers/BenchmarkRe
 export { BenchmarkService } from './cli/program/benchmark-service/BenchmarkService';
 export { registerResourcesCommand } from './cli/program/ResourcesCommand';
 export { ResourceQueueService } from './services/execution-runtimes/ResourceQueueService';
+export { TaskCompletionService } from './services/verification-evidence/TaskCompletionService';
+export { PerformanceProfileService } from './services/verification-evidence/PerformanceProfileService';
+export { registerTaskCommand } from './cli/program/TaskCommand';
+export { PerformanceEvidenceValidator } from './validators/verification-evidence/PerformanceEvidenceValidator';
+export { SourceProfileAdapter } from './adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter';

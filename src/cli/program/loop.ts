@@ -1,33 +1,25 @@
 import type { Command } from 'commander';
 import {
+	recordRegression,
+	type RecordRegressionInput
+} from '../../workflows/verification-evidence/record-regression/recordRegression';
+import { evaluateLoop, renderLoopEvaluation } from './loopEvaluate';
+import { nextLoopStep, renderNextLoopStep } from './loopNext';
+import { renderLoopSearchResults, searchLoops } from './loopSearch';
+import {
 	addLoopStep,
 	completeLoopStep,
 	createLoop,
 	readLoopStatus,
 	renderLoopStatus
 } from './manageLoop';
-import { evaluateLoop, renderLoopEvaluation } from './loopEvaluate';
-import { nextLoopStep, renderNextLoopStep } from './loopNext';
-import { renderLoopSearchResults, searchLoops } from './loopSearch';
-import {
-	recordRegression,
-	type RecordRegressionInput
-} from '../../workflows/verification-evidence/record-regression/recordRegression';
 
 export function registerLoopCommand(program: Command): void {
 	const command = program
 		.command('loop')
 		.description('Define and trace verifiable agent work loops.');
 	registerRegressionCommand(command);
-	command
-		.command('create <name>')
-		.option('--agent-model <name>', 'Authoring model metadata.')
-		.option('--from <template>', 'Loop template to inherit from.')
-		.requiredOption('--goal <goal>', 'Human-facing goal for the loop.')
-		.description('Create a new verifiable work loop.')
-		.action((name: string, options: { from?: string; goal: string; agentModel?: string }) =>
-			runCreateLoop(name, options)
-		);
+	registerCreateCommand(command);
 
 	command
 		.command('add <loop> <step>')
@@ -72,13 +64,21 @@ export function registerLoopCommand(program: Command): void {
 
 async function runCreateLoop(
 	name: string,
-	options: { from?: string; goal: string; agentModel?: string }
+	options: {
+		from?: string;
+		goal: string;
+		agentModel?: string;
+		kind?: 'coding' | 'planning';
+		plan?: string;
+	}
 ): Promise<void> {
 	const status = await createLoop({
 		name,
 		goal: options.goal,
 		from: options.from,
-		agentModel: options.agentModel
+		agentModel: options.agentModel,
+		kind: options.kind,
+		plan: options.plan
 	});
 	console.log(renderLoopStatus(status));
 }
@@ -143,5 +143,28 @@ function registerRegressionCommand(command: Command): void {
 				);
 				if (record.phase === 'capture' && record.status !== 'passed') process.exitCode = 1;
 			}
+		);
+}
+
+function registerCreateCommand(command: Command): void {
+	command
+		.command('create <name>')
+		.option('--agent-model <name>', 'Authoring model metadata.')
+		.option('--kind <kind>', 'Task completion contract: coding or planning.')
+		.option('--plan <path>', 'Committed proposal to audit at completion.')
+		.option('--from <template>', 'Loop template to inherit from.')
+		.requiredOption('--goal <goal>', 'Human-facing goal for the loop.')
+		.description('Create a new verifiable work loop.')
+		.action(
+			(
+				name: string,
+				options: {
+					from?: string;
+					goal: string;
+					agentModel?: string;
+					kind?: 'coding' | 'planning';
+					plan?: string;
+				}
+			) => runCreateLoop(name, options)
 		);
 }

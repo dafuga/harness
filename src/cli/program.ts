@@ -1,3 +1,4 @@
+import { registerTaskCommand } from './program/TaskCommand';
 import { sdkPackage } from '../utils/development-tooling/buildStamp';
 import { registerCodexCommand } from './program/CodexCommand';
 import { registerBenchmarkCommand } from './program/BenchmarkCommand';
@@ -48,6 +49,7 @@ export function buildProgram(): Command {
 	registerExplainCommand(program);
 	registerBudgetCommand(program);
 	registerVerifyCommand(program);
+	registerTaskCommand(program);
 	registerHistoryCommand(program);
 	registerHooksCommand(program);
 	registerConsoleCommand(program);
