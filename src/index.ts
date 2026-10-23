@@ -78,7 +78,7 @@ export { NativePickerBridgeService } from './services/development-tooling/native
 export { DesktopArchiveAdapter } from '../scripts/prepare-desktop-experiment/DesktopArchiveAdapter';
 export { NativePickerSwitchService } from './services/development-tooling/native-picker-bridge-service/NativePickerSwitchService';
 export { pickerProvider } from './utils/development-tooling/nativePickerProtocol';
-export { desktopPatchConfig } from './config/development-tooling/desktopPatchConfig';
+export { desktopPatchConfig } from './configs/development-tooling/desktopPatchConfig';
 export { DesktopIntegrityAdapter } from '../scripts/prepare-desktop-experiment/DesktopIntegrityAdapter';
 export { NativePickerDefaultsService } from './services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService';
 export { NativePickerIdleValidator } from './validators/development-tooling/NativePickerIdleValidator';

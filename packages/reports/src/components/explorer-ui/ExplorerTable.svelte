@@ -1,10 +1,6 @@
 <script lang="ts">
-	import type { Kind, Column } from "./ExplorerTable.types";
-
-	// The shared dialog's own sheet, so the desktop host draws it as the reports do.
 	import '../../lib/styles/gallery.css';
 	import { tick } from 'svelte';
-	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import { listed, type CatalogRow } from '../../utils/explorer-ui/entityCatalog';
 	import { humanize } from '../../helpers/strings/humanize';
 	import {
@@ -16,10 +12,12 @@
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../ExplorerUsage.svelte';
 	import Modal from '../shared-primitives/Modal.svelte';
-	import ConfigValueTree, { collection, valueMark } from './ConfigValueTree.svelte';
+	import ConfigValueTree, { collection } from './ConfigValueTree.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
+	import type { Kind, Column } from './ExplorerTable.types';
+	import ConfigValue from './explorer-table/ConfigValue.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
 	let {
 		category,
@@ -60,12 +58,17 @@
 	};
 	let shown = $derived(columns[category]);
 	let one = $derived(entityLabels[category].one);
-	// A shell is described under its name; the other kinds have a column for it.
 	let described = $derived(category === 'layouts');
+	let heading = $derived(
+		category === 'configs' && new Set(rows.map((row) => row.configFile?.source)).size === 1
+			? (rows[0]?.configFile?.title ?? entityLabels[category].title)
+			: entityLabels[category].title
+	);
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
 	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';
+	/** A name stays one text, breaking after a dot or between camel-case words, never inside one. */
+	const words = (name: string) => name.match(/.+?(?:\.|[a-z\d](?=[A-Z])|$)/g) ?? [];
 	let chosen = $state.raw<CatalogRow | null>(null);
-	/** An object or array opens as its contents; any other value opens as written. */
 	let contents = $derived(collection(chosen?.setting?.structure));
 	let opener: HTMLElement | null = null;
 	function view(row: CatalogRow, event: MouseEvent) {
@@ -77,11 +80,9 @@
 		await tick();
 		opener?.focus();
 	}
-	// A replacement row closes the modal, even when aliases kept the outer source text identical.
 	$effect.pre(() => {
 		if (chosen && !rows.includes(chosen)) chosen = null;
 	});
-
 </script>
 
 <div
@@ -89,7 +90,7 @@
 	class:ex-config-values={category === 'configs'}
 	data-harness-component="harness-explorer-table"
 >
-	<table class="ex-table" aria-label={entityLabels[category].title}>
+	<table class="ex-table" aria-label={heading}>
 		<thead>
 			<tr>
 				{#if category === 'configs'}
@@ -106,24 +107,26 @@
 			{#each rows as row (row.id)}
 				<tr>
 					{#if category === 'configs'}
-						{@const mark = valueMark(row.setting?.structure, value(row))}
+						{@const key = row.name.lastIndexOf('.') + 1}
 						<th scope="row"
-							><EntityLink to={open(row)} {nav}><code>{row.name}</code></EntityLink></th
+							><EntityLink to={open(row)} {nav}
+								><code class="ex-config-name"
+									><span class="ex-config-scope"
+										>{#each words(row.name.slice(0, key)) as word, position (position)}{word}<wbr
+											/>{/each}</span
+									>{#each words(row.name.slice(key)) as word, position (position)}{word}<wbr
+										/>{/each}</code
+								></EntityLink
+							></th
 						>
 						<td>
-							{#if mark}
-								<div class="ex-value">
-									<HarnessAction
-										tone="plain"
-										label={`View value for ${row.name}`}
-										onclick={(event) => view(row, event)}
-										><HarnessIcon name={mark.icon} size={18} /></HarnessAction
-									>
-									<span class="ex-note">{mark.size}</span>
-								</div>
-							{:else}
-								<code>{value(row)}</code>
-							{/if}
+							<ConfigValue
+								name={row.name}
+								source={value(row)}
+								literal={row.setting?.literal}
+								structure={row.setting?.structure}
+								onview={(event) => view(row, event)}
+							/>
 						</td>
 					{:else}
 						<th scope="row">
@@ -179,23 +182,19 @@
 		table-layout: fixed;
 	}
 	.ex-config-values.ex-scroll :global(:is(th, td)) {
+		padding-block: var(--hx-space-12);
 		vertical-align: top;
 	}
 	.ex-config-values :global(thead th:first-child) {
-		width: 17rem;
+		width: 36%;
 	}
-	.ex-config-values :global(:is(th code, td > code)) {
-		white-space: pre-wrap;
+	.ex-config-name {
+		font-size: var(--hx-type-size-sm);
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
-	.ex-value {
-		display: flex;
-		align-items: center;
-		gap: var(--hx-space-10);
-	}
-	.ex-value :global(.hx-action) {
-		width: 44px;
-		padding: 0;
+	.ex-config-scope {
+		color: var(--ex-muted);
 	}
 	.ex-config-values :global(.viewer-dialog .ex-value-full) {
 		max-height: min(70dvh, 720px);
@@ -210,8 +209,11 @@
 		overflow-wrap: anywhere;
 	}
 	@media (max-width: 640px) {
+		.ex-config-values.ex-scroll :global(:is(th, td)) {
+			padding: var(--hx-space-10);
+		}
 		.ex-config-values :global(thead th:first-child) {
-			width: 32%;
+			width: 40%;
 		}
 	}
 </style>

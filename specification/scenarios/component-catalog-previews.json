@@ -1723,7 +1723,7 @@
 			"id": "previews",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts",
+			"target": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-component-catalog.spec.ts",
 			"cwd": "packages/reports",
 			"timeoutMs": 600000
 		}

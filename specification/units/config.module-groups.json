@@ -8,9 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/config/development-tooling/moduleGroupsConfig.ts",
-			"src/config/development-tooling/moduleGroupsConfig.types.ts",
-			"src/config/moduleGroupsConfig.ts"
+			"src/configs/development-tooling/moduleGroupsConfig.ts",
+			"src/configs/development-tooling/moduleGroupsConfig.types.ts",
+			"src/configs/moduleGroupsConfig.ts"
 		],
 		"symbols": [
 			"moduleGroupsFile",
@@ -47,11 +47,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/config/development-tooling/moduleGroupsConfig.ts",
+		"entry": "src/configs/development-tooling/moduleGroupsConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/config/development-tooling/moduleGroupsConfig.ts"
+				"entry": "src/configs/development-tooling/moduleGroupsConfig.ts"
 			}
 		]
 	},

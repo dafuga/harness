@@ -1,6 +1,6 @@
 import type { HubApiRuntime } from '../../../utils/networking-security/hubRuntime';
 import { createCollaboration, createGitHubRepository, createGitHubSource } from 'collaboration';
-import type { HubEnv } from '../../../config/development-tooling/hubEnvConfig';
+import type { HubEnv } from '../../../configs/development-tooling/hubEnvConfig';
 import { HubProjectionService } from './hub-projection-service/HubProjectionService';
 import {
 	createHubAuth,
