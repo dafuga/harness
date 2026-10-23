@@ -7,11 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/development-tooling/explanationTypes.ts", "src/core/explanationTypes.ts"],
+		"source": [
+			"src/core/development-tooling/explanationTypes.ts",
+			"src/core/development-tooling/explanationTypes.types.ts",
+			"src/core/explanationTypes.ts"
+		],
 		"symbols": [
 			"explanationsFile",
 			"explanationOutcomes",
 			"explanationSchema",
+			"Explanation",
+			"ExplanationOutcome",
+			"RequiredReason",
+			"ReasonStatus",
 			"Explanation",
 			"ExplanationOutcome",
 			"RequiredReason",

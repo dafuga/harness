@@ -1,3 +1,4 @@
+import type { Shown } from './activity-bounds.e2e.test.types';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { mkdtemp, rm } from 'node:fs/promises';
@@ -5,19 +6,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { runHarness } from './support/cli';
-
-/**
- * A large change and a busy checkout are told with bounds: a count and the first few names, a
- * flag where a list was cut, and for a working agent the moment its own allowance runs out, so
- * that a page can stop calling it working without asking again.
- */
-interface Shown {
-	activity: { work: Array<{ units: string[]; unitCount: number; files: number }> };
-	live: {
-		worktrees: Array<{ changes: unknown[]; truncated: boolean }>;
-		agents: { roster: Array<{ label: string; heartbeatAt: string; expiresAt: string }> };
-	};
-}
 let root: string;
 const git = (args: string[]) =>
 	execFileSync(

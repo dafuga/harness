@@ -1,3 +1,4 @@
+import type { Declared } from './deriveManifest.types';
 import type { DeriveInput } from '../../../../utils/development-tooling/deriveManifest';
 import type { SourceFile } from '../../../../core/development-tooling/sourceTypes';
 import type {
@@ -41,21 +42,6 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		budgets: kept.budgets
 	};
 }
-
-type Declared = Pick<
-	ComponentManifest,
-	| 'kind'
-	| 'title'
-	| 'responsibility'
-	| 'responsibilityOrigin'
-	| 'contract'
-	| 'scenarios'
-	| 'preview'
-	| 'helperContracts'
-	| 'documentation'
-	| 'catalog'
-	| 'budgets'
->;
 
 function defaults(input: DeriveInput): Declared {
 	return {

@@ -1,5 +1,6 @@
+import type { RegressionNote } from './RegressionProofRepository.types';
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
-import { evidenceRef, type HistoryNote } from '../../core/git-source-history/historyTypes';
+import { evidenceRef } from '../../core/git-source-history/historyTypes';
 import { fail } from '../../core/development-tooling/errors';
 import type { RegressionRecord } from '../../core/verification-evidence/regressionTypes';
 import {
@@ -13,8 +14,6 @@ import { sourceArchiveRef } from '../../utils/git-source-history/historyRefs';
 import type { ReadNote } from '../../utils/git-source-history/note-lines/noteCommit';
 import { EvidenceBranchRepository } from './evidence-branch-repository/EvidenceBranchRepository';
 import { HistoryNoteRepository } from '../git-source-history/history-note-repository/HistoryNoteRepository';
-
-export type RegressionNote = Extract<HistoryNote, { kind: 'regression' }>;
 
 /** Append-only checkpoints share Harness's existing evidence branch, notes and archive refs. */
 export class RegressionProofRepository {
@@ -137,3 +136,5 @@ function regressionNote(
 		evidence: { commit: evidence, path, manifest: regressionHash(manifest) }
 	};
 }
+
+export type { RegressionNote } from './RegressionProofRepository.types';

@@ -1,3 +1,4 @@
+import type { D1Like } from './D1AuthStoreAdapter.types';
 import type {
 	AuthStore,
 	ChallengeRecord,
@@ -16,17 +17,6 @@ import { EXPIRE_GRANTS } from '../../../../utils/d1GrantStore';
 import { d1GrantStore } from './d1GrantStore';
 import { d1OneTimeStores } from './d1OneTimeStores';
 import { AuthRecordValidator } from '../../../../validators/accounts-access/AuthRecordValidator';
-
-/** The part of Cloudflare's D1Database this adapter uses; a D1Database satisfies it. */
-export interface D1Statement {
-	bind(...values: unknown[]): D1Statement;
-	first<T = unknown>(): Promise<T | null>;
-	run(): Promise<unknown>;
-}
-
-export interface D1Like {
-	prepare(query: string): D1Statement;
-}
 
 const purges = [
 	'DELETE FROM auth_challenges WHERE expires_at <= ?',
@@ -70,3 +60,5 @@ export class D1AuthStoreAdapter implements AuthStore {
 export function createD1AuthStore(db: D1Like): AuthStore {
 	return new D1AuthStoreAdapter(db);
 }
+
+export type { D1Statement, D1Like } from './D1AuthStoreAdapter.types';

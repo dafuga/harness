@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/benchmarkTypes.ts", "src/core/development-tooling/benchmarkTypes.ts"],
+		"source": [
+			"src/core/benchmarkTypes.ts",
+			"src/core/development-tooling/benchmarkTypes.ts",
+			"src/core/development-tooling/benchmarkTypes.types.ts"
+		],
 		"symbols": [
 			"measurementsDirectory",
 			"representativeWorkload",
@@ -21,6 +25,8 @@
 			"calibrationSchema",
 			"benchMeasurementSchema",
 			"kernelBenchmarkSchema",
+			"BenchMeasurement",
+			"KernelBenchmark",
 			"BenchMeasurement",
 			"KernelBenchmark"
 		]

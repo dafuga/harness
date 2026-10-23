@@ -1,3 +1,4 @@
+import type { Outgoing, Assembly, WireFramingOptions } from './WireFramingService.types';
 import { RemoteFailure, remoteLimits } from '../../models/networking-security/Remote.types';
 import { localTransport } from '../../models/networking-security/RemoteLocal.types';
 import type { WirePart } from '../../models/networking-security/RemoteLocal.types';
@@ -8,33 +9,6 @@ import {
 	remoteBytes,
 	toBase64
 } from '../../utils/networking-security/remoteBytes';
-
-export interface WireFramingOptions {
-	/** Writes one text frame to the transport. */
-	write: (frame: string) => void;
-	/** Runs the next step of sending later, so the frames of several messages take turns. */
-	defer?: (step: () => void) => void;
-	chunkBytes?: number;
-	frameBytes?: number;
-	/** The largest message accepted from the other side, and the largest one sent. */
-	incomingBytes?: number;
-	outgoingBytes?: number;
-	/** The most parts one incoming message may have. */
-	parts?: number;
-	/** Multipart messages in flight at one time: accepted from the other side, and sent to it. */
-	streams?: number;
-}
-interface Outgoing {
-	bytes: Uint8Array;
-	offset: number;
-	/** Given when its first frame is written, so ids rise in the order messages start. */
-	id: number | null;
-}
-interface Assembly {
-	parts: Uint8Array[];
-	size: number;
-	next: number;
-}
 /** Ordered frames written per step: events are small and must not trail far behind. */
 const orderedBurst = 16;
 const later = (step: () => void) => void setTimeout(step, 0);
@@ -171,3 +145,5 @@ export class WireFramingService {
 		return last;
 	}
 }
+
+export type { WireFramingOptions } from './WireFramingService.types';

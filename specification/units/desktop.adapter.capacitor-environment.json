@@ -10,7 +10,8 @@
 		"source": [
 			"packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts",
-			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts"
+			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.types.ts"
 		],
 		"symbols": [
 			"remotePluginName",
@@ -20,12 +21,13 @@
 			"remotePluginName",
 			"accountPluginName",
 			"CapacitorEnvironmentAdapter",
-			"CapacitorEnvironmentAdapterConfig",
 			"remotePluginName",
 			"accountPluginName",
 			"CapacitorEnvironmentAdapter",
 			"CapacitorEnvironmentAdapter.constructor",
-			"CapacitorEnvironmentAdapter.connect"
+			"CapacitorEnvironmentAdapter.connect",
+			"CapacitorEnvironmentAdapterConfig",
+			"CapacitorEnvironmentAdapterConfig"
 		]
 	},
 	"contract": {

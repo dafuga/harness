@@ -1,9 +1,4 @@
-export type PickerData = Record<string, unknown>;
-export type PickerRpc = (
-	method: string,
-	params: PickerData,
-	options?: PickerData
-) => Promise<PickerData>;
+import type { PickerData } from './nativePickerProtocol.types';
 
 export function nativePickerProtocol(value: unknown): PickerData {
 	if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
@@ -34,3 +29,5 @@ export const nativeOpusModel = {
 	modelUpgrade: null,
 	availableAccessPrograms: null
 };
+
+export type { PickerData, PickerRpc } from './nativePickerProtocol.types';

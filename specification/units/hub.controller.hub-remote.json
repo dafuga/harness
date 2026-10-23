@@ -7,11 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts"],
+		"source": [
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.types.ts"
+		],
 		"symbols": [
 			"HubRemoteController",
 			"HubRemoteController.constructor",
-			"HubRemoteController.handle"
+			"HubRemoteController.handle",
+			"Route",
+			"Call"
 		]
 	},
 	"contract": {

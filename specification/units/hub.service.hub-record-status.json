@@ -10,7 +10,8 @@
 		"source": [
 			"packages/hub/src/services/HubRecordStatusService.ts",
 			"packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts",
-			"packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.ts"
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.ts",
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.types.ts"
 		],
 		"symbols": [
 			"HubRecordStatusService",
@@ -20,7 +21,9 @@
 			"HubRecordStatusService.all",
 			"HubRecordStatusService.verifications",
 			"HubRecordStatusService.status",
-			"HubRecordStatusService.problems"
+			"HubRecordStatusService.problems",
+			"VerificationNote",
+			"Context"
 		]
 	},
 	"contract": {

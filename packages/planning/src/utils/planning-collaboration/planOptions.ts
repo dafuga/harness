@@ -1,14 +1,9 @@
-import type { DesignImageInput } from '../../models/planning-collaboration/PlanningBridge.types';
 import type {
 	AgentRef,
-	DesignImage,
 	DesignVersion,
 	ImageBinding
 } from '../../models/planning-collaboration/Planning.types';
 import { text } from './planValidate';
-
-/** Writes the images of a design with each file name under `prefix`, answering what it wrote. */
-export type WriteImages = (images: DesignImageInput[], prefix: string) => DesignImage[];
 
 export const most = 10;
 
@@ -36,3 +31,5 @@ export function approvable(version: DesignVersion, option?: string): ImageBindin
 export { planOptions } from '../../lib/planning-collaboration/planning/planning-service/planOptions';
 export { checkOptions } from './plan-read/checkOptions';
 export { heldBy } from './plan-design/heldBy';
+
+export type { WriteImages } from './planOptions.types';

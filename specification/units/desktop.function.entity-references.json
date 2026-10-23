@@ -11,16 +11,18 @@
 			"packages/desktop/src/components/explorer-ui/reference-text/entityReferences.ts",
 			"packages/desktop/src/components/reference-text/entityReferences.ts",
 			"packages/desktop/src/utils/entityReferences.ts",
-			"packages/desktop/src/utils/explorer-ui/entityReferences.ts"
+			"packages/desktop/src/utils/explorer-ui/entityReferences.ts",
+			"packages/desktop/src/utils/explorer-ui/entityReferences.types.ts"
 		],
 		"symbols": [
 			"entityReferences",
 			"entityReferences",
 			"entityReferences",
 			"isUnitId",
-			"ReferencePart",
 			"isUnitId",
-			"entityReferences"
+			"entityReferences",
+			"ReferencePart",
+			"ReferencePart"
 		]
 	},
 	"contract": {

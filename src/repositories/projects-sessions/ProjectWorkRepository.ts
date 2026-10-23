@@ -1,19 +1,9 @@
+import type { PathChange, Checkout } from './ProjectWorkRepository.types';
 import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import type { LoopState } from '../../workflows/development-tooling/loop-state/loopState';
-
-export interface Checkout {
-	path: string;
-	branch: string | null;
-	head: string | null;
-	primary: boolean;
-}
-export interface PathChange {
-	path: string;
-	status: string;
-}
 
 const loops = 'specification/loops';
 const committed: Record<string, string> = { A: 'added', D: 'removed' };
@@ -132,3 +122,5 @@ export class ProjectWorkRepository {
 		return parsedLoops(await Promise.all(read));
 	}
 }
+
+export type { Checkout, PathChange } from './ProjectWorkRepository.types';

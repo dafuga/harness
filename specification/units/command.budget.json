@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/BudgetCommand.ts"],
-		"symbols": ["registerBudgetCommand"]
+		"source": ["src/cli/program/BudgetCommand.ts", "src/cli/program/BudgetCommand.types.ts"],
+		"symbols": ["registerBudgetCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

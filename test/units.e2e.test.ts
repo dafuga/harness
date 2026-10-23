@@ -1,3 +1,4 @@
+import type { Manifest, IndexResult } from './units.e2e.test.types';
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -8,30 +9,6 @@ import {
 	sharedDateHelperProject,
 	utcDateExamples
 } from './support/unitProject';
-
-interface Manifest {
-	id: string;
-	kind: string;
-	status: string;
-	responsibility: string;
-	owns: { source: string[]; symbols: string[] };
-	contract: { origin: string; inputs: Item[]; outputs: Item[]; errors: Item[] };
-	dependencies: Array<{ unit: string; via: string; origin: string }>;
-	runtime: { kind: string; entry: string };
-	scenarios: string[];
-	budgets: { size: string; complexity: string };
-}
-interface Item {
-	name: string;
-	type: string;
-}
-interface IndexResult {
-	added: string[];
-	updated: string[];
-	moved: Array<{ id: string; from: string; to: string }>;
-	revived: string[];
-	orphaned: string[];
-}
 
 test('generic unit generator coexists with the Svelte component generator', async () => {
 	const project = await unitProject('app');

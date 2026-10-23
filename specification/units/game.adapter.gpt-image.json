@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/agents-providers/GptImageAdapter.ts"],
-		"symbols": ["GptImageAdapter", "GptImageAdapter.constructor", "GptImageAdapter.generate"]
+		"source": [
+			"packages/game/src/adapters/agents-providers/GptImageAdapter.ts",
+			"packages/game/src/adapters/agents-providers/GptImageAdapter.types.ts"
+		],
+		"symbols": [
+			"GptImageAdapter",
+			"GptImageAdapter.constructor",
+			"GptImageAdapter.generate",
+			"ImageFetch"
+		]
 	},
 	"contract": {
 		"origin": "derived",

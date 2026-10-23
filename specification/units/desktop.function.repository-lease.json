@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/development-tooling/repositoryLease.ts",
+			"packages/desktop/src/utils/development-tooling/repositoryLease.types.ts",
 			"packages/desktop/src/utils/repositoryLease.ts"
 		],
-		"symbols": ["RepositoryLease", "repositoryLease", "repositoryLease"]
+		"symbols": ["repositoryLease", "RepositoryLease", "RepositoryLease", "repositoryLease"]
 	},
 	"contract": {
 		"origin": "declared",

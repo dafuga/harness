@@ -1,8 +1,8 @@
 <script lang="ts" module>
+	import type { ConfigCollection } from './ConfigValueTree.module.types';
+
 	import type { ConfigValueNode } from '../../../../../src/utils/explorer-ui/unitMetadata';
 	import type { HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
-	/** A value that holds others: the attributes of an object or the items of an array. */
-	export type ConfigCollection = Exclude<ConfigValueNode, { kind: 'expression' }>;
 	/** The object or array a value is, if it is one. */
 	export const collection = (node?: ConfigValueNode): ConfigCollection | undefined =>
 		node?.kind === 'expression' ? undefined : node;
@@ -25,6 +25,8 @@
 		const size = lines > 1 ? `${lines} lines` : `${text.length} chars`;
 		return { icon: 'code' as const, size };
 	}
+
+	export type { ConfigCollection } from './ConfigValueTree.module.types';
 </script>
 
 <script lang="ts">

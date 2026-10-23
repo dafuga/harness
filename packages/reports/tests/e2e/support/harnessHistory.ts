@@ -1,66 +1,10 @@
+import type { SeededHistory, SeededRevision } from './harnessHistory.types';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fixtures } from './fixtures';
 
 export const home = fixtures.console;
-
-export interface SeededHistory {
-	repository: string;
-	refs: string;
-	/** A source branch that still exists; its name has a slash and a character to encode. */
-	keptBranch: string;
-	commits: Record<
-		| 'unbaselined'
-		| 'baseline'
-		| 'shout'
-		| 'kept'
-		| 'paired'
-		| 'twin'
-		| 'native'
-		| 'measured'
-		| 'emitting'
-		| 'packed'
-		| 'swapped'
-		| 'repacked'
-		| 'vanished'
-		| 'retained'
-		| 'grown'
-		| 'approved'
-		| 'added'
-		| 'established'
-		| 'removed'
-		| 'reordered'
-		| 'restated'
-		| 'unverified'
-		| 'sourceOnly'
-		| 'framed'
-		| 'framedBaseline'
-		| 'shelled'
-		| 'shellRetained',
-		string
-	>;
-}
-
-interface Capture {
-	kind: string;
-	sha256: string;
-	media: string | null;
-}
-export interface SeededRevision {
-	records: Array<{
-		id: string;
-		status: string;
-		failures: string[];
-		scenarios: Array<{
-			id: string;
-			status: string;
-			inherited: boolean;
-			origin: { record: string; commit: string };
-			states: Array<{ id: string; captures: Capture[] }>;
-		}>;
-	}>;
-}
 
 /** What the seed script recorded about the synthetic history, read fresh for each use. */
 export const seeded = (): SeededHistory =>
@@ -80,3 +24,5 @@ export const currentRefs = (): string =>
 		cwd: seeded().repository,
 		encoding: 'utf8'
 	}).trim();
+
+export type { SeededHistory, SeededRevision } from './harnessHistory.types';

@@ -1,9 +1,6 @@
+import type { Callable } from './pureHelpers.types';
 import ts from 'typescript';
 import { pureHelperCalls, pureGlobals } from './pureHelperCalls';
-
-// A declared contract is required. This conservative guard rejects unsupported operations;
-// it is not a general proof of purity for arbitrary JavaScript or hostile input objects.
-type Callable = ts.FunctionDeclaration | ts.VariableStatement;
 
 function declared(node: ts.Node): boolean {
 	return ts.getJSDocTags(node).some((tag) => tag.tagName.text === 'pure');

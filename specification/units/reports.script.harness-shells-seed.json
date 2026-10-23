@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/scripts/harness-shells-seed.ts"],
-		"symbols": ["shellsBranch", "shellUnit", "ShellsSeed", "seedShells"]
+		"source": [
+			"packages/reports/scripts/harness-shells-seed.ts",
+			"packages/reports/scripts/harness-shells-seed.types.ts"
+		],
+		"symbols": ["shellsBranch", "shellUnit", "seedShells", "ShellsSeed", "ShellsSeed"]
 	},
 	"contract": {
 		"origin": "derived",

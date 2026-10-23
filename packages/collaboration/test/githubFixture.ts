@@ -1,3 +1,4 @@
+import type { State, Call } from './githubFixture.types';
 import { createCollaboration, createGitHubRepository } from '../src/index';
 import type {
 	Actor,
@@ -47,19 +48,6 @@ export const source: SourceAdapter = {
 	},
 	async validateAnchor() {}
 };
-type Call = { path: string; method: string; body: Record<string, unknown> };
-interface State {
-	counter: number;
-	head: string;
-	public: boolean;
-	missing: boolean;
-	beforePatch: (() => void) | null;
-	commits: Map<string, { parent: string; tree: string }>;
-	trees: Map<string, string>;
-	blobs: Map<string, string>;
-	calls: Call[];
-	scopes: Parameters<GitHubOptions['token']>[0][];
-}
 function next(state: State) {
 	return (state.counter++).toString(16).padStart(40, '0');
 }

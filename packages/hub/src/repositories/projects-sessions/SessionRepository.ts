@@ -1,33 +1,13 @@
-import type { Actor } from 'collaboration';
 import type {
-	SessionKind,
-	SessionRecord,
-	SessionStore
-} from '../../models/accounts-access/HubAuthStore.types';
+	SessionRepositoryOptions,
+	SessionGrant,
+	IssuedSession
+} from './SessionRepository.types';
+import type { SessionRecord } from '../../models/accounts-access/HubAuthStore.types';
 import { randomToken } from '../../utils/verification-evidence/authSecrets';
-import type { AuthSecrets } from '../../utils/verification-evidence/authSecrets';
 
 export const BROWSER_TTL = 7 * 24 * 60 * 60 * 1000;
 export const NATIVE_TTL = 30 * 24 * 60 * 60 * 1000;
-
-export interface SessionRepositoryOptions {
-	store: SessionStore;
-	secrets: AuthSecrets;
-	now: () => number;
-}
-
-export interface SessionGrant {
-	kind: SessionKind;
-	actor: Actor;
-	resource: string;
-	parentHash: string | null;
-}
-
-export interface IssuedSession {
-	/** Shown to its holder once. Only a keyed hash of it is stored. */
-	credential: string;
-	record: SessionRecord;
-}
 
 /** Opaque, server-revocable sessions. A credential is random bytes, never a signed claim set. */
 export class SessionRepository {
@@ -68,3 +48,9 @@ export class SessionRepository {
 		await this.options.store.revoke(parentHash, this.options.now());
 	}
 }
+
+export type {
+	SessionRepositoryOptions,
+	SessionGrant,
+	IssuedSession
+} from './SessionRepository.types';

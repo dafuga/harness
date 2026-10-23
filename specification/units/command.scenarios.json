@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/ScenariosCommand.ts"],
-		"symbols": ["registerScenariosCommand"]
+		"source": ["src/cli/program/ScenariosCommand.ts", "src/cli/program/ScenariosCommand.types.ts"],
+		"symbols": ["registerScenariosCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

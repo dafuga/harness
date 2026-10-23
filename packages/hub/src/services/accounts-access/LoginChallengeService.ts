@@ -1,25 +1,8 @@
-import type { AuthChallenge } from '../../models/accounts-access/HubAuth.types';
-import type {
-	ChallengeRecord,
-	OneTimeStore
-} from '../../models/accounts-access/HubAuthStore.types';
+import type { LoginChallengeOptions, IssuedChallenge } from './LoginChallengeService.types';
 import { authFail } from '../../utils/accounts-access/authFail';
 import { randomToken, safeEqual } from '../../utils/verification-evidence/authSecrets';
-import type { AuthSecrets } from '../../utils/verification-evidence/authSecrets';
 
 export const CHALLENGE_TTL = 5 * 60 * 1000;
-
-export interface LoginChallengeOptions {
-	store: OneTimeStore<ChallengeRecord>;
-	secrets: AuthSecrets;
-	now: () => number;
-}
-
-export interface IssuedChallenge {
-	/** Value for the HttpOnly challenge cookie. */
-	cookie: string;
-	challenge: AuthChallenge;
-}
 
 /** Binds one sign-in attempt to one browser: a cookie half, a CSRF half and a Google nonce. */
 export class LoginChallengeService {
@@ -47,3 +30,5 @@ export class LoginChallengeService {
 		return matches ? record.nonce : authFail('challenge-invalid');
 	}
 }
+
+export type { LoginChallengeOptions, IssuedChallenge } from './LoginChallengeService.types';

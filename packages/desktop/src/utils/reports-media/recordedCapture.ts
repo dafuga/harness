@@ -1,19 +1,5 @@
+import type { CaptureBinding, ListedCapture } from './recordedCapture.types';
 import type { ExplorerEvidence } from '../../../../reports/src/models/Explorer.types';
-import type { HarnessCapture } from '../../../../reports/src/models/Harness.types';
-import type { EvidenceArtifactQuery } from '../../models/verification-evidence/DesktopEvidence.types';
-
-/** What names one capture of an evidence answer; all of it has to be as the answer lists it. */
-export type CaptureBinding = Pick<
-	EvidenceArtifactQuery,
-	'side' | 'recordId' | 'scenarioId' | 'state' | 'evidenceId' | 'viewport' | 'sha256'
->;
-
-export interface ListedCapture {
-	capture: HarnessCapture;
-	/** The record whose sealed files hold the bytes: for an inherited result, its origin. */
-	record: string;
-	focused?: boolean;
-}
 
 const unlisted = 'This capture is not listed by the evidence of this entity at these revisions.';
 
@@ -47,3 +33,5 @@ export function recordedCapture(
 	if (!ran) throw new Error(unlisted);
 	return { capture: found.capture, record: ran.origin.record };
 }
+
+export type { CaptureBinding, ListedCapture } from './recordedCapture.types';

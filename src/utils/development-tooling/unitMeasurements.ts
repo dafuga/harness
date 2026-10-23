@@ -1,21 +1,8 @@
+import type { BuiltArtifacts, Static, ArtifactEntry } from './unitMeasurements.types';
 import type { SourceFile } from '../../core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { Measurement } from '../../core/verification-evidence/verificationTypes';
 import { uncountedLanguage } from './complexityCoverage';
-
-/** Size and hash of each declared artifact that exists, by path. */
-export type BuiltArtifacts = Record<string, { bytes: number; sha256: string }>;
-
-interface Static {
-	metric: string;
-	unitOfMeasure: string;
-	value: number | null;
-	method: string;
-	/** Why there is no value at all. */
-	unavailable?: string;
-	/** What a value leaves out, when only part of the unit could be measured. */
-	partial?: string;
-}
 
 const complexityMethod = 'Decision points in owned source, plus one per function or method.';
 
@@ -145,11 +132,6 @@ function listed(paths: string[]): string {
 	return paths.length > 5 ? `${shown} and ${paths.length - 5} more` : shown;
 }
 
-type ArtifactEntry = Pick<
-	Measurement,
-	'metric' | 'unitOfMeasure' | 'value' | 'unavailable' | 'method' | 'target' | 'artifacts'
->;
-
 const emittedSize = { metric: 'artifact-bytes', unitOfMeasure: 'bytes' };
 
 /** The targets a unit is built for as a file of its own: a process binary or a Wasm module. */
@@ -193,3 +175,5 @@ function targetSize(paths: string[], built: BuiltArtifacts): Omit<ArtifactEntry,
 	const unavailable = `${listed(absent)} ${absent.length === 1 ? 'was' : 'were'} not built in the verified snapshot.`;
 	return { ...emittedSize, value: null, unavailable, method, artifacts };
 }
+
+export type { BuiltArtifacts } from './unitMeasurements.types';

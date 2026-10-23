@@ -1,7 +1,4 @@
-interface MockRequest {
-	model: string;
-	questions: Record<string, { criteria: Record<string, unknown> }>;
-}
+import type { MockRequest } from './jevPreload.types';
 
 globalThis.fetch = Object.assign(
 	async (_url: URL | RequestInfo, init?: RequestInit): Promise<Response> => {

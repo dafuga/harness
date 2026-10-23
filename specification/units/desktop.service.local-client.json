@@ -10,11 +10,11 @@
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/LocalClientService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.types.ts",
 			"packages/desktop/src/services/LocalClientService.ts"
 		],
 		"symbols": [
 			"LocalClientService",
-			"LocalClientOptions",
 			"LocalClientService",
 			"LocalClientService.constructor",
 			"LocalClientService.ended",
@@ -22,6 +22,8 @@
 			"LocalClientService.emit",
 			"LocalClientService.cancel",
 			"LocalClientService.end",
+			"LocalClientOptions",
+			"LocalClientOptions",
 			"LocalClientService",
 			"LocalClientOptions"
 		]

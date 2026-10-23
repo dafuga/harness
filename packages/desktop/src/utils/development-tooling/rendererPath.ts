@@ -1,12 +1,6 @@
+import type { RendererRoute } from './rendererPath.types';
 import { categories } from '../../models/development-tooling/Desktop.types';
 import type { Category } from '../../models/development-tooling/Desktop.types';
-export interface RendererRoute {
-	branch: string | null;
-	commit: string | null;
-	category: Category;
-	entityId: string | null;
-	tab: string | null;
-}
 export function rendererPath(path: string): RendererRoute {
 	const parts = path.split('/').filter(Boolean);
 	const result: RendererRoute = {
@@ -28,3 +22,5 @@ export function rendererPath(path: string): RendererRoute {
 	result.tab = parts[index + 2] ?? null;
 	return result;
 }
+
+export type { RendererRoute } from './rendererPath.types';

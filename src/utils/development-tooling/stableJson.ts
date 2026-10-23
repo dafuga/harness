@@ -1,11 +1,6 @@
+import type { Position } from './stableJson.types';
 const printWidth = 100;
 const tabWidth = 2;
-
-interface Position {
-	indent: number;
-	/** Characters already on the line before the value, plus a trailing comma when present. */
-	reserved: number;
-}
 
 /** Serializes JSON in the project Prettier style so generated files pass format checks. */
 export function stableJson(value: unknown): string {

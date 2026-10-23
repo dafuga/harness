@@ -1,29 +1,13 @@
+import type { DetailContext, DetailData } from './catalogDetail.types';
 import type { ComponentManifest } from '../../../../../../../src/lib/contracts';
 import type {
 	CatalogEntity,
 	EntityDetail,
 	Relationship
 } from '../../../../models/development-tooling/Desktop.types';
-import type {
-	PlanningPort,
-	PlanRecord
-} from '../../../../models/planning-collaboration/PlanningPort.types';
 import type { GitSourceAdapter } from '../git-source-adapter/GitSourceAdapter';
 import { catalogHistory } from './catalogHistory';
 import { categoryOf } from '../../../../utils/development-tooling/categoryOf';
-
-interface DetailContext {
-	source: GitSourceAdapter;
-	planning: PlanningPort;
-}
-
-interface DetailData {
-	id: string;
-	revision: string;
-	items: CatalogEntity[];
-	units: ComponentManifest[];
-	plan: PlanRecord | undefined;
-}
 
 export async function catalogDetail(
 	context: DetailContext,

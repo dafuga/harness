@@ -31,4 +31,4 @@ export const comparisonSchema = z.strictObject({
 	sampling: z.strictObject({ warmup: count, rounds: count.min(1), iterations: count.min(1) })
 });
 
-export type Comparison = z.infer<typeof comparisonSchema>;
+export type { Comparison } from './comparisonTypes.types';

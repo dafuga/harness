@@ -1,19 +1,12 @@
-import type {
-	ExplorerBehavior,
-	ExplorerEntity,
-	ExplorerEvidence,
-	ExplorerLocation,
-	ExplorerScope
-} from '../../../models/Explorer.types';
-import type { HarnessIndex, HarnessRevision, HarnessUnit } from '../../../models/Harness.types';
+import type { ViewInput } from './consoleView.types';
+import type { ExplorerEntity, ExplorerLocation } from '../../../models/Explorer.types';
+import type { HarnessRevision, HarnessUnit } from '../../../models/Harness.types';
 import type { EntityLens } from '../../../utils/entityLens';
 import { correctedLocation } from '../../../utils/correctedLocation';
 import { explorerBehavior } from '../../../utils/explorerBehavior';
 import { explorerEvidence } from '../../../utils/explorerEvidence';
 import { explorerHistory } from '../../../utils/explorer-history/explorerHistory';
 import { explorerRelationsReader } from '../../../utils/explorerRelations';
-
-export type ConsoleAnswer = { evidence: ExplorerEvidence; behavior: ExplorerBehavior };
 
 /** Remount content when its exact selected route changes, including callable and tab identity. */
 export function consoleContentKey(location: ExplorerLocation | undefined): string {
@@ -26,16 +19,6 @@ export function consoleContentKey(location: ExplorerLocation | undefined): strin
 		location?.helper,
 		location?.section
 	]);
-}
-
-interface ViewInput {
-	index: HarnessIndex;
-	scope: ExplorerScope;
-	loaded: { head: HarnessRevision; parent: HarnessRevision | null };
-	entities: ExplorerEntity[];
-	relations: EntityLens['relations'];
-	answers: Map<string, ConsoleAnswer>;
-	href: (to: ExplorerLocation) => string;
 }
 
 /** What an entity relates to at a revision; what its commit removed, as the parent held it. */
@@ -80,3 +63,5 @@ export function consoleView({
 	};
 	return { index: history, scope: at, head: revisions.head, parent: revisions.parent, lens };
 }
+
+export type { ConsoleAnswer } from './consoleView.types';

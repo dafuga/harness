@@ -1,3 +1,4 @@
+import type { HookStatus } from './HookInstallService.types';
 import { existsSync } from 'node:fs';
 import { chmod, mkdir, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve } from 'node:path';
@@ -6,33 +7,9 @@ import { fail } from '../../../core/development-tooling/errors';
 import {
 	chainedSuffix,
 	hookStages,
-	stageFile,
-	type HookStage
+	stageFile
 } from '../../../utils/development-tooling/hookScript';
 import { hookScript, managedHook } from './hookScript';
-
-/** One stage as this worktree has it: its shared wrapper, and whether it was asked for here. */
-export interface HookStageStatus {
-	stage: HookStage;
-	installed: boolean;
-	chained: boolean;
-	/** This worktree opted into this stage; an opt-in for another stage does not count. */
-	enabled: boolean;
-}
-
-export interface HookStatus {
-	/** The pre-push wrapper is present in the hooks directory. */
-	installed: boolean;
-	/** This worktree opted into pushes, so the pre-push wrapper runs Harness here. */
-	enabled: boolean;
-	stage: 'pre-push';
-	hooksDirectory: string;
-	/** A pre-push hook that was there before is kept and runs first. */
-	chained: boolean;
-	/** Every stage Harness offers, each with its own wrapper, earlier hook and opt-in. */
-	stages: HookStageStatus[];
-	limitations: string[];
-}
 
 const limitations = [
 	'`git push --no-verify` skips the hook; only CI checks every push.',
@@ -137,3 +114,5 @@ export class HookInstallService {
 		return { hooks, own, common };
 	}
 }
+
+export type { HookStageStatus, HookStatus } from './HookInstallService.types';

@@ -1,3 +1,4 @@
+import type { Listed, ExplainInput } from './runExplain.types';
 import { fail } from '../../core/development-tooling/errors';
 import {
 	explanationOutcomes,
@@ -19,22 +20,6 @@ import {
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { ReasonPathService } from '../../services/development-tooling/ReasonPathService';
 import { commitLoader, openRange, type RevisionRange } from './loadRevisions';
-
-export interface ExplainInput extends RevisionRange {
-	all?: boolean;
-	unit?: string;
-	symbol?: string[];
-	behavior?: string;
-	simplification?: string;
-	simplificationOutcome?: string;
-	performance?: string;
-	performanceOutcome?: string;
-	/** Also writes a reason for a change whose stored reason exceeds the writing limits. */
-	replace?: boolean;
-	now?: () => string;
-}
-
-type Listed = Omit<ReasonStatus, 'from' | 'to'>;
 
 /**
  * Which changes in a range need a reason, and whether each one has it, with the version of the
@@ -143,3 +128,5 @@ function outcome(value: string | undefined, flag: string): ExplanationOutcome {
 	const found = explanationOutcomes.find((item) => item === value);
 	return found ?? fail(`${flag} must be improved, not-improved or not-applicable.`);
 }
+
+export type { ExplainInput } from './runExplain.types';

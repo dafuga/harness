@@ -65,4 +65,6 @@ class ThreadRunState {
 export function createThreadRunStore(workspace: Workspace) {
 	return new ThreadRunState(workspace);
 }
-export type ThreadRun = ThreadRunState;
+
+export type { ThreadRun } from './threadRun.svelte.types';
+export type { ThreadRunState };

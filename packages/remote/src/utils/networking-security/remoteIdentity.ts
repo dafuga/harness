@@ -1,3 +1,4 @@
+import type { CredentialBinding } from './remoteIdentity.types';
 import { fromBase64Url, randomBytes, remoteBytes, sha256, toBase64Url, toHex } from './remoteBytes';
 
 /** Every identifier and encoded value of the protocol. Nothing else is accepted on a wire. */
@@ -29,13 +30,6 @@ export async function remoteIdentity(publicKey: Uint8Array | string): Promise<st
 	return toHex(await sha256(bytes)).slice(0, 40);
 }
 
-export interface CredentialBinding {
-	role: 'host' | 'device';
-	hostId: string;
-	deviceId?: string;
-	credential: string;
-}
-
 /** What a relay stores in place of a credential: bound to the role and the identities. */
 export async function credentialHash(binding: CredentialBinding): Promise<string> {
 	const { role, hostId, deviceId = '', credential } = binding;
@@ -62,3 +56,5 @@ export function normalizeCode(value: string): string {
 
 export { pairingCode } from '../../../../desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity';
 export { requestDigest } from '../../services/networking-security/wire-session-service/remoteIdentity';
+
+export type { CredentialBinding } from './remoteIdentity.types';

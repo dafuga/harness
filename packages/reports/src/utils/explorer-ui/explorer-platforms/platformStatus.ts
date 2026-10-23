@@ -1,13 +1,5 @@
-import type { HarnessIconName } from '../harnessIcons';
-import type {
-	PlatformEntry,
-	PlatformId
-} from '../../../../../../src/core/explorer-ui/Platform.types';
-interface PlatformView {
-	id: PlatformId;
-	name: string;
-	icon: HarnessIconName;
-}
+import type { PlatformView } from './platformStatus.types';
+import type { PlatformEntry } from '../../../../../../src/core/explorer-ui/Platform.types';
 /** The four platforms every revision is read for; their names belong to this view. */
 export const platformViews: readonly PlatformView[] = [
 	{ id: 'web', name: 'Web', icon: 'web' },

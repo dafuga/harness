@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/execution-runtimes/runtimeResponse.ts", "src/utils/runtimeResponse.ts"],
+		"source": [
+			"src/utils/execution-runtimes/runtimeResponse.ts",
+			"src/utils/execution-runtimes/runtimeResponse.types.ts",
+			"src/utils/runtimeResponse.ts"
+		],
 		"symbols": [
 			"runtimeResponse",
 			"runtimeResponseText",
-			"RuntimeDeadline",
 			"runtimeDeadline",
+			"RuntimeDeadline",
+			"RuntimeDeadline",
 			"runtimeResponse",
 			"runtimeResponseText",
 			"runtimeDeadline"

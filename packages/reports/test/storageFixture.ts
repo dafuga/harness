@@ -1,3 +1,4 @@
+import type { FixtureCloud } from './storageFixture.types';
 import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -34,11 +35,6 @@ export async function storageFixture(startedAt?: string) {
 	await atomicJson(join(repository.directory(report.id), 'manifest.json'), ready);
 	return { root, repository, report: ready };
 }
-export interface FixtureCloud {
-	objects: Map<string, Buffer>;
-	failDelete?: boolean;
-	calls: string[];
-}
 export function fixtureCloudResponse(
 	cloud: FixtureCloud,
 	command: { constructor: { name: string }; input: Record<string, unknown> }
@@ -65,3 +61,5 @@ export function fixtureCloudResponse(
 	}
 	return {};
 }
+
+export type { FixtureCloud } from './storageFixture.types';

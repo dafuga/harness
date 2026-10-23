@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/reportSite.ts",
-			"packages/reports/src/utils/reports-media/reportSite.ts"
+			"packages/reports/src/utils/reports-media/reportSite.ts",
+			"packages/reports/src/utils/reports-media/reportSite.types.ts"
 		],
-		"symbols": ["reportSite", "ownedBySite", "ReportSite", "reportSite", "ownedBySite"]
+		"symbols": [
+			"reportSite",
+			"ownedBySite",
+			"reportSite",
+			"ownedBySite",
+			"ReportSite",
+			"ReportSite"
+		]
 	},
 	"contract": {
 		"origin": "declared",

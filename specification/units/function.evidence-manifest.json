@@ -11,16 +11,18 @@
 			"src/services/evidence-attach-service/evidenceManifest.ts",
 			"src/services/verification-evidence/evidence-attach-service/evidenceManifest.ts",
 			"src/utils/evidenceManifest.ts",
-			"src/utils/verification-evidence/evidenceManifest.ts"
+			"src/utils/verification-evidence/evidenceManifest.ts",
+			"src/utils/verification-evidence/evidenceManifest.types.ts"
 		],
 		"symbols": [
 			"evidenceManifest",
 			"evidenceManifest",
 			"evidenceManifest",
 			"recordFiles",
-			"RecordFile",
 			"recordFiles",
-			"evidenceManifest"
+			"evidenceManifest",
+			"RecordFile",
+			"RecordFile"
 		]
 	},
 	"contract": {

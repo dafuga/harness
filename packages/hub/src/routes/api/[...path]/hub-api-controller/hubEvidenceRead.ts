@@ -1,14 +1,6 @@
-import type { Actor } from 'collaboration';
-import type { HubProjectionService } from '../hub-projection-service/HubProjectionService';
+import type { EvidenceRead } from './hubEvidenceRead.types';
 import { hubArtifactQuery, hubEvidenceQuery } from './hubEvidenceQuery';
 import { hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
-
-interface EvidenceRead {
-	actor: Actor;
-	projectId: string;
-	request: Request;
-	projection: HubProjectionService;
-}
 
 /** Reads share the authenticated project service; returned media has an attested type. */
 export async function hubEvidenceRead(context: EvidenceRead, operation: string): Promise<Response> {

@@ -10,7 +10,8 @@
 		"source": [
 			"src/utils/record-capture/recordCapture.ts",
 			"src/utils/recordCapture.ts",
-			"src/utils/reports-media/record-capture/recordCapture.ts"
+			"src/utils/reports-media/record-capture/recordCapture.ts",
+			"src/utils/reports-media/record-capture/recordCapture.types.ts"
 		],
 		"symbols": [
 			"evidenceRequested",
@@ -18,7 +19,8 @@
 			"evidenceRequested",
 			"recordCapture",
 			"evidenceRequested",
-			"recordCapture"
+			"recordCapture",
+			"Environment"
 		]
 	},
 	"contract": {

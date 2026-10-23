@@ -1,7 +1,6 @@
+import type { Random } from './kernelWorkload.types';
 import type { ImpactInput, KernelGraph } from '../../core/execution-runtimes/kernelTypes';
 import type { RuntimeRequest } from '../../core/execution-runtimes/runtimeTypes';
-
-type Random = () => number;
 
 /** Small deterministic generator so every runtime and machine sees identical workloads. */
 function random(seed: number): Random {

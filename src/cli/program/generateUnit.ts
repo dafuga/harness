@@ -1,3 +1,4 @@
+import type { GenerateUnitInput } from './generateUnit.types';
 import { fail } from '../../core/development-tooling/errors';
 import type { FileWriteStatus } from '../../core/development-tooling/files';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
@@ -8,15 +9,6 @@ import {
 	type GenerateResult
 } from '../../workflows/projects-sessions/generate-code/generateCode';
 import { loadUnits } from '../../workflows/development-tooling/load-units/loadUnits';
-
-export interface GenerateUnitInput {
-	name: string;
-	kind?: string;
-	responsibility?: string;
-	force?: boolean;
-	root?: string;
-	group?: string;
-}
 
 const aliases: Record<string, PieceKind> = { function: 'util', endpoint: 'api', page: 'view' };
 const withoutUnit = new Set<string>(['test', 'feature', 'e2e', 'resource']);
@@ -62,3 +54,5 @@ function pieceKind(kind: string): PieceKind {
 	const supported = ['function', ...scaffoldKinds.filter((item) => !withoutUnit.has(item))];
 	return fail(`Unsupported unit kind "${kind}". Use one of: ${supported.join(', ')}.`);
 }
+
+export type { GenerateUnitInput } from './generateUnit.types';

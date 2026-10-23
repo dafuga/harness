@@ -1,9 +1,5 @@
+import type { GatewayImage } from './GatewayImageValidator.types';
 import { gatewayContentError } from '../../utils/development-tooling/gatewayContentError';
-
-export interface GatewayImage {
-	data: string;
-	mimeType: 'image/png' | 'image/jpeg' | 'image/gif' | 'image/webp';
-}
 const signatures = {
 	'image/png': (bytes: Buffer) =>
 		bytes.subarray(0, 8).equals(Buffer.from('89504e470d0a1a0a', 'hex')),
@@ -55,3 +51,5 @@ export class GatewayImageValidator {
 		return { data, mimeType: mime as GatewayImage['mimeType'] };
 	}
 }
+
+export type { GatewayImage } from './GatewayImageValidator.types';

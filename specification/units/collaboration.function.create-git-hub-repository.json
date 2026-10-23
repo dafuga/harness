@@ -10,9 +10,15 @@
 		"source": [
 			"packages/collaboration/src/utils/create-git-hub-repository/createGitHubRepository.ts",
 			"packages/collaboration/src/utils/createGitHubRepository.ts",
-			"packages/collaboration/src/utils/git-source-history/create-git-hub-repository/createGitHubRepository.ts"
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-repository/createGitHubRepository.ts",
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-repository/createGitHubRepository.types.ts"
 		],
-		"symbols": ["createGitHubRepository", "createGitHubRepository", "createGitHubRepository"]
+		"symbols": [
+			"createGitHubRepository",
+			"createGitHubRepository",
+			"createGitHubRepository",
+			"Context"
+		]
 	},
 	"contract": {
 		"origin": "declared",

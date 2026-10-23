@@ -1,22 +1,5 @@
+import type { RuntimeChoiceInput, RuntimeChoice } from './chooseRuntime.types';
 import { performanceTolerance, type RuntimeKind } from '../../core/development-tooling/unitTypes';
-import type { Measurement } from '../../core/verification-evidence/verificationTypes';
-
-export interface RuntimeChoiceInput {
-	measurements: Array<Omit<Measurement, 'testedRevision'>>;
-	workload: string;
-	profile: string;
-}
-
-export interface RuntimeChoice {
-	runtime: RuntimeKind;
-	/** `unmeasured` means no usable measurement exists and the reference was kept. */
-	basis: 'measured' | 'unmeasured';
-	workload: string;
-	profile: string;
-	rule: string;
-	candidates: Array<{ runtime: RuntimeKind; coldMs: number }>;
-	excluded: Array<{ runtime: RuntimeKind; reason: string }>;
-}
 
 /** Simplest first: the order that breaks a tie. */
 const automatic: RuntimeKind[] = ['module', 'wasm', 'process'];
@@ -65,3 +48,5 @@ export function chooseRuntime(input: RuntimeChoiceInput): RuntimeChoice {
 		excluded: [...excluded, ...served]
 	};
 }
+
+export type { RuntimeChoiceInput, RuntimeChoice } from './chooseRuntime.types';

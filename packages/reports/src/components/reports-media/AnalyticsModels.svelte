@@ -1,9 +1,8 @@
 <script lang="ts">
+	import type { Models, Usage, Check } from "./AnalyticsModels.types";
+
 	import type { AnalyticsSnapshot } from '../../services/explorer-ui/HarnessAnalyticsService';
 	import { analyticsCount, analyticsDisplay } from '../../utils/reports-media/analyticsDisplay';
-	type Models = AnalyticsSnapshot['models'];
-	type Check = Models['firstTryByAuthor'][string]['response'];
-	type Usage = { name: string; count: number | null };
 	let { models }: { models: Models } = $props();
 	// Names are listed exactly as recorded, so an explicit "unknown" stays "unknown".
 	function usage(source: Record<string, number>): Usage[] {
@@ -18,6 +17,7 @@
 	// Nothing assessed means no rate, whatever number the snapshot carries.
 	const rate = (check: Check) =>
 		analyticsDisplay(check.firstTry.denominator ? check.firstTry.rate : null);
+
 </script>
 
 {#snippet usageCard(title: string, hint: string, rows: Usage[], empty: string)}

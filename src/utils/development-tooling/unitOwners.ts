@@ -1,8 +1,4 @@
-/** What one unit says it owns: files, or directories written with a closing slash. */
-export interface OwnedSource {
-	id: string;
-	source: string[];
-}
+import type { OwnedSource } from './unitOwners.types';
 
 /**
  * Tells which units own a path. A unit owns the files it lists and everything under a
@@ -22,3 +18,5 @@ export function unitOwners(units: OwnedSource[]): (path: string) => string[] {
 		return [...new Set([...(files.get(path) ?? []), ...held.map(([, id]) => id)])].sort();
 	};
 }
+
+export type { OwnedSource } from './unitOwners.types';

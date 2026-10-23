@@ -1,3 +1,4 @@
+import type { SourceReading } from './ios-acceptance-source.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
@@ -72,13 +73,6 @@ export function named(files: Map<string, string>) {
 	return { digest: treeDigest(files), files: files.size };
 }
 
-/** The three sets a run is made from, as they are read at one moment. */
-export interface SourceReading {
-	renderer: Map<string, string>;
-	native: Map<string, string>;
-	fixtureComputer: Map<string, string>;
-}
-
 export function readSources(): SourceReading {
 	return {
 		renderer: sourceFiles(rendererSources),
@@ -117,3 +111,5 @@ export function toolsProof() {
 		inspector: inspectorPackage()
 	};
 }
+
+export type { SourceReading } from './ios-acceptance-source.types';

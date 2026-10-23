@@ -1,11 +1,6 @@
+import type { BuiltFile } from './buildIdentity.types';
 import { createHash } from 'node:crypto';
 import { buildStamp, buildStampPattern, emptyBuildStamp } from '../development-tooling/buildStamp';
-
-export interface BuiltFile {
-	/** Path inside the build directory, with forward slashes. */
-	path: string;
-	sha256: string;
-}
 
 /**
  * The identity of a compiled build: one digest over the path and content hash of every file,
@@ -31,3 +26,5 @@ export function builtFileHash(bytes: Buffer): { sha256: string; stamps: string[]
 	const stamps = found.flatMap((slot) => buildStamp(slot) ?? []);
 	return { sha256: hash(emptied), stamps, slots: found.length };
 }
+
+export type { BuiltFile } from './buildIdentity.types';

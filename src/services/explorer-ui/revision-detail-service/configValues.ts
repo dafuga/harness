@@ -1,14 +1,7 @@
+import type { ConfigSource } from './configValues.types';
 import ts from 'typescript';
 import { configValueStructure } from './configValueStructure';
 import type { ConfigVariable } from '../../../utils/explorer-ui/unitMetadata';
-
-interface ConfigSource {
-	file: ts.SourceFile;
-	source: string;
-	bindings: Map<string, ts.Expression>;
-	values: Map<string, ConfigVariable>;
-	ancestors: Set<ts.Expression>;
-}
 
 /** Read committed config expressions without importing or executing their module. */
 export function configValues(text: string, source: string): ConfigVariable[] {

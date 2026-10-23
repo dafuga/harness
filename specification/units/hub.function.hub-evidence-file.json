@@ -10,12 +10,15 @@
 		"source": [
 			"packages/hub/src/services/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
 			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubEvidenceFile.types.ts",
 			"packages/hub/src/utils/hubEvidenceFile.ts",
 			"packages/hub/src/utils/verification-evidence/hubEvidenceFile.ts"
 		],
 		"symbols": [
 			"hubEvidenceFile",
 			"hubEvidenceFile",
+			"Input",
+			"Checked",
 			"hubEvidenceFile",
 			"evidenceFileLimit",
 			"evidenceFileLimit",

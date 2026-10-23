@@ -1,3 +1,4 @@
+import type { Unit } from './unitMetadata.types';
 import { explorerKindCategory } from '../../../utils/explorer-ui/explorerRoute';
 import { pureHelpers } from './pureHelpers';
 import { helperConsumers } from './helperConsumers';
@@ -5,14 +6,11 @@ import type { PublicHelper } from '../../../utils/explorer-ui/unitMetadata';
 import { type HelperTree } from '../../../utils/explorer-ui/helperConsumers';
 import { createHash } from 'node:crypto';
 import type { ExportedSymbol, SourceTree } from '../../../core/development-tooling/sourceTypes';
-import type { RevisionRegistry } from '../../../utils/verification-evidence/revision-registry/revisionRegistry';
 import { scanExports } from '../../../utils/development-tooling/scanExports';
 import { hydrateUnitDocumentation } from './unitDocumentation';
 import { ModuleCategoryService } from '../../development-tooling/ModuleCategoryService';
 import { moduleGroup } from '../../../utils/development-tooling/moduleGroup';
 import { configValues } from './configValues';
-
-type Unit = RevisionRegistry['units'][number];
 
 const kinds = new Set(['function', 'helper', 'shared-function', 'module']);
 

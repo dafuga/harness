@@ -165,9 +165,11 @@ export const historyIndexSchema = z.strictObject({
 /** The explanations shown with a revision are the stored reasons, unchanged. */
 export const indexedExplanationSchema = explanationSchema;
 
-export type IndexedRecord = z.infer<typeof indexedRecordSchema>;
-export type IndexedRevision = z.infer<typeof indexedRevisionSchema>;
-export type BenchmarkSeries = z.infer<typeof benchmarkSeriesSchema>;
-export type LegacyEntry = z.infer<typeof legacyEntrySchema>;
-export type LegacyMedia = z.infer<typeof legacyMediaSchema>;
-export type HistoryIndex = z.infer<typeof historyIndexSchema>;
+export type {
+	IndexedRecord,
+	IndexedRevision,
+	BenchmarkSeries,
+	LegacyEntry,
+	LegacyMedia,
+	HistoryIndex
+} from './historyIndexTypes.types';

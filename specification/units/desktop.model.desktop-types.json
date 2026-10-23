@@ -9,14 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/models/Desktop.types.ts",
-			"packages/desktop/src/models/development-tooling/Desktop.types.ts"
+			"packages/desktop/src/models/development-tooling/Desktop.types.ts",
+			"packages/desktop/src/models/development-tooling/DesktopValues.ts"
 		],
 		"symbols": [
-			"categories",
-			"DesignImage",
-			"DesignOptionInfo",
-			"DesignRevision",
-			"DesignVersion",
 			"categories",
 			"Category",
 			"ProviderId",
@@ -41,7 +37,17 @@
 			"Measure",
 			"EntityDetail",
 			"ProjectSnapshot",
-			"SourceChange"
+			"SourceChange",
+			"DesignImage",
+			"DesignOptionInfo",
+			"DesignRevision",
+			"DesignVersion",
+			"categories",
+			"DesignImage",
+			"DesignOptionInfo",
+			"DesignRevision",
+			"DesignVersion",
+			"categories"
 		]
 	},
 	"contract": {

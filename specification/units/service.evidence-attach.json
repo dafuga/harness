@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"src/services/evidence-attach-service/EvidenceAttachService.ts",
-			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts"
+			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
+			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.types.ts"
 		],
 		"symbols": [
 			"EvidenceAttachService",
-			"Attached",
 			"EvidenceAttachService",
 			"EvidenceAttachService.constructor",
-			"EvidenceAttachService.attach"
+			"EvidenceAttachService.attach",
+			"Attached",
+			"Attached"
 		]
 	},
 	"contract": {

@@ -1,3 +1,4 @@
+import type { CapacitorEnvironmentAdapterConfig } from './CapacitorEnvironmentAdapter.types';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';
 import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
@@ -10,16 +11,6 @@ import type {
 	RemoteNativePlugin,
 	RemoteNativeStatus
 } from '../../../models/development-tooling/Environment.types';
-
-export interface CapacitorEnvironmentAdapterConfig {
-	/** A test hands in a plugin; the app registers the native one. */
-	plugin?: RemoteNativePlugin;
-	/**
-	 * This phone's own Hub account. A test hands one in; the app registers the native one only
-	 * where the shell has it, so that an older shell keeps exactly the computer's bridge.
-	 */
-	account?: AccountNativePlugin;
-}
 
 export const remotePluginName = 'HarnessRemote';
 
@@ -73,3 +64,5 @@ export class CapacitorEnvironmentAdapter {
 		return () => void handle.then((item) => item.remove());
 	}
 }
+
+export type { CapacitorEnvironmentAdapterConfig } from './CapacitorEnvironmentAdapter.types';

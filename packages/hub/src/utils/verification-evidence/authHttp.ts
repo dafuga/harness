@@ -1,13 +1,9 @@
+import type { AuthHttpOptions } from './authHttp.types';
 import { AuthFailure, authFail } from '../accounts-access/authFail';
 
 const MAX_BODY = 16384;
 
 export const baseHeaders = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
-
-export interface AuthHttpOptions {
-	status?: number;
-	cookies?: string[];
-}
 
 export function withCookies(response: Response, cookies: string[] = []): Response {
 	for (const cookie of cookies) response.headers.append('Set-Cookie', cookie);
@@ -89,11 +85,6 @@ export async function readJson(request: Request): Promise<Record<string, unknown
 	return (text === null ? null : jsonObject(text)) ?? authFail('invalid-request');
 }
 
-export type AuthRoute = (request: Request) => Promise<Response>;
-
-/** Keyed by `METHOD /path`. */
-export type AuthRoutes = Record<string, AuthRoute>;
-
 /** The request path when it is inside the namespaces authentication owns, else null. */
 export function authPath(request: Request): string | null {
 	const path = new URL(request.url).pathname;
@@ -105,3 +96,5 @@ export {
 	sameOrigin,
 	bearerToken
 } from '../../lib/verification-evidence/server/auth/request-session-service/authHttp';
+
+export type { AuthHttpOptions, AuthRoute, AuthRoutes } from './authHttp.types';

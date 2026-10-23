@@ -1,21 +1,8 @@
+import type { Observed, Flow } from './explorerFlow.types';
 import type { Page } from '@playwright/test';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
 import { categories, nav } from './explorer';
 import { evidenceDirectory, servedBuild } from './harnessCapture';
-
-/** What a reader can observe of an explorer screen without knowing how it is built. */
-export interface Observed {
-	address: string;
-	heading: string;
-	categories: string[];
-	category: string | null;
-	branch: string | null;
-	commit: string | null;
-	/** The accessible names of the verification marks the screen draws, each once. */
-	marks: string[];
-	/** Source or runner paths drawn in the content. */
-	paths: string[];
-}
 
 const text = async (page: Page, selector: string) =>
 	(
@@ -54,15 +41,6 @@ export async function observed(page: Page): Promise<Observed> {
 		marks: marks.slice(0, 12),
 		paths: [...new Set(drawn ?? [])]
 	};
-}
-
-/** What one flow asked for and what it must find, in the words of the scenario. */
-export interface Flow {
-	state: string;
-	asked: string;
-	expects: string;
-	/** True where the state is the one screen that shows source on request. */
-	source?: boolean;
 }
 
 /** The checks every flow is held to, judged from what was observed and nothing else. */
@@ -137,3 +115,5 @@ export async function captureFlow(
 		env
 	);
 }
+
+export type { Observed, Flow } from './explorerFlow.types';

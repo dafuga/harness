@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"src/services/EvidenceRestoreService.ts",
-			"src/services/verification-evidence/EvidenceRestoreService.ts"
+			"src/services/verification-evidence/EvidenceRestoreService.ts",
+			"src/services/verification-evidence/EvidenceRestoreService.types.ts"
 		],
 		"symbols": [
 			"EvidenceRestoreService",
-			"Restored",
 			"EvidenceRestoreService",
 			"EvidenceRestoreService.constructor",
-			"EvidenceRestoreService.restore"
+			"EvidenceRestoreService.restore",
+			"Restored",
+			"Restored"
 		]
 	},
 	"contract": {

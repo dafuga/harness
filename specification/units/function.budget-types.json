@@ -7,12 +7,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/budgetTypes.ts", "src/core/verification-evidence/budgetTypes.ts"],
+		"source": [
+			"src/core/budgetTypes.ts",
+			"src/core/verification-evidence/budgetTypes.ts",
+			"src/core/verification-evidence/budgetTypes.types.ts"
+		],
 		"symbols": [
 			"performanceBaselineSchema",
 			"budgetEventSchema",
 			"performanceBaselineSchema",
 			"budgetEventSchema",
+			"BudgetEvent",
+			"PerformanceBaselineEntry",
 			"BudgetEvent",
 			"PerformanceBaselineEntry"
 		]

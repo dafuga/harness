@@ -7,15 +7,23 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/development-tooling/files.ts", "src/core/files.ts"],
+		"source": [
+			"src/core/development-tooling/files.ts",
+			"src/core/development-tooling/files.types.ts",
+			"src/core/files.ts"
+		],
 		"symbols": [
+			"writePlannedFiles",
+			"ensureParents",
+			"renderFileList",
 			"PlannedFile",
 			"FileWriteStatus",
 			"FileWriteResult",
 			"WriteFilesOptions",
-			"writePlannedFiles",
-			"ensureParents",
-			"renderFileList",
+			"PlannedFile",
+			"FileWriteStatus",
+			"FileWriteResult",
+			"WriteFilesOptions",
 			"writePlannedFiles",
 			"ensureParents",
 			"renderFileList"

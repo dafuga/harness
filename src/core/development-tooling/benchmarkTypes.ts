@@ -61,5 +61,4 @@ export const kernelBenchmarkSchema = z.object({
 	})
 });
 
-export type BenchMeasurement = z.infer<typeof benchMeasurementSchema>;
-export type KernelBenchmark = z.infer<typeof kernelBenchmarkSchema>;
+export type { BenchMeasurement, KernelBenchmark } from './benchmarkTypes.types';

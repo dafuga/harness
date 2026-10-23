@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/server/auth/HubAuthController.ts",
-			"packages/hub/src/lib/verification-evidence/server/auth/HubAuthController.ts"
+			"packages/hub/src/lib/verification-evidence/server/auth/HubAuthController.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/HubAuthController.types.ts"
 		],
 		"symbols": [
 			"HubAuthController",
-			"HubAuthControllerOptions",
 			"HubAuthController",
 			"HubAuthController.constructor",
-			"HubAuthController.handle"
+			"HubAuthController.handle",
+			"HubAuthControllerOptions",
+			"HubAuthControllerOptions"
 		]
 	},
 	"contract": {

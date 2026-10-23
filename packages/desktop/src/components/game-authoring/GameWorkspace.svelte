@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Source } from './GameWorkspace.types';
 	import { resolve } from '$app/paths';
 	import { untrack } from 'svelte';
 	import GameNavigationGuard from './GameNavigationGuard.svelte';
@@ -12,7 +13,6 @@
 	import GameMechanics from './GameMechanics.svelte';
 	import GamePreview from './game-preview/GamePreview.svelte';
 	import GameTrace from './GameTrace.svelte';
-	type Source = Pick<Props, 'projectId' | 'commit' | 'bridge'>;
 	const tabs = ['Preview', 'Checkpoints', 'Mechanics'] as const;
 	let { projectId = null, commit, readonly = false, bridge }: Props = $props();
 	let doc = $state.raw<GameDocument>();

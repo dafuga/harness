@@ -1,3 +1,4 @@
+import type { Child } from './gatedRuns.types';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -6,13 +7,6 @@ import { openRunGate, teardownGate, type RunGate } from './runGate';
 
 const fixtureOwner = resolve(import.meta.dirname, 'fixtureOwner.ts');
 const runGate = resolve(import.meta.dirname, 'runGate.ts');
-interface Child {
-	child: ChildProcess;
-	/** Resolves once the process is gone: closed with all it wrote read, or never started. */
-	closed: Promise<void>;
-	/** Why it could not be started, if it could not. */
-	failure?: Error;
-}
 /** What the guards started and must end: gates, child processes, and the directories they own. */
 const started = { gates: [] as RunGate[], children: [] as Child[], owned: [] as string[] };
 

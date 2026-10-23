@@ -9,22 +9,27 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-sections/entityContract.ts",
+			"packages/reports/src/components/explorer-ui/entity-sections/entityContract.types.ts",
 			"packages/reports/src/helpers/strings/humanize.ts",
 			"packages/reports/src/utils/entityContract.ts",
-			"packages/reports/src/utils/explorer-ui/entityContract.ts"
+			"packages/reports/src/utils/explorer-ui/entityContract.ts",
+			"packages/reports/src/utils/explorer-ui/entityContract.types.ts"
 		],
 		"symbols": [
 			"requiredStates",
 			"entityContract",
+			"Field",
 			"humanize",
 			"requiredStates",
 			"entityContract",
 			"humanize",
+			"requiredStates",
+			"entityContract",
 			"ContractRow",
 			"ContractFacts",
-			"requiredStates",
-			"entityContract",
-			"humanize"
+			"humanize",
+			"ContractRow",
+			"ContractFacts"
 		]
 	},
 	"contract": {

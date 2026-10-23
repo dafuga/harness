@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/development-tooling/pieces.ts", "src/templates/pieces.ts"],
-		"symbols": ["PieceKind", "PieceContext", "pieceFiles", "pieceFiles"]
+		"source": [
+			"src/templates/development-tooling/pieces.ts",
+			"src/templates/development-tooling/pieces.types.ts",
+			"src/templates/pieces.ts"
+		],
+		"symbols": ["PieceKind", "pieceFiles", "PieceContext", "PieceContext", "pieceFiles"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -47,6 +51,11 @@
 		},
 		{
 			"unit": "template.app-pieces",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.development-tooling-separate-type-declarations",
 			"via": "import",
 			"origin": "derived"
 		},

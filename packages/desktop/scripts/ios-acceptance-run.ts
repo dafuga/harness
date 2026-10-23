@@ -1,35 +1,7 @@
+import type { FixtureView, Acceptance, PairingOffer } from './ios-acceptance-run.types';
 import { resolve } from 'node:path';
 import { localOrigin, loopbackArgument, scanArgument } from './ios-acceptance-guards';
-import type { SimulatorPage } from './ios-acceptance-page';
-import type { AcceptanceRecord } from './ios-acceptance-record';
 import { launch, screenshot } from './ios-acceptance-simulator';
-
-/** What the control of the TEST ONLY fixture answers about its computer. */
-export interface FixtureView {
-	state: string;
-	locked: boolean | null;
-	requests: { deviceId: string; deviceName: string }[];
-	devices: { deviceId: string; name: string; online: boolean }[];
-}
-/** A one-time offer. Its code and its QR text are hidden by the record as soon as it arrives. */
-export interface PairingOffer {
-	pairingId: string;
-	code: string;
-	/** The text of the QR code: what a camera would read from the computer. */
-	scan: string;
-}
-
-/** TEST ONLY. Everything one phase of the native acceptance run works with. */
-export interface Acceptance {
-	record: AcceptanceRecord;
-	page: SimulatorPage;
-	udid: string;
-	/** The control of the run's own fixture; always on this machine. */
-	controlOrigin: string;
-	project: { id: string; name: string };
-	/** Where screenshots and the report go; ignored by Git. */
-	output: string;
-}
 
 export const computerName = 'Harness fixture computer';
 export const panelText = 'return panel();';
@@ -101,3 +73,5 @@ export async function openDesign(run: Acceptance): Promise<string> {
 	const image = "const image = document.querySelector('.image-canvas img');";
 	return page.until(`${image} return image?.naturalWidth ? 'loaded' : '';`, 'loaded', 90);
 }
+
+export type { FixtureView, PairingOffer, Acceptance } from './ios-acceptance-run.types';

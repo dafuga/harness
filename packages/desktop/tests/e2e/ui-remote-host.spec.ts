@@ -1,3 +1,4 @@
+import type { Call, Held } from './ui-remote-host.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { scannedText } from './qr-read';
 import { captured, remoteEvidence } from './remote-evidence';
@@ -10,8 +11,6 @@ import {
 	relayOrigin,
 	remoteHostFixture
 } from './ui-remote-host-fixture';
-
-type Call = Record<string, unknown>;
 const made = async (page: Page, op: string) =>
 	(await page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls)).filter(
 		(call) => call.op === op
@@ -22,7 +21,6 @@ const code = (page: Page) => access(page).getByRole('img', { name: 'Pairing QR c
 /** The text of the offer the SYNTHETIC control port holds open, or null when it holds none. */
 const open = (page: Page) =>
 	page.evaluate(() => {
-		type Held = { __remoteHost: { status: { pairing: { scan: string } | null } } };
 		return (window as unknown as Held).__remoteHost.status.pairing?.scan ?? null;
 	});
 const entity = (project: string, branch: string) =>

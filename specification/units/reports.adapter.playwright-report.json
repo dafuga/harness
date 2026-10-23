@@ -9,12 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts",
-			"packages/reports/src/services/reports-media/report-command-service/PlaywrightReportAdapter.ts"
+			"packages/reports/src/services/reports-media/report-command-service/PlaywrightReportAdapter.ts",
+			"packages/reports/src/services/reports-media/report-command-service/PlaywrightReportAdapter.types.ts"
 		],
 		"symbols": [
 			"PlaywrightReportAdapter",
 			"PlaywrightReportAdapter",
-			"PlaywrightReportAdapter.ingest"
+			"PlaywrightReportAdapter.ingest",
+			"PwResult",
+			"PwTest",
+			"PwSpec",
+			"PwSuite",
+			"Context",
+			"Meta"
 		]
 	},
 	"contract": {

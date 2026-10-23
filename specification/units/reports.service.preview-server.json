@@ -10,15 +10,18 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/accounts-access/preview-server-service/PreviewServerService.ts",
+			"packages/reports/src/services/accounts-access/preview-server-service/PreviewServerService.types.ts",
 			"packages/reports/src/services/preview-server-service/PreviewServerService.ts"
 		],
 		"symbols": [
-			"PreviewHandle",
-			"PreviewResult",
 			"PreviewServerService",
 			"PreviewServerService.constructor",
 			"PreviewServerService.run",
 			"PreviewServerService.close",
+			"PreviewHandle",
+			"PreviewResult",
+			"PreviewHandle",
+			"PreviewResult",
 			"PreviewServerService"
 		]
 	},

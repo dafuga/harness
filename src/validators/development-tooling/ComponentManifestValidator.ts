@@ -1,14 +1,10 @@
+import type { ManifestValidation } from './ComponentManifestValidator.types';
 import type { z } from 'zod';
 import {
 	componentManifestSchema,
 	type ComponentManifest
 } from '../../core/development-tooling/unitTypes';
 import { derivedResponsibility } from '../../workflows/development-tooling/load-units/unit-index-service/derivedResponsibility';
-
-export interface ManifestValidation<T> {
-	value?: T;
-	errors: string[];
-}
 
 /** Checks one stored unit manifest against the schema and its own file name. */
 export class ComponentManifestValidator {
@@ -86,3 +82,5 @@ export function schemaErrors(error: z.ZodError, label: string): string[] {
 		(issue) => `${label}: ${issue.path.join('.') || 'manifest'} ${issue.message}`
 	);
 }
+
+export type { ManifestValidation } from './ComponentManifestValidator.types';

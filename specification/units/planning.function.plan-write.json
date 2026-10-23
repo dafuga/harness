@@ -12,7 +12,8 @@
 			"packages/planning/src/lib/planning/planning-service/planWrite.ts",
 			"packages/planning/src/utils/plan-write/clean.ts",
 			"packages/planning/src/utils/planWrite.ts",
-			"packages/planning/src/utils/planning-collaboration/plan-write/clean.ts"
+			"packages/planning/src/utils/planning-collaboration/plan-write/clean.ts",
+			"packages/planning/src/utils/planning-collaboration/plan-write/clean.types.ts"
 		],
 		"symbols": [
 			"planWrite",
@@ -25,10 +26,11 @@
 			"assertClean",
 			"commitFiles",
 			"planWrite",
-			"Files",
 			"clean",
 			"assertClean",
-			"commitFiles"
+			"commitFiles",
+			"Files",
+			"Files"
 		]
 	},
 	"contract": {

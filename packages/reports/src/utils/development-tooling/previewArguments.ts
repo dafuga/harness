@@ -1,15 +1,7 @@
+import type { PreviewArguments, PreviewOptions } from './previewArguments.types';
 import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';
 import { resolve } from 'node:path';
-
-export interface PreviewArguments {
-	root: string;
-	configFile?: string;
-	port: number;
-	identity: string;
-}
-
-type PreviewOptions = { root: string; configFile?: string; port: number };
 
 /** The app owns its listener; Vite must never move to another port or expose it remotely. */
 export function previewArguments(
@@ -57,3 +49,5 @@ function applyOption(options: PreviewOptions, arg: string, value: string | undef
 			throw new Error(`Unsupported managed preview option: ${arg}`);
 	}
 }
+
+export type { PreviewArguments } from './previewArguments.types';

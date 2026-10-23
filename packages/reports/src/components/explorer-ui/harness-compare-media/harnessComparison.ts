@@ -1,20 +1,12 @@
+import type { Found, Slot } from './harnessComparison.types';
 import type {
 	ComparedSide,
 	StateChoice,
 	AlignedState
 } from '../../../utils/explorer-ui/harnessComparison';
-import type { HarnessCapture, HarnessRecord } from '../../../models/explorer-ui/Harness.types';
 import type { Evidence } from '../../../models/reports-media/Report.types';
 import { captureProvenance } from '../../../utils/reports-media/captureProvenance';
 import { mediaFile } from '../../../utils/explorer-ui/harnessEvidence';
-
-type Scenario = HarnessRecord['scenarios'][number];
-
-interface Found {
-	scenario: Scenario;
-	state: string;
-	capture: HarnessCapture;
-}
 
 const media = ['screenshot', 'audio'];
 
@@ -79,15 +71,6 @@ function viewportLabel(sides: ComparedSide[], scenario: string, id?: string): st
 		.find((item) => item.id === scenario);
 	const found = known?.viewports.find((viewport) => viewport.id === id);
 	return found ? `${found.width}px ${found.id}` : id;
-}
-
-interface Slot {
-	key: string;
-	scenario: string;
-	state: string;
-	where: string;
-	viewport?: string;
-	audio: boolean;
 }
 
 /** What every item of one aligned state shares, whichever side it is and whatever it holds. */

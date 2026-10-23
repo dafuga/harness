@@ -1,15 +1,11 @@
+import type { ReviewedDeployment, DeploymentOptions } from './DeploymentService.types';
 import { CloudflareDeployAdapter } from '../../adapters/development-tooling/CloudflareDeployAdapter';
 import { desktopDeployments } from './DeploymentActivityService';
 import type { DeploymentActivityService } from './DeploymentActivityService';
 import type {
-	DeployExecutor,
 	DeployInput,
-	DeploymentPlan,
-	DeploymentEnvironment,
 	DeploymentPlugin,
-	DeploymentQuery,
-	DeploymentReceipt,
-	CloudflareTarget
+	DeploymentQuery
 } from '../../models/development-tooling/Deployment.types';
 import type { ProjectContext } from '../../models/ProjectContext.types';
 import type { ProjectSessionService } from '../ProjectSessionService';
@@ -18,21 +14,6 @@ import { deploymentStatus } from '../../utils/development-tooling/deploymentStat
 import { deploymentExecution } from '../../utils/development-tooling/deploymentExecution';
 import { reviewDeployment } from '../../utils/development-tooling/reviewDeployment';
 import { enqueueChangeDeployments } from '../../utils/development-tooling/enqueueChangeDeployments';
-export interface DeploymentOptions {
-	plugin?: DeploymentPlugin;
-	execute?: DeployExecutor;
-	health?: (target: CloudflareTarget) => Promise<boolean>;
-	activities?: DeploymentActivityService;
-}
-export interface ReviewedDeployment {
-	sourceEnvironment: DeploymentEnvironment | null;
-	plan: DeploymentPlan;
-	fingerprint: string;
-	root: string;
-	projectId: string | null;
-	target?: CloudflareTarget;
-	predecessor: DeploymentReceipt | null;
-}
 /** Read-only plans and short admissions; every actual deployment belongs to the host job registry. */
 export class DeploymentService {
 	private plans = new Map<string, ReviewedDeployment>();
@@ -101,3 +82,5 @@ export class DeploymentService {
 		return this.session.root;
 	}
 }
+
+export type { DeploymentOptions, ReviewedDeployment } from './DeploymentService.types';

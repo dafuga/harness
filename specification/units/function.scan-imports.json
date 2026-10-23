@@ -9,18 +9,25 @@
 	"owns": {
 		"source": [
 			"src/services/development-tooling/source-index-service/scanImports.ts",
+			"src/services/development-tooling/source-index-service/scanImports.types.ts",
 			"src/services/source-index-service/scanImports.ts",
 			"src/utils/development-tooling/scanImports.ts",
+			"src/utils/development-tooling/scanImports.types.ts",
 			"src/utils/scanImports.ts"
 		],
 		"symbols": [
 			"scanImports",
+			"Found",
+			"LiteralPattern",
+			"scanImports",
+			"svelteScripts",
 			"scanImports",
 			"ReferenceVia",
 			"SourceLanguage",
 			"SourceReference",
-			"svelteScripts",
-			"scanImports",
+			"ReferenceVia",
+			"SourceLanguage",
+			"SourceReference",
 			"scanImports",
 			"svelteScripts"
 		]

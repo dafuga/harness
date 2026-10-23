@@ -11,7 +11,8 @@
 			"packages/planning/src/utils/plan-write/planCommit.ts",
 			"packages/planning/src/utils/planCommit.ts",
 			"packages/planning/src/utils/planning-collaboration/plan-write/planCommit.ts",
-			"packages/planning/src/utils/planning-collaboration/planCommit.ts"
+			"packages/planning/src/utils/planning-collaboration/planCommit.ts",
+			"packages/planning/src/utils/planning-collaboration/planCommit.types.ts"
 		],
 		"symbols": [
 			"planCommit",
@@ -22,9 +23,10 @@
 			"planCommit",
 			"requireLfsFilters",
 			"stageFiles",
-			"CommitContext",
 			"planCommit",
-			"requireLfsFilters"
+			"requireLfsFilters",
+			"CommitContext",
+			"CommitContext"
 		]
 	},
 	"contract": {

@@ -1,11 +1,7 @@
+import type { Seen } from './github-api.test.types';
 import { expect, test } from 'vitest';
 import { GithubApiAdapter } from '../../src/adapters/GithubApiAdapter';
 import { failure } from '../support/githubFixture';
-
-interface Seen {
-	url: string;
-	init: RequestInit;
-}
 
 function adapter(respond: () => Response | Promise<Response>) {
 	const seen: Seen[] = [];

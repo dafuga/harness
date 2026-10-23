@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/scripts/harness-seed-attacher.ts"],
+		"source": [
+			"packages/reports/scripts/harness-seed-attacher.ts",
+			"packages/reports/scripts/harness-seed-attacher.types.ts"
+		],
 		"symbols": [
-			"SeedAttach",
 			"SeedAttacher",
 			"SeedAttacher.open",
 			"SeedAttacher.attach",
-			"SeedAttacher.close"
+			"SeedAttacher.close",
+			"SeedAttach",
+			"SeedAttach"
 		]
 	},
 	"contract": {

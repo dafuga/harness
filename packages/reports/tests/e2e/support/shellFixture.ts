@@ -1,3 +1,4 @@
+import type { ShellPage } from './shellFixture.types';
 import type { Page } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
@@ -10,7 +11,6 @@ import {
 
 /** The address the fixture pages are opened at; nothing listens there. */
 export const shellOrigin = 'http://shell.fixture';
-export type ShellPage = 'navbar' | 'primitives' | 'errors' | 'activity' | 'catalog';
 const config = 'src/config/shellViteConfig.ts';
 /** Where the setup of a verification compiles the fixture: the build its captures are tied to. */
 const compiled = 'output/shell-fixture';
@@ -109,3 +109,5 @@ export async function captureShell(
 		bytes
 	);
 }
+
+export type { ShellPage } from './shellFixture.types';

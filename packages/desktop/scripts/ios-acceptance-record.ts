@@ -1,10 +1,5 @@
+import type { AcceptanceCheck } from './ios-acceptance-record.types';
 import { redacted } from './ios-acceptance-guards';
-
-export interface AcceptanceCheck {
-	phase: string;
-	name: string;
-	passed: boolean;
-}
 
 /**
  * TEST ONLY. What a native acceptance run found: every assertion by name, passed or failed. It
@@ -52,3 +47,5 @@ export class AcceptanceRecord {
 		return this.checks.length - this.failed;
 	}
 }
+
+export type { AcceptanceCheck } from './ios-acceptance-record.types';

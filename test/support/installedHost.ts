@@ -1,29 +1,11 @@
+import type { SyntheticHost, HostIndex } from './installedHost.types';
 import { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { runCommand, runHarness } from './cli';
 import { writeConsoleHost } from './consoleHost';
-import { baselineRepo, type VerifyRepo } from './verifyRepo';
+import { baselineRepo } from './verifyRepo';
 import { startWorker, type LocalWorker } from './workers';
-
-export interface HostIndex {
-	branches: Array<{ name: string; head: string }>;
-	revisions: Array<{ commit: string; records: Array<{ id: string }> }>;
-}
-
-export interface SyntheticHost {
-	root: string;
-	/** The SvelteKit project, with the packed Harness package installed. */
-	host: string;
-	/** A history index of a small verified repository, as `harness history build` wrote it. */
-	data: string;
-	index: HostIndex;
-	/** A verified commit of that history, and one of its screenshots. */
-	commit: string;
-	media: string;
-	repo: VerifyRepo;
-	dispose(): Promise<void>;
-}
 
 /** A second branch of the indexed history; its name needs its slash kept and its `#` encoded. */
 export const slashBranch = 'release/1.0#rc';
@@ -99,3 +81,5 @@ export async function filesHolding(directory: string, secrets: string[]): Promis
 	}
 	return found;
 }
+
+export type { HostIndex, SyntheticHost } from './installedHost.types';

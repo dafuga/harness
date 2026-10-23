@@ -1,10 +1,11 @@
 <script lang="ts">
+	import type { View } from "./AudioComparisonViewer.types";
+
 	import { onMount } from 'svelte';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import AudioEvidence from '../verification-evidence/AudioEvidence.svelte';
 	import Modal from '../shared-primitives/Modal.svelte';
-	type View = 'before' | 'after' | 'compare';
 	let {
 		before,
 		after,
@@ -33,6 +34,7 @@
 		if (dialog?.open) dialog.close();
 		onclose();
 	}
+
 </script>
 
 <Modal

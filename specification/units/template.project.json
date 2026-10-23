@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/project.ts", "src/templates/projects-sessions/project.ts"],
-		"symbols": ["projectFiles", "ProjectKind", "ProjectTemplateInput", "projectFiles"]
+		"source": [
+			"src/templates/project.ts",
+			"src/templates/projects-sessions/project.ts",
+			"src/templates/projects-sessions/project.types.ts"
+		],
+		"symbols": [
+			"projectFiles",
+			"projectFiles",
+			"ProjectKind",
+			"ProjectTemplateInput",
+			"ProjectKind",
+			"ProjectTemplateInput"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -39,6 +50,11 @@
 		},
 		{
 			"unit": "template.audit-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.development-tooling-separate-type-declarations",
 			"via": "import",
 			"origin": "derived"
 		},

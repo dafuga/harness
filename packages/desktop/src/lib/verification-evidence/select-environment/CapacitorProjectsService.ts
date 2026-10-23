@@ -1,21 +1,14 @@
 import type {
+	Key,
+	Input,
+	CapacitorProjectsServiceConfig,
+	Operation
+} from './CapacitorProjectsService.types';
+import type {
 	DesktopBridge,
 	RunEvent
 } from '../../../models/development-tooling/DesktopBridge.types';
 import type { DesktopProject } from '../../../models/projects-sessions/ProjectContext.types';
-
-export interface CapacitorProjectsServiceConfig {
-	/** This phone's own Hub account: the projects it owns or was invited to. */
-	cloud: DesktopBridge;
-	/** The paired computer. What it offers follows its status, so it is read at every use. */
-	mac: DesktopBridge;
-}
-
-type Key = keyof DesktopBridge;
-
-type Input = { projectId?: string; runId?: string };
-
-type Operation = (input?: Input) => Promise<unknown>;
 
 /** Operations a bridge may lack: found while the authority of the selected project offers them. */
 const optional = [
@@ -149,3 +142,5 @@ export class CapacitorProjectsService {
 		return local(input?.projectId ?? this.selected) ? this.config.mac : this.config.cloud;
 	}
 }
+
+export type { CapacitorProjectsServiceConfig } from './CapacitorProjectsService.types';

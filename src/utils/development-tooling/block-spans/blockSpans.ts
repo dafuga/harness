@@ -1,21 +1,6 @@
-import { bodyEnd, matchingBrace, sourceNesting, type SourceNesting } from '../sourceNesting';
+import type { BlockSpan, Scope } from './blockSpans.types';
+import { bodyEnd, matchingBrace, sourceNesting } from '../sourceNesting';
 import { statementEnd } from './statementEnd';
-
-export interface BlockSpan {
-	name: string;
-	kind: 'function' | 'method';
-	start: number;
-	end: number;
-}
-
-interface Scope {
-	masked: string;
-	nesting: SourceNesting;
-	depth: number;
-	from: number;
-	to: number;
-	prefix: string;
-}
 
 const modifiers = '(?:(?:public|private|protected|static|override|readonly|async|get|set)\\s+)*';
 
@@ -136,3 +121,5 @@ function span(
 	const lead = /^[ \t]*/.exec(match[0])?.[0].length ?? 0;
 	return { name: `${scope.prefix}${match[1]}`, kind, start: scope.from + match.index + lead, end };
 }
+
+export type { BlockSpan } from './blockSpans.types';

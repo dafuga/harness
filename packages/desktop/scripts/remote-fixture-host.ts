@@ -1,3 +1,4 @@
+import type { Relay, Running, RemoteFixtureOptions } from './remote-fixture-host.types';
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -14,20 +15,6 @@ import { RepositoryArbiterService } from '../src/services/projects-sessions/Repo
 import { remoteFixtureControl } from './remote-fixture-control';
 import type { FixtureAction } from './remote-fixture-control';
 import { fixtureProviders, remoteFixtureProject } from './remote-fixture-project';
-
-export interface RemoteFixtureOptions {
-	/** Fixed ports for a simulator to be pointed at; any free ones when 0 or omitted. */
-	relayPort?: number;
-	controlPort?: number;
-	/** Where public facts of the fixture are written: addresses and ids, never a code or a key. */
-	publicDirectory: string;
-	log: (line: string) => void;
-	/**
-	 * Who approves a phone that asks. By default the fixture does, as it has no person at it;
-	 * `asked` leaves every request waiting until the control is told to approve or deny it.
-	 */
-	approval?: 'automatic' | 'asked';
-}
 const owner = { id: 'fixture:synthetic-owner' };
 const notice =
 	'TEST ONLY: disposable relay and computer with a synthetic project. Not a deployment.';
@@ -62,13 +49,6 @@ function autoApprove(host: RemoteHostService, projectId: string, log: (line: str
 			void host.devices.approvePairing(grant).catch(() => log('The approval was refused.'));
 		}
 	});
-}
-
-type Relay = Awaited<ReturnType<typeof startRelay>>;
-interface Running {
-	host: RemoteHostService;
-	screen: { locked?: boolean };
-	facts: { relayOrigin: string; hostId: string; project: { id: string; name: string } };
 }
 /** The real host service over a synthetic project, registered at the fixture relay. */
 async function fixtureHost(relay: Relay, state: string, root: string) {
@@ -195,3 +175,5 @@ export async function startRemoteFixture(options: RemoteFixtureOptions) {
 	const entity = { entityId: project.entityId, threadId: project.threadId };
 	return { ...facts, controlOrigin: control.origin, entity, stop };
 }
+
+export type { RemoteFixtureOptions } from './remote-fixture-host.types';

@@ -7,11 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-acceptance-run.ts"],
+		"source": [
+			"packages/desktop/scripts/ios-acceptance-run.ts",
+			"packages/desktop/scripts/ios-acceptance-run.types.ts"
+		],
 		"symbols": [
-			"FixtureView",
-			"PairingOffer",
-			"Acceptance",
 			"computerName",
 			"panelText",
 			"footerText",
@@ -21,7 +21,13 @@
 			"restart",
 			"scanPressed",
 			"shot",
-			"openDesign"
+			"openDesign",
+			"FixtureView",
+			"PairingOffer",
+			"Acceptance",
+			"FixtureView",
+			"PairingOffer",
+			"Acceptance"
 		]
 	},
 	"contract": {

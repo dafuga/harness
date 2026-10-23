@@ -1,5 +1,5 @@
+import type { Fields } from './usageExamples.types';
 import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
-type Fields = Record<string, unknown>;
 const fields = (value: unknown): Fields | null =>
 	typeof value === 'object' && value !== null && !Array.isArray(value) ? (value as Fields) : null;
 const pair = ([key, item]: [string, unknown]) => `${JSON.stringify(key)}: ${compact(item)}`;

@@ -1,3 +1,4 @@
+import type { SeenService, WatchedService } from './ios-service-observers.types';
 import { buildObservation, type BuildObservation } from './ios-build-observation';
 import { join } from 'node:path';
 import {
@@ -6,11 +7,6 @@ import {
 	type ServiceContext
 } from '../../../src/utils/platformServices';
 import { processDescendants, type TrackedProcess } from '../../../src/utils/processDescendants';
-
-interface SeenService {
-	started: string;
-	executable: string;
-}
 const same = (one: TrackedProcess, other: TrackedProcess) =>
 	one.pid === other.pid && one.started === other.started;
 
@@ -47,11 +43,6 @@ export async function observeIosServices(
 		);
 		return !signal.aborted && clear.every(Boolean);
 	});
-}
-
-interface WatchedService {
-	known: TrackedProcess;
-	watch: ReturnType<typeof processDescendants>;
 }
 /** A helper is waited for, never delegated merely because a service started it. */
 async function clearService({ known, watch }: WatchedService, context: ServiceContext) {

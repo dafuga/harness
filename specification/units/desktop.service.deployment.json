@@ -9,11 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/DeploymentService.ts",
-			"packages/desktop/src/services/development-tooling/DeploymentService.ts"
+			"packages/desktop/src/services/development-tooling/DeploymentService.ts",
+			"packages/desktop/src/services/development-tooling/DeploymentService.types.ts"
 		],
 		"symbols": [
-			"DeploymentOptions",
-			"ReviewedDeployment",
 			"DeploymentService",
 			"DeploymentService.constructor",
 			"DeploymentService.status",
@@ -23,7 +22,11 @@
 			"DeploymentService.deploy",
 			"DeploymentService.automatic",
 			"DeploymentService.enqueue",
-			"DeploymentService.progress"
+			"DeploymentService.progress",
+			"DeploymentOptions",
+			"ReviewedDeployment",
+			"DeploymentOptions",
+			"ReviewedDeployment"
 		]
 	},
 	"contract": {

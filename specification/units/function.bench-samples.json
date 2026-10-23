@@ -10,7 +10,8 @@
 		"source": [
 			"src/cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples.ts",
 			"src/utils/benchSamples.ts",
-			"src/utils/development-tooling/benchSamples.ts"
+			"src/utils/development-tooling/benchSamples.ts",
+			"src/utils/development-tooling/benchSamples.types.ts"
 		],
 		"symbols": [
 			"benchSamples",
@@ -19,13 +20,15 @@
 			"timeCall",
 			"benchRounds",
 			"roundMeasurements",
-			"WarmResult",
 			"median",
 			"timeCall",
-			"RoundResult",
 			"benchRounds",
 			"roundMeasurements",
-			"benchSamples"
+			"benchSamples",
+			"WarmResult",
+			"RoundResult",
+			"WarmResult",
+			"RoundResult"
 		]
 	},
 	"contract": {

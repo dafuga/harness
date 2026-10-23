@@ -1,3 +1,4 @@
+import type { StoredAgent } from './AgentRegistryRepository.types';
 import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { link, mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
@@ -10,12 +11,6 @@ import {
 	type AgentEnd,
 	type AgentRegistration
 } from '../../../core/projects-sessions/activityTypes';
-
-export interface StoredAgent {
-	registration: AgentRegistration;
-	beat: AgentBeat;
-	end: AgentEnd | null;
-}
 
 const names = { registration: 'registration.json', beat: 'heartbeat.json', end: 'finished.json' };
 
@@ -112,3 +107,5 @@ export class AgentRegistryRepository {
 		await rename(draft, path);
 	}
 }
+
+export type { StoredAgent } from './AgentRegistryRepository.types';

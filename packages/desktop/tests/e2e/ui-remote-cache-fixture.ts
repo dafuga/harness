@@ -1,3 +1,4 @@
+import type { CacheOptions, CacheHost, Kept } from './ui-remote-cache-fixture.types';
 import type { Page } from '@playwright/test';
 import { remotePhoneFixture } from './ui-remote-phone-fixture';
 export * from './ui-remote-phone-fixture';
@@ -10,20 +11,6 @@ export * from './ui-remote-phone-fixture';
  */
 export const savedAt = '2026-10-12T07:30:00.000Z';
 const kept = ['listProjects', 'snapshot', 'entity', 'messages', 'image', 'source', 'history'];
-
-type Call = { method: string; input: unknown };
-type Answer = { value: unknown; cachedAt?: string };
-type Native = (plugin: string, method: string, input: Call) => Promise<Answer>;
-type Kept = { hit: boolean; value?: unknown };
-interface CacheOptions {
-	savedAt: string;
-	kept: string[];
-}
-interface CacheHost {
-	Capacitor: { nativePromise: Native };
-	__remotePhone: { phone: { state: string } };
-	__phoneCache: (op: 'save' | 'read', key: string, value?: unknown) => Promise<Kept>;
-}
 
 /** SYNTHETIC: wraps the imitated native bridge; a mutation is never kept and never replayed. */
 function installPhoneCache(options: CacheOptions) {

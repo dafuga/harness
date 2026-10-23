@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-build-observation.ts"],
-		"symbols": ["BuildObservation", "buildObservation", "finishObservation"]
+		"source": [
+			"packages/desktop/scripts/ios-build-observation.ts",
+			"packages/desktop/scripts/ios-build-observation.types.ts"
+		],
+		"symbols": ["buildObservation", "finishObservation", "BuildObservation", "BuildObservation"]
 	},
 	"contract": {
 		"origin": "derived",

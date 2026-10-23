@@ -1,10 +1,8 @@
+import type { RemoteHostEnrolment } from './RemoteHostRecordService.types';
 import type {
 	RemoteHostState,
 	RemoteHostStoreAdapter
 } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
-
-/** What a registration changes in the record. */
-export type RemoteHostEnrolment = Pick<RemoteHostState, 'enabled' | 'origin' | 'generation'>;
 
 /**
  * The one copy of what this computer keeps for remote access. It is read once, however many ask.
@@ -88,3 +86,5 @@ export class RemoteHostRecordService {
 		}
 	}
 }
+
+export type { RemoteHostEnrolment } from './RemoteHostRecordService.types';

@@ -1,14 +1,6 @@
+import type { MeasureContext, Entry } from './benchMeasurement.types';
 import type { BenchMeasurement } from '../../core/development-tooling/benchmarkTypes';
 import type { RuntimeKind } from '../../core/development-tooling/unitTypes';
-
-export interface MeasureContext {
-	profile: string;
-	commit: string | null;
-}
-
-export type Artifact = BenchMeasurement['artifacts'][number];
-
-export type Value = number | { unavailable: string };
 
 export const kernelUnits: Record<RuntimeKind, string> = {
 	module: 'function.impact-kernel',
@@ -16,17 +8,6 @@ export const kernelUnits: Record<RuntimeKind, string> = {
 	wasm: 'kernel.impact-kernel',
 	process: 'kernel.impact-kernel'
 };
-
-interface Entry {
-	target: RuntimeKind;
-	metric: string;
-	unitOfMeasure: string;
-	value: Value;
-	method: string;
-	workload?: string;
-	samples?: number;
-	artifacts?: Artifact[];
-}
 
 /** One benchmark measurement: a number, or an explicit reason there is none. */
 export function benchMeasurement(context: MeasureContext, entry: Entry): BenchMeasurement {
@@ -48,3 +29,5 @@ export function benchMeasurement(context: MeasureContext, entry: Entry): BenchMe
 }
 
 export { sizeMeasurements } from '../../cli/program/run-kernel-bench/benchMeasurement';
+
+export type { MeasureContext, Artifact, Value } from './benchMeasurement.types';

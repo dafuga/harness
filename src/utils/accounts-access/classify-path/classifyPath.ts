@@ -1,4 +1,4 @@
-import type { FileClass } from '../../../core/development-tooling/sourceTypes';
+import type { PathClass } from './classifyPath.types';
 import {
 	budgetsLedger,
 	defaultGlobalFiles,
@@ -9,17 +9,7 @@ import {
 	type UnitsConfig
 } from '../../../core/development-tooling/unitsConfig';
 import { unitIdentity } from './unitIdentity';
-import { type UnitIdentity } from '../unitIdentity';
-
-export interface PathClass {
-	classification: FileClass;
-	/** Name of the workspace that owns the path. */
-	workspace: string;
-	workspaceRoot: string;
-	/** Path relative to its workspace root. */
-	relative: string;
-	identity?: UnitIdentity;
-}
+import {} from '../unitIdentity';
 
 /** Decides how a repository-relative path participates in the unit graph. */
 export function classifyPath(path: string, config: UnitsConfig): PathClass {
@@ -64,3 +54,5 @@ function isGlobal(path: string, relative: string, config: UnitsConfig): boolean 
 		config.global.some((pattern) => pathMatches(path, pattern))
 	);
 }
+
+export type { PathClass } from './classifyPath.types';

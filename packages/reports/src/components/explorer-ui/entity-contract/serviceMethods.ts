@@ -1,16 +1,8 @@
+import type { Recorded, ServiceClass, Item } from './serviceMethods.types';
 import type { ContractGroup } from '../../../utils/explorer-ui/contractFields';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import type { ContractRow } from '../../../utils/explorer-ui/entityContract';
 import { fieldOf, returnField, typeLabel, type CallableContract } from './contractFields';
-
-type Item = HarnessUnit['contract']['inputs'][number];
-type Recorded = NonNullable<HarnessUnit['serviceClasses']>[number];
-
-/** A class of a service and the methods its contract is read by, its constructor first. */
-interface ServiceClass {
-	name: string;
-	methods: string[];
-}
 
 /** Whether a name is declared under a member: `Class.method.name`, or `Class.method` itself. */
 const within = (name: string, owner: string, whole: boolean): boolean =>

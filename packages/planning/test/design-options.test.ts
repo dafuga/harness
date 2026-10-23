@@ -1,3 +1,4 @@
+import type { Api, Option, Image } from './design-options.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { PNG } from 'pngjs';
@@ -7,15 +8,6 @@ import type {
 	OpenThreadInput
 } from '../src/models/PlanningBridge.types';
 import { author, contract, git, fixture } from './planFixture';
-
-/**
- * Design options: a Plan of a visual unit keeps several distinct designs in one immutable version,
- * each an identity of its own apart from the version, state and viewport. An approval and a thread
- * bind one exact option. A version written before options reads and approves as it always did.
- */
-type Api = Awaited<ReturnType<typeof fixture>>['api'];
-type Image = { file: string; sha256: string };
-type Option = { id: string; direction: unknown; images: Image[] };
 const unitId = 'page.home';
 const generator = { provider: 'codex', model: 'selected' };
 const png = (width: number) => PNG.sync.write(new PNG({ width, height: 2 }));

@@ -1,3 +1,4 @@
+import type { Progress, Host } from './ProjectRunService.types';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import type {
 	CreatedEntity,
@@ -25,14 +26,6 @@ import {
 export const plannedBefore = new WeakMap<object, CreatedEntity>();
 
 const unanchored = { version: null, imageSha256: null, state: null, viewport: null, region: null };
-
-/** What a creation run has written so far: the draft it names, and the run of its thread. */
-interface Progress {
-	created: CreatedEntity | null;
-	thread: Omit<RunContext, 'entity'> | null;
-}
-
-type Host = ReturnType<typeof hostChanges>;
 
 /** Registered ids the notes may name, those of the request first; no source goes with them. */
 async function known({ project, revision, request }: ProjectRunContext): Promise<string[]> {

@@ -10,6 +10,7 @@
 		"source": [
 			"packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.types.ts",
 			"packages/desktop/src/services/RecordedEvidenceService.ts"
 		],
 		"symbols": [
@@ -18,6 +19,8 @@
 			"RecordedEvidenceService.constructor",
 			"RecordedEvidenceService.evidence",
 			"RecordedEvidenceService.artifact",
+			"Shown",
+			"ProjectRead",
 			"RecordedEvidenceService"
 		]
 	},

@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts",
+			"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.types.ts",
 			"packages/reports/src/utils/explorer-verdict/explorerVerdict.ts",
 			"packages/reports/src/utils/explorerVerdict.ts"
 		],
@@ -16,6 +17,8 @@
 			"verdictRecord",
 			"verdictCoverage",
 			"explorerVerdict",
+			"Kind",
+			"Reason",
 			"verdictRecord",
 			"verdictCoverage",
 			"explorerVerdict",

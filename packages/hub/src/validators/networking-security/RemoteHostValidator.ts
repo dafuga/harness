@@ -1,8 +1,7 @@
+import type { Body } from './RemoteHostValidator.types';
 import type { RemoteHostRegisterInput } from '../../../../remote/src/models/RemoteRelay.types';
 import { remoteIdentity, remotePatterns } from '../../../../remote/src/utils/remoteIdentity';
 import { hubFail } from '../../utils/development-tooling/hubJson';
-
-type Body = Record<string, unknown>;
 
 const NAME_LENGTH = 80;
 

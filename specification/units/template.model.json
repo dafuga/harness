@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/development-tooling/model.ts", "src/templates/model.ts"],
-		"symbols": ["AdapterName", "ModelInput", "modelFiles", "modelFiles"]
+		"source": [
+			"src/templates/development-tooling/model.ts",
+			"src/templates/development-tooling/model.types.ts",
+			"src/templates/model.ts"
+		],
+		"symbols": [
+			"modelFiles",
+			"AdapterName",
+			"ModelInput",
+			"AdapterName",
+			"ModelInput",
+			"modelFiles"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -39,6 +50,11 @@
 		},
 		{
 			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.development-tooling-separate-type-declarations",
 			"via": "import",
 			"origin": "derived"
 		},

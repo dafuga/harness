@@ -1,21 +1,11 @@
-import type {
-	EntityEvidenceQuery,
-	EvidenceArtifactQuery
-} from '../../../../models/verification-evidence/DesktopEvidence.types';
+import type { Transport, Asked } from './HostedEvidenceService.types';
+import type { EvidenceArtifactQuery } from '../../../../models/verification-evidence/DesktopEvidence.types';
 import { HostedEvidenceValidator } from '../../../../validators/verification-evidence/HostedEvidenceValidator';
 import {
 	HostedReadService,
 	type HostedReadOptions
 } from '../../../../services/development-tooling/HostedReadService';
 import { RemoteArtifactCacheService } from './RemoteArtifactCacheService';
-type Asked = EntityEvidenceQuery & { projectId: string };
-interface Transport {
-	path(operation: 'evidence' | 'artifact', query: Asked): string;
-	evidence(query: Asked): Promise<unknown>;
-	artifact(
-		query: EvidenceArtifactQuery & { projectId: string }
-	): Promise<{ bytes: Uint8Array; mediaType: string; principalId: string }>;
-}
 export class HostedEvidenceService {
 	private reads: HostedReadService;
 	private artifacts: RemoteArtifactCacheService;

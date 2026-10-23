@@ -9,14 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/RelaySocketAdapter.ts",
-			"packages/desktop/src/adapters/networking-security/RelaySocketAdapter.ts"
+			"packages/desktop/src/adapters/networking-security/RelaySocketAdapter.ts",
+			"packages/desktop/src/adapters/networking-security/RelaySocketAdapter.types.ts"
 		],
 		"symbols": [
 			"RelaySocketAdapter",
-			"RelaySocketAdapterConfig",
 			"RelaySocketAdapter",
 			"RelaySocketAdapter.constructor",
-			"RelaySocketAdapter.open"
+			"RelaySocketAdapter.open",
+			"RelaySocketAdapterConfig",
+			"SocketEvent",
+			"HeaderSocket",
+			"HeaderSocketConstructor",
+			"RelaySocketAdapterConfig"
 		]
 	},
 	"contract": {

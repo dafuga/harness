@@ -1,3 +1,4 @@
+import type { EventBatch } from './ConsoleBridgeAdapter.types';
 import {
 	agentRequestKey,
 	definitiveAgentFailure
@@ -130,13 +131,6 @@ async function consoleRequest(body: {
 			status: response.status
 		});
 	return value;
-}
-
-interface EventBatch {
-	gap?: boolean;
-	sequence: number;
-	events: Array<{ sequence: number; value: RunEvent }>;
-	replay: Record<string, { text: string; detail: string; terminal?: RunEvent }>;
 }
 function consoleProgress(runId: string, after: number, value: EventBatch) {
 	const events: RunEvent[] = [];

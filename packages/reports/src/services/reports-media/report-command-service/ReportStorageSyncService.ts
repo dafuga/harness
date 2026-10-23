@@ -1,3 +1,4 @@
+import type { StorageSyncOptions } from './ReportStorageSyncService.types';
 import { readdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
@@ -6,10 +7,6 @@ import { ReplayStorageService } from '../ReplayStorageService';
 import { atomicJson, readJson } from '../../../utils/reports-media/reportFiles';
 import { reportLock } from '../../../utils/reports-media/reportLock';
 import { reportRetention } from '../../../utils/reports-media/reportRetention';
-export interface StorageSyncOptions {
-	run?: string;
-	dryRun?: boolean;
-}
 export class ReportStorageSyncService {
 	constructor(private readonly repository = new ReportRepository()) {}
 	async run(options: StorageSyncOptions = {}) {
@@ -76,3 +73,5 @@ export class ReportStorageSyncService {
 		return files.filter((file) => /^[a-f0-9]{64}\.mp4$/.test(file) && !receipts[file]);
 	}
 }
+
+export type { StorageSyncOptions } from './ReportStorageSyncService.types';

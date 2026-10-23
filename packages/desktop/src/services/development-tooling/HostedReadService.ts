@@ -1,19 +1,6 @@
+import type { HostedReadOptions, ReadContext } from './HostedReadService.types';
 import type { CacheIdentity } from '../../../../collaboration/src/models/Collaboration.types';
-import type { RemoteHttpOptions } from '../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
-import type { CacheStatus } from '../../models/projects-sessions/ProjectContext.types';
 import { HostedFailureValidator } from '../../validators/development-tooling/HostedFailureValidator';
-import type { ProjectionCacheService } from '../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
-export interface HostedReadOptions extends RemoteHttpOptions {
-	cache?: ProjectionCacheService;
-	onCacheStatus?: (status: CacheStatus) => void;
-}
-/** One read: whose it is, where it is kept, and the check that its authority still stands. */
-interface ReadContext {
-	scope: string;
-	principalId: string;
-	projectId: string;
-	guard: () => Promise<void>;
-}
 export class HostedReadService {
 	constructor(private options: HostedReadOptions) {}
 	async read<T>(
@@ -146,3 +133,5 @@ function validateIdentity(
 	if (![identity.sourceCommit, identity.sourceTree].every((value) => /^[a-f0-9]{40}$/.test(value)))
 		throw new Error('Invalid hosted cache revision.');
 }
+
+export type { HostedReadOptions } from './HostedReadService.types';

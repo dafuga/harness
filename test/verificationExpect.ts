@@ -1,28 +1,10 @@
+import type { Context, AssertionObservation } from './verificationExpect.types';
 import { expect as original, afterEach } from 'vitest';
 import { types } from 'node:util';
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { observationValue, type ObservationValue } from './verificationValues';
-
-export interface AssertionObservation {
-	schemaVersion: 1;
-	kind: 'matcher';
-	invocation: string;
-	testName: string;
-	matcher: string;
-	modifiers: string[];
-	actual: ObservationValue;
-	expected: ObservationValue[];
-	passed: boolean;
-	error?: ObservationValue;
-}
+import { observationValue } from './verificationValues';
 const counters = new Map<string, { started: number; completed: number }>();
-interface Context {
-	testName: string;
-	observed: { value: unknown };
-	modifiers: string[];
-	poll?: boolean;
-}
 function record(
 	context: Context,
 	matcher: string,
@@ -206,3 +188,5 @@ afterEach(() => {
 		})}\n`
 	);
 });
+
+export type { AssertionObservation } from './verificationExpect.types';

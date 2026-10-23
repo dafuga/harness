@@ -1,3 +1,4 @@
+import type { Groups } from './harnessImpact.types';
 import type { ComparedSides, HarnessImpact } from '../../../utils/explorer-ui/harnessImpact';
 import { sideImpact } from './sideImpact';
 import type {
@@ -37,8 +38,6 @@ export async function comparedSides(
 	);
 	return { base: base.commit, head: head.commit, impact };
 }
-
-type Groups = Record<'direct' | 'indirect' | 'added' | 'removed', string[]>;
 
 const unique = (items: string[]) => [...new Set(items)].sort();
 

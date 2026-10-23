@@ -1,16 +1,5 @@
+import type { Scenario, CaptureStanding, CaptureProvenance } from './captureProvenance.types';
 import type { HarnessCapture, HarnessRecord } from '../../models/explorer-ui/Harness.types';
-
-type Scenario = HarnessRecord['scenarios'][number];
-export type CaptureStanding = 'fresh' | 'inherited' | 'rejected' | 'unvalidated';
-
-export interface CaptureProvenance {
-	standing: CaptureStanding;
-	/** Short statement of the standing, shown wherever the capture appears. */
-	label: string;
-	facts: Array<{ label: string; value: string }>;
-	/** The same facts as sentences, with complete revisions. */
-	note: string;
-}
 
 const brief = (id: string) => id.slice(0, 12);
 const short = (commit: string) => commit.slice(0, 7);
@@ -129,3 +118,5 @@ export function scenarioOrigin(scenario: Scenario): string {
 	const elsewhere = others.length ? `; captures came from ${others.map(short).join(', ')}` : '';
 	return `Failed attempt at ${short(scenario.testedRevision)}${elsewhere}`;
 }
+
+export type { CaptureStanding, CaptureProvenance } from './captureProvenance.types';

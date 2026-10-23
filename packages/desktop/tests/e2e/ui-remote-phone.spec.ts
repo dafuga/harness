@@ -1,9 +1,7 @@
+import type { Call, Phone } from './ui-remote-phone.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { remoteEvidence } from './remote-evidence';
 import { alpha, deviceName, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
-
-type Call = Record<string, unknown>;
-type Phone = { __remotePhone: { set: (state: string) => void } };
 const made = async (page: Page, op: string) =>
 	(await page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls)).filter(
 		(call) => call.op === op

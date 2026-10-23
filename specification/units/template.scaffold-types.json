@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"src/templates/development-tooling/scaffoldTypes.ts",
+			"src/templates/development-tooling/scaffoldTypes.types.ts",
 			"src/templates/scaffoldTypes.ts"
 		],
 		"symbols": [
 			"scaffoldKinds",
-			"PieceKind",
 			"ScaffoldDetail",
 			"scaffoldDetails",
 			"isAppOnlyScaffold",
+			"PieceKind",
+			"PieceKind",
 			"scaffoldKinds",
 			"scaffoldDetails",
 			"isAppOnlyScaffold"

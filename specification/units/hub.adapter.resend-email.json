@@ -10,7 +10,8 @@
 		"source": [
 			"packages/hub/src/adapters/ResendEmailAdapter.ts",
 			"packages/hub/src/lib/server/auth/ResendEmailAdapter.ts",
-			"packages/hub/src/lib/verification-evidence/server/auth/ResendEmailAdapter.ts"
+			"packages/hub/src/lib/verification-evidence/server/auth/ResendEmailAdapter.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/ResendEmailAdapter.types.ts"
 		],
 		"symbols": [
 			"ResendEmailAdapter",
@@ -18,11 +19,12 @@
 			"ResendEmailAdapterConfig",
 			"ResendEmailAdapter",
 			"createResendDelivery",
-			"ResendEmailAdapterConfig",
 			"ResendEmailAdapter",
 			"ResendEmailAdapter.constructor",
 			"ResendEmailAdapter.send",
-			"createResendDelivery"
+			"createResendDelivery",
+			"ResendEmailAdapterConfig",
+			"ResendEmailAdapterConfig"
 		]
 	},
 	"contract": {

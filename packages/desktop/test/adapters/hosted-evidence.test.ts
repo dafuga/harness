@@ -1,3 +1,4 @@
+import type { Answer } from './hosted-evidence.test.types';
 import { expect, test, vi } from 'vitest';
 import { HostedEvidenceAdapter } from '../../src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter';
 import { artifactLimit } from '../../src/utils/artifactMedia';
@@ -28,7 +29,6 @@ const capture = {
 const scope = `entityId=page.home&commit=${commit}&branch=feature%2Fone+two&mode=current`;
 const bound = `${scope}&side=before&recordId=${hash}&scenarioId=home-page&state=filled&evidenceId=screens&sha256=${hash}`;
 const image = { 'content-type': 'image/png' };
-type Answer = (url: URL) => Response | Promise<Response>;
 
 /** A client of a hub whose session is good and whose project routes answer as given. */
 function hub(answer: Answer) {

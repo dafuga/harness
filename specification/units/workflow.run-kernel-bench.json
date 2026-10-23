@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/run-kernel-bench/runKernelBench.ts"],
-		"symbols": ["BenchOptions", "runKernelBench", "renderBench"]
+		"source": [
+			"src/cli/program/run-kernel-bench/runKernelBench.ts",
+			"src/cli/program/run-kernel-bench/runKernelBench.types.ts"
+		],
+		"symbols": ["runKernelBench", "renderBench", "BenchOptions", "BenchOptions"]
 	},
 	"contract": {
 		"origin": "derived",

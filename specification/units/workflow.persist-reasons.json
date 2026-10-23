@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/persistReasons.ts"],
-		"symbols": ["PersistedReasons", "persistReasons", "renderReasons"]
+		"source": ["src/cli/program/persistReasons.ts", "src/cli/program/persistReasons.types.ts"],
+		"symbols": ["persistReasons", "renderReasons", "PersistedReasons", "PersistedReasons"]
 	},
 	"contract": {
 		"origin": "derived",

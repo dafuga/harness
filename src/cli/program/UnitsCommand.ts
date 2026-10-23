@@ -1,14 +1,8 @@
+import type { Flags } from './UnitsCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
 import { listUnits, renderUnit, showUnit, unitSchema, unitsGraph } from './inspectUnits';
 import { checkUnits, indexUnits, renderCheck, renderIndex, retireUnit } from './manageUnits';
-
-interface Flags {
-	json?: boolean;
-	write?: boolean;
-	kind?: string;
-	reason?: string;
-}
 
 export function registerUnitsCommand(program: Command): void {
 	const units = program

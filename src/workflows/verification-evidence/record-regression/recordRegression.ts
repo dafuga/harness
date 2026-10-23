@@ -1,3 +1,4 @@
+import type { RecordRegressionInput } from './recordRegression.types';
 import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
 import { UnitRegistryRepository } from '../../../repositories/verification-evidence/UnitRegistryRepository';
 import { HistoryNoteRepository } from '../../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
@@ -21,18 +22,6 @@ import {
 	regressionFixCommit
 } from '../../../utils/verification-evidence/regressionFiles';
 import { regressionTestCommit } from './regressionFiles';
-
-export interface RecordRegressionInput {
-	root?: string;
-	loop: string;
-	phase: string;
-	commit?: string;
-	test?: string[];
-	unit?: string[];
-	command?: string;
-	assertion?: string;
-	timeout?: string;
-}
 
 /** A successful command stores proof of the declared phase; red itself remains a failure. */
 export async function recordRegression(input: RecordRegressionInput) {
@@ -161,3 +150,5 @@ async function declaredUnits(root: string, commit: string, units: string[]): Pro
 	);
 	if (units.some((id) => !known.has(id))) fail('Every --unit must be active at the tested commit.');
 }
+
+export type { RecordRegressionInput } from './recordRegression.types';
