@@ -12,6 +12,10 @@ export function styleTokenViolations(source: string, path: string): string[] {
 			if (path === config.tokenFile) return;
 			if (!prop.startsWith('--') && !config.designProperties.test(prop)) return;
 			const remaining = withoutVariables(value);
+			if (prop.startsWith('--hx-') && remaining.trim()) {
+				issues.push(`${path}: public token override outside catalog: ${prop}: ${value}`);
+				return;
+			}
 			if (literalDesign(prop.includes('font-family') ? 'font-family' : prop, remaining))
 				issues.push(`${path}: ${prop}: ${value}`);
 		});
