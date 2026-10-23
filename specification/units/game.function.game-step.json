@@ -19,6 +19,11 @@
 				"description": "Initial deterministic random seed normalized to an unsigned 32-bit integer."
 			},
 			{
+				"name": "createRun.view",
+				"type": "GameView | undefined",
+				"description": "Optional built layout whose spawn, level marker and view identity initialize the new run."
+			},
+			{
 				"name": "stepGame.run",
 				"type": "GameRun",
 				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
@@ -53,7 +58,7 @@
 			{
 				"name": "createRun",
 				"type": "GameRun",
-				"description": "Fresh deterministic run with initial key-door state and empty completion, event and trace lists."
+				"description": "Fresh deterministic run with empty completion, event and trace lists; a supplied world starts at its planned spawn."
 			},
 			{
 				"name": "stepGame",
@@ -75,7 +80,7 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Movement is non-finite or mechanics attempt conflicting or unsafe state-field writes."
+				"description": "Movement is non-finite, mechanics write conflicting or unsafe fields, or a planned level lacks a matching human approval and build."
 			}
 		]
 	},
@@ -92,6 +97,11 @@
 		},
 		{
 			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.validator.level",
 			"via": "import",
 			"origin": "derived"
 		}

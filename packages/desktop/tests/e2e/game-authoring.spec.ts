@@ -9,11 +9,13 @@ import {
 } from './game-unsaved-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 import { fakeProject } from './ui-workspace-fixture';
+import * as level from './game-level-fixture';
 if (process.env.TAKE_SCREENSHOT === 'true') test.use({ video: 'on' });
 test('game authoring exposes independent mechanics and executable checkpoint graph', async ({
 	page
 }) => {
-	test.setTimeout(90_000);
+	test.setTimeout(180_000);
+	await level.exerciseLevelPlanning(page, capture);
 	await captureCheckpointViewports(page, capture);
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await expect(page.getByRole('textbox', { name: 'Title', exact: true })).toHaveValue(
@@ -104,28 +106,30 @@ test('saved graph edits persist, invalid references block saves and history is r
 test('view creation and checkpoint creation/deletion preserve independent mechanics', async ({
 	page
 }) => {
-	await page.goto('/game');
+	await level.installLevelProject(page);
+	await page.goto(level.levelProject);
 	await viewSettings(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	const trace = page.getByText(/^Execution trace/);
 	for (let step = 0; step < 2; step++)
 		await page.getByRole('button', { name: 'Move right' }).click();
-	await page.getByRole('button', { name: 'New view', exact: true }).click();
-	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('New view');
+	await page.getByRole('button', { name: 'New level', exact: true }).click();
+	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('New level');
+	await level.buildLevel(page);
 	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
-	await expect(trace, 'a cloned view shares ids but not the courtyard trace').toHaveText(
+	await expect(trace, 'a newly built level has an independent trace').toHaveText(
 		'Execution trace (0)'
 	);
 	await page.getByRole('button', { name: 'Add checkpoint', exact: true }).click();
-	await expect(page.getByLabel('Checkpoint title', { exact: true })).toHaveValue('Checkpoint 5');
+	await expect(page.getByLabel('Checkpoint title', { exact: true })).toHaveValue('Checkpoint 1');
 	await page.getByRole('button', { name: 'Delete checkpoint', exact: true }).click();
-	await expect(page.getByText('Checkpoint 5', { exact: true })).toHaveCount(0);
+	await expect(page.getByText('Checkpoint 1', { exact: true })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await page.getByRole('textbox', { name: 'Title', exact: true }).fill('Independent movement');
 	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
-	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeVisible();
+	await expect(page.getByText('Checkpoint 1', { exact: true })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await expect(page.getByRole('textbox', { name: 'Title', exact: true })).toHaveValue(
 		'Independent movement'
@@ -133,6 +137,7 @@ test('view creation and checkpoint creation/deletion preserve independent mechan
 	await page.getByLabel('View', { exact: true }).selectOption({ label: 'The courtyard' });
 	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
+	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeVisible();
 	await expect(trace).toHaveText('Execution trace (1)');
 	await trace.click();
 	await expect(

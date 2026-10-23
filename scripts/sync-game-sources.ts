@@ -6,6 +6,7 @@ import { formatConfigFiles } from '../src/templates/development-tooling/formatCo
 /** Generated games keep their src/lib/game layout; each destination names its engine source. */
 export const gameSourceLayout: Readonly<Record<string, string>> = {
 	'models/Game.types.ts': 'models/game-authoring/Game.types.ts',
+	'validators/LevelValidator.ts': 'validators/game-authoring/LevelValidator.ts',
 	'validators/gameDocument.ts': 'validators/game-authoring/gameDocument.ts',
 	'validators/gameDocument.types.ts': 'validators/game-authoring/gameDocument.types.ts',
 	'utils/gameStep.ts': 'utils/game-authoring/gameStep.ts',

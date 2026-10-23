@@ -1,0 +1,112 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-level-review",
+	"kind": "component",
+	"title": "GameLevelReview",
+	"responsibility": "Review generated geometry, request revisions and explicitly approve a level.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/game-authoring/GameLevelReview.svelte",
+			"packages/desktop/src/components/game-authoring/GameLevelReview.types.ts"
+		],
+		"symbols": ["GameLevelReview", "GameLevelReviewProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameLevelReview.proposal",
+				"type": "LevelProposal",
+				"description": "Validated geometry and summary awaiting human review."
+			},
+			{
+				"name": "GameLevelReview.providers",
+				"type": "ProviderState[] | null",
+				"description": "Discovered labels for the provider and model that proposed this layout."
+			},
+			{
+				"name": "GameLevelReview.approved",
+				"type": "boolean",
+				"description": "Whether the human approved this exact proposal."
+			},
+			{
+				"name": "GameLevelReview.built",
+				"type": "boolean",
+				"description": "Whether the approved proposal has been materialized into playable geometry."
+			},
+			{
+				"name": "GameLevelReview.status",
+				"type": "LevelStatus",
+				"description": "Availability, pending request and error information."
+			},
+			{
+				"name": "GameLevelReview.regenerate",
+				"type": "(feedback: string) => void",
+				"description": "Request a replacement proposal using the entered changes."
+			},
+			{
+				"name": "GameLevelReview.approve",
+				"type": "() => void",
+				"description": "Explicitly approve this exact current proposal."
+			},
+			{
+				"name": "GameLevelReview.build",
+				"type": "() => void",
+				"description": "Build the current approved proposal, unlocking checkpoints."
+			},
+			{
+				"name": "GameLevelReview.edit",
+				"type": "() => void",
+				"description": "Return to the level brief without losing saved geometry."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameLevelReview",
+				"type": "markup",
+				"description": "Review generated geometry, request revisions and explicitly approve a level."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.game-level-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.game-level-preview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameLevelReview.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameLevelReview.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
