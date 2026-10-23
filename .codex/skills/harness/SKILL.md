@@ -85,6 +85,7 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## API and Naming Corrections
 
+- Before extending an alias resolver, strengthen its standard lookup matrix with canonical-name collisions, plural forms and normalization. Canonical names keep precedence over new aliases.
 - Function and parameter names describe their domain role or transformation. Avoid vague names such as `value` when the domain is known; generic abstractions may use genuinely generic names. Rename actual declarations, callers and contracts, not just UI labels.
 - When Daniel requests a naming or API correction, trace why the earlier implementation passed the generator, skill or review checkpoint. Repair the earliest responsible control within Harness, including generated tenant guidance where applicable, and verify the emitted instructions. Record cause and prevention alongside the regression proof.
 - A selected helper’s Uses must come from runtime references attributed to that exact caller, never its owning module’s import graph. Hide Uses when that callable has no recorded helper callees; cover independent siblings, same-module callees, imported callees and old empty Uses links in the shared callable matrix.
@@ -138,6 +139,8 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Module Naming
 
+Shared model names omit the .types file suffix. Preserve shared type-only models, registered IDs, source paths and classification; use the same clean name on cards, links and headings.
+
 Read `harness info naming` and the scaffold guide before naming a module. Classes keep PascalCase and their role suffix; models and components keep PascalCase; functions, pure helpers and value modules keep their actual camelCase name. Match source filenames and primary declarations, preserve framework entries and stable registered IDs, and keep descriptive responsibilities separate from code names. Use the same canonical code identity on cards, usage links and detail headings. Standard catalog coverage compares those surfaces for class, callable, component and model consumers at current and historical revisions; card-only naming overrides are not allowed.
 
 Before freezing a naming regression, format and lint the strengthened tests and shared fixtures. Record the failing assertion only after that preflight so green can use the unchanged test inputs.
@@ -147,6 +150,10 @@ Keep registered test titles stable when extending naming coverage; verification 
 Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.
 
 ## Responsibility Categories
+
+Group related list, detail and history pages by feature in meaningful domain
+folders. Reuse that feature category with `--group`; use route groups when public
+URLs must stay unchanged. Avoid broad technical catch-alls when a feature is known.
 
 Config modules use the plural `src/configs/<category>/` folder, one focused source file per config. Generate new configs there and preserve stable IDs when relocating existing files. The Configs explorer shows one table per source file; responsibility grouping must not combine unrelated configs. Decode only static source literals for presentation, preserve raw expressions for inspection, and never execute configuration or read host secrets to populate the catalog. Extend the standard mixed-config browser fixture whenever grouping or value presentation changes.
 
@@ -197,6 +204,10 @@ exist. Never add consumer category labels or a second card implementation. Scree
 and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
+
+Ownership review follows ledger membership rather than the file's module kind. Bridge factories
+and initializers recorded in `shared-service-ownership` are included; their owning workspace checks
+must include `test/services/unit-index.test.ts` even when full CLI/native suites are deferred.
 
 When changing a previously relocated helper or service workflow's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
@@ -297,3 +308,5 @@ General string transformations belong in `src/helpers/strings/`, independent of 
 When changing a scaffold shape or name, update emitted source, generated tests and public export plans together. Run the standard all-scaffold export-coherence assertion and the existing focused CLI project-check scenario before accepting the generator change; source-only scaffold assertions are insufficient.
 
 Pure helper SDK exports keep their callable names. When an existing SDK binding already uses that name, preserve it and qualify the helper export with a Helper suffix (then a numeric suffix if necessary); regenerating the helper must be idempotent. Keep the same-name util/helper CLI compilation scenario alongside export-to-emitted-file coherence coverage when changing helper scaffolds.
+
+When changing a shared Game renderer, include the root `test/game-runtime.test.ts` consumer guard in owning qualification, even when full CLI/native suites are deferred. Verify semantic object visibility and retained references; inactive scene containers must not change what a visibility assertion means.
