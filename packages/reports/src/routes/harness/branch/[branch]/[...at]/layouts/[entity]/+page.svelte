@@ -3,4 +3,4 @@
 	import HarnessScreen from '../../../../../../../components/explorer-ui/HarnessScreen.svelte';
 </script>
 
-<HarnessScreen title="Shell" content={EntityVisualScreen} />
+<HarnessScreen title="Layout" content={EntityVisualScreen} />
