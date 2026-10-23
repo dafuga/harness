@@ -32,6 +32,7 @@ test('app projects include SvelteKit and specification files', () =>
 		);
 		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
 			expect(fileContents(files, path)).toContain('Callable usage examples');
+			expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
 			expect(fileContents(files, path)).toContain(
 				'reusable visual frames with a child-content slot'
 			);
