@@ -43,11 +43,11 @@
 <style>
 	section {
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 	}
 	h2 {
 		margin: 0;
-		font-size: 12px;
+		font-size: var(--hx-type-size-xs);
 		color: var(--gold);
 	}
 	small {

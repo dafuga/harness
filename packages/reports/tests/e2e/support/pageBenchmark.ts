@@ -125,7 +125,14 @@ async function includedUnits(page: Page, route: string): Promise<string[]> {
 		'reports.function.explorer-evidence-focused-captures'
 	];
 	if (route === 'reports.page.harness-branch-branch-at-styles')
-		ran.push('reports.style.explorer-styles');
+		ran.push(
+			'reports.style.explorer-styles',
+			'reports.style.app-tokens',
+			'reports.style.explorer',
+			'reports.style.explorer-navbar',
+			'reports.function.harness-icons',
+			'reports.function.harness-shell'
+		);
 	const screened = /-(pages|shells|components)-entity$/.test(route);
 	if (screened) ran.push('reports.function.entity-screens');
 	const units = new Set([route, ...ran, ...(await shownUnits(page, true))]);

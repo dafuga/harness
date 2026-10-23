@@ -120,26 +120,26 @@
 		max-width: calc(100vw - 24px);
 		max-height: calc(100dvh - 24px);
 		padding: 0;
-		border: 1px solid var(--line);
-		border-radius: 14px;
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-xlarge);
 		background: var(--panel);
 		color: inherit;
-		box-shadow: 0 24px 80px #0009;
+		box-shadow: var(--hx-shadow-dialog);
 		overflow: hidden;
 	}
 	.checkpoint-modal :global(.viewer-dialog::backdrop) {
-		background: rgb(3 26 40 / 0.72);
+		background: var(--hx-scrim);
 	}
 	.checkpoint-modal :global(.viewer-header),
 	.checkpoint-modal :global(footer) {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		padding: 10px 12px 10px 20px;
+		gap: var(--hx-space-8);
+		padding: var(--hx-space-10) var(--hx-space-12) var(--hx-space-10) var(--hx-space-20);
 	}
 	.checkpoint-modal :global(.viewer-header) {
 		justify-content: space-between;
-		border-bottom: 1px solid var(--line);
+		border-bottom: var(--hx-border-thin) solid var(--line);
 	}
 	.checkpoint-modal :global(.viewer-header button) {
 		display: grid;
@@ -155,22 +155,22 @@
 		min-height: 0;
 		overflow: auto;
 		overscroll-behavior: contain;
-		padding: 20px;
+		padding: var(--hx-space-20);
 	}
 	.checkpoint-modal :global(footer) {
-		border-top: 1px solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--line);
 	}
 	.fields,
 	label {
 		display: grid;
-		gap: 16px;
+		gap: var(--hx-space-16);
 	}
 	label {
-		gap: 6px;
+		gap: var(--hx-space-6);
 	}
 	label > span {
-		font-size: 14px;
-		font-weight: 600;
+		font-size: var(--hx-type-size-sm);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	textarea {
 		min-height: 96px;
@@ -178,19 +178,19 @@
 	}
 	input:focus-visible,
 	textarea:focus-visible {
-		outline: 2px solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--gold);
 	}
 	.name {
 		grid-template-columns: auto minmax(0, 1fr);
 		align-items: center;
-		gap: 12px;
+		gap: var(--hx-space-12);
 	}
 	.name > span {
 		color: var(--muted);
-		font-weight: 400;
+		font-weight: var(--hx-style-weight-regular);
 	}
 	.name input {
-		padding-block: 6px;
+		padding-block: var(--hx-space-6);
 		background: none;
 	}
 	.disclosure,
@@ -209,8 +209,8 @@
 		color: var(--gold);
 	}
 	.rules {
-		padding-top: 16px;
-		border-top: 1px solid var(--line);
+		padding-top: var(--hx-space-16);
+		border-top: var(--hx-border-thin) solid var(--line);
 	}
 	.done {
 		margin-inline-start: auto;

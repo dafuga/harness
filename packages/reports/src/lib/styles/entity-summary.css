@@ -3,11 +3,11 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 16px 20px;
+	gap: var(--hx-space-16) var(--hx-space-20);
 }
 .ex-content .ex-head-main {
 	display: grid;
-	gap: 6px;
+	gap: var(--hx-space-6);
 	flex: 1 1 320px;
 	min-width: 0;
 }
@@ -15,43 +15,43 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 10px 14px;
+	gap: var(--hx-space-10) var(--hx-space-14);
 }
 .ex-content .ex-head-actions {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 12px;
+	gap: var(--hx-space-12);
 	margin-left: auto;
 }
 .ex-content .ex-route {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	color: var(--ex-soft);
 }
 .ex-content .ex-route a {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	gap: var(--hx-space-8);
 }
 .ex-content .ex-route code {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
-	padding: 8px 12px;
-	border: 1px solid var(--ex-line);
-	border-radius: 8px;
+	gap: var(--hx-space-8);
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--ex-line);
+	border-radius: var(--hx-radius-small);
 	background: var(--ex-surface);
 	overflow-wrap: anywhere;
 }
 .ex-content .ex-rows > div {
 	display: grid;
 	grid-template-columns: minmax(112px, 0.32fr) 1fr;
-	gap: 6px 16px;
-	padding: 10px 0;
-	border-top: 1px solid var(--ex-line);
+	gap: var(--hx-space-6) var(--hx-space-16);
+	padding: var(--hx-space-10) 0;
+	border-top: var(--hx-border-thin) solid var(--ex-line);
 }
 .ex-content .ex-rows dt {
 	color: var(--ex-soft);
@@ -64,12 +64,12 @@
 	grid-template-columns: 1fr auto;
 }
 .ex-content .ex-figures dd {
-	font-weight: 600;
+	font-weight: var(--hx-style-weight-semibold);
 	text-align: right;
 }
 .ex-content .unmeasured {
 	color: var(--ex-soft);
-	font-weight: 500;
+	font-weight: var(--hx-style-weight-medium);
 }
 .ex-content .over,
 .ex-content .failed {
@@ -79,7 +79,7 @@
 .ex-content .ex-summary {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
-	gap: 16px;
+	gap: var(--hx-space-16);
 	align-items: start;
 }
 /* Every figure of a profile is a row of one list, as tall as the tallest, its text centred in it. */
@@ -100,15 +100,15 @@
 .ex-content .ex-mini {
 	width: 100%;
 	border-collapse: collapse;
-	font-size: 0.92rem;
+	font-size: var(--hx-type-size-sm);
 }
 .ex-content .ex-mini th,
 .ex-content .ex-mini td {
-	padding: 8px 12px;
-	border-top: 1px solid var(--ex-line);
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border-top: var(--hx-border-thin) solid var(--ex-line);
 	text-align: left;
 	vertical-align: top;
-	font-weight: 500;
+	font-weight: var(--hx-style-weight-medium);
 }
 .ex-content .ex-mini thead th {
 	border-top: 0;
@@ -125,17 +125,17 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 8px 14px;
-	padding: 16px;
-	border: 1px dashed color-mix(in srgb, var(--ex-fail) 55%, transparent);
-	border-radius: 8px;
+	gap: var(--hx-space-8) var(--hx-space-14);
+	padding: var(--hx-space-16);
+	border: var(--hx-border-thin) dashed color-mix(in srgb, var(--ex-fail) 55%, transparent);
+	border-radius: var(--hx-radius-small);
 	color: var(--ex-soft);
 }
 .ex-content .ex-text-button {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	padding: 4px 2px;
+	gap: var(--hx-space-6);
+	padding: var(--hx-space-4) var(--hx-space-2);
 	border: 0;
 	background: none;
 	color: var(--ex-gold);
@@ -144,12 +144,12 @@
 }
 .ex-content .ex-links {
 	display: grid;
-	gap: 8px;
+	gap: var(--hx-space-8);
 }
 .ex-content .ex-links.inline {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px 22px;
+	gap: var(--hx-space-8) var(--hx-space-22);
 }
 .ex-content .ex-links a {
 	color: var(--ex-gold);
@@ -161,46 +161,46 @@
 .ex-content .ex-count {
 	margin-left: auto;
 	color: var(--ex-muted);
-	font-size: 0.9rem;
-	font-weight: 500;
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-medium);
 }
 .ex-content .ex-strip {
 	grid-template-columns: auto 1fr;
 	align-items: center;
-	gap: 10px 24px;
+	gap: var(--hx-space-10) var(--hx-space-24);
 }
 /* What an entity relates to and what a config provides: lists in columns that wrap. */
 .ex-content .ex-config,
 .ex-content .ex-relations {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-	gap: 16px;
+	gap: var(--hx-space-16);
 }
 .ex-content .ex-config > div {
 	display: grid;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-content: start;
 	min-width: 0;
 }
 .ex-content .ex-related,
 .ex-content .ex-reasons {
-	padding-left: 18px;
+	padding-left: var(--hx-space-18);
 	list-style: disc;
 	color: var(--ex-soft);
 }
 .ex-content .ex-related li {
 	display: flex;
 	align-items: start;
-	gap: 6px 12px;
-	padding-top: 8px;
-	border-top: 1px solid var(--ex-line);
+	gap: var(--hx-space-6) var(--hx-space-12);
+	padding-top: var(--hx-space-8);
+	border-top: var(--hx-border-thin) solid var(--ex-line);
 }
 .ex-content .ex-related a {
-	margin-right: 8px;
-	font-weight: 600;
+	margin-right: var(--hx-space-8);
+	font-weight: var(--hx-style-weight-semibold);
 }
 .ex-content .ex-reasons {
-	padding-left: 18px;
+	padding-left: var(--hx-space-18);
 	list-style: disc;
 	color: var(--ex-soft);
 }

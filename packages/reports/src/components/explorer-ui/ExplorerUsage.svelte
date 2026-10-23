@@ -47,16 +47,16 @@
 	.ex-usage {
 		display: grid;
 		align-items: baseline;
-		gap: 4px 10px;
+		gap: var(--hx-space-4) var(--hx-space-10);
 		min-width: 0;
 		color: var(--ex-muted);
-		font-size: 0.75rem;
-		line-height: 1.5;
+		font-size: var(--hx-type-size-xs);
+		line-height: var(--hx-style-leading-normal);
 	}
 	.ex-usage ul {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 4px 10px;
+		gap: var(--hx-space-4) var(--hx-space-10);
 		list-style: none;
 		margin: 0;
 		padding: 0;

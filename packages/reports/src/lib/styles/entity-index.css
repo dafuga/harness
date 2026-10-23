@@ -1,26 +1,26 @@
 /* A collection of the explorer: its controls, the grid of page cards and the tables. */
 .ex-content .ex-index {
 	display: grid;
-	gap: 14px;
+	gap: var(--hx-space-14);
 	min-width: 0;
 }
 .ex-content .ex-controls {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 12px 24px;
-	margin-top: 6px;
+	gap: var(--hx-space-12) var(--hx-space-24);
+	margin-top: var(--hx-space-6);
 }
 .ex-content .ex-search {
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	gap: var(--hx-space-12);
 	flex: 1 1 320px;
 	min-width: 0;
 	min-height: 48px;
-	padding: 0 16px;
-	border: 1px solid var(--ex-line-strong);
-	border-radius: 8px;
+	padding: 0 var(--hx-space-16);
+	border: var(--hx-border-thin) solid var(--ex-line-strong);
+	border-radius: var(--hx-radius-small);
 	background: var(--ex-surface);
 	color: var(--ex-muted);
 }
@@ -45,7 +45,7 @@
 	position: relative;
 	display: inline-flex;
 	align-items: center;
-	gap: 12px;
+	gap: var(--hx-space-12);
 	min-height: 44px;
 	cursor: pointer;
 }
@@ -63,10 +63,10 @@
 	position: relative;
 	width: 46px;
 	height: 26px;
-	border: 1px solid var(--ex-line-strong);
-	border-radius: 999px;
+	border: var(--hx-border-thin) solid var(--ex-line-strong);
+	border-radius: var(--hx-radius-pill);
 	background: var(--ex-raised);
-	transition: background 0.15s;
+	transition: background var(--hx-motion-fast);
 }
 .ex-content .ex-toggle-track::after {
 	content: '';
@@ -75,9 +75,9 @@
 	left: 3px;
 	width: 18px;
 	height: 18px;
-	border-radius: 50%;
+	border-radius: var(--hx-radius-round);
 	background: var(--ex-soft);
-	transition: transform 0.15s;
+	transition: transform var(--hx-motion-fast);
 }
 .ex-content .ex-toggle input:checked + .ex-toggle-track {
 	border-color: var(--ex-gold);
@@ -88,8 +88,8 @@
 	transform: translateX(20px);
 }
 .ex-content .ex-toggle input:focus-visible + .ex-toggle-track {
-	outline: 2px solid var(--ex-gold);
-	outline-offset: 2px;
+	outline: var(--hx-border-thick) solid var(--ex-gold);
+	outline-offset: var(--hx-border-thick);
 }
 .ex-content .ex-order {
 	flex: 0 1 260px;
@@ -103,16 +103,16 @@
 }
 .ex-content .report-select select {
 	width: 100%;
-	padding-inline-start: 14px;
-	border: 1px solid var(--ex-line-strong);
-	border-radius: 8px;
+	padding-inline-start: var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--ex-line-strong);
+	border-radius: var(--hx-radius-small);
 	background: var(--ex-surface);
 	color: var(--ex-text);
 	font: inherit;
 }
 .ex-content .ex-empty {
-	padding: 28px;
-	border: 1px dashed var(--ex-line-strong);
+	padding: var(--hx-space-28);
+	border: var(--hx-border-thin) dashed var(--ex-line-strong);
 	border-radius: var(--ex-radius);
 	color: var(--ex-soft);
 	text-align: center;
@@ -120,20 +120,20 @@
 .ex-content .ex-page-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-	gap: 18px;
+	gap: var(--hx-space-18);
 }
 .ex-content .ex-page-card {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-	gap: 22px;
-	padding: 16px;
-	border: 1px solid var(--ex-line);
+	gap: var(--hx-space-22);
+	padding: var(--hx-space-16);
+	border: var(--hx-border-thin) solid var(--ex-line);
 	border-radius: var(--ex-radius);
 	background: var(--ex-surface);
 }
 .ex-content .ex-card-shot {
 	display: grid;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-content: start;
 	min-width: 0;
 	margin: 0;
@@ -142,8 +142,8 @@
 	display: block;
 	aspect-ratio: 16 / 10;
 	overflow: hidden;
-	border: 1px solid var(--ex-line);
-	border-radius: 8px;
+	border: var(--hx-border-thin) solid var(--ex-line);
+	border-radius: var(--hx-radius-small);
 	background: var(--ex-raised);
 }
 /* The whole capture is shown, never cut: a component may sit anywhere in its screen. */
@@ -157,38 +157,38 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	gap: 2px 12px;
+	gap: var(--hx-space-2) var(--hx-space-12);
 	color: var(--ex-muted);
-	font-size: 0.8rem;
+	font-size: var(--hx-type-size-compact);
 	overflow-wrap: anywhere;
 }
 .ex-content .ex-thumb-gap {
 	display: grid;
 	place-content: center;
 	justify-items: center;
-	gap: 10px;
+	gap: var(--hx-space-10);
 	height: 100%;
-	padding: 16px;
+	padding: var(--hx-space-16);
 	color: var(--ex-muted);
-	font-size: 0.9rem;
+	font-size: var(--hx-type-size-sm);
 	text-align: center;
 }
 .ex-content .ex-page-body {
 	display: grid;
-	gap: 12px;
+	gap: var(--hx-space-12);
 	align-content: start;
 	justify-items: start;
 	min-width: 0;
 }
 .ex-content .ex-page-body h2 {
-	font-size: 1.5rem;
+	font-size: var(--hx-type-size-2xl);
 	overflow-wrap: anywhere;
 }
 .ex-content .ex-fact {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 10px 14px;
+	gap: var(--hx-space-10) var(--hx-space-14);
 	color: var(--ex-soft);
 }
 .ex-content .ex-legend {
@@ -196,9 +196,9 @@
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: 14px 28px;
-	padding: 14px 18px;
-	border: 1px solid var(--ex-line);
+	gap: var(--hx-space-14) var(--hx-space-28);
+	padding: var(--hx-space-14) var(--hx-space-18);
+	border: var(--hx-border-thin) solid var(--ex-line);
 	border-radius: var(--ex-radius);
 }
 .ex-content .ex-hint,
@@ -206,7 +206,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 12px 24px;
+	gap: var(--hx-space-12) var(--hx-space-24);
 }
 @media (max-width: 760px) {
 	.ex-content .ex-page-card {

@@ -40,13 +40,13 @@
 		display: grid;
 		flex: none;
 		align-content: center;
-		gap: 3px;
+		gap: var(--hx-space-3);
 		width: 142px;
 	}
 	.environment-choice {
 		display: flex;
 		align-items: center;
-		gap: 6px;
+		gap: var(--hx-space-6);
 	}
 	.environment-choice label {
 		flex: 1;
@@ -59,11 +59,11 @@
 		height: 34px;
 		min-height: 34px !important;
 		padding-block: 0;
-		font-size: 13px;
+		font-size: var(--hx-type-size-compact);
 	}
 	/* Prod is reached through Deploy alone; while prod is chosen, Deploy is marked as the way there. */
 	.gated .environment-choice :global(.agent-icon:enabled) {
-		border-color: rgb(255 208 53 / 0.55);
+		border-color: var(--hx-gold-line);
 		color: var(--gold);
 	}
 	/* On a phone the environment and Deploy begin the shared control rail. */
@@ -74,26 +74,26 @@
 		.environment-choice {
 			grid-area: environment;
 			gap: 0;
-			margin: 8px 0 0 6px;
-			border-radius: 8px 0 0 8px;
+			margin: var(--hx-space-8) 0 0 var(--hx-space-6);
+			border-radius: var(--hx-radius-small) 0 0 var(--hx-radius-small);
 			background: var(--panel);
-			box-shadow: inset 0 0 0 1px var(--line);
+			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--line);
 		}
 		/* The rail draws the choice; a hairline parts it from Deploy. */
 		.environment-picker .environment-choice :global(.report-select select) {
-			padding-inline: 12px 28px;
+			padding-inline: var(--hx-space-12) var(--hx-space-28);
 			border-color: transparent;
 			border-inline-end-color: var(--line);
-			border-radius: 8px 0 0 8px;
+			border-radius: var(--hx-radius-small) 0 0 var(--hx-radius-small);
 			background-color: transparent;
-			font-weight: 600;
+			font-weight: var(--hx-style-weight-semibold);
 		}
 		.environment-picker .environment-choice :global(.report-select svg) {
 			inset-inline-end: 8px;
 		}
 		.environment-choice :global(select:focus-visible) {
-			outline: 2px solid var(--gold);
-			outline-offset: -2px;
+			outline: var(--hx-border-thick) solid var(--gold);
+			outline-offset: calc(-1 * var(--hx-space-2));
 		}
 	}
 </style>

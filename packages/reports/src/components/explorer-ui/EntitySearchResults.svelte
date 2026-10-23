@@ -76,23 +76,23 @@
 		display: flex;
 		flex: 1 1 auto;
 		flex-direction: column;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		min-height: 0;
-		padding: 12px;
+		padding: var(--hx-space-12);
 	}
 	.entity-search-results {
 		flex: 1 1 auto;
 		min-height: 0;
 		overflow-y: auto;
 		overscroll-behavior: contain;
-		line-height: 1.4;
+		line-height: var(--hx-style-leading-snug);
 		text-align: left;
 	}
 	.entity-search-note {
-		margin: 6px 8px;
-		color: var(--muted, #8fa1b8);
-		font-size: 12px;
-		line-height: 1.4;
+		margin: var(--hx-space-6) var(--hx-space-8);
+		color: var(--muted, var(--hx-muted));
+		font-size: var(--hx-type-size-xs);
+		line-height: var(--hx-style-leading-snug);
 	}
 	ul {
 		margin: 0;
@@ -104,43 +104,43 @@
 		display: grid;
 		/* One badge column for every result, so the names start in one line. */
 		grid-template-columns: 5.5rem minmax(0, 1fr);
-		gap: 2px 10px;
-		padding: 8px 10px;
-		border-radius: 8px;
+		gap: var(--hx-space-2) var(--hx-space-10);
+		padding: var(--hx-space-8) var(--hx-space-10);
+		border-radius: var(--hx-radius-small);
 		color: inherit;
 		text-decoration: none;
 	}
 	[aria-selected='true'] a,
 	.entity-search-results a:hover {
-		background: rgb(255 255 255 / 0.07);
-		box-shadow: inset 2px 0 0 var(--gold, #f3c33b);
+		background: var(--hx-tint-selected);
+		box-shadow: inset var(--hx-space-2) 0 0 var(--gold, var(--hx-gold));
 	}
 	.entity-search-badge {
 		grid-row: span 2;
 		align-self: start;
 		justify-self: start;
-		padding: 2px 8px;
-		border: 1px solid var(--line, #24485c);
-		border-radius: 999px;
-		color: var(--gold, #f3c33b);
-		font-size: 11px;
-		font-weight: 600;
+		padding: var(--hx-space-2) var(--hx-space-8);
+		border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border-radius: var(--hx-radius-pill);
+		color: var(--gold, var(--hx-gold));
+		font-size: var(--hx-type-size-2xs);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	.entity-search-name {
-		font-weight: 600;
+		font-weight: var(--hx-style-weight-semibold);
 		overflow-wrap: anywhere;
 	}
 	.entity-search-purpose {
-		color: var(--muted, #8fa1b8);
-		font-size: 12px;
+		color: var(--muted, var(--hx-muted));
+		font-size: var(--hx-type-size-xs);
 		overflow-wrap: anywhere;
 	}
 	kbd {
 		display: inline-block;
 		min-width: 1.6em;
-		padding: 1px 6px;
-		border: 1px solid var(--line, #24485c);
-		border-radius: 5px;
+		padding: var(--hx-space-1) var(--hx-space-6);
+		border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border-radius: var(--hx-radius-xsmall);
 		font: inherit;
 		text-align: center;
 	}

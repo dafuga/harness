@@ -1,13 +1,12 @@
 /* The bar every explorer route shares: the brand, navigation, and the revision that is viewed. */
 .hx-nav {
-	--hx-nav-gap: clamp(10px, 1.1vw, 22px);
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
 	gap: 0 var(--hx-nav-gap);
 	min-height: 92px;
-	padding: 8px var(--hx-gutter);
-	border-bottom: 1px solid var(--hx-line);
+	padding: var(--hx-space-8) var(--hx-gutter);
+	border-bottom: var(--hx-border-thin) solid var(--hx-line);
 	background: var(--hx-surface);
 }
 .hx-nav a:hover {
@@ -16,12 +15,12 @@
 .hx-brand {
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	gap: var(--hx-space-12);
 	min-height: 56px;
 	color: var(--hx-text);
-	font-size: 1.65rem;
-	font-weight: 700;
-	letter-spacing: -0.01em;
+	font-size: var(--hx-type-size-2xl);
+	font-weight: var(--hx-style-weight-bold);
+	letter-spacing: var(--hx-style-tracking-tight);
 }
 .hx-mark {
 	display: inline-flex;
@@ -33,12 +32,12 @@
 	align-self: center;
 	min-width: 0;
 	max-width: 22ch;
-	padding-left: clamp(10px, 1.1vw, 22px);
-	border-left: 1px solid var(--hx-line-strong);
+	padding-left: clamp(var(--hx-space-10), 1.1vw, var(--hx-space-22));
+	border-left: var(--hx-border-thin) solid var(--hx-line-strong);
 	overflow: hidden;
 	color: var(--hx-soft);
-	font-size: 1.05rem;
-	line-height: 36px;
+	font-size: var(--hx-type-size-base);
+	line-height: var(--hx-space-36);
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
@@ -54,7 +53,7 @@
 	align-self: center;
 	width: 1px;
 	height: 56px;
-	margin-right: clamp(6px, 0.8vw, 14px);
+	margin-right: clamp(var(--hx-space-6), 0.8vw, var(--hx-space-14));
 	background: var(--hx-line-strong);
 }
 .hx-categories a,
@@ -64,22 +63,22 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 9px;
+	gap: var(--hx-space-9);
 	min-width: 72px;
 	min-height: 64px;
-	padding: 6px clamp(8px, 1.25vw, 22px);
+	padding: var(--hx-space-6) clamp(var(--hx-space-8), 1.25vw, var(--hx-space-22));
 	color: var(--hx-soft);
-	font-size: 1.02rem;
-	font-weight: 450;
-	line-height: 1.2;
+	font-size: var(--hx-type-size-base);
+	font-weight: var(--hx-style-weight-medium);
+	line-height: var(--hx-style-leading-tight);
 	white-space: nowrap;
-	outline-offset: -4px;
+	outline-offset: calc(-1 * var(--hx-space-4));
 }
 .hx-categories a:hover {
 	color: var(--hx-text);
 }
 .hx-category {
-	opacity: 0.55;
+	opacity: var(--hx-opacity-dim);
 }
 .hx-categories a[aria-current='page'],
 .hx-categories a[aria-current='page']:hover {
@@ -90,7 +89,7 @@
 	position: absolute;
 	inset: auto 6px 0;
 	height: 3px;
-	border-radius: 3px 3px 0 0;
+	border-radius: var(--hx-radius-xsmall) var(--hx-radius-xsmall) 0 0;
 	background: var(--hx-gold);
 }
 /* The search is one icon that ends the bar; the search itself opens in a dialog. */
@@ -106,17 +105,17 @@
 		flex-wrap: nowrap;
 	}
 	.hx-nav:has(.hx-search) {
-		--hx-nav-gap: clamp(10px, 2.2vw - 21px, 22px);
+		--hx-nav-gap: var(--hx-nav-gap-wide);
 	}
 	.hx-nav:has(.hx-search) .hx-revision {
 		flex-shrink: 0;
-		column-gap: 6px;
+		column-gap: var(--hx-space-6);
 	}
 	.hx-nav:has(.hx-search) .hx-repository {
 		flex-shrink: 2;
 	}
 	.hx-nav:has(.hx-search) :is(.hx-categories a, .hx-category) {
-		padding-inline: clamp(8px, 2.8vw - 32px, 22px);
+		padding-inline: clamp(var(--hx-space-8), 2.8vw - var(--hx-space-32), var(--hx-space-22));
 	}
 }
 /* Narrower: the search ends the brand's row, the categories take the row below, and the revision
@@ -141,7 +140,7 @@
 		order: 2;
 		flex: none;
 		margin-left: 0;
-		padding: 8px 0;
+		padding: var(--hx-space-8) 0;
 		border: 0;
 	}
 	/* The fields stay compact; their separator spans the full wrapped navbar row. */
@@ -168,7 +167,7 @@
 	.hx-categories a,
 	.hx-category {
 		min-width: 0;
-		font-size: clamp(0.9rem, 2vw, 1.02rem);
+		font-size: var(--hx-type-size-nav);
 	}
 }
 /* A phone: the brand and search, navigation across the screen, then the revision fields. */
@@ -177,14 +176,14 @@
 		min-height: 0;
 	}
 	.hx-brand {
-		font-size: 1.3rem;
+		font-size: var(--hx-type-size-xl);
 	}
 	.hx-repository {
 		flex: 1 1 0;
 		max-width: none;
 	}
 	.hx-categories {
-		border-top: 1px solid var(--hx-line);
+		border-top: var(--hx-border-thin) solid var(--hx-line);
 		overflow-x: auto;
 	}
 	.hx-categories a,
@@ -192,8 +191,8 @@
 		flex: 1 0 auto;
 		min-width: 0;
 		min-height: 60px;
-		padding: 6px;
-		font-size: 0.78rem;
+		padding: var(--hx-space-6);
+		font-size: var(--hx-type-size-xs);
 	}
 }
 /* A narrow phone: nine do not fit across, so they wrap four to a row, the shorter row centred.
@@ -209,7 +208,7 @@
 		box-sizing: border-box;
 		min-width: 25%;
 		min-height: 52px;
-		gap: 6px;
-		padding: 4px;
+		gap: var(--hx-space-6);
+		padding: var(--hx-space-4);
 	}
 }
