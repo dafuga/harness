@@ -13,16 +13,7 @@ export interface ContractFacts {
 	appRoute?: string | null;
 }
 
-/** An identifier of any casing as the words it is made of. */
-/** @pure */
-export function humanize(name: string): string {
-	return name
-		.replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-		.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-		.replace(/[_\-.]+/g, ' ')
-		.trim()
-		.toLowerCase();
-}
+export { humanize } from '../strings/humanize';
 
 export {
 	requiredStates,

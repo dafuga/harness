@@ -13,7 +13,8 @@
 			"packages/reports/src/components/projects-sessions/activity-agents/activityDisplay.ts",
 			"packages/reports/src/components/projects-sessions/project-activity/activityDisplay.ts",
 			"packages/reports/src/utils/activityDisplay.ts",
-			"packages/reports/src/utils/projects-sessions/activityDisplay.ts"
+			"packages/reports/src/utils/projects-sessions/activityDisplay.ts",
+			"packages/reports/src/utils/strings/plural.ts"
 		],
 		"symbols": [
 			"activityDisplay",
@@ -29,7 +30,8 @@
 			"activityTime",
 			"plural",
 			"commitHref",
-			"activityDisplay"
+			"activityDisplay",
+			"plural"
 		]
 	},
 	"contract": {
@@ -115,7 +117,7 @@
 	"helperContracts": [
 		{
 			"name": "plural",
-			"source": "packages/reports/src/utils/projects-sessions/activityDisplay.ts",
+			"source": "packages/reports/src/utils/strings/plural.ts",
 			"inputs": [
 				{
 					"name": "plural.count",

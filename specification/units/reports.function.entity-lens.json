@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/entityLens.ts",
-			"packages/reports/src/utils/explorer-ui/entityLens.ts"
+			"packages/reports/src/utils/explorer-ui/entityLens.ts",
+			"packages/reports/src/utils/strings/shortCommit.ts"
 		],
 		"symbols": [
 			"entityLabels",
@@ -20,6 +21,7 @@
 			"EntityLabel",
 			"entityLabels",
 			"entityLens",
+			"shortCommit",
 			"shortCommit"
 		]
 	},
@@ -76,7 +78,7 @@
 	"helperContracts": [
 		{
 			"name": "shortCommit",
-			"source": "packages/reports/src/utils/explorer-ui/entityLens.ts",
+			"source": "packages/reports/src/utils/strings/shortCommit.ts",
 			"inputs": [
 				{
 					"name": "shortCommit.commit",

@@ -9,11 +9,13 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/evidenceMedia.ts",
+			"packages/reports/src/utils/strings/formatDuration.ts",
 			"packages/reports/src/utils/verification-evidence/evidenceMedia.ts"
 		],
 		"symbols": [
 			"mediaMime",
 			"evidenceMedia",
+			"formatDuration",
 			"formatDuration",
 			"mediaMime",
 			"evidenceMedia",
@@ -69,7 +71,7 @@
 	"helperContracts": [
 		{
 			"name": "formatDuration",
-			"source": "packages/reports/src/utils/verification-evidence/evidenceMedia.ts",
+			"source": "packages/reports/src/utils/strings/formatDuration.ts",
 			"inputs": [
 				{
 					"name": "formatDuration.seconds",
