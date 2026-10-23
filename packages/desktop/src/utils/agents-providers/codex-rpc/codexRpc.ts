@@ -7,6 +7,7 @@ import { killOwnedProcess } from '../../development-tooling/cliProcess';
 import { streamLines } from '../../development-tooling/streamLines';
 import type { RpcEvent, RpcPending } from '../rpcMessages';
 import { rpcMessages, rpcRequest } from './rpcMessages';
+/** Consumes diagnostics without exposing raw output or private reasoning to the renderer. */
 function connection(command: CliCommand, resources?: ResourceContext) {
 	const child = spawn(command.command, command.args, {
 		env: { ...cliEnvironment(), ...resourceEnvironment(resources?.env ?? {}) },
@@ -39,7 +40,6 @@ function connection(command: CliCommand, resources?: ResourceContext) {
 		}
 	});
 	child.stdout.on('data', consume.write);
-	// Consume diagnostics without exposing raw output or private reasoning to the renderer.
 	child.stderr.resume();
 	child.on('error', rejectAll);
 	child.on('close', () => rejectAll(new Error('Codex connection closed.')));
