@@ -2,7 +2,7 @@
 	"name": "workspace-search-category",
 	"goal": "Keep desktop source search within its supported route categories",
 	"createdAt": "2026-10-23T00:29:19.049Z",
-	"updatedAt": "2026-10-23T00:30:01.898451Z",
+	"updatedAt": "2026-10-23T00:34:59.988357Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T00:34:59.988357Z",
+			"evidence": "1973c040e sealed red bcd0b45f0c0627e67d9feb96d2819a12920b550f78a547c98c878e52dfb00579: unsupported Platforms route is returned; 4 cases pass."
 		},
 		{
 			"id": "propose",
@@ -37,22 +39,30 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T00:33:05.582618Z",
+			"evidence": "1234e2c07 preserves entry identity and checks supported categories. Existing workspace search and route tests pass; desktop typecheck has zero errors."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T00:34:59.988357Z",
+			"evidence": "1234e2c07 sealed green b791d7a0c536cc885b43d008218ac30159e2b0effd1be3fd2b54af372cbcf7ba: same 5 tests pass, unchanged command and environment."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T00:34:59.988357Z",
+			"evidence": "Isolated snapshot at 1234e2c07: restoring the 1973c040e adapter fails the unchanged null-route assertion (exit 1); restoring the repair passes all 5 tests (exit 0)."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T00:34:59.988357Z",
+			"evidence": "Search/navigation browser 34 passed; search/routes units 17 passed; desktop types 0 errors. Contract/ownership guard 14 passed; units check no errors. Imported Reports 138 unit, 113 entity browser and 76 shell browser passed. Final committed game captures follow; full CLI/native deferred."
 		}
 	],
 	"evaluators": [
