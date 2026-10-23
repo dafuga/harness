@@ -32,7 +32,7 @@
 		"registryUnits": 1458,
 		"registryErrors": 0
 	},
-	"delivery": "Helpers #75 and config #76 must land first. Final combined-main capture, readback and serialized #77 landing remain pending; this is not a full verification verdict.",
+	"delivery": "Await actual config #76 before #77 landing. Final exact-tree Source capture/readback and main preview remain pending; the coordinated broad catalog follows the fixed main queue. This is not a full verification verdict.",
 	"layoutCorrection": {
 		"base": "d796d4d54b6dfa30827e84d7adbd571645573b78",
 		"integration": "f02fe3be9",
@@ -44,5 +44,33 @@
 		"reportsTypes": "passed",
 		"mixedDeclarationsRemaining": 0,
 		"registryErrors": 0
+	},
+	"helperIntegration": {
+		"base": "6a061768b5911cae5bd92520e22fe7b944caa631",
+		"integration": "7323a94156f18aac8285d164fe6c2c5c8b9cf834",
+		"rootFocusedTests": 172,
+		"reportsFocusedTests": 20,
+		"desktopFocusedTests": 15,
+		"consumerTypes": ["root", "reports", "desktop", "hub"],
+		"mixedDeclarationsRemaining": 0,
+		"registryUpdated": [],
+		"registryErrors": []
+	},
+	"scaffoldFormatting": {
+		"cause": "The declaration splitter added redundant boundary blank lines; initial scaffold unit coverage checked structure, not emitted formatting.",
+		"causalCommit": "172d26636f3fe01220433f47a79e3f494974b5b7",
+		"red": "6b722a7e8b925cf6648d2c4c7974a7120d50c77a30217a5140a86f29586001b6",
+		"green": "5a374f252a3b51a9a64eeb72f185ab87018246e0b06aed7e1769e4734ba2167d",
+		"repair": "Trim declaration boundaries and wrap model imports using the emitted formatter width. Preserve interior text.",
+		"prevention": "The existing all-scaffold matrix checks every generated TypeScript file with the emitted project formatter during normal root unit verification.",
+		"focusedLibProjectCheck": "passed",
+		"repairUnitTests": 29,
+		"rootTypesLintAuditUnits": "passed",
+		"fullCliAndNativeSuites": "deferred"
+	},
+	"layoutChipIntegration": {
+		"base": "5318a33f9a399de43f8a4cb56cd772df439eca12",
+		"integration": "3b762f6d26ab6bd4f7a577aa1dabd983544a0692",
+		"desktopTests": 4
 	}
 }
