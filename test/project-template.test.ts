@@ -10,7 +10,6 @@ test('app projects include SvelteKit and specification files', () =>
 		const packageJson = JSON.parse(
 			files.find((file) => file.path === 'package.json')?.contents ?? '{}'
 		);
-
 		expect(paths).toContain('svelte.config.js');
 		expect(paths).toContain('playwright.config.ts');
 		expect(paths).toContain('eslint.config.js');

@@ -35,21 +35,7 @@ export function appendMissingExports(contents: string, plans: ExportPlan[]): str
 
 /** Preserve existing SDK bindings when two scaffold kinds use the same requested name. */
 function helperBindings(contents: string, plan: ExportPlan): string[] {
-	const source = ts.createSourceFile('index.ts', contents, ts.ScriptTarget.Latest, true);
-	const existing = new Set<string>();
-	for (const node of source.statements) {
-		if (
-			!ts.isExportDeclaration(node) ||
-			!node.moduleSpecifier ||
-			!ts.isStringLiteral(node.moduleSpecifier) ||
-			node.moduleSpecifier.text !== plan.source ||
-			!node.exportClause ||
-			!ts.isNamedExports(node.exportClause)
-		)
-			continue;
-		for (const item of node.exportClause.elements)
-			existing.add((item.propertyName ?? item.name).text);
-	}
+	const existing = helperImports(contents, plan.source);
 	const used = new Set(scanExports(contents).symbols.map((symbol) => symbol.name));
 	const named: string[] = [];
 	for (const name of plan.named ?? []) {
@@ -64,6 +50,26 @@ function helperBindings(contents: string, plan: ExportPlan): string[] {
 		named.push(alias === name ? name : `${name} as ${alias}`);
 	}
 	return named;
+}
+
+/** Recognize existing imported names even when their SDK binding is qualified. */
+function helperImports(contents: string, path: string): Set<string> {
+	const source = ts.createSourceFile('index.ts', contents, ts.ScriptTarget.Latest, true);
+	const existing = new Set<string>();
+	for (const node of source.statements) {
+		if (
+			!ts.isExportDeclaration(node) ||
+			!node.moduleSpecifier ||
+			!ts.isStringLiteral(node.moduleSpecifier) ||
+			node.moduleSpecifier.text !== path ||
+			!node.exportClause ||
+			!ts.isNamedExports(node.exportClause)
+		)
+			continue;
+		for (const item of node.exportClause.elements)
+			existing.add((item.propertyName ?? item.name).text);
+	}
+	return existing;
 }
 
 function exportLines(plan: ExportPlan): string[] {
