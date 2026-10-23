@@ -195,6 +195,7 @@ export function entityCatalog(
 			return helpers
 				.map((helper) => ({
 					...row,
+					...(helper.group ? { group: helper.group } : {}),
 					shared: true,
 					helper,
 					usedIn: helperConsumers(helper, byId),

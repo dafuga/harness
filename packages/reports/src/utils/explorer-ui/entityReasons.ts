@@ -4,7 +4,7 @@ import {
 	type WritingLimit
 } from '../../../../../src/utils/writing-limits/writingLimits';
 import type { HarnessExplanation } from '../../models/explorer-ui/Harness.types';
-import { humanize } from './entityContract';
+import { humanize } from '../../helpers/strings/humanize';
 
 export interface BoundedText {
 	text: string;

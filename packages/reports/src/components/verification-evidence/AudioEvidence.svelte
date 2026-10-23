@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { formatDuration, mediaMime } from '../../utils/verification-evidence/evidenceMedia';
+	import { mediaMime } from '../../utils/verification-evidence/evidenceMedia';
+	import { formatDuration } from '../../helpers/strings/formatDuration';
 	import { timeAgo } from '../../utils/reports-media/reportDisplay';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
