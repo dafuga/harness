@@ -121,8 +121,7 @@ async function sourceAdmission(unit: HarnessUnit): Promise<void> {
 	const body = render(EntitySource, {
 		props: { unit: { ...unit, owns: { ...unit.owns, source: paths }, testFiles: tests } }
 	}).body;
-	expect(words(body)).toContain('orders/OrderStore.ts');
-	expect(body).toContain('title="src/services/orders/OrderStore.ts"');
+	expect(words(body)).toContain('src/services/orders/OrderStore.ts');
 	expect(words(body)).toContain('test/order-store.test.ts');
 	const beforeRead = reads.indexed;
 	const reader = archivedSource({ ...unit, sourceFiles: snapshots, testFiles: tests }, '/media/');

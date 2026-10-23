@@ -43,7 +43,7 @@
 	<SourceFileList
 		{files}
 		href={sourceLink}
-		relativeTo={unit.kind === 'service' ? 'src/services/' : ''}
+		relativeTo={entity?.category === 'services' ? 'src/services/' : ''}
 	>
 		{#snippet children(path)}
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
