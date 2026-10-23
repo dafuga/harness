@@ -7,7 +7,7 @@ import { explorerCategory, explorerRole } from '../../reports/src/utils/explorer
 import { CatalogService } from '../src/services/catalog-service/CatalogService';
 import { catalogUnit, planCatalog } from '../src/utils/catalogUnit';
 import { manifest } from './catalog-listing-manifests';
-import { imagelessDesign, listingProject, pagePlan } from './catalog-listing-fixture';
+import { imagelessDesign, listingProject, pagePlan, previewReads } from './catalog-listing-fixture';
 import {
 	analytics,
 	charted,
@@ -103,20 +103,7 @@ function expectPreviewReads(
 	unit: ComponentManifest,
 	declaredPreview: NonNullable<ComponentManifest['preview']>
 ): void {
-	const reads: string[] = [];
-	const preview = { ...declaredPreview, state: 'before-summary' };
-	const observed = {
-		...unit,
-		get preview() {
-			reads.push('preview');
-			return preview;
-		},
-		get responsibility() {
-			reads.push('summary');
-			preview.state = 'after-summary';
-			return unit.responsibility;
-		}
-	};
+	const { reads, preview, observed } = previewReads(unit, declaredPreview);
 	const entry = catalogUnit(observed, new Set());
 	expect(reads).toEqual(['preview', 'summary']);
 	expect(entry?.thumbnail).toEqual({ source: 'recorded', ...preview });
