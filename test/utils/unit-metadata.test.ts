@@ -197,10 +197,7 @@ test.each(serviceClassCases)(
 		let constructedBy = consumers;
 		if (label === 'registry' || label === 'shadow') constructedBy = [];
 		if (label === 'factory') constructedBy = [{ unit: service.id }];
-		expect(
-			service,
-			'class proof is source-derived rather than inferred from a service filename'
-		).toHaveProperty(
+		expect(service, 'class proof comes from source').toHaveProperty(
 			'serviceClasses',
 			methods === null
 				? []
