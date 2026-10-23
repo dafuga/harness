@@ -43,6 +43,10 @@ for (const [name, size] of Object.entries(viewports)) {
 		}
 		await reviewRelationPaging(tab, name);
 	});
+	test(`private dependencies reuse module cards at ${name} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await reviewPrivateFunctions(page, name);
+	});
 	test(`models, components, helpers and services use a card grid at ${name} width`, async ({
 		page: tab
 	}) => {
