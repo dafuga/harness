@@ -15,7 +15,16 @@ export function registerAnalyticsCommand(program: Command): void {
 				process.stdout.write(JSON.stringify(snapshot, null, 2) + '\n', () => done());
 			});
 		});
-	for (const operation of ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export']) {
+	for (const operation of [
+		'summary',
+		'loops',
+		'jev',
+		'models',
+		'benchmarks',
+		'events',
+		'import',
+		'export'
+	]) {
 		analytics
 			.command(operation)
 			.option('--json', 'Print structured results.')

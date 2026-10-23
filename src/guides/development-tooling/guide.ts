@@ -1,4 +1,5 @@
 import { loopGuide } from './loop';
+import { benchmarkGuide } from '../agents-providers/benchmark';
 import { gameGuide } from '../game-authoring/game';
 import { harnessNamingRules, harnessRuleSummaries } from '../../rules/explorer-ui/catalog';
 import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
@@ -24,6 +25,7 @@ export interface Guide {
 }
 
 export const guides: Guide[] = [
+	benchmarkGuide,
 	gameGuide,
 	analyticsGuide,
 	activityGuide,
