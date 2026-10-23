@@ -29,6 +29,7 @@ async function fileLink(page: Page, path: string, commit: string) {
 	await expect(link).toHaveAttribute('target', '_blank');
 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
 	await expect(link).toHaveAttribute('title', path);
+	await expect(link).toHaveText(path.replace(/^src\/services\//, ''));
 	const height = await link.locator('..').evaluate((row) => row.clientHeight);
 	expect(height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
 	await expect(
