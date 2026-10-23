@@ -1,0 +1,37 @@
+{
+	"scope": "Focused and workspace verification; full CLI E2E and native UI suites deferred at Daniel's request.",
+	"sourceMigration": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+	"sourceRegression": {
+		"red": "f6feade5d687913e95ca66c7f205ef451f842cb30819d589546cd0ad71f0b55b",
+		"green": "d88dd024303330eca75c6d9b0ae78fe8aa423f23ac7fc4ce4d5df988f58f0ebf"
+	},
+	"companionOwnershipRegression": {
+		"red": "ab1a2fcdd9fe9af284eb79de28514b06193d92b21a369b6b6c3b2e1983a62321",
+		"green": "3dadf191bd73840d16f5ee64e9f106197c93cfca9a4cc3b9fbcf9744a832787a"
+	},
+	"rootUnitRun": {
+		"commit": "e54b7248de14a24ac4c9a15a56f2938a356fce4f",
+		"passed": 991,
+		"skipped": 25
+	},
+	"workspaceUnitRuns": {
+		"reports": 690,
+		"desktop": 953,
+		"hub": 477,
+		"planning": 56,
+		"collaboration": 45,
+		"remote": 135,
+		"relay": 159,
+		"game": 25
+	},
+	"layoutIntegration": {
+		"base": "a34b012a07ca5886fc1cb74b5cf38e72e358529d",
+		"rootRouteOwnershipGuards": 96,
+		"reportsFocusedTests": 39,
+		"mixedDeclarationsRemaining": 0,
+		"registryUnits": 1458,
+		"registryErrors": 0
+	},
+	"knownUpstreamIssue": "Desktop catalogUnit complexity 14 exceeds 10 in a34b012a0; unchanged by this branch and reported to the Layouts coordinator.",
+	"delivery": "Final combined-main capture, readback and serialized landing remain pending; this is not a full verification verdict."
+}
