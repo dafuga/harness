@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { content, words } from '../entityRender';
 import { record, revision } from '../entityFixture';
@@ -68,7 +69,6 @@ test('legacy contract tables retain types and example controls for opaque fields
 	expect(body).toContain('View example for Context');
 	expect(body).toContain('PrivateContext');
 });
-
 test('callable contracts preserve actual parameters and associate their returns', () => {
 	const head = revision(commits.tip, [record(commits.tip)]);
 	head.registry.units = head.registry.units.map((unit) =>
@@ -109,7 +109,6 @@ test('callable contracts preserve actual parameters and associate their returns'
 	expect(words(body)).not.toContain('No errors declared.');
 	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });
-
 test('a selected callable page excludes sibling APIs and rejects missing symbols', () => {
 	const head = revision(commits.tip, []);
 	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
@@ -171,8 +170,7 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 		expect(legacy).not.toContain('aria-label="first contract"');
 	}
 });
-
-test('selected callable Uses exclude module dependencies and hide empty navigation', () => {
+test('selected callable Uses exclude module dependencies and hide empty navigation', async () => {
 	const head = revision(commits.tip, []);
 	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
 	unit.helpers = [
@@ -210,7 +208,15 @@ test('selected callable Uses exclude module dependencies and hide empty navigati
 			{ category: 'functions', entity: ids.filter, helper, tab: 'uses' },
 			{ head }
 		);
-	expect(words(uses('outer'))).toContain('inner()');
+	const outer = await measureWorkload(
+		'reports.function.entity-shown',
+		'selected-callable-uses',
+		() =>
+			measureWorkload('reports.function.entity-catalog', 'private-callable-card', () =>
+				uses('outer')
+			)
+	);
+	expect(words(outer)).toContain('inner()');
 	expect(words(uses('outer'))).toContain('external()');
 	expect(uses('outer')).not.toContain('aria-label="Configs uses"');
 	expect(uses('inner')).not.toContain('aria-label="inner uses"');

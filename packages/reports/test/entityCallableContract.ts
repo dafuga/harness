@@ -150,6 +150,7 @@ async function reviewCallableUses(
 	viewport: string
 ) {
 	const units = [
+		'reports.component.harness-entity-frame',
 		'reports.component.harness-entity-header',
 		'reports.component.harness-entity-sections'
 	];
