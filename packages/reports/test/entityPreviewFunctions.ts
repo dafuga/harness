@@ -141,3 +141,30 @@ export { reviewHelperSource } from './entityPreviewFunctionSource';
 export { reviewUsageCards } from './entityPreviewUsage';
 
 export { reviewServiceCard } from './entityPreviewUsage';
+
+/** Folder titles follow the selected revision across contract and history tabs. */
+export async function reviewServiceFolders(page: Page, viewport: string): Promise<void> {
+	const service = { category: 'services' as const, entity: ids.store };
+	for (const commit of [null, commits.first]) {
+		await open(page, { ...service, commit, tab: 'contract' }, 'groups');
+		const group = commit ? 'Purchases' : 'Orders';
+		const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
+		await capture(page, `folder-contract-${commit ? 'historical' : 'current'}-${viewport}`, [
+			'reports.component.harness-entity-header'
+		]);
+		await expect
+			.soft(crumbs.getByRole('listitem'))
+			.toHaveText(['Services', group, 'OrderStore'], { timeout: 500 });
+		await page.getByRole('tab', { name: 'History', exact: true }).click();
+		await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+			'reports.component.harness-entity-header'
+		]);
+		await expect
+			.soft(crumbs.getByRole('listitem'))
+			.toHaveText(['Services', group, 'OrderStore', 'History'], { timeout: 500 });
+	}
+	await open(page, service);
+	await expect(
+		page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+	).toHaveText(['Services', 'OrderStore'], { timeout: 500 });
+}

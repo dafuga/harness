@@ -2,6 +2,7 @@ import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
+import { reviewServiceFolders } from './entityPreviewFunctions';
 import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
@@ -119,26 +120,6 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				.toHaveText(file, { timeout: 500 });
 			expect(await fits(page)).toBe(true);
 		}
-		const service = { category: 'services' as const, entity: ids.store };
-		for (const commit of [null, commits.first]) {
-			await open(page, { ...service, commit, tab: 'contract' }, 'groups');
-			const group = commit ? 'Purchases' : 'Orders';
-			const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
-			await capture(page, `folder-contract-${commit ? 'historical' : 'current'}-${viewport}`, [
-				'reports.component.harness-entity-header'
-			]);
-			await expect.soft(crumbs.getByRole('listitem')).toHaveText(['Services', group, 'OrderStore']);
-			await page.getByRole('tab', { name: 'History', exact: true }).click();
-			await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
-				'reports.component.harness-entity-header'
-			]);
-			await expect
-				.soft(crumbs.getByRole('listitem'))
-				.toHaveText(['Services', group, 'OrderStore', 'History']);
-		}
-		await open(page, service);
-		await expect(
-			page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
-		).toHaveText(['Services', 'OrderStore']);
+		await reviewServiceFolders(page, viewport);
 	});
 }
