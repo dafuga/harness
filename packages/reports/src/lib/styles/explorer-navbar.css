@@ -119,13 +119,26 @@
 		padding-inline: clamp(8px, 2.8vw - 32px, 22px);
 	}
 }
-/* Narrower: the revision takes a row of its own under the bar, and the search stays at the end of
-   the categories' row. The categories keep the room of its 40px icon, so the two always wrap
-   together and the search never takes a row alone. */
+/* Narrower: the search ends the brand's row, the categories take the row below, and the revision
+   takes a row of its own under the divider, so the search never joins the branch and commit. */
 @media (max-width: 1419px) {
+	/* An empty item the width of the bar breaks the row, so the revision never joins the categories. */
+	.hx-nav:has(.hx-revision)::after {
+		content: '';
+		order: 1;
+		flex-basis: 100%;
+	}
+	/* The categories follow the search, so the search stays on the brand's row. */
+	.hx-categories {
+		flex: 1 1 100%;
+		order: 1;
+	}
+	.hx-categories::before {
+		display: none;
+	}
 	.hx-nav .hx-revision {
 		position: relative;
-		order: 1;
+		order: 2;
 		flex: none;
 		margin-left: 0;
 		padding: 8px 0;
@@ -142,12 +155,20 @@
 		background: var(--hx-line);
 		pointer-events: none;
 	}
-	.hx-nav:has(.hx-search) .hx-categories {
-		flex-grow: 1;
-		margin-right: calc(40px + var(--hx-nav-gap));
-	}
 	.hx-search {
-		margin-left: calc(-40px - var(--hx-nav-gap));
+		margin-left: auto;
+	}
+}
+/* A tablet: the nine categories keep their size across the row from about 820px and ease down a
+   little below it; a wider fallback font wraps a category onto a second line, never off the screen. */
+@media (min-width: 721px) and (max-width: 1419px) {
+	.hx-categories {
+		flex-wrap: wrap;
+	}
+	.hx-categories a,
+	.hx-category {
+		min-width: 0;
+		font-size: clamp(0.9rem, 2vw, 1.02rem);
 	}
 }
 /* A phone: the brand and search, navigation across the screen, then the revision fields. */
@@ -163,20 +184,8 @@
 		max-width: none;
 	}
 	.hx-categories {
-		flex: 1 1 100%;
 		border-top: 1px solid var(--hx-line);
 		overflow-x: auto;
-	}
-	/* The categories follow the search, so the search stays on the brand's row. */
-	.hx-nav:has(.hx-search) .hx-categories {
-		order: 1;
-		margin-right: 0;
-	}
-	.hx-search {
-		margin-left: auto;
-	}
-	.hx-categories::before {
-		display: none;
 	}
 	.hx-categories a,
 	.hx-category {
@@ -187,7 +196,7 @@
 		font-size: 0.78rem;
 	}
 }
-/* A narrow phone: seven do not fit across, so they wrap four over three, the shorter row centred.
+/* A narrow phone: nine do not fit across, so they wrap four to a row, the shorter row centred.
    Each takes at least a quarter of the row and grows for a longer label rather than cutting it. */
 @media (max-width: 480px) {
 	.hx-categories {

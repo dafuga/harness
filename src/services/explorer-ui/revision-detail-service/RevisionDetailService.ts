@@ -21,9 +21,12 @@ import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../../repositories/RegressionProofRepository';
 import type { RegressionView } from '../../../core/regressionTypes';
 import { unitMetadata } from './unitMetadata';
+import { readPlatformCatalog } from './platformCatalog';
+import type { PlatformCatalog } from '../../../core/explorer-ui/Platform.types';
 export interface RevisionDetail {
 	schemaVersion: 1;
 	commit: string;
+	platforms?: PlatformCatalog;
 	registry: RevisionRegistry;
 	/** What the latest usable record compared this revision with, as that record stated it. */
 	comparison: {
@@ -36,15 +39,9 @@ export interface RevisionDetail {
 		/** References the impact analysis could not resolve, which widened what was rerun. */
 		uncertain: VerificationRecord['impact']['uncertain'];
 	} | null;
-	/**
-	 * What the commit changed against its first parent, computed from the source of both commits.
-	 * It exists whether or not anything was verified; null when a tree could not be read.
-	 */
+	/** Source changes against the first parent; null for unreadable trees. Needs no verification. */
 	sourceImpact: sourceImpact.SourceImpact | null;
-	/**
-	 * Where the stored side of this revision's source tree is, relative to the index: what any
-	 * two revisions are compared from. Null when the tree could not be read.
-	 */
+	/** Stored source-tree side, relative to the index; null when its tree cannot be read. */
 	side: string | null;
 	records: RecordView[];
 	/** The reasons for what this commit itself changed against its first parent. */
@@ -58,6 +55,7 @@ export interface RevisionDetail {
 	regressions?: RegressionView[];
 }
 interface Stored {
+	platforms: PlatformCatalog;
 	registry: RevisionRegistry;
 	ledger: BudgetEvent[];
 }
@@ -109,6 +107,7 @@ export class RevisionDetailService {
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
+			platforms: stored.platforms,
 			registry: stored.registry,
 			comparison: comparison(sound),
 			sourceImpact: (await this.kept.source.of(commit)) ?? null,
@@ -173,8 +172,9 @@ export class RevisionDetailService {
 		const limits = new BudgetService().baselines(ledger, units.manifests);
 		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
 		await unitMetadata(tree, registry.units);
-		this.kept.registries.set(key, { registry, ledger });
-		return { registry, ledger };
+		const stored = { registry, ledger, platforms: await readPlatformCatalog(tree) };
+		this.kept.registries.set(key, stored);
+		return stored;
 	}
 	/** Reasons of this commit itself, excluding the earlier commits of a verified range. */
 	private async reasons(commit: string, sound: VerificationRecord[]): Promise<RevisionReasons> {

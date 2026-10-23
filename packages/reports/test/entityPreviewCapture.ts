@@ -6,6 +6,7 @@ import { BuildIdentityService } from '../../../src/services/BuildIdentityService
 import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { unitIdPattern } from '../../../src/core/unitTypes';
 import { previewHome } from './entityPreviewSetup';
+import { capturePlatformEvidence } from './entityPreviewPlatformEvidence';
 import { withoutViewportSuffix } from '../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 
 /** The compiled fixture files served by entityPreviewPage, independently of its synthetic history. */
@@ -36,6 +37,7 @@ export async function capture(
 	mkdirSync(directory, { recursive: true });
 	const pixels = await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true });
 	await retain(page, { name, units, pixels });
+	await capturePlatformEvidence(page, name, pixels);
 	const observed = await page.evaluate(() => {
 		const navigation = performance.getEntriesByType('navigation')[0] as
 			| PerformanceNavigationTiming

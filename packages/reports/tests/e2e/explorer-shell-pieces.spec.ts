@@ -22,7 +22,8 @@ const categories = [
 	'Configs',
 	'Services',
 	'Models',
-	'Styles'
+	'Styles',
+	'Platforms'
 ];
 const here = `${shellOrigin}/`;
 let home = '';

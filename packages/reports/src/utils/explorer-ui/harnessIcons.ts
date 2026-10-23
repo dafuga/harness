@@ -30,6 +30,20 @@ export const harnessIcons = {
 		'M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6',
 	configs: `${cog}M12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6z`,
 	services: 'M12 4l8 4.5-8 4.5-8-4.5L12 4zM4 13.5L12 18l8-4.5',
+	// A screen with a phone in front of it: every place the app is built for.
+	platforms:
+		'M12 15H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M8 19h4M10 15v4' +
+		'M16 10h4a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z',
+	// The platforms themselves: a globe, a handset, the Android head and a monitor.
+	web:
+		`${ring}M3.5 12h17M12 3.5c2.3 2.3 3.5 5.1 3.5 8.5s-1.2 6.2-3.5 8.5` +
+		'M12 3.5C9.7 5.8 8.5 8.6 8.5 12s1.2 6.2 3.5 8.5',
+	phone:
+		'M8.5 3h7A1.5 1.5 0 0 1 17 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 7 19.5v-15' +
+		'A1.5 1.5 0 0 1 8.5 3zM11 18h2',
+	android: 'M5 16a7 7 0 0 1 14 0zM8.3 10.1L6.8 7.6M15.7 10.1L17.2 7.6M9.5 13.2v.1M14.5 13.2v.1',
+	desktop:
+		'M4 4h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zM8.5 20h7M12 16v4',
 	// The two verdicts: a disc with a check cut out of it, and one with a cross.
 	passed: `${disc}M10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z`,
 	failed: `${disc}M15.5 7.1l1.4 1.4L13.4 12l3.5 3.5-1.4 1.4L12 13.4l-3.5 3.5-1.4-1.4L10.6 12 7.1 8.5l1.4-1.4L12 10.6z`,
@@ -96,5 +110,6 @@ export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	functions: 'functions',
 	configs: 'configs',
 	services: 'services',
-	models: 'database'
+	models: 'database',
+	platforms: 'platforms'
 };

@@ -1,9 +1,10 @@
 import { expect, type Page } from '@playwright/test';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
+import { previewShell } from './entityPreviewShell';
 import {
 	reviewComponentCapture,
 	reviewMeasuredSources,
@@ -13,7 +14,7 @@ import {
 	reviewProfileRows
 } from './entityPreviewOverview';
 import { commits, ids } from './entityUnits';
-import { capture, ready, previewIdentity } from './entityPreviewCapture';
+import { capture, ready } from './entityPreviewCapture';
 export { capture, captureRegion, ready } from './entityPreviewCapture';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
@@ -31,16 +32,6 @@ const types: Record<string, string> = {
 	'.wav': 'audio/wav',
 	'.json': 'application/json'
 };
-async function shell(home: string, variant: PreviewVariant = ''): Promise<string> {
-	const sheets = readdirSync(home).filter((name) => name.endsWith('.css'));
-	const hashes = readFileSync(join(home, 'hashes.json'), 'utf8');
-	const links = sheets.map((name) => `<link rel="stylesheet" href="/${name}">`).join('');
-	const build = JSON.stringify(await previewIdentity());
-	return `<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">${links}</head>
-<body><div class="hx-shell"><main class="hx-main" id="app"></main></div>
-<script>window.previewBuild=${build};window.previewInitialUrl=location.href;window.artifactHashes=${hashes};window.previewVariant=${JSON.stringify(variant)}</script><script src="/preview.iife.js"></script></body></html>`;
-}
 /** Opens a compiled fixture at its requested address and synthetic history variant. */
 export async function open(
 	page: Page,
@@ -58,7 +49,7 @@ export async function open(
 			if (path === '/' || /^\/harness\/(branch|commit)\//.test(path))
 				return request.fulfill({
 					contentType: 'text/html',
-					body: await shell(home, variants.get(page))
+					body: await previewShell(home, variants.get(page))
 				});
 			if (!existsSync(file)) return request.fulfill({ status: 404, body: 'not in the preview' });
 			return request.fulfill({ contentType: types[extname(file)], body: readFileSync(file) });
@@ -88,6 +79,15 @@ export const shown = async (page: Page, selector: string): Promise<string[]> =>
 		.evaluateAll((all) => all.map((found) => (found as HTMLElement).innerText.trim()));
 export const fits = (page: Page): Promise<boolean> =>
 	page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
+
+/** Clean cards lead to the detail header, where the full verdict remains interactive. */
+export async function componentVerdict(page: Page) {
+	const row = page.getByRole('article', { name: 'OrderList', exact: true });
+	await expect(row.locator('.hx-verdict')).toHaveCount(0);
+	await row.getByRole('link', { name: 'OrderList', exact: true }).click();
+	await expect(page.getByRole('heading', { level: 1, name: 'OrderList' })).toBeVisible();
+	return page.locator('.ex-head').getByRole('button', { name: 'Coverage incomplete' });
+}
 function visualTabs(category: ExplorerLocation['category']): string[] {
 	return [
 		'Overview',

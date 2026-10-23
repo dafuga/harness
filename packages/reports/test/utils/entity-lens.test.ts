@@ -11,7 +11,8 @@ test('there are exactly seven collections and pages come first', () => {
 		'functions',
 		'configs',
 		'services',
-		'models'
+		'models',
+		'platforms'
 	]);
 	const words = Object.values(entityLabels).flatMap((label) => [label.title, label.subtitle]);
 	expect(words.join(' ')).not.toMatch(/sub-?components|related|reports/i);
