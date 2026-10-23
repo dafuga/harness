@@ -58,8 +58,8 @@ const application = [
 const scale = `${owner} HARNESS_CONSOLE_DATA=${consoleHome}/scale`;
 export default defineConfig({
 	testDir: 'tests/e2e',
-	// The provider picker has its own preview server; it runs under src/config/pickerPlaywrightConfig.ts.
-	// The explorer shell needs no server at all; it runs under src/config/shellPlaywrightConfig.ts.
+	// The provider picker has its own preview server; it runs under src/configs/pickerPlaywrightConfig.ts.
+	// The explorer shell needs no server at all; it runs under src/configs/shellPlaywrightConfig.ts.
 	// Its specs are named by their file, so a checkout in a directory of a like name loses none.
 	testIgnore: ['provider-picker.spec.ts', /[\\/]explorer-shell[^\\/]*\.spec\.ts$/],
 	workers: 1,

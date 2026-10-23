@@ -1,11 +1,15 @@
-import type { ExplorerRelations } from '../../models/explorer-ui/Explorer.types';
-import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
-import type { ExplorerVerdict } from '../../models/explorer-ui/Explorer.types';
+import type {
+	ExplorerEntity,
+	ExplorerRelations,
+	ExplorerVerdict
+} from '../../models/explorer-ui/Explorer.types';
 import type { catalogOrders } from './entityCatalog';
 
 export type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
 
 export interface CatalogRow {
+	/** Canonical source-file identity shared by a config section and its table. */
+	configFile?: { source: string; title: string };
 	setting?: NonNullable<ExplorerEntity['unit']['configValues']>[number];
 	group?: { id: string; title: string };
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];

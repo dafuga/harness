@@ -194,7 +194,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 		'Initializer unit test.'
 	]),
 	config: detail('config', 'Typed feature configuration.', false, [
-		'Config object under src/config.',
+		'Config object under src/configs.',
 		'Name and enabled fields.',
 		'Config unit test.'
 	]),

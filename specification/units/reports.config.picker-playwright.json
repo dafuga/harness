@@ -8,8 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/config/development-tooling/pickerPlaywrightConfig.ts",
-			"packages/reports/src/config/pickerPlaywrightConfig.ts"
+			"packages/reports/src/configs/development-tooling/pickerPlaywrightConfig.ts",
+			"packages/reports/src/configs/pickerPlaywrightConfig.ts"
 		],
 		"symbols": ["default", "default"]
 	},
@@ -28,11 +28,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/config/development-tooling/pickerPlaywrightConfig.ts",
+		"entry": "packages/reports/src/configs/development-tooling/pickerPlaywrightConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/config/development-tooling/pickerPlaywrightConfig.ts"
+				"entry": "packages/reports/src/configs/development-tooling/pickerPlaywrightConfig.ts"
 			}
 		]
 	},
