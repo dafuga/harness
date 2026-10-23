@@ -1,6 +1,7 @@
 import type { DesktopCase } from './desktopData.svelte';
 import { providers } from './desktopData.svelte';
 import { children, done, noop, text, image } from './shared';
+import { routeIds } from './routeUnits';
 export const desktopControls: Record<string, DesktopCase> = {
 	'desktop.component.agent-controls': () => ({
 		providers,
@@ -125,6 +126,14 @@ export const desktopControls: Record<string, DesktopCase> = {
 				direction: 'used-by',
 				hasPlan: false,
 				verification: 'verified'
+			},
+			{
+				id: routeIds.shell,
+				title: 'OrdersFrame',
+				category: 'layouts',
+				direction: 'used-by',
+				hasPlan: false,
+				verification: 'unknown'
 			}
 		],
 		workspace: d.workspace,
