@@ -134,6 +134,8 @@ Shared Services lists require source-proven concrete instantiated classes with m
 
 ## Responsibility Categories
 
+General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatters are reusable operations, not the domains of their callers. Domain-specific helpers stay in their domain. Move the real implementation into the correct category and preserve public imports and unit identity; helper cards and breadcrumbs derive the category from the callable source, even inside a mixed module. Review meaning rather than inferring a category from its callers or return type alone.
+
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
 new code; a new explicit group extends the taxonomy. Reuse an existing category

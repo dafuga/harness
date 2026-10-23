@@ -7,8 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/case.ts", "src/core/development-tooling/case.ts"],
+		"source": [
+			"src/core/case.ts",
+			"src/core/development-tooling/case.ts",
+			"src/core/strings/case.ts"
+		],
 		"symbols": [
+			"toKebabCase",
+			"toPascalCase",
+			"toCamelCase",
+			"toSnakeCase",
 			"toKebabCase",
 			"toPascalCase",
 			"toCamelCase",
@@ -79,7 +87,7 @@
 	"helperContracts": [
 		{
 			"name": "toKebabCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/core/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toKebabCase.textToConvert",
@@ -252,7 +260,7 @@
 		},
 		{
 			"name": "toPascalCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/core/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toPascalCase.textToConvert",
@@ -397,7 +405,7 @@
 		},
 		{
 			"name": "toCamelCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/core/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toCamelCase.textToConvert",
@@ -478,7 +486,7 @@
 		},
 		{
 			"name": "toSnakeCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/core/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toSnakeCase.textToConvert",

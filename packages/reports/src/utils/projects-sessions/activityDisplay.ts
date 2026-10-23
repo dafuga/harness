@@ -17,9 +17,7 @@ export function activityTime(iso: string): string {
 	return Number.isFinite(at.getTime()) ? at.toISOString().slice(0, 16).replace('T', ' ') : iso;
 }
 
-/** @pure */
-export const plural = (count: number, word: string): string =>
-	`${count} ${word}${count === 1 ? '' : 's'}`;
+export { plural } from '../strings/plural';
 
 export { commitHref } from '../../components/projects-sessions/project-activity/activityDisplay';
 export { activityDisplay } from '../../components/projects-sessions/activity-agents/activityDisplay';

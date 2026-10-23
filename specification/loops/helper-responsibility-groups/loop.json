@@ -2,11 +2,9 @@
 	"name": "helper-responsibility-groups",
 	"goal": "Generic text helpers live in Strings; helper cards and breadcrumbs use each callable source category, independent of consumers",
 	"createdAt": "2026-10-23T11:25:47.463Z",
-	"updatedAt": "2026-10-23T11:27:44.865Z",
+	"updatedAt": "2026-10-23T11:45:44.346Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:45:44.346Z",
+			"evidence": "23af23d71 fails Helper folder follows callable source at desktop, tablet and mobile. This test-only checkpoint also validates workload identifiers; the same command and fixtures are frozen for green."
 		},
 		{
 			"id": "implement",
