@@ -1,3 +1,4 @@
+import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { sourceText, sourceTestPath } from './entitySourceFixture';
 import type { Page } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
@@ -35,14 +36,61 @@ export async function testFile(page: Page, id: string, commit: string): Promise<
 		'href',
 		`https://github.com/example/orders/blob/${commit}/${path}`
 	);
+	const started = await page.evaluate(() => performance.now());
 	await list.getByRole('button', { name: `View code for ${path}`, exact: true }).click();
 	const dialog = page.getByRole('dialog');
 	await expect(dialog.locator('pre')).toHaveText(sourceText(commit, path));
+	await sourceReadMeasurements(page, started, commit);
 	await capture(
 		page,
 		`${process.env.SCREENSHOT_LABEL ?? 'run'}-source-test-${id}-${commit.slice(0, 7)}-${(await page.viewportSize())!.width}`,
-		['reports.component.harness-entity-source']
+		['reports.component.harness-entity-source', 'reports.component.source-file-list']
 	);
 	await page.keyboard.press('Escape');
 	await expect(dialog).toHaveCount(0);
+}
+
+async function sourceReadMeasurements(page: Page, started: number, commit: string): Promise<void> {
+	const observed = await page.evaluate(
+		(start) => ({
+			ms: performance.now() - start,
+			heap: (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
+				?.usedJSHeapSize
+		}),
+		started
+	);
+	const base = {
+		unit: 'reports.store.source-reader',
+		callable: 'archivedSource',
+		workload: 'open-archived-test-file',
+		target: 'module',
+		samples: 1
+	};
+	const measurements = [
+		{
+			...base,
+			metric: 'latency-cold-ms',
+			unitOfMeasure: 'ms',
+			value: observed.ms,
+			method:
+				'Browser time from the test-file code action through the modal displaying the exact archived text.'
+		},
+		{
+			...base,
+			metric: 'memory-bytes',
+			unitOfMeasure: 'bytes',
+			value: observed.heap ?? null,
+			method: 'Whole-renderer JavaScript heap after the source read, including shared page code.'
+		}
+	];
+	recordCapture(
+		{
+			evidence: 'benchmark',
+			kind: 'benchmark',
+			state: 'test-file',
+			file: `source-reader-${commit}-${page.viewportSize()!.width}.json`,
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
 }

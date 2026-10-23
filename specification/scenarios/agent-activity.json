@@ -8,7 +8,8 @@
 		{
 			"id": "lifecycle",
 			"title": "Register, update, finish and list agents",
-			"coverage": "required"
+			"coverage": "missing",
+			"reason": "The integration test exercises this lifecycle; a retained scenario assertion artifact has not been recorded."
 		}
 	],
 	"viewports": [],

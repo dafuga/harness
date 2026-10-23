@@ -102,32 +102,36 @@ test('source is shown only when the source tab is the open one', () => {
 /** Source accepts indexed arrays before serialization without invoking custom iteration/species. */
 function sourceAdmission(unit: HarnessUnit): void {
 	const paths = [...unit.owns.source];
-	const first = paths[0];
+	const tests = [{ path: 'test/order-store.test.ts', media: null }];
 	const reads = { indexed: 0, iterated: 0, species: 0 };
-	Object.defineProperty(paths, '0', {
-		get() {
-			reads.indexed++;
-			return first;
-		}
-	});
-	Object.defineProperty(paths, Symbol.iterator, {
-		value() {
-			reads.iterated++;
-			return [][Symbol.iterator]();
-		}
-	});
-	Object.defineProperty(paths, 'constructor', {
-		value: {
-			get [Symbol.species]() {
-				reads.species++;
-				return Array;
+	for (const input of [paths, tests]) {
+		const first = input[0];
+		Object.defineProperty(input, '0', {
+			get() {
+				reads.indexed++;
+				return first;
 			}
-		}
-	});
+		});
+		Object.defineProperty(input, Symbol.iterator, {
+			value() {
+				reads.iterated++;
+				return [][Symbol.iterator]();
+			}
+		});
+		Object.defineProperty(input, 'constructor', {
+			value: {
+				get [Symbol.species]() {
+					reads.species++;
+					return Array;
+				}
+			}
+		});
+	}
 	const body = render(EntitySource, {
-		props: { unit: { ...unit, owns: { ...unit.owns, source: paths } } }
+		props: { unit: { ...unit, owns: { ...unit.owns, source: paths }, testFiles: tests } }
 	}).body;
 	expect(words(body)).toContain('src/services/orders/OrderStore.ts');
+	expect(words(body)).toContain('test/order-store.test.ts');
 	expect(reads.indexed).toBeGreaterThan(0);
 	expect(reads.iterated).toBe(0);
 	expect(reads.species).toBe(0);

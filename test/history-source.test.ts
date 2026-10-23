@@ -4,6 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema, type ComponentManifest } from '../src/core/unitTypes';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { HistoryIndexService } from '../src/cli/program/history-index-service/HistoryIndexService';
 import { fixtureSources } from './support/verifyFixture';
 import { unitProject } from './support/unitProject';
@@ -94,6 +95,7 @@ test('history archives owned text from each commit, deduplicates it and states s
 		const out = join(dirname(repo.root), 'source-history');
 		const started = performance.now();
 		await new HistoryIndexService(repo.root).build(out, 10, async () => []);
+		archiveMeasurements(performance.now() - started);
 		console.log(
 			JSON.stringify({
 				workload: 'two committed source trees with text and gaps',
@@ -130,7 +132,15 @@ async function seedTests(repo: VerifyRepo): Promise<void> {
 				id: 'slugify',
 				title: 'Slugify through its command',
 				kind: 'headless',
-				states: [{ id: 'command', title: 'Command usage', coverage: 'required' }],
+				states: [
+					{
+						id: 'command',
+						title: 'Command usage',
+						coverage: 'missing',
+						reason:
+							'This source-only fixture stores test associations without a verification artifact.'
+					}
+				],
 				viewports: [],
 				units: ['function.slugify'],
 				tests: [
@@ -145,5 +155,42 @@ async function seedTests(repo: VerifyRepo): Promise<void> {
 				evidence: []
 			})
 		)
+	);
+}
+
+function archiveMeasurements(buildMs: number): void {
+	const measurements = ['service.source-archive', 'service.history-index'].flatMap((unit) => [
+		{
+			unit,
+			workload: 'two-commit-source-archive',
+			target: 'module',
+			samples: 1,
+			metric: 'latency-cold-ms',
+			unitOfMeasure: 'ms',
+			value: buildMs,
+			method:
+				'Wall time of a complete two-revision history build, including source/test association and archive I/O.'
+		},
+		{
+			unit,
+			workload: 'two-commit-source-archive',
+			target: 'module',
+			samples: 1,
+			metric: 'memory-bytes',
+			unitOfMeasure: 'bytes',
+			value: process.memoryUsage().rss,
+			method:
+				'Whole Vitest process RSS after the two-revision history build; includes indexing and runner overhead.'
+		}
+	]);
+	recordCapture(
+		{
+			evidence: 'benchmark',
+			kind: 'benchmark',
+			state: 'archive',
+			file: 'source-archive-workload.json',
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
 	);
 }
