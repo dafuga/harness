@@ -50,7 +50,7 @@ export const harnessNamingRules: Record<string, string> = {
 	service:
 		'Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.',
 	model:
-		'Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.',
+		'Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts. Shared model names omit the .types file suffix; keep registered IDs, source paths and model classification stable.',
 	component: 'Naming: Components use <PascalName>.svelte and the same PascalCase import name.',
 	partial: 'Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.',
 	shell: 'Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.',
@@ -84,6 +84,8 @@ export const harnessNamingRules: Record<string, string> = {
 } satisfies Record<PieceKind, string> & Record<string, string>;
 
 export const harnessModuleGroupRules = [
+	'Group related list, detail and history pages by feature, using meaningful domain folders instead of broad technical catch-alls. Reuse that feature category with --group; use route groups when public URLs must stay unchanged.',
+
 	'Config modules live in src/configs/<category>/, with one focused file per config. Update generator output and public SDK export plans together; prove every planned export targets an emitted file. Keep source-based config documentation static; do not execute configuration to discover values.',
 	'General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatting are reusable operations, not the domains of their callers. Keep domain-specific helpers in their domain and derive each helper category from its own implementation folder.',
 	'Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.',

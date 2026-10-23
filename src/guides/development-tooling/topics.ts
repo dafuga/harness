@@ -21,6 +21,7 @@ function normalizeGuideTopic(entries: TopicEntry[], topic: string): string {
 }
 
 function topicCandidates(topic: string): string[] {
+	if (topic === 'page' || topic === 'pages') return [topic, 'page', 'view'];
 	if (topic === 'scaffold') return [topic, 'scaffolds'];
 	if (topic.endsWith('ies')) return [topic, `${topic.slice(0, -3)}y`];
 	if (topic.endsWith('s')) return [topic, topic.slice(0, -1)];

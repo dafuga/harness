@@ -79,7 +79,10 @@ function withConsumers(detail: HarnessRevision): HarnessRevision {
 		id: 'app.model.order',
 		kind: 'model',
 		title: 'Order',
-		owns: { source: ['src/models/Order.ts'], symbols: ['Order'] }
+		owns: {
+			source: ['src/models/Order.types.ts', 'src/models/OrderValues.ts'],
+			symbols: ['OrderInput', 'OrderResult', 'orderStatuses']
+		}
 	};
 	const secondModel = {
 		...model,
