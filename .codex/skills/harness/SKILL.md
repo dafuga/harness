@@ -72,6 +72,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 ## API and Naming Corrections
 
+- Before extending an alias resolver, strengthen its standard lookup matrix with canonical-name collisions, plural forms and normalization. Canonical names keep precedence over new aliases.
 - Function and parameter names describe their domain role or transformation. Avoid vague names such as `value` when the domain is known; generic abstractions may use genuinely generic names. Rename actual declarations, callers and contracts, not just UI labels.
 - When Daniel requests a naming or API correction, trace why the earlier implementation passed the generator, skill or review checkpoint. Repair the earliest responsible control within Harness, including generated tenant guidance where applicable, and verify the emitted instructions. Record cause and prevention alongside the regression proof.
 - A selected helper’s Uses must come from runtime references attributed to that exact caller, never its owning module’s import graph. Hide Uses when that callable has no recorded helper callees; cover independent siblings, same-module callees, imported callees and old empty Uses links in the shared callable matrix.
