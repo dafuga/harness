@@ -79,7 +79,6 @@ function told(side: ExplorerSide, found: ExplorerCapture) {
 	if (!side.record || !tested) return unrecorded;
 	return captureProvenance(side.record, tested, found.capture);
 }
-/** A recorded capture as a gallery item, with the standing the record gives it and nothing more. */
 function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidence {
 	const { capture, scenario, state } = found;
 	const origin = told(side, found);

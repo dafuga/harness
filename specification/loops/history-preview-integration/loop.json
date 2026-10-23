@@ -2,7 +2,7 @@
 	"name": "history-preview-integration",
 	"goal": "Keep owning-workspace route types, semantic screen equivalence and real catalog screenshot projection correct after integration",
 	"createdAt": "2026-10-23T02:18:34.356Z",
-	"updatedAt": "2026-10-23T02:18:34.356Z",
+	"updatedAt": "2026-10-23T02:42:58.783Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -11,27 +11,37 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T02:42:56.420Z",
+			"evidence": "PR65 native Hub route typing, neutral SSR attribution wrappers and historical preferred-state defaults were reproduced on actual committed source; original logs and retained proof IDs remain unchanged."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T02:42:56.927Z",
+			"evidence": "Existing standardized Pages and composition tests now cover all239 visual preview choices at all3viewports, unusable evidence, strict explicit-state gaps, historical default cards, and semantic wrapper normalization. Owning app and preview compiler/lint contexts are checked separately."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T02:42:57.630Z",
+			"evidence": "At this actual unfixed source commit, immutable321cdd9a proves the historical default card failure. Earlier33a2ce15 proves native Hub typing and5preview choices; both are real failures in isolated original-source snapshots."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T02:42:58.086Z",
+			"evidence": "Preserve native Hub resolve calls with separate preview compiler context, whitelist only neutral SSR wrappers, align current preview choices, and let only default cards/hover previews opt into valid focused own-source captures."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T02:42:58.783Z",
+			"evidence": "Source fixes72c56e8eb and7222eac9f, restored native Hub routes, canonical preview choices and default-only focused fallback. Existing standard tests, both package checks and inspected historical before/after screenshots prove the change; audit line boundary is repaired without behavior change."
 		},
 		{
 			"id": "green",
