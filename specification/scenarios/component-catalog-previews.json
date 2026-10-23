@@ -131,6 +131,7 @@
 		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-function-card",
 		"reports.component.explorer-ui-explorer-module-card",
+		"reports.component.explorer-ui-harness-explorer-styles-screen",
 		"reports.component.explorer-usage",
 		"reports.component.explorer-usage-link",
 		"reports.component.filter-dialog",
@@ -236,6 +237,7 @@
 		"reports.page.harness-branch-branch-at-shells",
 		"reports.page.harness-branch-branch-at-shells-entity",
 		"reports.page.harness-branch-branch-at-shells-entity-history",
+		"reports.page.harness-branch-branch-at-styles",
 		"reports.page.harness-view"
 	],
 	"states": [
@@ -1002,6 +1004,12 @@
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-harness-explorer-styles-screen",
+			"title": "ExplorerStylesScreen",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-harness-explorer-styles-screen"]
+		},
+		{
 			"id": "reports-component-explorer-usage",
 			"title": "ExplorerUsage",
 			"coverage": "required",
@@ -1632,6 +1640,12 @@
 			"units": ["reports.page.harness-branch-branch-at-shells-entity-history"]
 		},
 		{
+			"id": "reports-page-harness-branch-branch-at-styles",
+			"title": "/harness/branch/[branch]/[...at]/styles",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-styles"]
+		},
+		{
 			"id": "reports-page-harness-view",
 			"title": "/harness/[...view]",
 			"coverage": "required",
@@ -1797,6 +1811,7 @@
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-ui-explorer-module-card",
+				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-usage",
 				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",
@@ -1902,6 +1917,7 @@
 				"reports-page-harness-branch-branch-at-shells",
 				"reports-page-harness-branch-branch-at-shells-entity",
 				"reports-page-harness-branch-branch-at-shells-entity-history",
+				"reports-page-harness-branch-branch-at-styles",
 				"reports-page-harness-view"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],

@@ -32,6 +32,10 @@ function category([name, entity]: [string, string]): Array<[string, RoutePreview
 	];
 }
 export const routePreviews: Record<string, RoutePreview> = {
+	'reports.page.harness-branch-branch-at-styles': {
+		route: '/harness/branch/[branch]/[...at]/styles',
+		path: `${branch}/styles`
+	},
 	// No route of its own serves a callable of a function: the catch-all shows it, exactly.
 	'reports.page.harness-view': {
 		route: '/harness/[...view]',

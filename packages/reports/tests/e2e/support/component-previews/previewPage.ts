@@ -72,7 +72,8 @@ async function readyRoute(page: Page, id: string) {
 		'desktop.page.projects-project-id-harness-path': 'Pages',
 		'desktop.page.settings': 'Settings',
 		'desktop.page.game': 'Game Views',
-		'reports.layout.root': 'Components'
+		'reports.layout.root': 'Components',
+		'reports.page.harness-branch-branch-at-styles': 'Styles'
 	};
 	if (headings[id])
 		await expect(page.getByRole('heading', { name: headings[id], exact: true })).toBeVisible();
@@ -99,7 +100,7 @@ export async function capturePreview(page: Page, home: string, id: string, viewp
 	const served = await new BuildIdentityService().identify(home);
 	recordCapture(
 		{
-			evidence: 'screens',
+			evidence: id,
 			kind: 'screenshot',
 			state,
 			viewport,

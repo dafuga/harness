@@ -24,6 +24,10 @@ const seen = {
 	mediaBase: '/media/'
 };
 export const explorerCases: PreviewCases = {
+	'reports.component.explorer-ui-harness-explorer-styles-screen': d.host() as unknown as Record<
+		string,
+		unknown
+	>,
 	'reports.component.harness-entity-artifact': {
 		cell: d.cell,
 		label: 'Assertions',
