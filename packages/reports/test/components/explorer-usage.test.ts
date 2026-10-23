@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { render } from 'svelte/server';
 import ExplorerUsage from '../../src/components/ExplorerUsage.svelte';
 import ExplorerPageCard from '../../src/components/explorer-ui/ExplorerPageCard.svelte';
@@ -33,7 +34,7 @@ for (const mode of ['current', 'commit'] as const) {
 		}
 	);
 
-	test(`shared usage footers render links and empty usage at ${mode} scope`, () => {
+	test(`shared usage footers render links and empty usage at ${mode} scope`, async () => {
 		const host = hostProps(mode);
 		const nav = { route: host.route, href: host.lens.href, go: host.onroute };
 		const props = { nav, lens: host.lens, mediaBase: host.mediaBase };
@@ -75,7 +76,9 @@ for (const mode of ['current', 'commit'] as const) {
 		const empty = render(ExplorerUsage, { props: { ...props, consumers: [] } }).body;
 		expect(words(empty).trim()).toBe('Used In —');
 		expect(empty).not.toContain('<a');
-		for (const sameOwner of [false, true]) assertNamedUsage(mode, sameOwner);
+		await measureWorkload('reports.function.entity-usage', `named-helper-consumers-${mode}`, () => {
+			for (const sameOwner of [false, true]) assertNamedUsage(mode, sameOwner);
+		});
 	});
 }
 
