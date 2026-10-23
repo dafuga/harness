@@ -173,8 +173,11 @@ test("the policy holds for Harness's own registry", () => {
 		expect(category === null || explorerCategories.some((known) => known === category)).toBe(true);
 		expect(explorerRole(item)).toMatch(/^[A-Z][a-z]+( [a-z]+)*$/);
 	}
-	expect(listed('functions')).toEqual([]); // Raw manifests have no source-derived helper proof.
-	for (const category of explorerCategories.filter((kind) => kind !== 'functions')) {
+	for (const category of ['functions', 'models', 'types'])
+		expect(listed(category), 'raw manifests have no source-derived declaration proof').toEqual([]);
+	for (const category of explorerCategories.filter(
+		(kind) => !['functions', 'models', 'types'].includes(kind)
+	)) {
 		expect(listed(category).length).toBeGreaterThan(0);
 	}
 });
