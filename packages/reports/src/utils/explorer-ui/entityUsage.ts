@@ -1,41 +1,10 @@
-import type { ExplorerEntity, ExplorerSupport } from '../../models/explorer-ui/Explorer.types';
+import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
 import { explorerChange, explorerEntity } from './explorerEntities';
 import { explorerRole } from './explorerCategory';
 import { explorerVerdict } from './explorer-verdict/explorerVerdict';
 import { explorerKindCategory } from '../../../../../src/utils/explorerRoute';
-import { type HarnessIconName } from './harnessIcons';
-
-/** One kind of thing an entity uses, with the entities of that kind. */
-export interface UsageGroup {
-	title: string;
-	icon: HarnessIconName;
-	items: ExplorerEntity[];
-}
-
-/** What an entity is shown with of the things around it, one list for each direction. */
-export interface EntityUsage {
-	/** What uses it: the pages that show it first, then everything else, each once. */
-	usedIn: ExplorerEntity[];
-	usedInGroups: UsageGroup[];
-	/** What it uses, kind by kind; a kind it uses nothing of is left out. */
-	uses: UsageGroup[];
-	/** What it uses that is none of the five kinds. */
-	other: ExplorerSupport[];
-	/** How many things it uses in all. */
-	count: number;
-}
-
-/** One of `other` on its module card: its own name and users, with no kind or page invented. */
-export interface SupportRow {
-	support: ExplorerSupport;
-	id: string;
-	name: string;
-	/** What uses it at the shown revision, as a catalog row lists them. */
-	usedIn: ExplorerEntity[];
-	/** A private function opens its existing page under Functions; any other unit has none. */
-	opens: 'functions' | null;
-}
+export type { UsageGroup, EntityUsage, SupportRow } from './entityUsage.types';
 
 /** Public collection admission never controls which active runtime owners may use a helper. */
 export function usageOwners(entities: ExplorerEntity[], revision?: HarnessRevision) {

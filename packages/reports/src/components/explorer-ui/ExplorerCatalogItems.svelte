@@ -3,11 +3,10 @@
 	import type { ExplorerCategory } from '../../models/Explorer.types';
 	import type { CatalogRow } from '../../utils/entityCatalog';
 	import type { EntityLens, EntityNav } from '../../utils/entityLens';
-	import type { SupportRow } from '../../utils/entityUsage';
+	import type { Row } from './ExplorerCatalogItems.types';
 	import ExplorerModuleCard from './ExplorerModuleCard.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';
 	import HarnessAction from './HarnessAction.svelte';
-	type Row = CatalogRow | SupportRow;
 	let {
 		category,
 		rows,
