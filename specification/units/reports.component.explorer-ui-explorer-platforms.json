@@ -165,10 +165,10 @@
 			}
 		]
 	},
-	"scenarios": ["explorer-platforms"],
+	"scenarios": ["component-catalog-previews", "explorer-platforms"],
 	"preview": {
-		"scenario": "explorer-platforms",
-		"state": "list",
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-explorer-ui-explorer-platforms",
 		"viewport": "desktop"
 	},
 	"budgets": {

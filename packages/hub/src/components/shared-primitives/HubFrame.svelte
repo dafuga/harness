@@ -8,7 +8,7 @@
 
 <div class="workspace hub-page">
 	<header class="topbar">
-		<a class="brand" href={resolve('/', {})} data-sveltekit-reload
+		<a class="brand" href={resolve('/')} data-sveltekit-reload
 			><span class="brand-mark"><BrandMark /></span> Harness</a
 		><span class="hub-title">Shared projects</span>
 		<div class="account"><AccountMenu /></div>
