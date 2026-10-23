@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { formatDuration } from '../../utils/verification-evidence/evidenceMedia';
+	import { formatDuration } from '../../helpers/strings/formatDuration';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import StatusBadge from '../shared-primitives/StatusBadge.svelte';
 	let { before, after, onopen }: { before: Evidence; after: Evidence; onopen: () => void } =
