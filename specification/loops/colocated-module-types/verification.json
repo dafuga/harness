@@ -32,7 +32,7 @@
 		"registryUnits": 1458,
 		"registryErrors": 0
 	},
-	"delivery": "Await actual config #76 before #77 landing. Final exact-tree Source capture/readback and main preview remain pending; the coordinated broad catalog follows the fixed main queue. This is not a full verification verdict.",
+	"delivery": "Frozen candidate for exact-tree Source/config capture, Git readback and authorized #77 squash landing. The final broad catalog remains coordinated after the fixed source queue. Focused evidence is not a full verification verdict.",
 	"layoutCorrection": {
 		"base": "d796d4d54b6dfa30827e84d7adbd571645573b78",
 		"integration": "f02fe3be9",
@@ -72,5 +72,37 @@
 		"base": "5318a33f9a399de43f8a4cb56cd772df439eca12",
 		"integration": "3b762f6d26ab6bd4f7a577aa1dabd983544a0692",
 		"desktopTests": 4
+	},
+	"configIntegration": {
+		"base": "c9bcbdfd6cafa7a0bc498be9de439f797611901d",
+		"integration": "70481769b",
+		"siblingTypeModules": ["ConfigValueTree.module.types.ts", "configValueStructure.types.ts"],
+		"rootConfigOwnershipTests": 73,
+		"reportsNormalCheck": {
+			"tests": 698,
+			"format": "passed",
+			"types": "passed",
+			"lint": "passed",
+			"build": "passed",
+			"audit": "passed"
+		},
+		"consumerTypes": ["root", "api", "reports", "desktop", "hub"],
+		"registryErrors": [],
+		"mixedDeclarationsRemaining": 0
+	},
+	"sourceAdmission": {
+		"cause": "Source archive aggregation used caller array iterators instead of retaining native indexed lookups.",
+		"red": "2aec84ce071c56df56a6e7b2370f64cfaf9921b2886f9c4bca3b156c16e725bd",
+		"green": "8cce2f33a508164d313cd96fbeaeb4ef56dfe5278c6cfde8db094e7213d429f0",
+		"source": "5ccaf24d984a6eee1be05c515bea091b9c041347",
+		"prevention": "The existing Source admission case covers renderer and archived reads before serialization, including iterator, species, indexed getter and lazy-read behavior."
+	},
+	"hostNavigation": {
+		"originalSource": "7bac826043501d9f1d5067f7b401e595a8aaed7c",
+		"integration": "71fb5734c",
+		"focusedCases": 2,
+		"passedOnIntegratedBranch": true,
+		"freshPackagePrerequisites": ["api", "cli", "reports", "kernel"],
+		"scope": "Two existing installed-console branch/commit/category and repository/access cases; full CLI/native suites deferred."
 	}
 }
