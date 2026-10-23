@@ -12,14 +12,23 @@ export const configExpression = (commit: string): string => `z.strictObject({
   if (!settings.title) context.addIssue({ code: "custom", message: "Title required" });
 })`;
 
-export const longConfigValue = `"${'orders/'.repeat(35)}"`;
+export const configStrings = {
+	defaultSort: 'newest',
+	archivePath: 'orders/'.repeat(35),
+	fulfilmentNote:
+		'Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.'
+} as const;
+
+export const longConfigValue = JSON.stringify(configStrings.archivePath);
+export const configRemoteExpression =
+	'process.env.REPORT_ORIGIN ?? "https://orders.example.test/integrations"';
 
 /** Source-derived settings vary with the selected revision, independently of contract examples. */
 export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 	if (unit.kind !== 'config') return unit;
 	const values = {
 		pageSize: commit === commits.first ? '10' : '25',
-		defaultSort: '"newest"',
+		defaultSort: JSON.stringify(configStrings.defaultSort),
 		enabled: 'false',
 		emptyLabel: '""',
 		retryCount: '0',
@@ -27,6 +36,8 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		regions: '["ca", "us"]',
 		schema: configExpression(commit),
 		archivePath: longConfigValue,
+		fulfilmentNote: JSON.stringify(configStrings.fulfilmentNote),
+		remoteEndpoint: configRemoteExpression,
 		steps: '[{label: "Pack", flags: [true, false]}, "Ship"]',
 		emptySteps: '[]'
 	};
@@ -34,7 +45,9 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		configValues: Object.entries(values).map(([name, value]) => ({
 			name: `orderSettings.${name}`,
 			value,
-			...(['schema', 'archivePath', 'steps'].includes(name) ? {} : { literal: JSON.parse(value) }),
+			...(['schema', 'remoteEndpoint', 'steps'].includes(name)
+				? {}
+				: { literal: JSON.parse(value) }),
 			source: unit.owns.source[0],
 			...structuredFixture(name, value)
 		}))
