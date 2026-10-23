@@ -1,0 +1,27 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-lNRPb7
+
+ ✓ test/workspace-test-config.test.ts (15 tests) 7286ms
+   ✓ a workspace without a config of its own runs its tests with the root config and its own setup  1244ms
+   ✓ the root runs its own tests and still leaves the workspaces to theirs  1341ms
+   ✓ collaboration keeps its own configuration within one worker  1121ms
+   ✓ remote keeps its own configuration within one worker  1144ms
+   ✓ relay keeps its own configuration within one worker  1130ms
+   ✓ game keeps its own configuration within one worker  1302ms
+ ✓ test/utils/resource-workers.test.ts (4 tests) 2ms
+
+ Test Files  2 passed (2)
+      Tests  19 passed (19)
+   Start at  13:58:51
+   Duration  9.82s (transform 39ms, setup 83ms, collect 13ms, tests 7.29s, environment 0ms, prepare 61ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-lNRPb7/packages/desktop
+
+ ✓ test/cli-integration.test.ts (20 tests) 2467ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  13:59:01
+   Duration  2.93s (transform 190ms, setup 52ms, collect 257ms, tests 2.47s, environment 0ms, prepare 28ms)
+
