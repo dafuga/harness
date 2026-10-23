@@ -1,4 +1,7 @@
 <script lang="ts">
+	// The shared dialog's own sheet, so the desktop host draws it as the reports do.
+	import '../../../lib/styles/gallery.css';
+	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 	import { listed, type CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
 	import { humanize } from '../../../utils/explorer-ui/entityContract';
@@ -10,6 +13,7 @@
 	} from '../../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../../ExplorerUsage.svelte';
+	import Modal from '../../shared-primitives/Modal.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
@@ -60,6 +64,24 @@
 	// A shell is described under its name; the other kinds have a column for it.
 	let described = $derived(category === 'shells');
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
+	/** A config value as written; past one line or 48 characters it is previewed, opened whole. */
+	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';
+	let chosen = $state.raw<CatalogRow | null>(null);
+	let opener: HTMLElement | null = null;
+	function view(row: CatalogRow, event: MouseEvent) {
+		opener = event.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+		chosen = row;
+	}
+	async function close() {
+		chosen = null;
+		await tick();
+		opener?.focus();
+	}
+	// Another revision or search brings other rows: a value they no longer hold is not left open.
+	$effect.pre(() => {
+		const held = chosen && value(chosen);
+		if (!rows.some((row) => row.name === chosen?.name && value(row) === held)) chosen = null;
+	});
 </script>
 
 <div
@@ -84,10 +106,27 @@
 			{#each rows as row (row.id)}
 				<tr>
 					{#if category === 'configs'}
+						{@const text = value(row)}
+						{@const lines = text.split(/\r?\n/)}
+						{@const size = lines.length > 1 ? `${lines.length} lines` : `${text.length} chars`}
 						<th scope="row"
 							><EntityLink to={open(row)} {nav}><code>{row.name}</code></EntityLink></th
 						>
-						<td><code>{row.setting?.value ?? 'Not recorded at this revision'}</code></td>
+						<td>
+							{#if lines.length > 1 || text.length > 48}
+								<div class="ex-value" class:more={lines.length > 2}>
+									<code class="ex-value-preview">{lines.slice(0, 2).join('\n')}</code>
+									<span class="ex-note">{size}</span>
+									<HarnessAction
+										tone="plain"
+										label={`View value for ${row.name}`}
+										onclick={(event) => view(row, event)}>View value</HarnessAction
+									>
+								</div>
+							{:else}
+								<code>{text}</code>
+							{/if}
+						</td>
 					{:else}
 						<th scope="row">
 							<span class="ex-row-name">
@@ -124,19 +163,57 @@
 			{/each}
 		</tbody>
 	</table>
+	<Modal open={chosen !== null} title={`${chosen?.name} · Value`} variant="text" onClose={close}>
+		{#if chosen}<pre class="ex-value-full"><code>{value(chosen)}</code></pre>{/if}
+	</Modal>
 </div>
 
 <style>
-	.ex-config-values :global(.ex-table) {
-		min-width: 0;
-		table-layout: auto;
+	.ex-config-values .ex-table {
+		table-layout: fixed;
 	}
-	.ex-config-values :global(:is(th, td)) {
+	.ex-config-values.ex-scroll :global(:is(th, td)) {
 		vertical-align: top;
 	}
-	.ex-config-values :global(code) {
+	.ex-config-values thead th:first-child {
+		width: 17rem;
+	}
+	.ex-config-values th code,
+	.ex-config-values td > code {
 		white-space: pre-wrap;
-		overflow-wrap: normal;
-		word-break: normal;
+		overflow-wrap: anywhere;
+	}
+	.ex-value {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 12px;
+	}
+	/* The first lines as written: what does not fit is cut at the edge, never rewritten. */
+	.ex-value-preview {
+		flex: 1 1 14rem;
+		overflow: hidden;
+		white-space: pre;
+		text-overflow: ellipsis;
+	}
+	.more .ex-value-preview {
+		mask-image: linear-gradient(black 45%, transparent);
+	}
+	.ex-config-values :global(.viewer-dialog .ex-value-full) {
+		max-height: min(70dvh, 720px);
+		margin: 0;
+		padding: 14px 16px;
+		border-radius: 8px;
+		background: var(--ex-raised);
+		font-size: 0.95rem;
+		white-space: pre;
+	}
+	.ex-config-values :global(.viewer-header h2) {
+		overflow-wrap: anywhere;
+	}
+	@media (max-width: 640px) {
+		.ex-config-values thead th:first-child {
+			width: 32%;
+		}
 	}
 </style>
