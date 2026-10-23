@@ -2,7 +2,7 @@
 	"name": "helper-source-folders",
 	"goal": "Public helpers live under src/helpers/<responsibility> and helper Source tabs show only the selected callable implementation; owner-private helpers stay with owners",
 	"createdAt": "2026-10-23T11:02:52.837Z",
-	"updatedAt": "2026-10-23T11:02:52.837Z",
+	"updatedAt": "2026-10-23T11:15:16.307Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:15:15.586Z",
+			"evidence": "Pre-existing mixed helper/module ownership survived71 structural moves. Humanize was defined under utils but its module owned component contract code; helperEntity narrowed owns.source but retained all archived sourceFiles."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:15:16.307Z",
+			"evidence": "Existing Source fixture had one effective source per helper and no selected-helper archive assertion. Registry checked examples but not canonical helper ownership. Pieces test allowed helper classes. Extended these standard checks and generated-project guidance coverage."
 		},
 		{
 			"id": "red",
