@@ -26,9 +26,9 @@ const alpha = (commit = tip, entities = [frame, time]) =>
 	show(createWorkspaceStore(), 'local-alpha', commit, entities);
 const at = (rest: string) => `/projects/local-alpha/harness/branch/feat%2Falpha/${rest}`;
 
-test('a shell leads under Shells and a pinned commit is kept in the address', () => {
+test('a shell leads under Layouts and a pinned commit is kept in the address', () => {
 	expect(unitLinks(alpha())('app.shell.order-frame')).toEqual({
-		...{ to: at('shells/app.shell.order-frame'), name: 'Order frame', category: 'layouts' }
+		...{ to: at('layouts/app.shell.order-frame'), name: 'Order frame', category: 'layouts' }
 	});
 	expect(unitLinks(alpha(earlier))('app.function.format-time')?.to).toBe(
 		at(`commit/${earlier}/functions/app.function.format-time`)
