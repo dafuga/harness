@@ -49,6 +49,9 @@ const layoutConfiguration = (unit: Classified) =>
 	unit.owns.source.length > 0 &&
 	unit.owns.source.every((path) => /\+layout(?:\.server)?\.[cm]?[jt]s$/.test(path));
 
+const nonvisualLayout = (unit: Classified) =>
+	unit.kind === 'layout' && !unit.owns.source.some((path) => path.endsWith('.svelte'));
+
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
@@ -61,8 +64,7 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	if (layoutConfiguration(unit)) return 'configs';
-	if (unit.kind === 'layout' && !unit.owns.source.some((path) => path.endsWith('.svelte')))
-		return null;
+	if (nonvisualLayout(unit)) return null;
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'functions' || unit.kind === 'module') {
 		return unit.helpers?.some(helperContract) ? 'functions' : null;

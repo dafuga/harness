@@ -60,10 +60,12 @@ export function explorerName(unit: Named): string {
 	return parts.length > 0 ? sentence(parts) : 'Unnamed';
 }
 
+const frameworkLayout = (unit: Named) =>
+	unit.kind === 'layout' && unit.owns?.source.some((path) => /\/\+layout\.svelte$/.test(path));
+
 /** Owned source decides code identity even when a manifest has a descriptive title. */
 function codeName(unit: Named): string | undefined {
-	if (unit.kind === 'layout' && unit.owns?.source.some((path) => /\/\+layout\.svelte$/.test(path)))
-		return undefined;
+	if (frameworkLayout(unit)) return undefined;
 	if (['page', 'view', 'api', 'style', 'script', 'template', 'guide', 'audit'].includes(unit.kind))
 		return undefined;
 	const stems = (unit.owns?.source ?? [])
