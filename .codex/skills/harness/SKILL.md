@@ -203,6 +203,10 @@ and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
 
+Ownership review follows ledger membership rather than the file's module kind. Bridge factories
+and initializers recorded in `shared-service-ownership` are included; their owning workspace checks
+must include `test/services/unit-index.test.ts` even when full CLI/native suites are deferred.
+
 When changing a previously relocated helper or service workflow's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in
