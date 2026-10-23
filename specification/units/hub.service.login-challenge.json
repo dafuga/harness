@@ -9,18 +9,21 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/services/LoginChallengeService.ts",
-			"packages/hub/src/services/accounts-access/LoginChallengeService.ts"
+			"packages/hub/src/services/accounts-access/LoginChallengeService.ts",
+			"packages/hub/src/services/accounts-access/LoginChallengeService.types.ts"
 		],
 		"symbols": [
 			"CHALLENGE_TTL",
 			"LoginChallengeService",
 			"CHALLENGE_TTL",
-			"LoginChallengeOptions",
-			"IssuedChallenge",
 			"LoginChallengeService",
 			"LoginChallengeService.constructor",
 			"LoginChallengeService.issue",
-			"LoginChallengeService.consume"
+			"LoginChallengeService.consume",
+			"LoginChallengeOptions",
+			"IssuedChallenge",
+			"LoginChallengeOptions",
+			"IssuedChallenge"
 		]
 	},
 	"contract": {

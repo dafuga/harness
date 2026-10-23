@@ -9,15 +9,17 @@
 	"owns": {
 		"source": [
 			"src/repositories/ScenarioRepository.ts",
-			"src/repositories/verification-evidence/ScenarioRepository.ts"
+			"src/repositories/verification-evidence/ScenarioRepository.ts",
+			"src/repositories/verification-evidence/ScenarioRepository.types.ts"
 		],
 		"symbols": [
 			"ScenarioRepository",
-			"ScenarioRead",
 			"ScenarioRepository",
 			"ScenarioRepository.constructor",
 			"ScenarioRepository.read",
-			"ScenarioRepository.write"
+			"ScenarioRepository.write",
+			"ScenarioRead",
+			"ScenarioRead"
 		]
 	},
 	"contract": {

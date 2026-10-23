@@ -1,16 +1,10 @@
+import type { HookOutcome } from './HookRunService.types';
 import { pushedRefs } from './pushedRefs';
 import { historyAttach } from '../../../workflows/git-source-history/runHistory';
 import {
 	verifyCheck,
 	verifyRun
 } from '../../../workflows/verification-evidence/run-verify/runVerify';
-
-export interface HookOutcome {
-	/** Commits that may be pushed, each with the record that proves it. */
-	verified: Array<{ commit: string; record: string }>;
-	/** Commits that may not be pushed, each with what failed. */
-	blocked: Array<{ commit: string; failures: string[] }>;
-}
 
 /**
  * The pre-push gate. Each source commit about to be pushed must be proven by a passing record;
@@ -46,3 +40,5 @@ export class HookRunService {
 		return { id: record.id, failures: unexplained ? ['verification failed'] : failures };
 	}
 }
+
+export type { HookOutcome } from './HookRunService.types';

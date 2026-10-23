@@ -1,27 +1,8 @@
+import type { SourceHistory, SourceRevision } from './SourceHistoryRepository.types';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { refKind } from '../../../utils/git-source-history/historyRefs';
 import { sourceBranches } from './sourceBranches';
 import { type ListedRef } from '../../../utils/git-source-history/sourceBranches';
-
-export interface SourceRevision {
-	commit: string;
-	tree: string;
-	parents: string[];
-	subject: string;
-	author: string;
-	authoredAt: string;
-	committedAt: string;
-	/** Source branches that reach the commit. */
-	branches: string[];
-	/** True when only an archive ref keeps the commit. */
-	retained: boolean;
-}
-
-export interface SourceHistory {
-	branches: Array<{ name: string; head: string }>;
-	revisions: SourceRevision[];
-	truncated: boolean;
-}
 
 const fields = ['%H', '%T', '%P', '%an', '%aI', '%cI', '%s'].join('%x1f');
 
@@ -119,3 +100,5 @@ function revision(entry: string[], reach: Map<string, string[]>): SourceRevision
 		retained: branches.length === 0
 	};
 }
+
+export type { SourceRevision, SourceHistory } from './SourceHistoryRepository.types';

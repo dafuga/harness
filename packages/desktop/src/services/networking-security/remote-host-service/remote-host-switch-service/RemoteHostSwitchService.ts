@@ -1,25 +1,8 @@
+import type { Shown, RemoteHostSwitchOptions } from './RemoteHostSwitchService.types';
 import { importRemoteKeys } from '../../../../../../remote/src/index';
-import type { RemoteKeyPair } from '../../../../../../remote/src/index';
 import type { RemoteHostState } from '../../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { registerRemoteHost, remoteHostIdentity } from './remoteHostIdentity';
-import type { RegisterRemoteHost } from '../../../../utils/networking-security/remoteHostIdentity';
 import type { RemoteHostPhase } from '../../../../utils/networking-security/remoteHostStatus';
-import type { RemoteHostRecordService } from '../RemoteHostRecordService';
-
-export interface RemoteHostSwitchOptions {
-	record: RemoteHostRecordService;
-	/** Registers this computer under the signed-in hosted identity; rejects when there is none. */
-	register: RegisterRemoteHost;
-	name: () => string;
-	/** The host goes online with this registration, in place of one that runs. */
-	run: (state: RemoteHostState, keys: RemoteKeyPair) => void;
-	/** The running host ends. */
-	close: () => void;
-	/** Told when what the status shows changes while a request is still under way. */
-	changed: () => void;
-}
-
-type Shown = [RemoteHostPhase, string | null];
 
 const unregistered = 'Remote access could not be registered. Try again.';
 
@@ -99,3 +82,5 @@ export class RemoteHostSwitchService {
 		if (kept && latest()) run(state, keys);
 	}
 }
+
+export type { RemoteHostSwitchOptions } from './RemoteHostSwitchService.types';

@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts",
+			"packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.types.ts",
 			"packages/hub/src/utils/hubEvidenceRead.ts"
 		],
-		"symbols": ["hubEvidenceRead", "hubEvidenceRead"]
+		"symbols": ["hubEvidenceRead", "EvidenceRead", "hubEvidenceRead"]
 	},
 	"contract": {
 		"origin": "declared",

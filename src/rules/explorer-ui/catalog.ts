@@ -1,15 +1,5 @@
+import type { HarnessRuleLimits } from './catalog.types';
 import type { PieceKind } from '../../templates/development-tooling/scaffoldTypes';
-
-export interface HarnessRuleLimits {
-	maxFileLines: number;
-	maxFunctionLines: number;
-	maxClassLines: number;
-	maxMethodLines: number;
-	maxNestingDepth: number;
-	maxParameters: number;
-	maxComplexity: number;
-	maxClassesPerFile: number;
-}
 
 export const harnessRuleLimits: HarnessRuleLimits = {
 	maxFileLines: 220,
@@ -125,3 +115,5 @@ export function harnessRuleSummariesFor(limits: HarnessRuleLimits): string[] {
 		'Unsupported file types must appear in audit coverage instead of being skipped silently.'
 	];
 }
+
+export type { HarnessRuleLimits } from './catalog.types';

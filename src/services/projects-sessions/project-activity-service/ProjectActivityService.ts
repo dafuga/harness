@@ -1,3 +1,4 @@
+import type { Owners, Reason } from './ProjectActivityService.types';
 import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
@@ -25,8 +26,6 @@ import type { RevisionDetail } from '../../explorer-ui/revision-detail-service/R
 const bounds = { files: 40, reasons: 3, units: 12, checkouts: 12, changes: 40, recorded: 30 };
 
 const none: SourceHistory = { branches: [], revisions: [], truncated: false };
-
-type Owners = (path: string) => string[];
 
 /**
  * The activity of the repository a checkout belongs to. Live, it is read from Git, the checkouts
@@ -119,7 +118,6 @@ export class ProjectActivityService {
 
 /** The reasons noted on a commit, as the notes of the repository hold them. */
 function noted(note: { entries: Array<{ kind: string }> } | undefined) {
-	type Reason = { kind: 'reason'; explanation: { unit: string; behavior: string } };
 	const entries = (note?.entries ?? []) as Array<Reason | { kind: string }>;
 	return entries.flatMap((entry) =>
 		entry.kind === 'reason' ? [(entry as Reason).explanation] : []

@@ -1,9 +1,8 @@
+import type { SyncAction } from './syncHistory.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../core/development-tooling/errors';
 import { HistorySyncService, type Synced } from './history-sync-service/HistorySyncService';
-
-export type SyncAction = 'fetch' | 'push' | 'sync';
 
 /** Runs one explicit exchange of evidence, notes and archived source refs with a remote. */
 export async function syncHistory(
@@ -22,3 +21,5 @@ export function renderSync(action: SyncAction, result: Synced): string {
 	const tail = action === 'fetch' ? '' : `; ${pushed} ${result.remote}`;
 	return `Evidence ${result.evidence}, notes ${result.notes}${tail}.`;
 }
+
+export type { SyncAction } from './syncHistory.types';

@@ -1,3 +1,4 @@
+import type { PieceContext } from './pieces.types';
 import { separateTypeDeclarations } from './separateTypeDeclarations';
 import { toKebabCase, toPascalCase } from '../../core/development-tooling/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
@@ -37,11 +38,6 @@ import type { PieceKind } from './scaffoldTypes';
 import { gameViewFiles, mechanicFiles, checkpointFiles } from '../game-authoring/gamePieces';
 
 export type { PieceKind } from './scaffoldTypes';
-
-/** Project facts a scaffold needs beyond its name, read once by the generate workflow. */
-export interface PieceContext {
-	dimension?: '2d' | '3d';
-}
 
 const pieceBuilders: Record<PieceKind, (name: string, context: PieceContext) => PlannedFile[]> = {
 	'game-view': gameViewFiles,
@@ -120,3 +116,5 @@ function migrationFiles(name: string): PlannedFile[] {
 		}
 	];
 }
+
+export type { PieceContext } from './pieces.types';

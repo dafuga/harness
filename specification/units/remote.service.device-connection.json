@@ -9,18 +9,23 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/DeviceConnectionService.ts",
-			"packages/remote/src/services/networking-security/DeviceConnectionService.ts"
+			"packages/remote/src/services/networking-security/DeviceConnectionService.ts",
+			"packages/remote/src/services/networking-security/DeviceConnectionService.types.ts"
 		],
 		"symbols": [
 			"DeviceConnectionService",
-			"RemoteSocket",
-			"DeviceStatus",
-			"DeviceConnectionOptions",
 			"DeviceConnectionService",
 			"DeviceConnectionService.constructor",
 			"DeviceConnectionService.onStatus",
 			"DeviceConnectionService.connect",
-			"DeviceConnectionService.close"
+			"DeviceConnectionService.close",
+			"RemoteSocket",
+			"DeviceStatus",
+			"DeviceConnectionOptions",
+			"RemoteSocket",
+			"DeviceStatus",
+			"DeviceConnectionOptions",
+			"Reply"
 		]
 	},
 	"contract": {

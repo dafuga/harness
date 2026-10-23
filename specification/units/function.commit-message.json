@@ -11,7 +11,8 @@
 			"src/services/commit-message-service/commitMessage.ts",
 			"src/services/git-source-history/commit-message-service/commitMessage.ts",
 			"src/utils/commitMessage.ts",
-			"src/utils/git-source-history/commitMessage.ts"
+			"src/utils/git-source-history/commitMessage.ts",
+			"src/utils/git-source-history/commitMessage.types.ts"
 		],
 		"symbols": [
 			"writtenMessage",
@@ -22,9 +23,10 @@
 			"commitMessage",
 			"commitPrefixes",
 			"commitPrefixes",
-			"MessageCleanup",
 			"writtenMessage",
-			"commitMessage"
+			"commitMessage",
+			"MessageCleanup",
+			"MessageCleanup"
 		]
 	},
 	"contract": {

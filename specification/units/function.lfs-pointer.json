@@ -14,7 +14,8 @@
 			"src/services/history-status-service/attached-record-service/lfsPointer.ts",
 			"src/services/verification-evidence/history-status-service/attached-record-service/lfsPointer.ts",
 			"src/utils/lfsPointer.ts",
-			"src/utils/verification-evidence/lfsPointer.ts"
+			"src/utils/verification-evidence/lfsPointer.ts",
+			"src/utils/verification-evidence/lfsPointer.types.ts"
 		],
 		"symbols": [
 			"lfsAttributes",
@@ -28,11 +29,12 @@
 			"lfsPointer",
 			"lfsStored",
 			"mediaExtensions",
-			"LfsObject",
 			"lfsPointer",
 			"lfsStored",
 			"parseLfsPointer",
-			"lfsAttributes"
+			"lfsAttributes",
+			"LfsObject",
+			"LfsObject"
 		]
 	},
 	"contract": {

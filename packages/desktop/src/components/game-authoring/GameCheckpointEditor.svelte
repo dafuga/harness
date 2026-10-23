@@ -1,13 +1,9 @@
 <script lang="ts">
+	import type { Props } from './GameCheckpointEditor.types';
+
 	import Select from '$shared/Select.svelte';
 	import GameTextField from './GameTextField.svelte';
 	import type { Checkpoint, Condition, GameAction } from '../../../../game/src/index';
-	/** The executable rules of a checkpoint; every edit returns a new checkpoint to the parent. */
-	interface Props {
-		checkpoint: Checkpoint | null;
-		change: (node: Checkpoint) => void;
-		readonly?: boolean;
-	}
 	let { checkpoint, change, readonly = false }: Props = $props();
 	const ops: Record<Condition['op'], string> = { eq: 'equals', gte: 'at least', lte: 'at most' };
 	const kinds = { set: 'Set', emit: 'Emit', transition: 'Transition', visibility: 'Visibility' };

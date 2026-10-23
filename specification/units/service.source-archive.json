@@ -9,12 +9,14 @@
 	"owns": {
 		"source": [
 			"src/cli/program/history-index-service/SourceArchiveService.ts",
+			"src/cli/program/history-index-service/SourceArchiveService.types.ts",
 			"src/services/SourceArchiveService.ts"
 		],
 		"symbols": [
 			"SourceArchiveService",
 			"SourceArchiveService.constructor",
 			"SourceArchiveService.archive",
+			"Unit",
 			"SourceArchiveService"
 		]
 	},

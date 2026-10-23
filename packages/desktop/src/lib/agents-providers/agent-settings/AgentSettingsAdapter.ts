@@ -1,8 +1,5 @@
+import type { AgentSettingsAdapterConfig } from './AgentSettingsAdapter.types';
 import { defaultDesignCount, designCounts } from '../../../utils/explorer-ui/composeModes';
-
-export interface AgentSettingsAdapterConfig {
-	storage?: Pick<Storage, 'getItem' | 'setItem'>;
-}
 
 /** Device preferences are kept apart from project history and agent credentials. */
 export class AgentSettingsAdapter {
@@ -35,3 +32,5 @@ export class AgentSettingsAdapter {
 		return this.config.storage ?? globalThis.localStorage;
 	}
 }
+
+export type { AgentSettingsAdapterConfig } from './AgentSettingsAdapter.types';

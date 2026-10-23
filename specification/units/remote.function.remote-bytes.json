@@ -11,12 +11,12 @@
 			"packages/remote/src/services/networking-security/wire-session-service/remoteBytes.ts",
 			"packages/remote/src/services/wire-session-service/remoteBytes.ts",
 			"packages/remote/src/utils/networking-security/remoteBytes.ts",
+			"packages/remote/src/utils/networking-security/remoteBytes.types.ts",
 			"packages/remote/src/utils/remoteBytes.ts"
 		],
 		"symbols": [
 			"stableJson",
 			"stableJson",
-			"CryptoSource",
 			"cryptoSource",
 			"remoteBytes",
 			"bytesText",
@@ -30,6 +30,8 @@
 			"randomBytes",
 			"safeEqual",
 			"stableJson",
+			"CryptoSource",
+			"CryptoSource",
 			"stableJson",
 			"cryptoSource",
 			"remoteBytes",

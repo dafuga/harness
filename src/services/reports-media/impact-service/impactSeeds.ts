@@ -1,14 +1,10 @@
+import type { Sides } from './impactSeeds.types';
 import type { ImpactSeeds } from '../../../utils/reports-media/impactSeeds';
 import type { ImpactSide } from '../../../core/development-tooling/impactTypes';
 import type { UncertainNode } from '../../../core/development-tooling/sourceTypes';
 import { scenariosDirectory, unitsDirectory } from '../../../core/development-tooling/unitsConfig';
 import { classifyPath } from '../../../utils/accounts-access/classify-path/classifyPath';
 import type { TreeChange } from '../../../utils/reports-media/treeChanges';
-
-interface Sides {
-	base: ImpactSide;
-	head: ImpactSide;
-}
 
 /** Turns changed paths into kernel seeds, never dropping a path it cannot classify. */
 export function impactSeeds(changes: TreeChange[], sides: Sides): ImpactSeeds {

@@ -1,16 +1,9 @@
+import type { ModelInput, AdapterName } from './model.types';
 import { separateTypeDeclarations } from './separateTypeDeclarations';
 import { toKebabCase, toPascalCase, toSnakeCase } from '../../core/development-tooling/case';
 import type { Field } from '../../core/development-tooling/fields/fields';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { sqliteModelDefinition } from './sqliteModel';
-
-export type AdapterName = 'd1' | 'sqlite' | 'postgres';
-
-export interface ModelInput {
-	name: string;
-	fields: Field[];
-	adapter: AdapterName;
-}
 
 export function modelFiles(input: ModelInput): PlannedFile[] {
 	const className = toPascalCase(input.name);
@@ -192,3 +185,5 @@ export function createPostgresAdapter(): PersistenceAdapter {
 }
 `;
 }
+
+export type { AdapterName, ModelInput } from './model.types';

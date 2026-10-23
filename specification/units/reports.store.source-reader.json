@@ -9,15 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
+			"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
 			"packages/reports/src/lib/stores/sourceReader.svelte.ts"
 		],
 		"symbols": [
-			"SourceState",
-			"SourceFiles",
-			"SourceRead",
 			"createSourceReaderStore",
 			"implementationFiles",
 			"archivedSource",
+			"SourceState",
+			"SourceFiles",
+			"SourceRead",
+			"SourceState",
+			"SourceFiles",
+			"SourceRead",
 			"createSourceReaderStore",
 			"implementationFiles",
 			"archivedSource",

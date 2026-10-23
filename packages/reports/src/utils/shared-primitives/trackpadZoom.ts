@@ -1,13 +1,4 @@
-export type Point = { x: number; y: number };
-
-type ZoomControls = {
-	current: number;
-	minimum: number;
-	maximum: number;
-	apply: (next: number | null, point: Point) => void;
-};
-
-type Gesture = Event & { scale?: number; clientX?: number; clientY?: number };
+import type { ZoomControls, Gesture, Point } from './trackpadZoom.types';
 
 // Chrome sends a pinch as Ctrl+wheel with deltaY = -100·ln(scale), so zoom follows the fingers;
 // the cap keeps one Ctrl+mouse-wheel notch to about 1.65×.
@@ -79,3 +70,5 @@ export {
 	imageAnchor,
 	keepPointerInPlace
 } from '../../components/shared-primitives/image-zoom/trackpadZoom';
+
+export type { Point } from './trackpadZoom.types';

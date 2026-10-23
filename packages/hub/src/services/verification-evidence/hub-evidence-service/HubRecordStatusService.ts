@@ -1,5 +1,5 @@
+import type { Context, VerificationNote } from './HubRecordStatusService.types';
 import { verificationNoteIdentity } from '../../../../../../src/utils/verificationNoteIdentity';
-import type { HistoryNote } from '../../../../../../src/core/historyTypes';
 import type { VerificationRecord } from '../../../../../../src/core/verificationTypes';
 import type { ReadNote } from '../../../../../../src/utils/note-lines/noteCommit';
 import { recordLineage } from '../../../../../../src/utils/recordLineage';
@@ -9,13 +9,6 @@ import type {
 	RecordStatus
 } from '../../../../../../src/services/history-status-service/HistoryStatusService';
 import type { HubAttachedService } from './hub-attached-service/HubAttachedService';
-
-type VerificationNote = Extract<HistoryNote, { kind: 'verification' }>;
-interface Context {
-	notes: Promise<Map<string, ReadNote>>;
-	attached: HubAttachedService;
-	tree: (commit: string) => Promise<string | undefined>;
-}
 /** Request-scoped reader; the caller authorizes before constructing this frozen context. */
 export class HubRecordStatusService {
 	readonly attached: HubAttachedService;

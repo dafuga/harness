@@ -1,10 +1,5 @@
+import type { Authority } from './remoteAuthority.types';
 import type { RemoteMobileStatus } from '../../models/development-tooling/Environment.types';
-
-/** Under whose identity and which grant what is on a page was read. */
-export interface Authority {
-	holder: string | null;
-	grant: string;
-}
 export const noAuthority: Authority = { holder: null, grant: '' };
 
 /** Whose data may be shown: this computer and this phone, with exactly this grant. */
@@ -27,3 +22,5 @@ export function authorityChange(known: Authority, next: Authority, steady: boole
 export function excludes(status: RemoteMobileStatus, projectId: string | null): boolean {
 	return projectId !== null && !status.grant?.projects.some((item) => item.id === projectId);
 }
+
+export type { Authority } from './remoteAuthority.types';

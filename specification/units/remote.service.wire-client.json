@@ -9,11 +9,11 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/WireClientService.ts",
-			"packages/remote/src/services/networking-security/WireClientService.ts"
+			"packages/remote/src/services/networking-security/WireClientService.ts",
+			"packages/remote/src/services/networking-security/WireClientService.types.ts"
 		],
 		"symbols": [
 			"WireClientService",
-			"WireClientOptions",
 			"WireClientService",
 			"WireClientService.constructor",
 			"WireClientService.bind",
@@ -21,7 +21,11 @@
 			"WireClientService.close",
 			"WireClientService.request",
 			"WireClientService.on",
-			"WireClientService.receive"
+			"WireClientService.receive",
+			"WireClientOptions",
+			"WireClientOptions",
+			"Listener",
+			"Waiting"
 		]
 	},
 	"contract": {

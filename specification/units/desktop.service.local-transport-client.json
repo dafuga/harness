@@ -9,17 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
+			"packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.types.ts",
 			"packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts",
 			"packages/desktop/src/services/LocalTransportClientService.ts"
 		],
 		"symbols": [
-			"LocalSocketPort",
-			"LocalTransportClientOptions",
 			"LocalTransportClientService",
 			"LocalTransportClientService.constructor",
 			"LocalTransportClientService.request",
 			"LocalTransportClientService.on",
 			"LocalTransportClientService.close",
+			"LocalSocketPort",
+			"LocalTransportClientOptions",
+			"LocalSocketPort",
+			"LocalTransportClientOptions",
 			"LocalTransportClientService",
 			"LocalTransportClientService",
 			"LocalSocketPort",

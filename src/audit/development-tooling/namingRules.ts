@@ -5,6 +5,8 @@ import { auditScaffoldTypeScriptNaming } from './scaffoldNamingRules';
 import type { AuditFinding } from './types';
 
 export function auditTypeScriptNaming(file: AuditFile): AuditFinding[] {
+	// Runtime definitions in companions are rejected independently by auditTypePlacement.
+	if (file.relativePath.endsWith('.types.ts')) return [];
 	return [...auditFunctionNames(file), ...auditScaffoldTypeScriptNaming(file)];
 }
 

@@ -1,3 +1,4 @@
+import type { Fields } from './RemoteInputValidator.types';
 import { REMOTE_PROTOCOL, RemoteFailure } from '../../models/networking-security/Remote.types';
 import type {
 	AttachInput,
@@ -7,8 +8,6 @@ import type {
 } from '../../models/networking-security/Remote.types';
 import type { RemoteApprovalInput } from '../../models/networking-security/RemoteControl.types';
 import { remotePatterns } from '../../utils/networking-security/remoteIdentity';
-
-type Fields = Record<string, unknown>;
 const kinds = ['electron', 'ios', 'test'];
 const commit = /^[a-f0-9]{40}$/;
 

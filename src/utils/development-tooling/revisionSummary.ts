@@ -1,10 +1,6 @@
+import type { Viewed, RevisionRecords } from './revisionSummary.types';
 import type { IndexedRevision } from '../../core/git-source-history/historyIndexTypes';
 import type { CommitStatus } from '../../services/verification-evidence/history-status-service/HistoryStatusService';
-import type { RecordView } from './recordView';
-
-/** What the records attached to one commit come to: its coverage, its gaps and each record. */
-export type RevisionRecords = Pick<IndexedRevision, 'coverage' | 'gaps' | 'records'>;
-type Viewed = Pick<RecordView, 'id' | 'profile' | 'finishedAt' | 'source'>;
 
 const unverified = 'no verification record is attached to this commit';
 const short = (id: string): string => id.slice(0, 12);
@@ -49,3 +45,5 @@ export function revisionSummary(
 		records
 	};
 }
+
+export type { RevisionRecords } from './revisionSummary.types';

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Section } from './EntityView.types';
+
 	import { onDestroy, onMount, untrack } from 'svelte';
 	import { explorerAppRoute, explorerName } from '../../../../../reports/src/utils/explorerName';
 	import { createEntityEvidenceStore } from '../../../lib/stores/explorer-ui/entityEvidence.svelte';
@@ -25,7 +27,6 @@
 	import EntityExamples from '../../../../../reports/src/components/EntityExamples.svelte';
 	import { workspaceSections as sections } from '../../../utils/projects-sessions/workspaceRoute';
 	let { workspace }: { workspace: Workspace } = $props();
-	type Section = keyof typeof sections;
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
 	const headless = $derived(workspace.entity?.category === 'functions');
 	/** A component keeps its runtime evidence between its name and every section it opens. */

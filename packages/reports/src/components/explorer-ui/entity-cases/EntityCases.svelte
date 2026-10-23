@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Row } from "./EntityCases.types";
+
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
 	import { artifactCases } from './artifactCases';
 	import RecordedValue from '../../shared-primitives/recorded-value/RecordedValue.svelte';
@@ -13,13 +15,6 @@
 		unit?: string;
 		callable?: boolean;
 	} = $props();
-	type Row = {
-		name: string;
-		description?: string;
-		input: unknown;
-		failed: boolean;
-		result: unknown;
-	};
 	const seen = 'What a test observed end to end';
 	let observed = $derived(
 		callable ? `${seen}; it is not a direct call of this function.` : `${seen}.`
@@ -56,6 +51,7 @@
 		};
 	});
 	let expanded = $state(false);
+
 </script>
 
 <!-- Each input beside what was observed for it, or is documented to give; none says why. -->

@@ -9,18 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/NativeSessionAdapter.ts",
-			"packages/desktop/src/adapters/networking-security/NativeSessionAdapter.ts"
+			"packages/desktop/src/adapters/networking-security/NativeSessionAdapter.ts",
+			"packages/desktop/src/adapters/networking-security/NativeSessionAdapter.types.ts"
 		],
 		"symbols": [
 			"NativeSessionAdapter",
-			"NativeEncryption",
 			"NativeSessionAdapter",
 			"NativeSessionAdapter.constructor",
 			"NativeSessionAdapter.invalidate",
 			"NativeSessionAdapter.available",
 			"NativeSessionAdapter.read",
 			"NativeSessionAdapter.save",
-			"NativeSessionAdapter.clear"
+			"NativeSessionAdapter.clear",
+			"NativeEncryption",
+			"NativeEncryption"
 		]
 	},
 	"contract": {

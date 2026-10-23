@@ -1,3 +1,4 @@
+import type { Result } from './explorerCoverage.types';
 import type {
 	ExplorerScenarioCoverage,
 	ExplorerStateCoverage
@@ -9,8 +10,6 @@ import type {
 } from '../../../models/explorer-ui/Harness.types';
 import { coverageWorst, scenarioFor, type Judged, type Told } from '../explorerState';
 import { explorerState } from './explorerState';
-
-type Result = HarnessRecord['scenarios'][number];
 
 const short = (commit: string) => commit.slice(0, 7);
 

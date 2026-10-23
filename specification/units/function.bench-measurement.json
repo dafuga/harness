@@ -10,19 +10,24 @@
 		"source": [
 			"src/cli/program/run-kernel-bench/benchMeasurement.ts",
 			"src/utils/benchMeasurement.ts",
-			"src/utils/verification-evidence/benchMeasurement.ts"
+			"src/utils/verification-evidence/benchMeasurement.ts",
+			"src/utils/verification-evidence/benchMeasurement.types.ts"
 		],
 		"symbols": [
 			"sizeMeasurements",
 			"sizeMeasurements",
 			"kernelUnits",
 			"benchMeasurement",
+			"kernelUnits",
+			"benchMeasurement",
+			"sizeMeasurements",
 			"MeasureContext",
 			"Artifact",
 			"Value",
-			"kernelUnits",
-			"benchMeasurement",
-			"sizeMeasurements"
+			"MeasureContext",
+			"Artifact",
+			"Value",
+			"Entry"
 		]
 	},
 	"contract": {

@@ -9,10 +9,11 @@
 	"owns": {
 		"source": [
 			"src/utils/execution-runtimes/impact-kernel/kernelClosure.ts",
+			"src/utils/execution-runtimes/impact-kernel/kernelClosure.types.ts",
 			"src/utils/impact-kernel/kernelClosure.ts",
 			"src/utils/kernelClosure.ts"
 		],
-		"symbols": ["kernelClosure", "kernelClosure", "kernelClosure"]
+		"symbols": ["kernelClosure", "Indexed", "Reached", "kernelClosure", "kernelClosure"]
 	},
 	"contract": {
 		"origin": "declared",

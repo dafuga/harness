@@ -1,3 +1,4 @@
+import type { GenerateModelInput, GenerateResult, GeneratePieceInput } from './generateCode.types';
 import { applyExports } from './exports';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -6,8 +7,7 @@ import { fail } from '../../../core/development-tooling/errors';
 import {
 	ensureParents,
 	renderFileList,
-	writePlannedFiles,
-	type FileWriteResult
+	writePlannedFiles
 } from '../../../core/development-tooling/files';
 import { detectGameDimension, detectProjectKind } from './project';
 import { validateCodeName } from '../../../core/development-tooling/validation';
@@ -32,31 +32,6 @@ export { scaffoldKinds };
 export type { PieceKind };
 
 const adapters = ['d1', 'sqlite', 'postgres'] as const;
-
-export interface GenerateModelInput {
-	name: string;
-	rawFields: string[];
-	adapter: string;
-	force?: boolean;
-	root?: string;
-	group?: string;
-}
-
-export interface GeneratePieceInput {
-	kind: PieceKind;
-	name: string;
-	force?: boolean;
-	root?: string;
-	group?: string;
-	responsibility?: string;
-}
-
-export interface GenerateResult {
-	kind: string;
-	name: string;
-	writes: FileWriteResult[];
-	exportsUpdated: boolean;
-}
 
 export async function generateModel(input: GenerateModelInput): Promise<GenerateResult> {
 	const root = input.root ?? process.cwd();
@@ -137,3 +112,5 @@ async function maybeExport(root: string, plans: ExportPlan[]): Promise<boolean> 
 	const projectKind = await detectProjectKind(root);
 	return projectKind === 'lib' ? applyExports(root, plans) : false;
 }
+
+export type { GenerateModelInput, GeneratePieceInput, GenerateResult } from './generateCode.types';

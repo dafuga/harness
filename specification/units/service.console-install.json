@@ -9,14 +9,19 @@
 	"owns": {
 		"source": [
 			"src/cli/program/console-install-service/ConsoleInstallService.ts",
+			"src/cli/program/console-install-service/ConsoleInstallService.types.ts",
 			"src/services/console-install-service/ConsoleInstallService.ts"
 		],
 		"symbols": [
-			"ConsoleInstallOptions",
-			"ConsoleInstallResult",
 			"ConsoleInstallService",
 			"ConsoleInstallService.install",
 			"ConsoleInstallService.restore",
+			"ConsoleInstallOptions",
+			"ConsoleInstallResult",
+			"ConsoleInstallOptions",
+			"ConsoleInstallResult",
+			"Step",
+			"Applied",
 			"ConsoleInstallService",
 			"ConsoleInstallOptions",
 			"ConsoleInstallResult"

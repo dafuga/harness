@@ -1,3 +1,4 @@
+import type { RouteSuffix, WorkspaceRoute, WorkspaceTarget } from './workspaceRoute.types';
 import { categories } from '../../models/development-tooling/Desktop.types';
 import type { Category } from '../../models/development-tooling/Desktop.types';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -19,7 +20,6 @@ export const routeSuffixes = [
 	'source',
 	'details'
 ] as const;
-export type RouteSuffix = (typeof routeSuffixes)[number] | null;
 /** Labels and addresses of the shared entity page sections. */
 export const workspaceSections = {
 	Overview: '',
@@ -33,16 +33,6 @@ export const workspaceSections = {
 	History: 'history',
 	Source: 'source'
 } as const;
-/** What a workspace address names. A legacy `/harness` address names no project. */
-export interface WorkspaceRoute {
-	projectId: string | null;
-	branch: string | null;
-	commit: string | null;
-	category: Category;
-	entityId: string | null;
-	suffix: RouteSuffix;
-}
-export type WorkspaceTarget = Pick<WorkspaceRoute, 'category'> & Partial<WorkspaceRoute>;
 
 const fullCommit = /^[a-f0-9]{40}$/;
 const pieces = (path: string) => path.split('/').filter(Boolean);
@@ -111,3 +101,5 @@ export function workspaceGameViews(
 		? views
 		: `${views}&readonly=1&commit=${encodeURIComponent(snapshot.revision.commit)}`;
 }
+
+export type { RouteSuffix, WorkspaceRoute, WorkspaceTarget } from './workspaceRoute.types';

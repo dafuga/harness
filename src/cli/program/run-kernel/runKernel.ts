@@ -1,3 +1,4 @@
+import type { ParityCases, ParityReport, ByteRuntime, DefaultReport } from './runKernel.types';
 import { performance } from 'node:perf_hooks';
 import { isDeepStrictEqual } from 'node:util';
 import { ProcessRuntimeAdapter } from '../../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
@@ -11,7 +12,7 @@ import { MeasurementRepository } from '../../../repositories/verification-eviden
 import { RuntimeServerService, type ServedRuntime } from './RuntimeServerService';
 import { UnitRuntimeService } from '../../../services/execution-runtimes/UnitRuntimeService';
 import { timeCall } from '../../../utils/development-tooling/benchSamples';
-import { chooseRuntime, type RuntimeChoice } from '../../../utils/execution-runtimes/chooseRuntime';
+import { chooseRuntime } from '../../../utils/execution-runtimes/chooseRuntime';
 import { impactKernel } from '../../../utils/execution-runtimes/impact-kernel/impactKernel';
 import { impactKernelText } from './impactKernel';
 import { kernelArtifacts } from '../../../utils/execution-runtimes/kernelArtifacts';
@@ -20,21 +21,7 @@ import { kernelWorkload } from '../../../utils/execution-runtimes/kernelWorkload
 import { runtimeResponseText } from '../../../utils/execution-runtimes/runtimeResponse';
 import { machineProfile } from '../../../utils/development-tooling/machineProfile';
 
-export interface ParityReport {
-	contract: string;
-	cases: number;
-	status: 'passed' | 'failed' | 'incomplete';
-	runtimes: Array<{ runtime: RuntimeKind; available: boolean; mismatches: number }>;
-}
-
 const paritySizes = [0, 1, 2, 3, 17, 120, 900];
-
-interface ParityCases {
-	requests: unknown[];
-	texts: string[];
-}
-
-type ByteRuntime = WasmRuntimeAdapter | ProcessRuntimeAdapter;
 
 function parityCases(): ParityCases {
 	const seeded = paritySizes.flatMap((nodes) =>
@@ -93,11 +80,6 @@ export function parityProblems(report: ParityReport): string[] {
 	});
 }
 
-export interface DefaultReport extends RuntimeChoice {
-	/** Where the measurements behind the choice came from; null when there are none. */
-	evidence: { kind: 'calibration'; verified: false; commit: string | null; dirty: boolean } | null;
-}
-
 /** The default for this machine, or the default a measurement file supports. */
 export function kernelDefault(measurements?: string): DefaultReport {
 	const repository = new MeasurementRepository(process.cwd());
@@ -150,3 +132,5 @@ export async function kernelSample(options: {
 	await runtime.close();
 	return { elapsedMs };
 }
+
+export type { ParityReport, DefaultReport } from './runKernel.types';

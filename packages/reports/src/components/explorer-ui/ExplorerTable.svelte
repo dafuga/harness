@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Kind, Column } from "./ExplorerTable.types";
+
 	// The shared dialog's own sheet, so the desktop host draws it as the reports do.
 	import '../../lib/styles/gallery.css';
 	import { tick } from 'svelte';
@@ -18,8 +20,6 @@
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
-	/** Pages and components are only ever the shared visual card, never a table row. */
-	type Kind = Exclude<ExplorerCategory, 'pages' | 'components'>;
 	let {
 		category,
 		rows,
@@ -35,8 +35,6 @@
 		mediaBase: string;
 		verification?: boolean;
 	} = $props();
-	/** A column's words for a row; null for what uses the row, shown as the shared usage footer. */
-	type Column = [string, ((row: CatalogRow) => string) | null];
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
 	const columns: Record<Kind, Column[]> = {
 		platforms: [],
@@ -82,6 +80,7 @@
 		const held = chosen && value(chosen);
 		if (!rows.some((row) => row.name === chosen?.name && value(row) === held)) chosen = null;
 	});
+
 </script>
 
 <div

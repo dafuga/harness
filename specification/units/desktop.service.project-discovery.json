@@ -9,13 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.types.ts"
 		],
 		"symbols": [
 			"ProjectDiscoveryService",
 			"ProjectDiscoveryService",
 			"ProjectDiscoveryService.constructor",
-			"ProjectDiscoveryService.projects"
+			"ProjectDiscoveryService.projects",
+			"HeldDiscovery",
+			"SnapshotPort"
 		]
 	},
 	"contract": {

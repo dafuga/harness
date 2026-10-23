@@ -9,12 +9,17 @@
 	"owns": {
 		"source": [
 			"src/cli/program/history-index-service/historySeries.ts",
+			"src/cli/program/history-index-service/historySeries.types.ts",
 			"src/services/history-index-service/historySeries.ts",
 			"src/utils/historySeries.ts"
 		],
 		"symbols": [
 			"unitGrowth",
 			"historySeries",
+			"Growth",
+			"Point",
+			"Line",
+			"Head",
 			"unitGrowth",
 			"historySeries",
 			"unitGrowth",

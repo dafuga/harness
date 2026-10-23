@@ -9,12 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/explorerRelations.ts",
+			"packages/reports/src/utils/explorer-ui/explorerRelations.types.ts",
 			"packages/reports/src/utils/explorerRelations.ts"
 		],
 		"symbols": [
-			"RelationsReader",
 			"explorerRelationsReader",
 			"explorerRelations",
+			"RelationsReader",
+			"Edges",
+			"Reached",
+			"Graph",
+			"Entity",
+			"RelationsReader",
 			"explorerRelationsReader",
 			"explorerRelations"
 		]

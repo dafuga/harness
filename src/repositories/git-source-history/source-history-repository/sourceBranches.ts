@@ -1,12 +1,7 @@
+import type { Tracked } from './sourceBranches.types';
 import type { ListedRef, SourceBranch } from '../../../utils/git-source-history/sourceBranches';
 import { evidenceBranch } from '../../../core/git-source-history/historyTypes';
 import { refKind } from '../../../utils/git-source-history/historyRefs';
-
-interface Tracked {
-	remote: string;
-	branch: string;
-	head: string;
-}
 
 /**
  * The branches of code a repository knows. A local branch has its own name and tip. A branch

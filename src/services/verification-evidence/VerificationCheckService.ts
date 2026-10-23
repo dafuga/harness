@@ -1,3 +1,4 @@
+import type { CheckReport } from './VerificationCheckService.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -13,13 +14,6 @@ import { recordLineage } from '../../utils/development-tooling/recordLineage';
 import { recordIntact } from '../../utils/verification-evidence/sealRecord';
 import { loadSide } from '../../workflows/development-tooling/loadRevisions';
 import { SourceIndexService } from '../development-tooling/source-index-service/SourceIndexService';
-
-export interface CheckReport {
-	status: 'passed' | 'failed';
-	commit: string;
-	record: string;
-	problems: string[];
-}
 
 /** Decides whether a stored record really proves one commit: identity, integrity, outcome. */
 export class VerificationCheckService {
@@ -115,3 +109,5 @@ export class VerificationCheckService {
 		});
 	}
 }
+
+export type { CheckReport } from './VerificationCheckService.types';

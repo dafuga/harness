@@ -1,11 +1,3 @@
-/** Private health protocol between the supervisor and the exact worker it spawned. */
-export interface PreviewHealth {
-	protocol: 'harness-worker-v1';
-	pid: number;
-	errors: number;
-	busy: boolean;
-}
-
 export const path = '/__harness_worker__';
 
 export {
@@ -13,3 +5,5 @@ export {
 	previewHealth
 } from '../../lib/development-tooling/initialize-preview/previewHealth';
 export { readPreviewHealth } from '../../lib/development-tooling/preview-node/preview-worker-service/previewHealth';
+
+export type { PreviewHealth } from './previewHealth.types';

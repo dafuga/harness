@@ -1,3 +1,4 @@
+import type { ShellsSeed } from './harness-shells-seed.types';
 /**
  * Adds to the synthetic history a frame that puts the title list under a heading, and how it
  * becomes a shell: on a branch of its own it is first indexed as a component and baselined, then
@@ -21,11 +22,6 @@ const frame = (heading: string) =>
 		`<section><h2>${heading}</h2><TitleList {titles} /></section>`,
 		''
 	].join('\n');
-
-export interface ShellsSeed {
-	verified: (repo: VerifyRepo) => Promise<VerifyOutcome>;
-	explain: (repo: VerifyRepo, behavior: string) => Promise<unknown>;
-}
 
 /** The commits it made, by what the frame was at each; it leaves `main` checked out. */
 export async function seedShells(
@@ -64,3 +60,5 @@ export async function seedShells(
 	await repo.git(['branch', '-q', '-D', 'feature/shell-retained']);
 	return { framed, framedBaseline, shelled, shellRetained };
 }
+
+export type { ShellsSeed } from './harness-shells-seed.types';

@@ -1,30 +1,14 @@
+import type {
+	DeclaredBuild,
+	BuiltIdentity,
+	IdentifiedBuild,
+	Scanned
+} from './BuildIdentityService.types';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join, relative, resolve, sep } from 'node:path';
 import { fail } from '../../core/development-tooling/errors';
-import {
-	buildIdentity,
-	builtFileHash,
-	type BuiltFile
-} from '../../utils/accounts-access/buildIdentity';
+import { buildIdentity, builtFileHash } from '../../utils/accounts-access/buildIdentity';
 import { buildStampPattern } from '../../utils/development-tooling/buildStamp';
-
-export interface IdentifiedBuild {
-	buildId: string;
-	/** Number of files the identity covers. */
-	files: number;
-	/** The identity written into the files, when they were stamped; it should be `buildId`. */
-	stamp?: string;
-}
-
-/** One file of a build: its hash with every stamp slot emptied, and the stamps it holds. */
-type Scanned = BuiltFile & { file: string; stamps: string[]; slots: number };
-
-export interface DeclaredBuild {
-	id: string;
-	directory: string;
-}
-
-export type BuiltIdentity = DeclaredBuild & IdentifiedBuild;
 
 /** Reads a build directory and reports the identity of the files it holds. */
 export class BuildIdentityService {
@@ -113,3 +97,5 @@ function otherStamp(build: DeclaredBuild, found: IdentifiedBuild): string | unde
 function notProduced(build: DeclaredBuild): string {
 	return `build ${build.id} was not produced: setup left no files in ${build.directory}`;
 }
+
+export type { IdentifiedBuild, DeclaredBuild, BuiltIdentity } from './BuildIdentityService.types';

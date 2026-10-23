@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/stores/projects-sessions/session.svelte.ts",
+			"packages/hub/src/lib/stores/projects-sessions/session.svelte.types.ts",
 			"packages/hub/src/lib/stores/session.svelte.ts"
 		],
-		"symbols": ["createSessionStore", "Session", "createSessionStore"]
+		"symbols": ["createSessionStore", "Session", "SessionState", "Session", "createSessionStore"]
 	},
 	"contract": {
 		"origin": "derived",

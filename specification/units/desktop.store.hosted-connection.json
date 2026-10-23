@@ -9,9 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/hostedConnection.svelte.ts",
-			"packages/desktop/src/lib/stores/networking-security/hostedConnection.svelte.ts"
+			"packages/desktop/src/lib/stores/networking-security/hostedConnection.svelte.ts",
+			"packages/desktop/src/lib/stores/networking-security/hostedConnection.svelte.types.ts"
 		],
-		"symbols": ["createHostedConnectionStore", "createHostedConnectionStore", "HostedConnection"]
+		"symbols": [
+			"createHostedConnectionStore",
+			"createHostedConnectionStore",
+			"HostedConnection",
+			"HostedConnectionState",
+			"HostedConnection"
+		]
 	},
 	"contract": {
 		"origin": "derived",

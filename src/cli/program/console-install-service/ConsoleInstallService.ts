@@ -1,63 +1,24 @@
+import type {
+	ConsoleInstallOptions,
+	ConsoleInstallResult,
+	Step,
+	Applied
+} from './ConsoleInstallService.types';
 import { fail } from '../../../core/errors';
 import { bundledSize, consoleDataModules } from './consoleDataModules';
-import { type BundledSize, type IndexFile } from '../../../utils/consoleDataModules';
+import { type IndexFile } from '../../../utils/consoleDataModules';
 import { consoleHostFiles } from './consoleHostFiles';
 import { type HostFile } from '../../../utils/consoleHostFiles';
 import {
 	consoleManifest,
 	writeConsoleManifest,
 	type ConsoleChange,
-	type ConsoleFileEntry,
 	type ConsoleManifest,
 	type ConsoleStorage
 } from '../../../utils/consoleManifest';
 import { indexFiles } from '../../../utils/indexFiles';
 import { hostWarnings, installableHost } from './installableHost';
 import { ConsoleChangeService, type FileState } from '../../../services/ConsoleChangeService';
-export interface ConsoleInstallOptions {
-	host: string;
-	/** Module of the host that exports the policy, written as the host imports it. */
-	policy: string;
-	policyExport: string;
-	base: string;
-	/** Output directory of `harness history build`: bundled into the server, or to be uploaded. */
-	data?: string;
-	/** Binding of a private object store to read the history from instead of bundling it. */
-	bucket?: string;
-	/** Path inside that store the index was uploaded under. */
-	prefix?: string;
-	/** Replace files that hold other content; what they held is saved and the change recorded. */
-	update?: boolean;
-	/** Leave files that hold other content as the host's own version. */
-	keep?: boolean;
-}
-export interface ConsoleInstallResult {
-	host: string;
-	base: string;
-	policy: string;
-	written: string[];
-	removed: string[];
-	/** Files left as the host's own version. */
-	kept: string[];
-	/** Files that held other content and were replaced or removed on request. */
-	changes: ConsoleChange[];
-	data: { revisions: number; media: number; bytes: number } | null;
-	storage: ConsoleStorage;
-	/** What the bundled history adds to the server; null when nothing is bundled. */
-	bundle: BundledSize | null;
-	warnings: string[];
-}
-
-/** One file to write, or to remove when its contents are null, and what is in the way. */
-interface Step {
-	path: string;
-	contents: string | null;
-	state: FileState;
-}
-
-type Applied = Pick<ConsoleInstallResult, 'written' | 'removed' | 'kept' | 'changes'> & {
-	entries: ConsoleFileEntry[];
-};
 
 /** Installs the console into a SvelteKit host and records exactly what it wrote and changed. */
 export class ConsoleInstallService {
@@ -210,3 +171,5 @@ function measured(index: IndexFile[]): { revisions: number; media: number; bytes
 		bytes: index.reduce((sum, file) => sum + file.bytes.length, 0)
 	};
 }
+
+export type { ConsoleInstallOptions, ConsoleInstallResult } from './ConsoleInstallService.types';

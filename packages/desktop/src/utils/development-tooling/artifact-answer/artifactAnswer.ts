@@ -1,9 +1,7 @@
-import type { HarnessCapture } from '../../../../../reports/src/models/Harness.types';
+import type { Listed } from './artifactAnswer.types';
 import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactLimit } from '../artifactMedia';
 import { artifactMedia } from './artifactMedia';
-
-type Listed = Pick<HarnessCapture, 'kind' | 'mediaType' | 'sha256' | 'media' | 'gap'>;
 
 const hex = (bytes: Uint8Array) =>
 	[...bytes].map((value) => value.toString(16).padStart(2, '0')).join('');

@@ -1,3 +1,4 @@
+import type { Loader, RegressionNote, Loaded } from './regressionHistory.types';
 import { createHash } from 'node:crypto';
 import { fail } from '../../core/development-tooling/errors';
 import {
@@ -6,17 +7,12 @@ import {
 	type RegressionView,
 	type RegressionPoint
 } from '../../core/verification-evidence/regressionTypes';
-import type { HistoryNote } from '../../core/git-source-history/historyTypes';
 import { canonicalJson } from '../development-tooling/canonicalJson';
 import { checkedMedia, type MediaPlacer } from '../development-tooling/mediaPlace';
 import { mediaFacts } from '../verification-evidence/mediaFacts';
 import type { ReadNote } from './note-lines/noteCommit';
-
-type RegressionNote = Extract<HistoryNote, { kind: 'regression' }>;
 export const regressionHash = (bytes: string | Buffer) =>
 	createHash('sha256').update(bytes).digest('hex');
-type Loaded = { record: RegressionRecord; output: string; files?: Map<string, Buffer> };
-type Loader = (note: RegressionNote) => Promise<Loaded>;
 
 /** A red commit never borrows a future green result. Corrupt evidence remains a visible gap. */
 export async function regressionHistory(

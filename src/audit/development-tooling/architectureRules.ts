@@ -15,9 +15,27 @@ export function auditTypePlacement(file: AuditFile): AuditFinding[] {
 	const tree = ts.createSourceFile(file.relativePath, contents, ts.ScriptTarget.Latest, true);
 	const runtime = tree.statements.some(
 		(node) =>
-			ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node) || ts.isVariableStatement(node)
+			!(
+				ts.canHaveModifiers(node) &&
+				ts.getModifiers(node)?.some((m) => m.kind === ts.SyntaxKind.DeclareKeyword)
+			) &&
+			(ts.isClassDeclaration(node) ||
+				ts.isFunctionDeclaration(node) ||
+				ts.isVariableStatement(node) ||
+				ts.isEnumDeclaration(node) ||
+				ts.isExpressionStatement(node) ||
+				ts.isExportAssignment(node))
 	);
 	if (!runtime) return [];
+	if (file.relativePath.endsWith('.types.ts'))
+		return [
+			{
+				path: file.relativePath,
+				rule: 'separate-type-declarations',
+				message:
+					'Keep runtime implementations outside type files; retain type-only declarations and compatibility re-exports here.'
+			}
+		];
 	const findings: AuditFinding[] = [];
 	const visit = (node: ts.Node) => {
 		if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node))

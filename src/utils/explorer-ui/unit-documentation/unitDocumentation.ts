@@ -1,3 +1,4 @@
+import type { UnitDocumentation } from './unitDocumentation.types';
 import { z } from 'zod';
 import { usageExampleSchema } from '../../../core/development-tooling/unitTypes';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
@@ -8,25 +9,6 @@ const document = z.strictObject({
 	setup: z.string().trim().min(1).max(32_000).optional(),
 	examples: z.array(usageExampleSchema).min(1).max(64)
 });
-
-export interface UsageExample {
-	name: string;
-	description?: string;
-	/** Authored invocations are displayed as text and never executed by the viewer. */
-	call?: string;
-	input: unknown;
-	output?: unknown;
-	error?: unknown;
-}
-
-export interface UnitDocumentation {
-	path: string;
-	/** Original Markdown, retained verbatim for review; never rendered as HTML. */
-	text?: string;
-	setup?: string;
-	examples: UsageExample[];
-	gap?: string;
-}
 
 /** Authored uses are expected behavior, never observed test results. */
 export function unitDocumentation(text: string, unitId: string, path = ''): UnitDocumentation {
@@ -62,3 +44,5 @@ export async function readUnitDocumentation(
 		return { path, examples: [], gap: 'The document is not available at this commit.' };
 	}
 }
+
+export type { UsageExample, UnitDocumentation } from './unitDocumentation.types';

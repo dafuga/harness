@@ -1,9 +1,5 @@
-import {
-	tabOf,
-	explorerCategories,
-	type ExplorerCategory,
-	type ExplorerTab
-} from '../explorer-route/explorerTabs';
+import type { ExplorerSection, Scope, Selection, ExplorerLocation } from './explorerRoute.types';
+import { tabOf, explorerCategories, type ExplorerCategory } from '../explorer-route/explorerTabs';
 export {
 	explorerTabs,
 	explorerKindCategory,
@@ -12,29 +8,8 @@ export {
 	type ExplorerCategory,
 	type ExplorerTab
 } from '../explorer-route/explorerTabs';
-export type ExplorerScreen = 'styles';
 
 export const explorerSections = ['details', 'history'] as const;
-export type ExplorerSection = (typeof explorerSections)[number];
-
-/** One address of the explorer: where it is in history and which entity it shows there. */
-export interface ExplorerLocation {
-	/** Null for a commit that no branch reaches; no branch is invented for it. */
-	branch: string | null;
-	/** The full hash of a selected commit; null shows the branch at whatever its tip is. */
-	commit: string | null;
-	category: ExplorerCategory;
-	/** A design-system screen, separate from the entity categories. */
-	screen?: ExplorerScreen;
-	/** The id of a unit; absent on the index of a category. */
-	entity?: string;
-	/** A callable within its owning unit, resolved at the selected revision. */
-	helper?: string;
-	/** Absent for the overview of the entity. */
-	section?: ExplorerSection;
-	/** A tab of the section other than its default one. */
-	tab?: ExplorerTab;
-}
 
 const hash = /^[0-9a-f]{40}$/;
 const isCategory = (name: string): name is ExplorerCategory =>
@@ -47,12 +22,6 @@ function decoded(text: string): string | undefined {
 	} catch {
 		return undefined;
 	}
-}
-
-interface Scope {
-	branch: string | null;
-	commit: string | null;
-	rest: string[];
 }
 
 /** The branch a path names: null for none, undefined when it cannot be decoded or is empty. */
@@ -77,8 +46,6 @@ function scope(parts: string[]): Scope | undefined {
 	if (branch === null && commit === null) return undefined;
 	return { branch, commit, rest: commit === null ? after : after.slice(2) };
 }
-
-type Selection = Pick<ExplorerLocation, 'entity' | 'section'> | null;
 /** The entity and supported section after a category name. */
 function selection(rest: string[], allowSections = true): Selection {
 	const [id, section, ...extra] = rest;
@@ -178,3 +145,5 @@ function specialPath(location: ExplorerLocation): string | undefined {
 	const pane = location.section === 'history' ? 'history' : tab;
 	return `/helpers/${helper}${owner}${pane ? `/${pane}` : ''}`;
 }
+
+export type { ExplorerScreen, ExplorerSection, ExplorerLocation } from './explorerRoute.types';

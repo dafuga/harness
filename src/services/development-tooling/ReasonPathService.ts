@@ -1,3 +1,4 @@
+import type { SideLoader, ReasonRange } from './ReasonPathService.types';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import type { Explanation } from '../../core/development-tooling/explanationTypes';
 import {
@@ -5,18 +6,6 @@ import {
 	type ReasonSide
 } from '../../utils/development-tooling/required-reasons/requiredReasons';
 import { ExplanationService, type ReasonReport } from './ExplanationService';
-
-export interface ReasonRange {
-	base: ReasonSide;
-	head: ReasonSide;
-	/** Null when the range starts from nothing. */
-	baseCommit: string | null;
-	/** Null when the head is the working tree. */
-	headCommit: string | null;
-}
-
-/** Reads one commit as a side of a comparison. */
-export type SideLoader = (commit: string) => Promise<ReasonSide>;
 
 /** Commits nearer to the head than this are tried as steps; a longer history is judged directly. */
 const maxSteps = 200;
@@ -90,3 +79,5 @@ export class ReasonPathService {
 		return step(range.head);
 	}
 }
+
+export type { ReasonRange, SideLoader } from './ReasonPathService.types';

@@ -1,14 +1,7 @@
+import type { Canvas } from './brandIcon.types';
 import type { BrandIconVariant } from '../../src/utils/development-tooling/brandIcon';
 import { deflateSync } from 'node:zlib';
 import { brandColors, brandGrid, brandTiles } from '../../../reports/src/utils/brandMark';
-
-interface Canvas {
-	size: number;
-	mac: boolean;
-	boxes: number[][];
-	inset: number;
-	radius: number;
-}
 
 const [gold, navy] = [brandColors.gold, brandColors.navy].map((hex) =>
 	[1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16))

@@ -9,20 +9,25 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/device-pairing-service/DevicePairingService.ts",
-			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts"
+			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts",
+			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.types.ts"
 		],
 		"symbols": [
 			"DevicePairingService",
-			"DevicePairingInput",
-			"ScanningDevice",
-			"PendingPairing",
-			"DeviceCredentials",
 			"DevicePairingService",
 			"DevicePairingService.constructor",
 			"DevicePairingService.scanned",
 			"DevicePairingService.request",
 			"DevicePairingService.poll",
-			"DevicePairingService.exchange"
+			"DevicePairingService.exchange",
+			"DevicePairingInput",
+			"ScanningDevice",
+			"PendingPairing",
+			"DeviceCredentials",
+			"DevicePairingInput",
+			"ScanningDevice",
+			"PendingPairing",
+			"DeviceCredentials"
 		]
 	},
 	"contract": {

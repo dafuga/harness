@@ -1,19 +1,10 @@
+import type { LiteralPattern, Found } from './scanImports.types';
 import type {
 	SourceReference,
-	ReferenceVia,
 	SourceLanguage
 } from '../../../utils/development-tooling/scanImports';
 import { svelteScripts } from '../../../utils/development-tooling/scanImports';
 import { maskSource } from '../../../utils/development-tooling/maskSource';
-
-interface Found extends SourceReference {
-	index: number;
-}
-
-interface LiteralPattern {
-	via: ReferenceVia;
-	pattern: RegExp;
-}
 
 const literalPatterns: LiteralPattern[] = [
 	{ via: 'import', pattern: /\bimport\b(\s+type\b)?[^'"\x60;():=]*?(['"])([^'"\n]*)\2/g },

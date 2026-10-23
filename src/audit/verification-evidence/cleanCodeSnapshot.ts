@@ -1,5 +1,5 @@
+import type { SnapshotInput, ReviewSnapshot, SnapshotState } from './cleanCodeSnapshot.types';
 import { extname } from 'node:path';
-import type { AuditFinding } from '../development-tooling/types';
 import {
 	readReviewInput,
 	reviewHash,
@@ -9,30 +9,6 @@ import { relatedReviewPaths, reviewConventionPaths } from '../development-toolin
 import { readAuditConfig } from '../development-tooling/config';
 
 export const maxReviewStateBytes = 24000;
-
-export interface ReviewSnapshot {
-	target: ReviewInputFile;
-	inputs: ReviewInputFile[];
-	contextHash: string;
-	state: string;
-	contextPaths: string[];
-	omittedContext: string[];
-}
-
-interface SnapshotInput {
-	root: string;
-	path: string;
-	files: string[];
-	findings: AuditFinding[];
-}
-
-interface SnapshotState {
-	target: { path: string; language: string; code: string };
-	related: Array<{ path: string; code: string }>;
-	conventions: Array<{ path: string; text: string; partial: boolean }>;
-	auditFindings: AuditFinding[];
-	omittedContext: string[];
-}
 
 export async function snapshotCleanCodeFile(input: SnapshotInput): Promise<ReviewSnapshot> {
 	const target = await readReviewInput(input.root, input.path);
@@ -113,3 +89,5 @@ function conventionText(root: string, file: ReviewInputFile): string {
 		ignore: config.ignore.map(({ path, rule, reason }) => ({ path, rule, reason }))
 	});
 }
+
+export type { ReviewSnapshot } from './cleanCodeSnapshot.types';

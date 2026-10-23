@@ -1,3 +1,4 @@
+import type { Flags } from './HistoryCommand.types';
 import type { Command } from 'commander';
 import { buildHistory, renderBuild, type BuildOptions } from './buildHistory';
 import { importReports, renderImport, type ImportOptions } from './importReports';
@@ -6,11 +7,8 @@ import { renderSync, syncHistory, type SyncAction } from './syncHistory';
 import {
 	historyAttach,
 	historyStatus,
-	renderStatus,
-	type HistoryOptions
+	renderStatus
 } from '../../workflows/git-source-history/runHistory';
-
-type Flags = HistoryOptions & { json?: boolean };
 
 function print(flags: Flags, value: unknown, text: string): void {
 	console.log(flags.json ? JSON.stringify(value, null, 2) : text);

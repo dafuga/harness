@@ -1,16 +1,7 @@
+import type { FieldType, Field } from './fields.types';
 import { toCamelCase, toSnakeCase } from '../case';
 import { fail } from '../errors';
 import { validateFieldName } from './validation';
-
-export type FieldType = 'string' | 'text' | 'number' | 'boolean' | 'date' | 'json';
-
-export interface Field {
-	name: string;
-	column: string;
-	type: FieldType;
-	tsType: string;
-	sqlType: string;
-}
 
 const fieldTypes: Record<FieldType, { tsType: string; sqlType: string }> = {
 	string: { tsType: 'string', sqlType: 'TEXT' },
@@ -68,3 +59,5 @@ function normalizeType(value: string): FieldType {
 		`Unsupported field type "${value}". Use string, text, number, boolean, date, or json.`
 	);
 }
+
+export type { FieldType, Field } from './fields.types';

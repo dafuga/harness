@@ -1,12 +1,10 @@
+import type { Unit } from './SourceArchiveService.types';
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
 import type { TreeEntry } from '../../../core/development-tooling/sourceTypes';
-import type { RevisionRegistry } from '../../../utils/verification-evidence/revision-registry/revisionRegistry';
 import type { SourceFileSnapshot } from '../../../utils/explorer-ui/unitMetadata';
-
-type Unit = RevisionRegistry['units'][number];
 
 /** Retains owned committed text as deduplicated private media, never reading the working tree. */
 export class SourceArchiveService {

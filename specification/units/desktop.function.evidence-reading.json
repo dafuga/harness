@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/evidenceReading.ts",
-			"packages/desktop/src/utils/verification-evidence/evidenceReading.ts"
+			"packages/desktop/src/utils/verification-evidence/evidenceReading.ts",
+			"packages/desktop/src/utils/verification-evidence/evidenceReading.types.ts"
 		],
-		"symbols": ["evidenceReading", "EvidenceRead", "evidenceReading"]
+		"symbols": ["evidenceReading", "evidenceReading", "EvidenceRead", "EvidenceRead"]
 	},
 	"contract": {
 		"origin": "declared",

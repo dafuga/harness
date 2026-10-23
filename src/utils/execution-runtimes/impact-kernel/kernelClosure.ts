@@ -1,24 +1,10 @@
+import type { Reached, Indexed } from './kernelClosure.types';
 import type {
 	AffectedNode,
 	ImpactInput,
 	ImpactOutput,
 	KernelGraph
 } from '../../../core/execution-runtimes/kernelTypes';
-
-interface Indexed {
-	ids: string[];
-	index: Map<string, number>;
-	dependents: number[][];
-	dependencies: number[][];
-}
-
-interface Reached {
-	graph: Indexed;
-	/** Hops from the nearest seed to each node, or -1. */
-	distance: Int32Array;
-	/** Non-negative for nodes some sink depends on. */
-	covered: Int32Array;
-}
 
 /** Reverse transitive closure over the base and head graphs, merged into one answer. */
 export function kernelClosure(input: ImpactInput): ImpactOutput {

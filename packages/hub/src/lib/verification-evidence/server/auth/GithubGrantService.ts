@@ -1,20 +1,13 @@
+import type { GithubGrantOptions, GrantProof, Lifetime } from './GithubGrantService.types';
 import type { Actor } from 'collaboration';
-import type { GithubApiAdapter } from './GithubApiAdapter';
 import type { GithubStatus } from '../../../../models/accounts-access/HubAuth.types';
 import type {
-	AuthStore,
 	GithubGrantRecord,
 	GrantState,
 	SessionRecord
 } from '../../../../models/accounts-access/HubAuthStore.types';
-import type { GithubAppConfig } from '../../../../utils/verification-evidence/authConfig';
 import { authFail } from '../../../../utils/accounts-access/authFail';
 import { randomToken, sha256Url } from '../../../../utils/verification-evidence/authSecrets';
-import type { AuthSecrets } from '../../../../utils/verification-evidence/authSecrets';
-import type {
-	GithubUser,
-	GithubUserToken
-} from '../../../../validators/development-tooling/GithubResponseValidator';
 
 export const STATE_TTL = 10 * 60 * 1000;
 export const GRANT_TTL = 30 * 24 * 60 * 60 * 1000;
@@ -22,21 +15,6 @@ export const GRANT_TTL = 30 * 24 * 60 * 60 * 1000;
 export const REFRESH_LEASE = 30 * 1000;
 const EXPIRY_MARGIN = 60 * 1000;
 const AUTHORIZE = 'https://github.com/login/oauth/authorize';
-
-export interface GithubGrantOptions {
-	app: GithubAppConfig;
-	api: GithubApiAdapter;
-	store: Pick<AuthStore, 'githubStates' | 'grants'>;
-	secrets: AuthSecrets;
-	origin: string;
-	now: () => number;
-}
-
-interface GrantProof {
-	user: GithubUser;
-	token: GithubUserToken;
-}
-type Lifetime = Pick<GithubGrantRecord, 'createdAt' | 'expiresAt'>;
 
 /** Additional data for sealing: a sealed token opens only for the actor it was sealed for. */
 function sealContext(actorId: string): string {
@@ -209,3 +187,5 @@ export class GithubGrantService {
 		return expiry === null || expiry - EXPIRY_MARGIN > this.options.now();
 	}
 }
+
+export type { GithubGrantOptions } from './GithubGrantService.types';

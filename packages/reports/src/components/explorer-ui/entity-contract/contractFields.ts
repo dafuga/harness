@@ -1,3 +1,4 @@
+import type { Item, CallableContract } from './contractFields.types';
 import type {
 	ContractExample,
 	ContractField,
@@ -7,8 +8,6 @@ import { guess } from '../../../utils/explorer-ui/contractFields';
 import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import { humanize, type ContractRow } from '../../../utils/explorer-ui/entityContract';
-
-type Item = HarnessUnit['contract']['inputs'][number];
 
 const targets: Record<string, string> = {
 	module: 'Module',
@@ -120,13 +119,6 @@ export function contractFacts(
 	return [...facts, { label: 'Runs as', value: [...new Set(kinds)].join(', ') || fallback }];
 }
 
-/** One callable as its contract shows it: its signature, parameters, return and errors. */
-export interface CallableContract {
-	name: string;
-	signature: string;
-	groups: ContractGroup[];
-}
-
 /** Each recorded callable keeps its own literal parameters and returned value. */
 export function callableContracts(unit: HarnessUnit): CallableContract[] {
 	const helpers = unit.helpers ?? [];
@@ -189,3 +181,5 @@ export function returnField(
 		};
 	return { ...fieldOf({ ...declared, name, type }, unit), name };
 }
+
+export type { CallableContract } from './contractFields.types';

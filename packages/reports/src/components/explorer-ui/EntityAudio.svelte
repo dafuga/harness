@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Pair } from "./EntityAudio.types";
+
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { shortCommit } from '../../utils/explorer-ui/entityLens';
@@ -18,10 +20,6 @@
 	} = $props();
 	let clips = $derived(galleryItems(evidence).filter((item) => item.mediaType === 'audio'));
 	let paired = $derived(evidence.mode === 'commit');
-	interface Pair {
-		before?: Evidence;
-		after?: Evidence;
-	}
 	// A clip stands beside the clip of the same scenario, state and evidence on the other side.
 	let pairs = $derived(
 		[...new Set(clips.map((item) => item.comparison))].map((key): Pair => {
@@ -38,6 +36,7 @@
 	let shown = $derived(paired ? sides : sides.slice(1));
 	const at = (phase: 'before' | 'after') =>
 		shortCommit(phase === 'before' ? (scope.parent ?? '') : scope.commit);
+
 </script>
 
 {#if clips.length}

@@ -1,14 +1,5 @@
+import type { SourceState, SourceRead, SourceFiles } from './sourceReader.svelte.types';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
-
-export interface SourceState {
-	files: string[];
-	path: string;
-	text: string;
-	loading: boolean;
-	error: string;
-}
-export type SourceFiles = () => Promise<string[]>;
-export type SourceRead = (path: string) => Promise<string>;
 
 function sourceError(cause: unknown): string {
 	return cause instanceof Error ? cause.message : String(cause);
@@ -95,3 +86,5 @@ export function archivedSource(unit: HarnessUnit, mediaBase: string, filePath?: 
 	const empty = archived ? undefined : 'Source contents are not recorded for this revision.';
 	return { files, read, empty };
 }
+
+export type { SourceState, SourceFiles, SourceRead } from './sourceReader.svelte.types';

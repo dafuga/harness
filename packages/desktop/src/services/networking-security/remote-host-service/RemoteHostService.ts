@@ -1,33 +1,12 @@
+import type { RemoteHostOptions } from './RemoteHostService.types';
 import { hostname } from 'node:os';
-import type {
-	RemoteHostStatus,
-	RemoteKeyPair,
-	RemoteSocket
-} from '../../../../../remote/src/index';
-import type {
-	RemoteHostState,
-	RemoteHostStoreAdapter
-} from '../../../adapters/networking-security/RemoteHostStoreAdapter';
-import type { RegisterRemoteHost } from '../../../utils/networking-security/remoteHostIdentity';
+import type { RemoteHostStatus, RemoteKeyPair } from '../../../../../remote/src/index';
+import type { RemoteHostState } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { remoteHostStatus } from './remoteHostStatus';
-import type { RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService';
 import { RemoteHostRecordService } from './RemoteHostRecordService';
 import { RemoteHostRuntimeService } from './RemoteHostRuntimeService';
-import type { RelayLinkTuning } from './RemoteHostRuntimeService';
 import { RemoteHostSwitchService } from './remote-host-switch-service/RemoteHostSwitchService';
 import { RemotePairingControlService } from './RemotePairingControlService';
-
-export interface RemoteHostOptions {
-	store: RemoteHostStoreAdapter;
-	/** Registers this computer under the signed-in hosted identity; rejects when there is none. */
-	register: RegisterRemoteHost;
-	open: (url: string, headers: Record<string, string>) => RemoteSocket;
-	shared: RemoteDeviceSessionsOptions['shared'];
-	name?: () => string;
-	link?: RelayLinkTuning;
-	/** Whether the screen is locked, once that is known. */
-	locked?: () => boolean | undefined;
-}
 
 /**
  * Remote access of this computer: off until the person turns it on, and only with OS encryption.
@@ -149,3 +128,5 @@ export class RemoteHostService {
 		this.runtime.start();
 	}
 }
+
+export type { RemoteHostOptions } from './RemoteHostService.types';

@@ -1,15 +1,12 @@
+import type { Flags } from './BudgetCommand.types';
 import type { Command } from 'commander';
 import {
 	budgetBench,
 	budgetHistory,
 	budgetMeasure,
-	budgetStatus,
-	type BenchInput,
-	type SignedInput
+	budgetStatus
 } from '../../workflows/verification-evidence/run-budget/runBudget';
 import { budgetApprove, budgetEstablish } from './signBudget';
-
-type Flags = Partial<SignedInput> & Partial<BenchInput> & { json?: boolean };
 
 const print = (flags: Flags, value: unknown, text: string): void =>
 	console.log(flags.json ? JSON.stringify(value, null, 2) : text);

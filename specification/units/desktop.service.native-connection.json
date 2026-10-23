@@ -10,12 +10,14 @@
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.types.ts",
 			"packages/desktop/src/services/NativeConnectionService.ts"
 		],
 		"symbols": [
 			"NativeConnectionService",
 			"NativeConnectionService",
 			"NativeConnectionService.create",
+			"NativeConnectionOptions",
 			"NativeConnectionService"
 		]
 	},

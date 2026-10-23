@@ -1,3 +1,4 @@
+import type { LegacyReader, BuiltHistory, Built } from './HistoryIndexService.types';
 import { createHash } from 'node:crypto';
 import { SourceArchiveService } from './SourceArchiveService';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
@@ -30,19 +31,6 @@ import {
 	RevisionDetailService,
 	type BuiltRevision
 } from '../../../services/explorer-ui/revision-detail-service/RevisionDetailService';
-
-export interface BuiltHistory {
-	out: string;
-	/** sha256 of `index.json`. */
-	digest: string;
-	media: { resolved: number; missing: number };
-	problems: string[];
-	index: HistoryIndex;
-	/** Rebuildable local SQLite query index; portable consoles may keep using JSON. */
-	catalog: string;
-}
-
-export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]>;
 
 /**
  * Builds the history index: a deterministic, self-contained set of files made only from Git.
@@ -140,8 +128,6 @@ function detailPath(commit: string): string {
 	return `revisions/${commit}.json`;
 }
 
-type Built = Array<{ revision: SourceRevision; result: BuiltRevision }>;
-
 function focusedRuns(built: Built) {
 	return built.flatMap(({ result }) => result.detail.regressions ?? []);
 }
@@ -212,3 +198,5 @@ function problems(
 function short(id: string): string {
 	return id.slice(0, 12);
 }
+
+export type { BuiltHistory, LegacyReader } from './HistoryIndexService.types';

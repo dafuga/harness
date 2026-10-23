@@ -1,11 +1,9 @@
+import type { Classified } from './explorerCategory.types';
 import { helperContract } from '../../../../../src/utils/helperContract';
 import {
 	explorerKindCategory,
 	type ExplorerCategory
 } from '../../../../../src/utils/explorerRoute';
-import type { HarnessUnit } from '../../models/explorer-ui/Harness.types';
-
-type Classified = Pick<HarnessUnit, 'kind' | 'owns' | 'helpers' | 'catalog'>;
 
 /** What a unit of each kind is called; a kind that is not here is called by its own words. */
 const roles = new Map<string, string>([

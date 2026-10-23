@@ -1,3 +1,4 @@
+import type { UnitDetail } from './inspectUnits.types';
 import { z } from 'zod';
 import { fail } from '../../core/development-tooling/errors';
 import type { SourceGraph } from '../../core/development-tooling/sourceTypes';
@@ -8,10 +9,7 @@ import {
 } from '../../core/development-tooling/unitTypes';
 import { verificationRecordSchema } from '../../core/verification-evidence/verificationTypes';
 import { fileNode, unitNode } from '../../services/development-tooling/SourceGraphService';
-import {
-	componentVersion,
-	type ComponentVersion
-} from '../../utils/development-tooling/componentVersion';
+import { componentVersion } from '../../utils/development-tooling/componentVersion';
 import { graphOf, loadUnits } from '../../workflows/development-tooling/load-units/loadUnits';
 import type { UnitsOptions } from './manageUnits';
 
@@ -20,18 +18,6 @@ const schemas = {
 	ScenarioManifest: scenarioManifestSchema,
 	VerificationRecord: verificationRecordSchema
 };
-
-export interface UnitDetail {
-	manifest: ComponentManifest;
-	/** Hashes identifying this exact version of the unit. */
-	version: ComponentVersion;
-	/** Units that depend on this unit, directly. */
-	consumers: string[];
-	/** Test files that import this unit's source, directly or transitively. */
-	tests: string[];
-	/** Public contracts of direct dependencies, so their implementations need not be read. */
-	dependencies: Array<Pick<ComponentManifest, 'id' | 'responsibility' | 'contract'>>;
-}
 
 export function unitSchema(name: string): unknown {
 	const schema = schemas[name as keyof typeof schemas];
@@ -130,3 +116,5 @@ export function renderUnit(detail: UnitDetail): string {
 		...items('Scenarios', manifest.scenarios)
 	].join('\n');
 }
+
+export type { UnitDetail } from './inspectUnits.types';

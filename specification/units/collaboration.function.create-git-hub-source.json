@@ -10,9 +10,10 @@
 		"source": [
 			"packages/collaboration/src/utils/create-git-hub-source/createGitHubSource.ts",
 			"packages/collaboration/src/utils/createGitHubSource.ts",
-			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/createGitHubSource.ts"
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/createGitHubSource.ts",
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/createGitHubSource.types.ts"
 		],
-		"symbols": ["createGitHubSource", "createGitHubSource", "createGitHubSource"]
+		"symbols": ["createGitHubSource", "createGitHubSource", "createGitHubSource", "Options"]
 	},
 	"contract": {
 		"origin": "declared",

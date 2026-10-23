@@ -1,3 +1,4 @@
+import type { Point } from './harnessEmittedGrowth.types';
 import type {
 	EmittedReview,
 	EmittedCell,
@@ -22,8 +23,6 @@ function reviewOf(review: HarnessReview, targets: string[]): EmittedReview[] {
 	if (changes.length === 0) return [];
 	return [{ type: review.type, reviewer: review.reviewer, reason: review.reason, changes }];
 }
-
-type Point = HarnessIndex['units'][number]['growth'][number];
 
 /** The limit a target had when a commit was verified: what the last earlier review said of it. */
 function limitOf(key: string, earlier: HarnessReview[]): Pick<EmittedCell, 'limit' | 'unlimited'> {

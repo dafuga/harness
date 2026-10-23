@@ -9,12 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/entityEvidence.svelte.ts",
-			"packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.ts"
+			"packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.ts",
+			"packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.types.ts"
 		],
 		"symbols": [
 			"createEntityEvidenceStore",
-			"EvidenceTarget",
 			"createEntityEvidenceStore",
+			"EvidenceTarget",
+			"EntityEvidence",
+			"EntityEvidenceState",
+			"EvidenceTarget",
 			"EntityEvidence"
 		]
 	},

@@ -1,3 +1,4 @@
+import type { ClassEntityTemplate, FunctionTemplate } from './railsPieces.types';
 import { toCamelCase, toKebabCase, toPascalCase } from '../../core/development-tooling/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { apiFiles, e2eFiles, viewFiles } from './appPieces';
@@ -5,24 +6,6 @@ import { adapterTypeFiles } from './adapterTypes';
 import { controllerFiles, policyFiles, serializerFiles } from './packagePieces';
 import { modelFiles } from './model';
 import { parseFields } from '../../core/development-tooling/fields/fields';
-
-interface ClassEntityTemplate {
-	folder: string;
-	fileName: string;
-	className: string;
-	contents: string;
-	expectation: string;
-}
-
-interface FunctionTemplate {
-	folder: string;
-	name: string;
-	functionName: string;
-	body: string;
-	expectation: string;
-	call: string;
-	expected: string;
-}
 
 export function mailerFiles(name: string): PlannedFile[] {
 	const className = `${toPascalCase(name)}Mailer`;

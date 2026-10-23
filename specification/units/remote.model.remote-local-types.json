@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/models/RemoteLocal.types.ts",
-			"packages/remote/src/models/networking-security/RemoteLocal.types.ts"
+			"packages/remote/src/models/networking-security/RemoteLocal.types.ts",
+			"packages/remote/src/models/networking-security/RemoteLocalValues.ts"
 		],
-		"symbols": ["localTransport", "localTransport", "LocalBootstrap", "WirePart"]
+		"symbols": ["localTransport", "LocalBootstrap", "WirePart", "localTransport", "localTransport"]
 	},
 	"contract": {
 		"origin": "derived",

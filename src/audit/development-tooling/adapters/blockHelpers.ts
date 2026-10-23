@@ -1,10 +1,6 @@
+import type { BlockCandidate } from './blockHelpers.types';
 import { harnessRuleLimits, type HarnessRuleLimits } from '../../../rules/explorer-ui/catalog';
 import type { AuditFinding } from '../types';
-
-interface BlockCandidate {
-	start: number;
-	lines: string[];
-}
 
 export function auditCurlyFunctions(
 	path: string,

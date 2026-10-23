@@ -1,10 +1,10 @@
+import type { Context } from './createGitHubRepository.types';
 import { z } from 'zod';
 import type {
 	CollaborationRepository,
 	GitHubRepositoryOptions,
 	CollaborationRecords
 } from '../../../models/planning-collaboration/Collaboration.types';
-import type { GitHubTransport } from '../githubTransport';
 import { fail, parse, safePath, sha } from '../../planning-collaboration/parseCollaborationInput';
 import { recordsSchema } from '../../development-tooling/recordsSchema';
 import { decode64, readRef, githubTransport, refPath } from '../githubTransport';
@@ -18,8 +18,6 @@ function empty(revision: string) {
 		records: { schemaVersion: 1 as const, projects: [], members: [], invitations: [], threads: [] }
 	};
 }
-
-type Context = { client: GitHubTransport; ref: string; path: string };
 
 async function readRecords(context: Context) {
 	const { client, ref, path } = context;

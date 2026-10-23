@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Line } from "./EntityChange.types";
+
 	import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../../models/explorer-ui/Explorer.types';
 	import { humanize } from '../../../utils/explorer-ui/entityContract';
 	import { reviewChanges } from './entityHistory';
@@ -29,12 +31,6 @@
 	let reasons = $derived(entityReasons(detail?.explanations ?? []));
 	// What a reviewer wrote for a budget is not held to a limit; what is shown at once is.
 	const noted = (reason: string) => boundedText([reason], writingLimits.body);
-	interface Line {
-		metric: string;
-		before: string;
-		after: string;
-		delta: string;
-	}
 	const earlier = (now: number | null, change: number | null) =>
 		now === null || change === null ? null : now - change;
 	const bytes = (value: number | null) => (value === null ? notMeasured : byteSize(value));
@@ -74,6 +70,7 @@
 			commit: row.commit
 		})
 	);
+
 </script>
 
 <section

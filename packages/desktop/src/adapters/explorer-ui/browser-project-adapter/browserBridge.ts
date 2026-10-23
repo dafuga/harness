@@ -1,3 +1,4 @@
+import type { Listener, Guard, Reads, Denied } from './browserBridge.types';
 import { AgentHttpAdapter } from '../../agents-providers/AgentHttpAdapter';
 import { browserEvidenceReads } from './browserEvidenceReads';
 import type { CommittedThread, ProjectSummary } from 'collaboration';
@@ -10,28 +11,11 @@ import type {
 	ProjectSnapshot
 } from '../../../models/development-tooling/Desktop.types';
 import type {
-	CacheStatus,
 	ProjectCapabilities,
 	ProjectContext
 } from '../../../models/projects-sessions/ProjectContext.types';
 import { commentEntries } from './commentEntries';
 import type { BrowserApi } from '../../../models/development-tooling/BrowserApi.types';
-
-type Reads = Pick<
-	DesktopBridge,
-	'listProjects' | 'selectProject' | 'capabilities' | 'snapshot' | 'entity' | 'source'
-> &
-	Pick<DesktopBridge, 'image' | 'messages' | 'history' | 'evidence' | 'artifact'>;
-
-type Listener = (event: CacheStatus) => void;
-
-/** Runs a read of one project and, when it is refused, says so before the refusal is thrown. */
-type Guard = <T>(context: ProjectContext, read: (base: string) => Promise<T>) => Promise<T>;
-
-type Denied = Pick<
-	DesktopBridge,
-	'createPlan' | 'openThread' | 'approve' | 'providers' | 'startRun' | 'cancelRun'
->;
 
 const refused = 'The hosted workspace shows projects and comments. It runs no agent.';
 

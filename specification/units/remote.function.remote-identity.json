@@ -14,6 +14,7 @@
 			"packages/remote/src/services/networking-security/wire-session-service/remoteIdentity.ts",
 			"packages/remote/src/services/wire-session-service/remoteIdentity.ts",
 			"packages/remote/src/utils/networking-security/remoteIdentity.ts",
+			"packages/remote/src/utils/networking-security/remoteIdentity.types.ts",
 			"packages/remote/src/utils/remoteIdentity.ts"
 		],
 		"symbols": [
@@ -24,7 +25,6 @@
 			"requestDigest",
 			"remotePatterns",
 			"remoteIdentity",
-			"CredentialBinding",
 			"credentialHash",
 			"pkceChallenge",
 			"randomId",
@@ -32,6 +32,8 @@
 			"normalizeCode",
 			"pairingCode",
 			"requestDigest",
+			"CredentialBinding",
+			"CredentialBinding",
 			"pairingCode",
 			"requestDigest",
 			"remotePatterns",

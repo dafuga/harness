@@ -1,3 +1,4 @@
+import type { FileState } from './ConsoleChangeService.types';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -10,16 +11,6 @@ import type {
 
 /** Project-local copies of everything an install replaced, named by content hash. */
 export const replacedDirectory = '.harness/console/replaced';
-
-export type FileState =
-	/** Nothing is there, or it already holds exactly the wanted content. */
-	| { kind: 'free' }
-	/** Harness wrote it and nobody changed it since, so rewriting loses nothing. */
-	| { kind: 'unchanged' }
-	/** The host keeps its own version on purpose. */
-	| { kind: 'kept'; reason: string }
-	/** Writing would lose content Harness did not put there. */
-	| { kind: 'conflict'; reason: string };
 
 function identity(bytes: Buffer): FileIdentity {
 	return { sha256: createHash('sha256').update(bytes).digest('hex'), bytes: bytes.length };
@@ -99,3 +90,5 @@ export class ConsoleChangeService {
 		return readFile(join(this.host, path)).catch(() => undefined);
 	}
 }
+
+export type { FileState } from './ConsoleChangeService.types';

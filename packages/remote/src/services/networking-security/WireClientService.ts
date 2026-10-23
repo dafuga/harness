@@ -1,3 +1,4 @@
+import type { Waiting, Listener, WireClientOptions } from './WireClientService.types';
 import {
 	REMOTE_PROTOCOL,
 	RemoteFailure,
@@ -6,7 +7,6 @@ import {
 	remoteLimits
 } from '../../models/networking-security/Remote.types';
 import type {
-	AttachInput,
 	RemoteAttachment,
 	RemoteMethod,
 	RemoteResume,
@@ -15,20 +15,6 @@ import type {
 	WireRequest
 } from '../../models/networking-security/Remote.types';
 import { WireMessageValidator } from '../../validators/networking-security/WireMessageValidator';
-
-export interface WireClientOptions {
-	client: AttachInput['client'];
-	/** How long a request waits for its answer, across reconnects. */
-	deadlineMs?: number;
-	uuid?: () => string;
-}
-type Listener = (value: unknown) => void;
-interface Waiting {
-	request: WireRequest;
-	resolve: (value: unknown) => void;
-	reject: (error: Error) => void;
-	timer: ReturnType<typeof setTimeout>;
-}
 
 /**
  * The client side of the wire protocol over any transport: answers by request id, events once
@@ -147,3 +133,5 @@ export class WireClientService {
 		return this.options.uuid?.() ?? crypto.randomUUID();
 	}
 }
+
+export type { WireClientOptions } from './WireClientService.types';

@@ -1,3 +1,8 @@
+import type {
+	ConsoleUninstallOptions,
+	ConsoleUninstallResult,
+	Outcome
+} from './ConsoleUninstallService.types';
 import { rm, rmdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fail } from '../../core/development-tooling/errors';
@@ -5,33 +10,10 @@ import {
 	consoleManifest,
 	consoleManifestFile,
 	writeConsoleManifest,
-	type ConsoleChange,
 	type ConsoleFileEntry,
 	type ConsoleManifest
 } from '../../utils/development-tooling/consoleManifest';
 import { ConsoleChangeService } from '../../services/projects-sessions/ConsoleChangeService';
-
-export interface ConsoleUninstallOptions {
-	host: string;
-	/** Remove generated files the host edited too; what they hold is saved and recorded. */
-	update?: boolean;
-	/** Leave generated files the host edited in place, as the host's own. */
-	keep?: boolean;
-}
-
-export interface ConsoleUninstallResult {
-	host: string;
-	removed: string[];
-	/** Files that hold again what the host had there before the install replaced it. */
-	restored: string[];
-	/** Edited files left in place as the host's own. */
-	kept: string[];
-	changes: ConsoleChange[];
-	/** True when no record is left because nothing of the host was ever changed. */
-	clean: boolean;
-}
-
-type Outcome = Omit<ConsoleUninstallResult, 'host' | 'clean'> & { entries: ConsoleFileEntry[] };
 
 /**
  * Removes an installed console. Files Harness wrote and nobody changed are deleted with the
@@ -130,3 +112,8 @@ function refuse(edited: string[]): never {
 		].join('\n')
 	);
 }
+
+export type {
+	ConsoleUninstallOptions,
+	ConsoleUninstallResult
+} from './ConsoleUninstallService.types';

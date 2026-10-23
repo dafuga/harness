@@ -1,3 +1,4 @@
+import type { ScenarioRead } from './ScenarioRepository.types';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
@@ -6,11 +7,6 @@ import { scenariosDirectory } from '../../core/development-tooling/unitsConfig';
 import { stableJson } from '../../utils/development-tooling/stableJson';
 import { readTreeTexts } from '../../utils/development-tooling/readTreeTexts';
 import { ScenarioManifestValidator } from '../../validators/verification-evidence/ScenarioManifestValidator';
-
-export interface ScenarioRead {
-	manifests: ScenarioManifest[];
-	errors: string[];
-}
 
 /** Stores scenario contracts as one canonical JSON file per scenario. */
 export class ScenarioRepository {
@@ -47,3 +43,5 @@ function parse(text: string): unknown {
 		return undefined;
 	}
 }
+
+export type { ScenarioRead } from './ScenarioRepository.types';

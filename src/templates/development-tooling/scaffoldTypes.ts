@@ -1,3 +1,4 @@
+import type { PieceKind } from './scaffoldTypes.types';
 export const scaffoldKinds = [
 	'game-view',
 	'mechanic',
@@ -36,11 +37,9 @@ export const scaffoldKinds = [
 	'config',
 	'middleware'
 ] as const;
-export type PieceKind = (typeof scaffoldKinds)[number];
 import type { ScaffoldDetail } from './scaffoldDetailTypes';
 export type { ScaffoldDetail } from './scaffoldDetailTypes';
 import { gameScaffoldDetails } from '../game-authoring/gameScaffoldDetails';
-
 export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	...gameScaffoldDetails,
 	controller: detail('controller', 'Request handling as a thin coordinator.', false, [
@@ -208,7 +207,6 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 export function isAppOnlyScaffold(kind: PieceKind): boolean {
 	return scaffoldDetails[kind].appOnly;
 }
-
 function detail(
 	kind: PieceKind,
 	summary: string,
@@ -217,3 +215,5 @@ function detail(
 ): ScaffoldDetail {
 	return { kind, summary, appOnly, contains, exampleCommand: `harness generate ${kind} example` };
 }
+
+export type { PieceKind } from './scaffoldTypes.types';

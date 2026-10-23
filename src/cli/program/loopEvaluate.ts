@@ -1,33 +1,16 @@
+import type {
+	EvaluateLoopInput,
+	LoopEvaluationResult,
+	LoopCommandResult
+} from './loopEvaluate.types';
 import { spawn } from 'node:child_process';
 import {
 	loopPaths,
 	loopRoot,
 	readLoop,
 	appendTrace,
-	type LoopEvaluator,
-	type LoopInput
+	type LoopEvaluator
 } from '../../workflows/development-tooling/loop-state/loopState';
-
-export interface LoopEvaluationResult {
-	loop: string;
-	tracePath: string;
-	passed: boolean;
-	results: LoopCommandResult[];
-}
-
-export interface LoopCommandResult {
-	id: string;
-	title: string;
-	command: string;
-	exitCode: number;
-	stdout: string;
-	durationMs?: number;
-	stderr: string;
-}
-
-export interface EvaluateLoopInput extends LoopInput {
-	loop: string;
-}
 
 export async function evaluateLoop(input: EvaluateLoopInput): Promise<LoopEvaluationResult> {
 	const startedAt = Date.now();
@@ -123,3 +106,9 @@ function summaryResult(result: LoopCommandResult): Record<string, unknown> {
 		durationMs: result.durationMs
 	};
 }
+
+export type {
+	LoopEvaluationResult,
+	LoopCommandResult,
+	EvaluateLoopInput
+} from './loopEvaluate.types';

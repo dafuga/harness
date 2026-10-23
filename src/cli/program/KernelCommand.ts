@@ -1,3 +1,4 @@
+import type { Flags } from './KernelCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
 import {
@@ -10,19 +11,6 @@ import {
 } from './run-kernel/runKernel';
 import { renderBench, runKernelBench } from './run-kernel-bench/runKernelBench';
 import { kernelBoundary } from './runKernelBoundary';
-
-interface Flags {
-	json?: boolean;
-	quick?: boolean;
-	boundary?: boolean;
-	write?: boolean | string;
-	measurements?: string;
-	runtime: string;
-	port: string;
-	nodes: string;
-	seed: string;
-	url?: string;
-}
 
 const cli = (): string[] => [process.execPath, process.argv[1]];
 

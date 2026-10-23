@@ -1,3 +1,4 @@
+import type { SecureChannelOptions } from './SecureChannelService.types';
 import { remoteLimits } from '../../../models/networking-security/Remote.types';
 import { SecureFailure } from '../../../models/networking-security/RemoteSecure.types';
 import type {
@@ -18,21 +19,6 @@ import { remoteBytes, toBase64Url } from '../../../utils/networking-security/rem
 import { remoteKeys } from '../../../utils/networking-security/remoteKeys';
 import { openPacket, sealPacket } from './sealPacket';
 import { sessionKeys } from './sessionKeys';
-
-export interface SecureChannelOptions {
-	role: SecureRole;
-	hostId: string;
-	deviceId: string;
-	staticKey: RemoteKeyPair;
-	/** The pinned static key of the other side. */
-	peerKey: Uint8Array;
-	/** Host only: the approval generation of the device, bound into the keys. */
-	generation?: number;
-	limits?: { chunkBytes?: number; messageBytes?: number };
-	/** Fixed values, for the frozen vectors only. */
-	ephemeral?: RemoteKeyPair;
-	nonce?: Uint8Array;
-}
 
 function directionOf(role: SecureRole, outgoing: boolean): SecureDirection {
 	return (role === 'device') === outgoing ? 'd2h' : 'h2d';
@@ -157,3 +143,5 @@ export class SecureChannelService {
 		throw new SecureFailure(reason);
 	}
 }
+
+export type { SecureChannelOptions } from './SecureChannelService.types';

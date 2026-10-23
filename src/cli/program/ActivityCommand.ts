@@ -1,3 +1,4 @@
+import type { Flags } from './ActivityCommand.types';
 import type { Command } from 'commander';
 import {
 	beatAgent,
@@ -8,9 +9,6 @@ import {
 	renderShown,
 	showActivity
 } from '../../workflows/projects-sessions/runActivity';
-import type { AgentInput } from '../../utils/agents-providers/agentStatement';
-
-type Flags = AgentInput & { json?: boolean; limit?: string; failed?: boolean };
 
 function print(flags: Flags, value: unknown, text: string): void {
 	console.log(flags.json ? JSON.stringify(value, null, 2) : text);

@@ -1,13 +1,5 @@
+import type { ConsoleModules, Loader } from './consoleBundle.types';
 import type { ConsoleData } from '../explorer-ui/consoleAccess';
-
-type Loader = () => Promise<unknown>;
-
-export interface ConsoleModules {
-	/** Loaders of modules whose default export is the JSON text of one data file. */
-	json: Record<string, Loader>;
-	/** Loaders of modules whose default export is base64 media and whose `type` is its MIME type. */
-	media: Record<string, Loader>;
-}
 
 const field = (module: unknown, name: string): unknown =>
 	(module as Record<string, unknown> | undefined)?.[name];
@@ -40,3 +32,5 @@ export function consoleBundle(modules: ConsoleModules): ConsoleData {
 		}
 	};
 }
+
+export type { ConsoleModules } from './consoleBundle.types';

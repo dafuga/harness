@@ -9,18 +9,23 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/entityLens.ts",
-			"packages/reports/src/utils/explorer-ui/entityLens.ts"
+			"packages/reports/src/utils/explorer-ui/entityLens.ts",
+			"packages/reports/src/utils/explorer-ui/entityLens.types.ts"
 		],
 		"symbols": [
+			"entityLabels",
+			"entityLens",
+			"shortCommit",
 			"entityLabels",
 			"entityLens",
 			"shortCommit",
 			"EntityLens",
 			"EntityNav",
 			"EntityLabel",
-			"entityLabels",
-			"entityLens",
-			"shortCommit"
+			"EntityLens",
+			"EntityNav",
+			"EntityLabel",
+			"Target"
 		]
 	},
 	"contract": {

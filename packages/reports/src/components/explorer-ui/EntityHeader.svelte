@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Place } from "./EntityHeader.types";
+
 	import type { Snippet } from 'svelte';
 	import type {
 		ExplorerEntity,
@@ -24,7 +26,6 @@
 		/** What stays between the identity and the tabs on every tab: the screenshots of a component. */
 		preview?: Snippet;
 	} = $props();
-	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
 	let privateFunction = $derived(
 		entity.category === 'functions' && explorerCategory(entity.unit) === null
@@ -85,6 +86,7 @@
 	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
 	// A page keeps its purpose in Overview and data relationships in Models.
 	let concise = $derived(entity.category === 'pages');
+
 </script>
 
 <nav class="ex-crumbs" aria-label="Breadcrumb">

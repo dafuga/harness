@@ -1,12 +1,8 @@
+import type { ElectronEnvironmentAdapterConfig } from './ElectronEnvironmentAdapter.types';
 import type {
 	Environment,
-	EnvironmentHost,
 	RemoteDesktopControl
 } from '../../../models/development-tooling/Environment.types';
-
-export interface ElectronEnvironmentAdapterConfig {
-	host: EnvironmentHost;
-}
 
 const control: (keyof RemoteDesktopControl)[] = [
 	'status',
@@ -39,3 +35,5 @@ export class ElectronEnvironmentAdapter {
 		};
 	}
 }
+
+export type { ElectronEnvironmentAdapterConfig } from './ElectronEnvironmentAdapter.types';

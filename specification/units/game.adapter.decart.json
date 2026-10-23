@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/agents-providers/DecartAdapter.ts"],
+		"source": [
+			"packages/game/src/adapters/agents-providers/DecartAdapter.ts",
+			"packages/game/src/adapters/agents-providers/DecartAdapter.types.ts"
+		],
 		"symbols": [
 			"DecartAdapter",
 			"DecartAdapter.constructor",
 			"DecartAdapter.start",
 			"renderRate",
-			"validateSession"
+			"validateSession",
+			"TokenClient"
 		]
 	},
 	"contract": {

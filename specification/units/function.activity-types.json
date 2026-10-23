@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/activityTypes.ts", "src/core/projects-sessions/activityTypes.ts"],
+		"source": [
+			"src/core/activityTypes.ts",
+			"src/core/projects-sessions/activityTypes.ts",
+			"src/core/projects-sessions/activityTypes.types.ts"
+		],
 		"symbols": [
 			"agentRegistrationSchema",
 			"agentBeatSchema",
@@ -15,6 +19,19 @@
 			"agentRegistrationSchema",
 			"agentBeatSchema",
 			"agentEndSchema",
+			"AgentRegistration",
+			"AgentBeat",
+			"AgentEnd",
+			"AgentState",
+			"AgentEntry",
+			"AgentRoster",
+			"FileChange",
+			"CommittedFile",
+			"LoopUsage",
+			"WorkItem",
+			"ProjectActivity",
+			"WorktreeState",
+			"LiveActivity",
 			"AgentRegistration",
 			"AgentBeat",
 			"AgentEnd",

@@ -1,13 +1,6 @@
+import type { EntityFileInput } from './packagePieces.types';
 import { toCamelCase, toKebabCase, toPascalCase } from '../../core/development-tooling/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
-
-interface EntityFileInput {
-	folder: string;
-	fileName: string;
-	className: string;
-	contents: string;
-	expectation: string;
-}
 
 export function controllerFiles(name: string): PlannedFile[] {
 	const className = `${toPascalCase(name)}Controller`;

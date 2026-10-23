@@ -9,16 +9,18 @@
 	"owns": {
 		"source": [
 			"src/workflows/record-regression/recordRegression.ts",
-			"src/workflows/verification-evidence/record-regression/recordRegression.ts"
+			"src/workflows/verification-evidence/record-regression/recordRegression.ts",
+			"src/workflows/verification-evidence/record-regression/recordRegression.types.ts"
 		],
 		"symbols": [
 			"recordRegression",
 			"requireRegressionProof",
 			"enforceRegressionStep",
-			"RecordRegressionInput",
 			"recordRegression",
 			"requireRegressionProof",
-			"enforceRegressionStep"
+			"enforceRegressionStep",
+			"RecordRegressionInput",
+			"RecordRegressionInput"
 		]
 	},
 	"contract": {

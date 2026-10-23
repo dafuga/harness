@@ -9,12 +9,11 @@
 	"owns": {
 		"source": [
 			"src/adapters/EvidenceTreeAdapter.ts",
-			"src/adapters/verification-evidence/EvidenceTreeAdapter.ts"
+			"src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
+			"src/adapters/verification-evidence/EvidenceTreeAdapter.types.ts"
 		],
 		"symbols": [
 			"EvidenceTreeAdapter",
-			"TreeFile",
-			"TreeCommit",
 			"EvidenceTreeAdapter",
 			"EvidenceTreeAdapter.constructor",
 			"EvidenceTreeAdapter.tip",
@@ -24,7 +23,11 @@
 			"EvidenceTreeAdapter.readMany",
 			"EvidenceTreeAdapter.list",
 			"EvidenceTreeAdapter.commit",
-			"EvidenceTreeAdapter.advance"
+			"EvidenceTreeAdapter.advance",
+			"TreeFile",
+			"TreeCommit",
+			"TreeFile",
+			"TreeCommit"
 		]
 	},
 	"contract": {

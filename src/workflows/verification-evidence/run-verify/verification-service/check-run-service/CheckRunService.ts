@@ -1,30 +1,11 @@
+import type { RunContext, CheckOutcome } from './CheckRunService.types';
 import { readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
-import type { VerificationRecord } from '../../../../../core/verification-evidence/verificationTypes';
 import { gatherCaptures } from './gatherCaptures';
-import { type Gathered } from '../../../../../utils/verification-evidence/gatherCaptures';
+import {} from '../../../../../utils/verification-evidence/gatherCaptures';
 import { readBrowserDiagnostics } from './readBrowserDiagnostics';
 import { runIsolated, type IsolatedResult } from '../../../../../utils/run-isolated/runIsolated';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
-
-export interface RunContext {
-	/** Clean export of the commit; every check runs inside it. */
-	snapshot: string;
-	/** Scratch directory of this run; evidence and logs are written beneath it. */
-	directory: string;
-	commit: string;
-	tree: string;
-	profile: string;
-	env: Record<string, string | undefined>;
-}
-
-export interface CheckOutcome {
-	check: PlannedCheck;
-	passed: boolean;
-	entry: VerificationRecord['tests'][number];
-	gathered: Gathered[];
-	failures: string[];
-}
 
 const maxLogBytes = 2_000_000;
 
@@ -147,3 +128,5 @@ function outcomeFailures(check: PlannedCheck, result: IsolatedResult): string[] 
 			: [`test ${check.name} failed with exit code ${result.exitCode ?? 'unknown'}`];
 	return [...failed, ...leaked];
 }
+
+export type { RunContext, CheckOutcome } from './CheckRunService.types';

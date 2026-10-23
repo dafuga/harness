@@ -1,9 +1,8 @@
+import type { AnalyticsSnapshot } from './HarnessAnalyticsService.types';
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
-import type { analyticsSnapshot } from '../../../../../src/cli/program/analyticsMetrics';
 import { reportRuntimeRoot } from '../../utils/reports-media/reportRuntimeRoot';
 import { reportSite } from '../../utils/reports-media/reportSite';
-export type AnalyticsSnapshot = ReturnType<typeof analyticsSnapshot>;
 export class HarnessAnalyticsService {
 	async snapshot(params: URLSearchParams): Promise<AnalyticsSnapshot> {
 		const root = reportRuntimeRoot();
@@ -36,3 +35,5 @@ export class HarnessAnalyticsService {
 		});
 	}
 }
+
+export type { AnalyticsSnapshot } from './HarnessAnalyticsService.types';

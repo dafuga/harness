@@ -1,22 +1,9 @@
-import type { CacheIdentity } from '../../../../../collaboration/src/models/Collaboration.types';
-import type { ExplorerScope } from '../../../../../reports/src/models/Explorer.types';
+import type { AnswerInput } from './recordedAnswer.types';
 import { explorerBehavior } from '../../../../../reports/src/utils/explorerBehavior';
-import {
-	explorerEvidence,
-	type ExplorerRevisions
-} from '../../../../../reports/src/utils/explorerEvidence';
+import { explorerEvidence } from '../../../../../reports/src/utils/explorerEvidence';
 import { remoteLimits } from '../../../../../remote/src/index';
 import type { EntityEvidenceResult } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { recordedProjection } from './recordedProjection';
-
-export interface AnswerInput {
-	/** Where the read is in history, with the entity it is of. */
-	scope: ExplorerScope;
-	/** What the revisions were read at. */
-	identity: CacheIdentity;
-	/** The stored revision of the shown commit, and of its first parent where one is compared. */
-	revisions: ExplorerRevisions;
-}
 
 /** Room for what a transport wraps around an answer, so both stay within one message. */
 const envelope = 1024;
@@ -46,3 +33,5 @@ export function recordedAnswer(input: AnswerInput): EntityEvidenceResult {
 	if (size > most) throw new Error(tooLarge);
 	return answer;
 }
+
+export type { AnswerInput } from './recordedAnswer.types';

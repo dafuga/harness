@@ -1,3 +1,4 @@
+import type { CollectedFiles } from './collect.types';
 import { lstat, readdir } from 'node:fs/promises';
 import { extname } from 'node:path';
 import { join } from 'node:path';
@@ -22,17 +23,6 @@ const ignoredDirs = new Set([
 	'test-results',
 	'tmp'
 ]);
-
-export interface CollectedFile {
-	path: string;
-	extension: string;
-}
-
-export interface CollectedFiles {
-	files: CollectedFile[];
-	dirs: string[];
-	ignoredPaths: string[];
-}
 
 export async function collectAuditedFiles(root: string): Promise<CollectedFiles> {
 	return collectFiles(root, '');
@@ -75,3 +65,5 @@ async function collectDirectory(path: string, relativePath: string): Promise<Col
 		ignoredPaths: collected.ignoredPaths
 	};
 }
+
+export type { CollectedFile, CollectedFiles } from './collect.types';

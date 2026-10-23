@@ -1,3 +1,4 @@
+import type { HarnessIconName } from './harnessIcons.types';
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 
 /**
@@ -97,8 +98,6 @@ export const harnessIcons = {
 		'M13 20h-2M8 20H5a1 1 0 0 1-1-1v-3M4 13v-2'
 } as const satisfies Record<string, string>;
 
-export type HarnessIconName = keyof typeof harnessIcons;
-
 /** The icons that are filled, not outlined: a verdict is read by its colour and its shape. */
 export const solidIcons: ReadonlySet<HarnessIconName> = new Set(['passed', 'failed']);
 
@@ -113,3 +112,5 @@ export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	models: 'database',
 	platforms: 'platforms'
 };
+
+export type { HarnessIconName } from './harnessIcons.types';

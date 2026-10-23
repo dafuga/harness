@@ -13,7 +13,8 @@
 			"src/utils/console-canonical/consoleRoute.ts",
 			"src/utils/consoleRoute.ts",
 			"src/utils/projects-sessions/console-canonical/consoleRoute.ts",
-			"src/utils/projects-sessions/consoleRoute.ts"
+			"src/utils/projects-sessions/consoleRoute.ts",
+			"src/utils/projects-sessions/consoleRoute.types.ts"
 		],
 		"symbols": [
 			"consoleRoutePath",
@@ -24,10 +25,12 @@
 			"consoleViews",
 			"consoleRoute",
 			"consoleViews",
+			"consoleRoute",
+			"consoleRoutePath",
 			"ConsoleView",
 			"ConsoleRoute",
-			"consoleRoute",
-			"consoleRoutePath"
+			"ConsoleView",
+			"ConsoleRoute"
 		]
 	},
 	"contract": {

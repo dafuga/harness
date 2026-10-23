@@ -9,15 +9,17 @@
 	"owns": {
 		"source": [
 			"src/repositories/BudgetLedgerRepository.ts",
-			"src/repositories/verification-evidence/BudgetLedgerRepository.ts"
+			"src/repositories/verification-evidence/BudgetLedgerRepository.ts",
+			"src/repositories/verification-evidence/BudgetLedgerRepository.types.ts"
 		],
 		"symbols": [
 			"BudgetLedgerRepository",
-			"LedgerRead",
 			"BudgetLedgerRepository",
 			"BudgetLedgerRepository.constructor",
 			"BudgetLedgerRepository.read",
-			"BudgetLedgerRepository.append"
+			"BudgetLedgerRepository.append",
+			"LedgerRead",
+			"LedgerRead"
 		]
 	},
 	"contract": {

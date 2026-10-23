@@ -1,23 +1,5 @@
+import type { RelaySocketAdapterConfig, HeaderSocketConstructor } from './RelaySocketAdapter.types';
 import type { RemoteSocket } from '../../../../remote/src/index';
-
-interface SocketEvent {
-	data?: unknown;
-	code?: number;
-}
-interface HeaderSocket {
-	readyState: number;
-	send(text: string): void;
-	close(code?: number): void;
-	addEventListener(type: string, listener: (event: SocketEvent) => void): void;
-}
-/** The WebSocket of the main process (not of a page): it can send request headers. */
-type HeaderSocketConstructor = new (
-	url: string,
-	options: { headers: Record<string, string> }
-) => HeaderSocket;
-export interface RelaySocketAdapterConfig {
-	socket?: HeaderSocketConstructor;
-}
 const open = 1;
 
 /** Opens a socket to the relay with the credential in a request header, never in the address. */
@@ -46,3 +28,5 @@ export class RelaySocketAdapter {
 		};
 	}
 }
+
+export type { RelaySocketAdapterConfig } from './RelaySocketAdapter.types';

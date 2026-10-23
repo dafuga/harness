@@ -1,3 +1,4 @@
+import type { Acknowledged, Address } from './HostCommandService.types';
 import { relayCloseCodes } from '../../../../../remote/src/index';
 import type { RelayErrorCode, RelayHostCommand } from '../../../../../remote/src/index';
 import type { HostSocketsAdapter } from './HostSocketsAdapter';
@@ -5,12 +6,6 @@ import { HostCommandValidator } from '../../../validators/development-tooling/Ho
 import type { DeviceRevocationService } from './DeviceRevocationService';
 import type { HostLinkService } from './HostLinkService';
 import type { PairingOfferService } from './PairingOfferService';
-
-type Acknowledged = Extract<RelayHostCommand, { ref: string }>;
-interface Address {
-	deviceId: string;
-	connectionId: string;
-}
 
 /** What the host asks of the relay over its socket. */
 export class HostCommandService {

@@ -1,54 +1,8 @@
+import type { LoopInput, LoopPaths, LoopState } from './loopState.types';
 import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';
 import { validateKebabName } from './validation';
-
-export interface LoopStep {
-	id: string;
-	title: string;
-	status: 'pending' | 'complete';
-	completedAt?: string;
-	evidence?: string;
-}
-
-export interface LoopEvaluator {
-	id: string;
-	title: string;
-	command: string;
-	step?: string;
-}
-
-export interface LoopState {
-	agentModel?: string;
-	name: string;
-	goal: string;
-	createdAt: string;
-	updatedAt: string;
-	template?: string;
-	templateLineage?: string[];
-	enforceOrder?: boolean;
-	/** Versioned opt-in: older loop evidence remains visible without inventing missing commits. */
-	regressionCommits?: 1;
-	steps: LoopStep[];
-	evaluators?: LoopEvaluator[];
-}
-
-export interface LoopStatus {
-	state: LoopState;
-	tracePath: string;
-}
-
-export interface LoopInput {
-	root?: string;
-	now?: () => string;
-}
-
-export interface LoopPaths {
-	dir: string;
-	state: string;
-	trace: string;
-	traceRelative: string;
-}
 
 export function loopRoot(input?: LoopInput): string {
 	return input?.root ?? process.cwd();
@@ -114,3 +68,12 @@ async function failIfLoopExists(path: string): Promise<void> {
 export function isMissingFile(error: unknown): boolean {
 	return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }
+
+export type {
+	LoopStep,
+	LoopEvaluator,
+	LoopState,
+	LoopStatus,
+	LoopInput,
+	LoopPaths
+} from './loopState.types';

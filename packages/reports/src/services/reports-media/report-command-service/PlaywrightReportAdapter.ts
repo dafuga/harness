@@ -1,17 +1,8 @@
+import type { PwSuite, PwSpec, Context, Meta } from './PlaywrightReportAdapter.types';
 import { dirname, resolve, extname } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import type { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
 import type { Status } from '../../../models/reports-media/Report.types';
-type PwResult = {
-	status?: string;
-	duration?: number;
-	attachments?: { name: string; path?: string }[];
-};
-type PwTest = { status?: string; results?: PwResult[] };
-type PwSpec = { title?: string; tests?: PwTest[] };
-type PwSuite = { specs?: PwSpec[]; suites?: PwSuite[] };
-type Context = { store: ReportRepository; id: string; file: string };
-type Meta = { status: Status; checkId: string; index: number; result?: PwResult };
 function collect(suites: PwSuite[]): PwSpec[] {
 	return suites.flatMap((suite) => [...(suite.specs || []), ...collect(suite.suites || [])]);
 }

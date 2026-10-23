@@ -9,9 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/report-command-service/MiraReportAdapter.ts",
-			"packages/reports/src/services/reports-media/report-command-service/MiraReportAdapter.ts"
+			"packages/reports/src/services/reports-media/report-command-service/MiraReportAdapter.ts",
+			"packages/reports/src/services/reports-media/report-command-service/MiraReportAdapter.types.ts"
 		],
-		"symbols": ["MiraReportAdapter", "MiraReportAdapter", "MiraReportAdapter.ingest"]
+		"symbols": [
+			"MiraReportAdapter",
+			"MiraReportAdapter",
+			"MiraReportAdapter.ingest",
+			"MiraAsset",
+			"MiraFinding"
+		]
 	},
 	"contract": {
 		"origin": "derived",

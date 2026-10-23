@@ -11,17 +11,20 @@
 			"src/cli/program/console-install-service/consoleHostFiles.ts",
 			"src/services/console-install-service/consoleHostFiles.ts",
 			"src/utils/consoleHostFiles.ts",
-			"src/utils/development-tooling/consoleHostFiles.ts"
+			"src/utils/development-tooling/consoleHostFiles.ts",
+			"src/utils/development-tooling/consoleHostFiles.types.ts"
 		],
 		"symbols": [
 			"consoleHostFiles",
 			"consoleHostFiles",
 			"consoleHostFiles",
 			"consoleServerDirectory",
+			"consoleServerDirectory",
+			"consoleHostFiles",
 			"HostFile",
 			"ConsoleHostOptions",
-			"consoleServerDirectory",
-			"consoleHostFiles"
+			"HostFile",
+			"ConsoleHostOptions"
 		]
 	},
 	"contract": {

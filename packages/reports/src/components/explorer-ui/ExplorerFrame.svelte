@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Opened } from "./ExplorerFrame.types";
+
 	import { tick, type Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
@@ -23,15 +25,6 @@
 		/** The screen itself, drawn only where the revision has a registry to read it from. */
 		children: Snippet<[EntityNav]>;
 	} = $props();
-	interface Opened {
-		entity: ExplorerEntity;
-		title: string;
-		trigger?: HTMLElement;
-		path?: string;
-		/** The revision of the screen it was opened on. */
-		at: string;
-		route: string;
-	}
 	// One reader for the screen, however many entities it lists; opening it changes no address.
 	let source = $state.raw<Opened | null>(null);
 	let route = $derived(
@@ -67,6 +60,7 @@
 	let gap = $derived(
 		registry.gap ?? `No unit registry is stored at ${shortCommit(host.scope.commit)}`
 	);
+
 </script>
 
 <!-- The marker of the frame draws no box: the content is laid out as the column holds it. -->

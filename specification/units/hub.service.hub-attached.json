@@ -10,7 +10,8 @@
 		"source": [
 			"packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
 			"packages/hub/src/services/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
-			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts"
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
+			"packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.types.ts"
 		],
 		"symbols": [
 			"HubAttachedService",
@@ -19,7 +20,8 @@
 			"HubAttachedService.constructor",
 			"HubAttachedService.load",
 			"HubAttachedService.regression",
-			"HubAttachedService.readFile"
+			"HubAttachedService.readFile",
+			"Context"
 		]
 	},
 	"contract": {

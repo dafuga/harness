@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-acceptance-source.ts"],
+		"source": [
+			"packages/desktop/scripts/ios-acceptance-source.ts",
+			"packages/desktop/scripts/ios-acceptance-source.types.ts"
+		],
 		"symbols": [
 			"rendererSources",
 			"nativeSources",
@@ -18,11 +21,12 @@
 			"missing",
 			"moved",
 			"named",
-			"SourceReading",
 			"readSources",
 			"movedSources",
 			"revision",
-			"toolsProof"
+			"toolsProof",
+			"SourceReading",
+			"SourceReading"
 		]
 	},
 	"contract": {
