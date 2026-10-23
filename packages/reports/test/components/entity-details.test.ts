@@ -5,7 +5,7 @@ import { commits, ids } from '../entityUnits';
 import { withGroups } from '../entityPreviewData';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { render } from 'svelte/server';
-import EntitySource from '../../src/components/explorer-ui/EntitySource.svelte';
+import EntitySource, { archivedSource } from '../../src/components/explorer-ui/EntitySource.svelte';
 import type { HarnessUnit } from '../../src/models/Harness.types';
 
 const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };
@@ -46,7 +46,7 @@ test('a page contract shows purpose, address, inputs and output without verifica
 	expect(body).not.toContain('/commit/');
 });
 
-test('source is shown only when the source tab is the open one', () => {
+test('source is shown only when the source tab is the open one', async () => {
 	for (const tab of ['measurements', undefined] as const)
 		expect(words(content('commit', { ...page, tab }))).not.toMatch(owned);
 	for (const mode of ['current', 'commit'] as const) {
@@ -71,7 +71,7 @@ test('source is shown only when the source tab is the open one', () => {
 	expect(words(body)).toContain('src/routes/orders/+page.svelte');
 	expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?tab=source`);
 	const head = withGroups(revision(commits.middle, []));
-	sourceAdmission(head.registry.units.find((unit) => unit.id === ids.store)!);
+	await sourceAdmission(head.registry.units.find((unit) => unit.id === ids.store)!);
 	for (const entity of explorerEntities(head)) {
 		const { helper, files } = sourceSelection(entity);
 		const source = content(
@@ -111,11 +111,16 @@ function sourceSelection(entity: ReturnType<typeof explorerEntities>[number]) {
 }
 
 /** Source accepts indexed arrays before serialization without invoking custom iteration/species. */
-function sourceAdmission(unit: HarnessUnit): void {
+async function sourceAdmission(unit: HarnessUnit): Promise<void> {
 	const paths = [...unit.owns.source];
-	const tests = [{ path: 'test/order-store.test.ts', media: null }];
+	const tests = [{ path: 'test/order-store.test.ts', media: null, gap: 'Recorded test gap' }];
+	const snapshots = paths.map((path) => ({
+		path,
+		media: null,
+		gap: 'Recorded implementation gap'
+	}));
 	const reads = { indexed: 0, iterated: 0, species: 0 };
-	for (const input of [paths, tests]) {
+	for (const input of [paths, tests, snapshots]) {
 		const first = input[0];
 		Object.defineProperty(input, '0', {
 			get() {
@@ -143,6 +148,12 @@ function sourceAdmission(unit: HarnessUnit): void {
 	}).body;
 	expect(words(body)).toContain('src/services/orders/OrderStore.ts');
 	expect(words(body)).toContain('test/order-store.test.ts');
+	const reader = archivedSource({ ...unit, sourceFiles: snapshots, testFiles: tests }, '/media/');
+	await expect(
+		reader.read(paths[0]),
+		'indexed source snapshots retain their recorded gap'
+	).rejects.toThrow('Recorded implementation gap');
+	await expect(reader.read(tests[0].path)).rejects.toThrow('Recorded test gap');
 	expect(reads.indexed).toBeGreaterThan(0);
 	expect(reads.iterated).toBe(0);
 	expect(reads.species).toBe(0);
