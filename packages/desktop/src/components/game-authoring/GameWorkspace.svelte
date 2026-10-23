@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Source } from './GameWorkspace.types';
-
 	import { resolve } from '$app/paths';
 	import { untrack } from 'svelte';
 	import GameNavigationGuard from './GameNavigationGuard.svelte';

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Candidate } from './GameCheckpointImage.types';
-
 	import type {
 		Checkpoint,
 		CheckpointImage,

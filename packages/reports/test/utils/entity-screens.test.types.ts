@@ -1,3 +1,3 @@
-import type { head } from './entity-screens.test';
+import type { revision } from '../entityFixture';
 
-export type Revision = typeof head;
+export type Revision = ReturnType<typeof revision>;

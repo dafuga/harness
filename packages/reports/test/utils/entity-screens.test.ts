@@ -217,5 +217,3 @@ test('validated unchanged screenshots stay visible with their capture origin', (
 	expect(shown.origin).toBe(commits.middle);
 	expect(shown.after.source).toBe(commits.middle);
 });
-
-export type { head };

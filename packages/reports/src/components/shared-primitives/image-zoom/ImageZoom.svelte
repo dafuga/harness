@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { DragStart, Point } from "./ImageZoom.types";
-
 	import { tick } from 'svelte';
 	import { t } from '../../../utils/reports-media/reportLocale';
 	import { imageAnchor, keepPointerInPlace } from './trackpadZoom';
@@ -79,7 +78,6 @@
 		const horizontal = event.key === 'ArrowLeft' || event.key === 'ArrowRight';
 		if (horizontal && stage && stage.scrollWidth > stage.clientWidth) event.stopPropagation();
 	}
-
 </script>
 
 <div class="zoom" data-harness-component="image-zoom">
