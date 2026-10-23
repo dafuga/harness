@@ -18,10 +18,10 @@ export const categories = [
 	'Pages',
 	'Layouts',
 	'Components',
+	'Models',
+	'Services',
 	'Helpers',
 	'Configs',
-	'Services',
-	'Models',
 	'Styles',
 	'Platforms'
 ];
