@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"id": "guide.benchmark",
+	"kind": "guide",
+	"title": "benchmark",
+	"responsibility": "Documents pinned benchmark definitions, trial defaults, explicit provider configuration and comparison limits.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/guides/agents-providers/benchmark.ts"],
+		"symbols": ["benchmarkGuide"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "benchmarkGuide",
+				"type": "Guide",
+				"description": "Benchmark authoring, execution and interpretation guidance."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "guide.guide",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/guides/agents-providers/benchmark.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/guides/agents-providers/benchmark.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

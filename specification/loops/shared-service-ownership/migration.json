@@ -1748,26 +1748,70 @@
 			"unit": "command.analytics",
 			"from": "src/commands/AnalyticsCommand.ts",
 			"to": "src/cli/program/AnalyticsCommand.ts",
-			"definition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
+			"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+			"previousReviews": [
+				{
+					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
+					"path": "src/cli/program/AnalyticsCommand.ts",
+					"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+					"reason": "Add benchmark queries while retaining CPU sampling and every existing analytics operation."
+				}
+			],
+			"review": {
+				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"path": "src/cli/program/AnalyticsCommand.ts",
+				"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+			},
+			"relocationDefinition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
 		},
 		{
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "740811098f4c3e08b006a61e1f33aa237e4ee3658a7b48a0c243c9f1fc841607",
+			"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "740811098f4c3e08b006a61e1f33aa237e4ee3658a7b48a0c243c9f1fc841607",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
+				"reason": "Retain the additive benchmark analytics query alongside the current sibling type companion."
+			},
+			"previousReviews": [
+				{
+					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "58532f27f752986df0807a8fe0dcf9e55384d054b41f3a5f509fd424a2f8fafb",
+					"reason": "Render benchmark events through the existing filtered analytics snapshot."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "740811098f4c3e08b006a61e1f33aa237e4ee3658a7b48a0c243c9f1fc841607",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
+			"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+			"previousReviews": [
+				{
+					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+					"reason": "Expose selected benchmark events without changing existing analytics summaries or filters."
+				}
+			],
+			"review": {
+				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"path": "src/cli/program/analyticsMetrics.ts",
+				"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+			},
+			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
 		{
 			"unit": "workflow.analytics-jev-metrics",
@@ -1805,6 +1849,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "c5d1707a8b06b0eef43e1c8475e6fb4cb5cf3658f9aadc72a3653ce3f0f51b59",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "d37a29605c59257ddd1188681880cdae10f63a40",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
+					"reason": "Retain main's level proposal operation through the existing session and provider context, preserving earlier game and deployment delegates."
 				}
 			]
 		},
@@ -3658,6 +3708,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "5e70fde5519a15663434e7eb8cdbef8b775393db4614423de72a5fc0bebce6e8",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "d37a29605c59257ddd1188681880cdae10f63a40",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
+					"reason": "Retain main's typed gameLevelGenerate IPC helper while preserving every existing bridge channel and invocation."
 				}
 			]
 		},

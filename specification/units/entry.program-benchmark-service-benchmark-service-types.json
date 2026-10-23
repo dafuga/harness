@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.program-benchmark-service-benchmark-service-types",
+	"kind": "entry",
+	"title": "BenchmarkService",
+	"responsibility": "Defines benchmark CLI output and ordering options; this module has no runtime workload.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/benchmark-service/BenchmarkService.types.ts"],
+		"symbols": ["BenchmarkOptions"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/benchmark-service/BenchmarkService.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/benchmark-service/BenchmarkService.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -124,7 +124,13 @@
 			"CatalogScenarioAttributes",
 			"CatalogScenarioCreateInput",
 			"CatalogScenarioUpdateInput",
-			"ModelDependencyService"
+			"ModelDependencyService",
+			"registerBenchmarkCommand",
+			"CodexBenchmarkAdapter",
+			"ClaudeBenchmarkAdapter",
+			"BenchmarkDefinitionValidator",
+			"BenchmarkRepository",
+			"BenchmarkService"
 		]
 	},
 	"contract": {
@@ -135,7 +141,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.claude-benchmark",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.claude-gateway",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.codex-benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -161,6 +177,11 @@
 		},
 		{
 			"unit": "adapter.sqlite",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -480,6 +501,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.benchmark",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.catalog",
 			"via": "reexport",
 			"origin": "derived"
@@ -511,6 +537,11 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -596,6 +627,11 @@
 		},
 		{
 			"unit": "service.regression-proof",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.benchmark-definition",
 			"via": "reexport",
 			"origin": "derived"
 		},

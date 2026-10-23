@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "command.benchmark",
+	"kind": "command",
+	"title": "BenchmarkCommand",
+	"responsibility": "Registers benchmark validation, execution and persisted-result commands without changing other CLI operations.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/BenchmarkCommand.ts"],
+		"symbols": ["registerBenchmarkCommand"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "registerBenchmarkCommand.program",
+				"type": "Command",
+				"description": "Commander program receiving the benchmark subcommands."
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerBenchmarkCommand",
+				"type": "void",
+				"description": "Registers validate, run and results with JSON and ordering-seed flags."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.benchmark",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/BenchmarkCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/BenchmarkCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

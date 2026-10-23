@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.codex-benchmark",
+	"kind": "adapter",
+	"title": "CodexBenchmarkAdapter",
+	"responsibility": "Invokes Codex with explicit configuration and validates completed benchmark turns.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.ts"],
+		"symbols": [
+			"CodexBenchmarkAdapter",
+			"CodexBenchmarkAdapter.constructor",
+			"CodexBenchmarkAdapter.preflight",
+			"CodexBenchmarkAdapter.run",
+			"CodexBenchmarkAdapter.command"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "CodexBenchmarkAdapter.constructor.executable",
+				"type": "unknown",
+				"description": "Native Codex executable name or path."
+			},
+			{
+				"name": "CodexBenchmarkAdapter.preflight.candidate",
+				"type": "BenchmarkCandidate",
+				"description": "Explicit runner, model, effort and tool configuration to validate."
+			},
+			{
+				"name": "CodexBenchmarkAdapter.run.input",
+				"type": "BenchmarkRunnerInput",
+				"description": "Isolated workspace, prompt, optional resumed session and abort signal."
+			},
+			{
+				"name": "CodexBenchmarkAdapter.command.input",
+				"type": "BenchmarkRunnerInput",
+				"description": "Candidate settings and session used to form the native argument vector."
+			}
+		],
+		"outputs": [
+			{
+				"name": "CodexBenchmarkAdapter.preflight",
+				"type": "Promise<string>",
+				"description": "Installed Codex CLI version after supported-setting checks."
+			},
+			{
+				"name": "CodexBenchmarkAdapter.run",
+				"type": "Promise<BenchmarkTurn>",
+				"description": "Completed turn with session identity, matching reported model and available usage."
+			},
+			{
+				"name": "CodexBenchmarkAdapter.command",
+				"type": "string[]",
+				"description": "Explicit Codex exec or resume argument vector."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects unsupported settings, unavailable execution and incomplete or mismatched turns."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.benchmark-events",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.benchmark-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
