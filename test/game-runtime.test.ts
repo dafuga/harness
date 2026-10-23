@@ -72,17 +72,20 @@ test('native dimensions select real camera types while preserving engine objects
 	const run = createRun();
 	source.render(run, view);
 	const [world, flat] = painted.mock.lastCall!;
+	const objects: Three.Object3D[] = [...world.children];
+	const visible = objects.filter((object) => object.visible);
 	expect(flat.isOrthographicCamera).toBe(true);
-	expect(
-		world.children.filter((object: { visible: boolean }) => object.visible).length
-	).toBeGreaterThan(3);
+	expect(visible.length).toBeGreaterThan(3);
 	const progressed = stepGame(run, { x: 2, y: 0 }, view);
 	source.render(progressed, { ...view, dimension: '3d' });
 	const [sameWorld, deep] = painted.mock.lastCall!;
 	expect(sameWorld).toBe(world);
 	expect(deep.isPerspectiveCamera).toBe(true);
 	expect(progressed.state.hasKey).toBe(true);
-	expect(world.children.filter((object: { visible: boolean }) => !object.visible)).toHaveLength(1);
+	expect(world.children).toEqual(objects);
+	const hidden = visible.filter((object) => !object.visible);
+	expect(hidden).toHaveLength(1);
+	expect(hidden[0].position).toMatchObject({ x: 2, y: 0.5, z: 0 });
 	expect(canvas.dataset).toEqual({ renderer: 'webgl3d', dimension: '3d', ready: 'true' });
 	source.dispose();
 });
