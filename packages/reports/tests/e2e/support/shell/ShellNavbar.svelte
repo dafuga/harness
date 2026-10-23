@@ -1,5 +1,5 @@
 <script lang="ts">
-	import HarnessHeader from '../../../../src/components/harness/HarnessHeader.svelte';
+	import HarnessHeader from '../../../../src/components/explorer-ui/HarnessHeader.svelte';
 	import type { ExplorerLocation } from '../../../../src/models/Explorer.types';
 	import {
 		shellBranch,

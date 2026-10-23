@@ -18,6 +18,11 @@ test('recorded source moves retain definitions, owner-local placement and regist
 	const gaps = helperMoveGaps(root, migration.helpers, migration.followUps);
 
 	expect(migration.helpers).toHaveLength(411);
+	const original = migration.helpers[0];
+	const missing = { ...original, to: 'missing/owner-local-helper.ts' };
+	expect(helperMoveGaps(root, [original], [missing])).toContain(
+		`${original.name}: owner-local source is missing`
+	);
 	expect(
 		gaps,
 		`owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, 12).join('; ')}`

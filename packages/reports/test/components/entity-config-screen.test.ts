@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import EntityConfigScreen from '../../src/components/harness/EntityConfigScreen.svelte';
+import EntityConfigScreen from '../../src/components/explorer-ui/EntityConfigScreen.svelte';
 import { content, drawn, count, screen, words } from '../entityRender';
 import { ids } from '../entityUnits';
 

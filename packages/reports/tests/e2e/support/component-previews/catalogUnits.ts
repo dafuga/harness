@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { catalogVisual, type PreviewManifest } from './visualUnits';
-const directory = fileURLToPath(new URL('../../../../../../specification/units/', import.meta.url));
+const directory = fileURLToPath(new URL('../../../../../../specification/units', import.meta.url));
 export const catalogUnits = readdirSync(directory)
 	.filter((name) => name.endsWith('.json'))
 	.map((name) => JSON.parse(readFileSync(directory + name, 'utf8')) as PreviewManifest)

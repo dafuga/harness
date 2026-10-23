@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
 import ExplorerUsage from '../../src/components/ExplorerUsage.svelte';
-import ExplorerPageCard from '../../src/components/harness/ExplorerPageCard.svelte';
+import ExplorerPageCard from '../../src/components/explorer-ui/ExplorerPageCard.svelte';
 import { entityCatalog } from '../../src/utils/entityCatalog';
 import { hostProps, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';

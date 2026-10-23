@@ -1,8 +1,8 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessHeader from '../../src/components/harness/HarnessHeader.svelte';
-import HarnessSelectors from '../../src/components/harness/harness-selectors/HarnessSelectors.svelte';
-import HarnessTabs from '../../src/components/harness/HarnessTabs.svelte';
+import HarnessHeader from '../../src/components/explorer-ui/HarnessHeader.svelte';
+import HarnessSelectors from '../../src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte';
+import HarnessTabs from '../../src/components/explorer-ui/HarnessTabs.svelte';
 import {
 	sha,
 	shellBranch,

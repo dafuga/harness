@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { catalogFilter } from '../../src/components/harness/explorer-index/entityCatalog';
+import { catalogFilter } from '../../src/components/explorer-ui/explorer-index/entityCatalog';
 import { entityCatalog, listed } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
