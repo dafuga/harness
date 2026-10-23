@@ -1,6 +1,5 @@
-import type { IsolatedRun, IsolatedResult, Outcome, Followed, Running } from './runIsolated.types';
+import type { IsolatedRun, IsolatedResult, Outcome, Running } from './runIsolated.types';
 export type { IsolatedRun, IsolatedResult, Outcome, Followed, Running } from './runIsolated.types';
-import type { ChildProcess } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -8,14 +7,9 @@ import { dirname } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { clearInterval, clearTimeout, setInterval, setTimeout } from 'node:timers';
 import { cleanupDeadline } from '../../development-tooling/cleanupDeadline';
-import {
-	processDescendants,
-	type ProcessTable,
-	type TrackedProcess
-} from '../../development-tooling/processDescendants';
-import type { ProcessProbes } from '../../development-tooling/processProbes';
+import { processDescendants } from '../../development-tooling/processDescendants';
 import { signalGroup } from '../groupTeardown';
-import { platformServices, type ServiceAuthority, type ServiceContext } from '../platformServices';
+import { platformServices, type ServiceContext } from '../platformServices';
 import { groupTeardown } from './groupTeardown';
 import { captureIsolatedOutput, isolatedChild } from './isolatedChild';
 import { haltProcesses, settleProcesses } from './settleProcesses';
