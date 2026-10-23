@@ -69,9 +69,11 @@ test('Rails-ish scaffolds create their expected code shapes', async () => {
 	expect(pieceFiles('initializer', 'Cache').map((file) => file.path)).toContain(
 		'src/initializers/initializeCache.ts'
 	);
-	expect(pieceExportPlans('config', 'Search')).toEqual([
-		{ source: './configs/searchConfig', named: ['searchConfig'] }
-	]);
+	await measureWorkload('function.exports', 'config-sdk-export-address', () => {
+		expect(pieceExportPlans('config', 'Search')).toEqual([
+			{ source: './configs/searchConfig', named: ['searchConfig'] }
+		]);
+	});
 	const config = await measureWorkload('template.rails-pieces', 'generate-config-shape', () =>
 		pieceFiles('config', 'Search')
 	);
