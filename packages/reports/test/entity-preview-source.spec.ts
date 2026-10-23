@@ -93,7 +93,8 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			).toHaveCount(0);
 			await expect(page.locator('pre')).toHaveCount(0);
 			await capture(page, `${phase}-source-action-${category}-${viewport}`, [
-				'reports.component.harness-entity-source'
+				'reports.component.harness-entity-source',
+				'reports.component.source-file-list'
 			]);
 			await expect(action, 'Every source file has its own code action').toBeVisible();
 			await fileLink(page, path, commits.tip);
