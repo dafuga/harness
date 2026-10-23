@@ -19,9 +19,20 @@
 	<ul class="source-files" aria-label={label}>
 		{#each files as path, position (position)}
 			{@const url = href(path)}
+			{@const split = path.lastIndexOf('/')}
+			{@const folder = split < 0 ? '' : path.slice(0, split)}
+			{@const name = path.slice(split + 1)}
 			<li>
-				{#if url}<a href={url} target="_blank" rel="noreferrer">{path}</a>
-				{:else}<code>{path}</code>{/if}
+				{#if url}<a href={url} target="_blank" rel="noreferrer" title={path} aria-label={path}>
+						{#if folder}<span class="source-folder">{folder}</span>{/if}<span class="source-name"
+							>{folder ? '/' : ''}{name}</span
+						>
+					</a>
+				{:else}<code title={path}>
+						{#if folder}<span class="source-folder">{folder}</span>{/if}<span class="source-name"
+							>{folder ? '/' : ''}{name}</span
+						>
+					</code>{/if}
 				{@render children(path)}
 			</li>
 		{/each}
@@ -35,8 +46,8 @@
 		padding: 0;
 	}
 	.source-files li {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
 		align-items: center;
 		gap: var(--hx-space-8) var(--hx-space-16);
 		padding: var(--hx-space-14) 0;
@@ -47,8 +58,22 @@
 	.source-files a,
 	.source-files code {
 		min-width: 0;
-		overflow-wrap: anywhere;
+		display: flex;
+		white-space: nowrap;
+		overflow: hidden;
 		font: var(--hx-type-size-sm) var(--hx-font-family-mono);
+	}
+	.source-folder {
+		min-width: 0;
+		flex: 0 1 auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.source-name {
+		flex: 0 0 auto;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.source-files a {
 		color: inherit;
@@ -65,6 +90,16 @@
 	.source-files :global(.hx-action svg) {
 		width: var(--hx-space-14);
 		height: var(--hx-space-14);
+	}
+	@media (max-width: 480px) {
+		.source-files li {
+			grid-template-columns: minmax(0, 1fr);
+			justify-items: start;
+		}
+		.source-files a,
+		.source-files code {
+			max-width: 100%;
+		}
 	}
 	.source-empty {
 		color: var(--ex-muted, var(--muted));

@@ -2,7 +2,7 @@
 	"name": "source-path-rows",
 	"goal": "Source paths and code actions fit one desktop line and at most two mobile lines",
 	"createdAt": "2026-10-23T14:50:06.746Z",
-	"updatedAt": "2026-10-23T14:51:00.705Z",
+	"updatedAt": "2026-10-23T14:57:44.622Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T14:55:45.918Z",
+			"evidence": "Committed ae43049ca; immutable red record retained with Source paths stay on one line failing on normal wrapping in the existing Source matrix."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T14:57:44.622Z",
+			"evidence": "Shared SourceFileList now uses two grid columns on desktop; folder text truncates before filename. Mobile has one path line plus one compact action line. Full title and accessible path retained."
 		},
 		{
 			"id": "green",
