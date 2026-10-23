@@ -60,6 +60,23 @@
 		return [...declared, { name: unclassified, description, tokens: rest }];
 	}
 
+	/** Each color once, under the first role that lists it; a color no role lists is still shown. */
+	function assignColors(palette: StyleToken[]) {
+		const left = new Map(palette.map((token) => [token.name, token] as const));
+		const claim = ([name, job]: readonly [string, string]) => {
+			const token = left.get(name);
+			return left.delete(name) && token ? [{ token, job }] : [];
+		};
+		const roles = appStyleTokensConfig.colorRoles.map(({ name, use, base, tokens }) => {
+			const own = base ? [{ label: 'Base color', base: true, colors: claim(base) }] : [];
+			const label = base ? 'Treatments' : 'Variables';
+			return { name, use, sets: [...own, { label, base: false, colors: tokens.flatMap(claim) }] };
+		});
+		const colors = [...left.values()].map((token) => ({ token, job: 'No role lists it yet' }));
+		const sets = [{ label: 'Variables', base: false, colors }];
+		return colors.length ? [...roles, { ...appStyleTokensConfig.unassignedColors, sets }] : roles;
+	}
+
 	/** Only :root rules publish app tokens; a component stylesheet's own variables are not listed. */
 	function readRules(rules: CSSRuleList, found: Map<string, string>) {
 		for (const rule of Array.from(rules)) {
@@ -122,11 +139,7 @@
 
 {#snippet specimen(token: StyleToken)}
 	{@const kind = drawing(token)[0]}
-	{#if kind === 'swatch'}
-		<div class="hx-style-color" style={specimenStyle(token)} aria-hidden="true">
-			<span></span><span></span>
-		</div>
-	{:else if kind === 'text'}
+	{#if kind === 'text'}
 		<p class="hx-style-specimen" style={specimenStyle(token)}>
 			<span>{sample(token)}</span>
 		</p>
@@ -156,30 +169,6 @@
 			</header>
 
 			<div class="hx-styles-groups">
-				<section class="hx-color-roles" aria-labelledby={headingId('Color roles')}>
-					<div class="hx-styles-group-heading">
-						<h2 id={headingId('Color roles')}>Color roles</h2>
-						<p>
-							Which variable a component should use for each job, each swatch drawn by the variable
-							itself. The complete inventory follows.
-						</p>
-					</div>
-					<div class="hx-styles-grid">
-						{#each appStyleTokensConfig.colorRoles as role (role.name)}
-							<article class="hx-color-role" aria-labelledby={headingId(role.name)}>
-								<h3 id={headingId(role.name)}>{role.name}</h3>
-								<p><strong>Use for</strong> {role.use}</p>
-								<ul>
-									{#each role.tokens as [name, job] (name)}
-										<li style={`--style-specimen: var(${name})`}>
-											<code>var({name})</code><span>{job}</span>
-										</li>
-									{/each}
-								</ul>
-							</article>
-						{/each}
-					</div>
-				</section>
 				{#each groups as group (group.name)}
 					<section class="hx-styles-group" aria-labelledby={headingId(group.name)}>
 						<div class="hx-styles-group-heading">
@@ -187,16 +176,38 @@
 							<span>{group.tokens.length}</span>
 							<p>{group.description}</p>
 						</div>
-						<div class="hx-styles-grid">
-							{#each group.tokens as token (token.name)}
-								<article class="hx-style-token" data-style-token={token.name}>
-									<header class="hx-style-token-head">
-										<code>{token.name}</code>
-										<span>{token.value}</span>
-									</header>
-									{@render specimen(token)}
-								</article>
-							{/each}
+						<div class="hx-styles-grid" class:hx-color-roles={group.name === 'Colors'}>
+							{#if group.name === 'Colors'}
+								{#each assignColors(group.tokens) as role (role.name)}
+									<article class="hx-color-role" aria-labelledby={headingId(role.name)}>
+										<h3 id={headingId(role.name)}>{role.name}</h3>
+										<p><strong>Use for</strong> {role.use}</p>
+										{#each role.sets as { label, base, colors } (label)}
+											{@const id = headingId(`${role.name} ${label}`)}
+											<div role="group" aria-labelledby={id} class:hx-color-base={base}>
+												<p {id}>{label}</p>
+												{#each colors as { token, job } (token.name)}
+													<div data-style-token={token.name} style={specimenStyle(token)}>
+														<code>{token.name}</code>
+														<span>{job}</span>
+														<span>{token.value}</span>
+													</div>
+												{/each}
+											</div>
+										{/each}
+									</article>
+								{/each}
+							{:else}
+								{#each group.tokens as token (token.name)}
+									<article class="hx-style-token" data-style-token={token.name}>
+										<header class="hx-style-token-head">
+											<code>{token.name}</code>
+											<span>{token.value}</span>
+										</header>
+										{@render specimen(token)}
+									</article>
+								{/each}
+							{/if}
 						</div>
 					</section>
 				{/each}
