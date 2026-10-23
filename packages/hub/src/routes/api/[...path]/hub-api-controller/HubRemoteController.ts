@@ -1,22 +1,10 @@
+import type { Route, Call } from './HubRemoteController.types';
 import type { Actor } from 'collaboration';
 import type { RemoteHostRegistration } from '../../../../../../remote/src/models/RemoteRelay.types';
 import { hubBody, hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
 import { hubFail } from '../../../../utils/development-tooling/hubJson';
 import type { HubRemoteRuntime } from '../../../../utils/networking-security/hubRemote';
 import { RemoteHostValidator } from '../../../../validators/networking-security/RemoteHostValidator';
-
-interface Route {
-	kind: 'hosts' | 'host' | 'device';
-	ids: string[];
-}
-
-interface Call {
-	request: Request;
-	remote: HubRemoteRuntime;
-	/** Always the verified session actor. Nothing a request carries names the owner. */
-	owner: { id: string };
-	ids: string[];
-}
 
 const validator = new RemoteHostValidator();
 

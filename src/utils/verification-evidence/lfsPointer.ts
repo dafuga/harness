@@ -1,3 +1,4 @@
+import type { LfsObject } from './lfsPointer.types';
 const header = 'version https://git-lfs.github.com/spec/v1';
 
 export /** Media is stored through Git LFS; records, manifests, logs and text stay ordinary blobs. */
@@ -15,12 +16,6 @@ const mediaExtensions = [
 	'mp4'
 ];
 
-export interface LfsObject {
-	/** sha256 of the original bytes, which is also the LFS object id. */
-	sha256: string;
-	bytes: number;
-}
-
 /** The exact pointer text Git LFS reads in place of the original bytes. */
 export function lfsPointer(file: LfsObject): string {
 	return `${header}\noid sha256:${file.sha256}\nsize ${file.bytes}\n`;
@@ -34,3 +29,5 @@ export function lfsStored(path: string): boolean {
 
 export { parseLfsPointer } from '../../services/verification-evidence/history-status-service/attached-record-service/lfsPointer';
 export { lfsAttributes } from '../../repositories/verification-evidence/evidence-branch-repository/lfsPointer';
+
+export type { LfsObject } from './lfsPointer.types';

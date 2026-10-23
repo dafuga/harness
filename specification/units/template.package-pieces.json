@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"src/templates/development-tooling/packagePieces.ts",
+			"src/templates/development-tooling/packagePieces.types.ts",
 			"src/templates/packagePieces.ts"
 		],
 		"symbols": [
@@ -21,6 +22,7 @@
 			"policyFiles",
 			"seederFiles",
 			"utilFiles",
+			"EntityFileInput",
 			"controllerFiles",
 			"classFiles",
 			"repositoryFiles",

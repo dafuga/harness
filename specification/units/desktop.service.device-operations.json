@@ -9,14 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.types.ts",
 			"packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts"
 		],
 		"symbols": [
-			"DeviceOperationsOptions",
 			"DeviceOperationsService",
 			"DeviceOperationsService.constructor",
 			"DeviceOperationsService.methods",
 			"DeviceOperationsService.handle",
+			"DeviceOperationsOptions",
+			"DeviceOperationsOptions",
+			"Fields",
+			"Operation",
 			"DeviceOperationsService"
 		]
 	},

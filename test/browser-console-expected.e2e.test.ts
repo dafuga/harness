@@ -1,3 +1,4 @@
+import type { Spec, Execution } from './browser-console-expected.e2e.test.types';
 import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -74,11 +75,6 @@ async function assertPersisted(results: Execution[], root: string) {
 	});
 }
 
-interface Execution {
-	status: string;
-	results: { attachments: { name: string; body: string }[]; errors: unknown[] }[];
-}
-
 test('API-only checks do not require a browser executable', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-api-only-'));
 	try {
@@ -107,9 +103,6 @@ test('API-only checks do not require a browser executable', async () => {
 		await rm(root, { recursive: true, force: true });
 	}
 }, 120_000);
-interface Spec {
-	tests: Execution[];
-}
 function diagnostic(test: Execution) {
 	const log = test.results[0].attachments.find((item) => item.name === 'browser-errors');
 	expect(log).toBeDefined();

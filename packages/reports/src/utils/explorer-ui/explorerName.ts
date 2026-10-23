@@ -1,7 +1,6 @@
+import type { Named } from './explorerName.types';
 import { explorerCategories } from '../../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../../models/explorer-ui/Harness.types';
-
-type Named = Pick<HarnessUnit, 'id' | 'kind' | 'title'> & Partial<Pick<HarnessUnit, 'owns'>>;
 const initials = new Set(['api', 'cli', 'cpu', 'css', 'e2e', 'html', 'id', 'json', 'lfs', 'mcp']);
 const more = ['pdf', 'r2', 'sdk', 'ui', 'url', 'wasm', 'wav', 'zip'];
 for (const word of more) initials.add(word);

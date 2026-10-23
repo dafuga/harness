@@ -15,11 +15,6 @@ export async function stageFiles(git: Git, files: Files, index: string): Promise
 	}
 }
 
-export interface CommitContext {
-	parent: string;
-	branch: string;
-	commit: string;
-	temp: string;
-}
-
 export { planCommit, requireLfsFilters } from './plan-write/planCommit';
+
+export type { CommitContext } from './planCommit.types';

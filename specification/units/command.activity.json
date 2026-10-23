@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/ActivityCommand.ts"],
-		"symbols": ["registerActivityCommand"]
+		"source": ["src/cli/program/ActivityCommand.ts", "src/cli/program/ActivityCommand.types.ts"],
+		"symbols": ["registerActivityCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

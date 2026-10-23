@@ -9,15 +9,18 @@
 	"owns": {
 		"source": [
 			"src/workflows/development-tooling/loadRevisions.ts",
+			"src/workflows/development-tooling/loadRevisions.types.ts",
 			"src/workflows/loadRevisions.ts"
 		],
 		"symbols": [
-			"RevisionSide",
-			"RevisionRange",
 			"loadSide",
 			"emptySide",
 			"openRange",
 			"commitLoader",
+			"RevisionSide",
+			"RevisionRange",
+			"RevisionSide",
+			"RevisionRange",
 			"loadSide",
 			"emptySide",
 			"openRange",

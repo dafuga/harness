@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/runHooks.ts"],
-		"symbols": ["manageHooks", "runHook", "checkMessage", "renderHooks", "renderHookOutcome"]
+		"source": ["src/cli/program/runHooks.ts", "src/cli/program/runHooks.types.ts"],
+		"symbols": [
+			"manageHooks",
+			"runHook",
+			"checkMessage",
+			"renderHooks",
+			"renderHookOutcome",
+			"Action"
+		]
 	},
 	"contract": {
 		"origin": "derived",

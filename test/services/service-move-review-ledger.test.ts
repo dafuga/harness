@@ -1,12 +1,6 @@
+import type { ReviewedFile } from './service-move-review-ledger.test.types';
 import { expect, test } from 'vitest';
 import migration from '../../specification/loops/shared-service-ownership/migration.json';
-
-interface ReviewedFile {
-	unit: string;
-	to: string;
-	definition: string;
-	review?: { commit: string; path: string; definition: string; reason: string };
-}
 
 test('history catalog changes have committed service-move review entries', () => {
 	const files = migration.files as ReviewedFile[];

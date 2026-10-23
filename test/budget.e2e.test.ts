@@ -1,3 +1,4 @@
+import type { Finding } from './budget.e2e.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, cloneRepo, reviewer, type VerifyRepo } from './support/verifyRepo';
 import { fixtureSources } from './support/verifyFixture';
@@ -11,13 +12,6 @@ afterAll(() => baseline.dispose());
 const ledger = 'specification/budgets/ledger.ndjson';
 const finding = (record: { budgets: { findings: Finding[] } }, unit: string, metric: string) =>
 	record.budgets.findings.find((item) => item.unit === unit && item.metric === metric);
-interface Finding {
-	unit: string;
-	metric: string;
-	status: string;
-	baseline: number | null;
-	measured: number | null;
-}
 const grow = (source: string) =>
 	source.replace(
 		'\treturn input',

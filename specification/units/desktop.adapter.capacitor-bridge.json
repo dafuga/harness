@@ -10,17 +10,21 @@
 		"source": [
 			"packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts"
+			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.types.ts"
 		],
 		"symbols": [
 			"CapacitorBridgeAdapter",
 			"CapacitorBridgeAdapterConfig",
 			"CapacitorBridgeAdapter",
-			"CapacitorBridgeAdapterConfig",
 			"CapacitorBridgeAdapter",
 			"CapacitorBridgeAdapter.constructor",
 			"CapacitorBridgeAdapter.allow",
-			"CapacitorBridgeAdapter.connect"
+			"CapacitorBridgeAdapter.connect",
+			"CapacitorBridgeAdapterConfig",
+			"CapacitorBridgeAdapterConfig",
+			"Input",
+			"Operation"
 		]
 	},
 	"contract": {

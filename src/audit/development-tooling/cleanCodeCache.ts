@@ -1,15 +1,11 @@
+import type { CachedEvaluation } from './cleanCodeCache.types';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, realpath, rename, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, join, relative } from 'node:path';
 import { reviewHash } from './cleanCodeFiles';
 import type { ReviewSnapshot } from '../verification-evidence/cleanCodeSnapshot';
-import type { CleanCodeSettings, JevEvaluation } from './cleanCodeTypes';
+import type { CleanCodeSettings } from './cleanCodeTypes';
 import { cleanCodeRubricVersion } from './cleanCodeRubric';
-
-export interface CachedEvaluation {
-	evaluation: JevEvaluation;
-	localization?: JevEvaluation;
-}
 
 export function reviewCacheKey(snapshot: ReviewSnapshot, settings: CleanCodeSettings): string {
 	return reviewHash(
@@ -76,3 +72,5 @@ async function validateCacheAncestor(root: string, directory: string): Promise<v
 	if (path.startsWith('..') || isAbsolute(path))
 		throw new Error('Cache ancestor is outside project');
 }
+
+export type { CachedEvaluation } from './cleanCodeCache.types';

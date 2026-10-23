@@ -1,3 +1,4 @@
+import type { Measured, Told } from './explorerHistory.types';
 import type { ExplorerHistoryRow, ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 import type {
 	HarnessGrowthPoint,
@@ -5,8 +6,6 @@ import type {
 	HarnessRevisionSummary
 } from '../../../models/explorer-ui/Harness.types';
 import { harnessAncestry } from './harnessAncestry';
-
-type Measured = NonNullable<ExplorerHistoryRow['measured']>;
 
 const marks = ['added', 'removed', 'direct'] as const;
 
@@ -28,8 +27,6 @@ const delta = (now: number | null, before: number | null | undefined) =>
 const unbuilt = 'This history was built before it recorded what each commit changed.';
 
 const unread = 'The source of this commit could not be compared with its parent.';
-
-type Told = Pick<ExplorerHistoryRow, 'standing' | 'change' | 'gap'>;
 
 /**
  * What the history records that a commit did to a unit: it changed, added or removed it, it

@@ -9,14 +9,18 @@
 	"owns": {
 		"source": [
 			"src/audit/cleanCodeSnapshot.ts",
-			"src/audit/verification-evidence/cleanCodeSnapshot.ts"
+			"src/audit/verification-evidence/cleanCodeSnapshot.ts",
+			"src/audit/verification-evidence/cleanCodeSnapshot.types.ts"
 		],
 		"symbols": [
 			"maxReviewStateBytes",
 			"snapshotCleanCodeFile",
 			"maxReviewStateBytes",
+			"snapshotCleanCodeFile",
 			"ReviewSnapshot",
-			"snapshotCleanCodeFile"
+			"ReviewSnapshot",
+			"SnapshotInput",
+			"SnapshotState"
 		]
 	},
 	"contract": {

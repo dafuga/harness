@@ -9,17 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/evidenceNotice.ts",
-			"packages/desktop/src/utils/verification-evidence/evidenceNotice.ts"
+			"packages/desktop/src/utils/verification-evidence/evidenceNotice.ts",
+			"packages/desktop/src/utils/verification-evidence/evidenceNotice.types.ts"
 		],
 		"symbols": [
 			"unavailableEvidence",
 			"readingEvidence",
 			"evidenceNotice",
-			"EvidenceStatus",
 			"unavailableEvidence",
 			"readingEvidence",
+			"evidenceNotice",
+			"EvidenceStatus",
 			"EvidenceNotice",
-			"evidenceNotice"
+			"EvidenceStatus",
+			"EvidenceNotice"
 		]
 	},
 	"contract": {

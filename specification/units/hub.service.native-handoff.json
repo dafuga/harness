@@ -10,6 +10,7 @@
 		"source": [
 			"packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts",
 			"packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service/NativeHandoffService.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service/NativeHandoffService.types.ts",
 			"packages/hub/src/services/native-handoff-service/NativeHandoffService.ts"
 		],
 		"symbols": [
@@ -18,13 +19,14 @@
 			"NativeHandoffService",
 			"HANDOFF_TTL",
 			"POLL_INTERVAL",
-			"NativeHandoffOptions",
 			"NativeHandoffService",
 			"NativeHandoffService.constructor",
 			"NativeHandoffService.start",
 			"NativeHandoffService.approve",
 			"NativeHandoffService.poll",
 			"NativeHandoffService.exchange",
+			"NativeHandoffOptions",
+			"NativeHandoffOptions",
 			"HANDOFF_TTL",
 			"POLL_INTERVAL",
 			"NativeHandoffService",

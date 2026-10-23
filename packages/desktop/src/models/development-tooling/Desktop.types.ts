@@ -1,35 +1,22 @@
-import type { ProjectCapabilities, CacheProvenance } from '../ProjectContext.types';
-import type { ProjectIdentity } from '../ProjectContext.types';
-import type { DesignVersion } from '../DesignVersion.types';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { UnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';
-export type {
-	DesignImage,
-	DesignOptionInfo,
-	DesignRevision,
-	DesignVersion
-} from '../DesignVersion.types';
-/**
- * What the Electron main process tells the renderer about a project. Every value here is
- * serializable: it crosses the preload bridge by structured clone.
- */
-export const categories = [
-	'pages',
-	'layouts',
-	'components',
-	'functions',
-	'configs',
-	'services',
-	'models'
-] as const;
+import type { DesignVersion } from '../DesignVersion.types';
+import type { ProjectIdentity } from '../ProjectContext.types';
+import type { ProjectCapabilities } from '../ProjectContext.types';
+import type { CacheProvenance } from '../ProjectContext.types';
+import type { categories } from './DesktopValues';
 export type Category = (typeof categories)[number];
+
 export type ProviderId = 'codex' | 'claude';
+
 export type RunMode = 'plan' | 'change';
+
 /**
  * `verified` and `failed` come from a verification record of the viewed commit. A plan is
  * `unverified` until such a record exists; a unit without one is `unknown`, never assumed.
  */
 export type Verification = 'verified' | 'failed' | 'unverified' | 'unknown';
+
 /** A rectangle on an image, each value a fraction of the image's width or height. */
 export interface Region {
 	x: number;
@@ -37,6 +24,7 @@ export interface Region {
 	width: number;
 	height: number;
 }
+
 export interface ModelChoice {
 	/** The identifier the CLI itself reported or accepts; passed back unchanged. */
 	id: string;
@@ -45,6 +33,7 @@ export interface ModelChoice {
 	defaultEffort: string | null;
 	isDefault: boolean;
 }
+
 export interface ProviderState {
 	id: ProviderId;
 	label: string;
@@ -157,6 +146,7 @@ export interface DesignThumbnail {
 	state: string;
 	viewport: string;
 }
+
 export type Thumbnail =
 	| DesignThumbnail
 	| ({ source: 'recorded' } & Partial<NonNullable<ComponentManifest['preview']>>);
@@ -217,3 +207,10 @@ export interface SourceChange {
 	path: string;
 	change: 'added' | 'modified' | 'deleted';
 }
+export {
+	type DesignImage,
+	type DesignOptionInfo,
+	type DesignRevision,
+	type DesignVersion,
+	categories
+} from './DesktopValues';

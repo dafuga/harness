@@ -1,4 +1,4 @@
-import type { ComponentManifest } from '../../src/core/unitTypes';
+import type { Helper, HelperCall } from './unit-documentation.test.types';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -116,9 +116,6 @@ test('every committed public helper example executes against its real implementa
 	}
 	expect(total).toBeGreaterThan(0);
 });
-
-type Helper = NonNullable<ComponentManifest['helperContracts']>[number];
-type HelperCall = (...args: unknown[]) => unknown;
 /** Normal helper documentation checks also retain direct, feature-based workloads. */
 function recordHelperWorkload(unit: string, helper: Helper, call: HelperCall) {
 	if (!evidenceRequested()) return;

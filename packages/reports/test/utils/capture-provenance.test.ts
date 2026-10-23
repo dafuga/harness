@@ -1,3 +1,4 @@
+import type { Scenario } from './capture-provenance.test.types';
 import { expect, test } from 'vitest';
 import type { HarnessCapture, HarnessRecord } from '../../src/models/Harness.types';
 import { harnessEvidence } from '../../src/utils/harnessEvidence';
@@ -24,7 +25,6 @@ function capture(extra: Partial<HarnessCapture> = {}): HarnessCapture {
 		...extra
 	};
 }
-type Scenario = HarnessRecord['scenarios'][number];
 function scenario(captures: HarnessCapture[], extra: Partial<Scenario> = {}): Scenario {
 	return {
 		id: 'titles-page',

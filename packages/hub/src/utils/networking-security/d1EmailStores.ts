@@ -1,13 +1,3 @@
-import type {
-	EmailLedgerStore,
-	EmailProofStore
-} from '../../models/accounts-access/HubAuthStore.types';
-
-export interface D1EmailStores {
-	emailProofs: EmailProofStore;
-	emailLedger: EmailLedgerStore;
-}
-
 export const EMAIL_PURGES = [
 	'DELETE FROM auth_email_proofs WHERE expires_at <= ?',
 	'DELETE FROM auth_email_verified WHERE expires_at <= ?',
@@ -15,3 +5,5 @@ export const EMAIL_PURGES = [
 ];
 
 export { d1EmailStores } from '../../routes/api/[...path]/d1-auth-store-adapter/d1EmailStores';
+
+export type { D1EmailStores } from './d1EmailStores.types';

@@ -10,7 +10,8 @@
 		"source": [
 			"src/utils/console-canonical/consoleCanonical.ts",
 			"src/utils/consoleCanonical.ts",
-			"src/utils/projects-sessions/console-canonical/consoleCanonical.ts"
+			"src/utils/projects-sessions/console-canonical/consoleCanonical.ts",
+			"src/utils/projects-sessions/console-canonical/consoleCanonical.types.ts"
 		],
 		"symbols": [
 			"defaultCommit",
@@ -26,13 +27,14 @@
 			"explorerExact",
 			"explorerAddress",
 			"consoleCanonical",
-			"IndexedHistory",
 			"defaultCommit",
 			"commitBranch",
 			"explorerHome",
 			"explorerExact",
 			"explorerAddress",
-			"consoleCanonical"
+			"consoleCanonical",
+			"IndexedHistory",
+			"IndexedHistory"
 		]
 	},
 	"contract": {

@@ -1,3 +1,4 @@
+import type { Kind } from './entity-tests.test.types';
 import { expect, test } from 'vitest';
 import { record, revision } from '../entityFixture';
 import { content, count, disclosed, verdicts, words, verificationPanel } from '../entityRender';
@@ -11,7 +12,6 @@ const row = (body: string, state: string) => {
 	return rows.find((part) => part.includes(`<th scope="row">${state}</th>`)) ?? '';
 };
 const missing = 'No capture of Orders page over synthetic orders: empty at mobile.';
-type Kind = 'pages' | 'functions' | 'services' | 'configs';
 /** The evidence labels read on an entity screen opened at its former Tests address. */
 const labels = (category: Kind, entity: string) => {
 	const shown = words(content('commit', { category, entity, tab: 'tests' }));

@@ -1,3 +1,4 @@
+import type { Impact } from './history-pairs.e2e.test.types';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -5,14 +6,6 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import { sideImpact } from '../packages/reports/src/components/explorer-ui/harness-compare/sideImpact';
 import { type StoredSide } from '../src/utils/sideImpact';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
-
-interface Impact {
-	expanded: boolean;
-	units: Record<'direct' | 'indirect' | 'added' | 'removed', string[]>;
-	scenarios: { affected: string[] };
-	uncertain: unknown[];
-	changed: unknown[];
-}
 
 let repo: VerifyRepo;
 let out: string;

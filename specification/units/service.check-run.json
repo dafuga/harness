@@ -12,7 +12,8 @@
 			"src/services/check-run-service/CheckRunService.ts",
 			"src/workflows/run-verify/verification-service/CheckRunService.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.types.ts"
 		],
 		"symbols": [
 			"RunContext",
@@ -25,12 +26,14 @@
 			"CheckOutcome",
 			"CheckRunService",
 			"CheckRunService",
-			"RunContext",
-			"CheckOutcome",
 			"CheckRunService",
 			"CheckRunService.constructor",
 			"CheckRunService.run",
-			"CheckRunService.version"
+			"CheckRunService.version",
+			"RunContext",
+			"CheckOutcome",
+			"RunContext",
+			"CheckOutcome"
 		]
 	},
 	"contract": {

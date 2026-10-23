@@ -1,3 +1,4 @@
+import type { UnitFlags } from './generate.types';
 import type { Command } from 'commander';
 import {
 	generateModel,
@@ -7,13 +8,6 @@ import {
 } from '../../workflows/projects-sessions/generate-code/generateCode';
 import type { PieceKind } from '../../workflows/projects-sessions/generate-code/generateCode';
 import { generateUnit } from './generateUnit';
-
-interface UnitFlags {
-	kind?: string;
-	responsibility?: string;
-	force?: boolean;
-	group?: string;
-}
 
 export function registerGenerateCommand(program: Command): void {
 	const command = program.command('generate').alias('g').description('Generate Harness code.');

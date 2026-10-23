@@ -1,30 +1,11 @@
+import type { VerifyRepo, VerifyOutcome } from './verifyRepo.types';
 import { cp, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
-import { runCommand, runHarness, type CommandResult } from './cli';
-import { projectAt, unitProject, type UnitProject } from './unitProject';
+import { runCommand, runHarness } from './cli';
+import { projectAt, unitProject } from './unitProject';
 import { fixtureScenarios, fixtureSources } from './verifyFixture';
-
-export interface VerifyOutcome {
-	exitCode: number;
-	stderr: string;
-	record: VerificationRecord;
-	/** Scratch directory holding the record, evidence and logs. */
-	directory: string;
-}
-
-export interface VerifyRepo extends UnitProject {
-	git(args: string[]): Promise<string>;
-	commit(message: string): Promise<string>;
-	/** Explains every currently required change with one generic reason. */
-	explainAll(range?: string[]): Promise<void>;
-	verify(args?: string[], env?: Record<string, string>): Promise<VerifyOutcome>;
-	/** Edits, explains and commits one file, returning the new commit. */
-	change(path: string, edit: (source: string) => string): Promise<string>;
-	run(args: string[], env?: Record<string, string>): Promise<CommandResult>;
-	dispose(): Promise<void>;
-}
 
 export const reviewer = ['--reviewer', 'Reviewer One', '--reason', 'Reviewed fixture change'];
 export const reason = [
@@ -147,3 +128,5 @@ export async function cloneRepo(source: VerifyRepo): Promise<VerifyRepo> {
 	await cp(source.root, join(parent, 'demo'), { recursive: true });
 	return repoAt(join(parent, 'demo'));
 }
+
+export type { VerifyOutcome, VerifyRepo } from './verifyRepo.types';

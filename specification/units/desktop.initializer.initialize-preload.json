@@ -10,9 +10,10 @@
 		"source": [
 			"packages/desktop/src/initializers/initializePreload.ts",
 			"packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+			"packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.types.ts",
 			"packages/desktop/src/lib/preload-initialization/initializePreload.ts"
 		],
-		"symbols": ["initializePreload", "initializePreload", "initializePreload"]
+		"symbols": ["initializePreload", "initializePreload", "Input", "initializePreload"]
 	},
 	"contract": {
 		"origin": "derived",

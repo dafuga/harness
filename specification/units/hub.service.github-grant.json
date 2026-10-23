@@ -10,6 +10,7 @@
 		"source": [
 			"packages/hub/src/lib/server/auth/GithubGrantService.ts",
 			"packages/hub/src/lib/verification-evidence/server/auth/GithubGrantService.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/GithubGrantService.types.ts",
 			"packages/hub/src/services/GithubGrantService.ts"
 		],
 		"symbols": [
@@ -20,7 +21,6 @@
 			"STATE_TTL",
 			"GRANT_TTL",
 			"REFRESH_LEASE",
-			"GithubGrantOptions",
 			"GithubGrantService",
 			"GithubGrantService.constructor",
 			"GithubGrantService.begin",
@@ -28,6 +28,10 @@
 			"GithubGrantService.status",
 			"GithubGrantService.disconnect",
 			"GithubGrantService.userToken",
+			"GithubGrantOptions",
+			"GithubGrantOptions",
+			"GrantProof",
+			"Lifetime",
 			"STATE_TTL",
 			"GRANT_TTL",
 			"REFRESH_LEASE",

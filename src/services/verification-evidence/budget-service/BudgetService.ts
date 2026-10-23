@@ -1,3 +1,4 @@
+import type { UnitBaseline, BudgetSubject, BudgetReport } from './BudgetService.types';
 import type { BudgetEvent } from '../../../core/verification-evidence/budgetTypes';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type {
@@ -11,22 +12,6 @@ import {
 	type BudgetBaseline
 } from '../../../utils/verification-evidence/budgetFindings';
 import { emittedMetric } from '../../../utils/development-tooling/emittedSizes';
-
-export interface UnitBaseline extends BudgetBaseline {
-	/** Retired predecessor whose frozen limits this unit continues. */
-	inheritedFrom?: string;
-}
-
-export interface BudgetSubject {
-	manifest: ComponentManifest;
-	/** True when the unit's own source changed, so its size and complexity are judged. */
-	checkSize: boolean;
-}
-
-export interface BudgetReport {
-	findings: BudgetFinding[];
-	failures: string[];
-}
 
 const units: Record<string, string> = { 'throughput-ops': 'ops/s', 'memory-bytes': 'bytes' };
 
@@ -187,3 +172,5 @@ function describe(finding: BudgetFinding, tolerance: number): string {
 		`the limit is ${limit} ${unit}`
 	);
 }
+
+export type { UnitBaseline, BudgetSubject, BudgetReport } from './BudgetService.types';

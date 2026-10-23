@@ -10,11 +10,11 @@
 		"source": [
 			"packages/desktop/src/services/RemoteHostRecordService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.types.ts",
 			"packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts"
 		],
 		"symbols": [
 			"RemoteHostRecordService",
-			"RemoteHostEnrolment",
 			"RemoteHostEnrolment",
 			"RemoteHostRecordService",
 			"RemoteHostRecordService.constructor",
@@ -24,6 +24,8 @@
 			"RemoteHostRecordService.off",
 			"RemoteHostRecordService.enrol",
 			"RemoteHostRecordService.settled",
+			"RemoteHostEnrolment",
+			"RemoteHostEnrolment",
 			"RemoteHostRecordService"
 		]
 	},

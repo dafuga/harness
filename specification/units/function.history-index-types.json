@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/git-source-history/historyIndexTypes.ts", "src/core/historyIndexTypes.ts"],
+		"source": [
+			"src/core/git-source-history/historyIndexTypes.ts",
+			"src/core/git-source-history/historyIndexTypes.types.ts",
+			"src/core/historyIndexTypes.ts"
+		],
 		"symbols": [
 			"indexedRecordSchema",
 			"indexedRevisionSchema",
@@ -16,6 +20,12 @@
 			"legacyEntrySchema",
 			"historyIndexSchema",
 			"indexedExplanationSchema",
+			"IndexedRecord",
+			"IndexedRevision",
+			"BenchmarkSeries",
+			"LegacyEntry",
+			"LegacyMedia",
+			"HistoryIndex",
 			"IndexedRecord",
 			"IndexedRevision",
 			"BenchmarkSeries",

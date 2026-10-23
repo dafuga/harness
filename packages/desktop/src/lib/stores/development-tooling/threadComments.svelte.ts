@@ -1,11 +1,7 @@
+import type { CommentInput } from './threadComments.svelte.types';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
-import type {
-	HumanCommentDraft,
-	HumanCommentResult
-} from '../../../models/projects-sessions/ProjectContext.types';
+import type { HumanCommentResult } from '../../../models/projects-sessions/ProjectContext.types';
 import type { PendingComment } from '../../../utils/explorer-ui/commentEntries';
-
-export type CommentInput = Pick<HumanCommentDraft, 'text' | 'anchor' | 'threadId'>;
 
 /**
  * Human comments of one entity view. A comment goes to the comment operation only: nothing here
@@ -69,4 +65,6 @@ class ThreadCommentsState {
 export function createThreadCommentsStore(workspace: Workspace) {
 	return new ThreadCommentsState(workspace);
 }
-export type ThreadComments = ThreadCommentsState;
+
+export type { CommentInput, ThreadComments } from './threadComments.svelte.types';
+export type { ThreadCommentsState };

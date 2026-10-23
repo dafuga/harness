@@ -1,27 +1,9 @@
+import type { Pending, AuthOptions } from './NativeAuthService.types';
 import { randomBytes, createHash } from 'node:crypto';
-import type { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
-import type { NativeSessionAdapter } from '../../../adapters/networking-security/NativeSessionAdapter';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import { NativeHandoffValidator } from '../../../validators/development-tooling/NativeHandoffValidator';
 import { NativeAccountStatusService } from './NativeAccountStatusService';
 import { responseRecord } from '../../../validators/projects-sessions/RemoteProjectResponseValidator';
-interface AuthOptions {
-	origin: string;
-	http: HostedHttpAdapter;
-	store: NativeSessionAdapter;
-	open: (url: string) => Promise<void>;
-	now?: () => number;
-	clearCache?: () => Promise<void>;
-	onDisconnect?: () => void;
-}
-interface Pending {
-	handoffId: string;
-	verifier: string;
-	nonce: string;
-	resource: string;
-	next: number;
-	status: NativeHostedStatus;
-}
 export class NativeAuthService {
 	private pending: Pending | null = null;
 	private queue: Promise<unknown> = Promise.resolve();

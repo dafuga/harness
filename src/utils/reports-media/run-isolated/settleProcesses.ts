@@ -1,3 +1,4 @@
+import type { Session, Work, Stop } from './settleProcesses.types';
 import type { SettleTiming } from '../settleProcesses';
 import { cleanupDeadline, type CleanupDeadline } from '../../development-tooling/cleanupDeadline';
 import { classifyProcess, type ServiceContext, type Verdict } from '../platformServices';
@@ -5,24 +6,6 @@ import { stillPrivate } from './stillPrivate';
 import type { FollowedProcess, TrackedProcess } from '../../development-tooling/processDescendants';
 import { settlementReport } from './settlementReport';
 import { unknownSettlement, type Judged, type Settlement, type Watched } from '../settlementReport';
-
-/** What one command's settling remembers between its looks. */
-interface Session {
-	/** Who stood with a service, by id and start time; what such a one started stands with it. */
-	shielded: Set<string>;
-	/** Who was sent a signal, at the time limit or after the end, by id and start time. */
-	signalled: Set<string>;
-	halting: CleanupDeadline | null;
-}
-
-interface Work {
-	watch: Watched;
-	context: ServiceContext;
-	session: Session;
-	deadline: CleanupDeadline;
-}
-
-type Stop = 'SIGTERM' | 'SIGKILL';
 
 const stepMs = 100;
 

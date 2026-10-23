@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/harnessClient.ts",
+			"packages/reports/src/utils/explorer-ui/harnessClient.types.ts",
 			"packages/reports/src/utils/harnessClient.ts"
 		],
-		"symbols": ["HarnessClient", "harnessClient", "harnessClient"]
+		"symbols": ["harnessClient", "HarnessClient", "HarnessClient", "harnessClient"]
 	},
 	"contract": {
 		"origin": "declared",

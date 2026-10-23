@@ -1,3 +1,4 @@
+import type { Device, Address } from './remote-relay-fixture.types';
 import { credentialHash, randomId } from '../../remote/src/index';
 import type {
 	RelayHostCommand,
@@ -8,16 +9,6 @@ import type {
 import { MemoryPairingDesk } from './remote-pairing-fixture';
 import { socketEnd } from './remote-socket-fixture';
 import type { SocketEnd } from './remote-socket-fixture';
-
-interface Device {
-	hash: string;
-	end: SocketEnd | null;
-	connectionId: string;
-}
-interface Address {
-	deviceId: string;
-	connectionId: string;
-}
 
 const stamp = '2026-10-12T10:00:00.000Z';
 const present = (devices: Map<string, Device>) =>

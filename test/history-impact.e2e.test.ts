@@ -1,29 +1,10 @@
+import type { Detail, Impact, Listed } from './history-impact.e2e.test.types';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
-
-interface Impact {
-	expanded: boolean;
-	units: Record<'direct' | 'indirect' | 'added' | 'removed', string[]>;
-	scenarios: { affected: string[] };
-	uncertain: Array<{ node: string; reason: string }>;
-	changed: Array<{ path: string; status: string }>;
-}
-interface Detail {
-	comparison: unknown;
-	records: unknown[];
-	sourceImpact: {
-		base: string | null;
-		expanded: boolean;
-		units: Impact['units'];
-		scenarios: string[];
-		uncertain: Impact['uncertain'];
-		changed: Impact['changed'];
-	} | null;
-}
 
 let repo: VerifyRepo;
 let out: string;
@@ -163,10 +144,6 @@ test('a changed dependency, an unresolved reference and a removal are each visib
 });
 
 test('the index lists what each commit changed itself, verified or not, and nothing for the rest', async () => {
-	interface Listed {
-		commit: string;
-		changes?: { base: string | null; direct: string[]; added: string[]; removed: string[] } | null;
-	}
 	const index = JSON.parse(await readFile(join(out, 'index.json'), 'utf8')) as {
 		revisions: Listed[];
 	};

@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/ReplayStorageService.ts",
-			"packages/reports/src/services/reports-media/ReplayStorageService.ts"
+			"packages/reports/src/services/reports-media/ReplayStorageService.ts",
+			"packages/reports/src/services/reports-media/ReplayStorageService.types.ts"
 		],
 		"symbols": [
 			"ReplayStorageService",
 			"ReplayStorageService",
 			"ReplayStorageService.store",
-			"ReplayStorageService.restore"
+			"ReplayStorageService.restore",
+			"Receipts"
 		]
 	},
 	"contract": {

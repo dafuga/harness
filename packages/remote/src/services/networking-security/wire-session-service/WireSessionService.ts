@@ -1,3 +1,4 @@
+import type { Sink, WireSessionOptions, WireLink } from './WireSessionService.types';
 import {
 	REMOTE_PROTOCOL,
 	RemoteFailure,
@@ -9,7 +10,6 @@ import type {
 	RemoteAttachment,
 	RemoteError,
 	RemoteLimits,
-	RemoteMethod,
 	WireChannel,
 	WireMessage,
 	WireRequest
@@ -19,35 +19,6 @@ import { RemoteInputValidator } from '../../../validators/networking-security/Re
 import { WireMessageValidator } from '../../../validators/networking-security/WireMessageValidator';
 import { EventLogService } from './EventLogService';
 import { ResponseLedgerService } from './ResponseLedgerService';
-
-export interface WireSessionOptions {
-	role: RemoteAttachment['role'];
-	/** What this client may call right now; read again for every request. */
-	methods: () => readonly RemoteMethod[];
-	describe: () => Pick<RemoteAttachment, 'host' | 'device' | 'grant'>;
-	/** Policy and operation of one allowed request. Throw `RemoteFailure` to refuse with a code. */
-	handle: (request: WireRequest) => Promise<unknown>;
-	/** Turns any other error into public words. By default nothing of the error is shown. */
-	explain?: (error: unknown) => RemoteError;
-	limits?: Partial<RemoteLimits>;
-	epoch?: string;
-	/** Mutations must name this session's epoch: one issued before a restart is never run. */
-	authority?: boolean;
-}
-
-/** One connection of a session. A transport feeds it text frames and closes it when it ends. */
-export interface WireLink {
-	receive(text: string): Promise<void>;
-	close(): void;
-}
-
-interface Sink {
-	send: (text: string) => void;
-	violation: () => void;
-	attached: boolean;
-	open: boolean;
-	pending: number;
-}
 
 const unexplained = (): RemoteError => ({ code: 'failed', message: remoteErrorMessages.failed });
 
@@ -157,3 +128,5 @@ export class WireSessionService {
 		for (const event of events) this.deliver(sink, event);
 	}
 }
+
+export type { WireSessionOptions, WireLink } from './WireSessionService.types';

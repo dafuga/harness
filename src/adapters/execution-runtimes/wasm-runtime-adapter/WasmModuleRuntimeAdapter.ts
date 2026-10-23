@@ -1,3 +1,4 @@
+import type { WasmSource, WasmLoader, JsonAbi } from './WasmModuleRuntimeAdapter.types';
 import {
 	defaultRuntimeTimeoutMs,
 	runtimeFailure,
@@ -11,17 +12,6 @@ import {
 	runtimeDeadline,
 	runtimeResponseText
 } from '../../../utils/execution-runtimes/runtimeResponse';
-
-interface JsonAbi {
-	memory: WebAssembly.Memory;
-	harness_alloc(length: number): number;
-	harness_free(pointer: number, length: number): void;
-	harness_invoke(pointer: number, length: number): bigint;
-}
-
-/** A module the platform already compiled, or the bytes of one where compiling is allowed. */
-export type WasmSource = WebAssembly.Module | BufferSource;
-export type WasmLoader = () => WasmSource | Promise<WasmSource>;
 
 const abiExports = ['memory', 'harness_alloc', 'harness_free', 'harness_invoke'];
 const unavailableName = 'RuntimeUnavailable';
@@ -109,3 +99,5 @@ export class WasmModuleRuntimeAdapter implements UnitRuntime {
 		);
 	}
 }
+
+export type { WasmSource, WasmLoader } from './WasmModuleRuntimeAdapter.types';

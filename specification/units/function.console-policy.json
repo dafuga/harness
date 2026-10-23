@@ -11,7 +11,8 @@
 			"packages/reports/src/utils/console-server/consolePolicy.ts",
 			"packages/reports/src/utils/explorer-ui/console-server/consolePolicy.ts",
 			"src/utils/consolePolicy.ts",
-			"src/utils/explorer-ui/consolePolicy.ts"
+			"src/utils/explorer-ui/consolePolicy.ts",
+			"src/utils/explorer-ui/consolePolicy.types.ts"
 		],
 		"symbols": [
 			"loopbackAddress",
@@ -21,12 +22,15 @@
 			"loopbackAddress",
 			"consolePolicy",
 			"denyAll",
+			"denyAll",
+			"loopbackAddress",
+			"consolePolicy",
 			"ConsoleRequest",
 			"ConsolePolicy",
 			"OwnerMode",
-			"denyAll",
-			"loopbackAddress",
-			"consolePolicy"
+			"ConsoleRequest",
+			"ConsolePolicy",
+			"OwnerMode"
 		]
 	},
 	"contract": {

@@ -1,17 +1,8 @@
+import type { ActivityFixture } from './activityFixture.types';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fixtures } from './fixtures';
-
-/**
- * Gives the fixture application a history to show: two components, three loops of two types,
- * a change with its reason noted, work in its second checkout that is not committed, and agents
- * that registered through the public command: one working, one quiet, one finished, and one of
- * another application. It is made once for a run, with the commands a project itself uses.
- */
-export interface ActivityFixture {
-	commits: { first: string; second: string };
-}
 const cli = resolve('../../src/index.ts');
 const site = fixtures.site('alpha-project');
 const checkout = fixtures.site('alpha-checkout');
@@ -108,3 +99,5 @@ export function activityFixture(): ActivityFixture {
 	writeFileSync(marker, JSON.stringify(made));
 	return made;
 }
+
+export type { ActivityFixture } from './activityFixture.types';

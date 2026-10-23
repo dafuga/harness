@@ -7,17 +7,23 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/installConsole.ts", "src/workflows/installConsole.ts"],
+		"source": [
+			"src/cli/program/installConsole.ts",
+			"src/cli/program/installConsole.types.ts",
+			"src/workflows/installConsole.ts"
+		],
 		"symbols": [
-			"ConsoleInstallFlags",
 			"installConsole",
-			"ConsoleObjectEntry",
 			"consoleObjects",
 			"uninstallConsole",
 			"renderConsoleUninstall",
 			"restoreConsoleFile",
 			"renderConsoleChange",
 			"renderConsoleInstall",
+			"ConsoleInstallFlags",
+			"ConsoleObjectEntry",
+			"ConsoleInstallFlags",
+			"ConsoleObjectEntry",
 			"installConsole",
 			"consoleObjects",
 			"uninstallConsole",

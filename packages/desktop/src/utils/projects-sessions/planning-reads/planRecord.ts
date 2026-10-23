@@ -1,5 +1,5 @@
+import type { PlanningContext } from './planRecord.types';
 import type {
-	PlanningApi,
 	PlanDetail,
 	DesignVersion as StoredVersion
 } from '../../../../../planning/src/lib/planning/index';
@@ -11,11 +11,6 @@ import type {
 import { approvalInfo, threadInfo } from '../planningConvert';
 import { planningConvert } from './planningConvert';
 import { gitText } from '../gitRead';
-
-export interface PlanningContext {
-	root: string;
-	api: PlanningApi;
-}
 
 export async function planRecord(
 	context: PlanningContext,
@@ -106,3 +101,5 @@ function revisionOf(source: NonNullable<StoredVersion['revises']>): DesignRevisi
 		...(source.option ? { option: source.option } : {})
 	};
 }
+
+export type { PlanningContext } from './planRecord.types';

@@ -1,3 +1,4 @@
+import type { PreviewPick } from './recordedPreview.types';
 import type {
 	RecordedThumbnail,
 	PreviewState
@@ -10,8 +11,6 @@ import type {
 import { artifactBytes } from './artifactBytes';
 import { artifactQuery } from '../../../utils/development-tooling/artifactQuery';
 import { evidenceQuery } from '../../../utils/verification-evidence/evidenceQuery';
-
-type PreviewPick = Required<Omit<RecordedThumbnail, 'source'>>;
 
 const empty = (status: PreviewState['status'], reason = ''): PreviewState => ({
 	status,

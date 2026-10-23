@@ -1,3 +1,4 @@
+import type { GenerateModelInput, GenerateResult, GeneratePieceInput } from './generateCode.types';
 import { applyExports } from './exports';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -6,8 +7,7 @@ import { fail } from '../../../core/development-tooling/errors';
 import {
 	ensureParents,
 	renderFileList,
-	writePlannedFiles,
-	type FileWriteResult
+	writePlannedFiles
 } from '../../../core/development-tooling/files';
 import { detectGameDimension, detectProjectKind } from './project';
 import { validateCodeName } from '../../../core/development-tooling/validation';
@@ -25,37 +25,13 @@ import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportP
 import { groupedFiles, groupedExports, assertUniqueGroupedNames } from './groupedFiles';
 import { generationGroup, saveGenerationGroup } from './generationGroup';
 import { ModelDependencyService } from '../../../services/development-tooling/ModelDependencyService';
+import { separateTypeDeclarations } from '../../../templates/development-tooling/separateTypeDeclarations';
 
 export { scaffoldKinds };
 
 export type { PieceKind };
 
 const adapters = ['d1', 'sqlite', 'postgres'] as const;
-
-export interface GenerateModelInput {
-	name: string;
-	rawFields: string[];
-	adapter: string;
-	force?: boolean;
-	root?: string;
-	group?: string;
-}
-
-export interface GeneratePieceInput {
-	kind: PieceKind;
-	name: string;
-	force?: boolean;
-	root?: string;
-	group?: string;
-	responsibility?: string;
-}
-
-export interface GenerateResult {
-	kind: string;
-	name: string;
-	writes: FileWriteResult[];
-	exportsUpdated: boolean;
-}
 
 export async function generateModel(input: GenerateModelInput): Promise<GenerateResult> {
 	const root = input.root ?? process.cwd();
@@ -94,7 +70,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const selection = source ? generationGroup(root, input) : undefined;
 	const dimension = projectKind === 'game' ? await detectGameDimension(root) : undefined;
 	const grouped = groupedFiles(pieceFiles(input.kind, name, { dimension }), selection?.group.id);
-	const files = [...grouped.files, ...support];
+	const files = separateTypeDeclarations([...grouped.files, ...support]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
@@ -136,3 +112,5 @@ async function maybeExport(root: string, plans: ExportPlan[]): Promise<boolean> 
 	const projectKind = await detectProjectKind(root);
 	return projectKind === 'lib' ? applyExports(root, plans) : false;
 }
+
+export type { GenerateModelInput, GeneratePieceInput, GenerateResult } from './generateCode.types';

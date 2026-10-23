@@ -1,3 +1,4 @@
+import type { BenchOptions } from './runKernelBench.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import {
@@ -18,14 +19,6 @@ import { chooseRuntime } from '../../../utils/execution-runtimes/chooseRuntime';
 import { kernelArtifacts } from '../../../utils/execution-runtimes/kernelArtifacts';
 import { kernelWorkload } from '../../../utils/execution-runtimes/kernelWorkload';
 import { machineProfile } from '../../../utils/development-tooling/machineProfile';
-
-export interface BenchOptions {
-	root?: string;
-	quick?: boolean;
-	/** `true` writes the profile file in the repository; a string writes that file. */
-	write?: boolean | string;
-	cli: string[];
-}
 
 const seed = 7;
 
@@ -108,3 +101,5 @@ export function renderBench(benchmark: KernelBenchmark): string {
 		`Provenance: calibration from ${tree}; not verification evidence or a budget baseline.`
 	].join('\n');
 }
+
+export type { BenchOptions } from './runKernelBench.types';

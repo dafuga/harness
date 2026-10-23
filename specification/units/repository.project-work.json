@@ -9,18 +9,21 @@
 	"owns": {
 		"source": [
 			"src/repositories/ProjectWorkRepository.ts",
-			"src/repositories/projects-sessions/ProjectWorkRepository.ts"
+			"src/repositories/projects-sessions/ProjectWorkRepository.ts",
+			"src/repositories/projects-sessions/ProjectWorkRepository.types.ts"
 		],
 		"symbols": [
 			"ProjectWorkRepository",
-			"Checkout",
-			"PathChange",
 			"ProjectWorkRepository",
 			"ProjectWorkRepository.constructor",
 			"ProjectWorkRepository.checkouts",
 			"ProjectWorkRepository.changes",
 			"ProjectWorkRepository.uncommitted",
-			"ProjectWorkRepository.loops"
+			"ProjectWorkRepository.loops",
+			"Checkout",
+			"PathChange",
+			"Checkout",
+			"PathChange"
 		]
 	},
 	"contract": {

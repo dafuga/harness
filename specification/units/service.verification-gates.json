@@ -10,7 +10,8 @@
 		"source": [
 			"src/services/VerificationGates.ts",
 			"src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.types.ts"
 		],
 		"symbols": [
 			"registryGate",
@@ -18,7 +19,8 @@
 			"registryGate",
 			"ledgerGate",
 			"registryGate",
-			"ledgerGate"
+			"ledgerGate",
+			"Registry"
 		]
 	},
 	"contract": {

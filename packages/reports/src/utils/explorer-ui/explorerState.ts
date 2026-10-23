@@ -1,21 +1,6 @@
+import type { Users } from './explorerState.types';
 import type { CoverageStanding } from '../../models/explorer-ui/Explorer.types';
-import type {
-	HarnessRecord,
-	HarnessScenario,
-	HarnessUnit
-} from '../../models/explorer-ui/Harness.types';
-
-type Result = HarnessRecord['scenarios'][number];
-
-export type Told = [CoverageStanding, string];
-
-/** One declared scenario with its result, and the commit its captures must be of. */
-export interface Judged {
-	declared: HarnessScenario;
-	result: Result;
-	record: HarnessRecord;
-	bound: string;
-}
+import type { HarnessScenario, HarnessUnit } from '../../models/explorer-ui/Harness.types';
 
 const located = / in (?:[\w.@+-]+\/)+[\w.@+[\]-]+/g;
 
@@ -30,8 +15,6 @@ export function reasonText(text: string): string {
 }
 
 const order: CoverageStanding[] = ['failed', 'stale', 'missing', 'incomplete', 'passed'];
-
-type Users = Map<string, string[]>;
 
 const usersOf = new WeakMap<HarnessUnit[], Users>();
 
@@ -99,3 +82,5 @@ export function coverageWorst(standings: CoverageStanding[]): CoverageStanding {
 }
 
 export { captureUnbound, explorerState } from './explorer-verdict/explorerState';
+
+export type { Told, Judged } from './explorerState.types';

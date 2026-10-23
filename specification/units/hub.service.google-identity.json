@@ -10,6 +10,7 @@
 		"source": [
 			"packages/hub/src/lib/server/auth/GoogleIdentityService.ts",
 			"packages/hub/src/lib/verification-evidence/server/auth/GoogleIdentityService.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/GoogleIdentityService.types.ts",
 			"packages/hub/src/services/GoogleIdentityService.ts"
 		],
 		"symbols": [
@@ -18,11 +19,13 @@
 			"GoogleIdentityService",
 			"GOOGLE_JWKS_URL",
 			"GOOGLE_ISSUERS",
-			"GoogleIdentity",
-			"GoogleIdentityOptions",
 			"GoogleIdentityService",
 			"GoogleIdentityService.constructor",
 			"GoogleIdentityService.verify",
+			"GoogleIdentity",
+			"GoogleIdentityOptions",
+			"GoogleIdentity",
+			"GoogleIdentityOptions",
 			"GOOGLE_JWKS_URL",
 			"GOOGLE_ISSUERS",
 			"GoogleIdentityService",

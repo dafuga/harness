@@ -1,3 +1,4 @@
+import type { Workspace } from './workspace.svelte.types';
 import { createDeploymentActivityStore } from '../deploymentActivity.svelte';
 import { createDeploymentsStore } from '../deployments.svelte';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
@@ -149,7 +150,6 @@ class WorkspaceState {
 export function createWorkspaceStore() {
 	return new WorkspaceState();
 }
-export type Workspace = WorkspaceState;
 /** A discovery event says whether the list it precedes is current; every event is applied. */
 function heard(workspace: WorkspaceState, event: CacheStatus) {
 	if (event.projectId === everyProject) workspace.listedOffline = event.status === 'offline';
@@ -189,3 +189,6 @@ async function switchProject(workspace: Workspace, projectId: string) {
 	if (!projectId || projectId === workspace.projectId) return;
 	await workspace.navigate(workspacePath({ projectId, category: workspace.category }));
 }
+
+export type { Workspace } from './workspace.svelte.types';
+export type { WorkspaceState };

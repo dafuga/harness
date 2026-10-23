@@ -1,9 +1,9 @@
+import type { NativeHandoffOptions } from './NativeHandoffService.types';
 import {
 	NATIVE_ACTION,
 	NATIVE_AUDIENCE
 } from '../../../../../models/accounts-access/HubAuth.types';
 import type {
-	HubEnvironment,
 	NativeApproveInput,
 	NativeAuthorization,
 	NativeExchangeInput,
@@ -12,11 +12,9 @@ import type {
 	NativeStartResult
 } from '../../../../../models/accounts-access/HubAuth.types';
 import type {
-	ExchangeStore,
 	NativeExchangeRecord,
 	SessionRecord
 } from '../../../../../models/accounts-access/HubAuthStore.types';
-import type { SessionRepository } from '../../../../../repositories/projects-sessions/SessionRepository';
 import { authFail } from '../../../../../utils/accounts-access/authFail';
 import { normalizeCode, userCode } from './authSecrets';
 import {
@@ -24,20 +22,10 @@ import {
 	safeEqual,
 	sha256Url
 } from '../../../../../utils/verification-evidence/authSecrets';
-import type { AuthSecrets } from '../../../../../utils/verification-evidence/authSecrets';
 
 export const HANDOFF_TTL = 5 * 60 * 1000;
 
 export const POLL_INTERVAL = 2;
-
-export interface NativeHandoffOptions {
-	store: ExchangeStore;
-	sessions: SessionRepository;
-	secrets: AuthSecrets;
-	origin: string;
-	environment: HubEnvironment;
-	now: () => number;
-}
 
 /**
  * Hands a browser sign-in to the desktop app by polling. The desktop keeps a PKCE verifier; the
@@ -147,3 +135,5 @@ export class NativeHandoffService {
 		return this.options.secrets.hash('native-code', `${handoffId}\n${code}`);
 	}
 }
+
+export type { NativeHandoffOptions } from './NativeHandoffService.types';

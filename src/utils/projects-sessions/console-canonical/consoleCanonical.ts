@@ -1,3 +1,4 @@
+import type { IndexedHistory } from './consoleCanonical.types';
 import { consoleRoute } from './consoleRoute';
 import { consoleViews, type ConsoleRoute } from '../consoleRoute';
 import { explorerLegacy } from './explorerLegacy';
@@ -6,12 +7,6 @@ import {
 	explorerRoutePath,
 	type ExplorerLocation
 } from '../../explorer-ui/explorerRoute';
-
-/** The parts of a history index that say where a commit is. */
-export interface IndexedHistory {
-	branches: Array<{ name: string; head: string }>;
-	revisions: Array<{ commit: string; branches: string[]; retained?: boolean }>;
-}
 
 const preferred = ['main', 'master'];
 
@@ -138,3 +133,5 @@ export function consoleCanonical(
 	const address = explorerAddress(index, url.pathname.slice(base.length), url.search);
 	return address === undefined ? undefined : `${base}${address}`;
 }
+
+export type { IndexedHistory } from './consoleCanonical.types';

@@ -1,15 +1,10 @@
+import type { StoredRecord } from './VerificationStoreRepository.types';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { verificationsDirectory } from '../../core/verification-evidence/verifyTypes';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 import { VerificationRecordValidator } from '../../validators/verification-evidence/VerificationRecordValidator';
-
-export interface StoredRecord {
-	record: VerificationRecord;
-	/** Directory holding `record.json`, its evidence and its logs. */
-	directory: string;
-}
 
 /**
  * Scratch store of verification drafts. It lives outside the source tree and is the input from
@@ -66,3 +61,5 @@ export class VerificationStoreRepository {
 		}
 	}
 }
+
+export type { StoredRecord } from './VerificationStoreRepository.types';

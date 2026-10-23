@@ -1,10 +1,9 @@
+import type { Fixture } from './local-transport-bounds.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { WireFramingService, remoteLimits } from '../../remote/src/index';
 import { attempt, closed, localFixture } from './local-transport-fixture';
 import { git } from './run-fixture';
-
-type Fixture = Awaited<ReturnType<typeof localFixture>>;
 /** A socket of the app page with a fresh ticket of its window: what an honest preload opens. */
 async function admitted(f: Fixture, target = f.window()) {
 	const { socket } = await attempt(f.port, { protocols: f.ticketed(target) });

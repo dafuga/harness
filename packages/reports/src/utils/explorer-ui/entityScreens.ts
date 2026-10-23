@@ -1,3 +1,4 @@
+import type { ScreenOption, ScreenPick, Phase, Pane, EntityScreens } from './entityScreens.types';
 import type {
 	ExplorerCapture,
 	ExplorerEvidence,
@@ -7,29 +8,6 @@ import type { HarnessScenario } from '../../models/explorer-ui/Harness.types';
 import type { Evidence } from '../../models/reports-media/Report.types';
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { mediaFile } from './harnessEvidence';
-export interface ScreenOption {
-	scenario: string;
-	title: string;
-	/** The states the scenario requires; one it marks missing or inapplicable is not offered. */
-	states: string[];
-	viewports: Array<{ id: string; label: string; size: string }>;
-}
-export interface ScreenPick {
-	scenario: string;
-	state: string;
-	viewport: string;
-}
-export interface EntityScreens {
-	/** The parent's capture at a selected commit; absent at the branch tip. */
-	before?: Evidence;
-	/** The capture of the shown revision, or the stated gap when it has none. */
-	after: Evidence;
-	/** True only when the shown capture is usable and was taken for the shown revision itself. */
-	fresh: boolean;
-	/** The revision an inherited capture was taken at. */
-	origin?: string;
-}
-type Phase = NonNullable<Evidence['phase']>;
 const media = ['screenshot', 'audio'];
 const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1);
 const short = (commit: string) => commit.slice(0, 7);
@@ -145,10 +123,6 @@ const matches = (found: ExplorerCapture, pick: ScreenPick) =>
 	found.scenario === pick.scenario &&
 	found.state === pick.state &&
 	found.capture.viewport === pick.viewport;
-interface Pane {
-	found?: ExplorerCapture;
-	shown: Evidence;
-}
 /** One side at the picked state: its own capture, or its stated gap. */
 function pane(
 	side: ExplorerSide | null,
@@ -217,3 +191,5 @@ export function galleryItems(evidence: ExplorerEvidence): Evidence[] {
 	];
 	return items.map((entry, order) => ({ ...entry, order }));
 }
+
+export type { ScreenOption, ScreenPick, EntityScreens } from './entityScreens.types';

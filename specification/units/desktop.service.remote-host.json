@@ -9,10 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostService.types.ts",
 			"packages/desktop/src/services/remote-host-service/RemoteHostService.ts"
 		],
 		"symbols": [
-			"RemoteHostOptions",
 			"RemoteHostService",
 			"RemoteHostService.constructor",
 			"RemoteHostService.enabled",
@@ -29,6 +29,8 @@
 			"RemoteHostService.current",
 			"RemoteHostService.published",
 			"RemoteHostService.saved",
+			"RemoteHostOptions",
+			"RemoteHostOptions",
 			"RemoteHostService"
 		]
 	},

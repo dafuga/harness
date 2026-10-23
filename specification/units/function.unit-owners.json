@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/unitOwners.ts", "src/utils/unitOwners.ts"],
-		"symbols": ["OwnedSource", "unitOwners", "unitOwners"]
+		"source": [
+			"src/utils/development-tooling/unitOwners.ts",
+			"src/utils/development-tooling/unitOwners.types.ts",
+			"src/utils/unitOwners.ts"
+		],
+		"symbols": ["unitOwners", "OwnedSource", "OwnedSource", "unitOwners"]
 	},
 	"contract": {
 		"origin": "declared",

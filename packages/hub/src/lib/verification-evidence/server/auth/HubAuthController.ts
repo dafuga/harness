@@ -1,13 +1,9 @@
+import type { HubAuthControllerOptions } from './HubAuthController.types';
 import type { Actor } from 'collaboration';
 import type { AuthStatus, SignInResult } from '../../../../models/accounts-access/HubAuth.types';
 import { BROWSER_TTL } from '../../../../repositories/projects-sessions/SessionRepository';
-import type { SessionRepository } from '../../../../repositories/projects-sessions/SessionRepository';
 import { PENDING_TTL } from '../../../../services/verification-evidence/email-proof-service/EmailProofService';
-import type { EmailProofService } from '../../../../services/verification-evidence/email-proof-service/EmailProofService';
-import type { GoogleIdentityService } from './GoogleIdentityService';
 import { CHALLENGE_TTL } from '../../../../services/accounts-access/LoginChallengeService';
-import type { LoginChallengeService } from '../../../../services/accounts-access/LoginChallengeService';
-import type { RequestSessionService } from './request-session-service/RequestSessionService';
 import {
 	CHALLENGE_COOKIE,
 	EMAIL_PROOF_COOKIE,
@@ -24,19 +20,8 @@ import {
 	hasAuthorization,
 	readJson
 } from '../../../../utils/verification-evidence/authHttp';
-import type { AuthRoute, AuthRoutes } from '../../../../utils/verification-evidence/authHttp';
+import type { AuthRoute } from '../../../../utils/verification-evidence/authHttp';
 import { AuthRequestValidator } from '../../../../validators/accounts-access/AuthRequestValidator';
-
-export interface HubAuthControllerOptions {
-	clientId: string;
-	sessions: RequestSessionService;
-	repository: SessionRepository;
-	challenges: LoginChallengeService;
-	google: GoogleIdentityService;
-	emailProofs: EmailProofService;
-	/** Native handoff and GitHub connection routes. */
-	routes: AuthRoutes;
-}
 
 /** HTTP entry for `/api/auth/*` and `/api/github/*`. Takes a Request, returns a Response. */
 export class HubAuthController {
@@ -141,3 +126,5 @@ export class HubAuthController {
 		return authHttp({ ok: true }, { cookies });
 	}
 }
+
+export type { HubAuthControllerOptions } from './HubAuthController.types';

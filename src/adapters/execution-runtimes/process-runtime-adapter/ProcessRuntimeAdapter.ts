@@ -1,9 +1,9 @@
+import type { ProcessRuntimeConfig } from './ProcessRuntimeAdapter.types';
 import { spawn } from 'node:child_process';
 import { clearTimeout, setTimeout } from 'node:timers';
 import {
 	defaultRuntimeTimeoutMs,
 	runtimeTimeout,
-	type RuntimeOptions,
 	type RuntimeRequest,
 	type RuntimeResponse,
 	type UnitRuntime
@@ -20,13 +20,6 @@ import {
 	runtimeDeadline,
 	runtimeResponseText
 } from '../../../utils/execution-runtimes/runtimeResponse';
-
-export interface ProcessRuntimeConfig extends RuntimeOptions {
-	command: string;
-	args?: string[];
-	/** Keep one process alive and exchange one JSON document per line. */
-	persistent?: boolean;
-}
 
 /** Runs a native unit as a JSON process: a request on stdin, a response on stdout. */
 export class ProcessRuntimeAdapter implements UnitRuntime {
@@ -90,3 +83,5 @@ export class ProcessRuntimeAdapter implements UnitRuntime {
 		});
 	}
 }
+
+export type { ProcessRuntimeConfig } from './ProcessRuntimeAdapter.types';

@@ -7,18 +7,24 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/GitAdapter.ts", "src/adapters/git-source-history/GitAdapter.ts"],
+		"source": [
+			"src/adapters/GitAdapter.ts",
+			"src/adapters/git-source-history/GitAdapter.ts",
+			"src/adapters/git-source-history/GitAdapter.types.ts"
+		],
 		"symbols": [
 			"GitAdapter",
-			"GitRunOptions",
-			"GitResult",
 			"GitAdapter",
 			"GitAdapter.constructor",
 			"GitAdapter.run",
 			"GitAdapter.bytes",
 			"GitAdapter.attempt",
 			"GitAdapter.exec",
-			"GitAdapter.isRepository"
+			"GitAdapter.isRepository",
+			"GitRunOptions",
+			"GitResult",
+			"GitRunOptions",
+			"GitResult"
 		]
 	},
 	"contract": {

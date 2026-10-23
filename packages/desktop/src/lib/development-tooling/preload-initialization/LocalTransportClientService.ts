@@ -1,25 +1,13 @@
+import type {
+	LocalSocketPort,
+	LocalTransportClientOptions
+} from './LocalTransportClientService.types';
 import {
 	WireClientService,
 	WireFramingService,
 	localTransport
 } from '../../../../../remote/src/index';
-import type { LocalBootstrap, RemoteMethod, WireChannel } from '../../../../../remote/src/index';
-
-/** The WebSocket of a page, or anything shaped like it. */
-export interface LocalSocketPort {
-	send(text: string): void;
-	close(): void;
-	onopen: ((event: unknown) => void) | null;
-	onmessage: ((event: { data: unknown }) => void) | null;
-	onclose: ((event: unknown) => void) | null;
-}
-export interface LocalTransportClientOptions {
-	/** Asks the main process for a ticket. In the app this is the one IPC call of the preload. */
-	bootstrap: () => Promise<LocalBootstrap>;
-	open: (url: string, protocols: string[]) => LocalSocketPort;
-	retryMs?: number[];
-	deadlineMs?: number;
-}
+import type { RemoteMethod, WireChannel } from '../../../../../remote/src/index';
 const unreachable = 'The desktop backend cannot be reached.';
 /** A person may leave a dialog open for a long time. */
 const patient = 6 * 60 * 60 * 1000;
@@ -104,3 +92,8 @@ export class LocalTransportClientService {
 		setTimeout(() => void this.ready().catch(() => undefined), delay);
 	}
 }
+
+export type {
+	LocalSocketPort,
+	LocalTransportClientOptions
+} from './LocalTransportClientService.types';

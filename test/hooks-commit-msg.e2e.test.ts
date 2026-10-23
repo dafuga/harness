@@ -1,3 +1,4 @@
+import type { HookStatus } from './hooks-commit-msg.e2e.test.types';
 import { chmod, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -5,15 +6,6 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import { runCommand } from './support/cli';
 import { harnessJson } from './support/historyRepo';
 import { baselineRepo, cloneRepo, repoAt, type VerifyRepo } from './support/verifyRepo';
-
-interface HookStatus {
-	installed: boolean;
-	enabled: boolean;
-	stage: string;
-	chained: boolean;
-	stages: Array<{ stage: string; installed: boolean; chained: boolean; enabled: boolean }>;
-	limitations: string[];
-}
 
 const cli = resolve(dirname(fileURLToPath(import.meta.url)), '../src/index.ts');
 const command = ['--command', `bun ${cli}`];

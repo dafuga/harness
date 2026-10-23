@@ -7,19 +7,28 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleManifest.ts", "src/utils/development-tooling/consoleManifest.ts"],
+		"source": [
+			"src/utils/consoleManifest.ts",
+			"src/utils/development-tooling/consoleManifest.ts",
+			"src/utils/development-tooling/consoleManifest.types.ts"
+		],
 		"symbols": [
 			"consoleManifestFile",
 			"consoleManifest",
 			"writeConsoleManifest",
 			"consoleManifestFile",
+			"consoleManifest",
+			"writeConsoleManifest",
 			"ConsoleFileEntry",
 			"FileIdentity",
 			"ConsoleChange",
 			"ConsoleStorage",
 			"ConsoleManifest",
-			"consoleManifest",
-			"writeConsoleManifest"
+			"ConsoleFileEntry",
+			"FileIdentity",
+			"ConsoleChange",
+			"ConsoleStorage",
+			"ConsoleManifest"
 		]
 	},
 	"contract": {

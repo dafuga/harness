@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/helperContract.ts", "src/utils/helperContract.ts"],
-		"symbols": ["helperContract", "helperContract"]
+		"source": [
+			"src/utils/development-tooling/helperContract.ts",
+			"src/utils/development-tooling/helperContract.types.ts",
+			"src/utils/helperContract.ts"
+		],
+		"symbols": ["helperContract", "CallableContract", "helperContract"]
 	},
 	"contract": {
 		"origin": "declared",

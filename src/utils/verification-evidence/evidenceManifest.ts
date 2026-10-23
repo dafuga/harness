@@ -1,11 +1,5 @@
+import type { RecordFile } from './evidenceManifest.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
-
-export interface RecordFile {
-	path: string;
-	sha256: string;
-	bytes: number;
-	mediaType?: string;
-}
 
 /**
  * The files a record directory holds besides the record itself: the captures this run produced
@@ -26,3 +20,5 @@ export function recordFiles(record: VerificationRecord): RecordFile[] {
 }
 
 export { evidenceManifest } from '../../services/verification-evidence/evidence-attach-service/evidenceManifest';
+
+export type { RecordFile } from './evidenceManifest.types';

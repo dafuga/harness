@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/CloudflareDeployAdapter.ts",
-			"packages/desktop/src/adapters/development-tooling/CloudflareDeployAdapter.ts"
+			"packages/desktop/src/adapters/development-tooling/CloudflareDeployAdapter.ts",
+			"packages/desktop/src/adapters/development-tooling/CloudflareDeployAdapter.types.ts"
 		],
 		"symbols": [
 			"CloudflareDeployAdapter",
 			"CloudflareDeployAdapter.constructor",
 			"CloudflareDeployAdapter.discover",
-			"CloudflareDeployAdapter.deploy"
+			"CloudflareDeployAdapter.deploy",
+			"Options"
 		]
 	},
 	"contract": {

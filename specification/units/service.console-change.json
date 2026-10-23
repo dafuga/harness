@@ -9,13 +9,13 @@
 	"owns": {
 		"source": [
 			"src/services/ConsoleChangeService.ts",
-			"src/services/projects-sessions/ConsoleChangeService.ts"
+			"src/services/projects-sessions/ConsoleChangeService.ts",
+			"src/services/projects-sessions/ConsoleChangeService.types.ts"
 		],
 		"symbols": [
 			"replacedDirectory",
 			"ConsoleChangeService",
 			"replacedDirectory",
-			"FileState",
 			"ConsoleChangeService",
 			"ConsoleChangeService.constructor",
 			"ConsoleChangeService.state",
@@ -23,7 +23,9 @@
 			"ConsoleChangeService.restore",
 			"ConsoleChangeService.remove",
 			"ConsoleChangeService.write",
-			"ConsoleChangeService.entryFor"
+			"ConsoleChangeService.entryFor",
+			"FileState",
+			"FileState"
 		]
 	},
 	"contract": {

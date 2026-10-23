@@ -1,3 +1,4 @@
+import { assertCompanionOwnership } from './unit-index/ownership';
 import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
@@ -183,18 +184,14 @@ test('an alternative implementation is a related unit linked by a declared contr
 test('several owned files produce identical metadata after one indexing pass', async () => {
 	const files = {
 		'src/utils/z.ts': 'export function z() { return 1; }',
-		'src/utils/a.ts': 'export function a() { return 2; }'
+		'src/utils/a.ts': 'export function a() { return 2; }',
+		'src/utils/z.types.ts': 'export interface Z { value: number }'
 	};
 	const first = unitOf(
 		await indexFiles({ 'src/utils/z.ts': files['src/utils/z.ts'] }),
 		'function.z'
 	);
-	const grouped = { ...first, owns: { source: Object.keys(files), symbols: ['z', 'a'] } };
-	const once = await indexFiles(files, [grouped]);
-	const again = await indexFiles(files, once.result.manifests);
-	expect(again.result.updated, 'one-pass source indexing must be idempotent').toEqual([]);
-	expect(again.result.manifests).toEqual(once.result.manifests);
-	expect([...once.index.files.keys()]).toEqual(Object.keys(files));
+	await assertCompanionOwnership(files, first);
 });
 
 test('recorded service moves preserve implementations and registered owner-local placement', () => {

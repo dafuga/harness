@@ -9,15 +9,18 @@
 	"owns": {
 		"source": [
 			"src/services/ExplanationService.ts",
-			"src/services/development-tooling/ExplanationService.ts"
+			"src/services/development-tooling/ExplanationService.ts",
+			"src/services/development-tooling/ExplanationService.types.ts"
 		],
 		"symbols": [
 			"ExplanationService",
 			"describe",
-			"ReasonReport",
 			"ExplanationService",
 			"ExplanationService.report",
-			"describe"
+			"describe",
+			"ReasonReport",
+			"ReasonReport",
+			"Fingerprint"
 		]
 	},
 	"contract": {

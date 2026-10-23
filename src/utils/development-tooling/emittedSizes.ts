@@ -1,3 +1,4 @@
+import type { Sized } from './emittedSizes.types';
 import type { RuntimeKind } from '../../core/development-tooling/unitTypes';
 
 /** The size of what a unit emits. It is frozen once for every execution target, never as a sum. */
@@ -5,13 +6,6 @@ export const emittedMetric = 'artifact-bytes';
 
 /** The name an emitted size is frozen under in the ledger: one limit per unit and target. */
 export const emittedKey = (target: string): string => `${emittedMetric}:${target}`;
-
-interface Sized {
-	metric: string;
-	target?: RuntimeKind;
-	profile?: string | null;
-	workload?: string | null;
-}
 
 /**
  * The emitted sizes that are frozen: those measured from the build of the verified snapshot, one

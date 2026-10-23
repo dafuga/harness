@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/report-command-service/ReportStorageSyncService.ts",
-			"packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts"
+			"packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts",
+			"packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.types.ts"
 		],
 		"symbols": [
 			"ReportStorageSyncService",
-			"StorageSyncOptions",
 			"ReportStorageSyncService",
 			"ReportStorageSyncService.constructor",
-			"ReportStorageSyncService.run"
+			"ReportStorageSyncService.run",
+			"StorageSyncOptions",
+			"StorageSyncOptions"
 		]
 	},
 	"contract": {

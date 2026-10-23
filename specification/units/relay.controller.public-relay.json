@@ -9,12 +9,14 @@
 	"owns": {
 		"source": [
 			"packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
+			"packages/relay/src/lib/networking-security/relay/PublicRelayController.types.ts",
 			"packages/relay/src/lib/relay/PublicRelayController.ts"
 		],
 		"symbols": [
 			"PublicRelayController",
 			"PublicRelayController.constructor",
 			"PublicRelayController.handle",
+			"HostRoute",
 			"PublicRelayController"
 		]
 	},

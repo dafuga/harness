@@ -1,19 +1,12 @@
+import type { HarnessPage } from './harnessPage.types';
 import {
 	commitBranch,
 	explorerAddress,
 	explorerHome
 } from '../../../../../../src/utils/console-canonical/consoleCanonical';
 import { explorerRoute, explorerRoutePath } from '../../../../../../src/utils/explorerRoute';
-import type { ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessIndex } from '../../../models/explorer-ui/Harness.types';
 import { explorerScope } from './explorerScope';
-
-export type HarnessPage =
-	/** The address stands for another one: the root, an earlier page, a branch or commit alone. */
-	| { kind: 'redirect'; path: string }
-	/** Nothing in this history is at the address; `home` is where the explorer opens, if anywhere. */
-	| { kind: 'missing'; message: string; home: string | null }
-	| { kind: 'page'; scope: ExplorerScope };
 
 /** Pages at the tip of the main branch, where the root of the console leads. */
 export function homePath(index: HarnessIndex): string | null {
@@ -43,3 +36,5 @@ export function harnessPage(index: HarnessIndex, path: string, search = ''): Har
 		? { kind: 'page', scope: resolved.scope }
 		: missing(resolved.message);
 }
+
+export type { HarnessPage } from './harnessPage.types';

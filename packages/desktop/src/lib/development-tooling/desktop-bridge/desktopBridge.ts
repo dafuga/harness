@@ -1,3 +1,4 @@
+import type { BridgeContext } from './desktopBridge.types';
 import { GameImageService } from './GameImageService';
 import { GameProjectService } from './GameProjectService';
 import { GameRenderService } from './GameRenderService';
@@ -10,16 +11,6 @@ import type { DesktopBridge } from '../../../models/development-tooling/DesktopB
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import type { DeploymentBridge } from '../../../models/Deployment.types';
 import type { GameDesktopBridge } from '../../../models/game-authoring/GameDesktopBridge.types';
-import type { ProviderDiscoveryService } from '../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import type { DesktopRunService } from '../../../services/agents-providers/desktop-run-service/DesktopRunService';
-interface BridgeContext {
-	session: ProjectSessionService;
-	providers: ProviderDiscoveryService;
-	runs: DesktopRunService;
-	choose: () => Promise<string | null>;
-	/** False once the client this bridge serves has ended: nothing more is written for it. */
-	alive?: () => boolean;
-}
 const projectIndependentMethods: Array<keyof DesktopBridge> = [
 	'openProject',
 	'selectProject',

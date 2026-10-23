@@ -1,13 +1,7 @@
-export type EvidenceStatus = 'idle' | 'planned' | 'unavailable' | 'loading' | 'ready' | 'failed';
+import type { EvidenceStatus, EvidenceNotice } from './evidenceNotice.types';
 
 export const unavailableEvidence = 'Recorded runtime evidence is not available on this connection.';
 export const readingEvidence = 'Reading recorded evidence…';
-
-export interface EvidenceNotice {
-	text: string;
-	/** True for what went wrong, so that it is announced as such. */
-	alert: boolean;
-}
 
 /**
  * What is said in place of recorded evidence while there is none to show: that the entity is
@@ -26,3 +20,5 @@ export function evidenceNotice(
 	const said = { planned, unavailable: unavailableEvidence };
 	return { text: said[status as keyof typeof said] ?? readingEvidence, alert: false };
 }
+
+export type { EvidenceStatus, EvidenceNotice } from './evidenceNotice.types';

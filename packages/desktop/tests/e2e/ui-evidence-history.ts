@@ -1,3 +1,4 @@
+import type { Result, Example, SealedHistory } from './ui-evidence-history.types';
 import { createHash } from 'node:crypto';
 import { PNG } from 'pngjs';
 import type {
@@ -18,7 +19,6 @@ import { commits, ids, scenarios } from '../../../reports/test/entityUnits';
  */
 export const cardScenario = 'order-card';
 export const soundScenario = 'search-sound';
-type Result = HarnessRecord['scenarios'][number];
 /** The colour a screenshot is filled with, one for each commit, so two sides can be told apart. */
 export const tones: Record<string, [number, number, number]> = {
 	[commits.middle]: [40, 90, 200],
@@ -53,10 +53,6 @@ const job = (id: string) => ({
 	durationMs: 20
 });
 const shot = { kind: 'screenshot', state: '', viewport: 'desktop' };
-export interface Example {
-	input: unknown;
-	output: unknown;
-}
 
 /** What the tip keeps of the order card: the result of the middle commit, not run again. */
 function inherited(origin: Result): Result {
@@ -143,12 +139,6 @@ function bytesOf(
 	return Buffer.from(JSON.stringify(document, null, 2));
 }
 
-export interface SealedHistory {
-	revisions: Record<string, HarnessRevision>;
-	/** Every kept artifact by the SHA-256 its capture states. */
-	bytes: Record<string, { mediaType: string; data: number[] }>;
-}
-
 /** Gives every capture its bytes and states their hash and where they are kept on the capture. */
 function sealed(detail: HarnessRevision, bytes: SealedHistory['bytes'], example?: Example): void {
 	const results = detail.records.flatMap((item) => item.scenarios);
@@ -217,3 +207,5 @@ export function observedHistory(
 		Object.assign(history.revisions[commits.tip].records[0].tests[0], { browserErrors });
 	return history;
 }
+
+export type { Example, SealedHistory } from './ui-evidence-history.types';

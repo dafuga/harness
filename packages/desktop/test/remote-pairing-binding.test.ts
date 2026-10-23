@@ -1,3 +1,4 @@
+import type { Fixture } from './remote-pairing-binding.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { DevicePairingService } from '../../remote/src/index';
@@ -5,7 +6,6 @@ import { RemoteHostService } from '../src/services/remote-host-service/RemoteHos
 import { hostFixture } from './remote-host-fixture';
 
 const settle = { timeout: 15000 };
-type Fixture = Awaited<ReturnType<typeof hostFixture>>;
 /** A phone asked with the code; then another request took its place at the relay. */
 async function replaced(f: Fixture) {
 	await f.host.enable();

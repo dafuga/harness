@@ -10,8 +10,11 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": ["packages/reports/src/utils/explorer-ui/explorer-platforms/platformStatus.ts"],
-		"symbols": ["platformViews", "unrecorded", "platformStatus"]
+		"source": [
+			"packages/reports/src/utils/explorer-ui/explorer-platforms/platformStatus.ts",
+			"packages/reports/src/utils/explorer-ui/explorer-platforms/platformStatus.types.ts"
+		],
+		"symbols": ["platformViews", "unrecorded", "platformStatus", "PlatformView"]
 	},
 	"contract": {
 		"origin": "declared",

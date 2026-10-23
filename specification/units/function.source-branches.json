@@ -9,12 +9,14 @@
 	"owns": {
 		"source": [
 			"src/repositories/git-source-history/source-history-repository/sourceBranches.ts",
+			"src/repositories/git-source-history/source-history-repository/sourceBranches.types.ts",
 			"src/repositories/source-history-repository/sourceBranches.ts",
 			"src/utils/git-source-history/sourceBranches.ts",
 			"src/utils/sourceBranches.ts"
 		],
 		"symbols": [
 			"sourceBranches",
+			"Tracked",
 			"sourceBranches",
 			"ListedRef",
 			"SourceBranch",

@@ -1,15 +1,5 @@
+import type { SocketClose, SocketRefusal, Frame } from './relaySocket.types';
 import WebSocket from 'ws';
-
-export interface SocketClose {
-	code: number;
-	reason: string;
-}
-export interface SocketRefusal {
-	status: number;
-	error: string | null;
-	upgrade: string | null;
-}
-export type Frame = Record<string, unknown>;
 
 /** A real WebSocket client that keeps every text frame in the order it arrived. */
 export class RelaySocket {
@@ -137,3 +127,5 @@ function errorOf(body: string): string | null {
 	const error = (value as { error?: unknown }).error;
 	return typeof error === 'string' ? error : null;
 }
+
+export type { SocketClose, SocketRefusal, Frame } from './relaySocket.types';

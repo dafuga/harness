@@ -1,3 +1,4 @@
+import type { Case } from './plan-reads-port.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { Buffer } from 'node:buffer';
@@ -12,7 +13,6 @@ import { planReads } from '../src/services/planning-service/planReads';
  */
 const sha = 'a'.repeat(40);
 const plan = ['show', `${sha}:page.home/plan.json`];
-type Case = { name: string; input: unknown; output: unknown };
 function port(fails = 0, objectFormat: Git['objectFormat'] | null = 'sha1') {
 	const calls: string[][] = [];
 	const git: Git = {

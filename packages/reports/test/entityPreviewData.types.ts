@@ -1,0 +1,18 @@
+export type PreviewVariant =
+	| 'platforms'
+	| 'source'
+	| ''
+	| 'legacy'
+	| 'partial'
+	| 'declared'
+	| 'layouts'
+	| 'console'
+	| 'inherited'
+	| 'states'
+	| 'documented'
+	| 'helpers'
+	| 'groups'
+	| 'relations'
+	| 'measurements'
+	| 'focused'
+	| 'viewport-states';

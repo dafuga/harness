@@ -1,8 +1,7 @@
+import type { Fixture } from './prepare-project-run.test.types';
 import { expect, test } from 'vitest';
 import type { ProjectRunRequest } from '../../src/models/DesktopBridge.types';
 import { fixture, git } from '../run-fixture';
-
-type Fixture = Awaited<ReturnType<typeof fixture>>;
 const asked = (f: Fixture, change: object = {}) =>
 	({
 		intent: 'create',

@@ -10,17 +10,19 @@
 		"source": [
 			"packages/hub/src/routes/browserContext.ts",
 			"packages/hub/src/utils/browserContext.ts",
-			"packages/hub/src/utils/development-tooling/browserContext.ts"
+			"packages/hub/src/utils/development-tooling/browserContext.ts",
+			"packages/hub/src/utils/development-tooling/browserContext.types.ts"
 		],
 		"symbols": [
 			"provideBrowser",
 			"provideBrowser",
 			"key",
 			"browserContext",
-			"HostedBrowser",
 			"key",
 			"browserContext",
-			"provideBrowser"
+			"provideBrowser",
+			"HostedBrowser",
+			"HostedBrowser"
 		]
 	},
 	"contract": {

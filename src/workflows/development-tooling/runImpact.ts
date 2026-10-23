@@ -1,18 +1,10 @@
+import type { ImpactOptions } from './runImpact.types';
 import { fail } from '../../core/development-tooling/errors';
 import type { ImpactReport } from '../../core/development-tooling/impactTypes';
 import { runtimeKinds, type RuntimeKind } from '../../core/development-tooling/unitTypes';
 import { ImpactService } from '../../services/reports-media/impact-service/ImpactService';
 import { UnitRuntimeService } from '../../services/execution-runtimes/UnitRuntimeService';
 import { openRange } from './loadRevisions';
-
-export interface ImpactOptions {
-	root?: string;
-	/** Revision to compare from; defaults to `HEAD`. */
-	base?: string;
-	/** Revision to compare to; defaults to the working tree. */
-	head?: string;
-	runtime?: string;
-}
 
 /** Compares two revisions of this repository and reports what the change affects. */
 export async function runImpact(options: ImpactOptions = {}): Promise<ImpactReport> {
@@ -50,3 +42,5 @@ export function renderImpact(report: ImpactReport): string {
 		...report.uncertain.map((entry) => `  ${entry.reason}: ${entry.node} (${entry.detail})`)
 	].join('\n');
 }
+
+export type { ImpactOptions } from './runImpact.types';

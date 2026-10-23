@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/game-authoring/GameWorkspace.svelte"],
-		"symbols": ["GameWorkspace"]
+		"source": [
+			"packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
+			"packages/desktop/src/components/game-authoring/GameWorkspace.types.ts"
+		],
+		"symbols": ["GameWorkspace", "Source"]
 	},
 	"contract": {
 		"origin": "declared",

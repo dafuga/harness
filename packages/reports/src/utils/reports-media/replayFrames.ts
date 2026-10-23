@@ -1,17 +1,10 @@
+import type { ReplayFrame } from './replayFrames.types';
 import type { Evidence } from '../../models/reports-media/Report.types';
 import { evidenceMedia } from '../verification-evidence/evidenceMedia';
 
 export const FRAME_SECONDS = 3;
 
 export const REPLAY_SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
-
-export interface ReplayFrame {
-	item: Evidence;
-	scene: number | null;
-	index: number;
-	start: number;
-	duration: number;
-}
 
 export function replayFrames(items: Evidence[]): ReplayFrame[] {
 	return items
@@ -35,3 +28,5 @@ function sceneNumber(title: string) {
 }
 
 export { replayStart } from '../../components/reports-media/gameplay-replay/replayFrames';
+
+export type { ReplayFrame } from './replayFrames.types';

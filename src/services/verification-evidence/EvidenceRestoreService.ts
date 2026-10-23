@@ -1,14 +1,9 @@
+import type { Restored } from './EvidenceRestoreService.types';
 import { randomUUID } from 'node:crypto';
 import { mkdir, rename, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { VerificationStoreRepository } from '../../repositories/verification-evidence/VerificationStoreRepository';
 import { HistoryStatusService } from './history-status-service/HistoryStatusService';
-
-export interface Restored {
-	restored: string[];
-	/** Attached records that could not be restored, each with what is wrong with it. */
-	skipped: Array<{ record: string; problems: string[] }>;
-}
 
 /**
  * Rebuilds the local record cache from Git. Only a record whose manifest, files and media are
@@ -59,3 +54,5 @@ export class EvidenceRestoreService {
 		await rename(partial, join(directory, record));
 	}
 }
+
+export type { Restored } from './EvidenceRestoreService.types';

@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/AnalyticsHistory.svelte",
-			"packages/reports/src/components/git-source-history/AnalyticsHistory.svelte"
+			"packages/reports/src/components/git-source-history/AnalyticsHistory.svelte",
+			"packages/reports/src/components/git-source-history/AnalyticsHistory.types.ts"
 		],
-		"symbols": ["AnalyticsHistory", "AnalyticsHistory"]
+		"symbols": ["AnalyticsHistory", "AnalyticsHistory", "Props"]
 	},
 	"contract": {
 		"origin": "declared",

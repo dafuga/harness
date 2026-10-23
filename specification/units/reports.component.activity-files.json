@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ActivityFiles.svelte",
-			"packages/reports/src/components/projects-sessions/ActivityFiles.svelte"
+			"packages/reports/src/components/projects-sessions/ActivityFiles.svelte",
+			"packages/reports/src/components/projects-sessions/ActivityFiles.types.ts"
 		],
-		"symbols": ["ActivityFiles", "ActivityFiles"]
+		"symbols": ["ActivityFiles", "ActivityFiles", "Open"]
 	},
 	"contract": {
 		"origin": "declared",

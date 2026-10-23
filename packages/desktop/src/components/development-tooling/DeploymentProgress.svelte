@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Mark } from './DeploymentProgress.types';
+
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 	/**
 	 * Where one deployment is: its live line and why it failed, if it did, then its steps. The steps
@@ -7,7 +9,6 @@
 	 * in words as well as drawn.
 	 */
 	let { deployment }: { deployment: DeploymentActivity } = $props();
-	type Mark = 'done' | 'running' | 'failed' | 'waiting';
 	const words: Record<Mark, string> = {
 		done: 'done',
 		running: 'in progress',

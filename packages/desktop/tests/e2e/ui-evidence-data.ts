@@ -1,3 +1,4 @@
+import type { Mode } from './ui-evidence-data.types';
 import { bound, bindingFields } from './ui-evidence-bindings';
 export { bindingFields, bindingKey } from './ui-evidence-bindings';
 import type { CacheIdentity } from '../../../collaboration/src/models/Collaboration.types';
@@ -21,7 +22,6 @@ export const branch = 'feature/orders';
 export const sharedProject = '7a2e3d4c-5b6a-4f79-8a81-9b2c3d4e5f60';
 export const pinned = { notes: '1'.repeat(40), evidence: '2'.repeat(40) };
 export { designSha, planningCommit } from './ui-evidence-entity';
-type Mode = 'current' | 'commit';
 const short = (commit: string) => commit.slice(0, 7);
 
 function identity(commit: string, shared: boolean): CacheIdentity {
@@ -105,4 +105,5 @@ export function evidenceData(
 		identity: identity(commits.tip, shared)
 	};
 }
-export type EvidenceData = ReturnType<typeof evidenceData>;
+
+export type { EvidenceData } from './ui-evidence-data.types';

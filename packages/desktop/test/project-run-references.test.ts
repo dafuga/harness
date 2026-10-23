@@ -1,3 +1,4 @@
+import type { Fixture } from './project-run-references.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -5,13 +6,6 @@ import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import type { ProjectRunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git } from './run-fixture';
-
-/**
- * A creation run asks with the registered ids of every catalog, those the request names first,
- * and says in public only what was checked: the notes of a valid proposal, or an answer in plain
- * words such as a question. Raw JSON is never said, and the strict proposal rules are unchanged.
- */
-type Fixture = Awaited<ReturnType<typeof fixture>>;
 const template = resolve(
 	import.meta.dirname,
 	'../../../specification/units/desktop.function.time-label.json'

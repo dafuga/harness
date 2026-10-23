@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAccountStatusService.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAccountStatusService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAccountStatusService.types.ts"
 		],
 		"symbols": [
 			"NativeAccountStatusService",
 			"NativeAccountStatusService",
 			"NativeAccountStatusService.constructor",
-			"NativeAccountStatusService.read"
+			"NativeAccountStatusService.read",
+			"StatusOptions"
 		]
 	},
 	"contract": {

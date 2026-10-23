@@ -1,7 +1,4 @@
-interface CallableContract {
-	pure?: boolean;
-	consumers?: Array<{ unit: string; symbol?: string }>;
-}
+import type { CallableContract } from './helperContract.types';
 
 /** Eligibility is shared by all renderers; missing contracts are never assumed pure. */
 export function helperContract(helper: CallableContract): boolean {

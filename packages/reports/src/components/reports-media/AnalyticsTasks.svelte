@@ -1,8 +1,8 @@
 <script lang="ts">
+	import type { Jev, Task } from "./AnalyticsTasks.types";
+
 	import type { AnalyticsSnapshot } from '../../services/explorer-ui/HarnessAnalyticsService';
 	import { analyticsCount } from '../../utils/reports-media/analyticsDisplay';
-	type Jev = AnalyticsSnapshot['jev'];
-	type Task = Jev['response']['tasks'][number];
 	let { jev }: { jev: Jev } = $props();
 	let groups = $derived([
 		{ title: 'Response checks', kind: 'response', tasks: jev.response.tasks },
@@ -23,6 +23,7 @@
 	const toPass = (row: Task) =>
 		row.attemptsToPass === null ? 'Not yet passed' : analyticsCount(row.attemptsToPass);
 	const reportHref = (report: string) => '/harness/reports/' + encodeURIComponent(report);
+
 </script>
 
 <section class="analytics-section" data-harness-component="analytics-tasks">
