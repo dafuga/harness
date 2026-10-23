@@ -12,6 +12,7 @@ import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const shared = '$shared';
+const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
@@ -102,6 +103,7 @@ test('no import written through a build alias of any package is left as a packag
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
 test('the registry stores Select as a derived dependency of each of its consumers, and is not stale', () => {
+	expect(loaded.index.files.get(selectTest)?.classification).toBe('test');
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
 		...[
