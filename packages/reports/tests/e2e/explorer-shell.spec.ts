@@ -19,7 +19,6 @@ import {
 	removeShellFixture,
 	shellOrigin
 } from './support/shellFixture';
-/** The bar, its navigation and revision selectors across three viewports. */
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;

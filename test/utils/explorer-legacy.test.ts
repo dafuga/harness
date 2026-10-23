@@ -120,9 +120,14 @@ test('the tab of a section is kept in the query and only where it exists', () =>
 			tab: 'contract'
 		})
 	).toBe(`/branch/main/commit/${sha}/pages/reports.page.titles?tab=models`);
+	expectRetainedContracts();
+});
+
+/** Non-page modules retain Contract while Pages canonicalize it to Models. */
+function expectRetainedContracts() {
 	for (const category of ['components', 'shells', 'functions', 'services', 'configs', 'models']) {
 		const path = `/branch/main/${category}/example`;
 		expect(explorerRoute(path, '?tab=contract')?.tab).toBe('contract');
 		expect(explorerRoutePath(explorerRoute(path, '?tab=contract')!)).toBe(`${path}?tab=contract`);
 	}
-});
+}
