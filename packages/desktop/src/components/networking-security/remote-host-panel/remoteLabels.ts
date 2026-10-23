@@ -1,4 +1,4 @@
-import { plural } from '../../../utils/networking-security/remoteLabels';
+import { plural } from '../../../helpers/strings/plural';
 import type { RemoteHostStatus } from '../../../models/development-tooling/Environment.types';
 
 /** A relay as a person recognises it: its host, never a path or a query. */

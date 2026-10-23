@@ -7,11 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/case.ts", "src/core/development-tooling/case.ts"],
+		"source": [
+			"src/core/case.ts",
+			"src/core/development-tooling/case.ts",
+			"src/helpers/strings/case.ts"
+		],
 		"symbols": [
 			"toKebabCase",
 			"toPascalCase",
 			"toCamelCase",
+			"toSnakeCase",
+			"toKebabCase",
+			"toCamelCase",
+			"toPascalCase",
 			"toSnakeCase",
 			"toKebabCase",
 			"toPascalCase",
@@ -79,7 +87,7 @@
 	"helperContracts": [
 		{
 			"name": "toKebabCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toKebabCase.textToConvert",
@@ -252,7 +260,7 @@
 		},
 		{
 			"name": "toPascalCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toPascalCase.textToConvert",
@@ -376,10 +384,6 @@
 				},
 				{
 					"unit": "template.rails-pieces",
-					"symbol": "helperFiles"
-				},
-				{
-					"unit": "template.rails-pieces",
 					"symbol": "initializerFiles"
 				},
 				{
@@ -397,7 +401,7 @@
 		},
 		{
 			"name": "toCamelCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toCamelCase.textToConvert",
@@ -472,13 +476,17 @@
 					"symbol": "configFiles"
 				},
 				{
+					"unit": "template.rails-pieces",
+					"symbol": "helperFiles"
+				},
+				{
 					"unit": "workflow.export-plans"
 				}
 			]
 		},
 		{
 			"name": "toSnakeCase",
-			"source": "src/core/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toSnakeCase.textToConvert",

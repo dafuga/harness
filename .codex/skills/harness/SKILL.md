@@ -145,6 +145,10 @@ private helpers and single-owner services inside their owner category. Preserve
 registered IDs, framework entries and public URLs. The explorer reads category
 folders and titles from the selected source revision for every collection.
 
+## Helper implementation ownership
+
+- Public shared helper implementations belong under src/helpers/<responsibility>/<camelName>.ts, with pure functions separated from component/service orchestration. Keep single-consumer helpers with their owner. Point helper source contracts and Source tabs only at the selected callable implementation, never all files of its owning module. Preserve supported import addresses with forwarding exports when needed; update active callers to the canonical helper source. Run the registry helper-source guard and the standard selected-helper Source browser test.
+
 ## Callable usage examples
 
 Every public helper needs committed examples with a real invocation, argument values and expected output or error. Execute authored examples against the actual implementation. `harness units check` rejects missing examples; indexing must preserve them and the detail page must select only the current callable and revision.
@@ -260,3 +264,9 @@ Public category or route renames must inventory canonical and compatibility titl
 Full-frame previews own their content boundaries. Apply content-container styling inside the
 frame, never around its navigation. When changing fixture context, extend the existing standard
 acceptance assertions for affected controls and inspect retained pixels before accepting the UI.
+
+General string transformations belong in `src/helpers/strings/`, independent of their consumers. Keep domain-specific helpers such as device-key identity formatting in their domain. Derive each callable category from its own implementation source; use that category for catalog cards, filters and breadcrumbs. Preserve each revision's taxonomy and each helper's registered identity.
+
+When changing a scaffold shape or name, update emitted source, generated tests and public export plans together. Run the standard all-scaffold export-coherence assertion and the existing focused CLI project-check scenario before accepting the generator change; source-only scaffold assertions are insufficient.
+
+Pure helper SDK exports keep their callable names. When an existing SDK binding already uses that name, preserve it and qualify the helper export with a Helper suffix (then a numeric suffix if necessary); regenerating the helper must be idempotent. Keep the same-name util/helper CLI compilation scenario alongside export-to-emitted-file coherence coverage when changing helper scaffolds.

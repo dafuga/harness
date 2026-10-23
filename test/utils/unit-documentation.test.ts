@@ -91,6 +91,10 @@ test('every committed public helper example executes against its real implementa
 		const unit = JSON.parse(await readFile(`specification/units/${file}`, 'utf8'));
 		if (unit.status !== 'active') continue;
 		for (const helper of unit.helperContracts ?? []) {
+			expect(
+				helper.source,
+				'Public helper implementation belongs in src/helpers/<responsibility>'
+			).toMatch(/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/);
 			expect(helper.examples?.length, 'Callable examples are required').toBeGreaterThan(0);
 			const titles = helper.examples.map((example: { name: string }) =>
 				example.name.trim().toLowerCase()
