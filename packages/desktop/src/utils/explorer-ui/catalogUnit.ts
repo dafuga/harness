@@ -12,10 +12,6 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 	const classified = unit.kind === 'layout' ? explorerCategory(unit) : categoryOf(unit.kind);
 	const category = classified === 'platforms' ? null : classified;
 	if (!category || unit.status !== 'active') return null;
-	const preview =
-		category === 'pages' || category === 'layouts' || category === 'components'
-			? unit.preview
-			: undefined;
 	return {
 		...(unit.helperContracts?.length ? { helperContracts: unit.helperContracts } : {}),
 		id: unit.id,
@@ -32,11 +28,14 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 		latestVersion: null,
 		approvedVersion: null,
 		threadCount: 0,
-		thumbnail:
-			preview || category === 'pages' || category === 'layouts'
-				? { source: 'recorded', ...preview }
-				: null
+		thumbnail: catalogThumbnail(unit, category)
 	};
+}
+function catalogThumbnail(unit: ComponentManifest, category: CatalogEntity['category']) {
+	const frame = category === 'pages' || category === 'layouts';
+	if (!frame && category !== 'components') return null;
+	const preview = unit.preview;
+	return preview || frame ? { source: 'recorded' as const, ...preview } : null;
 }
 /** The route files that load for an address and render nothing of it. */
 const loader = /(^|\/)\+page(\.server)?\.[jt]s$/;
