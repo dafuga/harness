@@ -9,10 +9,23 @@ export class UnitRegistryValidator {
 		return [
 			...active.flatMap((unit) => this.missingSource(unit, files)),
 			...active.flatMap((unit) => this.helperExamples(unit)),
+			...active.flatMap((unit) => this.helperSources(unit)),
 			...active.flatMap((unit) => this.unknownDependencies(unit, known)),
 			...this.sharedSource(active),
 			...active.flatMap((unit) => this.lineage(unit, manifests))
 		];
+	}
+
+	private helperSources(unit: ComponentManifest): string[] {
+		return (unit.helperContracts ?? []).flatMap((helper) => {
+			const prefix = `${unit.id}: ${helper.name}`;
+			const issues: string[] = [];
+			if (!/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/.test(helper.source))
+				issues.push(`${prefix} must be implemented under src/helpers/<responsibility>/`);
+			if (!unit.owns.source.includes(helper.source))
+				issues.push(`${prefix} source must be owned by its registered module`);
+			return issues;
+		});
 	}
 
 	private helperExamples(unit: ComponentManifest): string[] {
