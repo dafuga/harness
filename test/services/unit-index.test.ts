@@ -1,3 +1,4 @@
+import { recordIndexWorkload } from './unit-index/measurements';
 import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
@@ -196,12 +197,19 @@ test('several owned files produce identical metadata after one indexing pass', a
 	expect(again.result.updated, 'one-pass source indexing must be idempotent').toEqual([]);
 	expect(again.result.manifests).toEqual(once.result.manifests);
 	expect([...once.index.files.keys()]).toEqual(Object.keys(files));
+	const started = performance.now();
 	const automatic = await indexFiles(files);
+	recordIndexWorkload(performance.now() - started);
 	expect(
 		unitOf(automatic, 'function.z').owns.source,
 		'a sibling type file belongs to its implementation'
 	).toEqual(['src/utils/z.ts', 'src/utils/z.types.ts']);
 	expect(automatic.result.added).toEqual(['function.a', 'function.z']);
+	const visual = await indexFiles({
+		'src/components/Tile.svelte': '<p>Tile</p>',
+		'src/components/Tile.types.ts': 'export interface TileProps { title: string }'
+	});
+	expect(visual.result.added).toEqual(['component.tile']);
 	const types = {
 		...first,
 		id: 'model.z-types',
