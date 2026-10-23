@@ -162,16 +162,39 @@ test('page models include models reached through services and remain bound to th
 	});
 });
 
-test('private functions use the same module card as shared functions in owner relationships', () => {
+test('private and unclassified dependencies reuse the shared module card', () => {
 	for (const mode of ['current', 'commit'] as const) {
 		const head = withHelpers(hostProps(mode).head);
+		const shape = 'app.model.order-shape-types';
+		const template = head.registry.units.find((unit) => unit.id === ids.filter)!;
+		head.registry.units.push({
+			...template,
+			id: shape,
+			kind: 'model',
+			title: 'OrderShape.types',
+			helpers: [],
+			owns: { source: ['src/models/OrderShape.types.ts'], symbols: ['OrderShape'] }
+		});
+		head.registry.units
+			.find((unit) => unit.id === ids.list)!
+			.dependencies.push({ unit: shape, via: 'import' });
 		const body = content(mode, { ...list, tab: 'uses' }, { head });
-		const card = [...body.matchAll(/<article\b[^]*?<\/article>/g)]
-			.map((match) => match[0])
-			.find((item) => item.includes('aria-label="single"'));
-		expect(card, 'Private functions must be shared cards, not plain Other rows').toBeDefined();
-		expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
-		expect(card).toContain('aria-label="Used In"');
-		expect(card).toContain('/functions/function.single');
+		const support = explorerRelations(head, ids.list).support.filter((item) =>
+			['function.single', shape].includes(item.id)
+		);
+		expect(support).toHaveLength(2);
+		for (const item of support) {
+			const card = [...body.matchAll(/<article\b[^]*?<\/article>/g)]
+				.map((match) => match[0])
+				.find((markup) => markup.includes(`aria-label="${item.name}"`));
+			expect(card, 'Dependencies must be shared cards, not plain Other rows').toBeDefined();
+			expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
+			expect(card).toContain('aria-label="Used In"');
+			expect(card).not.toContain('ex-pill');
+			if (item.id === 'function.single') expect(card).toContain('/functions/function.single');
+			else
+				for (const category of ['models', 'functions'])
+					expect(card).not.toContain(`/${category}/${shape}`);
+		}
 	}
 });
