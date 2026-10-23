@@ -1,6 +1,5 @@
 import { posix } from 'node:path';
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
-import { codeAudit } from './task-completion-service/codeAudit';
 import { planAudit, type TaskCheck } from './task-completion-service/planAudit';
 import { sourceAudit } from './task-completion-service/sourceAudit';
 import { taskAuditRecord } from './task-completion-service/taskAuditRecord';
@@ -18,8 +17,10 @@ export class TaskCompletionService {
 			checks.push({ id: 'source', passed: true, detail: `Committed source at ${commit}.` });
 			if (input.plan || input.kind === 'planning')
 				checks.push(...planAudit(await this.proposal(commit, input.plan), input.goal));
-			if (input.kind === 'coding')
+			if (input.kind === 'coding') {
+				const { codeAudit } = await import('./task-completion-service/codeAudit');
 				checks.push(...(await codeAudit(this.root, commit, input.units)));
+			}
 			if ((await sourceAudit(this.root, input)) !== commit)
 				throw new Error('Task source changed during its completion audit.');
 		} catch (error) {
@@ -31,7 +32,7 @@ export class TaskCompletionService {
 		}
 		return taskAuditRecord(this.root, { ...input, commit, checks });
 	}
-	/** The app also enforces unchanged source around this content audit. */
+	/** Content-only audit; check() also verifies the committed source around it. */
 	requirePlan(proposal: string, goal: string): void {
 		const missing = planAudit(proposal, goal).filter((check) => !check.passed);
 		if (missing.length)
