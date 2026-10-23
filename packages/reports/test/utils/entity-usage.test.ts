@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { ExplorerEntity, ExplorerRelations } from '../../src/models/Explorer.types';
-import { entityUsage } from '../../src/components/harness/entity-relations/entityUsage';
+import { entityUsage } from '../../src/components/explorer-ui/entity-relations/entityUsage';
 
 const entity = (id: string, category: string) => ({ id, category }) as ExplorerEntity;
 const support = (id: string) =>

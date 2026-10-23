@@ -8,7 +8,7 @@
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
 	import HarnessScreen from '../../../../src/components/HarnessScreen.svelte';
-	import ExplorerContent from '../../../../src/components/harness/ExplorerContent.svelte';
+	import ExplorerContent from '../../../../src/components/explorer-ui/ExplorerContent.svelte';
 	import HubHome from '../../../../../hub/src/routes/+page.svelte';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
@@ -24,7 +24,7 @@
 		);
 	// What the explorer draws inside its content, as it is drawn there.
 	const explorer =
-		Boolean(unit.source?.includes('/components/explorer-ui/harness/')) ||
+		Boolean(unit.source?.includes('/components/explorer-ui/')) ||
 		[
 			'explorer-catalog-items',
 			'explorer-function-card',
