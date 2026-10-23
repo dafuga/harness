@@ -57,6 +57,14 @@
 	}
 	.source-files :global(.hx-action) {
 		flex: 0 0 auto;
+		min-height: var(--hx-space-28);
+		padding: 0 var(--hx-space-8);
+		gap: var(--hx-space-4);
+		font-size: var(--hx-type-size-xs);
+	}
+	.source-files :global(.hx-action svg) {
+		width: var(--hx-space-14);
+		height: var(--hx-space-14);
 	}
 	.source-empty {
 		color: var(--ex-muted, var(--muted));

@@ -30,6 +30,9 @@ async function fileLink(page: Page, path: string, commit: string) {
 	await expect(
 		link.locator('..').getByRole('button', { name: `View code for ${path}`, exact: true })
 	).toBeVisible();
+	const bounds = (await link.locator('..').getByRole('button').boundingBox())!;
+	expect(bounds.height, 'Code actions stay compact').toBeLessThanOrEqual(28);
+	expect(bounds.width, 'Code actions stay compact').toBeLessThanOrEqual(110);
 	await expect(page.getByText('Source ownership', { exact: true })).toHaveCount(0);
 	await expect(page.getByText('Symbols', { exact: true })).toHaveCount(0);
 	await expect(page.getByText('Execution targets', { exact: true })).toHaveCount(0);
