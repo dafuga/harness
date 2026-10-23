@@ -18,7 +18,6 @@ const kinds = [
 test.use({ actionTimeout: 3000 });
 const expect = browserExpect.configure({ timeout: 2000 });
 const phase = process.env.SCREENSHOT_LABEL ?? 'run';
-
 async function sourceMetrics(page: Page, info: TestInfo, started: number) {
 	await info.attach('source-view-metrics', {
 		body: JSON.stringify(
@@ -35,7 +34,6 @@ async function sourceMetrics(page: Page, info: TestInfo, started: number) {
 		contentType: 'application/json'
 	});
 }
-
 async function fileLink(page: Page, path: string, commit: string) {
 	const files = page.getByRole('list', { name: 'Source files', exact: true });
 	const link = files.getByRole('link', { name: path, exact: true });
@@ -75,7 +73,6 @@ async function historicalFile(
 	await page.getByRole('dialog').getByRole('button', { name: 'Close viewer', exact: true }).click();
 	await expect(page.getByRole('dialog')).toHaveCount(0);
 }
-
 for (const [viewport, size] of Object.entries(viewports)) {
 	for (const [label, category, name, id, path] of kinds) {
 		test(`${label} code opens only from the detail Source tab at ${viewport} width`, async ({

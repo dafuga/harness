@@ -266,3 +266,5 @@ acceptance assertions for affected controls and inspect retained pixels before a
 General string transformations belong in `src/helpers/strings/`, independent of their consumers. Keep domain-specific helpers such as device-key identity formatting in their domain. Derive each callable category from its own implementation source; use that category for catalog cards, filters and breadcrumbs. Preserve each revision's taxonomy and each helper's registered identity.
 
 When changing a scaffold shape or name, update emitted source, generated tests and public export plans together. Run the standard all-scaffold export-coherence assertion and the existing focused CLI project-check scenario before accepting the generator change; source-only scaffold assertions are insufficient.
+
+Pure helper SDK exports keep their callable names. When an existing SDK binding already uses that name, preserve it and qualify the helper export with a Helper suffix (then a numeric suffix if necessary); regenerating the helper must be idempotent. Keep the same-name util/helper CLI compilation scenario alongside export-to-emitted-file coherence coverage when changing helper scaffolds.
