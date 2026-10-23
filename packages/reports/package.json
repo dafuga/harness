@@ -10,7 +10,7 @@
 		"dev": "BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts",
 		"build": "bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts",
 		"check": "bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit",
-		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./tsconfig.previews.json",
 		"format:check": "prettier --check .",
 		"format": "prettier --write .",
 		"lint": "svelte-kit sync && eslint .",
