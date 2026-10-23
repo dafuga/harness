@@ -41,22 +41,22 @@ test('the bar has seven entity categories and a Styles screen scoped to the view
 		['pages', 'Pages', 'pages'],
 		['shells', 'Shells', 'shells'],
 		['components', 'Components', 'components'],
+		['models', 'Models', 'database'],
+		['services', 'Services', 'services'],
 		['functions', 'Helpers', 'functions'],
 		['configs', 'Configs', 'configs'],
-		['services', 'Services', 'services'],
-		['models', 'Models', 'database'],
 		['styles', 'Styles', 'styles'],
 		['platforms', 'Platforms', 'platforms']
 	]);
 	// The whole branch is one segment, and a category opens its index: no entity, section or tab.
 	expect(categories.map((item) => item.href)).toEqual([
-		...['pages', 'shells', 'components', 'functions', 'configs', 'services', 'models'].map(
+		...['pages', 'shells', 'components', 'models', 'services', 'functions', 'configs'].map(
 			(category) => `${scoped}/commit/${sha(4)}/${category}`
 		),
 		`${scoped}/commit/${sha(4)}/styles`,
 		`${scoped}/commit/${sha(4)}/platforms`
 	]);
-	expect(categories[5].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
+	expect(categories[4].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
 	// Details of a function keep Functions active, and nothing else is.
 	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['functions']);
 });
@@ -148,10 +148,10 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 		'Pages',
 		'Shells',
 		'Components',
+		'Models',
+		'Services',
 		'Helpers',
 		'Configs',
-		'Services',
-		'Models',
 		'Styles',
 		'Platforms'
 	]);
