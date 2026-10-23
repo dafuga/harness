@@ -106,6 +106,10 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Screenshot Evidence
 
+- For a new or changed table layout, extend its existing viewport matrix beyond text presence
+  and document fit: preserve readable identifiers/types and short labels, contain horizontal
+  scrolling, and exercise full-example keyboard access. Capture both panes before assertions;
+  a compressed unreadable table can fit the page and still fail acceptance.
 - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
 - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
