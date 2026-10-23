@@ -207,6 +207,7 @@
 		"reports.component.report-summary",
 		"reports.component.report-view",
 		"reports.component.select",
+		"reports.component.shared-primitives-loading-state",
 		"reports.component.site-activity",
 		"reports.component.source-code-action",
 		"reports.component.source-content",
@@ -1464,6 +1465,12 @@
 			"units": ["reports.component.select"]
 		},
 		{
+			"id": "reports-component-shared-primitives-loading-state",
+			"title": "Accessible data loading status",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-loading-state"]
+		},
+		{
 			"id": "reports-component-site-activity",
 			"title": "Live site activity",
 			"coverage": "required",
@@ -1915,6 +1922,7 @@
 				"reports-component-report-summary",
 				"reports-component-report-view",
 				"reports-component-select",
+				"reports-component-shared-primitives-loading-state",
 				"reports-component-site-activity",
 				"reports-component-source-code-action",
 				"reports-component-source-content",

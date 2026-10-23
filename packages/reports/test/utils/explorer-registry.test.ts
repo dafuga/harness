@@ -58,9 +58,12 @@ test('the registry records each page as made of the host and the one screen it m
 	}
 });
 
-test('the host is made of the bar alone, and only the page of no screen names every screen', () => {
+test('the host uses shared frame pieces, and only the page of no screen names every screen', () => {
 	expect(drawn(`${part}screen`)).toEqual(['harness-console']);
-	expect(drawn(`${part}harness-console`)).toEqual(['harness-header']);
+	expect(drawn(`${part}harness-console`)).toEqual([
+		'harness-header',
+		'reports.component.shared-primitives-loading-state'
+	]);
 	expect(drawn('reports.page.harness-view')).toEqual(['explorer-content', 'screen']);
 	const users = units.filter((unit) =>
 		unit.dependencies.some((used) => used.unit === `${part}explorer-content`)
