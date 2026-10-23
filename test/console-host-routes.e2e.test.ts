@@ -31,7 +31,9 @@ const main = (commit: string, rest: string) => `/harness/branch/main/commit/${co
 const tip = (rest: string) => `/harness/branch/main/${rest}`;
 /** The whole branch is one segment of an explorer address. */
 const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
-const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
+const categories = 'Pages,Shells,Components,Helpers,Configs,Services,Models,Styles,Platforms'.split(
+	','
+);
 const pathOf = (page: Page) => new URL(page.url()).pathname;
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
