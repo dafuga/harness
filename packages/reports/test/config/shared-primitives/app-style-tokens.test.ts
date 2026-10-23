@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
+import postcss from 'postcss';
 import { appStyleTokensConfig as config } from '../../../src/config/shared-primitives/appStyleTokensConfig';
 import { styleTokenViolations } from './styleTokenAudit';
 
@@ -55,4 +56,19 @@ test('all Harness component design values use the shared token catalog', () => {
 	expect(violations, 'Undocumented design values remain outside the shared token catalog').toEqual(
 		[]
 	);
+});
+
+/** A component cannot invent a private hx token that the Styles registry never documents. */
+test('all public app token references are declared in the canonical catalog', () => {
+	const declared = new Set<string>();
+	postcss.parse(readFileSync(join(root, config.tokenFile), 'utf8')).walkDecls((declaration) => {
+		if (declaration.prop.startsWith('--hx-')) declared.add(declaration.prop);
+	});
+	const unknown = config.roots.flatMap(sources).flatMap((path) => {
+		const source = readFileSync(join(root, path), 'utf8');
+		return [...source.matchAll(/var\(\s*(--hx-[\w-]+)/g)]
+			.filter((match) => !declared.has(match[1]))
+			.map((match) => `${path}: ${match[1]}`);
+	});
+	expect([...new Set(unknown)], 'Every public app token must be documented').toEqual([]);
 });
