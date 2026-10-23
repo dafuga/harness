@@ -2,9 +2,11 @@
 	"name": "config-value-icons",
 	"goal": "Config collections use distinct object and array icon controls with accurate counts and expandable read-only contents.",
 	"createdAt": "2026-10-23T10:45:09.421Z",
-	"updatedAt": "2026-10-23T10:47:13.604Z",
+	"updatedAt": "2026-10-23T10:54:44.977Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T10:54:44.977Z",
+			"evidence": "At test commit 279cde09b, retained red f3478ac8 records the actual visible View value assertion failure at desktop/tablet/mobile plus five missing structural metadata cases. Same test corpus and command frozen; original screenshots retained in Git evidence."
 		},
 		{
 			"id": "implement",
