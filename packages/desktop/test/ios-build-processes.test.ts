@@ -116,9 +116,6 @@ async function built(name: string, env: Record<string, string> = {}) {
 		['desktop.script.build-ios-simulator', 'desktop.script.ios-scan-fixture'],
 		'simulator-script-and-scan-module-initialization-with-xcode-stand-in'
 	);
-	onTestFinished((context) => {
-		if (context.task.result?.state === 'pass') finish();
-	});
 	const { cwd, path, daemon } = workspace(name);
 	const log = join(root, `${name}.log`);
 	const result = await runIsolated({
@@ -130,6 +127,10 @@ async function built(name: string, env: Record<string, string> = {}) {
 		log,
 		maxLogBytes: 1_000_000
 	});
+	if (result.status === 'passed')
+		onTestFinished((context) => {
+			if (context.task.result?.state === 'pass') finish();
+		});
 	return { result, output: readFileSync(log, 'utf8'), daemon: daemon() };
 }
 
