@@ -162,7 +162,6 @@ test("the policy holds for Harness's own registry", () => {
 	expect(listed('pages').map((item) => item.id)).toContain('reports.page.harness-view');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.root');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.layout.root');
-	// No rule, guide, template or model is presented as a function of the product.
 	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];
 	for (const item of units.filter((found) => invented.includes(found.kind))) {
 		expect([item.id, explorerCategory(item)]).toEqual([item.id, null]);
@@ -170,7 +169,6 @@ test("the policy holds for Harness's own registry", () => {
 	for (const item of listed('functions')) {
 		expect(['function', 'validator', 'serializer', 'kernel']).toContain(item.kind);
 	}
-	// Every unit has a category of the five or none, and a role either way.
 	for (const item of units) {
 		const category = explorerCategory(item);
 		expect(category === null || explorerCategories.some((known) => known === category)).toBe(true);

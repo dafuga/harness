@@ -1,4 +1,4 @@
-import { reviewModelCard, reviewFlatModelUsage } from './entityPreviewModels';
+import { reviewModelCard, reviewFlatModelUsage, reviewTypeCard } from './entityPreviewModels';
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
@@ -8,6 +8,7 @@ import {
 import { expect, test } from '../../../test/support/browserTest';
 import {
 	capture,
+	ready,
 	fits,
 	open,
 	viewports,
@@ -54,10 +55,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		});
 		for (const category of ['models', 'types', 'components', 'functions', 'services'] as const) {
 			await open(tab, { category }, 'helpers');
-			await tab.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all([...document.images].map((image) => image.decode()));
-			});
+			await ready(tab);
 			await capture(tab, `grid-${category}-${name}`, moduleCard.units);
 			const cards = tab.getByRole('article');
 			await expect(
@@ -76,24 +74,7 @@ for (const [name, size] of Object.entries(viewports)) {
 				expect(card.width, 'cards leave room for neighbors').toBeLessThan(available.width * 0.6);
 			}
 			expect(await fits(tab)).toBe(true);
-			if (category === 'types') {
-				const typeCard = tab.getByRole('article', { name: 'OrderInput', exact: true });
-				await expect(typeCard).toBeVisible();
-				await typeCard.getByRole('link', { name: 'OrderInput', exact: true }).click();
-				expect(await where(tab)).toMatchObject({
-					category: 'types',
-					entity: 'app.model.order-input'
-				});
-				await expect(tab.getByRole('heading', { name: 'OrderInput', exact: true })).toBeVisible();
-				await expect(tab.getByText('Settings it provides', { exact: true })).toHaveCount(0);
-				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
-				await expect(tab.locator('[data-harness-component="entity-contract"]')).toBeVisible();
-				await capture(tab, `type-definition-${name}`, ['reports.component.entity-contract']);
-				const definition = tab.getByRole('table', { name: 'OrderInput', exact: true });
-				await expect(definition).toContainText('id');
-				await expect(definition).toContainText('string');
-				await expect(tab.getByRole('tab', { name: 'Table', exact: true })).toHaveCount(0);
-			}
+			if (category === 'types') await reviewTypeCard(tab, name);
 			if (category === 'models') {
 				await expect(tab.getByRole('article', { name: 'OrderInput', exact: true })).toHaveCount(0);
 				for (const modelCard of await cards.all())
@@ -117,10 +98,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		await tab.setViewportSize(size);
 		for (const commit of [null, commits.middle, commits.first]) {
 			await open(tab, { category: 'components', commit });
-			await tab.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all([...document.images].map((image) => image.decode()));
-			});
+			await ready(tab);
 			await capture(tab, `component-cards-${commit?.slice(0, 7) ?? 'tip'}-${name}`);
 			const cards = tab.getByRole('article');
 			await expect(cards, 'components show screenshot cards').toHaveCount(3);
@@ -141,10 +119,7 @@ for (const [name, size] of Object.entries(viewports)) {
 	}) => {
 		await tab.setViewportSize(size);
 		await open(tab);
-		await tab.evaluate(async () => {
-			await document.fonts.ready;
-			await Promise.all([...document.images].map((image) => image.decode()));
-		});
+		await ready(tab);
 		await capture(tab, `compact-page-${name}`, moduleCard.units);
 		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
 		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toHaveText('Used In—');
@@ -176,7 +151,11 @@ for (const [name, size] of Object.entries(viewports)) {
 		const categoryStart = await tab.evaluate(() => performance.now());
 		await tab
 			.getByRole('navigation', { name: 'Harness categories' })
-			.getByRole('link', { name: 'Helpers', exact: true })
+			.getByRole('link', { name: 'Modules', exact: true })
+			.click();
+		await tab
+			.getByRole('tablist', { name: 'Module categories' })
+			.getByRole('tab', { name: 'Helpers', exact: true })
 			.click();
 		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
 			'1003 of 1003 helpers shown'

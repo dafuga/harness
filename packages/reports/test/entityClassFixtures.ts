@@ -1,3 +1,5 @@
+import type { HarnessUnit } from '../src/models/Harness.types';
+import type { ModelDefinition } from '../../../src/utils/unitMetadata';
 import type { Reads } from './entityClassFixtures.types';
 import type { ExplorerEntity } from '../src/models/Explorer.types';
 import type { entityCatalog } from '../src/utils/entityCatalog';
@@ -130,4 +132,53 @@ export function modelDefinition(name: string, source: string) {
 					}
 				})
 	};
+}
+
+/** Shared declaration shapes exercise fields, signatures, aliases and source ownership. */
+export function typeDeclarations(source: string): ModelDefinition[] {
+	const first = modelDefinition('OrderInput', source);
+	return [
+		{
+			...first,
+			fields: [...first.fields, { name: 'note', type: 'string', optional: true }],
+			methods: [{ name: 'resolve', inputs: [{ name: 'key', type: 'string' }], output: 'number' }]
+		},
+		{ ...first, name: 'OrderIds', kind: 'type', fields: [], type: 'string[]' },
+		{ ...first, name: 'ForeignInput', source: 'src/Other.types.ts' }
+	];
+}
+
+/** Persisted wrappers and an independent shared declaration module used by consumer cards. */
+export function consumerModels(seed: HarnessUnit) {
+	const model = {
+		...seed,
+		id: 'app.model.order',
+		kind: 'model',
+		title: 'Order',
+		responsibility: 'Wraps stored order data.',
+		owns: {
+			source: ['src/models/Order.ts', 'src/models/Order.types.ts'],
+			symbols: ['Order']
+		},
+		modelDefinitions: [modelDefinition('Order', 'src/models/Order.ts')]
+	};
+	const secondModel = {
+		...model,
+		id: 'app.model.invoice',
+		title: 'Invoice',
+		owns: { source: ['src/models/Invoice.ts'], symbols: ['Invoice'] },
+		modelDefinitions: [modelDefinition('Invoice', 'src/models/Invoice.ts')]
+	};
+	const types = {
+		...model,
+		id: 'app.model.order-input',
+		title: 'OrderInput',
+		responsibility: 'Describes the input data for an order.',
+		owns: {
+			source: ['src/models/OrderInput.types.ts', 'src/models/OrderInputValues.ts'],
+			symbols: ['OrderInput']
+		},
+		modelDefinitions: [modelDefinition('OrderInput', 'src/models/OrderInput.types.ts')]
+	};
+	return [model, secondModel, types];
 }

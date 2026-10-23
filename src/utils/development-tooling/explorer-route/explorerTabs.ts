@@ -1,7 +1,7 @@
 import type { ExplorerCategory, ExplorerTab } from './explorerTabs.types';
 import type { ExplorerLocation } from '../../explorerRoute';
 
-/** The seven kinds of entity the explorer shows, in the order of its navigation. */
+/** The entity collections supported by explorer addresses. */
 export const explorerEntityCategories = [
 	'pages',
 	'layouts',

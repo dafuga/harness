@@ -1,3 +1,4 @@
+import { modelDefinition } from './entityClassFixtures';
 import type { HarnessRevision, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
 import { record, revision } from './entityFixture';
 import { capture, commits, ids, scenarios, units } from './entityUnits';
@@ -44,7 +45,14 @@ export function withSourceMeasures(detail: HarnessRevision): HarnessRevision {
 	const sample = detail.registry.units[0];
 	const extra = [
 		{ ...sample, id: 'app.shell.orders', kind: 'shell', title: 'Orders shell' },
-		{ ...sample, id: 'app.model.order', kind: 'model', title: 'Order model' }
+		{
+			...sample,
+			id: 'app.model.order',
+			kind: 'model',
+			title: 'Order model',
+			owns: { source: ['src/models/Order.ts'], symbols: ['Order'] },
+			modelDefinitions: [modelDefinition('Order', 'src/models/Order.ts')]
+		}
 	];
 	const units = [...detail.registry.units, ...extra].map((unit) => ({
 		...unit,

@@ -1,3 +1,4 @@
+import { modelDefinition } from './entityClassFixtures';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { ids, units } from './entityUnits';
 import taxonomy from '../../../harness.groups.json' with { type: 'json' };
@@ -142,7 +143,8 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		id: 'app.model.order',
 		kind: 'model',
 		title: 'Order',
-		responsibility: 'An order placed by an account.',
+		responsibility: 'Wraps stored order data.',
+		modelDefinitions: [modelDefinition('Order', 'src/models/orders/Order.ts')],
 		dependencies: [],
 		owns: { source: ['src/models/orders/Order.ts'], symbols: ['Order'] }
 	};
@@ -150,6 +152,7 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		...model,
 		id: 'app.model.order-types',
 		title: 'Order.types',
+		modelDefinitions: [modelDefinition('OrderInput', 'src/models/orders/Order.types.ts')],
 		owns: { source: ['src/models/orders/Order.types.ts'], symbols: ['OrderInput'] }
 	};
 	return {

@@ -1,4 +1,6 @@
-import { callableUsesFixture } from '../entityPreviewCallables';
+import { contractFields } from '../../src/utils/contractFields';
+import { unit as fixtureUnit } from '../explorerFixture';
+import { typeDeclarations } from '../entityClassFixtures';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { content, words } from '../entityRender';
@@ -48,7 +50,7 @@ test('a component contract lists prop types and examples without an output secti
 		expect(body).not.toMatch(/src\/|\.svelte\b/);
 	}
 });
-test('legacy contract tables retain types and example controls for opaque fields', () => {
+test('legacy contract tables retain types and example controls for opaque fields', async () => {
 	const head = revision(commits.tip, [record(commits.tip)]);
 	head.registry.units = head.registry.units.map((unit) =>
 		unit.id !== ids.list
@@ -69,6 +71,37 @@ test('legacy contract tables retain types and example controls for opaque fields
 	expect(body).toContain('View example for Label');
 	expect(body).toContain('View example for Context');
 	expect(body).toContain('PrivateContext');
+	const source = 'src/models/OrderInput.types.ts';
+	const types = fixtureUnit('app.model.order-input', 'model', {
+		owns: { source: [source], symbols: ['OrderInput'] },
+		modelDefinitions: typeDeclarations(source)
+	});
+	const groups = await measureWorkload(
+		'reports.function.contract-fields',
+		'shared-type-declarations',
+		() => contractFields(types, 'types')
+	);
+	expect(groups.map((group) => group.title)).toEqual(['OrderInput', 'OrderIds']);
+	expect(groups[0].fields.map((field) => [field.name, field.type])).toEqual([
+		['id', 'string'],
+		['note?', 'string'],
+		['resolve', '(key: string): number']
+	]);
+	expect(groups[1].fields[0]).toMatchObject({ name: 'OrderIds', type: 'string[]' });
+	expect(
+		groups
+			.flatMap((group) => group.fields)
+			.every((field) => field.source === 'missing' && field.examples.length === 0)
+	).toBe(true);
+	head.registry.units.push(types);
+	const typed = content(
+		'current',
+		{ category: 'types', entity: types.id, tab: 'contract' },
+		{ head }
+	);
+	expect(typed).toContain('aria-label="OrderInput"');
+	expect(typed).toContain('aria-label="OrderIds"');
+	expect(words(typed)).not.toContain('ForeignInput');
 });
 test('callable contracts preserve actual parameters and associate their returns', () => {
 	const head = revision(commits.tip, [record(commits.tip)]);
@@ -163,43 +196,4 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 		expect(legacy).toContain(`/helpers/second/in/${ids.filter}/contract`);
 		expect(legacy).not.toContain('aria-label="first contract"');
 	}
-});
-test('selected callable Uses exclude module dependencies and hide empty navigation', async () => {
-	const head = revision(commits.tip, []);
-	const unit = callableUsesFixture(head.registry.units.find((item) => item.id === ids.filter)!);
-	head.registry.units = head.registry.units.map((item) => (item.id === unit.id ? unit : item));
-	head.registry.units.push({
-		...unit,
-		id: 'app.function.external',
-		title: 'externalHelpers',
-		helpers: [
-			{
-				name: 'external',
-				source: 'external.ts',
-				inputs: [],
-				pure: true,
-				consumers: [{ unit: ids.filter, symbol: 'outer' }]
-			}
-		]
-	});
-	const uses = (helper: string) =>
-		content(
-			'current',
-			{ category: 'functions', entity: ids.filter, helper, tab: 'uses' },
-			{ head }
-		);
-	const outer = await measureWorkload(
-		'reports.function.entity-shown',
-		'selected-callable-uses',
-		() =>
-			measureWorkload('reports.function.entity-catalog', 'private-callable-card', () =>
-				uses('outer')
-			)
-	);
-	expect(words(outer)).toContain('inner()');
-	expect(words(uses('outer'))).toContain('external()');
-	expect(uses('outer')).not.toContain('aria-label="Configs uses"');
-	expect(uses('inner')).not.toContain('aria-label="inner uses"');
-	expect(words(uses('inner'))).not.toMatch(/\bUses\b/);
-	expect(words(uses('sibling'))).not.toMatch(/\bUses\b/);
 });

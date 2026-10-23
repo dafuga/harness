@@ -2,7 +2,7 @@
 	"name": "modules-navigation",
 	"goal": "Show five primary destinations with module categories and separate data-shape Types from persisted Models",
 	"createdAt": "2026-10-23T20:09:18.165Z",
-	"updatedAt": "2026-10-23T22:27:58.973091+00:00",
+	"updatedAt": "2026-10-23T22:58:50.337572+00:00",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,18 +17,19 @@
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
 			"status": "complete",
-			"evidence": "Added source-proven Models/Types classification, stable Types routes and generic declaration tables. Five scoped primary destinations reuse HarnessTabs for six module kinds. Claude Opus 5.5/xhigh made the actual bounded navbar and responsive CSS edits; originals remain uncommitted evidence. Acceptance verification remains pending."
+			"evidence": "Source-proven Models/Types classification preserves registered identities and clean names. Five primary destinations reuse HarnessTabs for six module categories. Claude Opus 5.5/xhigh made the navbar and responsive CSS edits. Types uses generated dedicated route shells and existing catalog, entity, contract and history screens; its visual pages have standard capture slots. Broader qualification and landing remain pending."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
 			"status": "complete",
-			"evidence": "Canonical admitted red 2533ca7f7ddddb8f21966434681c3be69eff9aa5977a00936dafca4799cc72ba at 28fc1a41404ada4d9adcf26a76995b922fb17a29 reproduces the navbar and model/type gaps in all three viewports, retaining 66 capture bindings and eight observations. The Types detail case now requires the actual entity-contract marker and its registered unit attribution. The original Python command ran through immutable current C443 resource admission, job5c381642-455d-4189-90dd-e3a16de89164. Earlier red receipts remain preserved; green must use this corrected complete corpus and identical wrapper."
+			"evidence": "Immutable corrected admitted pair: red ee5d3ce48e04283e244e3ec149b39324e8715f11064dc5557e28f23f561160fc at 28fc1a41404ada4d9adcf26a76995b922fb17a29 failed on the intended navbar/model gaps (66 capture bindings, eight observations); unchanged green a72dc4410f5d5fd9d3295c792302490f27856559a1b26874d208b47908bdb8e6 at eaa562dbed2858ea992a59671aaf03c3d106cc21 passed (243 bindings, 368 observations). Same tests, inputs, command, assertion and darwin/arm64/1.2.18/0a98320eb0e7ab37cb68812e9b365c30e20b84231de4cf8f88d709cc279dcfd5 profile. Original receipts remain retained. Current-main integration and broader verification remain pending."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Current-main preflight passes formatting, root/Reports type checks and structure audits, 173 focused root ownership/route/guidance assertions, all 742 Reports tests, units check, Desktop typecheck and affected Desktop tests. Commit-bound packaged-host/browser capture, hosted CI, landing and delivered-main refresh remain required. Full local CLI/native verification remains explicitly deferred; do not promote focused records into that verdict."
 		}
 	],
 	"evaluators": [

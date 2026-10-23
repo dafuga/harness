@@ -1,5 +1,10 @@
 import type { HarnessRevision } from '../src/models/Harness.types';
-import { relationServiceMetadata, relationSource, modelDefinition } from './entityClassFixtures';
+import {
+	relationServiceMetadata,
+	relationSource,
+	modelDefinition,
+	consumerModels
+} from './entityClassFixtures';
 import { ids } from './entityUnits';
 
 /** Mixed module groups exceed one and two batches, with an uneven final batch. */
@@ -17,6 +22,13 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 				kind,
 				title: `Consumer ${kind} ${offset + 1}`,
 				...relationServiceMetadata(kind, offset, ids.page),
+				...(kind === 'model'
+					? {
+							modelDefinitions: [
+								modelDefinition(`Consumer${offset + 1}`, relationSource(kind, offset))
+							]
+						}
+					: {}),
 				helpers:
 					kind === 'function'
 						? [
@@ -53,34 +65,9 @@ export function withRelationGroups(detail: HarnessRevision): HarnessRevision {
 
 /** Mixed consumer kinds, duplicates and a fourth eligible consumer exercise every card's limit. */
 export function withConsumers(detail: HarnessRevision): HarnessRevision {
-	const model = {
-		...detail.registry.units.find((unit) => unit.id === ids.store)!,
-		id: 'app.model.order',
-		kind: 'model',
-		title: 'Order',
-		owns: {
-			source: ['src/models/Order.ts', 'src/models/Order.types.ts'],
-			symbols: ['Order']
-		},
-		modelDefinitions: [modelDefinition('Order', 'src/models/Order.ts')]
-	};
-	const secondModel = {
-		...model,
-		id: 'app.model.invoice',
-		title: 'Invoice',
-		owns: { source: ['src/models/Invoice.ts'], symbols: ['Invoice'] },
-		modelDefinitions: [modelDefinition('Invoice', 'src/models/Invoice.ts')]
-	};
-	const types = {
-		...model,
-		id: 'app.model.order-input',
-		title: 'OrderInput',
-		owns: {
-			source: ['src/models/OrderInput.types.ts', 'src/models/OrderInputValues.ts'],
-			symbols: ['OrderInput']
-		},
-		modelDefinitions: [modelDefinition('OrderInput', 'src/models/OrderInput.types.ts')]
-	};
+	const [model, secondModel, types] = consumerModels(
+		detail.registry.units.find((unit) => unit.id === ids.store)!
+	);
 	const consumers = [
 		ids.page,
 		ids.filter,

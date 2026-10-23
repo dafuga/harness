@@ -29,7 +29,7 @@ const categoryOf = (head: HarnessRevision, id: string) =>
 
 test('the bar has entity categories and a separate Styles screen link', () => {
 	const location = { branch: shellBranch, commit: null, category: 'layouts' as const };
-	const { categories } = harnessShell({
+	const { categories, modules } = harnessShell({
 		base: shellMount,
 		repository: 'synthetic-repository',
 		scope: shellScope(location),
@@ -40,14 +40,18 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 	});
 	expect(categories.map((item) => [item.id, item.label, item.icon, item.active])).toEqual([
 		['pages', 'Pages', 'pages', false],
-		['layouts', 'Layouts', 'layouts', true],
-		['components', 'Components', 'components', false],
-		['models', 'Models', 'database', false],
-		['services', 'Services', 'services', false],
-		['functions', 'Helpers', 'functions', false],
-		['configs', 'Configs', 'configs', false],
+		['modules', 'Modules', 'layers', true],
 		['styles', 'Styles', 'styles', false],
+		['configs', 'Configs', 'configs', false],
 		['platforms', 'Platforms', 'platforms', false]
+	]);
+	expect(modules.map((item) => [item.id, item.active])).toEqual([
+		['layouts', true],
+		['components', false],
+		['models', false],
+		['services', false],
+		['functions', false],
+		['types', false]
 	]);
 	expect(categoryIcon.layouts).not.toBe(categoryIcon.components);
 });

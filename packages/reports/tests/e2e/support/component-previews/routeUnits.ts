@@ -1,7 +1,12 @@
+import { modelDefinition } from '../../../../test/entityClassFixtures';
 import type { HarnessUnit } from '../../../../src/models/Harness.types';
 import { ids, units } from '../../../../test/entityUnits';
-/** The two kinds the orders history has no unit of, so Layouts and Models each open one. */
-export const routeIds = { shell: 'app.shell.orders-frame', model: 'app.model.order' };
+/** Additional synthetic declarations opened by the Layouts, Models and Types routes. */
+export const routeIds = {
+	shell: 'app.shell.orders-frame',
+	model: 'app.model.order',
+	types: 'app.model.order-input'
+};
 const card = units.find((unit) => unit.id === ids.card)!;
 const settings = units.find((unit) => unit.id === ids.settings)!;
 const owned = (file: string, symbol: string) => ({
@@ -32,8 +37,9 @@ export const routeUnits: HarnessUnit[] = [
 		...owned('src/models/Order.ts', 'Order'),
 		id: routeIds.model,
 		kind: 'model',
+		modelDefinitions: [modelDefinition('Order', 'src/models/Order.ts')],
 		title: 'Order',
-		responsibility: 'Synthetic preview model: the shape of one order of the orders fixture.',
+		responsibility: 'Synthetic preview model: wraps stored order data in the orders fixture.',
 		contract: {
 			inputs: [],
 			outputs: [
@@ -43,5 +49,16 @@ export const routeUnits: HarnessUnit[] = [
 			errors: []
 		},
 		version: `v-${routeIds.model}`
+	},
+	{
+		...settings,
+		...owned('src/models/OrderInput.types.ts', 'OrderInput'),
+		id: routeIds.types,
+		kind: 'model',
+		title: 'OrderInput.types',
+		responsibility: 'Synthetic shared type module: describes order input data.',
+		modelDefinitions: [modelDefinition('OrderInput', 'src/models/OrderInput.types.ts')],
+		contract: { inputs: [], outputs: [], errors: [] },
+		version: `v-${routeIds.types}`
 	}
 ];

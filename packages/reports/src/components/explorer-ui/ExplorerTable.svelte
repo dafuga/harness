@@ -67,7 +67,6 @@
 	);
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
 	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';
-	/** A name stays one text, breaking after a dot or between camel-case words, never inside one. */
 	const words = (name: string) => name.match(/.+?(?:\.|[a-z\d](?=[A-Z])|$)/g) ?? [];
 	let chosen = $state.raw<CatalogRow | null>(null);
 	let contents = $derived(collection(chosen?.setting?.structure));

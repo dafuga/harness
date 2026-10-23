@@ -14,6 +14,7 @@ test('there are exactly seven collections and pages come first', () =>
 			'configs',
 			'services',
 			'models',
+			'types',
 			'platforms'
 		]);
 		const words = Object.values(entityLabels).flatMap((label) => [label.title, label.subtitle]);

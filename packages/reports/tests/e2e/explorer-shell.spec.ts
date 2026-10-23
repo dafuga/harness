@@ -8,7 +8,8 @@ import {
 	reachable,
 	navigationSpacing,
 	styled,
-	revisionDivider
+	revisionDivider,
+	moduleNavigation
 } from './support/shellChecks';
 import { sha, shellBranch, shellMount, longBranch } from './support/shellData';
 import { shellCategories as categories } from './support/shellData';
@@ -93,7 +94,6 @@ for (const [screen, width, height] of screens) {
 		await expect(brand).toHaveAttribute('href', `${scoped}/pages`);
 		await reachable(brand, width);
 		await expect(bar.getByText('synthetic-repository', { exact: true })).toBeVisible();
-
 		// The keyboard walks the bar in reading order, and shows where it is.
 		await brand.focus();
 		for (const name of categories) {
@@ -128,23 +128,7 @@ for (const [screen, width, height] of screens) {
 		await expect(page).toHaveURL(at(`${scoped}/styles`));
 		await links.filter({ hasText: 'Platforms' }).click();
 		await expect(page).toHaveURL(at(`${scoped}/platforms`));
-		await links.filter({ hasText: 'Modules' }).click();
-		const modules = bar.getByRole('tablist', { name: 'Module categories' });
-		await pictured(page, `explorer-shell-modules-${screen}`);
-		await expect(modules.getByRole('tab')).toHaveText([
-			'Layouts',
-			'Components',
-			'Models',
-			'Services',
-			'Helpers',
-			'Types'
-		]);
-		await modules.getByRole('tab', { name: 'Types', exact: true }).click();
-		await pictured(page, `explorer-shell-types-${screen}`);
-		await expect(page).toHaveURL(at(`${scoped}/types`));
-		await expect(links.filter({ hasText: 'Modules' })).toHaveAttribute('aria-current', 'page');
-		await modules.getByRole('tab', { name: 'Helpers', exact: true }).click();
-		await expect(page).toHaveURL(at(`${scoped}/functions`));
+		await moduleNavigation(page, home, screen, `${scoped}`);
 	});
 	test(`the branch with its tip and the viewed commit are told apart at ${screen} width`, async ({
 		page

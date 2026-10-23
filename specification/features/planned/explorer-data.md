@@ -2,8 +2,7 @@
 
 ## Overview
 
-The Harness console is an explorer of the entities of one repository: Pages, Components,
-Functions, Configs and Services. This feature is its address, its data and its verdicts: where a
+The Harness console is an explorer of the entities of one repository: Pages and revision-scoped module collections. This feature is its address, its data and its verdicts: where a
 page is in history, which units it lists, what proves each of them, what a commit is compared
 with and which commits changed an entity. The shared bar and the entity screens render what is
 decided here and decide none of it.
@@ -23,13 +22,25 @@ decided here and decide none of it.
 - An address whose branch, commit or pairing of the two the history does not hold is reported as
   missing. An entity that is absent at a revision stays absent; no other revision is shown.
 
+## Navigation
+
+- Primary navigation is Pages, Modules, Styles, Configs and Platforms.
+- Modules contains Layouts, Components, Models, Services, Helpers and Types, using shared tabs.
+- Category changes preserve branch and selected commit, clearing the entity and selected helper.
+- The same navigation works at desktop, tablet and mobile widths without widening the page.
+
 ## Classification
 
 - A page is a unit that renders an address, whatever kind it was registered as. A route file that
-  renders nothing is a service, and a layout is a component.
-- Functions are functions, validators, serializers and kernels. Rules, guides, templates, models,
-  modules, entry points, scripts and style sheets have no category: they are named with their
-  role where something depends on them and are never presented as functions.
+  renders nothing is a service, and a visual layout is a reusable frame with child content.
+- Helpers require explicit purity and distinct runtime consumers. Rules, guides, templates,
+  entry points, scripts and style sheets retain their own roles where used.
+- Models are persisted data wrappers proven by their selected-revision source declarations.
+  Existing shared interface and type-alias modules belong under Types, with stable identities and
+  source paths. Display names omit `.types`. Unproven runtime classes stay unclassified.
+- Type companions owned by components and services remain with those owners. Types lists existing
+  shared type modules, rather than every exported declaration. Type details show their own fields,
+  optionality, method signatures and alias expressions through the shared contract tables.
 - A page leads to its components, those to their components and those to functions. Configs and
   services are sections of their own.
 
@@ -55,9 +66,10 @@ decided here and decide none of it.
 ## Acceptance Criteria
 
 - Unit tests of each helper fail on the unchanged implementation and pass after it.
-- The classification holds for the registry of this repository.
+- The classification holds for the registry of this repository. Types has dedicated catalog,
+  entity, contract and history routes, with required visual captures for each settled page.
 - Browser acceptance on an isolated synthetic history fails on the unchanged console and passes on
-  the explorer: five categories, tip and commit addresses, earlier addresses, page to function
+  the explorer: five primary destinations, scoped module tabs, tip and commit addresses, earlier addresses, page to function
   traversal, source only on request, binary verdicts, one current capture against a parent pair,
   end-to-end behaviour, history, and no sideways scrolling at tablet and phone widths.
 - Page, data, media and export requests still pass the admin policy first.

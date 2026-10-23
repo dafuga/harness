@@ -1,4 +1,6 @@
-import { expect, type Locator } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
+import { captureShell, shellOrigin } from './shellFixture';
+import { fits, pictured } from './sharedSelect';
 
 /** What the specs of the shell ask of what is drawn: where it is, and how it is styled. */
 export const box = async (locator: Locator) => (await locator.boundingBox())!;
@@ -82,4 +84,37 @@ export async function revisionDivider(within: Locator): Promise<void> {
 		expect(line.top).toBe(0);
 		expect(channels(line.color)[3] ?? 1).toBeGreaterThan(0);
 	} else expect(line.content).toBe('none');
+}
+
+/** Primary Modules opens the scoped module strip without widening the page. */
+export async function moduleNavigation(
+	page: Page,
+	home: string,
+	screen: string,
+	scoped: string
+): Promise<void> {
+	const bar = page.getByRole('banner');
+	await bar.getByRole('link', { name: 'Modules', exact: true }).click();
+	const modules = bar.getByRole('tablist', { name: 'Module categories' });
+	await pictured(page, `explorer-shell-modules-${screen}`);
+	await captureShell(page, home, { state: 'modules', viewport: screen });
+	await expect(modules.getByRole('tab')).toHaveText([
+		'Layouts',
+		'Components',
+		'Models',
+		'Services',
+		'Helpers',
+		'Types'
+	]);
+	await modules.getByRole('tab', { name: 'Types', exact: true }).click();
+	await pictured(page, `explorer-shell-types-${screen}`);
+	await captureShell(page, home, { state: 'types', viewport: screen });
+	expect(await fits(page), 'module tabs scroll without widening the page').toBe(true);
+	await expect(page).toHaveURL(`${shellOrigin}${scoped}/types`);
+	await expect(bar.getByRole('link', { name: 'Modules', exact: true })).toHaveAttribute(
+		'aria-current',
+		'page'
+	);
+	await modules.getByRole('tab', { name: 'Helpers', exact: true }).click();
+	await expect(page).toHaveURL(`${shellOrigin}${scoped}/functions`);
 }
