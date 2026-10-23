@@ -2,11 +2,9 @@
 	"name": "redundant-harness-folders",
 	"goal": "Remove redundant component namespaces, preserve helper placement, identities, routes and rendered behavior, and reject reintroduction",
 	"createdAt": "2026-10-23T08:49:30.702Z",
-	"updatedAt": "2026-10-23T09:20:42.746Z",
+	"updatedAt": "2026-10-23T09:22:19.233Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:22:11.324Z",
+			"evidence": "Same unchanged test corpus passed in immutable red/green snapshots under one environment. Paired records saved in /tmp/harness-folder-paired-red.json and /tmp/harness-folder-paired-green.json; latest-main unfixed source failed on redundant namespace, repaired source passed."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:22:19.233Z",
+			"evidence": "In a clean temporary snapshot of de2d651, adding explorer-ui/harness/NamespaceRegression.ts caused the unchanged standard guard to fail on the redundant namespace. Removing only that injected file restored the passing test. Logs: /tmp/harness-folder-guard-negative.log and /tmp/harness-folder-guard-restored.log."
 		},
 		{
 			"id": "verify",
