@@ -1,0 +1,22 @@
+
+Running 15 tests using 1 worker
+
+(node:96821) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.remote-offer-code at desktop (665ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.page.root at desktop (676ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › hub.page.root at desktop (661ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop (834ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.provider-picker at desktop (638ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.remote-offer-code at tablet (310ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.page.root at tablet (343ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › hub.page.root at tablet (366ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet (488ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.provider-picker at tablet (334ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.remote-offer-code at mobile (276ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.page.root at mobile (333ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › hub.page.root at mobile (326ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile (499ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.provider-picker at mobile (329ms)
+
+  15 passed (17.5s)
