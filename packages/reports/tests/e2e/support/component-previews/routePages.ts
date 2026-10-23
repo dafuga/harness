@@ -32,6 +32,14 @@ function category([name, entity]: [string, string]): Array<[string, RoutePreview
 	];
 }
 export const routePreviews: Record<string, RoutePreview> = {
+	'reports.page.harness-branch-branch-at-platforms': {
+		route: '/harness/branch/[branch]/[...at]/platforms',
+		path: `${branch}/platforms`
+	},
+	'reports.page.harness-branch-branch-at-platforms-entity': {
+		route: '/harness/branch/[branch]/[...at]/platforms/[entity]',
+		path: `${branch}/platforms/web`
+	},
 	'reports.page.harness-branch-branch-at-styles': {
 		route: '/harness/branch/[branch]/[...at]/styles',
 		path: `${branch}/styles`

@@ -131,6 +131,8 @@
 		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-function-card",
 		"reports.component.explorer-ui-explorer-module-card",
+		"reports.component.explorer-ui-explorer-platform-details",
+		"reports.component.explorer-ui-explorer-platforms",
 		"reports.component.explorer-ui-harness-explorer-styles-screen",
 		"reports.component.explorer-usage",
 		"reports.component.explorer-usage-link",
@@ -231,6 +233,8 @@
 		"reports.page.harness-branch-branch-at-pages",
 		"reports.page.harness-branch-branch-at-pages-entity",
 		"reports.page.harness-branch-branch-at-pages-entity-history",
+		"reports.page.harness-branch-branch-at-platforms",
+		"reports.page.harness-branch-branch-at-platforms-entity",
 		"reports.page.harness-branch-branch-at-services",
 		"reports.page.harness-branch-branch-at-services-entity",
 		"reports.page.harness-branch-branch-at-services-entity-history",
@@ -1004,6 +1008,18 @@
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platform-details",
+			"title": "ExplorerPlatformDetails",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms",
+			"title": "ExplorerPlatforms",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
 			"id": "reports-component-explorer-ui-harness-explorer-styles-screen",
 			"title": "ExplorerStylesScreen",
 			"coverage": "required",
@@ -1604,6 +1620,18 @@
 			"units": ["reports.page.harness-branch-branch-at-pages-entity-history"]
 		},
 		{
+			"id": "reports-page-harness-branch-branch-at-platforms",
+			"title": "/harness/branch/[branch]/[...at]/platforms",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-platforms"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-platforms-entity",
+			"title": "/harness/branch/[branch]/[...at]/platforms/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-platforms-entity"]
+		},
+		{
 			"id": "reports-page-harness-branch-branch-at-services",
 			"title": "/harness/branch/[branch]/[...at]/services",
 			"coverage": "required",
@@ -1811,6 +1839,8 @@
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-ui-explorer-module-card",
+				"reports-component-explorer-ui-explorer-platform-details",
+				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-usage",
 				"reports-component-explorer-usage-link",
@@ -1911,6 +1941,8 @@
 				"reports-page-harness-branch-branch-at-pages",
 				"reports-page-harness-branch-branch-at-pages-entity",
 				"reports-page-harness-branch-branch-at-pages-entity-history",
+				"reports-page-harness-branch-branch-at-platforms",
+				"reports-page-harness-branch-branch-at-platforms-entity",
 				"reports-page-harness-branch-branch-at-services",
 				"reports-page-harness-branch-branch-at-services-entity",
 				"reports-page-harness-branch-branch-at-services-entity-history",

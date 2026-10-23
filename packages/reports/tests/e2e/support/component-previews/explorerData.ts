@@ -1,3 +1,4 @@
+import { platformFixture } from '../../../../test/platformFixture';
 import { index, record, revision } from '../../../../test/entityFixture';
 import { place, scope, lens, nav } from '../../../../test/entityPlaces';
 import { commits, ids } from '../../../../test/entityUnits';
@@ -75,5 +76,17 @@ export function host(
 		mediaBase: '/media/',
 		onroute: () => {},
 		exportHref: ''
+	};
+}
+
+/** Existing synthetic Orders deployment declarations, shown by the actual platform components. */
+export function platformHost(entity?: string): ExplorerScreenProps {
+	const shown = host('platforms');
+	const route = { ...shown.route, entity };
+	return {
+		...shown,
+		route,
+		scope: { ...shown.scope, location: route },
+		head: { ...shown.head, platforms: platformFixture }
 	};
 }

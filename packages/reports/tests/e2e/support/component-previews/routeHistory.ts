@@ -1,3 +1,4 @@
+import { platformFixture } from '../../../../test/platformFixture';
 import type {
 	HarnessIndex,
 	HarnessRecord,
@@ -32,7 +33,11 @@ export function routeRevision(commit: string): HarnessRevision {
 			: scenario
 	);
 	const units = [...shown.registry.units, ...routeUnits];
-	return { ...shown, registry: { ...shown.registry, units, scenarios } };
+	return {
+		...shown,
+		platforms: platformFixture,
+		registry: { ...shown.registry, units, scenarios }
+	};
 }
 /** A commit the sealed history did not record keeps the results of the orders fixture. */
 function results(commit: string, taken: HarnessRecord): HarnessRecord {
