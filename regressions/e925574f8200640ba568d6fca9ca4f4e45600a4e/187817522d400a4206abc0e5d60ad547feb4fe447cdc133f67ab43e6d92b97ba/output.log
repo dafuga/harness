@@ -1,0 +1,16 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [161.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Zd4mFD
+
+ ✓ test/cli.e2e.test.ts (4 tests | 3 skipped) 15856ms
+   ✓ CLI scaffolds and checks a lib project  15854ms
+ ✓ test/pieces.test.ts (6 tests | 4 skipped) 5ms
+ ✓ test/project-detection.test.ts (6 tests | 5 skipped) 7ms
+
+ Test Files  3 passed (3)
+      Tests  4 passed | 12 skipped (16)
+   Start at  13:36:46
+   Duration  19.09s (transform 117ms, setup 120ms, collect 280ms, tests 15.87s, environment 0ms, prepare 74ms)
+
