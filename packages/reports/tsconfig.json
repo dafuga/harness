@@ -6,12 +6,11 @@
 		"skipLibCheck": true
 	},
 	"include": [
+		".svelte-kit/ambient.d.ts",
+		".svelte-kit/non-ambient.d.ts",
 		"src/**/*.ts",
 		"src/**/*.svelte",
 		"test/**/*.ts",
-		"db/**/*.ts",
-		"tests/e2e/support/component-previews/**/*.ts",
-		"tests/e2e/support/component-previews/**/*.svelte",
-		"tests/e2e/support/shell/catalogEntry.ts"
+		"db/**/*.ts"
 	]
 }

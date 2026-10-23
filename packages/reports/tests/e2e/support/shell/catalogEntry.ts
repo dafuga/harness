@@ -16,11 +16,9 @@ const unitId =
 	new URLSearchParams(location.search).get('unit') ?? 'reports.component.activity-list';
 // Preserve the document's original unit before real route fixtures replace the visible URL.
 window.previewDocument = Object.freeze({ unit: unitId, timeOrigin: performance.timeOrigin });
-const styles = unitId.startsWith('desktop.')
-	? [workspace, design]
-	: unitId.startsWith('hub.')
-		? [workspace, design, hub]
-		: [base, base2, base3, harness, gallery, gallery2, picker, analytics];
+let styles = [base, base2, base3, harness, gallery, gallery2, picker, analytics];
+if (unitId.startsWith('desktop.')) styles = [workspace, design];
+if (unitId.startsWith('hub.')) styles = [workspace, design, hub];
 const contextStyle = document.createElement('style');
 contextStyle.dataset.previewApp = unitId.split('.')[0];
 contextStyle.textContent = styles.join('\n');

@@ -3,3 +3,8 @@ export const base = '';
 export function resolve(path: string, params: Record<string, string> = {}): string {
 	return path.replace(/\[([^\]]+)\]/g, (_, key: string) => encodeURIComponent(params[key] ?? key));
 }
+
+/** Only the preview compiler includes this runtime mock; app compilers keep their own route IDs. */
+declare module '$app/paths' {
+	export function resolve(path: string, params?: Record<string, string>): string;
+}

@@ -79,7 +79,6 @@ function told(side: ExplorerSide, found: ExplorerCapture) {
 	if (!side.record || !tested) return unrecorded;
 	return captureProvenance(side.record, tested, found.capture);
 }
-/** A recorded capture as a gallery item, with the standing the record gives it and nothing more. */
 function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidence {
 	const { capture, scenario, state } = found;
 	const origin = told(side, found);
@@ -165,9 +164,7 @@ function pane(
 		? { found, shown: gap(side, pick, phase, borrowed(side, found)) }
 		: { found, shown: item(side, found, phase) };
 }
-
 const current = (found: ExplorerCapture) => found.current;
-
 /** Why a recorded capture is not shown as the screenshot of the branch tip. */
 function borrowed(side: ExplorerSide, found: ExplorerCapture): string {
 	const at = short(side.commit);
@@ -175,7 +172,6 @@ function borrowed(side: ExplorerSide, found: ExplorerCapture): string {
 		? `The capture on record was inherited from ${short(found.inheritedFrom)}; it was not captured at ${at}.`
 		: `The capture on record is not usable for ${at}: it is ${found.standing}.`;
 }
-
 /** The selected state's current capture or parent/commit pair, keeping every side's own gaps. */
 export function entityScreens(evidence: ExplorerEvidence, pick: ScreenPick | null): EntityScreens {
 	const paired = evidence.mode === 'commit';
@@ -188,22 +184,26 @@ export function entityScreens(evidence: ExplorerEvidence, pick: ScreenPick | nul
 	const why = evidence.before ? null : evidence.initial;
 	return { before: pane(evidence.before, pick, 'before', why).shown, ...result };
 }
-
 /** A catalog preview of this entity's shown version: fresh first, else validated unchanged proof. */
-export function catalogShot(evidence: ExplorerEvidence, preview?: ScreenPick): Evidence | null {
-	const usable = evidence.after.captures.filter(
-		(entry) =>
-			entry.usable &&
-			entry.capture.kind === 'screenshot' &&
-			entry.capture.media !== null &&
-			(!preview ||
-				matches(entry, { ...preview, scenario: entry.focused ? entry.scenario : preview.scenario }))
+export function catalogShot(
+	evidence: ExplorerEvidence,
+	preview?: ScreenPick,
+	allowFocusedDefault = false
+): Evidence | null {
+	const own = evidence.after.captures.filter(
+		(entry) => entry.usable && entry.capture.kind === 'screenshot' && entry.capture.media !== null
 	);
+	let usable = own.filter(
+		(entry) =>
+			!preview ||
+			matches(entry, { ...preview, scenario: entry.focused ? entry.scenario : preview.scenario })
+	);
+	// Only default card/hover callers opt in; an explicit unavailable state remains a gap.
+	if (!usable.length && allowFocusedDefault) usable = own.filter((entry) => Boolean(entry.focused));
 	const found = usable.find((entry) => entry.current) ?? usable[0];
 	if (!found) return null;
 	return item(evidence.after, found, evidence.mode === 'commit' ? 'after' : 'current');
 }
-
 /** Every screenshot and audio clip of the evidence, for the gallery, the viewer and the player. */
 export function galleryItems(evidence: ExplorerEvidence): Evidence[] {
 	const paired = evidence.mode === 'commit';

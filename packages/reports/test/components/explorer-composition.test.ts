@@ -1,3 +1,4 @@
+import { drawn as visibleMarkup } from '../entityRender';
 import { readdirSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -123,4 +124,24 @@ test('a catalog draws no entity view, and each entity view draws its own and not
 			]);
 		}
 	}
+});
+
+// Attribution-only display:contents wrappers cannot alter screen equivalence.
+test('screen normalization keeps semantic content, attributes and ordinary containers', () => {
+	const body = '<section aria-label="Panel"><a href="/kept">Keep</a></section>';
+	const wrapped =
+		'<div class="ex-shown svelte-proof" data-harness-component="panel">' + body + '</div>';
+	expect(visibleMarkup(wrapped)).toBe(visibleMarkup(body));
+	for (const changed of [
+		body.replace('Keep', 'Changed'),
+		body.replace('/kept', '/other'),
+		body.replace('Panel', 'Other')
+	])
+		expect(visibleMarkup(wrapped)).not.toBe(visibleMarkup(changed));
+	expect(visibleMarkup('<div>' + body + '</div>')).not.toBe(visibleMarkup(body));
+	expect(
+		visibleMarkup(
+			wrapped.replace('data-harness-component', 'aria-label="Distinct" data-harness-component')
+		)
+	).not.toBe(visibleMarkup(body));
 });

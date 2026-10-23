@@ -41,7 +41,16 @@ export const screen = (entry: Component<ExplorerScreenProps>, ...given: Given): 
 	render(entry, { props: hostProps(...given) }).body;
 
 /** Markup as it is drawn, without the marks a renderer leaves for itself between elements. */
-export const drawn = (body: string): string => body.replace(/<!--.*?-->/gs, '');
+export function drawn(body: string): string {
+	let shown = body.replace(/<!--.*?-->/gs, '');
+	// Strip only the known attribution-only container; any semantic attribute keeps it visible.
+	const wrapper = /<div class="ex-shown(?: svelte-[\w-]+)?" data-harness-component="[^"]+">/;
+	while (wrapper.test(shown))
+		shown = replaced(shown, wrapper, 'div', (whole) =>
+			whole.replace(/^<div[^>]*>/, '').replace(/<\/div>$/, '')
+		);
+	return shown;
+}
 
 /** The content that shows any address, as a host without route pages mounts it. */
 export const content = (...given: Given): string => screen(ExplorerContent, ...given);

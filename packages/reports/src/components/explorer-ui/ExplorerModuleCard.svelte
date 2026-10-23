@@ -45,7 +45,7 @@
 	// The entity's own capture at the shown revision, or null for its gap; never another's.
 	let capture = $derived.by(() => {
 		if (shot !== undefined || !visual) return shot ?? null;
-		return catalogShot(lens.evidence(row.entity.unit), row.entity.unit.preview);
+		return catalogShot(lens.evidence(row.entity.unit), row.entity.unit.preview, true);
 	});
 	let file = $derived(capture && !capture.missing ? capture.file : '');
 	// A failure belongs to one file: the file of another revision is tried afresh.

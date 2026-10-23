@@ -60,10 +60,10 @@
 			}
 		]
 	},
-	"scenarios": ["agent-settings"],
+	"scenarios": ["agent-settings", "component-catalog-previews"],
 	"preview": {
-		"scenario": "agent-settings",
-		"state": "settings",
+		"scenario": "component-catalog-previews",
+		"state": "desktop-page-settings",
 		"viewport": "desktop"
 	},
 	"budgets": {
