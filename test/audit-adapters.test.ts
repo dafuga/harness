@@ -80,28 +80,25 @@ test('ecosystem adapters report app and library rule violations', async () => {
 		);
 		await writeFile(join(root, 'scripts/run.sh'), 'rm -rf $TARGET\n');
 
-		const appRules = (await auditProject(root, { profile: 'app' })).findings.map(
-			(finding) => finding.rule
-		);
+		const appFindings = (await auditProject(root, { profile: 'app' })).findings;
+		const appRules = appFindings.map((finding) => finding.rule);
 		const libRules = (await auditProject(root, { profile: 'lib' })).findings.map(
 			(finding) => finding.rule
 		);
 
 		expect(
-			(await auditProject(root, { profile: 'app' })).findings
-				.filter((f) => f.rule === 'separate-type-declarations')
-				.map((f) => f.path)
+			appFindings.filter((f) => f.rule === 'separate-type-declarations').map((f) => f.path)
 		).toEqual([
 			'src/components/Payment.svelte',
 			'src/lib/checkout/payment.ts',
 			'src/utils/runtime.types.ts'
 		]);
 		expect(
-			(await auditProject(root, { profile: 'app' })).findings.filter((f) =>
+			appFindings.filter((f) =>
 				['src/utils/payment.types.ts', 'src/config/paymentConfig.types.ts'].includes(f.path)
 			)
 		).toEqual([]);
-		expect((await auditProject(root, { profile: 'app' })).findings).toEqual(
+		expect(appFindings).toEqual(
 			expect.arrayContaining([
 				expect.objectContaining({ path: 'src/lib/checkout/payment.ts', rule: 'file-name-pattern' })
 			])
