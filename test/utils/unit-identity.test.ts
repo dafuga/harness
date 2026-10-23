@@ -1,3 +1,5 @@
+import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
+import { indexFiles, unitOf } from '../support/memoryTree';
 import { afterAll, expect, test } from 'vitest';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { unitIdentity } from '../../src/utils/classify-path/unitIdentity';
@@ -89,5 +91,46 @@ afterAll(() => {
 			mediaType: 'application/json'
 		},
 		JSON.stringify({ measurements })
+	);
+});
+
+test('public helper contracts require owned, categorized helper implementation files', async () => {
+	const indexed = await indexFiles({
+		'src/utils/slugify.ts': 'export function slugify(title: string) { return title.trim(); }'
+	});
+	const unit = unitOf(indexed, 'function.slugify');
+	const helper = {
+		name: 'slugify',
+		source: 'src/utils/slugify.ts',
+		inputs: [],
+		output: 'string',
+		pure: true as const,
+		consumers: [],
+		examples: [
+			{ name: 'Trim a title', call: 'slugify(" title ")', input: [' title '], output: 'title' }
+		]
+	};
+	const errors = (path: string, owned = true) =>
+		new UnitRegistryValidator().validate(
+			[
+				{
+					...unit,
+					owns: { ...unit.owns, source: owned ? [path] : unit.owns.source },
+					helperContracts: [{ ...helper, source: path }]
+				}
+			],
+			new Set([path, ...unit.owns.source])
+		);
+	for (const path of [
+		'src/utils/slugify.ts',
+		'src/components/orders/slugify.ts',
+		'src/helpers/slugify.ts'
+	])
+		expect(errors(path)).toContain(
+			'function.slugify: slugify must be implemented under src/helpers/<responsibility>/'
+		);
+	expect(errors('src/helpers/orders/slugify.ts')).toEqual([]);
+	expect(errors('src/helpers/orders/slugify.ts', false)).toContain(
+		'function.slugify: slugify source must be owned by its registered module'
 	);
 });

@@ -45,9 +45,7 @@ test('Rails-ish scaffolds create their expected code shapes', () => {
 	expect(pieceFiles('mailer', 'Welcome').map((file) => file.path)).toContain(
 		'src/mailers/WelcomeMailer.ts'
 	);
-	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain(
-		'src/helpers/PostHelper.ts'
-	);
+	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain('src/helpers/post.ts');
 	expect(pieceFiles('concern', 'Publishable').map((file) => file.path)).toContain(
 		'src/concerns/withPublishable.ts'
 	);
@@ -69,5 +67,16 @@ test('Rails-ish scaffolds create their expected code shapes', () => {
 	);
 	expect(pieceFiles('resource', 'Article').map((file) => file.path)).toContain(
 		'src/routes/article/+page.svelte'
+	);
+});
+
+test('helper scaffolds emit pure camelCase functions with domain parameters', () => {
+	const files = pieceFiles('helper', 'formatLabel');
+	const source = files.find((file) => file.path === 'src/helpers/formatLabel.ts');
+	expect(source?.contents).toContain('/** @pure */');
+	expect(source?.contents).toContain('export function formatLabel(textToFormat: string): string');
+	expect(source?.contents).not.toContain('class ');
+	expect(files.find((file) => file.path.startsWith('test/helpers/'))?.contents).toContain(
+		"formatLabel('  label  ')"
 	);
 });

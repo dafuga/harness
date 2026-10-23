@@ -32,6 +32,7 @@ test('app projects include SvelteKit and specification files', () =>
 		);
 		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
 			expect(fileContents(files, path)).toContain('Callable usage examples');
+			expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
 			expect(fileContents(files, path)).toContain(
 				'reusable visual frames with a child-content slot'
 			);
@@ -43,6 +44,8 @@ test('app projects include SvelteKit and specification files', () =>
 				'one representative example per distinct behavior'
 			);
 			expect(fileContents(files, path)).toContain('descriptive behavior titles');
+			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
+			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
