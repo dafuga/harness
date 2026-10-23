@@ -2,12 +2,15 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /** Exercise the real transport in fresh Bun and Node hosts, including synchronous PID tracking. */
 export function observedProviderExit(runtime: string, transport: string, delay: number) {
 	const root = mkdtempSync(join(tmpdir(), 'harness-provider-exit-'));
 	try {
-		const cli = new URL('../src/utils/development-tooling/cliProcess.ts', import.meta.url).href;
+		const cli = fileURLToPath(
+			new URL('../src/utils/development-tooling/cliProcess.ts', import.meta.url)
+		);
 		const rpc = new URL('../src/utils/agents-providers/codex-rpc/codexRpc.ts', import.meta.url)
 			.href;
 		const source = join(root, 'fixture.ts');
