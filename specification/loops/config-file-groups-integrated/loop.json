@@ -2,7 +2,7 @@
 	"name": "config-file-groups-integrated",
 	"goal": "Preserve per-file Configs tables and typed values after latest main integration",
 	"createdAt": "2026-10-23T12:31:08.933Z",
-	"updatedAt": "2026-10-23T12:36:25.374Z",
+	"updatedAt": "2026-10-23T12:40:59.812Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,17 +46,23 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:39:39.639Z",
+			"evidence": "Paired record1bf316f1 at source05a753863 passes the unchanged3viewport command against redc26e8b5d at386a99495, with identical full test corpus and runtime profile. Rebuilt Git readback:90 hash-matching PNGs decode; inspected desktop/tablet/mobile file tables and typed cells."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:39:43.297Z",
+			"evidence": "In this isolated worktree, restoring only responsibility grouping made all3 viewport guards fail with1table instead of2. Restoring source grouping passed all3 with unchanged tests, fixtures, runner and environment; redc26e8b5d and green1bf316f1 are retained."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:40:59.812Z",
+			"evidence": "Focused verification at the integrated repair:3browser cases pass with180 real route/heap observations and90 retained, decoded captures. Reports694units; Hub477units/audit; Relay full package check159tests; root72guards,15Desktop and6Reports imported assertions, types/lint/audits pass. Full CLI/native verification remains explicitly deferred; later main integration requires a fresh exact-tree capture."
 		}
 	],
 	"evaluators": [
