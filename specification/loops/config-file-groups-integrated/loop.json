@@ -2,7 +2,7 @@
 	"name": "config-file-groups-integrated",
 	"goal": "Preserve per-file Configs tables and typed values after latest main integration",
 	"createdAt": "2026-10-23T12:31:08.933Z",
-	"updatedAt": "2026-10-23T12:32:08.846Z",
+	"updatedAt": "2026-10-23T12:36:25.374Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:36:05.273Z",
+			"evidence": "Record b11a11e6908954db at source386a99495: all3 viewports fail the unchanged two-tables assertion with Received1. Restored hash-matching Git evidence and inspected the mobile Orders table combining both config sources; all21 original PNGs decode."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:36:06.303Z",
+			"evidence": "Restore configSections keyed by exact source path for configs, keep responsibility groups for other categories. Keep the existing mixed-config browser matrix in normal test:entities, source headings, typed values, search, historical values and raw inspection intact."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:36:25.374Z",
+			"evidence": "Restored the source-keyed configSections selection. The standard category browser matrix retains both source heading assertions,2table assertion, typed values, exact source modal, history and search at all3 viewports."
 		},
 		{
 			"id": "green",
