@@ -13,7 +13,7 @@ export interface CatalogRow {
 	setting?: NonNullable<ExplorerEntity['unit']['configValues']>[number];
 	group?: { id: string; title: string };
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** Revision-scoped consumers for linked usage previews; helper rows keep the first three eligible consumers. */
+	/** Revision-scoped consumers for linked usage previews; every eligible one, so a footer knows of more. */
 	usedIn?: ExplorerEntity[];
 	entity: ExplorerEntity;
 	id: string;
@@ -130,17 +130,18 @@ export function byName(left: CatalogRow, right: CatalogRow): number {
 /** Resolve per-export runtime consumers; unrelated exports in the same module do not count. */
 function helperConsumers(
 	helper: NonNullable<CatalogRow['helper']>,
-	entities: Map<string, ExplorerEntity>
+	entities: Map<string, ExplorerEntity>,
+	ownerId: string
 ): NonNullable<CatalogRow['usedIn']> {
 	const usedIn: NonNullable<CatalogRow['usedIn']> = [];
 	const seen = new Set<string>();
 	for (const consumer of helper.consumers ?? []) {
-		const entity = entities.get(consumer.unit);
+		const id = consumer.unit;
+		if (id === ownerId) continue;
+		const entity = entities.get(id);
 		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
-		if (!['components', 'services', 'models'].includes(entity.category)) continue;
 		seen.add(entity.id);
 		usedIn.push(entity);
-		if (usedIn.length === 3) break;
 	}
 	return usedIn;
 }
@@ -164,6 +165,7 @@ export function entityCatalog(
 	options: { related?: boolean; consumers?: ExplorerEntity[] } = {}
 ): CatalogRow[] {
 	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
+	// Config collections list their variables; relationships list each config module once.
 	return entities
 		.filter((entity) => entity.category === category)
 		.flatMap((entity) => {
@@ -184,8 +186,7 @@ export function entityCatalog(
 					.map((id) => byId.get(id))
 					.filter((owner): owner is ExplorerEntity =>
 						Boolean(owner && owner.change !== 'removed' && owner.unit.status === 'active')
-					)
-					.slice(0, 3);
+					);
 				const shared = usedIn.length >= 2;
 				return hasRequiredServiceOwners(usedIn.length, options) ? [{ ...row, shared, usedIn }] : [];
 			}
@@ -197,13 +198,13 @@ export function entityCatalog(
 					...row,
 					shared: true,
 					helper,
-					usedIn: helperConsumers(helper, byId),
+					usedIn: helperConsumers(helper, byId, row.id),
 					name: helper.name,
 					id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
 				}))
 				.filter((item) => options.related || item.usedIn.length >= 2);
 		})
-		.flatMap((row) => (category === 'configs' ? configRows(row) : [row]))
+		.flatMap((row) => (category === 'configs' && !options.related ? configRows(row) : [row]))
 		.sort(byName);
 }
 
