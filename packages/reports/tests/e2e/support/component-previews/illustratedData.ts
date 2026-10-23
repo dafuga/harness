@@ -1,7 +1,6 @@
 import type { Data } from './illustratedData.types';
 import { createHash } from 'node:crypto';
 import { chromium } from '@playwright/test';
-import type { evidenceData } from '../../../../../desktop/tests/e2e/ui-evidence-data';
 /** Representative image input for screenshot viewers, explicitly labeled as synthetic content. */
 function exampleScreen(label: string): Buffer {
 	return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">

@@ -7,7 +7,6 @@ import {
 	openDevice,
 	pairDevice,
 	registerHost,
-	type TestDevice,
 	type TestHost
 } from '../support/relayActors';
 import { startRelay, type RelayFixture } from '../support/relayFixture';

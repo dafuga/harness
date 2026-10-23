@@ -2,7 +2,6 @@ import type { Mode, Asked, EvidenceFixture } from './evidenceFixture.types';
 import type { Actor, CollaborationCache, CollaborationRecords, Project } from 'collaboration';
 import { createCollaboration } from 'collaboration';
 import type {
-	EntityEvidenceQuery,
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../../../desktop/src/models/DesktopEvidence.types';

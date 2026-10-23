@@ -1,6 +1,5 @@
 import type { Expiring, Rows, MemoryAuthStore } from './memoryAuthStore.types';
 import type {
-	AuthStore,
 	ChallengeRecord,
 	ExchangeStore,
 	GithubStateRecord,

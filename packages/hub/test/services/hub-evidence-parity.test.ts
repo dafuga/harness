@@ -11,7 +11,7 @@ import type { HarnessRevision } from '../../../reports/src/models/Harness.types'
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import { asked, evidenceFixture, read, type EvidenceFixture } from '../support/evidenceFixture';
 import { blobId } from '../support/evidenceGit';
-import { clock, page, scenarios, units, type Stored } from '../support/evidenceRecords';
+import { clock, page, scenarios, units } from '../support/evidenceRecords';
 
 /** One commit as the local backend holds it, from the same data and the same pure functions. */
 function local(f: EvidenceFixture, commit: string, held: Held) {

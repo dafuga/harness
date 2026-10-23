@@ -1,6 +1,5 @@
 import type { Claims, GoogleFixture } from './googleFixture.types';
 import { SignJWT, createLocalJWKSet, exportJWK, exportSPKI, generateKeyPair } from 'jose';
-import type { JWTPayload, JWTVerifyGetKey } from 'jose';
 
 export const CLIENT_ID = 'synthetic-client.apps.googleusercontent.com';
 export const KEY_ID = 'synthetic-google-key';

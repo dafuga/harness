@@ -1,6 +1,6 @@
 import type { Create } from './authEmailContract.types';
 import { expect, test } from 'vitest';
-import type { AuthStore, EmailProofRecord } from '../../src/models/HubAuthStore.types';
+import type { EmailProofRecord } from '../../src/models/HubAuthStore.types';
 const actor = {
 	id: 'google-3',
 	email: 'lin@example.org',

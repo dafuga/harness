@@ -1,6 +1,5 @@
 import type { HostFixture } from './remote-host-holds.types';
 import { deferred } from './remote-fixture';
-import type { hostFixture } from './remote-host-fixture';
 
 /**
  * The real encrypted store with its first read, or its first write, held open until released.

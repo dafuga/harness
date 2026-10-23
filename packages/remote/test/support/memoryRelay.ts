@@ -1,7 +1,5 @@
 import type { Route, RelayState, Entry, RelayInput } from './memoryRelay.types';
-import type { RemotePairingRequest } from '../../src/models/RemoteControl.types';
-import type { RelayPairingRequest, RelayPairingState } from '../../src/models/RemoteRelay.types';
-import type { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
+import type { RelayPairingRequest } from '../../src/models/RemoteRelay.types';
 import { pkceChallenge, randomCredential } from '../../src/utils/remoteIdentity';
 const json = (value: unknown, status = 200) =>
 	new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });

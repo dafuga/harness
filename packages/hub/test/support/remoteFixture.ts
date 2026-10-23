@@ -4,7 +4,6 @@ import type { Actor } from 'collaboration';
 import type { HubEnv } from '../../src/config/hubEnvConfig';
 import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
 import { hubRemote } from '../../src/routes/api/[...path]/hubRemote';
-import type { HubApiRuntime } from '../../src/utils/hubRuntime';
 import { actor } from './projectionFixture';
 import { remoteHostsFake } from './remoteHostsFake';
 

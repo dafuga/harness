@@ -5,7 +5,7 @@ import type {
 	PairingCommand
 } from './remote-pairing-fixture.types';
 import { pkceChallenge, randomCredential } from '../../remote/src/index';
-import type { RelayHostCommand, RelayHostFrame } from '../../remote/src/index';
+import type { RelayHostFrame } from '../../remote/src/index';
 const json = (value: unknown, status = 200) =>
 	new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
 

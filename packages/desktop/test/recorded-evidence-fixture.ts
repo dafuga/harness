@@ -2,10 +2,8 @@ import type { Recorded, Opened, Reads, At } from './recorded-evidence-fixture.ty
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { realpath } from 'node:fs/promises';
-import { indexedRepo, type IndexedCommits } from '../../../test/support/historyIndexFixture';
-import type { VerifyRepo } from '../../../test/support/verifyRepo';
+import { indexedRepo } from '../../../test/support/historyIndexFixture';
 import type { ExplorerCapture } from '../../reports/src/models/Explorer.types';
-import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,

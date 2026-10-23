@@ -2,10 +2,8 @@ import type { AuthFixture } from './authFixture.types';
 import type { Actor } from 'collaboration';
 import { SessionRepository } from '../../src/repositories/SessionRepository';
 import { authSecrets } from '../../src/lib/server/auth/authSecrets';
-import type { AuthSecrets } from '../../src/utils/authSecrets';
 import { START } from './googleFixture';
 import { memoryAuthStore } from './memoryAuthStore';
-import type { MemoryAuthStore } from './memoryAuthStore';
 
 export const ORIGIN = 'https://hub.test';
 export const SECRET = 'synthetic-session-secret-0123456789abcdef';

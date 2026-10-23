@@ -6,7 +6,7 @@ import type {
 	Stored,
 	VerificationLine
 } from './evidenceRecords.types';
-import type { EvidencePointer, HistoryNote } from '../../../../src/core/historyTypes';
+import type { EvidencePointer } from '../../../../src/core/historyTypes';
 import type { Capture, VerificationRecord } from '../../../../src/core/verificationTypes';
 import { evidenceManifest } from '../../../../src/services/evidence-attach-service/evidenceManifest';
 import { lfsPointer, lfsStored } from '../../../../src/utils/lfsPointer';

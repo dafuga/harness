@@ -4,7 +4,7 @@ import { expect, test } from 'vitest';
 import { offerRules } from '../../src/utils/pairingOffer';
 import { pairingOffer } from '../../../desktop/src/services/remote-host-service/pairingOffer';
 import { readPairingOffer } from '../../src/services/device-pairing-service/pairingOffer';
-import type { OfferEnvironment, PairingOffer } from '../../src/utils/pairingOffer';
+import type { OfferEnvironment } from '../../src/utils/pairingOffer';
 const file = new URL('../support/offer-vectors.json', import.meta.url);
 const vectors = JSON.parse(readFileSync(file, 'utf8')) as OfferVectors;
 

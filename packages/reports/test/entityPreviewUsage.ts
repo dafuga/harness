@@ -1,6 +1,5 @@
 import type { UsageRoute } from './entityPreviewUsage.types';
 import { expect, type Page } from '@playwright/test';
-import type { ExplorerLocation } from '../src/models/Explorer.types';
 import { commits, ids } from './entityUnits';
 import { capture, fits, open, ready, where, moduleCard } from './entityPreviewPage';
 

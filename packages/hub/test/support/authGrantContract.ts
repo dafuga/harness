@@ -1,6 +1,5 @@
 import type { Create } from './authGrantContract.types';
 import { expect, test } from 'vitest';
-import type { AuthStore } from '../../src/models/HubAuthStore.types';
 import { grantRecord as grant } from './authStoreContract';
 
 const actor = grant.actorId;

@@ -3,7 +3,6 @@ import { expect, test } from 'vitest';
 import { remoteLimits } from '../../src/models/Remote.types';
 import type { WirePart } from '../../src/models/RemoteLocal.types';
 import { WireFramingService } from '../../src/services/WireFramingService';
-import type { WireFramingOptions } from '../../src/services/WireFramingService';
 /** A sender whose later steps run only when the test says so. */
 function sender(options: Options = {}) {
 	const frames: string[] = [],

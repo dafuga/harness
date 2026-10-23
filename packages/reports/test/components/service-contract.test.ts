@@ -1,7 +1,7 @@
 import type { Manifest } from './service-contract.test.types';
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import type { HarnessRevision, HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessRevision } from '../../src/models/Harness.types';
 import { content, words } from '../entityRender';
 import { record, revision } from '../entityFixture';
 import {
