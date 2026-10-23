@@ -3853,12 +3853,12 @@
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "e1f295d380107aa8d509e3ea29f9187d881236a0b207864ae2509a923bc4419a",
+			"definition": "5548263136affc817d03eff679c4057b1c73cca2daff10907e7940efee99bdb8",
 			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
 			"review": {
-				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+				"commit": "e21854663c8120808ea89af6698a60cdd0d30117",
 				"path": "src/cli/program/manageLoop.ts",
-				"definition": "e1f295d380107aa8d509e3ea29f9187d881236a0b207864ae2509a923bc4419a",
+				"definition": "5548263136affc817d03eff679c4057b1c73cca2daff10907e7940efee99bdb8",
 				"reason": "Audit final completion only for explicitly typed loops and preserve default completion and paired regression guards."
 			},
 			"previousReviews": [
@@ -3873,6 +3873,12 @@
 					"path": "src/cli/program/manageLoop.ts",
 					"definition": "e22f324c0ed193da968ea4323d97eff32fbbf3d4d3b69b49b630548ec5f96b19",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+					"path": "src/cli/program/manageLoop.ts",
+					"definition": "e1f295d380107aa8d509e3ea29f9187d881236a0b207864ae2509a923bc4419a",
+					"reason": "Audit final completion only for explicitly typed loops and preserve default completion and paired regression guards."
 				}
 			]
 		},
