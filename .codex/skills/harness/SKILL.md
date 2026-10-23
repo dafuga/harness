@@ -50,11 +50,17 @@ For helpers recorded by `specification/loops/local-helper-ownership/migration.js
 
 When a reuse threshold controls catalog inclusion, derive that decision and the
 visible usage links from the same resolved, distinct consumer set. Keep every resolved module
-category eligible for usage links, exclude the owner itself, and cover all supported kinds
+category eligible for usage links, exclude the callable itself, and cover all supported kinds
 in the normal card matrix; a legacy category whitelist can silently lose valid consumers. Cover zero,
 one and multiple eligible consumers in the standardized catalog tests, including
 duplicate references and excluded or missing consumers. A passing display test
-must not accept a row that contradicts the collection's inclusion rule.
+must not accept a row that contradicts the collection's inclusion rule. Resolve consumer owners
+from the selected revision's full active registry, independently of public catalog filtering.
+Distinct named procedural callers use owner-plus-symbol identity, including siblings in the
+helper's own unit; duplicate references and the helper itself do not count twice. Components and
+classes remain distinct owner units. Private callers never become public Helpers merely because
+they consume a shared helper. Select a recorded callable when available; otherwise open its real
+owner source, preserving template/audit roles without inventing a helper API or entity route.
 
 ## Bug and Regression Loops
 

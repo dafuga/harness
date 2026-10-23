@@ -21,6 +21,8 @@ export type PreviewVariant =
 	| 'states'
 	| 'documented'
 	| 'helpers'
+	| 'named-callers'
+	| 'sibling-callers'
 	| 'groups'
 	| 'relations'
 	| 'measurements'

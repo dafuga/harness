@@ -2,7 +2,7 @@
 	"name": "all-relation-module-cards",
 	"goal": "Every related module reuses the shared module card and its footer shows only three distinct consumers plus an ellipsis",
 	"createdAt": "2026-10-23T10:20:28.553Z",
-	"updatedAt": "2026-10-23T13:10:02.729Z",
+	"updatedAt": "2026-10-23T13:32:45.764Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,14 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending",
-			"evidence": "Prior card/overflow proof remains preserved. Pending the additional full-owner-graph and distinct named-caller regression."
+			"status": "complete",
+			"evidence": "Repair 0a25d12a resolves active revision owners independently of catalog eligibility, deduplicates named callers, excludes true self references and opens unselectable callers in owning source.",
+			"completedAt": "2026-10-23T13:32:43.896Z"
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending",
-			"evidence": "Prior card/overflow proof remains preserved. Pending the additional full-owner-graph and distinct named-caller regression."
+			"status": "complete",
+			"evidence": "Unchanged green 1f305aa7 at0a25d12a passes all36 assertions against frozen red081e9cd1 at585972f49. Reports types0errors/0warnings, lint, audit and unit-index guard pass. Full CLI/native verification remains deferred.",
+			"completedAt": "2026-10-23T13:32:45.764Z"
 		},
 		{
 			"id": "verify",

@@ -2,6 +2,7 @@ import type { Locator, Page } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
 import { capture, fits, open, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
+import { reviewNamedCallers } from './entityPreviewFunctionSource';
 
 /** Private functions stay reachable from their owner at the tip and a historical commit. */
 export async function reviewPrivateFunctions(page: Page, viewport: string): Promise<void> {
@@ -78,6 +79,7 @@ export async function reviewHelperCard(page: Page, cards: Locator): Promise<void
 
 /** Consumer links are limited to three eligible units and retain current or selected-commit scope. */
 export async function reviewHelperUsage(page: Page, viewport: string): Promise<void> {
+	await reviewNamedCallers(page, viewport);
 	for (const commit of [null, commits.middle]) {
 		await open(page, { category: 'functions', commit }, 'helpers');
 		await page.evaluate(async () => {

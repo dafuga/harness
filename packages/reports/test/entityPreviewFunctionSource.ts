@@ -25,3 +25,40 @@ export async function reviewHelperSource(page: Page, viewport: string): Promise<
 		expect(await where(page)).toEqual({ branch: 'feature/orders', commit, ...filter });
 	}
 }
+
+/** Private named callers retain callable and revision identity without entering the collection. */
+export async function reviewNamedCallers(page: Page, viewport: string): Promise<void> {
+	const units = [
+		'reports.function.entity-catalog',
+		'reports.function.entity-usage',
+		'reports.component.explorer-usage',
+		'reports.component.explorer-usage-link',
+		'reports.model.explorer-types',
+		'reports.component.harness-explorer-catalog-screen'
+	];
+	for (const variant of ['named-callers', 'sibling-callers'] as const) {
+		for (const commit of [null, commits.middle]) {
+			await open(page, { category: 'functions', commit }, variant);
+			const cards = page.getByRole('article');
+			await expect(cards, 'Private callers never become public helper cards').toHaveCount(1);
+			const usage = cards.getByRole('group', { name: 'Used In', exact: true });
+			await expect(usage.getByRole('link')).toHaveText(['firstCall', 'secondCall', 'thirdCall']);
+			await expect(usage).toContainText('…');
+			await expect(usage).not.toContainText('fourthCall');
+			await capture(page, `${variant}-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+			await usage.getByRole('link', { name: 'firstCall', exact: true }).press('Enter');
+			expect(await where(page)).toMatchObject({
+				branch: 'feature/orders',
+				commit,
+				category: 'functions',
+				helper: 'firstCall',
+				entity: variant === 'sibling-callers' ? ids.filter : 'function.named-users'
+			});
+			await expect(page.getByRole('heading', { name: 'firstCall', exact: true })).toBeVisible();
+			await page.getByRole('tab', { name: 'Source', exact: true }).click();
+			await expect(page.getByRole('tabpanel', { name: 'firstCall source' })).toBeVisible();
+			await capture(page, `${variant}-source-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+			expect(await fits(page)).toBe(true);
+		}
+	}
+}
