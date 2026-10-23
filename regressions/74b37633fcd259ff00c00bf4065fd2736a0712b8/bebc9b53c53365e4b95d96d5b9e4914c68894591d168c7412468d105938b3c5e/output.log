@@ -1,0 +1,21 @@
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-AAaVmK/packages/desktop
+
+ ✓ test/catalog-listing.test.ts (6 tests) 1506ms
+   ✓ the tip lists every ordinary entity and no page manifest that only loads for an address  335ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  601ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  518ms
+ ✓ test/shells-category.test.ts (6 tests) 7ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  13:11:03
+   Duration  2.58s (transform 417ms, setup 85ms, collect 637ms, tests 1.51s, environment 0ms, prepare 58ms)
+
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-AAaVmK/packages/desktop/src/utils/explorer-ui/catalogUnit.ts
+  11:8  error  Function 'catalogUnit' has a complexity of 14. Maximum allowed is 10  complexity
+
+✖ 1 problem (1 error, 0 warnings)
+
