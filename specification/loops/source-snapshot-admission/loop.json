@@ -2,11 +2,9 @@
 	"name": "source-snapshot-admission",
 	"goal": "Archived source reads retain indexed files and gaps without invoking caller array iterators",
 	"createdAt": "2026-10-23T13:21:18.499Z",
-	"updatedAt": "2026-10-23T13:22:27.030Z",
+	"updatedAt": "2026-10-23T13:25:49.084Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:25:49.084Z",
+			"evidence": "Final immutable green passes all seven unchanged Source cases at 5ccaf24d9, retaining native lazy find lookups for each archived collection."
 		},
 		{
 			"id": "verify",

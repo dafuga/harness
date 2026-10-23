@@ -3,6 +3,7 @@ import { index, record, revision } from '../entityFixture';
 import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withGroups } from '../entityPreviewData';
+import { sourceAdmissionArrays } from '../entitySourceFixture';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { render } from 'svelte/server';
 import EntitySource, { archivedSource } from '../../src/components/explorer-ui/EntitySource.svelte';
@@ -112,43 +113,15 @@ function sourceSelection(entity: ReturnType<typeof explorerEntities>[number]) {
 
 /** Source accepts indexed arrays before serialization without invoking custom iteration/species. */
 async function sourceAdmission(unit: HarnessUnit): Promise<void> {
-	const paths = [...unit.owns.source];
-	const tests = [{ path: 'test/order-store.test.ts', media: null, gap: 'Recorded test gap' }];
-	const snapshots = paths.map((path) => ({
-		path,
-		media: null,
-		gap: 'Recorded implementation gap'
-	}));
-	const reads = { indexed: 0, iterated: 0, species: 0 };
-	for (const input of [paths, tests, snapshots]) {
-		const first = input[0];
-		Object.defineProperty(input, '0', {
-			get() {
-				reads.indexed++;
-				return first;
-			}
-		});
-		Object.defineProperty(input, Symbol.iterator, {
-			value() {
-				reads.iterated++;
-				return [][Symbol.iterator]();
-			}
-		});
-		Object.defineProperty(input, 'constructor', {
-			value: {
-				get [Symbol.species]() {
-					reads.species++;
-					return Array;
-				}
-			}
-		});
-	}
+	const { paths, tests, snapshots, reads } = sourceAdmissionArrays(unit);
 	const body = render(EntitySource, {
 		props: { unit: { ...unit, owns: { ...unit.owns, source: paths }, testFiles: tests } }
 	}).body;
 	expect(words(body)).toContain('src/services/orders/OrderStore.ts');
 	expect(words(body)).toContain('test/order-store.test.ts');
+	const beforeRead = reads.indexed;
 	const reader = archivedSource({ ...unit, sourceFiles: snapshots, testFiles: tests }, '/media/');
+	expect(reads.indexed, 'source readers keep indexed getters lazy until a read').toBe(beforeRead);
 	await expect(
 		reader.read(paths[0]),
 		'indexed source snapshots retain their recorded gap'
