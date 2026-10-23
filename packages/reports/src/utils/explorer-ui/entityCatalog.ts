@@ -1,5 +1,7 @@
 import { helperContract } from '../../../../../src/utils/helperContract';
 import { explorerCategory } from './explorerCategory';
+import { helperConsumers, usageOwners } from './entityUsage';
+import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
 import type {
 	ExplorerCategory,
 	ExplorerEntity,
@@ -127,25 +129,6 @@ export function byName(left: CatalogRow, right: CatalogRow): number {
 	return sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
 }
 
-/** Resolve per-export runtime consumers; unrelated exports in the same module do not count. */
-function helperConsumers(
-	helper: NonNullable<CatalogRow['helper']>,
-	entities: Map<string, ExplorerEntity>,
-	ownerId: string
-): NonNullable<CatalogRow['usedIn']> {
-	const usedIn: NonNullable<CatalogRow['usedIn']> = [];
-	const seen = new Set<string>();
-	for (const consumer of helper.consumers ?? []) {
-		const id = consumer.unit;
-		if (id === ownerId) continue;
-		const entity = entities.get(id);
-		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
-		seen.add(entity.id);
-		usedIn.push(entity);
-	}
-	return usedIn;
-}
-
 /** Related cards retain private pure callees; public collections require shared ownership. */
 function catalogHelpers(entity: ExplorerEntity, related?: boolean) {
 	return (entity.unit.helpers ?? []).filter((helper) =>
@@ -162,9 +145,9 @@ export function entityCatalog(
 	entities: ExplorerEntity[],
 	category: ExplorerCategory,
 	relations: (id: string) => Relations,
-	options: { related?: boolean; consumers?: ExplorerEntity[] } = {}
+	options: { related?: boolean; consumers?: ExplorerEntity[]; revision?: HarnessRevision } = {}
 ): CatalogRow[] {
-	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
+	const byId = usageOwners(options.consumers ?? entities, options.revision);
 	// Config collections list their variables; relationships list each config module once.
 	return entities
 		.filter((entity) => entity.category === category)

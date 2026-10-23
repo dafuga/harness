@@ -66,7 +66,8 @@
 				{label}
 				rows={entityCatalog(items, category, host.lens.relations, {
 					related: true,
-					consumers: host.entities
+					consumers: host.entities,
+					revision: host.head
 				})}
 			/>
 		{/key}

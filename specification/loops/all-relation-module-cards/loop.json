@@ -2,7 +2,7 @@
 	"name": "all-relation-module-cards",
 	"goal": "Every related module reuses the shared module card and its footer shows only three distinct consumers plus an ellipsis",
 	"createdAt": "2026-10-23T10:20:28.553Z",
-	"updatedAt": "2026-10-23T11:48:07.362Z",
+	"updatedAt": "2026-10-23T13:10:02.729Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,8 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending",
-			"evidence": "Prior card/overflow proof remains preserved. Pending the additional full-owner-graph and distinct named-caller regression."
+			"status": "complete",
+			"evidence": "Immutable red 081e9cd1 at585972f49 fails three assertions: private function projection and named sibling sharing disappear. Fixture types, lint and audit pass; no setup failure.",
+			"completedAt": "2026-10-23T13:10:02.729Z"
 		},
 		{
 			"id": "implement",
