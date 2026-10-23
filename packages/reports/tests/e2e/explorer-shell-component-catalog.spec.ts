@@ -90,7 +90,9 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.page.harness-branch-branch-at-layouts') {
 				const card = component.locator('article').filter({ hasText: 'OrdersFrame' });
 				await expect(card.locator('img')).toHaveAttribute('src', /synthetic-layout-input\.svg$/);
-				await expect(card.getByRole('link', { name: 'OrdersPage', exact: true })).toBeVisible();
+				const usage = card.getByRole('link', { name: 'Orders page', exact: true });
+				await expect(usage).toBeVisible();
+				await expect(usage).toHaveAttribute('href', /\/pages\/app\.page\.orders$/);
 			}
 
 			if (unit.id === 'reports.component.explorer-function-card') {
