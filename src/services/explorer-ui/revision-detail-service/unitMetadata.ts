@@ -11,6 +11,7 @@ import { hydrateUnitDocumentation } from './unitDocumentation';
 import { ModuleCategoryService } from '../../development-tooling/ModuleCategoryService';
 import { moduleGroup } from '../../../utils/development-tooling/moduleGroup';
 import { configValues } from './configValues';
+import { modelDefinitions } from './modelDefinitions';
 
 const kinds = new Set(['function', 'helper', 'shared-function', 'module']);
 
@@ -72,6 +73,7 @@ async function servicesAt(tree: HelperTree, unit: Unit): Promise<void> {
 export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<void> {
 	const categories = await categoriesAt(tree, units);
 	await configurationsAt(tree, units);
+	await modelsAt(tree, units);
 	await hydrateUnitDocumentation(tree, units);
 	const paths = [
 		...new Set(
@@ -103,6 +105,21 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 	for (let start = 0; start < units.length; start += 64)
 		await Promise.all(units.slice(start, start + 64).map((unit) => servicesAt(tree, unit)));
 	await helperConsumers(tree, units);
+}
+
+async function modelsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): Promise<void> {
+	for (const unit of units) {
+		if (unit.kind !== 'model') continue;
+		unit.modelDefinitions = [];
+		for (const source of unit.owns.source) {
+			if (!/\.[cm]?tsx?$/.test(source)) continue;
+			try {
+				unit.modelDefinitions.push(...modelDefinitions(await tree.read(source), source));
+			} catch {
+				// Missing historical source proves no schema or methods from a newer revision.
+			}
+		}
+	}
 }
 
 function helperDetails(

@@ -277,6 +277,11 @@ When adding or changing workspace build aliases, run the existing `test/shared-s
 
 ## Type Files
 
+Model contracts use the service method presentation for actual public methods, including static
+persistence methods. Keep shared interface fields and callable members distinct from constants.
+Do not synthesize initialization, CRUD or storage. The Table tab reads selected-revision schema
+syntax only; unknown expressions stay unresolved and no live database rows are accessed.
+
 Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
 Component implementations belong directly in their responsibility category, with private code in an owner folder. Do not insert an application-name namespace beneath that category or retain a duplicate internal forwarding tree after relocation. Keep meaningful route prefixes, supported package exports, registered IDs and original migration records stable; record subsequent helper locations as reviewed follow-ups. Run the existing visual registry, import/alias impact, namespace-spy and ownership migration guards before broad verification.
 
