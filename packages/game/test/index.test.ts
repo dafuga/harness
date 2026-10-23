@@ -71,7 +71,14 @@ test('public 3D renderer falls back to software canvas paint without WebGL', () 
 });
 
 test('both starter dimensions validate', () => {
-	for (const d of ['2d', '3d'] as const) expect(validateDocument(exampleDocument(d))).toEqual([]);
+	for (const d of ['2d', '3d'] as const) {
+		const doc = exampleDocument(d);
+		expect(validateDocument(doc)).toEqual([]);
+		Object.assign(doc.views[0], { planning: { concept: '', description: '' } });
+		expect(validateDocument(doc)).toEqual([]);
+		Object.assign(doc.views[0], { planning: { concept: 42, description: '' } });
+		expect(validateDocument(doc)).toContain('Invalid level planning');
+	}
 });
 
 test('cyclic prerequisites cannot be saved as executable graphs', () => {

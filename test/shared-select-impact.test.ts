@@ -115,6 +115,7 @@ test('the registry stores Select as a derived dependency of each of its consumer
 			'environment-picker',
 			'game-checkpoint-editor',
 			'game-create',
+			'game-level-brief',
 			'game-preview',
 			'game-view-fields'
 		].map((name) => `desktop.component.${name}`),

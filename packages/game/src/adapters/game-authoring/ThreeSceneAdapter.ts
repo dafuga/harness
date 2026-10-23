@@ -8,6 +8,8 @@ export class ThreeSceneAdapter implements FrameSource {
 	private readonly scene: THREE.Scene;
 	private readonly flat: THREE.OrthographicCamera;
 	private readonly camera: THREE.PerspectiveCamera;
+	private world = new THREE.Group();
+	private layout = '';
 	private readonly player: THREE.Mesh;
 	private readonly door: THREE.Mesh;
 	private readonly key: THREE.Mesh;
@@ -31,6 +33,7 @@ export class ThreeSceneAdapter implements FrameSource {
 		scene.add(light);
 		const ground = box(12, 0.2, 7, '#476755');
 		ground.position.set(4, -0.2, 0);
+		ground.name = 'legacy-ground';
 		scene.add(ground);
 		scene.add((this.player = box(0.4, 0.8, 0.4, '#acd8ee')));
 		this.door = box(0.25, 2, 1.8, '#c7995d');
@@ -39,6 +42,7 @@ export class ThreeSceneAdapter implements FrameSource {
 		this.key = box(0.35, 0.35, 0.35, '#f5d77d');
 		this.key.position.set(2, 0.5, 0);
 		scene.add(this.key);
+		scene.add(this.world);
 	}
 
 	render = (run: GameRun, view: GameView) => {
@@ -46,10 +50,45 @@ export class ThreeSceneAdapter implements FrameSource {
 		this.key.visible = !run.state.hasKey && run.state['visible:key'] !== false;
 		this.door.visible = !run.state.doorOpen && run.state['visible:door'] !== false;
 		this.player.visible = run.state['visible:player'] !== false;
+		this.world.visible = Boolean(view.world);
+		this.scene.getObjectByName('legacy-ground')!.visible = !view.world;
+		if (view.world) this.renderWorld(view.world);
+		else {
+			this.layout = '';
+			this.camera.position.set(6, 7, 13);
+			this.camera.lookAt(4, 0, 0);
+		}
 		this.renderer.render(this.scene, view.dimension === '2d' ? this.flat : this.camera);
 		this.canvas.dataset.dimension = view.dimension;
 		this.canvas.dataset.ready = 'true';
 	};
+
+	private renderWorld(layout: NonNullable<GameView['world']>) {
+		this.door.visible = this.key.visible = false;
+		this.scene.getObjectByName('legacy-ground')!.visible = false;
+		const identity = JSON.stringify(layout);
+		if (identity === this.layout) return;
+		this.layout = identity;
+		this.world.traverse((object) => {
+			if (object instanceof THREE.Mesh) {
+				object.geometry.dispose();
+				object.material.dispose();
+			}
+		});
+		this.world.clear();
+		const ground = box(layout.width, 0.2, layout.depth, '#476755');
+		ground.position.set(layout.width / 2, -0.2, layout.depth / 2);
+		this.world.add(ground);
+		for (const o of layout.objects) {
+			const mesh = box(o.width, o.height, o.depth, o.kind === 'goal' ? '#f5d77d' : '#c7995d');
+			mesh.position.set(o.x, o.height / 2, o.z);
+			this.world.add(mesh);
+		}
+		const span = Math.max(layout.width, layout.depth);
+		this.camera.position.set(layout.width / 2 + span * 0.6, span, layout.depth / 2 + span);
+		this.camera.lookAt(layout.width / 2, 0, layout.depth / 2);
+		fitFlatLevel(this.flat, layout, this.canvas.width / this.canvas.height);
+	}
 
 	dispose = () => {
 		this.scene.traverse((object) => {
@@ -79,4 +118,21 @@ function flatCamera(aspect: number) {
 	camera.up.set(0, 0, -1);
 	camera.lookAt(4, 0, 0);
 	return camera;
+}
+
+function fitFlatLevel(
+	camera: THREE.OrthographicCamera,
+	layout: NonNullable<GameView['world']>,
+	aspect: number
+) {
+	const span = Math.max(layout.width / aspect, layout.depth) + 2;
+	Object.assign(camera, {
+		left: (-span * aspect) / 2,
+		right: (span * aspect) / 2,
+		top: span / 2,
+		bottom: -span / 2
+	});
+	camera.position.set(layout.width / 2, 80, layout.depth / 2);
+	camera.lookAt(layout.width / 2, 0, layout.depth / 2);
+	camera.updateProjectionMatrix();
 }

@@ -12,6 +12,7 @@ export class Software3dAdapter implements FrameSource {
 	}
 
 	render = (run: GameRun, _view: GameView) => {
+		if (_view.world) return drawLevelWorld(this.canvas, this.ctx, run, _view.world);
 		const { canvas, ctx } = this;
 		const project = (point: Point) => projectPoint(point, canvas.width, canvas.height);
 		ctx.fillStyle = '#152c29';
@@ -97,4 +98,52 @@ function face(ctx: CanvasRenderingContext2D, points: [number, number][], color: 
 	ctx.fill();
 	ctx.strokeStyle = '#152c2933';
 	ctx.stroke();
+}
+
+function drawLevelWorld(
+	canvas: HTMLCanvasElement,
+	ctx: CanvasRenderingContext2D,
+	run: GameRun,
+	layout: NonNullable<GameView['world']>
+) {
+	const scale = Math.min(10 / layout.width, 6 / layout.depth);
+	const project = (point: Point) =>
+		projectPoint(
+			[
+				4 + (point[0] - layout.width / 2) * scale,
+				point[1] * scale,
+				(point[2] - layout.depth / 2) * scale
+			],
+			canvas.width,
+			canvas.height
+		);
+	ctx.fillStyle = '#152c29';
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	face(
+		ctx,
+		[
+			[0, 0, 0],
+			[layout.width, 0, 0],
+			[layout.width, 0, layout.depth],
+			[0, 0, layout.depth]
+		].map((p) => project(p as Point)),
+		'#476755'
+	);
+	const boxes: Box[] = layout.objects.map((o) => ({
+		id: o.id,
+		at: [o.x, 0, o.z],
+		size: [o.width, o.height, o.depth],
+		color: o.kind === 'goal' ? '#f5d77d' : '#c7995d'
+	}));
+	boxes.push({
+		id: 'player',
+		at: [Number(run.state.x), 0, Number(run.state.y)],
+		size: [0.4, 0.8, 0.4],
+		color: '#acd8ee'
+	});
+	boxes.sort((a, b) => b.at[2] - a.at[2] || a.at[0] - b.at[0]);
+	for (const box of boxes) drawBox(ctx, box, project);
+	canvas.dataset.ready = 'true';
+	canvas.dataset.renderer = 'software3d';
+	canvas.dataset.dimension = '3d';
 }

@@ -2,6 +2,7 @@ export type { CreatedEntity, RunPhase, RunEvent } from './RunContext.types';
 export type { ProjectTaskRequest } from '../projects-sessions/ProjectTask.types';
 export const channels = {
 	gameCreate: 'game:create',
+	gameLevelGenerate: 'game:level-generate',
 	gameImageGenerate: 'game:image-generate',
 	gameImageRead: 'game:image-read',
 	gameRead: 'game:read',

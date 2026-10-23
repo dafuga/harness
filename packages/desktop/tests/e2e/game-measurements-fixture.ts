@@ -6,19 +6,31 @@ import { unitMeasurements } from '../../../../src/utils/development-tooling/unit
 import { existsSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 const cached = new Map<string, Promise<Observation[]>>();
+const defaultUnits = [
+	'game-workspace',
+	'game-view-fields',
+	'game-graph',
+	'game-checkpoint-pane',
+	'game-checkpoint-image',
+	'game-checkpoint-editor'
+].map((name) => 'desktop.component.' + name);
 
 /** Source sizes and complexity come from the tested Git tree, not the live checkout. */
-export function gameSourceMeasurements(revision?: string): Promise<Observation[]> {
+export function gameSourceMeasurements(
+	revision?: string,
+	ids = defaultUnits
+): Promise<Observation[]> {
 	if (!revision) return Promise.resolve([]);
-	let pending = cached.get(revision);
+	const key = revision + '|' + ids.join(',');
+	let pending = cached.get(key);
 	if (!pending) {
-		pending = measuredSource(revision);
-		cached.set(revision, pending);
+		pending = measuredSource(revision, ids);
+		cached.set(key, pending);
 	}
 	return pending;
 }
 
-async function measuredSource(revision: string): Promise<Observation[]> {
+async function measuredSource(revision: string, ids: string[]): Promise<Observation[]> {
 	const root = resolve(import.meta.dirname, '../../../..');
 	const exported = !existsSync(join(root, '.git'));
 	if (exported && !basename(root).startsWith('harness-snapshot-'))
@@ -27,19 +39,8 @@ async function measuredSource(revision: string): Promise<Observation[]> {
 		? new WorkingTreeAdapter(root)
 		: await CommitTreeAdapter.open(root, revision);
 	const loaded = await loadUnits(root, source);
-	const names = [
-		'game-workspace',
-		'game-view-fields',
-		'game-graph',
-		'game-checkpoint-pane',
-		'game-checkpoint-image',
-		'game-checkpoint-editor'
-	];
-	const units = loaded.stored.filter((u) =>
-		names.some((name) => u.id === 'desktop.component.' + name)
-	);
-	if (units.length !== names.length)
-		throw new Error('Checkpoint source metrics need every changed unit.');
+	const units = loaded.stored.filter((u) => ids.includes(u.id));
+	if (units.length !== ids.length) throw new Error('Source metrics need every requested unit.');
 	return units.flatMap((unit) =>
 		unitMeasurements(unit, loaded.index.files, revision).flatMap((entry) => {
 			if (entry.metric === 'artifact-bytes' && entry.method === 'Not applicable.') return [];
