@@ -183,7 +183,8 @@ test('an alternative implementation is a related unit linked by a declared contr
 test('several owned files produce identical metadata after one indexing pass', async () => {
 	const files = {
 		'src/utils/z.ts': 'export function z() { return 1; }',
-		'src/utils/a.ts': 'export function a() { return 2; }'
+		'src/utils/a.ts': 'export function a() { return 2; }',
+		'src/utils/z.types.ts': 'export interface Z { value: number }'
 	};
 	const first = unitOf(
 		await indexFiles({ 'src/utils/z.ts': files['src/utils/z.ts'] }),
@@ -195,6 +196,20 @@ test('several owned files produce identical metadata after one indexing pass', a
 	expect(again.result.updated, 'one-pass source indexing must be idempotent').toEqual([]);
 	expect(again.result.manifests).toEqual(once.result.manifests);
 	expect([...once.index.files.keys()]).toEqual(Object.keys(files));
+	const automatic = await indexFiles(files);
+	expect(
+		unitOf(automatic, 'function.z').owns.source,
+		'a sibling type file belongs to its implementation'
+	).toEqual(['src/utils/z.ts', 'src/utils/z.types.ts']);
+	expect(automatic.result.added).toEqual(['function.a', 'function.z']);
+	const types = {
+		...first,
+		id: 'model.z-types',
+		kind: 'model',
+		owns: { source: ['src/utils/z.types.ts'], symbols: ['Z'] }
+	};
+	const declared = await indexFiles(files, [first, types]);
+	expect(unitOf(declared, 'model.z-types').owns.source).toEqual(types.owns.source);
 });
 
 test('recorded service moves preserve implementations and registered owner-local placement', () => {
