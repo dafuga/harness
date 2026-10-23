@@ -3,9 +3,9 @@ import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import process from 'node:process';
-import { afterEach, vi } from 'vitest';
+import { afterEach, onTestFinished, vi } from 'vitest';
 import { ResourceQueueService } from '../../../src/services/execution-runtimes/ResourceQueueService';
-import { snapshot } from '../../../test/support/resourceFixture';
+import { observeResources, snapshot } from '../../../test/support/resourceFixture';
 import { ClaudeCliAdapter } from '../src/adapters/claude-cli-adapter/ClaudeCliAdapter';
 import { CodexAppServerAdapter } from '../src/adapters/codex-app-server-adapter/CodexAppServerAdapter';
 import type { AgentTurn } from '../src/models/AgentRunner.types';
@@ -42,6 +42,24 @@ afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
 export async function fixture(mode: string) {
+	const codex = mode.startsWith('codex');
+	const finish = observeResources(
+		codex
+			? [
+					'desktop.adapter.codex-app-server',
+					'desktop.function.codex-turn',
+					'desktop.function.managed-agent-turn'
+				]
+			: [
+					'desktop.adapter.claude-cli',
+					'desktop.function.claude-turn',
+					'desktop.function.managed-agent-turn'
+				],
+		'native-provider-' + mode
+	);
+	onTestFinished((context) => {
+		if (context.task.result?.state === 'pass') finish();
+	});
 	for (const key of 'OPENAI_API_KEY OPENAI_BASE_URL ANTHROPIC_API_KEY ANTHROPIC_BASE_URL'.split(
 		' '
 	))

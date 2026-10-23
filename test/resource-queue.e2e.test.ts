@@ -1,3 +1,4 @@
+import { measureProcess } from './support/cli-measurement/measureProcess';
 import { spawn } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -138,7 +139,17 @@ test('the Node CommonJS desktop bundle shares the Bun SQLite reservation protoco
 	);
 	expect(bun.exitCode, bun.stderr).toBe(0);
 	const code = `const {ResourceQueueService}=require(${JSON.stringify(bundle)});const q=new ResourceQueueService({home:${JSON.stringify(path)},env:{}});const jobs=q.queue.all();if(jobs.length!==1||jobs[0].cpus!==8)throw new Error('Bun reservation missing');q.queue.remove(jobs[0].id);q.close();console.log('shared reservation cleared');`;
-	const node = await runCommand(['node', '-e', code], process.cwd(), false);
+	const node = await measureProcess(
+		{
+			units: ['module.resources'],
+			workload: 'cold-node-resources-entry',
+			target: 'module',
+			command: ['node', '-e', code],
+			cwd: process.cwd(),
+			expectSuccess: false
+		},
+		runCommand
+	);
 	expect(node.exitCode, node.stderr).toBe(0);
 	expect(node.stdout).toContain('shared reservation cleared');
 	const db = new ResourceQueueRepository(path);

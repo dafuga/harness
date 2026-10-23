@@ -60,3 +60,32 @@ test('an impossible resource request is rejected before a command starts', async
 	expect(result.stderr).toContain('exceeds usable capacity');
 	expect(result.stdout).not.toContain('STARTED');
 }, 15000);
+
+test('an admitted command receives its bounded budget and releases its shared reservation', async () => {
+	const env = await environment();
+	const result = await runHarness(
+		[
+			'resources',
+			'run',
+			'--cpus',
+			'1',
+			'--memory-mib',
+			'512',
+			'--',
+			'bun',
+			'-e',
+			'console.log(JSON.stringify({cpus:process.env.HARNESS_RESOURCE_CPUS,memory:process.env.HARNESS_RESOURCE_MEMORY_MIB,threads:process.env.CARGO_BUILD_JOBS,lease:process.env.HARNESS_RESOURCE_LEASE}))'
+		],
+		process.cwd(),
+		true,
+		env
+	);
+	expect(JSON.parse(result.stdout)).toEqual({
+		cpus: '1',
+		memory: '512',
+		threads: '1',
+		lease: expect.any(String)
+	});
+	const status = await runHarness(['resources', 'status', '--json'], process.cwd(), true, env);
+	expect(JSON.parse(status.stdout).jobs).toEqual([]);
+}, 15000);

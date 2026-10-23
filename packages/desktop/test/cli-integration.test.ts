@@ -144,8 +144,8 @@ test.each(
 	)
 )(
 	'$runtime $transport retains fast child results during a $delay ms resource observer',
-	({ runtime, transport, delay }) => {
-		const result = observedProviderExit(runtime, transport, delay);
+	async ({ runtime, transport, delay }) => {
+		const result = await observedProviderExit(runtime, transport, delay);
 		expect(result.exit, result.stderr + result.stdout).toBe(0);
 		expect(result.stderr).toBe('');
 		expect(JSON.parse(result.stdout)).toEqual(
