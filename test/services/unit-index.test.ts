@@ -226,7 +226,7 @@ test('public helper contracts require owned, categorized helper implementation f
 		source: 'src/utils/slugify.ts',
 		inputs: [],
 		output: 'string',
-		pure: true,
+		pure: true as const,
 		consumers: [],
 		examples: [
 			{ name: 'Trim a title', call: 'slugify(" title ")', input: [' title '], output: 'title' }
