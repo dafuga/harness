@@ -70,10 +70,10 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 			'Pages',
 			'Shells',
 			'Components',
+			'Models',
+			'Services',
 			'Helpers',
 			'Configs',
-			'Services',
-			'Models',
 			'Styles',
 			'Platforms'
 		].map((label) => ({
@@ -130,7 +130,7 @@ test('at the tip of a branch the commit is the tip, said as current, and Go to t
 			.filter((item) => item.current)
 			.map((item) => item.label)
 	).toEqual(['Pages']);
-	expect(links(html)[3].href).toBe(`${scoped}/functions`);
+	expect(links(html)[5].href).toBe(`${scoped}/functions`);
 });
 
 test('at a selected commit the tip and the viewed hash differ, and Go to tip is the current route', () => {
@@ -157,7 +157,7 @@ test('both selectors are the shared select, and the bar writes no field of its o
 test('without a resolved address the bar keeps its navigation and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
 	expect(text(categories(html))).toBe(
-		'Pages Shells Components Helpers Configs Services Models Styles Platforms'
+		'Pages Shells Components Models Services Helpers Configs Styles Platforms'
 	);
 	expect(links(html)).toEqual([]);
 	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(9);
