@@ -226,3 +226,11 @@ do not treat a newly hidden destination as a stale fixture.
 - When measuring browser performance, keep native Performance APIs running. Freeze only calendar labels for deterministic screenshots; a full fake clock can erase navigation entries or replace the monotonic clock. Assert the measured document identity and positive real observations in the capture test.
 - Retain original build, source, measurement method, workload, profile and outcome. Keep failures visible alongside valid partial captures. Measure size and complexity from tracked source, and runtime figures from actual executions; contextual route or fixture measurements must not claim isolated component cost or budget approval.
 - Inspect decoded, hash-matching images from the retained record. Do not fill a missing device or revision with another image. State an unreproducible historical gap explicitly and keep required verification pending until it is resolved or reported as blocked.
+
+## Cross-workspace visual integration checkpoint
+
+When a fixture imports UI from another app, check that app with its own generated route types as well as the fixture host. A passing Reports typecheck cannot replace Hub's or Desktop's typecheck. If product source changes, run the owning workspace's normal check with `HARNESS_CLI_PATH` bound to this repository; a globally installed CLI is not proof of the current source. Preserve real app routing semantics rather than changing product calls solely for another app's generated types.
+
+Attribution-only DOM containers require the full Reports component suite, alongside explicit negative normalization assertions for text, links, semantic attributes and ordinary containers. Normalize only the known metadata-only wrapper; preserve all behavioral and accessibility assertions.
+
+A successful capture count does not prove catalog delivery. The standardized Pages screen test must project every registered visual unit's dedicated capture through its actual preview choice and require a displayed file. Keep unit preview metadata aligned with the captured catalog state, and verify the prepared main index's cards in the browser before landing/handoff. Preserve exact state selection and missing-state gaps for explicitly requested previews.

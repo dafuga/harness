@@ -1,3 +1,10 @@
+import { readFileSync } from 'node:fs';
+import { catalogShot } from '../../src/utils/entityScreens';
+import { explorerEvidence } from '../../src/utils/explorerEvidence';
+import { scope } from '../entityPlaces';
+import { withFocused } from '../entityStates';
+import { unit } from '../explorerFixture';
+import type { HarnessUnit } from '../../src/models/Harness.types';
 import { expect, test } from 'vitest';
 import ExplorerPagesScreen from '../../src/components/harness/ExplorerPagesScreen.svelte';
 import { revision } from '../entityFixture';
@@ -22,4 +29,25 @@ test('a revision without a registry is said to have none, and no page of another
 	expect(words(body)).toContain('No registry at this revision');
 	expect(words(body)).toContain('The registry could not be read.');
 	expect(count(body, /<article\b/g)).toBe(0);
+});
+
+// Exercise the real registry's preview policy through the shared capture projection.
+test('every dedicated visual catalog capture can appear in its registered catalog card', () => {
+	const catalog = JSON.parse(
+		readFileSync('../../specification/scenarios/component-catalog-previews.json', 'utf8')
+	);
+	const unavailable: string[] = [];
+	for (const state of catalog.states) {
+		const id = state.units[0];
+		const manifest = JSON.parse(readFileSync('../../specification/units/' + id + '.json', 'utf8'));
+		const actual = unit(id, manifest.kind, { preview: manifest.preview }) as HarnessUnit;
+		const captured = withFocused(revision(commits.tip, []), id);
+		for (const entry of captured.regressions![0].green!.captures!) entry.capture.state = state.id;
+		captured.registry = { ...captured.registry, units: [actual], scenarios: [catalog] };
+		const evidence = explorerEvidence(scope('current'), { head: captured, parent: null }, actual);
+		if (!catalogShot(evidence, actual.preview)?.file) unavailable.push(id);
+	}
+	expect(unavailable, 'Captured previews visible through each registered preview choice').toEqual(
+		[]
+	);
 });
