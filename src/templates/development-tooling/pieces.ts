@@ -1,6 +1,6 @@
 import type { PieceContext } from './pieces.types';
 import { separateTypeDeclarations } from './separateTypeDeclarations';
-import { toKebabCase, toPascalCase } from '../../core/development-tooling/case';
+import { toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import {
 	apiFiles,

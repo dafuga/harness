@@ -2,6 +2,7 @@ import type { Unit } from './unitMetadata.types';
 import { explorerKindCategory } from '../../../utils/explorer-ui/explorerRoute';
 import { pureHelpers } from './pureHelpers';
 import { helperConsumers } from './helperConsumers';
+import type { PublicHelper } from '../../../utils/explorer-ui/unitMetadata';
 import { type HelperTree } from '../../../utils/explorer-ui/helperConsumers';
 import { createHash } from 'node:crypto';
 import type { ExportedSymbol, SourceTree } from '../../../core/development-tooling/sourceTypes';
@@ -69,7 +70,7 @@ async function servicesAt(tree: HelperTree, unit: Unit): Promise<void> {
 
 /** Enrich the selected revision from its own source; absent historical files stay absent. */
 export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<void> {
-	await categoriesAt(tree, units);
+	const categories = await categoriesAt(tree, units);
 	await configurationsAt(tree, units);
 	await hydrateUnitDocumentation(tree, units);
 	const paths = [
@@ -94,10 +95,7 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 		);
 		unit.helpers = files
 			.flatMap((file) => file?.helpers ?? [])
-			.map((helper) => {
-				const examples = documented.get(`${helper.source}#${helper.name}`);
-				return { ...helper, ...(examples ? { examples } : {}) };
-			});
+			.map((helper) => helperDetails(helper, documented, categories));
 		const gaps = files.flatMap((file) => (file?.gap ? [file.gap] : []));
 		if (gaps.length) unit.helperGap = gaps.join(' ');
 		else delete unit.helperGap;
@@ -105,6 +103,16 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 	for (let start = 0; start < units.length; start += 64)
 		await Promise.all(units.slice(start, start + 64).map((unit) => servicesAt(tree, unit)));
 	await helperConsumers(tree, units);
+}
+
+function helperDetails(
+	helper: PublicHelper,
+	documented: Map<string, PublicHelper['examples']>,
+	categories: Awaited<ReturnType<ModuleCategoryService['at']>>
+): PublicHelper {
+	const examples = documented.get(`${helper.source}#${helper.name}`);
+	const group = moduleGroup([helper.source], categories?.groups ?? []);
+	return { ...helper, ...(examples ? { examples } : {}), ...(group ? { group } : {}) };
 }
 
 async function configurationsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): Promise<void> {
@@ -122,11 +130,12 @@ async function configurationsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): 
 	}
 }
 
-async function categoriesAt(tree: HelperTree, units: Unit[]): Promise<void> {
+async function categoriesAt(tree: HelperTree, units: Unit[]) {
 	const categories = await new ModuleCategoryService().at(tree);
 	for (const unit of units) {
 		const group = categories ? moduleGroup(unit.owns.source, categories.groups) : undefined;
 		if (group) unit.group = group;
 		else delete unit.group;
 	}
+	return categories;
 }

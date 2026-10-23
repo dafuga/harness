@@ -1,6 +1,6 @@
 import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { sourceText, sourceTestPath } from './entitySourceFixture';
-import type { Page } from '@playwright/test';
+import type { Page, TestInfo } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
 import { capture, fits, open, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -98,4 +98,21 @@ async function sourceReadMeasurements(
 		},
 		JSON.stringify({ measurements })
 	);
+}
+
+export async function sourceMetrics(page: Page, info: TestInfo, started: number) {
+	await info.attach('source-view-metrics', {
+		body: JSON.stringify(
+			await page.evaluate(
+				(start) => ({
+					openMs: performance.now() - start,
+					pageHeapBytes:
+						(performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
+							?.usedJSHeapSize ?? null
+				}),
+				started
+			)
+		),
+		contentType: 'application/json'
+	});
 }

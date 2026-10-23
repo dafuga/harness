@@ -10,6 +10,7 @@
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-sections/entityContract.ts",
 			"packages/reports/src/components/explorer-ui/entity-sections/entityContract.types.ts",
+			"packages/reports/src/helpers/strings/humanize.ts",
 			"packages/reports/src/utils/entityContract.ts",
 			"packages/reports/src/utils/explorer-ui/entityContract.ts",
 			"packages/reports/src/utils/explorer-ui/entityContract.types.ts"
@@ -18,14 +19,15 @@
 			"requiredStates",
 			"entityContract",
 			"Field",
+			"humanize",
 			"requiredStates",
 			"entityContract",
-			"humanize",
 			"humanize",
 			"requiredStates",
 			"entityContract",
 			"ContractRow",
 			"ContractFacts",
+			"humanize",
 			"ContractRow",
 			"ContractFacts"
 		]
@@ -103,7 +105,7 @@
 	"helperContracts": [
 		{
 			"name": "humanize",
-			"source": "packages/reports/src/utils/explorer-ui/entityContract.ts",
+			"source": "packages/reports/src/helpers/strings/humanize.ts",
 			"inputs": [
 				{
 					"name": "humanize.name",
@@ -116,25 +118,33 @@
 				{
 					"name": "Separate lowercase words from uppercase letters",
 					"call": "humanize(\"orderID\")",
-					"input": ["orderID"],
+					"input": [
+						"orderID"
+					],
 					"output": "order id"
 				},
 				{
 					"name": "Separate an acronym from the following word",
 					"call": "humanize(\"HTTPServer\")",
-					"input": ["HTTPServer"],
+					"input": [
+						"HTTPServer"
+					],
 					"output": "http server"
 				},
 				{
 					"name": "Replace identifier separators with spaces and trim",
 					"call": "humanize(\" order-item_count.total \")",
-					"input": [" order-item_count.total "],
+					"input": [
+						" order-item_count.total "
+					],
 					"output": "order item count total"
 				},
 				{
 					"name": "Leave an empty identifier blank",
 					"call": "humanize(\"\")",
-					"input": [""],
+					"input": [
+						""
+					],
 					"output": ""
 				}
 			],

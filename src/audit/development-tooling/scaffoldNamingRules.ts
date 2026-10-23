@@ -1,5 +1,5 @@
 import type { FunctionFileRule } from './scaffoldNamingRules.types';
-import { toCamelCase, toPascalCase } from '../../core/development-tooling/case';
+import { toCamelCase, toPascalCase } from '../../helpers/strings/case';
 import { harnessClassFileRules } from '../../rules/explorer-ui/catalog';
 import type { AuditFile } from './adapters/types';
 import { hasNamedValueExport } from './functionNamingRules';

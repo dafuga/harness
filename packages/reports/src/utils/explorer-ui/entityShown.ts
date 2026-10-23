@@ -33,8 +33,12 @@ export function helperEntity(
 		purpose: output?.description ?? `Helper defined in ${unit.title}.`,
 		unit: {
 			...unit,
+			...(helper.group ? { group: helper.group } : {}),
 			title: helperName,
 			helpers: [helper],
+			...(unit.sourceFiles
+				? { sourceFiles: unit.sourceFiles.filter((file) => file.path === helper.source) }
+				: {}),
 			owns: { source: [helper.source], symbols: [helperName] },
 			contract: helperFields(unit, helperName),
 			documentation: helperDocumentation(unit, helper)

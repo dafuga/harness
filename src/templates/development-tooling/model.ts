@@ -1,6 +1,6 @@
 import type { ModelInput, AdapterName } from './model.types';
 import { separateTypeDeclarations } from './separateTypeDeclarations';
-import { toKebabCase, toPascalCase, toSnakeCase } from '../../core/development-tooling/case';
+import { toKebabCase, toPascalCase, toSnakeCase } from '../../helpers/strings/case';
 import type { Field } from '../../core/development-tooling/fields/fields';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { sqliteModelDefinition } from './sqliteModel';

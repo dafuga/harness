@@ -159,8 +159,8 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 		'Mailer unit test.'
 	]),
 	helper: detail('helper', 'Small display helper for views or serializers.', false, [
-		'Helper class under src/helpers.',
-		'Format method.',
+		'Pure camelCase function under src/helpers.',
+		'Pure formatting function.',
 		'Helper unit test.'
 	]),
 	concern: detail('concern', 'Reusable cross-cutting behavior.', false, [

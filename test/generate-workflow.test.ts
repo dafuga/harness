@@ -13,6 +13,7 @@ test('lib generation auto-exports package-safe scaffolds', async () => {
 	await generatePiece({ root, kind: 'mailer', name: 'Welcome' });
 	await generatePiece({ root, kind: 'concern', name: 'Publishable' });
 	await generatePiece({ root, kind: 'config', name: 'Search' });
+	await generatePiece({ root, kind: 'helper', name: 'FormatPostTitle' });
 	await generateModel({ root, name: 'Post', rawFields: ['title:string'], adapter: 'sqlite' });
 	const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
 	expect(manifest.dependencies['@dafuga01/harness']).toBe('^0.1.4');
@@ -22,6 +23,7 @@ test('lib generation auto-exports package-safe scaffolds', async () => {
 	expect(index).toContain("export { WelcomeMailer } from './mailers/WelcomeMailer';");
 	expect(index).toContain("export { withPublishable } from './concerns/withPublishable';");
 	expect(index).toContain("export { searchConfig } from './config/searchConfig';");
+	expect(index).toContain("export { formatPostTitle } from './helpers/formatPostTitle';");
 	expect(index).toContain("export { Post } from './models/Post';");
 	expect(index).toContain('export type { PostAttributes, PostCreateInput, PostUpdateInput }');
 	await rm(root, { recursive: true, force: true });
@@ -73,7 +75,8 @@ test('generation keeps category folders, imports and package exports in agreemen
 		);
 		const grouped = { root, group: 'verification-evidence' };
 		for (const kind of ['service', 'repository', 'adapter', 'util', 'config', 'helper'] as const) {
-			const result = await generatePiece({ ...grouped, kind, name: 'Proof' });
+			const name = kind === 'helper' ? 'FormatProofLabel' : 'Proof';
+			const result = await generatePiece({ ...grouped, kind, name });
 			expect(
 				result.writes.some(
 					(file) => file.path.startsWith(`src/`) && file.path.includes('/verification-evidence/')

@@ -3,7 +3,7 @@
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { shortCommit } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { galleryItems } from '../../utils/explorer-ui/entityScreens';
 	import AudioEvidence from '../verification-evidence/AudioEvidence.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';

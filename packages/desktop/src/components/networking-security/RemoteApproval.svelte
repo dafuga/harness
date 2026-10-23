@@ -2,7 +2,7 @@
 	import Select from '../../../../reports/src/components/Select.svelte';
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';
 	import type { RemotePairingRequest } from '../../models/development-tooling/Environment.types';
-	import { identityLabel } from '../../utils/networking-security/remoteLabels';
+	import { identityLabel } from '../../helpers/networking-security/identityLabel';
 	let {
 		request,
 		projects,

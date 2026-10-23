@@ -145,13 +145,13 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 test('index records reviewed shared helper contracts for clients without source rescans', async () => {
 	const project = await sharedDateHelperProject();
 	const unit = await project.json<{ helperContracts: unknown[] }>(
-		'specification/units/function.format-date.json'
+		'specification/units/helper.dates-format-date.json'
 	);
 	expect(unit.helperContracts, 'committed pure helper contracts').toEqual([
 		expect.objectContaining({
 			name: 'formatDate',
 			pure: true,
-			source: 'src/utils/formatDate.ts',
+			source: 'src/helpers/dates/formatDate.ts',
 			consumers: expect.arrayContaining([
 				{ unit: 'function.first', symbol: 'first' },
 				{ unit: 'function.second', symbol: 'second' }
@@ -163,7 +163,7 @@ test('index records reviewed shared helper contracts for clients without source 
 	const examples = utcDateExamples;
 	const writeExamples = (examples: unknown[]) =>
 		project.write(
-			'specification/units/function.format-date.json',
+			'specification/units/helper.dates-format-date.json',
 			JSON.stringify({
 				...unit,
 				helperContracts: unit.helperContracts.map((item) => ({ ...(item as object), examples }))
@@ -183,7 +183,7 @@ test('index records reviewed shared helper contracts for clients without source 
 	await writeExamples(examples);
 	await project.harness(['units', 'index', '--write']);
 	const again = await project.json<{ helperContracts: Array<{ examples: unknown }> }>(
-		'specification/units/function.format-date.json'
+		'specification/units/helper.dates-format-date.json'
 	);
 	expect(again.helperContracts[0].examples).toEqual(examples);
 	await project.harness(['units', 'check']);

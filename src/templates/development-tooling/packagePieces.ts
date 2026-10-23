@@ -1,5 +1,5 @@
 import type { EntityFileInput } from './packagePieces.types';
-import { toCamelCase, toKebabCase, toPascalCase } from '../../core/development-tooling/case';
+import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 
 export function controllerFiles(name: string): PlannedFile[] {

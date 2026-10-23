@@ -6,7 +6,7 @@ import type {
 } from '../../../utils/explorer-ui/entityMeasure';
 import { notMeasured, byteSize, tolerancePolicy } from '../../../utils/explorer-ui/entityMeasure';
 import type { HarnessRecord, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
-import { humanize } from '../../../utils/explorer-ui/entityContract';
+import { humanize } from '../../../helpers/strings/humanize';
 import { reasonText } from '../../../utils/explorer-ui/explorerState';
 import { harnessEmitted } from '../../../utils/explorer-ui/harnessEmitted';
 

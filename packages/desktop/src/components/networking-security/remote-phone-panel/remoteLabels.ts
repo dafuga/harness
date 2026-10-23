@@ -1,6 +1,5 @@
 import type { Words } from './remoteLabels.types';
 import {
-	plural,
 	grantLabel,
 	awakeNote,
 	lockedNote,
@@ -9,6 +8,7 @@ import {
 	awayNote,
 	revokedNote
 } from '../../../utils/networking-security/remoteLabels';
+import { plural } from '../../../helpers/strings/plural';
 import type {
 	RemoteMobileStatus,
 	RemoteNativeStatus
