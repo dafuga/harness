@@ -97,7 +97,9 @@ test('a screen is recorded on the pages that mount it and on no other route page
 });
 
 const visual = (id: string) =>
-	['page', 'shell', 'component'].includes(units.find((unit) => unit.id === id)?.kind ?? '');
+	['page', 'shell', 'component', 'layout', 'partial'].includes(
+		units.find((unit) => unit.id === id)?.kind ?? ''
+	);
 const naming = (id: string) =>
 	scenario.states.filter((state) => state.units?.includes(id)).map((state) => state.id);
 
