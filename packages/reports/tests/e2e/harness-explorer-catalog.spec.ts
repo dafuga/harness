@@ -187,10 +187,10 @@ test.describe('a registry of several hundred units', () => {
 		expect(await cards(page).count()).toBeGreaterThanOrEqual(10);
 		expect(await cards(page).count()).toBeLessThan(20);
 		await noFilters(page);
-		await expect(cards(page).first()).toHaveAttribute('aria-label', 'unit300');
+		await expect(cards(page).first()).toHaveAttribute('aria-label', 'unit030');
 		await titled(page).focus();
 		await page.keyboard.press('Enter');
-		await expectPath(page, tip('main', 'helpers/unit300/contract'));
+		await expectPath(page, tip('main', 'helpers/unit030/contract'));
 	});
 
 	test('on a phone the list reaches any unit without scrolling sideways', async ({ page }) => {
