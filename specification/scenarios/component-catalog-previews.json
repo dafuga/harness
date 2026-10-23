@@ -130,6 +130,7 @@
 		"reports.component.evidence-viewer",
 		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-function-card",
+		"reports.component.explorer-ui-config-value-tree",
 		"reports.component.explorer-ui-explorer-module-card",
 		"reports.component.explorer-ui-explorer-platform-details",
 		"reports.component.explorer-ui-explorer-platforms",
@@ -1003,6 +1004,12 @@
 			"units": ["reports.component.explorer-function-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-config-value-tree",
+			"title": "ConfigValueTree",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
 			"title": "ExplorerModuleCard",
 			"coverage": "required",
@@ -1845,6 +1852,7 @@
 				"reports-component-evidence-viewer",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-function-card",
+				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platforms",

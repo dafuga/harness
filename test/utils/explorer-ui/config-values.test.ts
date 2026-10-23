@@ -86,6 +86,20 @@ test('JSON config keys keep their actual scalar values', () => {
 // Structural inspection is data read from the AST, alongside the unchanged source-value contract.
 test.each([
 	[
+		'export const schema = z\n  .strictObject({schemaVersion: z.literal(1), groups: z.array(group), legacy: z.array(z.string())})\n  .superRefine(check);',
+		'schema',
+		{
+			kind: 'object',
+			count: 3,
+			entries: [
+				{ name: 'schemaVersion', node: { kind: 'expression', source: 'z.literal(1)' } },
+				{ name: 'groups', node: { kind: 'array' } },
+				{ name: 'legacy', node: { kind: 'array' } }
+			]
+		}
+	],
+	['export const schema = z\n  .array(z.string());', 'schema', { kind: 'array', schema: true }],
+	[
 		'export const schema = z.strictObject({id: z.string(), groups: z.array(z.string())}).superRefine(check);',
 		'schema',
 		{
@@ -134,7 +148,10 @@ test.each([
 	async (source, name, structure) => {
 		await measureWorkload('function.unit-metadata', 'config-collection-structure', () => {
 			const result = configValues(source, 'settings.ts').find((item) => item.name === name);
-			expect(result).toMatchObject({ name, structure });
+			expect(result, 'committed collection structure is inspectable').toMatchObject({
+				name,
+				structure
+			});
 		});
 	}
 );
