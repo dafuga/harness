@@ -9,7 +9,12 @@ export async function reviewPrivateFunctions(page: Page, viewport: string): Prom
 		await open(page, { category: 'components', entity: ids.list, tab: 'uses', commit }, 'helpers');
 		await capture(
 			page,
-			`${process.env.SCREENSHOT_LABEL ?? 'run'}-private-card-${commit ? 'commit' : 'tip'}-${viewport}`
+			`${process.env.SCREENSHOT_LABEL ?? 'run'}-private-card-${commit ? 'commit' : 'tip'}-${viewport}`,
+			[
+				'reports.component.harness-entity-relations',
+				'reports.component.explorer-ui-explorer-module-card',
+				'reports.component.explorer-catalog-items'
+			]
 		);
 		const card = page.getByRole('article', { name: 'single', exact: true });
 		await expect(card, 'Private dependencies reuse the canonical module card').toHaveAttribute(
