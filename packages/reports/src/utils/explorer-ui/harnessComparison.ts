@@ -23,4 +23,4 @@ export interface AlignedState {
 export {
 	comparisonChoices,
 	harnessComparison
-} from '../../components/explorer-ui/harness/harness-compare-media/harnessComparison';
+} from '../../components/explorer-ui/harness-compare-media/harnessComparison';

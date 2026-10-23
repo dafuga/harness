@@ -76,4 +76,4 @@ export function plainClick(event: MouseEvent): boolean {
 	return event.button === 0 && !modified && !event.defaultPrevented;
 }
 
-export { harnessShell } from '../../components/explorer-ui/harness/harness-navbar/harnessShell';
+export { harnessShell } from '../../components/explorer-ui/harness-navbar/harnessShell';

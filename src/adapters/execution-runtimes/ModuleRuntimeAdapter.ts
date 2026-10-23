@@ -4,7 +4,7 @@ import {
 	type RuntimeHandler,
 	type RuntimeOptions
 } from '../../core/execution-runtimes/runtimeTypes';
-import { HandlerRuntimeAdapter } from '../../../packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter';
+import { HandlerRuntimeAdapter } from '../../../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 
 /** Runs a unit in this process by calling an exported handler function. */
 export class ModuleRuntimeAdapter extends HandlerRuntimeAdapter {

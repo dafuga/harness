@@ -11,10 +11,10 @@
 	import '../../lib/styles/platforms.css';
 	import Select from '../shared-primitives/Select.svelte';
 	import FilterDialog from '../shared-primitives/FilterDialog.svelte';
-	import EntityLink from './harness/EntityLink.svelte';
-	import ExplorerControls from './harness/ExplorerControls.svelte';
-	import ExplorerFrame from './harness/ExplorerFrame.svelte';
-	import HarnessIcon from './harness/HarnessIcon.svelte';
+	import EntityLink from './EntityLink.svelte';
+	import ExplorerControls from './ExplorerControls.svelte';
+	import ExplorerFrame from './ExplorerFrame.svelte';
+	import HarnessIcon from './HarnessIcon.svelte';
 	import ExplorerPlatformDetails from './ExplorerPlatformDetails.svelte';
 	import {
 		platformStatus,

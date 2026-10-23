@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/harness-navbar/HarnessNavbar.svelte",
-			"packages/reports/src/components/harness/harness-navbar/HarnessNavbar.svelte"
-		],
-		"symbols": ["HarnessNavbar", "HarnessNavbar"]
+		"source": ["packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"],
+		"symbols": ["HarnessNavbar"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -110,11 +107,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/harness-navbar/HarnessNavbar.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/harness-navbar/HarnessNavbar.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
 			}
 		]
 	},

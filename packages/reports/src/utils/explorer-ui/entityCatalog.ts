@@ -206,4 +206,4 @@ export function listed(names: string[], most = 1): string {
 	return `${names.slice(0, most).join(' · ')} + ${names.length - most} more`;
 }
 
-export { catalogFilter } from '../../components/explorer-ui/harness/explorer-index/entityCatalog';
+export { catalogFilter } from '../../components/explorer-ui/explorer-index/entityCatalog';

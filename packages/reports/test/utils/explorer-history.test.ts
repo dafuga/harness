@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { ExplorerScope } from '../../src/models/Explorer.types';
 import { explorerHistory } from '../../src/utils/explorer-history/explorerHistory';
-import { historyDetail } from '../../src/components/harness/entity-history/explorerHistory';
+import { historyDetail } from '../../src/components/explorer-ui/entity-history/explorerHistory';
 import {
 	complete,
 	declared,

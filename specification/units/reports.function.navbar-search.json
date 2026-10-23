@@ -8,12 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness/harness-navbar/navbarSearch.ts",
-			"packages/reports/src/components/harness/harness-navbar/navbarSearch.ts",
+			"packages/reports/src/components/explorer-ui/harness-navbar/navbarSearch.ts",
 			"packages/reports/src/utils/explorer-ui/navbarSearch.ts",
 			"packages/reports/src/utils/navbarSearch.ts"
 		],
-		"symbols": ["navbarSearch", "navbarSearch", "NavbarSearch", "navbarSearch", "navbarSearch"]
+		"symbols": ["navbarSearch", "NavbarSearch", "navbarSearch", "navbarSearch"]
 	},
 	"contract": {
 		"origin": "declared",

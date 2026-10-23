@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { SearchEntry } from '../../src/utils/entitySearch';
-import { navbarSearch } from '../../src/components/harness/harness-navbar/navbarSearch';
+import { navbarSearch } from '../../src/components/explorer-ui/harness-navbar/navbarSearch';
 import { sha, shellBranch, shellScope } from '../../tests/e2e/support/shellData';
 
 /**

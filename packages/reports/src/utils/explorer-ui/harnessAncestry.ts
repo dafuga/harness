@@ -28,5 +28,5 @@ export function branchOf(index: HarnessIndex, commit: string): string {
 }
 
 export { harnessAncestry } from './explorer-history/harnessAncestry';
-export { branchCommits } from '../../components/explorer-ui/harness/harness-navbar/harnessAncestry';
-export { revisionLabel } from '../../components/explorer-ui/harness/harness-selectors/harnessAncestry';
+export { branchCommits } from '../../components/explorer-ui/harness-navbar/harnessAncestry';
+export { revisionLabel } from '../../components/explorer-ui/harness-selectors/harnessAncestry';

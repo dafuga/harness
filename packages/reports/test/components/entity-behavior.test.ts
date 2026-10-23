@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntityBehavior from '../../src/components/harness/EntityBehavior.svelte';
+import EntityBehavior from '../../src/components/explorer-ui/EntityBehavior.svelte';
 import { explorerReading } from '../../src/utils/explorer-reading/explorerReading';
 import { observedRows, rows } from '../artifactCaseDocs';
 import { servedArtifacts } from '../entityArtifacts';

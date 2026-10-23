@@ -5,8 +5,8 @@
 	import type { EntityLens, EntityNav } from '../../utils/entityLens';
 	import type { SupportRow } from '../../utils/entityUsage';
 	import ExplorerModuleCard from './ExplorerModuleCard.svelte';
-	import ExplorerTable from '../harness/ExplorerTable.svelte';
-	import HarnessAction from '../harness/HarnessAction.svelte';
+	import ExplorerTable from './ExplorerTable.svelte';
+	import HarnessAction from './HarnessAction.svelte';
 	type Row = CatalogRow | SupportRow;
 	let {
 		category,

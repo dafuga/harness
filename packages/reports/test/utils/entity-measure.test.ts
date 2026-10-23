@@ -4,7 +4,7 @@ import {
 	recordCapture
 } from '../../../../src/utils/record-capture/recordCapture';
 import { byteSize, notMeasured } from '../../src/utils/entityMeasure';
-import { entityMeasure } from '../../src/components/harness/entity-sections/entityMeasure';
+import { entityMeasure } from '../../src/components/explorer-ui/entity-sections/entityMeasure';
 import { record } from '../entityFixture';
 import { commits, ids, units } from '../entityUnits';
 
