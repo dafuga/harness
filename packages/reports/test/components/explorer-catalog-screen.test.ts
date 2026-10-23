@@ -28,9 +28,7 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 						new RegExp(`<table class="ex-table(?: [^"]*)?" aria-label="${name}"`)
 					);
 					expect(words(body), category).toContain(name);
-					// Inline decoration and zero-width breaks do not add characters to a code name.
-					const text = body.replace(/<\/?(?:span|code|wbr)\b[^>]*>/g, '');
-					expect(words(text), 'configs list variable names and source values').toContain(
+					expect(words(body), 'configs list variable names and source values').toContain(
 						'orderSettings.pageSize 25'
 					);
 					expect(count(body, /scope="col"/g), 'only variable and value columns').toBe(2);

@@ -55,7 +55,7 @@
 		<span class="chip blank" role="img" aria-label="Empty string">Empty string</span>
 	{:else if items}
 		<ul class="items" aria-label={`Array, ${count(items.length)}`}>
-			{#each items as item, index (index)}
+			{#each items as item, position (position)}
 				<li
 					class="chip"
 					class:number={typeof item === 'number'}

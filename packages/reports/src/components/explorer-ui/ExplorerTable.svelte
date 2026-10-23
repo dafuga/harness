@@ -119,9 +119,9 @@
 							><EntityLink to={open(row)} {nav}
 								><code class="ex-config-name"
 									><span class="ex-config-scope"
-										>{#each words(row.name.slice(0, key)) as word, index (index)}{word}<wbr
+										>{#each words(row.name.slice(0, key)) as word, position (position)}{word}<wbr
 											/>{/each}</span
-									>{#each words(row.name.slice(key)) as word, index (index)}{word}<wbr
+									>{#each words(row.name.slice(key)) as word, position (position)}{word}<wbr
 										/>{/each}</code
 								></EntityLink
 							></th

@@ -97,11 +97,9 @@
 		{#each sections as section (section.id)}
 			<section class="ex-group">
 				<header class="ex-group-head">
-					<h2>{section.title} <span class="ex-group-count">{section.rows.length}</span></h2>
-					{#if section.source}<p class="ex-group-source">
-							{#each section.source.match(/[^/]*\/|[^/]+$/g) ?? [] as part, index (index)}{part}<wbr
-								/>{/each}
-						</p>{/if}
+					<h2 title={section.source}>
+						{section.title} <span class="ex-group-count">{section.rows.length}</span>
+					</h2>
 				</header>
 				{@render list(section.rows)}
 			</section>
@@ -142,7 +140,7 @@
 	.ex-group {
 		margin-top: 28px;
 	}
-	/* A group's name and count; a config file's path beside them, wrapping under them on a phone. */
+	/* The source config's name and variable count form one compact section heading. */
 	.ex-group-head {
 		display: flex;
 		flex-wrap: wrap;
@@ -168,12 +166,5 @@
 		font-weight: 400;
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
-	}
-	.ex-group-source {
-		min-width: 0;
-		color: var(--hx-muted, #8fa1b8);
-		font-family: var(--hx-font-family-mono);
-		font-size: var(--hx-type-size-xs);
-		overflow-wrap: anywhere;
 	}
 </style>
