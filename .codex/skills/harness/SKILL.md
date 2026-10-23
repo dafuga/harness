@@ -51,10 +51,21 @@ remains effectful even when the function has a clear name.
 For helpers recorded by `specification/loops/local-helper-ownership/migration.json`, preserve the original move definition and update the existing intentional `followUps` record with the implementation commit, reason and current definition. Run the root `test/services/unit-index.test.ts` guard alongside the owning workspace's tests before landing; workspace-only checks do not cover this repository-wide ownership record.
 
 When a reuse threshold controls catalog inclusion, derive that decision and the
-visible usage links from the same resolved, distinct consumer set. Cover zero,
+visible usage links from the same resolved, distinct consumer set. Keep every resolved module
+category eligible for usage links, exclude the callable itself, and cover all supported kinds
+in the normal card matrix; a legacy category whitelist can silently lose valid consumers. Cover zero,
 one and multiple eligible consumers in the standardized catalog tests, including
 duplicate references and excluded or missing consumers. A passing display test
-must not accept a row that contradicts the collection's inclusion rule.
+must not accept a row that contradicts the collection's inclusion rule. Resolve consumer owners
+from the selected revision's full active registry, independently of public catalog filtering.
+Distinct named procedural callers use owner-plus-symbol identity, including siblings in the
+helper's own unit; duplicate references and the helper itself do not count twice. Components and
+classes remain distinct owner units. Private callers never become public Helpers merely because
+they consume a shared helper. Select a recorded callable when available; otherwise open its real
+owner source, preserving template/audit roles without inventing a helper API or entity route.
+When a reference carries a callable identity separately from its owner, the normal mixed-consumer
+matrix must assert that its link text, hover or focus preview, and opened destination identify the
+same callable. Exercise distinct owner and callable names at current and historical revisions.
 
 ## Bug and Regression Loops
 
@@ -170,7 +181,11 @@ When reusing a catalog item in relationships or another context, review the rend
 variants and their supplied data, not only the component import. The existing
 standardized catalog and relationship matrix must exercise the same consumer
 footer, clickable references, hover/focus preview and branch/revision navigation.
-Include empty usage and missing screenshots. A class-name or entity-name assertion
+Include empty usage and missing screenshots. Inventory every relationship input, including
+private callables and unclassified support dependencies; checking only existing article
+elements cannot detect modules that bypass the card renderer. Keep at least one fourth
+eligible consumer through the data projection and assert both three visible links and
+the overflow indicator. A class-name or entity-name assertion
 alone does not prove interaction parity. Keep screenshot evidence at the failing
 and passing checkpoints; do not substitute another entity or revision's image.
 

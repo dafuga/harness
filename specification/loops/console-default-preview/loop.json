@@ -1,0 +1,60 @@
+{
+	"name": "console-default-preview",
+	"goal": "Default Console previews show the settled catalog capture while loading states remain selectable.",
+	"createdAt": "2026-10-23T14:31:53.383Z",
+	"updatedAt": "2026-10-23T14:54:58.061Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:34:23.664Z",
+			"evidence": "Active prepared main a34 selects loading-history for the Console through the real catalogShot(evidence, unit.preview, true) card call. Its definition has no preferred preview. Expected default is the settled dedicated catalog capture; loading history/revision states remain available."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:34:24.340Z",
+			"evidence": "The existing every-dedicated-visual-catalog-card test forces a state pick and supplies only default captures, so it misses the no-preview actual caller and loading captures recorded first. Strengthen that existing registry-wide case with real Console loading states and exact caller selection; retain strict per-device and rejected-evidence assertions."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:41:08.587Z",
+			"evidence": "At test-only f8ce3c10a, record 2cc2db98 reproduces the actual Console default caller choosing loading-history instead of its settled capture; the other standardized cases pass. Test inputs preflight format/lint/types/audit pass."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:51:13.654Z",
+			"evidence": "Reviewed Console as the visual routing component that renders ExplorerLayout, loading notices and the supplied screen, without a children slot. Correct its single legacy shell declaration to component and declare the settled catalog preview. Stable ID and existing component category are preserved; no classifier, selector or provenance rule changes. Normal units index canonicalizes metadata order."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:54:58.061Z",
+			"evidence": "Paired same-environment red 6c5f4e5e at f8ce3c10a selects loading-history and green 3523105d at 0a05219ca selects the settled default. The existing test corpus/command is unchanged; all four standardized cases pass, six Console loading captures remain available, and all registered device preview choices still resolve. Registry1461/93 and fourteen unchanged readable-contract/ownership guards pass."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
