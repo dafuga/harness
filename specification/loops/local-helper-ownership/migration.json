@@ -5256,6 +5256,13 @@
 			"definition": "72da54d7da3dd6518c39557f45e9ca722e15b035eec4d4120e603872af7bb8c1",
 			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
 			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "hub.function.hub-metadata-paths",
+			"name": "hubMetadataPaths",
+			"commit": "ae9e65325",
+			"reason": "Include layout planning metadata alongside legacy shell metadata.",
+			"definition": "9a1709bd49893223f8b60758a6164ba814fc2a59fc4c96e97adf804857465ee0"
 		}
 	]
 }

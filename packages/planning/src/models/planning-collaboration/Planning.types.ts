@@ -2,13 +2,16 @@ import type { ChangeRecord } from './HostFileChange.types';
 export type { HostFileChange, ChangeTarget, ChangeRecord } from './HostFileChange.types';
 import type { DesignOption } from './DesignOption.types';
 export type { DesignOption, DesignOptionInput } from './DesignOption.types';
-/**
- * Planning artifacts as they are stored in Git and returned by the facade.
- * Every type here is plain data: it survives JSON and structured clone unchanged,
- * except `ImageContent.bytes`, which needs structured clone (Electron IPC).
- */
+/** Git-stored planning artifacts are plain data; image bytes use structured clone. */
 
-export type PlanCategory = 'page' | 'shell' | 'component' | 'function' | 'config' | 'service';
+export type PlanCategory =
+	| 'page'
+	| 'shell'
+	| 'layout'
+	| 'component'
+	| 'function'
+	| 'config'
+	| 'service';
 /** Pages and components use the three screen viewports; headless units use `diagram`. */
 export type PlanViewport = 'desktop' | 'tablet' | 'mobile' | 'diagram';
 /** Derived, never stored: no version, latest version unapproved, latest version approved. */

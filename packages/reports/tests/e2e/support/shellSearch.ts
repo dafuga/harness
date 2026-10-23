@@ -19,7 +19,7 @@ const lasting: Row[] = [
 	]
 ];
 const newer: Row[] = [
-	['app.shell.order-frame', 'shells', 'Order frame', 'Frames the order pages.'],
+	['app.shell.order-frame', 'layouts', 'Order frame', 'Frames the order pages.'],
 	[
 		'app.function.order-totals',
 		'functions',

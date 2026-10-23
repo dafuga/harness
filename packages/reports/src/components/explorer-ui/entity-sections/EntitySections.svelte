@@ -42,7 +42,7 @@
 			: null
 	);
 	let removed = $derived(entity.change === 'removed');
-	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	let visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
 	// Functions and services show their authored uses; their former Tests address opens them too.
 	let examples = $derived(
 		['functions', 'services'].includes(entity.category) &&

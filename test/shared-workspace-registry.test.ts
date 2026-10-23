@@ -159,7 +159,7 @@ test('every active visual module has its own required capture state', () => {
 			const alias = sources.some(
 				(path) =>
 					path.startsWith('packages/reports/src/routes/harness/') &&
-					path.endsWith('/[entity]/details/+page.svelte')
+					(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
 			);
 			return !alias && sources.some((path) => path.endsWith('/+page.svelte'));
 		})

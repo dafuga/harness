@@ -41,7 +41,7 @@ test('the bar has seven entity categories and a Styles screen scoped to the view
 		const { categories } = view(historical);
 		expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 			['pages', 'Pages', 'pages'],
-			['shells', 'Shells', 'shells'],
+			['layouts', 'Layouts', 'layouts'],
 			['components', 'Components', 'components'],
 			['models', 'Models', 'database'],
 			['services', 'Services', 'services'],
@@ -52,7 +52,7 @@ test('the bar has seven entity categories and a Styles screen scoped to the view
 		]);
 		// The whole branch is one segment, and a category opens its index: no entity, section or tab.
 		expect(categories.map((item) => item.href)).toEqual([
-			...['pages', 'shells', 'components', 'models', 'services', 'functions', 'configs'].map(
+			...['pages', 'layouts', 'components', 'models', 'services', 'functions', 'configs'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
 			),
 			`${scoped}/commit/${sha(4)}/styles`,
@@ -149,7 +149,7 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 	expect(home).toEqual({ href: shellMount, to: null });
 	expect(categories.map((item) => item.label)).toEqual([
 		'Pages',
-		'Shells',
+		'Layouts',
 		'Components',
 		'Models',
 		'Services',

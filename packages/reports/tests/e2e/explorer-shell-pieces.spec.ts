@@ -16,12 +16,12 @@ import {
  */
 const categories = [
 	'Pages',
-	'Shells',
+	'Layouts',
 	'Components',
+	'Models',
+	'Services',
 	'Helpers',
 	'Configs',
-	'Services',
-	'Models',
 	'Styles',
 	'Platforms'
 ];

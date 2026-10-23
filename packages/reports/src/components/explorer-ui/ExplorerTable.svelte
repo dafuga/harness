@@ -37,7 +37,7 @@
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
 	const columns: Record<Kind, Column[]> = {
 		platforms: [],
-		shells: [
+		layouts: [
 			['Used on', null],
 			['Contains', (row) => listed(row.contains, 2)]
 		],
@@ -59,7 +59,7 @@
 	let shown = $derived(columns[category]);
 	let one = $derived(entityLabels[category].one);
 	// A shell is described under its name; the other kinds have a column for it.
-	let described = $derived(category === 'shells');
+	let described = $derived(category === 'layouts');
 	// The variables of one source file are one table, named as the file is; a mix keeps the kind's.
 	let heading = $derived.by(() => {
 		const file = rows[0]?.configFile;

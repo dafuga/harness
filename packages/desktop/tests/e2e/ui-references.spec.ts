@@ -115,7 +115,7 @@ test('a shared project renders a reference in a comment and offers no agent cont
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(
 		thread(page).getByRole('link', { name: 'Gamma frame', exact: true })
-	).toHaveAttribute('href', `/projects/${gamma}/harness/branch/main/shells/app.shell.order-frame`);
+	).toHaveAttribute('href', `/projects/${gamma}/harness/branch/main/layouts/app.shell.order-frame`);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Plan', exact: true })).toHaveCount(0);
 });

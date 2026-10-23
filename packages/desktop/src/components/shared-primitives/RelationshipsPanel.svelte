@@ -18,7 +18,7 @@
 	/** Each kind as a group of what is used is headed, and as one user of the entity is badged. */
 	const kinds: Record<Category, [string, string]> = {
 		pages: ['Pages', 'Page'],
-		shells: ['Shells', 'Shell'],
+		layouts: ['Layouts', 'Shell'],
 		components: ['Components', 'Component'],
 		functions: ['Functions', 'Function'],
 		configs: ['Configs', 'Config'],

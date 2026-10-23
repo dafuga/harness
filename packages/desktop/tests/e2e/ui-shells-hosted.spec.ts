@@ -19,8 +19,8 @@ for (const viewport of [
 	}) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await withShell(page, hostedFixture);
-		await page.goto(route('shells'));
-		await expect(nav(page).getByRole('link', { name: 'Shells' })).toHaveClass(/active/);
+		await page.goto(route('layouts'));
+		await expect(nav(page).getByRole('link', { name: 'Layouts' })).toHaveClass(/active/);
 		await expect(page.getByText('Shared workspace shell', { exact: true })).toBeVisible();
 		await expect(agent(page)).toHaveCount(0);
 		await evidenced(page, 'shells-hosted');

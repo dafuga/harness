@@ -65,6 +65,11 @@ function scaffoldGuide(detail: ScaffoldDetail): Guide {
 		],
 		rules: [
 			'Generated code is a starting shape.',
+			...(detail.kind === 'layout'
+				? [
+						'Layouts are reusable visual frames with a child-content slot; preview the actual frame with a labelled Child content placeholder. Routing hosts and options-only modules are not visual layouts.'
+					]
+				: []),
 			...harnessModuleGroupRules,
 			'Keep public behavior covered by focused tests.',
 			eligibility(detail)

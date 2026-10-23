@@ -2,6 +2,7 @@
 export const planningIgnores = [
 	'pages',
 	'shells',
+	'layouts',
 	'components',
 	'functions',
 	'services',

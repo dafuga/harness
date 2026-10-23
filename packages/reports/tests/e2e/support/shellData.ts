@@ -86,7 +86,7 @@ export function shellHref(to: ExplorerLocation): string {
 
 export const shellCategories = [
 	'Pages',
-	'Shells',
+	'Layouts',
 	'Components',
 	'Models',
 	'Services',

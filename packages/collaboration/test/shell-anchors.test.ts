@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { GitHubOptions } from '../src/models/Collaboration.types';
 import { createGitHubSource } from '../src/utils/create-git-hub-source/createGitHubSource';
@@ -88,17 +89,22 @@ async function hosted() {
 	return { adapter: createGitHubSource(options), imageSha256 };
 }
 
-test('a comment on a shell, and on an image of its plan, is anchored like one on any entity', async () => {
-	const { adapter, imageSha256 } = await hosted();
-	const shell = { ...anchor, entityId: id };
-	await expect(adapter.validateAnchor(sourceRepository, shell)).resolves.toBeUndefined();
-	const pictured = {
-		...shell,
-		version: 'v001',
-		imageSha256,
-		state: 'default',
-		viewport: 'desktop',
-		region: { x: 0.1, y: 0.2, width: 0.3, height: 0.4 }
-	};
-	await expect(adapter.validateAnchor(sourceRepository, pictured)).resolves.toBeUndefined();
-});
+test('a comment on a shell, and on an image of its plan, is anchored like one on any entity', () =>
+	measureWorkload(
+		'collaboration.function.validate-git-hub-anchor',
+		'layout-catalog-behavior',
+		async () => {
+			const { adapter, imageSha256 } = await hosted();
+			const shell = { ...anchor, entityId: id };
+			await expect(adapter.validateAnchor(sourceRepository, shell)).resolves.toBeUndefined();
+			const pictured = {
+				...shell,
+				version: 'v001',
+				imageSha256,
+				state: 'default',
+				viewport: 'desktop',
+				region: { x: 0.1, y: 0.2, width: 0.3, height: 0.4 }
+			};
+			await expect(adapter.validateAnchor(sourceRepository, pictured)).resolves.toBeUndefined();
+		}
+	));
