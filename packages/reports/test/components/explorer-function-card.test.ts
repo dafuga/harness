@@ -117,6 +117,7 @@ test('helper usage selects three distinct eligible consumers before truncating',
 			expect(card).not.toContain('aria-label="Components"');
 			expect(card).not.toContain('aria-label="Services"');
 			expect(count(card, /<a\b/g)).toBe(4);
+			expect(words(card), 'A fourth eligible consumer must produce an ellipsis').toContain('…');
 			for (const target of [
 				`components/${ids.list}`,
 				`services/${ids.store}`,
