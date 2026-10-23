@@ -26,19 +26,19 @@
 			{
 				"name": "explorerCategory.unit",
 				"type": "Classified",
-				"description": "Unit kind and owned source files to classify."
+				"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
 			},
 			{
 				"name": "explorerRole.unit",
 				"type": "Classified",
-				"description": "Unit kind and owned source files to label."
+				"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerCategory",
 				"type": "ExplorerCategory | null",
-				"description": "Pages for rendering routes; Helpers only for explicitly pure functions with two distinct runtime consumers. Private, unproven and explicitly internal catalog units have no collection category; other kinds keep their existing category."
+				"description": "Rendering routes are Pages. Source-declared persisted data wrappers are Models; existing shared interface and alias modules are Types. Helpers require purity and two distinct runtime consumers. Unproven or internal modules have no collection."
 			},
 			{
 				"name": "explorerRole",

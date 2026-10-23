@@ -69,12 +69,36 @@ export function fieldOf(item: Item, unit: HarnessUnit): ContractField {
 	};
 }
 
+/** Shared type modules show their own source declarations without runtime methods or examples. */
+function typeGroups(unit: HarnessUnit): ContractGroup[] {
+	return (unit.modelDefinitions ?? [])
+		.filter((item) => item.kind !== 'class' && unit.owns.source.includes(item.source))
+		.map((item, index) => ({
+			id: `type-${index}`,
+			title: item.name,
+			none: 'No fields declared.',
+			keepEmpty: true,
+			fields: [
+				...item.fields.map((field) => ({
+					name: `${field.name}${field.optional ? '?' : ''}`,
+					type: field.type
+				})),
+				...item.methods.map((method) => ({
+					name: method.name,
+					type: `(${method.inputs.map((input) => `${input.name}: ${input.type}`).join(', ')}): ${method.output}`
+				})),
+				...(item.type ? [{ name: item.name, type: item.type }] : [])
+			].map((field) => ({ ...field, source: 'missing' as const, examples: [] }))
+		}));
+}
+
 /**
  * The inputs, outputs and errors of one unit, each field with its exact public type, what it is
  * in words and its examples. What a config outputs is what it provides. Computed for the one
  * entity that is open, never for a whole catalog.
  */
 export function contractFields(unit: HarnessUnit, category: ExplorerCategory): ContractGroup[] {
+	if (category === 'types') return typeGroups(unit);
 	const { inputs, outputs, errors } = unit.contract;
 	const fields = (items: Item[]) => items.map((item) => fieldOf(item, unit));
 	const component = category === 'components';

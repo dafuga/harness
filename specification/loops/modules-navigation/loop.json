@@ -2,27 +2,28 @@
 	"name": "modules-navigation",
 	"goal": "Show five primary destinations with module categories and separate data-shape Types from persisted Models",
 	"createdAt": "2026-10-23T20:09:18.165Z",
-	"updatedAt": "2026-10-23T20:09:18.165Z",
+	"updatedAt": "2026-10-23T22:27:58.973091+00:00",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"evidence": "Daniel selected five primary destinations and limited Types to existing shared type modules. Preserve IDs, paths, shared cards and scoped revision navigation; Models represent persisted data wrappers."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"evidence": "Added source-proven Models/Types classification, stable Types routes and generic declaration tables. Five scoped primary destinations reuse HarnessTabs for six module kinds. Claude Opus 5.5/xhigh made the actual bounded navbar and responsive CSS edits; originals remain uncommitted evidence. Acceptance verification remains pending."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"evidence": "Canonical admitted red 2533ca7f7ddddb8f21966434681c3be69eff9aa5977a00936dafca4799cc72ba at 28fc1a41404ada4d9adcf26a76995b922fb17a29 reproduces the navbar and model/type gaps in all three viewports, retaining 66 capture bindings and eight observations. The Types detail case now requires the actual entity-contract marker and its registered unit attribution. The original Python command ran through immutable current C443 resource admission, job5c381642-455d-4189-90dd-e3a16de89164. Earlier red receipts remain preserved; green must use this corrected complete corpus and identical wrapper."
 		},
 		{
 			"id": "verify",

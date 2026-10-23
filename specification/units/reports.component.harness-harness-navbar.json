@@ -58,7 +58,7 @@
 			{
 				"name": "HarnessNavbar",
 				"type": "markup",
-				"description": "Repository/category links, revision controls and entity search for the available scope. Unavailable category destinations are disabled text. Plain link clicks use the route callback, while normal modified-link behavior is preserved. Search entries are accepted only for their matching revision context."
+				"description": "Five scoped primary destinations with shared module-category tabs inside Modules, revision controls and entity search. Unresolved navigation is disabled. Plain clicks route inside the host; modified clicks retain their normal link behavior."
 			}
 		],
 		"errors": []
@@ -81,6 +81,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-selectors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-tabs",
 			"via": "import",
 			"origin": "derived"
 		},

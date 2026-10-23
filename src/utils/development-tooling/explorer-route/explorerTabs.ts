@@ -9,7 +9,8 @@ export const explorerEntityCategories = [
 	'functions',
 	'configs',
 	'services',
-	'models'
+	'models',
+	'types'
 ] as const;
 export const explorerCategories = [...explorerEntityCategories, 'platforms'] as const;
 

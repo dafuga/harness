@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Screen } from "./ExplorerContent.types";
+	import type { Screen } from './ExplorerContent.types';
 
 	import type { Component } from 'svelte';
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
@@ -21,6 +21,7 @@
 		services: EntityBehaviorScreen,
 		configs: EntityConfigScreen,
 		models: EntityConfigScreen,
+		types: EntityConfigScreen,
 		platforms: ExplorerPlatforms
 	};
 	// An entity opens as the kind it is at this revision, whatever its address calls it.
@@ -36,7 +37,6 @@
 		if (section === 'details') return EntityDetailsScreen;
 		return section === 'history' ? EntityHistoryScreen : overviews[kind];
 	});
-
 </script>
 
 <!-- Any address of the explorer, for a host without a page of its own for each screen. Its marker

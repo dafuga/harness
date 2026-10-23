@@ -154,6 +154,7 @@ function related(graph: Graph, id: string, entity: Entity): ExplorerRelations {
 		functions: of('functions'),
 		configs: of('configs'),
 		services: of('services'),
+		types: of('types'),
 		models:
 			held && graph.category(graph.units.get(id)!) === 'pages'
 				? entities(modelsOf(graph, id))

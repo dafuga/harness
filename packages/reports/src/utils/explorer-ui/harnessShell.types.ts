@@ -39,7 +39,7 @@ export interface HarnessShellLink {
 }
 
 export interface HarnessShellCategory {
-	id: ExplorerCategory | 'styles';
+	id: ExplorerCategory | 'styles' | 'modules';
 	label: string;
 	icon: HarnessIconName;
 	active: boolean;
@@ -66,5 +66,6 @@ export interface HarnessShellRevision {
 export interface HarnessShellView {
 	home: { href: string; to: ExplorerLocation | null };
 	categories: HarnessShellCategory[];
+	modules: HarnessShellCategory[];
 	revision: HarnessShellRevision | null;
 }

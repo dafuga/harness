@@ -10,7 +10,7 @@ function ownsChange(paths: string[], changed: Set<string>) {
 }
 export function catalogUnit(unit: ComponentManifest, changed: Set<string>): CatalogEntity | null {
 	const classified = unit.kind === 'layout' ? explorerCategory(unit) : categoryOf(unit.kind);
-	const category = classified === 'platforms' ? null : classified;
+	const category = classified === 'platforms' || classified === 'types' ? null : classified;
 	if (!category || unit.status !== 'active') return null;
 	const preview = catalogPreview(unit, category);
 	return {

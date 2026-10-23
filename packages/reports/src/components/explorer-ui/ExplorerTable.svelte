@@ -49,6 +49,7 @@
 			['Purpose', (row) => row.summary],
 			['Used by', null]
 		],
+		types: [['Used by', null]],
 		configs: [],
 		services: [
 			['Responsibility', (row) => row.summary],

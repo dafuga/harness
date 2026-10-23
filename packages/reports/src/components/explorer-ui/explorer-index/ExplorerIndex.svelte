@@ -28,7 +28,8 @@
 		'functions',
 		'configs',
 		'services',
-		'models'
+		'models',
+		'types'
 	]);
 	let filter = $state<CatalogFilter>({
 		search: '',
@@ -107,7 +108,7 @@
 	{:else}
 		{@render list(listed)}
 	{/if}
-	{#if category !== 'functions' && category !== 'models' && category !== 'configs'}<footer
+	{#if category !== 'functions' && category !== 'models' && category !== 'types' && category !== 'configs'}<footer
 			class="ex-legend"
 		>
 			{#if category === 'pages'}

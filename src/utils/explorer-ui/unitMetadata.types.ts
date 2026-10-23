@@ -23,6 +23,8 @@ export interface PublicServiceClass {
 }
 
 export interface UnitMetadata {
+	/** Public model declarations and static storage definitions from this exact revision. */
+	modelDefinitions?: ModelDefinition[];
 	/** Committed initializer expressions, never values read from the host environment. */
 	configValues?: ConfigVariable[];
 	sourceFiles?: SourceFileSnapshot[];
@@ -38,6 +40,34 @@ export interface UnitMetadata {
 	/** Concrete declarations, instance methods and constructor references from this revision. */
 	serviceClasses?: PublicServiceClass[];
 	helperGap?: string;
+}
+
+export interface ModelDefinition {
+	name: string;
+	kind: 'class' | 'interface' | 'type';
+	source: string;
+	type?: string;
+	fields: Array<{ name: string; type: string; optional: boolean }>;
+	methods: Array<{
+		name: string;
+		inputs: Array<{ name: string; type: string }>;
+		output: string;
+	}>;
+	table?: ModelTable;
+	tableGap?: string;
+}
+
+export interface ModelTable {
+	name: string;
+	primaryKey: string;
+	columns: Array<{
+		property: string;
+		name: string;
+		type: string;
+		nullable: boolean;
+		primaryKey: boolean;
+		default?: string;
+	}>;
 }
 
 /** A source expression or a statically inspectable collection; no initializer is executed. */
