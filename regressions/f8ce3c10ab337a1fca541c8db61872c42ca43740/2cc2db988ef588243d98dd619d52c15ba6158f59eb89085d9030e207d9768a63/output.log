@@ -1,0 +1,40 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xZxepi/packages/reports
+
+ ❯ test/components/explorer-pages-screen.test.ts (4 tests | 1 failed) 25ms
+   ✓ the pages screen lists pages as cards, each with its own screenshot and a real link 7ms
+   ✓ a revision without a registry is said to have none, and no page of another is listed 1ms
+   × every dedicated visual catalog capture can appear in its registered catalog card 16ms
+     → reports.component.harness-harness-console actual card chooses its settled default: expected 'loading-history-desktop.png' to be 'ccccccc-default-desktop.png' // Object.is equality
+   ✓ default page cards show their own focused source when a historical preferred state is absent 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-pages-screen.test.ts > every dedicated visual catalog capture can appear in its registered catalog card
+AssertionError: reports.component.harness-harness-console actual card chooses its settled default: expected 'loading-history-desktop.png' to be 'ccccccc-default-desktop.png' // Object.is equality
+
+Expected: "ccccccc-default-desktop.png"
+Received: "loading-history-desktop.png"
+
+ ❯ test/components/explorer-pages-screen.test.ts:64:5
+     62|    catalogShot(evidence, actual.preview, true)?.file,
+     63|    id + ' actual card chooses its settled default'
+     64|   ).toBe('ccccccc-default-desktop.png');
+       |     ^
+     65|   if (id === 'reports.component.harness-harness-console')
+     66|    expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  15:38:41
+   Duration  1.22s (transform 747ms, setup 0ms, collect 1.03s, tests 25ms, environment 0ms, prepare 35ms)
+
