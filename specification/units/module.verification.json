@@ -41,11 +41,6 @@
 			"BuildIdentityService",
 			"BuiltIdentity",
 			"IdentifiedBuild",
-			"PerformanceProfileService",
-			"ProfileInput",
-			"TaskCompletionService",
-			"TaskAudit",
-			"TaskAuditInput",
 			"scenarioRequirements",
 			"RequiredCapture",
 			"ScenarioRequirements",
@@ -63,7 +58,12 @@
 			"BudgetInput",
 			"PerformanceBaseline",
 			"recordIntact",
-			"sealRecord"
+			"sealRecord",
+			"PerformanceProfileService",
+			"ProfileInput",
+			"TaskCompletionService",
+			"TaskAudit",
+			"TaskAuditInput"
 		]
 	},
 	"contract": {
