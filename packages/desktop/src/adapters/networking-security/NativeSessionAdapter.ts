@@ -1,14 +1,8 @@
+import type { NativeEncryption } from './NativeSessionAdapter.types';
 import { mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import type { NativeHostedCredential } from '../../lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter';
-/** Electron safeStorage is injected only by main; fixtures supply a deterministic encryption port. */
-export interface NativeEncryption {
-	isEncryptionAvailable(): boolean;
-	getSelectedStorageBackend?(): string | undefined;
-	encryptString(value: string): Buffer;
-	decryptString(value: Buffer): string;
-}
 export class NativeSessionAdapter {
 	generation = 0;
 	constructor(
@@ -62,3 +56,5 @@ export class NativeSessionAdapter {
 		});
 	}
 }
+
+export type { NativeEncryption } from './NativeSessionAdapter.types';

@@ -1,3 +1,4 @@
+import type { RosterContext } from './AgentActivityService.types';
 import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { readdir } from 'node:fs/promises';
@@ -13,7 +14,7 @@ import { fail } from '../../../core/development-tooling/errors';
 import { AgentRegistryRepository, type StoredAgent } from './AgentRegistryRepository';
 import type { Checkout } from '../../../repositories/projects-sessions/ProjectWorkRepository';
 import { agentLiveness } from './agentLiveness';
-import { type ProcessFacts } from '../../../utils/agents-providers/agentLiveness';
+import {} from '../../../utils/agents-providers/agentLiveness';
 import { agentStatement } from './agentStatement';
 import {
 	type AgentInput,
@@ -162,12 +163,6 @@ function registered(
 	};
 	const beat = { at: context.at, branch: context.branch, task, loop, units };
 	return { registration, beat, end: null };
-}
-
-interface RosterContext {
-	known: Set<string>;
-	now: number;
-	processOf: (pid: number) => ProcessFacts;
 }
 
 /** One agent as the roster shows it: what it stated, where, and whether it is working now. */

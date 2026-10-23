@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/development-tooling/runImpact.ts", "src/workflows/runImpact.ts"],
+		"source": [
+			"src/workflows/development-tooling/runImpact.ts",
+			"src/workflows/development-tooling/runImpact.types.ts",
+			"src/workflows/runImpact.ts"
+		],
 		"symbols": [
-			"ImpactOptions",
 			"runImpact",
 			"runtimeKind",
 			"renderImpact",
+			"ImpactOptions",
+			"ImpactOptions",
 			"runImpact",
 			"runtimeKind",
 			"renderImpact"

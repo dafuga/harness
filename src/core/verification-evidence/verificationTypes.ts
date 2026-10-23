@@ -198,10 +198,12 @@ export const verificationRecordSchema = z.strictObject({
 	failures: z.array(text)
 });
 
-export type Capture = z.infer<typeof captureSchema>;
-export type ScenarioResult = z.infer<typeof scenarioResultSchema>;
-export type VerificationProfile = z.infer<typeof profileSchema>;
-export type BudgetFinding = z.infer<typeof budgetFindingSchema>;
-export type RecordedComponent = z.infer<typeof componentVersionSchema>;
-export type Measurement = z.infer<typeof measurementSchema>;
-export type VerificationRecord = z.infer<typeof verificationRecordSchema>;
+export type {
+	Capture,
+	ScenarioResult,
+	VerificationProfile,
+	BudgetFinding,
+	RecordedComponent,
+	Measurement,
+	VerificationRecord
+} from './verificationTypes.types';

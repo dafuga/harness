@@ -73,28 +73,28 @@
 <style>
 	.group {
 		display: grid;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		min-width: 0;
 	}
 	h3 {
 		display: flex;
 		align-items: center;
-		gap: 10px;
-		margin: 6px 0 0;
-		font-size: 1.05rem;
+		gap: var(--hx-space-10);
+		margin: var(--hx-space-6) 0 0;
+		font-size: var(--hx-type-size-base);
 	}
 	.label {
 		margin: 0;
 		color: var(--ex-soft);
-		font-size: 0.85rem;
-		font-weight: 600;
+		font-size: var(--hx-type-size-sm);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	/* Keep all columns visible on phones and leave room for the trailing touch target. */
 	.frame {
 		min-width: 0;
 		overflow-x: auto;
-		border: 1px solid var(--ex-line);
-		border-radius: 8px;
+		border: var(--hx-border-thin) solid var(--ex-line);
+		border-radius: var(--hx-radius-small);
 		background: var(--ex-surface);
 	}
 	table {
@@ -105,9 +105,9 @@
 	}
 	th,
 	td {
-		padding: 8px 6px;
+		padding: var(--hx-space-8) var(--hx-space-6);
 		text-align: start;
-		border-bottom: 1px solid var(--ex-line);
+		border-bottom: var(--hx-border-thin) solid var(--ex-line);
 		vertical-align: middle;
 		overflow-wrap: break-word;
 	}
@@ -116,19 +116,19 @@
 	}
 	thead th {
 		color: var(--ex-soft);
-		font-size: 0.8rem;
-		font-weight: 600;
+		font-size: var(--hx-type-size-compact);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	/* Name and type keep their width when a returns table hides its name column. */
 	.leading {
 		width: 30%;
 	}
 	.type {
-		padding: 2px 4px;
-		border: 1px solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
-		border-radius: 6px;
+		padding: var(--hx-space-2) var(--hx-space-4);
+		border: var(--hx-border-thin) solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
+		border-radius: var(--hx-radius-compact);
 		color: var(--ex-gold);
-		font-size: 0.88rem;
+		font-size: var(--hx-type-size-sm);
 	}
 	.example {
 		color: var(--ex-soft);
@@ -140,7 +140,7 @@
 		position: sticky;
 		inset-inline-end: 0;
 		width: 60px;
-		padding: 2px 8px;
+		padding: var(--hx-space-2) var(--hx-space-8);
 		text-align: end;
 		background: var(--ex-surface);
 	}
@@ -150,8 +150,8 @@
 		width: 32px;
 		height: 32px;
 		padding: 0;
-		border: 1px solid transparent;
-		border-radius: 6px;
+		border: var(--hx-border-thin) solid transparent;
+		border-radius: var(--hx-radius-compact);
 		background: none;
 		color: var(--ex-soft);
 		cursor: pointer;
@@ -162,8 +162,8 @@
 		color: var(--ex-gold);
 	}
 	.info:focus-visible {
-		outline: 2px solid var(--ex-gold);
-		outline-offset: 1px;
+		outline: var(--hx-border-thick) solid var(--ex-gold);
+		outline-offset: var(--hx-border-thin);
 	}
 	@media (pointer: coarse) {
 		.info {

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-service-observers.ts"],
-		"symbols": ["observeIosServices"]
+		"source": [
+			"packages/desktop/scripts/ios-service-observers.ts",
+			"packages/desktop/scripts/ios-service-observers.types.ts"
+		],
+		"symbols": ["observeIosServices", "SeenService", "WatchedService"]
 	},
 	"contract": {
 		"origin": "derived",

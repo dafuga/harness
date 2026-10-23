@@ -1,4 +1,4 @@
-import type { RunContext } from '../../models/RunContext.types';
+import type { PromotionContext } from './promoteChange.types';
 import type { RunRequest } from '../../models/DesktopBridge.types';
 import type { ProjectSessionService } from '../../services/ProjectSessionService';
 import { DeploymentService } from '../../services/development-tooling/DeploymentService';
@@ -32,11 +32,6 @@ export async function prepareChangeEnvironment(
 			);
 	}
 }
-/** Runs inside the change run's existing repository lock; no remote branches are pushed. */
-type PromotionContext = Pick<
-	RunContext,
-	'root' | 'emit' | 'id' | 'signal' | 'session' | 'revision'
-> & { request: Pick<RunRequest, 'environment'> };
 export async function promoteChange(
 	context: PromotionContext,
 	before: SourceSnapshot

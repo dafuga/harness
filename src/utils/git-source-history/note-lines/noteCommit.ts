@@ -1,10 +1,5 @@
+import type { ReadNote } from './noteCommit.types';
 import { historyNoteSchema, type HistoryNote } from '../../../core/git-source-history/historyTypes';
-
-export interface ReadNote {
-	/** Valid entries that were written for this commit. */
-	entries: HistoryNote[];
-	problems: string[];
-}
 
 /** The commit an entry was written for. */
 export function noteCommit(entry: HistoryNote): string {
@@ -39,3 +34,5 @@ function parseJson(text: string): unknown {
 		return undefined;
 	}
 }
+
+export type { ReadNote } from './noteCommit.types';

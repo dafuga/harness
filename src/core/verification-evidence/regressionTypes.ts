@@ -39,10 +39,6 @@ export const regressionRecordSchema = z.strictObject({
 	captures: z.array(focusedCaptureSchema).optional(),
 	red: z.strictObject({ commit, record: hash }).optional()
 });
-
-/** A focused regression result never grants full verification or a budget baseline. */
-export type RegressionRecord = z.infer<typeof regressionRecordSchema>;
-export type RegressionPhase = z.infer<typeof regressionPhaseSchema>;
 const pointSchema = z.strictObject({
 	commit,
 	sourceTree: commit.optional(),
@@ -68,5 +64,10 @@ export const regressionViewSchema = z.strictObject({
 	green: pointSchema.optional(),
 	gap: text.optional()
 });
-export type RegressionPoint = z.infer<typeof pointSchema>;
-export type RegressionView = z.infer<typeof regressionViewSchema>;
+
+export type {
+	RegressionRecord,
+	RegressionPhase,
+	RegressionPoint,
+	RegressionView
+} from './regressionTypes.types';

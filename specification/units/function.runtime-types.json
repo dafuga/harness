@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/execution-runtimes/runtimeTypes.ts", "src/core/runtimeTypes.ts"],
+		"source": [
+			"src/core/execution-runtimes/runtimeTypes.ts",
+			"src/core/execution-runtimes/runtimeTypes.types.ts",
+			"src/core/runtimeTypes.ts"
+		],
 		"symbols": [
+			"defaultRuntimeTimeoutMs",
+			"runtimeFailure",
+			"runtimeTimeout",
 			"RuntimeRequest",
 			"RuntimeFailure",
 			"RuntimeResponse",
@@ -16,9 +23,13 @@
 			"RuntimeOptions",
 			"RuntimeHandler",
 			"TransportFailure",
-			"defaultRuntimeTimeoutMs",
-			"runtimeFailure",
-			"runtimeTimeout",
+			"RuntimeRequest",
+			"RuntimeFailure",
+			"RuntimeResponse",
+			"UnitRuntime",
+			"RuntimeOptions",
+			"RuntimeHandler",
+			"TransportFailure",
 			"defaultRuntimeTimeoutMs",
 			"runtimeFailure",
 			"runtimeTimeout"

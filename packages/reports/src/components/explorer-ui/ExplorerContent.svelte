@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Screen } from "./ExplorerContent.types";
+
 	import type { Component } from 'svelte';
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
@@ -11,7 +13,6 @@
 	import ExplorerPagesScreen from './ExplorerPagesScreen.svelte';
 	import ExplorerPlatforms from './ExplorerPlatforms.svelte';
 	let host: ExplorerScreenProps = $props();
-	type Screen = Component<ExplorerScreenProps>;
 	const overviews: Record<ExplorerCategory, Screen> = {
 		pages: EntityVisualScreen,
 		layouts: EntityVisualScreen,
@@ -35,6 +36,7 @@
 		if (section === 'details') return EntityDetailsScreen;
 		return section === 'history' ? EntityHistoryScreen : overviews[kind];
 	});
+
 </script>
 
 <!-- Any address of the explorer, for a host without a page of its own for each screen. Its marker

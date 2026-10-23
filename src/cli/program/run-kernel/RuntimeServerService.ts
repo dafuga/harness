@@ -1,18 +1,8 @@
+import type { ServeOptions, ServedRuntime } from './RuntimeServerService.types';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import type { UnitRuntime } from '../../../core/execution-runtimes/runtimeTypes';
 import { runtimeReply } from '../../../utils/execution-runtimes/runtimeReply';
-
-export interface ServedRuntime {
-	url: string;
-	close(): Promise<void>;
-}
-
-export interface ServeOptions {
-	port: number;
-	/** Loopback unless a host is given deliberately; the server has no authentication. */
-	host?: string;
-}
 
 /** Serves any runtime over HTTP so a unit can run as an independently deployed service. */
 export class RuntimeServerService {
@@ -55,3 +45,5 @@ async function body(request: IncomingMessage): Promise<string> {
 	for await (const chunk of request) chunks.push(chunk as Buffer);
 	return Buffer.concat(chunks).toString('utf8');
 }
+
+export type { ServedRuntime, ServeOptions } from './RuntimeServerService.types';

@@ -1,3 +1,4 @@
+import type { Compared } from './github-reaches.test.types';
 import { expect, test } from 'vitest';
 import { createGitHubSource } from '../../src/utils/create-git-hub-source/createGitHubSource';
 import { sourceRepository } from '../githubFixture';
@@ -5,7 +6,6 @@ import { sourceRepository } from '../githubFixture';
 const tip = 'a'.repeat(40),
 	commit = 'b'.repeat(40),
 	other = 'c'.repeat(40);
-type Compared = { status: string; base: string } | number;
 function fixture(compared: Compared) {
 	const paths: string[] = [];
 	const response = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status });

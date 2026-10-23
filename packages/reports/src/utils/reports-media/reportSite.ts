@@ -1,18 +1,10 @@
+import type { ReportSite } from './reportSite.types';
 import { execFileSync } from 'node:child_process';
 import { basename, resolve } from 'node:path';
 import {
 	repositoryIdentity,
 	sameSite
 } from '../../../../../src/utils/repository-identity/repositoryIdentity';
-
-export interface ReportSite {
-	/** The checkout this server is hosted for. */
-	root: string;
-	/** What the application is called: the directory of its primary checkout. */
-	name: string;
-	/** Null when the server is not hosted in a Git repository; then only its own directory is. */
-	identity: string | null;
-}
 
 let site: ReportSite | undefined;
 
@@ -46,3 +38,5 @@ export function reportSite(): ReportSite {
 export function ownedBySite(project: { path: string }): boolean {
 	return sameSite(reportSite().root, project.path);
 }
+
+export type { ReportSite } from './reportSite.types';

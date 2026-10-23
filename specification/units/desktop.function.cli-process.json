@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/cliProcess.ts",
-			"packages/desktop/src/utils/development-tooling/cliProcess.ts"
+			"packages/desktop/src/utils/development-tooling/cliProcess.ts",
+			"packages/desktop/src/utils/development-tooling/cliProcess.types.ts"
 		],
 		"symbols": [
 			"killOwnedProcess",
 			"cliProcess",
-			"ProcessOptions",
 			"killOwnedProcess",
-			"cliProcess"
+			"cliProcess",
+			"ProcessOptions",
+			"ProcessOptions"
 		]
 	},
 	"contract": {

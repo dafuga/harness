@@ -9,18 +9,20 @@
 	"owns": {
 		"source": [
 			"src/adapters/snapshot-adapter/SnapshotAdapter.ts",
-			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts"
+			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.ts",
+			"src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter.types.ts"
 		],
 		"symbols": [
 			"SnapshotAdapter",
-			"SnapshotDrift",
 			"SnapshotAdapter",
 			"SnapshotAdapter.create",
 			"SnapshotAdapter.link",
 			"SnapshotAdapter.misdeclared",
 			"SnapshotAdapter.drift",
 			"SnapshotAdapter.artifact",
-			"SnapshotAdapter.remove"
+			"SnapshotAdapter.remove",
+			"SnapshotDrift",
+			"SnapshotDrift"
 		]
 	},
 	"contract": {

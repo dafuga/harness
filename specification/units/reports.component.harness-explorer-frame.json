@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ExplorerFrame.svelte"],
-		"symbols": ["ExplorerFrame"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerFrame.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerFrame.types.ts"
+		],
+		"symbols": ["ExplorerFrame", "Opened"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,3 +1,5 @@
+import type { VerifyContext } from './VerificationService.types';
+export type { VerifyContext } from './VerificationService.types';
 import type { ImpactReport } from '../../../../core/development-tooling/impactTypes';
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
@@ -15,27 +17,6 @@ import { scenarioCoverage } from './scenarioCoverage';
 import { referencedScenario } from './sealRecord';
 import { SnapshotRunService, type Executed } from './SnapshotRunService';
 import { verifyPlan } from './verifyPlan';
-
-export interface VerifyContext {
-	requirePerformance?: boolean;
-	root: string;
-	commit: string;
-	tree: string;
-	/** The proven revision everything is judged against, or null when nothing is proven. */
-	baseCommit: string | null;
-	/** The passing record that proves the base; inherited evidence comes from it alone. */
-	baseRecord?: string;
-	/** The base that was asked for; it differs when that revision has no passing record. */
-	requestedBase: string | null;
-	base: RevisionSide;
-	head: RevisionSide;
-	impact: ImpactReport;
-	config: VerifyConfig;
-	testTimeoutMs?: number;
-	env: Record<string, string | undefined>;
-	/** Whether every change since the base is explained, directly or step by step. */
-	explained: () => Promise<ReasonReport>;
-}
 
 /** Verifies one exact commit in a clean snapshot and writes the record, whatever the outcome. */
 export class VerificationService {

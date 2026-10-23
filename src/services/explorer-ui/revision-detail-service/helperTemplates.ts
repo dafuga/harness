@@ -1,7 +1,6 @@
+import type { Node } from './helperTemplates.types';
 import { parse } from 'svelte/compiler';
 import { svelteScripts } from '../../../utils/development-tooling/scanImports';
-
-type Node = { type?: string; start?: number; end?: number; [key: string]: unknown };
 
 function bindingNames(value: unknown): string[] {
 	if (!value || typeof value !== 'object') return [];

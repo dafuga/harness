@@ -1,13 +1,7 @@
+import type { ConfigSource } from './configValues.types';
 import ts from 'typescript';
+import { configValueStructure } from './configValueStructure';
 import type { ConfigVariable } from '../../../utils/explorer-ui/unitMetadata';
-
-interface ConfigSource {
-	file: ts.SourceFile;
-	source: string;
-	bindings: Map<string, ts.Expression>;
-	values: Map<string, ConfigVariable>;
-	ancestors: Set<ts.Expression>;
-}
 
 /** Read committed config expressions without importing or executing their module. */
 export function configValues(text: string, source: string): ConfigVariable[] {
@@ -117,5 +111,15 @@ function readValue(value: ts.Expression, name: string, context: ConfigSource): v
 		}
 		return;
 	}
-	context.values.set(name, { name, value: resolved.getText(context.file), source: context.source });
+	storeValue(resolved, name, context);
+}
+
+function storeValue(resolved: ts.Expression, name: string, context: ConfigSource): void {
+	const structure = configValueStructure(resolved, context.bindings);
+	context.values.set(name, {
+		name,
+		value: resolved.getText(context.file),
+		source: context.source,
+		...(structure.kind === 'expression' ? {} : { structure })
+	});
 }

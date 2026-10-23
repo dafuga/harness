@@ -1,3 +1,4 @@
+import type { Fixture } from './remote-host-lifecycle.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
@@ -8,7 +9,6 @@ import { deferred } from './remote-fixture';
 import { hostFixture } from './remote-host-fixture';
 
 const settle = { timeout: 15000 };
-type Fixture = Awaited<ReturnType<typeof hostFixture>>;
 async function paired(f: Fixture) {
 	await f.host.enable();
 	await f.online();

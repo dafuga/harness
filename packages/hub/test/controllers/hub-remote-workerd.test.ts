@@ -1,3 +1,4 @@
+import type { Summary } from './hub-remote-workerd.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import {
 	connectDevice,
@@ -20,11 +21,6 @@ afterAll(async () => {
 const owner = 'session-owner',
 	other = 'session-other',
 	limit = 60_000;
-interface Summary {
-	generation: number;
-	registeredAt: string;
-	devices: Record<string, unknown>[];
-}
 async function registration(host: TestHost, extra: Record<string, unknown> = {}) {
 	const { hostId, hostKey, credential, name } = host,
 		hash = await credentialHash({ role: 'host', hostId, credential });

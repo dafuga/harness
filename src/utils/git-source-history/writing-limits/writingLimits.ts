@@ -1,13 +1,12 @@
-/** How long one piece of writing may be; a null limit is not counted. */
-export interface WritingLimit {
-	words: number | null;
-	characters: number;
-}
+import type {
+	WritingVersion,
+	WritingLimit,
+	WritingPolicy,
+	WrittenReason
+} from './writingLimits.types';
 
 /** The versions of the limits a repository can declare as `writing` in harness.verify.json. */
 export const writingVersions = [1, 2] as const;
-
-export type WritingVersion = (typeof writingVersions)[number];
 
 /** The newest version: the one a repository declares to be held to the limits as they are now. */
 export const writingVersion: WritingVersion = 2;
@@ -29,8 +28,6 @@ export const writingLimits = {
 	/** The rest of a commit message, with its trailers. */
 	body: { words: 60, characters: 400 }
 } as const satisfies Record<string, WritingLimit>;
-
-export type WritingPolicy = Record<keyof typeof writingLimits, WritingLimit>;
 
 /** How many words one attempt may have under each version; a version changes nothing else. */
 const attemptWords: Record<WritingVersion, number> = { 1: 20, 2: 15 };
@@ -80,15 +77,6 @@ export function writingProblems(field: string, text: string, limit: WritingLimit
 	];
 }
 
-/** The parts of a recorded reason that an author writes, and what they are written about. */
-export interface WrittenReason {
-	unit: string;
-	symbol: string;
-	behavior: string;
-	simplification: { attempt: string };
-	performance: { attempt: string };
-}
-
 /**
  * What exceeds the limits of one version in a reason: its behaviour note and each of its two
  * attempts. The version is that of the revision the reason explains, never one read from the
@@ -103,3 +91,10 @@ export function explanationProblems(reason: WrittenReason, version: WritingVersi
 		...writingProblems('performance attempt', reason.performance.attempt, attempt)
 	].map((problem) => `${subject}: ${problem}`);
 }
+
+export type {
+	WritingLimit,
+	WritingVersion,
+	WritingPolicy,
+	WrittenReason
+} from './writingLimits.types';

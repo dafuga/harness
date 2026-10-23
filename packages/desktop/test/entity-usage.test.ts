@@ -1,15 +1,11 @@
+import type { Direction } from './entity-usage.test.types';
 import { expect, test } from 'vitest';
 import RelationshipsPanel from '../src/components/RelationshipsPanel.svelte';
 import type { Workspace } from '../src/lib/stores/workspace.svelte';
 import type { Category, Relationship } from '../src/models/Desktop.types';
+import { categories } from '../src/models/Desktop.types';
 import { workspaceRoute } from '../src/utils/workspaceRoute';
 import { drawn } from './evidence-fixture';
-
-/**
- * What the workspace shows of the things around an entity: a section named Used In and one
- * named Uses, from the relationships its catalog recorded. Neither is called a relationship.
- */
-type Direction = Relationship['direction'];
 const link = (direction: Direction, id: string, title: string, category: Category | null) =>
 	({ id, title, category, direction, hasPlan: false, verification: 'unknown' }) as Relationship;
 /** A function used by a page and, recorded twice, by a component; it uses three things. */
@@ -42,6 +38,13 @@ test('Used In lists what uses the entity once each, with what it is', () => {
 	expect(times(used, 'OrderList')).toBe(1);
 	expect(used).not.toMatch(/relationship|Used by|Uses|OrderStore|orderSettings|src\//i);
 	expect(used, 'usage lists omit verification marks').not.toMatch(/[×✓]/);
+	for (const category of categories) {
+		const singular = category[0].toUpperCase() + category.slice(1, -1);
+		expect(
+			panel('used-by', [link('used-by', `app.${singular}.consumer`, 'Consumer', category)]),
+			`${category} uses its canonical singular label`
+		).toMatch(new RegExp(`\\b${singular}$`));
+	}
 });
 
 test('Uses keeps what the entity depends on apart by kind, with what is none of the five last', () => {

@@ -1,11 +1,7 @@
+import type { Seen } from './resend-email.test.types';
 import { expect, test } from 'vitest';
 import { ResendEmailAdapter, createResendDelivery } from '../../src/adapters/ResendEmailAdapter';
 import { failure } from '../support/githubFixture';
-
-interface Seen {
-	url: string;
-	init: RequestInit;
-}
 const message = {
 	email: 'lin@example.org',
 	code: '31415926',

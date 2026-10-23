@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/artifactQuery.ts",
-			"packages/desktop/src/utils/development-tooling/artifactQuery.ts"
+			"packages/desktop/src/utils/development-tooling/artifactQuery.ts",
+			"packages/desktop/src/utils/development-tooling/artifactQuery.types.ts"
 		],
-		"symbols": ["artifactQuery", "EvidenceSide", "artifactQuery"]
+		"symbols": ["artifactQuery", "artifactQuery", "EvidenceSide", "EvidenceSide"]
 	},
 	"contract": {
 		"origin": "declared",

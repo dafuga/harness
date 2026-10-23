@@ -1,3 +1,4 @@
+import type { ReviewCleanCodeInput, ReviewedEntry } from './reviewCleanCode.types';
 import { resolve } from 'node:path';
 import { JevAdapter } from '../../adapters/agents-providers/JevAdapter';
 import { collectAuditedFiles } from './collect';
@@ -10,27 +11,7 @@ import {
 	snapshotCleanCodeFile,
 	type ReviewSnapshot
 } from '../verification-evidence/cleanCodeSnapshot';
-import type {
-	CleanCodeOptions,
-	CleanCodeReport,
-	CleanCodeSettings,
-	FileReview,
-	JevUsage
-} from './cleanCodeTypes';
-import type { AuditFinding } from './types';
-
-export interface ReviewCleanCodeInput {
-	root: string;
-	settings: CleanCodeSettings;
-	options?: CleanCodeOptions;
-	findings?: AuditFinding[];
-	evaluate?: JevEvaluator;
-}
-
-interface ReviewedEntry {
-	result: FileReview;
-	snapshot?: ReviewSnapshot;
-}
+import type { CleanCodeReport, CleanCodeSettings, FileReview, JevUsage } from './cleanCodeTypes';
 
 export async function reviewCleanCode(input: ReviewCleanCodeInput): Promise<CleanCodeReport> {
 	const root = resolve(input.root);
@@ -147,3 +128,5 @@ function lazyEvaluator(settings: CleanCodeSettings): JevEvaluator {
 		}
 	};
 }
+
+export type { ReviewCleanCodeInput } from './reviewCleanCode.types';

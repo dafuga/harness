@@ -1,3 +1,4 @@
+import type { RuntimeServiceOptions } from './UnitRuntimeService.types';
 import { resolve } from 'node:path';
 import { HttpRuntimeAdapter } from '../../adapters/execution-runtimes/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../../adapters/execution-runtimes/ModuleRuntimeAdapter';
@@ -5,7 +6,7 @@ import { ProcessRuntimeAdapter } from '../../adapters/execution-runtimes/process
 import { WasmRuntimeAdapter } from '../../adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter';
 import { representativeWorkload } from '../../core/development-tooling/benchmarkTypes';
 import { fail } from '../../core/development-tooling/errors';
-import type { RuntimeOptions, UnitRuntime } from '../../core/execution-runtimes/runtimeTypes';
+import type { UnitRuntime } from '../../core/execution-runtimes/runtimeTypes';
 import type {
 	ComponentManifest,
 	ExecutionTarget,
@@ -16,10 +17,6 @@ import { chooseRuntime, type RuntimeChoice } from '../../utils/execution-runtime
 import { impactKernelPortable } from '../../utils/execution-runtimes/impact-kernel/impactKernel';
 import { kernelArtifacts, type Environment } from '../../utils/execution-runtimes/kernelArtifacts';
 import { machineProfile } from '../../utils/development-tooling/machineProfile';
-
-export interface RuntimeServiceOptions extends RuntimeOptions {
-	env?: Environment;
-}
 
 /** Turns declared execution targets into working runtimes behind the one typed contract. */
 export class UnitRuntimeService {
@@ -86,3 +83,5 @@ export class UnitRuntimeService {
 function notBuilt(runtime: string): never {
 	return fail(`The ${runtime} runtime is not built; run bun run build:kernel.`);
 }
+
+export type { RuntimeServiceOptions } from './UnitRuntimeService.types';

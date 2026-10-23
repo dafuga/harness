@@ -1,11 +1,7 @@
+import type { CatalogSection } from './catalogGroups.types';
 import type { CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
 
 const ungrouped = { id: 'uncategorized', title: 'Uncategorized' };
-interface CatalogSection {
-	id: string;
-	title: string;
-	rows: CatalogRow[];
-}
 
 /** Build sections from only eligible catalog rows, keeping requested order within each group. */
 export function catalogSections(rows: CatalogRow[]): CatalogSection[] {

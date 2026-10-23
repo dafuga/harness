@@ -9,9 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/projects-sessions/workspace.svelte.ts",
+			"packages/desktop/src/lib/stores/projects-sessions/workspace.svelte.types.ts",
 			"packages/desktop/src/lib/stores/workspace.svelte.ts"
 		],
-		"symbols": ["createWorkspaceStore", "Workspace", "createWorkspaceStore"]
+		"symbols": [
+			"createWorkspaceStore",
+			"Workspace",
+			"WorkspaceState",
+			"Workspace",
+			"createWorkspaceStore"
+		]
 	},
 	"contract": {
 		"origin": "derived",

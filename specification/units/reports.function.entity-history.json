@@ -10,8 +10,10 @@
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-change/entityHistory.ts",
 			"packages/reports/src/components/explorer-ui/entity-history/entityHistory.ts",
+			"packages/reports/src/components/explorer-ui/entity-history/entityHistory.types.ts",
 			"packages/reports/src/utils/entityHistory.ts",
-			"packages/reports/src/utils/explorer-ui/entityHistory.ts"
+			"packages/reports/src/utils/explorer-ui/entityHistory.ts",
+			"packages/reports/src/utils/explorer-ui/entityHistory.types.ts"
 		],
 		"symbols": [
 			"reviewChanges",
@@ -19,6 +21,7 @@
 			"historyListed",
 			"entityHistory",
 			"historyProfiles",
+			"Coverage",
 			"historyVerdict",
 			"historyListed",
 			"entityHistory",
@@ -26,14 +29,15 @@
 			"reviewChanges",
 			"signedBytes",
 			"signedCount",
-			"HistoryTiming",
 			"signedBytes",
 			"signedCount",
 			"historyVerdict",
 			"historyListed",
 			"entityHistory",
 			"historyProfiles",
-			"reviewChanges"
+			"reviewChanges",
+			"HistoryTiming",
+			"HistoryTiming"
 		]
 	},
 	"contract": {

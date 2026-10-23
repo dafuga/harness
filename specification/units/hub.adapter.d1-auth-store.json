@@ -9,19 +9,22 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
-			"packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts"
+			"packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
+			"packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.types.ts"
 		],
 		"symbols": [
 			"D1AuthStoreAdapter",
 			"createD1AuthStore",
 			"D1Statement",
 			"D1Like",
-			"D1Statement",
-			"D1Like",
 			"D1AuthStoreAdapter",
 			"D1AuthStoreAdapter.constructor",
 			"D1AuthStoreAdapter.purge",
-			"createD1AuthStore"
+			"createD1AuthStore",
+			"D1Statement",
+			"D1Like",
+			"D1Statement",
+			"D1Like"
 		]
 	},
 	"contract": {

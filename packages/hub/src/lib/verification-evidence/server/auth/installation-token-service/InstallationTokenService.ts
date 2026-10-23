@@ -1,23 +1,10 @@
+import type { InstallationTokenOptions } from './InstallationTokenService.types';
 import type { RepositoryIdentity } from 'collaboration';
-import type { GithubApiAdapter, InstallationScope } from '../GithubApiAdapter';
+import type { InstallationScope } from '../GithubApiAdapter';
 import type { InstallationTokenInput } from '../../../../../models/accounts-access/HubAuth.types';
-import type { GithubAppConfig } from '../../../../../utils/verification-evidence/authConfig';
 import { authFail } from '../../../../../utils/accounts-access/authFail';
 import { githubAppJwt, githubAppKey } from './githubAppJwt';
 import type { InstallationGrant } from '../../../../../validators/development-tooling/GithubResponseValidator';
-
-export interface CachedInstallationToken {
-	token: string;
-	expiresAt: number;
-}
-
-export interface InstallationTokenOptions {
-	app: GithubAppConfig;
-	api: GithubApiAdapter;
-	/** Isolate memory only. Tokens are never written to a store. */
-	cache: Map<string, CachedInstallationToken>;
-	now: () => number;
-}
 
 const REFRESH_MARGIN = 5 * 60 * 1000;
 
@@ -122,3 +109,8 @@ export class InstallationTokenService {
 		cache.set(key, { token: grant.token, expiresAt: grant.expiresAt });
 	}
 }
+
+export type {
+	CachedInstallationToken,
+	InstallationTokenOptions
+} from './InstallationTokenService.types';

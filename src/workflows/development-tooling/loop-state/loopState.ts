@@ -1,56 +1,23 @@
+import type {
+	LoopStep,
+	LoopEvaluator,
+	LoopState,
+	LoopStatus,
+	LoopInput,
+	LoopPaths
+} from './loopState.types';
+export type {
+	LoopStep,
+	LoopEvaluator,
+	LoopState,
+	LoopStatus,
+	LoopInput,
+	LoopPaths
+} from './loopState.types';
 import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';
 import { validateKebabName } from './validation';
-
-export interface LoopStep {
-	id: string;
-	title: string;
-	status: 'pending' | 'complete';
-	completedAt?: string;
-	evidence?: string;
-}
-
-export interface LoopEvaluator {
-	id: string;
-	title: string;
-	command: string;
-	step?: string;
-}
-
-export interface LoopState {
-	/** Completion policy is versioned; old traces are not rewritten as new evidence. */
-	completion?: { version: 1; kind: 'coding' | 'planning'; plan?: string };
-	agentModel?: string;
-	name: string;
-	goal: string;
-	createdAt: string;
-	updatedAt: string;
-	template?: string;
-	templateLineage?: string[];
-	enforceOrder?: boolean;
-	/** Versioned opt-in: older loop evidence remains visible without inventing missing commits. */
-	regressionCommits?: 1;
-	steps: LoopStep[];
-	evaluators?: LoopEvaluator[];
-}
-
-export interface LoopStatus {
-	state: LoopState;
-	tracePath: string;
-}
-
-export interface LoopInput {
-	root?: string;
-	now?: () => string;
-}
-
-export interface LoopPaths {
-	dir: string;
-	state: string;
-	trace: string;
-	traceRelative: string;
-}
 
 export function loopRoot(input?: LoopInput): string {
 	return input?.root ?? process.cwd();

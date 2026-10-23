@@ -1,21 +1,9 @@
+import type { Installed, Change } from './console-update.e2e.test.types';
 import { createHash } from 'node:crypto';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
-
-interface Change {
-	path: string;
-	action: string;
-	reason: string;
-	before: { sha256: string; saved: string };
-	after: { sha256: string } | null;
-}
-interface Installed {
-	written: string[];
-	kept: string[];
-	changes: Change[];
-}
 
 let repo: VerifyRepo;
 let endpoint = '';

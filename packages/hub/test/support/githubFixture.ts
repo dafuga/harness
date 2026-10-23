@@ -46,8 +46,6 @@ export async function githubFixture(overrides: Partial<GithubAppConfig> = {}) {
 	};
 }
 
-export type GithubFixture = Awaited<ReturnType<typeof githubFixture>>;
-
 export async function failure(run: Promise<unknown>): Promise<string> {
 	try {
 		await run;
@@ -72,3 +70,5 @@ export function holdGithub(github: GithubFake, matches: (call: FakeCall) => bool
 	};
 	return { reached, release: () => release() };
 }
+
+export type { GithubFixture } from './githubFixture.types';

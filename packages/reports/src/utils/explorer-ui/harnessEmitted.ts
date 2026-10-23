@@ -1,6 +1,5 @@
+import type { Measurement, EmittedLine } from './harnessEmitted.types';
 import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
-
-type Measurement = HarnessRecord['measurements'][number];
 
 export const metric = 'artifact-bytes';
 
@@ -16,17 +15,6 @@ export const emittedLabel = (target: string): string => labels[target] ?? target
 
 /** The name the limit of a target has in the ledger and in the notes of a growth point. */
 export const emittedKey = (target: string): string => `${metric}:${target}`;
-
-export interface EmittedLine {
-	target: string;
-	label: string;
-	/** The measured bytes, or the statement that there are none and why. */
-	value: string;
-	/** The limit this revision freezes for the target, or that it freezes none. */
-	limit: string;
-	/** What the record found when it judged the size against that limit. */
-	note?: string;
-}
 
 export /**
  * The size measured from the build of the verified snapshot. A size a benchmark reports about
@@ -105,12 +93,7 @@ export function harnessEmitted(unit: HarnessUnit, record: HarnessRecord | null):
 	});
 }
 
-export interface EmittedChange {
-	target: string;
-	label: string;
-	before: number | null;
-	after: number | null;
-}
-
 export { emittedChange } from '../../components/explorer-ui/harness-compare/harnessEmitted';
 export { emittedTargets } from '../../components/explorer-ui/harness-growth/harnessEmitted';
+
+export type { EmittedLine, EmittedChange } from './harnessEmitted.types';

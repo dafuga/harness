@@ -1,3 +1,4 @@
+import type { Unit, View } from './history-emitted.e2e.test.types';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -5,36 +6,6 @@ import { emittedRepo, resized } from './support/emittedRepo';
 import { build, type Built } from './support/historyIndexFixture';
 import { attach } from './support/historyRepo';
 import { reviewer, type VerifyRepo } from './support/verifyRepo';
-
-/**
- * What the portable history holds about the size of what a unit emits: one number for each
- * execution target at every measured commit, the limits the ledger of a revision freezes, and
- * every review that set or changed them. A viewer reads all of it from the index alone.
- */
-interface Point {
-	commit: string;
-	emitted?: Record<string, number>;
-	notes?: Record<string, string>;
-}
-interface Review {
-	type: string;
-	commit: string;
-	reviewer: string;
-	reason: string;
-	before?: Record<string, number>;
-	after: Record<string, number>;
-	unmeasured?: Record<string, string>;
-}
-interface Unit {
-	id: string;
-	growth: Point[];
-	reviews?: Review[];
-}
-interface View {
-	id: string;
-	emitted?: { limits: Record<string, number>; unmeasured?: Record<string, string> };
-	limits?: { metrics: Record<string, number>; unmeasured?: Record<string, string> };
-}
 
 let repo: VerifyRepo;
 let built: Built;

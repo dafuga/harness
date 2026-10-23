@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Candidate } from './GameCheckpointImage.types';
 	import type {
 		Checkpoint,
 		CheckpointImage,
@@ -33,7 +34,6 @@
 		change: (patch: Partial<Checkpoint>) => void;
 		accept: (patch: Partial<Checkpoint>) => void;
 	} = $props();
-	type Candidate = { image: CheckpointImage; url: string; guidance: string; stale: boolean };
 	let preview = $state(''),
 		candidate = $state.raw<Candidate | null>(null),
 		changes = $state(''),
@@ -181,7 +181,7 @@
 	figure,
 	label {
 		display: grid;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		min-width: 0;
 		margin: 0;
 	}
@@ -189,31 +189,31 @@
 		width: 100%;
 		max-height: min(420px, 45dvh);
 		object-fit: contain;
-		border: 1px solid var(--line);
-		border-radius: 10px;
-		background: #041624;
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius);
+		background: var(--hx-bg);
 	}
 	label > span {
-		font-size: 14px;
-		font-weight: 600;
+		font-size: var(--hx-type-size-sm);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	textarea {
 		min-height: 64px;
 		resize: vertical;
 	}
 	textarea:focus-visible {
-		outline: 2px solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--gold);
 	}
 	.actions {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: flex-end;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	p,
 	figcaption {
 		margin: 0;
-		font-size: 12px;
-		line-height: 1.5;
+		font-size: var(--hx-type-size-xs);
+		line-height: var(--hx-style-leading-normal);
 	}
 </style>

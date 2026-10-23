@@ -9,9 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/entityScreens.ts",
-			"packages/reports/src/utils/explorer-ui/entityScreens.ts"
+			"packages/reports/src/utils/explorer-ui/entityScreens.ts",
+			"packages/reports/src/utils/explorer-ui/entityScreens.types.ts"
 		],
 		"symbols": [
+			"screenOptions",
+			"screenPick",
+			"entityScreens",
+			"catalogShot",
+			"galleryItems",
 			"screenOptions",
 			"screenPick",
 			"entityScreens",
@@ -20,11 +26,11 @@
 			"ScreenOption",
 			"ScreenPick",
 			"EntityScreens",
-			"screenOptions",
-			"screenPick",
-			"entityScreens",
-			"catalogShot",
-			"galleryItems"
+			"ScreenOption",
+			"ScreenPick",
+			"EntityScreens",
+			"Phase",
+			"Pane"
 		]
 	},
 	"contract": {

@@ -1,14 +1,9 @@
+import type { Binding } from './hub-options.test.types';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { hubImageOption, hubRevision } from '../../src/utils/hub-catalog/hubImageOption';
 import { hubOptions } from '../../src/utils/hub-designs/hubOptions';
 import type { HubDesign } from '../../src/utils/hubSchemas';
-
-/**
- * Stored design options must divide the images of their version exactly, as planning writes
- * them; a single design passes as it always did. SYNTHETIC records, no Git or network.
- */
-type Binding = { file: string; sha256: string };
 const [a, b, c] = ['a', 'b', 'c'].map((letter) => ({
 	file: `o-${letter}-default-desktop.png`,
 	sha256: letter.repeat(64)

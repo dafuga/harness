@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorer-ui/metricChanges.ts"],
-		"symbols": ["MetricChangeRow", "MetricSide", "MetricComparison", "metricChanges"]
+		"source": [
+			"packages/reports/src/utils/explorer-ui/metricChanges.ts",
+			"packages/reports/src/utils/explorer-ui/metricChanges.types.ts"
+		],
+		"symbols": [
+			"metricChanges",
+			"MetricChangeRow",
+			"MetricSide",
+			"MetricComparison",
+			"MetricChangeRow",
+			"MetricSide",
+			"MetricComparison",
+			"Sample"
+		]
 	},
 	"contract": {
 		"origin": "declared",

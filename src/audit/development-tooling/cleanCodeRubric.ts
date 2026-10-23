@@ -1,13 +1,7 @@
+import type { CleanCodePrinciple } from './cleanCodeRubric.types';
 import type { JevQuestions } from './cleanCodeTypes';
 
 export const cleanCodeRubricVersion = 'clean-code-v1';
-
-export interface CleanCodePrinciple {
-	id: string;
-	title: string;
-	question: string;
-	guidance: string;
-}
 
 export const cleanCodePrinciples: CleanCodePrinciple[] = [
 	principle(
@@ -110,3 +104,5 @@ function principle(
 ): CleanCodePrinciple {
 	return { id, title, question, guidance };
 }
+
+export type { CleanCodePrinciple } from './cleanCodeRubric.types';

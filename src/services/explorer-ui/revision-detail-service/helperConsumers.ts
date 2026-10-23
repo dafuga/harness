@@ -1,6 +1,6 @@
+import type { Context, Unit } from './helperConsumers.types';
 import type { HelperTree, HelperConsumer } from '../../../utils/explorer-ui/helperConsumers';
 import { explorerKindCategory } from '../../../utils/explorer-ui/explorerRoute';
-import type { RevisionRegistry } from '../../../utils/verification-evidence/revision-registry/revisionRegistry';
 import {
 	defaultUnitsConfig,
 	unitsConfigFile,
@@ -15,18 +15,6 @@ import {
 	type HelperBinding
 } from '../../../utils/explorer-ui/helperReferences';
 import { resolveImport } from '../../../utils/development-tooling/resolveImport';
-
-type Unit = RevisionRegistry['units'][number];
-
-interface Context {
-	units: Unit[];
-	config: UnitsConfig;
-	paths: Set<string>;
-	facts: Map<string, HelperFacts>;
-	helpers: Set<string>;
-	services: Map<string, string>;
-	resolved: Map<string, string | undefined>;
-}
 
 async function configuration(tree: HelperTree): Promise<UnitsConfig> {
 	try {

@@ -1,14 +1,8 @@
+import type { PairOptions } from './channelPair.types';
 import type { SecurePacket } from '../../src/models/RemoteSecure.types';
 import { SecureChannelService } from '../../src/services/secure-channel-service/SecureChannelService';
 import { remoteIdentity } from '../../src/utils/remoteIdentity';
 import { remoteKeys } from '../../src/utils/remoteKeys';
-
-interface PairOptions {
-	hostPins?: Uint8Array;
-	devicePins?: Uint8Array;
-	host?: { chunkBytes?: number; messageBytes?: number };
-	device?: { chunkBytes?: number; messageBytes?: number };
-}
 /** A device and a host channel with fresh keys, after a completed handshake. */
 export async function channelPair(options: PairOptions = {}) {
 	const hostKeys = await remoteKeys(),

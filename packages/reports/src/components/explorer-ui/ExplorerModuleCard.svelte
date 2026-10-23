@@ -2,12 +2,8 @@
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
-	import {
-		entityLens,
-		shortCommit,
-		type EntityLens,
-		type EntityNav
-	} from '../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../ExplorerUsage.svelte';
@@ -156,7 +152,7 @@
 		align-content: start;
 		align-items: center;
 		min-width: 0;
-		border: 1px solid var(--ex-line);
+		border: var(--hx-border-thin) solid var(--ex-line);
 		border-radius: var(--ex-radius);
 		background: var(--ex-surface);
 	}
@@ -166,52 +162,48 @@
 		overflow: auto;
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
-		font:
-			0.9rem/1.6 ui-monospace,
-			SFMono-Regular,
-			Menlo,
-			monospace;
+		font: var(--hx-style-code);
 	}
 	.ex-function-tile :global(.ex-function-call) {
 		display: block;
 		min-width: 0;
-		padding: 16px 16px 8px;
+		padding: var(--hx-space-16) var(--hx-space-16) var(--hx-space-8);
 		border-radius: inherit;
 	}
 	.ex-function-tile > :global(.ex-usage) {
-		padding: 0 16px 14px;
+		padding: 0 var(--hx-space-16) var(--hx-space-14);
 	}
 	.ex-page-card.ex-page-minimal {
 		grid-template-columns: minmax(0, 1fr);
-		gap: 12px;
+		gap: var(--hx-space-12);
 	}
 	/* A layout or component card, wherever listed: its own capture above its title and Used In. */
 	.ex-page-card:not(.ex-page-minimal) {
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-rows: auto 1fr;
-		gap: 14px;
+		gap: var(--hx-space-14);
 		min-width: 0;
 	}
 	.ex-page-card .ex-page-body {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 10px;
+		gap: var(--hx-space-10);
 	}
 	.ex-page-card .ex-page-body h2 {
-		font-size: 1.2rem;
+		font-size: var(--hx-type-size-xl);
 	}
 	:global(.ex-page-open) {
 		display: grid;
-		gap: 14px;
+		gap: var(--hx-space-14);
 		min-width: 0;
 	}
 	:global(.ex-page-open h2) {
-		font-size: 1.2rem;
+		font-size: var(--hx-type-size-xl);
 		overflow-wrap: anywhere;
 	}
 	:global(.ex-page-open:focus-visible) {
-		outline: 2px solid var(--ex-gold);
-		outline-offset: 6px;
+		outline: var(--hx-border-thick) solid var(--ex-gold);
+		outline-offset: var(--hx-space-6);
 	}
 </style>

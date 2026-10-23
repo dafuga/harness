@@ -10,13 +10,12 @@
 		"source": [
 			"src/adapters/WasmModuleRuntimeAdapter.ts",
 			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
+			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.types.ts",
 			"src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"
 		],
 		"symbols": [
 			"wasmUnavailable",
 			"WasmModuleRuntimeAdapter",
-			"WasmSource",
-			"WasmLoader",
 			"WasmSource",
 			"WasmLoader",
 			"wasmUnavailable",
@@ -26,6 +25,11 @@
 			"WasmModuleRuntimeAdapter.invokeText",
 			"WasmModuleRuntimeAdapter.memoryBytes",
 			"WasmModuleRuntimeAdapter.close",
+			"WasmSource",
+			"WasmLoader",
+			"JsonAbi",
+			"WasmSource",
+			"WasmLoader",
 			"wasmUnavailable",
 			"WasmModuleRuntimeAdapter"
 		]

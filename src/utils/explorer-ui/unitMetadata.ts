@@ -6,6 +6,8 @@ import { type UnitDocumentation } from './unit-documentation/unitDocumentation';
 
 export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | 'output'> {
 	source: string;
+	/** This callable's implementation folder, independent of its owning module. */
+	group?: UnitMetadata['group'];
 	examples?: z.infer<typeof usageExampleSchema>[];
 	/** Explicit @pure source contract accepted by the conservative effect guard. */
 	pure?: boolean;
@@ -24,6 +26,8 @@ export interface UnitMetadata {
 	/** Committed initializer expressions, never values read from the host environment. */
 	configValues?: ConfigVariable[];
 	sourceFiles?: SourceFileSnapshot[];
+	/** Associated test snapshots derived from direct imports or authored scenarios at this revision. */
+	testFiles?: SourceFileSnapshot[];
 	catalog?: { visibility: 'public' | 'internal' };
 	group?: { id: string; title: string };
 	documentation?: UnitDocumentation;
@@ -36,7 +40,20 @@ export interface UnitMetadata {
 	helperGap?: string;
 }
 
+/** A source expression or a statically inspectable collection; no initializer is executed. */
+export type ConfigValueNode =
+	| { kind: 'expression'; source: string }
+	| {
+			kind: 'object' | 'array';
+			source: string;
+			entries: Array<{ name: string; node: ConfigValueNode }>;
+			/** Exact immediate key/item count; omitted for spreads or schema-defined array lengths. */
+			count?: number;
+			schema?: boolean;
+	  };
+
 export interface ConfigVariable {
+	structure?: ConfigValueNode;
 	name: string;
 	value: string;
 	source: string;

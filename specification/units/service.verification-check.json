@@ -9,15 +9,17 @@
 	"owns": {
 		"source": [
 			"src/services/VerificationCheckService.ts",
-			"src/services/verification-evidence/VerificationCheckService.ts"
+			"src/services/verification-evidence/VerificationCheckService.ts",
+			"src/services/verification-evidence/VerificationCheckService.types.ts"
 		],
 		"symbols": [
 			"VerificationCheckService",
-			"CheckReport",
 			"VerificationCheckService",
 			"VerificationCheckService.constructor",
 			"VerificationCheckService.check",
-			"VerificationCheckService.integrity"
+			"VerificationCheckService.integrity",
+			"CheckReport",
+			"CheckReport"
 		]
 	},
 	"contract": {

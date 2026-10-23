@@ -1,3 +1,4 @@
+import type { Block } from './check-ios-limits.types';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 
@@ -12,14 +13,6 @@ const limits = { file: 220, type: 120, func: 55, method: 35, parameters: 4 };
 const required = ['willPerformHTTPRedirection'];
 const root = resolve(import.meta.dirname, '..');
 const folders = ['ios/App/App', 'ios/Checks'];
-
-interface Block {
-	kind: 'type' | 'func';
-	name: string;
-	start: number;
-	depth: number;
-	inType: boolean;
-}
 
 function swiftFiles(folder: string): string[] {
 	return readdirSync(folder, { withFileTypes: true }).flatMap((entry) => {

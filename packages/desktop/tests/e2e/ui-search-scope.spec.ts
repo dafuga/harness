@@ -1,3 +1,4 @@
+import type { Box } from './ui-search-scope.spec.types';
 import { expect, test, type Page, type TestInfo } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -178,7 +179,6 @@ test('desktop search and revision icons retain their widths across the responsiv
 		(await bar.getByRole('button', { name: 'Choose branch', exact: true }).boundingBox())!,
 		(await bar.getByRole('navigation', { name: 'Catalog categories' }).boundingBox())!
 	];
-	type Box = typeof row;
 	// The layout of a wide desktop is one row: the field and the branch field lie in the row of the
 	// categories, as the branch field did before the search.
 	const within = (item: Box) => item.y >= row.y && item.y + item.height <= row.y + row.height;

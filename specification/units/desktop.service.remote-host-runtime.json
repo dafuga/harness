@@ -10,12 +10,11 @@
 		"source": [
 			"packages/desktop/src/services/RemoteHostRuntimeService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.types.ts",
 			"packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts"
 		],
 		"symbols": [
 			"RemoteHostRuntimeService",
-			"RelayLinkTuning",
-			"RemoteHostRuntimeOptions",
 			"RelayLinkTuning",
 			"RemoteHostRuntimeOptions",
 			"RemoteHostRuntimeService",
@@ -24,6 +23,10 @@
 			"RemoteHostRuntimeService.stop",
 			"RemoteHostRuntimeService.end",
 			"RemoteHostRuntimeService.online",
+			"RelayLinkTuning",
+			"RemoteHostRuntimeOptions",
+			"RelayLinkTuning",
+			"RemoteHostRuntimeOptions",
 			"RemoteHostRuntimeService"
 		]
 	},

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { notMeasured, type EntityMeasure } from '../../utils/explorer-ui/entityMeasure';
-	import { shortCommit } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { metricChanges, type MetricComparison } from '../../utils/explorer-ui/metricChanges';
 	import HarnessIcon from './HarnessIcon.svelte';
 	let {
@@ -174,7 +174,7 @@
 <style>
 	.ex-note {
 		display: block;
-		margin-top: 4px;
+		margin-top: var(--hx-space-4);
 	}
 	td {
 		overflow-wrap: normal;

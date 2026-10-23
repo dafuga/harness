@@ -1,3 +1,4 @@
+import type { Measurement, Budget } from './entityMeasure.types';
 import type {
 	MeasureRow,
 	PerformanceRow,
@@ -5,13 +6,9 @@ import type {
 } from '../../../utils/explorer-ui/entityMeasure';
 import { notMeasured, byteSize, tolerancePolicy } from '../../../utils/explorer-ui/entityMeasure';
 import type { HarnessRecord, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
-import { humanize } from '../../../utils/explorer-ui/entityContract';
+import { humanize } from '../../../helpers/strings/humanize';
 import { reasonText } from '../../../utils/explorer-ui/explorerState';
 import { harnessEmitted } from '../../../utils/explorer-ui/harnessEmitted';
-
-type Measurement = HarnessRecord['measurements'][number];
-
-type Budget = HarnessUnit['budgets']['performance'][number];
 
 /** A recorded note as a reader is told it: without the file it names, which Details Source shows. */
 const told = (note: string | undefined) => (note === undefined ? undefined : reasonText(note));

@@ -1,13 +1,7 @@
+import type { Call } from './ui-remote-scan.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { captured, remoteEvidence } from './remote-evidence';
 import { deviceName, remotePhoneFixture } from './ui-remote-phone-fixture';
-
-/**
- * Scans that end without an offer, on the SYNTHETIC native plugin of the phone fixture: no
- * camera and no code exist here. Each ending says what happened and offers another scan, and
- * nothing reaches a computer. Four of them are states of the scenario `remote-mobile-ui`.
- */
-type Call = Record<string, unknown>;
 const made = async (page: Page, op: string) =>
 	(await page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls)).filter(
 		(call) => call.op === op

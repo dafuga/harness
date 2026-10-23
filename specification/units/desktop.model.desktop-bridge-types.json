@@ -9,20 +9,14 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/models/DesktopBridge.types.ts",
-			"packages/desktop/src/models/development-tooling/DesktopBridge.types.ts"
+			"packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"packages/desktop/src/models/development-tooling/DesktopBridgeValues.ts"
 		],
 		"symbols": [
 			"channels",
 			"runEventChannel",
 			"cacheEventChannel",
-			"CreatedEntity",
-			"RunPhase",
-			"RunEvent",
-			"ProjectTaskRequest",
-			"channels",
 			"ChannelName",
-			"runEventChannel",
-			"cacheEventChannel",
 			"RevisionQuery",
 			"EntityQuery",
 			"SourceQuery",
@@ -35,7 +29,21 @@
 			"ApprovalDraft",
 			"RunRequest",
 			"ProjectRunRequest",
-			"DesktopBridge"
+			"DesktopBridge",
+			"CreatedEntity",
+			"RunPhase",
+			"RunEvent",
+			"ProjectTaskRequest",
+			"channels",
+			"runEventChannel",
+			"cacheEventChannel",
+			"CreatedEntity",
+			"RunPhase",
+			"RunEvent",
+			"ProjectTaskRequest",
+			"channels",
+			"runEventChannel",
+			"cacheEventChannel"
 		]
 	},
 	"contract": {

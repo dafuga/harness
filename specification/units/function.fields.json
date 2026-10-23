@@ -9,13 +9,16 @@
 	"owns": {
 		"source": [
 			"src/core/development-tooling/fields/fields.ts",
+			"src/core/development-tooling/fields/fields.types.ts",
 			"src/core/fields.ts",
 			"src/core/fields/fields.ts"
 		],
 		"symbols": [
+			"parseFields",
 			"FieldType",
 			"Field",
-			"parseFields",
+			"FieldType",
+			"Field",
 			"FieldType",
 			"Field",
 			"parseFields",

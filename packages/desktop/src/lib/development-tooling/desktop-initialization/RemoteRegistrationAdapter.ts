@@ -1,18 +1,10 @@
+import type { RemoteRegistrationAdapterConfig } from './RemoteRegistrationAdapter.types';
 import type {
 	RemoteHostRegisterInput,
 	RemoteHostRegistration
 } from '../../../../../remote/src/index';
 import type { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';
 import { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
-import type { NativeHostedCredential } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
-
-export interface RemoteRegistrationAdapterConfig {
-	/** The exact hub origin of this computer; without it there is no hosted identity. */
-	origin?: string;
-	/** The hosted session kept by the OS key store. It never leaves the main process. */
-	credentials: () => Promise<NativeHostedCredential | null>;
-	fetch?: typeof fetch;
-}
 function signedOut(): Error {
 	const error = new Error('Connect to Harness Hub on this computer first.');
 	return Object.assign(error, { signedOut: true });
@@ -47,3 +39,5 @@ export class RemoteRegistrationAdapter {
 		return registration(await response.json(), hostId);
 	}
 }
+
+export type { RemoteRegistrationAdapterConfig } from './RemoteRegistrationAdapter.types';

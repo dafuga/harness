@@ -1,3 +1,5 @@
+import type { SourceIndex, Parsed } from './SourceIndexService.types';
+export type { SourceIndex, Parsed } from './SourceIndexService.types';
 import { extname } from 'node:path';
 import type {
 	ExportedSymbol,
@@ -23,26 +25,6 @@ import { scanComponent } from './scanComponent';
 import { scanImports } from './scanImports';
 import { sourceBlocks } from './sourceBlocks';
 import { sourceExecution } from './sourceExecution';
-
-export interface SourceIndex {
-	revision: string;
-	/** Indexed files by repository-relative path; ignored files are absent. */
-	files: Map<string, SourceFile>;
-}
-
-interface Parsed {
-	execution: NonNullable<SourceFile['execution']>;
-	bytes: number;
-	lines: number;
-	references: SourceReference[];
-	blocks: SourceBlock[];
-	exports: ExportedSymbol[];
-	errors: string[];
-	/** False for a file that was not read at all. */
-	read: boolean;
-	/** True when markup carries a script of its own. */
-	scripted: boolean;
-}
 
 const languages: Record<string, SourceLanguage> = {
 	'.ts': 'ts',

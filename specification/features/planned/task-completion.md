@@ -17,7 +17,7 @@ Harness provides opt-in coding and planning audits using committed source and ac
 
 ## Dependencies
 
-Reuse the current verification stores, unit registry, capture protocol, loops and Desktop run services. Preserve registered identities and published verification entrypoints. Do not change deployment topology or adopt an older UI implementation.
+Reuse the current verification stores, unit registry, capture protocol and loops. Preserve the existing agent and Desktop run services. Preserve registered identities and published verification entrypoints. Do not change deployment topology or adopt an older UI implementation.
 
 ## Verification
 

@@ -1,3 +1,4 @@
+import type { Ask } from './recorded-evidence-transport.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterAll, beforeAll, test } from 'vitest';
 import type { RemoteBinary } from '../../remote/src/index';
@@ -15,7 +16,6 @@ beforeAll(async () => {
 afterAll(() => f.repo.dispose());
 
 const tip = () => ({ commit: f.commits.changed, branch: 'verified', mode: 'current' as const });
-type Ask = <T>(method: 'evidence' | 'artifact', input: Record<string, unknown>) => Promise<T>;
 /** The refusal code of a request, or `accepted`. */
 const outcome = (ask: Ask, method: 'evidence' | 'artifact', input: Record<string, unknown>) =>
 	ask(method, input).then(

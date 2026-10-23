@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"src/validators/NativePickerIdleValidator.ts",
-			"src/validators/development-tooling/NativePickerIdleValidator.ts"
+			"src/validators/development-tooling/NativePickerIdleValidator.ts",
+			"src/validators/development-tooling/NativePickerIdleValidator.types.ts"
 		],
 		"symbols": [
 			"NativePickerIdleValidator",
-			"NativePickerIdleValidatorResult",
 			"NativePickerIdleValidator",
-			"NativePickerIdleValidator.validate"
+			"NativePickerIdleValidator.validate",
+			"NativePickerIdleValidatorResult",
+			"NativePickerIdleValidatorResult"
 		]
 	},
 	"contract": {

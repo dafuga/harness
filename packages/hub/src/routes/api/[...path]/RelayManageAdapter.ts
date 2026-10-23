@@ -1,3 +1,4 @@
+import type { RelayManageAdapterConfig, Operation } from './RelayManageAdapter.types';
 import type {
 	RelayManageDevice,
 	RelayManageOwner,
@@ -7,13 +8,6 @@ import type {
 } from '../../../../../remote/src/models/RemoteRelay.types';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 import { RelayReplyValidator } from '../../../validators/networking-security/RelayReplyValidator';
-
-export interface RelayManageAdapterConfig {
-	/** The relay's host objects: one per host id. `/manage/*` is reachable through this only. */
-	hosts: DurableObjectNamespace;
-}
-
-type Operation = 'register' | 'summary' | 'revoke-device' | 'unregister';
 
 const MANAGE = 'https://relay.internal/manage/';
 /** The relay refusals a caller may see, each only with the status it is defined for. */
@@ -84,3 +78,5 @@ export class RelayManageAdapter {
 		}
 	}
 }
+
+export type { RelayManageAdapterConfig } from './RelayManageAdapter.types';

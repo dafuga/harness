@@ -125,6 +125,12 @@
 			"CatalogScenarioCreateInput",
 			"CatalogScenarioUpdateInput",
 			"ModelDependencyService",
+			"registerBenchmarkCommand",
+			"CodexBenchmarkAdapter",
+			"ClaudeBenchmarkAdapter",
+			"BenchmarkDefinitionValidator",
+			"BenchmarkRepository",
+			"BenchmarkService",
 			"TaskCompletionService",
 			"PerformanceProfileService",
 			"registerTaskCommand",
@@ -140,7 +146,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.claude-benchmark",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.claude-gateway",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.codex-benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -165,12 +181,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "adapter.source-profile",
+			"unit": "adapter.sqlite",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
-			"unit": "adapter.sqlite",
+			"unit": "command.benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -181,11 +197,6 @@
 		},
 		{
 			"unit": "command.codex-picker",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "command.task",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -495,6 +506,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.benchmark",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.catalog",
 			"via": "reexport",
 			"origin": "derived"
@@ -526,6 +542,11 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -595,11 +616,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.performance-profile",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "service.picker-preview",
 			"via": "reexport",
 			"origin": "derived"
@@ -620,7 +636,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.task-completion",
+			"unit": "validator.benchmark-definition",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -640,11 +656,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "validator.performance-evidence",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "workflow.analytics-record",
 			"via": "import",
 			"origin": "derived"
@@ -657,6 +668,31 @@
 		{
 			"unit": "workflow.run-activity",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.source-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.performance-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.performance-evidence",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],

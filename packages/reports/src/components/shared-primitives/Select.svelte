@@ -56,7 +56,7 @@
 	.report-select select {
 		width: 100%;
 		min-height: 44px;
-		padding-inline-end: 42px;
+		padding-inline-end: var(--hx-space-42);
 		appearance: none;
 		cursor: pointer;
 	}
@@ -76,7 +76,7 @@
 		color: var(--muted);
 	}
 	.disabled {
-		opacity: 0.5;
+		opacity: var(--hx-opacity-dim);
 	}
 	select:disabled {
 		cursor: not-allowed;
@@ -86,7 +86,7 @@
 		min-height: 32px;
 		height: 32px;
 		padding-block: 0;
-		padding-inline-end: 30px;
+		padding-inline-end: var(--hx-space-30);
 	}
 	.compact svg {
 		inset-inline-end: 9px;
@@ -97,8 +97,8 @@
 		color: transparent;
 	}
 	.has-display :global(option) {
-		color: var(--text, #eef2f8);
-		background: var(--panel, #102131);
+		color: var(--text, var(--hx-text));
+		background: var(--panel, var(--hx-surface));
 	}
 	.report-select-value {
 		position: absolute;

@@ -1,3 +1,4 @@
+import type { SyntheticServices } from './syntheticServices.types';
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
 import {
 	chmodSync,
@@ -13,7 +14,6 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import type { ServiceAuthority } from '../../src/utils/platformServices';
 import { signalProcesses, type TrackedProcess } from '../../src/utils/processDescendants';
 
 /**
@@ -58,21 +58,6 @@ const sign = (identifier: string, path: string) =>
 	execFileSync('codesign', ['--force', '--sign', '-', '--identifier', identifier, path], {
 		stdio: 'pipe'
 	});
-
-export interface SyntheticServices {
-	home: string;
-	/** The made-up developer tools, vouched for, with the vetted service inside. */
-	authority: ServiceAuthority;
-	service: string;
-	/** The same program under the same name where nothing vouches for it. */
-	lookAlike: string;
-	/** A plain program of the command's own. */
-	helper: string;
-	/** An application like the vouched one whose service carries another identity. */
-	other: ServiceAuthority;
-	/** An application whose service path is only a link to the look-alike. */
-	linked: ServiceAuthority;
-}
 
 /** An application with developer tools inside; its service is the given file or a link to one. */
 function application(home: string, name: string, place: (target: string) => void) {
@@ -170,3 +155,5 @@ export async function cleared(home: string): Promise<void> {
 	await signalProcesses(strays, 'SIGKILL');
 	rmSync(home, { recursive: true, force: true });
 }
+
+export type { SyntheticServices } from './syntheticServices.types';

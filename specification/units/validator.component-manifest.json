@@ -9,17 +9,19 @@
 	"owns": {
 		"source": [
 			"src/validators/ComponentManifestValidator.ts",
-			"src/validators/development-tooling/ComponentManifestValidator.ts"
+			"src/validators/development-tooling/ComponentManifestValidator.ts",
+			"src/validators/development-tooling/ComponentManifestValidator.types.ts"
 		],
 		"symbols": [
 			"ComponentManifestValidator",
 			"wellFormed",
 			"schemaErrors",
-			"ManifestValidation",
 			"ComponentManifestValidator",
 			"ComponentManifestValidator.validate",
 			"wellFormed",
-			"schemaErrors"
+			"schemaErrors",
+			"ManifestValidation",
+			"ManifestValidation"
 		]
 	},
 	"contract": {

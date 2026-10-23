@@ -1,3 +1,5 @@
+import type { Runner, ProcessInput } from './measureProcess.types';
+export type { Runner, ProcessInput } from './measureProcess.types';
 import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
@@ -5,23 +7,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import type { CommandResult } from '../cli';
-
-type Runner = (
-	args: string[],
-	cwd: string,
-	success?: boolean,
-	env?: Record<string, string>
-) => Promise<CommandResult>;
-interface ProcessInput {
-	units: string[];
-	workload: string;
-	target: 'process' | 'module';
-	command: string[];
-	cwd: string;
-	expectSuccess?: boolean;
-	env?: Record<string, string>;
-	partial?: string;
-}
 
 /** One actual child invocation; OS usage belongs to that child, not the test runner. */
 export async function measureProcess(input: ProcessInput, run: Runner): Promise<CommandResult> {

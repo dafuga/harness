@@ -1,20 +1,5 @@
+import type { Prompt, VideoConnection } from './DecartStreamAdapter.types';
 import type { RenderSession } from '../../models/game-authoring/Game.types';
-export interface VideoConnection {
-	disconnect(): void;
-	setPrompt(text: string): Promise<void>;
-	on(event: 'error' | 'sessionEnded', listener: () => void): void;
-}
-export type VideoConnector = (
-	source: MediaStream,
-	options: {
-		session: RenderSession;
-		prompt: string;
-		retries: 0;
-		capacityRetryBudgetMs: 0;
-		onRemoteStream: (stream: MediaStream) => void;
-	}
-) => Promise<VideoConnection>;
-type Prompt = string | { prompt: string; signal?: AbortSignal; connector?: VideoConnector };
 /** The public vendor SDK puts its client credential in a URL. No safe transport is registered. */
 export function decartTransportReady(): boolean {
 	return false;
@@ -112,3 +97,5 @@ function canvasLife(source: MediaStream, seconds: number, signal?: AbortSignal) 
 		}
 	};
 }
+
+export type { VideoConnection, VideoConnector } from './DecartStreamAdapter.types';

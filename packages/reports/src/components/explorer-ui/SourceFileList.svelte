@@ -2,17 +2,21 @@
 	import type { Snippet } from 'svelte';
 	let {
 		files,
+		label = 'Source files',
+		empty = 'No source files recorded at this revision.',
 		href,
 		children
 	}: {
 		files: string[];
+		label?: string;
+		empty?: string;
 		href: (path: string) => string | undefined;
 		children: Snippet<[string]>;
 	} = $props();
 </script>
 
 {#if files.length}
-	<ul class="source-files" aria-label="Source files">
+	<ul class="source-files" aria-label={label}>
 		{#each files as path, position (position)}
 			{@const url = href(path)}
 			<li>
@@ -22,7 +26,7 @@
 			</li>
 		{/each}
 	</ul>
-{:else}<p class="source-empty">No source files recorded at this revision.</p>{/if}
+{:else}<p class="source-empty">{empty}</p>{/if}
 
 <style>
 	.source-files {
@@ -34,21 +38,17 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px 16px;
-		padding: 14px 0;
+		gap: var(--hx-space-8) var(--hx-space-16);
+		padding: var(--hx-space-14) 0;
 	}
 	.source-files li + li {
-		border-top: 1px solid var(--ex-line, var(--border));
+		border-top: var(--hx-border-thin) solid var(--ex-line, var(--border));
 	}
 	.source-files a,
 	.source-files code {
 		min-width: 0;
 		overflow-wrap: anywhere;
-		font:
-			0.9rem ui-monospace,
-			SFMono-Regular,
-			Menlo,
-			monospace;
+		font: var(--hx-type-size-sm) var(--hx-font-family-mono);
 	}
 	.source-files a {
 		color: inherit;

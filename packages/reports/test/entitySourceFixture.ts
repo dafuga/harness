@@ -1,4 +1,4 @@
-import type { HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { revision } from './entityFixture';
 import { commits, ids } from './entityUnits';
 import { withHelpers } from './entityPreviewHelpers';
@@ -16,8 +16,29 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 		...added,
 		registry: {
 			...added.registry,
-			units: added.registry.units.map((unit) =>
-				unit.id === ids.store
+			units: added.registry.units.map((unit) => {
+				if (unit.id === ids.filter)
+					return {
+						...unit,
+						owns: {
+							...unit.owns,
+							source: [
+								...new Set([
+									...unit.owns.source,
+									'src/helpers/orders/filterOrders.ts',
+									'src/components/orders/contract.ts'
+								])
+							]
+						},
+						helpers: unit.helpers?.map((helper) => ({
+							...helper,
+							source:
+								helper.name === 'filterOrders'
+									? 'src/helpers/orders/filterOrders.ts'
+									: helper.source
+						}))
+					};
+				return unit.id === ids.store
 					? {
 							...unit,
 							owns: {
@@ -25,15 +46,20 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 								source: [...unit.owns.source, 'src/services/orders/Order types #é.ts']
 							}
 						}
-					: unit
-			)
+					: unit;
+			})
 		}
 	};
 }
 
+export const sourceTestPath = (id: string): string => `test/${id}.test.ts`;
+
 export const sourcePaths = [
 	...new Set(
-		sourceCatalog(revision(commits.tip, [])).registry.units.flatMap((unit) => unit.owns.source)
+		sourceCatalog(revision(commits.tip, [])).registry.units.flatMap((unit) => [
+			...unit.owns.source,
+			sourceTestPath(unit.id)
+		])
 	)
 ];
 
@@ -45,6 +71,12 @@ export function sourceSnapshots(detail: HarnessRevision, hashes: Record<string, 
 			...detail.registry,
 			units: detail.registry.units.map((unit) => ({
 				...unit,
+				testFiles: [
+					{
+						path: sourceTestPath(unit.id),
+						media: `media/${hashes[`source:${detail.commit}:${sourceTestPath(unit.id)}`]}.txt`
+					}
+				],
 				...{
 					sourceFiles: unit.owns.source.map((path) => ({
 						path,
@@ -54,4 +86,40 @@ export function sourceSnapshots(detail: HarnessRevision, hashes: Record<string, 
 			}))
 		}
 	};
+}
+
+/** Arrays admitted before JSON retain indexed values without using their iterator or species. */
+export function sourceAdmissionArrays(unit: HarnessUnit) {
+	const paths = [...unit.owns.source];
+	const tests = [{ path: 'test/order-store.test.ts', media: null, gap: 'Recorded test gap' }];
+	const snapshots = paths.map((path) => ({
+		path,
+		media: null,
+		gap: 'Recorded implementation gap'
+	}));
+	const reads = { indexed: 0, iterated: 0, species: 0 };
+	for (const input of [paths, tests, snapshots]) {
+		const first = input[0];
+		Object.defineProperty(input, '0', {
+			get() {
+				reads.indexed++;
+				return first;
+			}
+		});
+		Object.defineProperty(input, Symbol.iterator, {
+			value() {
+				reads.iterated++;
+				return [][Symbol.iterator]();
+			}
+		});
+		Object.defineProperty(input, 'constructor', {
+			value: {
+				get [Symbol.species]() {
+					reads.species++;
+					return Array;
+				}
+			}
+		});
+	}
+	return { paths, tests, snapshots, reads };
 }

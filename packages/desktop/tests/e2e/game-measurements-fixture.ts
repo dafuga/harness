@@ -1,19 +1,10 @@
+import type { Observation, RuntimeInput } from './game-measurements-fixture.types';
 import { loadUnits } from '../../../../src/workflows/loadUnits';
 import { CommitTreeAdapter } from '../../../../src/adapters/git-source-history/CommitTreeAdapter';
 import { WorkingTreeAdapter } from '../../../../src/adapters/git-source-history/WorkingTreeAdapter';
 import { unitMeasurements } from '../../../../src/utils/development-tooling/unitMeasurements';
 import { existsSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
-type Observation = {
-	unit: string;
-	metric: string;
-	unitOfMeasure: string;
-	value: number;
-	workload: string;
-	target: string;
-	samples: number;
-	method: string;
-};
 const cached = new Map<string, Promise<Observation[]>>();
 
 /** Source sizes and complexity come from the tested Git tree, not the live checkout. */
@@ -69,14 +60,6 @@ async function measuredSource(revision: string): Promise<Observation[]> {
 		})
 	);
 }
-
-type RuntimeInput = {
-	units: string[];
-	elapsed: number;
-	heap: number;
-	workload: string;
-	navigation: number | null;
-};
 /** Keep real fresh-document navigation separately from later modal-state timing. */
 export function gameRuntimeMeasurements(input: RuntimeInput): Observation[] {
 	const navigation = input.navigation;

@@ -118,5 +118,5 @@ export function hostedData() {
 		]
 	};
 }
-export type HostedData = ReturnType<typeof hostedData>;
-export type HostedProject = HostedData['projects'][number];
+
+export type { HostedData, HostedProject } from './hosted-data.types';

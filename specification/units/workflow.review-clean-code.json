@@ -9,12 +9,15 @@
 	"owns": {
 		"source": [
 			"src/audit/development-tooling/reviewCleanCode.ts",
+			"src/audit/development-tooling/reviewCleanCode.types.ts",
 			"src/audit/reviewCleanCode.ts",
 			"src/workflows/reviewCleanCode.ts"
 		],
 		"symbols": [
-			"ReviewCleanCodeInput",
 			"reviewCleanCode",
+			"ReviewCleanCodeInput",
+			"ReviewCleanCodeInput",
+			"ReviewedEntry",
 			"reviewCleanCode",
 			"reviewCleanCode",
 			"ReviewCleanCodeInput"

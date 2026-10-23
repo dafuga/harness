@@ -7,15 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/history-sync-service/HistorySyncService.ts"],
+		"source": [
+			"src/cli/program/history-sync-service/HistorySyncService.ts",
+			"src/cli/program/history-sync-service/HistorySyncService.types.ts"
+		],
 		"symbols": [
-			"RefChange",
-			"Synced",
 			"HistorySyncService",
 			"HistorySyncService.constructor",
 			"HistorySyncService.fetch",
 			"HistorySyncService.push",
-			"HistorySyncService.sync"
+			"HistorySyncService.sync",
+			"RefChange",
+			"Synced",
+			"RefChange",
+			"Synced",
+			"Relation"
 		]
 	},
 	"contract": {

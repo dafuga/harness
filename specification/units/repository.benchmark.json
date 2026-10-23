@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.benchmark",
+	"kind": "repository",
+	"title": "BenchmarkRepository",
+	"responsibility": "Atomically persists private benchmark run records and marks abandoned live trials as interrupted.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/agents-providers/BenchmarkRepository.ts"],
+		"symbols": [
+			"BenchmarkRepository",
+			"BenchmarkRepository.constructor",
+			"BenchmarkRepository.directory",
+			"BenchmarkRepository.save",
+			"BenchmarkRepository.read"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "BenchmarkRepository.constructor.home",
+				"type": "unknown",
+				"description": "Directory containing the private persisted benchmark run subfolders."
+			},
+			{
+				"name": "BenchmarkRepository.directory.id",
+				"type": "string",
+				"description": "UUID-shaped persisted benchmark run identifier."
+			},
+			{
+				"name": "BenchmarkRepository.save.run",
+				"type": "BenchmarkRun",
+				"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+			},
+			{
+				"name": "BenchmarkRepository.read.id",
+				"type": "string",
+				"description": "UUID-shaped persisted benchmark run identifier."
+			}
+		],
+		"outputs": [
+			{
+				"name": "BenchmarkRepository.directory",
+				"type": "string",
+				"description": "Private subdirectory for the validated run identifier."
+			},
+			{
+				"name": "BenchmarkRepository.save",
+				"type": "Promise<void>",
+				"description": "Atomically replaces the private run JSON record."
+			},
+			{
+				"name": "BenchmarkRepository.read",
+				"type": "Promise<BenchmarkRun>",
+				"description": "Persisted run with abandoned running trials marked interrupted."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects invalid run IDs or unavailable persisted records."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.subagent-benchmark-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/BenchmarkRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/BenchmarkRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

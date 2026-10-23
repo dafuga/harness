@@ -1,3 +1,4 @@
+import type { UnitSeed, CaptureSeed } from './entityUnits.types';
 import { serviceMetadata } from './entityClassFixtures';
 import type { HarnessCapture, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
 
@@ -13,18 +14,6 @@ export const ids = {
 	settings: 'app.config.order-settings',
 	store: 'app.service.order-store'
 };
-
-interface UnitSeed {
-	id: string;
-	kind: string;
-	title: string;
-	responsibility: string;
-	uses?: string[];
-	inputs?: string[];
-	outputs?: string[];
-	targets?: string[];
-	performance?: HarnessUnit['budgets']['performance'];
-}
 
 function unit(seed: UnitSeed): HarnessUnit {
 	// A page is what renders an address: it owns the route file of that address.
@@ -183,14 +172,6 @@ export const scenarios: HarnessScenario[] = [
 	}
 ];
 
-export interface CaptureSeed {
-	kind: string;
-	state: string;
-	viewport?: string;
-	status?: 'passed' | 'failed';
-	media?: string | null;
-}
-
 const files: Record<string, [string, string]> = {
 	screenshot: ['png', 'image/png'],
 	audio: ['wav', 'audio/wav']
@@ -217,3 +198,5 @@ export function capture(commit: string, seed: CaptureSeed): HarnessCapture {
 		...(media === null ? { gap: 'the bytes are not in this history' } : {})
 	};
 }
+
+export type { CaptureSeed } from './entityUnits.types';

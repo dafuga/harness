@@ -1,3 +1,4 @@
+import type { Fixture } from './hub-reader-retention.test.types';
 import { expect, test } from 'vitest';
 import { sealRecord } from '../../../../src/utils/sealRecord';
 import { asked, bound, bytesOf, evidenceFixture, read, sourceAt } from '../support/evidenceFixture';
@@ -5,8 +6,6 @@ import { attachedAt } from '../support/evidenceReaders';
 import { png, stored, sha256 } from '../support/evidenceRecords';
 
 const shot = 'captures/titles-default-desktop.png';
-
-type Fixture = ReturnType<typeof evidenceFixture>;
 
 /** The first record with 24 more half-megabyte captures, sealed again under its own id. */
 function largeRecord(f: Fixture) {

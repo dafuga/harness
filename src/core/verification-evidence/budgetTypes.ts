@@ -55,5 +55,4 @@ export const budgetEventSchema = z.discriminatedUnion('type', [
 	})
 ]);
 
-export type BudgetEvent = z.infer<typeof budgetEventSchema>;
-export type PerformanceBaselineEntry = z.infer<typeof performanceBaselineSchema>;
+export type { BudgetEvent, PerformanceBaselineEntry } from './budgetTypes.types';

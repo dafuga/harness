@@ -3,7 +3,7 @@
 	"id": "workflow.loop-state-new-loop-state",
 	"kind": "workflow",
 	"title": "newLoopState",
-	"responsibility": "Builds loop state with inherited template steps and an explicit versioned coding or planning completion contract.",
+	"responsibility": "Builds inherited loop state while adding a versioned completion contract only when a task kind is explicitly requested.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -28,7 +28,7 @@
 			{
 				"name": "newLoopState",
 				"type": "Promise<LoopState>",
-				"description": "Initial pending steps, template lineage and versioned completion contract; historical untyped loop state remains readable."
+				"description": "Initial pending steps and template lineage; a coding or planning completion contract appears only for an explicitly supplied task kind."
 			}
 		],
 		"errors": [

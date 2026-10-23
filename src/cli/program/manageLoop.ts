@@ -1,3 +1,15 @@
+import type {
+	CreateLoopInput,
+	AddLoopStepInput,
+	CompleteLoopStepInput,
+	ReadLoopInput
+} from './manageLoop.types';
+export type {
+	CreateLoopInput,
+	AddLoopStepInput,
+	CompleteLoopStepInput,
+	ReadLoopInput
+} from './manageLoop.types';
 import { fail } from '../../core/development-tooling/errors';
 import { TaskCompletionService } from '../../services/verification-evidence/TaskCompletionService';
 import {
@@ -24,31 +36,6 @@ export {
 	type LoopStatus,
 	type LoopStep
 } from '../../workflows/development-tooling/loop-state/loopState';
-
-export interface CreateLoopInput extends LoopInput {
-	kind?: 'coding' | 'planning';
-	plan?: string;
-	name: string;
-	goal: string;
-	from?: string;
-	agentModel?: string;
-}
-
-export interface AddLoopStepInput extends LoopInput {
-	loop: string;
-	step: string;
-	title: string;
-}
-
-export interface CompleteLoopStepInput extends LoopInput {
-	loop: string;
-	step: string;
-	evidence: string;
-}
-
-export interface ReadLoopInput extends LoopInput {
-	loop: string;
-}
 
 export async function createLoop(input: CreateLoopInput): Promise<LoopStatus> {
 	const root = loopRoot(input);

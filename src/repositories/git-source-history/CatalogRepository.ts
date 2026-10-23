@@ -1,3 +1,4 @@
+import type { CatalogQuery } from './CatalogRepository.types';
 import { createSqliteAdapter } from '../../adapters/development-tooling/SqliteAdapter';
 import type { HistoryIndex, IndexedRevision } from '../../core/historyIndexTypes';
 import type { SqliteDatabase, SqliteValue } from '../../core/development-tooling/sqliteTypes';
@@ -7,14 +8,6 @@ import {
 	type CatalogSnapshot
 } from '../../services/git-source-history/CatalogWriteService';
 import type { RevisionRegistry } from '../../utils/revisionRegistry';
-
-export interface CatalogQuery {
-	commit?: string;
-	kind?: string;
-	search?: string;
-	limit?: number;
-	offset?: number;
-}
 /** Indexed reads of declared entities and their recorded history; no source-tree scans. */
 export class CatalogRepository {
 	readonly adapter;
@@ -130,3 +123,5 @@ export class CatalogRepository {
 		);
 	}
 }
+
+export type { CatalogQuery } from './CatalogRepository.types';

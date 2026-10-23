@@ -60,7 +60,13 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.scan-exports",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/workflows/projects-sessions/generate-code/exports.ts",

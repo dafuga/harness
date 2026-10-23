@@ -104,44 +104,44 @@
 <style>
 	.mechanics {
 		display: grid;
-		gap: 20px;
+		gap: var(--hx-space-20);
 	}
 	header {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		gap: 16px;
+		gap: var(--hx-space-16);
 	}
 	h2 {
-		margin: 0 0 4px;
-		font-size: 1.05rem;
+		margin: 0 0 var(--hx-space-4);
+		font-size: var(--hx-type-size-base);
 	}
 	header p,
 	.empty {
 		margin: 0;
 		color: var(--muted);
-		font-size: 0.9rem;
+		font-size: var(--hx-type-size-sm);
 	}
 	ol {
 		display: grid;
-		gap: 14px;
+		gap: var(--hx-space-14);
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 	li {
 		display: grid;
-		gap: 12px;
-		padding: 18px;
-		border: 1px solid var(--line);
-		border-radius: 12px;
+		gap: var(--hx-space-12);
+		padding: var(--hx-space-18);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
 		background: var(--panel);
 	}
 	.head {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: flex-end;
-		gap: 12px;
+		gap: var(--hx-space-12);
 	}
 	.title {
 		flex: 1 1 220px;
@@ -152,12 +152,12 @@
 	}
 	label {
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 	}
 	label span {
 		color: var(--muted);
-		font-size: 0.78rem;
-		letter-spacing: 0.04em;
+		font-size: var(--hx-type-size-xs);
+		letter-spacing: var(--hx-style-tracking-wide);
 		text-transform: uppercase;
 	}
 	textarea {
@@ -165,15 +165,15 @@
 	}
 	code {
 		min-width: 0;
-		padding-bottom: 12px;
+		padding-bottom: var(--hx-space-12);
 		color: var(--muted);
-		font-size: 12px;
+		font-size: var(--hx-type-size-xs);
 		overflow-wrap: anywhere;
 	}
 	.contract {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: 12px;
+		gap: var(--hx-space-12);
 	}
 	.sr {
 		position: absolute;

@@ -1,21 +1,11 @@
-import type {
-	HostedHttpAdapter,
-	NativeHostedCredential
-} from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
-import type { NativeSessionAdapter } from '../../../adapters/networking-security/NativeSessionAdapter';
+import type { StatusOptions } from './NativeAccountStatusService.types';
+import type { NativeHostedCredential } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import { HostedFailureValidator } from '../../../validators/development-tooling/HostedFailureValidator';
 import {
 	RemoteProjectResponseValidator,
 	responseRecord
 } from '../../../validators/projects-sessions/RemoteProjectResponseValidator';
-
-interface StatusOptions {
-	http: HostedHttpAdapter;
-	store: Pick<NativeSessionAdapter, 'clear'>;
-	clearCache?: () => Promise<void>;
-	onDisconnect?: () => void;
-}
 
 /** Rechecks a device's Google identity without confusing temporary failure with revocation. */
 export class NativeAccountStatusService {

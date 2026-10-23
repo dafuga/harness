@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"src/utils/componentVersion.ts",
-			"src/utils/development-tooling/componentVersion.ts"
+			"src/utils/development-tooling/componentVersion.ts",
+			"src/utils/development-tooling/componentVersion.types.ts"
 		],
-		"symbols": ["componentVersion", "ComponentVersion", "componentVersion"]
+		"symbols": ["componentVersion", "componentVersion", "ComponentVersion", "ComponentVersion"]
 	},
 	"contract": {
 		"origin": "declared",

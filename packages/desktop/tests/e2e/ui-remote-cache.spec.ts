@@ -1,7 +1,6 @@
+import type { Call } from './ui-remote-cache.spec.types';
 import { expect, test, type Page, type TestInfo } from '../../../../test/support/browserTest';
 import { alpha, reopenAway, remoteCacheFixture } from './ui-remote-cache-fixture';
-
-type Call = Record<string, unknown>;
 /** Screenshots are opt-in test output; they are never part of the source tree. */
 const shot = async (page: Page, info: TestInfo, name: string) => {
 	if (process.env.TAKE_SCREENSHOT === 'true')

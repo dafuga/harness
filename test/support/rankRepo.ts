@@ -1,22 +1,8 @@
+import type { PerformanceEntry } from './rankRepo.types';
 import { rankScenario, rankSource, rankWorkload } from './verifyFixture';
 import { baselineRepo, type VerifyOutcome, type VerifyRepo } from './verifyRepo';
 
 export const rankWorkloadPath = 'specification/workloads/rank-20k.json';
-
-export interface PerformanceEntry {
-	workload: string;
-	metric: string;
-	profile: string;
-	value: number;
-	unitOfMeasure: string;
-	method: string;
-	comparison: {
-		request: string;
-		boundary: string;
-		protocol: string;
-		sampling: { warmup: number; rounds: number; iterations: number };
-	};
-}
 
 /** The baseline fixture plus a real operation with a frozen end-to-end latency budget. */
 export function rankBaselineRepo(): Promise<VerifyRepo> {
@@ -65,3 +51,5 @@ export async function performanceHistory(
 	const history = await repo.run(['budget', 'history', unit, '--json']);
 	return JSON.parse(history.stdout) as Array<{ type: string; performance: PerformanceEntry[] }>;
 }
+
+export type { PerformanceEntry } from './rankRepo.types';

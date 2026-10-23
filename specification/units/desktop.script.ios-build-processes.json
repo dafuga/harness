@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-build-processes.ts"],
-		"symbols": ["FollowedResult", "followed"]
+		"source": [
+			"packages/desktop/scripts/ios-build-processes.ts",
+			"packages/desktop/scripts/ios-build-processes.types.ts"
+		],
+		"symbols": ["followed", "FollowedResult", "Row", "Settling", "Standing", "FollowedResult"]
 	},
 	"contract": {
 		"origin": "derived",

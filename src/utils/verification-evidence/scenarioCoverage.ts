@@ -1,31 +1,10 @@
-import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
-import type { ScenarioResult } from '../../core/verification-evidence/verificationTypes';
+import type { CoverageInput, Evidence, Viewport } from './scenarioCoverage.types';
 import {
 	benchmarkCaptureSchema,
 	verifyConfigFile
 } from '../../core/verification-evidence/verifyTypes';
 import type { Gathered } from './gatherCaptures';
 import type { MediaFacts } from './mediaFacts';
-
-export interface CoverageInput {
-	scenario: ScenarioManifest;
-	/** The exact commit being verified; captures must come from a build of it. */
-	commit: string;
-	gathered: Gathered[];
-	/** True when a check that produced these captures failed or timed out. */
-	checkFailed: boolean;
-	/** The builds the project declares, and the identity of each one setup compiled. */
-	builds?: { declared: string[]; compiled: Map<string, string> };
-}
-
-export interface CoverageResult {
-	states: ScenarioResult['states'];
-	failures: string[];
-}
-
-type Evidence = ScenarioManifest['evidence'][number];
-
-type Viewport = ScenarioManifest['viewports'][number];
 
 const durationTolerance = 0.05;
 
@@ -160,3 +139,5 @@ function buildProblem(
 }
 
 export { scenarioCoverage } from '../../workflows/verification-evidence/run-verify/verification-service/scenarioCoverage';
+
+export type { CoverageInput, CoverageResult } from './scenarioCoverage.types';

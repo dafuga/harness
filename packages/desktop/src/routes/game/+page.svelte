@@ -52,6 +52,6 @@
 	.game-page {
 		max-width: 1280px;
 		margin: 0 auto;
-		padding: 28px 24px 48px;
+		padding: var(--hx-space-28) var(--hx-space-24) var(--hx-space-48);
 	}
 </style>

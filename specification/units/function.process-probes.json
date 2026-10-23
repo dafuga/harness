@@ -7,8 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/processProbes.ts", "src/utils/processProbes.ts"],
-		"symbols": ["ProcessFacts", "ProcessProbes", "ProbeLimits", "processProbes", "processProbes"]
+		"source": [
+			"src/utils/development-tooling/processProbes.ts",
+			"src/utils/development-tooling/processProbes.types.ts",
+			"src/utils/processProbes.ts"
+		],
+		"symbols": [
+			"processProbes",
+			"ProcessFacts",
+			"ProcessProbes",
+			"ProbeLimits",
+			"ProcessFacts",
+			"ProcessProbes",
+			"ProbeLimits",
+			"processProbes"
+		]
 	},
 	"contract": {
 		"origin": "declared",

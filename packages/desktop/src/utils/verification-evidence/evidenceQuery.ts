@@ -1,14 +1,5 @@
-import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';
+import type { EvidenceView } from './evidenceQuery.types';
 import type { EntityEvidenceQuery } from '../../models/verification-evidence/DesktopEvidence.types';
-import type { ProjectContext } from '../../models/projects-sessions/ProjectContext.types';
-
-/** What of a workspace says where an entity is shown in history. */
-export interface EvidenceView {
-	snapshot: ProjectSnapshot | null;
-	/** True while the address names a commit, also when that commit is the tip. */
-	pinned: boolean;
-	context: ProjectContext;
-}
 
 /**
  * What is asked of a backend for the recorded evidence of one entity as it is shown: the tip of
@@ -21,3 +12,5 @@ export function evidenceQuery(view: EvidenceView, entityId: string): EntityEvide
 	const mode = view.pinned ? 'commit' : 'current';
 	return { entityId, commit: revision.commit, branch: revision.branch, mode, ...view.context };
 }
+
+export type { EvidenceView } from './evidenceQuery.types';

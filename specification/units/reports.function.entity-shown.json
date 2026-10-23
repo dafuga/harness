@@ -10,19 +10,22 @@
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
 			"packages/reports/src/utils/entityShown.ts",
-			"packages/reports/src/utils/explorer-ui/entityShown.ts"
+			"packages/reports/src/utils/explorer-ui/entityShown.ts",
+			"packages/reports/src/utils/explorer-ui/entityShown.types.ts"
 		],
 		"symbols": [
 			"entityShown",
 			"entityShown",
 			"entityChanged",
 			"helperEntity",
-			"EntityShown",
-			"Shown",
 			"entityChanged",
 			"entityShown",
 			"helperEntity",
-			"helperRelations"
+			"helperRelations",
+			"EntityShown",
+			"Shown",
+			"EntityShown",
+			"Shown"
 		]
 	},
 	"contract": {

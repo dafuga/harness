@@ -9,10 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.ts",
+			"packages/desktop/src/utils/development-tooling/recorded-answer/recordedAnswer.types.ts",
 			"packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
 			"packages/desktop/src/utils/recordedAnswer.ts"
 		],
-		"symbols": ["AnswerInput", "recordedAnswer", "recordedAnswer", "AnswerInput", "recordedAnswer"]
+		"symbols": [
+			"recordedAnswer",
+			"AnswerInput",
+			"AnswerInput",
+			"recordedAnswer",
+			"AnswerInput",
+			"recordedAnswer"
+		]
 	},
 	"contract": {
 		"origin": "declared",

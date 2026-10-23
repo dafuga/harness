@@ -1,3 +1,4 @@
+import type { TestHost, TestDevice, TestRequest } from './relayActors.types';
 import { expect } from 'vitest';
 import {
 	credentialHash,
@@ -11,24 +12,6 @@ import {
 } from '../../../remote/src/index';
 import type { RelayFixture } from './relayFixture';
 import { RelaySocket, type Frame } from './relaySocket';
-
-export interface TestHost {
-	ownerId: string;
-	hostId: string;
-	hostKey: string;
-	credential: string;
-	name: string;
-}
-export interface TestDevice {
-	deviceId: string;
-	credential: string;
-}
-/** A pairing a phone asked for: what it sent, and the verifier only the phone knows. */
-export interface TestRequest {
-	pairingId: string;
-	verifier: string;
-	body: { ephemeralKey: string; sealed: string; challenge: string };
-}
 
 /** A fresh P-256 public key and the id it certifies. */
 export async function newIdentity(): Promise<{ id: string; key: string }> {
@@ -203,3 +186,5 @@ export async function openDevice(
 	const opened = await pairing.socket.until('device-open');
 	return { socket, connectionId: String(opened.connectionId) };
 }
+
+export type { TestHost, TestDevice, TestRequest } from './relayActors.types';

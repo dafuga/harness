@@ -7,17 +7,24 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/run-kernel/runKernel.ts"],
+		"source": [
+			"src/cli/program/run-kernel/runKernel.ts",
+			"src/cli/program/run-kernel/runKernel.types.ts"
+		],
 		"symbols": [
-			"ParityReport",
 			"kernelParity",
 			"parityProblems",
-			"DefaultReport",
 			"kernelDefault",
 			"renderDefault",
 			"runtimeKind",
 			"serveKernelRuntime",
-			"kernelSample"
+			"kernelSample",
+			"ParityReport",
+			"DefaultReport",
+			"ParityReport",
+			"ParityCases",
+			"ByteRuntime",
+			"DefaultReport"
 		]
 	},
 	"contract": {

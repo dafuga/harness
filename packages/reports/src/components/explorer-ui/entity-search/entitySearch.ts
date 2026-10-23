@@ -1,19 +1,10 @@
+import type { Read } from './entitySearch.types';
 import type { SearchEntry } from '../../../utils/explorer-ui/entitySearch';
 import { explorerCategories } from '../../../../../../src/utils/explorerRoute';
 
 const order = new Map<string, number>(
 	explorerCategories.map((category, index) => [category, index])
 );
-
-/** An entry as a query reads it: every text in lower case, its id and name also in parts. */
-interface Read {
-	name: string;
-	id: string;
-	parts: string[];
-	words: string[];
-	purpose: string;
-	terms: string[];
-}
 
 function read(entry: SearchEntry): Read {
 	const [name, id] = [entry.name.toLowerCase(), entry.id.toLowerCase()];

@@ -1,6 +1,12 @@
+import type { Guide } from './guide.types';
 import { loopGuide } from './loop';
+import { benchmarkGuide } from '../agents-providers/benchmark';
 import { gameGuide } from '../game-authoring/game';
-import { harnessNamingRules, harnessRuleSummaries } from '../../rules/explorer-ui/catalog';
+import {
+	harnessNamingRules,
+	harnessRuleSummaries,
+	harnessModuleGroupRules
+} from '../../rules/explorer-ui/catalog';
 import { availableGuideTopics as uniqueGuideTopics, findGuideByTopic } from './topics';
 import { activityGuide } from '../projects-sessions/activity';
 import { analyticsGuide, reportGuide } from '../reports-media/analytics';
@@ -13,17 +19,8 @@ import { runtimeGuides } from '../execution-runtimes/runtimes';
 import { unitGuides } from './units';
 import { verificationGuides } from '../verification-evidence/verification';
 
-export interface Guide {
-	topic: string;
-	summary: string;
-	steps: string[];
-	rules: string[];
-	antiPatterns: string[];
-	exampleCommands: string[];
-	contains?: string[];
-}
-
 export const guides: Guide[] = [
+	benchmarkGuide,
 	gameGuide,
 	analyticsGuide,
 	activityGuide,
@@ -163,7 +160,7 @@ export const guides: Guide[] = [
 	...consoleGuides
 ].map((guide) => {
 	const naming = harnessNamingRules[guide.topic];
-	return naming ? { ...guide, rules: [naming, ...guide.rules] } : guide;
+	return naming ? { ...guide, rules: [naming, ...guide.rules, ...harnessModuleGroupRules] } : guide;
 });
 
 export function findGuide(topic: string): Guide | undefined {
@@ -173,3 +170,5 @@ export function findGuide(topic: string): Guide | undefined {
 export function availableGuideTopics(): string[] {
 	return uniqueGuideTopics(guides);
 }
+
+export type { Guide } from './guide.types';

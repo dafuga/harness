@@ -1,24 +1,10 @@
+import type { ExportScan, Source, Located } from './scanExports.types';
 import type { ExportedSymbol } from '../../core/development-tooling/sourceTypes';
 import type { ContractItem } from '../../core/development-tooling/unitTypes';
 import { blockSpans, type BlockSpan } from './block-spans/blockSpans';
 import { maskSource } from './maskSource';
 import { normalizeType, parseParameters } from './parseParameters';
 import { bodyEnd, matchingBrace, sourceNesting, type SourceNesting } from './sourceNesting';
-
-export interface ExportScan {
-	symbols: ExportedSymbol[];
-	errors: string[];
-}
-
-interface Source {
-	code: string;
-	masked: string;
-	nesting: SourceNesting;
-}
-
-interface Located extends ExportedSymbol {
-	index: number;
-}
 
 const callable = /^[ \t]*export\s+(?:default\s+)?(?:async\s+)?function\s*\*?\s*([\w$]+)/gm;
 const variable = /^[ \t]*export\s+(?:const|let|var)\s+([\w$]+)\b/gm;
@@ -171,3 +157,5 @@ function thrownErrors(masked: string): string[] {
 	);
 	return [...new Set([...thrown, ...failed, ...http])].sort();
 }
+
+export type { ExportScan } from './scanExports.types';

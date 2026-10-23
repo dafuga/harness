@@ -1,3 +1,4 @@
+import type { Altered } from './entityArtifacts.types';
 import { createHash } from 'node:crypto';
 import type { HarnessRevision } from '../src/models/Harness.types';
 import type { ArtifactFetcher } from '../src/utils/explorerArtifact';
@@ -26,8 +27,6 @@ export function runDocument(state: string, kind: string, takenAt: string) {
 		]
 	};
 }
-
-type Altered = (document: ReturnType<typeof runDocument>, state: string) => unknown;
 
 /**
  * Makes every headless capture of the given revisions a readable result: each gets the hash of

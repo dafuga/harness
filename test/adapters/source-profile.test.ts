@@ -1,3 +1,5 @@
+import type { Output } from './source-profile.test.types';
+export type { Output } from './source-profile.test.types';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -7,8 +9,6 @@ import { componentManifestSchema } from '../../src/core/development-tooling/unit
 import { benchmarkCaptureSchema } from '../../src/core/verification-evidence/verifyTypes';
 import { runCommand } from '../support/cli';
 import { taskProfile } from '../support/taskProfiles';
-
-type Output = { name: string; type: string };
 
 function subject(outputs: Output[] = []) {
 	return componentManifestSchema.parse({

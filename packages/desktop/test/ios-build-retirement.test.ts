@@ -1,10 +1,10 @@
+import type { Row } from './ios-build-retirement.test.types';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { EventEmitter } from 'node:events';
 import type { ChildProcess } from 'node:child_process';
 import type * as Fs from 'node:fs';
 import { PassThrough } from 'node:stream';
 import type * as Descendants from '../../../src/utils/processDescendants';
-type Row = Descendants.ProcessRow & { executable: string };
 const fake = vi.hoisted(() => ({
 	rows: [] as Row[],
 	signals: [] as unknown[],

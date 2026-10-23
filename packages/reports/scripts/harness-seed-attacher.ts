@@ -1,3 +1,4 @@
+import type { SeedAttach } from './harness-seed-attacher.types';
 import { createHash } from 'node:crypto';
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -12,12 +13,6 @@ import {
 } from '../../../src/services/evidence-attach-service/EvidenceAttachService';
 import { EvidenceRestoreService } from '../../../src/services/EvidenceRestoreService';
 import { sourceCommit } from '../../../src/workflows/runHistory';
-
-/** What `harness history attach` is told: a commit, `HEAD` when omitted, and maybe a record. */
-export interface SeedAttach {
-	commit?: string;
-	record?: string;
-}
 
 /** Repositories that have had an attacher in this process; none of them ever gets another. */
 const owned = new Set<string>();
@@ -107,3 +102,5 @@ async function digest(directory: string): Promise<string> {
 	}
 	return hash.digest('hex');
 }
+
+export type { SeedAttach } from './harness-seed-attacher.types';

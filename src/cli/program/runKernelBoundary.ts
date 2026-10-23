@@ -1,7 +1,7 @@
+import type { BoundaryBenchmark } from './runKernelBoundary.types';
 import { ProcessRuntimeAdapter } from '../../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';
 import { representativeWorkload } from '../../core/development-tooling/benchmarkTypes';
 import { fail } from '../../core/development-tooling/errors';
-import type { Comparison } from '../../core/development-tooling/comparisonTypes';
 import type { UnitRuntime } from '../../core/execution-runtimes/runtimeTypes';
 import type { RuntimeKind } from '../../core/development-tooling/unitTypes';
 import { UnitRuntimeService } from '../../services/execution-runtimes/UnitRuntimeService';
@@ -15,22 +15,6 @@ import { recordCapture } from '../../utils/reports-media/record-capture/recordCa
 export const boundaryUnit = 'service.unit-runtime';
 const shape = { rounds: 5, iterations: 50 };
 const targets: RuntimeKind[] = ['module', 'wasm', 'process'];
-
-export interface BoundaryBenchmark {
-	unit: string;
-	workload: string;
-	measurements: Array<{
-		unit: string;
-		metric: string;
-		unitOfMeasure: string;
-		value: number;
-		method: string;
-		workload: string;
-		target: RuntimeKind;
-		samples: number;
-		comparison: Comparison;
-	}>;
-}
 
 function runtimeFor(target: RuntimeKind): UnitRuntime {
 	if (target !== 'process') return new UnitRuntimeService().kernel(target);
@@ -82,3 +66,5 @@ export async function kernelBoundary(): Promise<BoundaryBenchmark> {
 	}
 	return { unit: boundaryUnit, workload: representativeWorkload, measurements };
 }
+
+export type { BoundaryBenchmark } from './runKernelBoundary.types';

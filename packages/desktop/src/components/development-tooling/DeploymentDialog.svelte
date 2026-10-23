@@ -121,7 +121,7 @@
 <style>
 	h2 {
 		margin: 0;
-		font-size: 16px;
+		font-size: var(--hx-type-size-base);
 		color: var(--gold);
 	}
 	/* Preprod above production, each commit in full at the same place, so the two compare at a
@@ -129,46 +129,46 @@
 	dl {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 3px;
+		gap: var(--hx-space-3);
 		margin: 0;
-		padding: 10px 12px;
-		border: 1px solid var(--line);
-		border-radius: 8px;
-		background: #062031;
-		font-size: 13px;
+		padding: var(--hx-space-10) var(--hx-space-12);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-small);
+		background: var(--hx-raised);
+		font-size: var(--hx-type-size-compact);
 	}
 	dt {
-		font-size: 11px;
-		font-weight: 600;
-		letter-spacing: 0.06em;
+		font-size: var(--hx-type-size-2xs);
+		font-weight: var(--hx-style-weight-semibold);
+		letter-spacing: var(--hx-style-tracking-wide);
 		text-transform: uppercase;
 		color: var(--muted);
 	}
 	dd {
 		margin: 0;
-		color: #edf4fa;
+		color: var(--hx-text);
 	}
 	code {
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 12px;
+		font-family: var(--hx-font-family-mono);
+		font-size: var(--hx-type-size-xs);
 		overflow-wrap: anywhere;
 	}
 	.when {
-		font-size: 12px;
+		font-size: var(--hx-type-size-xs);
 		color: var(--muted);
 	}
 	/* How far apart they are rides the arrow from preprod to production; teal once they match. */
 	.between {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		min-height: 42px;
-		padding-inline: 12px;
-		font-size: 13px;
+		padding-inline: var(--hx-space-12);
+		font-size: var(--hx-type-size-compact);
 		color: var(--gold);
 	}
 	.same .between {
-		color: #7fe3c0;
+		color: var(--hx-pass);
 	}
 	.arrow {
 		display: grid;
@@ -176,27 +176,27 @@
 		flex: none;
 		width: 22px;
 		height: 22px;
-		border: 1px solid currentColor;
-		border-radius: 50%;
+		border: var(--hx-border-thin) solid currentColor;
+		border-radius: var(--hx-radius-round);
 	}
 	.between p {
 		margin: 0;
 	}
 	.blockers {
 		display: grid;
-		gap: 4px;
+		gap: var(--hx-space-4);
 		margin: 0;
-		padding: 8px 12px 8px 28px;
-		border-radius: 6px;
-		background: rgb(255 171 176 / 0.08);
-		font-size: 13px;
-		color: #ffabb0;
+		padding: var(--hx-space-8) var(--hx-space-12) var(--hx-space-8) var(--hx-space-28);
+		border-radius: var(--hx-radius-compact);
+		background: var(--hx-danger-soft);
+		font-size: var(--hx-type-size-compact);
+		color: var(--hx-fail);
 	}
 	.error {
 		margin: 0;
-		padding: 8px 12px;
-		border-radius: 6px;
-		font-size: 12px;
+		padding: var(--hx-space-8) var(--hx-space-12);
+		border-radius: var(--hx-radius-compact);
+		font-size: var(--hx-type-size-xs);
 	}
 	/* The live status beside its one action, in the footer that stays in sight while the promotion,
 	   its steps and its receipt scroll above it; the action keeps the end of the row. */
@@ -204,16 +204,16 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px 12px;
+		gap: var(--hx-space-8) var(--hx-space-12);
 	}
 	.promote p {
 		flex: 1 1 160px;
 		margin: 0;
-		font-size: 12px;
+		font-size: var(--hx-type-size-xs);
 		color: var(--gold);
 	}
 	.promote button {
 		margin-inline-start: auto;
-		padding: 9px 18px;
+		padding: var(--hx-space-9) var(--hx-space-18);
 	}
 </style>

@@ -1,12 +1,14 @@
 <script lang="ts">
+	import type { AudioEvent } from "./AudioEvidence.types";
+
 	import { onDestroy } from 'svelte';
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { formatDuration, mediaMime } from '../../utils/verification-evidence/evidenceMedia';
+	import { mediaMime } from '../../utils/verification-evidence/evidenceMedia';
+	import { formatDuration } from '../../helpers/strings/formatDuration';
 	import { timeAgo } from '../../utils/reports-media/reportDisplay';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
 	import StatusBadge from '../shared-primitives/StatusBadge.svelte';
-	type AudioEvent = Event & { currentTarget: EventTarget & HTMLAudioElement };
 	// A second copy (for example in a viewer) passes its own prefix so HTML ids stay unique.
 	let {
 		item,
@@ -68,6 +70,7 @@
 			if (audio !== event.currentTarget && !audio.paused) audio.pause();
 		});
 	}
+
 </script>
 
 <article class="evidence-card audio-card" class:unavailable={missing} id={idPrefix + item.id}>

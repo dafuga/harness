@@ -1,3 +1,4 @@
+import type { Input, Runner } from './measureHarness.types';
 import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -5,21 +6,6 @@ import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import type { CommandResult } from '../cli';
-
-type Runner = (
-	args: string[],
-	cwd: string,
-	success?: boolean,
-	env?: Record<string, string>
-) => Promise<CommandResult>;
-interface Input {
-	args: string[];
-	cwd: string;
-	expectSuccess: boolean;
-	env: Record<string, string>;
-	command: string[];
-	source: string;
-}
 
 /** Observe successful standard CLI workloads without changing their output or verification context. */
 export async function measureHarness(input: Input, run: Runner): Promise<CommandResult> {
@@ -50,6 +36,8 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 }
 
 function measuredUnits(args: string[]): string[] {
+	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
+	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];
 	if (args[0] === 'history' && args[1] === 'build')
 		return [
@@ -67,6 +55,37 @@ function measuredUnits(args: string[]): string[] {
 		? [...units, 'function.regression-history']
 		: units;
 }
+
+// These units execute in the native-fixture run. Figures describe the complete CLI workload.
+const benchmarkRunUnits = [
+	'command.benchmark',
+	'service.benchmark',
+	'adapter.codex-benchmark',
+	'adapter.claude-benchmark',
+	'repository.benchmark',
+	'validator.benchmark-definition',
+	'function.benchmark-events',
+	'function.benchmark-process',
+	'workflow.benchmark-definition',
+	'workflow.benchmark-evaluate',
+	'workflow.benchmark-metrics',
+	'workflow.benchmark-trial',
+	'workflow.benchmark-workspace',
+	'workflow.run-benchmark',
+	'function.command-action',
+	'entry.program',
+	'entry.index'
+];
+
+const measuredWorkloads: Record<string, string[]> = {
+	'benchmark:run': benchmarkRunUnits,
+	'analytics:benchmarks': [
+		'service.analytics',
+		'workflow.analytics-metrics',
+		'entry.program',
+		'entry.index'
+	]
+};
 
 function recordUsage(units: string[], args: string[], duration: number, usage: string): void {
 	const resident =

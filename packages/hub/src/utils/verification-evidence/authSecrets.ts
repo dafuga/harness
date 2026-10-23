@@ -2,14 +2,6 @@ import { base64url } from 'jose';
 
 export const encoder = new TextEncoder();
 
-export interface AuthSecrets {
-	/** Keyed lookup hash, stored in place of an opaque secret. */
-	hash(purpose: string, value: string): Promise<string>;
-	seal(plain: string, context: string): Promise<string>;
-	/** Null when the key, the context or the ciphertext does not match. */
-	open(sealed: string, context: string): Promise<string | null>;
-}
-
 export function randomToken(bytes = 32): string {
 	return base64url.encode(crypto.getRandomValues(new Uint8Array(bytes)));
 }
@@ -37,3 +29,5 @@ export {
 	normalizeCode
 } from '../../lib/verification-evidence/server/auth/native-handoff-service/authSecrets';
 export { emailCode } from '../../services/verification-evidence/email-proof-service/authSecrets';
+
+export type { AuthSecrets } from './authSecrets.types';

@@ -1,7 +1,5 @@
+import type { HostFixture } from './remote-host-holds.types';
 import { deferred } from './remote-fixture';
-import type { hostFixture } from './remote-host-fixture';
-
-export type HostFixture = Awaited<ReturnType<typeof hostFixture>>;
 
 /**
  * The real encrypted store with its first read, or its first write, held open until released.
@@ -42,3 +40,5 @@ export async function turnedOn(f: HostFixture): Promise<number> {
 export async function storedOn(f: HostFixture): Promise<boolean> {
 	return (await f.storeFor().read())?.enabled ?? false;
 }
+
+export type { HostFixture } from './remote-host-holds.types';

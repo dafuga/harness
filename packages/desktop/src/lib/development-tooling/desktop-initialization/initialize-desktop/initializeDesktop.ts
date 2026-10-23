@@ -1,3 +1,4 @@
+import type { Backend } from './initializeDesktop.types';
 import { NativeConnectionService } from '../NativeConnectionService';
 import { ProjectRegistryService } from '../../../../services/projects-sessions/ProjectRegistryService';
 import { CommentOutboxService } from '../../../../services/projects-sessions/CommentOutboxService';
@@ -37,8 +38,6 @@ import { NavigationValidator } from '../../../../validators/explorer-ui/Navigati
 protocol.registerSchemesAsPrivileged([
 	{ scheme: 'harness', privileges: { standard: true, secure: true, supportFetchAPI: true } }
 ]);
-
-type Backend = ReturnType<typeof desktopBackend>;
 
 /** The window, while there is one, and the client the main process keeps for it. */
 const windows: { current: { window: BrowserWindow; client: LocalClientService } | null } = {
@@ -215,3 +214,5 @@ void initializeDesktop().catch((error: unknown) => {
 	console.error(error);
 	app.exit(1);
 });
+
+export type { desktopBackend };

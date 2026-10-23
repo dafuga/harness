@@ -1,11 +1,10 @@
+import type { Action } from './runHooks.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../core/development-tooling/errors';
 import { CommitMessageService } from '../../services/git-source-history/commit-message-service/CommitMessageService';
 import { HookInstallService, type HookStatus } from './hook-install-service/HookInstallService';
 import { HookRunService, type HookOutcome } from './hook-run-service/HookRunService';
-
-type Action = 'install' | 'uninstall' | 'status';
 
 /** Variables Git sets for a hook; with them, commands run by a check would act on this repository. */
 const gitHookVariables = ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_PREFIX'];

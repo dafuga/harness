@@ -10,7 +10,8 @@
 		"source": [
 			"packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.types.ts"
 		],
 		"symbols": [
 			"HostedEvidenceAdapter",
@@ -19,7 +20,8 @@
 			"HostedEvidenceAdapter.constructor",
 			"HostedEvidenceAdapter.path",
 			"HostedEvidenceAdapter.evidence",
-			"HostedEvidenceAdapter.artifact"
+			"HostedEvidenceAdapter.artifact",
+			"Query"
 		]
 	},
 	"contract": {

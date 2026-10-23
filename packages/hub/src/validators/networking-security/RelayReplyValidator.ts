@@ -1,11 +1,9 @@
+import type { Fields, Device } from './RelayReplyValidator.types';
 import type {
 	RelayRegistered,
 	RemoteHostSummary
 } from '../../../../remote/src/models/RemoteRelay.types';
 import { hubFail } from '../../utils/development-tooling/hubJson';
-
-type Fields = Record<string, unknown>;
-type Device = RemoteHostSummary['devices'][number];
 
 function unavailable(): never {
 	return hubFail('unavailable');

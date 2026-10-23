@@ -1,10 +1,9 @@
+import type { Approval } from './remoteHost.svelte.types';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type {
 	RemoteDesktopControl,
 	RemoteHostStatus
 } from '../../../models/development-tooling/Environment.types';
-
-type Approval = Parameters<RemoteDesktopControl['approvePairing']>[0];
 
 /**
  * Phone access to this computer, as the desktop control port reports it: public metadata only.
@@ -87,4 +86,6 @@ class RemoteHostState {
 export function createRemoteHostStore(workspace: Workspace) {
 	return new RemoteHostState(workspace);
 }
-export type RemoteHost = RemoteHostState;
+
+export type { RemoteHost } from './remoteHost.svelte.types';
+export type { RemoteHostState };

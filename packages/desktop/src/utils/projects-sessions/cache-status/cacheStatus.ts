@@ -12,10 +12,6 @@ export const deniedNotice = 'Access to this shared project ended. Connect again 
 
 export const offlineNotice = 'Offline cached view. Comments and changes need a connection.';
 
-export interface OfflineView {
-	cachedAt: string | null;
-}
-
 /** Offline nothing can be changed, and nothing is promised about current membership. */
 export function offlineCapabilities(source: ProjectCapabilities['source']): ProjectCapabilities {
 	return { ...closedCapabilities, source, reason: offlineNotice };
@@ -71,3 +67,5 @@ export function cacheStatus(workspace: Workspace, event: CacheStatus): void {
 	if (event.status === 'offline' && event.projectId === workspace.projectId)
 		markOffline(workspace, event.cachedAt ?? null);
 }
+
+export type { OfflineView } from './cacheStatus.types';

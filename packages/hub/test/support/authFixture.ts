@@ -1,10 +1,9 @@
+import type { AuthFixture } from './authFixture.types';
 import type { Actor } from 'collaboration';
 import { SessionRepository } from '../../src/repositories/SessionRepository';
 import { authSecrets } from '../../src/lib/server/auth/authSecrets';
-import type { AuthSecrets } from '../../src/utils/authSecrets';
 import { START } from './googleFixture';
 import { memoryAuthStore } from './memoryAuthStore';
-import type { MemoryAuthStore } from './memoryAuthStore';
 
 export const ORIGIN = 'https://hub.test';
 export const SECRET = 'synthetic-session-secret-0123456789abcdef';
@@ -20,14 +19,6 @@ export const grace: Actor = {
 	name: 'Grace Example',
 	emailVerified: true
 };
-
-export interface AuthFixture {
-	store: MemoryAuthStore;
-	secrets: AuthSecrets;
-	sessions: SessionRepository;
-	now: () => number;
-	advance(milliseconds: number): void;
-}
 
 /** Shared synthetic state with a clock the test moves by hand. */
 export function authFixture(): AuthFixture {
@@ -49,3 +40,5 @@ export function authFixture(): AuthFixture {
 export function browserGrant(actor: Actor = ada) {
 	return { kind: 'browser' as const, actor, resource: 'projects', parentHash: null };
 }
+
+export type { AuthFixture } from './authFixture.types';

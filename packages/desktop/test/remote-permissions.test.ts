@@ -1,13 +1,10 @@
+import type { Client } from './remote-permissions.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { agentMethods, controlMethods, localMethods } from '../../remote/src/index';
 import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';
 import { remoteFixture } from './remote-fixture';
 import { fixture, git } from './run-fixture';
-
-type Client = Awaited<
-	ReturnType<ReturnType<Awaited<ReturnType<typeof remoteFixture>>['device']>['connect']>
->['client'];
 /** The refusal code of a request, or `accepted`. */
 const outcome = (client: Client, method: string, input: Record<string, unknown> = {}) =>
 	client.request(method as never, input).then(

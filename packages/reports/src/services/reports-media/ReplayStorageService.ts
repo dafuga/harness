@@ -1,3 +1,4 @@
+import type { Receipts } from './ReplayStorageService.types';
 import { createHash } from 'node:crypto';
 import { lstat, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -6,7 +7,6 @@ import { R2EvidenceStoreAdapter, replayObjectKey } from '../../adapters/R2Eviden
 import { registeredAsset } from '../../utils/reports-media/reportAssets';
 import { atomicJson, readJson } from '../../utils/reports-media/reportFiles';
 import { reportRetention } from '../../utils/reports-media/reportRetention';
-type Receipts = Record<string, string>;
 async function receipts(directory: string): Promise<Receipts> {
 	if ((await lstat(directory)).isSymbolicLink()) throw new Error('Invalid replay directory');
 	return readJson<Receipts>(join(directory, 'storage.json')).catch(

@@ -10,15 +10,17 @@
 		"source": [
 			"packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1EmailStores.ts",
 			"packages/hub/src/utils/d1EmailStores.ts",
-			"packages/hub/src/utils/networking-security/d1EmailStores.ts"
+			"packages/hub/src/utils/networking-security/d1EmailStores.ts",
+			"packages/hub/src/utils/networking-security/d1EmailStores.types.ts"
 		],
 		"symbols": [
 			"d1EmailStores",
 			"d1EmailStores",
 			"EMAIL_PURGES",
-			"D1EmailStores",
 			"EMAIL_PURGES",
-			"d1EmailStores"
+			"d1EmailStores",
+			"D1EmailStores",
+			"D1EmailStores"
 		]
 	},
 	"contract": {

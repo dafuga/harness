@@ -1,13 +1,5 @@
+import type { CodexModel } from './providerModels.types';
 import type { ModelChoice } from '../../../models/development-tooling/Desktop.types';
-
-interface CodexModel {
-	model: string;
-	displayName: string;
-	hidden: boolean;
-	supportedReasoningEfforts: { reasoningEffort: string }[];
-	defaultReasoningEffort: string;
-	isDefault: boolean;
-}
 
 export function providerModels(models: CodexModel[]): ModelChoice[] {
 	return models

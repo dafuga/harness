@@ -1,11 +1,6 @@
+import type { LegacyRun } from './LegacyReportRepository.types';
 import { readdir, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-
-export interface LegacyRun {
-	/** Directory name of the run in the old store. */
-	id: string;
-	manifest: unknown;
-}
 
 /**
  * The old report store, opened for reading only. Nothing here creates, changes or removes a
@@ -49,3 +44,5 @@ function parseJson(text: string): unknown {
 		return undefined;
 	}
 }
+
+export type { LegacyRun } from './LegacyReportRepository.types';

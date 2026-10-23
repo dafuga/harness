@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/UploadAudio.svelte",
-			"packages/reports/src/components/reports-media/UploadAudio.svelte"
+			"packages/reports/src/components/reports-media/UploadAudio.svelte",
+			"packages/reports/src/components/reports-media/UploadAudio.types.ts"
 		],
-		"symbols": ["UploadAudio", "UploadAudio"]
+		"symbols": ["UploadAudio", "UploadAudio", "Kind"]
 	},
 	"contract": {
 		"origin": "declared",

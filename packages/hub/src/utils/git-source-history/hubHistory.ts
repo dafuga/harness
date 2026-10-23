@@ -1,11 +1,6 @@
-import type { HistoryEvent } from '../../../../desktop/src/models/Desktop.types';
+import type { HubHistoryPage } from './hubHistory.types';
 import type { HubSourceContext } from '../development-tooling/hubSource';
 import { hubFail } from '../development-tooling/hubJson';
-export interface HubHistoryPage {
-	entries: HistoryEvent[];
-	complete: boolean;
-	nextPage: number | null;
-}
 export async function hubHistory(
 	context: HubSourceContext,
 	input: { branch?: string; paths: string[]; page?: number }
@@ -33,3 +28,5 @@ export async function hubHistory(
 			.sort((a, b) => b.at.localeCompare(a.at))
 	};
 }
+
+export type { HubHistoryPage } from './hubHistory.types';

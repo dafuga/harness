@@ -9,16 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/AudioUploadService.ts",
-			"packages/reports/src/services/reports-media/AudioUploadService.ts"
+			"packages/reports/src/services/reports-media/AudioUploadService.ts",
+			"packages/reports/src/services/reports-media/AudioUploadService.types.ts"
 		],
 		"symbols": [
 			"AudioUploadService",
-			"AudioUploadInput",
-			"AudioComparisonInput",
 			"AudioUploadService",
 			"AudioUploadService.constructor",
 			"AudioUploadService.upload",
-			"AudioUploadService.uploadComparison"
+			"AudioUploadService.uploadComparison",
+			"AudioUploadInput",
+			"AudioComparisonInput",
+			"AudioDetails",
+			"AudioUploadInput",
+			"AudioComparisonInput"
 		]
 	},
 	"contract": {

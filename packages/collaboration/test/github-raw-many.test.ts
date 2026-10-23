@@ -1,8 +1,7 @@
+import type { State, Files } from './github-raw-many.test.types';
 import { expect, test } from 'vitest';
 import { createHash } from 'node:crypto';
 import { Buffer } from 'node:buffer';
-type Files = Map<string, { text: string; bytes: Buffer; oid: string }>;
-type State = { mode: string; cancelled: number };
 import { createGitHubSource } from '../src/utils/create-git-hub-source/createGitHubSource';
 import { sourceRepository } from './githubFixture';
 const commit = 'a'.repeat(40),

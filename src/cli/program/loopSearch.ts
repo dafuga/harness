@@ -1,26 +1,12 @@
+import type { SearchLoopsInput, LoopSearchResult } from './loopSearch.types';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
 	isMissingFile,
 	loopPaths,
-	readLoop,
-	type LoopInput
+	readLoop
 } from '../../workflows/development-tooling/loop-state/loopState';
 import { listLoopTemplates } from '../../workflows/development-tooling/loop-templates/loopTemplates';
-
-export type LoopSearchKind = 'loop' | 'template';
-
-export interface LoopSearchResult {
-	kind: LoopSearchKind;
-	id: string;
-	title: string;
-	summary: string;
-	source: string;
-}
-
-export interface SearchLoopsInput extends LoopInput {
-	query?: string;
-}
 
 export async function searchLoops(input: SearchLoopsInput = {}): Promise<LoopSearchResult[]> {
 	const root = input.root ?? process.cwd();
@@ -89,3 +75,5 @@ function matches(result: LoopSearchResult, query: string): boolean {
 		value.toLowerCase().includes(query)
 	);
 }
+
+export type { LoopSearchKind, LoopSearchResult, SearchLoopsInput } from './loopSearch.types';

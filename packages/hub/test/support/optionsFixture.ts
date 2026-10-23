@@ -1,16 +1,9 @@
+import type { Planning, Stored, Json } from './optionsFixture.types';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
 import { author, fixture as planningFixture, git } from '../../../planning/test/planFixture';
 import { projectionFixture, unit, unitPath } from './projectionFixture';
-
-/**
- * SYNTHETIC design options as the real planning package commits them: plans are written in a
- * temporary Git repository by planning itself, and the hub then reads exactly the files committed
- * there. No image was generated; every picture is a small synthetic PNG of its own.
- */
-type Json = Record<string, unknown>;
-type Planning = Awaited<ReturnType<typeof planningFixture>>['api'];
 const generator = { provider: 'codex', model: 'synthetic' };
 const contract = {
 	responsibility: 'Synthetic options',
@@ -41,7 +34,6 @@ async function planned() {
 	await made.api.createPlan({ ...plan, goal: 'Review options', author, contract } as never);
 	return made;
 }
-type Stored = { versions: Json[]; path: string; contractHash: string };
 const read = async (api: Planning) =>
 	(await api.readPlan({ unitId: unit.id })) as unknown as Stored;
 const optionsOf = (version: Json) =>

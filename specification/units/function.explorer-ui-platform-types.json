@@ -7,8 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/explorer-ui/Platform.types.ts"],
-		"symbols": ["platformIds", "PlatformId", "PlatformStatus", "PlatformEntry", "PlatformCatalog"]
+		"source": ["src/core/explorer-ui/Platform.types.ts", "src/core/explorer-ui/PlatformValues.ts"],
+		"symbols": [
+			"PlatformId",
+			"PlatformStatus",
+			"PlatformEntry",
+			"PlatformCatalog",
+			"platformIds",
+			"platformIds"
+		]
 	},
 	"contract": {
 		"origin": "declared",

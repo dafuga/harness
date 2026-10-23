@@ -1,5 +1,5 @@
+import type { Kind, Reason } from './explorerVerdict.types';
 import type {
-	CoverageStanding,
 	ExplorerScenarioCoverage,
 	ExplorerVerdict
 } from '../../../models/explorer-ui/Explorer.types';
@@ -10,10 +10,6 @@ import type {
 } from '../../../models/explorer-ui/Harness.types';
 import { explorerCoverage } from './explorerCoverage';
 import { coverageWorst, reasonText } from '../explorerState';
-
-type Kind = CoverageStanding | 'unusable';
-
-type Reason = [Kind, string];
 
 /** The worst kind of reason names the verdict; the order is from worst to least. */
 const labels: Array<[Kind, string]> = [

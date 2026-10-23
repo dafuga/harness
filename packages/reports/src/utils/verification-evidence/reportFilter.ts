@@ -1,8 +1,7 @@
+import type { ScreenSize } from './reportFilter.types';
 import type { Evidence, Report } from '../../models/reports-media/Report.types';
 import { evidenceMedia } from './evidenceMedia';
 import { audioPairs } from '../reports-media/audioPairs';
-
-export type ScreenSize = 'mobile' | 'tablet' | 'desktop' | 'other';
 
 export function screenSize(item: Evidence): ScreenSize {
 	const viewport = (item.viewport || '').toLowerCase();
@@ -26,13 +25,6 @@ export function galleryEvidence(items: Evidence[], pairs = audioPairs(items)) {
 	);
 }
 
-export interface Filters {
-	search: string;
-	category: string;
-	phase: string;
-	status: string;
-}
-
 export function projectFilter(run: Report, query: string, project: string) {
 	return (
 		(!project || run.project.id === project) &&
@@ -41,3 +33,5 @@ export function projectFilter(run: Report, query: string, project: string) {
 }
 
 export { reportFilter } from '../../components/verification-evidence/evidence-grid/reportFilter';
+
+export type { ScreenSize, Filters } from './reportFilter.types';

@@ -9,16 +9,9 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
 
 ## What it holds
 
-- The SHA-1 object format with the original proof and committed behavior reviews. There are no refs;
-  parent history is not traversed.
-- For the ledger's `originalProof` and each file's current and previous reviews, it holds the commit, its root tree,
-  every tree down the path and the blob at that path.
-- The commits: `16ab6fdf66c235918411bf42bb02e39653653a05` (original proof),
-  `0816efe0e469ca8c3963f583590289d253961a79`, `9fb0505ef04992cc5b1716d2b7b5280d4f866036` and
-  `0f968c6c98050fb14bf7f7a29d174352755a87d2`,
-  `1bf1e0acb343c3894a34781787bd67cd41c57317`, `acb1a676d2a5186986369c5a4fb52ec1eabdaae9` and
-  `ff91d603c94486efdaddde9cd5e5288703cf38e2`. Earlier reviewed objects remain present. The original HistoryIndexService implementation
-  is retained alongside its migration record.
+- SHA-1 Git commit, tree and blob objects for the ledger's original proof and every current and previous review. No refs or unrelated source blobs are included.
+- Each reviewed source path and every tree down to it; parent history is not traversed. The original HistoryIndexService source and migration record remain present.
+- The repository-wide type migration retains prior reviews and adds committed source reviews for mechanical companion-file extraction. Later Source-tab test archiving keeps its own reviewed implementation.
 
 The Layouts update also retains implementation commit `ae9e65325` for layout design,
 planning writes and immutable formatter ignores.
@@ -64,3 +57,5 @@ git pack-objects --stdout --threads=1 < ids.txt > test/support/service-review-hi
 
 The pack's bytes can differ between Git versions; its object ids cannot. Check a new pack with
 `git index-pack --stdin` into an empty bare repository, then run `test/services/unit-index.test.ts`.
+
+Benchmark analytics retains implementation commit `9425223b3` for the additive query registration, rendering and snapshot fields.

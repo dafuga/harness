@@ -7,9 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/git-source-history/CatalogRepository.ts"],
+		"source": [
+			"src/repositories/git-source-history/CatalogRepository.ts",
+			"src/repositories/git-source-history/CatalogRepository.types.ts"
+		],
 		"symbols": [
-			"CatalogQuery",
 			"CatalogRepository",
 			"CatalogRepository.constructor",
 			"CatalogRepository.replace",
@@ -18,7 +20,9 @@
 			"CatalogRepository.consumers",
 			"CatalogRepository.history",
 			"CatalogRepository.records",
-			"CatalogRepository.scenarios"
+			"CatalogRepository.scenarios",
+			"CatalogQuery",
+			"CatalogQuery"
 		]
 	},
 	"contract": {

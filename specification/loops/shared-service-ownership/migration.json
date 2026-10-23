@@ -1572,44 +1572,73 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
+			"definition": "3f641a8d687006a3b8a4a12bccd84abb9dc14ea1704e76cc53af5f77581e6cfa",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
-				"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
-				"reason": "Retain the game branch\u2019s unload confirmation and quit-time window and backend guards."
-			}
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+				"definition": "3f641a8d687006a3b8a4a12bccd84abb9dc14ea1704e76cc53af5f77581e6cfa",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
+					"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
+					"reason": "Retain the game branch\u2019s unload confirmation and quit-time window and backend guards."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.native-connection",
 			"from": "packages/desktop/src/services/NativeConnectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-			"definition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133"
+			"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
+			"relocationDefinition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
+				"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f"
+			"definition": "0435f4b7a85e042232cfe12ae825a7b3c48895b3cbd315b0bc63df1e47a3e41b",
+			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+				"definition": "0435f4b7a85e042232cfe12ae825a7b3c48895b3cbd315b0bc63df1e47a3e41b",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.export-plans",
 			"from": "src/workflows/exportPlans.ts",
 			"to": "src/workflows/projects-sessions/generate-code/exportPlans.ts",
-			"definition": "c9339ec6bedaa209dcec34bf6434e5486c3ca3a3bfb80759c7759765bc6c34cf"
+			"definition": "68da0a8a4a75db0a1cf6f6399568a33f6844e244c6a5d9189e881ed6828da991",
+			"relocationDefinition": "c9339ec6bedaa209dcec34bf6434e5486c3ca3a3bfb80759c7759765bc6c34cf",
+			"review": {
+				"commit": "b708b7a4e6d950b7f0fc735948f5e30c00b45cf9",
+				"path": "src/workflows/projects-sessions/generate-code/exportPlans.ts",
+				"definition": "68da0a8a4a75db0a1cf6f6399568a33f6844e244c6a5d9189e881ed6828da991",
+				"reason": "Pure helper scaffolds emit a camelCase function file; derive its matching SDK export instead of the removed Helper class filename."
+			}
 		},
 		{
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "d52015f00de454015d23ba160638bc2f1284b076ade670319b59c4c85afe1b65",
+			"definition": "20d82a9911c8fbf0b9f59a2e7da692bd3654873a1bb3bca25ec2bd63e60fa1f4",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-				"definition": "d52015f00de454015d23ba160638bc2f1284b076ade670319b59c4c85afe1b65",
-				"reason": "Review independent capture retention, failed-command status and required observations; ignore only volatile launcher identity while retaining red/green validation."
+				"definition": "20d82a9911c8fbf0b9f59a2e7da692bd3654873a1bb3bca25ec2bd63e60fa1f4",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			},
 			"previousReviews": [
 				{
@@ -1623,6 +1652,12 @@
 					"path": "src/services/RegressionProofService.ts",
 					"definition": "50ff3a98e3e93eb0c0393cd95cf8a929b427d23e0f9b242046743b17ad8d40ec",
 					"reason": "Retain main\u2019s bounded failed-green diagnostics after relocation."
+				},
+				{
+					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "d52015f00de454015d23ba160638bc2f1284b076ade670319b59c4c85afe1b65",
+					"reason": "Review independent capture retention, failed-command status and required observations; ignore only volatile launcher identity while retaining red/green validation."
 				}
 			]
 		},
@@ -1630,33 +1665,64 @@
 			"unit": "workflow.load-units",
 			"from": "src/workflows/loadUnits.ts",
 			"to": "src/workflows/development-tooling/load-units/loadUnits.ts",
-			"definition": "9d367801f0fa6ade38ffdf6e7c305993641678882f75cca10eae2642226738dc",
+			"definition": "9bc21ddfafcb550af41159462c22749fc85d68cdbffdae9195d9fb0a464fe9f6",
 			"relocationDefinition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "src/workflows/loadUnits.ts",
-				"definition": "9d367801f0fa6ade38ffdf6e7c305993641678882f75cca10eae2642226738dc",
-				"reason": "Retain main\u2019s committed helper-example validation after relocation."
-			}
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
+				"definition": "9bc21ddfafcb550af41159462c22749fc85d68cdbffdae9195d9fb0a464fe9f6",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "src/workflows/loadUnits.ts",
+					"definition": "9d367801f0fa6ade38ffdf6e7c305993641678882f75cca10eae2642226738dc",
+					"reason": "Retain main\u2019s committed helper-example validation after relocation."
+				}
+			]
 		},
 		{
 			"unit": "service.unit-index",
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
-			"definition": "778cb54bcdb5124bbba4a4a7713eb68ba9bbc398edbbb93f94edd04daad12a03"
+			"definition": "7ddfbd9389331a61bcad4f2fbd1d89b2d7f6dc19f9f279764dc0be1862801ca4",
+			"relocationDefinition": "778cb54bcdb5124bbba4a4a7713eb68ba9bbc398edbbb93f94edd04daad12a03",
+			"review": {
+				"commit": "8e28bfa54b08ad3b43e8f89c9f3b452db28e6da1",
+				"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+				"definition": "7ddfbd9389331a61bcad4f2fbd1d89b2d7f6dc19f9f279764dc0be1862801ca4",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+					"definition": "9c90c0ea8a6b95ce4fb61fb6c62b97da447ab6a81ba9a0f6304e8dbed97f2c37",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "0e5adf8e0023141a2105822aa0343dfac0d8586df26d217c66c2746decdbacb3",
+			"definition": "cdfc98412273989b75c9f0f636659ae1dd091e86a8043273978d40f0815a2f57",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "1bf1e0acb343c3894a34781787bd67cd41c57317",
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "0e5adf8e0023141a2105822aa0343dfac0d8586df26d217c66c2746decdbacb3",
-				"reason": "Preserve declared catalog assignments when re-indexing module manifests."
-			}
+				"definition": "cdfc98412273989b75c9f0f636659ae1dd091e86a8043273978d40f0815a2f57",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "1bf1e0acb343c3894a34781787bd67cd41c57317",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "0e5adf8e0023141a2105822aa0343dfac0d8586df26d217c66c2746decdbacb3",
+					"reason": "Preserve declared catalog assignments when re-indexing module manifests."
+				}
+			]
 		},
 		{
 			"unit": "function.derived-responsibility",
@@ -1674,19 +1740,70 @@
 			"unit": "command.analytics",
 			"from": "src/commands/AnalyticsCommand.ts",
 			"to": "src/cli/program/AnalyticsCommand.ts",
-			"definition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
+			"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+			"previousReviews": [
+				{
+					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
+					"path": "src/cli/program/AnalyticsCommand.ts",
+					"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+					"reason": "Add benchmark queries while retaining CPU sampling and every existing analytics operation."
+				}
+			],
+			"review": {
+				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"path": "src/cli/program/AnalyticsCommand.ts",
+				"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+			},
+			"relocationDefinition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
 		},
 		{
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086"
+			"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
+			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
+			"review": {
+				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"path": "src/cli/program/AnalyticsService.ts",
+				"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
+				"reason": "Retain the additive benchmark analytics query alongside the current sibling type companion."
+			},
+			"previousReviews": [
+				{
+					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "58532f27f752986df0807a8fe0dcf9e55384d054b41f3a5f509fd424a2f8fafb",
+					"reason": "Render benchmark events through the existing filtered analytics snapshot."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "740811098f4c3e08b006a61e1f33aa237e4ee3658a7b48a0c243c9f1fc841607",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
+			"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+			"previousReviews": [
+				{
+					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+					"reason": "Expose selected benchmark events without changing existing analytics summaries or filters."
+				}
+			],
+			"review": {
+				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"path": "src/cli/program/analyticsMetrics.ts",
+				"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+			},
+			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
 		{
 			"unit": "workflow.analytics-jev-metrics",
@@ -1698,13 +1815,13 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "b46a6eeefb79f68661eaeae18ae934b919ca30dc5812ed7f3e1e02ef247453d0",
+			"definition": "c5d1707a8b06b0eef43e1c8475e6fb4cb5cf3658f9aadc72a3653ce3f0f51b59",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/utils/desktopBridge.ts",
-				"definition": "b46a6eeefb79f68661eaeae18ae934b919ca30dc5812ed7f3e1e02ef247453d0",
-				"reason": "Retain the game branch\u2019s game operations and project-independent game creation."
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+				"definition": "c5d1707a8b06b0eef43e1c8475e6fb4cb5cf3658f9aadc72a3653ce3f0f51b59",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			},
 			"previousReviews": [
 				{
@@ -1712,6 +1829,12 @@
 					"path": "packages/desktop/src/utils/desktopBridge.ts",
 					"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
 					"reason": "Retain main\u2019s deployment operations and active project scoping."
+				},
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/utils/desktopBridge.ts",
+					"definition": "b46a6eeefb79f68661eaeae18ae934b919ca30dc5812ed7f3e1e02ef247453d0",
+					"reason": "Retain the game branch\u2019s game operations and project-independent game creation."
 				}
 			]
 		},
@@ -1719,13 +1842,27 @@
 			"unit": "desktop.service.recorded-evidence",
 			"from": "packages/desktop/src/services/RecordedEvidenceService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
-			"definition": "20f742d0064d2f7b41ccff6bb63b5fddf59ea307c5df95c9b8882fb117efb79f"
+			"definition": "d816cf86236e43fa190e0447352dd828a7cf2d886e368e6061ad523b75460fe5",
+			"relocationDefinition": "20f742d0064d2f7b41ccff6bb63b5fddf59ea307c5df95c9b8882fb117efb79f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
+				"definition": "d816cf86236e43fa190e0447352dd828a7cf2d886e368e6061ad523b75460fe5",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.adapter.evidence-refs",
 			"from": "packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
-			"definition": "9e9e412ad8f06d522282097d50ea030e58dc73514c809cdb76f6c497774d4c84"
+			"definition": "3bf1ab5e665532667e97e3d3067a7a63778eb9baa90252a81c5b30b233e8a7e6",
+			"relocationDefinition": "9e9e412ad8f06d522282097d50ea030e58dc73514c809cdb76f6c497774d4c84",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
+				"definition": "3bf1ab5e665532667e97e3d3067a7a63778eb9baa90252a81c5b30b233e8a7e6",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.desktop-bridge",
@@ -1737,14 +1874,22 @@
 			"unit": "desktop.service.hosted-project",
 			"from": "packages/desktop/src/services/HostedProjectService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-			"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
+			"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
 			"relocationDefinition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/services/HostedProjectService.ts",
-				"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
-				"reason": "Retain the game branch\u2019s local game creation and reread of the open project."
-			}
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
+				"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/services/HostedProjectService.ts",
+					"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
+					"reason": "Retain the game branch\u2019s local game creation and reread of the open project."
+				}
+			]
 		},
 		{
 			"unit": "command.loop",
@@ -1763,7 +1908,14 @@
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3"
+			"definition": "78ac6ad38f03d0577fb8b8b3fed6b9a5ad4251def0ee8969b964a88ae1936de9",
+			"relocationDefinition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/loopEvaluate.ts",
+				"definition": "78ac6ad38f03d0577fb8b8b3fed6b9a5ad4251def0ee8969b964a88ae1936de9",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "adapter.desktop-archive",
@@ -1775,31 +1927,52 @@
 			"unit": "command.generate",
 			"from": "src/commands/generate.ts",
 			"to": "src/cli/program/generate.ts",
-			"definition": "7694a2189c935655b62d83136dacbd275d482657fd4fc26c3195d026dfebc224"
+			"definition": "c232dd7d8d968d835cc3d15fcd0db4d49658cada4bde19df8aaa3e4c3e56ba3e",
+			"relocationDefinition": "7694a2189c935655b62d83136dacbd275d482657fd4fc26c3195d026dfebc224",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/generate.ts",
+				"definition": "c232dd7d8d968d835cc3d15fcd0db4d49658cada4bde19df8aaa3e4c3e56ba3e",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.remote-host-runtime",
 			"from": "packages/desktop/src/services/RemoteHostRuntimeService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
-			"definition": "a051c6220e08e2287a7067ad22e9c2703627421b10f5d8b400a169581376c7e7"
+			"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
+			"relocationDefinition": "a051c6220e08e2287a7067ad22e9c2703627421b10f5d8b400a169581376c7e7",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
+				"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653"
+			"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
+			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+				"definition": "f94196b4018bf795307928eb69bc9d1a1409363c15695075d4e7e807cfb37dc7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
+			"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
-				"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
-				"reason": "Retain the game branch\u2019s project request extraction within method limits."
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+				"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			},
 			"previousReviews": [
 				{
@@ -1807,6 +1980,12 @@
 					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 					"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
 					"reason": "Retain main\u2019s measurement-aware hosted API replies."
+				},
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
+					"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
+					"reason": "Retain the game branch\u2019s project request extraction within method limits."
 				}
 			]
 		},
@@ -1820,7 +1999,14 @@
 			"unit": "hub.function.hub-evidence-read",
 			"from": "packages/hub/src/controllers/hub-api-controller/hubEvidenceRead.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts",
-			"definition": "5e52a9484eebb4051a965c031f8f5343f52c277b5cb90b91b84a30df3a6eff01"
+			"definition": "3f1c4e164dbc0a12a3bc9a0bffc64ca35e2c8321e8551e93edee857d3c3620d9",
+			"relocationDefinition": "5e52a9484eebb4051a965c031f8f5343f52c277b5cb90b91b84a30df3a6eff01",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts",
+				"definition": "3f1c4e164dbc0a12a3bc9a0bffc64ca35e2c8321e8551e93edee857d3c3620d9",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.hub-http",
@@ -1838,7 +2024,14 @@
 			"unit": "hub.controller.hub-remote",
 			"from": "packages/hub/src/controllers/HubRemoteController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-			"definition": "69949fa0a61ff7bc03b458c831cc2500e441bad89a146faab9191123f86bbbfc"
+			"definition": "568871fa63ff61e5b24d72dedd89947269410a8242f0c4def23667d56e4354f8",
+			"relocationDefinition": "69949fa0a61ff7bc03b458c831cc2500e441bad89a146faab9191123f86bbbfc",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
+				"definition": "568871fa63ff61e5b24d72dedd89947269410a8242f0c4def23667d56e4354f8",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.service.report-import",
@@ -1850,13 +2043,27 @@
 			"unit": "reports.adapter.vitest-report",
 			"from": "packages/reports/src/adapters/VitestReportAdapter.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/VitestReportAdapter.ts",
-			"definition": "53c8fb1eed34afa767c14c38f8e72d0dc228ccc8d18789e3fd5eb5889ea40282"
+			"definition": "9a985043ab15e7bb0cb64ae99e91c24ac4507478b334cc6d3bd22e743aee615d",
+			"relocationDefinition": "53c8fb1eed34afa767c14c38f8e72d0dc228ccc8d18789e3fd5eb5889ea40282",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/reports/src/services/reports-media/report-command-service/VitestReportAdapter.ts",
+				"definition": "9a985043ab15e7bb0cb64ae99e91c24ac4507478b334cc6d3bd22e743aee615d",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "remote.service.event-log",
 			"from": "packages/remote/src/services/EventLogService.ts",
 			"to": "packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
-			"definition": "9a31de9e16bf83a9a756a68fce57a344eb2e3710c077663ebd944e938745f68c"
+			"definition": "7b447aae00bb84d1eb86e7557cf97ea92f2e25358f2e93267b9640e34271aa03",
+			"relocationDefinition": "9a31de9e16bf83a9a756a68fce57a344eb2e3710c077663ebd944e938745f68c",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
+				"definition": "7b447aae00bb84d1eb86e7557cf97ea92f2e25358f2e93267b9640e34271aa03",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.impact",
@@ -1868,19 +2075,40 @@
 			"unit": "repository.agent-registry",
 			"from": "src/repositories/AgentRegistryRepository.ts",
 			"to": "src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts",
-			"definition": "3eb33e31f1fd393900c022be242f9a1d337c2526a53fa5143cc1dca29e1eb098"
+			"definition": "0176440c5545e6c17b1e5187db416a873166b60c7df70fdfcaf54cda52fb1c21",
+			"relocationDefinition": "3eb33e31f1fd393900c022be242f9a1d337c2526a53fa5143cc1dca29e1eb098",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts",
+				"definition": "0176440c5545e6c17b1e5187db416a873166b60c7df70fdfcaf54cda52fb1c21",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "relay.function.host-runtime",
 			"from": "packages/relay/src/utils/hostRuntime.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.ts",
-			"definition": "6354d18661261e6d3e34d0d735f5cf472ce06af946b09a4478e8500022d7744f"
+			"definition": "0fb947f36b20aa0d413ffbef6cf3aae3070389710ad79cd58a79ccb2084ca643",
+			"relocationDefinition": "6354d18661261e6d3e34d0d735f5cf472ce06af946b09a4478e8500022d7744f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/hostRuntime.ts",
+				"definition": "0fb947f36b20aa0d413ffbef6cf3aae3070389710ad79cd58a79ccb2084ca643",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "relay.service.host-command",
 			"from": "packages/relay/src/services/HostCommandService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
-			"definition": "f3976fc69c97ec44e8772db4c1ec91d10df896931b8e453967641bff17098e7b"
+			"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
+			"relocationDefinition": "f3976fc69c97ec44e8772db4c1ec91d10df896931b8e453967641bff17098e7b",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
+				"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.select-environment",
@@ -1892,13 +2120,27 @@
 			"unit": "desktop.adapter.electron-environment",
 			"from": "packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-			"definition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce"
+			"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
+			"relocationDefinition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+				"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.service.installation-token",
 			"from": "packages/hub/src/services/installation-token-service/InstallationTokenService.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/installation-token-service/InstallationTokenService.ts",
-			"definition": "a31b7359526ab249b8b6e501af9a486e252f1bf52054aa44b3fef6621458f38b"
+			"definition": "40e9f325708aef34976267e4306e007a5cbb420172f4543f0d1c351b52ad9b26",
+			"relocationDefinition": "a31b7359526ab249b8b6e501af9a486e252f1bf52054aa44b3fef6621458f38b",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/installation-token-service/InstallationTokenService.ts",
+				"definition": "40e9f325708aef34976267e4306e007a5cbb420172f4543f0d1c351b52ad9b26",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.github-app-jwt",
@@ -1910,31 +2152,66 @@
 			"unit": "command.history",
 			"from": "src/commands/HistoryCommand.ts",
 			"to": "src/cli/program/HistoryCommand.ts",
-			"definition": "4fd4f25488fa98509dc9442a3850a8916c9ffd1a7955e85b0010de13e11d9699"
+			"definition": "37aa8fae19bda219be9104ffce5c5cd9519584be6eabc469c729ba989faf107d",
+			"relocationDefinition": "4fd4f25488fa98509dc9442a3850a8916c9ffd1a7955e85b0010de13e11d9699",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/HistoryCommand.ts",
+				"definition": "37aa8fae19bda219be9104ffce5c5cd9519584be6eabc469c729ba989faf107d",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.import-reports",
 			"from": "src/workflows/importReports.ts",
 			"to": "src/cli/program/importReports.ts",
-			"definition": "173c3fd0c1504c8b601f875ef4df133d48df545f0003627d516d4a441ef078b6"
+			"definition": "29d36e7910bc475f84969efa7a3cd0821ad114338e066c167506b39a1103c9ee",
+			"relocationDefinition": "173c3fd0c1504c8b601f875ef4df133d48df545f0003627d516d4a441ef078b6",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/importReports.ts",
+				"definition": "29d36e7910bc475f84969efa7a3cd0821ad114338e066c167506b39a1103c9ee",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.run-budget",
 			"from": "src/workflows/runBudget.ts",
 			"to": "src/workflows/verification-evidence/run-budget/runBudget.ts",
-			"definition": "c0d6dfe19e737954a7def5fcedbc21fedb5c8f1fcf4c3beb4cc5d4efcfaae42d"
+			"definition": "d25b0db20838470c13b03536e8e232fe8a2f21c0cb13487266fd41f1dc004f01",
+			"relocationDefinition": "c0d6dfe19e737954a7def5fcedbc21fedb5c8f1fcf4c3beb4cc5d4efcfaae42d",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-budget/runBudget.ts",
+				"definition": "d25b0db20838470c13b03536e8e232fe8a2f21c0cb13487266fd41f1dc004f01",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.unit-benchmark",
 			"from": "src/services/UnitBenchmarkService.ts",
 			"to": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
-			"definition": "95a44da0ce4a824fca16a7832ee41fc64d683116aa168143555a0a9180adaffb"
+			"definition": "0feddcb3af3779c3c275a2a0e89a4c393f9db90f1701d601d9af498dccbd3f71",
+			"relocationDefinition": "95a44da0ce4a824fca16a7832ee41fc64d683116aa168143555a0a9180adaffb",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
+				"definition": "0feddcb3af3779c3c275a2a0e89a4c393f9db90f1701d601d9af498dccbd3f71",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.budget",
 			"from": "src/commands/BudgetCommand.ts",
 			"to": "src/cli/program/BudgetCommand.ts",
-			"definition": "86bae079a7c2d4df19d0b126d1988fe00a46c6e17d1f56c99b8230a416896cc1"
+			"definition": "ee1d8205cfac62bdf0eac21fc811c2cf4e69b1532b326e12d46b10bcfad0cfff",
+			"relocationDefinition": "86bae079a7c2d4df19d0b126d1988fe00a46c6e17d1f56c99b8230a416896cc1",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/BudgetCommand.ts",
+				"definition": "ee1d8205cfac62bdf0eac21fc811c2cf4e69b1532b326e12d46b10bcfad0cfff",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.sign-budget",
@@ -1959,7 +2236,14 @@
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4"
+			"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
+			"relocationDefinition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+				"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.hub-artifact-commit",
@@ -2025,7 +2309,14 @@
 			"unit": "command.kernel",
 			"from": "src/commands/KernelCommand.ts",
 			"to": "src/cli/program/KernelCommand.ts",
-			"definition": "d8f56da3fb0c704326eec59e045c71e08cf41ddaa98ee3c9c59c6b78fa83e371"
+			"definition": "04d300685102c96869426f3de0ccd9187775390b2bd95e3ac0e387262d305d12",
+			"relocationDefinition": "d8f56da3fb0c704326eec59e045c71e08cf41ddaa98ee3c9c59c6b78fa83e371",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/KernelCommand.ts",
+				"definition": "04d300685102c96869426f3de0ccd9187775390b2bd95e3ac0e387262d305d12",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.bench-measurement",
@@ -2037,13 +2328,27 @@
 			"unit": "workflow.run-kernel-bench",
 			"from": "src/workflows/run-kernel-bench/runKernelBench.ts",
 			"to": "src/cli/program/run-kernel-bench/runKernelBench.ts",
-			"definition": "5e7d9ea213ae8ee0619442e657976cd8fba97b7213f6c612fbf3614ceb85aec3"
+			"definition": "095bf4a2073241a400ec45b921c1df6451b18f5206e9f765fd7c6bc358a5a5ba",
+			"relocationDefinition": "5e7d9ea213ae8ee0619442e657976cd8fba97b7213f6c612fbf3614ceb85aec3",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/run-kernel-bench/runKernelBench.ts",
+				"definition": "095bf4a2073241a400ec45b921c1df6451b18f5206e9f765fd7c6bc358a5a5ba",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.kernel-benchmark",
 			"from": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"definition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f"
+			"definition": "8488272623badb55525a433da588d86a3fe902400048530750e06eb47738044f",
+			"relocationDefinition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+				"definition": "8488272623badb55525a433da588d86a3fe902400048530750e06eb47738044f",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.bench-samples",
@@ -2073,49 +2378,105 @@
 			"unit": "desktop.service.hosted-evidence",
 			"from": "packages/desktop/src/services/HostedEvidenceService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
-			"definition": "3e00646f73cc3637b2bfe2472711b4aadc2854340bd792eee4568d195b083fec"
+			"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
+			"relocationDefinition": "3e00646f73cc3637b2bfe2472711b4aadc2854340bd792eee4568d195b083fec",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
+				"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.relay-link",
 			"from": "packages/desktop/src/services/relay-link-service/RelayLinkService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
-			"definition": "001bc6336fe43c5f2ba0a17caa6c00c55fa2ef254a9089931ef3bfd8773d22d3"
+			"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
+			"relocationDefinition": "001bc6336fe43c5f2ba0a17caa6c00c55fa2ef254a9089931ef3bfd8773d22d3",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
+				"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.relay-frame",
 			"from": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
-			"definition": "c73bfca3686cc759002345ef1fc8b27750c7cb3ad6e44628483fbd48a8da992a"
+			"definition": "a514558bdfc54e7528760fe6651f143fd7d6582d2aea2911c8b65a5afeb8fe1f",
+			"relocationDefinition": "c73bfca3686cc759002345ef1fc8b27750c7cb3ad6e44628483fbd48a8da992a",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
+				"definition": "a514558bdfc54e7528760fe6651f143fd7d6582d2aea2911c8b65a5afeb8fe1f",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.native-account-status",
 			"from": "packages/desktop/src/services/NativeAccountStatusService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAccountStatusService.ts",
-			"definition": "a68bd733bc96078afcc13b06d02101634df34b4ffacbfed6c59e61bb405c8033"
+			"definition": "945a9a40be04d39f6119efd3838551b02098662691bcaf9be27811c83d951029",
+			"relocationDefinition": "a68bd733bc96078afcc13b06d02101634df34b4ffacbfed6c59e61bb405c8033",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAccountStatusService.ts",
+				"definition": "945a9a40be04d39f6119efd3838551b02098662691bcaf9be27811c83d951029",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.units",
 			"from": "src/commands/UnitsCommand.ts",
 			"to": "src/cli/program/UnitsCommand.ts",
-			"definition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0"
+			"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
+			"relocationDefinition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/UnitsCommand.ts",
+				"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.inspect-units",
 			"from": "src/workflows/inspectUnits.ts",
 			"to": "src/cli/program/inspectUnits.ts",
-			"definition": "072cf1293671393fd361ca319d41b7dbb0a77de9cc57be8e81f46013d9296019"
+			"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
+			"relocationDefinition": "072cf1293671393fd361ca319d41b7dbb0a77de9cc57be8e81f46013d9296019",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/inspectUnits.ts",
+				"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38"
+			"definition": "be0462cdd4611009e66c05e818da3e783018dbcc6f4b4b1e464d67036f47053b",
+			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+				"definition": "be0462cdd4611009e66c05e818da3e783018dbcc6f4b4b1e464d67036f47053b",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9"
+			"definition": "fcfc6dd3b50f6abf780d83c14a847a0bc1d382bbb25a979d25b39086a3e53a38",
+			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+				"definition": "fcfc6dd3b50f6abf780d83c14a847a0bc1d382bbb25a979d25b39086a3e53a38",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.scenario-coverage",
@@ -2139,37 +2500,79 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936"
+			"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
+			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+				"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.recorded-builds",
 			"from": "src/services/record-assembly-service/recordedBuilds.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
-			"definition": "55d30881cbcba4fab3a23661992d3c2660f3be37182901d9d80c94dd0c1d3fb5"
+			"definition": "6994520d35139d22dc9858598583a42b897f249b0159fc16181a44d0951d2960",
+			"relocationDefinition": "55d30881cbcba4fab3a23661992d3c2660f3be37182901d9d80c94dd0c1d3fb5",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
+				"definition": "6994520d35139d22dc9858598583a42b897f249b0159fc16181a44d0951d2960",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.seal-record",
 			"from": "src/services/record-assembly-service/sealRecord.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
-			"definition": "479c0146db46857a37e33e2a651c9682ca71b480f0c163ce55d57d46286ec96a"
+			"definition": "af89bde1180830bd49fa270c385edc2a512df775969dd10c5fe4871797a15d3c",
+			"relocationDefinition": "479c0146db46857a37e33e2a651c9682ca71b480f0c163ce55d57d46286ec96a",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+				"definition": "af89bde1180830bd49fa270c385edc2a512df775969dd10c5fe4871797a15d3c",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.adapter.agent-settings",
 			"from": "packages/desktop/src/adapters/AgentSettingsAdapter.ts",
 			"to": "packages/desktop/src/lib/agents-providers/agent-settings/AgentSettingsAdapter.ts",
-			"definition": "75cd353f7784dc2f03fbbf87581a334db84bc3f62a1e38c61540387043685d37"
+			"definition": "eebcdece88c92aec6500a289e4135eaf0d1384c66da4cb68983963fdbf3afab0",
+			"relocationDefinition": "75cd353f7784dc2f03fbbf87581a334db84bc3f62a1e38c61540387043685d37",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/agents-providers/agent-settings/AgentSettingsAdapter.ts",
+				"definition": "eebcdece88c92aec6500a289e4135eaf0d1384c66da4cb68983963fdbf3afab0",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.controller.hub-auth",
 			"from": "packages/hub/src/controllers/HubAuthController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/HubAuthController.ts",
-			"definition": "55313229fc2a0d03f59c4a06de96bda2576637c2d971f3afbc08ba3d985cadf9"
+			"definition": "bf5841ca247c8680a9acc455ea01cf5ea2b8da6838a2e1900af1c0d7a52a8896",
+			"relocationDefinition": "55313229fc2a0d03f59c4a06de96bda2576637c2d971f3afbc08ba3d985cadf9",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/HubAuthController.ts",
+				"definition": "bf5841ca247c8680a9acc455ea01cf5ea2b8da6838a2e1900af1c0d7a52a8896",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.remote-lifecycle",
 			"from": "packages/desktop/src/services/RemoteLifecycleService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteLifecycleService.ts",
-			"definition": "720333cecb5bf9cd05f3dae6365a30baffa591228b0c5d43545a827a1746cfae"
+			"definition": "8bdb0759b9c13e5646c9bd8b4a006f455fc2be44a5d6831c6ba6dbccd3d4ff7f",
+			"relocationDefinition": "720333cecb5bf9cd05f3dae6365a30baffa591228b0c5d43545a827a1746cfae",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteLifecycleService.ts",
+				"definition": "8bdb0759b9c13e5646c9bd8b4a006f455fc2be44a5d6831c6ba6dbccd3d4ff7f",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.codex",
@@ -2199,13 +2602,27 @@
 			"unit": "reports.adapter.report-pages-retention",
 			"from": "packages/reports/src/adapters/ReportPagesRetentionAdapter.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
-			"definition": "8277258b463411f5dc0b60f2f199e7d2b83478fc9fbe986bac924e1de01a5df4"
+			"definition": "e7aae4518baf087b89273b4e636084e439d56ef74ecf1b38a759e604c8fcfe97",
+			"relocationDefinition": "8277258b463411f5dc0b60f2f199e7d2b83478fc9fbe986bac924e1de01a5df4",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts",
+				"definition": "e7aae4518baf087b89273b4e636084e439d56ef74ecf1b38a759e604c8fcfe97",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.loop-templates",
 			"from": "src/workflows/loopTemplates.ts",
 			"to": "src/workflows/development-tooling/loop-templates/loopTemplates.ts",
-			"definition": "84f016c884e52779a602337666b3550448dfad30e71d818d12e3b16cf1c88b19"
+			"definition": "2f4247ddc6f432d67c22a2d1ea5c162f39d1877bebcee65248a350ae9e82e0e8",
+			"relocationDefinition": "84f016c884e52779a602337666b3550448dfad30e71d818d12e3b16cf1c88b19",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/development-tooling/loop-templates/loopTemplates.ts",
+				"definition": "2f4247ddc6f432d67c22a2d1ea5c162f39d1877bebcee65248a350ae9e82e0e8",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.built-in-loop-templates",
@@ -2217,19 +2634,40 @@
 			"unit": "reports.adapter.playwright-report",
 			"from": "packages/reports/src/adapters/PlaywrightReportAdapter.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/PlaywrightReportAdapter.ts",
-			"definition": "59b0c3c429381266f91ac81e870eb49cd145d810a4c8ad7f6055844379923bea"
+			"definition": "50ca1f902f53e1f675e152507afdb074691caf55e3992be0ef7961c2be3474f7",
+			"relocationDefinition": "59b0c3c429381266f91ac81e870eb49cd145d810a4c8ad7f6055844379923bea",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/reports/src/services/reports-media/report-command-service/PlaywrightReportAdapter.ts",
+				"definition": "50ca1f902f53e1f675e152507afdb074691caf55e3992be0ef7961c2be3474f7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.manage-units",
 			"from": "src/workflows/manageUnits.ts",
 			"to": "src/cli/program/manageUnits.ts",
-			"definition": "9724dcb63f8d4269c25b93b40fe77fac47ecd44518b088f3f0e8b47a79c03353"
+			"definition": "fbf0eb9a9e1831f1455c480266bd3a7ace78dcfe9fc32054f6a1bcc6e8df71b6",
+			"relocationDefinition": "9724dcb63f8d4269c25b93b40fe77fac47ecd44518b088f3f0e8b47a79c03353",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/manageUnits.ts",
+				"definition": "fbf0eb9a9e1831f1455c480266bd3a7ace78dcfe9fc32054f6a1bcc6e8df71b6",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.explain",
 			"from": "src/commands/ExplainCommand.ts",
 			"to": "src/cli/program/ExplainCommand.ts",
-			"definition": "636caa893839ad5ff25739fe30fec6419c6cbd5ff3772dbf3174d116a63f3b84"
+			"definition": "56ccecfbd69d81db4ea77328eb1c9a2ff5126c4fcd93c02b441653abf30364fa",
+			"relocationDefinition": "636caa893839ad5ff25739fe30fec6419c6cbd5ff3772dbf3174d116a63f3b84",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/ExplainCommand.ts",
+				"definition": "56ccecfbd69d81db4ea77328eb1c9a2ff5126c4fcd93c02b441653abf30364fa",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.project-session",
@@ -2254,7 +2692,14 @@
 			"unit": "desktop.function.catalog-detail",
 			"from": "packages/desktop/src/services/catalog-service/catalogDetail.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
-			"definition": "1ceee21dff48fa90b8ba7aa477d5eb90b99c6f96e2a2bf14b3b05071ebb65b31"
+			"definition": "adda1a4ffe96275b3aef4ce4e9d11c16aa532ddddf4f1e130679b2fcfa8c8ea2",
+			"relocationDefinition": "1ceee21dff48fa90b8ba7aa477d5eb90b99c6f96e2a2bf14b3b05071ebb65b31",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
+				"definition": "adda1a4ffe96275b3aef4ce4e9d11c16aa532ddddf4f1e130679b2fcfa8c8ea2",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.catalog-history",
@@ -2279,7 +2724,14 @@
 			"unit": "relay.controller.public-relay",
 			"from": "packages/relay/src/controllers/PublicRelayController.ts",
 			"to": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
-			"definition": "312fda1bbc8e913bb9972dbb7598d7ab2ed09a616b07cf1d9a44ebb77697120a"
+			"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
+			"relocationDefinition": "312fda1bbc8e913bb9972dbb7598d7ab2ed09a616b07cf1d9a44ebb77697120a",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
+				"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "relay.middleware.connect-guard",
@@ -2291,13 +2743,27 @@
 			"unit": "hub.adapter.resend-email",
 			"from": "packages/hub/src/adapters/ResendEmailAdapter.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/ResendEmailAdapter.ts",
-			"definition": "43ef13121cd7579d9b91c52940fe89fd69ba4f502b3ec8122376bb81c6dfb752"
+			"definition": "efeaa81cde75f16b572dea854829355ca31d8c52b20dff594bd81b95aec00a28",
+			"relocationDefinition": "43ef13121cd7579d9b91c52940fe89fd69ba4f502b3ec8122376bb81c6dfb752",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/ResendEmailAdapter.ts",
+				"definition": "efeaa81cde75f16b572dea854829355ca31d8c52b20dff594bd81b95aec00a28",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.controller.email-proof",
 			"from": "packages/hub/src/controllers/EmailProofController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/EmailProofController.ts",
-			"definition": "8badc98ed02ba3c7f2c6bc98684fbe1ecfdcda7fde9c168ff54d83361f93993f"
+			"definition": "62850930a4618889ab41605e5c041f361fc393f7b4df691e6184074a79bab553",
+			"relocationDefinition": "8badc98ed02ba3c7f2c6bc98684fbe1ecfdcda7fde9c168ff54d83361f93993f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/EmailProofController.ts",
+				"definition": "62850930a4618889ab41605e5c041f361fc393f7b4df691e6184074a79bab553",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.service.replay-video",
@@ -2315,19 +2781,40 @@
 			"unit": "desktop.service.remote-artifact-cache",
 			"from": "packages/desktop/src/services/RemoteArtifactCacheService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
-			"definition": "56dbb98929eb8ad7b80cef5fbffa6668e32ff3337ae716c9a7074a6183ba137f"
+			"definition": "1657bc24f92ea4859084b82e7cd4280632880c4a8fbdae8ed8c9b23fcebe4216",
+			"relocationDefinition": "56dbb98929eb8ad7b80cef5fbffa6668e32ff3337ae716c9a7074a6183ba137f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts",
+				"definition": "1657bc24f92ea4859084b82e7cd4280632880c4a8fbdae8ed8c9b23fcebe4216",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.console",
 			"from": "src/commands/ConsoleCommand.ts",
 			"to": "src/cli/program/ConsoleCommand.ts",
-			"definition": "04f06c12ee1be6bcd65cc0a8a46dea86d0923d9d30369bf472cea823435381ef"
+			"definition": "e6de559b2cd6b4401db8a3c0fae4512171af1f8b818adb596908a79552c0994d",
+			"relocationDefinition": "04f06c12ee1be6bcd65cc0a8a46dea86d0923d9d30369bf472cea823435381ef",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/ConsoleCommand.ts",
+				"definition": "e6de559b2cd6b4401db8a3c0fae4512171af1f8b818adb596908a79552c0994d",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.install-console",
 			"from": "src/workflows/installConsole.ts",
 			"to": "src/cli/program/installConsole.ts",
-			"definition": "4e5f4d4c88f90ae1c3c9d4c20c0ebc0404620b0751fde72cc789f689e47e9bba"
+			"definition": "e5811e922a75c21b821512d5310f604aa63e5984156a1f22a09318ecb552b522",
+			"relocationDefinition": "4e5f4d4c88f90ae1c3c9d4c20c0ebc0404620b0751fde72cc789f689e47e9bba",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/installConsole.ts",
+				"definition": "e5811e922a75c21b821512d5310f604aa63e5984156a1f22a09318ecb552b522",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "relay.service.host-registry",
@@ -2339,14 +2826,22 @@
 			"unit": "workflow.build-history",
 			"from": "src/workflows/buildHistory.ts",
 			"to": "src/cli/program/buildHistory.ts",
-			"definition": "e9818ce1c29b9ee4cc797e14fec7b41c1cebee52013edf57e9feb81f41c3ddfd",
+			"definition": "b1aa941bd3eabaf8f810edcc598f661a62fdc5ddca7668f91204f66028bdc008",
 			"relocationDefinition": "f3772641c01fa9fc01230cef507cf61d269c7ae4c1f468ce8466ad9f813344f0",
 			"review": {
-				"commit": "acb1a676d2a5186986369c5a4fb52ec1eabdaae9",
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 				"path": "src/cli/program/buildHistory.ts",
-				"definition": "e9818ce1c29b9ee4cc797e14fec7b41c1cebee52013edf57e9feb81f41c3ddfd",
-				"reason": "Report the SQLite catalog output with the existing history build summary."
-			}
+				"definition": "b1aa941bd3eabaf8f810edcc598f661a62fdc5ddca7668f91204f66028bdc008",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "acb1a676d2a5186986369c5a4fb52ec1eabdaae9",
+					"path": "src/cli/program/buildHistory.ts",
+					"definition": "e9818ce1c29b9ee4cc797e14fec7b41c1cebee52013edf57e9feb81f41c3ddfd",
+					"reason": "Report the SQLite catalog output with the existing history build summary."
+				}
+			]
 		},
 		{
 			"unit": "relay.service.socket-frame",
@@ -2376,13 +2871,27 @@
 			"unit": "desktop.service.local-transport",
 			"from": "packages/desktop/src/services/LocalTransportService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
-			"definition": "f3c24b924c74c2ac829123f1bd69cf51cb6d2303573f7e8611b7cd2461d62d71"
+			"definition": "2c8f72f2a24d06778497ca7e2247f58e35db26e989c392e875e38ab237144592",
+			"relocationDefinition": "f3c24b924c74c2ac829123f1bd69cf51cb6d2303573f7e8611b7cd2461d62d71",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalTransportService.ts",
+				"definition": "2c8f72f2a24d06778497ca7e2247f58e35db26e989c392e875e38ab237144592",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.adapter.console-bridge",
 			"from": "packages/reports/src/adapters/ConsoleBridgeAdapter.ts",
 			"to": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
-			"definition": "99210841b8655c75dc1c97ca9da4db278f8d762a9d7dec7244055e7b0b8dae85"
+			"definition": "108d87b898246e30997bfbd8953e92e215fadee37de1d8df1e7fe6aadae83f08",
+			"relocationDefinition": "99210841b8655c75dc1c97ca9da4db278f8d762a9d7dec7244055e7b0b8dae85",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
+				"definition": "108d87b898246e30997bfbd8953e92e215fadee37de1d8df1e7fe6aadae83f08",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "relay.adapter.host-storage",
@@ -2406,13 +2915,27 @@
 			"unit": "hub.service.google-identity",
 			"from": "packages/hub/src/services/GoogleIdentityService.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/GoogleIdentityService.ts",
-			"definition": "49a3f1cadcb4d94b996329a4d860098d5cafc28440c3e284468ede6de29faa19"
+			"definition": "cd84ba8705597ae9f0c4417e62839e9cc1250f658978a332228a6499c61a9ceb",
+			"relocationDefinition": "49a3f1cadcb4d94b996329a4d860098d5cafc28440c3e284468ede6de29faa19",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/GoogleIdentityService.ts",
+				"definition": "cd84ba8705597ae9f0c4417e62839e9cc1250f658978a332228a6499c61a9ceb",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.scenarios",
 			"from": "src/commands/ScenariosCommand.ts",
 			"to": "src/cli/program/ScenariosCommand.ts",
-			"definition": "a5876ffd75435e97960d08f4193096e9a62908d1e3461022ff3f75ed255ed0b1"
+			"definition": "fbad6beee4bc707815076b347524abdf82bae545a75c3508b3ee1dd0c20acb45",
+			"relocationDefinition": "a5876ffd75435e97960d08f4193096e9a62908d1e3461022ff3f75ed255ed0b1",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/ScenariosCommand.ts",
+				"definition": "fbad6beee4bc707815076b347524abdf82bae545a75c3508b3ee1dd0c20acb45",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.response-check",
@@ -2461,7 +2984,14 @@
 			"unit": "hub.function.hub-evidence-scope",
 			"from": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
-			"definition": "6ca680340adfdaf2b2b0cf008429abbb7d040c4a3919aceb8c31594b888a1f0b"
+			"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
+			"relocationDefinition": "6ca680340adfdaf2b2b0cf008429abbb7d040c4a3919aceb8c31594b888a1f0b",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+				"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.hub-notes",
@@ -2473,19 +3003,40 @@
 			"unit": "hub.service.hub-attached",
 			"from": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
 			"to": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
-			"definition": "74a581a9942c2de9e8539b9e6b0805da00738aea18fcc599b6ad93c366407a66"
+			"definition": "dedafdbbd530d778f6e5d97b779c59f635f42144c17ea30728448a800138e4cf",
+			"relocationDefinition": "74a581a9942c2de9e8539b9e6b0805da00738aea18fcc599b6ad93c366407a66",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
+				"definition": "dedafdbbd530d778f6e5d97b779c59f635f42144c17ea30728448a800138e4cf",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.hub-attached-record",
 			"from": "packages/hub/src/services/hub-attached-service/hubAttachedRecord.ts",
 			"to": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
-			"definition": "4df7c679ca09b18040550d79c50f27724890dcc57550f7384f410ef2d5d54fa5"
+			"definition": "81f81623d6058de6e3a9211e0bb19301afa33238170399bd0ec54aa54ea1d2e7",
+			"relocationDefinition": "4df7c679ca09b18040550d79c50f27724890dcc57550f7384f410ef2d5d54fa5",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts",
+				"definition": "81f81623d6058de6e3a9211e0bb19301afa33238170399bd0ec54aa54ea1d2e7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.hub-evidence-file",
 			"from": "packages/hub/src/services/hub-attached-service/hubEvidenceFile.ts",
 			"to": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
-			"definition": "6b7fbbd96c2e73a50150197450e5a7ebe8d6b9fb61efda39ef8fdc07177addab"
+			"definition": "32988b050028374331cd01163ebc105b7630954b1505f7dca6916ff5168fdeb7",
+			"relocationDefinition": "6b7fbbd96c2e73a50150197450e5a7ebe8d6b9fb61efda39ef8fdc07177addab",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts",
+				"definition": "32988b050028374331cd01163ebc105b7630954b1505f7dca6916ff5168fdeb7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.hub-pinned-source",
@@ -2497,19 +3048,40 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94"
+			"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
+			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+				"definition": "05e7b0ad0818cc4c6310d6a56abf0b26d62435fdd0fc85b3f6dcea083893b9dd",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-			"definition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8"
+			"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
+			"relocationDefinition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+				"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.console-install",
 			"from": "src/services/console-install-service/ConsoleInstallService.ts",
 			"to": "src/cli/program/console-install-service/ConsoleInstallService.ts",
-			"definition": "1ba3af29117ab81457c8ab86a5bb1de4610191ede5952f24a74585169c9ef116"
+			"definition": "16ce72bcb9c78348a174ed7097749e055f1116039c13ebaa57a15110ff5e1351",
+			"relocationDefinition": "1ba3af29117ab81457c8ab86a5bb1de4610191ede5952f24a74585169c9ef116",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/console-install-service/ConsoleInstallService.ts",
+				"definition": "16ce72bcb9c78348a174ed7097749e055f1116039c13ebaa57a15110ff5e1351",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.console-data-modules",
@@ -2533,13 +3105,27 @@
 			"unit": "command.hooks",
 			"from": "src/commands/HooksCommand.ts",
 			"to": "src/cli/program/HooksCommand.ts",
-			"definition": "afb8eec4ccffc73475632d6c2233e53549fbf7f5125840e5994a46854b35d96d"
+			"definition": "98355d75ffd729d5953caffe25e5be88e1080908f4ef034d66191aaefc2f144e",
+			"relocationDefinition": "afb8eec4ccffc73475632d6c2233e53549fbf7f5125840e5994a46854b35d96d",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/HooksCommand.ts",
+				"definition": "98355d75ffd729d5953caffe25e5be88e1080908f4ef034d66191aaefc2f144e",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.adapter.hosted-evidence",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"definition": "fde061067f0730945bc7cc76edcb411ee62318daa9bd504164739b5c53e32039"
+			"definition": "d3d5a3e4682b4d5aa9bc11aebeb6b78b267ede76d6af855804a055c43b2ec5b7",
+			"relocationDefinition": "fde061067f0730945bc7cc76edcb411ee62318daa9bd504164739b5c53e32039",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+				"definition": "d3d5a3e4682b4d5aa9bc11aebeb6b78b267ede76d6af855804a055c43b2ec5b7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.hosted-evidence-path",
@@ -2551,13 +3137,27 @@
 			"unit": "command.activity",
 			"from": "src/commands/ActivityCommand.ts",
 			"to": "src/cli/program/ActivityCommand.ts",
-			"definition": "c3a88eed52a534b2e567d34cb4af7a267a15b3e072b90ba76430c1fc9cb41034"
+			"definition": "8507e2f9c83bad9528498914c8205a1e5d196bd941dc0aa0495e7c94458d295c",
+			"relocationDefinition": "c3a88eed52a534b2e567d34cb4af7a267a15b3e072b90ba76430c1fc9cb41034",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/ActivityCommand.ts",
+				"definition": "8507e2f9c83bad9528498914c8205a1e5d196bd941dc0aa0495e7c94458d295c",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.device-session",
 			"from": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-			"definition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f"
+			"definition": "35a8cc71a4e882dbc3f2c662a0d0228eaed1f28d785dfbf3a069e06861145745",
+			"relocationDefinition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
+				"definition": "35a8cc71a4e882dbc3f2c662a0d0228eaed1f28d785dfbf3a069e06861145745",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.remote-failure-text",
@@ -2569,7 +3169,14 @@
 			"unit": "service.legacy-import",
 			"from": "src/services/legacy-import-service/LegacyImportService.ts",
 			"to": "src/cli/program/legacy-import-service/LegacyImportService.ts",
-			"definition": "985ecdd1a89c00854ef72625b8ac3065d5392f6ee09fc196e68e7583f9b7adbf"
+			"definition": "64ff8eee25aeb1fba660062789fa415f9e00d6b16b67ed08a4ab5113e2da5b07",
+			"relocationDefinition": "985ecdd1a89c00854ef72625b8ac3065d5392f6ee09fc196e68e7583f9b7adbf",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/legacy-import-service/LegacyImportService.ts",
+				"definition": "64ff8eee25aeb1fba660062789fa415f9e00d6b16b67ed08a4ab5113e2da5b07",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.legacy-report",
@@ -2581,7 +3188,14 @@
 			"unit": "repository.legacy-report",
 			"from": "src/repositories/LegacyReportRepository.ts",
 			"to": "src/cli/program/legacy-import-service/LegacyReportRepository.ts",
-			"definition": "fc721d08a5f37ac629dd391b192456c82fe7ab7aedb09e9710ffdcd50d766963"
+			"definition": "cff93b2b061edda0690716d821d2b12ab696cd99ad2bf945d8c37b08bd85b1ec",
+			"relocationDefinition": "fc721d08a5f37ac629dd391b192456c82fe7ab7aedb09e9710ffdcd50d766963",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/legacy-import-service/LegacyReportRepository.ts",
+				"definition": "cff93b2b061edda0690716d821d2b12ab696cd99ad2bf945d8c37b08bd85b1ec",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.projection-cache",
@@ -2611,13 +3225,27 @@
 			"unit": "desktop.service.remote-pairing-control",
 			"from": "packages/desktop/src/services/RemotePairingControlService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-			"definition": "387180118bceee12a21e4a25d91232047e1844acc24e79528c4902816fd1df06"
+			"definition": "3844804ed55b42bd507ad6d8664b1f23dfd2c174f0a6d0a44b8a64e1849096ac",
+			"relocationDefinition": "387180118bceee12a21e4a25d91232047e1844acc24e79528c4902816fd1df06",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
+				"definition": "3844804ed55b42bd507ad6d8664b1f23dfd2c174f0a6d0a44b8a64e1849096ac",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.service.hub-record-status",
 			"from": "packages/hub/src/services/HubRecordStatusService.ts",
 			"to": "packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.ts",
-			"definition": "100c55fe5d694f8d7c1212c0aa0bdf51187b992bc5845e40f652060c9d020708"
+			"definition": "723e0fe7c747114c239947640453e341f8149929220377faa0588bd14ca5ba8f",
+			"relocationDefinition": "100c55fe5d694f8d7c1212c0aa0bdf51187b992bc5845e40f652060c9d020708",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/HubRecordStatusService.ts",
+				"definition": "723e0fe7c747114c239947640453e341f8149929220377faa0588bd14ca5ba8f",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "adapter.handler-runtime",
@@ -2629,13 +3257,27 @@
 			"unit": "workflow.generate-unit",
 			"from": "src/workflows/generateUnit.ts",
 			"to": "src/cli/program/generateUnit.ts",
-			"definition": "01ad2cb45c272b1aa57b901d98d6a7f4161427ee11ac46d5403f06948fcaf62c"
+			"definition": "a912492e601eaa6116eda09a506b7783367dab366d126c2d75896bca53467933",
+			"relocationDefinition": "01ad2cb45c272b1aa57b901d98d6a7f4161427ee11ac46d5403f06948fcaf62c",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/generateUnit.ts",
+				"definition": "a912492e601eaa6116eda09a506b7783367dab366d126c2d75896bca53467933",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.adapter.mira-report",
 			"from": "packages/reports/src/adapters/MiraReportAdapter.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/MiraReportAdapter.ts",
-			"definition": "f10b3b46752d753cabb143b715d5c631163c463b058d8c33501272643d57c4e5"
+			"definition": "bbfecbcc42a568e1f8458ba6bfdb656ed27f9b956fe9341fd087e51ed45a2068",
+			"relocationDefinition": "f10b3b46752d753cabb143b715d5c631163c463b058d8c33501272643d57c4e5",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/reports/src/services/reports-media/report-command-service/MiraReportAdapter.ts",
+				"definition": "bbfecbcc42a568e1f8458ba6bfdb656ed27f9b956fe9341fd087e51ed45a2068",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "relay.controller.pairing",
@@ -2647,13 +3289,27 @@
 			"unit": "service.history-status",
 			"from": "src/services/HistoryStatusService.ts",
 			"to": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
-			"definition": "87c7256a47a4123f12fe84b1fcbe545919c9f68d9d8bf8af12ce2bb4e5cddb0a"
+			"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
+			"relocationDefinition": "87c7256a47a4123f12fe84b1fcbe545919c9f68d9d8bf8af12ce2bb4e5cddb0a",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
+				"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.attached-record",
 			"from": "src/services/attached-record-service/AttachedRecordService.ts",
 			"to": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"definition": "b8757575d793690dcd6f3daf521c33ca6d67b2a6d3d63ee7c1f22a002400b992"
+			"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
+			"relocationDefinition": "b8757575d793690dcd6f3daf521c33ca6d67b2a6d3d63ee7c1f22a002400b992",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+				"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.lfs-pointer",
@@ -2665,7 +3321,14 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502"
+			"definition": "c0c8e938ebe7537ff6697610d106e55e70bbc9243489cf608b69027423e25ee4",
+			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+				"definition": "c0c8e938ebe7537ff6697610d106e55e70bbc9243489cf608b69027423e25ee4",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.project-proposal",
@@ -2683,19 +3346,40 @@
 			"unit": "workflow.run-hooks",
 			"from": "src/workflows/runHooks.ts",
 			"to": "src/cli/program/runHooks.ts",
-			"definition": "1e216b824dc470d69c4ee5c04a8a9d6f0aa444dfb090eb561e92dd617472bf67"
+			"definition": "eafbdb63c9714886ed1503960c4f58765fca49c4625ceddb4b85e3dafcd95827",
+			"relocationDefinition": "1e216b824dc470d69c4ee5c04a8a9d6f0aa444dfb090eb561e92dd617472bf67",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/runHooks.ts",
+				"definition": "eafbdb63c9714886ed1503960c4f58765fca49c4625ceddb4b85e3dafcd95827",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.sync-history",
 			"from": "src/workflows/syncHistory.ts",
 			"to": "src/cli/program/syncHistory.ts",
-			"definition": "8cb31c39abef90bb9f8b728e2b2690eb0b7bd4168ef78487069b850c7d197e67"
+			"definition": "d49deaab1a14b47a77d1d7b93a9c8810dab963dbb9ccfbfd309997fdca40fa0f",
+			"relocationDefinition": "8cb31c39abef90bb9f8b728e2b2690eb0b7bd4168ef78487069b850c7d197e67",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/syncHistory.ts",
+				"definition": "d49deaab1a14b47a77d1d7b93a9c8810dab963dbb9ccfbfd309997fdca40fa0f",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.history-sync",
 			"from": "src/services/history-sync-service/HistorySyncService.ts",
 			"to": "src/cli/program/history-sync-service/HistorySyncService.ts",
-			"definition": "77f2dfda99fa773d749ac5db85fa15725eac3596a496d3d4a242c98e1c0f5711"
+			"definition": "1c5e30f493ba2b5bf2be09989a558b1641d49ee4ffdbd1fe62dc2fbc056e08ca",
+			"relocationDefinition": "77f2dfda99fa773d749ac5db85fa15725eac3596a496d3d4a242c98e1c0f5711",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/history-sync-service/HistorySyncService.ts",
+				"definition": "1c5e30f493ba2b5bf2be09989a558b1641d49ee4ffdbd1fe62dc2fbc056e08ca",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.history-refs",
@@ -2720,7 +3404,14 @@
 			"unit": "desktop.function.git-blobs",
 			"from": "packages/desktop/src/adapters/git-source-adapter/gitBlobs.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
-			"definition": "33e36f9afda2c67dafe8ac8750d80698f12501bb9c97a9b92d701169b2896f6f"
+			"definition": "112207d897c990c1eb89a5e1980fa9f0e008e6b9e55eb7241cd17554c1443cf9",
+			"relocationDefinition": "33e36f9afda2c67dafe8ac8750d80698f12501bb9c97a9b92d701169b2896f6f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
+				"definition": "112207d897c990c1eb89a5e1980fa9f0e008e6b9e55eb7241cd17554c1443cf9",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.git-read",
@@ -2744,13 +3435,27 @@
 			"unit": "desktop.adapter.remote-registration",
 			"from": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
-			"definition": "0b6b8fd1d9cbd054a71db55cd499d6ad412a4e65d86ea520e3ab8bf6414549a5"
+			"definition": "0a9926f6641d205003dc13959832bf6c59ba9bf7d74a03183e08ac3d9888d1e4",
+			"relocationDefinition": "0b6b8fd1d9cbd054a71db55cd499d6ad412a4e65d86ea520e3ab8bf6414549a5",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
+				"definition": "0a9926f6641d205003dc13959832bf6c59ba9bf7d74a03183e08ac3d9888d1e4",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740"
+			"definition": "c5597a0791a47bc9f41a5c1b22fa3a0115991f75b61c25681e3221742f18f462",
+			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+				"definition": "c5597a0791a47bc9f41a5c1b22fa3a0115991f75b61c25681e3221742f18f462",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.check-run",
@@ -2762,19 +3467,40 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6"
+			"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
+			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+				"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.service.report-storage-sync",
 			"from": "packages/reports/src/services/ReportStorageSyncService.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts",
-			"definition": "0873e5cbf4d526f8c2a6b385538548eb00943824900f94dbd00db8af2a834473"
+			"definition": "c7a3c2dfe105687b1c3a978ad7364c2f96b0ddadb575e937c32148c92fcf68a9",
+			"relocationDefinition": "0873e5cbf4d526f8c2a6b385538548eb00943824900f94dbd00db8af2a834473",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/reports/src/services/reports-media/report-command-service/ReportStorageSyncService.ts",
+				"definition": "c7a3c2dfe105687b1c3a978ad7364c2f96b0ddadb575e937c32148c92fcf68a9",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.service.request-session",
 			"from": "packages/hub/src/services/request-session-service/RequestSessionService.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/request-session-service/RequestSessionService.ts",
-			"definition": "e91d3ea0b35df80b51efb6d8cf83382cd993ffbe8e370d39e16f2029cb5c1eb6"
+			"definition": "7c14c36ba4d0a7f3181fb9bc98e1672e6eda4a0a8a43ad9201e24dbb5c17c703",
+			"relocationDefinition": "e91d3ea0b35df80b51efb6d8cf83382cd993ffbe8e370d39e16f2029cb5c1eb6",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/request-session-service/RequestSessionService.ts",
+				"definition": "7c14c36ba4d0a7f3181fb9bc98e1672e6eda4a0a8a43ad9201e24dbb5c17c703",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.auth-http",
@@ -2786,7 +3512,14 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc"
+			"definition": "4237e0be96a290c2ca0fa2912eae5a990eeaca57041a0c7ac1ac81231a23f605",
+			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/VerifyCommand.ts",
+				"definition": "4237e0be96a290c2ca0fa2912eae5a990eeaca57041a0c7ac1ac81231a23f605",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.analytics-html",
@@ -2798,7 +3531,14 @@
 			"unit": "hub.controller.hub-agent",
 			"from": "packages/hub/src/controllers/HubAgentController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
-			"definition": "0d95fa47025cad07d80735fa157260a9afa50cfece897f29a381021ec4253ead"
+			"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
+			"relocationDefinition": "0d95fa47025cad07d80735fa157260a9afa50cfece897f29a381021ec4253ead",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
+				"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.report",
@@ -2810,7 +3550,14 @@
 			"unit": "function.reports-environment",
 			"from": "src/workflows/run-report/reportsEnvironment.ts",
 			"to": "src/cli/program/run-report/reportsEnvironment.ts",
-			"definition": "0d914797cc82d740380dfddf99191e75e1ee67f0b59596edbf53aa2f4a8329a3"
+			"definition": "2ef76049642b4d853f70a176bfd0ebc8cbd569e06b219c77e43e14285bfac2dc",
+			"relocationDefinition": "0d914797cc82d740380dfddf99191e75e1ee67f0b59596edbf53aa2f4a8329a3",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/run-report/reportsEnvironment.ts",
+				"definition": "2ef76049642b4d853f70a176bfd0ebc8cbd569e06b219c77e43e14285bfac2dc",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.run-report",
@@ -2834,7 +3581,14 @@
 			"unit": "desktop.service.device-operations",
 			"from": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-			"definition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db"
+			"definition": "784d078f78fda8536a0c75c96171242770e87a91e28a752b0216454dd34e7811",
+			"relocationDefinition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
+				"definition": "784d078f78fda8536a0c75c96171242770e87a91e28a752b0216454dd34e7811",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.device-capabilities",
@@ -2877,7 +3631,14 @@
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"definition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2"
+			"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
+			"relocationDefinition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+				"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.cached-snapshot",
@@ -2901,13 +3662,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "392af9b941403a4de6f0df55e32810b357f07816e287a7eff6c4b50ef191e2ee",
+			"definition": "5e70fde5519a15663434e7eb8cdbef8b775393db4614423de72a5fc0bebce6e8",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/initializers/initializePreload.ts",
-				"definition": "392af9b941403a4de6f0df55e32810b357f07816e287a7eff6c4b50ef191e2ee",
-				"reason": "Retain the game branch\u2019s game bridge methods in the isolated preload."
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+				"definition": "5e70fde5519a15663434e7eb8cdbef8b775393db4614423de72a5fc0bebce6e8",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			},
 			"previousReviews": [
 				{
@@ -2915,6 +3676,12 @@
 					"path": "packages/desktop/src/initializers/initializePreload.ts",
 					"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
 					"reason": "Retain main\u2019s deployment bridge methods in the isolated preload."
+				},
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/initializers/initializePreload.ts",
+					"definition": "392af9b941403a4de6f0df55e32810b357f07816e287a7eff6c4b50ef191e2ee",
+					"reason": "Retain the game branch\u2019s game bridge methods in the isolated preload."
 				}
 			]
 		},
@@ -2922,26 +3689,48 @@
 			"unit": "desktop.service.local-transport-client",
 			"from": "packages/desktop/src/services/LocalTransportClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
-			"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
+			"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
 			"relocationDefinition": "0e3be5d2f39adfa9674e3c23158e2aa577543d021a80a90020a45076a8c361af",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/services/LocalTransportClientService.ts",
-				"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
-				"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
-			}
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts",
+				"definition": "1a861568730ba3682840b0f426290b0b49b7882bf5ed518b4e31e0e2af9bdb0d",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/services/LocalTransportClientService.ts",
+					"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
+					"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
+				}
+			]
 		},
 		{
 			"unit": "workflow.run-kernel-boundary",
 			"from": "src/workflows/runKernelBoundary.ts",
 			"to": "src/cli/program/runKernelBoundary.ts",
-			"definition": "470eeb9b21aae88f574630e79fcd67d6822b116c07ed98179b356784c618d642"
+			"definition": "8ecbd85dc0decc118485e79c38f0eaff903038ae874ee3081363d2829717f4b7",
+			"relocationDefinition": "470eeb9b21aae88f574630e79fcd67d6822b116c07ed98179b356784c618d642",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/runKernelBoundary.ts",
+				"definition": "8ecbd85dc0decc118485e79c38f0eaff903038ae874ee3081363d2829717f4b7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.manage-loop",
 			"from": "src/workflows/manageLoop.ts",
 			"to": "src/cli/program/manageLoop.ts",
-			"definition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe"
+			"definition": "e22f324c0ed193da968ea4323d97eff32fbbf3d4d3b69b49b630548ec5f96b19",
+			"relocationDefinition": "e95f68a7587b306a9f99bd633dad2b68e60c3f5c138bcbb7af1e4c5ee767a3fe",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/manageLoop.ts",
+				"definition": "e22f324c0ed193da968ea4323d97eff32fbbf3d4d3b69b49b630548ec5f96b19",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.legacy-history",
@@ -2965,7 +3754,14 @@
 			"unit": "remote.service.host-pairing",
 			"from": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-			"definition": "4a40e61e9dd41177d106b1e6d73e1040b90d29be5ecaba311a76a91c200e708e"
+			"definition": "63adebf2436e7b747da746f7d0a4bf93d751c376f9b1c1a831ddfba128d828bf",
+			"relocationDefinition": "4a40e61e9dd41177d106b1e6d73e1040b90d29be5ecaba311a76a91c200e708e",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
+				"definition": "63adebf2436e7b747da746f7d0a4bf93d751c376f9b1c1a831ddfba128d828bf",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "remote.function.remote-identity",
@@ -2977,7 +3773,14 @@
 			"unit": "workflow.response-check-evaluate",
 			"from": "src/workflows/responseCheckEvaluate.ts",
 			"to": "src/cli/program/responseCheckEvaluate.ts",
-			"definition": "ae5733eee279bb145f9c1c5a72a9b07ad7b9c1aa4cf7132cf4f27e9a3c6904ad"
+			"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
+			"relocationDefinition": "ae5733eee279bb145f9c1c5a72a9b07ad7b9c1aa4cf7132cf4f27e9a3c6904ad",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/responseCheckEvaluate.ts",
+				"definition": "dff12cecda5aa9dfdc4589cc72c1a66f31d331ede5eb710603f1241078a324e4",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "adapter.cpu-process",
@@ -3037,7 +3840,14 @@
 			"unit": "workflow.loop-next",
 			"from": "src/workflows/loopNext.ts",
 			"to": "src/cli/program/loopNext.ts",
-			"definition": "6765f316e35a3d071a8bd403b52f8e3b3cba90ef2740b71534ad718aeab0cc4c"
+			"definition": "9be130cd7edf9f07bd7d053a6a0b23ac402618daeecf41cb699ad876b97d401e",
+			"relocationDefinition": "6765f316e35a3d071a8bd403b52f8e3b3cba90ef2740b71534ad718aeab0cc4c",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/loopNext.ts",
+				"definition": "9be130cd7edf9f07bd7d053a6a0b23ac402618daeecf41cb699ad876b97d401e",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.remote-projection",
@@ -3049,13 +3859,27 @@
 			"unit": "desktop.service.project-discovery",
 			"from": "packages/desktop/src/services/ProjectDiscoveryService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
-			"definition": "83d804a14932dae5e1e35afc813a194dcd1991a9d879ebc5330b2eeea48e5d48"
+			"definition": "70e82b9f7e1ab0d08bcc2556d643d9933d01bfef0cfa79baa671e48c4c9a7faf",
+			"relocationDefinition": "83d804a14932dae5e1e35afc813a194dcd1991a9d879ebc5330b2eeea48e5d48",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts",
+				"definition": "70e82b9f7e1ab0d08bcc2556d643d9933d01bfef0cfa79baa671e48c4c9a7faf",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.review-clean-code",
 			"from": "src/workflows/reviewCleanCode.ts",
 			"to": "src/audit/development-tooling/reviewCleanCode.ts",
-			"definition": "44b4bab69c483cf432c2ed13f325f301a3b3fb4229a1663559dba7e8ea494c62"
+			"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
+			"relocationDefinition": "44b4bab69c483cf432c2ed13f325f301a3b3fb4229a1663559dba7e8ea494c62",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/audit/development-tooling/reviewCleanCode.ts",
+				"definition": "04e49773a58e5b15ed544714c7dd52931dec2568434bcdd0a6b0fa1e41460a10",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.plan-run",
@@ -3073,13 +3897,27 @@
 			"unit": "hub.adapter.github-api",
 			"from": "packages/hub/src/adapters/GithubApiAdapter.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.ts",
-			"definition": "554f401f137bae1fd6dcfebe9d1014f8fafeb0a049d42af6efd9a55a6376cb87"
+			"definition": "e89df0e7e1b20bebfdbecdf6c2064cc1f8d096cadafbcd74fcc7ddfbce597903",
+			"relocationDefinition": "554f401f137bae1fd6dcfebe9d1014f8fafeb0a049d42af6efd9a55a6376cb87",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/GithubApiAdapter.ts",
+				"definition": "e89df0e7e1b20bebfdbecdf6c2064cc1f8d096cadafbcd74fcc7ddfbce597903",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.adapter.d1-auth-store",
 			"from": "packages/hub/src/adapters/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
 			"to": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
-			"definition": "627dc6c31ac7b1db9f58e62d32a97024552e6c93eab258ad6319039e3361bd35"
+			"definition": "611e2b79319b9dfdc8c7f00ecda4d4fd03b2f176bae429450fa99b0617325bf7",
+			"relocationDefinition": "627dc6c31ac7b1db9f58e62d32a97024552e6c93eab258ad6319039e3361bd35",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts",
+				"definition": "611e2b79319b9dfdc8c7f00ecda4d4fd03b2f176bae429450fa99b0617325bf7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.d1-credential-stores",
@@ -3109,13 +3947,13 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "16603e9168a91a2ecbbd04328e02081bff2a233abb0717b6a2dba9831d53822e",
+			"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
 			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
 			"review": {
-				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+				"commit": "58d3f7e0ed7a888438f53413e729ba15f5ae7656",
 				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
-				"definition": "16603e9168a91a2ecbbd04328e02081bff2a233abb0717b6a2dba9831d53822e",
-				"reason": "Feed retained focused runs into workload history while keeping verification records, source growth and catalog output unchanged."
+				"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			},
 			"previousReviews": [
 				{
@@ -3123,6 +3961,18 @@
 					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
 					"definition": "4d4532d584d85b0c2d3504d5f5cb536118f9bd7baa021fd2d05b7eb5c41dcec0",
 					"reason": "Persist the catalog from the captured Git revision while retaining JSON history compatibility."
+				},
+				{
+					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+					"definition": "16603e9168a91a2ecbbd04328e02081bff2a233abb0717b6a2dba9831d53822e",
+					"reason": "Feed retained focused runs into workload history while keeping verification records, source growth and catalog output unchanged."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+					"definition": "0dc664d7a37b7bca22bc00d7a7f1d0fbd99b69f1594779343f1e709a38e22414",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},
@@ -3136,14 +3986,22 @@
 			"unit": "function.history-series",
 			"from": "src/services/history-index-service/historySeries.ts",
 			"to": "src/cli/program/history-index-service/historySeries.ts",
-			"definition": "8a433d3c04dc795e04af7e3ed16f67f063d601f410c58110cc4e24079e807c03",
+			"definition": "476daeb76e1573d1a5c34396fe9526be592b4bce41beaae06f5a20c14f7c9337",
 			"relocationDefinition": "92697a7d2e73e368db3abe4e27cc48a861b4e40b2ca75e7e3132b1fe5db910e9",
 			"review": {
-				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 				"path": "src/cli/program/history-index-service/historySeries.ts",
-				"definition": "8a433d3c04dc795e04af7e3ed16f67f063d601f410c58110cc4e24079e807c03",
-				"reason": "Review deduplicated focused workload series, rejecting gaps and revision-mismatched measurements without granting verification or budget approval."
-			}
+				"definition": "476daeb76e1573d1a5c34396fe9526be592b4bce41beaae06f5a20c14f7c9337",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+					"path": "src/cli/program/history-index-service/historySeries.ts",
+					"definition": "8a433d3c04dc795e04af7e3ed16f67f063d601f410c58110cc4e24079e807c03",
+					"reason": "Review deduplicated focused workload series, rejecting gaps and revision-mismatched measurements without granting verification or budget approval."
+				}
+			]
 		},
 		{
 			"unit": "function.revision-changes",
@@ -3167,7 +4025,14 @@
 			"unit": "relay.service.pairing-offer",
 			"from": "packages/relay/src/services/PairingOfferService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-			"definition": "445fee03b5c60d9fcaed7dd87b6aac01ff99f0c4d466b5c773277c30f850a2cf"
+			"definition": "82b37373fbde6ba0e24b105c49e8f3f089578d39496dac61e478c8bffc2cdcf8",
+			"relocationDefinition": "445fee03b5c60d9fcaed7dd87b6aac01ff99f0c4d466b5c773277c30f850a2cf",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
+				"definition": "82b37373fbde6ba0e24b105c49e8f3f089578d39496dac61e478c8bffc2cdcf8",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "adapter.process-identity",
@@ -3179,13 +4044,27 @@
 			"unit": "remote.service.response-ledger",
 			"from": "packages/remote/src/services/ResponseLedgerService.ts",
 			"to": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
-			"definition": "d566b05cb230f17316ee1a3e79071658e942276a05f11f5de213b2392efefd41"
+			"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
+			"relocationDefinition": "d566b05cb230f17316ee1a3e79071658e942276a05f11f5de213b2392efefd41",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
+				"definition": "c1c0345d1fed8cda43c9ccc1de7f71cad73031337310561dd14cc326ae3be90c",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.console-uninstall",
 			"from": "src/services/ConsoleUninstallService.ts",
 			"to": "src/cli/program/ConsoleUninstallService.ts",
-			"definition": "9e18ed6f492ae72cd20e40c5458d3660a71367b8a2d106cec48b86709cc71d19"
+			"definition": "1030dc8551bb2e051c0f9402e8fe448da69b53bcedf03d8f591ce54ee5da0278",
+			"relocationDefinition": "9e18ed6f492ae72cd20e40c5458d3660a71367b8a2d106cec48b86709cc71d19",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/ConsoleUninstallService.ts",
+				"definition": "1030dc8551bb2e051c0f9402e8fe448da69b53bcedf03d8f591ce54ee5da0278",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.service.console-agent",
@@ -3301,14 +4180,22 @@
 			"unit": "desktop.adapter.pinned-history",
 			"from": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
-			"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
+			"definition": "be861a6d48e5b0cf919ca0105ad4ad0d7a8fe540a561eaf1414dab6d9af67a3f",
 			"relocationDefinition": "235f3a164c394ef8af28277f70a8dacb6277795a732f363a2188221f354dfd97",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
-				"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
-				"reason": "Retain main\u2019s regression evidence and source measurement projection."
-			}
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
+				"definition": "be861a6d48e5b0cf919ca0105ad4ad0d7a8fe540a561eaf1414dab6d9af67a3f",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
+					"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
+					"reason": "Retain main\u2019s regression evidence and source measurement projection."
+				}
+			]
 		},
 		{
 			"unit": "repository.codex-session",
@@ -3326,7 +4213,14 @@
 			"unit": "hub.service.github-owner",
 			"from": "packages/hub/src/services/GithubOwnerService.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/GithubOwnerService.ts",
-			"definition": "5172eb1c8a9861b05644b13ff9480922a7c081924e8a4588439adaa27910ea2d"
+			"definition": "ba094b9b8c82b87d0135ba756365b539314985413a79179ce76c67ea1e2d16e7",
+			"relocationDefinition": "5172eb1c8a9861b05644b13ff9480922a7c081924e8a4588439adaa27910ea2d",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/GithubOwnerService.ts",
+				"definition": "ba094b9b8c82b87d0135ba756365b539314985413a79179ce76c67ea1e2d16e7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.adapter.r2-report-retention",
@@ -3338,13 +4232,27 @@
 			"unit": "service.verification-gates",
 			"from": "src/services/VerificationGates.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
-			"definition": "9782437852eb3589831812da79891f6a8a3727a289b5981275169ae5ae24a3d1"
+			"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
+			"relocationDefinition": "9782437852eb3589831812da79891f6a8a3727a289b5981275169ae5ae24a3d1",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+				"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.persist-reasons",
 			"from": "src/workflows/persistReasons.ts",
 			"to": "src/cli/program/persistReasons.ts",
-			"definition": "cd74c1c03c11931cc13d99f36dae7104f2bd419139d6ffe1ab7e0eb330cdc8bf"
+			"definition": "c13b1aab841db37e4940af62f50cf5158d2e509ad10e59d1101f55102a490ed3",
+			"relocationDefinition": "cd74c1c03c11931cc13d99f36dae7104f2bd419139d6ffe1ab7e0eb330cdc8bf",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/persistReasons.ts",
+				"definition": "c13b1aab841db37e4940af62f50cf5158d2e509ad10e59d1101f55102a490ed3",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.impact-kernel",
@@ -3356,25 +4264,53 @@
 			"unit": "function.kernel-workload",
 			"from": "src/workflows/run-kernel/kernelWorkload.ts",
 			"to": "src/cli/program/run-kernel/kernelWorkload.ts",
-			"definition": "1afd32f4699966708ed77b090d284e18a697f30046ad9f64fe0e62b71c708bfa"
+			"definition": "a6ae9b8bd84996f4cd4013b97f4d369b4075fc2857adc3a94a9b597d86d17a0b",
+			"relocationDefinition": "1afd32f4699966708ed77b090d284e18a697f30046ad9f64fe0e62b71c708bfa",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/run-kernel/kernelWorkload.ts",
+				"definition": "a6ae9b8bd84996f4cd4013b97f4d369b4075fc2857adc3a94a9b597d86d17a0b",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.run-kernel",
 			"from": "src/workflows/run-kernel/runKernel.ts",
 			"to": "src/cli/program/run-kernel/runKernel.ts",
-			"definition": "ff323de4ea14c1cfff6a983dca23342caa65e7294c8d629b54437712d3b7f6a0"
+			"definition": "b9a04d1d019f1ff18b4d0de842df0415ca0b222bdab68f5f22cde3f8c1590e25",
+			"relocationDefinition": "ff323de4ea14c1cfff6a983dca23342caa65e7294c8d629b54437712d3b7f6a0",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/run-kernel/runKernel.ts",
+				"definition": "b9a04d1d019f1ff18b4d0de842df0415ca0b222bdab68f5f22cde3f8c1590e25",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.runtime-server",
 			"from": "src/services/RuntimeServerService.ts",
 			"to": "src/cli/program/run-kernel/RuntimeServerService.ts",
-			"definition": "4c5cde2a9393be944223b056f53f61e6cbcff44139852af24b82360a45c05c01"
+			"definition": "db48bacc03918689c3be77945eebbffcfefdca1e5cc9d68da662cf3720791b87",
+			"relocationDefinition": "4c5cde2a9393be944223b056f53f61e6cbcff44139852af24b82360a45c05c01",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/run-kernel/RuntimeServerService.ts",
+				"definition": "db48bacc03918689c3be77945eebbffcfefdca1e5cc9d68da662cf3720791b87",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "workflow.loop-search",
 			"from": "src/workflows/loopSearch.ts",
 			"to": "src/cli/program/loopSearch.ts",
-			"definition": "1778b62b24b95d14637892548eb20905c81b15703bc142a7e626e75b120a703f"
+			"definition": "2a46eb057892bc38a0a304793a78dd7deb824a199257c8db3df0c0da5c09d594",
+			"relocationDefinition": "1778b62b24b95d14637892548eb20905c81b15703bc142a7e626e75b120a703f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/loopSearch.ts",
+				"definition": "2a46eb057892bc38a0a304793a78dd7deb824a199257c8db3df0c0da5c09d594",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "command.audit",
@@ -3416,7 +4352,14 @@
 			"unit": "service.hook-run",
 			"from": "src/services/hook-run-service/HookRunService.ts",
 			"to": "src/cli/program/hook-run-service/HookRunService.ts",
-			"definition": "8cc99febe64e2b4c68697f542fae772ff98e5a30f7338b1c069fabdde2bb2a55"
+			"definition": "0daf08c3bef9ba5558ff84149fa5e8e566af04c59a4988052daa9a626983a9d7",
+			"relocationDefinition": "8cc99febe64e2b4c68697f542fae772ff98e5a30f7338b1c069fabdde2bb2a55",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/hook-run-service/HookRunService.ts",
+				"definition": "0daf08c3bef9ba5558ff84149fa5e8e566af04c59a4988052daa9a626983a9d7",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.pushed-refs",
@@ -3440,13 +4383,27 @@
 			"unit": "workflow.run-audit",
 			"from": "src/workflows/runAudit.ts",
 			"to": "src/cli/program/runAudit.ts",
-			"definition": "3ffb7ca3e71084177f94c31818c4ebf3bf90b75d73854117cd9df1c4e0107a0b"
+			"definition": "9bc78ea4b641709ef63210257e3dd9c5b03fd24177639285de10688b1d66ade5",
+			"relocationDefinition": "3ffb7ca3e71084177f94c31818c4ebf3bf90b75d73854117cd9df1c4e0107a0b",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/runAudit.ts",
+				"definition": "9bc78ea4b641709ef63210257e3dd9c5b03fd24177639285de10688b1d66ade5",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.controller.github-connection",
 			"from": "packages/hub/src/controllers/github-connection-controller/GithubConnectionController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
-			"definition": "b9d251c80caa2bd7338394371b892f1a3e5a1a1a68125864a9285274e4505d7b"
+			"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
+			"relocationDefinition": "b9d251c80caa2bd7338394371b892f1a3e5a1a1a68125864a9285274e4505d7b",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
+				"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.auth-http",
@@ -3476,13 +4433,27 @@
 			"unit": "hub.adapter.relay-manage",
 			"from": "packages/hub/src/adapters/RelayManageAdapter.ts",
 			"to": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
-			"definition": "0c67bdcde714a6f787737cc23805ec2b4431d89c4c5bb50343f3ce050778635b"
+			"definition": "f4c6d6ef0af020d40bf86958136a919cb614ff040ca45404a4c19aab58c9f35a",
+			"relocationDefinition": "0c67bdcde714a6f787737cc23805ec2b4431d89c4c5bb50343f3ce050778635b",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
+				"definition": "f4c6d6ef0af020d40bf86958136a919cb614ff040ca45404a4c19aab58c9f35a",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.remote-host-switch",
 			"from": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
-			"definition": "e59ff23491834c18f7a944895835a6ecbf1feaac050bc2fdc4093317eac99e3f"
+			"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
+			"relocationDefinition": "e59ff23491834c18f7a944895835a6ecbf1feaac050bc2fdc4093317eac99e3f",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
+				"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.function.remote-host-identity",
@@ -3494,7 +4465,14 @@
 			"unit": "hub.service.github-grant",
 			"from": "packages/hub/src/services/GithubGrantService.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/GithubGrantService.ts",
-			"definition": "27fc88856f66e3f5c731d6dd2201467207e9890096017543f999a8fa1b1fa5a1"
+			"definition": "bd50137749607dae4763d8d9ded2ad0706349033b728781c6051f07efcf26477",
+			"relocationDefinition": "27fc88856f66e3f5c731d6dd2201467207e9890096017543f999a8fa1b1fa5a1",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/GithubGrantService.ts",
+				"definition": "bd50137749607dae4763d8d9ded2ad0706349033b728781c6051f07efcf26477",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.project-image-cache",
@@ -3524,44 +4502,87 @@
 			"unit": "adapter.wasm-module-runtime",
 			"from": "src/adapters/WasmModuleRuntimeAdapter.ts",
 			"to": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-			"definition": "6e795040118ba3425b9dabbd4884df717cc4f45b43bbcf841bb021b762d2f41a"
+			"definition": "a1be9417b15b6f66a9cc82fff3a44ad9b244b3b8732d95f7c9027c93f77e5db6",
+			"relocationDefinition": "6e795040118ba3425b9dabbd4884df717cc4f45b43bbcf841bb021b762d2f41a",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
+				"definition": "a1be9417b15b6f66a9cc82fff3a44ad9b244b3b8732d95f7c9027c93f77e5db6",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.controller.native-handoff",
 			"from": "packages/hub/src/controllers/NativeHandoffController.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
-			"definition": "b880ee1b45081519ef68e430763b436645845191782190d93682b383357ea2b0"
+			"definition": "23598992896132ab8125aa14c9e07f056b7047f259bc90112f133367e4f569d1",
+			"relocationDefinition": "b880ee1b45081519ef68e430763b436645845191782190d93682b383357ea2b0",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/NativeHandoffController.ts",
+				"definition": "23598992896132ab8125aa14c9e07f056b7047f259bc90112f133367e4f569d1",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
+			"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "packages/desktop/src/services/LocalClientService.ts",
-				"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
-				"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
-			}
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+				"definition": "1f8781d596660ae51c109384f6efb74834a9e19cfa93c319f71ee6dc8b668d1e",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "packages/desktop/src/services/LocalClientService.ts",
+					"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
+					"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4"
+			"definition": "a820511343a29c7edeb5ba96bd48a84e12615a4275e20d64f45f1054258db559",
+			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+				"definition": "a820511343a29c7edeb5ba96bd48a84e12615a4275e20d64f45f1054258db559",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "relay.service.rate-limit",
 			"from": "packages/relay/src/services/RateLimitService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.ts",
-			"definition": "66f34da337c2f061a4e9761a0ed2a7060a890b3fd0a792bb93ac1619a507482e"
+			"definition": "d225585eb526cb4ae2f54ed1a1ca6bb2b8f62288720f9fb53f3061a0faa222af",
+			"relocationDefinition": "66f34da337c2f061a4e9761a0ed2a7060a890b3fd0a792bb93ac1619a507482e",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/RateLimitService.ts",
+				"definition": "d225585eb526cb4ae2f54ed1a1ca6bb2b8f62288720f9fb53f3061a0faa222af",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "service.hook-install",
 			"from": "src/services/hook-install-service/HookInstallService.ts",
 			"to": "src/cli/program/hook-install-service/HookInstallService.ts",
-			"definition": "d752a5201c6a89300d2a160b06ad6e0bcc57d88266c4963f6880c3038f3f34c9"
+			"definition": "374804a03e6fc4daef73a7118298618e3c42766a7002caf630d6e9aedbac6c61",
+			"relocationDefinition": "d752a5201c6a89300d2a160b06ad6e0bcc57d88266c4963f6880c3038f3f34c9",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/hook-install-service/HookInstallService.ts",
+				"definition": "374804a03e6fc4daef73a7118298618e3c42766a7002caf630d6e9aedbac6c61",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.hook-script",
@@ -3573,7 +4594,14 @@
 			"unit": "hub.service.native-handoff",
 			"from": "packages/hub/src/services/native-handoff-service/NativeHandoffService.ts",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service/NativeHandoffService.ts",
-			"definition": "adc1bff1069ed8336168cc7c69a01b7f363508d47402950f6e3b624e4df87831"
+			"definition": "03a9cc5d29adc5f4e50eb9e8d0525bd10d0b33f44d6cda247af5a8aff5bfaf14",
+			"relocationDefinition": "adc1bff1069ed8336168cc7c69a01b7f363508d47402950f6e3b624e4df87831",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service/NativeHandoffService.ts",
+				"definition": "03a9cc5d29adc5f4e50eb9e8d0525bd10d0b33f44d6cda247af5a8aff5bfaf14",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "hub.function.auth-secrets",
@@ -3609,19 +4637,40 @@
 			"unit": "desktop.service.client-projects",
 			"from": "packages/desktop/src/services/ClientProjectsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
-			"definition": "e7b1ac7d1e24d5fb3626b6072183bfc29bf27d362eca39ba35c3a254b3da4f42"
+			"definition": "d826b63ecb38d784b43182a19686c1db3fb408da0ea4a3637f949fe4af08d6fa",
+			"relocationDefinition": "e7b1ac7d1e24d5fb3626b6072183bfc29bf27d362eca39ba35c3a254b3da4f42",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/ClientProjectsService.ts",
+				"definition": "d826b63ecb38d784b43182a19686c1db3fb408da0ea4a3637f949fe4af08d6fa",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "reports.service.screenshot-upload",
 			"from": "packages/reports/src/services/ScreenshotUploadService.ts",
 			"to": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-			"definition": "e19472c2cbf4000653bedf229be0e2df9fa8a390db23a9ba052e446cc5648ac8"
+			"definition": "d640bf556facf0ca3612e0bb6781bedf3267edcfb6ac796c471c53366a2be021",
+			"relocationDefinition": "e19472c2cbf4000653bedf229be0e2df9fa8a390db23a9ba052e446cc5648ac8",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
+				"definition": "d640bf556facf0ca3612e0bb6781bedf3267edcfb6ac796c471c53366a2be021",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a"
+			"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
+			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
+				"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
@@ -3633,14 +4682,22 @@
 			"unit": "workflow.create-project",
 			"from": "src/workflows/create-project/createProject.ts",
 			"to": "src/cli/program/create-project/createProject.ts",
-			"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
+			"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
 			"relocationDefinition": "079d03bf5f45ed18001faf540c6fe2ea44ec45252b43225525d9e377022a84d1",
 			"review": {
-				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
-				"path": "src/workflows/create-project/createProject.ts",
-				"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
-				"reason": "Retain the game branch\u2019s dimension, parent folder and partial-creation handling."
-			}
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/cli/program/create-project/createProject.ts",
+				"definition": "1e96e6ce8d029b320a828135312efef03142585dae49afe7f84970097d62aaed",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			},
+			"previousReviews": [
+				{
+					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
+					"path": "src/workflows/create-project/createProject.ts",
+					"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
+					"reason": "Retain the game branch\u2019s dimension, parent folder and partial-creation handling."
+				}
+			]
 		},
 		{
 			"unit": "function.validation",
@@ -3652,7 +4709,14 @@
 			"unit": "desktop.service.remote-host-record",
 			"from": "packages/desktop/src/services/RemoteHostRecordService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
-			"definition": "f7513cb284eebfa427a14af5bacf7f5cb61c58162b6a1e7a5073f03eaf7c9672"
+			"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
+			"relocationDefinition": "f7513cb284eebfa427a14af5bacf7f5cb61c58162b6a1e7a5073f03eaf7c9672",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
+				"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "desktop.service.project-task",

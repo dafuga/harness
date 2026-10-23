@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/networking-security/remoteAuthority.ts",
+			"packages/desktop/src/utils/networking-security/remoteAuthority.types.ts",
 			"packages/desktop/src/utils/remoteAuthority.ts"
 		],
 		"symbols": [
-			"Authority",
 			"noAuthority",
 			"remoteAuthority",
 			"authorityChange",
 			"excludes",
+			"Authority",
+			"Authority",
 			"noAuthority",
 			"remoteAuthority",
 			"authorityChange",

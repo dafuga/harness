@@ -1,3 +1,4 @@
+import type { EvaluationInput } from './cleanCodeEvaluate.types';
 import { CleanCodeResponseValidator } from '../../validators/CleanCodeResponseValidator';
 import { recordValue } from '../../validators/development-tooling/cleanCodeValue';
 import { assessCleanCode, fileReviewStatus } from './cleanCodeAssessment';
@@ -10,26 +11,7 @@ import {
 import { reviewInputsCurrent } from './cleanCodeFiles';
 import { applyReviewLocations, planReviewLocations } from './cleanCodeLocations';
 import { cleanCodeQuestions } from './cleanCodeRubric';
-import type { ReviewSnapshot } from '../verification-evidence/cleanCodeSnapshot';
-import type {
-	CleanCodeOptions,
-	CleanCodeSettings,
-	FileReview,
-	JevEvaluation,
-	JevRequest,
-	JevUsage
-} from './cleanCodeTypes';
-
-export type JevEvaluator = (request: JevRequest, signal?: AbortSignal) => Promise<JevEvaluation>;
-
-interface EvaluationInput {
-	root: string;
-	snapshot: ReviewSnapshot;
-	settings: CleanCodeSettings;
-	options: CleanCodeOptions;
-	evaluate: JevEvaluator;
-	onUsage?: (usage: JevUsage) => void;
-}
+import type { FileReview, JevEvaluation } from './cleanCodeTypes';
 
 export async function evaluateCleanCodeFile(input: EvaluationInput): Promise<FileReview> {
 	const key = reviewCacheKey(input.snapshot, input.settings);
@@ -118,3 +100,5 @@ function evaluationUsage(value: CachedEvaluation): JevEvaluation['usage'] {
 			value.evaluation.usage.output_tokens + (value.localization?.usage.output_tokens ?? 0)
 	};
 }
+
+export type { JevEvaluator } from './cleanCodeEvaluate.types';

@@ -1,3 +1,4 @@
+import type { Parts } from './explain-versions.e2e.test.types';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -9,8 +10,6 @@ beforeAll(async () => {
 	baseline = await baselineRepo();
 }, 120_000);
 afterAll(() => baseline.dispose());
-
-type Parts = Partial<Record<'behavior' | 'simplification' | 'performance', string>>;
 const words = (count: number) => Array.from({ length: count }, () => 'word').join(' ');
 const range = ['--base', 'HEAD~1', '--head', 'HEAD'];
 const about = 'function.slugify slugify';

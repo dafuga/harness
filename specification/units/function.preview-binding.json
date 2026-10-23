@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/previewBinding.ts", "src/utils/previewBinding.ts"],
-		"symbols": ["previewBinding", "previewBinding"]
+		"source": [
+			"src/utils/development-tooling/previewBinding.ts",
+			"src/utils/development-tooling/previewBinding.types.ts",
+			"src/utils/previewBinding.ts"
+		],
+		"symbols": ["previewBinding", "PreviewUnit", "previewBinding"]
 	},
 	"contract": {
 		"origin": "declared",

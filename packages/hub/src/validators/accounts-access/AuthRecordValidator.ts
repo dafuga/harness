@@ -1,3 +1,4 @@
+import type { Row } from './AuthRecordValidator.types';
 import type { HubEnvironment } from '../../models/accounts-access/HubAuth.types';
 import type {
 	ChallengeRecord,
@@ -9,8 +10,6 @@ import type {
 	SessionRecord,
 	VerifiedEmailRecord
 } from '../../models/accounts-access/HubAuthStore.types';
-
-type Row = Record<string, unknown>;
 
 const kinds = ['browser', 'native'] as const;
 const statuses = ['pending', 'approved', 'consumed'] as const;

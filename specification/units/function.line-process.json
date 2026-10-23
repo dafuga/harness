@@ -11,16 +11,19 @@
 			"src/adapters/execution-runtimes/process-runtime-adapter/lineProcess.ts",
 			"src/adapters/process-runtime-adapter/lineProcess.ts",
 			"src/utils/execution-runtimes/lineProcess.ts",
+			"src/utils/execution-runtimes/lineProcess.types.ts",
 			"src/utils/lineProcess.ts"
 		],
 		"symbols": [
 			"lineProcess",
 			"lineProcess",
-			"ProcessReply",
-			"LineProcess",
 			"unavailable",
 			"exited",
 			"lineProcess",
+			"ProcessReply",
+			"LineProcess",
+			"ProcessReply",
+			"LineProcess",
 			"lineProcess",
 			"unavailable",
 			"exited"

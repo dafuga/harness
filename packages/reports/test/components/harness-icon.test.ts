@@ -1,4 +1,5 @@
 import { render } from 'svelte/server';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import HarnessIcon from '../../src/components/explorer-ui/HarnessIcon.svelte';
 import { harnessIcons, type HarnessIconName } from '../../src/utils/harnessIcons';
@@ -26,11 +27,12 @@ test('an icon that stands alone is an image with a name', () => {
 	expect(named).not.toContain('aria-hidden');
 });
 
-test('every name draws its own path, outlined except for the two verdict discs', () => {
-	for (const name of Object.keys(harnessIcons) as HarnessIconName[]) {
-		const body = markup({ name });
-		expect([name, body.includes(`d="${harnessIcons[name]}"`)]).toEqual([name, true]);
-		const solid = /class="[^"]*\bsolid\b/.test(tag(body));
-		expect([name, solid]).toEqual([name, name === 'passed' || name === 'failed']);
-	}
-});
+test('every name draws its own path, outlined except for the two verdict discs', () =>
+	measureWorkload('reports.function.harness-icons', 'render-icon-catalog', () => {
+		for (const name of Object.keys(harnessIcons) as HarnessIconName[]) {
+			const body = markup({ name });
+			expect([name, body.includes(`d="${harnessIcons[name]}"`)]).toEqual([name, true]);
+			const solid = /class="[^"]*\bsolid\b/.test(tag(body));
+			expect([name, solid]).toEqual([name, name === 'passed' || name === 'failed']);
+		}
+	}));

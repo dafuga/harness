@@ -202,10 +202,15 @@
 		</svg>
 		{#if marks.size > 0}
 			<div class="hc-legend" aria-label="Map legend">
-				<span><span class="hc-swatch" style="background:#6b4d16"></span>Directly changed</span>
-				<span><span class="hc-swatch" style="background:#2e4a66"></span>Indirectly affected</span>
-				<span><span class="hc-swatch" style="background:#1f5a3c"></span>Added</span>
-				<span><span class="hc-swatch" style="background:#5c2630"></span>Removed</span>
+				<span
+					><span class="hc-swatch" style="background:var(--hx-gold-fill)"></span>Directly changed</span
+				>
+				<span
+					><span class="hc-swatch" style="background:var(--hx-accent-fill)"></span>Indirectly
+					affected</span
+				>
+				<span><span class="hc-swatch" style="background:var(--hx-pass-fill)"></span>Added</span>
+				<span><span class="hc-swatch" style="background:var(--hx-fail-fill)"></span>Removed</span>
 			</div>
 		{/if}
 	</div>

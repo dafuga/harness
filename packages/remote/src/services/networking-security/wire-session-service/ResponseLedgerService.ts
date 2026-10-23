@@ -1,18 +1,5 @@
+import type { Entry, LedgerOptions } from './ResponseLedgerService.types';
 import { RemoteFailure, remoteLimits } from '../../../models/networking-security/Remote.types';
-
-interface Entry {
-	digest: string;
-	answer: Promise<unknown>;
-	settled: boolean;
-	at: number;
-}
-export interface LedgerOptions {
-	capacity?: number;
-	ttlMs?: number;
-	/** How many request ids are remembered as spent. Beyond it no new mutation is accepted. */
-	tombstones?: number;
-	now?: () => number;
-}
 
 /**
  * Remembers the answer of each mutation by request id, so a request that is sent again after a
@@ -73,3 +60,5 @@ export class ResponseLedgerService {
 		return this.options.now?.() ?? Date.now();
 	}
 }
+
+export type { LedgerOptions } from './ResponseLedgerService.types';

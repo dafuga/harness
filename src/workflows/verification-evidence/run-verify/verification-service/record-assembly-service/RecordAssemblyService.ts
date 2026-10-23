@@ -1,3 +1,5 @@
+import type { AssemblyContext, AssemblyInput } from './RecordAssemblyService.types';
+export type { AssemblyContext, AssemblyInput } from './RecordAssemblyService.types';
 import type { ImpactReport } from '../../../../../core/development-tooling/impactTypes';
 import type { ComponentManifest } from '../../../../../core/development-tooling/unitTypes';
 import type {
@@ -24,29 +26,6 @@ import { recordedBuilds } from './recordedBuilds';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { unmeasured } from './unmeasured';
 import { ledgerGate, registryGate } from './VerificationGates';
-
-export interface AssemblyContext {
-	requirePerformance?: boolean;
-	root: string;
-	commit: string;
-	tree: string;
-	baseCommit: string | null;
-	baseRecord?: string;
-	requestedBase: string | null;
-	base: RevisionSide;
-	head: RevisionSide;
-	impact: ImpactReport;
-	profile: VerificationProfile;
-	store: VerificationStoreRepository;
-	/** Whether every change since the base is explained, directly or step by step. */
-	explained: () => Promise<ReasonReport>;
-}
-export interface AssemblyInput {
-	startedAt: string;
-	executed: Executed;
-	scenarios: Array<{ result: ScenarioResult; failures: string[] }>;
-	referenced: ScenarioResult[];
-}
 function outcome(failures: string[]): 'passed' | 'failed' {
 	return failures.length === 0 ? 'passed' : 'failed';
 }

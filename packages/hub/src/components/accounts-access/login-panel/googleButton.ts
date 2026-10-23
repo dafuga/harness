@@ -1,15 +1,6 @@
+import type { GoogleIdentity } from './googleButton.types';
 import type { GoogleButton } from '../../../utils/accounts-access/googleButton';
 import { googleIdentityScript } from '../../../utils/accounts-access/googleButton';
-
-interface GoogleIdentity {
-	initialize(options: {
-		client_id: string;
-		nonce: string;
-		callback: (response: { credential: string }) => void;
-		ux_mode: 'popup';
-	}): void;
-	renderButton(element: HTMLElement, options: Record<string, string>): void;
-}
 
 let loading: Promise<GoogleIdentity> | null = null;
 

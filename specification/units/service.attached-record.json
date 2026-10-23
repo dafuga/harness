@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"src/services/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts"
+			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.types.ts"
 		],
 		"symbols": [
 			"AttachedRecordService",
-			"AttachedRecord",
 			"AttachedRecordService",
 			"AttachedRecordService.constructor",
-			"AttachedRecordService.load"
+			"AttachedRecordService.load",
+			"AttachedRecord",
+			"AttachedRecord"
 		]
 	},
 	"contract": {

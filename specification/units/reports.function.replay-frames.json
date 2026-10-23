@@ -11,7 +11,8 @@
 			"packages/reports/src/components/gameplay-replay/replayFrames.ts",
 			"packages/reports/src/components/reports-media/gameplay-replay/replayFrames.ts",
 			"packages/reports/src/utils/replayFrames.ts",
-			"packages/reports/src/utils/reports-media/replayFrames.ts"
+			"packages/reports/src/utils/reports-media/replayFrames.ts",
+			"packages/reports/src/utils/reports-media/replayFrames.types.ts"
 		],
 		"symbols": [
 			"replayStart",
@@ -22,9 +23,10 @@
 			"replayFrames",
 			"FRAME_SECONDS",
 			"REPLAY_SPEEDS",
-			"ReplayFrame",
 			"replayFrames",
-			"replayStart"
+			"replayStart",
+			"ReplayFrame",
+			"ReplayFrame"
 		]
 	},
 	"contract": {

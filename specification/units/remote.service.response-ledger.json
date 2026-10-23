@@ -10,15 +10,18 @@
 		"source": [
 			"packages/remote/src/services/ResponseLedgerService.ts",
 			"packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.ts",
+			"packages/remote/src/services/networking-security/wire-session-service/ResponseLedgerService.types.ts",
 			"packages/remote/src/services/wire-session-service/ResponseLedgerService.ts"
 		],
 		"symbols": [
 			"ResponseLedgerService",
 			"LedgerOptions",
-			"LedgerOptions",
 			"ResponseLedgerService",
 			"ResponseLedgerService.constructor",
 			"ResponseLedgerService.run",
+			"LedgerOptions",
+			"Entry",
+			"LedgerOptions",
 			"ResponseLedgerService"
 		]
 	},

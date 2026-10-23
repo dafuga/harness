@@ -1,3 +1,4 @@
+import type { VerifyConfig } from './verifyTypes.types';
 import { z } from 'zod';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { runtimeKinds, unitIdPattern } from '../development-tooling/unitTypes';
@@ -62,8 +63,6 @@ export const verifyConfigSchema = z.strictObject({
 	timeouts: z.strictObject({ test: z.number().int().positive() })
 });
 
-export type VerifyConfig = z.infer<typeof verifyConfigSchema>;
-
 export const defaultVerifyConfig: VerifyConfig = {
 	schemaVersion: 1,
 	setup: [],
@@ -94,8 +93,6 @@ export const captureLineSchema = z.strictObject({
 	server: z.strictObject({ buildId: text, revision: text }).optional(),
 	note: z.string().optional()
 });
-
-export type CaptureLine = z.infer<typeof captureLineSchema>;
 
 /** One measurement a benchmark capture reports; the run adds its profile and revision. */
 export const reportedMeasurementSchema = z.object({
@@ -128,4 +125,4 @@ export const workloadSchema = z.strictObject({
 	iterations: z.number().int().min(1).max(100_000)
 });
 
-export type Workload = z.infer<typeof workloadSchema>;
+export type { VerifyConfig, CaptureLine, Workload } from './verifyTypes.types';

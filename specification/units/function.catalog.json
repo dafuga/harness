@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/rules/catalog.ts", "src/rules/explorer-ui/catalog.ts"],
+		"source": [
+			"src/rules/catalog.ts",
+			"src/rules/explorer-ui/catalog.ts",
+			"src/rules/explorer-ui/catalog.types.ts"
+		],
 		"symbols": [
 			"harnessRuleLimits",
 			"harnessClassFileRules",
@@ -15,13 +19,14 @@
 			"harnessModuleGroupRules",
 			"harnessRuleSummaries",
 			"harnessRuleSummariesFor",
-			"HarnessRuleLimits",
 			"harnessRuleLimits",
 			"harnessClassFileRules",
 			"harnessNamingRules",
 			"harnessModuleGroupRules",
 			"harnessRuleSummaries",
-			"harnessRuleSummariesFor"
+			"harnessRuleSummariesFor",
+			"HarnessRuleLimits",
+			"HarnessRuleLimits"
 		]
 	},
 	"contract": {

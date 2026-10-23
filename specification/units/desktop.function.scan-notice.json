@@ -9,17 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/development-tooling/scan-notice/scanNotice.ts",
+			"packages/desktop/src/utils/development-tooling/scan-notice/scanNotice.types.ts",
 			"packages/desktop/src/utils/scan-notice/scanNotice.ts",
 			"packages/desktop/src/utils/scanNotice.ts"
 		],
 		"symbols": [
-			"ScanFailure",
 			"scanFailures",
 			"nameNotice",
 			"scanNotices",
 			"scanFailure",
 			"scanNotice",
 			"phoneName",
+			"ScanFailure",
+			"ScanFailure",
 			"scanFailures",
 			"nameNotice",
 			"scanNotices",

@@ -1,20 +1,9 @@
+import type { Run } from './kernel-calibration.e2e.test.types';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
-
-interface Run {
-	source: { commit: string | null; dirty: boolean };
-	provenance: { kind: string; verified: boolean; note: string };
-	measurements: Array<{
-		metric: string;
-		target: string;
-		testedRevision: string | null;
-		artifacts: Array<{ sha256: string }>;
-	}>;
-	default: { runtime: string; basis: string };
-}
 
 const identity = ['-c', 'user.name=Harness Fixture', '-c', 'user.email=fixture@harness.invalid'];
 

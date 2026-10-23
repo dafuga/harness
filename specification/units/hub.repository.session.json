@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/repositories/SessionRepository.ts",
-			"packages/hub/src/repositories/projects-sessions/SessionRepository.ts"
+			"packages/hub/src/repositories/projects-sessions/SessionRepository.ts",
+			"packages/hub/src/repositories/projects-sessions/SessionRepository.types.ts"
 		],
 		"symbols": [
 			"BROWSER_TTL",
@@ -17,16 +18,19 @@
 			"SessionRepository",
 			"BROWSER_TTL",
 			"NATIVE_TTL",
-			"SessionRepositoryOptions",
-			"SessionGrant",
-			"IssuedSession",
 			"SessionRepository",
 			"SessionRepository.constructor",
 			"SessionRepository.issue",
 			"SessionRepository.find",
 			"SessionRepository.live",
 			"SessionRepository.revoke",
-			"SessionRepository.revokeIssuedFrom"
+			"SessionRepository.revokeIssuedFrom",
+			"SessionRepositoryOptions",
+			"SessionGrant",
+			"IssuedSession",
+			"SessionRepositoryOptions",
+			"SessionGrant",
+			"IssuedSession"
 		]
 	},
 	"contract": {

@@ -111,7 +111,7 @@
 <style>
 	.catalog-tools {
 		flex-wrap: nowrap;
-		gap: 10px;
+		gap: var(--hx-space-10);
 	}
 	.catalog-tools > input {
 		flex: 1 1 0;

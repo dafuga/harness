@@ -76,10 +76,10 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 12px;
+		gap: var(--hx-space-12);
 	}
 	.sections {
-		gap: 6px;
+		gap: var(--hx-space-6);
 	}
 	.toggle {
 		margin-inline-start: auto;
@@ -94,10 +94,10 @@
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
 		align-items: end;
-		gap: 12px 16px;
-		padding: 16px;
-		border: 1px solid var(--line);
-		border-radius: 10px;
+		gap: var(--hx-space-12) var(--hx-space-16);
+		padding: var(--hx-space-16);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius);
 		background: var(--panel);
 	}
 	.settings[hidden] {
@@ -105,7 +105,7 @@
 	}
 	.field {
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		min-width: 0;
 	}
 	.style {

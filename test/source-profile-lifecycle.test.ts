@@ -1,11 +1,11 @@
+import type { Fixture } from './source-profile-lifecycle.test.types';
+export type { Fixture } from './source-profile-lifecycle.test.types';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { expect, test } from 'vitest';
 import { preload, runnerCaptures, runnerFixture } from './support/sourceProfileRunners';
-
-type Fixture = Awaited<ReturnType<typeof runnerFixture>>;
 
 async function foreignProgram(fixture: Fixture, source: string, environment = fixture.environment) {
 	const root = await mkdtemp(join(tmpdir(), 'harness-foreign-runner-'));

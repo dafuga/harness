@@ -1,3 +1,4 @@
+import type { GithubApiOptions, InstallationScope, Call } from './GithubApiAdapter.types';
 import { authFail } from '../../../../utils/accounts-access/authFail';
 import { GithubResponseValidator } from '../../../../validators/development-tooling/GithubResponseValidator';
 import type {
@@ -8,23 +9,6 @@ import type {
 	InstallationList,
 	RepositoryPage
 } from '../../../../validators/development-tooling/GithubResponseValidator';
-
-export interface GithubApiOptions {
-	fetch: typeof fetch;
-}
-
-export interface InstallationScope {
-	repository_ids: number[];
-	permissions: Record<string, string>;
-}
-
-interface Call {
-	method?: string;
-	authorization?: string;
-	contentType?: string;
-	accept?: string;
-	body?: string;
-}
 
 const API = 'https://api.github.com';
 const OAUTH_TOKEN = 'https://github.com/login/oauth/access_token';
@@ -133,3 +117,5 @@ export class GithubApiAdapter {
 		}
 	}
 }
+
+export type { GithubApiOptions, InstallationScope } from './GithubApiAdapter.types';
