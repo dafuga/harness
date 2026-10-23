@@ -30,6 +30,7 @@ function expectCapturedMeasurements(state: string, viewport: string): void {
 		pageUnit,
 		screenUnit,
 		styleUnit,
+		'reports.style.app-tokens',
 		'function.explorer-route',
 		'reports.component.harness-harness-console',
 		'reports.function.harness-icons',
