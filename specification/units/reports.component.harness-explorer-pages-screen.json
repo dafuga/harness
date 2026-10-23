@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/ExplorerPagesScreen.svelte",
-			"packages/reports/src/components/harness/ExplorerPagesScreen.svelte"
-		],
-		"symbols": ["ExplorerPagesScreen", "ExplorerPagesScreen"]
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerPagesScreen.svelte"],
+		"symbols": ["ExplorerPagesScreen"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -96,11 +93,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerPagesScreen.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerPagesScreen.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerPagesScreen.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerPagesScreen.svelte"
 			}
 		]
 	},

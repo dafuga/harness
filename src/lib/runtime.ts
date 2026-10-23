@@ -22,7 +22,7 @@ export type {
 	ImpactOutput,
 	KernelGraph
 } from '../core/execution-runtimes/kernelTypes';
-export { HandlerRuntimeAdapter } from '../../packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter';
+export { HandlerRuntimeAdapter } from '../../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 export { HttpRuntimeAdapter } from '../adapters/execution-runtimes/HttpRuntimeAdapter';
 export { ModuleRuntimeAdapter } from '../adapters/execution-runtimes/ModuleRuntimeAdapter';
 export { ProcessRuntimeAdapter } from '../adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter';

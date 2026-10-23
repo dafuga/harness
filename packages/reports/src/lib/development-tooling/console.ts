@@ -1,5 +1,5 @@
 import { mount } from 'svelte';
-import ConsoleShell from '../../components/explorer-ui/harness/HarnessShell.svelte';
+import ConsoleShell from '../../components/explorer-ui/HarnessShell.svelte';
 import '../styles/base.css';
 import '../styles/base-2.css';
 import '../styles/base-3.css';

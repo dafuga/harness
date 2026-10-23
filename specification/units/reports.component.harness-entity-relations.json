@@ -8,10 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness/entity-relations/EntityRelations.svelte",
-			"packages/reports/src/components/harness/entity-relations/EntityRelations.svelte"
+			"packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
 		],
-		"symbols": ["EntityRelations", "EntityRelations"]
+		"symbols": ["EntityRelations"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -100,11 +99,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/entity-relations/EntityRelations.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/entity-relations/EntityRelations.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
 			}
 		]
 	},
