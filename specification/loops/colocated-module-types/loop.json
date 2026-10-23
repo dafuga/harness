@@ -2,7 +2,7 @@
 	"name": "colocated-module-types",
 	"goal": "Keep named types in sibling files across existing and generated code, with a durable audit guard",
 	"createdAt": "2026-10-23T10:20:13.011Z",
-	"updatedAt": "2026-10-23T10:44:08.410Z",
+	"updatedAt": "2026-10-23T10:46:14.290Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T10:46:14.290Z",
+			"evidence": "Paired green 55b33030be at 172d26636 passes the same 18 audit/scaffold tests from red b480452d8 with all test/fixture/config inputs unchanged."
 		},
 		{
 			"id": "verify",
