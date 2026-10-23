@@ -1,0 +1,26 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ta0tUC/packages/reports
+
+ ✓ test/utils/harness-shell.test.ts (9 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  10:08:15
+   Duration  306ms (transform 71ms, setup 0ms, collect 125ms, tests 6ms, environment 0ms, prepare 37ms)
+
+
+Running 9 tests using 1 worker
+
+(node:54382) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell.spec.ts:59:2 › the bar shows its navigation with an icon above each label at desktop width (603ms)
+  ✓  2 tests/e2e/explorer-shell.spec.ts:133:2 › the branch with its tip and the viewed commit are told apart at desktop width (284ms)
+  ✓  3 tests/e2e/explorer-shell.spec.ts:180:2 › Go to tip, back, a reload and another branch each keep their place at desktop width (263ms)
+  ✓  4 tests/e2e/explorer-shell.spec.ts:59:2 › the bar shows its navigation with an icon above each label at tablet width (401ms)
+  ✓  5 tests/e2e/explorer-shell.spec.ts:133:2 › the branch with its tip and the viewed commit are told apart at tablet width (246ms)
+  ✓  6 tests/e2e/explorer-shell.spec.ts:180:2 › Go to tip, back, a reload and another branch each keep their place at tablet width (256ms)
+  ✓  7 tests/e2e/explorer-shell.spec.ts:59:2 › the bar shows its navigation with an icon above each label at mobile width (393ms)
+  ✓  8 tests/e2e/explorer-shell.spec.ts:133:2 › the branch with its tip and the viewed commit are told apart at mobile width (275ms)
+  ✓  9 tests/e2e/explorer-shell.spec.ts:180:2 › Go to tip, back, a reload and another branch each keep their place at mobile width (229ms)
+
+  9 passed (5.1s)
