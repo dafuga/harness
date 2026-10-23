@@ -13,23 +13,14 @@ const configUnits = [
 ];
 
 async function pageFamilies(page: Page): Promise<void> {
-	for (const feature of [
-		'Components',
-		'Configs',
-		'Helpers',
-		'Layouts',
-		'Models',
-		'Pages',
-		'Services'
-	]) {
-		await expect
-			.soft(
-				page.getByRole('heading', { level: 2, name: `${feature} 3`, exact: true }),
-				'Page families follow their feature folders'
-			)
-			.toBeVisible({ timeout: 500 });
-	}
 	for (const [feature, count] of [
+		['Components', 3],
+		['Configs', 3],
+		['Helpers', 3],
+		['Layouts', 3],
+		['Models', 3],
+		['Pages', 3],
+		['Services', 3],
 		['Platforms', 2],
 		['Styles', 1]
 	] as const) {
