@@ -14,7 +14,7 @@ const testDiscoveryExcludes = [
 // stays relative on purpose, so each such workspace runs its own `test/setup.ts`.
 const owned = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 /** Shared low-memory default: CPU count must not multiply whole test runtimes. */
-export const testWorkers = { minWorkers: 1, maxWorkers: 1, ...resourceWorkers(process.env) };
+export const testWorkers = { minWorkers: 1, maxWorkers: 1, ...resourceWorkers(process.env, 1) };
 export default defineConfig({
 	test: {
 		...testWorkers,
