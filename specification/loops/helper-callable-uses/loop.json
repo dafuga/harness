@@ -2,7 +2,7 @@
 	"name": "helper-callable-uses",
 	"goal": "Only actual helper calls appear in a selected helper Uses tab; empty Uses is absent",
 	"createdAt": "2026-10-23T10:45:43.304Z",
-	"updatedAt": "2026-10-23T10:56:57.491Z",
+	"updatedAt": "2026-10-23T11:00:05.839Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:00:05.839Z",
+			"evidence": "Unchanged 27d337b2d regression passes at 0cf94eac5: three current/historical desktop/tablet/mobile browser cases and five component cases, with retained images and contextual runtime/memory observations. Full CLI/native suites remain deferred."
 		},
 		{
 			"id": "verify",
