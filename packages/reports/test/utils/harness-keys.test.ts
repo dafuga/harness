@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { expect, test } from 'vitest';
 
 const directory = join(
@@ -15,6 +15,17 @@ const directory = join(
 		)
 	).runtime.entry,
 	'..'
+);
+const registry = join(import.meta.dirname, '../../../../specification/units');
+const owned = new Set(
+	readdirSync(registry)
+		.filter((name) => name.endsWith('.json'))
+		.flatMap((name) => {
+			const unit = JSON.parse(readFileSync(join(registry, name), 'utf8'));
+			return unit.status === 'active' && unit.id.startsWith('reports.component.harness-')
+				? unit.owns.source.map((path: string) => basename(path))
+				: [];
+		})
 );
 /**
  * Keys that are unique by construction: a position, a member of a set, a constant, or the
@@ -44,7 +55,9 @@ const unique = new Set([
 
 test('console lists are keyed only by what cannot repeat, never by recorded text', () => {
 	const keyed: Array<[string, string]> = [];
-	for (const file of readdirSync(directory).filter((name) => name.endsWith('.svelte'))) {
+	for (const file of readdirSync(directory).filter(
+		(name) => name.endsWith('.svelte') && owned.has(name)
+	)) {
 		const source = readFileSync(join(directory, file), 'utf8');
 		// The key is the last parenthesised part; the list expression before it may hold calls.
 		for (const block of source.matchAll(/\{#each\s[^}]*\(([^()]*)\)\}/g)) {

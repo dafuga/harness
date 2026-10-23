@@ -131,6 +131,14 @@ test('every active visual module has its own required capture state', () => {
 	expect(owned.filter((path) => /\/components\/(?:explorer-ui\/)?harness\//.test(path))).toEqual(
 		[]
 	);
+	const entries = loaded.stored
+		.filter((unit) => unit.status === 'active')
+		.map((unit) => unit.runtime.entry);
+	expect(
+		entries.some(
+			(path) => path?.includes('/components/harness/') || path?.includes('/explorer-ui/harness/')
+		)
+	).toBe(false);
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
 		.filter((unit) => {
