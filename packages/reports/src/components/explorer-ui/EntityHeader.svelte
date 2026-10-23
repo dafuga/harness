@@ -103,6 +103,9 @@
 				>
 			{/if}
 		</li>
+		{#if !privateFunction && entity.unit.group}
+			<li>{entity.unit.group.title}</li>
+		{/if}
 		{#if nav.route.section === 'history'}
 			<li><EntityLink to={at()} {nav}>{entity.name}</EntityLink></li>
 			<li aria-current="page">History</li>
