@@ -7,9 +7,7 @@ test('app projects include SvelteKit and specification files', () =>
 	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
 		const files = projectFiles({ kind: 'app', name: 'demo-app' });
 		const paths = files.map((file) => file.path);
-		const packageJson = JSON.parse(
-			files.find((file) => file.path === 'package.json')?.contents ?? '{}'
-		);
+		const packageJson = JSON.parse(fileContents(files, 'package.json'));
 		expect(paths).toContain('svelte.config.js');
 		expect(paths).toContain('playwright.config.ts');
 		expect(paths).toContain('eslint.config.js');

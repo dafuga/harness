@@ -126,21 +126,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				},
 				'groups'
 			);
-			await page.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all(
-					[...document.images]
-						.filter((image) => {
-							const box = image.getBoundingClientRect();
-							return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
-						})
-						.map(async (image) => {
-							await image.decode();
-							if (!image.complete || !image.naturalWidth || !image.naturalHeight)
-								throw new Error('Image not ready');
-						})
-				);
-			});
+			await ready(page);
 			await capture(page, `source-${category}-${viewport}`, [
 				'reports.component.harness-entity-header'
 			]);
