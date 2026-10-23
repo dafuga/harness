@@ -19,7 +19,16 @@ export async function openPreview(page: Page, home: string, id: string) {
 	await page.route('**/*', (route) => servePreview(route, home));
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
-	await page.clock.setFixedTime(new Date('2026-10-20T10:00:05Z'));
+	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
+	await page.addInitScript((now) => {
+		const NativeDate = Date;
+		window.Date = new Proxy(NativeDate, {
+			construct: (target, args, type) =>
+				Reflect.construct(target, args.length ? args : [now], type),
+			apply: () => new NativeDate(now).toString(),
+			get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
+		});
+	}, Date.parse('2026-10-20T10:00:05Z'));
 	await page.goto(`${previewOrigin}/?unit=${encodeURIComponent(id)}`);
 }
 export async function readyPreview(page: Page, id: string) {

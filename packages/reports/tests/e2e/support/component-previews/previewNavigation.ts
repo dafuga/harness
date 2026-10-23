@@ -4,16 +4,7 @@ import { previewState } from './catalogUnits';
 
 /** The actual document that mounted this route, never a preceding soft-navigation document. */
 export async function previewNavigation(page: Page, unit: string, viewport: string) {
-	const navigation = await page.evaluate(() => {
-		const entry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-		return entry
-			? {
-					document: window.previewDocument,
-					timeOrigin: performance.timeOrigin,
-					duration: entry.duration
-				}
-			: null;
-	});
+	const navigation = await readNavigation(page);
 	if (
 		navigation?.document?.unit !== unit ||
 		navigation.document.timeOrigin !== navigation.timeOrigin
@@ -61,4 +52,18 @@ export async function previewNavigation(page: Page, unit: string, viewport: stri
 		},
 		JSON.stringify({ measurements })
 	);
+}
+
+/** The initial unit stamp survives the real route module replacing the address bar. */
+async function readNavigation(page: Page) {
+	return page.evaluate(() => {
+		const entry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+		return entry
+			? {
+					document: window.previewDocument,
+					timeOrigin: performance.timeOrigin,
+					duration: entry.duration
+				}
+			: null;
+	});
 }
