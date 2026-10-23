@@ -4,7 +4,7 @@ import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { scope } from '../entityPlaces';
 import { withFocused } from '../entityStates';
 import { unit } from '../explorerFixture';
-import type { HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessUnit, HarnessRevision } from '../../src/models/Harness.types';
 import { expect, test } from 'vitest';
 import ExplorerPagesScreen from '../../src/components/explorer-ui/ExplorerPagesScreen.svelte';
 import { revision } from '../entityFixture';
@@ -42,7 +42,9 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 		const manifest = JSON.parse(readFileSync('../../specification/units/' + id + '.json', 'utf8'));
 		const actual = unit(id, manifest.kind, { preview: manifest.preview }) as HarnessUnit;
 		const captured = withFocused(revision(commits.tip, []), id);
-		for (const entry of captured.regressions![0].green!.captures!) entry.capture.state = state.id;
+		const captures = captured.regressions![0].green!.captures!;
+		for (const entry of captures) entry.capture.state = state.id;
+		if (id === 'reports.component.harness-harness-console') prependLoadingCaptures(captured);
 		captured.registry = { ...captured.registry, units: [actual], scenarios: [catalog] };
 		const evidence = explorerEvidence(scope('current'), { head: captured, parent: null }, actual);
 		const rejected = {
@@ -52,7 +54,18 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 				captures: evidence.after.captures.map((entry) => ({ ...entry, usable: false }))
 			}
 		};
-		expect(catalogShot(rejected, actual.preview), id + ' rejects unusable evidence').toBeNull();
+		expect(
+			catalogShot(rejected, actual.preview, true),
+			id + ' rejects unusable evidence'
+		).toBeNull();
+		expect(
+			catalogShot(evidence, actual.preview, true)?.file,
+			id + ' actual card chooses its settled default'
+		).toBe('ccccccc-default-desktop.png');
+		if (id === 'reports.component.harness-harness-console')
+			expect(
+				evidence.after.captures.filter((entry) => entry.state.startsWith('loading-'))
+			).toHaveLength(6);
 		const choice = actual.preview ?? { scenario: catalog.id, state: state.id, viewport: 'desktop' };
 		for (const viewport of ['desktop', 'tablet', 'mobile'])
 			if (!catalogShot(evidence, { ...choice, viewport })?.file)
@@ -74,3 +87,20 @@ test('default page cards show their own focused source when a historical preferr
 	const body = screen(ExplorerPagesScreen, 'current', {}, { head: captured });
 	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
 });
+
+/** The normal Console producer records these intentional loading states before its settled state. */
+function prependLoadingCaptures(detail: HarnessRevision): void {
+	const captures = detail.regressions![0].green!.captures!;
+	captures.unshift(
+		...['loading-history', 'loading-revision'].flatMap((loading) =>
+			captures.map((entry) => ({
+				...entry,
+				capture: {
+					...entry.capture,
+					state: loading,
+					media: `media/${loading}-${entry.capture.viewport}.png`
+				}
+			}))
+		)
+	);
+}
