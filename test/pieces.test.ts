@@ -1,3 +1,5 @@
+import { check } from 'prettier';
+import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
 import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
 import { posix } from 'node:path';
 import { expect, test } from 'vitest';
@@ -6,9 +8,17 @@ import { isAppOnlyScaffold, scaffoldKinds } from '../src/templates/scaffoldTypes
 
 test.each(['2d', '3d'] as const)(
 	'every scaffold kind creates at least one file in a %s project',
-	(dimension) => {
+	async (dimension) => {
 		for (const kind of scaffoldKinds) {
 			const files = pieceFiles(kind, 'BlogPost', { dimension });
+			const options = JSON.parse(
+				formatConfigFiles().find((file) => file.path === '.prettierrc')!.contents
+			);
+			for (const file of files.filter((file) => file.path.endsWith('.ts')))
+				expect(
+					await check(file.contents, { ...options, filepath: file.path }),
+					`Generated TypeScript follows the emitted project formatter: ${file.path}`
+				).toBe(true);
 			expect(files.length, kind).toBeGreaterThan(0);
 			for (const plan of pieceExportPlans(kind, 'BlogPost'))
 				expect(
