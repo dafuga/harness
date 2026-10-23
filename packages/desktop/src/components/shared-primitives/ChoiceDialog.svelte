@@ -89,8 +89,8 @@
 		width: min(var(--picker-width), calc(100vw - 24px));
 		max-height: min(var(--picker-height), calc(100dvh - 24px));
 		padding: 0;
-		border: 1px solid var(--line);
-		border-radius: 10px;
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius);
 		background: var(--panel);
 		color: inherit;
 		overflow: auto;
@@ -104,17 +104,17 @@
 	.agent-picker-footer {
 		position: sticky;
 		bottom: 0;
-		padding: 12px 14px 14px;
-		border-top: 1px solid var(--line);
+		padding: var(--hx-space-12) var(--hx-space-14) var(--hx-space-14);
+		border-top: var(--hx-border-thin) solid var(--line);
 		background: var(--panel);
 	}
 	.agent-picker::backdrop {
-		background: rgb(3 26 40 / 0.6);
+		background: var(--hx-scrim);
 	}
 	.agent-picker-body {
 		display: grid;
 		gap: var(--picker-gap);
-		padding: 14px;
+		padding: var(--hx-space-14);
 	}
 	.agent-picker-body :global(button) {
 		justify-content: start;

@@ -24,16 +24,16 @@
 
 <style>
 	.console-chat {
-		--panel: var(--hx-surface, #101f2d);
-		--ink: var(--hx-bg, #0d1a26);
-		--gold: var(--hx-gold, #f3c33b);
-		--line: var(--hx-line, #2c4259);
-		--text: var(--hx-text, #f2f5fa);
-		--muted: var(--hx-muted, #8fa1b8);
+		--panel: var(--hx-surface);
+		--ink: var(--hx-bg);
+		--gold: var(--hx-gold);
+		--line: var(--hx-line);
+		--text: var(--hx-text);
+		--muted: var(--hx-muted);
 		display: contents;
 		color: var(--text);
-		font-size: 14px;
-		line-height: 1.45;
+		font-size: var(--hx-type-size-sm);
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
 
@@ -50,12 +50,12 @@
 	}
 	.console-chat :global(form),
 	.console-chat :global(.composer) {
-		gap: 0.5rem;
+		gap: var(--hx-space-8);
 		width: 100%;
 		max-width: 100%;
 		min-width: 0;
-		padding: 0.625rem;
-		border-top: 1px solid var(--line);
+		padding: var(--hx-space-10);
+		border-top: var(--hx-border-thin) solid var(--line);
 		background: var(--panel);
 	}
 	.console-chat :global(textarea),
@@ -65,9 +65,9 @@
 		max-width: 100%;
 		min-width: 0;
 		margin: 0;
-		padding: 0.5rem 0.625rem;
-		border: 1px solid var(--line);
-		border-radius: 8px;
+		padding: var(--hx-space-8) var(--hx-space-10);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-small);
 		background: var(--panel);
 		color: var(--text);
 		font: inherit;
@@ -85,32 +85,32 @@
 	.console-chat :global(input:focus-visible),
 	.console-chat :global(select:focus-visible),
 	.console-chat :global(button:focus-visible) {
-		outline: 2px solid var(--gold);
-		outline-offset: 1px;
+		outline: var(--hx-border-thick) solid var(--gold);
+		outline-offset: var(--hx-border-thin);
 	}
 	.console-chat :global(button:not(.floating-chat-bubble):not(.floating-chat-close)) {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.375rem;
+		gap: var(--hx-space-6);
 		max-width: 100%;
 		min-height: 2rem;
 		margin: 0;
-		padding: 0.375rem 0.75rem;
-		border: 1px solid var(--line);
-		border-radius: 8px;
+		padding: var(--hx-space-6) var(--hx-space-12);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-small);
 		background: var(--panel);
 		color: var(--text);
 		font: inherit;
-		font-size: 13px;
-		line-height: 1.2;
+		font-size: var(--hx-type-size-compact);
+		line-height: var(--hx-style-leading-tight);
 		cursor: pointer;
 	}
 	.console-chat :global(button:hover:not(:disabled)) {
 		border-color: var(--gold);
 	}
 	.console-chat :global(button:disabled) {
-		opacity: 0.5;
+		opacity: var(--hx-opacity-dim);
 		cursor: not-allowed;
 	}
 	.console-chat :global(.modes),
@@ -119,7 +119,7 @@
 	.console-chat :global([role='group']) {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.375rem;
+		gap: var(--hx-space-6);
 		min-width: 0;
 	}
 	.console-chat :global(.mode),
@@ -144,29 +144,29 @@
 		border-color: var(--gold);
 		background: var(--gold);
 		color: var(--ink);
-		font-weight: 600;
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	.console-chat :global(button[type='submit']:hover:not(:disabled)),
 	.console-chat :global(button.primary:hover:not(:disabled)),
 	.console-chat :global(button.send:hover:not(:disabled)) {
-		filter: brightness(0.95);
+		filter: var(--hx-effect-hover-dim);
 	}
 	.console-chat :global(.error),
 	.console-chat :global([role='alert']) {
-		padding: 0.5rem 0.625rem;
-		border: 1px solid var(--hx-fail, #f2545b);
-		border-radius: 8px;
-		background: var(--hx-danger-soft, #351c25);
-		color: var(--hx-fail, #f2545b);
-		font-size: 13px;
+		padding: var(--hx-space-8) var(--hx-space-10);
+		border: var(--hx-border-thin) solid var(--hx-fail);
+		border-radius: var(--hx-radius-small);
+		background: var(--hx-danger-soft);
+		color: var(--hx-fail);
+		font-size: var(--hx-type-size-compact);
 	}
 	.console-chat :global(small),
 	.console-chat :global(.hint),
 	.console-chat :global(.meta),
 	.console-chat :global(.muted) {
 		color: var(--muted);
-		font-size: 12px;
-		line-height: 1.35;
+		font-size: var(--hx-type-size-xs);
+		line-height: var(--hx-style-leading-snug);
 	}
 	.console-chat :global(pre),
 	.console-chat :global(code) {
@@ -177,13 +177,13 @@
 	@media (max-width: 420px) {
 		.console-chat :global(form),
 		.console-chat :global(.composer) {
-			padding: 0.5rem;
+			padding: var(--hx-space-8);
 		}
 		.console-chat :global(textarea) {
-			font-size: 16px;
+			font-size: var(--hx-type-size-base);
 		}
 		.console-chat :global(button:not(.floating-chat-bubble):not(.floating-chat-close)) {
-			padding: 0.375rem 0.5rem;
+			padding: var(--hx-space-6) var(--hx-space-8);
 		}
 	}
 </style>

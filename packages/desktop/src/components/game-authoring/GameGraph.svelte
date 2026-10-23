@@ -145,13 +145,13 @@
 <style>
 	.game-graph {
 		display: grid;
-		gap: 12px;
+		gap: var(--hx-space-12);
 	}
 	header {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	header p {
 		margin: 0;
@@ -162,7 +162,7 @@
 		color: var(--gold);
 	}
 	header p span {
-		font-size: 13px;
+		font-size: var(--hx-type-size-compact);
 	}
 	button:hover:not(:disabled) {
 		border-color: var(--gold);
@@ -172,13 +172,13 @@
 	.canvas {
 		height: clamp(380px, 65dvh, 880px);
 		overflow: hidden;
-		border: 1px solid var(--line);
-		border-radius: 12px;
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
 		--xy-background-color: var(--panel);
 		--xy-background-pattern-color: var(--line);
-		--xy-node-background-color: color-mix(in srgb, var(--panel) 70%, #000);
-		--xy-node-border: 1px solid var(--line);
-		--xy-node-boxshadow-selected: 0 0 0 1px var(--gold);
+		--xy-node-background-color: color-mix(in srgb, var(--panel) 70%, var(--hx-bg));
+		--xy-node-border: var(--hx-space-1) solid var(--line);
+		--xy-node-boxshadow-selected: 0 0 0 var(--hx-space-1) var(--gold);
 		--xy-edge-stroke: var(--line);
 		--xy-edge-stroke-selected: var(--gold);
 		--xy-connectionline-stroke: var(--gold);
@@ -189,11 +189,11 @@
 	}
 	.canvas :global(.svelte-flow__node.checkpoint) {
 		width: 184px;
-		padding: 14px 18px;
-		border-radius: 10px;
+		padding: var(--hx-space-14) var(--hx-space-18);
+		border-radius: var(--hx-radius);
 		text-align: start;
-		font-size: 14px;
-		font-weight: 600;
+		font-size: var(--hx-type-size-sm);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	.canvas :global(.svelte-flow__node.eligible) {
 		border-color: var(--gold);
@@ -204,10 +204,10 @@
 	.canvas :global(.svelte-flow__node.completed::after) {
 		content: 'Completed';
 		display: block;
-		margin-top: 6px;
+		margin-top: var(--hx-space-6);
 		color: var(--gold);
-		font-size: 0.72rem;
-		letter-spacing: 0.08em;
+		font-size: var(--hx-type-size-xs);
+		letter-spacing: var(--hx-style-tracking-caps);
 		text-transform: uppercase;
 	}
 </style>

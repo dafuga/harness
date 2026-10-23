@@ -49,8 +49,8 @@
 	.project-activity {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 16px;
-		margin: 0 0 28px;
+		gap: var(--hx-space-16);
+		margin: 0 0 var(--hx-space-28);
 	}
 	.pa-identity {
 		grid-column: 1 / -1;
@@ -58,9 +58,9 @@
 	}
 	.project-activity :global(.pa-card) {
 		min-width: 0;
-		padding: 18px;
-		border: 1px solid var(--line);
-		border-radius: 12px;
+		padding: var(--hx-space-18);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
 		background: var(--panel);
 	}
 	.project-activity :global(.pa-head),
@@ -69,7 +69,7 @@
 		flex-wrap: wrap;
 		align-items: baseline;
 		justify-content: space-between;
-		gap: 6px 12px;
+		gap: var(--hx-space-6) var(--hx-space-12);
 	}
 	/* In a row the name takes the room and wraps; what follows it keeps its line. */
 	.project-activity :global(.pa-row) {
@@ -84,19 +84,19 @@
 	}
 	.project-activity :global(h2) {
 		margin: 0;
-		font-size: 1.05rem;
+		font-size: var(--hx-type-size-base);
 	}
 	.project-activity :global(h3) {
-		margin: 14px 0 0;
-		font-size: 0.8rem;
-		letter-spacing: 0.08em;
+		margin: var(--hx-space-14) 0 0;
+		font-size: var(--hx-type-size-compact);
+		letter-spacing: var(--hx-style-tracking-caps);
 		text-transform: uppercase;
 		color: var(--gold);
 	}
 	.project-activity :global(.pa-list) {
 		display: grid;
-		gap: 10px;
-		margin: 12px 0 0;
+		gap: var(--hx-space-10);
+		margin: var(--hx-space-12) 0 0;
 		padding: 0;
 		list-style: none;
 	}
@@ -105,34 +105,34 @@
 	}
 	.project-activity :global(.pa-more) {
 		min-height: 36px;
-		margin-top: 10px;
-		padding: 4px 12px;
-		font-size: 0.82rem;
+		margin-top: var(--hx-space-10);
+		padding: var(--hx-space-4) var(--hx-space-12);
+		font-size: var(--hx-type-size-compact);
 	}
 	.project-activity :global(.pa-head .pa-more) {
-		margin: 0 0 0 8px;
+		margin: 0 0 0 var(--hx-space-8);
 	}
 	.project-activity :global(.pa-detail summary) {
 		color: var(--gold);
-		font-size: 0.82rem;
+		font-size: var(--hx-type-size-compact);
 		cursor: pointer;
 	}
 	.project-activity :global(.pa-detail > *) {
-		margin-top: 6px;
+		margin-top: var(--hx-space-6);
 	}
 	.project-activity :global(.pa-warn) {
-		margin: 10px 0 0;
-		padding: 8px 12px;
-		border-left: 3px solid #edc27b;
-		color: #edc27b;
-		font-size: 0.86rem;
+		margin: var(--hx-space-10) 0 0;
+		padding: var(--hx-space-8) var(--hx-space-12);
+		border-left: var(--hx-border-heavy) solid var(--hx-warning);
+		color: var(--hx-warning);
+		font-size: var(--hx-type-size-sm);
 	}
 	.project-activity :global(.pa-list li:not([hidden])) {
 		display: grid;
-		gap: 4px;
+		gap: var(--hx-space-4);
 		min-width: 0;
-		padding-top: 10px;
-		border-top: 1px solid var(--line);
+		padding-top: var(--hx-space-10);
+		border-top: var(--hx-border-thin) solid var(--line);
 		overflow-wrap: anywhere;
 	}
 	.project-activity :global(.pa-meta),
@@ -140,7 +140,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 4px 12px;
+		gap: var(--hx-space-4) var(--hx-space-12);
 		margin: 0;
 	}
 	.project-activity :global(.pa-meta),
@@ -148,19 +148,19 @@
 	.project-activity :global(.pa-empty),
 	.project-activity :global(small) {
 		color: var(--muted);
-		font-size: 0.82rem;
+		font-size: var(--hx-type-size-compact);
 	}
 	.project-activity :global(.pa-chip) {
-		padding: 1px 8px;
-		border: 1px solid var(--line);
-		border-radius: 999px;
-		font-size: 0.78rem;
+		padding: var(--hx-space-1) var(--hx-space-8);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-pill);
+		font-size: var(--hx-type-size-xs);
 	}
 	.project-activity :global(.pa-chip em),
 	.project-activity :global(.pa-state.stale),
 	.project-activity :global(.pa-state.gone),
 	.project-activity :global(.pa-state.failed) {
-		color: #edc27b;
+		color: var(--hx-warning);
 	}
 	.project-activity :global(.pa-state.working),
 	.project-activity :global(a) {
@@ -169,11 +169,11 @@
 	.project-activity :global(.pa-count) {
 		display: flex;
 		align-items: baseline;
-		gap: 12px;
-		margin: 10px 0 0;
+		gap: var(--hx-space-12);
+		margin: var(--hx-space-10) 0 0;
 	}
 	.project-activity :global(.pa-count strong) {
-		font-size: 2rem;
+		font-size: var(--hx-type-size-3xl);
 	}
 	.project-activity :global(.pa-reason) {
 		margin: 0;
@@ -182,7 +182,7 @@
 		color: var(--muted);
 	}
 	.project-activity :global(code) {
-		font-size: 0.85rem;
+		font-size: var(--hx-type-size-sm);
 	}
 	@media (max-width: 920px) {
 		.project-activity {
@@ -192,17 +192,17 @@
 	/* On a phone the parts are tighter, so that what comes second is not far down. */
 	@media (max-width: 520px) {
 		.project-activity {
-			gap: 12px;
+			gap: var(--hx-space-12);
 		}
 		.project-activity :global(.pa-card) {
-			padding: 14px;
+			padding: var(--hx-space-14);
 		}
 		.project-activity :global(.pa-list) {
-			gap: 6px;
-			margin-top: 8px;
+			gap: var(--hx-space-6);
+			margin-top: var(--hx-space-8);
 		}
 		.project-activity :global(.pa-list li:not([hidden])) {
-			padding-top: 8px;
+			padding-top: var(--hx-space-8);
 		}
 	}
 </style>

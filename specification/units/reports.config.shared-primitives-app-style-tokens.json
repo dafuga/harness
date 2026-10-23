@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.config.shared-primitives-app-style-tokens",
+	"kind": "config",
+	"title": "appStyleTokensConfig",
+	"responsibility": "Declares the application stylesheet scope, canonical token source, documented groups and design-value admission rules.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/config/shared-primitives/appStyleTokensConfig.ts"],
+		"symbols": ["appStyleTokensConfig"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "appStyleTokensConfig",
+				"type": "typeof appStyleTokensConfig",
+				"description": "Application source roots, canonical stylesheet path, token groups and guarded CSS property patterns."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/config/shared-primitives/appStyleTokensConfig.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/config/shared-primitives/appStyleTokensConfig.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

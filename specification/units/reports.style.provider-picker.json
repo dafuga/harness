@@ -16,7 +16,13 @@
 		"outputs": [],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.style.app-tokens",
+			"via": "style-import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/lib/styles/provider-picker.css",

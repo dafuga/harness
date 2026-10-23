@@ -9,8 +9,8 @@
 @media (max-width: 1250px) {
 	.topbar {
 		flex-wrap: wrap;
-		gap: 12px;
-		padding-top: 12px;
+		gap: var(--hx-space-12);
+		padding-top: var(--hx-space-12);
 	}
 	.catalog-tools > input {
 		flex-basis: 100%;
@@ -22,13 +22,13 @@
 		grid-template-columns: minmax(0, 1fr) 330px;
 	}
 	.entity-main {
-		padding: 20px;
+		padding: var(--hx-space-20);
 	}
 	.entity-heading {
 		flex-wrap: wrap;
 	}
 	.entity-heading h1 {
-		font-size: 27px;
+		font-size: var(--hx-type-size-2xl);
 	}
 	.entity-symbol {
 		display: none;
@@ -47,20 +47,20 @@
 	.thread-panel {
 		position: fixed;
 		inset: 15vh 0 0;
-		z-index: 40;
+		z-index: var(--hx-layer-popover);
 		max-height: 85vh;
-		box-shadow: 0 -30px 80px #00111a;
-		border-top: 1px solid var(--line);
+		box-shadow: var(--hx-shadow-sheet);
+		border-top: var(--hx-border-thin) solid var(--line);
 		border-left: 0;
 	}
 	.thread-scroll {
 		max-height: 380px;
 	}
 	.entity-main {
-		padding: 18px;
+		padding: var(--hx-space-18);
 	}
 	.brand {
-		font-size: 20px;
+		font-size: var(--hx-type-size-xl);
 	}
 	.before-after {
 		grid-template-columns: minmax(0, 1fr);
@@ -68,7 +68,7 @@
 }
 @media (max-width: 560px) {
 	.topbar {
-		padding: 10px 12px 0;
+		padding: var(--hx-space-10) var(--hx-space-12) 0;
 	}
 	.account {
 		justify-content: flex-end;
@@ -84,8 +84,8 @@
 			'environment environment revision tip tip'
 			'summary summary summary summary summary'
 			'tools tools tools tools tools';
-		gap: 2px 0;
-		padding-top: 4px;
+		gap: var(--hx-space-2) 0;
+		padding-top: var(--hx-space-4);
 	}
 	.topbar.with-account {
 		grid-template-areas:
@@ -99,15 +99,15 @@
 		content: '';
 		grid-area: environment-start / 1 / summary-end / -1;
 		align-self: stretch;
-		margin-block: 2px;
-		border: 1px solid var(--line);
-		border-radius: 12px;
+		margin-block: var(--hx-space-2);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
 		background: var(--panel);
 	}
 	/* The mark alone stands for Harness, so the project's name keeps the room. */
 	.topbar:has(.topbar-search) .brand-mark {
 		display: flex;
-		font-size: 26px;
+		font-size: var(--hx-type-size-2xl);
 	}
 	.brand-word {
 		position: absolute;
@@ -134,7 +134,7 @@
 		color: var(--muted);
 	}
 	header.topbar .agent-icon:focus-visible {
-		outline-offset: -2px;
+		outline-offset: calc(-1 * var(--hx-space-2));
 	}
 	.topbar nav {
 		display: grid;
@@ -143,11 +143,11 @@
 	}
 	.topbar nav a {
 		min-width: 0;
-		gap: 1px;
-		padding: 1px 8px 0;
-		border-bottom-width: 2px;
+		gap: var(--hx-space-1);
+		padding: var(--hx-space-1) var(--hx-space-8) 0;
+		border-bottom-width: var(--hx-border-thick);
 		color: var(--muted);
-		font-size: 11px;
+		font-size: var(--hx-type-size-2xs);
 	}
 	.topbar nav svg {
 		width: 16px;
@@ -155,20 +155,20 @@
 	}
 	/* A focus ring is drawn within its tab, clear of the tabs beside and below it. */
 	.topbar nav a:focus-visible {
-		outline-offset: -3px;
+		outline-offset: calc(-1 * var(--hx-space-3));
 	}
 	.catalog {
-		padding: 18px;
+		padding: var(--hx-space-18);
 	}
 	.catalog > .row {
 		align-items: flex-start;
-		gap: 12px;
+		gap: var(--hx-space-12);
 	}
 	.catalog h1 {
-		font-size: 28px;
+		font-size: var(--hx-type-size-3xl);
 	}
 	.catalog > .row p {
-		font-size: 13px;
+		font-size: var(--hx-type-size-compact);
 	}
 	.catalog-tools .report-select {
 		flex: 1 1 auto;
@@ -181,22 +181,22 @@
 		overflow: auto;
 	}
 	.entity-tabs button {
-		font-size: 12px;
-		padding: 12px;
+		font-size: var(--hx-type-size-xs);
+		padding: var(--hx-space-12);
 	}
 	.entity-heading > div {
 		flex-basis: 100%;
 	}
 	.entity-heading .row {
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	.entity-heading h1 {
 		width: 100%;
-		font-size: 27px;
+		font-size: var(--hx-type-size-2xl);
 	}
 	.panel {
-		padding: 12px;
+		padding: var(--hx-space-12);
 	}
 	.measures {
 		flex-wrap: wrap;
@@ -205,15 +205,15 @@
 		min-height: 0;
 	}
 	.modal {
-		padding: 20px;
+		padding: var(--hx-space-20);
 	}
 	.image-actions {
 		justify-content: flex-start;
 	}
 	.image-actions button {
-		font-size: 11px;
+		font-size: var(--hx-type-size-2xs);
 	}
 	.status-bar {
-		padding: 12px 18px;
+		padding: var(--hx-space-12) var(--hx-space-18);
 	}
 }

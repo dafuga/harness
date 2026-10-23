@@ -55,7 +55,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		font-size: 14px;
+		font-size: var(--hx-type-size-sm);
 	}
 	/* Narrower than a desktop the switcher is no bordered column of the bar. */
 	@media (max-width: 1250px) {
@@ -68,29 +68,29 @@
 	   Add are quiet icons beside it. */
 	@media (max-width: 560px) {
 		.project-switcher {
-			gap: 2px;
-			margin-inline: 6px;
+			gap: var(--hx-space-2);
+			margin-inline: var(--hx-space-6);
 		}
 		.project-name {
 			max-width: none;
-			padding-inline: 2px;
-			font-size: 15px;
-			font-weight: 600;
+			padding-inline: var(--hx-space-2);
+			font-size: var(--hx-type-size-base);
+			font-weight: var(--hx-style-weight-semibold);
 		}
 		.add-project {
 			border-color: transparent;
 			background: none;
-			font-size: 20px;
+			font-size: var(--hx-type-size-xl);
 		}
 		.add-project:focus-visible {
-			outline-offset: -2px;
+			outline-offset: calc(-1 * var(--hx-space-2));
 		}
 	}
 	/* In its dialog the switcher is a field of the dialog's width, drawn as a field. */
 	.picker-field {
 		display: grid;
-		gap: 6px;
-		font-size: 12px;
+		gap: var(--hx-space-6);
+		font-size: var(--hx-type-size-xs);
 	}
 	.picker-field :global(.report-select) {
 		display: block;
@@ -98,6 +98,6 @@
 	.picker-field :global(select) {
 		max-width: none;
 		border-color: var(--line);
-		background: #062031;
+		background: var(--hx-raised);
 	}
 </style>

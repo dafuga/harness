@@ -139,7 +139,7 @@
 	.editor,
 	fieldset {
 		display: grid;
-		gap: 16px;
+		gap: var(--hx-space-16);
 	}
 	fieldset {
 		min-width: 0;
@@ -149,23 +149,23 @@
 	}
 	label {
 		display: grid;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	label > span,
 	h3 {
 		margin: 0;
 		color: var(--muted);
-		font-size: 12px;
-		letter-spacing: 0.08em;
+		font-size: var(--hx-type-size-xs);
+		letter-spacing: var(--hx-style-tracking-caps);
 		text-transform: uppercase;
 	}
 	input:focus-visible {
-		outline: 2px solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--gold);
 	}
 	.check {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: var(--hx-space-10);
 	}
 	.check input {
 		width: 18px;
@@ -180,7 +180,7 @@
 	.row {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	@media (max-width: 560px) {
 		.row {

@@ -123,7 +123,7 @@
 	/* The icons and the line of what is shown share one row; a pinned commit adds Go to tip. */
 	.revision-picker {
 		align-items: center;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	/* The branch and commit icons are a group of their own only where a phone draws one. */
 	.revision-choices {
@@ -132,13 +132,13 @@
 	.revision-summary {
 		display: flex;
 		align-items: baseline;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		flex: 0 1 auto;
 		min-width: 0;
 		max-width: 300px;
-		margin-inline-start: 4px;
-		font-size: 13px;
-		line-height: 1.35;
+		margin-inline-start: var(--hx-space-4);
+		font-size: var(--hx-type-size-compact);
+		line-height: var(--hx-style-leading-snug);
 	}
 	.revision-summary > * {
 		overflow: hidden;
@@ -150,12 +150,12 @@
 	}
 	.revision-summary small {
 		flex: none;
-		line-height: 1.35;
+		line-height: var(--hx-style-leading-snug);
 	}
 	/* In its dialog a picker is a field of the dialog's width, not one of the bar. */
 	.picker-field {
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		width: auto;
 		max-width: none;
 	}
@@ -171,41 +171,41 @@
 			grid-area: revision;
 			display: flex;
 			justify-self: start;
-			margin: 8px 0 0 -1px;
-			border-radius: 0 8px 8px 0;
+			margin: var(--hx-space-8) 0 0 calc(-1 * var(--hx-space-1));
+			border-radius: 0 var(--hx-radius-small) var(--hx-radius-small) 0;
 			background: var(--panel);
-			box-shadow: inset 0 0 0 1px var(--line);
+			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--line);
 		}
 		.revision-summary {
 			grid-area: summary;
 			display: flex;
 			align-items: baseline;
-			gap: 8px;
+			gap: var(--hx-space-8);
 			min-width: 0;
 			max-width: none;
-			margin: 2px 0 8px;
-			padding-inline: 6px;
-			line-height: 13px;
+			margin: var(--hx-space-2) 0 var(--hx-space-8);
+			padding-inline: var(--hx-space-6);
+			line-height: var(--hx-space-13);
 		}
 		/* A long branch gives way first; what is shown stays whole. */
 		.revision-summary strong {
 			flex: 0 1 auto;
 			min-width: 0;
-			font-size: 12px;
+			font-size: var(--hx-type-size-xs);
 		}
 		.revision-summary small {
 			flex: none;
-			font-size: 11px;
-			line-height: 13px;
+			font-size: var(--hx-type-size-2xs);
+			line-height: var(--hx-space-13);
 		}
 		.go-to-tip {
 			grid-area: tip;
 			justify-self: end;
 			height: 30px;
-			margin: 8px 6px 0 0;
-			padding: 0 12px;
-			border-color: rgb(255 208 53 / 0.5);
-			border-radius: 15px;
+			margin: var(--hx-space-8) var(--hx-space-6) 0 0;
+			padding: 0 var(--hx-space-12);
+			border-color: var(--hx-gold-line);
+			border-radius: var(--hx-radius-xlarge);
 			background: none;
 			color: var(--gold);
 		}

@@ -54,6 +54,6 @@
 		overflow-wrap: inherit;
 	}
 	:global(.hx-shell) > .hx-header + .hc-notice {
-		margin-top: 20px;
+		margin-top: var(--hx-space-20);
 	}
 </style>
