@@ -16,8 +16,24 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 		...added,
 		registry: {
 			...added.registry,
-			units: added.registry.units.map((unit) =>
-				unit.id === ids.store
+			units: added.registry.units.map((unit) => {
+				if (unit.id === ids.filter)
+					return {
+						...unit,
+						owns: {
+							...unit.owns,
+							source: [
+								...unit.owns.source,
+								'src/helpers/orders/filterOrders.ts',
+								'src/components/orders/contract.ts'
+							]
+						},
+						helpers: unit.helpers?.map((helper) => ({
+							...helper,
+							source: 'src/helpers/orders/filterOrders.ts'
+						}))
+					};
+				return unit.id === ids.store
 					? {
 							...unit,
 							owns: {
@@ -25,8 +41,8 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 								source: [...unit.owns.source, 'src/services/orders/Order types #é.ts']
 							}
 						}
-					: unit
-			)
+					: unit;
+			})
 		}
 	};
 }

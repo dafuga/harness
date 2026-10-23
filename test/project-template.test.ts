@@ -43,6 +43,8 @@ test('app projects include SvelteKit and specification files', () =>
 				'one representative example per distinct behavior'
 			);
 			expect(fileContents(files, path)).toContain('descriptive behavior titles');
+			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
+			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
