@@ -1,4 +1,5 @@
 import { recordGameCapture } from './game-checkpoint-fixture';
+import { recordLevelCapture } from './game-level-capture';
 import { expect, type Locator, type Page } from '../../../../test/support/browserTest';
 import type { GameDocument } from '../../../game/src/models/game-authoring/Game.types';
 
@@ -154,6 +155,7 @@ export async function captureGame(page: import('@playwright/test').Page, name: s
 	const path = 'test-results/' + name + '-' + page.viewportSize()?.width + '.png';
 	const bytes = await page.screenshot({ path, fullPage: true });
 	await recordGameCapture(page, name, bytes);
+	await recordLevelCapture(page, name, bytes);
 }
 
 /** Compact creation, image review and optional rule editing at each scenario viewport. */

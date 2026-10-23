@@ -47,6 +47,11 @@
 			"unit": "game.model.game-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "game.validator.level",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

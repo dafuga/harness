@@ -1,3 +1,4 @@
+import { prepareNativeLegacyGame } from './native-level-fixture';
 import { viewSettings, doneCheckpoint } from './game-unsaved-fixture';
 import scenario from '../../../../specification/scenarios/game-authoring.json' with { type: 'json' };
 import { buildStamp } from '../../../../src/utils/development-tooling/buildStamp';
@@ -183,6 +184,7 @@ export async function createNativeGame(page: Page, name: string, dimension: stri
 	await viewSettings(page);
 	await expect(page.getByLabel('Dimension', { exact: true })).toHaveValue(dimension);
 	await expect(page.getByText('Demo', { exact: true })).toHaveCount(0);
+	await prepareNativeLegacyGame(page, dimension);
 }
 
 /** The candidate is explicitly accepted before the real image reference is saved. */

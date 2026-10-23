@@ -28,6 +28,7 @@ export function gamePayload(channel: string, input: unknown): unknown {
 			path: textField(x.path, 100, /^static\/game\/checkpoints\/[a-f0-9]{64}\.png$/),
 			...(x.commit === undefined ? {} : { commit: textField(x.commit, 40, commitPattern) })
 		};
+	if (channel === 'game:level-generate') return levelRequest(projectId, x);
 	if (channel === 'game:image-generate') {
 		assertDocument(x.document);
 		return {
@@ -54,4 +55,17 @@ export function gamePayload(channel: string, input: unknown): unknown {
 	} as RenderSessionRequest;
 	validateSession(request);
 	return request;
+}
+
+function levelRequest(projectId: string, x: ReturnType<typeof ipcFields>) {
+	assertDocument(x.document);
+	return {
+		projectId,
+		document: x.document,
+		viewId: textField(x.viewId, 200),
+		expectedRevision: textField(x.expectedRevision, 64, /^[a-f0-9]{64}$/),
+		provider: enumField(x.provider, ['codex', 'claude']),
+		model: textField(x.model, 200),
+		...(x.feedback === undefined ? {} : { feedback: textField(x.feedback, 4000) })
+	};
 }

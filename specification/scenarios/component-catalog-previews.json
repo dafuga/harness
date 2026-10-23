@@ -29,8 +29,13 @@
 		"desktop.component.game-checkpoint-editor",
 		"desktop.component.game-checkpoint-image",
 		"desktop.component.game-checkpoint-pane",
+		"desktop.component.game-controls",
 		"desktop.component.game-create",
 		"desktop.component.game-graph",
+		"desktop.component.game-level-brief",
+		"desktop.component.game-level-plan",
+		"desktop.component.game-level-preview",
+		"desktop.component.game-level-review",
 		"desktop.component.game-live-video",
 		"desktop.component.game-mechanics",
 		"desktop.component.game-preview",
@@ -399,6 +404,12 @@
 			"units": ["desktop.component.game-checkpoint-pane"]
 		},
 		{
+			"id": "desktop-component-game-controls",
+			"title": "GameControls",
+			"coverage": "required",
+			"units": ["desktop.component.game-controls"]
+		},
+		{
 			"id": "desktop-component-game-create",
 			"title": "GameCreate",
 			"coverage": "required",
@@ -409,6 +420,30 @@
 			"title": "GameGraph",
 			"coverage": "required",
 			"units": ["desktop.component.game-graph"]
+		},
+		{
+			"id": "desktop-component-game-level-brief",
+			"title": "GameLevelBrief",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-brief"]
+		},
+		{
+			"id": "desktop-component-game-level-plan",
+			"title": "GameLevelPlan",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-plan"]
+		},
+		{
+			"id": "desktop-component-game-level-preview",
+			"title": "GameLevelPreview",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-preview"]
+		},
+		{
+			"id": "desktop-component-game-level-review",
+			"title": "GameLevelReview",
+			"coverage": "required",
+			"units": ["desktop.component.game-level-review"]
 		},
 		{
 			"id": "desktop-component-game-live-video",
@@ -1758,8 +1793,13 @@
 				"desktop-component-game-checkpoint-editor",
 				"desktop-component-game-checkpoint-image",
 				"desktop-component-game-checkpoint-pane",
+				"desktop-component-game-controls",
 				"desktop-component-game-create",
 				"desktop-component-game-graph",
+				"desktop-component-game-level-brief",
+				"desktop-component-game-level-plan",
+				"desktop-component-game-level-preview",
+				"desktop-component-game-level-review",
 				"desktop-component-game-live-video",
 				"desktop-component-game-mechanics",
 				"desktop-component-game-preview",
