@@ -30,5 +30,5 @@ export {
 	historyListed,
 	entityHistory,
 	historyProfiles
-} from '../../components/explorer-ui/harness/entity-history/entityHistory';
-export { reviewChanges } from '../../components/explorer-ui/harness/entity-change/entityHistory';
+} from '../../components/explorer-ui/entity-history/entityHistory';
+export { reviewChanges } from '../../components/explorer-ui/entity-change/entityHistory';

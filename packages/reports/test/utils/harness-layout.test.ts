@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { HarnessUnit } from '../../src/models/Harness.types';
-import { harnessLayout } from '../../src/components/harness/harness-map/harnessLayout';
+import { harnessLayout } from '../../src/components/explorer-ui/harness-map/harnessLayout';
 import { nodeSize } from '../../src/utils/harnessLayout';
 
 function unit(id: string, dependencies: Array<[string, string]> = []): HarnessUnit {

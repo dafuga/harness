@@ -1,6 +1,6 @@
 import { mount, unmount } from 'svelte';
-import ExplorerContent from '../src/components/harness/ExplorerContent.svelte';
-import HarnessShell from '../src/components/harness/HarnessShell.svelte';
+import ExplorerContent from '../src/components/explorer-ui/ExplorerContent.svelte';
+import HarnessShell from '../src/components/explorer-ui/HarnessShell.svelte';
 import { explorerRoute, explorerRoutePath } from '../../../src/utils/explorerRoute';
 import '../src/lib/styles/base.css';
 import '../src/lib/styles/base-2.css';

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { entityShown } from '../../../src/components/explorer-ui/harness/entity-sections/entityShown';
+import { entityShown } from '../../../src/components/explorer-ui/entity-sections/entityShown';
 import { entityMetricComparison } from '../../../src/utils/explorer-ui/entityMetricComparison';
 import { hostProps } from '../../entityRender';
 import { commits, ids } from '../../entityUnits';

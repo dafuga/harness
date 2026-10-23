@@ -24,9 +24,9 @@ export const brandingVerificationScopes: Record<string, VerificationScope> = {
 					'shared-surfaces',
 				'hub/src/components/shared-primitives/HubFrame.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'reports/src/components/explorer-ui/harness/harness-navbar/HarnessNavbar.svelte compiles to the shared mark, not the old one':
+				'reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
-				'reports/src/components/explorer-ui/harness/HarnessHeader.svelte compiles to the shared mark, not the old one':
+				'reports/src/components/explorer-ui/HarnessHeader.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces',
 				'reports/src/components/reports-media/ReportView.svelte compiles to the shared mark, not the old one':
 					'shared-surfaces'

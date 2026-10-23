@@ -8,10 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness/harness-failures/HarnessFailures.svelte",
-			"packages/reports/src/components/harness/harness-failures/HarnessFailures.svelte"
+			"packages/reports/src/components/explorer-ui/harness-failures/HarnessFailures.svelte"
 		],
-		"symbols": ["HarnessFailures", "HarnessFailures"]
+		"symbols": ["HarnessFailures"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -50,11 +49,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/harness-failures/HarnessFailures.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness-failures/HarnessFailures.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/harness-failures/HarnessFailures.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness-failures/HarnessFailures.svelte"
 			}
 		]
 	},

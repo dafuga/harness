@@ -1,6 +1,9 @@
 import { expect, test } from 'vitest';
 import type { HarnessUnit } from '../../src/models/Harness.types';
-import { harnessLayout, mapColumns } from '../../src/components/harness/harness-map/harnessLayout';
+import {
+	harnessLayout,
+	mapColumns
+} from '../../src/components/explorer-ui/harness-map/harnessLayout';
 import { nodeSize } from '../../src/utils/harnessLayout';
 import {
 	drawnEdges,
@@ -8,7 +11,7 @@ import {
 	nextNode,
 	panView,
 	zoomView
-} from '../../src/components/harness/harness-map/focusView';
+} from '../../src/components/explorer-ui/harness-map/focusView';
 import { wholeView } from '../../src/utils/focusView';
 
 function unit(id: string, dependencies: string[] = []): HarnessUnit {

@@ -3,7 +3,7 @@
 	import { page } from '$app/state';
 	import '../../lib/styles/harness.css';
 	import type { ExplorerScreen } from '../../models/explorer-ui/ExplorerScreen.types';
-	import HarnessConsole from './harness/HarnessConsole.svelte';
+	import HarnessConsole from './HarnessConsole.svelte';
 	let {
 		title,
 		content

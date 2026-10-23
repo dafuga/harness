@@ -1,0 +1,92 @@
+<script lang="ts">
+	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
+	import type { Evidence } from '../../models/reports-media/Report.types';
+	import { shortCommit } from '../../utils/explorer-ui/entityLens';
+	import { galleryItems } from '../../utils/explorer-ui/entityScreens';
+	import AudioEvidence from '../verification-evidence/AudioEvidence.svelte';
+	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
+	let {
+		evidence,
+		scope,
+		mediaBase,
+		empty = false
+	}: {
+		evidence: ExplorerEvidence;
+		scope: ExplorerScope;
+		mediaBase: string;
+		empty?: boolean;
+	} = $props();
+	let clips = $derived(galleryItems(evidence).filter((item) => item.mediaType === 'audio'));
+	let paired = $derived(evidence.mode === 'commit');
+	interface Pair {
+		before?: Evidence;
+		after?: Evidence;
+	}
+	// A clip stands beside the clip of the same scenario, state and evidence on the other side.
+	let pairs = $derived(
+		[...new Set(clips.map((item) => item.comparison))].map((key): Pair => {
+			const of = (phase: Evidence['phase']) =>
+				clips.find((item) => item.comparison === key && item.phase === phase);
+			return { before: of('before'), after: of('after') ?? of('current') };
+		})
+	);
+	const sides = [
+		{ phase: 'before' as const, title: 'Before', role: 'Parent commit' },
+		{ phase: 'after' as const, title: 'After', role: 'Selected commit' }
+	];
+	// At the branch tip there is one side, and it is never called before or after.
+	let shown = $derived(paired ? sides : sides.slice(1));
+	const at = (phase: 'before' | 'after') =>
+		shortCommit(phase === 'before' ? (scope.parent ?? '') : scope.commit);
+</script>
+
+{#if clips.length}
+	<section
+		class="ex-card ex-evidence"
+		aria-labelledby="ex-audio-title"
+		data-harness-component="harness-entity-audio"
+	>
+		<header class="ex-evidence-head">
+			<div>
+				<h2 id="ex-audio-title">{paired ? 'Audio comparison' : 'Current audio'}</h2>
+				<p class="ex-soft">
+					{paired
+						? 'The same clip before and after the selected commit, each with its transcript.'
+						: `What was recorded at the current branch tip · ${shortCommit(scope.commit)}`}
+				</p>
+			</div>
+		</header>
+		{#each pairs as pair, position (position)}
+			<div class="ex-panes" class:paired>
+				{#each shown as side}
+					{@const clip = pair[side.phase]}
+					<div class="ex-pane" role="group" aria-label={`${side.title} · ${at(side.phase)}`}>
+						{#if paired}
+							<p class="ex-pane-head">
+								<strong>{side.title} · {at(side.phase)}</strong>
+								<span class="ex-pill">{side.role}</span>
+							</p>
+						{/if}
+						{#if clip}
+							<AudioEvidence item={clip} assetBase={mediaBase} idPrefix="overview-audio-" />
+						{:else}
+							<p class="ex-gap">
+								<HarnessVerdict passed={false} label="No clip" />
+								<span>No clip of this state is recorded for {at(side.phase)}.</span>
+							</p>
+						{/if}
+					</div>
+				{/each}
+			</div>
+		{/each}
+	</section>
+{:else if empty}
+	<section
+		class="ex-card ex-evidence"
+		aria-labelledby="ex-audio-title"
+		data-harness-component="harness-entity-audio"
+	>
+		<h2 id="ex-audio-title">Audio evidence</h2>
+		<p class="ex-soft">No audio evidence is recorded for this component at this revision.</p>
+	</section>
+{/if}

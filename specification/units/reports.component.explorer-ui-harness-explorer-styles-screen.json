@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/harness/ExplorerStylesScreen.svelte"],
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerStylesScreen.svelte"],
 		"symbols": ["ExplorerStylesScreen"]
 	},
 	"contract": {
@@ -97,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerStylesScreen.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerStylesScreen.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerStylesScreen.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerStylesScreen.svelte"
 			}
 		]
 	},
