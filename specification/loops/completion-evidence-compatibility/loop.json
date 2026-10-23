@@ -1,12 +1,8 @@
 {
-	"completion": {
-		"version": 1,
-		"kind": "coding"
-	},
 	"name": "completion-evidence-compatibility",
 	"goal": "Require current completion evidence while preserving paired regression guards and actual module memory observations",
 	"createdAt": "2026-10-23T13:44:24.827Z",
-	"updatedAt": "2026-10-23T13:44:24.827Z",
+	"updatedAt": "2026-10-23T17:06:57.925Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -15,32 +11,44 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:52.514Z",
+			"evidence": "Module lifecycle observations must retain real timing and correctly normalized process RSS without changing operation results."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:53.120Z",
+			"evidence": "Existing source-profile lifecycle tests lacked the native Bun memory-unit boundary. The committed standard matrix adds it before repair."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:54.117Z",
+			"evidence": "Accepted immutable failing checkpoint 231dcf53e66483eff346fe5a7fd575dff7bee899; tests were committed before product repair."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:55.189Z",
+			"evidence": "Repair and guard native module lifecycle and memory observations. The later user choice removes automatic agent and Desktop gating."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:56.577Z",
+			"evidence": "Accepted unchanged-test passing checkpoint b357e4b82660c370fb54c6f9dd809d6782c76493 with its retained paired red record."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:57.925Z",
+			"evidence": "Frozen lifecycle proof passes at the paired fix. Later focused source-runner tests also pass; global repository checks are tracked separately."
 		}
 	],
 	"evaluators": [
