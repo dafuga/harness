@@ -1,0 +1,76 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QnQxvc
+
+ ✓ test/utils/unit-metadata.test.ts (42 tests) 73ms
+ ✓ test/utils/explorer-ui/config-values.test.ts (17 tests) 19ms
+
+ Test Files  2 passed (2)
+      Tests  59 passed (59)
+   Start at  14:02:54
+   Duration  3.29s (transform 170ms, setup 98ms, collect 713ms, tests 93ms, environment 0ms, prepare 59ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QnQxvc/packages/reports
+
+ ✓ test/module-groups.test.ts (6 tests) 40ms
+ ✓ test/components/harness-icon.test.ts (3 tests) 5ms
+ ✓ test/components/explorer-ui/config-value-tree.test.ts (1 test) 3ms
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  14:02:58
+   Duration  1.04s (transform 333ms, setup 0ms, collect 562ms, tests 49ms, environment 0ms, prepare 81ms)
+
+
+Running 30 tests using 1 worker
+
+(node:31222) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop (3.0s)
+  ✓   2 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet (2.4s)
+  ✓   3 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile (2.5s)
+  ✓   4 test/entity-preview-groups.spec.ts:156:2 › source lists category implementation files only at desktop (1.4s)
+  ✓   5 test/entity-preview-groups.spec.ts:156:2 › source lists category implementation files only at tablet (1.3s)
+  ✓   6 test/entity-preview-groups.spec.ts:156:2 › source lists category implementation files only at mobile (1.3s)
+  ✓   7 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at desktop width (668ms)
+  ✓   8 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at desktop width (686ms)
+  ✓   9 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at desktop width (655ms)
+  ✓  10 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at desktop width (742ms)
+  ✓  11 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at desktop width (648ms)
+  ✓  12 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at desktop width (688ms)
+  ✓  13 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at desktop width (698ms)
+  ✓  14 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at tablet width (655ms)
+  ✓  15 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at tablet width (680ms)
+  ✓  16 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at tablet width (655ms)
+  ✓  17 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at tablet width (726ms)
+  ✓  18 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at tablet width (681ms)
+  ✓  19 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at tablet width (674ms)
+  ✓  20 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at tablet width (688ms)
+  ✓  21 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at mobile width (983ms)
+  ✓  22 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at mobile width (1.2s)
+  ✓  23 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at mobile width (674ms)
+  ✓  24 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at mobile width (720ms)
+  ✓  25 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at mobile width (659ms)
+  ✓  26 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at mobile width (649ms)
+  ✓  27 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at mobile width (646ms)
+  ✓  28 test/entity-preview-source.spec.ts:132:1 › source file selection and closing retain the detail Source tab (248ms)
+  ✓  29 test/entity-preview-source.spec.ts:153:1 › Source opens file contents in a modal and older histories state an explicit gap (338ms)
+  ✓  30 test/entity-preview-source.spec.ts:188:1 › a delayed previous source read cannot replace the selected file (269ms)
+
+  30 passed (31.2s)
+
+Running 9 tests using 1 worker
+
+(node:36028) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at desktop (625ms)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-config-value-tree at desktop (648ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-explorer-table at desktop (633ms)
+  ✓  4 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at tablet (283ms)
+  ✓  5 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-config-value-tree at tablet (313ms)
+  ✓  6 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-explorer-table at tablet (315ms)
+  ✓  7 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at mobile (312ms)
+  ✓  8 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-config-value-tree at mobile (313ms)
+  ✓  9 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-explorer-table at mobile (330ms)
+
+  9 passed (12.9s)
