@@ -125,6 +125,12 @@ test('every active visual module has its own required capture state', () => {
 		redundant,
 		'Components use their responsibility folder without a redundant harness namespace'
 	).toEqual([]);
+	const owned = loaded.stored
+		.filter((unit) => unit.status === 'active')
+		.flatMap((unit) => unit.owns.source);
+	expect(owned.filter((path) => /\/components\/(?:explorer-ui\/)?harness\//.test(path))).toEqual(
+		[]
+	);
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
 		.filter((unit) => {
