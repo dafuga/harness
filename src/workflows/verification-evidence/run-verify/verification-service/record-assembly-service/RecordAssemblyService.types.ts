@@ -1,12 +1,15 @@
-import type { RevisionSide } from '../../../../loadRevisions';
-import type { ImpactReport } from '../../../../../core/impactTypes';
-import type { VerificationProfile } from '../../../../../core/verificationTypes';
-import type { ScenarioResult } from '../../../../../core/verificationTypes';
-import type { VerificationStoreRepository } from '../../../../../repositories/VerificationStoreRepository';
+import type { ImpactReport } from '../../../../../core/development-tooling/impactTypes';
+import type {
+	ScenarioResult,
+	VerificationProfile
+} from '../../../../../core/verification-evidence/verificationTypes';
+import type { VerificationStoreRepository } from '../../../../../repositories/verification-evidence/VerificationStoreRepository';
 import type { ReasonReport } from '../../../../../services/ExplanationService';
+import type { RevisionSide } from '../../../../loadRevisions';
 import type { Executed } from '../SnapshotRunService';
 
 export interface AssemblyContext {
+	requirePerformance?: boolean;
 	root: string;
 	commit: string;
 	tree: string;

@@ -4,7 +4,14 @@ import type {
 	CompleteLoopStepInput,
 	ReadLoopInput
 } from './manageLoop.types';
-import { resolveLoopTemplate } from '../../workflows/development-tooling/loop-templates/loopTemplates';
+export type {
+	CreateLoopInput,
+	AddLoopStepInput,
+	CompleteLoopStepInput,
+	ReadLoopInput
+} from './manageLoop.types';
+import { fail } from '../../core/development-tooling/errors';
+import { TaskCompletionService } from '../../services/verification-evidence/TaskCompletionService';
 import {
 	appendTrace,
 	loopPaths,
@@ -19,8 +26,8 @@ import {
 	type LoopStatus,
 	type LoopStep
 } from '../../workflows/development-tooling/loop-state/loopState';
-import { fail } from '../../core/development-tooling/errors';
 import { enforceRegressionStep } from '../../workflows/verification-evidence/record-regression/recordRegression';
+import { newLoopState } from './manage-loop/newLoopState';
 
 export {
 	type LoopEvaluator,
@@ -35,7 +42,14 @@ export async function createLoop(input: CreateLoopInput): Promise<LoopStatus> {
 	const goal = validateRequiredText(input.goal, 'Loop goal');
 	const paths = loopPaths(root, name);
 	const createdAt = timestamp(input.now);
-	const state = await newLoopState(root, { name, goal, createdAt, from: input.from });
+	const state = await newLoopState(root, {
+		name,
+		goal,
+		createdAt,
+		from: input.from,
+		kind: input.kind,
+		plan: input.plan
+	});
 
 	state.agentModel = input.agentModel ?? process.env.HARNESS_AGENT_MODEL;
 	await writeNewLoop(paths, state);
@@ -77,6 +91,7 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	if (state.enforceOrder && pending && pending.id !== step)
 		fail(`Complete loop step "${pending.id}" before "${step}".`);
 	await enforceRegressionStep(loopRoot(input), state, step);
+	await auditLoopCompletion(loopRoot(input), state);
 
 	const completedAt = timestamp(input.now);
 	Object.assign(item, { status: 'complete' as const, completedAt, evidence });
@@ -115,27 +130,15 @@ export function renderLoopStatus(status: LoopStatus): string {
 	return [...lines, ...status.state.steps.flatMap(renderStep)].join('\n');
 }
 
-async function newLoopState(
-	root: string,
-	input: { name: string; goal: string; createdAt: string; from?: string }
-): Promise<LoopState> {
-	const inherited = input.from ? await resolveLoopTemplate(root, input.from) : undefined;
-	return {
-		name: input.name,
-		goal: input.goal,
-		createdAt: input.createdAt,
-		updatedAt: input.createdAt,
-		template: inherited?.id,
-		templateLineage: inherited?.lineage,
-		enforceOrder: inherited?.lineage.some((id) =>
-			['bug-fix', 'regression-prevention'].includes(id)
-		),
-		...(inherited?.lineage.some((id) => ['bug-fix', 'regression-prevention'].includes(id))
-			? { regressionCommits: 1 as const }
-			: {}),
-		steps: inherited?.steps.map((step) => ({ ...step, status: 'pending' as const })) ?? [],
-		evaluators: inherited?.evaluators
-	};
+async function auditLoopCompletion(root: string, state: LoopState): Promise<void> {
+	const final = state.steps.filter((candidate) => candidate.status === 'pending').length === 1;
+	if (state.completion && final)
+		await new TaskCompletionService(root).require({
+			kind: state.completion?.kind ?? 'coding',
+			plan: state.completion?.plan,
+			goal: state.goal,
+			loop: state.name
+		});
 }
 
 function createTraceEvent(state: LoopState, timestampValue: string): Record<string, unknown> {
@@ -154,10 +157,3 @@ function renderStep(step: LoopStep): string[] {
 	if (step.evidence) lines.push(`    evidence: ${step.evidence}`);
 	return lines;
 }
-
-export type {
-	CreateLoopInput,
-	AddLoopStepInput,
-	CompleteLoopStepInput,
-	ReadLoopInput
-} from './manageLoop.types';

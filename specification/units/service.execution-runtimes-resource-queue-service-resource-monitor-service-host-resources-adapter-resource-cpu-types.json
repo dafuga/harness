@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-resource-cpu-types",
+	"kind": "service",
+	"title": "resourceCpu",
+	"responsibility": "Defines compile-time Counters contracts for its adjacent resource implementation; it performs no runtime workload.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu.types.ts"
+		],
+		"symbols": ["Counters"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-cpu",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

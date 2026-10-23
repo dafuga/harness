@@ -18,12 +18,12 @@
 			"verifyIdentity",
 			"verifyStamp",
 			"renderVerify",
+			"VerifyOptions",
 			"verifyRun",
 			"verifyCheck",
 			"verifyIdentity",
 			"verifyStamp",
 			"renderVerify",
-			"VerifyOptions",
 			"VerifyOptions"
 		]
 	},
@@ -88,6 +88,11 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
 			"via": "import",
 			"origin": "derived"
 		},

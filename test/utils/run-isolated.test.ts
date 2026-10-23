@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -45,10 +46,16 @@ const leaveOnceSeen =
 	'fs.renameSync(at("family.part"), at("family")); ' +
 	'setInterval(() => fs.existsSync(at("seen")) && process.exit(0), 10);';
 
-async function run(script: string, timeoutMs = 5000, maxLogBytes = 64_000) {
+async function run(
+	script: string,
+	timeoutMs = 5000,
+	maxLogBytes = 64_000,
+	options: { onSpawn?: (pid: number) => void; signal?: AbortSignal } = {}
+) {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-isolated-'));
 	const log = join(directory, 'run.log');
 	const result = await runIsolated({
+		...options,
 		command: node,
 		args: ['-e', script, directory],
 		cwd: directory,
@@ -61,23 +68,62 @@ async function run(script: string, timeoutMs = 5000, maxLogBytes = 64_000) {
 	return { directory, log, result };
 }
 
-test('a passing and a failing command report their exit codes and output', async () => {
-	const passed = await run('console.log("out"); console.error("err")');
-	expect(passed.result).toMatchObject({ status: 'passed', exitCode: 0, timedOut: false });
-	expect(await readFile(passed.log, 'utf8')).toBe('out\nerr\n');
-	const failed = await run('process.exit(7)');
-	expect(failed.result).toMatchObject({ status: 'failed', exitCode: 7, timedOut: false });
-	const absent = await runIsolated({
-		command: '/nonexistent/harness-check',
-		args: [],
-		cwd: tmpdir(),
-		env: {},
-		timeoutMs: 1000,
-		log: join(passed.directory, 'absent.log'),
-		maxLogBytes: 1000
-	});
-	expect(absent).toMatchObject({ status: 'failed', exitCode: null, timedOut: false });
-});
+test.each([
+	[0, 0],
+	[100, 0],
+	[0, 150],
+	[100, 150]
+])(
+	'commands retain exit codes and output with %i ms spawn and %i ms table observers',
+	async (delay, tableDelay) => {
+		let pid: number | undefined;
+		const passed = await run('console.log("out"); console.error("err")', 5000, 64000, {
+			onSpawn: (own) => {
+				pid = own;
+				if (delay) execFileSync('sleep', [String(delay / 1000)]);
+			}
+		});
+		expect(pid).toBeGreaterThan(0);
+		expect(passed.result).toMatchObject({ status: 'passed', exitCode: 0, timedOut: false });
+		expect(await readFile(passed.log, 'utf8')).toBe('out\nerr\n');
+		const failed = await run('process.exit(7)');
+		expect(failed.result).toMatchObject({ status: 'failed', exitCode: 7, timedOut: false });
+		const absent = await runIsolated({
+			command: '/nonexistent/harness-check',
+			args: [],
+			cwd: tmpdir(),
+			env: {},
+			timeoutMs: 1000,
+			log: join(passed.directory, 'absent.log'),
+			maxLogBytes: 1000
+		});
+		expect(absent).toMatchObject({ status: 'failed', exitCode: null, timedOut: false });
+		const native = await observedBunExit(delay, tableDelay);
+		expect(native.result).toMatchObject({ status: 'passed', exitCode: 0, timedOut: false });
+		expect(native.output).toBe('out\nerr\n');
+	}
+);
+
+/** Native Bun can deliver a child's events while a synchronous observer asks another process. */
+async function observedBunExit(delay: number, tableDelay: number) {
+	const directory = await mkdtemp(join(tmpdir(), 'harness-observed-exit-'));
+	const source = new URL('../../src/utils/runIsolated.ts', import.meta.url).href;
+	const table = new URL('../../src/utils/processDescendants.ts', import.meta.url).href;
+	const script = `import {runIsolated} from ${JSON.stringify(source)};
+		import {processTable} from ${JSON.stringify(table)};
+		import {execFileSync} from 'node:child_process';
+		import {readFileSync} from 'node:fs';
+		const result = await runIsolated({command:'sh',args:['-c','printf "out\\n"; printf "err\\n" >&2'],
+		cwd:${JSON.stringify(directory)},env:process.env,timeoutMs:500,
+		log:${JSON.stringify(join(directory, 'run.log'))},maxLogBytes:1000,
+		platform:{table:()=>{if (${tableDelay}) execFileSync('sleep',[String(${tableDelay}/1000)]);return processTable();}},
+		onSpawn:()=>{if (${delay}) execFileSync('sleep',[String(${delay}/1000)])}});
+		console.log(JSON.stringify({result,output:readFileSync(result.log.path,'utf8')}));`;
+	return JSON.parse(execFileSync('bun', ['-e', script], { encoding: 'utf8', timeout: 6000 })) as {
+		result: { status: string; exitCode: number; timedOut: boolean };
+		output: string;
+	};
+}
 
 test('a command that ignores termination is still stopped at its limit', async () => {
 	const started = Date.now();
@@ -85,6 +131,10 @@ test('a command that ignores termination is still stopped at its limit', async (
 	expect(result).toMatchObject({ status: 'timeout', timedOut: true });
 	expect(Date.now() - started).toBeLessThan(5000);
 	expect(result.durationMs).toBeGreaterThanOrEqual(300);
+	const abort = new AbortController();
+	const cancelled = run('setInterval(()=>{},1000)', 5000, 64000, { signal: abort.signal });
+	setTimeout(() => abort.abort(), 100);
+	expect((await cancelled).result).toMatchObject({ status: 'failed', timedOut: false });
 });
 
 test('children of a timed-out or finished command are torn down with it', async () => {

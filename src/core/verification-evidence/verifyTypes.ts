@@ -15,6 +15,8 @@ const identifier = z.string().regex(unitIdPattern);
 /** How this repository's checks run inside a verification snapshot. */
 export const verifyConfigSchema = z.strictObject({
 	schemaVersion: z.literal(1),
+	/** New task contracts require profiling even when no performance budget is declared. */
+	performanceRequired: z.literal(1).optional(),
 	/**
 	 * The version of the writing limits this revision is held to: its reasons must be as short
 	 * as that version says, 20 words an attempt under 1 and 15 under 2. A revision that declares

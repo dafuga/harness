@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "service.task-completion",
+	"kind": "service",
+	"title": "TaskCompletionService",
+	"responsibility": "Audits committed coding or planning evidence and refuses completion when verification, profiling or proposal checks are missing or stale.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/TaskCompletionService.ts",
+			"src/services/verification-evidence/TaskCompletionService.types.ts"
+		],
+		"symbols": [
+			"TaskAudit",
+			"TaskAuditInput",
+			"TaskCompletionService",
+			"TaskCompletionService.constructor",
+			"TaskCompletionService.check",
+			"TaskCompletionService.requirePlan",
+			"TaskCompletionService.require",
+			"taskCompletionInstructions",
+			"TaskAuditInput",
+			"TaskAudit"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TaskCompletionService.constructor.root",
+				"type": "string",
+				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+			},
+			{
+				"name": "TaskCompletionService.check.input",
+				"type": "TaskAuditInput",
+				"description": "Declared task or observation metadata appropriate to the named operation."
+			},
+			{
+				"name": "TaskCompletionService.requirePlan.proposal",
+				"type": "string",
+				"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
+			},
+			{
+				"name": "TaskCompletionService.requirePlan.goal",
+				"type": "string",
+				"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
+			},
+			{
+				"name": "TaskCompletionService.require.input",
+				"type": "TaskAuditInput",
+				"description": "Declared task or observation metadata appropriate to the named operation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TaskCompletionService.check",
+				"type": "Promise<TaskAudit>",
+				"description": "Persisted audit with explicit failed checks when source, verification, profiling or proposal evidence is unavailable."
+			},
+			{
+				"name": "TaskCompletionService.requirePlan",
+				"type": "void",
+				"description": "Accepts structurally complete, relevant proposal content; otherwise throws a completion-audit error."
+			},
+			{
+				"name": "TaskCompletionService.require",
+				"type": "Promise<TaskAudit>",
+				"description": "Passed persisted audit; any failed check rejects completion with its recorded details."
+			},
+			{
+				"name": "taskCompletionInstructions",
+				"type": "string[]",
+				"description": "Coding and planning guidance that distinguishes evidence gates from semantic acceptance and hypothetical performance plans."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Incomplete proposals, missing verification, stale source or insufficient runtime evidence reject a required completion audit."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion-service-code-audit",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion-service-plan-audit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion-service-source-audit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion-service-task-audit-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/TaskCompletionService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/TaskCompletionService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

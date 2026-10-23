@@ -54,6 +54,8 @@ export async function buildScanFixture(): Promise<string> {
 		kept = ['-derivedDataPath', data, '-clonedSourcePackagesDirPath', packages];
 	const built = await followed([
 		'xcodebuild',
+		'-jobs',
+		process.env.CARGO_BUILD_JOBS ?? '1',
 		...project,
 		...place,
 		...kept,

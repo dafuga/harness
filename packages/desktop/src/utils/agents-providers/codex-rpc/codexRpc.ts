@@ -1,14 +1,16 @@
-import { spawn } from 'node:child_process';
-import { killOwnedProcess } from '../../development-tooling/cliProcess';
-import { cliEnvironment } from '../../development-tooling/cli-environment/cliEnvironment';
+import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
+import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
+import { resourceEnvironment } from '../../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
-import { rpcMessages, rpcRequest } from './rpcMessages';
-import type { RpcEvent, RpcPending } from '../rpcMessages';
+import { cliEnvironment } from '../../development-tooling/cli-environment/cliEnvironment';
+import { killOwnedProcess } from '../../development-tooling/cliProcess';
 import { streamLines } from '../../development-tooling/streamLines';
-
-function connection(command: CliCommand) {
+import type { RpcEvent, RpcPending } from '../rpcMessages';
+import { rpcMessages, rpcRequest } from './rpcMessages';
+/** Consumes diagnostics without exposing raw output or private reasoning to the renderer. */
+function connection(command: CliCommand, resources?: ResourceContext) {
 	const child = spawn(command.command, command.args, {
-		env: cliEnvironment(),
+		env: { ...cliEnvironment(), ...resourceEnvironment(resources?.env ?? {}) },
 		detached: process.platform !== 'win32',
 		stdio: 'pipe'
 	});
@@ -36,11 +38,8 @@ function connection(command: CliCommand) {
 			rejectAll(new Error('Codex message too large.'));
 		}
 	});
-	child.stdout.on('data', consume.write);
-	// Consume diagnostics without exposing raw output or private reasoning to the renderer.
-	child.stderr.resume();
-	child.on('error', rejectAll);
-	child.on('close', () => rejectAll(new Error('Codex connection closed.')));
+	watchConnection(child, consume, rejectAll);
+	if (child.pid) resources?.track(child.pid);
 	const request = <T = unknown>(method: string, params: unknown = {}, timeoutMs = 30000) =>
 		rpcRequest(
 			{ pending, listeners, send },
@@ -62,13 +61,26 @@ function connection(command: CliCommand) {
 	};
 }
 
+function watchConnection(
+	child: ChildProcessWithoutNullStreams,
+	consume: ReturnType<typeof streamLines>,
+	reject: (error: Error) => void
+): void {
+	child.stdout.on('data', consume.write);
+	child.stderr.resume();
+	child.on('error', reject);
+	child.on('close', () => reject(new Error('Codex connection closed.')));
+	child.stdin.on('error', () => reject(new Error('Codex connection closed.')));
+}
+
 export async function codexRpc(
 	command: CliCommand = {
 		command: 'codex',
 		args: ['app-server', '--stdio', '-c', 'model_provider="openai"']
-	}
+	},
+	resources?: ResourceContext
 ) {
-	const rpc = connection(command);
+	const rpc = connection(command, resources);
 	try {
 		await rpc.request('initialize', {
 			clientInfo: { name: 'harness-desktop', version: '0.1.0' },

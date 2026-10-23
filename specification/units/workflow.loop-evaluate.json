@@ -13,11 +13,11 @@
 			"src/workflows/loopEvaluate.ts"
 		],
 		"symbols": [
-			"evaluateLoop",
-			"renderLoopEvaluation",
 			"LoopEvaluationResult",
 			"LoopCommandResult",
 			"EvaluateLoopInput",
+			"evaluateLoop",
+			"renderLoopEvaluation",
 			"LoopEvaluationResult",
 			"LoopCommandResult",
 			"EvaluateLoopInput",
@@ -53,6 +53,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.resource-work",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "workflow.loop-state",
 			"via": "import",

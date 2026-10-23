@@ -1,5 +1,4 @@
-import type { SourceFile } from '../../../core/development-tooling/sourceTypes';
-import type { ExportedSymbol } from '../../../core/development-tooling/sourceTypes';
+import type { ExportedSymbol, SourceFile } from '../../../core/development-tooling/sourceTypes';
 import type { SourceReference } from '../../../utils/development-tooling/scanImports';
 import type { SourceBlock } from '../../../utils/development-tooling/sourceBlocks';
 
@@ -8,8 +7,8 @@ export interface SourceIndex {
 	/** Indexed files by repository-relative path; ignored files are absent. */
 	files: Map<string, SourceFile>;
 }
-
 export interface Parsed {
+	execution: NonNullable<SourceFile['execution']>;
 	bytes: number;
 	lines: number;
 	references: SourceReference[];
