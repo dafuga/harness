@@ -70,9 +70,11 @@ const transforms = [
 	['reports.function.activity-display', 'activityDisplay', 'plural', [2, 'item'], '2 items'],
 	['reports.function.evidence-media', 'evidenceMedia', 'formatDuration', [90.9], '1:30']
 ] as const;
-test.each(transforms)(
-	'Strings relocation preserves public entry %s',
-	async (unit, entry, name, args, output) => {
+test.each(
+	transforms.map(([unit, entry, name, args, output]) => ({ unit, entry, name, args, output }))
+)(
+	'Strings relocation preserves public entry $name',
+	async ({ unit, entry, name, args, output }) => {
 		const legacy = await import(`../src/utils/${entry}.ts`);
 		const canonical = await import(`../src/utils/strings/${name}.ts`);
 		expect(legacy[name]).toBe(canonical[name]);
