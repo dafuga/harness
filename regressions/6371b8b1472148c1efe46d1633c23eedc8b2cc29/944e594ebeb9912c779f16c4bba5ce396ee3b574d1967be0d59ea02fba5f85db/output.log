@@ -1,0 +1,16 @@
+
+Running 9 tests using 1 worker
+
+(node:57922) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at desktop (1.9s)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity at desktop (948ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity-history at desktop (691ms)
+  ✓  4 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at tablet (383ms)
+  ✓  5 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity at tablet (389ms)
+  ✓  6 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity-history at tablet (346ms)
+  ✓  7 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at mobile (377ms)
+  ✓  8 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity at mobile (403ms)
+  ✓  9 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity-history at mobile (348ms)
+
+  9 passed (17.1s)
