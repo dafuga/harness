@@ -10,6 +10,7 @@ export const appStyleTokensConfig = {
 		'Spacing',
 		'Borders and corners',
 		'Shadows',
+		'Effects',
 		'Opacity',
 		'Motion',
 		'Layering',
@@ -17,6 +18,6 @@ export const appStyleTokensConfig = {
 		'Responsive breakpoints'
 	],
 	designProperties:
-		/^(?:color|background(?:-.+)?|border(?:-.+)?|outline(?:-.+)?|fill|stroke|font(?:-.+)?|line-height|letter-spacing|text-shadow|box-shadow|padding(?:-.+)?|margin(?:-.+)?|(?:row-|column-)?gap|opacity|z-index|transition(?:-.+)?|animation-duration|animation-delay|animation-timing-function)$/,
+		/^(?:color|background(?:-.+)?|border(?:-.+)?|outline(?:-.+)?|fill|stroke|font(?:-.+)?|line-height|letter-spacing|text-shadow|box-shadow|filter|backdrop-filter|accent-color|caret-color|scrollbar-color|text-decoration(?:-.+)?|border-spacing|padding(?:-.+)?|margin(?:-.+)?|(?:row-|column-)?gap|opacity|z-index|transition(?:-.+)?|animation(?:-.+)?)$/,
 	typographyProperties: /^(?:font(?:-.+)?|line-height|letter-spacing)$/
 } as const;
