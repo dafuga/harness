@@ -1,0 +1,75 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-gmFTyz/packages/reports
+
+ ❯ test/config/shared-primitives/app-style-tokens.test.ts (33 tests | 1 failed) 458ms
+   ✓ style admission characterizes color: #fff 2ms
+   ✓ style admission characterizes scrollbar-color: #123456 transparent 0ms
+   ✓ style admission characterizes accent-color: var(--gold, #f3c33b) 0ms
+   ✓ style admission characterizes backdrop-filter: blur(3px) 1ms
+   ✓ style admission characterizes filter: brightness(0.95) 0ms
+   ✓ style admission characterizes filter: var(--hx-effect-hover-dim) 0ms
+   ✓ style admission characterizes animation: spinner var(--hx-motion-spin) linear infinite 0ms
+   ✓ style admission characterizes --hx-style-weight-bold: 900 0ms
+   ✓ style admission characterizes --hx-nav-gap: var(--hx-space-3) 0ms
+   ✓ style admission characterizes color: RebeccaPurple 0ms
+   ✓ style admission characterizes border: var(--hx-border-thin) solid rebeccapurple 0ms
+   ✓ style admission characterizes fill: url(#c0ffee) 0ms
+   ✓ style admission characterizes color: var(--hx-text) 0ms
+   ✓ style admission characterizes color: var(--hx-text, #fff) 0ms
+   ✓ style admission characterizes color: currentColor 0ms
+   ✓ style admission characterizes padding: 12px 0ms
+   ✓ style admission characterizes padding: 0 var(--hx-space-3) 0ms
+   ✓ style admission characterizes font-size: 0.875rem 0ms
+   ✓ style admission characterizes font: inherit 0ms
+   ✓ style admission characterizes font-family: monospace 0ms
+   ✓ style admission characterizes font-weight: 600 0ms
+   ✓ style admission characterizes font-weight: var(--hx-style-weight-semibold) 0ms
+   ✓ style admission characterizes border: 1px solid var(--hx-line) 0ms
+   ✓ style admission characterizes border-radius: 50% 0ms
+   ✓ style admission characterizes transition: color .15s ease 0ms
+   ✓ style admission characterizes box-shadow: 0 4px 8px black 0ms
+   ✓ style admission characterizes opacity: .5 0ms
+   ✓ style admission characterizes background: color-mix(in srgb, var(--hx-gold) 20%, transparent) 0ms
+   ✓ literal style directives and SVG paints use the same admission rule 2ms
+   ✓ literal inline component colors use the same admission rule 0ms
+   × all Harness component design values use the shared token catalog 263ms
+     → Undocumented design values remain outside the shared token catalog: expected [ …(8) ] to deeply equal []
+   ✓ all public app token references are declared in the canonical catalog 33ms
+   ✓ every responsive media and container threshold is documented in Styles 153ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/config/shared-primitives/app-style-tokens.test.ts > all Harness component design values use the shared token catalog
+AssertionError: Undocumented design values remain outside the shared token catalog: expected [ …(8) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "packages/reports/src/components/planning-collaboration/ConsoleChat.svelte: filter: brightness(0.95)",
++   "packages/reports/src/components/shared-primitives/FilterDialog.svelte: backdrop-filter: blur(3px)",
++   "packages/reports/src/components/shared-primitives/FilterDialog.svelte: accent-color: var(--gold, #f3c33b)",
++   "packages/reports/src/components/shared-primitives/LoadingState.svelte: animation: hx-loading-turn var(--hx-motion-spin) linear infinite",
++   "packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte: scrollbar-color: #3d5078 transparent",
++   "packages/reports/src/lib/styles/gallery.css: backdrop-filter: blur(5px)",
++   "packages/reports/src/lib/styles/replay.css: animation: replay-pulse var(--hx-motion-pulse) ease-in-out infinite",
++   "packages/desktop/src/components/development-tooling/DeploymentActivity.svelte: animation: pulse var(--hx-motion-pulse) ease-in-out infinite",
++ ]
+
+ ❯ test/config/shared-primitives/app-style-tokens.test.ts:67:91
+     65|   .flatMap(sources)
+     66|   .flatMap((path) => styleTokenViolations(readFileSync(join(root, path…
+     67|  expect(violations, 'Undocumented design values remain outside the sha…
+       |                                                                                           ^
+     68|   []
+     69|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  13:06:22
+   Duration  1.39s (transform 393ms, setup 0ms, collect 749ms, tests 458ms, environment 0ms, prepare 38ms)
+
