@@ -2,7 +2,7 @@
 	"name": "styles-color-roles",
 	"goal": "Styles explains primary, secondary, surface, text and status color roles with actual variables, usage guidance and responsive examples for component authors.",
 	"createdAt": "2026-10-23T14:13:47.754Z",
-	"updatedAt": "2026-10-23T14:15:50.928Z",
+	"updatedAt": "2026-10-23T16:35:32.636Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T16:35:31.843Z",
+			"evidence": "Opus implemented eight color roles without changing the canonical palette. Product commit c7f64aa41; all three standard catalog viewports pass unchanged assertions."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T16:35:32.636Z",
+			"evidence": "Paired retained red f31a1881 and green 60cf842f use unchanged tests and matching runtime. Reports 731 tests, lint, audit and both typechecks pass; actual route proof and integration remain pending."
 		},
 		{
 			"id": "verify",
