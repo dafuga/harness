@@ -2,7 +2,8 @@
 	import { tick, type Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
-	import { entityLens, shortCommit, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import '../../lib/styles/entity.css';
 	import '../../lib/styles/entity-summary.css';
 	import '../../lib/styles/entity-index.css';

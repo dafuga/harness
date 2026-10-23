@@ -1,4 +1,5 @@
 import { measureWorkload } from './support/measureWorkload';
+import { harnessRuleLimits, harnessRuleSummariesFor } from '../src/rules/catalog';
 import { expect, test } from 'vitest';
 import { availableGuideTopics, findGuide, guides } from '../src/guides/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
@@ -11,33 +12,42 @@ test('model guidance is available for agents', () =>
 		expect(guide?.exampleCommands[0]).toContain('harness generate model');
 	}));
 
-test('guidance covers every non-model scaffold topic', () => {
-	const topics = new Set(guides.map((guide) => guide.topic));
-	const gameNames: Record<string, string> = {
-		'game-view': '<camelName>ViewConfig.ts',
-		mechanic: '<camelName>.ts',
-		checkpoint: '<camelName>CheckpointConfig.ts'
-	};
+test('guidance covers every non-model scaffold topic', () =>
+	measureWorkload('guide.guide', 'helper-source-category-guide', () => {
+		const topics = new Set(guides.map((guide) => guide.topic));
+		const gameNames: Record<string, string> = {
+			'game-view': '<camelName>ViewConfig.ts',
+			mechanic: '<camelName>.ts',
+			checkpoint: '<camelName>CheckpointConfig.ts'
+		};
 
-	for (const kind of scaffoldKinds) {
-		expect(topics.has(kind), kind).toBe(true);
-		expect(findGuide(kind)?.rules.join('\n'), kind).toContain('Naming:');
-		if (gameNames[kind]) expect(findGuide(kind)?.rules.join('\n'), kind).toContain(gameNames[kind]);
-	}
-});
+		for (const kind of scaffoldKinds) {
+			expect(topics.has(kind), kind).toBe(true);
+			expect(findGuide(kind)?.rules.join('\n'), kind).toContain('Naming:');
+			expect(findGuide(kind)?.rules.join('\n'), kind).toContain(
+				'General text helpers belong in Strings'
+			);
+			if (gameNames[kind])
+				expect(findGuide(kind)?.rules.join('\n'), kind).toContain(gameNames[kind]);
+		}
+	}));
 
-test('code-rules guidance exposes hard Harness limits', () => {
-	const guide = findGuide('code-rules');
+test('code-rules guidance exposes hard Harness limits', () =>
+	measureWorkload('function.catalog', 'helper-category-guidance', () => {
+		expect(harnessRuleSummariesFor(harnessRuleLimits).join('\n')).toContain(
+			'General text helpers belong in Strings'
+		);
+		const guide = findGuide('code-rules');
 
-	expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
-	expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');
-	const naming = findGuide('naming');
-	expect(naming?.rules.join('\n')).toContain('<PascalName>Service.ts');
-	expect(naming?.rules.join('\n')).toContain('<PascalName>.svelte');
-	expect(naming?.rules.join('\n')).toContain('<camelName>.ts');
-	expect(naming?.rules.join('\n')).toContain('<PascalName>.types.ts');
-	expect(findGuide('service')?.rules.join('\n')).toContain('instantiated classes');
-});
+		expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
+		expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');
+		const naming = findGuide('naming');
+		expect(naming?.rules.join('\n')).toContain('<PascalName>Service.ts');
+		expect(naming?.rules.join('\n')).toContain('<PascalName>.svelte');
+		expect(naming?.rules.join('\n')).toContain('<camelName>.ts');
+		expect(naming?.rules.join('\n')).toContain('<PascalName>.types.ts');
+		expect(findGuide('service')?.rules.join('\n')).toContain('instantiated classes');
+	}));
 
 test('loop guidance describes loop driven development', () => {
 	const guide = findGuide('loop');

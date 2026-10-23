@@ -3,12 +3,8 @@
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
 	import type { SupportRow } from '../../utils/explorer-ui/entityUsage';
-	import {
-		entityLens,
-		shortCommit,
-		type EntityLens,
-		type EntityNav
-	} from '../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../ExplorerUsage.svelte';
