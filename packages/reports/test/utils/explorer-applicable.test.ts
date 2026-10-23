@@ -114,12 +114,15 @@ afterAll(() => {
 	if (!evidenceRequested()) return;
 	const registry = [catalog, entity, route];
 	const samples: number[] = [];
+	let selectedStates = 0;
 	for (let round = 0; round < 6; round++) {
 		const started = performance.now();
 		for (let iteration = 0; iteration < 10000; iteration++)
-			for (const unit of registry) scenarioFor(scenario, unit.id, registry);
+			for (const unit of registry)
+				selectedStates += scenarioFor(scenario, unit.id, registry).states.length;
 		if (round > 0) samples.push((performance.now() - started) / (10000 * registry.length));
 	}
+	expect(selectedStates).toBe(240000);
 	const common = {
 		unit: 'reports.function.explorer-state',
 		callable: 'scenarioFor',
@@ -134,7 +137,7 @@ afterAll(() => {
 			unitOfMeasure: 'ms',
 			value: samples.sort((a, b) => a - b)[2],
 			method:
-				'Median per call across five batches of 10000 passes over the standard two-page and nonvisual-route fixture, after one warmup batch.'
+				'Median per call across five batches of 10000 passes over the standard two-page and nonvisual-route fixture, after one warmup batch; returned state counts are consumed and checked.'
 		},
 		{
 			...common,
