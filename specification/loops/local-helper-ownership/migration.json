@@ -4917,7 +4917,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -4952,9 +4952,18 @@
 		{
 			"unit": "reports.function.contract-fields",
 			"name": "contractFields",
-			"commit": "17192fb8f8a3ade93c1b49adcdf8511cb4219ebb",
-			"reason": "Show component Props without derived outputs; omit empty error groups while retaining declared field types and examples.",
-			"definition": "1c01800c390be6754a38e669d381495f57991079333d7f81419630bf0cc3aea6"
+			"commit": "caa32de5d477bfd67fdfca82519d2e1f0fe11ef6",
+			"reason": "Project source-declared shared interfaces and aliases through the existing contract tables under Types without inventing runtime behavior.",
+			"definition": "1e847858bfbc5f1e7cf8e00fd84c1f50f233c8714b4cd8fb0abca8f438bf8e10",
+			"previousDefinitions": [
+				{
+					"unit": "reports.function.contract-fields",
+					"name": "contractFields",
+					"commit": "17192fb8f8a3ade93c1b49adcdf8511cb4219ebb",
+					"reason": "Show component Props without derived outputs; omit empty error groups while retaining declared field types and examples.",
+					"definition": "1c01800c390be6754a38e669d381495f57991079333d7f81419630bf0cc3aea6"
+				}
+			]
 		},
 		{
 			"unit": "reports.function.entity-contract",
@@ -4968,11 +4977,22 @@
 		{
 			"unit": "reports.function.harness-shell",
 			"name": "harnessShell",
-			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
-			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
-			"definition": "a9ab137632380c549b3b0ba62da1e339416922baf69d5fd64af95156f5a8acb8",
+			"commit": "caa32de5d477bfd67fdfca82519d2e1f0fe11ef6",
+			"reason": "Group scoped module destinations beneath five primary navigation entries while preserving branch, selected commit and existing entity paths.",
+			"definition": "054b2d015e18f41b054f540e2c67c1aadbe0fbfd7952d85f74f16a970070134d",
 			"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
-			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
+			"previousDefinitions": [
+				{
+					"unit": "reports.function.harness-shell",
+					"name": "harnessShell",
+					"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+					"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+					"definition": "a9ab137632380c549b3b0ba62da1e339416922baf69d5fd64af95156f5a8acb8",
+					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
+					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+				}
+			]
 		},
 		{
 			"unit": "function.side-impact",
