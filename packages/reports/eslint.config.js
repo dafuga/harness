@@ -13,7 +13,9 @@ export default [
 			'src/**/*.ts',
 			'test/**/*.ts',
 			'db/**/*.ts',
-			'tests/e2e/support/component-previews/**/*.ts'
+			'tests/e2e/support/component-previews/**/*.ts',
+			'tests/e2e/support/shell/catalogEntry.ts',
+			'tests/e2e/support/shell/hubPaths.ts'
 		],
 		languageOptions: {
 			parser: tsParser,
@@ -57,5 +59,13 @@ export default [
 			'max-params': ['error', harnessRuleLimits.maxParameters],
 			'no-nested-ternary': 'error'
 		}
+	},
+	{
+		files: [
+			'tests/e2e/support/component-previews/**/*.ts',
+			'tests/e2e/support/shell/catalogEntry.ts',
+			'tests/e2e/support/shell/hubPaths.ts'
+		],
+		languageOptions: { parserOptions: { project: './tsconfig.previews.json' } }
 	}
 ];
