@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
-import type { ComponentManifest } from '../src/core/unitTypes';
+import { scenarioManifestSchema, type ComponentManifest } from '../src/core/unitTypes';
 import { HistoryIndexService } from '../src/cli/program/history-index-service/HistoryIndexService';
 import { fixtureSources } from './support/verifyFixture';
 import { unitProject } from './support/unitProject';
@@ -121,22 +121,26 @@ async function seedTests(repo: VerifyRepo): Promise<void> {
 	await repo.write('test/unrelated.test.ts', '// A different module must not appear.\n');
 	await repo.write(
 		'specification/scenarios/slugify.json',
-		JSON.stringify({
-			schemaVersion: 1,
-			id: 'slugify',
-			title: 'Slugify through its command',
-			kind: 'integration',
-			units: ['function.slugify'],
-			tests: [
-				{
-					id: 'declared',
-					kind: 'integration',
-					runner: 'command',
-					target: 'bun x vitest run declared.test.ts',
-					cwd: 'test'
-				}
-			],
-			evidence: []
-		})
+		JSON.stringify(
+			scenarioManifestSchema.parse({
+				schemaVersion: 1,
+				id: 'slugify',
+				title: 'Slugify through its command',
+				kind: 'headless',
+				states: [{ id: 'command', title: 'Command usage', coverage: 'required' }],
+				viewports: [],
+				units: ['function.slugify'],
+				tests: [
+					{
+						id: 'declared',
+						kind: 'integration',
+						runner: 'command',
+						target: 'bun x vitest run declared.test.ts',
+						cwd: 'test'
+					}
+				],
+				evidence: []
+			})
+		)
 	);
 }
