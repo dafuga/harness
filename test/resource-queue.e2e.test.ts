@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module';
 import { measureProcess } from './support/cli-measurement/measureProcess';
 import { spawn } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -126,6 +127,22 @@ test('the Node CommonJS desktop bundle shares the Bun SQLite reservation protoco
 		process.cwd()
 	);
 	expect(built.exitCode, built.stderr).toBe(0);
+	const runtimes: Array<{ command: string; env: Record<string, string>; label: string }> = [
+		{ command: 'node', env: {}, label: 'Node' },
+		{
+			command: createRequire(import.meta.url)('electron') as string,
+			env: { ELECTRON_RUN_AS_NODE: '1' },
+			label: 'Electron'
+		}
+	];
+	for (const runtime of runtimes) await sharedRuntimeReservation(path, bundle, runtime);
+}, 15000);
+
+async function sharedRuntimeReservation(
+	path: string,
+	bundle: string,
+	runtime: { command: string; env: Record<string, string>; label: string }
+) {
 	const bun = await runCommand(
 		[
 			'bun',
@@ -142,10 +159,11 @@ test('the Node CommonJS desktop bundle shares the Bun SQLite reservation protoco
 	const node = await measureProcess(
 		{
 			units: ['module.resources'],
-			workload: 'cold-node-resources-entry',
+			workload: `cold-${runtime.label.toLowerCase()}-resources-entry`,
 			target: 'module',
-			command: ['node', '-e', code],
+			command: [runtime.command, '-e', code],
 			cwd: process.cwd(),
+			env: runtime.env,
 			expectSuccess: false
 		},
 		runCommand
@@ -158,4 +176,4 @@ test('the Node CommonJS desktop bundle shares the Bun SQLite reservation protoco
 	} finally {
 		db.close();
 	}
-}, 15000);
+}
