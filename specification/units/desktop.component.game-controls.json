@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.game-controls",
+	"kind": "component",
+	"title": "GameControls",
+	"responsibility": "Display level-specific player status and touch movement controls while preserving legacy key-door branches.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/game-authoring/GameControls.svelte",
+			"packages/desktop/src/components/game-authoring/GameControls.types.ts"
+		],
+		"symbols": ["GameControls", "GameControlsProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GameControls.view",
+				"type": "GameView",
+				"description": "Current generated level or legacy key-door view."
+			},
+			{
+				"name": "GameControls.run",
+				"type": "GameRun",
+				"description": "Current player position and mechanics state."
+			},
+			{
+				"name": "GameControls.step",
+				"type": "(input: GameInput) => void",
+				"description": "Advance the game using the requested direction or legacy branch."
+			},
+			{
+				"name": "GameControls.reset",
+				"type": "() => void",
+				"description": "Reset the current level to its initial player state."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GameControls",
+				"type": "markup",
+				"description": "Player coordinates and touch movement controls appropriate to the current level."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/game-authoring/GameControls.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/game-authoring/GameControls.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

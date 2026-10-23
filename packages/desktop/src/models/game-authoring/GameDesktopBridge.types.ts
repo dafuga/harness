@@ -1,11 +1,22 @@
 import type {
 	GameDocument,
+	LevelProposal,
 	CheckpointImage,
 	RenderSessionRequest,
 	RenderSession
 } from '../../../../game/src/models/game-authoring/Game.types';
 import type { ProjectSnapshot } from '../development-tooling/Desktop.types';
 export interface GameDesktopBridge {
+	gameLevelGenerate?(input: {
+		projectId: string;
+		document: GameDocument;
+		viewId: string;
+		expectedRevision: string;
+		provider: 'codex' | 'claude';
+		model: string;
+		feedback?: string;
+	}): Promise<{ proposal: LevelProposal }>;
+
 	gameImageGenerate?(input: {
 		projectId: string;
 		document: GameDocument;

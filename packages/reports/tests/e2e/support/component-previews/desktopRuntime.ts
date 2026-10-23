@@ -1,3 +1,4 @@
+import { gameLevelCases } from './gameLevelData';
 import { createRun, exampleDocument, stepGame } from '../../../../../game/src/index';
 import type { DesktopCase } from './desktopData.svelte';
 import { noop, type PreviewCases } from './shared';
@@ -7,6 +8,7 @@ const view = game.views[0];
 const run = stepGame(createRun(), { x: 2.5, y: 0 }, view);
 /** The game authoring components over the example game; nothing here reads or saves a project. */
 export const gameCases: PreviewCases = {
+	...gameLevelCases,
 	'desktop.component.game-authoring-game-graph-fit': {},
 	'desktop.component.game-checkpoint-editor': { checkpoint: view.checkpoints[1], change: noop },
 	'desktop.component.game-checkpoint-image': {
@@ -41,6 +43,7 @@ export const gameCases: PreviewCases = {
 	'desktop.component.game-text-field': { value: 'x, y, choice', label: 'Inputs', change: noop },
 	'desktop.component.game-trace': { run, view },
 	'desktop.component.game-view-fields': {
+		section: 'Checkpoints',
 		view,
 		views: game.views,
 		select: noop,

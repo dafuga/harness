@@ -4,6 +4,7 @@
 	import type { GamePreviewProps as Props } from '../../../models/game-authoring/GamePreview.types';
 	import Select from '$shared/Select.svelte';
 	import GameLiveVideo from '../GameLiveVideo.svelte';
+	import GameControls from '../GameControls.svelte';
 	import { gameRenderOptions } from './gameRenderOptions';
 	const models = gameRenderOptions();
 	import { createRun, create3d, draw2d, stepGame } from '../../../../../game/src/index';
@@ -31,7 +32,7 @@
 		Boolean(aiVideo.decartTransportReady() && !readonly && projectId && bridge?.gameRender)
 	);
 	const busy = $derived(status !== 'off');
-	const scope = $derived(view.id + ':' + view.dimension);
+	const scope = $derived(view.id + ':' + view.dimension + ':' + view.planning?.built);
 	const summary = $derived.by(() => {
 		if (!aiVideo.decartTransportReady()) return 'Live AI is not configured for this build.';
 		if (!available) return 'AI video needs a saved project open in the desktop app.';
@@ -42,8 +43,6 @@
 		const style = view.style;
 		untrack(() => live?.setPrompt(style));
 	});
-	const fixed = (value: unknown) => Number(value).toFixed(2);
-	const choose = (branch: string) => step({ x: 0, y: 0, choice: branch.toLowerCase() });
 	const keyup = (event: KeyboardEvent) => held.delete(event.key);
 
 	function step(input: GameInput) {
@@ -51,9 +50,22 @@
 		onRun(run);
 	}
 	function reset() {
-		run = createRun();
+		run = createRun(1, view);
 		onRun(run);
 	}
+	function atSpawn(next: GameRun): GameRun {
+		if (!view.world || next.state.level === view.id + ':' + view.planning?.built) return next;
+		const { spawn } = view.world;
+		const state = {
+			...next.state,
+			x: spawn.x,
+			y: spawn.z,
+			level: view.id + ':' + view.planning?.built,
+			view: view.id
+		};
+		return { ...next, viewId: view.id, state };
+	}
+
 	function keydown(event: KeyboardEvent) {
 		const target = event.target instanceof Element ? event.target : null;
 		if (!event.key.startsWith('Arrow') || target?.matches('input, textarea, select')) return;
@@ -143,7 +155,7 @@
 		shown = scope;
 		untrack(() => {
 			halt('');
-			run = initialRun ?? createRun();
+			run = atSpawn(initialRun ?? createRun(1, view));
 			onRun(run);
 		});
 	});
@@ -168,21 +180,7 @@
 		{/if}
 	</div>
 	<!-- The readout stays outside the canvas, so the AI capture never includes it. -->
-	<div class="row">
-		<span class="chip">x {fixed(run.state.x)} · y {fixed(run.state.y)}</span>
-		<span class="chip">{run.state.hasKey ? 'Key held' : 'No key yet'}</span>
-		<span class="chip">{run.state.doorOpen ? 'Door open' : 'Door locked'}</span>
-		{#if run.state.outcome}<span class="chip gold">Reached the {run.state.outcome}</span>{/if}
-	</div>
-	<div class="row">
-		<button aria-label="Move left" onclick={() => step({ x: -1, y: 0 })}>← Move left</button>
-		<button aria-label="Move right" onclick={() => step({ x: 1, y: 0 })}>Move right →</button>
-		{#each ['Garden', 'Vault'] as branch (branch)}
-			<button disabled={!run.state.doorOpen} onclick={() => choose(branch)}>{branch}</button>
-		{/each}
-		<button onclick={reset}>Reset</button>
-		<small>Or hold the arrow keys.</small>
-	</div>
+	<GameControls {view} {run} {step} {reset} />
 	<div class="row">
 		<Select label="AI video model" bind:value={choice} disabled={!available || busy}>
 			{#each Object.entries(models) as [key, item] (key)}
