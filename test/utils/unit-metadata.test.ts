@@ -7,7 +7,6 @@ import {
 	serviceClassCases,
 	serviceClassFiles
 } from '../support/referenceFixtures';
-
 const source = [
 	'export type Options = { enabled: boolean };',
 	'export const schema = { parse: true };',
@@ -19,12 +18,12 @@ const source = [
 	'export function unused(value: number) { return value; }',
 	'export const sharedArrow = (text: string): string => text;'
 ].join('\n');
-
 test('revision metadata derives project categories from the same committed source tree', async () => {
 	const paths = ['services', 'components', 'utils', 'models', 'config'].map(
 		(folder) => `src/${folder}/payments/Example.ts`
 	);
 	const files = Object.fromEntries(paths.map((path) => [path, 'export const example = 1;']));
+	files[paths[2]] = '/** @pure */ export function example() { return 1; }';
 	const config = (title: string) =>
 		JSON.stringify({ schemaVersion: 1, groups: [{ id: 'payments', title, terms: [] }] });
 	const indexed = await indexFiles(files);
@@ -35,6 +34,10 @@ test('revision metadata derives project categories from the same committed sourc
 	);
 	for (const unit of registry.units)
 		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Payments' });
+	expect(registry.units.find((unit) => unit.helpers?.length)?.helpers?.[0]).toHaveProperty(
+		'group',
+		{ id: 'payments', title: 'Payments' }
+	);
 	const settings = registry.units.find((unit) => unit.kind === 'config')!;
 	expect(settings, 'configs record their committed variable values').toHaveProperty(
 		'configValues',
@@ -47,6 +50,10 @@ test('revision metadata derives project categories from the same committed sourc
 	);
 	for (const unit of registry.units)
 		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Billing' });
+	expect(registry.units.find((unit) => unit.helpers?.length)?.helpers?.[0]).toHaveProperty(
+		'group',
+		{ id: 'payments', title: 'Billing' }
+	);
 	expect(settings).toHaveProperty('configValues', [
 		{ name: 'example', value: '2', source: paths[4] }
 	]);
@@ -58,7 +65,6 @@ test('revision metadata derives project categories from the same committed sourc
 		[]
 	);
 });
-
 test('revision metadata lists standalone shared exports without requiring callers', async () => {
 	const paths = [
 		'src/utils/helpers.ts',
@@ -85,7 +91,6 @@ test('revision metadata lists standalone shared exports without requiring caller
 	expect(shared.helpers).toEqual([]);
 	expect(shared.helperGap).toContain('could not be read');
 });
-
 test.each(cases)(
 	'revision metadata counts distinct actual consumers: $count',
 	async ({ files, count }) => {
@@ -111,7 +116,6 @@ test.each(cases)(
 		).toEqual([]);
 	}
 );
-
 const pureCases = [
 	['/** @pure */\nexport function env() { return process.env.MODE; }', false],
 	['let state = 0;\n/** @pure */\nexport function captured() { return state; }', false],
@@ -131,7 +135,6 @@ const pureCases = [
 	],
 	['export function fake() { return "/** @pure */"; }', false]
 ] as const;
-
 test.each(pureCases)(
 	'helper purity is an explicit, checked source contract: %s',
 	async (source, pure) => {
@@ -142,7 +145,6 @@ test.each(pureCases)(
 		expect(registry.units[0].helpers?.[0]).toMatchObject({ pure });
 	}
 );
-
 // Services count the owning code unit once, including top-level page and entry references.
 test.each(cases.map((item, index) => ({ ...item, serviceCount: [2, 2, 1, 1, 2, 0, 0, 2][index] })))(
 	'revision metadata counts distinct runtime service owners: $serviceCount',
@@ -175,7 +177,6 @@ test.each(cases.map((item, index) => ({ ...item, serviceCount: [2, 2, 1, 1, 2, 0
 		expect(service.serviceConsumers).toEqual([]);
 	}
 );
-
 test.each(serviceClassCases)(
 	'revision metadata proves service class declarations and construction: $label',
 	async ({ label, declaration, methods }) => {

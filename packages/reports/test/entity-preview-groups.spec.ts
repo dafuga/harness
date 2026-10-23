@@ -89,6 +89,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				.toBeVisible();
 			expect(await fits(page)).toBe(true);
 			if (category === 'configs') await configVariables(page, viewport);
+			if (category === 'functions') await helperFolders(page, viewport);
 		}
 		await open(page, { category: 'components', commit: commits.middle }, 'groups');
 		await page.getByRole('searchbox').fill('SearchBox');
@@ -152,4 +153,33 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		}
 		await reviewServiceFolders(page, viewport);
 	});
+}
+
+/** Helper source folders stay consistent between catalog and selected-callable breadcrumbs. */
+async function helperFolders(page: Page, viewport: string) {
+	for (const [commit, title] of [
+		[commits.middle, 'Strings'],
+		[commits.first, 'Words']
+	]) {
+		await open(page, { category: 'functions', commit }, 'groups');
+		await capture(page, `helper-folder-list-${commit.slice(0, 7)}-${viewport}`);
+		await expect
+			.soft(
+				page.getByRole('heading', { name: new RegExp(`^${title} 1$`), level: 2 }),
+				'Helper folder follows callable source'
+			)
+			.toBeVisible();
+		await page.getByRole('link', { name: 'plural(2, "item")', exact: true }).click();
+		await capture(page, `helper-folder-detail-${commit.slice(0, 7)}-${viewport}`, [
+			'reports.component.harness-entity-frame',
+			'reports.component.harness-entity-header',
+			'reports.component.harness-entity-sections'
+		]);
+		await expect(
+			page.getByRole('navigation', { name: 'Breadcrumb' }),
+			'Helper folder follows callable source'
+		).toContainText(title);
+		await page.reload();
+		await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(title);
+	}
 }

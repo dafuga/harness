@@ -20,6 +20,9 @@ test('guidance covers every non-model scaffold topic', () => {
 	for (const kind of scaffoldKinds) {
 		expect(topics.has(kind), kind).toBe(true);
 		expect(findGuide(kind)?.rules.join('\n'), kind).toContain('Naming:');
+		expect(findGuide(kind)?.rules.join('\n'), kind).toContain(
+			'General text helpers belong in Strings'
+		);
 		if (gameNames[kind]) expect(findGuide(kind)?.rules.join('\n'), kind).toContain(gameNames[kind]);
 	}
 });
