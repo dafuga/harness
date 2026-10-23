@@ -41,7 +41,8 @@ test.each(['.', 'packages/desktop'])(
 		const result = await runCommand(
 			['bun', 'run', 'format:check', '--version'],
 			join(process.cwd(), workspace),
-			false
+			false,
+			await environment()
 		);
 		expect(result.stdout.trim(), result.stderr).toBe(version);
 		expect(result.exitCode, result.stderr).toBe(0);

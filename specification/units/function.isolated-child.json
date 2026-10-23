@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "function.isolated-child",
+	"kind": "function",
+	"title": "isolatedChild",
+	"responsibility": "Spawns owned process groups with transparent or captured streams and truncates captured output at its byte limit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/reports-media/run-isolated/isolatedChild.ts"],
+		"symbols": ["isolatedChild", "captureIsolatedOutput"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "isolatedChild.run",
+				"type": "IsolatedRun",
+				"description": "Owned command definition, environment, stream mode, log destination and process lifetime limits."
+			},
+			{
+				"name": "captureIsolatedOutput.child",
+				"type": "ChildProcess",
+				"description": "Spawned owned process whose output stream is captured."
+			},
+			{
+				"name": "captureIsolatedOutput.output",
+				"type": "Buffer[]",
+				"description": "Caller-owned byte chunks receiving captured output and a truncation marker when needed."
+			},
+			{
+				"name": "captureIsolatedOutput.limit",
+				"type": "number",
+				"description": "Maximum retained output bytes before the truncation marker."
+			}
+		],
+		"outputs": [
+			{
+				"name": "isolatedChild",
+				"type": "ChildProcess",
+				"description": "Detached owned child with inherited streams or captured stdout and merged stderr."
+			},
+			{
+				"name": "captureIsolatedOutput",
+				"type": "void",
+				"description": "Registers stream collection into the supplied chunks without exceeding the retained-byte limit."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.run-isolated",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/reports-media/run-isolated/isolatedChild.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/reports-media/run-isolated/isolatedChild.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

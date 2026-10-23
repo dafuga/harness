@@ -1,4 +1,4 @@
-import { spawn, type ChildProcess } from 'node:child_process';
+import type { ChildProcess } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -6,19 +6,24 @@ import { dirname } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { clearInterval, clearTimeout, setInterval, setTimeout } from 'node:timers';
 import { cleanupDeadline } from '../../development-tooling/cleanupDeadline';
-import { groupTeardown } from './groupTeardown';
-import { signalGroup } from '../groupTeardown';
-import { platformServices, type ServiceAuthority, type ServiceContext } from '../platformServices';
 import {
 	processDescendants,
 	type ProcessTable,
 	type TrackedProcess
 } from '../../development-tooling/processDescendants';
 import type { ProcessProbes } from '../../development-tooling/processProbes';
+import { signalGroup } from '../groupTeardown';
+import { platformServices, type ServiceAuthority, type ServiceContext } from '../platformServices';
+import { groupTeardown } from './groupTeardown';
+import { captureIsolatedOutput, isolatedChild } from './isolatedChild';
 import { haltProcesses, settleProcesses } from './settleProcesses';
 
 export interface IsolatedRun {
 	command: string;
+	/** Transparent stdio for managed coding CLIs; captured logs remain the default. */
+	stdio?: 'inherit';
+	signal?: AbortSignal;
+	onSpawn?: (pid: number) => void;
 	args: string[];
 	cwd: string;
 	env: Record<string, string | undefined>;
@@ -66,8 +71,6 @@ const lookMs = 200;
 /** How long what a command started may take to end by itself once the command has ended. */
 const settleMs = 2000;
 
-const marker = '\n[output truncated]\n';
-
 /**
  * Runs a command in its own process group with a hard time limit. On timeout or on exit what the
  * command started is stopped, so that it cannot outlive the command or report late: elsewhere by
@@ -75,6 +78,7 @@ const marker = '\n[output truncated]\n';
  * handed over and a possible one is left running and fails the command.
  */
 export async function runIsolated(run: IsolatedRun): Promise<IsolatedResult> {
+	run.signal?.throwIfAborted();
 	const started = performance.now();
 	const output: Buffer[] = [];
 	const outcome = pathMissing(run.command)
@@ -167,31 +171,20 @@ function pathMissing(command: string): boolean {
 
 function execute(run: IsolatedRun, output: Buffer[]): Promise<Outcome> {
 	// The shell only merges stderr into stdout, then replaces itself with the command.
-	const child = spawn('sh', ['-c', 'exec "$0" "$@" 2>&1', run.command, ...run.args], {
-		cwd: run.cwd,
-		env: run.env,
-		detached: true,
-		stdio: ['ignore', 'pipe', 'ignore']
-	});
+	const child = isolatedChild(run);
 	const descendants = processDescendants(child.pid ?? -1, run.platform?.table);
 	const guard = guarding(run, child.pid ?? -1);
 	const looking = setInterval(() => void descendants.look(), lookMs);
 	void descendants.look();
-	let kept = 0;
 	let timedOut = false;
-	child.stdout?.on('data', (chunk: Buffer) => {
-		if (kept > run.maxLogBytes) return;
-		const room = run.maxLogBytes - kept;
-		output.push(chunk.length > room ? chunk.subarray(0, room) : chunk);
-		if (chunk.length > room) output.push(Buffer.from(marker));
-		kept += chunk.length > room ? run.maxLogBytes + 1 : chunk.length;
-	});
+	captureIsolatedOutput(child, output, run.maxLogBytes);
 	return new Promise((resolve) => {
 		let ended = false;
 		const running = { run, child, descendants, guard };
 		const finish = (exitCode: number | null) => {
 			if (ended) return;
 			ended = true;
+			run.signal?.removeEventListener('abort', cancel);
 			clearTimeout(limit);
 			clearInterval(looking);
 			void ending(running).then(({ survivors, stopped, resisted, unknown, report }) => {
@@ -199,15 +192,25 @@ function execute(run: IsolatedRun, output: Buffer[]): Promise<Outcome> {
 				resolve({ exitCode, timedOut, survivors, stopped, resisted, unknown });
 			});
 		};
+		const cancel = () => halt(running, () => finish(null));
 		const limit = setTimeout(() => {
 			timedOut = true;
 			halt(running, () => finish(null));
 		}, run.timeoutMs);
 		child.once('error', () => finish(null));
+		run.signal?.addEventListener('abort', cancel, { once: true });
+		if (run.signal?.aborted) cancel();
+		// Bun may deliver child events inside a synchronous spawn observer.
 		child.once('exit', (code) => {
 			descendants.closed();
 			if (!guard) signalGroup(child, 'SIGKILL');
 			setTimeout(() => finish(code), 50);
 		});
+		try {
+			if (child.pid) run.onSpawn?.(child.pid);
+		} catch {
+			cancel();
+			finish(null);
+		}
 	});
 }

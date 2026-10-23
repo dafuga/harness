@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "module.resources",
+	"kind": "module",
+	"title": "resources",
+	"responsibility": "Exports the managed resource API through the stable published resources entrypoint.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/lib/execution-runtimes/resources.ts"],
+		"symbols": [
+			"resourceConfigSchema",
+			"resourcePriorities",
+			"resourceRequestSchema",
+			"ResourceConfig",
+			"ResourceContext",
+			"ResourceJob",
+			"ResourceRequest",
+			"ResourceSnapshot",
+			"ResourceQueueService",
+			"RunOptions",
+			"resourceConfig",
+			"saveResourceConfig",
+			"resourceEnvironment",
+			"resourceWork",
+			"resourceThreads",
+			"resourceWorkers"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-config",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-environment",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-workers",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "reexport",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/lib/execution-runtimes/resources.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/lib/execution-runtimes/resources.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

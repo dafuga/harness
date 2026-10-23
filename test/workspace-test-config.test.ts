@@ -3,6 +3,7 @@ import {
 	copyFileSync,
 	mkdirSync,
 	mkdtempSync,
+	readdirSync,
 	readFileSync,
 	realpathSync,
 	rmSync,
@@ -25,7 +26,12 @@ afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true
 function project(config?: string): string {
 	const root = realpathSync(mkdtempSync(join(tmpdir(), 'harness-workspace-config-')));
 	roots.push(root);
-	for (const file of ['vitest.config.ts', 'test/svelteKitConfigs.ts', 'test/setup.ts']) {
+	for (const file of [
+		'vitest.config.ts',
+		'src/utils/execution-runtimes/resourceWorkers.ts',
+		'test/svelteKitConfigs.ts',
+		'test/setup.ts'
+	]) {
 		mkdirSync(join(root, file, '..'), { recursive: true });
 		copyFileSync(join(repository, file), join(root, file));
 	}
@@ -66,6 +72,7 @@ function samples(root: string, name: string, assertion: string): void {
 import { expect, test } from 'vitest';
 test('${name} ${index}', async () => {
 	${assertion}
+	expect(process.env.HARNESS_RESOURCE_CPUS).toBe('1');
 	const id = process.pid + ':${index}';
 	appendFileSync('workers.log', 'start ' + id + '\\n');
 	await new Promise((resolve) => setTimeout(resolve, 100));
@@ -114,7 +121,12 @@ function run(root: string, cwd: string) {
 		['x', 'vitest', 'run', '--reporter=json', `--outputFile=${report}`],
 		{
 			cwd,
-			env: { ...env, NO_COLOR: '1' },
+			env: {
+				...env,
+				NO_COLOR: '1',
+				HARNESS_RESOURCE_CPUS: '3',
+				HARNESS_RESOURCE_MEMORY_MIB: '1792'
+			},
 			encoding: 'utf8',
 			timeout: runLimit,
 			killSignal: 'SIGKILL'
@@ -175,4 +187,26 @@ test.each(['collaboration', 'remote', 'relay', 'game'])(
 		]);
 	},
 	60_000
+);
+
+const managedWorkspaces = [
+	'.',
+	...readdirSync(join(repository, 'packages'), { withFileTypes: true })
+		.filter((entry) => entry.isDirectory())
+		.map((entry) => `packages/${entry.name}`)
+];
+test.each(managedWorkspaces)(
+	'%s routes standalone verification and build scripts through admission',
+	(workspace) => {
+		const { scripts } = JSON.parse(
+			readFileSync(join(repository, workspace, 'package.json'), 'utf8')
+		) as { scripts: Record<string, string> };
+		for (const [name, command] of Object.entries(scripts)) {
+			if (!/(^|:)(test|build|check|lint|format)(:|$)/.test(name)) continue;
+			const delegation = /^bun run [\w:-]+$/.test(command);
+			expect(command.includes(' resources run ') || delegation, `${workspace}: ${name}`).toBe(true);
+			if (command.includes(' -- sh -c '))
+				expect(command, `${workspace}: ${name} arguments`).toMatch(/ "\$@"' --$/);
+		}
+	}
 );

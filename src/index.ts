@@ -177,3 +177,5 @@ export { ClaudeBenchmarkAdapter } from './cli/program/benchmark-service/benchmar
 export { BenchmarkDefinitionValidator } from './cli/program/benchmark-service/benchmark-definition/BenchmarkDefinitionValidator';
 export { BenchmarkRepository } from './repositories/agents-providers/BenchmarkRepository';
 export { BenchmarkService } from './cli/program/benchmark-service/BenchmarkService';
+export { registerResourcesCommand } from './cli/program/ResourcesCommand';
+export { ResourceQueueService } from './services/execution-runtimes/ResourceQueueService';

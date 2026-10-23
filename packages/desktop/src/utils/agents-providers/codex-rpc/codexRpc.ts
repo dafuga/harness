@@ -1,17 +1,19 @@
 import { spawn } from 'node:child_process';
-import { killOwnedProcess } from '../../development-tooling/cliProcess';
-import { cliEnvironment } from '../../development-tooling/cli-environment/cliEnvironment';
+import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
+import { resourceEnvironment } from '../../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
-import { rpcMessages, rpcRequest } from './rpcMessages';
-import type { RpcEvent, RpcPending } from '../rpcMessages';
+import { cliEnvironment } from '../../development-tooling/cli-environment/cliEnvironment';
+import { killOwnedProcess } from '../../development-tooling/cliProcess';
 import { streamLines } from '../../development-tooling/streamLines';
-
-function connection(command: CliCommand) {
+import type { RpcEvent, RpcPending } from '../rpcMessages';
+import { rpcMessages, rpcRequest } from './rpcMessages';
+function connection(command: CliCommand, resources?: ResourceContext) {
 	const child = spawn(command.command, command.args, {
-		env: cliEnvironment(),
+		env: { ...cliEnvironment(), ...resourceEnvironment(resources?.env ?? {}) },
 		detached: process.platform !== 'win32',
 		stdio: 'pipe'
 	});
+	if (child.pid) resources?.track(child.pid);
 	let sequence = 0,
 		closed = false;
 	const pending = new Map<number, RpcPending>(),
@@ -66,9 +68,10 @@ export async function codexRpc(
 	command: CliCommand = {
 		command: 'codex',
 		args: ['app-server', '--stdio', '-c', 'model_provider="openai"']
-	}
+	},
+	resources?: ResourceContext
 ) {
-	const rpc = connection(command);
+	const rpc = connection(command, resources);
 	try {
 		await rpc.request('initialize', {
 			clientInfo: { name: 'harness-desktop', version: '0.1.0' },

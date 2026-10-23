@@ -1,6 +1,9 @@
+import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
+import type { ResourceQueueService } from '../../../../../../src/services/execution-runtimes/ResourceQueueService';
 import type { AgentTurn, CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 import { codexRpc } from '../../../utils/agents-providers/codex-rpc/codexRpc';
+import { managedAgentTurn } from '../../../utils/agents-providers/managedAgentTurn';
 
 interface TurnItem {
 	type: string;
@@ -23,10 +26,23 @@ interface TurnOptions extends AgentTurn {
 	reference?: string | null;
 	image?: boolean;
 }
-
-export async function codexTurn(command: CliCommand, turn: TurnOptions): Promise<TurnResult> {
-	if (turn.signal.aborted) throw new RunCancelled();
-	const rpc = await codexRpc(command);
+export async function codexTurn(
+	command: CliCommand,
+	turn: TurnOptions,
+	queue?: ResourceQueueService
+): Promise<TurnResult> {
+	return managedAgentTurn(turn, (resources) => runCodexTurn(command, turn, resources), queue);
+}
+async function runCodexTurn(
+	command: CliCommand,
+	turn: TurnOptions,
+	resources: ResourceContext
+): Promise<TurnResult> {
+	const rpc = await codexRpc(command, resources);
+	if (turn.signal.aborted) {
+		rpc.dispose();
+		throw new RunCancelled();
+	}
 	try {
 		const started = await rpc.request<{
 			thread: { id: string };
@@ -45,6 +61,7 @@ export async function codexTurn(command: CliCommand, turn: TurnOptions): Promise
 		});
 		if (started.model !== turn.model || started.modelProvider !== 'openai')
 			throw new Error('Codex did not run the requested model/provider.');
+		if (turn.signal.aborted) throw new RunCancelled();
 		return await waitTurn(rpc, { turn, threadId: started.thread.id, model: started.model });
 	} finally {
 		rpc.dispose();

@@ -11,6 +11,7 @@ export default defineConfig({
 		environment: 'node',
 		fileParallelism: !process.env.CI,
 		env: {
+			...testWorkers.env,
 			PROJECT_REPORTS_ASSET_STORAGE: 'local',
 			PROJECT_REPORTS_HOME: '/tmp/project-reports-unit'
 		}

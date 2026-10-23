@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-work",
+	"kind": "function",
+	"title": "resourceWork",
+	"responsibility": "Scopes an asynchronous operation to validated shared resource admission and always closes its queue connection.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/execution-runtimes/resourceWork.ts"],
+		"symbols": ["resourceWork"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resourceWork.request",
+				"type": "Partial<ResourceRequest>",
+				"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+			},
+			{
+				"name": "resourceWork.action",
+				"type": "(context: ResourceContext) => Promise<T>",
+				"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+			},
+			{
+				"name": "resourceWork.env",
+				"type": "Record<string, string | undefined>",
+				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+			},
+			{
+				"name": "resourceWork.options",
+				"type": "Omit<RunOptions, 'env'>",
+				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceWork",
+				"type": "Promise<T>",
+				"description": "Admitted operation result, with reservation and connection released after success or failure."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/execution-runtimes/resourceWork.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/execution-runtimes/resourceWork.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

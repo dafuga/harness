@@ -75,6 +75,10 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Code Rules
 
+- Scheduler changes must prove progress across mixed nesting depths, occupied ancestor budgets and pending siblings while preserving priority and headroom.
+- Process-runner observer changes must prove fast exit, retained output and delayed synchronous observers in both Bun and Node before broad verification.
+- Workspace verification and build entrypoints must join admission and preserve caller arguments; keep the existing workspace entrypoint inventory current.
+
 - Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models define data shapes and schemas. Unknown or effectful functions are not helpers.
 - Reserve shared helper folders for pure callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
 - A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
