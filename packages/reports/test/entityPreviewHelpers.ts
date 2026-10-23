@@ -1,3 +1,4 @@
+import { withConsumers } from './entityRelationFixtures';
 import type { HarnessRevision } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
 import { serviceClassProof } from './entityClassFixtures';
@@ -67,61 +68,6 @@ export function withHelpers(detail: HarnessRevision): HarnessRevision {
 						: unit
 				),
 				...hidden
-			]
-		}
-	};
-}
-
-/** Mixed consumer kinds, duplicates and a fourth eligible consumer exercise every card's limit. */
-function withConsumers(detail: HarnessRevision): HarnessRevision {
-	const model = {
-		...detail.registry.units.find((unit) => unit.id === ids.store)!,
-		id: 'app.model.order',
-		kind: 'model',
-		title: 'Order',
-		owns: {
-			source: ['src/models/Order.types.ts', 'src/models/OrderValues.ts'],
-			symbols: ['OrderInput', 'OrderResult', 'orderStatuses']
-		}
-	};
-	const secondModel = {
-		...model,
-		id: 'app.model.invoice',
-		title: 'Invoice',
-		owns: { source: ['src/models/Invoice.ts'], symbols: ['Invoice'] }
-	};
-	const consumers = [
-		ids.page,
-		ids.filter,
-		'missing',
-		ids.list,
-		ids.list,
-		ids.store,
-		model.id,
-		ids.card
-	].map((unit) => ({ unit }));
-	return {
-		...detail,
-		registry: {
-			...detail.registry,
-			units: [
-				...detail.registry.units.map((unit) => {
-					if (unit.id === ids.filter)
-						return { ...unit, helpers: unit.helpers?.map((helper) => ({ ...helper, consumers })) };
-					if (unit.id === ids.list || unit.id === ids.store)
-						return {
-							...unit,
-							dependencies: [
-								...unit.dependencies,
-								{ unit: model.id, via: 'import' },
-								{ unit: secondModel.id, via: 'import' },
-								...(unit.id === ids.store ? [{ unit: ids.card, via: 'import' }] : [])
-							]
-						};
-					return unit;
-				}),
-				model,
-				secondModel
 			]
 		}
 	};

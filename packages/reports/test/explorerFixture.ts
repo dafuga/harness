@@ -1,3 +1,4 @@
+import { modelDefinition } from './entityClassFixtures';
 import type { RecordScenario } from './explorerFixture.types';
 import type {
 	HarnessCapture,
@@ -37,6 +38,20 @@ export function unit(id: string, kind: string, extra: Partial<HarnessUnit> = {})
 							pure: true,
 							consumers: [{ unit: 'component.first' }, { unit: 'component.second' }]
 						}
+					]
+				}
+			: {}),
+		...(kind === 'model'
+			? {
+					modelDefinitions: [
+						modelDefinition(
+							id.split('.').pop() ?? id,
+							extra.owns?.source.find(
+								(path) => !/\.(?:types|d)\.[cm]?tsx?$/.test(path) && !path.endsWith('Values.ts')
+							) ??
+								extra.owns?.source[0] ??
+								`src/${id}.ts`
+						)
 					]
 				}
 			: {}),

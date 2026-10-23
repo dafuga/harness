@@ -29,9 +29,38 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 		expect(explorerCategory(unit('reports.config.report-vite', 'config'))).toBe('configs');
 		expect(explorerCategory(unit('service.title', 'service'))).toBe('services');
 		expect(explorerCategory(unit('model.order', 'model'))).toBe('models');
+		expect(
+			explorerCategory(unit('model.unknown', 'model', { ...{ modelDefinitions: undefined } })),
+			'missing source does not prove a model'
+		).toBeNull();
+		expect(
+			explorerCategory(unit('model.value', 'model', { ...{ modelDefinitions: [] } })),
+			'a value namespace is not a database model or type collection'
+		).toBeNull();
+		const classOnly = unit('model.client', 'model', {
+			...{
+				modelDefinitions: [
+					{ name: 'Client', kind: 'class', source: 'src/model.client.ts', fields: [], methods: [] }
+				]
+			}
+		});
+		expect(
+			explorerCategory(classOnly),
+			'a runtime class alone does not prove persistence'
+		).toBeNull();
+		const mixed = owning('model.input', 'model', [
+			'src/models/Input.types.ts',
+			'src/models/InputValues.ts'
+		]);
+		expect(
+			explorerCategory(mixed),
+			'runtime constants do not turn interfaces into database models'
+		).toBe('types');
 		for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
 			const types = owning('model.order-types', 'model', source);
-			expect(explorerCategory(types), 'Type collections are not data models').toBeNull();
+			expect(explorerCategory(types), 'Type collections are separate from data models').toBe(
+				'types'
+			);
 			expect(explorerRole(types)).toBe('Type definitions');
 		}
 		expect(

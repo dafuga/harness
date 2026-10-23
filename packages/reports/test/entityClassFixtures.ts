@@ -108,3 +108,26 @@ export function relationSource(kind: string, offset: number): string {
 	if (kind === 'page') return `src/routes/consumers/${offset + 1}/+page.svelte`;
 	return `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`;
 }
+
+/** Synthetic declaration evidence shared by normal model and type catalog matrices. */
+export function modelDefinition(name: string, source: string) {
+	const types = /\.(?:types|d)\.[cm]?tsx?$/.test(source);
+	return {
+		name,
+		source,
+		kind: types ? ('interface' as const) : ('class' as const),
+		fields: [{ name: 'id', type: 'string', optional: false }],
+		methods: [],
+		...(types
+			? {}
+			: {
+					table: {
+						name: name.toLowerCase(),
+						primaryKey: 'id',
+						columns: [
+							{ property: 'id', name: 'id', type: 'TEXT', nullable: false, primaryKey: true }
+						]
+					}
+				})
+	};
+}

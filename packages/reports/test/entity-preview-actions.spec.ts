@@ -52,7 +52,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		tab.on('console', (message) => {
 			if (message.type() === 'error') browserErrors.push(message.text());
 		});
-		for (const category of ['models', 'components', 'functions', 'services'] as const) {
+		for (const category of ['models', 'types', 'components', 'functions', 'services'] as const) {
 			await open(tab, { category }, 'helpers');
 			await tab.evaluate(async () => {
 				await document.fonts.ready;
@@ -63,7 +63,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			await expect(
 				cards,
 				'collections use cards; helpers and models require two distinct visible consumers'
-			).toHaveCount({ models: 2, components: 3, functions: 1, services: 1 }[category]);
+			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
 			for (const item of await cards.all()) {
 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
@@ -76,7 +76,18 @@ for (const [name, size] of Object.entries(viewports)) {
 				expect(card.width, 'cards leave room for neighbors').toBeLessThan(available.width * 0.6);
 			}
 			expect(await fits(tab)).toBe(true);
+			if (category === 'types') {
+				const typeCard = tab.getByRole('article', { name: 'OrderInput', exact: true });
+				await expect(typeCard).toBeVisible();
+				await typeCard.getByRole('link', { name: 'OrderInput', exact: true }).click();
+				expect(await where(tab)).toMatchObject({
+					category: 'types',
+					entity: 'app.model.order-input'
+				});
+				await expect(tab.getByRole('heading', { name: 'OrderInput', exact: true })).toBeVisible();
+			}
 			if (category === 'models') {
+				await expect(tab.getByRole('article', { name: 'OrderInput', exact: true })).toHaveCount(0);
 				for (const modelCard of await cards.all())
 					await reviewFlatModelUsage(
 						modelCard.getByRole('group', { name: 'Used In', exact: true })
