@@ -2,7 +2,7 @@
 	"name": "helper-source-folders",
 	"goal": "Public helpers live under src/helpers/<responsibility> and helper Source tabs show only the selected callable implementation; owner-private helpers stay with owners",
 	"createdAt": "2026-10-23T11:02:52.837Z",
-	"updatedAt": "2026-10-23T11:17:37.788Z",
+	"updatedAt": "2026-10-23T11:57:52.728Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -63,6 +63,11 @@
 			"status": "complete",
 			"completedAt": "2026-10-23T11:17:37.788Z",
 			"evidence": "Root42 focused cases/types/lint/build/audit, Reports690 cases/types/lint/build plus final audit follow-up, Hub/Desktop types and24 Source browser cases pass. Retained red/green pixels inspected. CLI/native deferred; final same-tree capture and managed-main readback remain delivery checks."
+		},
+		{
+			"id": "strings-grouping",
+			"title": "Generic text helpers use Strings in actual source, catalog filters and current/historical detail breadcrumbs",
+			"status": "pending"
 		}
 	],
 	"evaluators": [
