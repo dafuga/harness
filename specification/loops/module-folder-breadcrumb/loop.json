@@ -2,7 +2,7 @@
 	"name": "module-folder-breadcrumb",
 	"goal": "Show recorded responsibility folder between collection and entity in breadcrumbs",
 	"createdAt": "2026-10-23T08:53:48.091Z",
-	"updatedAt": "2026-10-23T09:05:50.036Z",
+	"updatedAt": "2026-10-23T09:09:10.747Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:09:08.466Z",
+			"evidence": "Paired proof 2b48d513c2 at ac94b2e1b passes the unchanged three-viewport regression from 5c81723e3; 66 red/green images rebuilt and hash-decoded."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:09:10.747Z",
+			"evidence": "687 Reports tests, 14 root guards, root and Reports types/audits, lint, format, build, and live tabs passed. Full CLI/native deferred. Source and contextual renderer metrics retained."
 		}
 	],
 	"evaluators": [
