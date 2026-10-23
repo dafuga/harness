@@ -1,15 +1,8 @@
 <script lang="ts">
-	import type {
-		ExplorerHistoryDetail,
-		ExplorerHistoryRow
-	} from '../../../models/explorer-ui/Explorer.types';
+	import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../../models/explorer-ui/Explorer.types';
 	import { humanize } from '../../../utils/explorer-ui/entityContract';
 	import { reviewChanges } from './entityHistory';
-	import {
-		signedBytes,
-		signedCount,
-		type HistoryTiming
-	} from '../../../utils/explorer-ui/entityHistory';
+	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/explorer-ui/entityHistory';
 	import { entityLens, shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { byteSize, notMeasured } from '../../../utils/explorer-ui/entityMeasure';
 	import { writingLimits } from '../../../../../../src/utils/writing-limits/writingLimits';

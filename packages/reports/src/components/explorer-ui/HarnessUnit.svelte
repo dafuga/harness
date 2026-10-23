@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { harnessBudget } from '../../utils/explorer-ui/harnessBudget';
 	import { harnessEmitted } from '../../utils/explorer-ui/harnessEmitted';
-	import type {
-		HarnessRecord,
-		HarnessScenario,
-		HarnessUnit
-	} from '../../models/explorer-ui/Harness.types';
+	import type { HarnessRecord, HarnessScenario, HarnessUnit } from '../../models/explorer-ui/Harness.types';
 	import { scenarioOrigin } from '../../utils/reports-media/captureProvenance';
 	let {
 		unit,

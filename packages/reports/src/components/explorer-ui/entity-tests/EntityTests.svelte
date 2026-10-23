@@ -56,12 +56,7 @@
 		record?.tests.find((item) => item.id === `${scenario}:${test}`);
 </script>
 
-<div
-	role="tabpanel"
-	aria-label={`${entity.name} tests`}
-	class="ex-stack"
-	data-harness-component="harness-entity-tests"
->
+<div role="tabpanel" aria-label={`${entity.name} tests`} class="ex-stack" data-harness-component="harness-entity-tests">
 	<RegressionProof
 		items={evidence.after.detail?.regressions ?? []}
 		unit={entity.id}

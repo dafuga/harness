@@ -1,10 +1,6 @@
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import {
-		galleryEvidence,
-		screenSize,
-		type ScreenSize
-	} from '../../utils/verification-evidence/reportFilter';
+	import { galleryEvidence, screenSize, type ScreenSize } from '../../utils/verification-evidence/reportFilter';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
 	import ImageZoom from '../shared-primitives/image-zoom/ImageZoom.svelte';

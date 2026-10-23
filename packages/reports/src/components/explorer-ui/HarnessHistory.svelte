@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type {
-		HarnessRevision,
-		HarnessRevisionSummary
-	} from '../../models/explorer-ui/Harness.types';
+	import type { HarnessRevision, HarnessRevisionSummary } from '../../models/explorer-ui/Harness.types';
 	import { harnessEvidence, mediaFile } from '../../utils/explorer-ui/harnessEvidence';
 	import { captureProvenance, scenarioOrigin } from '../../utils/reports-media/captureProvenance';
 	import EvidenceGrid from '../verification-evidence/evidence-grid/EvidenceGrid.svelte';

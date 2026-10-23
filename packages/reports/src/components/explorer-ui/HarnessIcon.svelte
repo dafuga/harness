@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		harnessIcons,
-		solidIcons,
-		type HarnessIconName
-	} from '../../utils/explorer-ui/harnessIcons';
+	import { harnessIcons, solidIcons, type HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
 	let {
 		name,
 		size = 20,

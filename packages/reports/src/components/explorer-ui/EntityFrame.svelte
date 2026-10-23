@@ -98,7 +98,12 @@
 					</ul>
 				</section>
 			{:else if entity}
-				<EntityHeader {entity} {owner} {nav} preview={screens} />
+				<EntityHeader
+					{entity}
+					{owner}
+					{nav}
+					preview={screens}
+				/>
 				{@render screen(entity, nav)}
 			{:else}
 				<EntityMissing

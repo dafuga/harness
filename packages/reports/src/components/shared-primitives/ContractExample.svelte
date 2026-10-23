@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type {
-		ContractExample as Example,
-		ContractField
-	} from '../../utils/explorer-ui/contractFields';
+	import type { ContractExample as Example, ContractField } from '../../utils/explorer-ui/contractFields';
 	import RecordedValue from './recorded-value/RecordedValue.svelte';
 	/** One field of a contract as its example view says it: what it is, then what it looks like. */
 	let { field }: { field: ContractField } = $props();

@@ -71,9 +71,9 @@
 	</div>
 	<p class="analytics-note">
 		<strong>Author</strong> models write the response or code that a check looks at.
-		<strong>Evaluator</strong> models judge that work and are never credited as its author, so first-try
-		rates are grouped by author model. A count is how often a model was recorded in that role, and a model
-		recorded as “unknown” stays unknown rather than being guessed or merged.
+		<strong>Evaluator</strong> models judge that work and are never credited as its author, so
+		first-try rates are grouped by author model. A count is how often a model was recorded in that
+		role, and a model recorded as “unknown” stays unknown rather than being guessed or merged.
 	</p>
 	<div class="analytics-grid analytics-pair">
 		{@render usageCard(
@@ -101,9 +101,7 @@
 					{analyticsCount(models.inputTokens + models.outputTokens)} combined
 				</p>
 			</div>
-			<p class="analytics-note">
-				Input and output tokens recorded by Jev for assessments in this view.
-			</p>
+			<p class="analytics-note">Input and output tokens recorded by Jev for assessments in this view.</p>
 			<div class="analytics-grid analytics-tiles">
 				<div>
 					<p class="analytics-label">Input tokens</p>
@@ -122,10 +120,9 @@
 			<p class="analytics-meta">{analyticsCount(firstTry.length)} listed</p>
 		</div>
 		<p class="analytics-note">
-			Share of assessed tasks whose first check passed. Excluded checks are left out of the rate
-			instead of counting as failures, and a model with nothing assessed shows “{analyticsDisplay(
-				null
-			)}” rather than 0%.
+			Share of assessed tasks whose first check passed. Excluded checks are left out of the
+			rate instead of counting as failures, and a model with nothing assessed shows
+			“{analyticsDisplay(null)}” rather than 0%.
 		</p>
 		{#if firstTry.length}
 			<div class="analytics-scroll">

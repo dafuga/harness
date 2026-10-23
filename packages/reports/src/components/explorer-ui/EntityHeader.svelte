@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { ExplorerEntity, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
+	import type {
+		ExplorerEntity,
+		ExplorerLocation
+	} from '../../models/explorer-ui/Explorer.types';
 	import { explorerCategory } from '../../utils/explorer-ui/explorerCategory';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';

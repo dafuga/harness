@@ -4,11 +4,7 @@
 	import { evidenceMedia } from '../../../utils/verification-evidence/evidenceMedia';
 	import { audioPairs } from '../../../utils/reports-media/audioPairs';
 	import { t } from '../../../utils/reports-media/reportLocale';
-	import {
-		galleryEvidence,
-		screenSize,
-		type ScreenSize
-	} from '../../../utils/verification-evidence/reportFilter';
+	import { galleryEvidence, screenSize, type ScreenSize } from '../../../utils/verification-evidence/reportFilter';
 	import { reportFilter } from './reportFilter';
 	import AudioComparisonViewer from '../../reports-media/AudioComparisonViewer.svelte';
 	import EvidenceCard from '../EvidenceCard.svelte';
