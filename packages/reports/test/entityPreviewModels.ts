@@ -34,6 +34,7 @@ export async function reviewModelCard(page: Page, viewport: string): Promise<voi
 		const card = page.getByRole('article', { name: 'Order', exact: true });
 		await expect(page.getByRole('article', { name: 'Invoice', exact: true })).toBeVisible();
 		await expect(card.locator('code')).toHaveText('Order');
+		await expect(page.locator('.ex-content')).not.toContainText('Order.types');
 		await expect(card.locator('h2, p, img, svg, button, .hx-verdict')).toHaveCount(0);
 		await expect(page.locator('.ex-legend')).toHaveCount(0);
 		expect(await appearance()).toEqual(helperAppearance);

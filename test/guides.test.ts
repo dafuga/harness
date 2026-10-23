@@ -10,6 +10,7 @@ test('model guidance is available for agents', () =>
 		const guide = findGuide('model');
 
 		expect(guide?.topic).toBe('model');
+		expect(guide?.rules.join('\n')).toContain('Shared model names omit the .types file suffix');
 		expect(guide?.exampleCommands[0]).toContain('harness generate model');
 	}));
 
