@@ -5,10 +5,11 @@ import type {
 	HarnessUnit
 } from '../src/models/Harness.types';
 import { record } from './entityFixture';
-import { capture, ids, units } from './entityUnits';
+import { capture, commits, ids, units } from './entityUnits';
 import { categorySources } from './entityPreviewGroups';
 import { withSourceMeasures } from './entityStates';
 export type PreviewVariant =
+	| 'platforms'
 	| 'source'
 	| ''
 	| 'legacy'
@@ -23,7 +24,8 @@ export type PreviewVariant =
 	| 'groups'
 	| 'relations'
 	| 'measurements'
-	| 'focused';
+	| 'focused'
+	| 'viewport-states';
 export function stateRecord(commit: string): HarnessRecord {
 	const taken = previewRecord(commit);
 	taken.scenarios[0].states.push({
@@ -173,25 +175,44 @@ export function withMeasurements(detail: HarnessRevision): HarnessRevision {
 	detail = withSourceMeasures(detail);
 	const helper = detail.registry.units.find((unit) => unit.id === ids.filter)!;
 	helper.budgets.performance = [];
+	const baseline = detail.commit === commits.first;
 	for (const taken of detail.records) {
 		const timing = taken.measurements.find((item) => item.unit === ids.filter && item.workload)!;
 		timing.profile = '1db6ce9451b5e530';
 		timing.method =
 			'Median of five batches of 1000 direct calls after three warmups using representative input.';
-		taken.measurements.push({
-			...timing,
-			metric: 'process-peak-rss-bytes',
-			unitOfMeasure: 'bytes',
-			value: 93_000_000,
-			method:
-				'Peak RSS of the whole benchmark process including the test runner, not attributable to one function.'
-		});
+		taken.measurements.push(
+			{
+				...timing,
+				metric: 'process-peak-rss-bytes',
+				unitOfMeasure: 'bytes',
+				value: 93_000_000,
+				method:
+					'Peak RSS of the whole benchmark process including the test runner, not attributable to one function.'
+			},
+			{
+				unit: ids.page,
+				metric: 'latency-warm-ms',
+				unitOfMeasure: 'ms',
+				value: baseline ? 14.2 : 12.1,
+				workload: 'orders-page',
+				profile: 'bun-reference',
+				target: 'browser'
+			},
+			{
+				unit: ids.page,
+				metric: 'process-peak-rss-bytes',
+				unitOfMeasure: 'bytes',
+				value: baseline ? 3_000_000 : 2_500_000,
+				workload: 'orders-page',
+				profile: 'bun-reference',
+				target: 'browser'
+			}
+		);
 	}
 	return detail;
 }
-
 export { withDocumentation } from './entityPreviewDocumentation';
-
 /** Category metadata is synthetic selected-revision data, like contracts and measurements. */
 export function withGroups(detail: HarnessRevision): HarnessRevision {
 	return categorySources(withFrame(detail, 'shell'));

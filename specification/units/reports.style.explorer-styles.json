@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.style.explorer-styles",
+	"kind": "style",
+	"title": "explorer-styles",
+	"responsibility": "Styles grouped design tokens and responsive specimens on the explorer Styles page.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/styles/explorer-styles.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/styles/explorer-styles.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/styles/explorer-styles.css"
+			}
+		]
+	},
+	"scenarios": ["harness-styles"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

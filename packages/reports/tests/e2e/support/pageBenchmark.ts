@@ -118,6 +118,19 @@ function includedUnits(page: string): string[] {
 		'reports.function.explorer-evidence',
 		'reports.function.explorer-evidence-focused-captures'
 	];
+	if (page === 'reports.page.harness-branch-branch-at-styles')
+		return [
+			page,
+			'function.explorer-route',
+			'reports.component.harness-screen',
+			'reports.component.harness-harness-console',
+			'reports.component.explorer-ui-harness-explorer-styles-screen',
+			'reports.function.harness-icons',
+			'reports.function.harness-shell',
+			'reports.style.explorer',
+			'reports.style.explorer-navbar',
+			'reports.style.explorer-styles'
+		];
 	if (/-(pages|shells|components)-entity$/.test(page))
 		units.push(
 			'reports.component.harness-entity-screens',
@@ -134,7 +147,7 @@ export function pageUnit(address: string): string | undefined {
 	if (/^\/harness\/commit\/[a-f0-9]{40}(?:\/|$)/.test(new URL(address).pathname))
 		return 'reports.page.harness-view';
 	const match =
-		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
+		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models|styles)(\/[^/]+)?(\/(?:history|details))?$/.exec(
 			new URL(address).pathname
 		);
 	if (!match) return;

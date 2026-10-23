@@ -6,7 +6,8 @@ import {
 	shown,
 	viewports,
 	where,
-	reviewMeasurements
+	reviewMeasurements,
+	componentVerdict
 } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 const filter = { category: 'functions' as const, entity: ids.filter };
@@ -25,8 +26,7 @@ for (const [name, size] of Object.entries(viewports)) {
 	}) => {
 		await tab.setViewportSize(size);
 		await open(tab, components, 'partial');
-		const row = tab.getByRole('article', { name: 'OrderList', exact: true });
-		const mark = row.getByRole('button', { name: 'Coverage incomplete' });
+		const mark = await componentVerdict(tab);
 		await expect(mark).toBeVisible();
 		expect((await shown(tab, '.hx-verdict')).join('')).toBe('');
 		await expect(tip(tab)).toHaveCount(0);
@@ -38,7 +38,10 @@ for (const [name, size] of Object.entries(viewports)) {
 		await capture(tab, `marks-open-${name}`);
 		await tab.mouse.move(1, 1);
 		await expect(tip(tab)).toHaveCount(0);
-		await row.getByRole('link', { name: 'OrderList', exact: true }).focus();
+		await tab
+			.getByRole('navigation', { name: 'Breadcrumb' })
+			.getByRole('link', { name: 'Components', exact: true })
+			.focus();
 		await tab.keyboard.press('Tab');
 		await expect(mark).toBeFocused();
 		await expect(tip(tab)).toContainText(why);
@@ -54,11 +57,10 @@ test('a tap opens what a mark tells, and a tap elsewhere closes it', async ({
 	browserErrors.watch(context);
 	const tab = await context.newPage();
 	await open(tab, components, 'partial');
-	const row = tab.getByRole('article', { name: 'OrderList', exact: true });
-	await row.getByRole('button', { name: 'Coverage incomplete' }).tap();
+	await (await componentVerdict(tab)).tap();
 	await expect(tip(tab)).toContainText(why);
 	expect(await inside(tab, viewports.mobile)).toBe(true);
-	await tab.getByRole('heading', { level: 1, name: 'Components' }).tap();
+	await tab.getByRole('heading', { level: 1, name: 'OrderList' }).tap();
 	await expect(tip(tab)).toHaveCount(0);
 	await context.close();
 });

@@ -1603,13 +1603,13 @@
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "50ff3a98e3e93eb0c0393cd95cf8a929b427d23e0f9b242046743b17ad8d40ec",
+			"definition": "d52015f00de454015d23ba160638bc2f1284b076ade670319b59c4c85afe1b65",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "9fb0505ef04992cc5b1716d2b7b5280d4f866036",
-				"path": "src/services/RegressionProofService.ts",
-				"definition": "50ff3a98e3e93eb0c0393cd95cf8a929b427d23e0f9b242046743b17ad8d40ec",
-				"reason": "Retain main’s bounded failed-green diagnostics after relocation."
+				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+				"definition": "d52015f00de454015d23ba160638bc2f1284b076ade670319b59c4c85afe1b65",
+				"reason": "Review independent capture retention, failed-command status and required observations; ignore only volatile launcher identity while retaining red/green validation."
 			},
 			"previousReviews": [
 				{
@@ -1617,6 +1617,12 @@
 					"path": "src/services/RegressionProofService.ts",
 					"definition": "d686ee37b2344e2960908907bfd564b34cbffbb50df4422256129fa9241e1104",
 					"reason": "Retain main’s canonical screenshot evidence mapping after relocation."
+				},
+				{
+					"commit": "9fb0505ef04992cc5b1716d2b7b5280d4f866036",
+					"path": "src/services/RegressionProofService.ts",
+					"definition": "50ff3a98e3e93eb0c0393cd95cf8a929b427d23e0f9b242046743b17ad8d40ec",
+					"reason": "Retain main’s bounded failed-green diagnostics after relocation."
 				}
 			]
 		},
@@ -1744,7 +1750,14 @@
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2"
+			"definition": "6bb0fbb6329a318b39e5e9207effb58d882f86cfe8b4293908d519f2d626dace",
+			"relocationDefinition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2",
+			"review": {
+				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+				"path": "src/cli/program/loop.ts",
+				"definition": "6bb0fbb6329a318b39e5e9207effb58d882f86cfe8b4293908d519f2d626dace",
+				"reason": "Expose independent capture arguments and return a failing exit status for failed capture commands, preserving red/green options."
+			}
 		},
 		{
 			"unit": "workflow.loop-evaluate",
@@ -3089,14 +3102,22 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "4d4532d584d85b0c2d3504d5f5cb536118f9bd7baa021fd2d05b7eb5c41dcec0",
+			"definition": "16603e9168a91a2ecbbd04328e02081bff2a233abb0717b6a2dba9831d53822e",
 			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
 			"review": {
-				"commit": "acb1a676d2a5186986369c5a4fb52ec1eabdaae9",
+				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
 				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
-				"definition": "4d4532d584d85b0c2d3504d5f5cb536118f9bd7baa021fd2d05b7eb5c41dcec0",
-				"reason": "Persist the catalog from the captured Git revision while retaining JSON history compatibility."
-			}
+				"definition": "16603e9168a91a2ecbbd04328e02081bff2a233abb0717b6a2dba9831d53822e",
+				"reason": "Feed retained focused runs into workload history while keeping verification records, source growth and catalog output unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "acb1a676d2a5186986369c5a4fb52ec1eabdaae9",
+					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+					"definition": "4d4532d584d85b0c2d3504d5f5cb536118f9bd7baa021fd2d05b7eb5c41dcec0",
+					"reason": "Persist the catalog from the captured Git revision while retaining JSON history compatibility."
+				}
+			]
 		},
 		{
 			"unit": "function.budget-reviews",
@@ -3108,7 +3129,14 @@
 			"unit": "function.history-series",
 			"from": "src/services/history-index-service/historySeries.ts",
 			"to": "src/cli/program/history-index-service/historySeries.ts",
-			"definition": "92697a7d2e73e368db3abe4e27cc48a861b4e40b2ca75e7e3132b1fe5db910e9"
+			"definition": "8a433d3c04dc795e04af7e3ed16f67f063d601f410c58110cc4e24079e807c03",
+			"relocationDefinition": "92697a7d2e73e368db3abe4e27cc48a861b4e40b2ca75e7e3132b1fe5db910e9",
+			"review": {
+				"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+				"path": "src/cli/program/history-index-service/historySeries.ts",
+				"definition": "8a433d3c04dc795e04af7e3ed16f67f063d601f410c58110cc4e24079e807c03",
+				"reason": "Review deduplicated focused workload series, rejecting gaps and revision-mismatched measurements without granting verification or budget approval."
+			}
 		},
 		{
 			"unit": "function.revision-changes",

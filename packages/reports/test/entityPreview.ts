@@ -9,10 +9,10 @@ import '../src/lib/styles/gallery.css';
 import '../src/lib/styles/gallery-2.css';
 import '../src/lib/styles/harness.css';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
-import type { HarnessUnit, HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessRevision } from '../src/models/Harness.types';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { index, revision } from './entityFixture';
-import { lens, place, scope, type View } from './entityPlaces';
+import { lens, place, viewOf } from './entityPlaces';
 import {
 	declaredContract,
 	legacyReasons,
@@ -31,8 +31,10 @@ import { withServiceDocumentation } from './entityPreviewServiceDocs';
 import { withServiceContracts } from './entityServiceContract';
 import { withFocused } from './entityStates';
 import { withHelpers } from './entityPreviewHelpers';
+import { callableFixture } from './entityPreviewCallables';
 import { withRelationGroups } from './entityRelationFixtures';
 import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
+import { platformFixture } from './platformFixture';
 
 const variant = ((window as unknown as { previewVariant?: PreviewVariant }).previewVariant ??
 	new URLSearchParams(location.search).get('variant')) as PreviewVariant | null;
@@ -45,12 +47,19 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'platforms') {
+	for (const commit of [commits.middle, commits.tip])
+		stored[commit] = { ...stored[commit], ...{ platforms: platformFixture } };
+}
 if (variant === 'groups')
 	for (const commit of Object.keys(stored)) stored[commit] = withGroups(stored[commit]);
 if (variant === 'measurements')
 	for (const commit of Object.keys(stored)) stored[commit] = withMeasurements(stored[commit]);
 if (variant === 'focused')
 	for (const commit of Object.keys(stored)) stored[commit] = withFocused(stored[commit]);
+if (variant === 'viewport-states')
+	for (const commit of Object.keys(stored))
+		stored[commit] = withFocused(stored[commit], ids.page, {}, true);
 if (variant === 'relations')
 	for (const commit of Object.keys(stored)) stored[commit] = withRelationGroups(stored[commit]);
 if (variant === 'helpers')
@@ -79,7 +88,7 @@ if (variant === 'declared') {
 	for (const [commit, detail] of Object.entries(stored)) {
 		const { registry } = detail;
 		const units = registry.units.map((unit) => {
-			if (unit.id === ids.page) return { ...unit, contract: declaredContract };
+			if (unit.id === ids.settings) return { ...unit, contract: declaredContract };
 			return unit.id === ids.filter ? callableFixture(unit) : unit;
 		});
 		stored[commit] = withServiceContracts({ ...detail, registry: { ...registry, units } });
@@ -90,29 +99,11 @@ if (variant === 'shells') {
 	stored[commits.middle] = withFrame(stored[commits.middle], 'component');
 	stored[commits.tip] = withFrame(stored[commits.tip], 'shell');
 }
-const parents: Record<string, string | null> = {
-	[commits.first]: null,
-	[commits.middle]: commits.first,
-	[commits.tip]: commits.middle
-};
-/** The tip alone, or a selected commit beside the first parent the history gives it. */
-function viewOf(route: ExplorerLocation): View {
-	if (route.commit === null) {
-		return { scope: scope('current', route), head: stored[commits.tip], parent: null };
-	}
-	const parent = parents[route.commit] ?? null;
-	const at = { ...scope('commit', route), commit: route.commit, parent };
-	return {
-		scope: { ...at, atTip: route.commit === commits.tip },
-		head: stored[route.commit],
-		parent: parent ? stored[parent] : null
-	};
-}
 const target = document.getElementById('app') as HTMLElement;
 let mounted: ReturnType<typeof mount> | undefined;
 function show(route: ExplorerLocation) {
 	if (mounted) void unmount(mounted);
-	const shown = viewOf(route);
+	const shown = viewOf(route, stored);
 	history.replaceState(null, '', `#${encodeURIComponent(JSON.stringify(route))}`);
 	mounted = mount(ExplorerContent, {
 		target,
@@ -141,7 +132,7 @@ function asked(): ExplorerLocation {
 	);
 }
 window.addEventListener('hashchange', () => show(asked()));
-if (variant === 'console') {
+if (variant === 'console' || variant === 'platforms') {
 	const fetcher = window.fetch;
 	window.fetch = Object.assign(
 		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
@@ -154,6 +145,7 @@ if (variant === 'console') {
 				path.endsWith(`/revisions/${commit}.json`)
 			)?.[1];
 			if (!data) return fetcher(input, init);
+			if (variant === 'platforms') return Promise.resolve(Response.json(data));
 			const scaled = withScale(data);
 			const units = scaled.registry.units.map((unit) =>
 				unit.id === ids.filter ? callableFixture(unit) : unit
@@ -165,55 +157,3 @@ if (variant === 'console') {
 	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
 	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
 } else show(asked());
-function callableFixture(unit: HarnessUnit): HarnessUnit {
-	const returnNames: Record<string, string> = {
-		toKebabCase: 'kebabCaseText',
-		countWords: 'wordCount',
-		reset: 'noReturnValue'
-	};
-	const exampleReturns: Record<string, string | number | null> = {
-		toKebabCase: 'hello-world',
-		countWords: 2,
-		reset: null
-	};
-	const helpers = [
-		['toKebabCase', 'string'],
-		['countWords', 'number'],
-		['reset', 'void']
-	].map(([name, output]) => ({
-		name,
-		output,
-		source: 'src/functions/text.ts',
-		pure: true,
-		consumers: [{ unit: ids.list }, { unit: ids.store }],
-		examples: [
-			{
-				name: `${name} usage`,
-				call: name === 'reset' ? 'reset() ?? null' : `${name}("hello world")`,
-				input: name === 'reset' ? [] : ['hello world'],
-				output: exampleReturns[name]
-			}
-		],
-		inputs: name === 'reset' ? [] : [{ name: `${name}.textToConvert`, type: 'string' }]
-	}));
-	return {
-		...unit,
-		helpers,
-		owns: { source: ['src/functions/text.ts'], symbols: helpers.map((h) => h.name) },
-		contract: {
-			inputs: helpers.flatMap((h) => h.inputs.map((i) => ({ ...i, examples: ['hello world'] }))),
-			outputs: helpers.map((h) => ({
-				name: `${h.name}.${returnNames[h.name]}`,
-				type: h.output,
-				...(h.output === 'void' ? {} : { examples: [h.name === 'countWords' ? 2 : 'hello-world'] })
-			})),
-			errors: [
-				{
-					name: 'countWords.invalidInput',
-					type: 'TypeError',
-					examples: [{ name: 'TypeError', message: 'Input text required.' }]
-				}
-			]
-		}
-	};
-}

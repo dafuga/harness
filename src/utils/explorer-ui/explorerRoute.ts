@@ -1,62 +1,19 @@
-import { tabOf, type ExplorerTab } from '../explorer-route/explorerTabs';
-export { explorerTabs, type ExplorerTab } from '../explorer-route/explorerTabs';
+import {
+	tabOf,
+	explorerCategories,
+	type ExplorerCategory,
+	type ExplorerTab
+} from '../explorer-route/explorerTabs';
+export {
+	explorerTabs,
+	explorerKindCategory,
+	explorerEntityCategories,
+	explorerCategories,
+	type ExplorerCategory,
+	type ExplorerTab
+} from '../explorer-route/explorerTabs';
+export type ExplorerScreen = 'styles';
 
-/** The seven kinds of entity the explorer shows, in the order of its navigation. */
-export const explorerCategories = [
-	'pages',
-	'shells',
-	'components',
-	'functions',
-	'configs',
-	'services',
-	'models'
-] as const;
-export type ExplorerCategory = (typeof explorerCategories)[number];
-
-/** The kinds of unit a product is made of, each under the one category it is listed in. */
-const kinds = new Map<string, ExplorerCategory>([
-	['page', 'pages'],
-	['view', 'pages'],
-	// Only a unit whose manifest declares it a shell: nothing is read from an id or a file name.
-	['shell', 'shells'],
-	['component', 'components'],
-	['partial', 'components'],
-	['layout', 'components'],
-	['function', 'functions'],
-	['validator', 'functions'],
-	['serializer', 'functions'],
-	['kernel', 'functions'],
-	['helper', 'functions'],
-	['decorator', 'functions'],
-	['policy', 'functions'],
-	['form', 'functions'],
-	['config', 'configs'],
-	['initializer', 'configs'],
-	['model', 'models'],
-	['service', 'services'],
-	['endpoint', 'services'],
-	['api', 'services'],
-	['adapter', 'services'],
-	['repository', 'services'],
-	['workflow', 'services'],
-	['command', 'services'],
-	['controller', 'services'],
-	['job', 'services'],
-	['channel', 'services'],
-	['middleware', 'services'],
-	['hook', 'services'],
-	['mailer', 'services']
-]);
-
-/**
- * The category a kind of unit is listed under. Null for a kind that is none of the six: a rule,
- * a guide, a template, a script or anything unknown is not presented as a function.
- */
-export function explorerKindCategory(kind: string): ExplorerCategory | null {
-	return kinds.get(kind) ?? null;
-}
-
-/** What is shown of one entity; an address without a section shows its overview. */
 export const explorerSections = ['details', 'history'] as const;
 export type ExplorerSection = (typeof explorerSections)[number];
 
@@ -67,6 +24,8 @@ export interface ExplorerLocation {
 	/** The full hash of a selected commit; null shows the branch at whatever its tip is. */
 	commit: string | null;
 	category: ExplorerCategory;
+	/** A design-system screen, separate from the entity categories. */
+	screen?: ExplorerScreen;
 	/** The id of a unit; absent on the index of a category. */
 	entity?: string;
 	/** A callable within its owning unit, resolved at the selected revision. */
@@ -82,7 +41,6 @@ const isCategory = (name: string): name is ExplorerCategory =>
 	explorerCategories.some((known) => known === name);
 const isSection = (name: string): name is ExplorerSection =>
 	explorerSections.some((known) => known === name);
-
 function decoded(text: string): string | undefined {
 	try {
 		return decodeURIComponent(text);
@@ -120,29 +78,27 @@ function scope(parts: string[]): Scope | undefined {
 	return { branch, commit, rest: commit === null ? after : after.slice(2) };
 }
 
-/** The entity and section the parts after a category name; null when they name neither. */
-function selection(rest: string[]): Pick<ExplorerLocation, 'entity' | 'section'> | null {
+type Selection = Pick<ExplorerLocation, 'entity' | 'section'> | null;
+/** The entity and supported section after a category name. */
+function selection(rest: string[], allowSections = true): Selection {
 	const [id, section, ...extra] = rest;
 	if (id === undefined) return {};
 	const entity = decoded(id);
 	if (!entity || extra.length > 0) return null;
 	if (section === undefined) return { entity };
-	return isSection(section) ? { entity, section } : null;
+	return allowSections && isSection(section) ? { entity, section } : null;
 }
 
-/**
- * Reads an address of the explorer, the part after the route it is served under:
- * `/branch/<name>[/commit/<sha>]/<category>[/<entity>[/details|/history]]`. A branch is one
- * encoded segment, and a commit that no branch reaches has the form without one. A branch or a
- * commit alone stands for its Pages. Undefined when the path names no address.
- */
+/** Reads a scoped explorer address; branch or commit alone opens Pages. */
 export function explorerRoute(path: string, search = ''): ExplorerLocation | undefined {
 	const found = scope(path.replace(/\/+$/, '').split('/').slice(1));
 	if (!found) return undefined;
 	const [category = 'pages', ...after] = found.rest;
 	if (category === 'helpers') return helperSelection(found, after);
-	const selected = isCategory(category) ? selection(after) : null;
-	if (!isCategory(category) || !selected) return undefined;
+	if (category === 'styles') return stylesSelection(found);
+	if (!isCategory(category)) return undefined;
+	const selected = selection(after, category !== 'platforms');
+	if (!selected) return undefined;
 	const { branch, commit } = found;
 	const location: ExplorerLocation = { branch, commit, category, ...selected };
 	const helper = helperOf(location, new URLSearchParams(search).get('helper'));
@@ -151,13 +107,19 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	return tab ? { ...location, tab } : location;
 }
 
+function stylesSelection(found: Scope): ExplorerLocation | undefined {
+	if (found.rest.length !== 1) return undefined;
+	return { branch: found.branch, commit: found.commit, category: 'pages', screen: 'styles' };
+}
+
 /** Legacy Details links keep their scope and open a tab of the existing entity page. */
 export function canonicalExplorerLocation(location: ExplorerLocation): ExplorerLocation {
 	if (location.section !== 'details') return location;
 	const canonical = { ...location };
 	delete canonical.section;
 	if (location.tab === 'measurements') delete canonical.tab;
-	else canonical.tab = location.tab === 'source' ? 'source' : 'contract';
+	else if (location.tab === 'source') canonical.tab = 'source';
+	else canonical.tab = location.category === 'pages' ? 'models' : 'contract';
 	return canonical;
 }
 
@@ -166,7 +128,7 @@ export function explorerRoutePath(location: ExplorerLocation): string {
 	location = canonicalExplorerLocation(location);
 	const branch = location.branch === null ? '' : `/branch/${encodeURIComponent(location.branch)}`;
 	const commit = location.commit === null ? '' : `/commit/${location.commit}`;
-	const callable = helperPath(location);
+	const callable = specialPath(location);
 	if (callable) return `${branch}${commit}${callable}`;
 	const entity = location.entity ? `/${encodeURIComponent(location.entity)}` : '';
 	const section = location.entity && location.section ? `/${location.section}` : '';
@@ -207,7 +169,8 @@ function helperPane(location: ExplorerLocation, pane?: string): ExplorerLocation
 	return tab ? { ...location, tab } : undefined;
 }
 
-function helperPath(location: ExplorerLocation): string | undefined {
+function specialPath(location: ExplorerLocation): string | undefined {
+	if (location.screen === 'styles') return '/styles';
 	if (location.category !== 'functions' || !location.helper) return undefined;
 	const helper = encodeURIComponent(location.helper);
 	const owner = location.entity ? `/in/${encodeURIComponent(location.entity)}` : '';

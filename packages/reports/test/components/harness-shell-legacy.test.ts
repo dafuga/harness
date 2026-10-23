@@ -78,7 +78,7 @@ test('the header with a navbar is the unified bar, and the notices it always sho
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(
 		text(/<nav\b[^>]*aria-label="Harness categories"[^>]*>(.*?)<\/nav>/s.exec(html)?.[1] ?? '')
-	).toBe('Pages Shells Components Helpers Configs Services Models');
+	).toBe('Pages Shells Components Helpers Configs Services Models Styles Platforms');
 	// The title row and its links to other views are gone, with or without links to draw.
 	expect(html).not.toMatch(/hc-top|<h1\b|Other views|brand-symbol/);
 	expect(header({ navbar, links: [{ label: 'Reports', href: '/harness/reports' }] })).not.toMatch(

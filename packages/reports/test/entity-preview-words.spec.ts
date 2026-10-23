@@ -26,7 +26,7 @@ test('a long word in a narrow column of a collection stays whole, and the table 
 }) => {
 	await tab.setViewportSize(viewports.mobile);
 	await open(tab, { category: 'configs', commit: commits.middle });
-	const cells = tab.locator('.ex-table tbody tr').first().locator('td');
+	const cells = tab.locator('.ex-table tbody tr').first().locator('th, td');
 	for (const position of [0, 1]) {
 		await cells.nth(position).evaluate((cell, text) => (cell.textContent = text), long);
 	}
@@ -59,7 +59,7 @@ test('a long word in a row of a history stays whole too', async ({ page: tab }) 
 test('the details of a declared contract say what each item is, and fit a phone', async ({
 	page: tab
 }) => {
-	const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };
+	const page = { category: 'configs' as const, entity: ids.settings, section: 'details' as const };
 	await open(tab, { ...page, commit: commits.middle }, 'declared');
 	const contract = tab.getByRole('region', { name: 'Contract' });
 	await expect(contract).not.toContainText('The branch, as one encoded path segment.');
@@ -76,7 +76,11 @@ test('the details of a declared contract say what each item is, and fit a phone'
 	expect(await fits(tab)).toBe(true);
 	await capture(tab, 'details-declared-mobile');
 	// The dedicated Contract tab explains it without requiring technical details.
-	await open(tab, { category: 'pages', entity: ids.page, commit: commits.middle }, 'declared');
+	await open(
+		tab,
+		{ category: 'configs', entity: ids.settings, commit: commits.middle },
+		'declared'
+	);
 	await expect(tab.getByRole('region', { name: 'Contract', exact: true })).toHaveCount(0);
 	await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
 	await contract.getByRole('button', { name: 'View example for Branch', exact: true }).click();
@@ -114,7 +118,7 @@ async function reviewExamples(tab: Page, contract: Locator, checkpoint: string):
 		expect(await fits(tab)).toBe(true);
 		await dialog.getByRole('button', { name: 'Close viewer', exact: true }).click();
 	}
-	const output = contract.getByRole('table', { name: 'Outputs', exact: true });
+	const output = contract.getByRole('table', { name: 'Provides', exact: true });
 	await output.getByRole('button').click();
 	await expect(dialog).toContainText('<main>Orders</main>');
 	await expect(dialog.locator('main')).toHaveCount(0);
@@ -171,7 +175,7 @@ for (const [width, size] of Object.entries(viewports)) {
 	test(`contract has its own typed example view at ${width} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		for (const commit of [null, commits.middle]) {
-			await open(tab, { category: 'pages', entity: ids.page, commit }, 'declared');
+			await open(tab, { category: 'configs', entity: ids.settings, commit }, 'declared');
 			await capture(tab, `contract-overview-${commit ? 'commit' : 'tip'}-${width}`);
 			await expect(
 				tab.getByRole('tab', { name: 'Contract', exact: true }),
@@ -188,7 +192,7 @@ for (const [width, size] of Object.entries(viewports)) {
 			const inputs = contract.getByRole('table', { name: 'Inputs', exact: true });
 			await expect(inputs, 'contract inputs are a table').toBeVisible();
 			await expect(inputs.getByRole('row').filter({ hasText: 'Branch' })).toContainText('string');
-			await expect(contract.getByRole('table', { name: 'Outputs', exact: true })).toBeVisible();
+			await expect(contract.getByRole('table', { name: 'Provides', exact: true })).toBeVisible();
 			await compactExamples(inputs);
 			await expect(contract).toContainText('<main>Orders</main>');
 			await expect(contract).not.toContainText('The branch, as one encoded path segment.');
@@ -196,8 +200,8 @@ for (const [width, size] of Object.entries(viewports)) {
 			await reviewExamples(tab, contract, `${commit ? 'commit' : 'tip'}-${width}`);
 			expect(await where(tab)).toMatchObject({
 				commit,
-				category: 'pages',
-				entity: ids.page,
+				category: 'configs',
+				entity: ids.settings,
 				tab: 'contract'
 			});
 			expect(await fits(tab)).toBe(true);

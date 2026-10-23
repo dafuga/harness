@@ -14,7 +14,17 @@ import {
  * binary badge, actions, tabs and the bar without an address, and beside them, outside the
  * explorer, two rows of the console that was.
  */
-const categories = ['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
+const categories = [
+	'Pages',
+	'Shells',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models',
+	'Styles',
+	'Platforms'
+];
 const here = `${shellOrigin}/`;
 let home = '';
 
@@ -60,7 +70,7 @@ for (const [screen, width, height] of screens) {
 			.evaluateAll((list) => list.map((tip) => tip.id));
 		expect([tips.length, new Set(tips).size]).toEqual([9, 9]);
 
-		// Without an address the bar still names the seven categories and offers nothing to choose.
+		// Without an address the bar still names its navigation and offers nothing to choose.
 		const idle = page.getByRole('region', { name: 'Bar without an address' });
 		await expect(idle.getByRole('navigation', { name: 'Harness categories' })).toHaveText(
 			new RegExp(`^\\s*${categories.join('\\s*')}\\s*$`)

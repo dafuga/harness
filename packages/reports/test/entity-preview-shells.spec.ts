@@ -40,9 +40,13 @@ for (const [viewport, size] of [
 			content(page).getByRole('article', { name: 'OrderFrame', exact: true })
 		).toHaveCount(0);
 		const asUser = content(page)
-			.getByRole('list', { name: 'Shells', exact: true })
-			.getByText('OrderFrame', { exact: true });
-		await expect(asUser).toBeVisible();
+			.getByRole('group', { name: 'Used In', exact: true })
+			.getByRole('link', { name: 'OrderFrame', exact: true });
+		expect(await asUser.count()).toBeGreaterThan(0);
+		for (const link of await asUser.all()) {
+			await expect(link).toBeVisible();
+			await expect(link).toHaveAttribute('href', new RegExp(`/shells/${frameId}$`));
+		}
 		await expect(frame(page)).toHaveCount(await asUser.count());
 	});
 }

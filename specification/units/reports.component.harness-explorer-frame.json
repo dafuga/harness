@@ -25,6 +25,11 @@
 				"name": "ExplorerFrame.children",
 				"type": "Snippet<[EntityNav]>",
 				"description": "The screen to draw inside."
+			},
+			{
+				"name": "ExplorerFrame.registryRequired",
+				"type": "boolean | undefined",
+				"description": "Defaults to true. Platform configuration can be read without a unit registry."
 			}
 		],
 		"outputs": [

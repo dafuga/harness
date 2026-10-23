@@ -33,6 +33,7 @@ export interface RevisionRegistry {
 		serviceExports?: UnitMetadata['serviceExports'];
 		serviceConsumers?: UnitMetadata['serviceConsumers'];
 		serviceClasses?: UnitMetadata['serviceClasses'];
+		configValues?: UnitMetadata['configValues'];
 		sourceFiles?: UnitMetadata['sourceFiles'];
 		/** Static observations from this source commit; not a verification verdict. */
 		sourceMeasurements?: Measurement[];

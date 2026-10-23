@@ -1,5 +1,6 @@
 import type { HarnessIndex, HarnessRecord, HarnessRevision } from '../src/models/Harness.types';
 import { capture, commits, ids, scenarios, units, type CaptureSeed } from './entityUnits';
+import { configSnapshot } from './entityConfigFixtures';
 
 type RecordScenario = HarnessRecord['scenarios'][number];
 
@@ -86,7 +87,12 @@ const changedBy = (commit: string) => (commit === commits.tip ? [] : [ids.list, 
 export function revision(commit: string, records: HarnessRecord[]): HarnessRevision {
 	return {
 		commit,
-		registry: { available: true, units, scenarios, graph: { edges: [] } },
+		registry: {
+			available: true,
+			units: units.map((unit) => configSnapshot(unit, commit)),
+			scenarios,
+			graph: { edges: [] }
+		},
 		comparison: null,
 		sourceImpact: {
 			base: null,

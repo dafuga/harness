@@ -1,5 +1,61 @@
 import type { ExplorerLocation } from '../../explorerRoute';
 
+/** The seven kinds of entity the explorer shows, in the order of its navigation. */
+export const explorerEntityCategories = [
+	'pages',
+	'shells',
+	'components',
+	'functions',
+	'configs',
+	'services',
+	'models'
+] as const;
+export const explorerCategories = [...explorerEntityCategories, 'platforms'] as const;
+export type ExplorerCategory = (typeof explorerCategories)[number];
+
+/** The kinds of unit a product is made of, each under the one category it is listed in. */
+const kinds = new Map<string, ExplorerCategory>([
+	['page', 'pages'],
+	['view', 'pages'],
+	// Only a unit whose manifest declares it a shell: nothing is read from an id or a file name.
+	['shell', 'shells'],
+	['component', 'components'],
+	['partial', 'components'],
+	['layout', 'components'],
+	['function', 'functions'],
+	['validator', 'functions'],
+	['serializer', 'functions'],
+	['kernel', 'functions'],
+	['helper', 'functions'],
+	['decorator', 'functions'],
+	['policy', 'functions'],
+	['form', 'functions'],
+	['config', 'configs'],
+	['initializer', 'configs'],
+	['model', 'models'],
+	['service', 'services'],
+	['endpoint', 'services'],
+	['api', 'services'],
+	['adapter', 'services'],
+	['repository', 'services'],
+	['workflow', 'services'],
+	['command', 'services'],
+	['controller', 'services'],
+	['job', 'services'],
+	['channel', 'services'],
+	['middleware', 'services'],
+	['hook', 'services'],
+	['mailer', 'services']
+]);
+
+/**
+ * The category a kind of unit is listed under. Null for a kind that is none of the seven: a rule,
+ * a guide, a template, a script or anything unknown is not presented as a function.
+ */
+export function explorerKindCategory(kind: string): ExplorerCategory | null {
+	return kinds.get(kind) ?? null;
+}
+
 /**
  * The tabs a section supports; helpers use path segments and legacy modules use the query.
  * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
@@ -9,6 +65,7 @@ export const explorerTabs = {
 	overview: [
 		'overview',
 		'contract',
+		'models',
 		'used-in',
 		'uses',
 		'relationships',
@@ -18,7 +75,7 @@ export const explorerTabs = {
 		'states',
 		'source'
 	],
-	details: ['contract', 'measurements', 'source'],
+	details: ['contract', 'models', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
 export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][number];
@@ -27,12 +84,23 @@ function invalidAudioTab(asked: string | null, location: ExplorerLocation): bool
 	return asked === 'audio' && location.category !== 'components';
 }
 
+/** Page-only tabs and the legacy Contract address retain their category rules. */
+function pageQueryTab(asked: string | null, category: ExplorerLocation['category']) {
+	if (asked === 'models' && category !== 'pages') return undefined;
+	if (category === 'pages') {
+		if (asked === 'contract') return 'models';
+		if (asked === 'used-in') return undefined;
+	}
+	return asked;
+}
+
 /** Keep the category checks in their original order while selecting a query tab. */
 function tabQuery(location: ExplorerLocation, search: string): string | null | undefined {
-	let asked = new URLSearchParams(search).get('tab');
+	const requested = new URLSearchParams(search).get('tab');
 	const visual = ['pages', 'components', 'shells'].includes(location.category);
-	if (invalidAudioTab(asked, location)) return undefined;
-	if (location.category === 'pages' && asked === 'used-in') return undefined;
+	if (invalidAudioTab(requested, location)) return undefined;
+	let asked = pageQueryTab(requested, location.category);
+	if (asked === undefined) return undefined;
 	if (visual && asked === 'tests') asked = 'states';
 	if (location.category === 'functions' && asked === 'tests') asked = 'examples';
 	if (!visual && asked === 'states') return undefined;
@@ -41,6 +109,7 @@ function tabQuery(location: ExplorerLocation, search: string): string | null | u
 
 /** The tab a query names, when the shown section has it and it is not the default one. */
 export function tabOf(location: ExplorerLocation, search: string): ExplorerTab | undefined {
+	if (location.category === 'platforms') return undefined;
 	if (!location.entity && !location.helper) return undefined;
 	const [, ...others] = explorerTabs[location.section ?? 'overview'] as readonly ExplorerTab[];
 	const asked = tabQuery(location, search);

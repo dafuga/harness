@@ -4,6 +4,7 @@ import type { Status } from '../reports-media/Report.types';
 import type { BrowserDiagnostic } from '../../../../../src/core/browserDiagnostics';
 import type { RegressionView } from '../../../../../src/core/regressionTypes';
 import type { UnitMetadata } from '../../../../../src/utils/unitMetadata';
+import type { PlatformCatalog } from '../../../../../src/core/explorer-ui/Platform.types';
 export type * from './HarnessLegacy.types';
 export interface HarnessRecordSummary {
 	id: string;
@@ -183,6 +184,7 @@ export interface HarnessExplanation {
 	performance: { attempt: string; outcome: string };
 }
 export interface HarnessRevision {
+	platforms?: PlatformCatalog;
 	regressions?: RegressionView[];
 	commit: string;
 	/** Opaque whole-tree identity retained by entity projections, without a cache filename. */

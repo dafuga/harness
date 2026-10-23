@@ -1,5 +1,6 @@
 export {
 	explorerCategories,
+	explorerEntityCategories,
 	explorerKindCategory,
 	explorerSections,
 	explorerTabs,

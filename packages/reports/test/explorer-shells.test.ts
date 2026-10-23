@@ -27,7 +27,7 @@ const frame = frameId;
 const categoryOf = (head: HarnessRevision, id: string) =>
 	explorerEntities(head).find((entity) => entity.id === id)?.category;
 
-test('the bar has seven categories, Shells after Pages, each with its own icon', () => {
+test('the bar has entity categories and a separate Styles screen link', () => {
 	const location = { branch: shellBranch, commit: null, category: 'shells' as const };
 	const { categories } = harnessShell({
 		base: shellMount,
@@ -45,7 +45,9 @@ test('the bar has seven categories, Shells after Pages, each with its own icon',
 		['functions', 'Helpers', 'functions', false],
 		['configs', 'Configs', 'configs', false],
 		['services', 'Services', 'services', false],
-		['models', 'Models', 'database', false]
+		['models', 'Models', 'database', false],
+		['styles', 'Styles', 'styles', false],
+		['platforms', 'Platforms', 'platforms', false]
 	]);
 	expect(categoryIcon.shells).not.toBe(categoryIcon.components);
 });

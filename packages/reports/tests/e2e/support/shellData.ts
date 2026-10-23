@@ -1,5 +1,6 @@
 import type { ExplorerLocation, ExplorerScope } from '../../../src/models/Explorer.types';
 import type { HarnessIndex, HarnessRevisionSummary } from '../../../src/models/Harness.types';
+import { explorerRoutePath } from '../../../../../src/utils/explorerRoute';
 
 /**
  * A made-up history for the shell alone: two branches that share three commits, one branch whose
@@ -80,12 +81,17 @@ export function shellScope(location: ExplorerLocation): ExplorerScope {
 
 /** The address of a location under the mount: the whole branch is one encoded segment. */
 export function shellHref(to: ExplorerLocation): string {
-	const parts = [
-		...(to.branch === null ? [] : ['branch', encodeURIComponent(to.branch)]),
-		...(to.commit === null ? [] : ['commit', to.commit]),
-		to.category,
-		...(to.entity === undefined ? [] : [encodeURIComponent(to.entity)]),
-		...(to.section === undefined ? [] : [to.section])
-	];
-	return `${shellMount}/${parts.join('/')}${to.tab ? `?tab=${to.tab}` : ''}`;
+	return `${shellMount}${explorerRoutePath(to)}`;
 }
+
+export const shellCategories = [
+	'Pages',
+	'Shells',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models',
+	'Styles',
+	'Platforms'
+];
