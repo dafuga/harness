@@ -79,6 +79,11 @@ for (const viewport of catalogViewports) {
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
+			for (const field of await component.locator('.hx-revision .has-display select').all())
+				await expect(
+					field,
+					'Only the compact value is painted in a closed revision field'
+				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
 			if (unit.kind === 'layout') {
 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
 				await expect(slot).toBeVisible();
