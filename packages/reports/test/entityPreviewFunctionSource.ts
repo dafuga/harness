@@ -1,3 +1,4 @@
+import { sourceText, sourceTestPath } from './entitySourceFixture';
 import type { Page } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
 import { capture, fits, open, where } from './entityPreviewPage';
@@ -24,4 +25,24 @@ export async function reviewHelperSource(page: Page, viewport: string): Promise<
 		await page.getByRole('tab', { name: 'Overview', exact: true }).click();
 		expect(await where(page)).toEqual({ branch: 'feature/orders', commit, ...filter });
 	}
+}
+
+export async function testFile(page: Page, id: string, commit: string): Promise<void> {
+	const path = sourceTestPath(id);
+	const list = page.getByRole('list', { name: 'Test files', exact: true });
+	await expect(list, 'associated tests have their own file list').toBeVisible();
+	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+		'href',
+		`https://github.com/example/orders/blob/${commit}/${path}`
+	);
+	await list.getByRole('button', { name: `View code for ${path}`, exact: true }).click();
+	const dialog = page.getByRole('dialog');
+	await expect(dialog.locator('pre')).toHaveText(sourceText(commit, path));
+	await capture(
+		page,
+		`${process.env.SCREENSHOT_LABEL ?? 'run'}-source-test-${id}-${commit.slice(0, 7)}-${(await page.viewportSize())!.width}`,
+		['reports.component.harness-entity-source']
+	);
+	await page.keyboard.press('Escape');
+	await expect(dialog).toHaveCount(0);
 }

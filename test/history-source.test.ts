@@ -25,27 +25,41 @@ async function seedSource(repo: VerifyRepo) {
 	);
 	await repo.write('src/assets/shared.txt', 'Unicode source: π Ω 🙂\n');
 	await repo.write('src/assets/binary.dat', '\0binary\0');
+	await seedTests(repo);
 	await repo.git(['init', '-q', '-b', 'main']);
 	const first = await repo.commit('feat: first source revision');
 	const original = await repo.read('src/utils/slugify.ts');
 	const changed = original + '// selected second revision\n';
 	await repo.write('src/utils/slugify.ts', changed);
+	await repo.write('test/slugify.test.ts', '// second committed test\n' + testText);
 	const second = await repo.commit('feat: second source revision');
+	await repo.write('test/slugify.test.ts', '// dirty test must never appear\n');
 	await repo.write('src/utils/slugify.ts', '// dirty working tree must never appear\n');
 	return [
-		[first, original],
-		[second, changed]
+		[first, original, testText],
+		[second, changed, '// second committed test\n' + testText]
 	];
 }
 
-async function assertSource(out: string, commit: string, expected: string) {
+async function assertSource(out: string, commit: string, expected: string, expectedTest: string) {
 	const media = new Set<string>();
 	const detail = JSON.parse(await readFile(join(out, `revisions/${commit}.json`), 'utf8'));
-	const units = detail.registry.units as Array<{ id: string; sourceFiles?: Snapshot[] }>;
+	const units = detail.registry.units as Array<{
+		id: string;
+		sourceFiles?: Snapshot[];
+		testFiles?: Snapshot[];
+	}>;
 	const files = units.find((item) => item.id === 'function.slugify')?.sourceFiles;
 	expect(files, 'owned source is retained with the selected revision').toBeDefined();
 	const path = files?.find((item) => item.path === 'src/utils/slugify.ts')?.media;
 	expect(await readFile(join(out, path!), 'utf8')).toBe(expected);
+	const tests = units.find((item) => item.id === 'function.slugify')?.testFiles;
+	expect(
+		tests?.map((file) => file.path),
+		'associated tests are retained at the selected revision'
+	).toEqual(['test/declared.test.ts', 'test/slugify.test.ts']);
+	const test = tests?.find((file) => file.path === 'test/slugify.test.ts');
+	expect(await readFile(join(out, test!.media!), 'utf8')).toBe(expectedTest);
 	const assets = units.find((item) => item.id === 'config.assets')?.sourceFiles;
 	expect(assets).toContainEqual({
 		path: 'src/missing.ts',
@@ -57,7 +71,10 @@ async function assertSource(out: string, commit: string, expected: string) {
 		media: null,
 		gap: expect.any(String)
 	});
-	for (const file of units.flatMap((item) => item.sourceFiles ?? [])) {
+	for (const file of units.flatMap((item) => [
+		...(item.sourceFiles ?? []),
+		...(item.testFiles ?? [])
+	])) {
 		if (!file.media) continue;
 		const bytes = await readFile(join(out, file.media));
 		expect(file.media).toBe(`media/${createHash('sha256').update(bytes).digest('hex')}.txt`);
@@ -83,8 +100,8 @@ test('history archives owned text from each commit, deduplicates it and states s
 			})
 		);
 		const media = new Set<string>();
-		for (const [commit, expected] of revisions)
-			for (const file of await assertSource(out, commit, expected)) media.add(file);
+		for (const [commit, expected, expectedTest] of revisions)
+			for (const file of await assertSource(out, commit, expected, expectedTest)) media.add(file);
 		expect((await readdir(join(out, 'media'))).map((name) => `media/${name}`).sort()).toEqual(
 			[...media].sort()
 		);
@@ -92,3 +109,34 @@ test('history archives owned text from each commit, deduplicates it and states s
 		await repo.dispose();
 	}
 }, 120_000);
+
+const testText =
+	"import { slugify } from '../src/utils/slugify';\nexport const actual = slugify('Hello');\n";
+async function seedTests(repo: VerifyRepo): Promise<void> {
+	await repo.write('test/slugify.test.ts', testText);
+	await repo.write(
+		'test/declared.test.ts',
+		'// Declared CLI coverage without a direct implementation import.\n'
+	);
+	await repo.write('test/unrelated.test.ts', '// A different module must not appear.\n');
+	await repo.write(
+		'specification/scenarios/slugify.json',
+		JSON.stringify({
+			schemaVersion: 1,
+			id: 'slugify',
+			title: 'Slugify through its command',
+			kind: 'integration',
+			units: ['function.slugify'],
+			tests: [
+				{
+					id: 'declared',
+					kind: 'integration',
+					runner: 'command',
+					target: 'bun x vitest run declared.test.ts',
+					cwd: 'test'
+				}
+			],
+			evidence: []
+		})
+	);
+}

@@ -1,3 +1,4 @@
+import { testFile } from './entityPreviewFunctionSource';
 import { expect as browserExpect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -61,6 +62,7 @@ async function historicalFile(
 		'source'
 	);
 	await fileLink(page, item.path, commits.middle);
+	await testFile(page, item.id, commits.middle);
 	await page.getByRole('button', { name: `View code for ${item.path}`, exact: true }).click();
 	await expect(page.getByRole('dialog').locator('pre')).toHaveText(
 		sourceText(commits.middle, item.path)
@@ -90,9 +92,12 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				page.locator('.ex-head').getByRole('button', { name: /^View code for / })
 			).toHaveCount(0);
 			await expect(page.locator('pre')).toHaveCount(0);
-			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+			await capture(page, `${phase}-source-action-${category}-${viewport}`, [
+				'reports.component.harness-entity-source'
+			]);
 			await expect(action, 'Every source file has its own code action').toBeVisible();
 			await fileLink(page, path, commits.tip);
+			await testFile(page, id, commits.tip);
 			const started = await page.evaluate(() => performance.now());
 			await action.click();
 			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });

@@ -2,7 +2,7 @@
 	"name": "entity-source-tests",
 	"goal": "Show source and associated test files from the selected revision with working code viewing",
 	"createdAt": "2026-10-23T10:20:13.649Z",
-	"updatedAt": "2026-10-23T10:20:13.649Z",
+	"updatedAt": "2026-10-23T11:05:26.810Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:05:26.255Z",
+			"evidence": "Source must list associated test files as well as implementation and companion files; every code action reads only the selected committed snapshot."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:05:26.810Z",
+			"evidence": "Standard source archive and seven-kind browser coverage only supplied implementation snapshots, so omitted associated tests and their historical bytes. Extend those existing fixtures and assertions."
 		},
 		{
 			"id": "red",

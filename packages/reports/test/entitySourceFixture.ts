@@ -31,9 +31,14 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 	};
 }
 
+export const sourceTestPath = (id: string): string => `test/${id}.test.ts`;
+
 export const sourcePaths = [
 	...new Set(
-		sourceCatalog(revision(commits.tip, [])).registry.units.flatMap((unit) => unit.owns.source)
+		sourceCatalog(revision(commits.tip, [])).registry.units.flatMap((unit) => [
+			...unit.owns.source,
+			sourceTestPath(unit.id)
+		])
 	)
 ];
 
@@ -45,6 +50,12 @@ export function sourceSnapshots(detail: HarnessRevision, hashes: Record<string, 
 			...detail.registry,
 			units: detail.registry.units.map((unit) => ({
 				...unit,
+				testFiles: [
+					{
+						path: sourceTestPath(unit.id),
+						media: `media/${hashes[`source:${detail.commit}:${sourceTestPath(unit.id)}`]}.txt`
+					}
+				],
 				...{
 					sourceFiles: unit.owns.source.map((path) => ({
 						path,
