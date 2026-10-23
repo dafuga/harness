@@ -21,7 +21,7 @@ test.each([
 		exports: ['catalogFilter', 'entityCatalog', 'isShared', 'listed']
 	},
 	{
-		entry: '../../src/components/harness/explorer-index/entityCatalog.ts',
+		entry: '../../src/components/explorer-ui/explorer-index/entityCatalog.ts',
 		exports: ['catalogFilter']
 	}
 ])('a fresh runtime loads and calls the catalog through $entry', ({ entry, exports }) => {

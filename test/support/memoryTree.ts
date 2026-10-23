@@ -132,9 +132,12 @@ export function helperMoveGaps(
 ): string[] {
 	const gaps: string[] = [];
 	for (const move of moves) {
-		const reviewed = followUps.find((item) => item.unit === move.unit && item.name === move.name);
-		const location = reviewed?.to ?? move.to;
-		const owner = reviewed?.ownerSource ?? move.ownerSource;
+		const current = {
+			...move,
+			...followUps.find((item) => item.unit === move.unit && item.name === move.name)
+		};
+		const location = current.to;
+		const owner = current.ownerSource;
 		const target = resolve(root, location);
 		if (!existsSync(target)) {
 			gaps.push(`${move.name}: owner-local source is missing`);
@@ -143,7 +146,7 @@ export function helperMoveGaps(
 		if (posix.dirname(location) !== posix.dirname(owner))
 			gaps.push(`${move.name}: different owner folder`);
 		if (!existsSync(resolve(root, owner))) gaps.push(`${move.name}: owner source is missing`);
-		if (movedDefinition(location, move.name) !== (reviewed?.definition ?? move.definition))
+		if (movedDefinition(location, move.name) !== current.definition)
 			gaps.push(`${move.name}: definition changed`);
 		const unit = JSON.parse(
 			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
