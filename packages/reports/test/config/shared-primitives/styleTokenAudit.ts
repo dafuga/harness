@@ -67,6 +67,10 @@ function literalDesign(property: string, value: string): boolean {
 		)
 	)
 		return true;
+	return typographyOrScalar(property, value);
+}
+
+function typographyOrScalar(property: string, value: string): boolean {
 	if (
 		/^(?:font-weight|line-height|opacity|z-index)$/.test(property) &&
 		/(?:^|\s)(?!0(?:\s|$))(?:\d|\.\d)/.test(value)
