@@ -2,7 +2,7 @@
 	"name": "helper-responsibility-groups",
 	"goal": "Generic text helpers live in Strings; helper cards and breadcrumbs use each callable source category, independent of consumers",
 	"createdAt": "2026-10-23T11:25:47.463Z",
-	"updatedAt": "2026-10-23T11:48:24.358Z",
+	"updatedAt": "2026-10-23T11:52:07.183Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:52:07.183Z",
+			"evidence": "75a8d65b2 passes focused red/green, 90 decoded images, source/behavior observations, root and Reports checks, 7 Desktop cases, Desktop types and current-CLI audit. Full CLI/native suites remain explicitly deferred. Main integration and final live catalog readback stay queued."
 		}
 	],
 	"evaluators": [
