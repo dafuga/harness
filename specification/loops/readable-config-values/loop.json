@@ -2,7 +2,7 @@
 	"name": "readable-config-values",
 	"goal": "Keep config values compact and inspect full declarations without page overflow",
 	"createdAt": "2026-10-23T08:45:03.122Z",
-	"updatedAt": "2026-10-23T09:09:41.286Z",
+	"updatedAt": "2026-10-23T09:24:09.272Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:24:05.776Z",
+			"evidence": "Paired red 4ac5b9c9 and green ab25fdba use identical commands, environment profiles and frozen test corpus. All three category-folder cases pass at f6d3a76ee; 66 capture references and 132 contextual observations retained."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:24:09.272Z",
+			"evidence": "Reports check passes 687 tests, formatting, types, lint, build and audit. Root 32 shared-impact/registry/ownership checks, root/Desktop/Hub types and root audit pass. Real historical Configs manually verified: compact rows, exact 12-line schema modal, internal scrolling, close/focus restoration, no page errors. Full CLI/native suites explicitly deferred."
 		}
 	],
 	"evaluators": [
