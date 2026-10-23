@@ -116,11 +116,22 @@
 		max-width: 100%;
 		list-style-position: outside;
 	}
+	/* Key, shape, count and value run on one line, each a space and a little margin apart. */
 	.ex-value-tree :global(.hx-icon) {
+		display: inline-block;
+		margin-right: 2px;
 		vertical-align: -3px;
 	}
+	.ex-value-line .ex-note {
+		display: inline;
+		margin: 0 4px 0 0;
+		white-space: nowrap;
+	}
+	/* A long key breaks on a narrow screen rather than pushing the panel sideways. */
 	.ex-value-key {
+		margin-right: 4px;
 		font-weight: 600;
+		overflow-wrap: anywhere;
 	}
 	/* Long expressions wrap where they must, keeping the breaks they were written with. */
 	.ex-value-code {

@@ -42,14 +42,14 @@ function schemaNode(
 ): ConfigValueNode {
 	const constructor = schemaConstructor(value, bindings);
 	if (!ts.isCallExpression(constructor)) return { kind: 'expression', source };
-	const call = constructor.expression.getText();
+	const call = schemaConstructorName(constructor.expression);
 	const first = constructor.arguments[0];
-	if (/^z\.(?:object|strictObject|looseObject)$/.test(call) && first) {
+	if (['object', 'strictObject', 'looseObject'].includes(call) && first) {
 		const shape = resolve(first, bindings);
 		if (ts.isObjectLiteralExpression(shape))
 			return { ...objectNode(shape, source, bindings, depth), schema: true };
 	}
-	if (call === 'z.array' && first)
+	if (call === 'array' && first)
 		return {
 			kind: 'array',
 			source,
@@ -57,6 +57,13 @@ function schemaNode(
 			entries: [{ name: 'Item schema', node: configValueStructure(first, bindings, depth + 1) }]
 		};
 	return { kind: 'expression', source };
+}
+
+/** Property access is recognized from syntax, independent of line breaks and comments. */
+function schemaConstructorName(callee: ts.Expression): string {
+	if (!ts.isPropertyAccessExpression(callee)) return '';
+	if (!ts.isIdentifier(callee.expression) || callee.expression.text !== 'z') return '';
+	return callee.name.text;
 }
 
 function asserted(
