@@ -15,7 +15,15 @@ export function skillRules(projectType: string): string {
 }
 
 function regressionLoopRules(): string {
-	return `## Callable usage examples
+	return `## Scaffold export coherence
+
+- Change generated source, tests and public export plans together. Verify every generated export targets an emitted scaffold and run the standard focused CLI project-check scenario after a scaffold shape change.
+
+## Helper implementation ownership
+
+- Public shared helper implementations belong under src/helpers/<responsibility>/<camelName>.ts, with pure functions separated from component/service orchestration. Keep single-consumer helpers with their owner. Point helper source contracts and Source tabs only at the selected callable implementation, never all files of its owning module. Preserve supported import addresses with forwarding exports when needed; update active callers to the canonical helper source. Run the registry helper-source guard and the standard selected-helper Source browser test.
+
+## Callable usage examples
 
 - Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.
 - Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests, not the Examples tab.

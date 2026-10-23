@@ -1,4 +1,4 @@
-import { toCamelCase, toSnakeCase } from '../case';
+import { toCamelCase, toSnakeCase } from '../../../helpers/strings/case';
 import { fail } from '../errors';
 import { validateFieldName } from './validation';
 

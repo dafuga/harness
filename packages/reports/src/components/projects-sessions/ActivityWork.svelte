@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { WorkItem } from '../../../../../src/core/activityTypes';
-	import { activityTime, plural } from '../../utils/projects-sessions/activityDisplay';
+	import { activityTime } from '../../utils/projects-sessions/activityDisplay';
+	import { plural } from '../../helpers/strings/plural';
 	import ActivityList from './ActivityList.svelte';
 	let {
 		work,
