@@ -19,7 +19,7 @@ const found = (page: Page) => page.getByRole('listbox', { name: 'Entities found'
 const options = (page: Page) => found(page).getByRole('option');
 const sixth = [
 	['Page', 'Alpha activity'],
-	['Shell', 'Alpha order frame'],
+	['Layout', 'Alpha order frame'],
 	['Component', 'Alpha button'],
 	['Helper', 'Alpha format time'],
 	['Config', 'Alpha order limits'],
@@ -45,7 +45,7 @@ async function remember(page: Page, info: TestInfo, name: string): Promise<void>
 	await page.screenshot({ path: join(folder, file), fullPage: true, animations: 'disabled' });
 }
 
-test('every category of the shown revision is found, and the keyboard opens a shell under Shells', async ({
+test('every category of the shown revision is found, and the keyboard opens a shell under Layouts', async ({
 	page
 }, info) => {
 	await searchFixture(page);
@@ -66,7 +66,7 @@ test('every category of the shown revision is found, and the keyboard opens a sh
 	await expect(options(page).nth(1)).toHaveAttribute('aria-selected', 'true');
 	await expect(field(page)).toBeFocused();
 	await field(page).press('Enter');
-	await expect(page).toHaveURL(alphaAt('shells/app.shell.order-frame'));
+	await expect(page).toHaveURL(alphaAt('layouts/app.shell.order-frame'));
 	await expect(page.getByRole('heading', { level: 1, name: 'Alpha order frame' })).toBeVisible();
 	await expect(found(page)).toBeHidden();
 });
