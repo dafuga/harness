@@ -116,8 +116,15 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 	const head = revision(commits.tip, []);
 	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
 	unit.helpers = [
-		{ name: 'first', source: 'helpers.ts', inputs: [], output: 'string' },
-		{ name: 'second', source: 'helpers.ts', inputs: [], output: 'number' }
+		{ name: 'first', source: 'helpers.ts', inputs: [], output: 'string', pure: true },
+		{
+			name: 'second',
+			source: 'helpers.ts',
+			inputs: [],
+			output: 'number',
+			pure: true,
+			consumers: [{ unit: ids.filter, symbol: 'first' }]
+		}
 	];
 	unit.contract = {
 		inputs: [],
@@ -165,4 +172,35 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 		expect(legacy).toContain(`/helpers/second/in/${ids.filter}/contract`);
 		expect(legacy).not.toContain('aria-label="first contract"');
 	}
+});
+
+test('selected callable Uses exclude module dependencies and hide empty navigation', () => {
+	const head = revision(commits.tip, []);
+	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
+	unit.helpers = [
+		{ name: 'outer', source: 'helpers.ts', inputs: [], pure: true },
+		{
+			name: 'inner',
+			source: 'helpers.ts',
+			inputs: [],
+			pure: true,
+			consumers: [{ unit: ids.filter, symbol: 'outer' }]
+		},
+		{ name: 'sibling', source: 'helpers.ts', inputs: [], pure: true }
+	];
+	unit.dependencies = [
+		{ unit: ids.settings, via: 'import' },
+		{ unit: ids.store, via: 'import' }
+	];
+	const uses = (helper: string) =>
+		content(
+			'current',
+			{ category: 'functions', entity: ids.filter, helper, tab: 'uses' },
+			{ head }
+		);
+	expect(words(uses('outer'))).toContain('inner()');
+	expect(uses('outer')).not.toContain('aria-label="Configs uses"');
+	expect(uses('inner')).not.toContain('aria-label="inner uses"');
+	expect(words(uses('inner'))).not.toMatch(/\bUses\b/);
+	expect(words(uses('sibling'))).not.toMatch(/\bUses\b/);
 });

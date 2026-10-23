@@ -21,7 +21,11 @@ export function callableFixture(unit: HarnessUnit): HarnessUnit {
 		output,
 		source: 'src/functions/text.ts',
 		pure: true,
-		consumers: [{ unit: ids.list }, { unit: ids.store }],
+		consumers: [
+			{ unit: ids.list },
+			{ unit: ids.store },
+			...(name === 'toKebabCase' ? [{ unit: ids.filter, symbol: 'countWords' }] : [])
+		],
 		examples: [
 			{
 				name: `${name} usage`,
@@ -35,6 +39,10 @@ export function callableFixture(unit: HarnessUnit): HarnessUnit {
 	return {
 		...unit,
 		helpers,
+		dependencies: [
+			{ unit: ids.settings, via: 'import' },
+			{ unit: ids.store, via: 'import' }
+		],
 		owns: { source: ['src/functions/text.ts'], symbols: helpers.map((h) => h.name) },
 		contract: {
 			inputs: helpers.flatMap((h) => h.inputs.map((i) => ({ ...i, examples: ['hello world'] }))),
