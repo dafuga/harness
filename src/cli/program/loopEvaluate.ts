@@ -92,7 +92,6 @@ function runEvaluator(
 						HARNESS_AGENT_MODEL: context.agentModel ?? process.env.HARNESS_AGENT_MODEL
 					}
 				});
-				if (child.pid) lease.track(child.pid);
 				const stdout: Buffer[] = [];
 				const stderr: Buffer[] = [];
 
@@ -119,6 +118,7 @@ function runEvaluator(
 						stderr: Buffer.concat(stderr).toString('utf8')
 					});
 				});
+				if (child.pid) lease.track(child.pid);
 			})
 	);
 }
