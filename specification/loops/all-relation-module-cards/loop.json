@@ -2,7 +2,7 @@
 	"name": "all-relation-module-cards",
 	"goal": "Every related module reuses the shared module card and its footer shows only three distinct consumers plus an ellipsis",
 	"createdAt": "2026-10-23T10:20:28.553Z",
-	"updatedAt": "2026-10-23T10:37:39.206Z",
+	"updatedAt": "2026-10-23T11:48:07.362Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:48:07.362Z",
+			"evidence": "Immutable red 725c5cdfc (b1b82519720709f6f9f9cd3faee6586f89e09f0c9b405c16444b9472d30f4c3d) and green 6792fcad7 (34e08df7b0b8e3f06685e2bdb2a7591970ee613985f43d806998eaa7598d7e2f) use identical frozen tests, fixtures, runner and environment on delivered main a34b012a0. All strengthened private/support-card, seven-kind consumer, self-reference and overflow assertions pass."
 		},
 		{
 			"id": "verify",
