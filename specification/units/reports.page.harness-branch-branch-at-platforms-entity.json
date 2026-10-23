@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.page.harness-branch-branch-at-platforms-entity",
+	"kind": "page",
+	"title": "/harness/branch/[branch]/[...at]/platforms/[entity]",
+	"responsibility": "Opens one platform configuration at its distinct revision-bound URL.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/[entity]/+page.svelte"
+		],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-platforms",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-screen",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/[entity]/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/[entity]/+page.svelte"
+			}
+		]
+	},
+	"scenarios": ["explorer-platforms"],
+	"preview": {
+		"scenario": "explorer-platforms",
+		"state": "web",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,58 +1,18 @@
-import { tabOf, type ExplorerTab } from '../explorer-route/explorerTabs';
-export { explorerTabs, type ExplorerTab } from '../explorer-route/explorerTabs';
-
-/** The seven kinds of entity the explorer shows, in the order of its navigation. */
-export const explorerCategories = [
-	'pages',
-	'shells',
-	'components',
-	'functions',
-	'configs',
-	'services',
-	'models'
-] as const;
-export type ExplorerCategory = (typeof explorerCategories)[number];
+import {
+	tabOf,
+	explorerCategories,
+	type ExplorerCategory,
+	type ExplorerTab
+} from '../explorer-route/explorerTabs';
+export {
+	explorerTabs,
+	explorerKindCategory,
+	explorerEntityCategories,
+	explorerCategories,
+	type ExplorerCategory,
+	type ExplorerTab
+} from '../explorer-route/explorerTabs';
 export type ExplorerScreen = 'styles';
-
-/** The kinds of unit a product is made of, each under the one category it is listed in. */
-const kinds = new Map<string, ExplorerCategory>([
-	['page', 'pages'],
-	['view', 'pages'],
-	// Only a unit whose manifest declares it a shell: nothing is read from an id or a file name.
-	['shell', 'shells'],
-	['component', 'components'],
-	['partial', 'components'],
-	['layout', 'components'],
-	['function', 'functions'],
-	['validator', 'functions'],
-	['serializer', 'functions'],
-	['kernel', 'functions'],
-	['helper', 'functions'],
-	['decorator', 'functions'],
-	['policy', 'functions'],
-	['form', 'functions'],
-	['config', 'configs'],
-	['initializer', 'configs'],
-	['model', 'models'],
-	['service', 'services'],
-	['endpoint', 'services'],
-	['api', 'services'],
-	['adapter', 'services'],
-	['repository', 'services'],
-	['workflow', 'services'],
-	['command', 'services'],
-	['controller', 'services'],
-	['job', 'services'],
-	['channel', 'services'],
-	['middleware', 'services'],
-	['hook', 'services'],
-	['mailer', 'services']
-]);
-
-/** Unknown kinds, rules, guides, templates and scripts have no catalog category. */
-export function explorerKindCategory(kind: string): ExplorerCategory | null {
-	return kinds.get(kind) ?? null;
-}
 
 export const explorerSections = ['details', 'history'] as const;
 export type ExplorerSection = (typeof explorerSections)[number];
@@ -118,14 +78,15 @@ function scope(parts: string[]): Scope | undefined {
 	return { branch, commit, rest: commit === null ? after : after.slice(2) };
 }
 
-/** The entity and section the parts after a category name; null when they name neither. */
-function selection(rest: string[]): Pick<ExplorerLocation, 'entity' | 'section'> | null {
+type Selection = Pick<ExplorerLocation, 'entity' | 'section'> | null;
+/** The entity and supported section after a category name. */
+function selection(rest: string[], allowSections = true): Selection {
 	const [id, section, ...extra] = rest;
 	if (id === undefined) return {};
 	const entity = decoded(id);
 	if (!entity || extra.length > 0) return null;
 	if (section === undefined) return { entity };
-	return isSection(section) ? { entity, section } : null;
+	return allowSections && isSection(section) ? { entity, section } : null;
 }
 
 /** Reads a scoped explorer address; branch or commit alone opens Pages. */
@@ -136,7 +97,7 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	if (category === 'helpers') return helperSelection(found, after);
 	if (category === 'styles') return stylesSelection(found);
 	if (!isCategory(category)) return undefined;
-	const selected = selection(after);
+	const selected = selection(after, category !== 'platforms');
 	if (!selected) return undefined;
 	const { branch, commit } = found;
 	const location: ExplorerLocation = { branch, commit, category, ...selected };

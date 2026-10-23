@@ -3,7 +3,7 @@
 	"id": "desktop.component.game-view-fields",
 	"kind": "component",
 	"title": "GameViewFields",
-	"responsibility": "Select and edit a game view title, dimension and visual direction with a read-only historical mode.",
+	"responsibility": "Select game views in a compact toolbar and progressively disclose view title, dimension and art direction.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -42,13 +42,18 @@
 				"name": "GameViewFields.change",
 				"type": "(patch: Partial<GameView>) => void",
 				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+			},
+			{
+				"name": "GameViewFields.children",
+				"type": "Snippet | undefined",
+				"description": "Render the owning workspace section controls within the compact toolbar."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameViewFields",
 				"type": "markup",
-				"description": "Select and edit a game view title, dimension and visual direction with a read-only historical mode. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Select game views in a compact toolbar and progressively disclose view title, dimension and art direction."
 			}
 		],
 		"errors": []

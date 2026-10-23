@@ -3,7 +3,7 @@
 	"id": "desktop.component.game-checkpoint-pane",
 	"kind": "component",
 	"title": "GameCheckpointPane",
-	"responsibility": "Keep the selected checkpoint image and executable rule editor bound to the same document context.",
+	"responsibility": "Describe and edit one checkpoint in a shared modal, with image approval and advanced executable rules.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -27,13 +27,28 @@
 				"name": "GameCheckpointPane.change",
 				"type": "(node: Checkpoint) => void",
 				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+			},
+			{
+				"name": "GameCheckpointPane.adding",
+				"type": "boolean",
+				"description": "Present the new-checkpoint title and focus its description."
+			},
+			{
+				"name": "GameCheckpointPane.close",
+				"type": "() => void",
+				"description": "Close the modal while preserving intentional edits and discarding untouched additions."
+			},
+			{
+				"name": "GameCheckpointPane.remove",
+				"type": "() => void",
+				"description": "Delete the selected checkpoint through its document owner."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCheckpointPane",
 				"type": "markup",
-				"description": "Keep the selected checkpoint image and executable rule editor bound to the same document context. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Describe and edit one checkpoint in a shared modal, with image approval and advanced executable rules."
 			}
 		],
 		"errors": []
@@ -56,6 +71,11 @@
 		},
 		{
 			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		}

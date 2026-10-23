@@ -457,6 +457,22 @@ missing or damaged notes, manifests and media are reported and never replaced by
 Timings taken on another machine profile, or under another request, unit, method or sampling,
 are separate series.
 
+**Platforms.** The Explorer's Platforms section lists Web, iOS, Android and Desktop (Electron).
+Each detail page shows the deployment configuration recorded in `harness.platforms.json` at
+the selected commit, including runtime, settings, build/package commands, release requirements
+and configuration source links. Shells continue to describe UI frames. A missing or invalid
+manifest is explicit; settings from a later revision are never shown in its place.
+
+The manifest has `schemaVersion: 1` and a `platforms` array. Each entry has an `id` (`web`,
+`ios`, `android` or `desktop`), `runtime`, `summary`, `status` (`configured`, `setup-required`
+or `not-configured`), `configuration` rows (`name`, `value`, optional `description`), `commands`
+(`name`, `command`), `requirements` strings and repository-relative `sources` paths. Each ID
+appears once. Unconfigured targets declare no commands. Commands are displayed as a reference
+and never executed by this page. Record public identifiers and credential variable names;
+keep credential values in the environment's secret store. Update the declaration alongside
+the configuration files it describes. The root manifest documents this repository's actual
+targets and explicitly records that Android has not been configured.
+
 **Branches in the index.** A source branch is a local branch or a branch the repository has
 from a remote, so a normal clone, which has one local branch, still holds the history of all
 of them. A local branch keeps its name and its own tip, always. A branch that exists only as a

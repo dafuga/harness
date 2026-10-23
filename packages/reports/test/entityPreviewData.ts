@@ -9,6 +9,7 @@ import { capture, commits, ids, units } from './entityUnits';
 import { categorySources } from './entityPreviewGroups';
 import { withSourceMeasures } from './entityStates';
 export type PreviewVariant =
+	| 'platforms'
 	| 'source'
 	| ''
 	| 'legacy'

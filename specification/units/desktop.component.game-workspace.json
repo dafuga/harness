@@ -3,7 +3,7 @@
 	"id": "desktop.component.game-workspace",
 	"kind": "component",
 	"title": "GameWorkspace",
-	"responsibility": "Own game document loading, authoring, optimistic saves and run state across preview, graph and mechanics tabs.",
+	"responsibility": "Own game documents, optimistic saves, runtime progress and checkpoint modal lifecycle.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -23,7 +23,7 @@
 			{
 				"name": "GameWorkspace",
 				"type": "markup",
-				"description": "Own game document loading, authoring, optimistic saves and run state across preview, graph and mechanics tabs. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Own game documents, optimistic saves, runtime progress and checkpoint modal lifecycle."
 			}
 		],
 		"errors": []

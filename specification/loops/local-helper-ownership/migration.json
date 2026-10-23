@@ -4760,6 +4760,13 @@
 	],
 	"followUps": [
 		{
+			"unit": "desktop.function.workspace-search",
+			"name": "workspaceSearch",
+			"commit": "1234e2c07",
+			"reason": "Constrain shared search results to supported desktop source categories after Platforms widened SearchEntry.",
+			"definition": "a7e69a45386f83fc6576bf19befea236d91dacf14fbf0127546055d2a3e9a10b"
+		},
+		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
 			"commit": "1bf1e0acb",

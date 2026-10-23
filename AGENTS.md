@@ -16,6 +16,7 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
 - When changing a helper recorded by `local-helper-ownership`, keep its original migration definition and record the intentional update in `followUps` with the implementation commit and reason. Run `test/services/unit-index.test.ts` alongside the owning workspace's checks before landing.
 - When adding, editing or regenerating unit registry manifests or contracts, review the real responsibility and every field description against the implementation. Run `bun run dev -- units check` and the unchanged `bun x vitest run test/readable-unit-contracts.test.ts`, even when broad CLI/native suites are deferred. Keep the guard assertions intact.
+- When widening shared catalog or search categories, run desktop typecheck and the existing workspace-search and workspace-route tests. Shared categories must not silently expand a consumer's supported routes.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 

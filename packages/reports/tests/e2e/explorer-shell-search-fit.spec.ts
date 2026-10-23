@@ -8,9 +8,11 @@ import {
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { box } from './support/shellChecks';
-import { shellMount } from './support/shellData';
+import { shellMount, shellCategories } from './support/shellData';
+import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
 import {
 	buildShellFixture,
+	captureShell,
 	openShellPage,
 	removeShellFixture,
 	shellOrigin
@@ -40,6 +42,8 @@ async function opened(page: Page, width: number): Promise<void> {
 	await openShellPage(page, home, 'navbar');
 	await expect(trigger(page)).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
+	const destinations = bar(page).getByRole('navigation', { name: 'Harness categories' });
+	await expect(destinations.getByRole('link')).toHaveText(shellCategories);
 }
 async function fits(page: Page, width: number): Promise<void> {
 	const search = await box(trigger(page));
@@ -47,12 +51,24 @@ async function fits(page: Page, width: number): Promise<void> {
 	expect(search.width).toBeLessThanOrEqual(48);
 	expect(search.x + search.width).toBeGreaterThan(width - 60);
 	expect(search.x + search.width).toBeLessThanOrEqual(width);
+	if (width < 1420) {
+		const revision = await box(bar(page).locator('.hx-revision'));
+		expect(search.y + search.height, 'search stays above the branch divider').toBeLessThanOrEqual(
+			revision.y
+		);
+	}
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
 	);
 }
 async function remember(page: Page, info: TestInfo, name: string): Promise<void> {
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	if (!evidenceRequested()) return;
+	const width = page.viewportSize()!.width;
+	await captureShell(page, home, {
+		state: name,
+		viewport: width >= 1200 ? 'desktop' : width <= 480 ? 'mobile' : 'tablet',
+		slot: 'reports.component.harness-harness-navbar'
+	});
 	const folder = process.env.SEARCH_SHOTS ?? info.outputDir;
 	mkdirSync(folder, { recursive: true });
 	const file = `${process.env.SCREENSHOT_LABEL ?? 'run'}-${name}.png`;
