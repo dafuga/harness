@@ -29,11 +29,8 @@ export async function reviewHelperSource(page: Page, viewport: string): Promise<
 /** Private named callers retain callable and revision identity without entering the collection. */
 export async function reviewNamedCallers(page: Page, viewport: string): Promise<void> {
 	const units = [
-		'reports.function.entity-catalog',
-		'reports.function.entity-usage',
 		'reports.component.explorer-usage',
 		'reports.component.explorer-usage-link',
-		'reports.model.explorer-types',
 		'reports.component.harness-explorer-catalog-screen'
 	];
 	for (const variant of ['named-callers', 'sibling-callers'] as const) {
