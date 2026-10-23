@@ -1,0 +1,47 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [131.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5TKXKM
+
+ ✓ test/utils/unit-documentation.test.ts (3 tests) 154ms
+ ✓ test/utils/unit-identity.test.ts (2 tests) 18ms
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  03:03:34
+   Duration  2.64s (transform 101ms, setup 63ms, collect 229ms, tests 172ms, environment 0ms, prepare 44ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5TKXKM/packages/reports
+
+ ✓ test/utils/explorer-registry.test.ts (5 tests) 31ms
+ ✓ test/utils/explorer-evidence.test.ts (8 tests) 3ms
+ ✓ test/utils/explorer-drawn.test.ts (9 tests) 3ms
+ ✓ test/utils/explorer-applicable.test.ts (4 tests) 18ms
+ ✓ test/utils/explorer-evidence-pairs.test.ts (3 tests) 3ms
+
+ Test Files  5 passed (5)
+      Tests  29 passed (29)
+   Start at  03:03:39
+   Duration  916ms (transform 71ms, setup 0ms, collect 172ms, tests 58ms, environment 0ms, prepare 103ms)
+
+
+Running 12 tests using 1 worker
+
+(node:46277) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-module-card at desktop (1.7s)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-screens at desktop (1.1s)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components at desktop (1.3s)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at desktop (840ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-module-card at tablet (305ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-screens at tablet (373ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components at tablet (406ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at tablet (341ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-module-card at mobile (320ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-screens at mobile (371ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components at mobile (404ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at mobile (337ms)
+
+  12 passed (14.9s)
