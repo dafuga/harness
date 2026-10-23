@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { remoteLimits } from '../../../remote/src/index';
-import { relayConfig } from '../../src/config/relayConfig';
+import { relayConfig } from '../../src/configs/relayConfig';
 
 test('relayConfig bounds what the relay reads and keeps', () => {
 	expect(relayConfig.bodyBytes).toBe(16 * 1024);

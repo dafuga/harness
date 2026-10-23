@@ -1,4 +1,4 @@
-import type { appStyleTokensConfig } from '../../config/shared-primitives/appStyleTokensConfig';
+import type { appStyleTokensConfig } from '../../configs/shared-primitives/appStyleTokensConfig';
 
 /** A catalog group declared by the shared app style token config. */
 export type StyleGroupName = (typeof appStyleTokensConfig.groups)[number];

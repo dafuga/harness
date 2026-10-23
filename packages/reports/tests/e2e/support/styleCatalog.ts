@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import postcss from 'postcss';
-import { appStyleTokensConfig } from '../../../src/config/shared-primitives/appStyleTokensConfig';
+import { appStyleTokensConfig } from '../../../src/configs/shared-primitives/appStyleTokensConfig';
 
 /** The actual shared registry, so adding a token requires catalog coverage without a stale count. */
 export function declaredStyleTokens(): string[] {

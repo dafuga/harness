@@ -92,7 +92,6 @@ function propertyPath(parent: string, name: ts.PropertyName): string {
 
 function readValue(value: ts.Expression, name: string, context: ConfigSource): void {
 	const resolved = expression(value, context.bindings);
-	if (ts.isArrowFunction(resolved) || ts.isFunctionExpression(resolved)) return;
 	if (context.ancestors.has(resolved)) {
 		context.values.set(name, { name, value: value.getText(context.file), source: context.source });
 		return;
@@ -111,15 +110,39 @@ function readValue(value: ts.Expression, name: string, context: ConfigSource): v
 		}
 		return;
 	}
-	storeValue(resolved, name, context);
-}
-
-function storeValue(resolved: ts.Expression, name: string, context: ConfigSource): void {
 	const structure = configValueStructure(resolved, context.bindings);
 	context.values.set(name, {
 		name,
 		value: resolved.getText(context.file),
 		source: context.source,
-		...(structure.kind === 'expression' ? {} : { structure })
+		...(structure.kind === 'expression' ? {} : { structure }),
+		...literalValue(resolved)
 	});
+}
+
+/** Decode syntax literals; never import, evaluate, or resolve the host environment. */
+function literalValue(expression: ts.Expression): { literal: unknown } | undefined {
+	if (ts.isStringLiteralLike(expression)) return { literal: expression.text };
+	if (expression.kind === ts.SyntaxKind.TrueKeyword) return { literal: true };
+	if (expression.kind === ts.SyntaxKind.FalseKeyword) return { literal: false };
+	if (expression.kind === ts.SyntaxKind.NullKeyword) return { literal: null };
+	if (ts.isArrayLiteralExpression(expression)) {
+		const items = expression.elements.map(literalValue);
+		if (items.every((item) => item !== undefined))
+			return { literal: items.map((item) => item.literal) };
+		return undefined;
+	}
+	return numericValue(expression);
+}
+
+function numericValue(expression: ts.Expression): { literal: number } | undefined {
+	let number: number;
+	if (ts.isNumericLiteral(expression)) number = Number(expression.text);
+	else if (ts.isPrefixUnaryExpression(expression) && ts.isNumericLiteral(expression.operand)) {
+		if (expression.operator === ts.SyntaxKind.MinusToken) number = -Number(expression.operand.text);
+		else if (expression.operator === ts.SyntaxKind.PlusToken)
+			number = Number(expression.operand.text);
+		else return undefined;
+	} else return undefined;
+	return Number.isFinite(number) ? { literal: number } : undefined;
 }

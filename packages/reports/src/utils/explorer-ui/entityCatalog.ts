@@ -66,12 +66,21 @@ function configRows(row: CatalogRow): CatalogRow[] {
 			value: 'Not recorded at this revision',
 			source: ''
 		}));
-	return values.map((setting, index) => ({
-		...row,
-		id: `${row.entity.id}#config:${index}`,
-		name: setting.name,
-		setting
-	}));
+	return values.map((setting, index) => {
+		const source = setting.source || row.entity.unit.owns.source[0] || row.entity.id;
+		const title =
+			source
+				.split('/')
+				.at(-1)
+				?.replace(/\.[^.]+$/, '') || row.entity.name;
+		return {
+			...row,
+			configFile: { source, title },
+			id: `${row.entity.id}#config:${index}`,
+			name: setting.name,
+			setting
+		};
+	});
 }
 
 /** Global collections need shared owners; owner relationships retain one owner. */
@@ -121,7 +130,10 @@ export function entityCatalog(
 ): CatalogRow[] {
 	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
 	return entities
-		.filter((entity) => entity.category === category)
+		.filter(
+			(entity) =>
+				entity.category === category && (category !== 'configs' || entity.unit.kind === 'config')
+		)
 		.flatMap((entity) => {
 			const row = rowOf(entity, relations(entity.id));
 			if (category === 'services') {

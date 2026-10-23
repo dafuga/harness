@@ -11,7 +11,7 @@ import {
 
 /** The address the fixture pages are opened at; nothing listens there. */
 export const shellOrigin = 'http://shell.fixture';
-const config = 'src/config/shellViteConfig.ts';
+const config = 'src/configs/shellViteConfig.ts';
 /** Where the setup of a verification compiles the fixture: the build its captures are tied to. */
 const compiled = 'output/shell-fixture';
 const types: Record<string, string> = { js: 'text/javascript', css: 'text/css' };

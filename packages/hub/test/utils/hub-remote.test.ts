@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { RelayManageAdapter } from '../../src/adapters/RelayManageAdapter';
-import type { HubEnv } from '../../src/config/hubEnvConfig';
+import type { HubEnv } from '../../src/configs/hubEnvConfig';
 import { hubRemote } from '../../src/routes/api/[...path]/hubRemote';
 import { remoteHostsFake } from '../support/remoteHostsFake';
 
