@@ -51,6 +51,16 @@ test('appends missing exports idempotently', async () => {
 	expect(appendMissingExports('', [{ source: './models/Post', named: ['Post'] }])).toBe(
 		"export { Post } from './models/Post';\n"
 	);
+
+	const occupied =
+		"export { formatDate } from './utils/formatDate';\nexport const formatDateHelper = true;\n";
+	const helper = [{ source: './helpers/strings/formatDate', named: ['formatDate'] }];
+	const merged = appendMissingExports(occupied, helper);
+	expect(merged, 'A helper keeps an existing package export intact').toContain(
+		"export { formatDate as formatDateHelper2 } from './helpers/strings/formatDate';"
+	);
+	expect(merged.startsWith(occupied)).toBe(true);
+	expect(appendMissingExports(merged, helper)).toBe(merged);
 	await rm(root, { recursive: true, force: true });
 });
 
