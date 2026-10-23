@@ -2,7 +2,7 @@
 	"name": "redundant-harness-folders",
 	"goal": "Remove redundant component namespaces, preserve helper placement, identities, routes and rendered behavior, and reject reintroduction",
 	"createdAt": "2026-10-23T08:49:30.702Z",
-	"updatedAt": "2026-10-23T09:22:19.233Z",
+	"updatedAt": "2026-10-23T10:26:04.588Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -60,7 +60,9 @@
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T10:26:04.588Z",
+			"evidence": "Scoped repair verification passes on integrated main56f12072 definitions: 37 root ownership/alias/contract/preview-binding tests; 30 actual shared-UI Source/grouping browser cases with fresh inspected desktop/mobile captures; root/Reports/Desktop/Hub types, root lint/format/audit and1452-unit registry. All85 implementations match main apart from relocation addresses and411 original helper move records remain unchanged. Latest same-environment immutable red/green pair and isolated negative/restored guard pass. Actual GitHub canonical source path inspected. Full CLI/native suites explicitly deferred; final whole-catalog immutable checkpoint is a separate landing gate and actual-main browser/readback is the subsequent delivery check."
 		}
 	],
 	"evaluators": [
