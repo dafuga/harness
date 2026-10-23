@@ -1,8 +1,9 @@
 import { createRawSnippet } from 'svelte';
 import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 import type { PreviewCases } from './shared';
-import { children, noop, text } from './shared';
+import { children, text } from './shared';
 import * as d from './explorerData';
+import { sourceCases } from './source';
 const base = { nav: d.navigation, lens: d.reading, scope: d.shown.scope, mediaBase: '/media/' };
 const entity = { entity: d.entity, ...base };
 const page = d.host();
@@ -15,14 +16,6 @@ const names = createRawSnippet((listed: () => CatalogRow[]) => ({
 			.join('') +
 		'</ul>'
 }));
-const sourceFiles = ['src/components/OrderList.svelte', 'src/utils/filterOrders.ts'];
-const sourceText = (path: string) =>
-	`// Synthetic preview source of ${path}; no project file is read.\nexport const preview = true;\n`;
-const source = {
-	files: async () => sourceFiles,
-	read: async (path: string) => sourceText(path),
-	commit: d.commits.middle
-};
 const seen = {
 	shown: d.run,
 	side: 'after',
@@ -202,27 +195,5 @@ export const explorerCases: PreviewCases = {
 	'reports.component.explorer-catalog-items': { category: 'components', rows: d.rows, ...base },
 	'reports.component.explorer-usage': { consumers: d.rows[0].usedIn ?? [], ...base },
 	'reports.component.explorer-usage-link': { entity: d.entity, ...base },
-	'reports.component.source-code-action': {
-		entity: d.entity,
-		nav: { ...d.navigation, source: noop },
-		path: sourceFiles[0]
-	},
-	'reports.component.source-content': source,
-	'reports.component.source-dialog': { ...source, open: true, title: 'OrderList', onClose: noop },
-	'reports.component.source-file-list': {
-		files: sourceFiles,
-		href: () => undefined,
-		children: text('<span>Synthetic file action</span>')
-	},
-	'reports.component.source-viewer': {
-		state: {
-			files: sourceFiles,
-			path: sourceFiles[0],
-			text: sourceText(sourceFiles[0]),
-			loading: false,
-			error: ''
-		},
-		commit: d.commits.middle,
-		onSelect: noop
-	}
+	...sourceCases
 };

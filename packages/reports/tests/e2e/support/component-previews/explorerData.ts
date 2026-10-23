@@ -25,10 +25,7 @@ export const behavior = desktopData.results[`${ids.filter}|commit|${commits.midd
 export const run = entityBehavior(behavior);
 export const cell = run.groups[0].lines[0].after;
 export const audioEvidence = desktopData.results[`${ids.search}|current|${commits.tip}`].evidence;
-export const contract = entityContract(entity.unit, {
-	category: entity.category,
-	states: ['default', 'empty']
-});
+export const contract = entityContract(entity.unit, { category: entity.category });
 export const measure = entityMeasure(entity.unit, head.records[0]);
 export const reasons = entityReasons(head.explanations);
 export const rows = entityCatalog(entities, 'components', reading.relations);
@@ -58,10 +55,12 @@ export function host(
 	category: ExplorerScreenProps['route']['category'] = 'components',
 	tab?: ExplorerScreenProps['route']['tab']
 ): ExplorerScreenProps {
+	let selected: string = ids.list;
+	if (category === 'configs') selected = ids.settings;
+	if (category === 'functions') selected = ids.filter;
 	const route = place({
 		category,
-		entity:
-			category === 'configs' ? ids.settings : category === 'functions' ? ids.filter : ids.list,
+		entity: selected,
 		tab
 	});
 	return {

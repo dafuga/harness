@@ -76,6 +76,11 @@
 		"desktop.component.thread-panel",
 		"desktop.component.workspace-link",
 		"desktop.component.workspace-shell",
+		"desktop.page.game",
+		"desktop.page.harness-path",
+		"desktop.page.projects-project-id-harness-path",
+		"desktop.page.root",
+		"desktop.page.settings",
 		"hub.component.account-menu",
 		"hub.component.email-proof-panel",
 		"hub.component.hosted-workspace",
@@ -87,6 +92,12 @@
 		"hub.component.native-approval",
 		"hub.component.project-create",
 		"hub.component.project-list",
+		"hub.layout.root",
+		"hub.page.invite-project-id-invitation-id",
+		"hub.page.native-handoff-id",
+		"hub.page.projects-project-id-harness-path",
+		"hub.page.projects-project-id-members",
+		"hub.page.root",
 		"reports.component.activity-agents",
 		"reports.component.activity-files",
 		"reports.component.activity-list",
@@ -202,7 +213,30 @@
 		"reports.component.status-badge",
 		"reports.component.upload-audio",
 		"reports.component.upload-comparison",
-		"reports.component.usage-examples-usage-examples"
+		"reports.component.usage-examples-usage-examples",
+		"reports.layout.root",
+		"reports.page.harness-branch-branch-at-components",
+		"reports.page.harness-branch-branch-at-components-entity",
+		"reports.page.harness-branch-branch-at-components-entity-history",
+		"reports.page.harness-branch-branch-at-configs",
+		"reports.page.harness-branch-branch-at-configs-entity",
+		"reports.page.harness-branch-branch-at-configs-entity-history",
+		"reports.page.harness-branch-branch-at-functions",
+		"reports.page.harness-branch-branch-at-functions-entity",
+		"reports.page.harness-branch-branch-at-functions-entity-history",
+		"reports.page.harness-branch-branch-at-models",
+		"reports.page.harness-branch-branch-at-models-entity",
+		"reports.page.harness-branch-branch-at-models-entity-history",
+		"reports.page.harness-branch-branch-at-pages",
+		"reports.page.harness-branch-branch-at-pages-entity",
+		"reports.page.harness-branch-branch-at-pages-entity-history",
+		"reports.page.harness-branch-branch-at-services",
+		"reports.page.harness-branch-branch-at-services-entity",
+		"reports.page.harness-branch-branch-at-services-entity-history",
+		"reports.page.harness-branch-branch-at-shells",
+		"reports.page.harness-branch-branch-at-shells-entity",
+		"reports.page.harness-branch-branch-at-shells-entity-history",
+		"reports.page.harness-view"
 	],
 	"states": [
 		{
@@ -638,6 +672,36 @@
 			"units": ["desktop.component.workspace-shell"]
 		},
 		{
+			"id": "desktop-page-game",
+			"title": "/game",
+			"coverage": "required",
+			"units": ["desktop.page.game"]
+		},
+		{
+			"id": "desktop-page-harness-path",
+			"title": "/harness/[...path]",
+			"coverage": "required",
+			"units": ["desktop.page.harness-path"]
+		},
+		{
+			"id": "desktop-page-projects-project-id-harness-path",
+			"title": "/projects/[projectId]/harness/[...path]",
+			"coverage": "required",
+			"units": ["desktop.page.projects-project-id-harness-path"]
+		},
+		{
+			"id": "desktop-page-root",
+			"title": "Electron and iOS workspace",
+			"coverage": "required",
+			"units": ["desktop.page.root"]
+		},
+		{
+			"id": "desktop-page-settings",
+			"title": "Agent settings",
+			"coverage": "required",
+			"units": ["desktop.page.settings"]
+		},
+		{
 			"id": "hub-component-account-menu",
 			"title": "Account menu",
 			"coverage": "required",
@@ -702,6 +766,42 @@
 			"title": "Project list",
 			"coverage": "required",
 			"units": ["hub.component.project-list"]
+		},
+		{
+			"id": "hub-layout-root",
+			"title": "/",
+			"coverage": "required",
+			"units": ["hub.layout.root"]
+		},
+		{
+			"id": "hub-page-invite-project-id-invitation-id",
+			"title": "/invite/[projectId]/[invitationId]",
+			"coverage": "required",
+			"units": ["hub.page.invite-project-id-invitation-id"]
+		},
+		{
+			"id": "hub-page-native-handoff-id",
+			"title": "/native/[handoffId]",
+			"coverage": "required",
+			"units": ["hub.page.native-handoff-id"]
+		},
+		{
+			"id": "hub-page-projects-project-id-harness-path",
+			"title": "/projects/[projectId]/harness/[...path]",
+			"coverage": "required",
+			"units": ["hub.page.projects-project-id-harness-path"]
+		},
+		{
+			"id": "hub-page-projects-project-id-members",
+			"title": "/projects/[projectId]/members",
+			"coverage": "required",
+			"units": ["hub.page.projects-project-id-members"]
+		},
+		{
+			"id": "hub-page-root",
+			"title": "/",
+			"coverage": "required",
+			"units": ["hub.page.root"]
 		},
 		{
 			"id": "reports-component-activity-agents",
@@ -1398,6 +1498,144 @@
 			"title": "Function usage examples",
 			"coverage": "required",
 			"units": ["reports.component.usage-examples-usage-examples"]
+		},
+		{
+			"id": "reports-layout-root",
+			"title": "/",
+			"coverage": "required",
+			"units": ["reports.layout.root"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-components",
+			"title": "/harness/branch/[branch]/[...at]/components",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-components"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-components-entity",
+			"title": "/harness/branch/[branch]/[...at]/components/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-components-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-components-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/components/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-components-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-configs",
+			"title": "/harness/branch/[branch]/[...at]/configs",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-configs"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-configs-entity",
+			"title": "/harness/branch/[branch]/[...at]/configs/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-configs-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-configs-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/configs/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-configs-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-functions",
+			"title": "/harness/branch/[branch]/[...at]/functions",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-functions-entity",
+			"title": "/harness/branch/[branch]/[...at]/functions/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-functions-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/functions/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-models",
+			"title": "/harness/branch/[branch]/[...at]/models",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-models"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-models-entity",
+			"title": "/harness/branch/[branch]/[...at]/models/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-models-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-models-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/models/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-models-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-pages",
+			"title": "/harness/branch/[branch]/[...at]/pages",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-pages-entity",
+			"title": "/harness/branch/[branch]/[...at]/pages/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-pages-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/pages/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-pages-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-services",
+			"title": "/harness/branch/[branch]/[...at]/services",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-services-entity",
+			"title": "/harness/branch/[branch]/[...at]/services/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-services-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/services/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-services-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-shells",
+			"title": "/harness/branch/[branch]/[...at]/shells",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-shells-entity",
+			"title": "/harness/branch/[branch]/[...at]/shells/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-shells-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/shells/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-shells-entity-history"]
+		},
+		{
+			"id": "reports-page-harness-view",
+			"title": "/harness/[...view]",
+			"coverage": "required",
+			"units": ["reports.page.harness-view"]
 		}
 	],
 	"viewports": [
@@ -1504,6 +1742,11 @@
 				"desktop-component-thread-panel",
 				"desktop-component-workspace-link",
 				"desktop-component-workspace-shell",
+				"desktop-page-game",
+				"desktop-page-harness-path",
+				"desktop-page-projects-project-id-harness-path",
+				"desktop-page-root",
+				"desktop-page-settings",
 				"hub-component-account-menu",
 				"hub-component-email-proof-panel",
 				"hub-component-hosted-workspace",
@@ -1515,6 +1758,12 @@
 				"hub-component-native-approval",
 				"hub-component-project-create",
 				"hub-component-project-list",
+				"hub-layout-root",
+				"hub-page-invite-project-id-invitation-id",
+				"hub-page-native-handoff-id",
+				"hub-page-projects-project-id-harness-path",
+				"hub-page-projects-project-id-members",
+				"hub-page-root",
 				"reports-component-activity-agents",
 				"reports-component-activity-files",
 				"reports-component-activity-list",
@@ -1630,7 +1879,30 @@
 				"reports-component-status-badge",
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
-				"reports-component-usage-examples-usage-examples"
+				"reports-component-usage-examples-usage-examples",
+				"reports-layout-root",
+				"reports-page-harness-branch-branch-at-components",
+				"reports-page-harness-branch-branch-at-components-entity",
+				"reports-page-harness-branch-branch-at-components-entity-history",
+				"reports-page-harness-branch-branch-at-configs",
+				"reports-page-harness-branch-branch-at-configs-entity",
+				"reports-page-harness-branch-branch-at-configs-entity-history",
+				"reports-page-harness-branch-branch-at-functions",
+				"reports-page-harness-branch-branch-at-functions-entity",
+				"reports-page-harness-branch-branch-at-functions-entity-history",
+				"reports-page-harness-branch-branch-at-models",
+				"reports-page-harness-branch-branch-at-models-entity",
+				"reports-page-harness-branch-branch-at-models-entity-history",
+				"reports-page-harness-branch-branch-at-pages",
+				"reports-page-harness-branch-branch-at-pages-entity",
+				"reports-page-harness-branch-branch-at-pages-entity-history",
+				"reports-page-harness-branch-branch-at-services",
+				"reports-page-harness-branch-branch-at-services-entity",
+				"reports-page-harness-branch-branch-at-services-entity-history",
+				"reports-page-harness-branch-branch-at-shells",
+				"reports-page-harness-branch-branch-at-shells-entity",
+				"reports-page-harness-branch-branch-at-shells-entity-history",
+				"reports-page-harness-view"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

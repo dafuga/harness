@@ -1,11 +1,25 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import { defineConfig, type UserConfig } from 'vite';
+import { defineConfig, type Plugin, type UserConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
 import { buildData } from '../../../tests/e2e/support/component-previews/buildData';
 // One page of the shell fixture as one script and one stylesheet: the shell alone over a made-up
 // history, with no server, no index and no build of the application behind it. The run that
 // builds it names the page and a directory of its own.
 const page = process.env.SHELL_FIXTURE_PAGE ?? 'navbar';
+// The catalog host installs these sheets for the selected app. Route imports must not spread
+// one app's global styles across all three apps in the shared fixture bundle. Inline reads stay.
+const contextStyles: Plugin = {
+	name: 'catalog-context-styles',
+	enforce: 'pre',
+	resolveId(source) {
+		if (/\/lib\/styles\/(?:base(?:-[23])?|gallery(?:-2)?|workspace|design|hub)\.css$/.test(source))
+			return '\0catalog-context-styles';
+		return null;
+	},
+	load(id) {
+		return id === '\0catalog-context-styles' ? '' : null;
+	}
+};
 export default defineConfig(
 	async (): Promise<UserConfig> => ({
 		define: {
@@ -14,7 +28,7 @@ export default defineConfig(
 				? { __COMPONENT_PREVIEW_DATA__: JSON.stringify(await buildData()) }
 				: {})
 		},
-		plugins: [svelte()],
+		plugins: [page === 'catalog' && contextStyles, svelte()],
 		resolve: ['components', 'catalog'].includes(page)
 			? {
 					alias: {

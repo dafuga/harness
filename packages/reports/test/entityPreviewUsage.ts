@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import { commits, ids } from './entityUnits';
-import { capture, fits, open, ready, where } from './entityPreviewPage';
+import { capture, fits, open, ready, where, moduleCard } from './entityPreviewPage';
 
 type UsageRoute = Pick<ExplorerLocation, 'category' | 'entity' | 'commit'>;
 
@@ -116,10 +116,7 @@ export async function reviewUsageCards(
 	await reviewConsumerKinds(page, category, direction);
 	const cards = page.locator('.ex-relations article');
 	for (const card of await cards.all()) {
-		await expect(card).toHaveAttribute(
-			'data-harness-component',
-			'explorer-ui-explorer-module-card'
-		);
+		await expect(card).toHaveAttribute('data-harness-component', moduleCard.marker);
 		await expect(
 			card.getByRole('group', { name: 'Used In', exact: true }),
 			'every relationship card includes its usage footer'

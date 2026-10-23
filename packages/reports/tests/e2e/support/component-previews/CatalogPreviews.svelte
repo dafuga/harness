@@ -6,13 +6,19 @@
 	import { exampleDocument } from '../../../../../game/src/index';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
+	import { routePreview } from './visualUnits';
+	import HarnessScreen from '../../../../src/components/HarnessScreen.svelte';
+	import ExplorerContent from '../../../../src/components/harness/ExplorerContent.svelte';
+	import HubHome from '../../../../../hub/src/routes/+page.svelte';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
 	if (!unit) throw new Error(`Unknown preview component ${id}`);
 	const fixture = previewFixture(id);
 	const Component = previewComponent(unit.source);
+	// A route module draws a whole screen of its application, as the screen components do.
 	const fullFrame =
+		routePreview(id) ||
 		/(?:harness-(navbar|header|console|shell)|harness-screen|workspace-shell|hosted-workspace)$/.test(
 			id
 		);
@@ -48,7 +54,7 @@
 
 <div class="preview-catalog" class:hx-shell={reports} class:hub-page={id.startsWith('hub.')}>
 	<main class="preview-main" class:hx-main={reports} class:full-frame={fullFrame}>
-		<h1 id="preview-title">{unit.title}</h1>
+		<h1 id="preview-title" class:preview-hidden={routePreview(id)}>{unit.title}</h1>
 		{#await fixture.ready}<p role="status">Preparing component preview…</p>{:then}
 			<div
 				class="preview-content"
@@ -57,7 +63,16 @@
 				class:ex-content={explorer}
 				data-preview-unit={unit.id}
 			>
-				{#if id === 'reports.component.harness-entity-history-row'}
+				{#if id === 'reports.layout.root'}
+					{#snippet pageContent()}<HarnessScreen
+							title="Components"
+							content={ExplorerContent}
+						/>{/snippet}
+					<Component {...fixture.props} children={pageContent} />
+				{:else if id === 'hub.layout.root'}
+					{#snippet hubPageContent()}<HubHome />{/snippet}
+					<Component {...fixture.props} children={hubPageContent} />
+				{:else if id === 'reports.component.harness-entity-history-row'}
 					<div class="ex-scroll">
 						<table class="ex-table ex-history" aria-label="History row preview">
 							<thead
@@ -90,6 +105,9 @@
 	}
 	.preview-catalog {
 		min-height: 100vh;
+	}
+	.preview-hidden {
+		display: none;
 	}
 	.preview-main:not(.hx-main) {
 		min-width: 0;

@@ -14,6 +14,19 @@ import { explorerHistory } from '../../../../utils/explorer-history/explorerHist
 import { explorerRelationsReader } from '../../../../utils/explorerRelations';
 
 export type ConsoleAnswer = { evidence: ExplorerEvidence; behavior: ExplorerBehavior };
+
+/** Remount content when its exact selected route changes, including callable and tab identity. */
+export function consoleContentKey(location: ExplorerLocation | undefined): string {
+	return JSON.stringify([
+		location?.branch,
+		location?.commit,
+		location?.category,
+		location?.entity,
+		location?.helper,
+		location?.section
+	]);
+}
+
 interface ViewInput {
 	index: HarnessIndex;
 	scope: ExplorerScope;

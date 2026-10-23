@@ -9,6 +9,9 @@ import { desktopRuntime, gameCases } from './desktopRuntime';
 import { deploymentCases } from './deployments';
 import { remotePreview } from './remote.svelte';
 import { hubPreview } from './hub.svelte';
+import { routeFixture } from './routePages';
+import { desktopRoute } from './routeDesktop.svelte';
+import { hubRoute } from './routeHub';
 import type { PreviewCases } from './shared';
 export function previewFixture(id: string) {
 	const desktop = createDesktopData(id);
@@ -22,7 +25,6 @@ export function previewFixture(id: string) {
 		)
 	);
 	desktop.workspace.remote = { host: {} as never };
-	const explorer = explorerCases;
 	const legacy = {
 		...legacyCases,
 		'reports.component.harness-harness-activity': {
@@ -32,7 +34,7 @@ export function previewFixture(id: string) {
 		}
 	};
 	const cases: PreviewCases = {
-		...explorer,
+		...explorerCases,
 		...legacy,
 		...reportCases,
 		...activityCases,
@@ -43,15 +45,26 @@ export function previewFixture(id: string) {
 		...hub.cases,
 		'desktop.component.remote-connection': { workspace: desktop.workspace }
 	};
-	if (!cases[id]) throw new Error(`No representative fixture for ${id}`);
+	// A route module is opened at its own address; it renders what the history holds there.
+	// A Desktop page reads the orders project over the synthetic bridge installed for it.
+	const route = desktopRoute(id, desktop);
+	const props =
+		routeFixture(id) ??
+		route?.props ??
+		hubRoute(id, hub.addresses['hub.component.hosted-workspace'], hub.project.id) ??
+		cases[id];
+	if (!props) throw new Error(`No representative fixture for ${id}`);
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
 	if (address) history.replaceState(history.state, '', address);
 	return {
-		props: cases[id],
+		props,
 		remote,
 		hub: hub.context,
-		cleanup: desktop.cleanup,
+		cleanup: () => {
+			desktop.cleanup();
+			route?.restore();
+		},
 		ready: desktop.ready
 	};
 }

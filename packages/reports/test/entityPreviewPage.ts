@@ -17,6 +17,11 @@ import { capture, ready, previewIdentity } from './entityPreviewCapture';
 export { capture, captureRegion, ready } from './entityPreviewCapture';
 // A local address is a secure context, so the page can hash the bytes of an artifact it reads.
 export const origin = 'http://localhost:41739';
+/** Identity of the shared card asserted by both catalog and relationship acceptance flows. */
+export const moduleCard = {
+	units: ['reports.component.explorer-ui-explorer-module-card'],
+	marker: 'explorer-ui-explorer-module-card'
+};
 export const viewports = {
 	desktop: { width: 1440, height: 900 },
 	tablet: { width: 834, height: 1112 },

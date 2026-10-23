@@ -63,15 +63,14 @@ function madeOf(units: HarnessUnit[], unit: string): Set<string> {
 	return seen;
 }
 
-const visualKinds = new Set(['page', 'shell', 'component']);
+const visualKinds = new Set(['page', 'shell', 'component', 'layout', 'partial']);
 
-/** Whether a state shows a page, shell or component: it names it, or names nothing at all. */
+/** Whether a state shows a visual module: it names it, or names nothing at all. */
 const drawsVisual = (state: HarnessScenario['states'][number], unit: string) =>
 	!state.units?.length || state.units.includes(unit);
 
 /**
- * A scenario as it applies to one unit: with the states that show that unit. A page, shell or
- * component is shown only by the states that name it and by those that name nothing, which stand
+ * A scenario as it applies to one unit: with the states that show that unit. A visual module is shown only by the states that name it and by those that name nothing, which stand
  * for the whole scenario. A state that names only what it is drawn in does not show it was drawn:
  * what imports it lends it no capture. Any other unit is shown by the states that name it; one no
  * state names, by the states that name something made of it in the registry of the revision;

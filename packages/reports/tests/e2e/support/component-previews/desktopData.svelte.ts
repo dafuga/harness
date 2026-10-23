@@ -63,6 +63,8 @@ export function createDesktopData(id: string) {
 	const audioResult = desktopData.results[`${ids.search}|current|${commits.tip}`];
 	return {
 		workspace,
+		// What the workspace reads; a Desktop route reads it as its synthetic `window.harness`.
+		bridge,
 		ready: Promise.all([whenReady(evidence), whenReady(visualEvidence), whenReady(audioEvidence)]),
 		visualEntity,
 		filterEntity,

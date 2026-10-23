@@ -63,7 +63,7 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 		'hub.component.project-create': { created: done },
 		'hub.component.project-list': { projects: [project] }
 	};
-	return { context: { session, projects, api }, cases, addresses: hosted.addresses };
+	return { context: { session, projects, api }, cases, addresses: hosted.addresses, project };
 }
 
 /**
@@ -92,7 +92,7 @@ function hostedWorkspace(shown: ProjectSnapshot) {
 /** A snapshot as the hub serves it: no local folder, and nothing an agent could write. */
 function hostedSnapshot(shown: ProjectSnapshot): ProjectSnapshot {
 	return {
-		...$state.snapshot(shown),
+		...shown,
 		project: { id: shown.project.id, name: shown.project.name, root: '' },
 		writable: false,
 		capabilities: {

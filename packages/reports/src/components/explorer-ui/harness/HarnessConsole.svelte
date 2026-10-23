@@ -17,6 +17,7 @@
 	import { harnessClient } from '../../../utils/explorer-ui/harnessClient';
 	import { harnessPage } from '../../../utils/explorer-ui/harness-page/harnessPage';
 	import {
+		consoleContentKey,
 		consoleRelations,
 		consoleView,
 		type ConsoleAnswer
@@ -98,17 +99,7 @@
 			: null
 	);
 
-	let contentKey = $derived.by(() => {
-		const at = shown?.scope.location;
-		return JSON.stringify([
-			at?.branch,
-			at?.commit,
-			at?.category,
-			at?.entity,
-			at?.helper,
-			at?.section
-		]);
-	});
+	let contentKey = $derived(consoleContentKey(shown?.scope.location));
 
 	// The search of the bar holds the entities of exactly the revision shown; none while it is read.
 	let searchCatalog = $derived({

@@ -13,12 +13,12 @@ import {
 	viewports,
 	where,
 	reviewVisual,
-	reviewStates
+	reviewStates,
+	moduleCard
 } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { reviewUsage, reviewRelationPaging } from './entityPreviewUsage';
 const page = { category: 'pages' as const, entity: ids.page };
-const cardUnits = ['reports.component.explorer-ui-explorer-module-card'];
 for (const [name, size] of Object.entries(viewports)) {
 	test(`visual overviews lead with screenshots at ${name} width`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
@@ -58,17 +58,14 @@ for (const [name, size] of Object.entries(viewports)) {
 				await document.fonts.ready;
 				await Promise.all([...document.images].map((image) => image.decode()));
 			});
-			await capture(tab, `grid-${category}-${name}`, cardUnits);
+			await capture(tab, `grid-${category}-${name}`, moduleCard.units);
 			const cards = tab.getByRole('article');
 			await expect(
 				cards,
 				'collections use cards; helpers and models require two distinct visible consumers'
 			).toHaveCount({ models: 2, components: 3, functions: 1, services: 1 }[category]);
 			for (const item of await cards.all()) {
-				await expect(item).toHaveAttribute(
-					'data-harness-component',
-					'explorer-ui-explorer-module-card'
-				);
+				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
 				expect(await footer.getByRole('link').count()).toBeLessThanOrEqual(3);
 				await expect(footer.locator('.ex-usage-kind')).toHaveCount(0);
@@ -129,7 +126,7 @@ for (const [name, size] of Object.entries(viewports)) {
 			await document.fonts.ready;
 			await Promise.all([...document.images].map((image) => image.decode()));
 		});
-		await capture(tab, `compact-page-${name}`, cardUnits);
+		await capture(tab, `compact-page-${name}`, moduleCard.units);
 		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
 		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toHaveText('Used In—');
 		await expect(card.getByRole('heading', { name: 'Orders page', exact: true })).toBeVisible();

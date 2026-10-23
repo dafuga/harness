@@ -1,19 +1,11 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { catalogVisual, type PreviewManifest } from './visualUnits';
 const directory = fileURLToPath(new URL('../../../../../../specification/units/', import.meta.url));
 export const catalogUnits = readdirSync(directory)
 	.filter((name) => name.endsWith('.json'))
-	.map(
-		(name) =>
-			JSON.parse(readFileSync(directory + name, 'utf8')) as {
-				id: string;
-				title: string;
-				kind: string;
-				status: string;
-				owns: { source: string[] };
-			}
-	)
-	.filter((unit) => ['component', 'shell'].includes(unit.kind) && unit.status === 'active')
+	.map((name) => JSON.parse(readFileSync(directory + name, 'utf8')) as PreviewManifest)
+	.filter(catalogVisual)
 	.sort((a, b) => a.id.localeCompare(b.id));
 export const previewState = (id: string) => id.replaceAll('.', '-');
 export const catalogViewports = [
