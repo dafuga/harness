@@ -36,6 +36,10 @@ test('app projects include SvelteKit and specification files', () =>
 				'reusable visual frames with a child-content slot'
 			);
 			expect(fileContents(files, path)).toContain('Child content');
+			expect(fileContents(files, path)).toContain('canonical and compatibility titles and links');
+			expect(fileContents(files, path)).toContain(
+				'affected downstream consumer tests alongside their typechecks'
+			);
 			expect(fileContents(files, path)).toContain(
 				'Full-frame previews own their content boundaries'
 			);
@@ -82,6 +86,10 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('<PascalName>Service.ts');
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
 		expect(fileContents(files, path)).toContain('instantiated classes');
+		expect(fileContents(files, path)).toContain('canonical and compatibility titles and links');
+		expect(fileContents(files, path)).toContain(
+			'affected downstream consumer tests alongside their typechecks'
+		);
 	}
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
