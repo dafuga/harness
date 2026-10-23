@@ -2,7 +2,6 @@ import { expect, test } from 'vitest';
 import { content, words } from '../entityRender';
 import { record, revision } from '../entityFixture';
 import { commits, ids } from '../entityUnits';
-
 const route = { category: 'components' as const, entity: ids.list, tab: 'contract' as const };
 test('a component contract lists prop types and examples without an output section', () => {
 	for (const mode of ['current', 'commit'] as const) {
@@ -47,7 +46,6 @@ test('a component contract lists prop types and examples without an output secti
 		expect(body).not.toMatch(/src\/|\.svelte\b/);
 	}
 });
-
 test('legacy contract tables retain types and example controls for opaque fields', () => {
 	const head = revision(commits.tip, [record(commits.tip)]);
 	head.registry.units = head.registry.units.map((unit) =>
@@ -192,6 +190,20 @@ test('selected callable Uses exclude module dependencies and hide empty navigati
 		{ unit: ids.settings, via: 'import' },
 		{ unit: ids.store, via: 'import' }
 	];
+	head.registry.units.push({
+		...unit,
+		id: 'app.function.external',
+		title: 'externalHelpers',
+		helpers: [
+			{
+				name: 'external',
+				source: 'external.ts',
+				inputs: [],
+				pure: true,
+				consumers: [{ unit: ids.filter, symbol: 'outer' }]
+			}
+		]
+	});
 	const uses = (helper: string) =>
 		content(
 			'current',
@@ -199,6 +211,7 @@ test('selected callable Uses exclude module dependencies and hide empty navigati
 			{ head }
 		);
 	expect(words(uses('outer'))).toContain('inner()');
+	expect(words(uses('outer'))).toContain('external()');
 	expect(uses('outer')).not.toContain('aria-label="Configs uses"');
 	expect(uses('inner')).not.toContain('aria-label="inner uses"');
 	expect(words(uses('inner'))).not.toMatch(/\bUses\b/);
