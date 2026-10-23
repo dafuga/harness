@@ -32,6 +32,7 @@ async function author(page: Page, dimension: string) {
 	await viewSettings(page);
 	await page.getByLabel('View title', { exact: true }).fill('Authored courtyard');
 	await page.getByRole('button', { name: 'New level', exact: true }).click();
+	await viewSettings(page);
 	await page.getByLabel('View title', { exact: true }).fill('Second view');
 	await page.getByLabel('View', { exact: true }).selectOption('courtyard');
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();

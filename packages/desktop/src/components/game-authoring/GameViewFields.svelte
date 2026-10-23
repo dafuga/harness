@@ -37,6 +37,7 @@
 		create({ id, title: 'New level', dimension, style, checkpoints: [], planning });
 		select(id);
 		section = 'Level';
+		expanded = false;
 	}
 	const retitle = (event: Event) =>
 		change({ title: (event.currentTarget as HTMLInputElement).value });
