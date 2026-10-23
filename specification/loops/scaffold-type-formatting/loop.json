@@ -2,11 +2,9 @@
 	"name": "scaffold-type-formatting",
 	"goal": "Generated implementations and sibling type files pass the project formatter after declaration extraction",
 	"createdAt": "2026-10-23T12:52:47.524Z",
-	"updatedAt": "2026-10-23T12:56:36.139Z",
+	"updatedAt": "2026-10-23T12:58:02.401Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:58:02.401Z",
+			"evidence": "Immutable 5a374f252a3b51a9a64eeb72f185ab87018246e0b06aed7e1769e4734ba2167d passes the same unchanged all-scaffold formatter checks at ad894a6302b12b96423eba4bc40bb90fc1280408."
 		},
 		{
 			"id": "verify",
