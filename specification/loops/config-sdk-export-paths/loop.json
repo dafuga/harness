@@ -2,7 +2,7 @@
 	"name": "config-sdk-export-paths",
 	"goal": "Config generators and SDK export plans use the same plural folder",
 	"createdAt": "2026-10-23T12:50:22.719Z",
-	"updatedAt": "2026-10-23T12:51:19.277Z",
+	"updatedAt": "2026-10-23T12:52:06.564Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,12 +39,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:52:04.667Z",
+			"evidence": "Recordafb8f74c at sourceffc5c6889 passes the unchanged test/pieces and unit-metadata command against red40a9d1e2at755c49710, with identical tests, fixtures, runner and runtime. Both2d/3d all-scaffold checks and exact config export binding pass;6normal generator workload observations retained."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T12:52:06.564Z",
+			"evidence": "The normal generator/export parity and revision metadata tests pass unchanged. Main75generated-library compilation coverage is preserved; root imports/type checks will rerun after the final shared main integration. This nonvisual mapping correction does not alter the Configs page; full CLI/native suites remain deferred."
 		}
 	],
 	"evaluators": [
