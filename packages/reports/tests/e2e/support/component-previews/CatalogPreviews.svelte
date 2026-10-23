@@ -60,7 +60,7 @@
 				class="preview-content"
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
-				class:ex-content={explorer}
+				class:ex-content={explorer && !fullFrame}
 				data-preview-unit={unit.id}
 			>
 				<!-- SYNTHETIC child: what a layout is given in place of a page, said so where drawn. -->
