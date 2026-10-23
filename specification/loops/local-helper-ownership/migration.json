@@ -4903,7 +4903,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5263,6 +5263,20 @@
 			"commit": "ae9e65325",
 			"reason": "Include layout planning metadata alongside legacy shell metadata.",
 			"definition": "9a1709bd49893223f8b60758a6164ba814fc2a59fc4c96e97adf804857465ee0"
+		},
+		{
+			"unit": "desktop.function.claude-turn",
+			"name": "claudeTurn",
+			"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+			"reason": "Propagate a bounded resource context to the provider transport without changing model, permission or output validation.",
+			"definition": "13358795bcd4728ecef95c95e08b6046f5c9797a43138298f7ecfc787a2a635f"
+		},
+		{
+			"unit": "desktop.function.codex-turn",
+			"name": "codexTurn",
+			"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+			"reason": "Propagate a bounded resource context to the provider transport without changing model, permission or output validation.",
+			"definition": "674dfb8331fb99851d0a01f11b34a867ed8284345ff1959edf545dbdd696b6ec"
 		}
 	]
 }

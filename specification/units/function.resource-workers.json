@@ -19,6 +19,11 @@
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
 			},
 			{
+				"name": "resourceWorkers.maximumWorkers",
+				"type": "number",
+				"description": "Optional caller ceiling of at least one worker; the default keeps the reservation-derived limit. Memory is divided by the actual capped worker count."
+			},
+			{
 				"name": "resourceThreads.env",
 				"type": "Record<string, string | undefined>",
 				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
@@ -36,7 +41,13 @@
 				"description": "Native thread variables capped by the CPU reservation while retaining stricter caller values."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects an invalid caller worker ceiling instead of returning an unusable worker configuration."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

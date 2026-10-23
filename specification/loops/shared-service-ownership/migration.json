@@ -1784,7 +1784,14 @@
 			"unit": "workflow.loop-evaluate",
 			"from": "src/workflows/loopEvaluate.ts",
 			"to": "src/cli/program/loopEvaluate.ts",
-			"definition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3"
+			"definition": "9ca3f4725594070b26bfbc4f7c88e9ab9601a765b696b4d201f6eec699a08db1",
+			"relocationDefinition": "93b1bdbb716a8569108453b267b0843f66f570e9076fcdbb7ea203eb2adf31e3",
+			"review": {
+				"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+				"path": "src/cli/program/loopEvaluate.ts",
+				"definition": "9ca3f4725594070b26bfbc4f7c88e9ab9601a765b696b4d201f6eec699a08db1",
+				"reason": "Admit evaluator commands under shared reservations and install child listeners before PID tracking."
+			}
 		},
 		{
 			"unit": "adapter.desktop-archive",
@@ -2130,7 +2137,14 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38"
+			"definition": "9fb96300a7e14734623313329942a45a662663c2c9ee377564f8f57aaf1cbafd",
+			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
+			"review": {
+				"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+				"definition": "9fb96300a7e14734623313329942a45a662663c2c9ee377564f8f57aaf1cbafd",
+				"reason": "Propagate the explicit resource priority to verification without changing revision or evidence selection."
+			}
 		},
 		{
 			"unit": "service.verification",
@@ -2783,7 +2797,14 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6"
+			"definition": "4c0bd01a27c1c8473719ec1c1038e107c482e03c4a851a3f9166b1fac289e5ea",
+			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
+			"review": {
+				"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+				"definition": "4c0bd01a27c1c8473719ec1c1038e107c482e03c4a851a3f9166b1fac289e5ea",
+				"reason": "Admit verification checks with bounded resources while retaining current diagnostics, captures and cleanup."
+			}
 		},
 		{
 			"unit": "reports.service.report-storage-sync",
@@ -2807,7 +2828,14 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc"
+			"definition": "bab61e10f282230a55e96fedc4ab5198848e3549ffdccfbe5a25b997bafa26a2",
+			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
+			"review": {
+				"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+				"path": "src/cli/program/VerifyCommand.ts",
+				"definition": "bab61e10f282230a55e96fedc4ab5198848e3549ffdccfbe5a25b997bafa26a2",
+				"reason": "Expose the managed work priority alongside all existing verification options."
+			}
 		},
 		{
 			"unit": "workflow.analytics-html",
