@@ -2,12 +2,40 @@ import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
+import { configExpression, longConfigValue } from './entityConfigFixtures';
 
 test.setTimeout(90_000);
 const configUnits = [
 	'reports.component.harness-explorer-table',
 	'reports.component.harness-explorer-content'
 ];
+
+async function inspectConfigValues(page: Page, viewport: string, commit: string): Promise<void> {
+	const table = page.getByRole('table', { name: 'Configs', exact: true });
+	await capture(page, `groups-config-values-${commit.slice(0, 7)}-${viewport}`, configUnits);
+	for (const [name, value] of [
+		['schema', configExpression(commit)],
+		['archivePath', longConfigValue]
+	]) {
+		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
+		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
+		await inspect.click();
+		const dialog = page.getByRole('dialog', { name: `orderSettings.${name} · Value`, exact: true });
+		await capture(page, `groups-config-${name}-${commit.slice(0, 7)}-${viewport}`, configUnits);
+		await expect(dialog).toBeVisible();
+		expect(await dialog.locator('pre code').textContent()).toBe(value);
+		await expect(dialog.locator('orders')).toHaveCount(0);
+		expect(await fits(page)).toBe(true);
+		await page.keyboard.press('Escape');
+		await expect(dialog).toHaveCount(0);
+		await expect(inspect).toBeFocused();
+	}
+	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.enabled' })).toContainText(
+		'false'
+	);
+	expect(await table.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+}
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'Configs', exact: true });
@@ -18,12 +46,14 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
 		'25'
 	);
+	await inspectConfigValues(page, viewport, commits.middle);
 	await page.getByRole('searchbox').fill('newest');
 	await expect(table.getByRole('row')).toHaveCount(2);
 	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'orderSettings', exact: true })).toBeVisible();
 	await open(page, { category: 'configs', commit: commits.first }, 'groups');
 	await capture(page, `groups-configs-historical-${viewport}`, configUnits);
+	await inspectConfigValues(page, viewport, commits.first);
 	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
 		'10'
 	);
