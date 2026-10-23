@@ -148,20 +148,26 @@ test('a state that names a component says so itself: where else it is drawn adds
 	expect(statesOf('component.table', at(['catalog', 'entity'], explicit))).toEqual(['entity']);
 });
 
-test('a page-only state cannot prove an imported component was drawn', () => {
-	const pageOnly = declared({
-		...scenario,
-		states: states.map((state) => ({ ...state, units: state.units.slice(0, 1) }))
-	});
-	const head = at(['catalog', 'entity'], pageOnly);
-	expect(statesOf('component.table', head)).toEqual([]);
-	expect(shown('component.table', head).after.captures).toEqual([]);
-	const unscoped = declared({
-		...scenario,
-		states: states.map(({ units: _units, ...state }) => state)
-	});
-	expect(statesOf('component.table', at(['catalog', 'entity'], unscoped))).toEqual([
-		'catalog',
-		'entity'
-	]);
-});
+test.each(['component', 'shell', 'layout', 'partial'])(
+	'a page-only state cannot prove an imported %s was drawn',
+	(kind) => {
+		const pageOnly = declared({
+			...scenario,
+			states: states.map((state) => ({ ...state, units: state.units.slice(0, 1) }))
+		});
+		const registry = units.map((unit) =>
+			unit.id === 'component.table' ? { ...unit, kind } : unit
+		);
+		const head = at(['catalog', 'entity'], pageOnly, registry);
+		expect(statesOf('component.table', head)).toEqual([]);
+		expect(shown('component.table', head).after.captures).toEqual([]);
+		const unscoped = declared({
+			...scenario,
+			states: states.map(({ units: _units, ...state }) => state)
+		});
+		expect(statesOf('component.table', at(['catalog', 'entity'], unscoped, registry))).toEqual([
+			'catalog',
+			'entity'
+		]);
+	}
+);
