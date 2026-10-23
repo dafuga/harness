@@ -99,7 +99,7 @@ export function helperRelations(
 	});
 	return {
 		...relations,
-		shells: [],
+		layouts: [],
 		components: [],
 		functions,
 		services: [],

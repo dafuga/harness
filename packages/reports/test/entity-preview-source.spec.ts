@@ -11,7 +11,7 @@ const kinds = [
 	['Helpers', 'functions', 'filterOrders', ids.filter, 'src/helpers/orders/filterOrders.ts'],
 	['Pages', 'pages', 'Orders page', ids.page, 'src/routes/orders/+page.svelte'],
 	['Components', 'components', 'OrderCard', ids.card, 'src/components/orders/OrderCard.ts'],
-	['Shells', 'shells', 'OrderFrame', frameId, 'src/shells/orders/OrderFrame.svelte'],
+	['Layouts', 'layouts', 'OrderFrame', frameId, 'src/layouts/orders/OrderFrame.svelte'],
 	['Configs', 'configs', 'orderSettings', ids.settings, 'src/configs/orders/orderSettings.ts'],
 	['Services', 'services', 'OrderStore', ids.store, 'src/services/orders/OrderStore.ts']
 ] as const;

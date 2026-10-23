@@ -75,7 +75,7 @@ export interface ExplorerRelations {
 	/** Pages that show the entity, through any depth of components. */
 	pages: ExplorerEntity[];
 	/** Shells it mounts directly: the frames that put navigation and content together. */
-	shells: ExplorerEntity[];
+	layouts: ExplorerEntity[];
 	/** Components it contains directly; theirs are reached by opening them. */
 	components: ExplorerEntity[];
 	functions: ExplorerEntity[];

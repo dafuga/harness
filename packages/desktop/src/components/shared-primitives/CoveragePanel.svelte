@@ -21,7 +21,7 @@
 	const short = (commit: string) => commit.slice(0, 7);
 	const notice = $derived(evidenceNotice(evidence.status, evidence.error, entity.kind));
 	const result = $derived(evidence.status === 'ready' ? evidence.result : null);
-	const visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	const visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
 	/** The shown revision as the one record that judges it stands; nothing is judged here. */
 	const side = $derived(result?.evidence.after);
 	const mark = (standing: CoverageStanding) => (standing === 'passed' ? 'verified' : 'failed');

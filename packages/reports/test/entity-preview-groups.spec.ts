@@ -68,7 +68,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		await page.setViewportSize(size);
 		for (const category of [
 			'pages',
-			'shells',
+			'layouts',
 			'components',
 			'functions',
 			'configs',
@@ -111,7 +111,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			['functions', ids.filter, 'src/functions/orders/filterOrders.ts'],
 			['configs', ids.settings, 'src/configs/orders/orderSettings.ts'],
 			['models', 'app.model.order', 'src/models/orders/Order.ts'],
-			['shells', frameId, 'src/shells/orders/OrderFrame.svelte'],
+			['layouts', frameId, 'src/layouts/orders/OrderFrame.svelte'],
 			['pages', ids.page, 'src/routes/orders/+page.svelte']
 		] as const) {
 			await open(page, { category, entity, commit: commits.middle, tab: 'source' }, 'groups');

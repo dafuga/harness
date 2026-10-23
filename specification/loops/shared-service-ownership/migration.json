@@ -2864,7 +2864,14 @@
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac"
+			"definition": "d892b3f0b451c59f8046bff249122c9fca3f3f7733d5cd3baddb8fbe2c29d029",
+			"relocationDefinition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac",
+			"review": {
+				"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+				"definition": "d892b3f0b451c59f8046bff249122c9fca3f3f7733d5cd3baddb8fbe2c29d029",
+				"reason": "Create layout plans with screen viewports while retaining shell plan compatibility."
+			}
 		},
 		{
 			"unit": "desktop.adapter.capacitor-bridge",
@@ -3238,7 +3245,14 @@
 			"unit": "planning.function.plan-design",
 			"from": "packages/planning/src/services/planning-service/planDesign.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-			"definition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe"
+			"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
+			"relocationDefinition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe",
+			"review": {
+				"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
+				"definition": "c672dcfeee6c5b04ce74d2888b22ce01eab310a2ccb562e08226b315ea3f0953",
+				"reason": "Treat reusable layouts as visual designs requiring images."
+			}
 		},
 		{
 			"unit": "planning.function.plan-history",
@@ -3262,7 +3276,14 @@
 			"unit": "planning.function.plan-registry",
 			"from": "packages/planning/src/services/planning-service/planRegistry.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planRegistry.ts",
-			"definition": "936bc9fa9c1ad007e5ce045bc2f143b4e683924ed77f715681929fce8bf26362"
+			"definition": "6449231b5af6ee5e477dd38226c9364e5500a16fe8433e2fe13365ed8fa2dc2d",
+			"relocationDefinition": "936bc9fa9c1ad007e5ce045bc2f143b4e683924ed77f715681929fce8bf26362",
+			"review": {
+				"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planRegistry.ts",
+				"definition": "6449231b5af6ee5e477dd38226c9364e5500a16fe8433e2fe13365ed8fa2dc2d",
+				"reason": "Preserve immutable layout planning artifacts alongside legacy shell artifacts."
+			}
 		},
 		{
 			"unit": "planning.function.plan-thread",

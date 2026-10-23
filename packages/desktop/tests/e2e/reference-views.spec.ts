@@ -154,13 +154,13 @@ test('a reference read at a pinned commit opens the unit at that commit', async 
 	const link = thread(page).getByRole('link', { name: 'Order frame', exact: true });
 	await expect(link).toHaveAttribute(
 		'href',
-		alphaAt(`commit/${earlier}/shells/app.shell.order-frame`)
+		alphaAt(`commit/${earlier}/layouts/app.shell.order-frame`)
 	);
 	await expect(link).toBeVisible();
 	// The pinned thread is the state; following the link afterwards leaves it.
 	await capture(page, info, 'pinned');
 	await link.click();
-	await expect(page).toHaveURL(alphaAt(`commit/${earlier}/shells/app.shell.order-frame`));
+	await expect(page).toHaveURL(alphaAt(`commit/${earlier}/layouts/app.shell.order-frame`));
 });
 
 test('a shared project links a reference in a comment and offers no agent', async ({
@@ -171,7 +171,7 @@ test('a shared project links a reference in a comment and offers no agent', asyn
 	const link = thread(page).getByRole('link', { name: 'Gamma frame', exact: true });
 	await expect(link).toHaveAttribute(
 		'href',
-		`/projects/${gamma}/harness/branch/main/shells/app.shell.order-frame`
+		`/projects/${gamma}/harness/branch/main/layouts/app.shell.order-frame`
 	);
 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Plan', exact: true })).toHaveCount(0);

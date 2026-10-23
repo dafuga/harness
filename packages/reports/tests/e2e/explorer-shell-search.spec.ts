@@ -26,7 +26,7 @@ const options = (page: Page) => found(page).getByRole('option');
 const address = (page: Page) => page.getByRole('status', { name: 'Address' });
 const listed = [
 	['Page', 'Orders'],
-	['Shell', 'Order frame'],
+	['Layout', 'Order frame'],
 	['Component', 'Order list'],
 	['Helper', 'Order totals'],
 	['Config', 'Order limits'],
@@ -75,7 +75,7 @@ test('every category of the revision is found, and the keyboard opens a shell un
 	await field(page).press('ArrowUp');
 	await field(page).press('ArrowDown');
 	await field(page).press('Enter');
-	await expect(address(page)).toHaveText(`${scoped}/shells/app.shell.order-frame`);
+	await expect(address(page)).toHaveText(`${scoped}/layouts/app.shell.order-frame`);
 	await expect(found(page)).toBeHidden();
 });
 

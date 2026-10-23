@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
 import { createWorkspaceStore } from '../src/lib/stores/workspace.svelte';
@@ -20,7 +21,7 @@ const [commit, tip] = ['a'.repeat(40), 'b'.repeat(40)];
 test('the shared app has seven categories, Shells after Pages', () => {
 	expect([...categories]).toEqual([
 		'pages',
-		'shells',
+		'layouts',
 		'components',
 		'functions',
 		'configs',
@@ -29,28 +30,30 @@ test('the shared app has seven categories, Shells after Pages', () => {
 	]);
 });
 
-test('a unit declared a shell is a Shell, and every other kind stays where it was', () => {
-	expect(categoryOf('shell')).toBe('shells');
-	expect(categoryOf('component')).toBe('components');
-	expect(categoryOf('model')).toBe('models');
-	expect(categoryOf('page')).toBe('pages');
-	expect(categoryOf('shared-function')).toBe('functions');
-});
+test('a unit declared a shell is a Shell, and every other kind stays where it was', () =>
+	measureWorkload('desktop.function.category-of', 'layout-catalog-behavior', () => {
+		expect(categoryOf('shell')).toBe('components');
+		expect(categoryOf('layout')).toBe('layouts');
+		expect(categoryOf('component')).toBe('components');
+		expect(categoryOf('model')).toBe('models');
+		expect(categoryOf('page')).toBe('pages');
+		expect(categoryOf('shared-function')).toBe('functions');
+	}));
 
 test('a shell has a workspace address with its project, branch, commit and section', () => {
-	const path = `/projects/p/harness/branch/feat%2Fx/commit/${commit}/shells/${shell}/details`;
+	const path = `/projects/p/harness/branch/feat%2Fx/commit/${commit}/layouts/${shell}/details`;
 	const route = workspaceRoute(path);
 	expect(route).toEqual({
 		projectId: 'p',
 		branch: 'feat/x',
 		commit,
-		category: 'shells',
+		category: 'layouts',
 		entityId: shell,
 		suffix: 'source'
 	});
 	expect(workspacePath(route)).toBe(path.replace(/\/details$/, '/source'));
 	expect(isWorkspacePath('/harness/shells')).toBe(true);
-	expect(workspaceRoute('/harness/branch/main/shells').category).toBe('shells');
+	expect(workspaceRoute('/harness/branch/main/shells').category).toBe('layouts');
 });
 
 /** A workspace over a bridge whose entity has the category its manifest gives it at that commit. */
@@ -72,19 +75,19 @@ function opened(category: string) {
 }
 
 test('an old Components address of a shell opens it under Shells, keeping its section', async () => {
-	const { store, history } = opened('shells');
+	const { store, history } = opened('layouts');
 	await store.navigate(`/harness/branch/main/components/${shell}/details`);
-	expect(store.category).toBe('shells');
+	expect(store.category).toBe('layouts');
 	expect(history.pushState).toHaveBeenCalledWith(
 		{},
 		'',
-		`/harness/branch/main/shells/${shell}/source`
+		`/harness/branch/main/layouts/${shell}/source`
 	);
 	await store.navigate(`/harness/branch/main/components/${shell}/history`, false);
 	expect(history.replaceState).toHaveBeenCalledWith(
 		{},
 		'',
-		`/harness/branch/main/shells/${shell}/history`
+		`/harness/branch/main/layouts/${shell}/history`
 	);
 });
 
@@ -96,37 +99,42 @@ test('at a commit that recorded it as a component, its Components address stays'
 	expect(history.pushState).toHaveBeenCalledWith({}, '', path);
 });
 
-test('plans and agent requests may name Shells, and a shell plan needs the image capability', async () => {
-	expect(
-		ipcPayload('plan:create', { category: 'shells', title: 'Host frame', goal: 'Frames a host.' })
-	).toMatchObject({ category: 'shells' });
-	const request = {
-		intent: 'create',
-		projectId: 'local-' + 'a'.repeat(64),
-		category: 'shells',
-		mode: 'plan',
-		provider: 'codex',
-		model: 'listed',
-		effort: null,
-		text: 'Add a frame for hosts'
-	};
-	expect(ipcPayload('run:start', request)).toMatchObject({ category: 'shells' });
-	const provider = (imageGeneration: boolean) =>
-		({
-			providers: {
-				list: async () => [
-					{
-						id: 'codex',
-						available: true,
-						imageGeneration,
-						models: [{ id: 'default-model', isDefault: true }]
-					}
-				]
-			}
-		}) as unknown as Preparation;
-	await expect(imageModel(provider(false), { mode: 'plan' }, 'shells')).rejects.toThrow(
-		/GPT Image/
-	);
-	expect(await imageModel(provider(true), { mode: 'plan' }, 'shells')).toBe('default-model');
-	expect(await imageModel(provider(false), { mode: 'plan' }, 'functions')).toBe('');
-});
+test('plans and agent requests may name Shells, and a shell plan needs the image capability', () =>
+	measureWorkload('desktop.function.prepare-run', 'layout-catalog-behavior', async () => {
+		expect(
+			ipcPayload('plan:create', {
+				category: 'layouts',
+				title: 'Host frame',
+				goal: 'Frames a host.'
+			})
+		).toMatchObject({ category: 'layouts' });
+		const request = {
+			intent: 'create',
+			projectId: 'local-' + 'a'.repeat(64),
+			category: 'layouts',
+			mode: 'plan',
+			provider: 'codex',
+			model: 'listed',
+			effort: null,
+			text: 'Add a frame for hosts'
+		};
+		expect(ipcPayload('run:start', request)).toMatchObject({ category: 'layouts' });
+		const provider = (imageGeneration: boolean) =>
+			({
+				providers: {
+					list: async () => [
+						{
+							id: 'codex',
+							available: true,
+							imageGeneration,
+							models: [{ id: 'default-model', isDefault: true }]
+						}
+					]
+				}
+			}) as unknown as Preparation;
+		await expect(imageModel(provider(false), { mode: 'plan' }, 'layouts')).rejects.toThrow(
+			/GPT Image/
+		);
+		expect(await imageModel(provider(true), { mode: 'plan' }, 'layouts')).toBe('default-model');
+		expect(await imageModel(provider(false), { mode: 'plan' }, 'functions')).toBe('');
+	}));

@@ -44,10 +44,10 @@ export interface EntityLabel {
 /** The six collections, pages first, with what each is called and described as. */
 export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 	pages: { title: 'Pages', one: 'Page', subtitle: 'Start with the pages people use.' },
-	shells: {
-		title: 'Shells',
-		one: 'Shell',
-		subtitle: 'How the app is put together for each host: navigation around the content.'
+	layouts: {
+		title: 'Layouts',
+		one: 'Layout',
+		subtitle: 'Reusable page frames with a clearly marked child-content area.'
 	},
 	components: {
 		title: 'Components',

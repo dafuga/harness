@@ -81,7 +81,6 @@ async function readyRoute(page: Page, id: string) {
 		'desktop.page.projects-project-id-harness-path': 'Pages',
 		'desktop.page.settings': 'Settings',
 		'desktop.page.game': 'Game Views',
-		'reports.layout.root': 'Components',
 		'reports.page.harness-branch-branch-at-styles': 'Styles'
 	};
 	if (headings[id])
@@ -92,7 +91,7 @@ async function readyRoute(page: Page, id: string) {
 		await expect(
 			page.getByRole('cell', { name: 'ada@example.invalid', exact: true })
 		).toBeVisible();
-	if (id === 'hub.page.root' || id === 'hub.layout.root')
+	if (id === 'hub.page.root')
 		await expect(page.getByRole('region', { name: 'Owned by you', exact: true })).toBeVisible();
 }
 export async function capturePreview(page: Page, home: string, id: string, viewport: string) {

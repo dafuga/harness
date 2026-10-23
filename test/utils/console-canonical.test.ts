@@ -130,7 +130,7 @@ test('an explorer address is left alone, with its tab', () => {
 	]) {
 		expect(canonical(page + legacy)).toBe(page + query);
 	}
-	for (const category of ['components', 'shells', 'functions', 'services', 'configs', 'models']) {
+	for (const category of ['components', 'layouts', 'functions', 'services', 'configs', 'models']) {
 		const path = `/harness/branch/feature%2Fkept%231/commit/${id('b')}/${category}/sample.unit`;
 		expect(canonical(`${path}?tab=contract`)).toBeUndefined();
 		expect(canonical(`${path}/details?tab=contract`)).toBe(`${path}?tab=contract`);
