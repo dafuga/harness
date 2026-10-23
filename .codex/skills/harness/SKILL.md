@@ -183,10 +183,12 @@ and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
 
-When changing a previously relocated helper's behavior, review its ownership
+When changing a previously relocated helper or service workflow's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in
-the existing follow-up ledger, then run the standardized unit-index guard.
+the existing follow-up ledger, retain earlier reviews, and regenerate its committed
+review-object pack when present. Then run the standardized unit-index guard,
+including the recorded service-move case for workflow changes.
 
 ## Native Unload Verification
 
