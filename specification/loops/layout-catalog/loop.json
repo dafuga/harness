@@ -2,7 +2,7 @@
 	"name": "layout-catalog",
 	"goal": "Layouts contains reusable visual frames and shows each child slot in the shared title, image and page-usage card",
 	"createdAt": "2026-10-23T09:21:46.411Z",
-	"updatedAt": "2026-10-23T10:47:31.615Z",
+	"updatedAt": "2026-10-23T11:04:55.250Z",
 	"template": "visual-change",
 	"templateLineage": ["feature", "visual-change"],
 	"enforceOrder": false,
@@ -38,8 +38,9 @@
 		{
 			"id": "browser-proof",
 			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
-			"status": "pending",
-			"evidence": "Pixel inspection of f035384b4 found overlapping compact selector text in the isolated layout host. Correct the host context, prove the strengthened standard assertion fails then passes, and recapture the final tree before landing."
+			"status": "complete",
+			"evidence": "Pixel inspection caught a shared preview-context leak. The unchanged compact-selector assertion failed at 85419b63e and passed at b9cd6c436, with clean inspected child-slot pixels. Harness guidance now preserves frame/content boundaries; its generated-instruction guard has matching-environment red/green proof. Capture every visual catalog entry and validate actual merged-main cards from the final frozen tree.",
+			"completedAt": "2026-10-23T11:04:55.250Z"
 		}
 	],
 	"evaluators": [
