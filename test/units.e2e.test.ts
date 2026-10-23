@@ -174,7 +174,7 @@ test('index records reviewed shared helper contracts for clients without source 
 		expect.objectContaining({
 			name: 'formatDate',
 			pure: true,
-			source: 'src/utils/formatDate.ts',
+			source: 'src/helpers/dates/formatDate.ts',
 			consumers: expect.arrayContaining([
 				{ unit: 'function.first', symbol: 'first' },
 				{ unit: 'function.second', symbol: 'second' }

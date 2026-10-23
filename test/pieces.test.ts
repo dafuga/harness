@@ -45,9 +45,7 @@ test('Rails-ish scaffolds create their expected code shapes', () => {
 	expect(pieceFiles('mailer', 'Welcome').map((file) => file.path)).toContain(
 		'src/mailers/WelcomeMailer.ts'
 	);
-	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain(
-		'src/helpers/PostHelper.ts'
-	);
+	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain('src/helpers/post.ts');
 	expect(pieceFiles('concern', 'Publishable').map((file) => file.path)).toContain(
 		'src/concerns/withPublishable.ts'
 	);
