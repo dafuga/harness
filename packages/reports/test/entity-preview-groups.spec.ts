@@ -9,11 +9,12 @@ import { entityLabels } from '../src/utils/entityLens';
 test.setTimeout(90_000);
 const configUnits = [
 	'reports.component.harness-explorer-table',
+	'reports.component.harness-explorer-index',
 	'reports.component.harness-explorer-content'
 ];
 
 async function inspectConfigValues(page: Page, viewport: string, commit: string): Promise<void> {
-	const table = page.getByRole('table', { name: 'Configs', exact: true });
+	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	await capture(page, `groups-config-values-${commit.slice(0, 7)}-${viewport}`, configUnits);
 	for (const [name, value] of [
 		['schema', configExpression(commit)],
@@ -40,7 +41,24 @@ async function inspectConfigValues(page: Page, viewport: string, commit: string)
 }
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
-	const table = page.getByRole('table', { name: 'Configs', exact: true });
+	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
+	await expect(page.getByRole('table'), 'each source config gets its own table').toHaveCount(2);
+	await expect(page.getByRole('table', { name: 'deliverySettings', exact: true })).toContainText(
+		'deliverySettings.enabled'
+	);
+	await expect(table).not.toContainText('deliverySettings');
+	for (const label of [
+		'Boolean false',
+		'Number 25',
+		'String newest',
+		'Empty string',
+		'Null',
+		'Array, 2 items'
+	])
+		await expect(
+			table.getByLabel(label, { exact: true }),
+			'config types have distinct accessible presentations'
+		).toBeVisible();
 	await expect(table.getByRole('columnheader'), 'only variable and value columns').toHaveText([
 		'Variable',
 		'Value'
@@ -50,6 +68,7 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 	);
 	await inspectConfigValues(page, viewport, commits.middle);
 	await page.getByRole('searchbox').fill('newest');
+	await expect(page.getByRole('table')).toHaveCount(1);
 	await expect(table.getByRole('row')).toHaveCount(2);
 	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'orderSettings', exact: true })).toBeVisible();
@@ -84,9 +103,10 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			);
 			await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(0);
 			await expect(page.getByRole('searchbox')).toBeVisible();
-			await expect
-				.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
-				.toBeVisible();
+			if (category !== 'configs')
+				await expect
+					.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
+					.toBeVisible();
 			expect(await fits(page)).toBe(true);
 			if (category === 'configs') await configVariables(page, viewport);
 		}

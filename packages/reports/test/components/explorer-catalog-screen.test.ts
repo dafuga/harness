@@ -13,11 +13,11 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 		'render-nonvisual-catalog-table',
 		() =>
 			measureWorkload('reports.function.entity-catalog', 'config-catalog-render', () => {
-				for (const [category, [title, name]] of Object.entries(kinds)) {
+				for (const [category, [, name]] of Object.entries(kinds)) {
 					const at = { category: category as keyof typeof kinds };
 					const body = screen(ExplorerCatalogScreen, 'commit', at);
 					expect(body, category).toMatch(
-						new RegExp(`<table class="ex-table(?: [^"]*)?" aria-label="${title}"`)
+						new RegExp(`<table class="ex-table(?: [^"]*)?" aria-label="${name}"`)
 					);
 					expect(words(body), category).toContain(name);
 					expect(words(body), 'configs list variable names and source values').toContain(
@@ -25,7 +25,8 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 					);
 					expect(count(body, /scope="col"/g), 'only variable and value columns').toBe(2);
 					expect(words(body)).not.toMatch(/Purpose|Used by|Changed|Verification/);
-					for (const value of ['false', '0', 'null', '""']) expect(words(body)).toContain(value);
+					for (const value of ['false', '0', 'null', 'Empty string'])
+						expect(words(body)).toContain(value);
 					expect(count(body, /<article\b/g), category).toBe(0);
 					expect(drawn(body), category).toBe(drawn(content('commit', at)));
 				}

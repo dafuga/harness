@@ -24,6 +24,7 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		emptyLabel: '""',
 		retryCount: '0',
 		fallback: 'null',
+		regions: '["ca", "us"]',
 		schema: configExpression(commit),
 		archivePath: longConfigValue
 	};
@@ -31,6 +32,7 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		configValues: Object.entries(values).map(([name, value]) => ({
 			name: `orderSettings.${name}`,
 			value,
+			...(['schema', 'archivePath'].includes(name) ? {} : { literal: JSON.parse(value) }),
 			source: unit.owns.source[0]
 		}))
 	});

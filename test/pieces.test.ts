@@ -62,7 +62,7 @@ test('Rails-ish scaffolds create their expected code shapes', () => {
 		'src/initializers/initializeCache.ts'
 	);
 	expect(pieceFiles('config', 'Search').map((file) => file.path)).toContain(
-		'src/config/searchConfig.ts'
+		'src/configs/searchConfig.ts'
 	);
 	expect(pieceFiles('middleware', 'Auth').map((file) => file.path)).toContain(
 		'src/middleware/AuthMiddleware.ts'
