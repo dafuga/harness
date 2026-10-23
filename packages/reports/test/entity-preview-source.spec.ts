@@ -156,7 +156,12 @@ test('source file selection and closing retain the detail Source tab', async ({ 
 test('Source opens file contents in a modal and older histories state an explicit gap', async ({
 	page
 }) => {
-	const route = { category: 'functions' as const, entity: ids.filter, tab: 'source' as const };
+	const route = {
+		category: 'functions' as const,
+		entity: ids.filter,
+		tab: 'source' as const,
+		helper: 'filterOrders'
+	};
 	await open(page, { ...route, commit: commits.middle }, 'source');
 	await expect(page.locator('pre')).toHaveCount(0);
 	await page

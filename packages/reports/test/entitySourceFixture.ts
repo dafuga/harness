@@ -23,14 +23,19 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 						owns: {
 							...unit.owns,
 							source: [
-								...unit.owns.source,
-								'src/helpers/orders/filterOrders.ts',
-								'src/components/orders/contract.ts'
+								...new Set([
+									...unit.owns.source,
+									'src/helpers/orders/filterOrders.ts',
+									'src/components/orders/contract.ts'
+								])
 							]
 						},
 						helpers: unit.helpers?.map((helper) => ({
 							...helper,
-							source: 'src/helpers/orders/filterOrders.ts'
+							source:
+								helper.name === 'filterOrders'
+									? 'src/helpers/orders/filterOrders.ts'
+									: helper.source
 						}))
 					};
 				return unit.id === ids.store

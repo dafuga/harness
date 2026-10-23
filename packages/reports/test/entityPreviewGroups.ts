@@ -16,7 +16,18 @@ function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {
 		...unit,
 		group,
 		...(unit.id === ids.filter ? textHelper(unit, commit) : {}),
-		owns: { ...unit.owns, source: [...new Set([...unit.owns.source, ...source])] },
+		owns: {
+			...unit.owns,
+			source: [
+				...new Set([
+					...unit.owns.source,
+					...source,
+					...(unit.id === ids.filter
+						? ['src/helpers/orders/filterOrders.ts', 'src/helpers/strings/plural.ts']
+						: [])
+				])
+			]
+		},
 		runtime: {
 			...unit.runtime,
 			targets: unit.runtime.targets.map((target) => ({ ...target, entry: source[0] }))
@@ -72,7 +83,10 @@ function textHelper(unit: HarnessUnit, commit: string) {
 	const group = { id: 'strings', title: commit === 'a'.repeat(40) ? 'Words' : 'Strings' };
 	return {
 		helpers: [
-			...(unit.helpers ?? []),
+			...(unit.helpers ?? []).map((helper) => ({
+				...helper,
+				source: 'src/helpers/orders/filterOrders.ts'
+			})),
 			{
 				name: 'plural',
 				source: 'src/helpers/strings/plural.ts',

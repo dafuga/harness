@@ -1,3 +1,5 @@
+import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
+import { posix } from 'node:path';
 import { expect, test } from 'vitest';
 import { pieceFiles } from '../src/templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../src/templates/scaffoldTypes';
@@ -8,6 +10,11 @@ test.each(['2d', '3d'] as const)(
 		for (const kind of scaffoldKinds) {
 			const files = pieceFiles(kind, 'BlogPost', { dimension });
 			expect(files.length, kind).toBeGreaterThan(0);
+			for (const plan of pieceExportPlans(kind, 'BlogPost'))
+				expect(
+					files.map((file) => file.path),
+					'Every public export targets an emitted scaffold'
+				).toContain(posix.normalize(`src/${plan.source}.ts`));
 			expect(
 				files.every((file) => file.path.length > 0 && file.contents.length > 0),
 				kind

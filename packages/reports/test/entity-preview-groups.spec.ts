@@ -109,28 +109,24 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		for (const [category, entity, file] of [
 			['services', ids.store, 'src/services/orders/OrderStore.ts'],
 			['components', ids.list, 'src/components/orders/OrderList.ts'],
-			['functions', ids.filter, 'src/functions/orders/filterOrders.ts'],
+			['functions', ids.filter, 'src/helpers/orders/filterOrders.ts'],
 			['configs', ids.settings, 'src/configs/orders/orderSettings.ts'],
 			['models', 'app.model.order', 'src/models/orders/Order.ts'],
 			['layouts', frameId, 'src/layouts/orders/OrderFrame.svelte'],
 			['pages', ids.page, 'src/routes/orders/+page.svelte']
 		] as const) {
-			await open(page, { category, entity, commit: commits.middle, tab: 'source' }, 'groups');
-			await page.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all(
-					[...document.images]
-						.filter((image) => {
-							const box = image.getBoundingClientRect();
-							return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
-						})
-						.map(async (image) => {
-							await image.decode();
-							if (!image.complete || !image.naturalWidth || !image.naturalHeight)
-								throw new Error('Image not ready');
-						})
-				);
-			});
+			await open(
+				page,
+				{
+					category,
+					entity,
+					commit: commits.middle,
+					tab: 'source',
+					...(category === 'functions' ? { helper: 'filterOrders' } : {})
+				},
+				'groups'
+			);
+			await ready(page);
 			await capture(page, `source-${category}-${viewport}`, [
 				'reports.component.harness-entity-header'
 			]);
