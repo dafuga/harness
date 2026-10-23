@@ -1,7 +1,7 @@
-import { measureWorkload } from './support/measureWorkload';
+import { format, type Options } from 'prettier';
 import { expect, test } from 'vitest';
 import { projectFiles } from '../src/templates/project';
-import { format, type Options } from 'prettier';
+import { measureWorkload } from './support/measureWorkload';
 
 test('app projects include SvelteKit and specification files', () =>
 	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
@@ -21,6 +21,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(paths).toContain('.codex/skills/harness/SKILL.md');
 		expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
 		expect(fileContents(files, 'AGENTS.md')).toContain('bun run check');
+		expectResourceGuidance(files);
 		expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
 			'Use this skill whenever'
 		);
@@ -134,4 +135,9 @@ function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<s
 	return JSON.parse(fileContents(files, 'harness.audit.json')) as {
 		limits: Record<string, number>;
 	};
+}
+
+function expectResourceGuidance(files: ReturnType<typeof projectFiles>): void {
+	expect(fileContents(files, 'AGENTS.md')).toContain('harness resources run');
+	expect(fileContents(files, 'AGENTS.md')).toContain('Finish current tests under pressure');
 }

@@ -1,5 +1,5 @@
-import type { RuntimeKind } from '../../../core/development-tooling/unitTypes';
 import type { Comparison } from '../../../core/development-tooling/comparisonTypes';
+import type { RuntimeKind } from '../../../core/development-tooling/unitTypes';
 
 export interface UnitBenchmark {
 	unit: string;

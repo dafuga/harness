@@ -1,4 +1,7 @@
 export interface VerifyOptions {
+	priority?: string;
+	/** Mandatory for task completion; historical verification contracts remain readable. */
+	requirePerformance?: boolean;
 	root?: string;
 	/** Commit to verify; `HEAD` by default. Uncommitted changes are never part of it. */
 	commit?: string;

@@ -5304,6 +5304,20 @@
 			"definition": "20c77088e3bad40cb8075ecf02b1d7039fa1bd183e0f8c126380567a8dbf0cf4",
 			"commit": "48e988d7a062523981ac285fddc4a87dd74388ca",
 			"reason": "Keep existing SDK bindings valid when a pure helper and another scaffold request the same name; qualify only the colliding helper binding and keep generation idempotent."
+		},
+		{
+			"unit": "desktop.function.claude-turn",
+			"name": "claudeTurn",
+			"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+			"reason": "Propagate a bounded resource context to the provider transport without changing model, permission or output validation.",
+			"definition": "13358795bcd4728ecef95c95e08b6046f5c9797a43138298f7ecfc787a2a635f"
+		},
+		{
+			"unit": "desktop.function.codex-turn",
+			"name": "codexTurn",
+			"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
+			"reason": "Propagate a bounded resource context to the provider transport without changing model, permission or output validation.",
+			"definition": "674dfb8331fb99851d0a01f11b34a867ed8284345ff1959edf545dbdd696b6ec"
 		}
 	]
 }

@@ -1,9 +1,10 @@
-import type { RevisionSide } from '../../../development-tooling/loadRevisions';
 import type { ImpactReport } from '../../../../core/development-tooling/impactTypes';
 import type { VerifyConfig } from '../../../../core/verification-evidence/verifyTypes';
 import type { ReasonReport } from '../../../../services/development-tooling/ExplanationService';
+import type { RevisionSide } from '../../../development-tooling/loadRevisions';
 
 export interface VerifyContext {
+	requirePerformance?: boolean;
 	root: string;
 	commit: string;
 	tree: string;

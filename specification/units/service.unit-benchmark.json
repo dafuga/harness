@@ -14,10 +14,10 @@
 		],
 		"symbols": [
 			"UnitBenchmarkService",
+			"UnitBenchmark",
 			"UnitBenchmarkService",
 			"UnitBenchmarkService.constructor",
 			"UnitBenchmarkService.measure",
-			"UnitBenchmark",
 			"UnitBenchmark"
 		]
 	},
@@ -76,6 +76,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.stable-json",
 			"via": "import",
 			"origin": "derived"
@@ -87,6 +92,11 @@
 		},
 		{
 			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.performance-profile",
 			"via": "import",
 			"origin": "derived"
 		},

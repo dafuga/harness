@@ -1,3 +1,4 @@
+import type { ResourceQueueService } from '../../../../../../src/services/execution-runtimes/ResourceQueueService';
 import type {
 	AgentRunner,
 	AgentTurn,
@@ -6,12 +7,15 @@ import type {
 	ImageGenerator,
 	ImageRequest
 } from '../../../models/agents-providers/AgentRunner.types';
+import { ImageBytesValidator } from '../../../validators/development-tooling/ImageBytesValidator';
 import { codexState } from './codexState';
 import { codexTurn } from './codexTurn';
-import { ImageBytesValidator } from '../../../validators/development-tooling/ImageBytesValidator';
 
 export class CodexAppServerAdapter implements AgentRunner, ImageGenerator {
-	constructor(private command: CliCommand = { command: 'codex', args: [] }) {}
+	constructor(
+		private command: CliCommand = { command: 'codex', args: [] },
+		private queue?: ResourceQueueService
+	) {}
 	private server(): CliCommand {
 		return {
 			command: this.command.command,
@@ -22,20 +26,24 @@ export class CodexAppServerAdapter implements AgentRunner, ImageGenerator {
 		return codexState(this.command, this.server());
 	}
 	async run(turn: AgentTurn) {
-		const result = await codexTurn(this.server(), turn);
+		const result = await codexTurn(this.server(), turn, this.queue);
 		return { text: result.text, model: result.model };
 	}
 	async generateImage(request: ImageRequest): Promise<GeneratedImage> {
-		const result = await codexTurn(this.server(), {
-			...request,
-			effort: null,
-			access: 'read-only',
-			image: true,
-			onText: () => {},
-			prompt:
-				'Use the image_gen tool to generate exactly ONE complete PNG image for this design. Do not use code, SVG, screenshots or descriptions as a substitute. Return the actual image generation result.\n' +
-				request.prompt
-		});
+		const result = await codexTurn(
+			this.server(),
+			{
+				...request,
+				effort: null,
+				access: 'read-only',
+				image: true,
+				onText: () => {},
+				prompt:
+					'Use the image_gen tool to generate exactly ONE complete PNG image for this design. Do not use code, SVG, screenshots or descriptions as a substitute. Return the actual image generation result.\n' +
+					request.prompt
+			},
+			this.queue
+		);
 		const item = result.images.find((i) => i.status === 'completed' && !i.failure && i.result);
 		if (!item?.result)
 			throw new Error(

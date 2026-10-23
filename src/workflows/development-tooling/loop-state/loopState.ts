@@ -1,4 +1,12 @@
-import type { LoopInput, LoopPaths, LoopState } from './loopState.types';
+import type { LoopState, LoopInput, LoopPaths } from './loopState.types';
+export type {
+	LoopStep,
+	LoopEvaluator,
+	LoopState,
+	LoopStatus,
+	LoopInput,
+	LoopPaths
+} from './loopState.types';
 import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';
@@ -68,12 +76,3 @@ async function failIfLoopExists(path: string): Promise<void> {
 export function isMissingFile(error: unknown): boolean {
 	return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }
-
-export type {
-	LoopStep,
-	LoopEvaluator,
-	LoopState,
-	LoopStatus,
-	LoopInput,
-	LoopPaths
-} from './loopState.types';

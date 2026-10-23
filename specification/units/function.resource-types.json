@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-types",
+	"kind": "function",
+	"title": "resourceTypes",
+	"responsibility": "Defines validated job, request and configuration schemas with minimum host reserves and stable priority order.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/execution-runtimes/resourceTypes.ts"],
+		"symbols": [
+			"ResourceConfig",
+			"ResourceContext",
+			"ResourceJob",
+			"ResourceRequest",
+			"ResourceSnapshot",
+			"resourcePriorities",
+			"resourcePriority",
+			"resourceConfigSchema",
+			"resourceRequestSchema",
+			"resourceJobSchema",
+			"mib"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "resourcePriorities",
+				"type": "unknown",
+				"description": "Fixed priority order: agent tests, coding, then environment operations."
+			},
+			{
+				"name": "resourcePriority",
+				"type": "unknown",
+				"description": "Schema accepting only the three declared work priorities."
+			},
+			{
+				"name": "resourceConfigSchema",
+				"type": "unknown",
+				"description": "Strict schema enforcing reserve floors and bounded sampling intervals."
+			},
+			{
+				"name": "resourceRequestSchema",
+				"type": "unknown",
+				"description": "Strict schema validating positive CPU and memory requests and a bounded public label."
+			},
+			{
+				"name": "resourceJobSchema",
+				"type": "unknown",
+				"description": "Persisted lease schema with validated identity, state, timestamps and reservation fields."
+			},
+			{
+				"name": "mib",
+				"type": "unknown",
+				"description": "Number of bytes in one mebibyte, 1048576."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-resource-types-types",
+			"via": "reexport",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/execution-runtimes/resourceTypes.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/execution-runtimes/resourceTypes.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

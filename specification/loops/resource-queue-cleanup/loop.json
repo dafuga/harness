@@ -1,0 +1,62 @@
+{
+	"name": "resource-queue-cleanup",
+	"goal": "Admit managed work without losing CPU and memory reserves, one-worker tests or current provider behavior",
+	"createdAt": "2026-10-23T11:59:57.369Z",
+	"updatedAt": "2026-10-23T17:08:03.104Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:07:58.674Z",
+			"evidence": "Admit managed work with bounded shared reservations while preserving process ownership, output and completion."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:07:59.330Z",
+			"evidence": "Existing process matrices missed a delayed synchronous tracking callback. Retain earlier worker-ceiling and stdin proof and extend the evaluator lifecycle case."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:00.159Z",
+			"evidence": "Accepted immutable failing checkpoint 844e0f1d2c08c063a4c555b9f316e81e4c9d8510; tests were committed before product repair."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:00.960Z",
+			"evidence": "Register completion and output listeners before resource tracking can synchronously delay a fast process."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:02.019Z",
+			"evidence": "Accepted unchanged-test passing checkpoint 43dacd3706aa93cc8cda40db9d6a802fde185562 with its retained paired red record."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:03.104Z",
+			"evidence": "Frozen evaluator proof passes; earlier worker and stdin proof remains retained. Focused queue, packed API and native provider matrices pass. Global checks remain separate."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

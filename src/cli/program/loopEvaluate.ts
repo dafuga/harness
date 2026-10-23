@@ -1,14 +1,20 @@
 import type {
-	EvaluateLoopInput,
 	LoopEvaluationResult,
-	LoopCommandResult
+	LoopCommandResult,
+	EvaluateLoopInput
+} from './loopEvaluate.types';
+export type {
+	LoopEvaluationResult,
+	LoopCommandResult,
+	EvaluateLoopInput
 } from './loopEvaluate.types';
 import { spawn } from 'node:child_process';
+import { resourceWork } from '../../utils/execution-runtimes/resourceWork';
 import {
+	appendTrace,
 	loopPaths,
 	loopRoot,
 	readLoop,
-	appendTrace,
 	type LoopEvaluator
 } from '../../workflows/development-tooling/loop-state/loopState';
 
@@ -59,35 +65,50 @@ function runEvaluator(
 	context: { loop: string; agentModel?: string }
 ): Promise<LoopCommandResult> {
 	const startedAt = Date.now();
-	return new Promise((resolve) => {
-		const child = spawn(evaluator.command, {
-			cwd: root,
-			shell: true,
-			stdio: 'pipe',
-			env: {
-				...process.env,
-				HARNESS_ANALYTICS_LOOP: context.loop,
-				HARNESS_ANALYTICS_STEP: evaluator.step,
-				HARNESS_AGENT_MODEL: context.agentModel ?? process.env.HARNESS_AGENT_MODEL
-			}
-		});
-		const stdout: Buffer[] = [];
-		const stderr: Buffer[] = [];
+	return resourceWork(
+		{ priority: 'agent-test', label: context.loop },
+		(lease) =>
+			new Promise((resolve) => {
+				const child = spawn(evaluator.command, {
+					cwd: root,
+					shell: true,
+					stdio: 'pipe',
+					env: {
+						...lease.env,
+						HARNESS_ANALYTICS_LOOP: context.loop,
+						HARNESS_ANALYTICS_STEP: evaluator.step,
+						HARNESS_AGENT_MODEL: context.agentModel ?? process.env.HARNESS_AGENT_MODEL
+					}
+				});
+				const stdout: Buffer[] = [];
+				const stderr: Buffer[] = [];
 
-		child.stdout.on('data', (chunk: Buffer) => stdout.push(chunk));
-		child.stderr.on('data', (chunk: Buffer) => stderr.push(chunk));
-		child.once('exit', (code) => {
-			resolve({
-				id: evaluator.id,
-				title: evaluator.title,
-				command: evaluator.command,
-				exitCode: code ?? 1,
-				durationMs: Date.now() - startedAt,
-				stdout: Buffer.concat(stdout).toString('utf8'),
-				stderr: Buffer.concat(stderr).toString('utf8')
-			});
-		});
-	});
+				child.stdout.on('data', (chunk: Buffer) => stdout.push(chunk));
+				child.stderr.on('data', (chunk: Buffer) => stderr.push(chunk));
+				child.once('error', () =>
+					resolve({
+						id: evaluator.id,
+						title: evaluator.title,
+						command: evaluator.command,
+						exitCode: 1,
+						stdout: '',
+						stderr: 'Evaluator could not start'
+					})
+				);
+				child.once('close', (code) => {
+					resolve({
+						id: evaluator.id,
+						title: evaluator.title,
+						command: evaluator.command,
+						exitCode: code ?? 1,
+						durationMs: Date.now() - startedAt,
+						stdout: Buffer.concat(stdout).toString('utf8'),
+						stderr: Buffer.concat(stderr).toString('utf8')
+					});
+				});
+				if (child.pid) lease.track(child.pid);
+			})
+	);
 }
 
 function renderCommandResult(result: LoopCommandResult): string {
@@ -106,9 +127,3 @@ function summaryResult(result: LoopCommandResult): Record<string, unknown> {
 		durationMs: result.durationMs
 	};
 }
-
-export type {
-	LoopEvaluationResult,
-	LoopCommandResult,
-	EvaluateLoopInput
-} from './loopEvaluate.types';

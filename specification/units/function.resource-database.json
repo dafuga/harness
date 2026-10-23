@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-database",
+	"kind": "function",
+	"title": "resourceDatabase",
+	"responsibility": "Opens the shared private SQLite protocol with equivalent Bun and Node statement adapters.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/resource-queue-service/resourceDatabase.ts"],
+		"symbols": ["ResourceDatabase", "Statement", "resourceDatabase"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resourceDatabase.home",
+				"type": "string",
+				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceDatabase",
+				"type": "ResourceDatabase",
+				"description": "Open database implementing the common transaction and statement protocol."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Unsupported database versions and filesystem or SQLite errors reject without resetting the existing queue."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.execution-runtimes-resource-queue-service-resource-database-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/resource-queue-service/resourceDatabase.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/resource-queue-service/resourceDatabase.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
