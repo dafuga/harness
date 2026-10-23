@@ -176,7 +176,7 @@ test('Source opens file contents in a modal and older histories state an explici
 	await open(page, route);
 	await page
 		.getByRole('button', {
-			name: 'View code for src/helpers/orders/filterOrders.ts',
+			name: 'View code for src/functions/filterOrders.ts',
 			exact: true
 		})
 		.click();
