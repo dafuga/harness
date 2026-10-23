@@ -49,7 +49,9 @@ remains effectful even when the function has a clear name.
 For helpers recorded by `specification/loops/local-helper-ownership/migration.json`, preserve the original move definition and update the existing intentional `followUps` record with the implementation commit, reason and current definition. Run the root `test/services/unit-index.test.ts` guard alongside the owning workspace's tests before landing; workspace-only checks do not cover this repository-wide ownership record.
 
 When a reuse threshold controls catalog inclusion, derive that decision and the
-visible usage links from the same resolved, distinct consumer set. Cover zero,
+visible usage links from the same resolved, distinct consumer set. Keep every resolved module
+category eligible for usage links, exclude the owner itself, and cover all supported kinds
+in the normal card matrix; a legacy category whitelist can silently lose valid consumers. Cover zero,
 one and multiple eligible consumers in the standardized catalog tests, including
 duplicate references and excluded or missing consumers. A passing display test
 must not accept a row that contradicts the collection's inclusion rule.

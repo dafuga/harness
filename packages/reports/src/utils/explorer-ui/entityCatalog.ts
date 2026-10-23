@@ -130,14 +130,16 @@ export function byName(left: CatalogRow, right: CatalogRow): number {
 /** Resolve per-export runtime consumers; unrelated exports in the same module do not count. */
 function helperConsumers(
 	helper: NonNullable<CatalogRow['helper']>,
-	entities: Map<string, ExplorerEntity>
+	entities: Map<string, ExplorerEntity>,
+	ownerId: string
 ): NonNullable<CatalogRow['usedIn']> {
 	const usedIn: NonNullable<CatalogRow['usedIn']> = [];
 	const seen = new Set<string>();
 	for (const consumer of helper.consumers ?? []) {
-		const entity = entities.get(consumer.unit);
+		const id = consumer.unit;
+		if (id === ownerId) continue;
+		const entity = entities.get(id);
 		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
-		if (!['components', 'services', 'models'].includes(entity.category)) continue;
 		seen.add(entity.id);
 		usedIn.push(entity);
 	}
@@ -163,47 +165,51 @@ export function entityCatalog(
 	options: { related?: boolean; consumers?: ExplorerEntity[] } = {}
 ): CatalogRow[] {
 	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
-	return entities
-		.filter((entity) => entity.category === category)
-		.flatMap((entity) => {
-			const row = rowOf(entity, relations(entity.id));
-			if (category === 'services') {
-				if (entity.change === 'removed') return [];
-				const service = entity.unit.serviceClasses?.find(
-					(item) =>
-						item.name === entity.name &&
-						/^[A-Z][A-Za-z0-9]*$/.test(item.name) &&
-						entity.unit.owns.source.includes(item.source) &&
-						item.constructedBy.length > 0 &&
-						new Set(item.methods).size >= 2
-				);
-				if (!service) return [];
-				const usedIn = [...new Set(service.consumers.map((user) => user.unit))]
-					.filter((id) => id !== entity.id)
-					.map((id) => byId.get(id))
-					.filter((owner): owner is ExplorerEntity =>
-						Boolean(owner && owner.change !== 'removed' && owner.unit.status === 'active')
+	return (
+		entities
+			.filter((entity) => entity.category === category)
+			.flatMap((entity) => {
+				const row = rowOf(entity, relations(entity.id));
+				if (category === 'services') {
+					if (entity.change === 'removed') return [];
+					const service = entity.unit.serviceClasses?.find(
+						(item) =>
+							item.name === entity.name &&
+							/^[A-Z][A-Za-z0-9]*$/.test(item.name) &&
+							entity.unit.owns.source.includes(item.source) &&
+							item.constructedBy.length > 0 &&
+							new Set(item.methods).size >= 2
 					);
-				const shared = usedIn.length >= 2;
-				return hasRequiredServiceOwners(usedIn.length, options) ? [{ ...row, shared, usedIn }] : [];
-			}
-			if (category !== 'functions') return [row];
-			const helpers = catalogHelpers(entity, options.related);
-			if (options.related && helpers.length === 0) return [row];
-			return helpers
-				.map((helper) => ({
-					...row,
-					shared: true,
-					helper,
-					usedIn: helperConsumers(helper, byId),
-					name: helper.name,
-					id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
-				}))
-				.filter((item) => options.related || item.usedIn.length >= 2);
-		})
-		// A collection of configs lists their settings; a relationship lists each config module once.
-		.flatMap((row) => (category === 'configs' && !options.related ? configRows(row) : [row]))
-		.sort(byName);
+					if (!service) return [];
+					const usedIn = [...new Set(service.consumers.map((user) => user.unit))]
+						.filter((id) => id !== entity.id)
+						.map((id) => byId.get(id))
+						.filter((owner): owner is ExplorerEntity =>
+							Boolean(owner && owner.change !== 'removed' && owner.unit.status === 'active')
+						);
+					const shared = usedIn.length >= 2;
+					return hasRequiredServiceOwners(usedIn.length, options)
+						? [{ ...row, shared, usedIn }]
+						: [];
+				}
+				if (category !== 'functions') return [row];
+				const helpers = catalogHelpers(entity, options.related);
+				if (options.related && helpers.length === 0) return [row];
+				return helpers
+					.map((helper) => ({
+						...row,
+						shared: true,
+						helper,
+						usedIn: helperConsumers(helper, byId, row.id),
+						name: helper.name,
+						id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
+					}))
+					.filter((item) => options.related || item.usedIn.length >= 2);
+			})
+			// A collection of configs lists their settings; a relationship lists each config module once.
+			.flatMap((row) => (category === 'configs' && !options.related ? configRows(row) : [row]))
+			.sort(byName)
+	);
 }
 
 /** Names in a cell: none, the first few, and how many more there are. */
