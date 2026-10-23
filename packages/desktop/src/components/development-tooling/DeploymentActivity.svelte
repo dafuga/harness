@@ -157,7 +157,7 @@
 	}
 	/* Only the light in the bar pulses, and not where motion is reduced; its halo stays. */
 	.pulse[data-state='active'] {
-		animation: pulse var(--hx-motion-pulse) ease-in-out infinite;
+		animation: pulse var(--hx-motion-pulse) var(--hx-motion-ease-in-out) infinite;
 	}
 	@keyframes pulse {
 		50% {

@@ -187,7 +187,7 @@
 		border-radius: var(--hx-radius-small);
 		background: var(--hx-bg);
 		cursor: grab;
-		scrollbar-color: #3d5078 transparent;
+		scrollbar-color: var(--hx-line-strong) transparent;
 	}
 	.stage.zoomed img {
 		max-width: none;

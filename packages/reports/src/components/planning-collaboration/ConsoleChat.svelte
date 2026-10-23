@@ -149,7 +149,7 @@
 	.console-chat :global(button[type='submit']:hover:not(:disabled)),
 	.console-chat :global(button.primary:hover:not(:disabled)),
 	.console-chat :global(button.send:hover:not(:disabled)) {
-		filter: brightness(0.95);
+		filter: var(--hx-effect-hover-dim);
 	}
 	.console-chat :global(.error),
 	.console-chat :global([role='alert']) {

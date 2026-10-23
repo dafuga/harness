@@ -40,7 +40,7 @@
 		border: var(--hx-border-thick) solid var(--hx-line-strong);
 		border-top-color: var(--hx-gold);
 		border-radius: var(--hx-radius-round);
-		animation: hx-loading-turn var(--hx-motion-spin) linear infinite;
+		animation: hx-loading-turn var(--hx-motion-spin) var(--hx-motion-linear) infinite;
 	}
 	.hx-loading-label {
 		min-width: 0;

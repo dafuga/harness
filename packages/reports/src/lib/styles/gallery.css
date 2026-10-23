@@ -92,7 +92,7 @@
 }
 .viewer-dialog::backdrop {
 	background: var(--hx-scrim-strong);
-	backdrop-filter: blur(5px);
+	backdrop-filter: var(--hx-effect-blur-strong);
 }
 .viewer-dialog.text {
 	max-width: 760px;

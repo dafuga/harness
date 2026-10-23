@@ -80,7 +80,7 @@
 	}
 	.catalog-filter-dialog :global(.viewer-dialog::backdrop) {
 		background: var(--hx-scrim);
-		backdrop-filter: blur(3px);
+		backdrop-filter: var(--hx-effect-blur-subtle);
 	}
 	.catalog-filter-dialog :global(.viewer-header) {
 		display: flex;
@@ -132,7 +132,7 @@
 		font: inherit;
 	}
 	.filter-fields :global(input[type='checkbox']) {
-		accent-color: var(--gold, #f3c33b);
+		accent-color: var(--hx-gold);
 	}
 	.catalog-filter-dialog :global(footer) {
 		display: flex;

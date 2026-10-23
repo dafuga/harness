@@ -141,17 +141,23 @@
 	--hx-shadow-ring-strong: 0 0 0 var(--hx-border-thin) var(--hx-line-strong);
 	--hx-shadow-halo: 0 0 0 var(--hx-border-heavy) var(--hx-gold-tint);
 	--hx-shadow-selected: inset var(--hx-border-thick) 0 0 var(--hx-gold);
+	/* Effects preserve the existing blur and hover treatments. */
+	--hx-effect-blur-subtle: blur(3px);
+	--hx-effect-blur-strong: blur(5px);
+	--hx-effect-hover-dim: brightness(0.95);
 	/* Opacity. */
 	--hx-opacity-faint: 0.18;
 	--hx-opacity-disabled: 0.45;
 	--hx-opacity-dim: 0.55;
 	--hx-opacity-secondary: 0.75;
-	/* Motion: transition and animation durations. */
+	/* Motion: transition and animation durations and easing functions. */
 	--hx-motion-fast: 0.15s;
 	--hx-motion-reveal: 0.2s;
 	--hx-motion-stagger: 0.3s;
 	--hx-motion-spin: 0.9s;
 	--hx-motion-pulse: 1.6s;
+	--hx-motion-linear: linear;
+	--hx-motion-ease-in-out: ease-in-out;
 	/* Layering: z-index order from behind content to a full-screen view. */
 	--hx-layer-behind: -1;
 	--hx-layer-raised: 1;

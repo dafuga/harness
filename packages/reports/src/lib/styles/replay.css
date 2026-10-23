@@ -102,7 +102,7 @@
 }
 @media (prefers-reduced-motion: no-preference) {
 	.replay-pulse {
-		animation: replay-pulse var(--hx-motion-pulse) ease-in-out infinite;
+		animation: replay-pulse var(--hx-motion-pulse) var(--hx-motion-ease-in-out) infinite;
 	}
 }
 .replay-caption {
