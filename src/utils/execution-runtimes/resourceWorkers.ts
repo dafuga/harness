@@ -1,12 +1,16 @@
 /** Test runners honor the managed command's reservation instead of all logical host CPUs. */
-export function resourceWorkers(env: Record<string, string | undefined> = process.env): {
+export function resourceWorkers(
+	env: Record<string, string | undefined> = process.env,
+	maximumWorkers = Infinity
+): {
 	maxWorkers?: number;
 	minWorkers?: number;
 	env?: Record<string, string>;
 } {
 	const count = Number(env.HARNESS_RESOURCE_CPUS);
 	if (!Number.isFinite(count) || count <= 0) return {};
-	const workers = Math.max(1, Math.floor(count));
+	if (!(maximumWorkers >= 1)) throw new Error('Invalid test worker ceiling');
+	const workers = Math.max(1, Math.floor(Math.min(count, maximumWorkers)));
 	const worker = { ...env, HARNESS_RESOURCE_CPUS: String(Math.min(1, count)) };
 	const context: Record<string, string> = {
 		HARNESS_RESOURCE_CPUS: worker.HARNESS_RESOURCE_CPUS,

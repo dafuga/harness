@@ -1,4 +1,4 @@
-import { spawn } from 'node:child_process';
+import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
@@ -14,7 +14,6 @@ function connection(command: CliCommand, resources?: ResourceContext) {
 		detached: process.platform !== 'win32',
 		stdio: 'pipe'
 	});
-	if (child.pid) resources?.track(child.pid);
 	let sequence = 0,
 		closed = false;
 	const pending = new Map<number, RpcPending>(),
@@ -39,10 +38,8 @@ function connection(command: CliCommand, resources?: ResourceContext) {
 			rejectAll(new Error('Codex message too large.'));
 		}
 	});
-	child.stdout.on('data', consume.write);
-	child.stderr.resume();
-	child.on('error', rejectAll);
-	child.on('close', () => rejectAll(new Error('Codex connection closed.')));
+	watchConnection(child, consume, rejectAll);
+	if (child.pid) resources?.track(child.pid);
 	const request = <T = unknown>(method: string, params: unknown = {}, timeoutMs = 30000) =>
 		rpcRequest(
 			{ pending, listeners, send },
@@ -62,6 +59,18 @@ function connection(command: CliCommand, resources?: ResourceContext) {
 			return () => listeners.delete(listener);
 		}
 	};
+}
+
+function watchConnection(
+	child: ChildProcessWithoutNullStreams,
+	consume: ReturnType<typeof streamLines>,
+	reject: (error: Error) => void
+): void {
+	child.stdout.on('data', consume.write);
+	child.stderr.resume();
+	child.on('error', reject);
+	child.on('close', () => reject(new Error('Codex connection closed.')));
+	child.stdin.on('error', () => reject(new Error('Codex connection closed.')));
 }
 
 export async function codexRpc(

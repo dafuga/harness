@@ -1,4 +1,4 @@
-import { spawn } from 'node:child_process';
+import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
 import type { ResourceContext } from '../../../../../src/core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../src/utils/execution-runtimes/resourceEnvironment';
@@ -39,7 +39,6 @@ export async function cliProcess(
 	return new Promise((resolve, reject) => {
 		const child = processFor(command, options),
 			decoder = new StringDecoder('utf8');
-		if (child.pid) options.resources?.track(child.pid);
 		let output = '',
 			error = '',
 			settled = false;
@@ -83,6 +82,18 @@ export async function cliProcess(
 			consume.end();
 			finish(code === 0 ? null : new Error('CLI failed (' + String(code) + '): ' + error));
 		});
-		child.stdin.end(options.input ?? '');
+		closeInput(child, options.input ?? '', finish);
+		if (child.pid) options.resources?.track(child.pid);
 	});
+}
+
+function closeInput(
+	child: ChildProcessWithoutNullStreams,
+	input: string,
+	finish: (failure: Error | null) => void
+): void {
+	child.stdin.on('error', (error: NodeJS.ErrnoException) => {
+		if (error.code !== 'EPIPE') finish(error);
+	});
+	child.stdin.end(input);
 }
