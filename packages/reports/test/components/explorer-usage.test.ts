@@ -3,8 +3,10 @@ import { render } from 'svelte/server';
 import ExplorerUsage from '../../src/components/ExplorerUsage.svelte';
 import ExplorerPageCard from '../../src/components/explorer-ui/ExplorerPageCard.svelte';
 import { entityCatalog } from '../../src/utils/entityCatalog';
-import { hostProps, words } from '../entityRender';
+import { content, hostProps, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
+import { withHelpers } from '../entityPreviewHelpers';
+import { explorerRelations } from '../../src/utils/explorerRelations';
 
 for (const mode of ['current', 'commit'] as const) {
 	test.each([0, 1, 3, 4, 7])(
@@ -75,3 +77,40 @@ for (const mode of ['current', 'commit'] as const) {
 		expect(empty).not.toContain('<a');
 	});
 }
+
+test('private and unclassified dependencies reuse the shared module card', () => {
+	for (const mode of ['current', 'commit'] as const) {
+		const head = withHelpers(hostProps(mode).head);
+		const shape = 'app.model.order-shape-types';
+		const template = head.registry.units.find((unit) => unit.id === ids.filter)!;
+		head.registry.units.push({
+			...template,
+			id: shape,
+			kind: 'model',
+			title: 'OrderShape.types',
+			helpers: [],
+			owns: { source: ['src/models/OrderShape.types.ts'], symbols: ['OrderShape'] }
+		});
+		head.registry.units
+			.find((unit) => unit.id === ids.list)!
+			.dependencies.push({ unit: shape, via: 'import' });
+		const body = content(mode, { category: 'components', entity: ids.list, tab: 'uses' }, { head });
+		const support = explorerRelations(head, ids.list).support.filter((item) =>
+			['function.single', shape].includes(item.id)
+		);
+		expect(support).toHaveLength(2);
+		for (const item of support) {
+			const card = [...body.matchAll(/<article\b[^]*?<\/article>/g)]
+				.map((match) => match[0])
+				.find((markup) => markup.includes(`aria-label="${item.name}"`));
+			expect(card, 'Dependencies must be shared cards, not plain Other rows').toBeDefined();
+			expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
+			expect(card).toContain('aria-label="Used In"');
+			expect(card).not.toContain('ex-pill');
+			if (item.id === 'function.single') expect(card).toContain('/functions/function.single');
+			else
+				for (const category of ['models', 'functions'])
+					expect(card).not.toContain(`/${category}/${shape}`);
+		}
+	}
+});

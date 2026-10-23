@@ -3,7 +3,7 @@ import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 import { configExpression, longConfigValue } from './entityConfigFixtures';
-import { reviewServiceFolders } from './entityPreviewFunctions';
+import { reviewPrivateFunctions, reviewServiceFolders } from './entityPreviewFunctions';
 import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
@@ -62,6 +62,11 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 }
 
 for (const [viewport, size] of Object.entries(viewports)) {
+	test(`private dependencies reuse module cards at ${viewport} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await reviewPrivateFunctions(page, viewport);
+	});
+
 	test(`category folders group every collection and filter together at ${viewport}`, async ({
 		page
 	}) => {
