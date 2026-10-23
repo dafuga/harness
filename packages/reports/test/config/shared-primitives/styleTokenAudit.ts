@@ -1,4 +1,5 @@
 import postcss from 'postcss';
+import { namedCssColors } from './namedCssColors';
 import { parse } from 'svelte/compiler';
 import { appStyleTokensConfig as config } from '../../../src/config/shared-primitives/appStyleTokensConfig';
 
@@ -44,12 +45,9 @@ function withoutVariables(value: string): string {
 }
 
 function literalDesign(property: string, value: string): boolean {
-	if (
-		/#[\da-f]{3,8}\b|\b(?:rgb|hsl|hwb|lab|lch|oklab|oklch)a?\(|\b(?:black|white|red|blue|green|yellow|gold|navy|gray|grey)\b/i.test(
-			value
-		)
-	)
-		return true;
+	value = value.replace(/url\([^)]*\)/g, '');
+	if (/#[\da-f]{3,8}\b|\b(?:rgb|hsl|hwb|lab|lch|oklab|oklch)a?\(/i.test(value)) return true;
+	if (namedCssColors.test(value)) return true;
 	if (
 		/(?:^|[^\w-])-?(?:\d*\.)?\d+(?:px|rem|em|ch|ms|s)\b/.test(
 			value.replace(/(?<![\d.])0(?:px|rem|em|ch|ms|s)\b/g, '0')

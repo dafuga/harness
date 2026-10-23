@@ -16,6 +16,9 @@ function sources(directory: string): string[] {
 
 test.each([
 	['color: #fff', true],
+	['color: RebeccaPurple', true],
+	['border: var(--hx-border-thin) solid rebeccapurple', true],
+	['fill: url(#c0ffee)', false],
 	['color: var(--hx-text)', false],
 	['color: var(--hx-text, #fff)', true],
 	['color: currentColor', false],
