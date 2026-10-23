@@ -46,7 +46,8 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Focused browser matrix and 17 component/relation cases pass; Reports typecheck, lint, build, audit and registry pass. Broader Reports run: 689/690 pass initially; the preview lifecycle test suite passes all 11 cases on retry. Root CLI/native full verification is deferred by Daniel; live 5690 belongs to another worktree with an older prepared index, so no live-main delivery claim yet."
 		}
 	],
 	"evaluators": [
