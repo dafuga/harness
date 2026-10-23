@@ -88,6 +88,14 @@ test('every page mounts the host with one screen of its own, and none draws ever
 	for (const category of explorerCategories) {
 		for (const [screen, view] of Object.entries(screens)) {
 			const mounted = mounts(page(category, view), false);
+			if (screen !== 'catalog') {
+				const singular = category[0].toUpperCase() + category.slice(1, -1);
+				const suffix = screen === 'overview' ? '' : ` ${screen}`;
+				expect(
+					readFileSync(join(repo, page(category, view)), 'utf8'),
+					`Canonical route title: ${category} ${screen}`
+				).toContain(`title="${singular}${suffix}"`);
+			}
 			expect([category, screen, mounted.length, mounted.includes('HarnessScreen')]).toEqual([
 				category,
 				screen,

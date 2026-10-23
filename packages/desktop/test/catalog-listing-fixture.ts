@@ -9,6 +9,27 @@ import type { ComponentManifest } from '../../../src/lib/contracts';
 import type { DesignVersion } from '../src/models/Desktop.types';
 import type { PlanRecord } from '../src/models/PlanningPort.types';
 
+export function previewReads(
+	unit: ComponentManifest,
+	declaredPreview: NonNullable<ComponentManifest['preview']>
+) {
+	const reads: string[] = [];
+	const preview = { ...declaredPreview, state: 'before-summary' };
+	const observed = {
+		...unit,
+		get preview() {
+			reads.push('preview');
+			return preview;
+		},
+		get responsibility() {
+			reads.push('summary');
+			preview.state = 'after-summary';
+			return unit.responsibility;
+		}
+	};
+	return { reads, preview, observed };
+}
+
 /** The plan/version states a catalog can receive, independent of image storage. */
 export const imagelessDesign: DesignVersion = {
 	version: 'v001',
