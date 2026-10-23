@@ -77,8 +77,15 @@ test('test:e2e runs headless chromium without the Electron spec, which only test
 	const project = (name: string) => playwright.projects?.find((item) => item.name === name);
 	const chromium = project('chromium');
 	const native = project('native');
-	expect(manifest.scripts['test:e2e']).toBe('playwright test --project=chromium');
-	expect(manifest.scripts['test:native']).toBe('playwright test --project=native');
+	for (const [script, project] of [
+		['test:e2e', 'chromium'],
+		['test:native', 'native']
+	] as const) {
+		expect(manifest.scripts[script]).toMatch(/^bun \.\.\/\.\.\/src\/index\.ts resources run /);
+		expect(manifest.scripts[script]).toContain(
+			`-- sh -c 'playwright test --project=${project} "$@"' --`
+		);
+	}
 	expect(chromium?.use).toMatchObject({ browserName: 'chromium', headless: true });
 	expect(launchesElectron('native-desktop.spec.ts')).toBe(true);
 	expect(launchesElectron('ui-hosted.spec.ts')).toBe(false);
