@@ -32,7 +32,12 @@ export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 	models: {
 		title: 'Models',
 		one: 'Model',
-		subtitle: 'The data types and schemas used by the app.'
+		subtitle: 'Persisted data models and their database schemas.'
+	},
+	types: {
+		title: 'Types',
+		one: 'Type',
+		subtitle: 'Shared interfaces and type aliases used by the app.'
 	},
 	platforms: {
 		title: 'Platforms',

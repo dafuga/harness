@@ -116,6 +116,7 @@ export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	configs: 'configs',
 	services: 'services',
 	models: 'database',
+	types: 'code',
 	platforms: 'platforms'
 };
 

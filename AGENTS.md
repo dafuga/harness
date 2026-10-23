@@ -80,7 +80,7 @@ These rules apply only to this Harness repository, including requests made in an
 
 - Before choosing component colors, consult Styles → Color roles and its definitions in `appStyleTokensConfig`. Use the documented role and shared control variant; a decorative accent does not establish an action style. Update role guidance and standardized Styles coverage when introducing a new semantic use.
 
-- Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models define data shapes and schemas. Unknown or effectful functions are not helpers.
+- Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models wrap persisted data; shared interfaces and aliases belong under Types. Unknown or effectful functions are not helpers.
 - Reserve shared helper folders for pure callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
 - A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
 - Preserve registered identities, contracts and history when relocating helpers. Update imports, tests and owned source together. Mixed shared/private modules must be split by responsibility rather than moving a shared helper into one consumer's folder. An unused export has no proven owner; check public API contracts and dynamic/runtime use before removing or relocating it.
@@ -104,7 +104,7 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Module Naming
 
-Shared model names omit the .types file suffix. Preserve shared type-only models, registered IDs, source paths and classification; use the same clean name on cards, links and headings.
+Models are persisted data wrappers with source-declared storage schemas. Existing shared type modules belong under Types. Preserve their registered IDs and source paths; omit the .types suffix on cards, links and headings.
 
 Before extending an alias resolver, strengthen its standard lookup matrix with
 canonical-name collisions, plural forms and normalization. Canonical names keep

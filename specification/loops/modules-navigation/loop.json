@@ -2,17 +2,16 @@
 	"name": "modules-navigation",
 	"goal": "Show five primary destinations with module categories and separate data-shape Types from persisted Models",
 	"createdAt": "2026-10-23T20:09:18.165Z",
-	"updatedAt": "2026-10-23T20:09:18.165Z",
+	"updatedAt": "2026-10-23T21:01:30.000Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"evidence": "Daniel selected five primary destinations and limited Types to existing shared type modules. Preserve IDs, paths, shared cards and scoped revision navigation; Models represent persisted data wrappers."
 		},
 		{
 			"id": "implement",
@@ -22,7 +21,8 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"evidence": "The existing navbar matrix assumed nine top-level entries and the mixed catalog admitted interface modules as Models. Strengthened normal route, metadata, category, shared-screen and three-viewport browser matrices. Canonical red ec56e15bd4f43deaacded2deee6875679ce6c5b0ed7f19b7d5caaae4fae47bc8 at d5dd131299c1bdd654846893a85ead6015d70af2 retains 66 original captures and eight observations; three navbar and three card-grid cases reproduce the gaps."
 		},
 		{
 			"id": "verify",

@@ -4805,9 +4805,9 @@
 		{
 			"unit": "function.unit-metadata",
 			"name": "unitMetadata",
-			"definition": "dbe9716788a00936bb887f41d48bc337b60f1b0f97273807f06842cbd3a84770",
-			"reason": "Derive each helper category from its own revision-bound source folder, preserving examples and domain-specific helper categories independently of the owning module.",
-			"commit": "bf32a1455bd7e76ddb1bf5afb9bf81d7c1b919d2",
+			"definition": "f1740bbc747b88643dcb9502f456d03c6473da06e3fc8e9eb6b83ef7ee67656c",
+			"reason": "Read actual public model declarations and statically declared SQLite schemas from the selected revision without executing source or accessing live rows.",
+			"commit": "485cf3f13a4967ff758ef923e31148f5f89bc118",
 			"previousDefinitions": [
 				{
 					"unit": "function.unit-metadata",
@@ -4829,6 +4829,13 @@
 					"definition": "4ff008eef84c519795231a6e506ceb4bb6182aa5152c1bea1f09258a08f323f0",
 					"reason": "Read committed config initializers alongside helper metadata without executing modules or borrowing values across revisions.",
 					"commit": "6847bb6128e3fe7bc85aead4517951cbd48d5b13"
+				},
+				{
+					"unit": "function.unit-metadata",
+					"name": "unitMetadata",
+					"definition": "dbe9716788a00936bb887f41d48bc337b60f1b0f97273807f06842cbd3a84770",
+					"reason": "Derive each helper category from its own revision-bound source folder, preserving examples and domain-specific helper categories independently of the owning module.",
+					"commit": "bf32a1455bd7e76ddb1bf5afb9bf81d7c1b919d2"
 				}
 			]
 		},

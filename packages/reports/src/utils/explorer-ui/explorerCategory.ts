@@ -32,14 +32,18 @@ const compatibility = (unit: Classified) =>
 			(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
 	);
 
-/** Type collections describe API shapes; they are not data models. */
-const typeCollection = (unit: Classified) =>
-	unit.kind === 'model' &&
-	unit.owns.source.length > 0 &&
-	unit.owns.source.every((path) => /\.(?:types|d)\.[cm]?tsx?$/.test(path));
+/** Only selected-revision declarations owned by this shared module establish its category. */
+function modelCategory(unit: Classified): 'models' | 'types' | null {
+	const definitions = (unit.modelDefinitions ?? []).filter((item) =>
+		unit.owns.source.includes(item.source)
+	);
+	if (definitions.some((item) => item.kind === 'class' && (item.table || item.tableGap)))
+		return 'models';
+	return definitions.length && definitions.every((item) => item.kind !== 'class') ? 'types' : null;
+}
 
 const unlisted = (unit: Classified) =>
-	unit.catalog?.visibility === 'internal' || typeCollection(unit) || nonvisualLayout(unit);
+	unit.catalog?.visibility === 'internal' || nonvisualLayout(unit);
 
 /** A SvelteKit options module configures rendering but renders no pixels itself. */
 const layoutConfiguration = (unit: Classified) =>
@@ -64,6 +68,7 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	if (layoutConfiguration(unit)) return 'configs';
+	if (unit.kind === 'model') return modelCategory(unit);
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'functions' || unit.kind === 'module') {
 		return unit.helpers?.some(helperContract) ? 'functions' : null;
@@ -73,7 +78,7 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 
 /** What a unit is, in words a reader knows: `Page`, `Route loader`, `Audit rule`. */
 export function explorerRole(unit: Classified): string {
-	if (typeCollection(unit)) return 'Type definitions';
+	if (unit.kind === 'model' && modelCategory(unit) === 'types') return 'Type definitions';
 	if (layoutConfiguration(unit)) return 'Route configuration';
 	if (compatibility(unit)) return 'Route alias';
 	if (renders(unit)) return 'Page';

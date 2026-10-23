@@ -9,7 +9,8 @@ const kinds = [
 	['Functions', 'functions'],
 	['Configs', 'configs'],
 	['Services', 'services'],
-	['Models', 'models']
+	['Models', 'models'],
+	['Types', 'types']
 ] as const;
 
 /** Each of them once, where it was first named. */
