@@ -1,0 +1,34 @@
+$ playwright test --config src/config/shellPlaywrightConfig.ts --grep "console data loading|reports.component.(harness-harness-console|shared-primitives-loading-state) at|every active visual component|the bar shows its navigation"
+
+Running 16 tests using 1 worker
+
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:22:1 › every active visual component has its own required capture state (5ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at desktop (3.9s)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at desktop (732ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at tablet (736ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at tablet (736ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at mobile (699ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at mobile (696ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-harness-console at desktop (1.4s)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.shared-primitives-loading-state at desktop (650ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-harness-console at tablet (467ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.shared-primitives-loading-state at tablet (314ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-harness-console at mobile (464ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.shared-primitives-loading-state at mobile (310ms)
+  ✓  14 tests/e2e/explorer-shell.spec.ts:59:2 › the bar shows its navigation with an icon above each label at desktop width (470ms)
+  ✓  15 tests/e2e/explorer-shell.spec.ts:59:2 › the bar shows its navigation with an icon above each label at tablet width (443ms)
+  ✓  16 tests/e2e/explorer-shell.spec.ts:59:2 › the bar shows its navigation with an icon above each label at mobile width (523ms)
+
+  16 passed (25.9s)
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-groups.spec.ts
+
+Running 6 tests using 1 worker
+
+  ✓  1 test/entity-preview-groups.spec.ts:35:2 › category folders group every collection and filter together at desktop (1.4s)
+  ✓  2 test/entity-preview-groups.spec.ts:35:2 › category folders group every collection and filter together at tablet (1.3s)
+  ✓  3 test/entity-preview-groups.spec.ts:35:2 › category folders group every collection and filter together at mobile (1.3s)
+  ✓  4 test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at desktop (1.6s)
+  ✓  5 test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at tablet (1.7s)
+  ✓  6 test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at mobile (1.5s)
+
+  6 passed (12.1s)
