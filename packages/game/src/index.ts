@@ -9,3 +9,4 @@ export {
 export { validateDocument, assertDocument } from './validators/game-authoring/gameDocument';
 export { draw2d, create2d } from './adapters/game-authoring/Canvas2dAdapter';
 export { create3d } from './adapters/game-authoring/ThreeSceneAdapter';
+export { LevelValidator } from './validators/game-authoring/LevelValidator';
