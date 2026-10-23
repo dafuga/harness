@@ -98,12 +98,12 @@ export function configFiles(name: string): PlannedFile[] {
 
 	return [
 		{
-			path: `src/config/${configName}.ts`,
+			path: `src/configs/${configName}.ts`,
 			contents: `export const ${configName} = {\n\tname: '${fileName}',\n\tenabled: true\n} as const;\n`
 		},
 		{
 			path: `test/config/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${configName} } from '../../src/config/${configName}';\n\ntest('${configName} is enabled', () => {\n\texpect(${configName}.enabled).toBe(true);\n});\n`
+			contents: `import { expect, test } from 'vitest';\nimport { ${configName} } from '../../src/configs/${configName}';\n\ntest('${configName} is enabled', () => {\n\texpect(${configName}.enabled).toBe(true);\n});\n`
 		}
 	];
 }

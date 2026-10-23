@@ -68,7 +68,7 @@
 			"kind": "e2e",
 			"runner": "command",
 			"cwd": "packages/reports",
-			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
+			"target": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
 			"timeoutMs": 180000
 		},
 		{

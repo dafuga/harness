@@ -7,7 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/config/shared-primitives/appStyleTokensConfig.ts"],
+		"source": ["packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"],
 		"symbols": ["appStyleTokensConfig"]
 	},
 	"contract": {
@@ -25,11 +25,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/config/shared-primitives/appStyleTokensConfig.ts",
+		"entry": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/config/shared-primitives/appStyleTokensConfig.ts"
+				"entry": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
 			}
 		]
 	},

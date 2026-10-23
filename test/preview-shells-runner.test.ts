@@ -66,7 +66,7 @@ test('capture readiness runs under the server-free shell config', () => {
 	const path = 'packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts';
 	expect(existsSync(path)).toBe(true);
 	expect(planned(path)[0].command).toBe(
-		'bun x playwright test --config src/config/shellPlaywrightConfig.ts tests/e2e/explorer-shell-capture-readiness.spec.ts'
+		'bun x playwright test --config src/configs/shellPlaywrightConfig.ts tests/e2e/explorer-shell-capture-readiness.spec.ts'
 	);
 });
 
