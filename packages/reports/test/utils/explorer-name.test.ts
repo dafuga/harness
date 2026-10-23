@@ -129,15 +129,15 @@ test.each([
 	['module', 'orderRules', 'src/lib/orders/orderRules.ts', ['validateOrder', 'sortOrders']],
 	['component', 'OrderList', 'src/components/order-list/OrderList.svelte', []],
 	['model', 'Order', 'src/models/Order.ts', ['OrderFields', 'Order']],
-	['model', 'Order.types', 'src/models/Order.types.ts', ['OrderInput', 'OrderResult'], 'Order'],
+	['model', 'Order.types', 'src/models/Order.types.ts', ['OrderInput', 'OrderResult']],
 	['config', 'orderConfig', 'src/config/orderConfig.ts', ['OrderConfig', 'orderConfig']]
 ])(
 	'%s names use the recorded code identity %s across descriptive titles',
-	(kind, name, source, symbols, expectedName = name) => {
+	(kind, name, source, symbols) => {
 		const record = unit(`app.${kind}.orders`, kind, {
 			title: 'A descriptive title for orders',
 			owns: { source: [source], symbols }
 		});
-		expect(explorerName(record)).toBe(expectedName);
+		expect(explorerName(record)).toBe(name === 'Order.types' ? 'Order' : name);
 	}
 );
