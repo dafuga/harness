@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 	import { catalogFilter } from './entityCatalog';
-	import { catalogSections, configSections } from './catalogGroups';
+	import { catalogSections } from './catalogGroups';
 	import { type CatalogFilter, type CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
 	import { entityLabels } from '../../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../../utils/explorer-ui/harnessIcons';
@@ -43,11 +43,7 @@
 	let listed = $derived(catalogFilter(rows, filter));
 	// Configs are one section for each source file; every other kind is grouped by responsibility.
 	let sections = $derived(
-		grouped.has(category)
-			? (category === 'configs' ? configSections : catalogSections)(listed).filter(
-					(section) => section.rows.length
-				)
-			: []
+		grouped.has(category) ? catalogSections(listed).filter((section) => section.rows.length) : []
 	);
 	let filtered = $derived(Boolean(filter.search.trim()));
 </script>
