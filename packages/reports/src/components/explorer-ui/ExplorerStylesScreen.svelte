@@ -14,38 +14,7 @@
 	let host: ExplorerScreenProps = $props();
 
 	const unclassified: UnclassifiedGroupName = 'Unclassified tokens';
-	/** The token prefixes each declared group owns; a name none of them claims stays unclassified. */
-	const prefixes: Record<StyleGroupName, RegExp> = {
-		Colors:
-			/^--hx-(?:bg|surface|raised|line|text|soft|muted|gold|pass|fail|accent|danger|warning|tint|scrim)(?:-|$)/,
-		'Font families': /^--hx-font-family-/,
-		'Type scale': /^--hx-type-size-/,
-		'Text styles': /^--hx-style-/,
-		Spacing: /^--hx-space-/,
-		'Borders and corners': /^--hx-(?:border|radius)(?:-|$)/,
-		Shadows: /^--hx-shadow-/,
-		Effects: /^--hx-effect-/,
-		Opacity: /^--hx-opacity-/,
-		Motion: /^--hx-motion-/,
-		Layering: /^--hx-layer-/,
-		'Layout tokens': /^--hx-(?:gutter$|nav-|layout-)/,
-		'Responsive breakpoints': /^--hx-breakpoint-/
-	};
-	const descriptions: Record<StyleGroupName, string> = {
-		Colors: 'The thirteen palette colors, and treatments mixed only from them.',
-		'Font families': 'Inter for interface text, and a named monospace stack for code.',
-		'Type scale': 'Fixed font sizes, fluid title sizes, and inline text sized to its parent.',
-		'Text styles': 'Weights, styles, leading, tracking, numerals and whole font shorthands.',
-		Spacing: 'Padding, margin and gap lengths, each named by its size in pixels.',
-		'Borders and corners': 'Border widths and corner radii.',
-		Shadows: 'Elevation and outline rings, painted with the shared shadow tint.',
-		Effects: 'Blur and brightness treatments shared by dialogs, galleries and chat.',
-		Opacity: 'Translucency of faint, disabled and secondary content.',
-		Motion: 'Transition and animation durations and easing functions.',
-		Layering: 'Stacking order, from behind content to a full-screen view.',
-		'Layout tokens': 'Gutters, navigation gaps and structural clearances.',
-		'Responsive breakpoints': 'Reference widths, repeated literally by media queries.'
-	};
+	const { groupPrefixes: prefixes, groupDescriptions: descriptions } = appStyleTokensConfig;
 	/** How a group draws its tokens; `$` stands for the token's own reference. */
 	const groupDrawings: Record<StyleGroupName, [StyleSpecimen, string]> = {
 		Colors: ['swatch', '--style-specimen: $'],
@@ -187,6 +156,30 @@
 			</header>
 
 			<div class="hx-styles-groups">
+				<section class="hx-color-roles" aria-labelledby={headingId('Color roles')}>
+					<div class="hx-styles-group-heading">
+						<h2 id={headingId('Color roles')}>Color roles</h2>
+						<p>
+							Which variable a component should use for each job, each swatch drawn by the variable
+							itself. The complete inventory follows.
+						</p>
+					</div>
+					<div class="hx-styles-grid">
+						{#each appStyleTokensConfig.colorRoles as role (role.name)}
+							<article class="hx-color-role" aria-labelledby={headingId(role.name)}>
+								<h3 id={headingId(role.name)}>{role.name}</h3>
+								<p><strong>Use for</strong> {role.use}</p>
+								<ul>
+									{#each role.tokens as [name, job] (name)}
+										<li style={`--style-specimen: var(${name})`}>
+											<code>var({name})</code><span>{job}</span>
+										</li>
+									{/each}
+								</ul>
+							</article>
+						{/each}
+					</div>
+				</section>
 				{#each groups as group (group.name)}
 					<section class="hx-styles-group" aria-labelledby={headingId(group.name)}>
 						<div class="hx-styles-group-heading">
