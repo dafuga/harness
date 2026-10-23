@@ -1,6 +1,8 @@
 import type { LoopInput } from '../../workflows/development-tooling/loop-state/loopState';
 
 export interface CreateLoopInput extends LoopInput {
+	kind?: 'coding' | 'planning';
+	plan?: string;
 	name: string;
 	goal: string;
 	from?: string;

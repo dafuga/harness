@@ -1,0 +1,47 @@
+{
+	"name": "completion-evidence-cleanup",
+	"goal": "Recover task audit and explicit profiling while preserving recent UI, stable APIs and existing behavior",
+	"createdAt": "2026-10-23T12:54:54.791Z",
+	"updatedAt": "2026-10-23T17:08:41.469Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:39.444Z",
+			"evidence": "Recover opt-in task audits and profiling while preserving current main UI, public contracts and ordinary completion behavior."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:40.487Z",
+			"evidence": "Retain source classification, one-pass observations, audit persistence and explicit CLI controls; remove the automatic agent and Desktop hooks."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:40.984Z",
+			"evidence": "Focused task, profile and source-runner matrices pass. Default-loop compatibility has immutable red and green proof; nine standard Task and packed API checks pass after the SDK repair."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:41.469Z",
+			"evidence": "Relevant focused runtime, API, type, format and lint checks pass. No product UI source is changed; final focused captures and global repository gates are tracked separately."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

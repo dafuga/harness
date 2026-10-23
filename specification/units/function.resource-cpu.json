@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-cpu",
+	"kind": "function",
+	"title": "resourceCpu",
+	"responsibility": "Converts host and quota counter intervals into currently available cores, respecting affinity and quota saturation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu.ts"
+		],
+		"symbols": ["Counters", "hostCpuCounters", "resourceCpu"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resourceCpu.previous",
+				"type": "Counters",
+				"description": "Previous CPU interval counters, quota usage and monotonic timestamp."
+			},
+			{
+				"name": "resourceCpu.current",
+				"type": "Counters",
+				"description": "Current CPU interval counters, affinity, quota usage and monotonic timestamp."
+			}
+		],
+		"outputs": [
+			{
+				"name": "hostCpuCounters",
+				"type": "unknown",
+				"description": "Monotonic host CPU counters, affinity and current cgroup limits for interval comparison."
+			},
+			{
+				"name": "resourceCpu",
+				"type": "unknown",
+				"description": "Logical and usable cores, observed host utilization and currently available quota-aware cores."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid counter intervals or changed or malformed quota counters require a fresh sample."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.host-resource-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-resource-queue-service-resource-monitor-service-host-resources-adapter-resource-cpu-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/resourceCpu.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

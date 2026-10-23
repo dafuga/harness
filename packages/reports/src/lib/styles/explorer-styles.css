@@ -1,4 +1,4 @@
-/* The Styles catalog: every shared app token, grouped, each drawn by the token itself. */
+/* The Styles catalog: color roles, then every shared app token grouped and drawn by itself. */
 .hx-styles-page {
 	max-width: 1440px;
 	margin: 0 auto;
@@ -59,7 +59,8 @@
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
 	gap: var(--hx-space-12);
 }
-.hx-style-token {
+.hx-style-token,
+.hx-color-role {
 	display: flex;
 	flex-direction: column;
 	gap: var(--hx-space-12);
@@ -77,7 +78,8 @@
 	gap: var(--hx-space-6) var(--hx-space-12);
 	min-height: 34px;
 }
-.hx-style-token-head code {
+.hx-style-token-head code,
+.hx-color-role code {
 	max-width: 100%;
 	color: var(--hx-soft);
 	font-family: var(--hx-font-family-mono);
@@ -96,7 +98,8 @@
 	display: flex;
 	gap: var(--hx-space-6);
 }
-.hx-style-color span {
+.hx-style-color span,
+.hx-color-role li::before {
 	flex: 1;
 	min-width: 0;
 	height: 28px;
@@ -159,11 +162,52 @@
 	border-radius: var(--hx-radius-small);
 	background: var(--hx-gold);
 }
+/* Each role spans three rows, so titles, guidance and variables line up along a row of roles. */
+.hx-color-roles .hx-styles-grid {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+}
+.hx-color-role {
+	display: grid;
+	grid-row: span 3;
+	grid-template-rows: subgrid;
+}
+.hx-color-role > * {
+	margin: 0;
+	color: var(--hx-soft);
+	font-size: var(--hx-type-size-sm);
+	line-height: var(--hx-style-leading-snug);
+}
+.hx-color-role h3 {
+	color: var(--hx-text);
+	font-size: var(--hx-type-size-base);
+}
+/* Each variable: the swatch it draws, the reference to write, and what it paints. */
+.hx-color-role ul {
+	display: grid;
+	align-content: start;
+	gap: var(--hx-space-10);
+	padding: var(--hx-space-12) 0 0;
+	border-top: var(--hx-border-thin) solid var(--hx-line);
+	color: var(--hx-muted);
+	font-size: var(--hx-type-size-xs);
+	list-style: none;
+}
+.hx-color-role li {
+	display: grid;
+	grid-template-columns: 28px minmax(0, 1fr);
+	align-items: center;
+	column-gap: var(--hx-space-10);
+}
+.hx-color-role li::before {
+	content: '';
+	grid-row: span 2;
+}
 @media (max-width: 560px) {
 	.hx-styles-intro {
 		margin-bottom: var(--hx-space-24);
 	}
-	.hx-style-token {
+	.hx-style-token,
+	.hx-color-role {
 		padding: var(--hx-space-12);
 	}
 }

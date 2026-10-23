@@ -14,6 +14,8 @@ export interface LoopEvaluator {
 }
 
 export interface LoopState {
+	/** Completion policy is versioned; old traces are not rewritten as new evidence. */
+	completion?: { version: 1; kind: 'coding' | 'planning'; plan?: string };
 	agentModel?: string;
 	name: string;
 	goal: string;

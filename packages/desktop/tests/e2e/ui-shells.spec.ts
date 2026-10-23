@@ -5,9 +5,9 @@ import { alpha } from './ui-project-fixture';
 import { evidenced, shell, withShell } from './ui-shells-fixture';
 
 /**
- * Shells in the shared app that Web, Electron and iOS render: a category after Pages, listing the
+ * Layouts in the shared app that Web, Electron and iOS render: a category after Pages, listing the
  * shared workspace shell, which Components no longer lists; an old Components address of it opens
- * it under Shells. A screenshot is kept before the checks of each place when TAKE_SCREENSHOT=true.
+ * it under Layouts. A screenshot is kept before the checks of each place when TAKE_SCREENSHOT=true.
  */
 const route = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
 const categories = ['Pages', 'Layouts', 'Components', 'Helpers', 'Configs', 'Services', 'Models'];
@@ -34,7 +34,7 @@ for (const viewport of [
 	{ id: 'desktop', width: 1440, height: 900 },
 	{ id: 'mobile', width: 390, height: 844 }
 ]) {
-	test(`Shells follows Pages and lists the shared workspace shell at ${viewport.id} width`, async ({
+	test(`Layouts follows Pages and lists the shared workspace shell at ${viewport.id} width`, async ({
 		page
 	}, info) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
@@ -55,7 +55,7 @@ for (const viewport of [
 	});
 }
 
-test('an old Components address of the shell opens it under Shells, keeping its section', async ({
+test('old Components and Shells addresses open the layout, keeping their section', async ({
 	page
 }, info) => {
 	await withShell(page);
@@ -64,8 +64,13 @@ test('an old Components address of the shell opens it under Shells, keeping its 
 	await expect(
 		page.getByRole('heading', { level: 1, name: 'Shared workspace shell' })
 	).toBeVisible();
-	await expect(page).toHaveURL(route(`shells/${shell}/source`));
+	await expect(page).toHaveURL(route(`layouts/${shell}/source`));
 	await expect(nav(page).getByRole('link', { name: 'Layouts' })).toHaveClass(/active/);
 	await expect(page.locator('.chip').filter({ hasText: /^shell$/ })).toBeVisible();
 	await evidenced(page, 'shells-legacy-address');
+	await page.goto(route(`shells/${shell}/details`));
+	await expect(page).toHaveURL(route(`layouts/${shell}/source`));
+	await expect(
+		page.getByRole('heading', { level: 1, name: 'Shared workspace shell' })
+	).toBeVisible();
 });

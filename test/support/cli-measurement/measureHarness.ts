@@ -36,6 +36,8 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 }
 
 function measuredUnits(args: string[]): string[] {
+	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
+	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];
 	if (args[0] === 'history' && args[1] === 'build')
 		return [
@@ -53,6 +55,87 @@ function measuredUnits(args: string[]): string[] {
 		? [...units, 'function.regression-history']
 		: units;
 }
+
+// These units execute in the native-fixture run. Figures describe the complete CLI workload.
+const benchmarkRunUnits = [
+	'command.benchmark',
+	'service.benchmark',
+	'adapter.codex-benchmark',
+	'adapter.claude-benchmark',
+	'repository.benchmark',
+	'validator.benchmark-definition',
+	'function.benchmark-events',
+	'function.benchmark-process',
+	'workflow.benchmark-definition',
+	'workflow.benchmark-evaluate',
+	'workflow.benchmark-metrics',
+	'workflow.benchmark-trial',
+	'workflow.benchmark-workspace',
+	'workflow.run-benchmark',
+	'function.command-action',
+	'entry.program',
+	'entry.index'
+];
+
+const measuredWorkloads: Record<string, string[]> = {
+	'info:resources': ['guide.resources', 'guide.guide', 'entry.program', 'entry.index'],
+	'resources:status': [
+		'command.resources',
+		'service.resource-queue',
+		'service.resource-monitor',
+		'adapter.host-resources',
+		'function.host-memory',
+		'function.host-resource-limits',
+		'function.resource-cpu',
+		'function.resource-config',
+		'function.resource-database',
+		'repository.resource-queue',
+		'function.resource-types',
+		'entry.program',
+		'entry.index',
+		'function.command-action'
+	],
+	'resources:run': [
+		'command.resources',
+		'service.resource-queue',
+		'service.resource-monitor',
+		'adapter.host-resources',
+		'function.host-memory',
+		'function.host-resource-limits',
+		'function.resource-cpu',
+		'function.resource-config',
+		'function.resource-database',
+		'repository.resource-queue',
+		'function.resource-types',
+		'function.resource-policy',
+		'function.resource-context',
+		'function.resource-command',
+		'function.resource-request',
+		'function.resource-identity',
+		'function.resource-workers',
+		'function.isolated-child',
+		'function.run-isolated',
+		'entry.program',
+		'entry.index',
+		'function.command-action'
+	],
+	'verify:run': [
+		'command.verify',
+		'workflow.run-verify',
+		'service.check-run',
+		'function.resource-work'
+	],
+
+	'info:benchmark': ['guide.benchmark', 'guide.guide', 'entry.program', 'entry.index'],
+	'benchmark:run': benchmarkRunUnits,
+	'analytics:benchmarks': [
+		'command.analytics',
+		'service.analytics',
+		'workflow.analytics-metrics',
+		'entry.program',
+		'entry.index'
+	]
+};
 
 function recordUsage(units: string[], args: string[], duration: number, usage: string): void {
 	const resident =

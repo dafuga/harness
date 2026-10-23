@@ -124,7 +124,20 @@
 			"CatalogScenarioAttributes",
 			"CatalogScenarioCreateInput",
 			"CatalogScenarioUpdateInput",
-			"ModelDependencyService"
+			"ModelDependencyService",
+			"registerBenchmarkCommand",
+			"CodexBenchmarkAdapter",
+			"ClaudeBenchmarkAdapter",
+			"BenchmarkDefinitionValidator",
+			"BenchmarkRepository",
+			"BenchmarkService",
+			"registerResourcesCommand",
+			"ResourceQueueService",
+			"TaskCompletionService",
+			"PerformanceProfileService",
+			"registerTaskCommand",
+			"PerformanceEvidenceValidator",
+			"SourceProfileAdapter"
 		]
 	},
 	"contract": {
@@ -135,7 +148,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.claude-benchmark",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.claude-gateway",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.codex-benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -160,7 +183,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.source-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.sqlite",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -171,6 +204,16 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.resources",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.task",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -480,6 +523,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.benchmark",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.catalog",
 			"via": "reexport",
 			"origin": "derived"
@@ -511,6 +559,11 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.benchmark",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -580,6 +633,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.performance-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.picker-preview",
 			"via": "reexport",
 			"origin": "derived"
@@ -600,6 +658,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.resource-queue",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.benchmark-definition",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.codex-request",
 			"via": "reexport",
 			"origin": "derived"
@@ -611,6 +684,11 @@
 		},
 		{
 			"unit": "validator.native-picker-idle",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.performance-evidence",
 			"via": "reexport",
 			"origin": "derived"
 		},

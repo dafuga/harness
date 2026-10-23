@@ -38,6 +38,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.benchmark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.budget",
 			"via": "import",
 			"origin": "derived"
@@ -103,12 +108,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.resources",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.response-check",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "command.scenarios",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.task",
 			"via": "import",
 			"origin": "derived"
 		},

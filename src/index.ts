@@ -171,3 +171,16 @@ export type {
 	CatalogScenarioUpdateInput
 } from './models/git-source-history/CatalogScenario.types';
 export { ModelDependencyService } from './services/development-tooling/ModelDependencyService';
+export { registerBenchmarkCommand } from './cli/program/BenchmarkCommand';
+export { CodexBenchmarkAdapter } from './cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter';
+export { ClaudeBenchmarkAdapter } from './cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter';
+export { BenchmarkDefinitionValidator } from './cli/program/benchmark-service/benchmark-definition/BenchmarkDefinitionValidator';
+export { BenchmarkRepository } from './repositories/agents-providers/BenchmarkRepository';
+export { BenchmarkService } from './cli/program/benchmark-service/BenchmarkService';
+export { registerResourcesCommand } from './cli/program/ResourcesCommand';
+export { ResourceQueueService } from './services/execution-runtimes/ResourceQueueService';
+export { TaskCompletionService } from './services/verification-evidence/TaskCompletionService';
+export { PerformanceProfileService } from './services/verification-evidence/PerformanceProfileService';
+export { registerTaskCommand } from './cli/program/TaskCommand';
+export { PerformanceEvidenceValidator } from './validators/verification-evidence/PerformanceEvidenceValidator';
+export { SourceProfileAdapter } from './adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter';

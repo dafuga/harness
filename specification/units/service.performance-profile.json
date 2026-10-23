@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"id": "service.performance-profile",
+	"kind": "service",
+	"title": "PerformanceProfileService",
+	"responsibility": "Measures explicit representative operations and completed source scopes, retaining real latency and honestly labelled whole-process memory.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/PerformanceProfileService.ts",
+			"src/services/verification-evidence/PerformanceProfileService.types.ts"
+		],
+		"symbols": [
+			"Measured",
+			"Observation",
+			"ObservationInput",
+			"ProfileInput",
+			"profileInput",
+			"observationInput",
+			"PerformanceProfileService",
+			"PerformanceProfileService.peakProcessRssBytes",
+			"PerformanceProfileService.beginScope",
+			"PerformanceProfileService.observe",
+			"PerformanceProfileService.observeAsync",
+			"PerformanceProfileService.flush",
+			"PerformanceProfileService.measure",
+			"PerformanceProfileService.capture",
+			"ProfileInput",
+			"ObservationInput",
+			"Measured",
+			"Observation"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "PerformanceProfileService.beginScope.input",
+				"type": "ObservationInput",
+				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+			},
+			{
+				"name": "PerformanceProfileService.observe.input",
+				"type": "ObservationInput",
+				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+			},
+			{
+				"name": "PerformanceProfileService.observe.operation",
+				"type": "() => T",
+				"description": "Actual operation supplied by the caller; one-pass observers preserve its result, receiver, effects and rejection behavior."
+			},
+			{
+				"name": "PerformanceProfileService.observeAsync.input",
+				"type": "ObservationInput",
+				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+			},
+			{
+				"name": "PerformanceProfileService.observeAsync.operation",
+				"type": "() => T",
+				"description": "Actual operation supplied by the caller; one-pass observers preserve its result, receiver, effects and rejection behavior."
+			},
+			{
+				"name": "PerformanceProfileService.measure.input",
+				"type": "ProfileInput",
+				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+			},
+			{
+				"name": "PerformanceProfileService.measure.operation",
+				"type": "() => unknown",
+				"description": "Representative replay-safe operation executed for the declared warmup, round and iteration counts; errors propagate."
+			},
+			{
+				"name": "PerformanceProfileService.capture.input",
+				"type": "ProfileInput",
+				"description": "Registered unit and workload, optional callable, and bounded replay settings for the named profiling operation."
+			},
+			{
+				"name": "PerformanceProfileService.capture.operation",
+				"type": "() => unknown",
+				"description": "Representative replay-safe operation executed for the declared warmup, round and iteration counts; errors propagate."
+			}
+		],
+		"outputs": [
+			{
+				"name": "profileInput",
+				"type": "unknown",
+				"description": "Strict schema for registered unit/workload identities and bounded rounds, iterations and warmups."
+			},
+			{
+				"name": "observationInput",
+				"type": "unknown",
+				"description": "Strict metadata schema for one actual unit, workload and optional callable observation."
+			},
+			{
+				"name": "PerformanceProfileService.peakProcessRssBytes",
+				"type": "number",
+				"description": "OS process high-water resident set normalized to bytes for Bun on Darwin and supported Node hosts."
+			},
+			{
+				"name": "PerformanceProfileService.beginScope",
+				"type": "()",
+				"description": "Idempotent callback completing one measured source scope; incomplete scopes do not count as success."
+			},
+			{
+				"name": "PerformanceProfileService.observe",
+				"type": "T",
+				"description": "Exact synchronous operation result; promise identity is preserved without treating an unsettled promise as a completed sample."
+			},
+			{
+				"name": "PerformanceProfileService.observeAsync",
+				"type": "Promise<Awaited<T>>",
+				"description": "Awaited actual result, recording only successfully completed asynchronous work."
+			},
+			{
+				"name": "PerformanceProfileService.flush",
+				"type": "Measured[]",
+				"description": "Current aggregate observations, written through the capture protocol and then removed from the in-memory collector."
+			},
+			{
+				"name": "PerformanceProfileService.measure",
+				"type": "Promise<Measured[]>",
+				"description": "Real latency and process-peak RSS observations after the explicit caller-selected replay and warmup counts."
+			},
+			{
+				"name": "PerformanceProfileService.capture",
+				"type": "Promise<Measured[]>",
+				"description": "Measured observations persisted through Harness captures with a unique immutable chunk name."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.bench-samples",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.record-capture",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/PerformanceProfileService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/PerformanceProfileService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

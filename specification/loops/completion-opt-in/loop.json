@@ -1,0 +1,62 @@
+{
+	"name": "completion-opt-in",
+	"goal": "Keep completion audits explicit and preserve current agent, Desktop and default loop behavior",
+	"createdAt": "2026-10-23T14:10:35.067Z",
+	"updatedAt": "2026-10-23T17:07:04.144Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:59.083Z",
+			"evidence": "Preserve ordinary loop, agent and Desktop completion; require explicit coding or planning opt-in for the new audit."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:06:59.590Z",
+			"evidence": "The standard loop matrix did not assert that a default loop omitted the completion contract. Freeze that assertion before restoring compatibility."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:07:00.533Z",
+			"evidence": "Accepted immutable failing checkpoint 75a99c721a04f4e0219962220b80a1d9a6fb215a; tests were committed before product repair."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:07:01.538Z",
+			"evidence": "Remove automatic completion hooks and retain only explicit CLI, API and typed-loop audits."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:07:02.823Z",
+			"evidence": "Accepted unchanged-test passing checkpoint 7c6175c67ca14085cfab6593f2ab7af7ad9bcb45 with its retained paired red record."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:07:04.144Z",
+			"evidence": "The unchanged default-loop regression passes. Existing activity and Desktop contracts are restored; later focused Task and SDK checks pass."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

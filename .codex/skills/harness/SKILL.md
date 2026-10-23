@@ -11,6 +11,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 Harness application's own UI uses the documented shared design tokens across Reports, Desktop/iOS and Hub. Add missing design categories or named tokens to Styles before using them; run the standardized app-style-tokens admission checks. This application-specific palette must not be imposed on generated tenant projects. Preserve data-derived geometry, structural CSS and external asset branding.
 
+Choose component colors from Styles → Color roles, defined in `appStyleTokensConfig`. Follow each role's usage guidance and the shared control's actual variant; decorative accents do not define action semantics. Keep that guide and the standard Styles assertions aligned when adding a semantic use.
+
 1. Treat `harness info`, Harness generators, and `harness audit` as mandatory project controls.
 2. Run `bun run dev -- info <topic>` or `bun run dev -- info scaffolds --json` before creating unfamiliar code shapes.
 3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
@@ -231,6 +233,8 @@ When a project-creation flow owns a new directory, test failure after files were
 Pin head, main and their merge base before reviewing removals. A behind-main diff is not proof that the branch deleted a feature. When integrating new main work, preserve its source behavior and original assertions alongside branch changes. Review conflicted tests against the merged source; never select an older implementation together with weaker expectations to obtain green checks.
 
 When reconciling changed assertions, map each expected state to its selected fixture revision and manifest status. Run every reconciled standardized test before broad verification; active, retired and never-present entities have different history behavior.
+
+When catalog categories or controls change, include `test/console-host-routes.e2e.test.ts` and `packages/reports/tests/e2e/harness-explorer-catalog.spec.ts` in the affected browser checks. Preserve legacy routes while proving the current labels and canonical paths in a packaged consumer.
 
 Before a broad run after importing main changes, run the existing standard tests owned by each imported source change, including unchanged test files. Check their expectations against the imported contract before retaining or revising them.
 
