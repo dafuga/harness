@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/EntityFrame.svelte",
-			"packages/reports/src/components/harness/EntityFrame.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/EntityFrame.svelte"],
 		"symbols": ["EntityFrame", "EntityFrame"]
 	},
 	"contract": {
@@ -106,11 +103,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/EntityFrame.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/EntityFrame.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/EntityFrame.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/EntityFrame.svelte"
 			}
 		]
 	},

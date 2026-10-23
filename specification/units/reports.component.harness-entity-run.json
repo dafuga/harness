@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/EntityRun.svelte",
-			"packages/reports/src/components/harness/EntityRun.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/EntityRun.svelte"],
 		"symbols": ["EntityRun", "EntityRun"]
 	},
 	"contract": {
@@ -80,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/EntityRun.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/EntityRun.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/EntityRun.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/EntityRun.svelte"
 			}
 		]
 	},

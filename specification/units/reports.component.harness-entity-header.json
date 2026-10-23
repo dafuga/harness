@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/EntityHeader.svelte",
-			"packages/reports/src/components/harness/EntityHeader.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/EntityHeader.svelte"],
 		"symbols": ["EntityHeader", "EntityHeader"]
 	},
 	"contract": {
@@ -90,11 +87,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/EntityHeader.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/EntityHeader.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/EntityHeader.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/EntityHeader.svelte"
 			}
 		]
 	},

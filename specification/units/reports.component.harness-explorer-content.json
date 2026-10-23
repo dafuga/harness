@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/ExplorerContent.svelte",
-			"packages/reports/src/components/harness/ExplorerContent.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerContent.svelte"],
 		"symbols": ["ExplorerContent", "ExplorerContent"]
 	},
 	"contract": {
@@ -146,11 +143,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerContent.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerContent.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerContent.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerContent.svelte"
 			}
 		]
 	},

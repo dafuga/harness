@@ -8,11 +8,19 @@
 	import type { Report } from '../../../models/reports-media/Report.types';
 	import { reportDisplay } from './reportDisplay';
 	import { t } from '../../../utils/reports-media/reportLocale';
-	import { FRAME_SECONDS, replayFrames, type ReplayFrame as Frame } from '../../../utils/reports-media/replayFrames';
+	import {
+		FRAME_SECONDS,
+		replayFrames,
+		type ReplayFrame as Frame
+	} from '../../../utils/reports-media/replayFrames';
 	import { replayStart } from './replayFrames';
 	import ReplayControls from '../ReplayControls.svelte';
 	import StatusBadge from '../../shared-primitives/StatusBadge.svelte';
-	let { report, assetBase, portable = false }: { report: Report; assetBase: string; portable?: boolean } = $props();
+	let {
+		report,
+		assetBase,
+		portable = false
+	}: { report: Report; assetBase: string; portable?: boolean } = $props();
 	let frames: Frame[] = $derived(replayFrames(report.evidence));
 	let display = $derived(reportDisplay(report));
 	let live = $derived(report.state === 'active' && display === 'running');
@@ -35,7 +43,9 @@
 	let elapsed = $derived(current ? current.start + Math.min(offset, current.duration) : 0);
 	let atEnd = $derived(Boolean(current && current === last && offset >= current.duration));
 	let scenes = $derived(
-		[...new Set(frames.flatMap((frame) => (frame.scene === null ? [] : [frame.scene])))].sort((a, b) => a - b)
+		[...new Set(frames.flatMap((frame) => (frame.scene === null ? [] : [frame.scene])))].sort(
+			(a, b) => a - b
+		)
 	);
 	let player = $state<HTMLElement>();
 	let native = $state(false);
@@ -118,7 +128,9 @@
 	}
 </script>
 
-<svelte:document onfullscreenchange={() => (native = !!player && document.fullscreenElement === player)} />
+<svelte:document
+	onfullscreenchange={() => (native = !!player && document.fullscreenElement === player)}
+/>
 <svelte:window {onkeydown} />
 
 {#if current || live}
@@ -171,7 +183,8 @@
 							<span>{$t('replay.error')}</span>
 							<div class="toolbar">
 								<button type="button" onclick={retry}>{$t('replay.retry')}</button>
-								{#if current !== last}<button type="button" onclick={() => go(index + 1)}>{$t('replay.skip')}</button
+								{#if current !== last}<button type="button" onclick={() => go(index + 1)}
+										>{$t('replay.skip')}</button
 									>{/if}
 							</div>
 						</div>

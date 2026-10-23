@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/harness-verdict/HarnessVerdict.svelte",
-			"packages/reports/src/components/harness/harness-verdict/HarnessVerdict.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte"],
 		"symbols": ["HarnessVerdict", "HarnessVerdict"]
 	},
 	"contract": {
@@ -65,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/harness-verdict/HarnessVerdict.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/harness-verdict/HarnessVerdict.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte"
 			}
 		]
 	},

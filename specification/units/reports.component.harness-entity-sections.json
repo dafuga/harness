@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/entity-sections/EntitySections.svelte",
-			"packages/reports/src/components/harness/entity-sections/EntitySections.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"],
 		"symbols": ["EntitySections", "EntitySections"]
 	},
 	"contract": {
@@ -115,11 +112,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/entity-sections/EntitySections.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/entity-sections/EntitySections.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"
 			}
 		]
 	},

@@ -13,7 +13,7 @@
 	import { type ContractField } from '../../../utils/explorer-ui/contractFields';
 	import ContractExample from '../../shared-primitives/ContractExample.svelte';
 	import ContractTable from '../../shared-primitives/ContractTable.svelte';
-	import HarnessIcon from '../harness/HarnessIcon.svelte';
+	import HarnessIcon from '../HarnessIcon.svelte';
 	import Modal from '../../shared-primitives/Modal.svelte';
 	let {
 		unit,

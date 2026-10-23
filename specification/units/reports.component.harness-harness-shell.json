@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/HarnessShell.svelte",
-			"packages/reports/src/components/harness/HarnessShell.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/HarnessShell.svelte"],
 		"symbols": ["HarnessShell", "HarnessShell"]
 	},
 	"contract": {
@@ -55,11 +52,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/HarnessShell.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/HarnessShell.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/HarnessShell.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/HarnessShell.svelte"
 			}
 		]
 	},

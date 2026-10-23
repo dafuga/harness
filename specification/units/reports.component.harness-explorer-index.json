@@ -8,10 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness/explorer-index/ExplorerIndex.svelte",
-			"packages/reports/src/components/explorer-ui/harness/explorer-index/catalogGroups.ts",
-			"packages/reports/src/components/harness/explorer-index/ExplorerIndex.svelte",
-			"packages/reports/src/components/harness/explorer-index/catalogGroups.ts"
+			"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte",
+			"packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.ts"
 		],
 		"symbols": [
 			"ExplorerIndex",
@@ -89,11 +87,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/explorer-index/ExplorerIndex.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/explorer-index/ExplorerIndex.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
 			}
 		]
 	},

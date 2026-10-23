@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/entity-history/EntityHistory.svelte",
-			"packages/reports/src/components/harness/entity-history/EntityHistory.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"],
 		"symbols": ["EntityHistory", "EntityHistory"]
 	},
 	"contract": {
@@ -120,11 +117,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/entity-history/EntityHistory.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/entity-history/EntityHistory.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"
 			}
 		]
 	},

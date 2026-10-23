@@ -9,9 +9,9 @@
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import { shortCommit, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import '../../lib/styles/platforms.css';
-	import EntityLink from './harness/EntityLink.svelte';
-	import EntityMissing from './harness/EntityMissing.svelte';
-	import HarnessIcon from './harness/HarnessIcon.svelte';
+	import EntityLink from './EntityLink.svelte';
+	import EntityMissing from './EntityMissing.svelte';
+	import HarnessIcon from './HarnessIcon.svelte';
 	import SourceFileList from './SourceFileList.svelte';
 	let { host, nav }: { host: ExplorerScreenProps; nav: EntityNav } = $props();
 	type Row = { name: string; value: string; description?: string };

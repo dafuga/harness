@@ -8,8 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness/harness-compare/HandlerRuntimeAdapter.ts",
-			"packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts",
+			"packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter.ts",
 			"src/adapters/HandlerRuntimeAdapter.ts"
 		],
 		"symbols": [
@@ -68,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/harness-compare/HandlerRuntimeAdapter.ts",
+		"entry": "packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/harness-compare/HandlerRuntimeAdapter.ts"
+				"entry": "packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter.ts"
 			}
 		]
 	},

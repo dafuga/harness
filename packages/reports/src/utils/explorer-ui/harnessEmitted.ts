@@ -112,5 +112,5 @@ export interface EmittedChange {
 	after: number | null;
 }
 
-export { emittedChange } from '../../components/explorer-ui/harness/harness-compare/harnessEmitted';
-export { emittedTargets } from '../../components/explorer-ui/harness/harness-growth/harnessEmitted';
+export { emittedChange } from '../../components/explorer-ui/harness-compare/harnessEmitted';
+export { emittedTargets } from '../../components/explorer-ui/harness-growth/harnessEmitted';

@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/ExplorerControls.svelte",
-			"packages/reports/src/components/harness/ExplorerControls.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerControls.svelte"],
 		"symbols": ["ExplorerControls", "ExplorerControls"]
 	},
 	"contract": {
@@ -50,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerControls.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerControls.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerControls.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerControls.svelte"
 			}
 		]
 	},

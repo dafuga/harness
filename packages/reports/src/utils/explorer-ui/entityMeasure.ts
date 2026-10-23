@@ -48,4 +48,4 @@ export function byteSize(count: number): string {
 	return `${Number.isInteger(scaled) ? scaled : Number(scaled.toFixed(1))} ${unit}`;
 }
 
-export { entityMeasure } from '../../components/explorer-ui/harness/entity-sections/entityMeasure';
+export { entityMeasure } from '../../components/explorer-ui/entity-sections/entityMeasure';

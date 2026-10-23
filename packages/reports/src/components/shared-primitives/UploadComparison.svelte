@@ -2,7 +2,8 @@
 	import { onMount } from 'svelte';
 	import type { Report } from '../../models/reports-media/Report.types';
 	import Select from './Select.svelte';
-	let { reportId, onUploaded }: { reportId: string; onUploaded: (report: Report) => void } = $props();
+	let { reportId, onUploaded }: { reportId: string; onUploaded: (report: Report) => void } =
+		$props();
 	let ready = $state(false);
 	let uploading = $state(false);
 	let message = $state('');
@@ -43,10 +44,18 @@
 	<summary><span>Add before/after comparison</span><span aria-hidden="true">↗</span></summary>
 	<form onsubmit={upload}>
 		<div class="upload-fields">
-			<label class="upload-title">Comparison title
-				<input name="title" maxlength="120" required placeholder="What changed?" disabled={uploading} />
+			<label class="upload-title"
+				>Comparison title
+				<input
+					name="title"
+					maxlength="120"
+					required
+					placeholder="What changed?"
+					disabled={uploading}
+				/>
 			</label>
-			<label>Viewport
+			<label
+				>Viewport
 				<Select label="Viewport" name="viewport" disabled={uploading}>
 					<option value="">Not specified</option>
 					<option value="mobile">390px mobile</option>
@@ -56,21 +65,37 @@
 			</label>
 		</div>
 		<div class="upload-pair">
-			<label>Before screenshot
-				<input name="before" type="file" accept="image/png,image/jpeg,image/webp" required
-					disabled={uploading} onchange={(event) => (beforeName = event.currentTarget.files?.[0]?.name || '')} />
+			<label
+				>Before screenshot
+				<input
+					name="before"
+					type="file"
+					accept="image/png,image/jpeg,image/webp"
+					required
+					disabled={uploading}
+					onchange={(event) => (beforeName = event.currentTarget.files?.[0]?.name || '')}
+				/>
 				<span class="file-choose">Choose image</span>
 				<small>{beforeName || 'Choose PNG, JPEG or WebP'}</small>
 			</label>
-			<label>After screenshot
-				<input name="after" type="file" accept="image/png,image/jpeg,image/webp" required
-					disabled={uploading} onchange={(event) => (afterName = event.currentTarget.files?.[0]?.name || '')} />
+			<label
+				>After screenshot
+				<input
+					name="after"
+					type="file"
+					accept="image/png,image/jpeg,image/webp"
+					required
+					disabled={uploading}
+					onchange={(event) => (afterName = event.currentTarget.files?.[0]?.name || '')}
+				/>
 				<span class="file-choose">Choose image</span>
 				<small>{afterName || 'Choose PNG, JPEG or WebP'}</small>
 			</label>
 		</div>
 		<div class="upload-actions">
-			<button class="button primary" type="submit" disabled={uploading || !ready}>Upload comparison</button>
+			<button class="button primary" type="submit" disabled={uploading || !ready}
+				>Upload comparison</button
+			>
 			{#if message}<p class={'badge ' + messageKind} role="status">{message}</p>{/if}
 		</div>
 	</form>

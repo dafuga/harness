@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/EntityMissing.svelte",
-			"packages/reports/src/components/harness/EntityMissing.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/EntityMissing.svelte"],
 		"symbols": ["EntityMissing", "EntityMissing"]
 	},
 	"contract": {
@@ -75,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/EntityMissing.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/EntityMissing.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/EntityMissing.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/EntityMissing.svelte"
 			}
 		]
 	},

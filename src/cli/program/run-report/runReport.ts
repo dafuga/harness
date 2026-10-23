@@ -17,7 +17,7 @@ export async function runReport(args: string[]): Promise<void> {
 			...reportsEnvironment(),
 			HARNESS_REPORTS_RUNTIME_ROOT: existsSync(bundled)
 				? dirname(bundled)
-				: fileURLToPath(new URL('../../../../packages/reports/', import.meta.url)),
+				: fileURLToPath(new URL('../../../../packages/reports', import.meta.url)),
 			HARNESS_CLI_PATH: existsSync(bundled)
 				? fileURLToPath(new URL('./index.js', import.meta.url))
 				: fileURLToPath(new URL('../../../index.ts', import.meta.url))

@@ -2,11 +2,9 @@
 	"name": "redundant-harness-folders",
 	"goal": "Remove redundant component namespaces, preserve helper placement, identities, routes and rendered behavior, and reject reintroduction",
 	"createdAt": "2026-10-23T08:49:30.702Z",
-	"updatedAt": "2026-10-23T08:52:50.136Z",
+	"updatedAt": "2026-10-23T08:56:03.194Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T08:55:58.116Z",
+			"evidence": "Immutable failing guard preserved in /tmp/harness-folders-final-red.json; the standard visual registry assertion reports the actual redundant source directories before relocation."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T08:56:03.194Z",
+			"evidence": "Move 85 implementations directly under explorer-ui, remove 84 internal forwarding files, rewrite exact import/source addresses, retain stable registered IDs and public routes, and add reviewed helper follow-up locations without overwriting original moves."
 		},
 		{
 			"id": "implement",

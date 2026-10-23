@@ -13,4 +13,4 @@ export interface NavbarSearch {
 	at: (entry: SearchEntry) => ExplorerLocation | null;
 }
 
-export { navbarSearch } from '../../components/explorer-ui/harness/harness-navbar/navbarSearch';
+export { navbarSearch } from '../../components/explorer-ui/harness-navbar/navbarSearch';

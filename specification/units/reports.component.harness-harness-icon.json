@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/HarnessIcon.svelte",
-			"packages/reports/src/components/harness/HarnessIcon.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/HarnessIcon.svelte"],
 		"symbols": ["HarnessIcon", "HarnessIcon"]
 	},
 	"contract": {
@@ -50,11 +47,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/HarnessIcon.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/HarnessIcon.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/HarnessIcon.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/HarnessIcon.svelte"
 			}
 		]
 	},

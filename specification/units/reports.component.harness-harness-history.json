@@ -7,10 +7,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/HarnessHistory.svelte",
-			"packages/reports/src/components/harness/HarnessHistory.svelte"
-		],
+		"source": ["packages/reports/src/components/explorer-ui/HarnessHistory.svelte"],
 		"symbols": ["HarnessHistory", "HarnessHistory"]
 	},
 	"contract": {
@@ -85,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/HarnessHistory.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/HarnessHistory.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/HarnessHistory.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/HarnessHistory.svelte"
 			}
 		]
 	},

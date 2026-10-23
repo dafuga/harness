@@ -8,7 +8,7 @@ type Environment = Record<string, string | undefined>;
 
 /** Per-run copies of the build, inside the checkout and outside everything tracked. */
 const frozenBuilds = fileURLToPath(
-	new URL('../../../../../../.cache/reports-e2e/', import.meta.url)
+	new URL('../../../../../../.cache/reports-e2e', import.meta.url)
 );
 
 /** Where one browser run keeps everything it seeds; no two runs share any of it. */
