@@ -1,0 +1,61 @@
+{
+	"name": "all-relation-module-cards",
+	"goal": "Every related module reuses the shared module card and its footer shows only three distinct consumers plus an ellipsis",
+	"createdAt": "2026-10-23T10:20:28.553Z",
+	"updatedAt": "2026-10-23T14:27:03.826Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-23T10:21:40.265Z",
+			"evidence": "Current main 56f12072d: private function.single is a plain Other row; fourth eligible helper consumer is discarded before the footer so no ellipsis appears."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-23T10:21:40.877Z",
+			"evidence": "Existing shared-card assertions inspect only article elements and miss plain support rows. Helper tests asserted three links but never checked overflow indication. Strengthened the existing entity-relations, function-card, and normal responsive browser matrix. The normal matrix now includes all seven navigable module kinds, true owner self references, duplicates, private functions and unclassified type definitions. Real-main Helpers readback additionally found private function owners missing from the collection-only lookup, and unit-only deduplication collapsing distinct named sibling callers. Extend the existing seven-kind card matrix and shared usage matrix with internal function owners, named siblings, duplicates, self references and missing owners. Review of the new named-caller representation found that the standard navigation test did not compare hover text with callable identity. The shared current/historical named-caller matrix now captures and checks that identity before navigation; the Harness skill requires this cross-surface control."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"evidence": "Immutable red 081e9cd1 at585972f49 fails three assertions: private function projection and named sibling sharing disappear. Fixture types, lint and audit pass; no setup failure.",
+			"completedAt": "2026-10-23T13:10:02.729Z"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"evidence": "Repair 0a25d12a resolves active revision owners independently of catalog eligibility, deduplicates named callers, excludes true self references and opens unselectable callers in owning source. Preview repair 991196c9 selects the actual caller symbol for nonvisual tooltips, preserving module titles for owner references.",
+			"completedAt": "2026-10-23T13:32:43.896Z"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"evidence": "Unchanged green 1f305aa7 at0a25d12a passes all36 assertions against frozen red081e9cd1 at585972f49. Reports types0errors/0warnings, lint, audit and unit-index guard pass. Full CLI/native verification remains deferred. Additional preview pair: red bc241186 at833213c65 reproduces namedUsers instead of firstCall; unchanged green02aa4eb0 at991196c9 passes. Isolated guard207222cd replays the old source and correctly rejects it.",
+			"completedAt": "2026-10-23T13:32:45.764Z"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending",
+			"evidence": "Full CLI/native suites are explicitly deferred by Daniel. Keep this broad verification step pending. Final committed browser captures and actual-main image readback are separate gates before landing."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

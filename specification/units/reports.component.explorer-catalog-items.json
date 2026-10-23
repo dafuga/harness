@@ -3,27 +3,28 @@
 	"id": "reports.component.explorer-catalog-items",
 	"kind": "component",
 	"title": "ExplorerCatalogItems",
-	"responsibility": "Lays catalog rows in their grid through the shared page/component card, helper cards or category table in list pages and relationship tabs; each card owns its layout.",
+	"responsibility": "Renders module collections and relationships through one shared card, retaining tables only for config variable values.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ExplorerCatalogItems.svelte",
-			"packages/reports/src/components/explorer-ui/ExplorerCatalogItems.svelte"
+			"packages/reports/src/components/explorer-ui/ExplorerCatalogItems.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerCatalogItems.types.ts"
 		],
-		"symbols": ["ExplorerCatalogItems", "ExplorerCatalogItems"]
+		"symbols": ["ExplorerCatalogItems", "ExplorerCatalogItems", "Row"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplorerCatalogItems.category",
-				"type": "ExplorerCategory",
-				"description": "Required catalog category: pages and components use the shared screenshot card, functions, models and services helper cards, and shells and configs the category table."
+				"type": "ExplorerCategory | null",
+				"description": "Collection category, or null for support dependencies. Modules use the shared card; config setting rows retain their value table."
 			},
 			{
 				"name": "ExplorerCatalogItems.rows",
-				"type": "CatalogRow[]",
+				"type": "Array<CatalogRow | SupportRow>",
 				"description": "Required revision-scoped rows to render in their supplied order."
 			},
 			{
@@ -61,7 +62,7 @@
 			{
 				"name": "ExplorerCatalogItems",
 				"type": "markup",
-				"description": "One category of revision-scoped catalog items using the same renderer in collections and relationship tabs. Verification is optional without changing item navigation or screenshots."
+				"description": "Ordered shared module cards, with optional four-entry batching and focus handling; config setting values retain their table."
 			}
 		],
 		"errors": []
@@ -89,6 +90,11 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-usage",
 			"via": "import",
 			"origin": "derived"
 		},
