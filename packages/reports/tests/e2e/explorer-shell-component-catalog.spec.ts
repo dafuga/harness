@@ -87,6 +87,11 @@ for (const viewport of catalogViewports) {
 				expect(box!.height).toBeGreaterThan(250);
 				await expect(slot).toContainText('Your page renders here');
 			}
+			if (unit.id === 'reports.page.harness-branch-branch-at-layouts') {
+				const card = component.locator('article').filter({ hasText: 'OrdersFrame' });
+				await expect(card.locator('img')).toHaveAttribute('src', /synthetic-layout-input\.svg$/);
+				await expect(card.getByRole('link', { name: 'OrdersPage', exact: true })).toBeVisible();
+			}
 
 			if (unit.id === 'reports.component.explorer-function-card') {
 				await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
