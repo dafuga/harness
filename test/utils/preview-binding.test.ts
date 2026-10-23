@@ -77,7 +77,7 @@ test('strict verification rejects a preview that names no recorded page state', 
 
 // Exercise every committed page preview, not a synthetic manifest whose state bindings are ideal.
 test('registered page previews name the state that actually shows that page', () => {
-	const root = new URL('../../specification/', import.meta.url);
+	const root = new URL('../../specification', import.meta.url);
 	const directory = new URL('units/', root);
 	for (const file of readdirSync(directory)) {
 		const unit = componentManifestSchema.parse(

@@ -1,11 +1,11 @@
 import { expect, test } from 'vitest';
 import type { HarnessRevision } from '../src/models/Harness.types';
-import { entityUsage } from '../src/components/harness/entity-relations/entityUsage';
+import { entityUsage } from '../src/components/explorer-ui/entity-relations/entityUsage';
 import { explorerCategory, explorerRole } from '../src/utils/explorerCategory';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { explorerRelations } from '../src/utils/explorerRelations';
 import { categoryIcon } from '../src/utils/harnessIcons';
-import { harnessShell } from '../src/components/harness/harness-navbar/harnessShell';
+import { harnessShell } from '../src/components/explorer-ui/harness-navbar/harnessShell';
 import {
 	shellBranch,
 	shellCommits,

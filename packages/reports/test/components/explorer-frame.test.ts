@@ -1,7 +1,7 @@
 import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import ExplorerFrame from '../../src/components/harness/ExplorerFrame.svelte';
+import ExplorerFrame from '../../src/components/explorer-ui/ExplorerFrame.svelte';
 import { revision } from '../entityFixture';
 import { hostProps, words } from '../entityRender';
 import { commits } from '../entityUnits';

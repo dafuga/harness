@@ -37,7 +37,7 @@ test.each([
 		'storedSide'
 	],
 	['src/utils/sideImpact.ts', 'sideImpact'],
-	['packages/reports/src/components/harness/harness-compare/sideImpact.ts', 'sideImpact']
+	['packages/reports/src/components/explorer-ui/harness-compare/sideImpact.ts', 'sideImpact']
 ])('stored history runtime cold-imports %s and calls %s', (entry, symbol) => {
 	const code = `
 import {pathToFileURL} from 'node:url';

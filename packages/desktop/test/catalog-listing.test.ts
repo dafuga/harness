@@ -123,7 +123,7 @@ test('the same identity is listed at the earlier commit where it renders, as it 
 }, 30_000);
 
 test('of the registry of this repository, the pages the explorer lists are listed and its route loaders are not', async () => {
-	const directory = new URL('../../../specification/units/', import.meta.url);
+	const directory = new URL('../../../specification/units', import.meta.url);
 	const units = readdirSync(directory)
 		.filter((name) => name.endsWith('.json'))
 		.map((name) => JSON.parse(readFileSync(new URL(name, directory), 'utf8')) as ComponentManifest);

@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessNavbar from '../../src/components/harness/harness-navbar/HarnessNavbar.svelte';
+import HarnessNavbar from '../../src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
 import {
 	sha,

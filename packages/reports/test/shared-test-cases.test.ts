@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
-import EntityArtifact from '../src/components/harness/EntityArtifact.svelte';
+import EntityArtifact from '../src/components/explorer-ui/EntityArtifact.svelte';
 import { observed, observedRows, rows, stored, unavailable, words } from './artifactCaseDocs';
 
 const draw = (document: unknown) =>

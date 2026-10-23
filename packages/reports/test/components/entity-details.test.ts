@@ -5,7 +5,7 @@ import { commits, ids } from '../entityUnits';
 import { withGroups } from '../entityPreviewData';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { render } from 'svelte/server';
-import EntitySource from '../../src/components/harness/EntitySource.svelte';
+import EntitySource from '../../src/components/explorer-ui/EntitySource.svelte';
 import type { HarnessUnit } from '../../src/models/Harness.types';
 
 const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };
