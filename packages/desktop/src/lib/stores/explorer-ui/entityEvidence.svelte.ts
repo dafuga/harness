@@ -106,4 +106,3 @@ export function createEntityEvidenceStore() {
 }
 
 export type { EvidenceTarget, EntityEvidence } from './entityEvidence.svelte.types';
-export type { EntityEvidenceState };

@@ -3881,12 +3881,12 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "0dc664d7a37b7bca22bc00d7a7f1d0fbd99b69f1594779343f1e709a38e22414",
+			"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
 			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "58d3f7e0ed7a888438f53413e729ba15f5ae7656",
 				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
-				"definition": "0dc664d7a37b7bca22bc00d7a7f1d0fbd99b69f1594779343f1e709a38e22414",
+				"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
 				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			},
 			"previousReviews": [
@@ -3901,6 +3901,12 @@
 					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
 					"definition": "16603e9168a91a2ecbbd04328e02081bff2a233abb0717b6a2dba9831d53822e",
 					"reason": "Feed retained focused runs into workload history while keeping verification records, source growth and catalog output unchanged."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+					"definition": "0dc664d7a37b7bca22bc00d7a7f1d0fbd99b69f1594779343f1e709a38e22414",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},

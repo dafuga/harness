@@ -40,7 +40,7 @@ export async function testFile(page: Page, id: string, commit: string): Promise<
 	await list.getByRole('button', { name: `View code for ${path}`, exact: true }).click();
 	const dialog = page.getByRole('dialog');
 	await expect(dialog.locator('pre')).toHaveText(sourceText(commit, path));
-	await sourceReadMeasurements(page, started, commit);
+	await sourceReadMeasurements(page, started, commit, id);
 	await capture(
 		page,
 		`${process.env.SCREENSHOT_LABEL ?? 'run'}-source-test-${id}-${commit.slice(0, 7)}-${(await page.viewportSize())!.width}`,
@@ -62,7 +62,7 @@ async function sourceReadMeasurements(page: Page, started: number, commit: strin
 	const base = {
 		unit: 'reports.store.source-reader',
 		callable: 'archivedSource',
-		workload: 'open-archived-test-file',
+		workload: `open-archived-test-file-${id}-${page.viewportSize()!.width}`,
 		target: 'module',
 		samples: 1
 	};
@@ -88,7 +88,7 @@ async function sourceReadMeasurements(page: Page, started: number, commit: strin
 			evidence: 'benchmark',
 			kind: 'benchmark',
 			state: 'test-file',
-			file: `source-reader-${commit}-${page.viewportSize()!.width}.json`,
+			file: `source-reader-${id}-${commit}-${page.viewportSize()!.width}.json`,
 			mediaType: 'application/json'
 		},
 		JSON.stringify({ measurements })

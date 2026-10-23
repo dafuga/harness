@@ -1,5 +1,5 @@
 import type { EntityEvidenceQuery } from '../../../models/verification-evidence/DesktopEvidence.types';
-import type { EntityEvidenceState } from './entityEvidence.svelte';
+import type { createEntityEvidenceStore } from './entityEvidence.svelte';
 
 /** What decides which evidence is shown; `stamp` names the pinned revisions of the project. */
 export interface EvidenceTarget {
@@ -8,4 +8,4 @@ export interface EvidenceTarget {
 	stamp: string;
 }
 
-export type EntityEvidence = EntityEvidenceState;
+export type EntityEvidence = ReturnType<typeof createEntityEvidenceStore>;
