@@ -51,6 +51,7 @@ for (const unit of ['service.task-completion', 'module.verification'])
 		{ unit, workload: 'public-planning-audit', rounds: 3, iterations: 10 },
 		() => audit.requirePlan(proposal, 'Search proposal')
 	);
+const coding = await audit.check({ kind: 'coding', goal: 'Verify the public coding auditor' });
 const line: CaptureLine = { evidence: 'output', kind: 'output', state: 'default', file: 'out.txt', mediaType: 'text/plain' };
 const explanation: Explanation | undefined = explanationSchema.safeParse({}).data;
 const event: BudgetEvent | undefined = budgetEventSchema.safeParse({}).data;
@@ -84,6 +85,7 @@ const compare = (measurement: typeof measured | Omit<typeof measured, 'compariso
 const { comparison: _dropped, ...labelOnly } = measured;
 console.log(JSON.stringify({
 	planningAudit: 'accepted',
+	codingAudit: { passed: coding.passed, issue: coding.checks.find(check => check.id === 'evidence')?.detail },
 	comparable: [
 		compare(measured),
 		compare({ ...measured, unitOfMeasure: 'seconds', value: 0.01 }),
@@ -101,6 +103,10 @@ console.log(JSON.stringify({
 
 const expected = {
 	planningAudit: 'accepted',
+	codingAudit: {
+		passed: false,
+		issue: 'Run harness verify run; no verification record proves the task commit.'
+	},
 	comparable: ['passed', 'incompatible', 'incompatible', 'incomplete'],
 	required: 1,
 	requested: true,
@@ -109,6 +115,27 @@ const expected = {
 	findings: ['missing-measurement', 'missing-measurement', 'missing-measurement'],
 	parsed: [true, true, true]
 };
+
+async function commitConsumer(project: string): Promise<void> {
+	await writeFile(join(project, '.gitignore'), 'node_modules/\n.cache/\n');
+	await runCommand(['git', 'init', '-q'], project);
+	await runCommand(['git', 'add', '-A'], project);
+	await runCommand(
+		[
+			'git',
+			'-c',
+			'user.name=Harness Fixture',
+			'-c',
+			'user.email=fixture@harness.invalid',
+			'-c',
+			'commit.gpgsign=false',
+			'commit',
+			'-qm',
+			'feat: packed consumer fixture'
+		],
+		project
+	);
+}
 
 test('a packed consumer uses the verification contracts and evidence protocol', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-verification-api-'));
@@ -142,6 +169,7 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 		expect(existsSync(join(project, 'node_modules', optional))).toBe(false);
 	const typecheck = await runCommand(['bun', 'x', 'tsc', '-p', '.'], project, false);
 	expect(typecheck.stdout + typecheck.stderr).toBe('');
+	await commitConsumer(project);
 
 	const scenario = await readFile('specification/scenarios/package-api.json', 'utf8');
 	const evidence = join(root, 'evidence');
