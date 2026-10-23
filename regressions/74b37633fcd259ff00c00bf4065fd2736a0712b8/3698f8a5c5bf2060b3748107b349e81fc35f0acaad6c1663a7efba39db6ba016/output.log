@@ -1,0 +1,44 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-jWn34h/packages/desktop
+
+ ✓ test/shells-category.test.ts (6 tests) 8ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/catalog-listing.test.ts [ test/catalog-listing.test.ts ]
+TSConfckParseError: failed to resolve "extends":"./.svelte-kit/tsconfig.json" in /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-jWn34h/packages/reports/tsconfig.json
+  Plugin: vite:esbuild
+  File: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-jWn34h/packages/reports/src/utils/explorerCategory.ts
+ ❯ resolveExtends ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5809:8
+ ❯ parseExtends ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5775:71
+ ❯ parse$13 ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5677:23
+ ❯ loadTsconfigJsonForFile ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6286:37
+ ❯ transformWithEsbuild ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6086:55
+ ❯ TransformPluginContext.transform ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6172:20
+ ❯ EnvironmentPluginContainer.transform ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:28801:14
+ ❯ loadAndTransform ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:22670:26
+
+Caused by: Error: Cannot find module './.svelte-kit/tsconfig.json'
+Require stack:
+- /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-jWn34h/packages/reports/tsconfig.json
+ ❯ resolveExtends ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5800:16
+ ❯ parseExtends ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5775:71
+ ❯ parse$13 ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5677:23
+ ❯ loadTsconfigJsonForFile ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6286:37
+ ❯ transformWithEsbuild ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6086:55
+ ❯ TransformPluginContext.transform ../../../../../../../../../Users/danielfugere/.codex/worktrees/layout-catalog/harness/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6172:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  6 passed (6)
+   Start at  13:10:20
+   Duration  808ms (transform 256ms, setup 84ms, collect 349ms, tests 8ms, environment 0ms, prepare 56ms)
+
