@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import { helperEntity } from '../src/utils/entityShown';
-import { categorySources } from './entityPreviewGroups';
+import { categorySources, projectPageSources } from './entityPreviewGroups';
 import { expect, test } from 'vitest';
 import { entityCatalog, catalogFilter } from '../src/utils/entityCatalog';
 import { explorerEntities } from '../src/utils/explorerEntities';
@@ -38,6 +38,31 @@ test('catalog categories survive across kinds and combine with other filters', (
 	expect(catalogFilter(components, { ...filter, search: 'Inputs' }).map((row) => row.name)).toEqual(
 		['SearchBox']
 	);
+	const project = projectPageSources(head);
+	const pages = entityCatalog(explorerEntities(project), 'pages', (id) =>
+		explorerRelations(project, id)
+	);
+	for (const [feature, title, count] of [
+		['components', 'Components', 3],
+		['configs', 'Configs', 3],
+		['functions', 'Helpers', 3],
+		['layouts', 'Layouts', 3],
+		['models', 'Models', 3],
+		['pages', 'Pages', 3],
+		['services', 'Services', 3],
+		['platforms', 'Platforms', 2],
+		['styles', 'Styles', 1]
+	] as const) {
+		const family = pages.filter((row) =>
+			row.entity.unit.owns.source.some((path) => path.includes(`/[...at]/${feature}/`))
+		);
+		expect(family, `${title} includes its registered page roles`).toHaveLength(count);
+		for (const row of family)
+			expect(row, 'Page families follow their feature folders').toHaveProperty('group', {
+				id: `${feature === 'functions' ? 'helper' : feature.replace(/s$/, '')}-catalog`,
+				title
+			});
+	}
 });
 
 test('a helper row uses its callable folder instead of its owning module category', async () => {

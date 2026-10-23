@@ -38,6 +38,11 @@ test('code-rules guidance exposes hard Harness limits', () =>
 			'General text helpers belong in Strings'
 		);
 		const guide = findGuide('code-rules');
+		for (const topic of ['view', 'page', 'code-rules']) {
+			expect(findGuide(topic)?.rules.join('\n')).toContain(
+				'Group related list, detail and history pages by feature'
+			);
+		}
 
 		expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
 		expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');

@@ -1,5 +1,39 @@
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { ids, units } from './entityUnits';
+import taxonomy from '../../../harness.groups.json';
+import { moduleGroup } from '../../../src/utils/development-tooling/moduleGroup';
+
+/** The real page manifests and taxonomy exercise feature folders beside synthetic history. */
+const projectPages = Object.values(
+	import.meta.glob<HarnessUnit>(
+		'../../../specification/units/reports.page.harness-branch-branch-at-*.json',
+		{ eager: true, import: 'default' }
+	)
+).filter((unit) => unit.catalog?.visibility !== 'internal');
+
+export function projectPageSources(detail: HarnessRevision): HarnessRevision {
+	const pages = projectPages.filter((unit) =>
+		unit.owns.source.some((path) =>
+			/\/\[\.\.\.at\]\/(components|configs|functions|layouts|models|pages|services|platforms|styles)\//.test(
+				path
+			)
+		)
+	);
+	return {
+		...detail,
+		registry: {
+			...detail.registry,
+			units: [
+				...detail.registry.units,
+				...pages.map((unit) => ({
+					...unit,
+					group: moduleGroup(unit.owns.source, taxonomy.groups),
+					version: 'fixture-manifest-without-source-version'
+				}))
+			]
+		}
+	};
+}
 
 /** A relocation retains a supported forwarding entry beside the real category source. */
 function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {

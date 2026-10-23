@@ -12,6 +12,25 @@ const configUnits = [
 	'reports.component.harness-explorer-content'
 ];
 
+async function pageFamilies(page: Page): Promise<void> {
+	for (const feature of [
+		'Components',
+		'Configs',
+		'Helpers',
+		'Layouts',
+		'Models',
+		'Pages',
+		'Services'
+	]) {
+		await expect
+			.soft(
+				page.getByRole('heading', { level: 2, name: `${feature} 3`, exact: true }),
+				'Page families follow their feature folders'
+			)
+			.toBeVisible({ timeout: 500 });
+	}
+}
+
 async function inspectConfigValues(page: Page, viewport: string, commit: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'Configs', exact: true });
 	await capture(page, `groups-config-values-${commit.slice(0, 7)}-${viewport}`, configUnits);
@@ -87,6 +106,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await expect
 				.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
 				.toBeVisible();
+			if (category === 'pages') await pageFamilies(page);
 			expect(await fits(page)).toBe(true);
 			if (category === 'configs') await configVariables(page, viewport);
 			if (category === 'functions') await helperFolders(page, viewport);
