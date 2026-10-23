@@ -57,7 +57,13 @@ async function historicalFile(
 ) {
 	await open(
 		page,
-		{ category: item.category, entity: item.id, commit: commits.middle, tab: 'source' },
+		{
+			category: item.category,
+			entity: item.id,
+			commit: commits.middle,
+			tab: 'source',
+			...(item.category === 'functions' ? { helper: 'filterOrders' } : {})
+		},
 		'source'
 	);
 	await fileLink(page, item.path, commits.middle);
@@ -80,7 +86,11 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await page.evaluate(() => document.fonts.ready);
 			await capture(page, `${phase}-source-catalog-${category}-${viewport}`);
 			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
-			await open(page, { category, entity: id }, 'source');
+			await open(
+				page,
+				{ category, entity: id, ...(category === 'functions' ? { helper: name } : {}) },
+				'source'
+			);
 			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
 			await page.getByRole('tab', { name: 'Source', exact: true }).click();
 			const address = await where(page);
