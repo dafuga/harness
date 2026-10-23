@@ -85,6 +85,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.harness-harness-tabs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-search",
 			"via": "import",
 			"origin": "derived"
@@ -101,11 +106,6 @@
 		},
 		{
 			"unit": "reports.model.explorer-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-tabs",
 			"via": "import",
 			"origin": "derived"
 		}
