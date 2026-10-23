@@ -2,7 +2,7 @@
 	"name": "layout-catalog",
 	"goal": "Layouts contains reusable visual frames and shows each child slot in the shared title, image and page-usage card",
 	"createdAt": "2026-10-23T09:21:46.411Z",
-	"updatedAt": "2026-10-23T11:04:55.250Z",
+	"updatedAt": "2026-10-23T12:52:18.427Z",
 	"template": "visual-change",
 	"templateLineage": ["feature", "visual-change"],
 	"enforceOrder": false,
@@ -39,8 +39,15 @@
 			"id": "browser-proof",
 			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
 			"status": "complete",
-			"evidence": "Pixel inspection caught a shared preview-context leak. The unchanged compact-selector assertion failed at 85419b63e and passed at b9cd6c436, with clean inspected child-slot pixels. Harness guidance now preserves frame/content boundaries; its generated-instruction guard has matching-environment red/green proof. Capture every visual catalog entry and validate actual merged-main cards from the final frozen tree.",
-			"completedAt": "2026-10-23T11:04:55.250Z"
+			"evidence": "Focused Layout browser proof 7fb2e354 retained 18 list, detail, history and real-layout images at ba0a9603d; desktop and mobile pixels inspected. Canonical title guard has retained red 3784a7a7 / green 20175d89. Desktop link, thumbnail and getter-order checks pass with lint; tenant naming guidance covers canonical/compatibility links and package tests/types/lint/audit. Combined-main catalog capture and live publication remain in the approved shared delivery queue; full CLI/native suites deferred.",
+			"completedAt": "2026-10-23T12:21:55.616Z"
+		},
+		{
+			"id": "kind-labels",
+			"title": "Verify canonical category labels in relationship entries.",
+			"status": "complete",
+			"completedAt": "2026-10-23T12:52:18.427Z",
+			"evidence": "The existing Used In test checks all seven canonical singular labels and passes after integrating main 6a061768b. Before capture 0af54582 retains the failing Page/Shell screenshots at three viewports; unchanged owning red e61775a1 and green 35e85b42 prove the Layout repair. The shared catalog fixture includes a layout and asserts Page/Layout badges. Final frozen-source capture and combined-main readback follow; full CLI/native suites remain deferred."
 		}
 	],
 	"evaluators": [

@@ -1,5 +1,5 @@
 import type { HarnessReview } from '../../../models/explorer-ui/HarnessBudget.types';
-import { humanize } from '../../../utils/explorer-ui/entityContract';
+import { humanize } from '../../../helpers/strings/humanize';
 import { emittedLabel } from '../../../utils/explorer-ui/harnessEmitted';
 
 const emitted = 'artifact-bytes:';

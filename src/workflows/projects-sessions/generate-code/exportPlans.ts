@@ -1,4 +1,4 @@
-import { toCamelCase, toKebabCase, toPascalCase } from '../../../core/development-tooling/case';
+import { toCamelCase, toKebabCase, toPascalCase } from '../../../helpers/strings/case';
 import type { ExportPlan } from '../../../core/projects-sessions/exports';
 import type { AdapterName } from '../../../templates/development-tooling/model';
 import type { PieceKind } from '../../../templates/development-tooling/scaffoldTypes';
@@ -27,9 +27,10 @@ export function pieceExportPlans(kind: PieceKind, name: string): ExportPlan[] {
 		return [{ source: classExportSource(kind, className), named: [className] }];
 	}
 
-	if (kind === 'util') {
+	if (kind === 'util' || kind === 'helper') {
 		const functionName = toCamelCase(name);
-		return [{ source: `./utils/${functionName}`, named: [functionName] }];
+		const folder = kind === 'helper' ? 'helpers' : 'utils';
+		return [{ source: `./${folder}/${functionName}`, named: [functionName] }];
 	}
 
 	if (kind === 'seeder') {
@@ -75,7 +76,6 @@ function classExportName(kind: PieceKind, name: string): string | undefined {
 		notification: 'Notification',
 		command: 'Command',
 		mailer: 'Mailer',
-		helper: 'Helper',
 		channel: 'Channel',
 		form: 'Form',
 		middleware: 'Middleware'
@@ -98,7 +98,6 @@ function classExportSource(kind: PieceKind, className: string): string {
 		notification: 'notifications',
 		command: 'commands',
 		mailer: 'mailers',
-		helper: 'helpers',
 		channel: 'channels',
 		form: 'forms',
 		middleware: 'middleware'
