@@ -6,19 +6,7 @@ import { appStyleTokensConfig as config } from '../../../src/config/shared-primi
 /** Inspect design declarations, including literal inline styles, without changing layout CSS. */
 export function styleTokenViolations(source: string, path: string): string[] {
 	const issues: string[] = [];
-	const inspect = (css: string) =>
-		postcss.parse(css).walkDecls((declaration) => {
-			const { prop, value } = declaration;
-			if (path === config.tokenFile) return;
-			if (!prop.startsWith('--') && !config.designProperties.test(prop)) return;
-			const remaining = withoutVariables(value);
-			if (prop.startsWith('--hx-') && remaining.trim()) {
-				issues.push(`${path}: public token override outside catalog: ${prop}: ${value}`);
-				return;
-			}
-			if (literalDesign(prop.includes('font-family') ? 'font-family' : prop, remaining))
-				issues.push(`${path}: ${prop}: ${value}`);
-		});
+	const inspect = (css: string) => inspectDeclarations(css, path, issues);
 	if (path.endsWith('.css')) inspect(source);
 	else {
 		const ast = parse(source);
@@ -36,6 +24,21 @@ export function styleTokenViolations(source: string, path: string): string[] {
 		walk(ast.html);
 	}
 	return issues;
+}
+
+function inspectDeclarations(css: string, path: string, issues: string[]): void {
+	postcss.parse(css).walkDecls((declaration) => {
+		const { prop, value } = declaration;
+		if (path === config.tokenFile) return;
+		if (!prop.startsWith('--') && !config.designProperties.test(prop)) return;
+		const remaining = withoutVariables(value);
+		if (prop.startsWith('--hx-') && remaining.trim()) {
+			issues.push(`${path}: public token override outside catalog: ${prop}: ${value}`);
+			return;
+		}
+		if (literalDesign(prop.includes('font-family') ? 'font-family' : prop, remaining))
+			issues.push(`${path}: ${prop}: ${value}`);
+	});
 }
 
 /** Remove references while retaining their fallbacks so a literal fallback cannot hide debt. */

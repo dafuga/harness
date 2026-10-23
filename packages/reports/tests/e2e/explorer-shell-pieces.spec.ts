@@ -176,8 +176,7 @@ for (const [screen, width, height] of screens) {
 		await page.getByRole('switch', { name: 'Changed only' }).check();
 		await reachable(page.getByRole('searchbox'), width);
 
-		// Outside the explorer the rows of the console that was keep the look they had: the
-		// explorer has a palette of its own, and it stays inside the explorer.
+		// Explorer and workspace controls share one palette, including legacy alias consumers.
 		const legacy = page.getByRole('region', { name: 'Legacy console rows' });
 		const selected = legacy.getByRole('tab', { selected: true });
 		const [outside, inside] = await page.evaluate(() =>
@@ -189,7 +188,8 @@ for (const [screen, width, height] of screens) {
 				return colour;
 			})
 		);
-		expect(inside).not.toBe(outside);
+		expect(inside).toBe(outside);
+		expect(inside).toBe('rgb(243, 195, 59)');
 		await expect(selected).toHaveText('Component map');
 		expect(await styled(selected, 'border-bottom-color')).toBe(outside);
 		expect(await styled(chosen, 'color')).toBe(inside);

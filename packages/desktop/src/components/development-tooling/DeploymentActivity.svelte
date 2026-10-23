@@ -129,8 +129,8 @@
 	.light {
 		width: 10px;
 		height: 10px;
-		border: 2px solid;
-		border-radius: 50%;
+		border: var(--hx-border-thick) solid;
+		border-radius: var(--hx-radius-round);
 		color: var(--muted);
 	}
 	/* Each state has its colour and, on a light, its shape: ring, dot, diamond or haloed dot. A row
@@ -140,28 +140,28 @@
 		color: var(--gold);
 	}
 	[data-state='recent'] {
-		color: #7fe3c0;
+		color: var(--hx-pass);
 	}
 	[data-state='failed'] {
-		color: #ffabb0;
+		color: var(--hx-fail);
 	}
 	.light:is([data-state='recent'], [data-state='failed'], [data-state='active']) {
 		background: currentColor;
 	}
 	.light[data-state='failed'] {
-		border-radius: 2px;
+		border-radius: var(--hx-radius-hairline);
 		transform: rotate(45deg) scale(0.9);
 	}
 	.light[data-state='active'] {
-		box-shadow: 0 0 0 3px rgb(255 208 53 / 0.25);
+		box-shadow: var(--hx-shadow-halo);
 	}
 	/* Only the light in the bar pulses, and not where motion is reduced; its halo stays. */
 	.pulse[data-state='active'] {
-		animation: pulse 1.6s ease-in-out infinite;
+		animation: pulse var(--hx-motion-pulse) ease-in-out infinite;
 	}
 	@keyframes pulse {
 		50% {
-			box-shadow: 0 0 0 6px rgb(255 208 53 / 0);
+			box-shadow: 0 0 0 var(--hx-space-6) color-mix(in srgb, var(--hx-gold) 0%, transparent);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
@@ -171,14 +171,14 @@
 	}
 	h2 {
 		margin: 0;
-		font-size: 16px;
+		font-size: var(--hx-type-size-base);
 		color: var(--gold);
 	}
 	.error {
 		margin: 0;
-		padding: 8px 12px;
-		border-radius: 6px;
-		font-size: 12px;
+		padding: var(--hx-space-8) var(--hx-space-12);
+		border-radius: var(--hx-radius-compact);
+		font-size: var(--hx-type-size-xs);
 	}
 	ul {
 		margin: 0;
@@ -186,20 +186,20 @@
 		list-style: none;
 	}
 	li + li {
-		border-top: 1px solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--line);
 	}
 	/* A row names its destination, then its route, how it stands, its project and its commit. */
 	.job {
 		display: grid;
 		grid-template-columns: auto minmax(0, 1fr);
 		align-items: center;
-		gap: 4px 12px;
+		gap: var(--hx-space-4) var(--hx-space-12);
 		width: 100%;
-		margin-block: 3px;
-		padding: 9px 10px;
+		margin-block: var(--hx-space-3);
+		padding: var(--hx-space-9) var(--hx-space-10);
 		border-color: transparent;
 		background: none;
-		font-size: 14px;
+		font-size: var(--hx-type-size-sm);
 	}
 	.job small {
 		grid-column: 2;
@@ -207,7 +207,7 @@
 	}
 	.back {
 		justify-self: start;
-		padding: 6px 10px;
-		font-size: 12px;
+		padding: var(--hx-space-6) var(--hx-space-10);
+		font-size: var(--hx-type-size-xs);
 	}
 </style>

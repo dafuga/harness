@@ -187,7 +187,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px 12px;
+		gap: var(--hx-space-8) var(--hx-space-12);
 	}
 	/* The first lines as written: what does not fit is cut at the edge, never rewritten. */
 	.ex-value-preview {
@@ -202,10 +202,10 @@
 	.ex-config-values :global(.viewer-dialog .ex-value-full) {
 		max-height: min(70dvh, 720px);
 		margin: 0;
-		padding: 14px 16px;
-		border-radius: 8px;
+		padding: var(--hx-space-14) var(--hx-space-16);
+		border-radius: var(--hx-radius-small);
 		background: var(--ex-raised);
-		font-size: 0.95rem;
+		font-size: var(--hx-type-size-base);
 		white-space: pre;
 	}
 	.ex-config-values :global(.viewer-header h2) {

@@ -174,7 +174,7 @@
 <style>
 	.ex-note {
 		display: block;
-		margin-top: 4px;
+		margin-top: var(--hx-space-4);
 	}
 	td {
 		overflow-wrap: normal;

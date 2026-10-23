@@ -123,14 +123,14 @@
 	.hx-verdict {
 		display: inline-flex;
 		align-items: center;
-		color: var(--hx-fail, #f2545b);
+		color: var(--hx-fail);
 		vertical-align: middle;
 	}
 	.hx-verdict.unknown {
-		color: var(--hx-muted, #92a6bb);
+		color: var(--hx-muted);
 	}
 	.hx-verdict.passed {
-		color: var(--hx-pass, #34d399);
+		color: var(--hx-pass);
 	}
 	button {
 		position: relative;
@@ -141,7 +141,7 @@
 		min-height: 32px;
 		padding: 0;
 		border: 0;
-		border-radius: 999px;
+		border-radius: var(--hx-radius-pill);
 		background: none;
 		color: inherit;
 		cursor: help;
@@ -155,29 +155,29 @@
 	.framed button {
 		min-width: 36px;
 		min-height: 36px;
-		border: 1px solid currentColor;
-		border-radius: var(--hx-radius-small, 8px);
+		border: var(--hx-border-thin) solid currentColor;
+		border-radius: var(--hx-radius-small);
 	}
 	/* Placed against the screen, so no column, row or scrolling wrapper cuts it. It scrolls when
 	   it is longer than its room, and is no stop of its own for the keyboard: the mark is. */
 	.hx-tip {
 		position: fixed;
-		z-index: 40;
+		z-index: var(--hx-layer-popover);
 		top: 0;
 		left: 0;
 		display: grid;
-		gap: 4px;
+		gap: var(--hx-space-4);
 		width: max-content;
 		max-width: min(320px, calc(100vw - 16px));
-		padding: 10px 12px;
-		border: 1px solid var(--hx-line-strong, #2c4259);
-		border-radius: var(--hx-radius-small, 8px);
-		background: var(--hx-raised, #14273a);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-		color: var(--hx-soft, #cbd5e1);
-		font-size: 0.85rem;
-		font-weight: 400;
-		line-height: 1.4;
+		padding: var(--hx-space-10) var(--hx-space-12);
+		border: var(--hx-border-thin) solid var(--hx-line-strong);
+		border-radius: var(--hx-radius-small);
+		background: var(--hx-raised);
+		box-shadow: var(--hx-shadow-popover);
+		color: var(--hx-soft);
+		font-size: var(--hx-type-size-sm);
+		font-weight: var(--hx-style-weight-regular);
+		line-height: var(--hx-style-leading-snug);
 		text-align: left;
 		white-space: normal;
 		overflow-wrap: anywhere;
@@ -188,14 +188,14 @@
 		display: none;
 	}
 	.hx-tip strong {
-		color: var(--hx-text, #f2f5fa);
-		font-weight: 600;
+		color: var(--hx-text);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	/* The gap to the mark belongs to the tooltip, so a pointer can cross it without closing it. */
 	.hx-tip::before {
 		content: '';
 		position: absolute;
 		inset: -9px 0;
-		z-index: -1;
+		z-index: var(--hx-layer-behind);
 	}
 </style>

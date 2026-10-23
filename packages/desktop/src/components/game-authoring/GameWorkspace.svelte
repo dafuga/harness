@@ -210,7 +210,7 @@
 <style>
 	.game {
 		display: grid;
-		gap: 16px;
+		gap: var(--hx-space-16);
 	}
 	.back {
 		justify-self: start;

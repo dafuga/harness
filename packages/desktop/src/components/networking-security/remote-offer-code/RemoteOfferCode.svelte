@@ -37,7 +37,10 @@
 			aria-label="Pairing QR code"
 			viewBox="0 0 {side} {side}"
 			shape-rendering="crispEdges"
-			><rect width={side} height={side} fill="#fff" /><path d={symbol.path} fill="#000" /></svg
+			><rect width={side} height={side} fill="var(--hx-text)" /><path
+				d={symbol.path}
+				fill="var(--hx-bg)"
+			/></svg
 		><small class="muted">Expires in {timeLeft(left)}</small>{:else}<span class="remote-note"
 			>{live ? unshown : expired}</span
 		>{/if}

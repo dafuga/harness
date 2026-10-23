@@ -125,24 +125,24 @@
 
 <style>
 	.ex-group {
-		margin-top: 28px;
+		margin-top: var(--hx-space-28);
 	}
 	.ex-group h2 {
-		margin: 0 0 12px;
-		padding-bottom: 8px;
-		border-bottom: 1px solid var(--hx-line, #2c4259);
-		color: var(--hx-text, #f2f5fa);
-		font-size: 17px;
-		font-weight: 600;
-		line-height: 1.3;
+		margin: 0 0 var(--hx-space-12);
+		padding-bottom: var(--hx-space-8);
+		border-bottom: var(--hx-border-thin) solid var(--hx-line);
+		color: var(--hx-text);
+		font-size: var(--hx-type-size-lg);
+		font-weight: var(--hx-style-weight-semibold);
+		line-height: var(--hx-style-leading-snug);
 		overflow-wrap: anywhere;
 	}
 	.ex-group-count {
-		margin-inline-start: 4px;
-		color: var(--hx-muted, #8fa1b8);
-		font-size: 13px;
-		font-weight: 400;
-		font-variant-numeric: tabular-nums;
+		margin-inline-start: var(--hx-space-4);
+		color: var(--hx-muted);
+		font-size: var(--hx-type-size-compact);
+		font-weight: var(--hx-style-weight-regular);
+		font-variant-numeric: var(--hx-style-numeric-tabular);
 		white-space: nowrap;
 	}
 </style>

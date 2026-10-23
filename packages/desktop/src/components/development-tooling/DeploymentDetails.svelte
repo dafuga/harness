@@ -65,29 +65,29 @@
 <style>
 	.deployment-details {
 		display: grid;
-		gap: 14px;
+		gap: var(--hx-space-14);
 	}
 	/* Named by its destination with its route under it, as in the list it was chosen from. */
 	.head {
 		display: grid;
 		justify-items: start;
-		gap: 6px;
-		font-size: 12px;
+		gap: var(--hx-space-6);
+		font-size: var(--hx-type-size-xs);
 	}
 	h2 {
 		margin: 0;
-		font-size: 16px;
+		font-size: var(--hx-type-size-base);
 		color: var(--gold);
 	}
 	.receipt {
 		display: grid;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	h3 {
 		margin: 0;
-		font-size: 11px;
-		font-weight: 600;
-		letter-spacing: 0.06em;
+		font-size: var(--hx-type-size-2xs);
+		font-weight: var(--hx-style-weight-semibold);
+		letter-spacing: var(--hx-style-tracking-wide);
 		text-transform: uppercase;
 		color: var(--muted);
 	}
@@ -96,28 +96,28 @@
 		display: grid;
 		grid-template-columns: max-content minmax(0, 1fr);
 		align-items: baseline;
-		gap: 6px 16px;
+		gap: var(--hx-space-6) var(--hx-space-16);
 		margin: 0;
-		font-size: 13px;
+		font-size: var(--hx-type-size-compact);
 	}
 	.facts {
-		padding-block: 10px;
-		border-block: 1px solid var(--line);
+		padding-block: var(--hx-space-10);
+		border-block: var(--hx-border-thin) solid var(--line);
 	}
 	dl div {
 		display: contents;
 	}
 	dt {
-		font-size: 12px;
+		font-size: var(--hx-type-size-xs);
 		color: var(--muted);
 	}
 	dd {
 		margin: 0;
-		color: #edf4fa;
+		color: var(--hx-text);
 		overflow-wrap: anywhere;
 	}
 	code {
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 12.5px;
+		font-family: var(--hx-font-family-mono);
+		font-size: var(--hx-type-size-compact);
 	}
 </style>
