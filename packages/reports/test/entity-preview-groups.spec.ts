@@ -3,6 +3,8 @@ import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 import { configExpression, longConfigValue } from './entityConfigFixtures';
+import { reviewServiceFolders } from './entityPreviewFunctions';
+import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
 const configUnits = [
@@ -128,7 +130,17 @@ for (const [viewport, size] of Object.entries(viewports)) {
 						})
 				);
 			});
-			await capture(page, `source-${category}-${viewport}`);
+			await capture(page, `source-${category}-${viewport}`, [
+				'reports.component.harness-entity-header'
+			]);
+			const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
+			await expect
+				.soft(crumbs.getByRole('listitem'))
+				.toHaveText([
+					entityLabels[category].title,
+					'Orders',
+					await page.getByRole('heading', { level: 1 }).innerText()
+				]);
 			const section = page.locator('section[aria-labelledby="ex-source-title"]');
 			await expect
 				.soft(section.getByRole('heading', { name: /Symbols|Execution targets/ }))
@@ -138,5 +150,6 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				.toHaveText(file, { timeout: 500 });
 			expect(await fits(page)).toBe(true);
 		}
+		await reviewServiceFolders(page, viewport);
 	});
 }
