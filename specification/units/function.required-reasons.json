@@ -9,13 +9,16 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/required-reasons/requiredReasons.ts",
+			"src/utils/development-tooling/required-reasons/requiredReasons.types.ts",
 			"src/utils/required-reasons/requiredReasons.ts",
 			"src/utils/requiredReasons.ts"
 		],
 		"symbols": [
-			"ReasonSide",
 			"presentUnits",
 			"requiredReasons",
+			"ReasonSide",
+			"ReasonSide",
+			"Symbol",
 			"presentUnits",
 			"requiredReasons",
 			"ReasonSide",

@@ -1,3 +1,4 @@
+import type { RegressionRun, Observation } from './RegressionProofService.types';
 import { focusedScreens } from './focusedScreens';
 import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';
 import type { ScenarioManifest } from '../../../core/development-tooling/unitTypes';
@@ -24,18 +25,6 @@ import { regressionHash } from '../../../utils/git-source-history/regressionHist
 import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
 import { regressionFiles } from '../../../utils/verification-evidence/regressionFiles';
 import { runIsolated } from '../../../utils/reports-media/run-isolated/runIsolated';
-
-export interface RegressionRun {
-	commit: string;
-	loop: string;
-	phase: RegressionPhase;
-	tests: string[];
-	units: string[];
-	command: string;
-	assertion: string;
-	timeoutMs: number;
-	red?: RegressionRecord;
-}
 
 /** Run only the declared regression command, in the existing clean-snapshot mechanism. */
 export class RegressionProofService {
@@ -106,16 +95,6 @@ function checkResult(
 		fail(
 			'The committed failing test must fail with the named assertion; setup errors do not prove the defect.'
 		);
-}
-
-interface Observation {
-	profile: string;
-	startedAt: string;
-	result: Awaited<ReturnType<typeof runIsolated>>;
-	output: Buffer;
-	measurements: NonNullable<RegressionRecord['measurements']>;
-	captures: NonNullable<RegressionRecord['captures']>;
-	files: Array<{ path: string; bytes: Buffer }>;
 }
 
 async function observeRegression(
@@ -207,3 +186,5 @@ function invalidExecution(result: Awaited<ReturnType<typeof runIsolated>>): bool
 		Boolean(result.unknown)
 	);
 }
+
+export type { RegressionRun } from './RegressionProofService.types';

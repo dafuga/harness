@@ -1,3 +1,4 @@
+import type { Case } from './plan-reads.test.types';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { createHash } from 'node:crypto';
@@ -27,7 +28,6 @@ async function counting(root: string) {
 const pinnedReads = (calls: string[][]) =>
 	calls.filter(([command]) => command === 'show' || command === 'ls-tree').map((c) => c.join(' '));
 const repeated = (reads: string[]) => reads.length - new Set(reads).size;
-type Case = { name: string; input: unknown; output: unknown };
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const trace = (file: string, cases: Case[]) =>
 	recordCapture(

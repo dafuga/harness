@@ -1,25 +1,10 @@
-import { offlineCapabilities, type OfflineView } from '../cache-status/cacheStatus';
+import type { ProjectSelection, LoadedWorkspace } from './loadWorkspace.types';
+import { offlineCapabilities } from '../cache-status/cacheStatus';
 import { offlineView } from './offlineView';
 import { projectCapabilities } from './projectCapabilities';
 import type { WorkspaceRoute } from '../workspaceRoute';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
-import type {
-	EntityDetail,
-	ProjectSnapshot
-} from '../../../models/development-tooling/Desktop.types';
-import type { ProjectCapabilities } from '../../../models/projects-sessions/ProjectContext.types';
-
-export interface LoadedWorkspace {
-	snapshot: ProjectSnapshot;
-	entity: EntityDetail | null;
-	capabilities: ProjectCapabilities;
-	offline: OfflineView | null;
-}
-
-/** The project the bridge was last told to select; null while that is not known. */
-export interface ProjectSelection {
-	id: string | null;
-}
+import type { ProjectSnapshot } from '../../../models/development-tooling/Desktop.types';
 
 /** A bridge keeps one selected project, so another one is selected before anything is read. */
 async function selected(bridge: DesktopBridge, route: WorkspaceRoute, selection: ProjectSelection) {
@@ -77,3 +62,5 @@ export async function loadWorkspace(
 		offline
 	};
 }
+
+export type { LoadedWorkspace, ProjectSelection } from './loadWorkspace.types';

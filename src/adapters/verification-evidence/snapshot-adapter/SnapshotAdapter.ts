@@ -1,3 +1,4 @@
+import type { SnapshotDrift } from './SnapshotAdapter.types';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
@@ -9,13 +10,6 @@ import { pathMatches } from '../../../core/development-tooling/unitsConfig';
 import { snapshotAdditions } from './snapshotAdditions';
 import { CommitTreeAdapter } from '../../git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../git-source-history/GitAdapter';
-
-export interface SnapshotDrift {
-	/** Tracked files that were changed or deleted, and shared links that were replaced. */
-	mutated: string[];
-	/** Files the commit does not contain and no output declaration covers. */
-	added: string[];
-}
 
 /**
  * A clean export of one exact commit, outside every repository. Checks run here, so nothing in
@@ -126,3 +120,5 @@ function extract(archive: Buffer, directory: string): Promise<void> {
 		);
 	});
 }
+
+export type { SnapshotDrift } from './SnapshotAdapter.types';

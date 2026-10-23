@@ -1,11 +1,7 @@
+import type { Read } from './readBrowserDiagnostics.types';
 import { lstatSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import {
-	browserDiagnosticSchema,
-	type BrowserDiagnostic
-} from '../../../../../core/development-tooling/browserDiagnostics';
-
-type Read = { browserErrors?: BrowserDiagnostic[]; failure?: string };
+import { browserDiagnosticSchema } from '../../../../../core/development-tooling/browserDiagnostics';
 
 /** Read only this check's diagnostics. Absence says nothing about an older test's monitoring. */
 export function readBrowserDiagnostics(directory: string): Read {

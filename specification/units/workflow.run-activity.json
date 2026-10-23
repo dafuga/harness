@@ -7,9 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/projects-sessions/runActivity.ts", "src/workflows/runActivity.ts"],
+		"source": [
+			"src/workflows/projects-sessions/runActivity.ts",
+			"src/workflows/projects-sessions/runActivity.types.ts",
+			"src/workflows/runActivity.ts"
+		],
 		"symbols": [
-			"Shown",
 			"activityRoot",
 			"showActivity",
 			"registerAgent",
@@ -19,6 +22,8 @@
 			"listAgents",
 			"renderRoster",
 			"renderShown",
+			"Shown",
+			"Shown",
 			"activityRoot",
 			"showActivity",
 			"registerAgent",

@@ -1,15 +1,7 @@
+import type { JevAdapterConfig } from './JevAdapter.types';
 import { APIError, TypeSafeClient } from '@typesafe-ai/sdk';
-import type { Fetch } from '@typesafe-ai/sdk';
 import type { JevEvaluation, JevRequest } from '../../core/agents-providers/jevTypes';
 import { JevResponseValidator } from '../../validators/agents-providers/JevResponseValidator';
-
-export interface JevAdapterConfig {
-	apiKey: string;
-	model: string;
-	fetch?: Fetch;
-	timeout?: number;
-	maxRetries?: number;
-}
 
 export class JevAdapter {
 	private readonly client: TypeSafeClient;
@@ -52,3 +44,5 @@ export class JevAdapter {
 		}
 	}
 }
+
+export type { JevAdapterConfig } from './JevAdapter.types';

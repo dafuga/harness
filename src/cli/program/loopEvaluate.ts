@@ -1,3 +1,13 @@
+import type {
+	LoopEvaluationResult,
+	LoopCommandResult,
+	EvaluateLoopInput
+} from './loopEvaluate.types';
+export type {
+	LoopEvaluationResult,
+	LoopCommandResult,
+	EvaluateLoopInput
+} from './loopEvaluate.types';
 import { spawn } from 'node:child_process';
 import { resourceWork } from '../../utils/execution-runtimes/resourceWork';
 import {
@@ -8,27 +18,6 @@ import {
 	type LoopEvaluator,
 	type LoopInput
 } from '../../workflows/development-tooling/loop-state/loopState';
-
-export interface LoopEvaluationResult {
-	loop: string;
-	tracePath: string;
-	passed: boolean;
-	results: LoopCommandResult[];
-}
-
-export interface LoopCommandResult {
-	id: string;
-	title: string;
-	command: string;
-	exitCode: number;
-	stdout: string;
-	durationMs?: number;
-	stderr: string;
-}
-
-export interface EvaluateLoopInput extends LoopInput {
-	loop: string;
-}
 
 export async function evaluateLoop(input: EvaluateLoopInput): Promise<LoopEvaluationResult> {
 	const startedAt = Date.now();

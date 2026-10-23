@@ -1,16 +1,7 @@
+import type { OfferVectors } from './qr-fixture.types';
 import { readFileSync } from 'node:fs';
 import jsQR from 'jsqr';
 import type { QrSymbol } from '../src/utils/qrSymbol';
-
-/**
- * TEST ONLY. Reads a drawn QR symbol the way a camera would: as pixels, with a decoder that
- * knows nothing of how the symbol was made. The offers are the vectors shared with the phone.
- */
-interface OfferVectors {
-	now: number;
-	valid: { text: string };
-	cases: { name: string; text: string; result: string }[];
-}
 const file = new URL('../../remote/test/support/offer-vectors.json', import.meta.url);
 export const offerVectors = JSON.parse(readFileSync(file, 'utf8')) as OfferVectors;
 

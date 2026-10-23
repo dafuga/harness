@@ -109,108 +109,108 @@
 
 <style>
 	.regression-proof {
-		margin: 20px 0;
-		padding: 22px;
-		border: 1px solid var(--hx-line, #284759);
-		border-radius: 12px;
-		background: var(--hx-surface, #0a2230);
+		margin: var(--hx-space-20) 0;
+		padding: var(--hx-space-22);
+		border: var(--hx-border-thin) solid var(--hx-line);
+		border-radius: var(--hx-radius-large);
+		background: var(--hx-surface);
 		min-width: 0;
 	}
 	.proof-context,
 	header p,
 	.footnote {
-		color: var(--hx-muted, #9bb2c1);
-		font-size: 0.875rem;
+		color: var(--hx-muted);
+		font-size: var(--hx-type-size-sm);
 	}
 	h2 {
-		margin: 0 0 6px;
-		font-size: 1.2rem;
+		margin: 0 0 var(--hx-space-6);
+		font-size: var(--hx-type-size-xl);
 	}
 	h3 {
-		margin: 20px 0 12px;
+		margin: var(--hx-space-20) 0 var(--hx-space-12);
 		text-transform: capitalize;
-		font-size: 0.9rem;
-		color: var(--hx-soft, #cbd5e1);
+		font-size: var(--hx-type-size-sm);
+		color: var(--hx-soft);
 	}
 	.proof-steps {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 16px;
+		gap: var(--hx-space-16);
 	}
 	.proof-step {
-		padding: 16px;
-		border: 1px solid var(--hx-line, #284759);
-		border-radius: 8px;
+		padding: var(--hx-space-16);
+		border: var(--hx-border-thin) solid var(--hx-line);
+		border-radius: var(--hx-radius-small);
 		min-width: 0;
 	}
 	.failed {
-		border-top: 3px solid var(--hx-fail, #f2545b);
+		border-top: var(--hx-border-heavy) solid var(--hx-fail);
 	}
 	.passed {
-		border-top: 3px solid var(--hx-pass, #34d399);
+		border-top: var(--hx-border-heavy) solid var(--hx-pass);
 	}
 	.step-heading {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-weight: 600;
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	.assertion {
-		margin: 12px 0 22px;
-		line-height: 1.5;
+		margin: var(--hx-space-12) 0 var(--hx-space-22);
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
 	a {
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		gap: 10px;
-		color: var(--hx-accent, #ffd22e);
-		font-size: 0.8rem;
+		gap: var(--hx-space-10);
+		color: var(--hx-accent);
+		font-size: var(--hx-type-size-compact);
 		text-decoration: none;
 	}
 	a:hover {
 		text-decoration: underline;
 	}
 	a code {
-		padding: 4px 6px;
-		border: 1px solid var(--hx-line, #284759);
-		border-radius: 4px;
+		padding: var(--hx-space-4) var(--hx-space-6);
+		border: var(--hx-border-thin) solid var(--hx-line);
+		border-radius: var(--hx-radius-xsmall);
 	}
 	details {
-		margin-top: 16px;
+		margin-top: var(--hx-space-16);
 	}
 	summary {
 		cursor: pointer;
-		font-size: 0.85rem;
-		color: var(--hx-soft, #cbd5e1);
+		font-size: var(--hx-type-size-sm);
+		color: var(--hx-soft);
 	}
 	.command {
 		display: block;
-		padding: 12px 0;
+		padding: var(--hx-space-12) 0;
 		overflow-wrap: anywhere;
 	}
 	pre {
 		max-height: 260px;
-		padding: 12px;
+		padding: var(--hx-space-12);
 		overflow: auto;
-		background: #061923;
-		font-size: 0.75rem;
+		background: var(--hx-bg);
+		font-size: var(--hx-type-size-xs);
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
 	}
 	.footnote {
-		margin: 18px 0 0;
+		margin: var(--hx-space-18) 0 0;
 	}
 	.proof-context {
-		margin: 0 0 16px;
+		margin: 0 0 var(--hx-space-16);
 	}
 	@media (max-width: 700px) {
 		.proof-steps {
 			grid-template-columns: minmax(0, 1fr);
 		}
 		.regression-proof {
-			padding: 16px;
+			padding: var(--hx-space-16);
 		}
 	}
 </style>

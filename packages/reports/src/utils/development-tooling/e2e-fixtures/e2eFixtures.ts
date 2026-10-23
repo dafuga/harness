@@ -1,32 +1,14 @@
+import type { Environment, E2eFixtures } from './e2eFixtures.types';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-type Environment = Record<string, string | undefined>;
-
 /** Per-run copies of the build, inside the checkout and outside everything tracked. */
 const frozenBuilds = fileURLToPath(
 	new URL('../../../../../../.cache/reports-e2e/', import.meta.url)
 );
-
-/** Where one browser run keeps everything it seeds; no two runs share any of it. */
-export interface E2eFixtures {
-	root: string;
-	/** The report store its servers read and its specs write. */
-	reports: string;
-	/** The seeded console history, its index and the metadata the specs read. */
-	console: string;
-	analytics: string;
-	/**
-	 * The copy of the finished build its servers are started from. It lies in the checkout's
-	 * cache, where the packages a built server imports resolve, under the name of the run.
-	 */
-	build: string;
-	/** A checkout of a fixture application, by its directory name. */
-	site(name: string): string;
-}
 
 /** The servers of a run; each listens on a port of its own unless the caller named one. */
 const portNames = [
@@ -101,3 +83,5 @@ export function closeE2eRun(env: Environment = process.env): void {
 	rmSync(env.HARNESS_E2E_ROOT, { recursive: true, force: true });
 	rmSync(join(frozenBuilds, basename(env.HARNESS_E2E_ROOT)), { recursive: true, force: true });
 }
+
+export type { E2eFixtures } from './e2eFixtures.types';

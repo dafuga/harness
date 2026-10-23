@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Row } from "./ExplorerPlatformDetails.types";
+
 	import type { PlatformEntry } from '../../../../../src/core/explorer-ui/Platform.types';
 	import {
 		platformViews,
@@ -7,14 +9,14 @@
 	} from '../../utils/explorer-ui/explorer-platforms/platformStatus';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
-	import { shortCommit, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import '../../lib/styles/platforms.css';
 	import EntityLink from './EntityLink.svelte';
 	import EntityMissing from './EntityMissing.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import SourceFileList from './SourceFileList.svelte';
 	let { host, nav }: { host: ExplorerScreenProps; nav: EntityNav } = $props();
-	type Row = { name: string; value: string; description?: string };
 	let list = $derived<ExplorerLocation>({
 		branch: host.route.branch,
 		commit: host.route.commit,
@@ -41,6 +43,7 @@
 		if (path.includes('\\') || parts.some((part) => !part || part === '.' || part === '..')) return;
 		return `${repository}/blob/${commit}/${parts.map(encodeURIComponent).join('/')}`;
 	}
+
 </script>
 
 {#snippet table(label: string, column: string, rows: Row[])}

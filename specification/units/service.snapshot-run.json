@@ -9,15 +9,18 @@
 	"owns": {
 		"source": [
 			"src/workflows/run-verify/verification-service/SnapshotRunService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.types.ts"
 		],
 		"symbols": [
 			"SnapshotRunService",
-			"SnapshotRun",
-			"Executed",
 			"SnapshotRunService",
 			"SnapshotRunService.constructor",
-			"SnapshotRunService.execute"
+			"SnapshotRunService.execute",
+			"SnapshotRun",
+			"Executed",
+			"SnapshotRun",
+			"Executed"
 		]
 	},
 	"contract": {

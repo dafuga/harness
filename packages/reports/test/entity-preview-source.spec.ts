@@ -1,14 +1,15 @@
+import { testFile, sourceMetrics } from './entityPreviewFunctionSource';
 import { expect as browserExpect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 import { sourceText } from './entitySourceFixture';
 import { createHash } from 'node:crypto';
-import type { Page, TestInfo } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 const kinds = [
 	['Models', 'models', 'Order', 'app.model.order', 'src/models/orders/Order.ts'],
-	['Helpers', 'functions', 'filterOrders', ids.filter, 'src/functions/orders/filterOrders.ts'],
+	['Helpers', 'functions', 'filterOrders', ids.filter, 'src/helpers/orders/filterOrders.ts'],
 	['Pages', 'pages', 'Orders page', ids.page, 'src/routes/orders/+page.svelte'],
 	['Components', 'components', 'OrderCard', ids.card, 'src/components/orders/OrderCard.ts'],
 	['Layouts', 'layouts', 'OrderFrame', frameId, 'src/layouts/orders/OrderFrame.svelte'],
@@ -18,24 +19,6 @@ const kinds = [
 test.use({ actionTimeout: 3000 });
 const expect = browserExpect.configure({ timeout: 2000 });
 const phase = process.env.SCREENSHOT_LABEL ?? 'run';
-
-async function sourceMetrics(page: Page, info: TestInfo, started: number) {
-	await info.attach('source-view-metrics', {
-		body: JSON.stringify(
-			await page.evaluate(
-				(start) => ({
-					openMs: performance.now() - start,
-					pageHeapBytes:
-						(performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
-							?.usedJSHeapSize ?? null
-				}),
-				started
-			)
-		),
-		contentType: 'application/json'
-	});
-}
-
 async function fileLink(page: Page, path: string, commit: string) {
 	const files = page.getByRole('list', { name: 'Source files', exact: true });
 	const link = files.getByRole('link', { name: path, exact: true });
@@ -57,10 +40,17 @@ async function historicalFile(
 ) {
 	await open(
 		page,
-		{ category: item.category, entity: item.id, commit: commits.middle, tab: 'source' },
+		{
+			category: item.category,
+			entity: item.id,
+			commit: commits.middle,
+			tab: 'source',
+			...(item.category === 'functions' ? { helper: 'filterOrders' } : {})
+		},
 		'source'
 	);
 	await fileLink(page, item.path, commits.middle);
+	await testFile(page, item.id, commits.middle);
 	await page.getByRole('button', { name: `View code for ${item.path}`, exact: true }).click();
 	await expect(page.getByRole('dialog').locator('pre')).toHaveText(
 		sourceText(commits.middle, item.path)
@@ -69,7 +59,6 @@ async function historicalFile(
 	await page.getByRole('dialog').getByRole('button', { name: 'Close viewer', exact: true }).click();
 	await expect(page.getByRole('dialog')).toHaveCount(0);
 }
-
 for (const [viewport, size] of Object.entries(viewports)) {
 	for (const [label, category, name, id, path] of kinds) {
 		test(`${label} code opens only from the detail Source tab at ${viewport} width`, async ({
@@ -80,7 +69,11 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await page.evaluate(() => document.fonts.ready);
 			await capture(page, `${phase}-source-catalog-${category}-${viewport}`);
 			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
-			await open(page, { category, entity: id }, 'source');
+			await open(
+				page,
+				{ category, entity: id, ...(category === 'functions' ? { helper: name } : {}) },
+				'source'
+			);
 			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
 			await page.getByRole('tab', { name: 'Source', exact: true }).click();
 			const address = await where(page);
@@ -90,9 +83,17 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				page.locator('.ex-head').getByRole('button', { name: /^View code for / })
 			).toHaveCount(0);
 			await expect(page.locator('pre')).toHaveCount(0);
-			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+			await capture(page, `${phase}-source-action-${category}-${viewport}`, [
+				'reports.component.harness-entity-source',
+				'reports.component.source-file-list'
+			]);
 			await expect(action, 'Every source file has its own code action').toBeVisible();
 			await fileLink(page, path, commits.tip);
+			await testFile(page, id, commits.tip);
+			if (category === 'functions')
+				await expect(
+					page.getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+				).toHaveCount(1);
 			const started = await page.evaluate(() => performance.now());
 			await action.click();
 			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });
@@ -142,17 +143,22 @@ test('source file selection and closing retain the detail Source tab', async ({ 
 test('Source opens file contents in a modal and older histories state an explicit gap', async ({
 	page
 }) => {
-	const route = { category: 'functions' as const, entity: ids.filter, tab: 'source' as const };
+	const route = {
+		category: 'functions' as const,
+		entity: ids.filter,
+		tab: 'source' as const,
+		helper: 'filterOrders'
+	};
 	await open(page, { ...route, commit: commits.middle }, 'source');
 	await expect(page.locator('pre')).toHaveCount(0);
 	await page
 		.getByRole('button', {
-			name: 'View code for src/functions/orders/filterOrders.ts',
+			name: 'View code for src/helpers/orders/filterOrders.ts',
 			exact: true
 		})
 		.click();
 	await expect(page.getByRole('dialog').locator('pre')).toHaveText(
-		sourceText(commits.middle, 'src/functions/orders/filterOrders.ts')
+		sourceText(commits.middle, 'src/helpers/orders/filterOrders.ts')
 	);
 	await open(page, route);
 	await page

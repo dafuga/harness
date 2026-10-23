@@ -1,12 +1,8 @@
+import type { ServedOptions } from './servedRepo.types';
 import { runCommand } from './cli';
 import { servedSources } from './servedFixture';
 import { fixtureScenarios, fixtureSources } from './verifyFixture';
 import { baselineRepo, type VerifyOutcome, type VerifyRepo } from './verifyRepo';
-
-export interface ServedOptions {
-	/** Leave the build undeclared, as a project that has not adopted build identity would. */
-	undeclared?: boolean;
-}
 
 /**
  * The baseline fixture with a page that is compiled by setup and captured from a real HTTP
@@ -57,3 +53,5 @@ export function pageCaptures(outcome: VerifyOutcome) {
 	const page = outcome.record.scenarios.find((scenario) => scenario.id === 'titles-page');
 	return (page?.states ?? []).flatMap((state) => state.captures);
 }
+
+export type { ServedOptions } from './servedRepo.types';

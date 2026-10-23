@@ -9,19 +9,24 @@
 	"owns": {
 		"source": [
 			"src/services/history-status-service/HistoryStatusService.ts",
-			"src/services/verification-evidence/history-status-service/HistoryStatusService.ts"
+			"src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
+			"src/services/verification-evidence/history-status-service/HistoryStatusService.types.ts"
 		],
 		"symbols": [
 			"HistoryStatusService",
-			"RecordStatus",
-			"CommitStatus",
-			"PinnedHistory",
 			"HistoryStatusService",
 			"HistoryStatusService.constructor",
 			"HistoryStatusService.all",
 			"HistoryStatusService.verifications",
 			"HistoryStatusService.status",
-			"HistoryStatusService.problems"
+			"HistoryStatusService.problems",
+			"RecordStatus",
+			"CommitStatus",
+			"PinnedHistory",
+			"VerificationNote",
+			"RecordStatus",
+			"CommitStatus",
+			"PinnedHistory"
 		]
 	},
 	"contract": {

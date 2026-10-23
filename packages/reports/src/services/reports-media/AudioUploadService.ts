@@ -1,20 +1,13 @@
+import type {
+	AudioDetails,
+	AudioUploadInput,
+	AudioComparisonInput
+} from './AudioUploadService.types';
 import { randomUUID } from 'node:crypto';
 import type { ReportRepository } from '../../repositories/reports-media/report-repository/ReportRepository';
 import { audioAsset } from '../../utils/reports-media/audio-asset/audioAsset';
 import { writeImageAsset } from '../../utils/reports-media/reportAssets';
 import { sanitize } from '../../utils/development-tooling/sanitize';
-interface AudioDetails {
-	title: string;
-	note: string;
-	source: string;
-}
-export interface AudioUploadInput extends AudioDetails {
-	audio: File;
-}
-export interface AudioComparisonInput extends AudioDetails {
-	before: File;
-	after: File;
-}
 function inputDetails(input: AudioDetails) {
 	const title = sanitize(input.title.trim());
 	if (!title || title.length > 120) throw new Error('Audio title must be 1–120 characters');
@@ -74,3 +67,5 @@ export class AudioUploadService {
 		});
 	}
 }
+
+export type { AudioUploadInput, AudioComparisonInput } from './AudioUploadService.types';

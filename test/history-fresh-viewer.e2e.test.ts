@@ -1,3 +1,4 @@
+import type { Index } from './history-fresh-viewer.e2e.test.types';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -16,22 +17,6 @@ import { removeRemote } from './support/historyRepo';
 import { legacyRun, png } from './support/legacyStore';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
 import { freePort } from './support/workers';
-
-interface Index {
-	legacy: Array<{
-		id: string;
-		status: string;
-		startedAt: string;
-		linked: string | null;
-		media: Media[];
-	}>;
-	revisions: Array<{ commit: string; coverage: string }>;
-}
-interface Media {
-	media: string | null;
-	sha256: string;
-	capturedAt?: string;
-}
 
 let baseline: VerifyRepo;
 let reader: VerifyRepo;

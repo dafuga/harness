@@ -1,3 +1,4 @@
+import type { Preview } from './test-preview-refusal.test.types';
 import { execFile } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
@@ -18,10 +19,6 @@ const named = 'HARNESS_HUB_TEST_PORT';
 const noPort = `${named} must be a port from 1024 to 65535`;
 const asData =
 	"import('./playwright.config.ts').then((read) => console.log(JSON.stringify(read.default)))";
-interface Preview {
-	webServer: { command: string; url: string; reuseExistingServer: boolean };
-	use: { baseURL: string };
-}
 const servers: Server[] = [];
 afterEach(async () => {
 	for (const server of servers.splice(0)) {

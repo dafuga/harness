@@ -16,7 +16,8 @@
 			"packages/planning/src/utils/planOptions.ts",
 			"packages/planning/src/utils/planning-collaboration/plan-design/heldBy.ts",
 			"packages/planning/src/utils/planning-collaboration/plan-read/checkOptions.ts",
-			"packages/planning/src/utils/planning-collaboration/planOptions.ts"
+			"packages/planning/src/utils/planning-collaboration/planOptions.ts",
+			"packages/planning/src/utils/planning-collaboration/planOptions.types.ts"
 		],
 		"symbols": [
 			"planOptions",
@@ -35,7 +36,6 @@
 			"approvable",
 			"heldBy",
 			"checkOptions",
-			"WriteImages",
 			"most",
 			"id",
 			"binding",
@@ -44,7 +44,9 @@
 			"approvable",
 			"planOptions",
 			"checkOptions",
-			"heldBy"
+			"heldBy",
+			"WriteImages",
+			"WriteImages"
 		]
 	},
 	"contract": {

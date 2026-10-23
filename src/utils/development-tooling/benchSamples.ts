@@ -1,12 +1,7 @@
+import type { RoundResult } from './benchSamples.types';
 import { performance } from 'node:perf_hooks';
 import { warmupCalls } from '../../core/development-tooling/comparisonTypes';
 import type { RuntimeRequest, UnitRuntime } from '../../core/execution-runtimes/runtimeTypes';
-
-export interface WarmResult {
-	medianMs: number;
-	opsPerSecond: number;
-	iterations: number;
-}
 
 export function median(values: number[]): number {
 	const sorted = [...values].sort((left, right) => left - right);
@@ -21,15 +16,6 @@ export async function timeCall(runtime: UnitRuntime, request: RuntimeRequest): P
 	const elapsed = performance.now() - started;
 	if (!response.ok) throw new Error(`${runtime.kind} failed: ${response.error.message}`);
 	return elapsed;
-}
-
-export interface RoundResult {
-	/** Fastest single call: the most repeatable figure on a machine doing other work. */
-	floorMs: number;
-	/** Median of the round medians. */
-	warmMs: number;
-	opsPerSecond: number;
-	samples: number;
 }
 
 /** Several rounds of end-to-end calls on an initialized runtime, after a short warm-up. */
@@ -82,3 +68,5 @@ export function roundMeasurements(result: RoundResult, where: string) {
 }
 
 export { benchSamples } from '../../cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples';
+
+export type { WarmResult, RoundResult } from './benchSamples.types';

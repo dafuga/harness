@@ -1,3 +1,4 @@
+import type { Runtime, Device } from './ios-acceptance-simulator.types';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 import { tool, tried } from './ios-products';
@@ -9,18 +10,6 @@ import { tool, tried } from './ios-products';
  */
 export const deviceName = 'Harness Native Acceptance';
 export const bundleId = 'com.dafuga.harness';
-
-interface Device {
-	name: string;
-	udid: string;
-	isAvailable?: boolean;
-}
-interface Runtime {
-	identifier: string;
-	version: string;
-	isAvailable: boolean;
-	supportedDeviceTypes: { name: string; identifier: string; productFamily: string }[];
-}
 
 function simctl(...args: string[]): string {
 	return tool(['xcrun', 'simctl', ...args]).trim();

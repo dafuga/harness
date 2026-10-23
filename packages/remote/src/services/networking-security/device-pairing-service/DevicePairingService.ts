@@ -1,5 +1,9 @@
-import type { RemoteGrant } from '../../../models/networking-security/Remote.types';
-import type { RemotePairInput } from '../../../models/networking-security/RemoteControl.types';
+import type {
+	DevicePairingInput,
+	ScanningDevice,
+	PendingPairing,
+	DeviceCredentials
+} from './DevicePairingService.types';
 import type {
 	RelayPairingExchange,
 	RelayPairingInfo,
@@ -9,8 +13,7 @@ import type {
 import type {
 	PairingApproval,
 	PairingSecret,
-	RemoteKeyPair,
-	StoredRemoteKeys
+	RemoteKeyPair
 } from '../../../models/networking-security/RemoteSecure.types';
 import {
 	openPairing,
@@ -36,40 +39,6 @@ import {
 	remoteKeys,
 	sharedSecret
 } from '../../../utils/networking-security/remoteKeys';
-
-export interface DevicePairingInput extends RemotePairInput {
-	platform?: PairingSecret['platform'];
-}
-
-/** How a device names itself when it scans: it gives no address and no code. */
-export interface ScanningDevice {
-	deviceName: string;
-	platform?: PairingSecret['platform'];
-}
-
-/** What a phone holds between its request and the exchange. Nothing here is sent anywhere. */
-export interface PendingPairing {
-	input: DevicePairingInput;
-	origin: string;
-	keys: RemoteKeyPair;
-	hostKey: string;
-	deviceId: string;
-	verifier: string;
-	approvalKey: CryptoKey;
-}
-
-/** What a paired phone keeps in its key store. */
-export interface DeviceCredentials {
-	origin: string;
-	hostId: string;
-	hostKey: string;
-	hostName: string;
-	deviceId: string;
-	credential: string;
-	keys: StoredRemoteKeys;
-	generation: number;
-	grant: RemoteGrant;
-}
 
 function checked(input: DevicePairingInput): string {
 	const origin = relayOrigin(input.origin),
@@ -166,3 +135,10 @@ export class DevicePairingService {
 		return (await response.json()) as unknown;
 	}
 }
+
+export type {
+	DevicePairingInput,
+	ScanningDevice,
+	PendingPairing,
+	DeviceCredentials
+} from './DevicePairingService.types';

@@ -1,4 +1,5 @@
-import { toCamelCase, toPascalCase } from '../../core/development-tooling/case';
+import type { FunctionFileRule } from './scaffoldNamingRules.types';
+import { toCamelCase, toPascalCase } from '../../helpers/strings/case';
 import { harnessClassFileRules } from '../../rules/explorer-ui/catalog';
 import type { AuditFile } from './adapters/types';
 import { hasNamedValueExport } from './functionNamingRules';
@@ -10,13 +11,6 @@ import {
 	typeScriptStem
 } from './namePatterns';
 import type { AuditFinding } from './types';
-
-interface FunctionFileRule {
-	expected: string;
-	label: string;
-	validFileName: boolean;
-	filePattern: string;
-}
 
 const modelAdapters: Record<string, string> = {
 	d1: 'createD1Adapter',

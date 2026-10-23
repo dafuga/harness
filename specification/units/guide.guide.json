@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/development-tooling/guide.ts", "src/guides/guide.ts"],
+		"source": [
+			"src/guides/development-tooling/guide.ts",
+			"src/guides/development-tooling/guide.types.ts",
+			"src/guides/guide.ts"
+		],
 		"symbols": [
-			"Guide",
 			"guides",
 			"findGuide",
 			"availableGuideTopics",
+			"Guide",
+			"Guide",
 			"guides",
 			"findGuide",
 			"availableGuideTopics"

@@ -92,4 +92,6 @@ class ProjectAgentState {
 export function createProjectAgentStore(workspace: Workspace) {
 	return new ProjectAgentState(workspace);
 }
-export type ProjectAgent = ProjectAgentState;
+
+export type { ProjectAgent } from './projectAgent.svelte.types';
+export type { ProjectAgentState };

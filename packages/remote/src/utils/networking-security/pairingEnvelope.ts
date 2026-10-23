@@ -1,3 +1,4 @@
+import type { PairingContext, PairingKeys, PairingKind } from './pairingEnvelope.types';
 import {
 	bytesText,
 	concatBytes,
@@ -8,21 +9,6 @@ import {
 	toBase64Url
 } from './remoteBytes';
 import { aesKey, deriveBytes } from './remoteKeys';
-
-export interface PairingContext {
-	hostId: string;
-	pairingId: string;
-	/** The phone's one-time public key for this pairing. */
-	ephemeralKey: Uint8Array;
-	hostKey: Uint8Array;
-	/** ECDH of that ephemeral key with the host's static key. */
-	secret: Uint8Array;
-}
-export type PairingKind = 'request' | 'approval';
-export interface PairingKeys {
-	request: CryptoKey;
-	approval: CryptoKey;
-}
 
 /** Two single-use keys: one seals the phone's request, the other the host's approval. */
 export async function pairingEnvelope(context: PairingContext): Promise<PairingKeys> {
@@ -61,3 +47,5 @@ export async function openPairing(
 	);
 	return JSON.parse(bytesText(new Uint8Array(plain))) as unknown;
 }
+
+export type { PairingContext, PairingKind, PairingKeys } from './pairingEnvelope.types';

@@ -1,3 +1,4 @@
+import type { Attached } from './EvidenceAttachService.types';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -24,17 +25,6 @@ import { sourceArchiveRef } from '../../../utils/git-source-history/historyRefs'
 import { lfsPointer } from '../../../utils/verification-evidence/lfsPointer';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { VerificationCheckService } from '../VerificationCheckService';
-
-export interface Attached {
-	record: string;
-	status: 'passed' | 'failed';
-	source: string;
-	evidence: EvidencePointer;
-	note: string;
-	archive: string;
-	/** False when this exact record was already attached. */
-	created: boolean;
-}
 
 /**
  * Persists a verification record after its source commit exists. The commit is not touched:
@@ -183,3 +173,5 @@ function sha256(text: string): string {
 function short(id: string): string {
 	return id.slice(0, 12);
 }
+
+export type { Attached } from './EvidenceAttachService.types';

@@ -7,13 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/development-tooling/runExplain.ts", "src/workflows/runExplain.ts"],
+		"source": [
+			"src/workflows/development-tooling/runExplain.ts",
+			"src/workflows/development-tooling/runExplain.types.ts",
+			"src/workflows/runExplain.ts"
+		],
 		"symbols": [
-			"ExplainInput",
 			"explainReport",
 			"explainedRange",
 			"listed",
 			"explainAdd",
+			"ExplainInput",
+			"ExplainInput",
+			"Listed",
 			"explainReport",
 			"explainedRange",
 			"listed",

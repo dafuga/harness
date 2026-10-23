@@ -32,30 +32,30 @@
 <style>
 	.agent-settings {
 		display: grid;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		max-width: 420px;
-		padding: 18px;
-		border: 1px solid var(--line);
-		border-radius: 12px;
+		padding: var(--hx-space-18);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
 		background: var(--panel);
 	}
 	h2 {
 		margin: 0;
-		font-size: 16px;
+		font-size: var(--hx-type-size-base);
 	}
 	.agent-setting {
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 	}
 	.agent-setting span {
 		color: var(--gold);
-		font-size: 13px;
+		font-size: var(--hx-type-size-compact);
 	}
 	small {
 		color: var(--muted);
 	}
 	.agent-settings-error {
 		margin: 0;
-		color: #ff8a8a;
+		color: var(--hx-fail);
 	}
 </style>

@@ -1,8 +1,10 @@
+import type { remoteScanFailures } from './RemoteControlValues';
 /** The checked-out branch and its tip, as the client last saw them. */
 export interface RemoteRevision {
 	branch: string;
 	commit: string;
 }
+
 /** The projects and permissions explicitly approved for one phone. */
 export interface RemoteGrant {
 	projects: { id: string; name: string }[];
@@ -10,6 +12,7 @@ export interface RemoteGrant {
 	comments?: boolean;
 	agents: boolean;
 }
+
 /** `resync` is raised by a client itself after a `gap`; a host never sends it. */
 export type RemoteConnectionEvent =
 	| { kind: 'grant'; grant: RemoteGrant }
@@ -31,6 +34,7 @@ export interface RemotePairingOffer {
 	scan: string;
 	expiresAt: string;
 }
+
 /** A phone that scanned the offer and waits for the person to approve its exact key. */
 export interface RemotePairingRequest {
 	pairingId: string;
@@ -40,6 +44,7 @@ export interface RemotePairingRequest {
 	requestedAt: string;
 	expiresAt: string;
 }
+
 export interface RemoteDeviceInfo {
 	deviceId: string;
 	name: string;
@@ -52,6 +57,7 @@ export interface RemoteDeviceInfo {
 	lastSeenAt: string | null;
 	online: boolean;
 }
+
 export type RemoteHostState =
 	| 'disabled'
 	| 'unavailable'
@@ -60,6 +66,7 @@ export type RemoteHostState =
 	| 'connecting'
 	| 'online'
 	| 'offline';
+
 /** Public metadata only: nothing here is a key or a credential. */
 export interface RemoteHostStatus {
 	supported: boolean;
@@ -73,6 +80,7 @@ export interface RemoteHostStatus {
 	devices: RemoteDeviceInfo[];
 	projects: { id: string; name: string }[];
 }
+
 /** `deviceId` is the identity of the request the person was shown; another one is refused. */
 export interface RemoteApprovalInput {
 	pairingId: string;
@@ -82,6 +90,7 @@ export interface RemoteApprovalInput {
 	comments?: boolean;
 	agents: boolean;
 }
+
 /** `window.harnessRemote` in Electron. Absent anywhere else. */
 export interface RemoteDesktopControl {
 	status(): Promise<RemoteHostStatus>;
@@ -105,6 +114,7 @@ export type RemoteMobileState =
 	| 'online'
 	| 'offline'
 	| 'revoked';
+
 export interface RemoteMobileStatus {
 	state: RemoteMobileState;
 	origin: string | null;
@@ -114,6 +124,7 @@ export interface RemoteMobileStatus {
 	reason: string | null;
 	lastOnlineAt: string | null;
 }
+
 /** What a device asks with once it read an offer. No page ever holds or sends this. */
 export interface RemotePairInput {
 	origin: string;
@@ -122,21 +133,14 @@ export interface RemotePairInput {
 	code: string;
 	deviceName: string;
 }
+
 /** All a page gives the scanner: how this phone is named to the person who approves it. */
 export interface RemoteScanInput {
 	deviceName: string;
 }
-/** Every way a scan ends without an offer; the plugin rejects with one of these as its code. */
-export const remoteScanFailures = [
-	'camera-denied',
-	'camera-unavailable',
-	'scan-cancelled',
-	'offer-invalid',
-	'offer-unsupported',
-	'offer-environment',
-	'offer-expired'
-] as const;
+
 export type RemoteScanFailure = (typeof remoteScanFailures)[number];
+
 /** The phone's control port, implemented by the native plugin. */
 export interface RemoteMobileControl {
 	status(): Promise<RemoteMobileStatus>;
@@ -148,3 +152,4 @@ export interface RemoteMobileControl {
 	disconnect(): Promise<RemoteMobileStatus>;
 	onStatus(listener: (status: RemoteMobileStatus) => void): () => void;
 }
+export { remoteScanFailures } from './RemoteControlValues';

@@ -104,23 +104,24 @@
 </div>
 
 <style>
-	/* No box of its own, so a host's rules for its children never move the bubble or the panel. */
 	.floating-chat {
-		/* On a phone the margin narrows to the panel's own, so the panel sits evenly. */
-		--fc-right: calc(var(--floating-chat-right, min(20px, 3vw)) + env(safe-area-inset-right, 0px));
-		--fc-bottom: calc(var(--floating-chat-bottom, 20px) + env(safe-area-inset-bottom, 0px));
-		--fc-above: calc(var(--fc-bottom) + 66px);
+		--fc-right: calc(
+			var(--floating-chat-right, min(var(--hx-space-20), 3vw)) + env(safe-area-inset-right, 0)
+		);
+		--fc-bottom: calc(
+			var(--floating-chat-bottom, var(--hx-space-20)) + env(safe-area-inset-bottom, 0)
+		);
+		--fc-above: calc(var(--fc-bottom) + var(--hx-layout-chat-bubble) + var(--hx-space-12));
 		display: contents;
 	}
-	/* Under a sheet or a dialog that is open, above the page and its sticky bar. */
 	.floating-chat-bubble,
 	.floating-chat-panel {
 		position: fixed;
 		right: var(--fc-right);
-		z-index: 35;
+		z-index: var(--hx-layer-floating);
 		box-sizing: border-box;
-		border: 1px solid var(--line, #24485c);
-		box-shadow: 0 14px 40px rgb(0 0 0 / 0.45);
+		border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		box-shadow: var(--hx-shadow-overlay);
 	}
 	.floating-chat-bubble,
 	.floating-chat-close {
@@ -128,15 +129,15 @@
 		flex: none;
 		place-items: center;
 		padding: 0;
-		border-radius: 50%;
+		border-radius: var(--hx-radius-round);
 		cursor: pointer;
 	}
 	.floating-chat-bubble {
 		bottom: var(--fc-bottom);
 		width: 54px;
 		height: 54px;
-		background: var(--ink, #04141e);
-		color: var(--gold, #f3c33b);
+		background: var(--ink, var(--hx-bg));
+		color: var(--gold, var(--hx-gold));
 	}
 	.floating-chat-bubble svg {
 		fill: none;
@@ -147,15 +148,14 @@
 	.floating-chat-bubble:hover,
 	.floating-chat-bubble[aria-expanded='true'],
 	.floating-chat-close:hover {
-		border-color: var(--gold, #f3c33b);
-		color: var(--gold, #f3c33b);
+		border-color: var(--gold, var(--hx-gold));
+		color: var(--gold, var(--hx-gold));
 	}
 	.floating-chat-bubble:focus-visible,
 	.floating-chat-close:focus-visible {
-		outline: 2px solid var(--gold, #f3c33b);
-		outline-offset: 3px;
+		outline: var(--hx-border-thick) solid var(--gold, var(--hx-gold));
+		outline-offset: var(--hx-border-heavy);
 	}
-	/* Above the bubble, and below the bar at the top of the page however far that bar wraps. */
 	.floating-chat-panel {
 		bottom: var(--fc-above);
 		display: flex;
@@ -163,50 +163,50 @@
 		width: min(400px, calc(100vw - 24px));
 		max-height: min(620px, calc(100dvh - var(--fc-above) - var(--floating-chat-top, 168px)));
 		overflow: hidden;
-		border-radius: 16px;
-		background: var(--panel, #082131);
-		color: var(--hx-text, #edf4fa);
-	}
-	.floating-chat-panel[hidden] {
-		display: none;
+		border-radius: var(--hx-radius-xlarge);
+		background: var(--panel, var(--hx-surface));
+		color: var(--hx-text);
 	}
 	.floating-chat-panel:focus {
 		outline: none;
 	}
+	.floating-chat-panel[hidden] {
+		display: none;
+	}
 	header {
 		display: flex;
 		flex: none;
-		gap: 12px;
+		gap: var(--hx-space-12);
 		align-items: flex-start;
 		justify-content: space-between;
-		padding: 12px 10px 10px 16px;
-		border-bottom: 1px solid var(--line, #24485c);
+		padding: var(--hx-space-12) var(--hx-space-10) var(--hx-space-10) var(--hx-space-16);
+		border-bottom: var(--hx-border-thin) solid var(--line, var(--hx-line));
 	}
 	h2 {
 		margin: 0;
-		font-size: 15px;
-		font-weight: 600;
+		font-size: var(--hx-type-size-base);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	header p {
-		margin: 3px 0 0;
-		color: var(--muted, #8fa1b8);
-		font-size: 12.5px;
-		line-height: 1.4;
+		margin: var(--hx-space-3) 0 0;
+		color: var(--muted, var(--hx-muted));
+		font-size: var(--hx-type-size-compact);
+		line-height: var(--hx-style-leading-snug);
 	}
 	.floating-chat-close {
 		width: 32px;
 		height: 32px;
 		border: 0;
 		background: none;
-		color: var(--muted, #8fa1b8);
+		color: var(--muted, var(--hx-muted));
 	}
 	.floating-chat-body {
 		display: flex;
 		flex: 1;
 		flex-direction: column;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		min-height: 0;
-		padding: 12px 14px 0;
+		padding: var(--hx-space-12) var(--hx-space-14) 0;
 		overflow-y: auto;
 		overscroll-behavior: contain;
 	}

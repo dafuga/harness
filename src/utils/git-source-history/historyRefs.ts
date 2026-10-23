@@ -1,19 +1,10 @@
+import type { RefKind } from './historyRefs.types';
 import {
 	evidenceRef,
 	notesRef,
 	remoteTrackingPrefix,
 	sourceArchivePrefix
 } from '../../core/git-source-history/historyTypes';
-
-export type RefKind =
-	| 'source'
-	| 'evidence'
-	| 'notes'
-	| 'archive'
-	| 'internal'
-	| 'tag'
-	| 'remote'
-	| 'other';
 
 /** The ref that keeps one tested commit reachable after its branch is deleted or rewritten. */
 export function sourceArchiveRef(commit: string): string {
@@ -41,3 +32,5 @@ export function refKind(ref: string): RefKind {
 }
 
 export { historyRefs } from '../../cli/program/history-sync-service/historyRefs';
+
+export type { RefKind } from './historyRefs.types';

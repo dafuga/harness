@@ -1,10 +1,8 @@
+import type { Query, Media } from './RemoteArtifactCacheService.types';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
-import type { EvidenceArtifactQuery } from '../../../../models/verification-evidence/DesktopEvidence.types';
 import { HostedArtifactValidator } from '../../../../validators/development-tooling/HostedArtifactValidator';
 import { artifactLimit } from '../../../../utils/development-tooling/artifactMedia';
 import type { HostedReadService } from '../../../../services/development-tooling/HostedReadService';
-type Query = EvidenceArtifactQuery & { projectId: string };
-type Media = { bytes: Uint8Array; mediaType: string; principalId: string };
 /** Pinned identities authorize cache provenance; only the server authorizes online bytes. */
 export class RemoteArtifactCacheService {
 	private pinned = new Map<string, CacheIdentity>();

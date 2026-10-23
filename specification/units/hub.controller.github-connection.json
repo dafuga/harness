@@ -9,15 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/lib/server/auth/github-connection-controller/GithubConnectionController.ts",
-			"packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts"
+			"packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/GithubConnectionController.types.ts"
 		],
 		"symbols": [
 			"GithubConnectionController",
-			"GithubConnection",
-			"GithubConnectionControllerOptions",
 			"GithubConnectionController",
 			"GithubConnectionController.constructor",
-			"GithubConnectionController.routes"
+			"GithubConnectionController.routes",
+			"GithubConnection",
+			"GithubConnectionControllerOptions",
+			"GithubConnection",
+			"GithubConnectionControllerOptions"
 		]
 	},
 	"contract": {

@@ -10,20 +10,25 @@
 		"source": [
 			"packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 			"packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.types.ts"
 		],
 		"symbols": [
 			"PinnedHistoryAdapter",
 			"CommitFacts",
 			"PinnedRevision",
 			"PinnedHistoryAdapter",
-			"CommitFacts",
-			"PinnedRevision",
 			"PinnedHistoryAdapter",
 			"PinnedHistoryAdapter.constructor",
 			"PinnedHistoryAdapter.facts",
 			"PinnedHistoryAdapter.revision",
-			"PinnedHistoryAdapter.files"
+			"PinnedHistoryAdapter.files",
+			"CommitFacts",
+			"PinnedRevision",
+			"CommitFacts",
+			"PinnedRevision",
+			"Known",
+			"Pinned"
 		]
 	},
 	"contract": {

@@ -11,6 +11,7 @@
 			"src/services/verification-service/scenarioCoverage.ts",
 			"src/utils/scenarioCoverage.ts",
 			"src/utils/verification-evidence/scenarioCoverage.ts",
+			"src/utils/verification-evidence/scenarioCoverage.types.ts",
 			"src/workflows/run-verify/verification-service/scenarioCoverage.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts"
 		],
@@ -18,10 +19,14 @@
 			"scenarioCoverage",
 			"scenarioCoverage",
 			"problem",
-			"CoverageInput",
-			"CoverageResult",
 			"problem",
 			"scenarioCoverage",
+			"CoverageInput",
+			"CoverageResult",
+			"CoverageInput",
+			"CoverageResult",
+			"Evidence",
+			"Viewport",
 			"scenarioCoverage",
 			"scenarioCoverage"
 		]

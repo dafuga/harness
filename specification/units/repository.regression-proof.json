@@ -9,19 +9,21 @@
 	"owns": {
 		"source": [
 			"src/repositories/RegressionProofRepository.ts",
-			"src/repositories/verification-evidence/RegressionProofRepository.ts"
+			"src/repositories/verification-evidence/RegressionProofRepository.ts",
+			"src/repositories/verification-evidence/RegressionProofRepository.types.ts"
 		],
 		"symbols": [
 			"RegressionProofRepository",
 			"regressionNotes",
-			"RegressionNote",
 			"RegressionProofRepository",
 			"RegressionProofRepository.constructor",
 			"RegressionProofRepository.history",
 			"RegressionProofRepository.save",
 			"RegressionProofRepository.load",
 			"RegressionProofRepository.latest",
-			"regressionNotes"
+			"regressionNotes",
+			"RegressionNote",
+			"RegressionNote"
 		]
 	},
 	"contract": {

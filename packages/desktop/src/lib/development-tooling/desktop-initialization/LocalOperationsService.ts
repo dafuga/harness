@@ -1,22 +1,15 @@
-import { remoteMethods } from '../../../../../remote/src/index';
 import type {
-	RemoteDesktopControl,
-	RemoteMethod,
-	WireRequest
-} from '../../../../../remote/src/index';
+	LocalControl,
+	LocalOperationsOptions,
+	Fields,
+	Operation
+} from './LocalOperationsService.types';
+import { remoteMethods } from '../../../../../remote/src/index';
+import type { RemoteMethod, WireRequest } from '../../../../../remote/src/index';
 import { channels } from '../../../models/development-tooling/DesktopBridge.types';
-import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type { EvidenceArtifactResult as Artifact } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { binaryAnswer } from '../../../utils/development-tooling/binaryAnswer';
 import { IpcRequestValidator } from '../../../validators/development-tooling/IpcRequestValidator';
-
-export type LocalControl = Omit<RemoteDesktopControl, 'onStatus'>;
-export interface LocalOperationsOptions {
-	bridge: Omit<DesktopBridge, 'onRunEvent'>;
-	control: LocalControl;
-}
-type Fields = Record<string, unknown>;
-type Operation = (input?: unknown) => Promise<unknown>;
 const controls: Record<string, keyof LocalControl> = {
 	'remote.status': 'status',
 	'remote.enable': 'enable',
@@ -58,3 +51,5 @@ export class LocalOperationsService {
 		return withInput.includes(name) ? operation(input) : operation();
 	}
 }
+
+export type { LocalControl, LocalOperationsOptions } from './LocalOperationsService.types';

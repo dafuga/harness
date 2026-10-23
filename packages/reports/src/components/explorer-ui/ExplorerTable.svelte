@@ -1,10 +1,12 @@
 <script lang="ts">
+	import type { Kind, Column } from "./ExplorerTable.types";
+
 	// The shared dialog's own sheet, so the desktop host draws it as the reports do.
 	import '../../lib/styles/gallery.css';
 	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import { listed, type CatalogRow } from '../../utils/explorer-ui/entityCatalog';
-	import { humanize } from '../../utils/explorer-ui/entityContract';
+	import { humanize } from '../../helpers/strings/humanize';
 	import {
 		entityLabels,
 		entityLens,
@@ -14,12 +16,11 @@
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../ExplorerUsage.svelte';
 	import Modal from '../shared-primitives/Modal.svelte';
+	import ConfigValueTree, { collection, valueMark } from './ConfigValueTree.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
 	import HarnessVerdict from './harness-verdict/HarnessVerdict.svelte';
-	/** Pages and components are only ever the shared visual card, never a table row. */
-	type Kind = Exclude<ExplorerCategory, 'pages' | 'components'>;
 	let {
 		category,
 		rows,
@@ -35,8 +36,6 @@
 		mediaBase: string;
 		verification?: boolean;
 	} = $props();
-	/** A column's words for a row; null for what uses the row, shown as the shared usage footer. */
-	type Column = [string, ((row: CatalogRow) => string) | null];
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
 	const columns: Record<Kind, Column[]> = {
 		platforms: [],
@@ -64,9 +63,10 @@
 	// A shell is described under its name; the other kinds have a column for it.
 	let described = $derived(category === 'layouts');
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
-	/** A config value as written; past one line or 48 characters it is previewed, opened whole. */
 	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';
 	let chosen = $state.raw<CatalogRow | null>(null);
+	/** An object or array opens as its contents; any other value opens as written. */
+	let contents = $derived(collection(chosen?.setting?.structure));
 	let opener: HTMLElement | null = null;
 	function view(row: CatalogRow, event: MouseEvent) {
 		opener = event.currentTarget instanceof HTMLElement ? event.currentTarget : null;
@@ -77,11 +77,11 @@
 		await tick();
 		opener?.focus();
 	}
-	// Another revision or search brings other rows: a value they no longer hold is not left open.
+	// A replacement row closes the modal, even when aliases kept the outer source text identical.
 	$effect.pre(() => {
-		const held = chosen && value(chosen);
-		if (!rows.some((row) => row.name === chosen?.name && value(row) === held)) chosen = null;
+		if (chosen && !rows.includes(chosen)) chosen = null;
 	});
+
 </script>
 
 <div
@@ -106,25 +106,23 @@
 			{#each rows as row (row.id)}
 				<tr>
 					{#if category === 'configs'}
-						{@const text = value(row)}
-						{@const lines = text.split(/\r?\n/)}
-						{@const size = lines.length > 1 ? `${lines.length} lines` : `${text.length} chars`}
+						{@const mark = valueMark(row.setting?.structure, value(row))}
 						<th scope="row"
 							><EntityLink to={open(row)} {nav}><code>{row.name}</code></EntityLink></th
 						>
 						<td>
-							{#if lines.length > 1 || text.length > 48}
-								<div class="ex-value" class:more={lines.length > 2}>
-									<code class="ex-value-preview">{lines.slice(0, 2).join('\n')}</code>
-									<span class="ex-note">{size}</span>
+							{#if mark}
+								<div class="ex-value">
 									<HarnessAction
 										tone="plain"
 										label={`View value for ${row.name}`}
-										onclick={(event) => view(row, event)}>View value</HarnessAction
+										onclick={(event) => view(row, event)}
+										><HarnessIcon name={mark.icon} size={18} /></HarnessAction
 									>
+									<span class="ex-note">{mark.size}</span>
 								</div>
 							{:else}
-								<code>{text}</code>
+								<code>{value(row)}</code>
 							{/if}
 						</td>
 					{:else}
@@ -164,7 +162,15 @@
 		</tbody>
 	</table>
 	<Modal open={chosen !== null} title={`${chosen?.name} · Value`} variant="text" onClose={close}>
-		{#if chosen}<pre class="ex-value-full"><code>{value(chosen)}</code></pre>{/if}
+		{#if contents}
+			<ConfigValueTree node={contents} />
+			<details class="ex-full">
+				<summary>Source expression</summary>
+				<pre class="ex-value-full"><code>{chosen?.setting?.value}</code></pre>
+			</details>
+		{:else if chosen}
+			<pre class="ex-value-full"><code>{value(chosen)}</code></pre>
+		{/if}
 	</Modal>
 </div>
 
@@ -178,34 +184,26 @@
 	.ex-config-values :global(thead th:first-child) {
 		width: 17rem;
 	}
-	.ex-config-values :global(th code),
-	.ex-config-values :global(td > code) {
+	.ex-config-values :global(:is(th code, td > code)) {
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
 	}
 	.ex-value {
 		display: flex;
-		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px 12px;
+		gap: var(--hx-space-10);
 	}
-	/* The first lines as written: what does not fit is cut at the edge, never rewritten. */
-	.ex-value-preview {
-		flex: 1 1 14rem;
-		overflow: hidden;
-		white-space: pre;
-		text-overflow: ellipsis;
-	}
-	.more .ex-value-preview {
-		mask-image: linear-gradient(black 45%, transparent);
+	.ex-value :global(.hx-action) {
+		width: 44px;
+		padding: 0;
 	}
 	.ex-config-values :global(.viewer-dialog .ex-value-full) {
 		max-height: min(70dvh, 720px);
 		margin: 0;
-		padding: 14px 16px;
-		border-radius: 8px;
+		padding: var(--hx-space-14) var(--hx-space-16);
+		border-radius: var(--hx-radius-small);
 		background: var(--ex-raised);
-		font-size: 0.95rem;
+		font-size: var(--hx-type-size-base);
 		white-space: pre;
 	}
 	.ex-config-values :global(.viewer-header h2) {

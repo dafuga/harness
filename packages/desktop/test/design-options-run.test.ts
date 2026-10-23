@@ -1,16 +1,10 @@
+import type { Made } from './design-options-run.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test, vi } from 'vitest';
 import { PNG } from 'pngjs';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git, settled } from './run-fixture';
-
-/**
- * A Plan of a page makes its design options one by one, each from its own direction, and commits
- * them together as one immutable version: three unless the Plan asks for another count. A failed
- * or cancelled option leaves no version and no commit of one. A headless Plan stays notes only.
- */
-type Made = Awaited<ReturnType<typeof fixture>>;
 const counted = (f: Made, designOptions: number) => ({ ...f.request, designOptions }) as RunRequest;
 /** Each generation answers an image of its own; `step` may act on the nth one first. */
 function distinct(f: Made, step: (call: number) => void = () => {}) {

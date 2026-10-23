@@ -1,3 +1,4 @@
+import type { How, Made } from './commit-message-cleanup.test.types';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -30,20 +31,6 @@ const script = (name: string, body: string) => {
 	writeFileSync(at(name), `#!/bin/sh\n${body}\n`);
 	chmodSync(at(name), 0o755);
 };
-
-interface Made {
-	exitCode: number;
-	stderr: string;
-	/** The message file as the hook was given it, and the message Git stored from it. */
-	seen: string;
-	stored: string;
-}
-interface How {
-	config?: string[];
-	flags?: string[];
-	/** The script that writes the message as an editor would; without one the text is given with -F. */
-	editor?: string;
-}
 
 /** Commits a staged change with a message written as a person or a tool would write it. */
 function commit(text: string, how: How = {}): Made {

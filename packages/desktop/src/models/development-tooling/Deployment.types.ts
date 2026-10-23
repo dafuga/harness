@@ -1,6 +1,8 @@
 import type { ProjectContext } from '../ProjectContext.types';
-export const deploymentEnvironments = ['dev', 'stage', 'preprod', 'prod'] as const;
+import type { deploymentEnvironments, deploymentSteps } from './DeploymentValues';
+
 export type DeploymentEnvironment = (typeof deploymentEnvironments)[number];
+
 export interface DeploymentReceipt {
 	environment: DeploymentEnvironment;
 	commit: string;
@@ -11,12 +13,14 @@ export interface DeploymentReceipt {
 	configuration?: string;
 	url: string;
 }
+
 export interface DeploymentStatus {
 	environment: DeploymentEnvironment;
 	receipt: DeploymentReceipt | null;
 	available: boolean;
 	reason: string;
 }
+
 export interface DeploymentProgress {
 	phase:
 		| 'queued'
@@ -29,14 +33,9 @@ export interface DeploymentProgress {
 		| 'failed';
 	detail: string;
 }
-export const deploymentSteps = [
-	{ id: 'preparing', title: 'Prepare source' },
-	{ id: 'checking', title: 'Run checks' },
-	{ id: 'building', title: 'Build source' },
-	{ id: 'uploading', title: 'Deploy to Cloudflare' },
-	{ id: 'verifying', title: 'Verify health' }
-] as const;
+
 export type DeploymentStep = (typeof deploymentSteps)[number]['id'];
+
 export interface DeploymentActivity extends DeploymentProgress {
 	sourceEnvironment: DeploymentEnvironment | null;
 	id: string;
@@ -54,11 +53,13 @@ export interface DeploymentActivity extends DeploymentProgress {
 	updatedAt: string;
 	finishedAt: string | null;
 }
+
 export interface ProductionPromotion {
 	preprod: DeploymentReceipt | null;
 	production: DeploymentReceipt | null;
 	commitsBehind: number | null;
 }
+
 export interface DeploymentPlan {
 	promotion?: ProductionPromotion;
 	id: string;
@@ -71,19 +72,24 @@ export interface DeploymentPlan {
 	blockers: string[];
 	expiresAt: string;
 }
+
 export interface DeploymentQuery extends ProjectContext {
 	environment: DeploymentEnvironment;
 	commit: string;
 }
+
 export interface DeployInput extends ProjectContext {
 	planId: string;
 }
+
 export interface DeployCommand {
 	args: string[];
 	cwd: string;
 	env?: Record<string, string>;
 }
+
 export type DeployExecutor = (command: DeployCommand) => Promise<string>;
+
 export interface CloudflareTarget {
 	environment: DeploymentEnvironment;
 	kind: 'workers' | 'pages';
@@ -96,11 +102,13 @@ export interface CloudflareTarget {
 	output: string;
 	healthUrl: string;
 }
+
 export interface DeploymentConfig {
 	fingerprint?: string;
 	sourceBranch: string;
 	targets: Partial<Record<DeploymentEnvironment, CloudflareTarget>>;
 }
+
 export interface DeploymentPlugin {
 	id: string;
 	discover(root: string): Promise<DeploymentConfig>;
@@ -118,3 +126,4 @@ export interface DeploymentBridge {
 	planDeployment?(input: DeploymentQuery): Promise<DeploymentPlan>;
 	deploy?(input: DeployInput): Promise<DeploymentReceipt>;
 }
+export { deploymentEnvironments, deploymentSteps } from './DeploymentValues';

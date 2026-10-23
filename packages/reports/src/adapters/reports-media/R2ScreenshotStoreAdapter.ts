@@ -1,14 +1,7 @@
+import type { R2ScreenshotStoreAdapterConfig } from './R2ScreenshotStoreAdapter.types';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { readFileSync } from 'node:fs';
 import { safeId } from '../../utils/reports-media/reportFiles';
-
-export interface R2ScreenshotStoreAdapterConfig {
-	accountId: string;
-	bucket: string;
-	accessKeyId: string;
-	secretAccessKey: string;
-	endpoint?: string;
-}
 
 export const screenshotObjectPrefix = 'uploaded-screenshots/';
 const r2Keys = [
@@ -106,3 +99,5 @@ export class R2ScreenshotStoreAdapter {
 		return Buffer.from(await response.Body.transformToByteArray());
 	}
 }
+
+export type { R2ScreenshotStoreAdapterConfig } from './R2ScreenshotStoreAdapter.types';

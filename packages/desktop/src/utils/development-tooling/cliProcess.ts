@@ -1,3 +1,5 @@
+import type { ProcessOptions } from './cliProcess.types';
+export type { ProcessOptions } from './cliProcess.types';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
 import type { ResourceContext } from '../../../../../src/core/execution-runtimes/resourceTypes';
@@ -6,15 +8,6 @@ import type { CliCommand } from '../../models/agents-providers/AgentRunner.types
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
 import { cliEnvironment } from './cli-environment/cliEnvironment';
 import { streamLines } from './streamLines';
-export interface ProcessOptions {
-	resources?: ResourceContext;
-	cwd?: string;
-	input?: string;
-	signal?: AbortSignal;
-	onLine?: (line: string) => void;
-	timeoutMs?: number;
-	maxBytes?: number;
-}
 export function killOwnedProcess(pid: number | undefined): void {
 	if (!pid) return;
 	try {

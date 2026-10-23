@@ -1,12 +1,6 @@
+import type { FrozenBuild } from './frozenBuild.types';
 import { cp, rm } from 'node:fs/promises';
 import { BuildIdentityService } from '../../../../../src/services/BuildIdentityService';
-
-export interface FrozenBuild {
-	/** The directory one run serves from. */
-	build: string;
-	buildId: string;
-	files: number;
-}
 
 /**
  * Copies a finished build to where one run serves it from. A built server loads its files as
@@ -36,3 +30,5 @@ export async function frozenBuild(
 		`${source} changed while this run was copying it (${before.buildId.slice(0, 12)}, then ${now}): another build is running in this checkout. A checkout has one build at a time; wait for it, or use another worktree or a verification snapshot.`
 	);
 }
+
+export type { FrozenBuild } from './frozenBuild.types';

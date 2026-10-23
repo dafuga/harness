@@ -1,23 +1,7 @@
+import type { LedgerEvent, EmittedFinding } from './emittedRepo.types';
 import { baselineRepo, type VerifyRepo } from './verifyRepo';
 
 export const ledger = 'specification/budgets/ledger.ndjson';
-export interface EmittedFinding {
-	unit: string;
-	metric: string;
-	target?: string;
-	status: string;
-	baseline: number | null;
-	measured: number | null;
-	detail?: string;
-}
-export interface LedgerEvent {
-	type: string;
-	unit: string;
-	metrics?: Record<string, number>;
-	before?: Record<string, number>;
-	after?: Record<string, number>;
-	unmeasured?: Record<string, string>;
-}
 
 /**
  * The fixture build. Every size comes from one comment in the source of the unit, digit for
@@ -102,3 +86,5 @@ export function emitted(
 	);
 	return Object.fromEntries(found.map((item) => [item.target ?? 'none', item]));
 }
+
+export type { EmittedFinding, LedgerEvent } from './emittedRepo.types';

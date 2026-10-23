@@ -1,4 +1,4 @@
-import type { AnalyticsContext } from '../../core/reports-media/analyticsTypes';
+import type { AuditCommandOptions } from './runAudit.types';
 import { resolvedContext, validateReport } from '../../workflows/reports-media/analyticsRecord';
 import { recordCleanCode } from '../../workflows/agents-providers/recordJevAnalytics';
 import { resolve } from 'node:path';
@@ -9,16 +9,6 @@ import {
 	cleanCodeExitCode,
 	renderCleanCode
 } from '../../audit/development-tooling/cleanCodeRender';
-
-export interface AuditCommandOptions extends AnalyticsContext {
-	profile?: string;
-	coverage?: boolean;
-	json?: boolean;
-	cleanCode?: boolean;
-	gate?: boolean;
-	dryRun?: boolean;
-	refresh?: boolean;
-}
 
 export async function runAudit(path: string, options: AuditCommandOptions): Promise<void> {
 	const start = Date.now();
@@ -43,3 +33,5 @@ export async function runAudit(path: string, options: AuditCommandOptions): Prom
 	console.log(options.json ? JSON.stringify(result, null, 2) : text + semantic);
 	process.exitCode = cleanCodeExitCode(result);
 }
+
+export type { AuditCommandOptions } from './runAudit.types';

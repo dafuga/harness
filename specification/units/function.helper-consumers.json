@@ -9,7 +9,9 @@
 	"owns": {
 		"source": [
 			"src/services/explorer-ui/revision-detail-service/helperConsumers.ts",
+			"src/services/explorer-ui/revision-detail-service/helperConsumers.types.ts",
 			"src/services/explorer-ui/revision-detail-service/serviceClasses.ts",
+			"src/services/explorer-ui/revision-detail-service/serviceClasses.types.ts",
 			"src/services/revision-detail-service/helperConsumers.ts",
 			"src/services/revision-detail-service/serviceClasses.ts",
 			"src/utils/explorer-ui/helperConsumers.ts",
@@ -17,7 +19,14 @@
 		],
 		"symbols": [
 			"helperConsumers",
+			"Unit",
+			"Context",
 			"serviceClasses",
+			"Unit",
+			"Facts",
+			"Definition",
+			"Lookup",
+			"ProofContext",
 			"helperConsumers",
 			"serviceClasses",
 			"HelperTree",

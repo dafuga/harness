@@ -1,3 +1,4 @@
+import type { LegacyReader, BuiltHistory, Built } from './HistoryIndexService.types';
 import { createHash } from 'node:crypto';
 import { SourceArchiveService } from './SourceArchiveService';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
@@ -31,19 +32,6 @@ import {
 	type BuiltRevision
 } from '../../../services/explorer-ui/revision-detail-service/RevisionDetailService';
 
-export interface BuiltHistory {
-	out: string;
-	/** sha256 of `index.json`. */
-	digest: string;
-	media: { resolved: number; missing: number };
-	problems: string[];
-	index: HistoryIndex;
-	/** Rebuildable local SQLite query index; portable consoles may keep using JSON. */
-	catalog: string;
-}
-
-export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]>;
-
 /**
  * Builds the history index: a deterministic, self-contained set of files made only from Git.
  * Every source commit is listed, with what proves it or the gap; media is copied in by hash.
@@ -68,7 +56,11 @@ export class HistoryIndexService {
 		const sides = new Set<string>();
 		for (const revision of revisions) {
 			const result = await details.build(revision.commit, media);
-			await sources.archive(revision.commit, result.detail.registry.units);
+			await sources.archive(
+				revision.commit,
+				result.detail.registry.units,
+				result.side ?? undefined
+			);
 			await writeFile(join(out, detailPath(revision.commit)), stableJson(result.detail));
 			// One stored side per source tree: what any two revisions are compared from.
 			if (result.side && result.detail.side && !sides.has(result.detail.side)) {
@@ -140,8 +132,6 @@ function detailPath(commit: string): string {
 	return `revisions/${commit}.json`;
 }
 
-type Built = Array<{ revision: SourceRevision; result: BuiltRevision }>;
-
 function focusedRuns(built: Built) {
 	return built.flatMap(({ result }) => result.detail.regressions ?? []);
 }
@@ -212,3 +202,5 @@ function problems(
 function short(id: string): string {
 	return id.slice(0, 12);
 }
+
+export type { BuiltHistory, LegacyReader } from './HistoryIndexService.types';

@@ -47,6 +47,13 @@ test('appends missing exports idempotently', async () => {
 	]);
 
 	expect(changed).toBe(true);
+	const existing = "export { publishPost } from './utils/publishPost';\n";
+	const plan = [{ source: './helpers/publishPost', named: ['publishPost'] }];
+	const combined = appendMissingExports(existing, plan);
+	expect(combined).toBe(
+		existing + "export { publishPost as publishPostHelper } from './helpers/publishPost';\n"
+	);
+	expect(appendMissingExports(combined, plan)).toBe(combined);
 	expect(unchanged).toBe(false);
 	expect(appendMissingExports('', [{ source: './models/Post', named: ['Post'] }])).toBe(
 		"export { Post } from './models/Post';\n"

@@ -1,22 +1,10 @@
+import type { Persisted, Told } from './history-reason-steps.e2e.test.types';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { explanationsFile } from '../src/core/explanationTypes';
 import { freshClone, noteLines, removeRemote, withRemote } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
-
-interface Persisted {
-	commit: string;
-	base: string | null;
-	attached: number;
-	missing: string[];
-}
-/** A reason as it is stored, as far as these tests read it. */
-interface Told {
-	unit: string;
-	behavior: string;
-	recordedAt: string;
-}
 let baseline: VerifyRepo;
 beforeAll(async () => {
 	baseline = await baselineRepo();

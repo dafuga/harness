@@ -1,9 +1,8 @@
+import type { Peer } from './device-connection.test.types';
 import { expect, test } from 'vitest';
 import { DeviceConnectionService } from '../../src/services/DeviceConnectionService';
 import type { DeviceStatus } from '../../src/services/DeviceConnectionService';
 import { hostPeer } from '../support/hostPeer';
-
-type Peer = Awaited<ReturnType<typeof hostPeer>>;
 function connection(peer: Peer) {
 	const opened: { url: string; headers: Record<string, string> }[] = [],
 		states: DeviceStatus[] = [];

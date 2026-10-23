@@ -9,9 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/accounts-access/browserAuth.ts",
+			"packages/hub/src/utils/accounts-access/browserAuth.types.ts",
 			"packages/hub/src/utils/browserAuth.ts"
 		],
-		"symbols": ["LoginChallenge", "NativeRequest", "browserAuth", "BrowserAuth", "browserAuth"]
+		"symbols": [
+			"browserAuth",
+			"LoginChallenge",
+			"NativeRequest",
+			"BrowserAuth",
+			"LoginChallenge",
+			"NativeRequest",
+			"BrowserAuth",
+			"browserAuth"
+		]
 	},
 	"contract": {
 		"origin": "declared",

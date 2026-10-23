@@ -1,3 +1,4 @@
+import type { Reads } from './entityClassFixtures.types';
 import type { ExplorerEntity } from '../src/models/Explorer.types';
 import type { entityCatalog } from '../src/utils/entityCatalog';
 /** Class evidence shared by the normal catalog, detail and browser fixtures. */
@@ -38,12 +39,6 @@ export function invalidServiceClasses(proof: ReturnType<typeof serviceClassProof
 		[{ ...proof, consumers: proof.consumers.slice(0, 1) }],
 		[{ ...proof, source: 'src/unowned.ts' }]
 	];
-}
-
-interface Reads {
-	species: number;
-	indexed: number;
-	iterated: number;
 }
 
 function observed<T>(items: T[], reads: Reads): T[] {

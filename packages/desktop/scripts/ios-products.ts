@@ -1,3 +1,4 @@
+import type { ProductChange } from './ios-products.types';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { cpSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -115,16 +116,6 @@ export function productFacts(product: string) {
 	};
 }
 
-export interface ProductChange {
-	/**
-	 * Plain http to this machine is let through by the system. A Debug fixture copy needs it to
-	 * reach the local test relay; a Release copy gets it to show that it still refuses by itself.
-	 */
-	localNetworking: boolean;
-	/** WebKit's inspector may attach, so that a check can read the page. */
-	inspection: boolean;
-}
-
 /**
  * TEST ONLY. A copy of a built product with the named changes, signed again ad hoc with the
  * simulator entitlements it had. The product it was copied from is left exactly as built.
@@ -150,3 +141,5 @@ export function changedCopy(source: string, target: string, change: ProductChang
 	if (simulated(target) === before) return verifiedSignature(target);
 	throw new Error('Signing again changed the simulator entitlements of the product.');
 }
+
+export type { ProductChange } from './ios-products.types';

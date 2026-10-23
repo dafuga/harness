@@ -25,7 +25,7 @@
 <style>
 	.ex-gap {
 		margin: 0;
-		font-size: 0.9rem;
-		color: #b6cad9;
+		font-size: var(--hx-type-size-sm);
+		color: var(--hx-soft);
 	}
 </style>

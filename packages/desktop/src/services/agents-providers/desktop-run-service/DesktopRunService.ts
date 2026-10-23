@@ -1,3 +1,4 @@
+import type { Prepared } from './DesktopRunService.types';
 import type {
 	ProjectRunRequest,
 	ProjectTaskRequest,
@@ -24,8 +25,6 @@ import { recordRunFailure } from '../../../utils/agents-providers/prepareRun';
 import { prepareProjectTask } from './prepareProjectTask';
 import { type ProjectTaskContext } from '../../../utils/agents-providers/prepareProjectTask';
 import { ProjectTaskService } from './project-task-service/ProjectTaskService';
-
-type Prepared = RunContext | ProjectRunContext | ProjectTaskContext;
 
 /** A creation run has no entity yet: it is told apart by what it was asked, not by a guess. */
 function creates(context: Prepared): context is ProjectRunContext {

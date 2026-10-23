@@ -1,16 +1,4 @@
-export interface MaskOptions {
-	/** Blank string, template and regular-expression contents as well as comments. */
-	strings?: boolean;
-}
-
-interface Cursor {
-	code: string;
-	out: string[];
-	index: number;
-	strings: boolean;
-	significant: string;
-	word: string;
-}
+import type { MaskOptions, Cursor } from './maskSource.types';
 
 const openBrace = '\x7b';
 const closeBrace = '\x7d';
@@ -134,3 +122,5 @@ function regexEnd(code: string, start: number): number {
 	}
 	return -1;
 }
+
+export type { MaskOptions } from './maskSource.types';

@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/importReports.ts"],
-		"symbols": ["ImportOptions", "importReports", "renderImport"]
+		"source": ["src/cli/program/importReports.ts", "src/cli/program/importReports.types.ts"],
+		"symbols": ["importReports", "renderImport", "ImportOptions", "ImportOptions"]
 	},
 	"contract": {
 		"origin": "derived",

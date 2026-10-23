@@ -1,3 +1,4 @@
+import type { ExplorerCategory, ExplorerTab } from './explorerTabs.types';
 import type { ExplorerLocation } from '../../explorerRoute';
 
 /** The seven kinds of entity the explorer shows, in the order of its navigation. */
@@ -11,7 +12,6 @@ export const explorerEntityCategories = [
 	'models'
 ] as const;
 export const explorerCategories = [...explorerEntityCategories, 'platforms'] as const;
-export type ExplorerCategory = (typeof explorerCategories)[number];
 
 /** The kinds of unit a product is made of, each under the one category it is listed in. */
 const kinds = new Map<string, ExplorerCategory>([
@@ -78,7 +78,6 @@ export const explorerTabs = {
 	details: ['contract', 'models', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
-export type ExplorerTab = (typeof explorerTabs)[keyof typeof explorerTabs][number];
 
 function invalidAudioTab(asked: string | null, location: ExplorerLocation): boolean {
 	return asked === 'audio' && location.category !== 'components';
@@ -116,3 +115,5 @@ export function tabOf(location: ExplorerLocation, search: string): ExplorerTab |
 	if (asked === undefined) return undefined;
 	return others.find((known) => known === asked);
 }
+
+export type { ExplorerCategory, ExplorerTab } from './explorerTabs.types';

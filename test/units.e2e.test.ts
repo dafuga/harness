@@ -1,3 +1,4 @@
+import type { Manifest, IndexResult } from './units.e2e.test.types';
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -8,30 +9,6 @@ import {
 	sharedDateHelperProject,
 	utcDateExamples
 } from './support/unitProject';
-
-interface Manifest {
-	id: string;
-	kind: string;
-	status: string;
-	responsibility: string;
-	owns: { source: string[]; symbols: string[] };
-	contract: { origin: string; inputs: Item[]; outputs: Item[]; errors: Item[] };
-	dependencies: Array<{ unit: string; via: string; origin: string }>;
-	runtime: { kind: string; entry: string };
-	scenarios: string[];
-	budgets: { size: string; complexity: string };
-}
-interface Item {
-	name: string;
-	type: string;
-}
-interface IndexResult {
-	added: string[];
-	updated: string[];
-	moved: Array<{ id: string; from: string; to: string }>;
-	revived: string[];
-	orphaned: string[];
-}
 
 test('generic unit generator coexists with the Svelte component generator', async () => {
 	const project = await unitProject('app');
@@ -168,13 +145,13 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 test('index records reviewed shared helper contracts for clients without source rescans', async () => {
 	const project = await sharedDateHelperProject();
 	const unit = await project.json<{ helperContracts: unknown[] }>(
-		'specification/units/function.format-date.json'
+		'specification/units/helper.dates-format-date.json'
 	);
 	expect(unit.helperContracts, 'committed pure helper contracts').toEqual([
 		expect.objectContaining({
 			name: 'formatDate',
 			pure: true,
-			source: 'src/utils/formatDate.ts',
+			source: 'src/helpers/dates/formatDate.ts',
 			consumers: expect.arrayContaining([
 				{ unit: 'function.first', symbol: 'first' },
 				{ unit: 'function.second', symbol: 'second' }
@@ -186,7 +163,7 @@ test('index records reviewed shared helper contracts for clients without source 
 	const examples = utcDateExamples;
 	const writeExamples = (examples: unknown[]) =>
 		project.write(
-			'specification/units/function.format-date.json',
+			'specification/units/helper.dates-format-date.json',
 			JSON.stringify({
 				...unit,
 				helperContracts: unit.helperContracts.map((item) => ({ ...(item as object), examples }))
@@ -206,7 +183,7 @@ test('index records reviewed shared helper contracts for clients without source 
 	await writeExamples(examples);
 	await project.harness(['units', 'index', '--write']);
 	const again = await project.json<{ helperContracts: Array<{ examples: unknown }> }>(
-		'specification/units/function.format-date.json'
+		'specification/units/helper.dates-format-date.json'
 	);
 	expect(again.helperContracts[0].examples).toEqual(examples);
 	await project.harness(['units', 'check']);

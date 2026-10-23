@@ -1,10 +1,7 @@
+import type { PendingComment } from './CommentOutboxService.types';
 import { randomUUID } from 'node:crypto';
 import { LocalDocumentAdapter } from '../../adapters/reports-media/LocalDocumentAdapter';
-import type {
-	HumanCommentDraft,
-	HumanCommentResult
-} from '../../models/projects-sessions/ProjectContext.types';
-type PendingComment = Extract<HumanCommentResult, { kind: 'pending' }>;
+import type { HumanCommentDraft } from '../../models/projects-sessions/ProjectContext.types';
 /** Durable unsent human drafts; intentionally separate from disposable projection storage. */
 export class CommentOutboxService {
 	private document: LocalDocumentAdapter<PendingComment[]>;

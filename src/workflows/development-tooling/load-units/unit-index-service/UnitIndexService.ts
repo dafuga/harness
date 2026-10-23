@@ -1,38 +1,10 @@
+import type { UnitIndexResult, Registry, Group } from './UnitIndexService.types';
 import type { SourceFile } from '../../../../core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../../../core/development-tooling/unitTypes';
 import { deriveManifest } from './deriveManifest';
 import { stableJson } from '../../../../utils/development-tooling/stableJson';
 import { unitLineage } from './unitLineage';
 import type { SourceIndex } from '../../../../services/development-tooling/source-index-service/SourceIndexService';
-
-export interface UnitMove {
-	id: string;
-	from: string;
-	to: string;
-}
-
-export interface UnitIndexResult {
-	manifests: ComponentManifest[];
-	added: string[];
-	updated: string[];
-	moved: UnitMove[];
-	revived: string[];
-	orphaned: string[];
-}
-
-interface Group {
-	id: string;
-	kind: string;
-	files: SourceFile[];
-}
-
-interface Registry {
-	byId: Map<string, ComponentManifest>;
-	/** Active owner of each source path. */
-	owners: Map<string, string>;
-	groups: Map<string, Group>;
-	result: UnitIndexResult;
-}
 
 /** Reconciles the stored registry with the source tree without ever changing an identity. */
 export class UnitIndexService {
@@ -71,9 +43,10 @@ export class UnitIndexService {
 		const groups = new Map<string, Group>();
 		for (const file of index.files.values()) {
 			if (file.classification !== 'source' || !file.identity) continue;
-			const group = groups.get(file.identity.id) ?? { ...file.identity, files: [] };
+			const identity = companionIdentity(file, index);
+			const group = groups.get(identity.id) ?? { ...identity, files: [] };
 			group.files.push(file);
-			groups.set(file.identity.id, group);
+			groups.set(identity.id, group);
 		}
 		return [...groups.values()].sort((left, right) => (left.id < right.id ? -1 : 1));
 	}
@@ -154,6 +127,26 @@ export class UnitIndexService {
 	}
 }
 
+/** New companion files join their concrete sibling; explicit registry ownership still wins. */
+function companionIdentity(
+	file: SourceFile,
+	index: SourceIndex
+): NonNullable<SourceFile['identity']> {
+	if (!file.path.endsWith('.types.ts')) return file.identity!;
+	const base = file.path.slice(0, -'.types.ts'.length);
+	const candidates = [
+		base + '.ts',
+		base + '.tsx',
+		base + '.svelte',
+		base.replace(/\.module$/, '') + '.svelte'
+	];
+	const siblings = [...new Set(candidates)].flatMap((path) => {
+		const sibling = index.files.get(path);
+		return sibling?.classification === 'source' && sibling.identity ? [sibling.identity] : [];
+	});
+	return siblings.length === 1 ? siblings[0] : file.identity!;
+}
+
 /** These groups are fresh internal arrays; the caller's source map retains its order. */
 function byPath(left: SourceFile, right: SourceFile): number {
 	if (left.path === right.path) return 0;
@@ -164,3 +157,5 @@ function sameSymbols(unit: ComponentManifest, group: Group): boolean {
 	const symbols = group.files.flatMap((file) => file.exports.map((symbol) => symbol.name));
 	return symbols.length > 0 && symbols.join('\n') === unit.owns.symbols.join('\n');
 }
+
+export type { UnitMove, UnitIndexResult } from './UnitIndexService.types';

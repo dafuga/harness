@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/check-ios-limits.ts"],
-		"symbols": []
+		"source": [
+			"packages/desktop/scripts/check-ios-limits.ts",
+			"packages/desktop/scripts/check-ios-limits.types.ts"
+		],
+		"symbols": ["Block"]
 	},
 	"contract": {
 		"origin": "derived",

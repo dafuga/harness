@@ -1,24 +1,13 @@
+import type {
+	GithubConnectionControllerOptions,
+	GithubConnection
+} from './GithubConnectionController.types';
 import type { GithubStatus } from '../../../../../models/accounts-access/HubAuth.types';
-import type { GithubGrantService } from '../GithubGrantService';
-import type { GithubOwnerService } from '../GithubOwnerService';
-import type { RequestSessionService } from '../request-session-service/RequestSessionService';
 import { authFail } from '../../../../../utils/accounts-access/authFail';
 import { authHttp } from '../../../../../utils/verification-evidence/authHttp';
 import { authRedirect } from './authHttp';
 import type { AuthRoutes } from '../../../../../utils/verification-evidence/authHttp';
 import { AuthRequestValidator } from '../../../../../validators/accounts-access/AuthRequestValidator';
-
-export interface GithubConnection {
-	grants: GithubGrantService;
-	owner: GithubOwnerService;
-}
-
-export interface GithubConnectionControllerOptions {
-	origin: string;
-	sessions: RequestSessionService;
-	/** Null when the GitHub App is not configured. */
-	github: GithubConnection | null;
-}
 
 const NOT_CONFIGURED: GithubStatus = { configured: false, connected: false, login: null };
 
@@ -80,3 +69,8 @@ export class GithubConnectionController {
 		return authHttp({ ok: true });
 	}
 }
+
+export type {
+	GithubConnection,
+	GithubConnectionControllerOptions
+} from './GithubConnectionController.types';

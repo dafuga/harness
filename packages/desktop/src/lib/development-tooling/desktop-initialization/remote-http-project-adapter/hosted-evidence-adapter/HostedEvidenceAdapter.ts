@@ -1,7 +1,5 @@
-import type {
-	EntityEvidenceQuery,
-	EvidenceArtifactQuery
-} from '../../../../../models/verification-evidence/DesktopEvidence.types';
+import type { Query } from './HostedEvidenceAdapter.types';
+import type { EvidenceArtifactQuery } from '../../../../../models/verification-evidence/DesktopEvidence.types';
 import {
 	HostedHttpAdapter,
 	type RemoteHttpOptions
@@ -10,8 +8,6 @@ import { hostedEvidencePath } from './hostedEvidencePath';
 import { hostedResponse } from '../../../../../utils/development-tooling/hostedResponse';
 import { artifactLimit } from '../../../../../utils/development-tooling/artifactMedia';
 import { HostedFailureValidator } from '../../../../../validators/development-tooling/HostedFailureValidator';
-
-type Query = EntityEvidenceQuery & { projectId: string };
 
 /** One authenticated bounded transport for the evidence service, without cache policy. */
 export class HostedEvidenceAdapter {

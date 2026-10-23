@@ -1,3 +1,4 @@
+import type { TestedRecord, Stored, Manifest } from './history-attach.e2e.test.types';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -8,38 +9,21 @@ import {
 	noteLines,
 	sha256,
 	statusOf,
-	type Attached,
 	type NoteLine
 } from './support/historyRepo';
-import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
+import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
 	baseline = await baselineRepo();
 }, 120_000);
 afterAll(() => baseline.dispose());
-
-interface Manifest {
-	record: string;
-	source: { commit: string; tree: string };
-	status: string;
-	files: Array<{ path: string; sha256: string; bytes: number; storage: string }>;
-}
 const grow = (source: string) =>
 	source.replace(
 		'\treturn input',
 		"\tif (input.length > 99 || input.includes('?')) return input;\n\treturn input"
 	);
 const show = (repo: VerifyRepo, object: string) => repo.git(['show', object]);
-
-type TestedRecord = VerifyOutcome['record'];
-interface Stored {
-	repo: VerifyRepo;
-	record: TestedRecord;
-	attached: Attached;
-	head: string;
-	tree: string;
-}
 const capturesOf = (record: TestedRecord) =>
 	record.scenarios.flatMap((scenario) => scenario.states.flatMap((state) => state.captures));
 

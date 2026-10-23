@@ -1,9 +1,4 @@
-export interface CleanCodeExample {
-	name: string;
-	path: string;
-	code: string;
-	expected: 'meets' | 'violates';
-}
+import type { CleanCodeExample } from './cleanCodeExamples.types';
 
 // Human-labelled naming examples. This small corpus is an initial calibration probe,
 // not a representative benchmark of every rubric principle or real-world project.
@@ -102,3 +97,5 @@ function example(
 ): CleanCodeExample {
 	return { name, path, code, expected };
 }
+
+export type { CleanCodeExample } from './cleanCodeExamples.types';

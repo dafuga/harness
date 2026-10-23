@@ -1,12 +1,8 @@
+import type { Seam } from './closing-ownership.test.types';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import {
-	processDescendants,
-	processTable,
-	type ProcessRow,
-	type ProcessTable
-} from '../src/utils/processDescendants';
+import { processDescendants, processTable, type ProcessRow } from '../src/utils/processDescendants';
 import { runIsolated } from '../src/utils/run-isolated/runIsolated';
 import { settleProcesses } from '../src/utils/run-isolated/settleProcesses';
 import {
@@ -109,7 +105,6 @@ fs.renameSync(dir + '/child.part', dir + '/child');
 const before = looked();
 setInterval(() => looked() !== before && process.exit(0), 5);
 `;
-type Seam = (dir: string) => ProcessTable;
 const noted = (dir: string, looks: number) => writeFileSync(join(dir, 'looked'), String(looks));
 
 /**

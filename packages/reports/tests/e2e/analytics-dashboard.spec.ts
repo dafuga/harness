@@ -1,3 +1,4 @@
+import type { Sample } from './analytics-dashboard.spec.types';
 import { expect, test } from '../../../../test/support/browserTest';
 import { execFileSync } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
@@ -24,13 +25,6 @@ async function capture(page: import('@playwright/test').Page, name: string) {
 		fullPage: true
 	});
 }
-type Sample = {
-	status: string;
-	sampledAt: string;
-	machinePercent: number;
-	groups: Array<{ id: string; label: string; machinePercent: number; processes: number }>;
-	agents: unknown[];
-};
 
 test('history has known first-try rates, model attribution and working filters', async ({
 	page

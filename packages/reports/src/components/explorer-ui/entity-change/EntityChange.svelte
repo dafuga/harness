@@ -1,9 +1,12 @@
 <script lang="ts">
+	import type { Line } from "./EntityChange.types";
+
 	import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../../models/explorer-ui/Explorer.types';
-	import { humanize } from '../../../utils/explorer-ui/entityContract';
+	import { humanize } from '../../../helpers/strings/humanize';
 	import { reviewChanges } from './entityHistory';
 	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/explorer-ui/entityHistory';
-	import { entityLens, shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
 	import { byteSize, notMeasured } from '../../../utils/explorer-ui/entityMeasure';
 	import { writingLimits } from '../../../../../../src/utils/writing-limits/writingLimits';
 	import { boundedText, entityReasons } from '../../../utils/explorer-ui/entityReasons';
@@ -29,12 +32,6 @@
 	let reasons = $derived(entityReasons(detail?.explanations ?? []));
 	// What a reviewer wrote for a budget is not held to a limit; what is shown at once is.
 	const noted = (reason: string) => boundedText([reason], writingLimits.body);
-	interface Line {
-		metric: string;
-		before: string;
-		after: string;
-		delta: string;
-	}
 	const earlier = (now: number | null, change: number | null) =>
 		now === null || change === null ? null : now - change;
 	const bytes = (value: number | null) => (value === null ? notMeasured : byteSize(value));
@@ -74,6 +71,7 @@
 			commit: row.commit
 		})
 	);
+
 </script>
 
 <section

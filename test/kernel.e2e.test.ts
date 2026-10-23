@@ -1,27 +1,11 @@
+import type { Bench } from './kernel.e2e.test.types';
 import { spawn } from 'node:child_process';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import type { Measurement } from '../src/core/verificationTypes';
 import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { runHarness } from './support/cli';
-
-interface Bench {
-	contract: string;
-	profile: {
-		id: string;
-		platform: string;
-		arch: string;
-		cpu: string;
-		cores: number;
-		runtime: string;
-	};
-	source: { commit: string | null; dirty: boolean };
-	workloads: Array<{ id: string; nodes: number; edges: number; requestBytes: number }>;
-	measurements: Measurement[];
-	default: { runtime: string; basis: string; workload: string; rule: string };
-}
 
 /**
  * Under verification, what this run measured for each built kernel is its benchmark evidence.

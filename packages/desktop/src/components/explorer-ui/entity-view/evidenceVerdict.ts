@@ -1,13 +1,11 @@
+import type { Judged } from './evidenceVerdict.types';
 import type { EntityVerdict, EvidenceRead } from '../../../utils/explorer-ui/evidenceVerdict';
 import type { ExplorerSide } from '../../../../../reports/src/models/Explorer.types';
 import { explorerVerdict } from '../../../../../reports/src/utils/explorer-verdict/explorerVerdict';
-import type { CatalogEntity } from '../../../models/development-tooling/Desktop.types';
 import {
 	evidenceNotice,
 	readingEvidence
 } from '../../../utils/verification-evidence/evidenceNotice';
-
-type Judged = Pick<CatalogEntity, 'id' | 'kind' | 'verification' | 'verificationNote'>;
 
 const unheld = 'The evidence that was read does not hold this entity, so it is not judged here.';
 

@@ -1,4 +1,4 @@
-import type { ComponentManifest } from '../../src/core/unitTypes';
+import type { Helper, HelperCall } from './unit-documentation.test.types';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -91,6 +91,10 @@ test('every committed public helper example executes against its real implementa
 		const unit = JSON.parse(await readFile(`specification/units/${file}`, 'utf8'));
 		if (unit.status !== 'active') continue;
 		for (const helper of unit.helperContracts ?? []) {
+			expect(
+				helper.source,
+				'Public helper implementation belongs in src/helpers/<responsibility>'
+			).toMatch(/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/);
 			expect(helper.examples?.length, 'Callable examples are required').toBeGreaterThan(0);
 			const titles = helper.examples.map((example: { name: string }) =>
 				example.name.trim().toLowerCase()
@@ -112,9 +116,6 @@ test('every committed public helper example executes against its real implementa
 	}
 	expect(total).toBeGreaterThan(0);
 });
-
-type Helper = NonNullable<ComponentManifest['helperContracts']>[number];
-type HelperCall = (...args: unknown[]) => unknown;
 /** Normal helper documentation checks also retain direct, feature-based workloads. */
 function recordHelperWorkload(unit: string, helper: Helper, call: HelperCall) {
 	if (!evidenceRequested()) return;

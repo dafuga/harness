@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/AnalyticsTasks.svelte",
-			"packages/reports/src/components/reports-media/AnalyticsTasks.svelte"
+			"packages/reports/src/components/reports-media/AnalyticsTasks.svelte",
+			"packages/reports/src/components/reports-media/AnalyticsTasks.types.ts"
 		],
-		"symbols": ["AnalyticsTasks", "AnalyticsTasks"]
+		"symbols": ["AnalyticsTasks", "AnalyticsTasks", "Jev", "Task"]
 	},
 	"contract": {
 		"origin": "declared",

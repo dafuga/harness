@@ -1,3 +1,4 @@
+import type { Page } from './local-transport-teardown.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterAll, test, vi } from 'vitest';
 import { once } from 'node:events';
@@ -118,7 +119,6 @@ test('the teardown of that test cancelled the socket and told its page that the 
 }, 40000);
 
 const states = ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'];
-type Page = Awaited<ReturnType<typeof asking>>;
 const sockets = (page: Page) => page.f.sockets.map((socket) => states[socket.readyState]);
 
 test('the teardown returns only once the socket it cancelled has closed', async () => {
@@ -164,3 +164,5 @@ test('the same error raised before the teardown is not its doing, and is thrown 
 		page.held.drop();
 	}
 }, 40000);
+
+export type { asking };

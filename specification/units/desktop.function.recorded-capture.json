@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/recordedCapture.ts",
-			"packages/desktop/src/utils/reports-media/recordedCapture.ts"
+			"packages/desktop/src/utils/reports-media/recordedCapture.ts",
+			"packages/desktop/src/utils/reports-media/recordedCapture.types.ts"
 		],
-		"symbols": ["recordedCapture", "CaptureBinding", "ListedCapture", "recordedCapture"]
+		"symbols": [
+			"recordedCapture",
+			"recordedCapture",
+			"CaptureBinding",
+			"ListedCapture",
+			"CaptureBinding",
+			"ListedCapture"
+		]
 	},
 	"contract": {
 		"origin": "declared",

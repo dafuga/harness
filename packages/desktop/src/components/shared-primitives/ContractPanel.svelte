@@ -35,27 +35,27 @@
 <style>
 	dl {
 		display: block;
-		margin: 0 0 18px;
+		margin: 0 0 var(--hx-space-18);
 	}
 	dl > div {
 		display: grid;
-		gap: 5px;
-		padding: 10px 0;
-		border-bottom: 1px solid var(--line);
+		gap: var(--hx-space-5);
+		padding: var(--hx-space-10) 0;
+		border-bottom: var(--hx-border-thin) solid var(--line);
 	}
 	dt {
 		text-transform: capitalize;
-		font-weight: 600;
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	dd {
 		margin: 0;
 		color: var(--muted);
-		line-height: 1.5;
+		line-height: var(--hx-style-leading-normal);
 	}
 	summary {
 		cursor: pointer;
 		color: var(--muted);
-		padding: 8px 0;
+		padding: var(--hx-space-8) 0;
 	}
 	.contract-field {
 		flex-wrap: wrap;

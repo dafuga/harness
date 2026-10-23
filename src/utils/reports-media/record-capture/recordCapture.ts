@@ -1,8 +1,7 @@
+import type { Environment } from './recordCapture.types';
 import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { captureIndex, type CaptureLine } from '../../../core/verification-evidence/verifyTypes';
-
-type Environment = Record<string, string | undefined>;
 
 /** True when the run asked for evidence: `harness verify` always does, ordinary runs opt in. */
 export function evidenceRequested(env: Environment = process.env): boolean {

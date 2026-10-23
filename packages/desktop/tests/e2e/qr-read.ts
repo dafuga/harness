@@ -1,17 +1,7 @@
+import type { Picture } from './qr-read.types';
 import { inflateSync } from 'node:zlib';
 import type { Locator } from '@playwright/test';
 import jsQR from 'jsqr';
-
-/**
- * TEST ONLY. Reads what is on the screen the way a camera would: a screenshot of the drawn
- * symbol, and a decoder that knows nothing of how the symbol was made.
- */
-interface Picture {
-	width: number;
-	height: number;
-	channels: number;
-	rows: Buffer;
-}
 
 /** The header and the packed rows of a PNG as a browser writes one: 8 bits, not interlaced. */
 function picture(file: Buffer): Picture {

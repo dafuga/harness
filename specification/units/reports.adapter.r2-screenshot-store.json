@@ -9,14 +9,14 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/adapters/R2ScreenshotStoreAdapter.ts",
-			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.ts"
+			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.ts",
+			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.types.ts"
 		],
 		"symbols": [
 			"screenshotObjectPrefix",
 			"r2ScreenshotConfig",
 			"r2ObjectKey",
 			"R2ScreenshotStoreAdapter",
-			"R2ScreenshotStoreAdapterConfig",
 			"screenshotObjectPrefix",
 			"r2ScreenshotConfig",
 			"r2ObjectKey",
@@ -24,7 +24,9 @@
 			"R2ScreenshotStoreAdapter.constructor",
 			"R2ScreenshotStoreAdapter.fromEnvironment",
 			"R2ScreenshotStoreAdapter.put",
-			"R2ScreenshotStoreAdapter.get"
+			"R2ScreenshotStoreAdapter.get",
+			"R2ScreenshotStoreAdapterConfig",
+			"R2ScreenshotStoreAdapterConfig"
 		]
 	},
 	"contract": {

@@ -1,15 +1,7 @@
+import type { Declared } from './entityServiceContract.types';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { serviceClassProof, serviceMetadata } from './entityClassFixtures';
 import { ids, units } from './entityUnits';
-
-/** A service as its manifest declares it, and its class as revision metadata records it. */
-type Declared = Pick<HarnessUnit, 'id' | 'title' | 'responsibility' | 'contract'> & {
-	source: string;
-	symbols: string[];
-	className: string;
-	/** The public methods the source declares, the constructor apart. */
-	methods: string[];
-};
 
 /** AgentActivityService as specification/units/service.agent-activity.json declares it now. */
 export const agentActivity: Declared = {

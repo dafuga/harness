@@ -1,3 +1,4 @@
+import type { Call } from './hubRelayFixture.types';
 import { build } from 'esbuild';
 import { fileURLToPath } from 'node:url';
 import { relayBinding, startRelay } from '../../../relay/test/support/relayFixture';
@@ -15,12 +16,6 @@ export class Broken extends DurableObject {
 }
 export default { fetch() { return new Response('broken'); } };`;
 const brokenBinding = { type: 'durable-object' as const, worker: 'broken', exportName: 'Broken' };
-type Call = (
-	session: string | null,
-	method: string,
-	path: string,
-	body?: unknown
-) => Promise<Response>;
 
 async function bundle(): Promise<string> {
 	const result = await build({
@@ -77,4 +72,5 @@ export async function startHubRelay() {
 		stop: () => relay.stop()
 	};
 }
-export type HubRelayFixture = Awaited<ReturnType<typeof startHubRelay>>;
+
+export type { HubRelayFixture } from './hubRelayFixture.types';

@@ -1,3 +1,4 @@
+import type { Body } from './AuthRequestValidator.types';
 import { EMAIL_CODE_LENGTH } from '../../models/accounts-access/HubAuth.types';
 import type {
 	GoogleSignInInput,
@@ -7,8 +8,6 @@ import type {
 } from '../../models/accounts-access/HubAuth.types';
 import { authFail } from '../../utils/accounts-access/authFail';
 import { normalizeCode } from '../../lib/verification-evidence/server/auth/native-handoff-service/authSecrets';
-
-type Body = Record<string, unknown>;
 
 const OPAQUE = /^[A-Za-z0-9_-]{32,128}$/;
 const COMPACT_JWT = /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;

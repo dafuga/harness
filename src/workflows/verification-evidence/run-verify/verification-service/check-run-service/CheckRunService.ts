@@ -1,3 +1,5 @@
+import type { RunContext, CheckOutcome } from './CheckRunService.types';
+export type { RunContext, CheckOutcome } from './CheckRunService.types';
 import { readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { resourcePriority } from '../../../../../core/execution-runtimes/resourceTypes';
@@ -9,25 +11,6 @@ import { type Gathered } from '../../../../../utils/verification-evidence/gather
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
 import { gatherCaptures } from './gatherCaptures';
 import { readBrowserDiagnostics } from './readBrowserDiagnostics';
-
-export interface RunContext {
-	/** Clean export of the commit; every check runs inside it. */
-	snapshot: string;
-	/** Scratch directory of this run; evidence and logs are written beneath it. */
-	directory: string;
-	commit: string;
-	tree: string;
-	profile: string;
-	env: Record<string, string | undefined>;
-}
-
-export interface CheckOutcome {
-	check: PlannedCheck;
-	passed: boolean;
-	entry: VerificationRecord['tests'][number];
-	gathered: Gathered[];
-	failures: string[];
-}
 
 const maxLogBytes = 2_000_000;
 

@@ -1,14 +1,9 @@
+import type { Deployment } from './ReportPagesRetentionAdapter.types';
 import { reportRuntimeRoot } from '../../../../utils/reports-media/reportRuntimeRoot';
 import { join } from 'node:path';
 import { r2ScreenshotConfig } from '../../../../adapters/reports-media/R2ScreenshotStoreAdapter';
 import { reportProcess } from '../../../../utils/reports-media/reportProcess';
 import { safeId } from '../../../../utils/reports-media/reportFiles';
-interface Deployment {
-	Id: string;
-	Environment: string;
-	Branch: string;
-	Deployment: string;
-}
 function publicationProject(url?: string) {
 	const configured = process.env.PROJECT_REPORTS_PAGES_PROJECT || 'project-report-shares';
 	if (!url) return configured;

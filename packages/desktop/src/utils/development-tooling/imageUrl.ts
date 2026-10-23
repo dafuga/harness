@@ -1,11 +1,6 @@
+import type { ImageRequest } from './imageUrl.types';
 import { tick } from 'svelte';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
-
-export interface ImageRequest {
-	entityId: string;
-	version: string;
-	sha256: string;
-}
 
 /**
  * Reads an image of the shown project and commit into an object URL. Call it inside an effect
@@ -39,3 +34,5 @@ export function imageUrl(
 		if (url) void tick().then(() => URL.revokeObjectURL(url));
 	};
 }
+
+export type { ImageRequest } from './imageUrl.types';

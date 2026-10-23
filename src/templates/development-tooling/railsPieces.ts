@@ -1,28 +1,11 @@
-import { toCamelCase, toKebabCase, toPascalCase } from '../../core/development-tooling/case';
+import type { ClassEntityTemplate, FunctionTemplate } from './railsPieces.types';
+import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { apiFiles, e2eFiles, viewFiles } from './appPieces';
 import { adapterTypeFiles } from './adapterTypes';
 import { controllerFiles, policyFiles, serializerFiles } from './packagePieces';
 import { modelFiles } from './model';
 import { parseFields } from '../../core/development-tooling/fields/fields';
-
-interface ClassEntityTemplate {
-	folder: string;
-	fileName: string;
-	className: string;
-	contents: string;
-	expectation: string;
-}
-
-interface FunctionTemplate {
-	folder: string;
-	name: string;
-	functionName: string;
-	body: string;
-	expectation: string;
-	call: string;
-	expected: string;
-}
 
 export function mailerFiles(name: string): PlannedFile[] {
 	const className = `${toPascalCase(name)}Mailer`;
@@ -39,16 +22,15 @@ export function mailerFiles(name: string): PlannedFile[] {
 }
 
 export function helperFiles(name: string): PlannedFile[] {
-	const className = `${toPascalCase(name)}Helper`;
-	const fileName = toKebabCase(name);
-	const contents = `export class ${className} {\n\tformat(value: string): string {\n\t\treturn value.trim();\n\t}\n}\n`;
-
-	return classEntityFiles({
+	const functionName = toCamelCase(name);
+	return functionFiles({
 		folder: 'helpers',
-		fileName,
-		className,
-		contents,
-		expectation: 'formats values'
+		name: toKebabCase(name),
+		functionName,
+		body: `/** @pure */\nexport function ${functionName}(textToFormat: string): string {\n\treturn textToFormat.trim();\n}\n`,
+		expectation: 'trims display text',
+		call: `${functionName}('  label  ')`,
+		expected: "'label'"
 	});
 }
 

@@ -1,3 +1,4 @@
+import type { Ask } from './planDesign.types';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -69,8 +70,6 @@ async function referenceImage(context: RunContext, draft: DesignDraft, directory
 	);
 	return reference;
 }
-
-type Ask = { prompt: string; reference: string | null; directory: string };
 
 async function generated(context: RunContext, ask: Ask, detail: string) {
 	context.emit({ runId: context.id, kind: 'status', phase: 'generating', detail });

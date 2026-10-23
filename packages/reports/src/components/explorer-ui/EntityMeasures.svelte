@@ -1,16 +1,12 @@
 <script lang="ts">
+	import type { Line } from "./EntityMeasures.types";
+
 	import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
-	import { humanize } from '../../utils/explorer-ui/entityContract';
+	import { humanize } from '../../helpers/strings/humanize';
 	import { harnessBudget } from '../../utils/explorer-ui/harnessBudget';
 	import { reasonText } from '../../utils/explorer-ui/explorerState';
 	import { harnessEmitted } from '../../utils/explorer-ui/harnessEmitted';
 	let { unit, record }: { unit: HarnessUnit; record: HarnessRecord | null } = $props();
-	interface Line {
-		metric: string;
-		value: string;
-		limit: string;
-		note?: string;
-	}
 	const frozen = ['source-bytes', 'complexity', 'dependencies'];
 	let measured = $derived((record?.measurements ?? []).filter((item) => item.unit === unit.id));
 	// A figure of the unit itself names no machine; what a benchmark reports about its run does.
@@ -51,6 +47,7 @@
 			note: finding(budget.metric)?.status
 		}))
 	]);
+
 </script>
 
 <section

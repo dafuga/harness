@@ -47,7 +47,7 @@
 		text-underline-offset: 2px;
 	}
 	:global(a.unit-reference svg) {
-		margin-right: 3px;
+		margin-right: var(--hx-space-3);
 		vertical-align: -2px;
 	}
 </style>

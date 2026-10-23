@@ -1,8 +1,7 @@
+import type { RecordScenario } from './entityFixture.types';
 import type { HarnessIndex, HarnessRecord, HarnessRevision } from '../src/models/Harness.types';
 import { capture, commits, ids, scenarios, units, type CaptureSeed } from './entityUnits';
 import { configSnapshot } from './entityConfigFixtures';
-
-type RecordScenario = HarnessRecord['scenarios'][number];
 
 export function tested(
 	commit: string,

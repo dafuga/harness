@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/generate.ts"],
-		"symbols": ["registerGenerateCommand"]
+		"source": ["src/cli/program/generate.ts", "src/cli/program/generate.types.ts"],
+		"symbols": ["registerGenerateCommand", "UnitFlags"]
 	},
 	"contract": {
 		"origin": "derived",

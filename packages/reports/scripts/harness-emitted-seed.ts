@@ -1,3 +1,4 @@
+import type { EmittedSeed } from './harness-emitted-seed.types';
 /**
  * Adds to the synthetic history a unit that is built for two execution targets, and takes it
  * through what a reader must be able to follow: an output without any limit yet, a first
@@ -12,11 +13,6 @@ const unit = 'function.packer';
 const file = 'src/utils/packer.ts';
 const source = (digits: string, method: string) =>
 	`// build: ${digits}\nexport function packer(value: string): string {\n\treturn value.${method}();\n}\n`;
-
-export interface EmittedSeed {
-	verified: (repo: VerifyRepo) => Promise<VerifyOutcome>;
-	explain: (repo: VerifyRepo, behavior: string) => Promise<unknown>;
-}
 
 /** The commits it made, by what happened at each. */
 export async function seedEmitted(
@@ -68,3 +64,5 @@ export async function seedEmitted(
 	await verified(repo);
 	return { emitting, packed, swapped, repacked, vanished };
 }
+
+export type { EmittedSeed } from './harness-emitted-seed.types';

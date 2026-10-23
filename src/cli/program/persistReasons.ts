@@ -1,19 +1,10 @@
+import type { PersistedReasons } from './persistReasons.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import type { HistoryNote } from '../../core/git-source-history/historyTypes';
 import { HistoryNoteRepository } from '../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { explainedRange } from '../../workflows/development-tooling/runExplain';
 import { sourceCommit } from '../../workflows/git-source-history/runHistory';
-
-export interface PersistedReasons {
-	commit: string;
-	/** The revision the changes are measured from; null for an empty starting point. */
-	base: string | null;
-	/** Reasons now noted on the commit. */
-	attached: number;
-	/** Changes in the range that still have no reason; nothing is written for them. */
-	missing: string[];
-}
 
 /**
  * Keeps the reasons of a committed range in the notes of its last commit, so they explain the
@@ -48,3 +39,5 @@ export function renderReasons(result: PersistedReasons): string {
 	const head = `${result.attached} reasons for ${from}..${result.commit.slice(0, 12)} are kept in notes.`;
 	return [head, ...result.missing.map((failure) => `  ${failure}`)].join('\n');
 }
+
+export type { PersistedReasons } from './persistReasons.types';

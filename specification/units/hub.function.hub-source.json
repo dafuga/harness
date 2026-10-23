@@ -9,9 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/development-tooling/hubSource.ts",
+			"packages/hub/src/utils/development-tooling/hubSource.types.ts",
 			"packages/hub/src/utils/hubSource.ts"
 		],
-		"symbols": ["HubSourceContext", "hubSource", "hubRead", "hubSource", "hubRead"]
+		"symbols": [
+			"hubSource",
+			"hubRead",
+			"HubSourceContext",
+			"HubSourceContext",
+			"hubSource",
+			"hubRead"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,3 +1,4 @@
+import type { Case, Producer } from './plan-reads-format.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test } from 'vitest';
 import { execFileSync } from 'node:child_process';
@@ -18,7 +19,6 @@ const roots: string[] = [];
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
-type Case = { name: string; input: unknown; output: unknown };
 async function repository(format: 'sha1' | 'sha256') {
 	const root = await mkdtemp(join(tmpdir(), `planning-${format}-`));
 	roots.push(root);
@@ -50,8 +50,6 @@ async function ask(cases: Case[], git: Git, args: string[], calls: string[][]) {
 	return output;
 }
 const verify = (name: string) => ['rev-parse', '--verify', `${name}^{commit}`];
-/** The unit and symbol whose actual calls a trace records. */
-type Producer = { unitId: string; symbol: string };
 const readHandle: Producer = { unitId: 'planning.function.plan-reads', symbol: 'planReads' };
 const formatProducer: Producer = { unitId: 'planning.function.plan-git', symbol: 'planGit' };
 const trace = (file: string, cases: Case[], producer: Producer = readHandle) =>

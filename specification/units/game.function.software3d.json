@@ -7,12 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/adapters/game-authoring/Software3dAdapter.ts"],
+		"source": [
+			"packages/game/src/adapters/game-authoring/Software3dAdapter.ts",
+			"packages/game/src/adapters/game-authoring/Software3dAdapter.types.ts"
+		],
 		"symbols": [
 			"Software3dAdapter",
 			"Software3dAdapter.constructor",
 			"Software3dAdapter.render",
-			"Software3dAdapter.dispose"
+			"Software3dAdapter.dispose",
+			"Point",
+			"Box"
 		]
 	},
 	"contract": {

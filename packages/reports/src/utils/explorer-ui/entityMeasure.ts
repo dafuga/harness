@@ -3,38 +3,6 @@ export const notMeasured = 'Not measured';
 /** The most a timing may worsen against its baseline under the recorded policy. */
 export const tolerancePolicy = 0.05;
 
-export interface MeasureRow {
-	label: string;
-	value: string;
-	rawValue?: number | null;
-	unitOfMeasure?: string;
-	/** Emitted artifact target; none means no output-size metric applies. */
-	target?: string;
-	/** Why there is no value, or what the value leaves out. */
-	note?: string;
-}
-
-export interface PerformanceRow {
-	workload: string;
-	metric: string;
-	/** The execution target the timing was taken on; empty when it names none. */
-	target: string;
-	/** The machine profile the timing was taken under; empty when nothing was measured. */
-	profile: string;
-	value: string;
-	rawValue?: number | null;
-	unitOfMeasure?: string;
-	note?: string;
-	tolerance: string;
-	/** True when the declared tolerance is looser than the policy allows. */
-	over: boolean;
-}
-
-export interface EntityMeasure {
-	size: MeasureRow[];
-	performance: PerformanceRow[];
-}
-
 const scales: Array<[number, string]> = [
 	[1_000_000, 'MB'],
 	[1_000, 'KB']
@@ -49,3 +17,5 @@ export function byteSize(count: number): string {
 }
 
 export { entityMeasure } from '../../components/explorer-ui/entity-sections/entityMeasure';
+
+export type { MeasureRow, PerformanceRow, EntityMeasure } from './entityMeasure.types';

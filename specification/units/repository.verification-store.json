@@ -9,18 +9,20 @@
 	"owns": {
 		"source": [
 			"src/repositories/VerificationStoreRepository.ts",
-			"src/repositories/verification-evidence/VerificationStoreRepository.ts"
+			"src/repositories/verification-evidence/VerificationStoreRepository.ts",
+			"src/repositories/verification-evidence/VerificationStoreRepository.types.ts"
 		],
 		"symbols": [
 			"VerificationStoreRepository",
-			"StoredRecord",
 			"VerificationStoreRepository",
 			"VerificationStoreRepository.constructor",
 			"VerificationStoreRepository.directoryFor",
 			"VerificationStoreRepository.save",
 			"VerificationStoreRepository.load",
 			"VerificationStoreRepository.latest",
-			"VerificationStoreRepository.all"
+			"VerificationStoreRepository.all",
+			"StoredRecord",
+			"StoredRecord"
 		]
 	},
 	"contract": {

@@ -1,38 +1,13 @@
-import { randomId, relayHeaders, relaySocketUrl } from '../../../../../../remote/src/index';
 import type {
-	RelayHostCommand,
-	RelayHostFrame,
-	RemoteSocket
-} from '../../../../../../remote/src/index';
+	Timer,
+	RelayLinkState,
+	Waiting,
+	RelayLinkOptions,
+	RelayCommandInput
+} from './RelayLinkService.types';
+import { randomId, relayHeaders, relaySocketUrl } from '../../../../../../remote/src/index';
+import type { RelayHostCommand, RemoteSocket } from '../../../../../../remote/src/index';
 import { relayFrame } from './relayFrame';
-
-export type RelayLinkState = 'connecting' | 'online' | 'offline';
-
-type Without<T, K extends string> = T extends unknown ? Omit<T, K> : never;
-
-/** A command the relay acknowledges; the link adds its `ref`. */
-export type RelayCommandInput = Without<Extract<RelayHostCommand, { ref: string }>, 'ref'>;
-
-export interface RelayLinkOptions {
-	open: (url: string, headers: Record<string, string>) => RemoteSocket;
-	origin: string;
-	hostId: string;
-	credential: string;
-	onFrame: (frame: RelayHostFrame) => void;
-	onState: (state: RelayLinkState) => void;
-	retryMs?: number[];
-	pingMs?: number;
-	idleMs?: number;
-	ackMs?: number;
-}
-
-type Timer = ReturnType<typeof setTimeout>;
-
-interface Waiting {
-	resolve: () => void;
-	reject: (error: Error) => void;
-	timer: Timer;
-}
 
 const quiet = (timer: Timer): Timer => {
 	(timer as { unref?: () => void }).unref?.();
@@ -142,3 +117,5 @@ export class RelayLinkService {
 		this.options.onState(state);
 	}
 }
+
+export type { RelayLinkState, RelayCommandInput, RelayLinkOptions } from './RelayLinkService.types';

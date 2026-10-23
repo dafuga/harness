@@ -1,3 +1,4 @@
+import type { Cache } from './cache-status.test.types';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { createWorkspaceStore } from '../../src/lib/stores/workspace.svelte';
 import { deniedNotice, offlineNotice } from '../../src/utils/cache-status/cacheStatus';
@@ -7,7 +8,6 @@ import type { CacheStatus } from '../../src/models/ProjectContext.types';
 
 const tip = 'a'.repeat(40);
 const saved = '2026-10-12T08:00:00.000Z';
-type Cache = NonNullable<ProjectSnapshot['cache']>;
 function snapshotOf(id: string, source: 'local' | 'github', status: Cache['status'] = 'fresh') {
 	return {
 		project: { name: id, root: '', id },

@@ -1,3 +1,4 @@
+import type { LoadedUnits } from './loadUnits.types';
 import { revisionRegistry } from '../../../utils/revisionRegistry';
 import { unitMetadata } from '../../../utils/explorer-ui/unitMetadata';
 import { helperContract } from '../../../utils/development-tooling/helperContract';
@@ -7,34 +8,13 @@ import { WorkingTreeAdapter } from '../../../adapters/git-source-history/Working
 import type { SourceGraph, SourceTree } from '../../../core/development-tooling/sourceTypes';
 import {
 	componentManifestSchema,
-	type ComponentManifest,
-	type ScenarioManifest
+	type ComponentManifest
 } from '../../../core/development-tooling/unitTypes';
-import type { UnitsConfig } from '../../../core/development-tooling/unitsConfig';
 import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../repositories/verification-evidence/UnitRegistryRepository';
 import { SourceGraphService } from '../../../services/development-tooling/SourceGraphService';
-import {
-	SourceIndexService,
-	type SourceIndex
-} from '../../../services/development-tooling/source-index-service/SourceIndexService';
+import { SourceIndexService } from '../../../services/development-tooling/source-index-service/SourceIndexService';
 import { UnitIndexService, type UnitIndexResult } from './unit-index-service/UnitIndexService';
-
-export interface LoadedUnits {
-	root: string;
-	config: UnitsConfig;
-	index: SourceIndex;
-	/** Manifests exactly as stored. */
-	stored: ComponentManifest[];
-	scenarios: ScenarioManifest[];
-	/** Schema problems found in stored manifests and scenarios. */
-	errors: string[];
-	/** Units whose stored file is not in canonical form. */
-	unformatted: string[];
-	/** What the registry should contain for this source tree. */
-	fresh: UnitIndexResult;
-	repository: UnitRegistryRepository;
-}
 
 /** Reads the registry and indexes one source tree; the working tree unless one is supplied. */
 export async function loadUnits(
@@ -106,3 +86,5 @@ async function committedHelpers(
 		.filter((unit) => !created.has(unit.id) && before.get(unit.id) !== stableJson(unit))
 		.map((unit) => unit.id);
 }
+
+export type { LoadedUnits } from './loadUnits.types';

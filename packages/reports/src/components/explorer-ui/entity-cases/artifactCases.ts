@@ -1,10 +1,9 @@
+import type { Fields } from './artifactCases.types';
 import { caseForm } from '../../../utils/explorer-ui/artifactCases';
 import type {
 	ExplorerArtifactCase,
 	ExplorerArtifactCases
 } from '../../../models/explorer-ui/ExplorerEvidence.types';
-
-type Fields = Record<string, unknown>;
 
 const gap = (why: string): ExplorerArtifactCases => ({ kind: 'gap', why });
 

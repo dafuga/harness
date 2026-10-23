@@ -9,17 +9,26 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/processDescendants.ts",
+			"src/utils/development-tooling/processDescendants.types.ts",
 			"src/utils/processDescendants.ts"
 		],
 		"symbols": [
+			"processTable",
+			"processDescendants",
+			"signalProcesses",
 			"TrackedProcess",
 			"ProcessRow",
 			"FollowedProcess",
 			"ProcessTable",
-			"processTable",
 			"Descendants",
-			"processDescendants",
-			"signalProcesses",
+			"TrackedProcess",
+			"ProcessRow",
+			"FollowedProcess",
+			"ProcessTable",
+			"Row",
+			"Owned",
+			"Following",
+			"Descendants",
 			"processTable",
 			"processDescendants",
 			"signalProcesses"

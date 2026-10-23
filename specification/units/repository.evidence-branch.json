@@ -9,15 +9,17 @@
 	"owns": {
 		"source": [
 			"src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts",
-			"src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository.ts"
+			"src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository.ts",
+			"src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository.types.ts"
 		],
 		"symbols": [
 			"EvidenceBranchRepository",
-			"StoredDirectory",
 			"EvidenceBranchRepository",
 			"EvidenceBranchRepository.constructor",
 			"EvidenceBranchRepository.tip",
-			"EvidenceBranchRepository.add"
+			"EvidenceBranchRepository.add",
+			"StoredDirectory",
+			"StoredDirectory"
 		]
 	},
 	"contract": {

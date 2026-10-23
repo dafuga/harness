@@ -20,31 +20,31 @@
 		display: inline-flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 4px 6px;
+		gap: var(--hx-space-4) var(--hx-space-6);
 		max-width: 100%;
 		vertical-align: middle;
 	}
 	.place {
 		min-width: 0;
-		padding: 0 7px;
-		border: 1px solid var(--line);
-		border-radius: 5px;
-		background: rgb(255 255 255 / 0.03);
-		color: #cfe0ec;
-		line-height: 1.6;
+		padding: 0 var(--hx-space-7);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-xsmall);
+		background: var(--hx-tint-hover);
+		color: var(--hx-soft);
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
 	.branch {
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 0.95em;
+		font-family: var(--hx-font-family-mono);
+		font-size: var(--hx-type-size-inline);
 	}
 	.to {
-		border-color: #4b7891;
-		color: #edf4fa;
-		font-weight: 600;
+		border-color: var(--hx-accent-line);
+		color: var(--hx-text);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	.arrow {
 		color: var(--gold);
-		font-weight: 600;
+		font-weight: var(--hx-style-weight-semibold);
 	}
 </style>

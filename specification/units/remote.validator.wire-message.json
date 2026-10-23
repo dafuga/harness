@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/validators/WireMessageValidator.ts",
-			"packages/remote/src/validators/networking-security/WireMessageValidator.ts"
+			"packages/remote/src/validators/networking-security/WireMessageValidator.ts",
+			"packages/remote/src/validators/networking-security/WireMessageValidator.types.ts"
 		],
 		"symbols": [
 			"WireMessageValidator",
 			"WireMessageValidator",
 			"WireMessageValidator.request",
-			"WireMessageValidator.message"
+			"WireMessageValidator.message",
+			"Fields"
 		]
 	},
 	"contract": {

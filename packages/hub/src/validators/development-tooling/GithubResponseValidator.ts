@@ -1,41 +1,12 @@
-type Json = Record<string, unknown>;
-
-export interface GithubUserToken {
-	accessToken: string;
-	expiresIn: number | null;
-	refreshToken: string | null;
-	refreshExpiresIn: number | null;
-}
-
-export interface GithubUser {
-	id: number;
-	login: string;
-}
-
-export interface GithubRepository {
-	id: number;
-	owner: string;
-	name: string;
-	private: boolean;
-	admin: boolean;
-}
-
-export interface InstallationList {
-	ids: number[];
-	total: number;
-}
-
-export interface RepositoryPage {
-	repositories: GithubRepository[];
-	total: number;
-}
-
-export interface InstallationGrant {
-	token: string;
-	expiresAt: number;
-	permissions: Record<string, string>;
-	repositories: GithubRepository[];
-}
+import type {
+	Json,
+	GithubUserToken,
+	GithubUser,
+	GithubRepository,
+	InstallationList,
+	RepositoryPage,
+	InstallationGrant
+} from './GithubResponseValidator.types';
 
 const TOKEN = /^[A-Za-z0-9_.~+/=-]{1,4096}$/;
 const LOGIN = /^[A-Za-z0-9_-]{1,100}(?:\[bot\])?$/;
@@ -123,3 +94,12 @@ export class GithubResponseValidator {
 		return { token: json.token, expiresAt, permissions, repositories: complete };
 	}
 }
+
+export type {
+	GithubUserToken,
+	GithubUser,
+	GithubRepository,
+	InstallationList,
+	RepositoryPage,
+	InstallationGrant
+} from './GithubResponseValidator.types';

@@ -1,4 +1,4 @@
-import type { ExplorerBehavior } from '../../../../reports/src/models/Explorer.types';
+import type { EvidenceRead } from './evidenceReading.types';
 import type { ArtifactFetcher } from '../../../../reports/src/utils/explorerArtifact';
 import { explorerReading } from '../../../../reports/src/utils/explorer-reading/explorerReading';
 import type { DesktopBridge } from '../../models/development-tooling/DesktopBridge.types';
@@ -7,13 +7,6 @@ import type {
 	EntityEvidenceResult
 } from '../../models/verification-evidence/DesktopEvidence.types';
 import { artifactQuery } from '../development-tooling/artifactQuery';
-
-export interface EvidenceRead {
-	/** The behaviour with every recorded result read, checked and compared. */
-	behavior: ExplorerBehavior;
-	/** Why the backend gave no bytes for a result, by the hash of that result, in its words. */
-	refusals: Record<string, string>;
-}
 
 /** Only a name: `explorerReading` asks for `base + file`, and no address is made of it. */
 const base = 'artifact:';
@@ -49,3 +42,5 @@ export async function evidenceReading(
 	const behavior = await explorerReading(result.behavior, base, fetcher);
 	return { behavior, refusals };
 }
+
+export type { EvidenceRead } from './evidenceReading.types';

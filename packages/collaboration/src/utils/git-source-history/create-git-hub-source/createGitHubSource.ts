@@ -1,6 +1,6 @@
+import type { Options } from './createGitHubSource.types';
 import { z } from 'zod';
 import type {
-	GitHubOptions,
 	RepositoryIdentity,
 	SourceAdapter,
 	SourceHistoryAdapter,
@@ -20,8 +20,6 @@ import { githubLfs } from './githubLfs';
 import { githubHistory } from './githubHistory';
 import { githubRawMany } from './githubRawMany';
 import { validateGitHubAnchor } from './validateGitHubAnchor';
-
-type Options = Omit<GitHubOptions, 'repository'>;
 
 const client = (options: Options, repository: RepositoryIdentity) =>
 	githubTransport({ ...options, repository }, 'read');

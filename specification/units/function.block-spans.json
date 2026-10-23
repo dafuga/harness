@@ -10,9 +10,18 @@
 		"source": [
 			"src/utils/block-spans/blockSpans.ts",
 			"src/utils/blockSpans.ts",
-			"src/utils/development-tooling/block-spans/blockSpans.ts"
+			"src/utils/development-tooling/block-spans/blockSpans.ts",
+			"src/utils/development-tooling/block-spans/blockSpans.types.ts"
 		],
-		"symbols": ["blockSpans", "BlockSpan", "blockSpans", "BlockSpan", "blockSpans"]
+		"symbols": [
+			"blockSpans",
+			"BlockSpan",
+			"blockSpans",
+			"blockSpans",
+			"BlockSpan",
+			"BlockSpan",
+			"Scope"
+		]
 	},
 	"contract": {
 		"origin": "declared",

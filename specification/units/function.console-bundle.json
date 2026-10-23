@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleBundle.ts", "src/utils/development-tooling/consoleBundle.ts"],
-		"symbols": ["consoleBundle", "ConsoleModules", "consoleBundle"]
+		"source": [
+			"src/utils/consoleBundle.ts",
+			"src/utils/development-tooling/consoleBundle.ts",
+			"src/utils/development-tooling/consoleBundle.types.ts"
+		],
+		"symbols": ["consoleBundle", "consoleBundle", "ConsoleModules", "Loader", "ConsoleModules"]
 	},
 	"contract": {
 		"origin": "declared",

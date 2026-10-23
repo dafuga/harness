@@ -6,38 +6,38 @@
 .runtime-evidence > .row,
 .coverage-panel > .row {
 	flex-wrap: wrap;
-	padding-bottom: 14px;
-	border-bottom: 1px solid var(--line);
+	padding-bottom: var(--hx-space-14);
+	border-bottom: var(--hx-border-thin) solid var(--line);
 }
 .runtime-card {
-	padding: 16px 0;
-	border-bottom: 1px solid var(--line);
+	padding: var(--hx-space-16) 0;
+	border-bottom: var(--hx-border-thin) solid var(--line);
 }
 .runtime-card:last-child {
 	border-bottom: 0;
 	padding-bottom: 0;
 }
 .runtime-card h3 {
-	margin: 0 0 4px;
+	margin: 0 0 var(--hx-space-4);
 }
 .runtime-controls {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 12px;
+	gap: var(--hx-space-12);
 	align-items: flex-end;
-	margin: 12px 0;
+	margin: var(--hx-space-12) 0;
 }
 .runtime-controls label {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
-	font-size: 12px;
+	gap: var(--hx-space-6);
+	font-size: var(--hx-type-size-xs);
 	min-width: 0;
 }
 .runtime-panes {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
-	gap: 14px;
+	gap: var(--hx-space-14);
 }
 .runtime-panes.paired {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -45,31 +45,31 @@
 .runtime-pane {
 	margin: 0;
 	min-width: 0;
-	border: 1px solid var(--line);
-	border-radius: 8px;
-	padding: 12px;
+	border: var(--hx-border-thin) solid var(--line);
+	border-radius: var(--hx-radius-small);
+	padding: var(--hx-space-12);
 }
 .runtime-pane figcaption,
 .runtime-pane-head {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: center;
-	margin: 0 0 10px;
+	margin: 0 0 var(--hx-space-10);
 }
 .runtime-pane img {
 	display: block;
 	width: 100%;
-	border: 1px solid var(--line);
-	border-radius: 6px;
-	background: #031823;
+	border: var(--hx-border-thin) solid var(--line);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-bg);
 }
 .runtime-pane audio {
 	width: 100%;
 }
 .runtime-standing {
-	margin: 8px 0 0;
-	font-size: 12px;
+	margin: var(--hx-space-8) 0 0;
+	font-size: var(--hx-type-size-xs);
 	color: var(--muted);
 }
 .runtime-standing.stale {
@@ -77,16 +77,16 @@
 }
 .runtime-gap {
 	display: flex;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: flex-start;
-	margin: 8px 0;
+	margin: var(--hx-space-8) 0;
 	padding: 0;
 	list-style: none;
 	flex-wrap: wrap;
 }
 .runtime-gap li {
 	display: flex;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: flex-start;
 }
 .runtime-gap span {
@@ -97,25 +97,25 @@
 .runtime-verdict {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
+	gap: var(--hx-space-10);
 	align-items: baseline;
 }
 .runtime-state h4 {
 	display: flex;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: center;
-	margin: 14px 0 6px;
+	margin: var(--hx-space-14) 0 var(--hx-space-6);
 }
 .runtime-result > p {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: center;
-	margin: 8px 0;
+	margin: var(--hx-space-8) 0;
 }
 .runtime-artifact h5 {
-	margin: 10px 0 4px;
-	font-size: 12px;
+	margin: var(--hx-space-10) 0 var(--hx-space-4);
+	font-size: var(--hx-type-size-xs);
 	color: var(--muted);
 }
 .runtime-artifact pre,
@@ -125,11 +125,11 @@
 }
 .runtime-artifact pre {
 	margin: 0;
-	padding: 10px;
-	border: 1px solid var(--line);
-	border-radius: 6px;
-	background: #031823;
-	font-size: 12px;
+	padding: var(--hx-space-10);
+	border: var(--hx-border-thin) solid var(--line);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-bg);
+	font-size: var(--hx-type-size-xs);
 }
 .runtime-checks {
 	list-style: none;
@@ -139,9 +139,9 @@
 .runtime-checks li {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: center;
-	margin: 6px 0;
+	margin: var(--hx-space-6) 0;
 }
 .runtime-checks pre {
 	flex-basis: 100%;
@@ -149,9 +149,9 @@
 .runtime-facts {
 	display: grid;
 	grid-template-columns: max-content minmax(0, 1fr);
-	gap: 4px 14px;
-	margin: 10px 0;
-	font-size: 13px;
+	gap: var(--hx-space-4) var(--hx-space-14);
+	margin: var(--hx-space-10) 0;
+	font-size: var(--hx-type-size-compact);
 }
 .runtime-facts dt {
 	color: var(--muted);
@@ -163,9 +163,9 @@
 .coverage-scenario h3 {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	align-items: center;
-	margin: 16px 0 4px;
+	margin: var(--hx-space-16) 0 var(--hx-space-4);
 }
 .coverage-scenario p span + span::before {
 	content: ' · ';
@@ -173,14 +173,14 @@
 .coverage-scenario table {
 	width: 100%;
 	border-collapse: collapse;
-	font-size: 13px;
+	font-size: var(--hx-type-size-compact);
 }
 .coverage-scenario th,
 .coverage-scenario td {
 	text-align: left;
 	vertical-align: top;
-	padding: 8px 10px 8px 0;
-	border-top: 1px solid var(--line);
+	padding: var(--hx-space-8) var(--hx-space-10) var(--hx-space-8) 0;
+	border-top: var(--hx-border-thin) solid var(--line);
 	overflow-wrap: anywhere;
 }
 @media (max-width: 850px) {

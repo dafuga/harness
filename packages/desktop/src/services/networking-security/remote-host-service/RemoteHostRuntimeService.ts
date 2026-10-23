@@ -1,28 +1,9 @@
+import type { RemoteHostRuntimeOptions } from './RemoteHostRuntimeService.types';
 import { HostPairingService } from '../../../../../remote/src/index';
-import type { RelayHostFrame, RemoteKeyPair, RemoteSocket } from '../../../../../remote/src/index';
-import type { RemoteHostState } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
+import type { RelayHostFrame } from '../../../../../remote/src/index';
 import { RelayLinkService } from './relay-link-service/RelayLinkService';
-import type { RelayLinkOptions, RelayLinkState } from './relay-link-service/RelayLinkService';
+import type { RelayLinkState } from './relay-link-service/RelayLinkService';
 import { RemoteDeviceSessionsService } from './RemoteDeviceSessionsService';
-import type { RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService';
-
-export type RelayLinkTuning = Pick<RelayLinkOptions, 'retryMs' | 'pingMs' | 'idleMs' | 'ackMs'>;
-export interface RemoteHostRuntimeOptions {
-	/** The live state: an approval or a revocation made later is seen here at once. */
-	state: RemoteHostState;
-	keys: RemoteKeyPair;
-	name: string;
-	open: (url: string, headers: Record<string, string>) => RemoteSocket;
-	shared: RemoteDeviceSessionsOptions['shared'];
-	link?: RelayLinkTuning;
-	locked?: () => boolean | undefined;
-	changed: () => void;
-	/** The relay is reachable again. */
-	ready: () => void;
-	/** The owner revoked a device through the hub. */
-	revoked: (deviceId: string) => void;
-	seen: (deviceId: string) => void;
-}
 
 /** What runs while remote access is on: the relay link, the pairing offer, the phones' sessions. */
 export class RemoteHostRuntimeService {
@@ -103,3 +84,5 @@ export class RemoteHostRuntimeService {
 		this.options.changed();
 	}
 }
+
+export type { RelayLinkTuning, RemoteHostRuntimeOptions } from './RemoteHostRuntimeService.types';

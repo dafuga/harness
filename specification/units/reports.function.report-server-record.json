@@ -12,7 +12,8 @@
 			"packages/reports/src/services/report-server-service/reportServerRecord.ts",
 			"packages/reports/src/services/reports-media/report-command-service/report-server-service/reportServerRecord.ts",
 			"packages/reports/src/utils/reportServerRecord.ts",
-			"packages/reports/src/utils/reports-media/reportServerRecord.ts"
+			"packages/reports/src/utils/reports-media/reportServerRecord.ts",
+			"packages/reports/src/utils/reports-media/reportServerRecord.types.ts"
 		],
 		"symbols": [
 			"stopReportServer",
@@ -21,11 +22,13 @@
 			"stopReportServer",
 			"processStarted",
 			"reportServerRecord",
-			"ServerRecord",
-			"StoppedServer",
 			"processStarted",
 			"reportServerRecord",
-			"stopReportServer"
+			"stopReportServer",
+			"ServerRecord",
+			"StoppedServer",
+			"ServerRecord",
+			"StoppedServer"
 		]
 	},
 	"contract": {

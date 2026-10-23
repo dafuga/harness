@@ -1,31 +1,11 @@
+import type { TurnItem, TurnResult, TurnOptions } from './codexTurn.types';
+export type { TurnItem, TurnResult, TurnOptions } from './codexTurn.types';
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
 import type { ResourceQueueService } from '../../../../../../src/services/execution-runtimes/ResourceQueueService';
 import type { AgentTurn, CliCommand } from '../../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 import { codexRpc } from '../../../utils/agents-providers/codex-rpc/codexRpc';
 import { managedAgentTurn } from '../../../utils/agents-providers/managedAgentTurn';
-
-interface TurnItem {
-	type: string;
-	text?: string;
-	result?: string;
-	status?: string;
-	savedPath?: string;
-	revisedPrompt?: string | null;
-	failure?: unknown;
-	changes?: { path: string }[];
-}
-
-interface TurnResult {
-	text: string;
-	model: string;
-	images: TurnItem[];
-}
-
-interface TurnOptions extends AgentTurn {
-	reference?: string | null;
-	image?: boolean;
-}
 export async function codexTurn(
 	command: CliCommand,
 	turn: TurnOptions,

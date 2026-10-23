@@ -1,3 +1,11 @@
+import type {
+	PhoneOptions,
+	PhoneHost,
+	PhoneState,
+	Call,
+	Listen,
+	Callback
+} from './ui-remote-phone-fixture.types';
 import type { Page } from '@playwright/test';
 import { alpha, beta, projectFixture } from './ui-project-fixture';
 import { pairing, phone, relayOrigin } from './ui-remote-host-fixture';
@@ -12,35 +20,6 @@ export { pairing, relayOrigin } from './ui-remote-host-fixture';
 export const hostName = 'Synthetic Mac';
 export const deviceName = phone.name;
 export const seenAt = '2026-10-12T08:00:00.000Z';
-
-type Operation = (input?: unknown) => Promise<unknown>;
-type Callback = (value: unknown) => void;
-type Call = { method: string; input: { projectId?: string } };
-interface PhoneOptions {
-	state: string;
-	origin: string;
-	host: { id: string; name: string };
-	device: { id: string; name: string };
-	seenAt: string;
-	granted: { id: string; name: string }[];
-}
-interface PhoneState {
-	options: PhoneOptions;
-	phone: { state: string; deviceName: string | null };
-	/** How the next scans end: a failure code of the plugin each, then success. */
-	scans: string[];
-	computer: Record<string, Operation>;
-	listeners: Map<string, { eventName: string; callback: Callback }>;
-	status: () => Record<string, unknown>;
-	set: (state: string) => void;
-	request: (call: Call) => Promise<unknown>;
-}
-interface PhoneHost {
-	harness?: Record<string, Operation>;
-	__calls: Record<string, unknown>[];
-	__projects: { selected: string | null };
-	__remotePhone: PhoneState;
-}
 
 /** SYNTHETIC phone state, in the words of `RemoteMobileStatus`. The fixture bridge leaves the page. */
 function installPhoneState(options: PhoneOptions) {
@@ -126,7 +105,6 @@ function installPhonePlugin() {
 		request: (call: Call) => request(call)
 	};
 	let serial = 0;
-	type Listen = { eventName: string; callbackId?: string };
 	const listen = (_plugin: string, method: string, input: Listen, callback: Callback) => {
 		if (method === 'removeListener') return void listeners.delete(String(input.callbackId));
 		listeners.set(String(++serial), { eventName: input.eventName, callback });

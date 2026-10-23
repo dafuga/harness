@@ -1,3 +1,4 @@
+import type { OptionId, Seed, Host, Item } from './ui-design-options-fixture.types';
 import type { Page } from '@playwright/test';
 import { createHash } from 'node:crypto';
 import { PNG } from 'pngjs';
@@ -9,7 +10,6 @@ export * from './ui-project-fixture';
  * stripe, so the bytes, the hashes and the pixels of the three all differ. No image was generated.
  */
 export const colors = { o1: [200, 40, 40], o2: [40, 160, 60], o3: [40, 70, 200] } as const;
-export type OptionId = keyof typeof colors;
 export const optionThread = '44444444-4444-4444-8444-444444444444';
 function png(color: readonly number[], stripe: number) {
 	const image = new PNG({ width: 96, height: 64 });
@@ -26,30 +26,6 @@ export const options = (Object.keys(colors) as OptionId[]).map((id, index) => {
 	return { id, sha256, bytes: Array.from(bytes), direction: `Synthetic direction ${index + 1}` };
 });
 export const sha = (id: OptionId) => options.find((option) => option.id === id)!.sha256;
-
-type Item = Record<string, unknown>;
-interface Entity extends Item {
-	id: string;
-	versions: Item[];
-	threads: Item[];
-}
-interface Host {
-	harness: Record<string, unknown>;
-	__emitRun: (event: Item) => void;
-	__projects: {
-		data: {
-			image: number[];
-			projects: Array<{ entities: Entity[]; messages: Record<string, Item[]> }>;
-		};
-		own: (op: string, input?: Item) => { entities: Entity[] };
-	};
-}
-interface Seed {
-	options: typeof options;
-	tip: string;
-	legacy: string;
-	thread: string;
-}
 
 /** Alpha (local) and Gamma (shared) gain v003 with three options; v002 stays one design. */
 function installOptions(seed: Seed) {
@@ -153,3 +129,5 @@ export async function designOptionsFixture(
 	await page.addInitScript(installEntities, seed);
 	await page.addInitScript(installBridge, seed);
 }
+
+export type { OptionId } from './ui-design-options-fixture.types';

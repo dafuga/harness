@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/explorerName.ts",
+			"packages/reports/src/utils/explorer-ui/explorerName.types.ts",
 			"packages/reports/src/utils/explorerName.ts"
 		],
-		"symbols": ["explorerName", "explorerAppRoute", "explorerName", "explorerAppRoute"]
+		"symbols": ["explorerName", "explorerAppRoute", "Named", "explorerName", "explorerAppRoute"]
 	},
 	"contract": {
 		"origin": "declared",

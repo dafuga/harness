@@ -1,20 +1,5 @@
+import type { ScenarioRequirements, RequiredCapture } from './scenarioRequirements.types';
 import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
-
-export interface RequiredCapture {
-	evidence: string;
-	kind: ScenarioManifest['evidence'][number]['kind'];
-	state: string;
-	viewport?: string;
-}
-
-export interface ScenarioRequirements {
-	/** Every capture a passing verification must contain. */
-	required: RequiredCapture[];
-	/** Applicable states nothing proves yet; a scenario with any of these cannot pass. */
-	unproven: Array<{ state: string; reason: string }>;
-	/** States that cannot occur for this scenario, with the reason. */
-	excluded: Array<{ state: string; reason: string }>;
-}
 
 /** Expands a scenario contract into the exact captures it demands. */
 export function scenarioRequirements(scenario: ScenarioManifest): ScenarioRequirements {
@@ -36,3 +21,5 @@ export function scenarioRequirements(scenario: ScenarioManifest): ScenarioRequir
 			.map((state) => ({ state: state.id, reason: state.reason ?? '' }));
 	return { required, unproven: declared('missing'), excluded: declared('inapplicable') };
 }
+
+export type { RequiredCapture, ScenarioRequirements } from './scenarioRequirements.types';

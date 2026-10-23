@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { implementationFiles } from '../../lib/explorer-ui/stores/sourceReader.svelte';
+	import { implementationFiles, testFiles } from '../../lib/explorer-ui/stores/sourceReader.svelte';
 	import type { HarnessUnit } from '../../models/explorer-ui/Harness.types';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
@@ -23,6 +23,7 @@
 		nav?: EntityNav;
 	} = $props();
 	let files = $derived(implementationFiles(unit));
+	let tests = $derived(testFiles(unit));
 	function sourceLink(file: string): string | undefined {
 		if (!repository || !/^https:\/\/github\.com\/[A-Za-z0-9_-]+\/[A-Za-z0-9_.-]+$/.test(repository))
 			return;
@@ -44,7 +45,24 @@
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
 		{/snippet}
 	</SourceFileList>
+	<h2 class="source-tests-title">Test files</h2>
+	<SourceFileList
+		files={tests}
+		label="Test files"
+		empty="No test files recorded at this revision."
+		href={sourceLink}
+	>
+		{#snippet children(path)}
+			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
+		{/snippet}
+	</SourceFileList>
 	{#if !files.some((file) => sourceLink(file))}<p class="ex-soft">
 			GitHub source unavailable for this revision.
 		</p>{/if}
 </section>
+
+<style>
+	.source-tests-title {
+		margin-top: var(--hx-space-28);
+	}
+</style>

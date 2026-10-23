@@ -1,3 +1,4 @@
+import type {} from './catalogEntry.types';
 import { mount, unmount, tick } from 'svelte';
 import CatalogPreviews from '../component-previews/CatalogPreviews.svelte';
 import base from '../../../../src/lib/styles/base.css?inline';
@@ -24,12 +25,6 @@ contextStyle.dataset.previewApp = unitId.split('.')[0];
 contextStyle.textContent = styles.join('\n');
 document.head.prepend(contextStyle);
 let mounted: ReturnType<typeof mount> | undefined;
-declare global {
-	interface Window {
-		previewDocument: Readonly<{ unit: string; timeOrigin: number }>;
-		previewRemount: () => Promise<void>;
-	}
-}
 window.previewRemount = async () => {
 	if (mounted) await unmount(mounted);
 	mounted = mount(CatalogPreviews, {

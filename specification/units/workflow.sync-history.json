@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/syncHistory.ts"],
-		"symbols": ["SyncAction", "syncHistory", "renderSync"]
+		"source": ["src/cli/program/syncHistory.ts", "src/cli/program/syncHistory.types.ts"],
+		"symbols": ["syncHistory", "renderSync", "SyncAction", "SyncAction"]
 	},
 	"contract": {
 		"origin": "derived",

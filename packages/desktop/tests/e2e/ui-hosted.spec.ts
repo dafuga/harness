@@ -1,8 +1,6 @@
+import type { Call, Event } from './ui-hosted.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { alpha, gamma, hostedFixture, tip, userCode, verificationUrl } from './ui-hosted-fixture';
-
-type Call = Record<string, unknown>;
-type Event = { projectId: string; status: string; cachedAt?: string };
 const calls = (page: Page) =>
 	page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls);
 const made = async (page: Page, op: string) => (await calls(page)).filter((call) => call.op === op);

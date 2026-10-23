@@ -51,7 +51,7 @@
 <style>
 	.ex-stack {
 		display: grid;
-		gap: 16px;
+		gap: var(--hx-space-16);
 		min-width: 0;
 	}
 </style>

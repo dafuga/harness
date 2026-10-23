@@ -1,15 +1,5 @@
+import type { HarnessRuleLimits } from './catalog.types';
 import type { PieceKind } from '../../templates/development-tooling/scaffoldTypes';
-
-export interface HarnessRuleLimits {
-	maxFileLines: number;
-	maxFunctionLines: number;
-	maxClassLines: number;
-	maxMethodLines: number;
-	maxNestingDepth: number;
-	maxParameters: number;
-	maxComplexity: number;
-	maxClassesPerFile: number;
-}
 
 export const harnessRuleLimits: HarnessRuleLimits = {
 	maxFileLines: 220,
@@ -36,7 +26,6 @@ export const harnessClassFileRules = [
 	{ kind: 'notification', folder: 'notifications', suffix: 'Notification' },
 	{ kind: 'command', folder: 'commands', suffix: 'Command' },
 	{ kind: 'mailer', folder: 'mailers', suffix: 'Mailer' },
-	{ kind: 'helper', folder: 'helpers', suffix: 'Helper' },
 	{ kind: 'channel', folder: 'channels', suffix: 'Channel' },
 	{ kind: 'form', folder: 'forms', suffix: 'Form' },
 	{ kind: 'middleware', folder: 'middleware', suffix: 'Middleware' }
@@ -44,6 +33,8 @@ export const harnessClassFileRules = [
 
 /** Naming is about actual source declarations, never a recased descriptive label. */
 export const harnessNamingRules: Record<string, string> = {
+	helper:
+		'Naming: Helpers are pure camelCase functions; colliding SDK exports use <camelName>Helper while retaining the existing binding. Implementations belong in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder.',
 	...(Object.fromEntries(
 		harnessClassFileRules.map(({ kind, suffix }) => [
 			kind,
@@ -93,6 +84,7 @@ export const harnessNamingRules: Record<string, string> = {
 } satisfies Record<PieceKind, string> & Record<string, string>;
 
 export const harnessModuleGroupRules = [
+	'General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatting are reusable operations, not the domains of their callers. Keep domain-specific helpers in their domain and derive each helper category from its own implementation folder.',
 	'Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.',
 	'Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.',
 	'Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.',
@@ -117,9 +109,13 @@ export function harnessRuleSummariesFor(limits: HarnessRuleLimits): string[] {
 		...harnessModuleGroupRules,
 		'Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.',
 		'Classes should not use catch-all Manager names.',
+		'Keep named interfaces and type aliases in sibling .types.ts files; import them with import type and preserve public type paths with type-only re-exports. Index new companions under their implementation unit while retaining existing explicit type-module identities.',
+		'Separate type declarations from runtime values in components, services, helpers, configs, tests and scripts. Keep shared type models with their established owner.',
 		'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
 		'Core, template, workflow, and command imports move in one direction.',
 		'Harness audit applies ecosystem adapters for app and library code surfaces.',
 		'Unsupported file types must appear in audit coverage instead of being skipped silently.'
 	];
 }
+
+export type { HarnessRuleLimits } from './catalog.types';

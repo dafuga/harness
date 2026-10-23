@@ -1,38 +1,40 @@
+/* The Styles catalog: every shared app token, grouped, each drawn by the token itself. */
 .hx-styles-page {
 	max-width: 1440px;
 	margin: 0 auto;
 }
 .hx-styles-intro {
-	margin: 0 0 30px;
+	margin: 0 0 var(--hx-space-30);
 }
 .hx-styles-kicker {
-	margin: 0 0 4px;
+	margin: 0 0 var(--hx-space-4);
 	color: var(--hx-gold);
 	font-size: var(--hx-type-size-xs);
 	font-weight: var(--hx-style-weight-semibold);
-	letter-spacing: 0.12em;
+	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
 }
 .hx-styles-intro h1 {
 	margin: 0;
-	font-size: clamp(2rem, 4vw, var(--hx-type-size-3xl));
+	font-size: var(--hx-type-size-3xl);
 	line-height: var(--hx-style-leading-tight);
 }
 .hx-styles-intro > p:last-child {
-	margin: 10px 0 0;
+	margin: var(--hx-space-10) 0 0;
 	color: var(--hx-soft);
 	font-size: var(--hx-type-size-lg);
 }
 .hx-styles-groups {
 	display: grid;
-	gap: 28px;
+	gap: var(--hx-space-28);
 }
+/* The title and count share a row; the description takes the row below. */
 .hx-styles-group-heading {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: baseline;
-	justify-content: space-between;
-	gap: 12px;
-	margin: 0 0 12px;
+	gap: var(--hx-space-4) var(--hx-space-12);
+	margin: 0 0 var(--hx-space-12);
 }
 .hx-styles-group-heading h2 {
 	margin: 0;
@@ -40,19 +42,30 @@
 	line-height: var(--hx-style-leading-tight);
 }
 .hx-styles-group-heading > span {
+	margin-left: auto;
 	color: var(--hx-muted);
 	font-size: var(--hx-type-size-sm);
-	font-variant-numeric: tabular-nums;
+	font-variant-numeric: var(--hx-style-numeric-tabular);
 }
+.hx-styles-group-heading > p {
+	flex-basis: 100%;
+	margin: 0;
+	color: var(--hx-muted);
+	font-size: var(--hx-type-size-sm);
+}
+/* As many columns as fit, never one narrower than the screen allows. */
 .hx-styles-grid {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 12px;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+	gap: var(--hx-space-12);
 }
 .hx-style-token {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-12);
 	min-width: 0;
-	padding: 14px;
-	border: 1px solid var(--hx-line);
+	padding: var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--hx-line);
 	border-radius: var(--hx-radius);
 	background: var(--hx-surface);
 }
@@ -61,7 +74,7 @@
 	flex-wrap: wrap;
 	align-items: flex-start;
 	justify-content: space-between;
-	gap: 6px 12px;
+	gap: var(--hx-space-6) var(--hx-space-12);
 	min-height: 34px;
 }
 .hx-style-token-head code {
@@ -78,59 +91,79 @@
 	font-size: var(--hx-type-size-xs);
 	overflow-wrap: anywhere;
 }
+/* A color fills one swatch and fades to nothing across the other. */
 .hx-style-color {
 	display: flex;
-	gap: 6px;
-	margin-top: 12px;
+	gap: var(--hx-space-6);
 }
 .hx-style-color span {
 	flex: 1;
 	min-width: 0;
 	height: 28px;
-	border: 1px solid var(--hx-line-strong);
+	border: var(--hx-border-thin) solid var(--hx-line-strong);
 	border-radius: var(--hx-radius-small);
-	background: var(--hx-token-swatch);
+	background: var(--style-specimen);
 }
 .hx-style-color span + span {
-	background: linear-gradient(135deg, var(--hx-token-swatch), transparent);
+	background: linear-gradient(135deg, var(--style-specimen), transparent);
 }
+/* Sample text keeps its line breaks, so a leading token shows the distance between two lines. */
 .hx-style-specimen {
 	display: flex;
 	align-items: center;
 	min-height: 40px;
-	margin: 8px 0 0;
+	margin: 0;
 	color: var(--hx-text);
-	line-height: inherit;
+	white-space: pre-line;
 	overflow-wrap: anywhere;
 }
-.hx-style-layout-preview {
+.hx-style-value {
+	margin: 0;
+	color: var(--hx-text);
+	font-family: var(--hx-font-family-mono);
+	font-size: var(--hx-type-size-xl);
+	font-variant-numeric: var(--hx-style-numeric-tabular);
+	overflow-wrap: anywhere;
+}
+/* Measures, edges, corners, raised surfaces and faded blocks sit in one row of the same height. */
+.hx-style-frame {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 	min-height: 40px;
-	margin-top: 8px;
-	border: 1px solid var(--hx-line-strong);
-	background: var(--hx-raised);
 }
-.hx-style-layout-preview span {
-	width: 12px;
+.hx-style-bar {
+	max-width: 100%;
 	height: 12px;
-	border-radius: 3px;
+	border-radius: var(--hx-radius-hairline);
 	background: var(--hx-gold);
 }
-@media (max-width: 1000px) {
-	.hx-styles-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
+.hx-style-edge {
+	width: 100%;
+	color: var(--hx-gold);
+}
+.hx-style-corner,
+.hx-style-shadow,
+.hx-style-fade {
+	width: 64px;
+	height: 40px;
+}
+.hx-style-corner {
+	border: var(--hx-border-thin) solid var(--hx-gold);
+	background: var(--hx-raised);
+}
+.hx-style-shadow {
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-raised);
+}
+.hx-style-fade {
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-gold);
 }
 @media (max-width: 560px) {
 	.hx-styles-intro {
-		margin-bottom: 24px;
-	}
-	.hx-styles-grid {
-		grid-template-columns: minmax(0, 1fr);
+		margin-bottom: var(--hx-space-24);
 	}
 	.hx-style-token {
-		padding: 12px;
+		padding: var(--hx-space-12);
 	}
 }

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Place } from "./EntityHeader.types";
+
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import { explorerCategory } from '../../utils/explorer-ui/explorerCategory';
@@ -24,7 +26,6 @@
 		/** A selected helper exposes Uses only when a helper call is recorded. */
 		usesAvailable?: boolean;
 	} = $props();
-	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
 	let privateFunction = $derived(
 		entity.category === 'functions' && explorerCategory(entity.unit) === null
@@ -86,6 +87,7 @@
 	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
 	// A page keeps its purpose in Overview and data relationships in Models.
 	let concise = $derived(entity.category === 'pages');
+
 </script>
 
 <nav class="ex-crumbs" aria-label="Breadcrumb">

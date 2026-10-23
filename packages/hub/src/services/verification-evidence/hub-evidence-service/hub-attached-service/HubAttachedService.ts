@@ -1,3 +1,4 @@
+import type { Context } from './HubAttachedService.types';
 import {
 	evidenceManifestSchema,
 	evidencePointerSchema,
@@ -17,12 +18,6 @@ import {
 } from '../../../../utils/verification-evidence/hubAttachedRecord';
 import { readRegression } from '../../../../../../../src/utils/regressionHistory';
 import type { RegressionNote } from '../../../../../../../src/repositories/RegressionProofRepository';
-
-interface Context {
-	base: HubSourceContext;
-	within: string | null;
-	reaches: (tip: string, commit: string) => Promise<boolean>;
-}
 
 /** All file hashes, sizes, seal and manifest identity are checked, including unselected captures. */
 export class HubAttachedService {

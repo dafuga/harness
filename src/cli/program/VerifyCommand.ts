@@ -1,3 +1,4 @@
+import type { Flags } from './VerifyCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
 import {
@@ -5,11 +6,8 @@ import {
 	verifyCheck,
 	verifyIdentity,
 	verifyRun,
-	verifyStamp,
-	type VerifyOptions
+	verifyStamp
 } from '../../workflows/verification-evidence/run-verify/runVerify';
-
-type Flags = VerifyOptions & { json?: boolean };
 
 export function registerVerifyCommand(program: Command): void {
 	const verify = program

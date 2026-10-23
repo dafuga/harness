@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/scripts/harness-scale-data.ts"],
-		"symbols": ["generatedUnits", "generatedFailures", "writeScaleData"]
+		"source": [
+			"packages/reports/scripts/harness-scale-data.ts",
+			"packages/reports/scripts/harness-scale-data.types.ts"
+		],
+		"symbols": ["generatedUnits", "generatedFailures", "writeScaleData", "Unit", "Detail"]
 	},
 	"contract": {
 		"origin": "derived",

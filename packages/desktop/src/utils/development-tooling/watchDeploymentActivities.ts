@@ -1,10 +1,5 @@
+import type { Events } from './watchDeploymentActivities.types';
 import type { Workspace } from '../../lib/stores/workspace.svelte';
-import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
-interface Events {
-	version: () => number;
-	received: (items: DeploymentActivity[], version: number) => void;
-	failed: (message: string) => void;
-}
 /** One host-wide read survives project navigation; stale connector replies never replace new jobs. */
 export function watchDeploymentActivities(workspace: Workspace, events: Events) {
 	let active = true,

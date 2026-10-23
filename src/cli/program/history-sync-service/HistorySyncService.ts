@@ -1,3 +1,4 @@
+import type { Relation, RefChange, Synced } from './HistorySyncService.types';
 import { EvidenceTreeAdapter } from '../../../adapters/verification-evidence/EvidenceTreeAdapter';
 import { LfsAdapter } from '../../../adapters/git-source-history/LfsAdapter';
 import { fail } from '../../../core/development-tooling/errors';
@@ -9,21 +10,6 @@ import {
 } from '../../../core/git-source-history/historyTypes';
 import { HistoryNoteRepository } from '../../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { historyRefs } from './historyRefs';
-
-export type RefChange = 'absent' | 'unchanged' | 'created' | 'fast-forwarded' | 'merged';
-
-export interface Synced {
-	remote: string;
-	/** What happened to the evidence branch: locally on fetch and sync, remotely on push. */
-	evidence: RefChange;
-	notes: RefChange;
-	/** True when the remote received anything. */
-	pushed: boolean;
-	/** Present only when something is incomplete, for example media the remote does not have. */
-	problems?: string[];
-}
-
-type Relation = 'none' | 'same' | 'ahead' | 'behind' | 'new' | 'diverged';
 
 const changes: Record<Relation, RefChange> = {
 	none: 'absent',
@@ -167,3 +153,5 @@ async function union(
 		message: `chore: merge evidence from ${sides.remote}`
 	});
 }
+
+export type { RefChange, Synced } from './HistorySyncService.types';

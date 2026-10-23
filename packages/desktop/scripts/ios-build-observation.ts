@@ -1,8 +1,4 @@
-/** A bounded read loop with at most one probe in flight, and no signal authority. */
-export interface BuildObservation {
-	look(): Promise<boolean>;
-	close(): void;
-}
+import type { BuildObservation } from './ios-build-observation.types';
 
 /** Rejection or timeout sticks as failure; a late probe cannot start another or clear it. */
 export function buildObservation(
@@ -62,3 +58,5 @@ export async function finishObservation(
 		for (const read of reads) read.close();
 	}
 }
+
+export type { BuildObservation } from './ios-build-observation.types';

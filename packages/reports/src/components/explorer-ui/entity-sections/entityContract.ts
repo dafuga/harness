@@ -1,5 +1,6 @@
+import type { Field } from './entityContract.types';
 import type { ContractRow, ContractFacts } from '../../../utils/explorer-ui/entityContract';
-import { humanize } from '../../../utils/explorer-ui/entityContract';
+import { humanize } from '../../../helpers/strings/humanize';
 import type { HarnessScenario, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import { scenarioFor } from '../../../utils/explorer-ui/explorerState';
 
@@ -28,8 +29,6 @@ export function requiredStates(
 		.map((state) => state.id);
 	return [...new Set(states)];
 }
-
-type Field = HarnessUnit['contract']['inputs'];
 
 /** The names a unit goes by itself: its title, its symbols and its files without their endings. */
 function own(unit: HarnessUnit): string[] {

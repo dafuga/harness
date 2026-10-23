@@ -89,59 +89,59 @@
 <style>
 	/* The panel ends under the bar at the top however far that bar wraps; a phone gives it room. */
 	.project-chat {
-		--floating-chat-top: 124px;
+		--floating-chat-top: var(--hx-layout-bar-clearance);
 		display: contents;
 	}
 	@media (max-width: 1409px) {
 		.project-chat {
-			--floating-chat-top: 170px;
+			--floating-chat-top: var(--hx-layout-bar-clearance-wrapped);
 		}
 	}
 	@media (max-width: 1250px) {
 		.project-chat {
-			--floating-chat-top: 220px;
+			--floating-chat-top: var(--hx-layout-bar-clearance-stacked);
 		}
 	}
 	@media (max-width: 560px) {
 		.project-chat {
-			--floating-chat-top: 96px;
+			--floating-chat-top: var(--hx-layout-bar-clearance-phone);
 		}
 	}
 	.chat-thread {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: var(--hx-space-10);
 	}
 	/* Without a request to write, the conversation ends a margin above the panel's edge. */
 	.chat-thread:last-child {
-		padding-bottom: 14px;
+		padding-bottom: var(--hx-space-14);
 	}
 	.chat-log {
 		display: grid;
-		gap: 8px;
+		gap: var(--hx-space-8);
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 	.chat-message {
 		max-width: 88%;
-		padding: 8px 12px;
-		border: 1px solid var(--line);
-		border-radius: 14px;
-		font-size: 14px;
-		line-height: 1.45;
+		padding: var(--hx-space-8) var(--hx-space-12);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-xlarge);
+		font-size: var(--hx-type-size-sm);
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 		white-space: pre-wrap;
 	}
 	.chat-message.user {
 		justify-self: end;
-		border-end-end-radius: 4px;
-		background: rgb(255 255 255 / 0.04);
+		border-end-end-radius: var(--hx-radius-xsmall);
+		background: var(--hx-tint-hover);
 	}
 	.chat-message.agent {
 		justify-self: start;
 		border-color: color-mix(in srgb, var(--gold) 45%, transparent);
-		border-end-start-radius: 4px;
+		border-end-start-radius: var(--hx-radius-xsmall);
 	}
 	/* Who said it is read out; the side of the conversation shows it. */
 	.chat-author {
@@ -155,35 +155,35 @@
 	.chat-note,
 	.error {
 		margin: 0;
-		font-size: 13px;
+		font-size: var(--hx-type-size-compact);
 	}
 	.chat-note {
 		color: var(--muted);
 	}
 	.chat-status {
 		display: flex;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		justify-content: space-between;
 		align-items: center;
 	}
 	.chat-status button {
 		flex: none;
-		padding: 5px 10px;
+		padding: var(--hx-space-5) var(--hx-space-10);
 	}
 	.error {
-		padding: 8px 12px;
-		border-radius: 8px;
+		padding: var(--hx-space-8) var(--hx-space-12);
+		border-radius: var(--hx-radius-small);
 	}
 	/* The request stays in reach under the conversation as it scrolls. */
 	.chat-compose {
 		position: sticky;
 		bottom: 0;
 		margin-top: auto;
-		padding: 2px 0 14px;
+		padding: var(--hx-space-2) 0 var(--hx-space-14);
 		background: var(--panel);
 	}
 	/* The request is what is read here: it is set as large as the words around it. */
 	.chat-compose :global(.composer textarea) {
-		font-size: 16px;
+		font-size: var(--hx-type-size-base);
 	}
 </style>

@@ -96,18 +96,18 @@
 		overflow-wrap: anywhere;
 	}
 	:global(.entity-card .helper-card-link:focus-visible) {
-		outline: 2px solid var(--gold);
-		outline-offset: 6px;
+		outline: var(--hx-border-thick) solid var(--gold);
+		outline-offset: var(--hx-space-6);
 	}
 
 	:global(.entity-card .page-card-link) {
 		display: grid;
-		gap: 16px;
+		gap: var(--hx-space-16);
 		min-width: 0;
 	}
 	:global(.entity-card .page-card-link:focus-visible) {
-		outline: 2px solid var(--gold);
-		outline-offset: 6px;
+		outline: var(--hx-border-thick) solid var(--gold);
+		outline-offset: var(--hx-space-6);
 	}
 	.thumbnail.runtime {
 		aspect-ratio: 16 / 11;

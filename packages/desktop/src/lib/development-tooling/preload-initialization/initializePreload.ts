@@ -1,3 +1,4 @@
+import type { Input } from './initializePreload.types';
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import { contextBridge, ipcRenderer } from 'electron';
 import type {
@@ -24,7 +25,6 @@ const transport = new LocalTransportClientService({
 	bootstrap: () => ipcRenderer.invoke(bootstrapChannel) as Promise<LocalBootstrap>,
 	open: (url, protocols) => new WebSocket(url, protocols) as unknown as LocalSocketPort
 });
-type Input = object | undefined;
 const call =
 	<T>(method: RemoteMethod) =>
 	(input?: Input): Promise<T> =>

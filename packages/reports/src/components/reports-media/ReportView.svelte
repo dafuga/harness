@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Detail } from "./ReportView.types";
+
 	import BrandMark from '../shared-primitives/BrandMark.svelte';
 	import { tick } from 'svelte';
 	import type { Report } from '../../models/reports-media/Report.types';
@@ -23,7 +25,6 @@
 		portable?: boolean;
 		onUploaded?: (report: Report) => void;
 	} = $props();
-	type Detail = 'checks' | 'acceptance' | 'coverage';
 	let activeDetail = $state<Detail | null>(null);
 	let opener: HTMLButtonElement | null = null;
 	function openDetail(detail: Detail, event: MouseEvent) {
@@ -36,6 +37,7 @@
 		opener?.focus();
 	}
 	let detailTitle = $derived(activeDetail ? $t(activeDetail) : '');
+
 </script>
 
 <main class="report-shell">

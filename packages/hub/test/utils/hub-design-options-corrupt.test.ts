@@ -1,18 +1,8 @@
+import type { Fixture, Option, Json } from './hub-design-options-corrupt.test.types';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { actor, commit, project, unit } from '../support/projectionFixture';
 import { directions, optionsFixture } from '../support/optionsFixture';
-
-/**
- * Stored design options are untrusted when hosted: besides dividing the images exactly, they
- * must keep what planning enforced when it wrote them. Directions differ after trimming and
- * case, no picture is shared by two options, and every option prompt hashes to its record.
- * SYNTHETIC planning-written Git files as checked out, changed here before the hub reads them.
- */
-type Fixture = Awaited<ReturnType<typeof optionsFixture>>;
-type Json = Record<string, unknown>;
-type Binding = { file: string; sha256: string };
-type Option = Json & { images: Binding[]; prompt: Binding | null };
 const entity = (f: Fixture) =>
 	f.projection.entity(actor, project.id, { entityId: unit.id, commit, branch: 'main' });
 const folder = (f: Fixture) => f.design.replace(/design\.json$/, '');

@@ -29,32 +29,28 @@
 <style>
 	.examples {
 		display: grid;
-		gap: 24px;
+		gap: var(--hx-space-24);
 	}
 	article {
 		min-width: 0;
 	}
 	h3 {
-		margin: 0 0 8px;
-		font-size: 0.95rem;
-		font-weight: 600;
-		color: #edf4fa;
+		margin: 0 0 var(--hx-space-8);
+		font-size: var(--hx-type-size-base);
+		font-weight: var(--hx-style-weight-semibold);
+		color: var(--hx-text);
 	}
 	pre {
 		margin: 0;
-		padding: 14px 16px;
-		border: 1px solid #263d4d;
-		border-radius: 8px;
-		background: #0b1821;
+		padding: var(--hx-space-14) var(--hx-space-16);
+		border: var(--hx-border-thin) solid var(--hx-line);
+		border-radius: var(--hx-radius-small);
+		background: var(--hx-bg);
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
-		color: #d5e4ef;
+		color: var(--hx-soft);
 	}
 	code {
-		font:
-			0.82rem/1.6 ui-monospace,
-			SFMono-Regular,
-			Menlo,
-			monospace;
+		font: var(--hx-style-code-compact);
 	}
 </style>

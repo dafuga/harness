@@ -1,22 +1,16 @@
-import { toKebabCase, toPascalCase, toSnakeCase } from '../../core/development-tooling/case';
+import type { ModelInput, AdapterName } from './model.types';
+import { separateTypeDeclarations } from './separateTypeDeclarations';
+import { toKebabCase, toPascalCase, toSnakeCase } from '../../helpers/strings/case';
 import type { Field } from '../../core/development-tooling/fields/fields';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { sqliteModelDefinition } from './sqliteModel';
-
-export type AdapterName = 'd1' | 'sqlite' | 'postgres';
-
-export interface ModelInput {
-	name: string;
-	fields: Field[];
-	adapter: AdapterName;
-}
 
 export function modelFiles(input: ModelInput): PlannedFile[] {
 	const className = toPascalCase(input.name);
 	const tableName = `${toSnakeCase(input.name)}s`;
 	const kebabName = toKebabCase(input.name);
 
-	return [
+	return separateTypeDeclarations([
 		{
 			path: `src/models/${className}.types.ts`,
 			contents: typeFile(className, input.fields)
@@ -37,7 +31,7 @@ export function modelFiles(input: ModelInput): PlannedFile[] {
 			path: `test/models/${kebabName}.test.ts`,
 			contents: modelTestFile(className)
 		}
-	];
+	]);
 }
 
 function typeFile(className: string, fields: Field[]): string {
@@ -61,7 +55,7 @@ function modelFile(className: string, tableName: string, definition: string): st
 	const createMethod = modelCreateMethod(className);
 
 	return `import type { PersistenceAdapter } from './adapters/types';
-import type { ${className}Attributes, ${className}CreateInput, ${className}UpdateInput } from './${className}.types';
+${modelTypeImport(className)}
 
 const tableName = '${tableName}';
 
@@ -92,6 +86,15 @@ ${createMethod}
 	}
 }
 `;
+}
+
+function modelTypeImport(className: string): string {
+	const names = ['Attributes', 'CreateInput', 'UpdateInput'].map((suffix) => className + suffix);
+	const source = `'./${className}.types'`;
+	const single = `import type { ${names.join(', ')} } from ${source};`;
+	return single.length <= 100
+		? single
+		: `import type {\n\t${names.join(',\n\t')}\n} from ${source};`;
 }
 
 function modelCreateMethod(className: string): string {
@@ -191,3 +194,5 @@ export function createPostgresAdapter(): PersistenceAdapter {
 }
 `;
 }
+
+export type { AdapterName, ModelInput } from './model.types';

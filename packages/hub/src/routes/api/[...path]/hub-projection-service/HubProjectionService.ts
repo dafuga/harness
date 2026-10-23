@@ -1,15 +1,11 @@
+import type { Dependencies } from './HubProjectionService.types';
 import { HubEvidenceService } from './hub-evidence-service/HubEvidenceService';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../../../desktop/src/models/DesktopEvidence.types';
 import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
-import type {
-	Actor,
-	CollaborationApi,
-	CollaborationCache,
-	SourceHistoryAdapter
-} from 'collaboration';
+import type { Actor } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/Desktop.types';
 import { hubSource, hubRead } from '../../../../utils/development-tooling/hubSource';
 import {
@@ -27,12 +23,6 @@ import { hubSnapshot } from './hubSnapshot';
 import { hubEntity } from './hubEntity';
 import { hubProjectionCache } from '../../../../utils/development-tooling/hubProjectionCache';
 import { RemoteProjectResponseValidator } from '../../../../../../desktop/src/validators/RemoteProjectResponseValidator';
-
-interface Dependencies {
-	api: CollaborationApi;
-	source: SourceHistoryAdapter;
-	cache: CollaborationCache;
-}
 
 export class HubProjectionService {
 	private readonly recorded: HubEvidenceService;

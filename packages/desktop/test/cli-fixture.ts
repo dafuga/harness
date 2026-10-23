@@ -1,3 +1,5 @@
+import type { Event } from './cli-fixture.types';
+export type { Event } from './cli-fixture.types';
 import { script } from './cli-provider-fixture';
 import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -16,18 +18,6 @@ const roots: string[] = [],
 export { pids };
 export const png =
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGNgAAIAAAUAAXpeqz8AAAAASUVORK5CYII=';
-
-interface Event {
-	kind: string;
-	pid?: number;
-	argv?: string[];
-	cwd?: string;
-	env?: string[];
-	resources?: { lease?: string; cpus?: string; threads?: string };
-	method?: string;
-	params?: Record<string, unknown>;
-	input?: string;
-}
 afterEach(async () => {
 	queues.splice(0).forEach((queue) => queue.close());
 	resourceTelemetry.pressure = false;

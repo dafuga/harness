@@ -7,10 +7,7 @@ test('app projects include SvelteKit and specification files', () =>
 	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
 		const files = projectFiles({ kind: 'app', name: 'demo-app' });
 		const paths = files.map((file) => file.path);
-		const packageJson = JSON.parse(
-			files.find((file) => file.path === 'package.json')?.contents ?? '{}'
-		);
-
+		const packageJson = JSON.parse(fileContents(files, 'package.json'));
 		expect(paths).toContain('svelte.config.js');
 		expect(paths).toContain('playwright.config.ts');
 		expect(paths).toContain('eslint.config.js');
@@ -34,6 +31,7 @@ test('app projects include SvelteKit and specification files', () =>
 		);
 		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
 			expect(fileContents(files, path)).toContain('Callable usage examples');
+			expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
 			expect(fileContents(files, path)).toContain(
 				'reusable visual frames with a child-content slot'
 			);
@@ -45,7 +43,10 @@ test('app projects include SvelteKit and specification files', () =>
 				'one representative example per distinct behavior'
 			);
 			expect(fileContents(files, path)).toContain('descriptive behavior titles');
+			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
+			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
+		expectRenameGuidance(files);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
@@ -85,6 +86,7 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
 		expect(fileContents(files, path)).toContain('instantiated classes');
 	}
+	expectRenameGuidance(files);
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -108,6 +110,16 @@ test.each(['app', 'lib'] as const)(
 		}
 	}
 );
+
+function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain('canonical and compatibility titles and links');
+		expect(fileContents(files, path)).toContain(
+			'affected downstream consumer tests alongside their typechecks'
+		);
+		expect(fileContents(files, path)).toContain('affected package lint and audit');
+	}
+}
 
 function fileContents(files: ReturnType<typeof projectFiles>, path: string): string {
 	return files.find((file) => file.path === path)?.contents ?? '';

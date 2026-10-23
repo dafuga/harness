@@ -9,11 +9,19 @@
 	"owns": {
 		"source": [
 			"src/services/development-tooling/source-index-service/sourceBlocks.ts",
+			"src/services/development-tooling/source-index-service/sourceBlocks.types.ts",
 			"src/services/source-index-service/sourceBlocks.ts",
 			"src/utils/development-tooling/sourceBlocks.ts",
 			"src/utils/sourceBlocks.ts"
 		],
-		"symbols": ["sourceBlocks", "sourceBlocks", "SourceBlock", "sourceBlocks", "sourceBlocks"]
+		"symbols": [
+			"sourceBlocks",
+			"Region",
+			"sourceBlocks",
+			"SourceBlock",
+			"sourceBlocks",
+			"sourceBlocks"
+		]
 	},
 	"contract": {
 		"origin": "declared",
