@@ -32,6 +32,7 @@ const call =
 const bridge: DesktopBridge = {
 	gameCreate: call('gameCreate'),
 	gameImageGenerate: call('gameImageGenerate'),
+	gameLevelGenerate: call('gameLevelGenerate'),
 	gameImageRead: call('gameImageRead'),
 	gameRead: call('gameRead'),
 	gameSave: call('gameSave'),

@@ -31,7 +31,7 @@ test.setTimeout(120_000);
 async function author(page: Page, dimension: string) {
 	await viewSettings(page);
 	await page.getByLabel('View title', { exact: true }).fill('Authored courtyard');
-	await page.getByRole('button', { name: 'New view', exact: true }).click();
+	await page.getByRole('button', { name: 'New level', exact: true }).click();
 	await page.getByLabel('View title', { exact: true }).fill('Second view');
 	await page.getByLabel('View', { exact: true }).selectOption('courtyard');
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
@@ -71,6 +71,8 @@ async function persisted(page: Page, root: string, dimension: string) {
 	const doc = JSON.parse(await readFile(join(root, 'game.json'), 'utf8')) as GameDocument;
 	expect(doc.views.map((view) => view.title)).toEqual(['Authored courtyard', 'Second view']);
 	expect(doc.mechanics[0].title).toBe('Authored movement');
+	expect(doc.views[1].planning).toEqual({ concept: '', description: '' });
+	expect(doc.views[1].checkpoints).toEqual([]);
 	expect(doc.views[0].checkpoints.at(-1)).toMatchObject({
 		requires: ['garden'],
 		conditions: [{ field: 'doorOpen', value: true }],

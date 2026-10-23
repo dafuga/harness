@@ -15,7 +15,7 @@ test('independent mechanics merge patches and reject conflicting writes', () => 
 			{ id: 'b', step: () => ({ hp: 2 }) }
 		])
 	).toThrow('Conflicting');
-	const planned = Object.assign(structuredClone(view), {
+	const planned = Object.assign(globalThis.structuredClone(view), {
 		planning: { concept: 'A quiet island', description: 'A bridge leads to the exit.' }
 	});
 	expect(() => stepGame(run, { x: 1, y: 0 }, planned)).toThrow('Approve and build');

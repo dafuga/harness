@@ -30,6 +30,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.game-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.game-live-video",
 			"via": "import",
 			"origin": "derived"

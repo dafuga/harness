@@ -21,7 +21,8 @@
 			"assertDocument",
 			"draw2d",
 			"create2d",
-			"create3d"
+			"create3d",
+			"LevelValidator"
 		]
 	},
 	"contract": {
@@ -63,6 +64,11 @@
 		},
 		{
 			"unit": "game.validator.game-document",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "game.validator.level",
 			"via": "reexport",
 			"origin": "derived"
 		}

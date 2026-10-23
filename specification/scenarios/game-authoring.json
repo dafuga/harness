@@ -19,7 +19,12 @@
 		"desktop.component.game-text-field",
 		"desktop.component.game-trace",
 		"desktop.component.project-gate",
-		"desktop.component.nav-bar"
+		"desktop.component.nav-bar",
+		"desktop.component.game-level-plan",
+		"desktop.component.game-level-brief",
+		"desktop.component.game-level-review",
+		"desktop.component.game-level-preview",
+		"desktop.component.game-controls"
 	],
 	"states": [
 		{
@@ -339,6 +344,166 @@
 				"desktop.component.game-view-fields",
 				"desktop.component.game-graph"
 			]
+		},
+		{
+			"id": "level-concept-2d",
+			"title": "Concept 2D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan"
+			]
+		},
+		{
+			"id": "level-concept-3d",
+			"title": "Concept 3D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan"
+			]
+		},
+		{
+			"id": "level-brief-2d",
+			"title": "Brief 2D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-brief"
+			]
+		},
+		{
+			"id": "level-brief-3d",
+			"title": "Brief 3D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-brief"
+			]
+		},
+		{
+			"id": "level-review-2d",
+			"title": "Review 2D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-review",
+				"desktop.component.game-level-preview"
+			]
+		},
+		{
+			"id": "level-review-3d",
+			"title": "Review 3D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-review",
+				"desktop.component.game-level-preview"
+			]
+		},
+		{
+			"id": "level-approved-2d",
+			"title": "Approved 2D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-review",
+				"desktop.component.game-level-preview"
+			]
+		},
+		{
+			"id": "level-approved-3d",
+			"title": "Approved 3D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-review",
+				"desktop.component.game-level-preview"
+			]
+		},
+		{
+			"id": "level-built-2d",
+			"title": "Built 2D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-review",
+				"desktop.component.game-level-preview"
+			]
+		},
+		{
+			"id": "level-built-3d",
+			"title": "Built 3D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-review",
+				"desktop.component.game-level-preview"
+			]
+		},
+		{
+			"id": "level-stale-2d",
+			"title": "Stale 2D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-brief"
+			]
+		},
+		{
+			"id": "level-stale-3d",
+			"title": "Stale 3D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-level-plan",
+				"desktop.component.game-level-brief"
+			]
+		},
+		{
+			"id": "level-play-2d",
+			"title": "Play planned 2D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-preview",
+				"desktop.component.game-controls"
+			]
+		},
+		{
+			"id": "level-play-3d",
+			"title": "Play planned 3D level",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-preview",
+				"desktop.component.game-controls"
+			]
 		}
 	],
 	"viewports": [
@@ -372,6 +537,14 @@
 			"kind": "e2e",
 			"runner": "command",
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/game-authoring.spec.ts -g 'game authoring exposes independent mechanics and executable checkpoint graph'",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		},
+		{
+			"id": "level-lifecycle",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/game-level-lifecycle.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 180000
 		}
@@ -504,7 +677,22 @@
 		{
 			"id": "level-planning-screens",
 			"kind": "screenshot",
-			"states": ["level-entry-2d", "level-entry-3d"],
+			"states": [
+				"level-entry-2d",
+				"level-entry-3d",
+				"level-concept-2d",
+				"level-concept-3d",
+				"level-brief-2d",
+				"level-brief-3d",
+				"level-review-2d",
+				"level-review-3d",
+				"level-approved-2d",
+				"level-approved-3d",
+				"level-built-2d",
+				"level-built-3d",
+				"level-stale-2d",
+				"level-stale-3d"
+			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",
@@ -514,7 +702,39 @@
 		{
 			"id": "level-planning-workload",
 			"kind": "benchmark",
-			"states": ["level-entry-2d", "level-entry-3d"],
+			"states": [
+				"level-entry-2d",
+				"level-entry-3d",
+				"level-concept-2d",
+				"level-concept-3d",
+				"level-brief-2d",
+				"level-brief-3d",
+				"level-review-2d",
+				"level-review-3d",
+				"level-approved-2d",
+				"level-approved-3d",
+				"level-built-2d",
+				"level-built-3d",
+				"level-stale-2d",
+				"level-stale-3d"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		},
+		{
+			"id": "level-playback-screens",
+			"kind": "screenshot",
+			"states": ["level-play-2d", "level-play-3d"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true,
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page"
+		},
+		{
+			"id": "level-playback-workload",
+			"kind": "benchmark",
+			"states": ["level-play-2d", "level-play-3d"],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true
 		}
