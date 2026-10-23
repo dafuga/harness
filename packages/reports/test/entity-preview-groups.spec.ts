@@ -29,6 +29,17 @@ async function pageFamilies(page: Page): Promise<void> {
 			)
 			.toBeVisible({ timeout: 500 });
 	}
+	for (const [feature, count] of [
+		['Platforms', 2],
+		['Styles', 1]
+	] as const) {
+		await expect
+			.soft(
+				page.getByRole('heading', { level: 2, name: `${feature} ${count}`, exact: true }),
+				'Page families follow their feature folders'
+			)
+			.toBeVisible({ timeout: 500 });
+	}
 }
 
 async function inspectConfigValues(page: Page, viewport: string, commit: string): Promise<void> {
