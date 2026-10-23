@@ -1,5 +1,84 @@
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { ids, units } from './entityUnits';
+import taxonomy from '../../../harness.groups.json' with { type: 'json' };
+import { moduleGroup } from '../../../src/utils/development-tooling/moduleGroup';
+
+import componentsList from '../../../specification/units/reports.page.harness-branch-branch-at-components.json' with { type: 'json' };
+import componentsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-components-entity.json' with { type: 'json' };
+import componentsHistory from '../../../specification/units/reports.page.harness-branch-branch-at-components-entity-history.json' with { type: 'json' };
+import configsList from '../../../specification/units/reports.page.harness-branch-branch-at-configs.json' with { type: 'json' };
+import configsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-configs-entity.json' with { type: 'json' };
+import configsHistory from '../../../specification/units/reports.page.harness-branch-branch-at-configs-entity-history.json' with { type: 'json' };
+import functionsList from '../../../specification/units/reports.page.harness-branch-branch-at-functions.json' with { type: 'json' };
+import functionsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-functions-entity.json' with { type: 'json' };
+import functionsHistory from '../../../specification/units/reports.page.harness-branch-branch-at-functions-entity-history.json' with { type: 'json' };
+import layoutsList from '../../../specification/units/reports.page.harness-branch-branch-at-layouts.json' with { type: 'json' };
+import layoutsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-layouts-entity.json' with { type: 'json' };
+import layoutsHistory from '../../../specification/units/reports.page.harness-branch-branch-at-layouts-entity-history.json' with { type: 'json' };
+import modelsList from '../../../specification/units/reports.page.harness-branch-branch-at-models.json' with { type: 'json' };
+import modelsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-models-entity.json' with { type: 'json' };
+import modelsHistory from '../../../specification/units/reports.page.harness-branch-branch-at-models-entity-history.json' with { type: 'json' };
+import pagesList from '../../../specification/units/reports.page.harness-branch-branch-at-pages.json' with { type: 'json' };
+import pagesDetail from '../../../specification/units/reports.page.harness-branch-branch-at-pages-entity.json' with { type: 'json' };
+import pagesHistory from '../../../specification/units/reports.page.harness-branch-branch-at-pages-entity-history.json' with { type: 'json' };
+import servicesList from '../../../specification/units/reports.page.harness-branch-branch-at-services.json' with { type: 'json' };
+import servicesDetail from '../../../specification/units/reports.page.harness-branch-branch-at-services-entity.json' with { type: 'json' };
+import servicesHistory from '../../../specification/units/reports.page.harness-branch-branch-at-services-entity-history.json' with { type: 'json' };
+import platformsList from '../../../specification/units/reports.page.harness-branch-branch-at-platforms.json' with { type: 'json' };
+import platformsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-platforms-entity.json' with { type: 'json' };
+import stylesList from '../../../specification/units/reports.page.harness-branch-branch-at-styles.json' with { type: 'json' };
+
+/** Actual manifests and taxonomy exercise feature folders beside synthetic history. */
+const projectPages = [
+	componentsList,
+	componentsDetail,
+	componentsHistory,
+	configsList,
+	configsDetail,
+	configsHistory,
+	functionsList,
+	functionsDetail,
+	functionsHistory,
+	layoutsList,
+	layoutsDetail,
+	layoutsHistory,
+	modelsList,
+	modelsDetail,
+	modelsHistory,
+	pagesList,
+	pagesDetail,
+	pagesHistory,
+	servicesList,
+	servicesDetail,
+	servicesHistory,
+	platformsList,
+	platformsDetail,
+	stylesList
+] as unknown as HarnessUnit[];
+
+export function projectPageSources(detail: HarnessRevision): HarnessRevision {
+	const pages = projectPages.filter((unit) =>
+		unit.owns.source.some((path) =>
+			/\/\[\.\.\.at\]\/(components|configs|functions|layouts|models|pages|services|platforms|styles)\//.test(
+				path
+			)
+		)
+	);
+	return {
+		...detail,
+		registry: {
+			...detail.registry,
+			units: [
+				...detail.registry.units,
+				...pages.map((unit) => ({
+					...unit,
+					group: moduleGroup(unit.owns.source, taxonomy.groups),
+					version: 'fixture-manifest-without-source-version'
+				}))
+			]
+		}
+	};
+}
 
 /** A relocation retains a supported forwarding entry beside the real category source. */
 function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {

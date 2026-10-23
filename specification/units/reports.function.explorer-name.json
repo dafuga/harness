@@ -32,7 +32,7 @@
 			{
 				"name": "explorerName",
 				"type": "string",
-				"description": "Recorded primary symbol or owned module stem for code units, preserving exact casing and type collection suffixes. Route screens retain readable names; absent code metadata retains the explicit readable fallback. No unit ID or route changes."
+				"description": "Recorded primary symbol or owned module stem for code units, preserving exact casing. Shared models omit the .types file suffix while keeping their recorded identity and source paths. Route screens retain readable names; absent code metadata retains the explicit readable fallback. No unit ID or route changes."
 			},
 			{
 				"name": "explorerAppRoute",

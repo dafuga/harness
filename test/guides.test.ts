@@ -3,12 +3,14 @@ import { harnessRuleLimits, harnessRuleSummariesFor } from '../src/rules/catalog
 import { expect, test } from 'vitest';
 import { availableGuideTopics, findGuide, guides } from '../src/guides/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
+import { findGuideByTopic } from '../src/guides/topics';
 
 test('model guidance is available for agents', () =>
 	measureWorkload('guide.scaffolds', 'layout-catalog-behavior', () => {
 		const guide = findGuide('model');
 
 		expect(guide?.topic).toBe('model');
+		expect(guide?.rules.join('\n')).toContain('Shared model names omit the .types file suffix');
 		expect(guide?.exampleCommands[0]).toContain('harness generate model');
 	}));
 
@@ -38,6 +40,11 @@ test('code-rules guidance exposes hard Harness limits', () =>
 			'General text helpers belong in Strings'
 		);
 		const guide = findGuide('code-rules');
+		for (const topic of ['view', 'page', 'code-rules']) {
+			expect(findGuide(topic)?.rules.join('\n')).toContain(
+				'Group related list, detail and history pages by feature'
+			);
+		}
 
 		expect(guide?.rules.join('\n')).toContain('Functions stay at or below 55 lines');
 		expect(guide?.rules.join('\n')).toContain('Classes stay at or below 120 lines');
@@ -68,12 +75,30 @@ test('scaffold guidance tells agents what generated code contains', () => {
 	expect(findGuide('layout')?.rules.join(' ')).toContain('child-content slot');
 });
 
-test('guide lookup accepts common scaffold aliases', () => {
-	expect(findGuide('scaffold')?.topic).toBe('scaffolds');
-	expect(findGuide('controllers')?.topic).toBe('controller');
-	expect(findGuide('policies')?.topic).toBe('policy');
-	expect(findGuide('code rules')?.topic).toBe('code-rules');
-});
+test('guide lookup accepts common scaffold aliases', () =>
+	measureWorkload('guide.topics', 'guide-topic-lookup', () => {
+		expect(findGuide('scaffold')?.topic).toBe('scaffolds');
+		expect(findGuide('controllers')?.topic).toBe('controller');
+		expect(findGuide('policies')?.topic).toBe('policy');
+		expect(findGuide('code rules')?.topic).toBe('code-rules');
+		for (const [entries, asked, canonical] of [
+			[['scaffold', 'scaffolds'], 'scaffold', 'scaffold'],
+			[['page', 'view'], 'page', 'page'],
+			[['page', 'view'], 'pages', 'page'],
+			[['pages', 'page', 'view'], 'pages', 'pages'],
+			[['service', 'services'], 'services', 'services'],
+			[['view'], 'PAGE', 'view'],
+			[['view'], 'pages', 'view']
+		] as const) {
+			expect(
+				findGuideByTopic(
+					entries.map((topic) => ({ topic })),
+					asked
+				)?.topic,
+				'Canonical topics precede aliases'
+			).toBe(canonical);
+		}
+	}));
 
 test('available guide topics are unique for CLI error output', () => {
 	const topics = availableGuideTopics();

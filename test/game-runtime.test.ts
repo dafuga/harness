@@ -72,20 +72,39 @@ test('native dimensions select real camera types while preserving engine objects
 	const run = createRun();
 	source.render(run, view);
 	const [world, flat] = painted.mock.lastCall!;
-	const objects: Three.Object3D[] = [...world.children];
-	const visible = objects.filter((object) => object.visible);
 	expect(flat.isOrthographicCamera).toBe(true);
-	expect(visible.length).toBeGreaterThan(3);
+	const meshes: Three.Mesh[] = world.children.filter(
+		(object: Three.Object3D) => object.type === 'Mesh'
+	);
+	const key = meshes.find((object) => object.position.x === 2)!;
+	const door = meshes.find((object) => object.position.x === 4 && object.position.y === 1)!;
+	const player = meshes.find(
+		(object) => (object.geometry as Three.BoxGeometry).parameters.height === 0.8
+	)!;
+	const floor = world.getObjectByName('legacy-ground');
+	expect(meshes).toHaveLength(4);
+	expect(new Set([key, door, player, floor]).size).toBe(4);
+	expect(meshes).toEqual(expect.arrayContaining([key, door, player, floor]));
+	expect(meshes.every((object) => object.visible)).toBe(true);
+	const groups: Three.Group[] = world.children.filter(
+		(object: Three.Object3D) => object.type === 'Group'
+	);
+	expect(groups).toHaveLength(1);
+	expect(groups[0].visible).toBe(false);
+	expect(groups[0].children).toHaveLength(0);
+	expect(
+		world.children.filter((object: { visible: boolean }) => object.visible).length
+	).toBeGreaterThan(3);
 	const progressed = stepGame(run, { x: 2, y: 0 }, view);
 	source.render(progressed, { ...view, dimension: '3d' });
 	const [sameWorld, deep] = painted.mock.lastCall!;
 	expect(sameWorld).toBe(world);
 	expect(deep.isPerspectiveCamera).toBe(true);
 	expect(progressed.state.hasKey).toBe(true);
-	expect(world.children).toEqual(objects);
-	const hidden = visible.filter((object) => !object.visible);
-	expect(hidden).toHaveLength(1);
-	expect(hidden[0].position).toMatchObject({ x: 2, y: 0.5, z: 0 });
+	expect(world.children).toEqual(expect.arrayContaining([key, door, player, floor]));
+	expect(meshes.filter((object) => !object.visible)).toEqual([key]);
+	expect(player.position.toArray()).toEqual([progressed.state.x, 0.4, progressed.state.y]);
+	expect(groups[0].visible).toBe(false);
 	expect(canvas.dataset).toEqual({ renderer: 'webgl3d', dimension: '3d', ready: 'true' });
 	source.dispose();
 });

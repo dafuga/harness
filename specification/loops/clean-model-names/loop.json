@@ -1,0 +1,60 @@
+{
+	"name": "clean-model-names",
+	"goal": "Shared type-only models keep their identities and use clean names across cards, usage links and detail headings.",
+	"createdAt": "2026-10-23T17:52:00.241Z",
+	"updatedAt": "2026-10-23T17:57:43.778Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:53:28.092Z",
+			"evidence": "Keep shared models with clean PascalCase names; preserve IDs, type filenames and classification. The selected model naming helper currently returns Deployment.types from its owned source."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:53:28.900Z",
+			"evidence": "The standard explorer-name matrix explicitly expected Order.types. Existing browser cards only used runtime Order.ts. Extend that matrix and shared mixed-consumer fixture with a type collection and values companion; retain card, usage and detail checks at current and historical revisions. Generated instructions lacked logical model naming guidance."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:56:06.864Z",
+			"evidence": "Unchanged shared naming and three-viewport mixed-card matrix fails at 72386ab4: clean Order is required but Order.types is rendered. Record 08a641ea retains six before screenshots and 20 observations. Guidance assertions also reject missing instructions."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:57:39.522Z",
+			"evidence": "The shared naming helper strips only terminal .types from model stems before resolving names. Keep source filenames, IDs and existing catalog eligibility. Shared naming rules teach the same distinction in generated app and library guidance."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:57:43.778Z",
+			"evidence": "Record 0213ba41 at 4505baad passes the same unchanged guide, template, naming and three-viewport mixed-card command as red 08a641ea; 174 original screenshots and 360 measured observations retained. Full CLI/native verification remains explicitly deferred."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
