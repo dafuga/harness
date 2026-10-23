@@ -1,6 +1,1 @@
-export {
-	toKebabCase,
-	toCamelCase,
-	toPascalCase,
-	toSnakeCase
-} from '../../helpers/strings/case';
+export { toKebabCase, toCamelCase, toPascalCase, toSnakeCase } from '../../helpers/strings/case';
