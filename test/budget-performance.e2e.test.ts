@@ -170,6 +170,10 @@ test('a real operation that is slowed without changing its result fails the end-
 async function assertTaskProfile(repo: VerifyRepo) {
 	await repo.change('src/utils/rank.ts', (source) => source.replace('?? 1;', '?? 2;'));
 	const profiled = await repo.verify(['--require-performance']);
+	const memory = profiled.record.measurements.find(
+		(item) => item.unit === 'function.rank' && item.metric === 'process-peak-rss-bytes'
+	);
+	expect(memory?.value ?? 0, 'actual module benchmark memory must be observed').toBeGreaterThan(0);
 	expect(profiled.record.failures).toEqual([]);
 	const audit = await new TaskCompletionService(repo.root).check({
 		kind: 'coding',
