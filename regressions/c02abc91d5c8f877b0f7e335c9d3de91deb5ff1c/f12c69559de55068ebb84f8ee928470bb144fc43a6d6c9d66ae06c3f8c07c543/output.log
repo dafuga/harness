@@ -1,0 +1,19 @@
+$ playwright test --config src/config/shellPlaywrightConfig.ts --grep "console data loading|reports.component.(harness-harness-console|shared-primitives-loading-state) at|every active visual component"
+
+Running 13 tests using 1 worker
+
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:22:1 › every active visual component has its own required capture state (4ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at desktop (1.7s)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at desktop (719ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at tablet (752ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at tablet (728ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at mobile (697ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at mobile (710ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-harness-console at desktop (1.4s)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.shared-primitives-loading-state at desktop (643ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-harness-console at tablet (458ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.shared-primitives-loading-state at tablet (326ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-harness-console at mobile (480ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.shared-primitives-loading-state at mobile (326ms)
+
+  13 passed (19.0s)
