@@ -8,8 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/config/desktopPatchConfig.ts",
-			"src/config/development-tooling/desktopPatchConfig.ts"
+			"src/configs/desktopPatchConfig.ts",
+			"src/configs/development-tooling/desktopPatchConfig.ts"
 		],
 		"symbols": ["desktopPatchConfig", "desktopPatchConfig"]
 	},
@@ -27,11 +27,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/config/development-tooling/desktopPatchConfig.ts",
+		"entry": "src/configs/development-tooling/desktopPatchConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/config/development-tooling/desktopPatchConfig.ts"
+				"entry": "src/configs/development-tooling/desktopPatchConfig.ts"
 			}
 		]
 	},

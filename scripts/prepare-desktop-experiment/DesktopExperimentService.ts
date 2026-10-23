@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { desktopPatchConfig } from '../../src/config/development-tooling/desktopPatchConfig';
+import { desktopPatchConfig } from '../../src/configs/development-tooling/desktopPatchConfig';
 
 export class DesktopExperimentService {
 	plan(

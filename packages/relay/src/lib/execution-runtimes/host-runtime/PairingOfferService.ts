@@ -2,7 +2,7 @@ import type { Approval } from './PairingOfferService.types';
 import { remoteLimits, safeEqual } from '../../../../../remote/src/index';
 import type { RelayErrorCode } from '../../../../../remote/src/index';
 import type { HostStorageAdapter } from './HostStorageAdapter';
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { PairingRecord } from '../../../models/networking-security/RelayHost.types';
 
 /** The side of a pairing that belongs to the host: it offers, approves, denies and closes. */
