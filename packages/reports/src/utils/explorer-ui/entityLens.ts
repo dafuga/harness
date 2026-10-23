@@ -106,5 +106,4 @@ export function entityLens(from: ExplorerLocation, to: Target): ExplorerLocation
 	return place;
 }
 
-/** @pure */
-export const shortCommit = (commit: string): string => commit.slice(0, 7);
+export { shortCommit } from '../../helpers/strings/shortCommit';

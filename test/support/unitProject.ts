@@ -22,13 +22,13 @@ export async function unitProject(kind: 'app' | 'lib'): Promise<UnitProject> {
 export async function sharedDateHelperProject(): Promise<UnitProject> {
 	const project = await unitProject('lib');
 	await project.write(
-		'src/utils/formatDate.ts',
+		'src/helpers/dates/formatDate.ts',
 		'/** @pure */\nexport function formatDate(iso: string): string { return new Date(iso).toISOString(); }\n'
 	);
 	for (const name of ['first', 'second'])
 		await project.write(
 			`src/utils/${name}.ts`,
-			`import { formatDate } from './formatDate';\nexport function ${name}(value: string) { return formatDate(value); }`
+			`import { formatDate } from '../helpers/dates/formatDate';\nexport function ${name}(value: string) { return formatDate(value); }`
 		);
 	await project.harness(['units', 'index', '--write']);
 	return project;
