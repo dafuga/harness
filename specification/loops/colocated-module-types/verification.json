@@ -32,6 +32,17 @@
 		"registryUnits": 1458,
 		"registryErrors": 0
 	},
-	"knownUpstreamIssue": "Desktop catalogUnit complexity 14 exceeds 10 in a34b012a0; unchanged by this branch and reported to the Layouts coordinator.",
-	"delivery": "Final combined-main capture, readback and serialized landing remain pending; this is not a full verification verdict."
+	"delivery": "Helpers #75 and config #76 must land first. Final combined-main capture, readback and serialized #77 landing remain pending; this is not a full verification verdict.",
+	"layoutCorrection": {
+		"base": "d796d4d54b6dfa30827e84d7adbd571645573b78",
+		"integration": "f02fe3be9",
+		"rootFocusedTests": 18,
+		"desktopFocusedTests": 15,
+		"reportsFocusedTests": 13,
+		"desktopLint": "passed",
+		"desktopTypes": "passed",
+		"reportsTypes": "passed",
+		"mixedDeclarationsRemaining": 0,
+		"registryErrors": 0
+	}
 }
