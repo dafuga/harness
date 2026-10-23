@@ -1,16 +1,10 @@
+import type { ScreenshotUploadInput } from './ScreenshotUploadService.types';
 import { randomUUID } from 'node:crypto';
 import type { Evidence } from '../../../models/reports-media/Report.types';
 import type { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
 import { imageAsset, writeImageAsset } from '../../../utils/reports-media/reportAssets';
 import { sanitize } from '../../../utils/development-tooling/sanitize';
 import type { R2ScreenshotStoreAdapter } from '../../../adapters/reports-media/R2ScreenshotStoreAdapter';
-
-export interface ScreenshotUploadInput {
-	title: string;
-	viewport: string;
-	before: File;
-	after: File;
-}
 
 const viewports: Record<string, string> = {
 	'': '',
@@ -67,3 +61,5 @@ export class ScreenshotUploadService {
 		});
 	}
 }
+
+export type { ScreenshotUploadInput } from './ScreenshotUploadService.types';

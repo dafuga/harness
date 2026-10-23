@@ -27,4 +27,5 @@ export function socketEnd(onText: (text: string) => void, onClose: () => void) {
 		shut: finish
 	};
 }
-export type SocketEnd = ReturnType<typeof socketEnd>;
+
+export type { SocketEnd } from './remote-socket-fixture.types';

@@ -1,10 +1,11 @@
 <script lang="ts">
+	import type { Kind } from "./UploadAudio.types";
+
 	import { onMount } from 'svelte';
 	import type { Report } from '../../models/reports-media/Report.types';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import AudioUploadFiles from './AudioUploadFiles.svelte';
 	import Select from '../shared-primitives/Select.svelte';
-	type Kind = 'running' | 'passed' | 'failed';
 	let { reportId, onUploaded }: { reportId: string; onUploaded: (report: Report) => void } =
 		$props();
 	const MAX_BYTES = 50_000_000;
@@ -66,6 +67,7 @@
 			uploading = false;
 		}
 	}
+
 </script>
 
 <!-- Shares the comparison upload framing; `upload-audio` adds the mode, notes field and spacing. -->

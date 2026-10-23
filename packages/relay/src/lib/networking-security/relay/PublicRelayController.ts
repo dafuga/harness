@@ -1,16 +1,11 @@
+import type { HostRoute } from './PublicRelayController.types';
 import { REMOTE_PROTOCOL } from '../../../../../remote/src/index';
 import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import { ConnectGuardMiddleware } from './ConnectGuardMiddleware';
-import type {
-	PairingRoute,
-	PublicRoute,
-	RelayEnv
-} from '../../../models/networking-security/RelayHost.types';
+import type { PairingRoute, RelayEnv } from '../../../models/networking-security/RelayHost.types';
 import { publicRoute } from '../../../utils/development-tooling/publicRoute';
 import { readJsonBody } from '../../../utils/development-tooling/readJsonBody';
 import { relayError, relayResponse } from '../../../utils/networking-security/relayResponse';
-
-type HostRoute = Exclude<PublicRoute, { kind: 'health' }>;
 
 /**
  * The public Worker. It serves the routes of contract §5.1 and nothing else: a request that is

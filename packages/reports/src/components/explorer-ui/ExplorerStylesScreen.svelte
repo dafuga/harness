@@ -1,16 +1,11 @@
 <script lang="ts">
+	import type { GroupName, StyleToken } from "./ExplorerStylesScreen.types";
+
 	import { onMount } from 'svelte';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	import '../../lib/styles/explorer-styles.css';
 	let host: ExplorerScreenProps = $props();
-
-	type GroupName = 'Colors' | 'Font families' | 'Type scale' | 'Text styles' | 'Layout tokens';
-	interface StyleToken {
-		name: string;
-		value: string;
-		group: GroupName;
-	}
 	const groupNames: GroupName[] = [
 		'Colors',
 		'Font families',
@@ -90,6 +85,7 @@
 	onMount(() => {
 		tokens = discoverTokens();
 	});
+
 </script>
 
 <ExplorerFrame {host}>

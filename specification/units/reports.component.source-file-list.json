@@ -30,6 +30,16 @@
 				"name": "SourceFileList.children",
 				"type": "Snippet<[string]>",
 				"description": "The existing action for each source file."
+			},
+			{
+				"name": "SourceFileList.label",
+				"type": "string | undefined",
+				"description": "Accessible list name, defaulting to Source files; test lists supply Test files."
+			},
+			{
+				"name": "SourceFileList.empty",
+				"type": "string | undefined",
+				"description": "Caller-supplied empty message for the selected file collection."
 			}
 		],
 		"outputs": [

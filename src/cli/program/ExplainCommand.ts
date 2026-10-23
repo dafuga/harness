@@ -1,13 +1,7 @@
+import type { Flags } from './ExplainCommand.types';
 import type { Command } from 'commander';
 import { fail } from '../../core/development-tooling/errors';
-import {
-	explainAdd,
-	explainedRange,
-	listed,
-	type ExplainInput
-} from '../../workflows/development-tooling/runExplain';
-
-type Flags = ExplainInput & { json?: boolean };
+import { explainAdd, explainedRange, listed } from '../../workflows/development-tooling/runExplain';
 
 const collect = (value: string, previous: string[] = []): string[] => [...previous, value];
 

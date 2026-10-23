@@ -1,5 +1,6 @@
+import type { Evaluate } from './responseCheckEvaluate.types';
 import { JevAdapter } from '../../adapters/agents-providers/JevAdapter';
-import type { JevChoice, JevEvaluation, JevRequest } from '../../core/agents-providers/jevTypes';
+import type { JevChoice } from '../../core/agents-providers/jevTypes';
 import type {
 	ResponseAssessment,
 	ResponseCheckInput,
@@ -11,8 +12,6 @@ import {
 	responseCheckQuestions,
 	type ResponseCheckDefinition
 } from '../../workflows/verification-evidence/responseCheckRubric';
-
-type Evaluate = (request: JevRequest) => Promise<JevEvaluation>;
 
 export async function assessResponse(
 	input: ResponseCheckInput,

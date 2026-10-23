@@ -1,26 +1,16 @@
+import type { AttachedRecord } from './AttachedRecordService.types';
 import { createHash } from 'node:crypto';
 import { LfsAdapter } from '../../../../adapters/git-source-history/LfsAdapter';
 import {
 	evidenceManifestSchema,
 	type EvidenceFile,
-	type EvidenceManifest,
 	type EvidencePointer
 } from '../../../../core/git-source-history/historyTypes';
-import type { VerificationRecord } from '../../../../core/verification-evidence/verificationTypes';
 import { EvidenceBranchRepository } from '../../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { recordFiles } from '../../../../utils/verification-evidence/evidenceManifest';
 import { parseLfsPointer } from './lfsPointer';
 import { recordIntact } from '../../../../utils/verification-evidence/sealRecord';
 import { VerificationRecordValidator } from '../../../../validators/verification-evidence/VerificationRecordValidator';
-
-export interface AttachedRecord {
-	pointer: EvidencePointer;
-	manifest?: EvidenceManifest;
-	record?: VerificationRecord;
-	/** Original bytes of every file that could be read, by path. */
-	files: Map<string, Buffer>;
-	problems: string[];
-}
 
 /**
  * Loads one stored directory from the evidence branch and validates all of it: the manifest
@@ -134,3 +124,5 @@ function sha256(bytes: Buffer): string {
 function short(id: string): string {
 	return id.slice(0, 12);
 }
+
+export type { AttachedRecord } from './AttachedRecordService.types';

@@ -15,6 +15,7 @@
 			"packages/desktop/src/components/thread-links/threadAnchor.ts",
 			"packages/desktop/src/components/thread-panel/threadAnchor.ts",
 			"packages/desktop/src/utils/explorer-ui/threadAnchor.ts",
+			"packages/desktop/src/utils/explorer-ui/threadAnchor.types.ts",
 			"packages/desktop/src/utils/threadAnchor.ts"
 		],
 		"symbols": [
@@ -30,8 +31,6 @@
 			"otherOption",
 			"designTarget",
 			"threadAnchor",
-			"ThreadTarget",
-			"CommentAnchor",
 			"entityTarget",
 			"imageTarget",
 			"optionImages",
@@ -42,6 +41,10 @@
 			"threadAnchor",
 			"versionOption",
 			"sameImage",
+			"ThreadTarget",
+			"CommentAnchor",
+			"ThreadTarget",
+			"CommentAnchor",
 			"shownApproval",
 			"otherOption",
 			"designTarget",

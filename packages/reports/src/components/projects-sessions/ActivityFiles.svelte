@@ -1,8 +1,9 @@
 <script lang="ts">
+	import type { Open } from "./ActivityFiles.types";
+
 	import type { CommittedFile, WorktreeState } from '../../../../../src/core/activityTypes';
 	import { activityTime } from '../../utils/projects-sessions/activityDisplay';
 	import ActivityList from './ActivityList.svelte';
-	type Open = { tree: WorktreeState; change: WorktreeState['changes'][number] };
 	let {
 		files,
 		worktrees,
@@ -21,6 +22,7 @@
 		(worktrees ?? []).flatMap((tree) => tree.changes.map((change) => ({ tree, change })))
 	);
 	let dirty = $derived((worktrees ?? []).filter((tree) => tree.changes.length).length);
+
 </script>
 
 {#snippet owners(units: string[])}

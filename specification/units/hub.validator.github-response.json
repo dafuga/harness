@@ -9,23 +9,31 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/validators/GithubResponseValidator.ts",
-			"packages/hub/src/validators/development-tooling/GithubResponseValidator.ts"
+			"packages/hub/src/validators/development-tooling/GithubResponseValidator.ts",
+			"packages/hub/src/validators/development-tooling/GithubResponseValidator.types.ts"
 		],
 		"symbols": [
 			"GithubResponseValidator",
-			"GithubUserToken",
-			"GithubUser",
-			"GithubRepository",
-			"InstallationList",
-			"RepositoryPage",
-			"InstallationGrant",
 			"GithubResponseValidator",
 			"GithubResponseValidator.userToken",
 			"GithubResponseValidator.user",
 			"GithubResponseValidator.repository",
 			"GithubResponseValidator.installations",
 			"GithubResponseValidator.repositories",
-			"GithubResponseValidator.installationGrant"
+			"GithubResponseValidator.installationGrant",
+			"GithubUserToken",
+			"GithubUser",
+			"GithubRepository",
+			"InstallationList",
+			"RepositoryPage",
+			"InstallationGrant",
+			"Json",
+			"GithubUserToken",
+			"GithubUser",
+			"GithubRepository",
+			"InstallationList",
+			"RepositoryPage",
+			"InstallationGrant"
 		]
 	},
 	"contract": {

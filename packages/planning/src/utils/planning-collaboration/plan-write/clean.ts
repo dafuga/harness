@@ -1,3 +1,4 @@
+import type { Files } from './clean.types';
 import { planCommit, requireLfsFilters } from './planCommit';
 import { stageFiles } from '../planCommit';
 import { mkdtemp, rm } from 'node:fs/promises';
@@ -7,8 +8,6 @@ import type { Git } from '../planGit';
 import { revision, safePath } from '../planGit';
 import { fail } from '../planData';
 import type { Committed } from '../../../models/planning-collaboration/PlanningView.types';
-
-export type Files = Record<string, string | Uint8Array>;
 
 export async function clean(git: Git, unitPath: string): Promise<void> {
 	await safePath(git, unitPath);
@@ -62,3 +61,5 @@ export async function commitFiles(
 		await rm(temp, { recursive: true, force: true });
 	}
 }
+
+export type { Files } from './clean.types';

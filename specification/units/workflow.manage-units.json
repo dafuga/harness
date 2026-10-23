@@ -7,17 +7,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/manageUnits.ts"],
+		"source": ["src/cli/program/manageUnits.ts", "src/cli/program/manageUnits.types.ts"],
 		"symbols": [
-			"UnitsOptions",
-			"IndexReport",
-			"CheckReport",
 			"indexUnits",
 			"checkUnits",
 			"registryErrors",
 			"retireUnit",
 			"renderIndex",
-			"renderCheck"
+			"renderCheck",
+			"UnitsOptions",
+			"IndexReport",
+			"CheckReport",
+			"UnitsOptions",
+			"IndexReport",
+			"CheckReport"
 		]
 	},
 	"contract": {

@@ -1,7 +1,7 @@
+import type { GameCredentialName } from './ProjectGameCredentialAdapter.types';
 import { readFile, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { gitRead } from '../../utils/projects-sessions/gitRead';
-export type GameCredentialName = 'HARNESS_GAME_OPENAI_API_KEY' | 'HARNESS_GAME_DECART_API_KEY';
 const credentialFile = '.env.local';
 
 /** Read only a project-owned ignored regular file; never ambient provider credentials. */
@@ -37,3 +37,5 @@ export class ProjectGameCredentialAdapter {
 function unconfigured(name: GameCredentialName): Error {
 	return new Error('Configure a project-owned ' + name + ' in this project’s ignored .env.local.');
 }
+
+export type { GameCredentialName } from './ProjectGameCredentialAdapter.types';

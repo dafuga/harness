@@ -1,11 +1,6 @@
+import type { Row } from './shellSearch.types';
 import type { ExplorerScope } from '../../../src/models/Explorer.types';
 import { sha } from './shellData';
-
-/**
- * What each revision of the made-up history holds to search, as a host hands it to the bar: the
- * newer commits of the branch hold a shell and a totals function, the older ones a legacy one.
- */
-type Row = [id: string, category: string, name: string, purpose: string, terms?: string[]];
 const lasting: Row[] = [
 	['app.page.orders', 'pages', 'Orders', 'Lists every order of a customer.'],
 	['app.component.order-list', 'components', 'Order list', 'Shows orders in a table.'],

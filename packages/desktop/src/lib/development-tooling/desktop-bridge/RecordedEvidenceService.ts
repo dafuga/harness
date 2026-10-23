@@ -1,3 +1,4 @@
+import type { ProjectRead, Shown } from './RecordedEvidenceService.types';
 import type { CacheIdentity } from '../../../../../collaboration/src/models/Collaboration.types';
 import { explorerEvidence } from '../../../../../reports/src/utils/explorerEvidence';
 import {
@@ -20,11 +21,6 @@ import { recordedAnswer } from '../../../utils/development-tooling/recorded-answ
 import { recordedCapture } from '../../../utils/reports-media/recordedCapture';
 import { recordedScope, recordedTip } from '../../../utils/development-tooling/recordedScope';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
-
-type Shown = Pick<EntityEvidenceQuery, 'branch' | 'commit'>;
-type ProjectRead = Pick<ReturnType<ProjectSessionService['requireProject']>, 'root' | 'source'> & {
-	projectId: string;
-};
 const unbranched = 'Select a local branch to read recorded evidence on.';
 
 /**

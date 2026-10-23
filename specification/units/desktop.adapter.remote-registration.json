@@ -10,16 +10,18 @@
 		"source": [
 			"packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
 			"packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.types.ts"
 		],
 		"symbols": [
 			"RemoteRegistrationAdapter",
 			"RemoteRegistrationAdapterConfig",
 			"RemoteRegistrationAdapter",
-			"RemoteRegistrationAdapterConfig",
 			"RemoteRegistrationAdapter",
 			"RemoteRegistrationAdapter.constructor",
-			"RemoteRegistrationAdapter.register"
+			"RemoteRegistrationAdapter.register",
+			"RemoteRegistrationAdapterConfig",
+			"RemoteRegistrationAdapterConfig"
 		]
 	},
 	"contract": {

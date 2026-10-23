@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/remote-fixture-host.ts"],
-		"symbols": ["RemoteFixtureOptions", "startRemoteFixture"]
+		"source": [
+			"packages/desktop/scripts/remote-fixture-host.ts",
+			"packages/desktop/scripts/remote-fixture-host.types.ts"
+		],
+		"symbols": [
+			"startRemoteFixture",
+			"RemoteFixtureOptions",
+			"RemoteFixtureOptions",
+			"Relay",
+			"Running"
+		]
 	},
 	"contract": {
 		"origin": "derived",

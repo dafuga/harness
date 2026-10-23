@@ -1,25 +1,12 @@
+import type { GoogleIdentityOptions, GoogleIdentity } from './GoogleIdentityService.types';
 import { jwtVerify } from 'jose';
-import type { JWTPayload, JWTVerifyGetKey } from 'jose';
+import type { JWTPayload } from 'jose';
 import type { Actor } from 'collaboration';
 import { authFail } from '../../../../utils/accounts-access/authFail';
 import { safeEqual } from '../../../../utils/verification-evidence/authSecrets';
 
 export const GOOGLE_JWKS_URL = 'https://www.googleapis.com/oauth2/v3/certs';
 export const GOOGLE_ISSUERS = ['https://accounts.google.com', 'accounts.google.com'];
-
-export interface GoogleIdentity {
-	/** Keyed by Google's subject. An actor outright only when `authoritative`. */
-	actor: Actor;
-	/** Gmail or Workspace: Google vouches for the mailbox today. */
-	authoritative: boolean;
-}
-
-export interface GoogleIdentityOptions {
-	clientId: string;
-	/** Production passes Google's remote key set. Tests pass a local set of real RSA keys. */
-	keys: JWTVerifyGetKey;
-	now: () => number;
-}
 
 const SUBJECT = /^[A-Za-z0-9._-]{1,128}$/;
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,255}$/;
@@ -84,3 +71,5 @@ export class GoogleIdentityService {
 		return typeof payload.nonce === 'string' && safeEqual(payload.nonce, nonce);
 	}
 }
+
+export type { GoogleIdentity, GoogleIdentityOptions } from './GoogleIdentityService.types';

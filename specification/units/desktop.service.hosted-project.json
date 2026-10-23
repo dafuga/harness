@@ -10,14 +10,17 @@
 		"source": [
 			"packages/desktop/src/services/HostedProjectService.ts",
 			"packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts",
-			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts"
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
+			"packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.types.ts"
 		],
 		"symbols": [
 			"HostedProjectService",
 			"HostedProjectService",
 			"HostedProjectService",
 			"HostedProjectService.constructor",
-			"HostedProjectService.wrap"
+			"HostedProjectService.wrap",
+			"Bridge",
+			"HostedInput"
 		]
 	},
 	"contract": {

@@ -1,23 +1,9 @@
+import type { PackedInstall, ServedReports } from './packedReports.types';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { runCommand, type CommandResult } from './cli';
+import { runCommand } from './cli';
 import { freePort } from './workers';
-
-export interface PackedInstall {
-	/** The temporary directory that holds the packed package, its report store and fixtures. */
-	root: string;
-	run(args: string[]): Promise<CommandResult>;
-	/** Restores the environment and removes the directory; safe to call more than once. */
-	dispose(): Promise<void>;
-}
-
-export interface ServedReports {
-	url: string;
-	port: number;
-	/** The server process this start created. */
-	pid: number;
-}
 
 /** True while a process with this id exists; signal 0 only asks. */
 export function running(pid: number): boolean {
@@ -78,3 +64,5 @@ export async function withReportServer<Result>(
 		await install.run(['report', 'stop', '--port', String(server.port)]);
 	}
 }
+
+export type { PackedInstall, ServedReports } from './packedReports.types';

@@ -1,10 +1,6 @@
+import type { FolderKind } from './unitIdentity.types';
 import type { UnitIdentity } from '../unitIdentity';
 import { toKebabCase } from '../../../helpers/strings/case';
-
-interface FolderKind {
-	kind: string;
-	suffix?: string;
-}
 
 const folderKinds: Record<string, FolderKind> = {
 	adapters: { kind: 'adapter', suffix: 'Adapter' },

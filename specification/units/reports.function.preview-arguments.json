@@ -10,9 +10,16 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/development-tooling/previewArguments.ts",
+			"packages/reports/src/utils/development-tooling/previewArguments.types.ts",
 			"packages/reports/src/utils/previewArguments.ts"
 		],
-		"symbols": ["PreviewArguments", "previewArguments", "previewArguments"]
+		"symbols": [
+			"previewArguments",
+			"PreviewArguments",
+			"PreviewArguments",
+			"PreviewOptions",
+			"previewArguments"
+		]
 	},
 	"contract": {
 		"origin": "declared",

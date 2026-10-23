@@ -1,16 +1,9 @@
+import type { Approval } from './PairingOfferService.types';
 import { remoteLimits, safeEqual } from '../../../../../remote/src/index';
 import type { RelayErrorCode } from '../../../../../remote/src/index';
 import type { HostStorageAdapter } from './HostStorageAdapter';
 import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { PairingRecord } from '../../../models/networking-security/RelayHost.types';
-
-interface Approval {
-	pairingId: string;
-	deviceId: string;
-	sealed: string;
-	/** The challenge of the request the host approved. Without it nothing is approved. */
-	challenge?: string;
-}
 
 /** The side of a pairing that belongs to the host: it offers, approves, denies and closes. */
 export class PairingOfferService {

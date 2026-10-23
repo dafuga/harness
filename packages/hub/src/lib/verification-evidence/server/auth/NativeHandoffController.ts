@@ -1,13 +1,7 @@
-import type { NativeHandoffService } from './native-handoff-service/NativeHandoffService';
-import type { RequestSessionService } from './request-session-service/RequestSessionService';
+import type { NativeHandoffControllerOptions } from './NativeHandoffController.types';
 import { authHttp, readJson } from '../../../../utils/verification-evidence/authHttp';
 import type { AuthRoutes } from '../../../../utils/verification-evidence/authHttp';
 import { AuthRequestValidator } from '../../../../validators/accounts-access/AuthRequestValidator';
-
-export interface NativeHandoffControllerOptions {
-	handoff: NativeHandoffService;
-	sessions: RequestSessionService;
-}
 
 /** `/api/auth/native/*`. Every value arrives in a JSON body; nothing is read from the URL. */
 export class NativeHandoffController {
@@ -46,3 +40,5 @@ export class NativeHandoffController {
 		return authHttp(await this.options.handoff.exchange(input));
 	}
 }
+
+export type { NativeHandoffControllerOptions } from './NativeHandoffController.types';

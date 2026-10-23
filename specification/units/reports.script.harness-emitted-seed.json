@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/scripts/harness-emitted-seed.ts"],
-		"symbols": ["EmittedSeed", "seedEmitted"]
+		"source": [
+			"packages/reports/scripts/harness-emitted-seed.ts",
+			"packages/reports/scripts/harness-emitted-seed.types.ts"
+		],
+		"symbols": ["seedEmitted", "EmittedSeed", "EmittedSeed"]
 	},
 	"contract": {
 		"origin": "derived",

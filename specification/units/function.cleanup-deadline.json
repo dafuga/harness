@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/cleanupDeadline.ts", "src/utils/development-tooling/cleanupDeadline.ts"],
-		"symbols": ["cleanupDeadline", "CleanupDeadline", "cleanupDeadline"]
+		"source": [
+			"src/utils/cleanupDeadline.ts",
+			"src/utils/development-tooling/cleanupDeadline.ts",
+			"src/utils/development-tooling/cleanupDeadline.types.ts"
+		],
+		"symbols": ["cleanupDeadline", "cleanupDeadline", "CleanupDeadline", "CleanupDeadline"]
 	},
 	"contract": {
 		"origin": "declared",

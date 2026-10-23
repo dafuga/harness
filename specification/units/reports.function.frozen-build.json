@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/development-tooling/frozenBuild.ts",
+			"packages/reports/src/utils/development-tooling/frozenBuild.types.ts",
 			"packages/reports/src/utils/frozenBuild.ts"
 		],
-		"symbols": ["FrozenBuild", "frozenBuild", "frozenBuild"]
+		"symbols": ["frozenBuild", "FrozenBuild", "FrozenBuild", "frozenBuild"]
 	},
 	"contract": {
 		"origin": "declared",

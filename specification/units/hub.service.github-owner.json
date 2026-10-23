@@ -10,15 +10,17 @@
 		"source": [
 			"packages/hub/src/lib/server/auth/GithubOwnerService.ts",
 			"packages/hub/src/lib/verification-evidence/server/auth/GithubOwnerService.ts",
+			"packages/hub/src/lib/verification-evidence/server/auth/GithubOwnerService.types.ts",
 			"packages/hub/src/services/GithubOwnerService.ts"
 		],
 		"symbols": [
 			"GithubOwnerService",
-			"GithubOwnerOptions",
 			"GithubOwnerService",
 			"GithubOwnerService.constructor",
 			"GithubOwnerService.authorizeRepository",
 			"GithubOwnerService.repositories",
+			"GithubOwnerOptions",
+			"GithubOwnerOptions",
 			"GithubOwnerService",
 			"GithubOwnerOptions"
 		]

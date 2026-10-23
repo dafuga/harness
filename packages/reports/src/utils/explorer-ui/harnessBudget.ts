@@ -1,26 +1,4 @@
-import type { HarnessRecord } from '../../models/explorer-ui/Harness.types';
-
-type Measurement = HarnessRecord['measurements'][number];
-type Finding = HarnessRecord['budgets']['findings'][number];
-
-export interface FrozenLine {
-	/** The measured value with its unit, or the statement that there is none and why. */
-	value: string;
-	/** What limit applies: a number, none yet, or none because nothing can be measured. */
-	limit: string;
-	/** What a value leaves out, when only part of the unit could be measured. */
-	note?: string;
-}
-
-/** What is known about the limit of one metric at a revision, beside the record's own finding. */
-export interface Reviewed {
-	/** True when the manifest declares the metric frozen; that alone freezes no number. */
-	declared: boolean;
-	/** The limit the ledger of the revision holds for it. */
-	limit?: number;
-	/** Why the ledger says it could not be measured when the limits were reviewed. */
-	unmeasured?: string;
-}
+import type { Measurement, Finding, Reviewed, FrozenLine } from './harnessBudget.types';
 
 /**
  * The limit a line may claim. A number is shown only where one was reviewed: the baseline the
@@ -75,3 +53,5 @@ export function harnessBudget(
 	const note = noted(found, finding);
 	return { value: `${found.value} ${found.unitOfMeasure}`, limit, ...(note ? { note } : {}) };
 }
+
+export type { FrozenLine, Reviewed } from './harnessBudget.types';

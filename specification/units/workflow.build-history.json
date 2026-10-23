@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/buildHistory.ts"],
-		"symbols": ["BuildOptions", "buildHistory", "renderBuild"]
+		"source": ["src/cli/program/buildHistory.ts", "src/cli/program/buildHistory.types.ts"],
+		"symbols": ["buildHistory", "renderBuild", "BuildOptions", "BuildOptions"]
 	},
 	"contract": {
 		"origin": "derived",

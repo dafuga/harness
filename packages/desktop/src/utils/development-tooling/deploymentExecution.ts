@@ -1,23 +1,10 @@
-import type {
-	DeploymentOptions,
-	ReviewedDeployment
-} from '../../services/development-tooling/DeploymentService';
-import type {
-	DeploymentPlugin,
-	DeploymentProgress,
-	CloudflareTarget,
-	DeploymentReceipt
-} from '../../models/development-tooling/Deployment.types';
+import type { Runtime, Captured } from './deploymentExecution.types';
+import type { ReviewedDeployment } from '../../services/development-tooling/DeploymentService';
 import { deploymentWorktree } from './deploymentWorktree';
 import { deploymentCommand } from './deploymentCommand';
 import { deploymentHealth } from './deploymentProof';
 import { saveDeployment } from './deploymentState';
 import { captureDeploymentTarget, verifyDeploymentSnapshot } from './verifyDeploymentSnapshot';
-interface Runtime extends DeploymentOptions {
-	plugin: DeploymentPlugin;
-	update: (phase: DeploymentProgress['phase'], detail: string) => void;
-}
-type Captured = { target: CloudflareTarget; destination: DeploymentReceipt | null };
 /** Each target uses its own immutable checkout; later edits and lower deployments can continue. */
 export async function deploymentExecution(reviewed: ReviewedDeployment, runtime: Runtime) {
 	if (reviewed.plan.blockers.length) throw new Error(reviewed.plan.blockers.join(' '));

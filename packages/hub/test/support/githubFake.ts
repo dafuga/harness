@@ -1,3 +1,4 @@
+import type { GithubFake } from './githubFake.types';
 import { randomToken } from '../../src/utils/authSecrets';
 import {
 	accessTokens,
@@ -22,15 +23,6 @@ const routes: [RegExp, FakeHandler][] = [
 	[/^GET https:\/\/api\.github\.com\/repos\/([^/]+)\/([^/]+)$/, repository],
 	[/^POST https:\/\/api\.github\.com\/app\/installations\/(\d+)\/access_tokens$/, accessTokens]
 ];
-
-export interface GithubFake {
-	state: FakeState;
-	fetch: typeof fetch;
-	/** The user approving the app on github.com: returns the code GitHub would send back. */
-	approve(userId: number, authorizeUrl: string): string;
-	/** The user revoking the app's authorization on github.com. */
-	revoke(userId: number): void;
-}
 
 async function record(input: RequestInfo | URL, init: RequestInit = {}): Promise<FakeCall> {
 	const request = new Request(input, init);
@@ -88,3 +80,5 @@ export async function githubFake(now: () => number): Promise<GithubFake> {
 		}
 	};
 }
+
+export type { GithubFake } from './githubFake.types';

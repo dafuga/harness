@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/hook-run-service/HookRunService.ts"],
+		"source": [
+			"src/cli/program/hook-run-service/HookRunService.ts",
+			"src/cli/program/hook-run-service/HookRunService.types.ts"
+		],
 		"symbols": [
-			"HookOutcome",
 			"HookRunService",
 			"HookRunService.constructor",
-			"HookRunService.prePush"
+			"HookRunService.prePush",
+			"HookOutcome",
+			"HookOutcome"
 		]
 	},
 	"contract": {

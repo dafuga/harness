@@ -1,3 +1,4 @@
+import type { AssertionInput } from './verification-assertions.types';
 import { z } from 'zod';
 import { resolve } from 'node:path';
 import type { VerificationTarget } from './verification-targets';
@@ -49,13 +50,6 @@ const reportSchema = z.object({
 		)
 		.length(1)
 });
-export interface AssertionInput {
-	report: unknown;
-	observations: string;
-	invocation: string;
-	cwd: string;
-	status: number | null;
-}
 /** Runner success alone is insufficient: each expected test must have complete actual observations. */
 export function verifiedAssertions(target: VerificationTarget, input: AssertionInput) {
 	if (input.status !== 0)
@@ -100,3 +94,5 @@ export function verifiedAssertions(target: VerificationTarget, input: AssertionI
 		return { state: target.tests[name], test: name, status: 'passed', observations: matchers };
 	});
 }
+
+export type { AssertionInput } from './verification-assertions.types';

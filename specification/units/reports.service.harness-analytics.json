@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/HarnessAnalyticsService.ts",
-			"packages/reports/src/services/explorer-ui/HarnessAnalyticsService.ts"
+			"packages/reports/src/services/explorer-ui/HarnessAnalyticsService.ts",
+			"packages/reports/src/services/explorer-ui/HarnessAnalyticsService.types.ts"
 		],
 		"symbols": [
 			"HarnessAnalyticsService",
-			"AnalyticsSnapshot",
 			"HarnessAnalyticsService",
-			"HarnessAnalyticsService.snapshot"
+			"HarnessAnalyticsService.snapshot",
+			"AnalyticsSnapshot",
+			"AnalyticsSnapshot"
 		]
 	},
 	"contract": {

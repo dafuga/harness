@@ -1,9 +1,9 @@
+import type { HostIdentity, RemoteFixtureOptions } from './remoteFixture.types';
 import { createECDH, createHash } from 'node:crypto';
 import type { Actor } from 'collaboration';
 import type { HubEnv } from '../../src/configs/hubEnvConfig';
 import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
 import { hubRemote } from '../../src/routes/api/[...path]/hubRemote';
-import type { HubApiRuntime } from '../../src/utils/hubRuntime';
 import { actor } from './projectionFixture';
 import { remoteHostsFake } from './remoteHostsFake';
 
@@ -11,18 +11,6 @@ export const HUB = 'https://fixture.example';
 export const RELAY_ORIGIN = 'https://relay.fixture.example';
 export const CREDENTIAL_HASH = createHash('sha256').update('synthetic credential').digest('hex');
 export const DEVICE_ID = createHash('sha256').update('synthetic device').digest('hex').slice(0, 40);
-
-export interface HostIdentity {
-	hostId: string;
-	hostKey: string;
-}
-
-export interface RemoteFixtureOptions {
-	/** Laid over the working settings; `undefined` removes one. */
-	env?: Partial<HubEnv>;
-	auth?: HubApiRuntime['auth'];
-	connect?: HubApiRuntime['connect'];
-}
 
 let issued = 0;
 
@@ -95,4 +83,4 @@ export function remoteFixture(options: RemoteFixtureOptions = {}) {
 	};
 }
 
-export type RemoteFixture = ReturnType<typeof remoteFixture>;
+export type { HostIdentity, RemoteFixtureOptions, RemoteFixture } from './remoteFixture.types';

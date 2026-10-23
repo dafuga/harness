@@ -9,12 +9,14 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.ts",
+			"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.types.ts",
 			"packages/reports/src/utils/explorer-verdict/explorerCoverage.ts",
 			"packages/reports/src/utils/explorerCoverage.ts"
 		],
 		"symbols": [
 			"coverageAffected",
 			"explorerCoverage",
+			"Result",
 			"coverageAffected",
 			"explorerCoverage",
 			"coverageAffected",

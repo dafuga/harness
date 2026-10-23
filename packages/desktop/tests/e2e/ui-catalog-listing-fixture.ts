@@ -1,18 +1,8 @@
+import type { ListedProject } from './ui-catalog-listing-fixture.types';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import type { Page, TestInfo } from '@playwright/test';
 import { desktopEvidence } from './desktop-evidence';
-
-interface Shown {
-	revision: { commit: string };
-	entities: { id: string }[];
-}
-export interface ListedProject {
-	tip: Shown;
-	earlier: Shown;
-	/** The detail of the analytics identity at each of the two commits. */
-	details: Record<string, unknown>;
-}
 
 function install(data: ListedProject) {
 	const earlier = data.earlier.revision.commit;
@@ -65,3 +55,5 @@ export async function pictured(page: Page, info: TestInfo, name: string): Promis
 	const path = info.outputPath(`${name}.png`);
 	await page.screenshot({ path, fullPage: true, animations: 'disabled', caret: 'hide' });
 }
+
+export type { ListedProject } from './ui-catalog-listing-fixture.types';

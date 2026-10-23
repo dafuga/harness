@@ -59,6 +59,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.explorer-ui-config-value-tree",
 			"via": "import",
 			"origin": "derived"

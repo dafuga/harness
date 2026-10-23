@@ -1,3 +1,4 @@
+import type { LocalClientOptions } from './LocalClientService.types';
 import { hostname } from 'node:os';
 import {
 	RemoteFailure,
@@ -6,37 +7,11 @@ import {
 } from '../../../../../remote/src/index';
 import { localTransport } from '../../../../../remote/src/index';
 import type { WireChannel, WireLink } from '../../../../../remote/src/index';
-import type { ImageGenerator } from '../../../models/agents-providers/AgentRunner.types';
-import type { RemoteProjectPort } from '../../../models/projects-sessions/ProjectContext.types';
-import type { CommentOutboxService } from '../../../services/projects-sessions/CommentOutboxService';
 import { DesktopBridgeService } from '../../../services/development-tooling/desktop-bridge-service/DesktopBridgeService';
 import { DesktopRunService } from '../../../services/agents-providers/desktop-run-service/DesktopRunService';
 import { LocalOperationsService } from './LocalOperationsService';
-import type { LocalControl } from './LocalOperationsService';
 import type { LocalSocket } from '../../../services/LocalTransportService';
-import type { NativeAuthService } from './NativeAuthService';
-import type { ProjectRegistryService } from '../../../services/projects-sessions/ProjectRegistryService';
 import { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
-import type { ProjectionCacheService } from './projection-cache-service/ProjectionCacheService';
-import type { ProviderDiscoveryService } from '../../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import type { RepositoryArbiterService } from '../../../services/projects-sessions/RepositoryArbiterService';
-
-export interface LocalClientOptions {
-	/** What every client of this computer shares; the session of a window is its own. */
-	shared: {
-		registry: ProjectRegistryService;
-		outbox: CommentOutboxService;
-		arbiter: RepositoryArbiterService;
-		providers: ProviderDiscoveryService;
-		generator: ImageGenerator;
-		cache?: ProjectionCacheService;
-		remote?: RemoteProjectPort;
-		auth?: NativeAuthService;
-	};
-	choose: () => Promise<string | null>;
-	control: LocalControl;
-	defer?: (step: () => void) => void;
-}
 /** A person may leave a dialog open, so nothing here ends an operation early. */
 const patient = 6 * 60 * 60 * 1000;
 const limits = {
@@ -146,3 +121,5 @@ export class LocalClientService {
 		}
 	}
 }
+
+export type { LocalClientOptions } from './LocalClientService.types';

@@ -1,16 +1,8 @@
+import type { Git } from './planGit.types';
 import type { Buffer } from 'node:buffer';
 import { lstat, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fail, hash } from './planData';
-
-export interface Git {
-	root: string;
-	dir: string;
-	transactionHead?: string;
-	/** The object format the repository itself states; absent when Git states none known here. */
-	objectFormat?: 'sha1' | 'sha256';
-	run(args: string[], input?: Uint8Array | string, env?: Record<string, string>): Promise<Buffer>;
-}
 
 export async function revision(git: Git, value = 'HEAD'): Promise<string> {
 	if (typeof value !== 'string' || !value || value.startsWith('-') || /[\0\r\n]/.test(value))
@@ -77,3 +69,5 @@ export async function safePath(git: Git, path: string): Promise<void> {
 
 export { planGit } from '../../lib/planning-collaboration/planning/planGit';
 export { containing } from './plan-read/containing';
+
+export type { Git } from './planGit.types';

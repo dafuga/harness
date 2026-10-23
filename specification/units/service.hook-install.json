@@ -9,16 +9,19 @@
 	"owns": {
 		"source": [
 			"src/cli/program/hook-install-service/HookInstallService.ts",
+			"src/cli/program/hook-install-service/HookInstallService.types.ts",
 			"src/services/hook-install-service/HookInstallService.ts"
 		],
 		"symbols": [
-			"HookStageStatus",
-			"HookStatus",
 			"HookInstallService",
 			"HookInstallService.constructor",
 			"HookInstallService.status",
 			"HookInstallService.install",
 			"HookInstallService.uninstall",
+			"HookStageStatus",
+			"HookStatus",
+			"HookStageStatus",
+			"HookStatus",
 			"HookInstallService",
 			"HookStageStatus",
 			"HookStatus"

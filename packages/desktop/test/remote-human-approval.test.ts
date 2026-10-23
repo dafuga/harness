@@ -1,3 +1,4 @@
+import type { Opening } from './remote-human-approval.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
 import {
@@ -17,7 +18,6 @@ import type { ProjectRegistryService } from '../src/services/ProjectRegistryServ
 import { deferred } from './remote-fixture';
 
 afterEach(() => vi.restoreAllMocks());
-type Opening = { opened: (...args: unknown[]) => Promise<{ deviceName: string } | null> };
 
 async function frame(keys: RemoteKeyPair, offer: HostPairingOffer, name: string) {
 	const device = await remoteKeys(),

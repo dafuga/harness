@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/development-tooling/railsPieces.ts", "src/templates/railsPieces.ts"],
+		"source": [
+			"src/templates/development-tooling/railsPieces.ts",
+			"src/templates/development-tooling/railsPieces.types.ts",
+			"src/templates/railsPieces.ts"
+		],
 		"symbols": [
 			"mailerFiles",
 			"helperFiles",
@@ -18,6 +22,8 @@
 			"configFiles",
 			"middlewareFiles",
 			"resourceFiles",
+			"ClassEntityTemplate",
+			"FunctionTemplate",
 			"mailerFiles",
 			"helperFiles",
 			"concernFiles",

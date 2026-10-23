@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/game/src/validators/game-authoring/gameDocument.ts"],
-		"symbols": ["validateDocument", "assertDocument"]
+		"source": [
+			"packages/game/src/validators/game-authoring/gameDocument.ts",
+			"packages/game/src/validators/game-authoring/gameDocument.types.ts"
+		],
+		"symbols": ["validateDocument", "assertDocument", "RecordValue"]
 	},
 	"contract": {
 		"origin": "derived",

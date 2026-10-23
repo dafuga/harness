@@ -1,14 +1,10 @@
+import type { Options } from './CloudflareDeployAdapter.types';
 import { deploymentConfig } from '../../utils/development-tooling/deploymentConfig';
 import { deploymentCommand } from '../../utils/development-tooling/deploymentCommand';
 import type {
 	CloudflareTarget,
-	DeployExecutor,
 	DeploymentPlugin
 } from '../../models/development-tooling/Deployment.types';
-interface Options {
-	execute?: DeployExecutor;
-	request?: (input: string, init?: RequestInit) => Promise<Response>;
-}
 export class CloudflareDeployAdapter implements DeploymentPlugin {
 	readonly id = 'cloudflare';
 	constructor(private options: Options = {}) {}

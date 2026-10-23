@@ -10,11 +10,11 @@
 		"source": [
 			"packages/desktop/src/services/RemotePairingControlService.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
+			"packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.types.ts",
 			"packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts"
 		],
 		"symbols": [
 			"RemotePairingControlService",
-			"RemoteHostAccess",
 			"RemoteHostAccess",
 			"RemotePairingControlService",
 			"RemotePairingControlService.constructor",
@@ -26,6 +26,8 @@
 			"RemotePairingControlService.dropped",
 			"RemotePairingControlService.seen",
 			"RemotePairingControlService.flush",
+			"RemoteHostAccess",
+			"RemoteHostAccess",
 			"RemotePairingControlService"
 		]
 	},

@@ -1,15 +1,5 @@
 import type { SecurePacket } from './RemoteSecure.types';
 
-export const relayCloseCodes = {
-	protocol: 4400,
-	unauthorized: 4401,
-	idle: 4408,
-	replaced: 4409,
-	tooLarge: 4413,
-	rateLimited: 4429
-} as const;
-/** Request headers of `GET /v1/hosts/{hostId}/connect`, beside `Authorization: Bearer`. */
-export const relayHeaders = { role: 'X-Harness-Role', device: 'X-Harness-Device' } as const;
 export type RelayErrorCode =
 	| 'not-found'
 	| 'invalid-input'
@@ -23,6 +13,7 @@ export type RelayErrorCode =
 	| 'rate-limited';
 
 export type RelayPairingState = 'open' | 'requested' | 'approved' | 'denied' | 'expired';
+
 export interface RelayPairingInfo {
 	hostId: string;
 	pairingId: string;
@@ -30,16 +21,19 @@ export interface RelayPairingInfo {
 	state: RelayPairingState;
 	expiresAt: string;
 }
+
 /** `challenge` = base64url(SHA-256(utf8(verifier))). */
 export interface RelayPairingRequest {
 	ephemeralKey: string;
 	sealed: string;
 	challenge: string;
 }
+
 export interface RelayPairingPoll {
 	state: RelayPairingState;
 	expiresAt: string;
 }
+
 /** Returned exactly once. `credential` goes to the OS key store and nowhere else. */
 export interface RelayPairingExchange {
 	deviceId: string;
@@ -87,14 +81,17 @@ export interface RelayManageOwner {
 	owner: { id: string };
 	hostId: string;
 }
+
 export interface RelayManageRegister extends RelayManageOwner {
 	hostKey: string;
 	credentialHash: string;
 	name: string;
 }
+
 export interface RelayManageDevice extends RelayManageOwner {
 	deviceId: string;
 }
+
 export interface RelayRegistered {
 	hostId: string;
 	generation: number;
@@ -105,6 +102,7 @@ export interface RelayRegistered {
 export interface RemoteHostRegistration extends RelayRegistered {
 	origin: string;
 }
+
 /** Hub `POST /api/remote/hosts` body. */
 export interface RemoteHostRegisterInput {
 	hostId: string;
@@ -112,6 +110,7 @@ export interface RemoteHostRegisterInput {
 	credentialHash: string;
 	name: string;
 }
+
 export interface RemoteHostSummary {
 	hostId: string;
 	name: string;
@@ -120,3 +119,4 @@ export interface RemoteHostSummary {
 	registeredAt: string;
 	devices: { deviceId: string; online: boolean; createdAt: string; lastSeenAt: string | null }[];
 }
+export { relayCloseCodes, relayHeaders } from './RemoteRelayValues';

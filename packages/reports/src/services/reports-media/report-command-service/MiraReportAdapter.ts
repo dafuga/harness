@@ -1,15 +1,7 @@
+import type { MiraAsset, MiraFinding } from './MiraReportAdapter.types';
 import { dirname, join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import type { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
-type MiraAsset = {
-	number: number;
-	file: string;
-	caption: string;
-	category: string;
-	source?: string;
-	capturedAt?: string;
-};
-type MiraFinding = { id: string; status: string; detail: string };
 export class MiraReportAdapter {
 	async ingest(store: ReportRepository, id: string, file: string, findingsFile?: string) {
 		const assets = JSON.parse(await readFile(file, 'utf8')) as MiraAsset[];

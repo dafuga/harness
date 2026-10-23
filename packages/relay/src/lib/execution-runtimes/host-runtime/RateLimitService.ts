@@ -1,11 +1,6 @@
+import type { RateStore } from './RateLimitService.types';
 import { relayConfig } from '../../../configs/networking-security/relayConfig';
-import type { RateBucket, RateRecord } from '../../../models/networking-security/RelayHost.types';
-
-/** Where the windows are kept: the storage of the host object, so that they outlive its memory. */
-export interface RateStore {
-	rate(bucket: RateBucket): RateRecord | undefined;
-	saveRate(bucket: RateBucket, record: RateRecord): void;
-}
+import type { RateBucket } from '../../../models/networking-security/RelayHost.types';
 
 /** A fixed-window limit per host object and bucket. */
 export class RateLimitService {
@@ -25,3 +20,5 @@ export class RateLimitService {
 		return true;
 	}
 }
+
+export type { RateStore } from './RateLimitService.types';

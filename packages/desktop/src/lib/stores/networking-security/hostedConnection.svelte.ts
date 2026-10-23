@@ -102,4 +102,6 @@ function principal(status: NativeHostedStatus | null) {
 export function createHostedConnectionStore(workspace: Workspace) {
 	return new HostedConnectionState(workspace);
 }
-export type HostedConnection = HostedConnectionState;
+
+export type { HostedConnection } from './hostedConnection.svelte.types';
+export type { HostedConnectionState };

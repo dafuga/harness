@@ -7,8 +7,24 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/recordView.ts", "src/utils/recordView.ts"],
-		"symbols": ["ResolvedMedia", "MediaResolver", "RecordView", "recordView", "recordView"]
+		"source": [
+			"src/utils/development-tooling/recordView.ts",
+			"src/utils/development-tooling/recordView.types.ts",
+			"src/utils/recordView.ts"
+		],
+		"symbols": [
+			"recordView",
+			"ResolvedMedia",
+			"MediaResolver",
+			"RecordView",
+			"Scenario",
+			"Capture",
+			"DiagnosticTest",
+			"ResolvedMedia",
+			"MediaResolver",
+			"RecordView",
+			"recordView"
+		]
 	},
 	"contract": {
 		"origin": "declared",

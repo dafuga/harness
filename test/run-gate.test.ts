@@ -1,3 +1,4 @@
+import type { Owner } from './run-gate.test.types';
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -18,7 +19,6 @@ afterAll(() => rmSync(scratch, { recursive: true, force: true }));
 
 /** A run directory owned by a process of its own, ended by the real teardown when told to. */
 const owner = (gate?: string) => started(scratch, gate);
-type Owner = Awaited<ReturnType<typeof owner>>;
 /** What a run keeps: its history, the media named by their hash, and its frozen build. */
 function kept(run: Owner) {
 	const meta = join(run.root, 'console', 'meta.json');

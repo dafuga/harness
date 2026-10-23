@@ -9,16 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/components/accounts-access/login-panel/googleButton.ts",
+			"packages/hub/src/components/accounts-access/login-panel/googleButton.types.ts",
 			"packages/hub/src/components/login-panel/googleButton.ts",
 			"packages/hub/src/utils/accounts-access/googleButton.ts",
+			"packages/hub/src/utils/accounts-access/googleButton.types.ts",
 			"packages/hub/src/utils/googleButton.ts"
 		],
 		"symbols": [
 			"googleButton",
+			"GoogleIdentity",
 			"googleButton",
 			"googleIdentityScript",
-			"GoogleButton",
 			"googleButton",
+			"GoogleButton",
+			"GoogleButton",
 			"googleButton",
 			"googleIdentityScript"
 		]

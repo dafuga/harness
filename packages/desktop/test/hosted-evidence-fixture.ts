@@ -1,3 +1,4 @@
+import type { AnswerAt, Pins, HubState } from './hosted-evidence-fixture.types';
 import { createHash } from 'node:crypto';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { mkdtemp, readdir, rm } from 'node:fs/promises';
@@ -27,16 +28,6 @@ export const asked = {
 	branch: 'main',
 	mode: 'commit' as const
 };
-export interface Pins {
-	notesRevision: string | null;
-	evidenceRevision: string | null;
-}
-export interface AnswerAt extends Pins {
-	principalId: string;
-	projectId: string;
-	mode: 'current' | 'commit';
-	entityId: string;
-}
 const usual: AnswerAt = {
 	principalId: 'alice',
 	projectId: 'p',
@@ -88,22 +79,6 @@ export function hubAnswer(at: Partial<AnswerAt> = {}): EntityEvidenceResult {
 	const scope = sampleScope(read.entityId, read.mode);
 	const answer = recordedAnswer({ scope, identity, revisions });
 	return JSON.parse(JSON.stringify(answer));
-}
-
-export interface HubState {
-	/** Who the kept session says it is, and who the hub says that session is. */
-	principal: string;
-	actor: string;
-	/** What every project route answers when it is not 200, with the public code it states. */
-	status: number;
-	error: string;
-	/** The revisions the hub reads notes and evidence at. */
-	notes: string | null;
-	evidence: string | null;
-	/** Stands in for the evidence answer, for a test that sends something else. */
-	answer: ((projectId: string) => unknown) | null;
-	artifact: { bytes: Uint8Array; mediaType: string };
-	seen: Array<{ url: string; authorization: string | undefined }>;
 }
 
 function json(response: ServerResponse, status: number, value: unknown) {
@@ -186,3 +161,5 @@ export async function hubFixture() {
 		}
 	};
 }
+
+export type { Pins, AnswerAt, HubState } from './hosted-evidence-fixture.types';

@@ -1,3 +1,4 @@
+import type { View } from './unitLinks.types';
 import type { UnitLink } from '../../../utils/explorer-ui/unitLinks';
 import { explorerName } from '../../../../../reports/src/utils/explorerName';
 import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
@@ -12,13 +13,6 @@ function indexed(entities: CatalogEntity[]): Map<string, CatalogEntity> {
 	let index = indexes.get(entities);
 	if (!index) indexes.set(entities, (index = new Map(entities.map((unit) => [unit.id, unit]))));
 	return index;
-}
-
-interface View {
-	projectId: string | null;
-	branch: string;
-	commit: string;
-	pinned: boolean;
 }
 
 /** The project, branch and commit in view, and whether the address pins that commit. */

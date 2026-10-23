@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"src/core/verification-evidence/verificationTypes.ts",
+			"src/core/verification-evidence/verificationTypes.types.ts",
 			"src/core/verificationTypes.ts"
 		],
 		"symbols": [
@@ -19,6 +20,13 @@
 			"componentVersionSchema",
 			"measurementSchema",
 			"verificationRecordSchema",
+			"Capture",
+			"ScenarioResult",
+			"VerificationProfile",
+			"BudgetFinding",
+			"RecordedComponent",
+			"Measurement",
+			"VerificationRecord",
 			"Capture",
 			"ScenarioResult",
 			"VerificationProfile",

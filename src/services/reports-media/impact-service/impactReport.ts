@@ -1,8 +1,8 @@
+import type { Assembly } from './impactReport.types';
 import { graphTests, testFile } from '../../../utils/reports-media/impactReport';
-import type { ImpactReport, ImpactSide } from '../../../core/development-tooling/impactTypes';
-import type { AffectedNode, ImpactOutput } from '../../../core/execution-runtimes/kernelTypes';
+import type { ImpactReport } from '../../../core/development-tooling/impactTypes';
+import type { AffectedNode } from '../../../core/execution-runtimes/kernelTypes';
 import type { UncertainNode } from '../../../core/development-tooling/sourceTypes';
-import type { ImpactSeeds } from '../../../utils/reports-media/impactSeeds';
 
 const sortedUnique = (values: Iterable<string>): string[] => [...new Set(values)].sort();
 
@@ -10,12 +10,6 @@ function ids(affected: AffectedNode[], prefix: string, keep: (node: AffectedNode
 	return affected
 		.filter((node) => node.id.startsWith(prefix) && keep(node))
 		.map((node) => node.id.slice(prefix.length));
-}
-
-interface Assembly {
-	sides: { base: ImpactSide; head: ImpactSide };
-	seeds: ImpactSeeds;
-	output: ImpactOutput;
 }
 
 /** Everything that widened selection: unbounded changes, uncovered files, uncertain aliases. */

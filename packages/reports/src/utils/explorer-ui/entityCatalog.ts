@@ -1,7 +1,6 @@
+import type { CatalogOrder, Relations, CatalogRow } from './entityCatalog.types';
 import { helperContract } from '../../../../../src/utils/helperContract';
 import { explorerCategory } from './explorerCategory';
-import type { CatalogOrder, CatalogRow, Relations } from './entityCatalog.types';
-export type { CatalogFilter, CatalogOrder, CatalogRow } from './entityCatalog.types';
 import type { ExplorerCategory, ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 
 export const catalogOrders = ['name', 'name-desc', 'changed', 'failed'] as const;
@@ -185,3 +184,5 @@ export function listed(names: string[], most = 1): string {
 }
 
 export { catalogFilter } from '../../components/explorer-ui/explorer-index/entityCatalog';
+
+export type { CatalogRow, CatalogOrder, CatalogFilter } from './entityCatalog.types';

@@ -9,12 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.types.ts",
 			"packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts"
 		],
 		"symbols": [
 			"plannedBefore",
 			"ProjectRunService",
 			"ProjectRunService.run",
+			"Progress",
+			"Host",
 			"plannedBefore",
 			"ProjectRunService"
 		]

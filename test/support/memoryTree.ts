@@ -1,3 +1,4 @@
+import type { Indexed } from './memoryTree.types';
 import { scanExports } from '../../src/utils/scanExports';
 import { existsSync, readFileSync } from 'node:fs';
 import { posix, resolve } from 'node:path';
@@ -6,14 +7,8 @@ import { createHash } from 'node:crypto';
 import type { SourceTree } from '../../src/core/sourceTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../src/core/unitsConfig';
-import {
-	SourceIndexService,
-	type SourceIndex
-} from '../../src/services/source-index-service/SourceIndexService';
-import {
-	UnitIndexService,
-	type UnitIndexResult
-} from '../../src/services/unit-index-service/UnitIndexService';
+import { SourceIndexService } from '../../src/services/source-index-service/SourceIndexService';
+import { UnitIndexService } from '../../src/services/unit-index-service/UnitIndexService';
 
 export function memoryTree(files: Record<string, string>): SourceTree {
 	return {
@@ -27,11 +22,6 @@ export function memoryTree(files: Record<string, string>): SourceTree {
 			),
 		read: (path) => Promise.resolve(files[path])
 	};
-}
-
-export interface Indexed {
-	index: SourceIndex;
-	result: UnitIndexResult;
 }
 
 export async function indexFiles(
@@ -193,3 +183,5 @@ export function serviceMoveGaps(services: {
 	}
 	return gaps;
 }
+
+export type { Indexed } from './memoryTree.types';

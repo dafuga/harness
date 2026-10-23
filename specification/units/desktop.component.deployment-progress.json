@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/DeploymentProgress.svelte",
-			"packages/desktop/src/components/development-tooling/DeploymentProgress.svelte"
+			"packages/desktop/src/components/development-tooling/DeploymentProgress.svelte",
+			"packages/desktop/src/components/development-tooling/DeploymentProgress.types.ts"
 		],
-		"symbols": ["DeploymentProgress", "DeploymentProgress"]
+		"symbols": ["DeploymentProgress", "DeploymentProgress", "Mark"]
 	},
 	"contract": {
 		"origin": "declared",

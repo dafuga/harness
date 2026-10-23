@@ -9,16 +9,18 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/ProjectSyncService.ts",
-			"packages/desktop/src/services/projects-sessions/ProjectSyncService.ts"
+			"packages/desktop/src/services/projects-sessions/ProjectSyncService.ts",
+			"packages/desktop/src/services/projects-sessions/ProjectSyncService.types.ts"
 		],
 		"symbols": [
 			"ProjectSyncService",
-			"ProjectSyncOptions",
 			"ProjectSyncService",
 			"ProjectSyncService.constructor",
 			"ProjectSyncService.start",
 			"ProjectSyncService.stop",
-			"ProjectSyncService.sync"
+			"ProjectSyncService.sync",
+			"ProjectSyncOptions",
+			"ProjectSyncOptions"
 		]
 	},
 	"contract": {

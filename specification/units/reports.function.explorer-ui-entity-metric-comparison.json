@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorer-ui/entityMetricComparison.ts"],
-		"symbols": ["entityMetricComparison"]
+		"source": [
+			"packages/reports/src/utils/explorer-ui/entityMetricComparison.ts",
+			"packages/reports/src/utils/explorer-ui/entityMetricComparison.types.ts"
+		],
+		"symbols": ["entityMetricComparison", "MetricHost"]
 	},
 	"contract": {
 		"origin": "declared",

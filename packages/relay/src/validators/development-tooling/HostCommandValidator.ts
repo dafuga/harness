@@ -1,9 +1,8 @@
+import type { Check } from './HostCommandValidator.types';
 import { remotePatterns, SecurePacketValidator } from '../../../../remote/src/index';
 import type { RelayHostCommand } from '../../../../remote/src/index';
 import { isRecord } from '../../utils/development-tooling/isRecord';
 import { matchesPattern } from '../../utils/development-tooling/matchesPattern';
-
-type Check = (value: unknown) => boolean;
 
 const packets = new SecurePacketValidator();
 const instantPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/;

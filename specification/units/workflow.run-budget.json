@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"src/workflows/run-budget/runBudget.ts",
-			"src/workflows/verification-evidence/run-budget/runBudget.ts"
+			"src/workflows/verification-evidence/run-budget/runBudget.ts",
+			"src/workflows/verification-evidence/run-budget/runBudget.types.ts"
 		],
 		"symbols": [
 			"loadBudgets",
@@ -17,13 +18,16 @@
 			"budgetHistory",
 			"budgetStatus",
 			"budgetBench",
-			"SignedInput",
 			"loadBudgets",
 			"budgetMeasure",
 			"budgetHistory",
 			"budgetStatus",
+			"budgetBench",
+			"SignedInput",
 			"BenchInput",
-			"budgetBench"
+			"SignedInput",
+			"Loaded",
+			"BenchInput"
 		]
 	},
 	"contract": {

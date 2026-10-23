@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/validators/SecurePacketValidator.ts",
-			"packages/remote/src/validators/networking-security/SecurePacketValidator.ts"
+			"packages/remote/src/validators/networking-security/SecurePacketValidator.ts",
+			"packages/remote/src/validators/networking-security/SecurePacketValidator.types.ts"
 		],
 		"symbols": [
 			"SecurePacketValidator",
 			"SecurePacketValidator",
 			"SecurePacketValidator.packet",
-			"SecurePacketValidator.text"
+			"SecurePacketValidator.text",
+			"Check"
 		]
 	},
 	"contract": {

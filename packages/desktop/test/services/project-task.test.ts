@@ -1,3 +1,4 @@
+import type { Fixture } from './project-task.test.types';
 import { expect } from '../../../../test/verificationExpect';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -5,8 +6,6 @@ import { test, vi } from 'vitest';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type { ProjectTaskRequest } from '../../src/models/DesktopBridge.types';
 import { fixture, git } from '../run-fixture';
-
-type Fixture = Awaited<ReturnType<typeof fixture>>;
 const target = 'fixture.function.requested';
 const reference = `[[unit:${target}]]`;
 function units(f: Fixture, many = false) {

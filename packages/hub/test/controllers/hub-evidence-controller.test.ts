@@ -1,3 +1,4 @@
+import type { Fields } from './hub-evidence-controller.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import type { EntityEvidenceResult } from '../../../desktop/src/models/DesktopEvidence.types';
@@ -12,8 +13,6 @@ import {
 	type EvidenceFixture
 } from '../support/evidenceFixture';
 import { clock, png, sha256 } from '../support/evidenceRecords';
-
-type Fields = Record<string, string | null | undefined>;
 const tipOf = (f: EvidenceFixture) => asked(f.commits.changed, 'verified', 'current');
 
 /** A request as the client sends it: a field that is null is left out of the address. */

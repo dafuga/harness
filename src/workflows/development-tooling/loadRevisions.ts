@@ -1,41 +1,16 @@
+import type { RevisionSide, RevisionRange } from './loadRevisions.types';
 import { resolve } from 'node:path';
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { WorkingTreeAdapter } from '../../adapters/git-source-history/WorkingTreeAdapter';
 import { fail } from '../../core/development-tooling/errors';
 import { evidenceMarker } from '../../core/git-source-history/historyTypes';
-import type { ImpactSide } from '../../core/development-tooling/impactTypes';
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
-import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { defaultUnitsConfig } from '../../core/development-tooling/unitsConfig';
 import { verifyConfigFile } from '../../core/verification-evidence/verifyTypes';
-import {
-	SourceIndexService,
-	type SourceIndex
-} from '../../services/development-tooling/source-index-service/SourceIndexService';
-import {
-	writingHeld,
-	type WritingVersion
-} from '../../utils/git-source-history/writing-limits/writingLimits';
+import { SourceIndexService } from '../../services/development-tooling/source-index-service/SourceIndexService';
+import { writingHeld } from '../../utils/git-source-history/writing-limits/writingLimits';
 import { graphOf, loadUnits } from './load-units/loadUnits';
-
-/** One revision with everything impact, reasons and measurements read from it. */
-export interface RevisionSide extends ImpactSide {
-	index: SourceIndex;
-	/** Manifests exactly as stored at the revision, before reconciliation with source. */
-	stored: ComponentManifest[];
-	tree?: SourceTree;
-	/** The version of the writing limits the verification config of the revision declares. */
-	writing?: WritingVersion | null;
-}
-
-export interface RevisionRange {
-	root?: string;
-	/** Revision to compare from; `HEAD` by default, `none` for an empty starting point. */
-	base?: string;
-	/** Revision to compare to; the working tree when omitted. */
-	head?: string;
-}
 
 /** Uses the reconciled registry so files a stale manifest misses are still owned. */
 export async function loadSide(
@@ -102,3 +77,5 @@ export function commitLoader(root: string): (commit: string) => Promise<Revision
 	const indexer = new SourceIndexService();
 	return async (commit) => loadSide(root, await CommitTreeAdapter.open(root, commit), indexer);
 }
+
+export type { RevisionSide, RevisionRange } from './loadRevisions.types';

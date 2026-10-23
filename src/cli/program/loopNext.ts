@@ -1,22 +1,9 @@
+import type { NextLoopStepInput, NextLoopStepResult } from './loopNext.types';
 import {
 	loopPaths,
 	loopRoot,
-	readLoop,
-	type LoopEvaluator,
-	type LoopInput,
-	type LoopStep
+	readLoop
 } from '../../workflows/development-tooling/loop-state/loopState';
-
-export interface NextLoopStepInput extends LoopInput {
-	loop: string;
-}
-
-export interface NextLoopStepResult {
-	loop: string;
-	tracePath: string;
-	step?: LoopStep;
-	evaluator?: LoopEvaluator;
-}
 
 export async function nextLoopStep(input: NextLoopStepInput): Promise<NextLoopStepResult> {
 	const root = loopRoot(input);
@@ -36,3 +23,5 @@ export function renderNextLoopStep(result: NextLoopStepResult): string {
 	if (result.evaluator) lines.push(`Evaluator: ${result.evaluator.command}`);
 	return lines.join('\n');
 }
+
+export type { NextLoopStepInput, NextLoopStepResult } from './loopNext.types';

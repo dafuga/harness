@@ -9,6 +9,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/agents-providers/codex-rpc/rpcMessages.ts",
+			"packages/desktop/src/utils/agents-providers/codex-rpc/rpcMessages.types.ts",
 			"packages/desktop/src/utils/agents-providers/rpcMessages.ts",
 			"packages/desktop/src/utils/codex-rpc/rpcMessages.ts",
 			"packages/desktop/src/utils/rpcMessages.ts"
@@ -16,6 +17,7 @@
 		"symbols": [
 			"rpcMessages",
 			"rpcRequest",
+			"RpcState",
 			"RpcEvent",
 			"RpcPending",
 			"rpcMessages",

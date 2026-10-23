@@ -1,7 +1,6 @@
+import type { ScanFailure } from './scanNotice.types';
 import { remoteScanFailures } from '../../../../../remote/src/models/RemoteControl.types';
 import type { RemoteScanFailure } from '../../../../../remote/src/models/RemoteControl.types';
-
-export type ScanFailure = RemoteScanFailure;
 
 export const scanFailures: readonly ScanFailure[] = remoteScanFailures;
 
@@ -38,3 +37,5 @@ export function phoneName(value: string): string | null {
 	const name = value.trim();
 	return name && name.length <= 80 ? name : null;
 }
+
+export type { ScanFailure } from './scanNotice.types';

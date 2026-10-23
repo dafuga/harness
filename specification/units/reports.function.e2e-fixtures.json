@@ -9,16 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/development-tooling/e2e-fixtures/e2eFixtures.ts",
+			"packages/reports/src/utils/development-tooling/e2e-fixtures/e2eFixtures.types.ts",
 			"packages/reports/src/utils/e2e-fixtures/e2eFixtures.ts",
 			"packages/reports/src/utils/e2eFixtures.ts"
 		],
 		"symbols": [
-			"E2eFixtures",
 			"e2eFixtures",
 			"freePorts",
 			"openE2eRun",
 			"namedE2eRun",
 			"closeE2eRun",
+			"E2eFixtures",
+			"Environment",
+			"E2eFixtures",
 			"e2eFixtures",
 			"freePorts",
 			"openE2eRun",

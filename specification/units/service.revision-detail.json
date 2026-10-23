@@ -9,15 +9,19 @@
 	"owns": {
 		"source": [
 			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.ts",
+			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.types.ts",
 			"src/services/revision-detail-service/RevisionDetailService.ts"
 		],
 		"symbols": [
-			"RevisionDetail",
-			"BuiltRevision",
 			"revisionSources",
 			"RevisionDetailService",
 			"RevisionDetailService.constructor",
 			"RevisionDetailService.build",
+			"RevisionDetail",
+			"BuiltRevision",
+			"RevisionDetail",
+			"Stored",
+			"BuiltRevision",
 			"revisionSources",
 			"RevisionDetailService"
 		]

@@ -1,26 +1,43 @@
+import { measureWorkload } from './support/measureWorkload';
+import { check } from 'prettier';
+import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
 import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
 import { posix } from 'node:path';
 import { expect, test } from 'vitest';
 import { pieceFiles } from '../src/templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../src/templates/scaffoldTypes';
-import { measureWorkload } from './support/measureWorkload';
 
 test.each(['2d', '3d'] as const)(
 	'every scaffold kind creates at least one file in a %s project',
 	async (dimension) => {
-		for (const kind of scaffoldKinds) {
-			const files = pieceFiles(kind, 'BlogPost', { dimension });
-			expect(files.length, kind).toBeGreaterThan(0);
-			for (const plan of pieceExportPlans(kind, 'BlogPost'))
-				expect(
-					files.map((file) => file.path),
-					'Every public export targets an emitted scaffold'
-				).toContain(posix.normalize(`src/${plan.source}.ts`));
-			expect(
-				files.every((file) => file.path.length > 0 && file.contents.length > 0),
-				kind
-			).toBe(true);
-		}
+		for (const kind of scaffoldKinds)
+			await measureWorkload(
+				kind === 'resource'
+					? 'template.model'
+					: 'template.development-tooling-separate-type-declarations',
+				`generate-formatted-${kind}-${dimension}`,
+				async () => {
+					const files = pieceFiles(kind, 'BlogPost', { dimension });
+					const options = JSON.parse(
+						formatConfigFiles().find((file) => file.path === '.prettierrc')!.contents
+					);
+					for (const file of files.filter((file) => file.path.endsWith('.ts')))
+						expect(
+							await check(file.contents, { ...options, filepath: file.path }),
+							`Generated TypeScript follows the emitted project formatter: ${file.path}`
+						).toBe(true);
+					expect(files.length, kind).toBeGreaterThan(0);
+					for (const plan of pieceExportPlans(kind, 'BlogPost'))
+						expect(
+							files.map((file) => file.path),
+							'Every public export targets an emitted scaffold'
+						).toContain(posix.normalize(`src/${plan.source}.ts`));
+					expect(
+						files.every((file) => file.path.length > 0 && file.contents.length > 0),
+						kind
+					).toBe(true);
+				}
+			);
 		const [view] = await measureWorkload('template.game-pieces', `game-view-${dimension}`, () =>
 			pieceFiles('game-view', 'BlogPost', { dimension })
 		);

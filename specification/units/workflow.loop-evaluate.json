@@ -7,13 +7,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/loopEvaluate.ts", "src/workflows/loopEvaluate.ts"],
+		"source": [
+			"src/cli/program/loopEvaluate.ts",
+			"src/cli/program/loopEvaluate.types.ts",
+			"src/workflows/loopEvaluate.ts"
+		],
 		"symbols": [
+			"evaluateLoop",
+			"renderLoopEvaluation",
 			"LoopEvaluationResult",
 			"LoopCommandResult",
 			"EvaluateLoopInput",
-			"evaluateLoop",
-			"renderLoopEvaluation",
+			"LoopEvaluationResult",
+			"LoopCommandResult",
+			"EvaluateLoopInput",
 			"evaluateLoop",
 			"renderLoopEvaluation",
 			"LoopEvaluationResult",

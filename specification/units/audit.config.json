@@ -7,13 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/config.ts", "src/audit/development-tooling/config.ts"],
+		"source": [
+			"src/audit/config.ts",
+			"src/audit/development-tooling/config.ts",
+			"src/audit/development-tooling/config.types.ts"
+		],
 		"symbols": [
 			"readAuditConfig",
 			"filterIgnoredFindings",
-			"ResolvedAuditConfig",
 			"readAuditConfig",
-			"filterIgnoredFindings"
+			"filterIgnoredFindings",
+			"ResolvedAuditConfig",
+			"ResolvedAuditConfig"
 		]
 	},
 	"contract": {

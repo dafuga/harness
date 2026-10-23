@@ -1,3 +1,4 @@
+import type { Request } from './GameImageService.types';
 import { GameDocumentRepository } from '../../../../../game/src/repositories/game-authoring/GameDocumentRepository';
 import { CheckpointImageRepository } from '../../../../../game/src/repositories/game-authoring/CheckpointImageRepository';
 import { GptImageAdapter } from '../../../../../game/src/adapters/agents-providers/GptImageAdapter';
@@ -6,7 +7,6 @@ import type { CheckpointImage } from '../../../../../game/src/models/game-author
 import type { GameDesktopBridge } from '../../../models/game-authoring/GameDesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProjectGameCredentialAdapter } from '../../../adapters/game-authoring/ProjectGameCredentialAdapter';
-type Request = Parameters<NonNullable<GameDesktopBridge['gameImageGenerate']>>[0];
 const active = new Set<string>();
 export class GameImageService {
 	constructor(

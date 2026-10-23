@@ -1,6 +1,5 @@
+import type { Side } from './sealRecord.types';
 import type { ImpactReport } from '../../../../../core/development-tooling/impactTypes';
-import type { SourceFile } from '../../../../../core/development-tooling/sourceTypes';
-import type { ComponentManifest } from '../../../../../core/development-tooling/unitTypes';
 import type {
 	Measurement,
 	RecordedComponent
@@ -8,11 +7,6 @@ import type {
 import { benchmarkCaptureSchema } from '../../../../../core/verification-evidence/verifyTypes';
 import { componentVersion } from '../../../../../utils/development-tooling/componentVersion';
 import type { Gathered } from '../../../../../utils/verification-evidence/gatherCaptures';
-
-interface Side {
-	manifests: ComponentManifest[];
-	index: { files: Map<string, SourceFile> };
-}
 
 /** The exact version of every unit a verification tested or measured. */
 export function recordComponents(

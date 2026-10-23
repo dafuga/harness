@@ -9,18 +9,23 @@
 	"owns": {
 		"source": [
 			"src/services/BuildIdentityService.ts",
-			"src/services/verification-evidence/BuildIdentityService.ts"
+			"src/services/verification-evidence/BuildIdentityService.ts",
+			"src/services/verification-evidence/BuildIdentityService.types.ts"
 		],
 		"symbols": [
 			"BuildIdentityService",
-			"IdentifiedBuild",
-			"DeclaredBuild",
-			"BuiltIdentity",
 			"BuildIdentityService",
 			"BuildIdentityService.declared",
 			"BuildIdentityService.changed",
 			"BuildIdentityService.identify",
-			"BuildIdentityService.stamp"
+			"BuildIdentityService.stamp",
+			"IdentifiedBuild",
+			"DeclaredBuild",
+			"BuiltIdentity",
+			"IdentifiedBuild",
+			"Scanned",
+			"DeclaredBuild",
+			"BuiltIdentity"
 		]
 	},
 	"contract": {

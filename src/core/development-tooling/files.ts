@@ -1,21 +1,12 @@
+import type {
+	PlannedFile,
+	WriteFilesOptions,
+	FileWriteResult,
+	FileWriteStatus
+} from './files.types';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fail } from './errors';
-
-export interface PlannedFile {
-	path: string;
-	contents: string;
-}
-
-export type FileWriteStatus = 'created' | 'skipped' | 'overwritten';
-
-export interface FileWriteResult extends PlannedFile {
-	status: FileWriteStatus;
-}
-
-export interface WriteFilesOptions {
-	force?: boolean;
-}
 
 export async function writePlannedFiles(
 	root: string,
@@ -98,3 +89,10 @@ function statusLabel(status: FileWriteStatus): string {
 
 	return 'skip';
 }
+
+export type {
+	PlannedFile,
+	FileWriteStatus,
+	FileWriteResult,
+	WriteFilesOptions
+} from './files.types';

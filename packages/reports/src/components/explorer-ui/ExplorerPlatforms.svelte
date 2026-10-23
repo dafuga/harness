@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Card } from "./ExplorerPlatforms.types";
+
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
@@ -22,11 +24,6 @@
 		unrecorded
 	} from '../../utils/explorer-ui/explorer-platforms/platformStatus';
 	let host: ExplorerScreenProps = $props();
-	type Card = (typeof platformViews)[number] & {
-		entry?: PlatformEntry;
-		status: ReturnType<typeof platformStatus>;
-		tally: string;
-	};
 	const label = entityLabels.platforms;
 	const statuses = [
 		['all', 'All statuses'],
@@ -74,6 +71,7 @@
 		filter.search = '';
 		status = 'all';
 	}
+
 </script>
 
 {#snippet statusFilter()}

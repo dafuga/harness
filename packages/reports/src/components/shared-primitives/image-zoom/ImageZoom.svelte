@@ -1,10 +1,9 @@
 <script lang="ts">
+	import type { DragStart, Point } from "./ImageZoom.types";
 	import { tick } from 'svelte';
 	import { t } from '../../../utils/reports-media/reportLocale';
 	import { imageAnchor, keepPointerInPlace } from './trackpadZoom';
 	import { trackpadZoom } from '../../../utils/shared-primitives/trackpadZoom';
-	type Point = { x: number; y: number };
-	type DragStart = Point & { left: number; top: number };
 	let { src, alt }: { src: string; alt: string } = $props();
 
 	// Scales are multiples of the image's natural pixels; null means fitted to the viewer.

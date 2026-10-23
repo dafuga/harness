@@ -10,6 +10,7 @@
 		"source": [
 			"packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
 			"packages/reports/src/utils/explorer-ui/focusView.ts",
+			"packages/reports/src/utils/explorer-ui/focusView.types.ts",
 			"packages/reports/src/utils/focusView.ts"
 		],
 		"symbols": [
@@ -19,7 +20,6 @@
 			"panView",
 			"drawnEdges",
 			"nextNode",
-			"MapView",
 			"pad",
 			"wholeView",
 			"focusView",
@@ -28,6 +28,8 @@
 			"panView",
 			"drawnEdges",
 			"nextNode",
+			"MapView",
+			"MapView",
 			"focusView",
 			"focusOn",
 			"zoomView",

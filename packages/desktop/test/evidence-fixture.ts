@@ -1,3 +1,4 @@
+import type { BridgeOptions, Reads } from './evidence-fixture.types';
 import type { Component } from 'svelte';
 import { render } from 'svelte/server';
 import { vi } from 'vitest';
@@ -15,13 +16,6 @@ import {
 } from '../tests/e2e/ui-evidence-data';
 
 export * from '../tests/e2e/ui-evidence-data';
-type Reads = Required<Pick<DesktopBridge, 'evidence' | 'artifact'>>;
-export interface BridgeOptions {
-	/** Hashes whose bytes arrive damaged, though the answer states the recorded hash. */
-	corrupt?: string[];
-	/** Hashes the backend gives no bytes for. */
-	refuse?: string[];
-}
 export const refusal = 'The pinned evidence changed; read the entity again.';
 export const data = evidenceData();
 
@@ -84,3 +78,5 @@ export function drawn<Props extends Record<string, unknown>>(
 /** The entity of the synthetic project as the viewer is given it. */
 export const entityOf = (id: string) =>
 	data.entities.find((item) => item.id === id) as unknown as EntityDetail;
+
+export type { BridgeOptions } from './evidence-fixture.types';

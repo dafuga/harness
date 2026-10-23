@@ -1,11 +1,6 @@
+import type { AgentCall } from './AgentHttpAdapter.types';
 import type { RunEvent, RevisionQuery } from '../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../models/development-tooling/Desktop.types';
-interface AgentCall {
-	method: string;
-	input: unknown;
-	requestId?: string;
-	revision?: { branch: string; commit: string };
-}
 /** Ignore volatile context when retrying an unacknowledged start; resend its original payload. */
 export function agentRequestKey(input: unknown): string {
 	const value = input as Record<string, unknown>;

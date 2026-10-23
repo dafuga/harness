@@ -1,18 +1,14 @@
+import type { AssemblyContext, AssemblyInput } from './RecordAssemblyService.types';
 import { sdkPackage } from '../../../../../utils/buildStamp';
 import type { ImpactReport } from '../../../../../core/impactTypes';
 import type { ComponentManifest } from '../../../../../core/unitTypes';
-import type { Measurement, ScenarioResult } from '../../../../../core/verificationTypes';
-import type {
-	VerificationProfile,
-	VerificationRecord
-} from '../../../../../core/verificationTypes';
+import type { Measurement } from '../../../../../core/verificationTypes';
+import type { VerificationRecord } from '../../../../../core/verificationTypes';
 import { BudgetLedgerRepository } from '../../../../../repositories/BudgetLedgerRepository';
-import type { VerificationStoreRepository } from '../../../../../repositories/VerificationStoreRepository';
 import { recordedBuilds } from './recordedBuilds';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { sealRecord } from '../../../../../utils/sealRecord';
 import { emittedTargets, unitMeasurements } from '../../../../../utils/unitMeasurements';
-import type { RevisionSide } from '../../../../loadRevisions';
 import { BudgetService } from '../../../../../services/budget-service/BudgetService';
 import type {
 	BudgetReport,
@@ -21,27 +17,6 @@ import type {
 import type { ReasonReport } from '../../../../../services/ExplanationService';
 import type { Executed } from '../SnapshotRunService';
 import { ledgerGate, registryGate } from './VerificationGates';
-export interface AssemblyContext {
-	root: string;
-	commit: string;
-	tree: string;
-	baseCommit: string | null;
-	baseRecord?: string;
-	requestedBase: string | null;
-	base: RevisionSide;
-	head: RevisionSide;
-	impact: ImpactReport;
-	profile: VerificationProfile;
-	store: VerificationStoreRepository;
-	/** Whether every change since the base is explained, directly or step by step. */
-	explained: () => Promise<ReasonReport>;
-}
-export interface AssemblyInput {
-	startedAt: string;
-	executed: Executed;
-	scenarios: Array<{ result: ScenarioResult; failures: string[] }>;
-	referenced: ScenarioResult[];
-}
 function outcome(failures: string[]): 'passed' | 'failed' {
 	return failures.length === 0 ? 'passed' : 'failed';
 }
@@ -210,3 +185,5 @@ function unmeasured(unit: string, testedRevision: string): Measurement[] {
 		)
 	];
 }
+
+export type { AssemblyContext, AssemblyInput } from './RecordAssemblyService.types';

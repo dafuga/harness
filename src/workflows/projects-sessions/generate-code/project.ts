@@ -1,16 +1,7 @@
+import type { PackageManifest } from './project.types';
 import type { DetectedProjectKind } from '../../../core/projects-sessions/project';
 import { access, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-
-interface PackageManifest {
-	harness?: {
-		kind?: string;
-		dimension?: string;
-	};
-	scripts?: Record<string, string>;
-	devDependencies?: Record<string, string>;
-	dependencies?: Record<string, string>;
-}
 
 export async function detectProjectKind(root: string): Promise<DetectedProjectKind> {
 	const manifest = await readPackage(root);

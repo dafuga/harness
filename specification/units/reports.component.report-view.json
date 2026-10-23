@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ReportView.svelte",
-			"packages/reports/src/components/reports-media/ReportView.svelte"
+			"packages/reports/src/components/reports-media/ReportView.svelte",
+			"packages/reports/src/components/reports-media/ReportView.types.ts"
 		],
-		"symbols": ["ReportView", "ReportView"]
+		"symbols": ["ReportView", "ReportView", "Detail"]
 	},
 	"contract": {
 		"origin": "declared",

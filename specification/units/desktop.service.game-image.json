@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/development-tooling/desktop-bridge/GameImageService.ts"],
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameImageService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameImageService.types.ts"
+		],
 		"symbols": [
 			"GameImageService",
 			"GameImageService.constructor",
 			"GameImageService.generate",
-			"GameImageService.read"
+			"GameImageService.read",
+			"Request"
 		]
 	},
 	"contract": {

@@ -9,14 +9,17 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/HarnessConsole.svelte",
-			"packages/reports/src/components/explorer-ui/harness-console/consoleView.ts"
+			"packages/reports/src/components/explorer-ui/harness-console/consoleView.ts",
+			"packages/reports/src/components/explorer-ui/harness-console/consoleView.types.ts"
 		],
 		"symbols": [
 			"HarnessConsole",
-			"ConsoleAnswer",
 			"consoleContentKey",
 			"consoleRelations",
-			"consoleView"
+			"consoleView",
+			"ConsoleAnswer",
+			"ConsoleAnswer",
+			"ViewInput"
 		]
 	},
 	"contract": {

@@ -9,12 +9,15 @@
 	"owns": {
 		"source": [
 			"src/configs/development-tooling/moduleGroupsConfig.ts",
+			"src/configs/development-tooling/moduleGroupsConfig.types.ts",
 			"src/configs/moduleGroupsConfig.ts"
 		],
 		"symbols": [
 			"moduleGroupsFile",
 			"moduleGroupConfig",
 			"moduleGroupsConfig",
+			"ModuleGroup",
+			"ModuleGroupsConfig",
 			"ModuleGroup",
 			"ModuleGroupsConfig",
 			"moduleGroupsFile",

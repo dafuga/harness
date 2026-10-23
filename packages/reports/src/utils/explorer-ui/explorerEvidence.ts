@@ -1,3 +1,4 @@
+import type { Named, ExplorerRevisions } from './explorerEvidence.types';
 import type {
 	ExplorerCapture,
 	ExplorerEvidence,
@@ -15,14 +16,6 @@ import { focusedCaptures, focusedScenario } from '../explorer-evidence/focusedCa
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { scenarioFor } from './explorerState';
 import { verdictCoverage, verdictRecord } from './explorer-verdict/explorerVerdict';
-
-/** The stored revisions a page has read: the shown one, and its first parent when it has one. */
-export interface ExplorerRevisions {
-	head: HarnessRevision;
-	/** Null when there is none or it is not stored; undefined while it is being read. */
-	parent: HarnessRevision | null | undefined;
-}
-type Named = { id: string };
 
 const short = (commit: string) => commit.slice(0, 7);
 const first = 'This is the first commit of its history: there is no parent to compare with.';
@@ -192,3 +185,5 @@ export function explorerEvidence(
 		incomparable: before ? incomparable(before, after, unit.id) : []
 	};
 }
+
+export type { ExplorerRevisions } from './explorerEvidence.types';

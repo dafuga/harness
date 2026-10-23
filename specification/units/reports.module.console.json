@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/lib/console.ts",
-			"packages/reports/src/lib/development-tooling/console.ts"
+			"packages/reports/src/lib/development-tooling/console.ts",
+			"packages/reports/src/lib/development-tooling/console.types.ts"
 		],
-		"symbols": []
+		"symbols": ["ConsoleOptions"]
 	},
 	"contract": {
 		"origin": "derived",

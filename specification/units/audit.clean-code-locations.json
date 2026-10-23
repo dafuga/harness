@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"src/audit/cleanCodeLocations.ts",
-			"src/audit/development-tooling/cleanCodeLocations.ts"
+			"src/audit/development-tooling/cleanCodeLocations.ts",
+			"src/audit/development-tooling/cleanCodeLocations.types.ts"
 		],
 		"symbols": [
 			"planReviewLocations",
 			"applyReviewLocations",
-			"LocationPlan",
 			"planReviewLocations",
-			"applyReviewLocations"
+			"applyReviewLocations",
+			"LocationPlan",
+			"LocationPlan"
 		]
 	},
 	"contract": {

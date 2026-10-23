@@ -1,3 +1,9 @@
+import type {
+	CreateLoopInput,
+	AddLoopStepInput,
+	CompleteLoopStepInput,
+	ReadLoopInput
+} from './manageLoop.types';
 import { resolveLoopTemplate } from '../../workflows/development-tooling/loop-templates/loopTemplates';
 import {
 	appendTrace,
@@ -9,7 +15,6 @@ import {
 	validateRequiredText,
 	writeLoop,
 	writeNewLoop,
-	type LoopInput,
 	type LoopState,
 	type LoopStatus,
 	type LoopStep
@@ -23,29 +28,6 @@ export {
 	type LoopStatus,
 	type LoopStep
 } from '../../workflows/development-tooling/loop-state/loopState';
-
-export interface CreateLoopInput extends LoopInput {
-	name: string;
-	goal: string;
-	from?: string;
-	agentModel?: string;
-}
-
-export interface AddLoopStepInput extends LoopInput {
-	loop: string;
-	step: string;
-	title: string;
-}
-
-export interface CompleteLoopStepInput extends LoopInput {
-	loop: string;
-	step: string;
-	evidence: string;
-}
-
-export interface ReadLoopInput extends LoopInput {
-	loop: string;
-}
 
 export async function createLoop(input: CreateLoopInput): Promise<LoopStatus> {
 	const root = loopRoot(input);
@@ -172,3 +154,10 @@ function renderStep(step: LoopStep): string[] {
 	if (step.evidence) lines.push(`    evidence: ${step.evidence}`);
 	return lines;
 }
+
+export type {
+	CreateLoopInput,
+	AddLoopStepInput,
+	CompleteLoopStepInput,
+	ReadLoopInput
+} from './manageLoop.types';

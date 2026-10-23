@@ -1,24 +1,8 @@
+import type { HubSourceContext } from './hubSource.types';
 import { hubRaw, hubMaterializedHash, hubBlobProfile } from './hubRaw';
 import { readCache, writeCache } from 'collaboration';
-import type {
-	Actor,
-	CacheIdentity,
-	CollaborationCache,
-	Project,
-	SourceEntry,
-	SourceHistoryAdapter
-} from 'collaboration';
+import type { Actor, CollaborationCache, Project, SourceHistoryAdapter } from 'collaboration';
 import { hubFail } from './hubJson';
-export interface HubSourceContext {
-	metadata?: Map<string, Uint8Array>;
-	metadataPending?: Promise<void>;
-	source: SourceHistoryAdapter;
-	repository: Project['sourceRepository'];
-	commit: string;
-	entries: SourceEntry[];
-	identity: CacheIdentity;
-	cache: CollaborationCache;
-}
 export async function hubSource(input: {
 	source: SourceHistoryAdapter;
 	cache: CollaborationCache;
@@ -80,3 +64,5 @@ export async function hubRead(
 	await writeCache(context.cache, identity, bytes);
 	return bytes;
 }
+
+export type { HubSourceContext } from './hubSource.types';

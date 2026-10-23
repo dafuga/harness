@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/DeploymentActivityService.ts",
-			"packages/desktop/src/services/development-tooling/DeploymentActivityService.ts"
+			"packages/desktop/src/services/development-tooling/DeploymentActivityService.ts",
+			"packages/desktop/src/services/development-tooling/DeploymentActivityService.types.ts"
 		],
 		"symbols": [
 			"DeploymentActivityService",
@@ -19,7 +20,9 @@
 			"DeploymentActivityService.idle",
 			"DeploymentActivityService.ensureCapacity",
 			"DeploymentActivityService.schedule",
-			"desktopDeployments"
+			"desktopDeployments",
+			"Work",
+			"Entry"
 		]
 	},
 	"contract": {

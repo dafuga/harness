@@ -10,9 +10,13 @@
 		"source": [
 			"packages/reports/src/helpers/strings/shortCommit.ts",
 			"packages/reports/src/utils/entityLens.ts",
-			"packages/reports/src/utils/explorer-ui/entityLens.ts"
+			"packages/reports/src/utils/explorer-ui/entityLens.ts",
+			"packages/reports/src/utils/explorer-ui/entityLens.types.ts"
 		],
 		"symbols": [
+			"shortCommit",
+			"entityLabels",
+			"entityLens",
 			"shortCommit",
 			"entityLabels",
 			"entityLens",
@@ -20,9 +24,10 @@
 			"EntityLens",
 			"EntityNav",
 			"EntityLabel",
-			"entityLabels",
-			"entityLens",
-			"shortCommit"
+			"EntityLens",
+			"EntityNav",
+			"EntityLabel",
+			"Target"
 		]
 	},
 	"contract": {

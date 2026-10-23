@@ -1,3 +1,4 @@
+import type { State } from './remotePhone.svelte.types';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 import type {
 	RemoteMobileControl,
@@ -20,8 +21,6 @@ import {
 } from '../../../utils/development-tooling/scan-notice/scanNotice';
 import type { ScanFailure } from '../../../utils/development-tooling/scan-notice/scanNotice';
 import { isWorkspacePath } from '../../../utils/projects-sessions/workspaceRoute';
-
-type State = RemoteMobileStatus['state'];
 /** Paired, but the computer cannot be asked right now. */
 const away: State[] = ['offline', 'connecting'];
 function path() {
@@ -156,4 +155,6 @@ class RemotePhoneState {
 export function createRemotePhoneStore(workspace: Workspace) {
 	return new RemotePhoneState(workspace);
 }
-export type RemotePhone = RemotePhoneState;
+
+export type { RemotePhone } from './remotePhone.svelte.types';
+export type { RemotePhoneState };

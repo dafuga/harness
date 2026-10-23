@@ -7,9 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-acceptance-record.ts"],
+		"source": [
+			"packages/desktop/scripts/ios-acceptance-record.ts",
+			"packages/desktop/scripts/ios-acceptance-record.types.ts"
+		],
 		"symbols": [
-			"AcceptanceCheck",
 			"AcceptanceRecord",
 			"AcceptanceRecord.constructor",
 			"AcceptanceRecord.begin",
@@ -18,7 +20,9 @@
 			"AcceptanceRecord.check",
 			"AcceptanceRecord.stopped",
 			"AcceptanceRecord.failed",
-			"AcceptanceRecord.passed"
+			"AcceptanceRecord.passed",
+			"AcceptanceCheck",
+			"AcceptanceCheck"
 		]
 	},
 	"contract": {

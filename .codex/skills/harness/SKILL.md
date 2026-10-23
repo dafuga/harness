@@ -244,11 +244,16 @@ A successful capture count does not prove catalog delivery. The standardized Pag
 
 When adding or changing workspace build aliases, run the existing `test/shared-select-impact.test.ts` before broad verification. Keep all alias imports resolved, distinguish indexed test imports from runtime owner units using source classification, and prove test selection separately from production dependency reachability; never discard an unresolved runtime owner to satisfy the check.
 
+## Type Files
+
+Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
 Component implementations belong directly in their responsibility category, with private code in an owner folder. Do not insert an application-name namespace beneath that category or retain a duplicate internal forwarding tree after relocation. Keep meaningful route prefixes, supported package exports, registered IDs and original migration records stable; record subsequent helper locations as reviewed follow-ups. Run the existing visual registry, import/alias impact, namespace-spy and ownership migration guards before broad verification.
 
 For structural relocations, rewrite resolved import addresses without normalizing unrelated URL literals. Directory URLs retain their trailing slash. Review the complete URL diff and run the existing catalog-listing and preview-binding tests alongside the visual catalog before sealing final evidence.
 
 When integrating main during a relocation, reconcile the latest landed definitions and adjust newly added imports and explicit reference origins for their new depth. Preserve every landed feature and assertion; verify the final source bodies against that main before freezing test inputs and final evidence.
+
+Source tabs list implementation files, sibling type files and associated tests from the selected revision. Resolve tests from direct source imports or authored scenario coverage; retain their committed bytes and gaps, and reuse the shared file list and code viewer. Never substitute working-copy or newer test contents.
 
 ## Layout catalog review
 
@@ -259,7 +264,7 @@ Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pa
 Capture the actual layout with a clearly labelled Child content placeholder passed through its
 real children slot. Never substitute a full page screenshot for a layout preview.
 
-Public category or route renames must inventory canonical and compatibility titles and links. Update exposed labels, preserve stable IDs and aliases, and extend the standard composition check across overview, details and history. Run affected downstream consumer tests alongside their typechecks. Run the affected package lint and audit as well.
+Public category or route renames must inventory canonical and compatibility titles and links. Update exposed labels, preserve stable IDs and aliases, and extend the standard composition check across overview, details and history. Run affected downstream consumer tests alongside their typechecks. Run the affected package lint and audit as well. Include the affected public-entry navigation cases even when the full CLI suite is deferred. In this repository, select the affected cases in `test/console-host-routes.e2e.test.ts`; retain branch, commit, compatibility and access assertions.
 
 Full-frame previews own their content boundaries. Apply content-container styling inside the
 frame, never around its navigation. When changing fixture context, extend the existing standard

@@ -1,20 +1,6 @@
-import type {
-	HelperBinding,
-	HelperFacts,
-	HelperReference
-} from '../../../utils/explorer-ui/helperReferences';
+import type { Facts, Lookup, Definition, Unit, ProofContext } from './serviceClasses.types';
 import type { HelperConsumer } from '../../../utils/explorer-ui/helperConsumers';
 import type { PublicServiceClass } from '../../../utils/explorer-ui/unitMetadata';
-import type { RevisionRegistry } from '../../../utils/revisionRegistry';
-
-type Unit = RevisionRegistry['units'][number];
-type Facts = Map<string, HelperFacts>;
-type Definition = NonNullable<HelperFacts['classes']>[number] & { source: string };
-interface Lookup {
-	users: Map<string, Map<string, HelperConsumer>>;
-	target(path: string, binding: HelperBinding): string | undefined;
-	reference(path: string, reference: HelperReference): string | undefined;
-}
 
 function definition(
 	asked: { source: string; name: string },
@@ -76,12 +62,6 @@ function constructors(units: Unit[], facts: Facts, lookup: Lookup) {
 
 function owners(users: Iterable<{ unit: string }>): HelperConsumer[] {
 	return [...new Set([...users].map((user) => user.unit))].sort().map((unit) => ({ unit }));
-}
-
-interface ProofContext {
-	facts: Facts;
-	lookup: Lookup;
-	constructed: Map<string, Set<string>>;
 }
 
 function exportClass(

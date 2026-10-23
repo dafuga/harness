@@ -1,10 +1,6 @@
+import type { Flags } from './HooksCommand.types';
 import type { Command } from 'commander';
 import { checkMessage, manageHooks, renderHookOutcome, renderHooks, runHook } from './runHooks';
-
-interface Flags {
-	json?: boolean;
-	command?: string;
-}
 
 const help = {
 	install: 'Enable the pre-push and commit-msg hooks for this worktree, keeping any existing hook.',

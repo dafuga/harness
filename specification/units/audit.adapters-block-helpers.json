@@ -9,13 +9,15 @@
 	"owns": {
 		"source": [
 			"src/audit/adapters/blockHelpers.ts",
-			"src/audit/development-tooling/adapters/blockHelpers.ts"
+			"src/audit/development-tooling/adapters/blockHelpers.ts",
+			"src/audit/development-tooling/adapters/blockHelpers.types.ts"
 		],
 		"symbols": [
 			"auditCurlyFunctions",
 			"auditIndentedPythonBlocks",
 			"auditCurlyFunctions",
-			"auditIndentedPythonBlocks"
+			"auditIndentedPythonBlocks",
+			"BlockCandidate"
 		]
 	},
 	"contract": {

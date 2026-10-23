@@ -1,6 +1,6 @@
+import type { ConfigSource } from './configValues.types';
 import ts from 'typescript';
 import { configValueStructure } from './configValueStructure';
-import type { ConfigSource } from './configValues.types';
 import type { ConfigVariable } from '../../../utils/explorer-ui/unitMetadata';
 
 /** Read committed config expressions without importing or executing their module. */

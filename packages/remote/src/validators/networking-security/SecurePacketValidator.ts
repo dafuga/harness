@@ -1,9 +1,8 @@
+import type { Check } from './SecurePacketValidator.types';
 import { remoteLimits } from '../../models/networking-security/Remote.types';
 import { SecureFailure } from '../../models/networking-security/RemoteSecure.types';
 import type { SecurePacket } from '../../models/networking-security/RemoteSecure.types';
 import { remotePatterns } from '../../utils/networking-security/remoteIdentity';
-
-type Check = (value: unknown) => boolean;
 const matches =
 	(pattern: RegExp): Check =>
 	(value) =>

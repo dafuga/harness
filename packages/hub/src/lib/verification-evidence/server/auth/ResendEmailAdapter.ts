@@ -1,3 +1,4 @@
+import type { ResendEmailAdapterConfig } from './ResendEmailAdapter.types';
 import type {
 	AuthEnv,
 	EmailProofDelivery,
@@ -5,12 +6,6 @@ import type {
 } from '../../../../models/accounts-access/HubAuth.types';
 import { authFail } from '../../../../utils/accounts-access/authFail';
 import { boundedText } from '../../../../utils/verification-evidence/authHttp';
-
-export interface ResendEmailAdapterConfig {
-	apiKey: string;
-	from: string;
-	fetch: typeof fetch;
-}
 
 const ENDPOINT = 'https://api.resend.com/emails';
 const SUBJECT = 'Your Harness verification code';
@@ -81,3 +76,5 @@ export function createResendDelivery(
 	if (!API_KEY.test(apiKey) || !FROM.test(from)) return null;
 	return new ResendEmailAdapter({ apiKey, from, fetch: fetcher });
 }
+
+export type { ResendEmailAdapterConfig } from './ResendEmailAdapter.types';

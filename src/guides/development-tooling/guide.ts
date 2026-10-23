@@ -1,3 +1,4 @@
+import type { Guide } from './guide.types';
 import { loopGuide } from './loop';
 import { gameGuide } from '../game-authoring/game';
 import {
@@ -16,16 +17,6 @@ import { historyGuides } from '../git-source-history/history';
 import { runtimeGuides } from '../execution-runtimes/runtimes';
 import { unitGuides } from './units';
 import { verificationGuides } from '../verification-evidence/verification';
-
-export interface Guide {
-	topic: string;
-	summary: string;
-	steps: string[];
-	rules: string[];
-	antiPatterns: string[];
-	exampleCommands: string[];
-	contains?: string[];
-}
 
 export const guides: Guide[] = [
 	gameGuide,
@@ -177,3 +168,5 @@ export function findGuide(topic: string): Guide | undefined {
 export function availableGuideTopics(): string[] {
 	return uniqueGuideTopics(guides);
 }
+
+export type { Guide } from './guide.types';
