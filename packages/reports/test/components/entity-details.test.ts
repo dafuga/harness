@@ -73,12 +73,14 @@ test('source is shown only when the source tab is the open one', () => {
 	const head = withGroups(revision(commits.middle, []));
 	sourceAdmission(head.registry.units.find((unit) => unit.id === ids.store)!);
 	for (const entity of explorerEntities(head)) {
+		const helper = entity.category === 'functions' ? entity.unit.helpers?.[0] : undefined;
 		const source = content(
 			'commit',
 			{
 				category: entity.category,
 				entity: entity.id,
-				tab: 'source'
+				tab: 'source',
+				helper: helper?.name
 			},
 			{ head }
 		);
@@ -89,7 +91,7 @@ test('source is shown only when the source tab is the open one', () => {
 		const grouped = entity.unit.owns.source.filter((path) =>
 			path.includes(`/${entity.unit.group!.id}/`)
 		);
-		const files = grouped.length ? grouped : entity.unit.owns.source;
+		const files = helper ? [helper.source] : grouped.length ? grouped : entity.unit.owns.source;
 		expect(
 			[...section.matchAll(/<li\b[^>]*>(.*?)<\/li>/gs)].map((match) =>
 				words(/<(?:a|code)\b[^>]*>(.*?)<\/(?:a|code)>/s.exec(match[1])?.[1] ?? match[1]).trim()
