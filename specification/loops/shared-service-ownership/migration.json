@@ -1679,14 +1679,22 @@
 			"unit": "service.unit-index",
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
-			"definition": "9c90c0ea8a6b95ce4fb61fb6c62b97da447ab6a81ba9a0f6304e8dbed97f2c37",
+			"definition": "7ddfbd9389331a61bcad4f2fbd1d89b2d7f6dc19f9f279764dc0be1862801ca4",
 			"relocationDefinition": "778cb54bcdb5124bbba4a4a7713eb68ba9bbc398edbbb93f94edd04daad12a03",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "8e28bfa54b08ad3b43e8f89c9f3b452db28e6da1",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
-				"definition": "9c90c0ea8a6b95ce4fb61fb6c62b97da447ab6a81ba9a0f6304e8dbed97f2c37",
+				"definition": "7ddfbd9389331a61bcad4f2fbd1d89b2d7f6dc19f9f279764dc0be1862801ca4",
 				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+					"definition": "9c90c0ea8a6b95ce4fb61fb6c62b97da447ab6a81ba9a0f6304e8dbed97f2c37",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.derive-manifest",
