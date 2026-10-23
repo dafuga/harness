@@ -1,5 +1,6 @@
 import { expect, test } from '../../../../test/support/browserTest';
-import { buildShellFixture, removeShellFixture } from './support/shellFixture';
+import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
+import { pictured } from './support/sharedSelect';
 import {
 	catalogUnits,
 	catalogViewports,
@@ -27,6 +28,49 @@ test('every active visual component has its own required capture state', () => {
 		)
 	);
 });
+for (const viewport of catalogViewports) {
+	for (const stage of ['history', 'revision'] as const) {
+		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
+			const unit = 'reports.component.harness-harness-console';
+			await page.setViewportSize(viewport);
+			await openPreview(page, home, unit);
+			await readyPreview(page, unit);
+			let release!: () => void;
+			const held = new Promise<void>((resolve) => (release = resolve));
+			const path = stage === 'history' ? '**/data/index.json' : '**/data/revisions/*.json';
+			await page.route(path, async (route) => {
+				await held;
+				await route.fallback();
+			});
+			await page.reload();
+			const message = stage === 'history' ? 'Loading history…' : 'Loading this revision…';
+			const status = page.getByRole('status').filter({ hasText: message });
+			try {
+				await expect(status).toBeVisible();
+				await pictured(page, `console-loading-${stage}-${viewport.id}`);
+				await captureShell(page, home, {
+					state: `loading-${stage}`,
+					viewport: viewport.id,
+					slot: unit
+				});
+				await expect(
+					status.locator('[aria-hidden="true"]'),
+					'Loading status has a decorative indicator'
+				).toBeVisible();
+				await page.emulateMedia({ reducedMotion: 'reduce' });
+				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+				await expect
+					.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+					.toBeLessThanOrEqual(viewport.width);
+			} finally {
+				release();
+			}
+			await readyPreview(page, unit);
+			await expect(status).toHaveCount(0);
+			await expect(page.getByRole('heading', { level: 1, name: 'Components' })).toBeVisible();
+		});
+	}
+}
 for (const viewport of catalogViewports) {
 	for (const unit of catalogUnits) {
 		test(`${unit.id} at ${viewport.id}`, async ({ page }) => {
