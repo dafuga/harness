@@ -2,7 +2,7 @@
 
 ## Overview
 
-Model details distinguish persisted classes from shared data declarations. Their Contract tab
+The Models catalog contains only persisted database models. Their Contract tab
 shows source-declared public methods using the same parameter/return tables as Services.
 A separate Table tab documents the database structure owned by a persisted model.
 
@@ -12,8 +12,9 @@ A separate Table tab documents the database structure owned by a persisted model
   and find/create/update/delete methods. Do not synthesize missing methods or effects.
 - Reuse the service method contract presentation, with parameter and named return tables;
   show declared errors only when present. Exported constants are not model outputs.
-- Keep existing shared model identities and classification while scope clarification is pending.
-  Shared interfaces expose their declared fields/method signatures, without invented CRUD or tables.
+- Exclude shared interfaces and type-only modules such as HubAuth from the Models catalog.
+  Keep their underlying source and stable history; never invent storage or CRUD to qualify them.
+  Prove catalog admission for real persisted models and rejection of shared type/constant modules.
 - Read table metadata from the selected committed model definition, never from the host database.
   Show the table name, columns, application properties, storage types, nullability, primary key
   and declared defaults. Unknown/dynamic definitions remain explicitly unresolved.
