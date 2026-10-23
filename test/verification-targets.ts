@@ -1,19 +1,7 @@
+import type { VerificationScope, VerificationTarget } from './verification-targets.types';
 import { resolve } from 'node:path';
 import { registeredVerificationScopes } from './registered-verification-scopes';
 import { planReadsVerificationTests } from './plan-reads-verification-scopes';
-export interface VerificationTarget {
-	scenario: string;
-	package: string;
-	runner: 'vitest' | 'playwright';
-	target: string;
-	tests: Record<string, string>;
-	states: string[];
-}
-export interface VerificationScope {
-	package: string;
-	vitest: Record<string, Record<string, string>>;
-	playwright: Record<string, string[]>;
-}
 const scopes: Record<string, VerificationScope> = {
 	...registeredVerificationScopes,
 	'runtime-evidence-ui': {
@@ -211,3 +199,5 @@ function atVerificationPackage(scope: VerificationScope, cwd: string): boolean {
 	if (scope.package === 'root') return resolve(cwd) === resolve(import.meta.dirname, '..');
 	return cwd.replaceAll('\\', '/').endsWith(`/packages/${scope.package}`);
 }
+
+export type { VerificationTarget, VerificationScope } from './verification-targets.types';

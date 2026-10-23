@@ -1,3 +1,11 @@
+import type {
+	Scenario,
+	Files,
+	Test,
+	Drafted,
+	Stored,
+	VerificationLine
+} from './evidenceRecords.types';
 import type { EvidencePointer, HistoryNote } from '../../../../src/core/historyTypes';
 import type { Capture, VerificationRecord } from '../../../../src/core/verificationTypes';
 import { evidenceManifest } from '../../../../src/services/evidence-attach-service/evidenceManifest';
@@ -7,9 +15,6 @@ import { json, sha256 } from './evidenceSource';
 
 export { clock, json, page, png, scenarios, sha256, sourceFiles, units } from './evidenceSource';
 const utf8 = (text: string) => new TextEncoder().encode(text);
-type Files = Map<string, Uint8Array>;
-type Scenario = VerificationRecord['scenarios'][number];
-type Test = VerificationRecord['tests'][number];
 
 const stated = (path: string, bytes: Uint8Array) => ({
 	path,
@@ -64,16 +69,6 @@ export function check(id: string, files: Files): Test {
 	};
 }
 
-export interface Drafted {
-	source: { commit: string; tree: string };
-	base: { commit: string; record: string } | null;
-	finishedAt: string;
-	scenarios: Scenario[];
-	tests: Test[];
-	/** The units the change reaches, as the record states its impact. */
-	direct: string[];
-}
-
 export function sealed(draft: Drafted): VerificationRecord {
 	const { base } = draft;
 	const linked = base ? { base: base.commit, baseRecord: base.record } : { base: null };
@@ -106,17 +101,6 @@ export function sealed(draft: Drafted): VerificationRecord {
 	});
 }
 
-export interface Stored {
-	record: VerificationRecord;
-	/** The original bytes of every capture and log, by the path the record names. */
-	files: Files;
-	/** The directory as the evidence branch holds it: media as LFS pointers. */
-	tree: Files;
-	/** The original bytes of what goes through LFS, by hash. */
-	lfs: Files;
-	manifest: string;
-}
-
 /** A record with its files as they are committed: the manifest beside it, and media in LFS. */
 export function stored(record: VerificationRecord, files: Files): Stored {
 	const text = json(record);
@@ -137,8 +121,6 @@ export function stored(record: VerificationRecord, files: Files): Stored {
 	return { record, files, tree, lfs, manifest: sha256(manifest) };
 }
 
-export type VerificationLine = Extract<HistoryNote, { kind: 'verification' }>;
-
 export function verification(item: Stored, evidence: EvidencePointer): VerificationLine {
 	const { id, status, source, finishedAt } = item.record;
 	return {
@@ -152,3 +134,5 @@ export function verification(item: Stored, evidence: EvidencePointer): Verificat
 		evidence
 	};
 }
+
+export type { Drafted, Stored, VerificationLine } from './evidenceRecords.types';

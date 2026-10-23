@@ -1,3 +1,4 @@
+import type { Given } from './entityRender.types';
 import type { Component } from 'svelte';
 import { render } from 'svelte/server';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
@@ -33,8 +34,6 @@ export function hostProps(
 		exportHref: ''
 	};
 }
-
-type Given = Parameters<typeof hostProps>;
 
 /** One screen as a route page mounts it, rendered to markup. */
 export const screen = (entry: Component<ExplorerScreenProps>, ...given: Given): string =>

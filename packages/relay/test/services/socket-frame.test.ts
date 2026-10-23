@@ -1,3 +1,4 @@
+import type { Scene } from './socket-frame.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { remoteLimits } from '../../../remote/src/index';
 import { relayConfig } from '../../src/config/relayConfig';
@@ -12,14 +13,6 @@ import {
 import { startRelay, type RelayFixture } from '../support/relayFixture';
 import { acceptPacket, sealedPacket } from '../support/relayPackets';
 import type { RelaySocket } from '../support/relaySocket';
-
-interface Scene {
-	host: TestHost;
-	socket: RelaySocket;
-	device: TestDevice;
-	phone: RelaySocket;
-	connectionId: string;
-}
 let relay: RelayFixture;
 
 beforeAll(async () => {

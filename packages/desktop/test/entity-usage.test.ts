@@ -1,15 +1,10 @@
+import type { Direction } from './entity-usage.test.types';
 import { expect, test } from 'vitest';
 import RelationshipsPanel from '../src/components/RelationshipsPanel.svelte';
 import type { Workspace } from '../src/lib/stores/workspace.svelte';
 import type { Category, Relationship } from '../src/models/Desktop.types';
 import { workspaceRoute } from '../src/utils/workspaceRoute';
 import { drawn } from './evidence-fixture';
-
-/**
- * What the workspace shows of the things around an entity: a section named Used In and one
- * named Uses, from the relationships its catalog recorded. Neither is called a relationship.
- */
-type Direction = Relationship['direction'];
 const link = (direction: Direction, id: string, title: string, category: Category | null) =>
 	({ id, title, category, direction, hasPlan: false, verification: 'unknown' }) as Relationship;
 /** A function used by a page and, recorded twice, by a component; it uses three things. */

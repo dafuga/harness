@@ -1,3 +1,4 @@
+import type { Revision } from './entity-screens.test.types';
 import { expect, test } from 'vitest';
 import {
 	catalogShot,
@@ -62,7 +63,6 @@ test('device states share a picker while original metadata and missing-device ga
 	).toBe(true);
 });
 const options = screenOptions(scenarios.filter((item) => item.units.includes(ids.page)));
-type Revision = typeof head;
 /** What the host gives for the page: the tip alone, or a commit beside the parent it names. */
 function evidence(_unit: typeof page, shown: Revision, parent?: Revision | null) {
 	if (parent === undefined)
@@ -217,3 +217,5 @@ test('validated unchanged screenshots stay visible with their capture origin', (
 	expect(shown.origin).toBe(commits.middle);
 	expect(shown.after.source).toBe(commits.middle);
 });
+
+export type { head };

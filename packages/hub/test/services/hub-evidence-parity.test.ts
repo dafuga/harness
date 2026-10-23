@@ -1,3 +1,4 @@
+import type { Held } from './hub-evidence-parity.test.types';
 import { expect, test } from 'vitest';
 import { BudgetService } from '../../../../src/services/budget-service/BudgetService';
 import { mediaPlace } from '../../../../src/services/history-media-service/mediaPlace';
@@ -11,8 +12,6 @@ import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/exp
 import { asked, evidenceFixture, read, type EvidenceFixture } from '../support/evidenceFixture';
 import { blobId } from '../support/evidenceGit';
 import { clock, page, scenarios, units, type Stored } from '../support/evidenceRecords';
-
-type Held = { stored: Stored; pointer: EvidenceFixture['pointers']['first'] };
 
 /** One commit as the local backend holds it, from the same data and the same pure functions. */
 function local(f: EvidenceFixture, commit: string, held: Held) {

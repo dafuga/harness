@@ -1,3 +1,4 @@
+import type { Create } from './authGrantContract.types';
 import { expect, test } from 'vitest';
 import type { AuthStore } from '../../src/models/HubAuthStore.types';
 import { grantRecord as grant } from './authStoreContract';
@@ -5,7 +6,6 @@ import { grantRecord as grant } from './authStoreContract';
 const actor = grant.actorId;
 const empty = { grant: null, refreshingUntil: null };
 const lease = { actorId: actor, generation: 1, now: 2000, until: 2030 };
-type Create = () => Promise<AuthStore>;
 
 function connectTests(name: string, create: Create): void {
 	test(`${name}: a connection is published only against the generation it observed`, async () => {

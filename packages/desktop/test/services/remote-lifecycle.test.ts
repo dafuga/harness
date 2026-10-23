@@ -1,7 +1,6 @@
+import type { PowerEvent } from './remote-lifecycle.test.types';
 import { expect, test } from 'vitest';
 import { RemoteLifecycleService } from '../../src/services/RemoteLifecycleService';
-
-type PowerEvent = 'suspend' | 'resume' | 'lock-screen' | 'unlock-screen';
 function setup(enabled = true) {
 	const listeners = new Map<string, (() => void)[]>(),
 		calls: string[] = [];

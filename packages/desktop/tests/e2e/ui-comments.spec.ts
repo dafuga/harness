@@ -1,3 +1,4 @@
+import type { Call } from './ui-comments.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import {
 	alpha,
@@ -9,8 +10,6 @@ import {
 	projectFixture,
 	tip
 } from './ui-project-fixture';
-
-type Call = Record<string, unknown>;
 const calls = (page: Page) =>
 	page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls);
 const made = async (page: Page, op: string) => (await calls(page)).filter((call) => call.op === op);

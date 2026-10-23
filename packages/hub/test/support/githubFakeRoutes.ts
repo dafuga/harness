@@ -1,12 +1,7 @@
+import type { FakeHandler } from './githubFakeRoutes.types';
 import { jwtVerify } from 'jose';
 import { randomToken, sha256Url } from '../../src/utils/authSecrets';
 import type { FakeCall, FakeRepository, FakeState } from './githubFakeState';
-
-export type FakeHandler = (
-	state: FakeState,
-	call: FakeCall,
-	match: RegExpExecArray
-) => Promise<Response> | Response;
 
 const json = (status: number, body: unknown) => Response.json(body, { status });
 const sees = (repo: FakeRepository, user: number) =>
@@ -156,3 +151,5 @@ export const accessTokens: FakeHandler = async (state, call, match) => {
 		repositories: repos.map((repo) => repositoryJson(repo!))
 	});
 };
+
+export type { FakeHandler } from './githubFakeRoutes.types';

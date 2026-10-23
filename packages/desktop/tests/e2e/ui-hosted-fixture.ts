@@ -1,21 +1,10 @@
+import type { HostedHost, Input } from './ui-hosted-fixture.types';
 import type { Page } from '@playwright/test';
 import { projectFixture } from './ui-project-fixture';
 export * from './ui-project-fixture';
 
 export const userCode = 'ABCD-EFGH';
 export const verificationUrl = 'https://hub.example.invalid/native/handoff-1';
-
-type Input = Record<string, unknown> & { projectId?: string; page?: number };
-interface HostedHost {
-	harness: Record<string, unknown>;
-	__cache: (event: { projectId: string; status: string; cachedAt?: string }) => void;
-	__hosted: { state: string; polls: number };
-	__deny: boolean;
-	__projects: {
-		own: (op: string, input?: Input) => unknown;
-		data: { ids: { tip: string }; projects: { entities: Record<string, unknown>[] }[] };
-	};
-}
 
 /** The connection as the main process reports it: a code and an address, never a secret. */
 function installConnection(input: { userCode: string; verificationUrl: string; state: string }) {

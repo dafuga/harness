@@ -1,7 +1,5 @@
 import { createRawSnippet } from 'svelte';
 import { formatDuration } from '../../../../src/utils/evidenceMedia';
-export type PreviewProps = Record<string, unknown>;
-export type PreviewCases = Record<string, PreviewProps>;
 export const noop = () => {};
 export const done = async () => true;
 export const text = (html = '<p>Recent activity is ready to review.</p>') =>
@@ -71,3 +69,5 @@ export const picker = {
 	controlConnected: true,
 	message: ''
 };
+
+export type { PreviewProps, PreviewCases } from './shared.types';

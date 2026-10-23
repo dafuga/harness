@@ -1,18 +1,7 @@
+import type { Added, Entity } from './ui-search-fixture.types';
 import type { Page } from '@playwright/test';
 import { projectFixture } from './ui-project-fixture';
 export * from './ui-project-fixture';
-
-type Entity = Record<string, unknown>;
-/** An entity added to one synthetic project, at both commits or at only one of them. */
-export interface Added {
-	project: number;
-	id: string;
-	category: string;
-	kind: string;
-	title: string;
-	summary: string;
-	at?: 'tip' | 'earlier';
-}
 /** Project-owned helpers name component and service callers; some exist at one commit only. */
 export const added: Added[] = [
 	{
@@ -123,3 +112,5 @@ export async function searchFixture(page: Page, fixture = projectFixture) {
 	await fixture(page);
 	await page.addInitScript(install, added);
 }
+
+export type { Added } from './ui-search-fixture.types';

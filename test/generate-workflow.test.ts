@@ -1,3 +1,4 @@
+import ts from 'typescript';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -126,6 +127,22 @@ test('the same category works for every source scaffold and can be extended', as
 					name: `${kind}Example`,
 					group: 'commerce'
 				});
+				for (const file of result.writes.filter((file) => file.path.endsWith('.ts'))) {
+					const text = await readFile(join(root, file.path), 'utf8');
+					const tree = ts.createSourceFile(file.path, text, ts.ScriptTarget.Latest);
+					const declarations = tree.statements.filter(
+						(node) => ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node)
+					);
+					const runtime = tree.statements.some(
+						(node) =>
+							ts.isClassDeclaration(node) ||
+							ts.isFunctionDeclaration(node) ||
+							ts.isVariableStatement(node)
+					);
+					expect(runtime && declarations.length > 0, file.path + ' separates named types').toBe(
+						false
+					);
+				}
 				expect(
 					result.writes.some(
 						(file) =>

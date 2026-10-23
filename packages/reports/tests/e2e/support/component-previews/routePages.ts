@@ -1,3 +1,4 @@
+import type { RoutePreview } from './routePages.types';
 import { ids } from '../../../../test/entityUnits';
 import { openRoute, page } from './router.svelte';
 import { routeIds } from './routeUnits';
@@ -14,11 +15,6 @@ const opened: Record<string, string> = {
 	services: ids.store,
 	models: routeIds.model
 };
-/** The SvelteKit route a module is served under, and the canonical address it is opened at. */
-interface RoutePreview {
-	route: string;
-	path: string;
-}
 /** The index of a category, the entity it opens on, and the history of that entity. */
 function category([name, entity]: [string, string]): Array<[string, RoutePreview]> {
 	const unit = `reports.page.harness-branch-branch-at-${name}`;

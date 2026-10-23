@@ -1,3 +1,4 @@
+import type { Snapshot } from './history-source.test.types';
 import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -7,8 +8,6 @@ import { HistoryIndexService } from '../src/cli/program/history-index-service/Hi
 import { fixtureSources } from './support/verifyFixture';
 import { unitProject } from './support/unitProject';
 import { repoAt, type VerifyRepo } from './support/verifyRepo';
-
-type Snapshot = { path: string; media: string | null; gap?: string };
 
 async function seedSource(repo: VerifyRepo) {
 	for (const [path, text] of Object.entries(fixtureSources)) await repo.write(path, text);

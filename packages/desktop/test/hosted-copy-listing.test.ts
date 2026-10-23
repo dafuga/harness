@@ -1,3 +1,4 @@
+import type { Fixture } from './hosted-copy-listing.test.types';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'vitest';
@@ -6,14 +7,6 @@ import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-ad
 import { RemoteProjectionService } from '../src/services/RemoteProjectionService';
 import { analytics, former } from './catalog-listing-manifests';
 import { remoteCacheFixture } from './remote-cache-fixture';
-
-/**
- * The copies the computer keeps of a hosted project for when the hub is away. A snapshot kept
- * before the catalog left route loaders out lists them and says nothing of what an entity owns,
- * so it cannot be corrected here: it is not shown, and the project is away until it is read
- * again. Every other copy, and what a denial does to all of them, stays as it was.
- */
-type Fixture = Awaited<ReturnType<typeof remoteCacheFixture>>;
 const tip = { projectId: 'p', branch: 'main', commit: null };
 const pinned = { projectId: 'p', branch: 'main', commit: 'a'.repeat(40) };
 const entity = { projectId: 'p', entityId: 'entity', commit: 'a'.repeat(40) };

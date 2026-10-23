@@ -1,3 +1,4 @@
+import type { Entity, Snapshot, Bridge } from './ui-function-examples-fixture.types';
 import { join } from 'node:path';
 import type { Page, TestInfo } from '@playwright/test';
 import scenario from '../../../../specification/scenarios/desktop-renderer.json' with { type: 'json' };
@@ -14,12 +15,9 @@ import { commits, ids } from './ui-evidence-fixture';
  * the backend for. The existing fixture is not changed: its answers are added to as they pass.
  */
 function install(data: { id: string; planned: object; version: object }) {
-	type Bridge = Record<string, (input?: object) => Promise<unknown>>;
-	type Entity = Record<string, unknown> & { id: string };
 	const asked: string[] = [];
 	const { planned, version } = data;
 	const listed = (entity: Entity) => (entity.id === data.id ? { ...entity, ...planned } : entity);
-	type Snapshot = { entities: Entity[] };
 	const shown = (snapshot: Snapshot) => ({ ...snapshot, entities: snapshot.entities.map(listed) });
 	/** What each answer of the backend becomes on its way to the page; any other passes as it is. */
 	const changed: Record<string, (answer: unknown, input?: object) => unknown> = {

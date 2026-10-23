@@ -1,3 +1,4 @@
+import type { Verified, Declared } from './verify-stamped-build.e2e.test.types';
 import { readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -6,16 +7,6 @@ import { runCommand } from './support/cli';
 import { attach, evidenceRef, statusOf } from './support/historyRepo';
 import { servedRepo } from './support/servedRepo';
 import { cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
-
-interface Verified {
-	repo: VerifyRepo;
-	outcome: VerifyOutcome;
-}
-interface Declared {
-	setup: object[];
-	outputs: string[];
-	builds: object[];
-}
 let baseline: VerifyRepo;
 let stamped: Verified;
 const cli = resolve('src/index.ts');

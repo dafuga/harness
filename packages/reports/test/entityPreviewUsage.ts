@@ -1,9 +1,8 @@
+import type { UsageRoute } from './entityPreviewUsage.types';
 import { expect, type Page } from '@playwright/test';
 import type { ExplorerLocation } from '../src/models/Explorer.types';
 import { commits, ids } from './entityUnits';
 import { capture, fits, open, ready, where, moduleCard } from './entityPreviewPage';
-
-type UsageRoute = Pick<ExplorerLocation, 'category' | 'entity' | 'commit'>;
 
 /** Usage belongs in its own tabs; pages expose dependencies and no consumers. */
 export async function reviewUsage(page: Page, route: UsageRoute, viewport: string): Promise<void> {

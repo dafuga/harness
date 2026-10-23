@@ -1,3 +1,4 @@
+import type { Registered } from './host-registry.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { randomCredential } from '../../../remote/src/index';
 import {
@@ -13,12 +14,6 @@ import {
 } from '../support/relayActors';
 import { startRelay, type RelayFixture } from '../support/relayFixture';
 import { RelaySocket } from '../support/relaySocket';
-
-interface Registered {
-	hostId: string;
-	generation: number;
-	registeredAt: string;
-}
 let relay: RelayFixture;
 
 beforeAll(async () => {

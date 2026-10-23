@@ -1,7 +1,6 @@
+import type { Call } from './ui-projects.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { alpha, beta, earlier, projectFixture, tip } from './ui-project-fixture';
-
-type Call = Record<string, unknown>;
 const calls = (page: Page) =>
 	page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls);
 const categories = (page: Page) => page.getByRole('navigation', { name: 'Catalog categories' });

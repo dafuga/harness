@@ -1,3 +1,4 @@
+import type { SeededExplorer, Judging } from './explorer.types';
 import { expect, type Page } from '@playwright/test';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -5,12 +6,6 @@ import { pageBenchmark, pageUnit } from './pageBenchmark';
 import { home, short } from './harnessHistory';
 import { settled, servedBuild } from './harnessCapture';
 import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
-
-/** What the seed recorded about the explorer's part of the synthetic history. */
-export interface SeededExplorer {
-	explorerBranch: string;
-	explorerUnits: Record<'page' | 'list' | 'row' | 'slugify' | 'config' | 'service', string>;
-}
 export const explorer = (): SeededExplorer =>
 	JSON.parse(readFileSync(join(home, 'meta.json'), 'utf8')) as SeededExplorer;
 
@@ -109,28 +104,6 @@ export async function expectPath(page: Page, path: string): Promise<void> {
 	await expect(page).toHaveURL((url) => url.pathname + url.search === path);
 }
 
-interface Judging {
-	id: string;
-	status: string;
-	valid: boolean;
-	finishedAt: string;
-	source: { commit: string };
-	scenarios: Array<{
-		id: string;
-		inherited: boolean;
-		origin: { commit: string };
-		states: Array<{
-			id: string;
-			captures: Array<{
-				kind: string;
-				viewport?: string;
-				sha256: string;
-				media: string | null;
-			}>;
-		}>;
-	}>;
-}
-
 /** The record that judges a commit, read from the built history: its newest usable one. */
 export function judging(commit: string): Judging | undefined {
 	const stored = JSON.parse(
@@ -155,3 +128,5 @@ export function recordedShot(
 	if (!shot?.media) throw new Error(`no stored ${where.state} at ${where.viewport} for ${commit}`);
 	return shot.media.replace(/^media\//, '');
 }
+
+export type { SeededExplorer } from './explorer.types';

@@ -1,3 +1,4 @@
+import type { Call, Answer } from './phone-evidence-bridge.test.types';
 import { createHash } from 'node:crypto';
 import { expect, test, vi } from 'vitest';
 import { CapacitorBridgeAdapter } from '../../src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter';
@@ -12,9 +13,6 @@ import type {
 } from '../../src/models/Environment.types';
 import { largeArtifact, otherArtifact, unshownArtifact } from '../../src/utils/remoteArtifact';
 import { damagedMedia, unreadableMedia } from '../../src/utils/remoteBinary';
-
-type Call = { method: string; input: Record<string, unknown> };
-type Answer = { value: unknown; cachedAt?: string | null };
 const attached: RemoteMethod[] = ['listProjects', 'snapshot', 'entity', 'evidence', 'artifact'];
 const online: RemoteNativeStatus = {
 	state: 'online',

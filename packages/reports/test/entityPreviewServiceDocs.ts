@@ -1,7 +1,6 @@
+import type { Documentation } from './entityPreviewServiceDocs.types';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { commits, ids } from './entityUnits';
-
-type Documentation = NonNullable<HarnessUnit['documentation']>;
 const path = 'docs/order-store.md';
 
 /**

@@ -1,3 +1,4 @@
+import type { FakeDelivery, HubOptions } from './hubFixture.types';
 import type {
 	AuthChallenge,
 	EmailProofDelivery,
@@ -12,16 +13,6 @@ import { COLLABORATION_REPOSITORY, OWNER_INSTALLATION } from './githubFakeState'
 import { CLIENT_ID, START, googleFixture } from './googleFixture';
 import { HubBrowser } from './hubBrowser';
 import { memoryAuthStore } from './memoryAuthStore';
-
-export interface HubOptions {
-	github?: boolean;
-	delivery?: boolean;
-}
-
-export interface FakeDelivery extends EmailProofDelivery {
-	sent: EmailProofMessage[];
-	failing: boolean;
-}
 
 /** A mailbox in memory. Nothing is sent anywhere. */
 function fakeDelivery(): FakeDelivery {
@@ -85,9 +76,9 @@ export async function hubFixture(options: HubOptions = {}) {
 	};
 }
 
-export type HubFixture = Awaited<ReturnType<typeof hubFixture>>;
-
 export async function errorOf(response: Response): Promise<string> {
 	const body = (await response.json()) as { error?: string };
 	return `${response.status} ${body.error}`;
 }
+
+export type { HubOptions, FakeDelivery, HubFixture } from './hubFixture.types';

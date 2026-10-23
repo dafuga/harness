@@ -1,3 +1,4 @@
+import type { Scope, Observed, Reported } from './gameCommand.types';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
@@ -9,24 +10,6 @@ import {
 	evidenceRequested,
 	recordCapture
 } from '../../src/utils/reports-media/record-capture/recordCapture';
-
-interface Scope {
-	units: string[];
-	workload: string;
-	cli?: string;
-}
-interface Observed {
-	elapsedMs: number;
-	peakRssBytes: number;
-	stdout: string;
-}
-/** What the driver prints: Bun's raw `maxRSS` and the platform whose accounting produced it. */
-interface Reported {
-	elapsedMs: number;
-	maxRSS: number;
-	platform: string;
-	stdout: string;
-}
 const driver = `
 const {command,cwd}=JSON.parse(process.argv[1]);
 const started=performance.now();

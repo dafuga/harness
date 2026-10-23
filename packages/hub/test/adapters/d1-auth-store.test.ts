@@ -1,3 +1,4 @@
+import type { Engine, Value } from './d1-auth-store.test.types';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import type { D1Database } from '@cloudflare/workers-types';
@@ -22,8 +23,6 @@ const files = [
 const migrations = files.map((file) =>
 	readFileSync(new URL(`../../db/migrations/${file}`, import.meta.url), 'utf8')
 );
-type Engine = InstanceType<NonNullable<typeof sqlite>['DatabaseSync']>;
-type Value = string | number | null;
 
 function statement(engine: Engine, query: string, values: Value[] = []): D1Statement {
 	return {
@@ -109,3 +108,5 @@ for (const entry of ['utils/d1GrantStore.ts', 'adapters/d1-auth-store-adapter/d1
 		expect(execFileSync('bun', ['-e', code], { encoding: 'utf8' }).trim()).toBe('function');
 	});
 }
+
+export type { sqlite };

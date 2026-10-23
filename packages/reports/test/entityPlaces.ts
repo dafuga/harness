@@ -1,3 +1,4 @@
+import type { View } from './entityPlaces.types';
 import { explorerRoutePath } from '../../../src/utils/explorerRoute';
 import type { ExplorerLocation, ExplorerScope } from '../src/models/Explorer.types';
 import type { HarnessIndex, HarnessRevision } from '../src/models/Harness.types';
@@ -56,12 +57,6 @@ export function scope(mode: 'current' | 'commit', location = place()): ExplorerS
 	};
 }
 
-export interface View {
-	scope: ExplorerScope;
-	head: HarnessRevision;
-	parent: HarnessRevision | null;
-}
-
 const parents: Record<string, string | null> = {
 	[commits.first]: null,
 	[commits.middle]: commits.first,
@@ -115,3 +110,5 @@ export function lens(shown: View, history: HarnessIndex = index): EntityLens {
 		history: (id) => explorerHistory(history, shown.scope, id)
 	};
 }
+
+export type { View } from './entityPlaces.types';

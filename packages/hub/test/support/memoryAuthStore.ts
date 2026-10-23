@@ -1,3 +1,4 @@
+import type { Expiring, Rows, MemoryAuthStore } from './memoryAuthStore.types';
 import type {
 	AuthStore,
 	ChallengeRecord,
@@ -12,9 +13,6 @@ import type {
 	SessionStore
 } from '../../src/models/HubAuthStore.types';
 import { memoryEmailStores } from './memoryEmailStores';
-
-type Expiring = { expiresAt: number };
-type Rows<T> = Map<string, T>;
 
 function oneTime<T extends Expiring & { idHash: string }>(rows: Rows<T>): OneTimeStore<T> {
 	return {
@@ -130,12 +128,6 @@ function expire<T extends Expiring>(rows: Rows<T>, now: number, extra?: (row: T)
 	for (const [key, row] of rows) if (row.expiresAt <= now || extra?.(row)) rows.delete(key);
 }
 
-export interface MemoryAuthStore extends AuthStore {
-	/** Every stored row as text, for asserting that no secret is kept in the clear. */
-	dump(): string;
-	count(): number;
-}
-
 /** Test-only store with the same claim semantics as the D1 adapter (see the store contract). */
 export function memoryAuthStore(): MemoryAuthStore {
 	const tables = {
@@ -173,3 +165,5 @@ export function memoryAuthStore(): MemoryAuthStore {
 	};
 	return store;
 }
+
+export type { MemoryAuthStore } from './memoryAuthStore.types';

@@ -1,7 +1,6 @@
+import type { Headers } from './hubBrowser.types';
 import type { HubAuth } from '../../src/models/HubAuth.types';
 import { ORIGIN } from './authFixture';
-
-type Headers = Record<string, string>;
 
 /** A browser as the hub sees it: a cookie jar, an Origin on POST, and a record of every URL. */
 export class HubBrowser {

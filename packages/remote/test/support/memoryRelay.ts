@@ -1,35 +1,8 @@
+import type { Route, RelayState, Entry, RelayInput } from './memoryRelay.types';
 import type { RemotePairingRequest } from '../../src/models/RemoteControl.types';
 import type { RelayPairingRequest, RelayPairingState } from '../../src/models/RemoteRelay.types';
 import type { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
 import { pkceChallenge, randomCredential } from '../../src/utils/remoteIdentity';
-
-interface Entry {
-	state: RelayPairingState;
-	expiresAt: string;
-	challenge?: string;
-	approval?: { deviceId: string; sealed: string };
-}
-interface RelayInput {
-	hostId: string;
-	hostKey: string;
-	host: HostPairingService;
-}
-interface RelayState {
-	input: RelayInput;
-	relay: { hostKey: string };
-	pairings: Map<string, Entry>;
-	calls: string[];
-	bodies: string[];
-	received: (RemotePairingRequest | null)[];
-}
-interface Route {
-	path: string;
-	method: string;
-	body: string | null;
-	hostId: string;
-	pairingId: string;
-	operation: string;
-}
 const json = (value: unknown, status = 200) =>
 	new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
 const parsed = (body: string | null) => JSON.parse(body ?? '{}') as Record<string, unknown>;

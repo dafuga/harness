@@ -1,3 +1,4 @@
+import type { Call, Answer } from './capacitor-bridge.test.types';
 import { createHash } from 'node:crypto';
 import { expect, test, vi } from 'vitest';
 import { CapacitorBridgeAdapter } from '../../src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter';
@@ -6,9 +7,6 @@ import type {
 	RemoteNativePlugin,
 	RemoteNativeStatus
 } from '../../src/models/Environment.types';
-
-type Call = { method: string; input: Record<string, unknown> };
-type Answer = { value: unknown; cachedAt?: string };
 const tip = 'a'.repeat(40);
 const revision = { branch: 'main', commit: tip };
 const shown = { ...revision, tip, atTip: true };

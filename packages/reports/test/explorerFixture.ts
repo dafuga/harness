@@ -1,3 +1,4 @@
+import type { RecordScenario } from './explorerFixture.types';
 import type {
 	HarnessCapture,
 	HarnessIndex,
@@ -9,7 +10,6 @@ import type {
 } from '../src/models/Harness.types';
 
 export const sha = (letter: string) => letter.repeat(40);
-type RecordScenario = HarnessRecord['scenarios'][number];
 
 /** A unit of a synthetic registry; every part of it can be replaced. */
 export function unit(id: string, kind: string, extra: Partial<HarnessUnit> = {}): HarnessUnit {

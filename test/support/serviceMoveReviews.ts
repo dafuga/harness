@@ -1,22 +1,9 @@
+import type { Ledger, Git, ReviewedFile } from './serviceMoveReviews.types';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { relocatedSource } from './memoryTree';
-
-interface ReviewedFile {
-	from: string;
-	to: string;
-	definition: string;
-	relocationDefinition?: string;
-	review?: { commit: string; path: string; definition: string; reason: string };
-}
-interface Ledger {
-	originalProof?: string;
-	moves: Record<string, string>;
-	files: ReviewedFile[];
-}
-type Git = (args: string[]) => string;
 
 /**
  * The committed objects the reviews name, exported from real Git objects (see the README beside

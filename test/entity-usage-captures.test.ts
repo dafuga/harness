@@ -1,3 +1,4 @@
+import type { Change } from './entity-usage-captures.test.types';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -38,15 +39,6 @@ const commit = 'c'.repeat(40);
 const build = 'b'.repeat(64);
 const folders: string[] = [];
 afterAll(() => folders.forEach((folder) => rmSync(folder, { recursive: true, force: true })));
-
-interface Change {
-	omit?: string;
-	revision?: string;
-	buildId?: string;
-	unwritten?: string;
-	width?: number;
-	failed?: boolean;
-}
 /** What the gate says of the usage captures a run left, with one thing about them changed. */
 function judged(change: Change = {}) {
 	const folder = mkdtempSync(join(tmpdir(), 'harness-usage-captures-'));

@@ -1,3 +1,4 @@
+import type { Entity } from './ui-shells-fixture.types';
 import type { Page } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenarioData from '../../../../specification/scenarios/shells-shared-app.json' with { type: 'json' };
@@ -17,7 +18,6 @@ const note =
 export async function withShell(page: Page, fixture = projectFixture): Promise<void> {
 	await fixture(page);
 	await page.addInitScript((id: string) => {
-		type Entity = Record<string, unknown>;
 		const host = window as unknown as {
 			__projects: { data: { projects: Array<{ entities: Entity[] }> } };
 		};
