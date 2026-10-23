@@ -8,18 +8,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness/harness-legacy/legacyEvidence.ts",
-			"packages/reports/src/components/harness/harness-legacy/legacyEvidence.ts",
+			"packages/reports/src/components/explorer-ui/harness-legacy/legacyEvidence.ts",
 			"packages/reports/src/utils/legacyEvidence.ts"
 		],
-		"symbols": [
-			"legacyLink",
-			"legacyEvidence",
-			"legacyLink",
-			"legacyEvidence",
-			"legacyLink",
-			"legacyEvidence"
-		]
+		"symbols": ["legacyLink", "legacyEvidence", "legacyLink", "legacyEvidence"]
 	},
 	"contract": {
 		"origin": "declared",

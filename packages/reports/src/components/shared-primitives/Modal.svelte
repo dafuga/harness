@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { t } from '../../utils/reports-media/reportLocale';
-	import HarnessIcon from '../explorer-ui/harness/HarnessIcon.svelte';
+	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
 	let {
 		open = false,
 		isOpen,

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tick, type Snippet } from 'svelte';
-	import HarnessIcon from '../explorer-ui/harness/HarnessIcon.svelte';
+	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
 	/** Persistent round launcher; Escape closes its panel and returns focus. */
 	let {
 		open = $bindable(false),

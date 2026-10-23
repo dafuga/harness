@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessIcon from '../../src/components/harness/HarnessIcon.svelte';
+import HarnessIcon from '../../src/components/explorer-ui/HarnessIcon.svelte';
 import { harnessIcons, type HarnessIconName } from '../../src/utils/harnessIcons';
 
 const markup = (props: { name: HarnessIconName; size?: number; label?: string }) =>

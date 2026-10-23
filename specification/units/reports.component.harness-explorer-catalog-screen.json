@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/ExplorerCatalogScreen.svelte",
-			"packages/reports/src/components/harness/ExplorerCatalogScreen.svelte"
-		],
-		"symbols": ["ExplorerCatalogScreen", "ExplorerCatalogScreen"]
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerCatalogScreen.svelte"],
+		"symbols": ["ExplorerCatalogScreen"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -91,11 +88,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerCatalogScreen.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerCatalogScreen.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/ExplorerCatalogScreen.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerCatalogScreen.svelte"
 			}
 		]
 	},

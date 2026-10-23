@@ -1,16 +1,16 @@
 import { render } from 'svelte/server';
 import { afterEach, expect, test, vi } from 'vitest';
-import HarnessShell from '../../src/components/harness/HarnessShell.svelte';
+import HarnessShell from '../../src/components/explorer-ui/HarnessShell.svelte';
 
 // The console is replaced by a probe that shows the address its host hands it.
 vi.mock(
-	'../../src/components/harness/HarnessConsole.svelte',
+	'../../src/components/explorer-ui/HarnessConsole.svelte',
 	() => import('./AddressProbe.svelte')
 );
 
 // The generic content is replaced by a mark, so the test sees which screen the host names.
 vi.mock(
-	'../../src/components/harness/ExplorerContent.svelte',
+	'../../src/components/explorer-ui/ExplorerContent.svelte',
 	() => import('./ScreenProbe.svelte')
 );
 

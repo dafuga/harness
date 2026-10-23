@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { entityShown } from '../../src/components/harness/entity-sections/entityShown';
+import { entityShown } from '../../src/components/explorer-ui/entity-sections/entityShown';
 import { record, revision } from '../entityFixture';
 import { hostProps } from '../entityRender';
 import { withFocused } from '../entityStates';

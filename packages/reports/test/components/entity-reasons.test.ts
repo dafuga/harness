@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntityReasons from '../../src/components/harness/entity-reasons/EntityReasons.svelte';
+import EntityReasons from '../../src/components/explorer-ui/entity-reasons/EntityReasons.svelte';
 import type { HarnessExplanation } from '../../src/models/Harness.types';
 import { entityReasons } from '../../src/utils/entityReasons';
 import { disclosed, words } from '../entityRender';

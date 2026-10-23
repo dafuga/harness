@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntityArtifact from '../src/components/harness/EntityArtifact.svelte';
+import EntityArtifact from '../src/components/explorer-ui/EntityArtifact.svelte';
 import type { BehaviorCell } from '../src/utils/entityBehavior';
 import {
 	callRows,

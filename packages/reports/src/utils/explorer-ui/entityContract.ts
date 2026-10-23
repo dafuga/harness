@@ -27,4 +27,4 @@ export function humanize(name: string): string {
 export {
 	requiredStates,
 	entityContract
-} from '../../components/explorer-ui/harness/entity-sections/entityContract';
+} from '../../components/explorer-ui/entity-sections/entityContract';

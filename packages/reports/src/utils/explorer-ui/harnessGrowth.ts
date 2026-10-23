@@ -22,4 +22,4 @@ export function signed(delta: number | undefined): string {
 export {
 	harnessGrowth,
 	unitTimings
-} from '../../components/explorer-ui/harness/harness-growth/harnessGrowth';
+} from '../../components/explorer-ui/harness-growth/harnessGrowth';

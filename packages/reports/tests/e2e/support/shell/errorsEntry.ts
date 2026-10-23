@@ -3,7 +3,7 @@ import '../../../../src/lib/styles/base.css';
 import '../../../../src/lib/styles/harness.css';
 import '../../../../src/lib/styles/entity.css';
 import '../../../../src/lib/styles/entity-evidence.css';
-import EntityTests from '../../../../src/components/harness/entity-tests/EntityTests.svelte';
+import EntityTests from '../../../../src/components/explorer-ui/entity-tests/EntityTests.svelte';
 import { answers, nav, view } from '../../../../test/entityPlaces';
 import { ids } from '../../../../test/entityUnits';
 

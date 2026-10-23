@@ -7,11 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/harness/EntityDetailsScreen.svelte",
-			"packages/reports/src/components/harness/EntityDetailsScreen.svelte"
-		],
-		"symbols": ["EntityDetailsScreen", "EntityDetailsScreen"]
+		"source": ["packages/reports/src/components/explorer-ui/EntityDetailsScreen.svelte"],
+		"symbols": ["EntityDetailsScreen"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -96,11 +93,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/EntityDetailsScreen.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/EntityDetailsScreen.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/EntityDetailsScreen.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/EntityDetailsScreen.svelte"
 			}
 		]
 	},

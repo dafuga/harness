@@ -21,4 +21,4 @@ export {
 	panView,
 	drawnEdges,
 	nextNode
-} from '../../components/explorer-ui/harness/harness-map/focusView';
+} from '../../components/explorer-ui/harness-map/focusView';

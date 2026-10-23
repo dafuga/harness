@@ -240,3 +240,8 @@ When adding or changing workspace build aliases, run the existing `test/shared-s
 ## Type Files
 
 Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations.
+Component implementations belong directly in their responsibility category, with private code in an owner folder. Do not insert an application-name namespace beneath that category or retain a duplicate internal forwarding tree after relocation. Keep meaningful route prefixes, supported package exports, registered IDs and original migration records stable; record subsequent helper locations as reviewed follow-ups. Run the existing visual registry, import/alias impact, namespace-spy and ownership migration guards before broad verification.
+
+For structural relocations, rewrite resolved import addresses without normalizing unrelated URL literals. Directory URLs retain their trailing slash. Review the complete URL diff and run the existing catalog-listing and preview-binding tests alongside the visual catalog before sealing final evidence.
+
+When integrating main during a relocation, reconcile the latest landed definitions and adjust newly added imports and explicit reference origins for their new depth. Preserve every landed feature and assertion; verify the final source bodies against that main before freezing test inputs and final evidence.
