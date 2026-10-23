@@ -175,11 +175,11 @@
 	.ex-config-values.ex-scroll :global(:is(th, td)) {
 		vertical-align: top;
 	}
-	.ex-config-values thead th:first-child {
+	.ex-config-values :global(thead th:first-child) {
 		width: 17rem;
 	}
-	.ex-config-values th code,
-	.ex-config-values td > code {
+	.ex-config-values :global(th code),
+	.ex-config-values :global(td > code) {
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
 	}
@@ -212,7 +212,7 @@
 		overflow-wrap: anywhere;
 	}
 	@media (max-width: 640px) {
-		.ex-config-values thead th:first-child {
+		.ex-config-values :global(thead th:first-child) {
 			width: 32%;
 		}
 	}
