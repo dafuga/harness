@@ -6,9 +6,18 @@ import { previewState } from './catalogUnits';
 export async function previewNavigation(page: Page, unit: string, viewport: string) {
 	const navigation = await page.evaluate(() => {
 		const entry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-		return entry ? { address: entry.name, duration: entry.duration } : null;
+		return entry
+			? {
+					document: window.previewDocument,
+					timeOrigin: performance.timeOrigin,
+					duration: entry.duration
+				}
+			: null;
 	});
-	if (new URL(navigation?.address ?? 'http://missing.invalid').searchParams.get('unit') !== unit)
+	if (
+		navigation?.document?.unit !== unit ||
+		navigation.document.timeOrigin !== navigation.timeOrigin
+	)
 		throw new Error(`The loaded preview document does not belong to ${unit}`);
 	if (!navigation || !(navigation.duration > 0))
 		throw new Error('Missing preview navigation timing');

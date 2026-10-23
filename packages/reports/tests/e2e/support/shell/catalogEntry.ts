@@ -14,6 +14,8 @@ import hub from '../../../../../hub/src/lib/styles/hub.css?inline';
 document.body.dataset.pickerPreview = 'true';
 const unitId =
 	new URLSearchParams(location.search).get('unit') ?? 'reports.component.activity-list';
+// Preserve the document's original unit before real route fixtures replace the visible URL.
+window.previewDocument = Object.freeze({ unit: unitId, timeOrigin: performance.timeOrigin });
 const styles = unitId.startsWith('desktop.')
 	? [workspace, design]
 	: unitId.startsWith('hub.')
@@ -26,6 +28,7 @@ document.head.prepend(contextStyle);
 let mounted: ReturnType<typeof mount> | undefined;
 declare global {
 	interface Window {
+		previewDocument: Readonly<{ unit: string; timeOrigin: number }>;
 		previewRemount: () => Promise<void>;
 	}
 }
