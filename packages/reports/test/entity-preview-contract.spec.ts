@@ -1,5 +1,5 @@
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, open, ready, viewports, where } from './entityPreviewPage';
+import { capture, fits, open, ready, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 const modelUnits = [
 	'reports.component.explorer-ui-explorer-module-card',
@@ -36,6 +36,45 @@ test('component contracts expose Props and keep verification states on States', 
 });
 
 for (const [viewport, size] of Object.entries(viewports)) {
+	test(`model detail separates method contracts and table structure at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		for (const commit of [null, commits.middle]) {
+			await open(
+				page,
+				{ category: 'models', entity: 'app.model.order', commit, tab: 'contract' },
+				'groups'
+			);
+			await ready(page);
+			await capture(page, `model-contract-${commit ? 'commit' : 'tip'}-${viewport}`, [
+				'reports.component.entity-contract'
+			]);
+			for (const method of ['initialize', 'create', 'update'])
+				await expect(
+					page.getByRole('region', { name: `${method} method`, exact: true })
+				).toBeVisible();
+			await expect(page.getByRole('table', { name: 'Outputs', exact: true })).toHaveCount(0);
+			await expect(page.getByRole('table', { name: 'Errors', exact: true })).toHaveCount(0);
+			await page.getByRole('tab', { name: 'Table', exact: true }).click();
+			await ready(page);
+			await capture(page, `model-table-${commit ? 'commit' : 'tip'}-${viewport}`);
+			await expect(
+				page.getByRole('heading', { name: commit ? 'purchases' : 'orders', exact: true })
+			).toBeVisible();
+			await expect(page.getByRole('cell', { name: 'account_id', exact: true })).toBeVisible();
+			expect(await where(page)).toMatchObject({
+				category: 'models',
+				entity: 'app.model.order',
+				commit,
+				tab: 'table'
+			});
+			expect(await fits(page)).toBe(true);
+			await page.reload();
+			await ready(page);
+			await expect(page.getByRole('cell', { name: 'account_id', exact: true })).toBeVisible();
+		}
+	});
 	test(`page sections show used models instead of a contract at ${viewport} width`, async ({
 		page: tab
 	}) => {
