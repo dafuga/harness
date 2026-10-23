@@ -36,6 +36,9 @@ test('app projects include SvelteKit and specification files', () =>
 				'reusable visual frames with a child-content slot'
 			);
 			expect(fileContents(files, path)).toContain('Child content');
+			expect(fileContents(files, path)).toContain(
+				'Full-frame previews own their content boundaries'
+			);
 			expect(fileContents(files, path), 'Behavior-focused example guidance').toContain(
 				'one representative example per distinct behavior'
 			);
