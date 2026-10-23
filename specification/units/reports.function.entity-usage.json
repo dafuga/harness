@@ -10,7 +10,8 @@
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-relations/entityUsage.ts",
 			"packages/reports/src/utils/entityUsage.ts",
-			"packages/reports/src/utils/explorer-ui/entityUsage.ts"
+			"packages/reports/src/utils/explorer-ui/entityUsage.ts",
+			"packages/reports/src/utils/explorer-ui/entityUsage.types.ts"
 		],
 		"symbols": [
 			"usageGroups",
@@ -18,8 +19,15 @@
 			"entityUsage",
 			"UsageGroup",
 			"EntityUsage",
+			"SupportRow",
+			"usageOwners",
+			"helperConsumers",
+			"usageIdentity",
 			"entityUsage",
-			"usageGroups"
+			"usageGroups",
+			"UsageGroup",
+			"EntityUsage",
+			"SupportRow"
 		]
 	},
 	"contract": {
@@ -34,6 +42,36 @@
 				"name": "usageGroups.items",
 				"type": "ExplorerEntity[]",
 				"description": "Resolved revision-scoped consumers with declared module categories."
+			},
+			{
+				"name": "usageOwners.entities",
+				"type": "ExplorerEntity[]",
+				"description": "Already resolved collection owners used when no full revision is supplied."
+			},
+			{
+				"name": "usageOwners.revision",
+				"type": "HarnessRevision | absent",
+				"description": "Selected source revision containing active private and public runtime owners."
+			},
+			{
+				"name": "helperConsumers.helper",
+				"type": "HarnessUnit.helpers[number]",
+				"description": "One callable with source-derived runtime consumer references."
+			},
+			{
+				"name": "helperConsumers.owners",
+				"type": "Map<string, ExplorerEntity>",
+				"description": "Revision-scoped active owner projections, independent of public catalog admission."
+			},
+			{
+				"name": "helperConsumers.ownerId",
+				"type": "string",
+				"description": "Actual owner unit identifier used to exclude the callable itself."
+			},
+			{
+				"name": "usageIdentity.entity",
+				"type": "ExplorerEntity",
+				"description": "Resolved consumer with optional recorded caller symbol."
 			}
 		],
 		"outputs": [
@@ -46,11 +84,46 @@
 				"name": "usageGroups",
 				"type": "UsageGroup[]",
 				"description": "Nonempty navigation-ordered groups with distinct entity identifiers within each category."
+			},
+			{
+				"name": "usageOwners",
+				"type": "Map<string, ExplorerEntity>",
+				"description": "Active runtime owners; unsupported owners open source without an invented entity page."
+			},
+			{
+				"name": "helperConsumers",
+				"type": "ExplorerEntity[]",
+				"description": "Distinct active owner/callable consumers, excluding missing owners and true self references."
+			},
+			{
+				"name": "usageIdentity",
+				"type": "string",
+				"description": "Actual unit identity plus callable identity when recorded."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-entities",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.harness-icons",
 			"via": "import",
@@ -58,6 +131,11 @@
 		},
 		{
 			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
 		}

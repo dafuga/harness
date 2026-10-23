@@ -11,7 +11,13 @@
 		mediaBase
 	}: { entity: ExplorerEntity; nav: EntityNav; lens: EntityLens; mediaBase: string } = $props();
 	const id = $props.id();
-	let to = $derived(entityLens(nav.route, { category: entity.category, entity: entity.id }));
+	let to = $derived(
+		entityLens(nav.route, {
+			category: entity.category,
+			entity: entity.id,
+			helper: entity.caller?.symbol
+		})
+	);
 	// A pointer over the link or its preview, or the keyboard on the link, opens it; a touch never
 	// does, so a tap follows the link at once.
 	let over = $state(false);
@@ -92,39 +98,47 @@
 </script>
 
 <span class="ex-usage-link" bind:this={root}
-	><EntityLink
-		{to}
-		{nav}
-		aria-describedby={open ? id : undefined}
-		onpointerenter={enter}
-		onpointerleave={leave}
-		onfocus={(event) => (focused = event.currentTarget.matches(':focus-visible'))}
-		onblur={close}>{entity.name}</EntityLink
-	>{#if open}<span
-			class="ex-usage-preview"
-			role="tooltip"
-			{id}
-			aria-label={`Preview of ${entity.name}`}
-			style={place || 'visibility:hidden'}
-			bind:this={tip}
+	>{#if entity.caller?.sourceOnly}
+		<button
+			type="button"
+			disabled={!nav.source}
+			onclick={(event) =>
+				nav.source?.(entity, `${entity.name} — ${entity.unit.title}`, event.currentTarget)}
+			>{entity.name}</button
+		>
+	{:else}<EntityLink
+			{to}
+			{nav}
+			aria-describedby={open ? id : undefined}
 			onpointerenter={enter}
 			onpointerleave={leave}
-		>
-			{#if !visual}
-				<code>{entity.unit.title}</code><span>{entity.role}</span>
-			{:else if pictured && shot}
-				<img
-					src={mediaBase + file}
-					alt={`Screenshot of ${entity.name}`}
-					decoding="async"
-					onload={(event) => loaded(event.currentTarget)}
-					onerror={() => (failed = file)}
-				/>
-				<span>{origin}</span>
-			{:else}
-				<span>No screenshot is recorded at this revision</span>
-			{/if}
-		</span>{/if}</span
+			onfocus={(event) => (focused = event.currentTarget.matches(':focus-visible'))}
+			onblur={close}>{entity.name}</EntityLink
+		>{#if open}<span
+				class="ex-usage-preview"
+				role="tooltip"
+				{id}
+				aria-label={`Preview of ${entity.name}`}
+				style={place || 'visibility:hidden'}
+				bind:this={tip}
+				onpointerenter={enter}
+				onpointerleave={leave}
+			>
+				{#if !visual}
+					<code>{entity.caller?.symbol ?? entity.unit.title}</code><span>{entity.role}</span>
+				{:else if pictured && shot}
+					<img
+						src={mediaBase + file}
+						alt={`Screenshot of ${entity.name}`}
+						decoding="async"
+						onload={(event) => loaded(event.currentTarget)}
+						onerror={() => (failed = file)}
+					/>
+					<span>{origin}</span>
+				{:else}
+					<span>No screenshot is recorded at this revision</span>
+				{/if}
+			</span>{/if}{/if}</span
 >
 
 <style>
@@ -132,11 +146,20 @@
 		min-width: 0;
 		max-width: 100%;
 	}
-	.ex-usage-link > :global(a) {
+	.ex-usage-link > :global(a),
+	.ex-usage-link > button {
 		color: var(--ex-soft);
 		overflow-wrap: break-word;
 		text-decoration: underline;
 		text-underline-offset: 3px;
+	}
+	.ex-usage-link > button {
+		background: none;
+		border: 0;
+		padding: 0;
+		font: inherit;
+		cursor: pointer;
+		text-align: left;
 	}
 	.ex-usage-link > :global(a:hover) {
 		color: var(--ex-text);

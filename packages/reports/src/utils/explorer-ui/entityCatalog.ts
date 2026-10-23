@@ -1,6 +1,8 @@
 import type { CatalogOrder, Relations, CatalogRow } from './entityCatalog.types';
 import { helperContract } from '../../../../../src/utils/helperContract';
 import { explorerCategory } from './explorerCategory';
+import { helperConsumers, usageOwners } from './entityUsage';
+import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
 import type { ExplorerCategory, ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 
 export const catalogOrders = ['name', 'name-desc', 'changed', 'failed'] as const;
@@ -92,24 +94,6 @@ export function byName(left: CatalogRow, right: CatalogRow): number {
 	return sortName(left).localeCompare(sortName(right), 'en', { sensitivity: 'base' });
 }
 
-/** Resolve per-export runtime consumers; unrelated exports in the same module do not count. */
-function helperConsumers(
-	helper: NonNullable<CatalogRow['helper']>,
-	entities: Map<string, ExplorerEntity>
-): NonNullable<CatalogRow['usedIn']> {
-	const usedIn: NonNullable<CatalogRow['usedIn']> = [];
-	const seen = new Set<string>();
-	for (const consumer of helper.consumers ?? []) {
-		const entity = entities.get(consumer.unit);
-		if (!entity || seen.has(entity.id) || entity.change === 'removed') continue;
-		if (!['components', 'services', 'models'].includes(entity.category)) continue;
-		seen.add(entity.id);
-		usedIn.push(entity);
-		if (usedIn.length === 3) break;
-	}
-	return usedIn;
-}
-
 /** Related cards retain private pure callees; public collections require shared ownership. */
 function catalogHelpers(entity: ExplorerEntity, related?: boolean) {
 	return (entity.unit.helpers ?? []).filter((helper) =>
@@ -126,9 +110,10 @@ export function entityCatalog(
 	entities: ExplorerEntity[],
 	category: ExplorerCategory,
 	relations: (id: string) => Relations,
-	options: { related?: boolean; consumers?: ExplorerEntity[] } = {}
+	options: { related?: boolean; consumers?: ExplorerEntity[]; revision?: HarnessRevision } = {}
 ): CatalogRow[] {
-	const byId = new Map((options.consumers ?? entities).map((entity) => [entity.id, entity]));
+	const byId = usageOwners(options.consumers ?? entities, options.revision);
+	// Config collections list their variables; relationships list each config module once.
 	return entities
 		.filter(
 			(entity) =>
@@ -152,8 +137,7 @@ export function entityCatalog(
 					.map((id) => byId.get(id))
 					.filter((owner): owner is ExplorerEntity =>
 						Boolean(owner && owner.change !== 'removed' && owner.unit.status === 'active')
-					)
-					.slice(0, 3);
+					);
 				const shared = usedIn.length >= 2;
 				return hasRequiredServiceOwners(usedIn.length, options) ? [{ ...row, shared, usedIn }] : [];
 			}
@@ -166,13 +150,13 @@ export function entityCatalog(
 					...(helper.group ? { group: helper.group } : {}),
 					shared: true,
 					helper,
-					usedIn: helperConsumers(helper, byId),
+					usedIn: helperConsumers(helper, byId, row.id),
 					name: helper.name,
 					id: helpers.length === 1 ? entity.id : `${entity.id}#${helper.source}:${helper.name}`
 				}))
 				.filter((item) => options.related || item.usedIn.length >= 2);
 		})
-		.flatMap((row) => (category === 'configs' ? configRows(row) : [row]))
+		.flatMap((row) => (category === 'configs' && !options.related ? configRows(row) : [row]))
 		.sort(byName);
 }
 

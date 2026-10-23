@@ -2,6 +2,7 @@
 	import type { ExplorerEntity } from '../../models/Explorer.types';
 	import type { EntityLens, EntityNav } from '../../utils/entityLens';
 	import ExplorerUsageLink from './ExplorerUsageLink.svelte';
+	import { usageIdentity } from '../../utils/explorer-ui/entityUsage';
 	let {
 		consumers,
 		nav,
@@ -20,7 +21,9 @@
 		limit?: number;
 	} = $props();
 	// The first three distinct consumers, each where it was first named; never reordered by kind.
-	let distinct = $derived([...new Map(consumers.map((item) => [item.id, item])).values()]);
+	let distinct = $derived([
+		...new Map(consumers.map((item) => [usageIdentity(item), item])).values()
+	]);
 	let items = $derived(distinct.slice(0, Math.min(3, Math.max(0, limit))));
 	let omitted = $derived(distinct.length - items.length);
 </script>
@@ -29,7 +32,7 @@
 <div class="ex-usage" role="group" aria-label="Used In">
 	<span>Used In</span>{#if distinct.length === 0}<span>—</span>{:else}
 		<ul>
-			{#each items as item (item.id)}
+			{#each items as item (usageIdentity(item))}
 				<li><ExplorerUsageLink entity={item} {nav} {lens} {mediaBase} /></li>
 			{/each}
 			{#if omitted > 0}
