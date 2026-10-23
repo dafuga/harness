@@ -23,9 +23,11 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 						owns: {
 							...unit.owns,
 							source: [
-								...unit.owns.source,
-								'src/helpers/orders/filterOrders.ts',
-								'src/components/orders/contract.ts'
+								...new Set([
+									...unit.owns.source,
+									'src/helpers/orders/filterOrders.ts',
+									'src/components/orders/contract.ts'
+								])
 							]
 						},
 						helpers: unit.helpers?.map((helper) => ({
