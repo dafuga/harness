@@ -115,7 +115,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Sorted category rows retaining full revision-scoped consumer entities for links and previews. Helpers keep up to three distinct eligible consumers and retain the public sharing threshold."
+				"description": "Sorted category rows retaining all distinct eligible revision-scoped consumers so rendering can indicate overflow. Related configs produce one module row; config collections expose variable rows."
 			},
 			{
 				"name": "catalogFilter",

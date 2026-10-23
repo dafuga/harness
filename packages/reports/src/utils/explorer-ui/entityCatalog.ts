@@ -13,7 +13,7 @@ export interface CatalogRow {
 	setting?: NonNullable<ExplorerEntity['unit']['configValues']>[number];
 	group?: { id: string; title: string };
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** Revision-scoped consumers for linked usage previews; helper rows keep the first three eligible consumers. */
+	/** Revision-scoped consumers for linked usage previews; every eligible one, so a footer knows of more. */
 	usedIn?: ExplorerEntity[];
 	entity: ExplorerEntity;
 	id: string;
@@ -140,7 +140,6 @@ function helperConsumers(
 		if (!['components', 'services', 'models'].includes(entity.category)) continue;
 		seen.add(entity.id);
 		usedIn.push(entity);
-		if (usedIn.length === 3) break;
 	}
 	return usedIn;
 }
@@ -177,8 +176,7 @@ export function entityCatalog(
 					.map((id) => byId.get(id))
 					.filter((owner): owner is ExplorerEntity =>
 						Boolean(owner && owner.change !== 'removed' && owner.unit.status === 'active')
-					)
-					.slice(0, 3);
+					);
 				const shared = usedIn.length >= 2;
 				return hasRequiredServiceOwners(usedIn.length, options) ? [{ ...row, shared, usedIn }] : [];
 			}
@@ -196,7 +194,8 @@ export function entityCatalog(
 				}))
 				.filter((item) => options.related || item.usedIn.length >= 2);
 		})
-		.flatMap((row) => (category === 'configs' ? configRows(row) : [row]))
+		// A collection of configs lists their settings; a relationship lists each config module once.
+		.flatMap((row) => (category === 'configs' && !options.related ? configRows(row) : [row]))
 		.sort(byName);
 }
 
