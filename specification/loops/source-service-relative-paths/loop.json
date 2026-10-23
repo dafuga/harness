@@ -2,7 +2,7 @@
 	"name": "source-service-relative-paths",
 	"goal": "Hide the implied Services source root in labels while preserving full file identities",
 	"createdAt": "2026-10-23T15:16:09.999Z",
-	"updatedAt": "2026-10-23T15:18:14.183Z",
+	"updatedAt": "2026-10-23T15:24:33.678Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T15:24:33.678Z",
+			"evidence": "The same frozen test corpus and stable environment pass on81ea4ed9e after310cb86db failed the label assertion. Original file identities, code actions, responsive row bounds and standalone lists remain checked."
 		},
 		{
 			"id": "verify",
