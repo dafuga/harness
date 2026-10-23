@@ -1,0 +1,134 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [194.00ms]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-words.spec.ts --grep "contract has its own typed example"
+
+Running 3 tests using 1 worker
+
+(node:90063) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at desktop width (6.9s)
+(node:90247) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at tablet width (6.6s)
+(node:90368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at mobile width (6.6s)
+
+
+  1) test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at desktop width 
+
+    Error: Uses tab follows the selected helper calls
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Uses', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Uses tab follows the selected helper calls getByRole('tab', { name: 'Uses', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Uses', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityCallableContract.ts:158
+
+      156 | 	await capture(page, `helper-uses-${name}-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+      157 | 	const tab = page.getByRole('tab', { name: 'Uses', exact: true });
+    > 158 | 	await expect(tab, 'Uses tab follows the selected helper calls').toHaveCount(
+          | 	                                                                ^
+      159 | 		name === 'countWords' ? 1 : 0
+      160 | 	);
+      161 | 	await open(
+        at reviewCallableUses (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entityCallableContract.ts:158:66)
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entityCallableContract.ts:28:3)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entity-preview-words.spec.ts:208:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/error-context.md
+
+  2) test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at tablet width 
+
+    Error: Uses tab follows the selected helper calls
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Uses', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Uses tab follows the selected helper calls getByRole('tab', { name: 'Uses', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Uses', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityCallableContract.ts:158
+
+      156 | 	await capture(page, `helper-uses-${name}-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+      157 | 	const tab = page.getByRole('tab', { name: 'Uses', exact: true });
+    > 158 | 	await expect(tab, 'Uses tab follows the selected helper calls').toHaveCount(
+          | 	                                                                ^
+      159 | 		name === 'countWords' ? 1 : 0
+      160 | 	);
+      161 | 	await open(
+        at reviewCallableUses (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entityCallableContract.ts:158:66)
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entityCallableContract.ts:28:3)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entity-preview-words.spec.ts:208:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/error-context.md
+
+  3) test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at mobile width 
+
+    Error: Uses tab follows the selected helper calls
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Uses', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Uses tab follows the selected helper calls getByRole('tab', { name: 'Uses', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Uses', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityCallableContract.ts:158
+
+      156 | 	await capture(page, `helper-uses-${name}-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+      157 | 	const tab = page.getByRole('tab', { name: 'Uses', exact: true });
+    > 158 | 	await expect(tab, 'Uses tab follows the selected helper calls').toHaveCount(
+          | 	                                                                ^
+      159 | 		name === 'countWords' ? 1 : 0
+      160 | 	);
+      161 | 	await open(
+        at reviewCallableUses (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entityCallableContract.ts:158:66)
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entityCallableContract.ts:28:3)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxKkIr/packages/reports/test/entity-preview-words.spec.ts:208:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at desktop width 
+    test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at tablet width 
+    test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at mobile width 
+error: script "test:entities" exited with code 1
