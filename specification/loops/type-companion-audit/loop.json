@@ -2,7 +2,7 @@
 	"name": "type-companion-audit",
 	"goal": "Accept pure companion modules and reject runtime definitions in type files",
 	"createdAt": "2026-10-23T10:54:38.113Z",
-	"updatedAt": "2026-10-23T10:57:18.154Z",
+	"updatedAt": "2026-10-23T11:05:19.776Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:02:05.351Z",
+			"evidence": "Separates all remaining source declarations, preserves public type imports, accepts companion names, rejects runtime constants and enums in type files."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:05:19.776Z",
+			"evidence": "Immutable 1ae0608c36 at b40c94f0 red lineage passes all 18 unchanged adapter/scaffold cases at the generator repair commit."
 		},
 		{
 			"id": "verify",

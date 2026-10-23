@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.config.development-tooling-hub-env-config-types",
+	"kind": "config",
+	"title": "hubEnvConfig",
+	"responsibility": "Owns the hubEnvConfig typed configuration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/config/development-tooling/hubEnvConfig.types.ts"],
+		"symbols": ["HubEnv"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -11,7 +11,7 @@
 			"packages/hub/src/config/development-tooling/hubEnvConfig.ts",
 			"packages/hub/src/config/hubEnvConfig.ts"
 		],
-		"symbols": ["HubEnv", "hubEnvConfig", "hubEnvConfig"]
+		"symbols": ["hubEnvConfig", "HubEnv", "hubEnvConfig"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -29,7 +29,13 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "hub.config.development-tooling-hub-env-config-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.ts",

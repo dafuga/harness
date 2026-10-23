@@ -11,9 +11,9 @@
 		"symbols": [
 			"readAuditConfig",
 			"filterIgnoredFindings",
-			"ResolvedAuditConfig",
 			"readAuditConfig",
-			"filterIgnoredFindings"
+			"filterIgnoredFindings",
+			"ResolvedAuditConfig"
 		]
 	},
 	"contract": {
@@ -61,7 +61,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "audit.clean-code-types",
+			"unit": "audit.development-tooling-config-types",
 			"via": "import",
 			"origin": "derived"
 		},
