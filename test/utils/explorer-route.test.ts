@@ -1,4 +1,3 @@
-import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
 import {
 	explorerCategories,
@@ -52,19 +51,18 @@ const shapes: Array<[string, Partial<ExplorerLocation>]> = [
 		{ category: 'services', entity: 'service.clock', section: 'history' }
 	]
 ];
-test('has exactly seven categories, pages then shells first', () =>
-	measureWorkload('function.explorer-route', 'layout-catalog-behavior', () => {
-		expect(explorerCategories).toEqual([
-			'pages',
-			'layouts',
-			'components',
-			'functions',
-			'configs',
-			'services',
-			'models',
-			'platforms'
-		]);
-	}));
+test('has exactly seven categories, pages then shells first', () => {
+	expect(explorerCategories).toEqual([
+		'pages',
+		'shells',
+		'components',
+		'functions',
+		'configs',
+		'services',
+		'models',
+		'platforms'
+	]);
+});
 test.each(shapes)('current branch %s', (tail, selected) => {
 	const location = { branch, commit: null, ...selected } as ExplorerLocation;
 	const path = `/branch/${encoded}${tail}`;

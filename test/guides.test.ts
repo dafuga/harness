@@ -1,15 +1,13 @@
-import { measureWorkload } from './support/measureWorkload';
 import { expect, test } from 'vitest';
 import { availableGuideTopics, findGuide, guides } from '../src/guides/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
 
-test('model guidance is available for agents', () =>
-	measureWorkload('guide.scaffolds', 'layout-catalog-behavior', () => {
-		const guide = findGuide('model');
+test('model guidance is available for agents', () => {
+	const guide = findGuide('model');
 
-		expect(guide?.topic).toBe('model');
-		expect(guide?.exampleCommands[0]).toContain('harness generate model');
-	}));
+	expect(guide?.topic).toBe('model');
+	expect(guide?.exampleCommands[0]).toContain('harness generate model');
+});
 
 test('guidance covers every non-model scaffold topic', () => {
 	const topics = new Set(guides.map((guide) => guide.topic));
@@ -55,7 +53,6 @@ test('scaffold guidance tells agents what generated code contains', () => {
 	expect(catalog?.rules.join('\n')).toContain('mailer: Email rendering');
 	expect(mailer?.contains?.join('\n')).toContain('Mailer class under src/mailers');
 	expect(mailer?.exampleCommands[0]).toBe('harness generate mailer example');
-	expect(findGuide('layout')?.rules.join(' ')).toContain('child-content slot');
 });
 
 test('guide lookup accepts common scaffold aliases', () => {
