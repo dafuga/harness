@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import { content, drawn, hostProps, verdicts, words } from '../entityRender';
 import { withRelationGroups } from '../entityRelationFixtures';
+import { withHelpers } from '../entityPreviewHelpers';
 import { entityCatalog } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
 import { explorerRelations } from '../../src/utils/explorerRelations';
@@ -159,4 +160,18 @@ test('page models include models reached through services and remain bound to th
 		);
 		expect(explorerRelations(old, ids.page).models).toEqual([]);
 	});
+});
+
+test('private functions use the same module card as shared functions in owner relationships', () => {
+	for (const mode of ['current', 'commit'] as const) {
+		const head = withHelpers(hostProps(mode).head);
+		const body = content(mode, { ...list, tab: 'uses' }, { head });
+		const card = [...body.matchAll(/<article\b[^]*?<\/article>/g)]
+			.map((match) => match[0])
+			.find((item) => item.includes('aria-label="single"'));
+		expect(card, 'Private functions must be shared cards, not plain Other rows').toBeDefined();
+		expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
+		expect(card).toContain('aria-label="Used In"');
+		expect(card).toContain('/functions/function.single');
+	}
 });
