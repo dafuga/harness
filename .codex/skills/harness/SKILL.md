@@ -257,8 +257,12 @@ Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pa
 Capture the actual layout with a clearly labelled Child content placeholder passed through its
 real children slot. Never substitute a full page screenshot for a layout preview.
 
+Public category or route renames must inventory canonical and compatibility titles and links. Update exposed labels, preserve stable IDs and aliases, and extend the standard composition check across overview, details and history. Run affected downstream consumer tests alongside their typechecks. Run the affected package lint and audit as well.
+
 Full-frame previews own their content boundaries. Apply content-container styling inside the
 frame, never around its navigation. When changing fixture context, extend the existing standard
 acceptance assertions for affected controls and inspect retained pixels before accepting the UI.
 
 General string transformations belong in `src/helpers/strings/`, independent of their consumers. Keep domain-specific helpers such as device-key identity formatting in their domain. Derive each callable category from its own implementation source; use that category for catalog cards, filters and breadcrumbs. Preserve each revision's taxonomy and each helper's registered identity.
+
+When changing a scaffold shape or name, update emitted source, generated tests and public export plans together. Run the standard all-scaffold export-coherence assertion and the existing focused CLI project-check scenario before accepting the generator change; source-only scaffold assertions are insufficient.
