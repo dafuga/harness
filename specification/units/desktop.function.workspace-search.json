@@ -34,7 +34,7 @@
 			{
 				"name": "workspaceSearch",
 				"type": "WorkspaceSearch",
-				"description": "Entries with names, purpose and commit, scope wording, and an at function returning routes only for the exact listed entry objects; loading returns null entries and no routes."
+				"description": "Entries with names, purpose and commit, scope wording, and routes only for exact listed entry objects with supported desktop categories; loading and unsupported categories produce no routes."
 			}
 		],
 		"errors": []

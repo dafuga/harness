@@ -1,7 +1,15 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-	import type { Checkpoint, GameView, GameDocument } from '../../../../game/src/index';
+	import type {
+		Checkpoint,
+		CheckpointImage,
+		GameView,
+		GameDocument
+	} from '../../../../game/src/index';
 	import type { DesktopBridge } from '../../models/development-tooling/DesktopBridge.types';
+	/**
+	 * A generated image stays a candidate, apart from the confirmed image, until Use this image.
+	 * Closing or a failure leaves the confirmed image as it was; nothing generates without a click.
+	 */
 	let {
 		checkpoint,
 		view,
@@ -11,7 +19,8 @@
 		commit,
 		readonly = false,
 		bridge,
-		change
+		change,
+		accept
 	}: {
 		checkpoint: Checkpoint;
 		view: GameView;
@@ -22,42 +31,53 @@
 		readonly?: boolean;
 		bridge?: DesktopBridge;
 		change: (patch: Partial<Checkpoint>) => void;
+		accept: (patch: Partial<Checkpoint>) => void;
 	} = $props();
+	type Candidate = { image: CheckpointImage; url: string; guidance: string; stale: boolean };
 	let preview = $state(''),
+		candidate = $state.raw<Candidate | null>(null),
+		changes = $state(''),
 		busy = $state(false),
-		error = $state(''),
-		note = $state('');
+		error = $state('');
 	let generation = 0,
 		reading = 0;
-	const ready = $derived(
-		Boolean(!readonly && !commit && projectId && revision && bridge?.gameImageGenerate)
-	);
-	function identity() {
-		return JSON.stringify([
-			projectId,
-			view.id,
-			view.style,
-			view.dimension,
-			checkpoint.id,
-			checkpoint.title,
-			checkpoint.description,
-			checkpoint.imagePrompt,
-			checkpoint.requires,
-			checkpoint.conditions,
-			checkpoint.actions
-		]);
+	const reason = $derived(blocked()),
+		idle = $derived(!busy && !reason);
+	function blocked() {
+		if (commit) return 'History is read-only, so new images are off here.';
+		if (readonly) return 'This game is read-only, so new images are off.';
+		if (!projectId) return 'The demo is not saved, so it cannot generate images.';
+		if (!revision) return 'Reload the game to generate images.';
+		if (!bridge?.gameImageGenerate) return 'This app cannot generate images.';
+		return checkpoint.description.trim() ? '' : 'Describe the checkpoint to generate its image.';
 	}
-	/** Every edit replaces the pane's context: reading depends on these values, not on the edit. */
-	const owner = $derived(projectId + ':' + view.id + ':' + checkpoint.id),
+	/** What an image is made from, to tell a result that predates later edits. */
+	function identity() {
+		const { style, dimension } = view;
+		const { title, description, requires, conditions, actions } = checkpoint;
+		return JSON.stringify({ style, dimension, title, description, requires, conditions, actions });
+	}
+	/** The document as it stands, with this checkpoint carrying the guidance for one image. */
+	function draft(guidance: string): GameDocument {
+		const swap = (c: Checkpoint) => (c.id === checkpoint.id ? { ...c, imagePrompt: guidance } : c);
+		const views = document.views.map((v) =>
+			v.id === view.id ? { ...v, checkpoints: v.checkpoints.map(swap) } : v
+		);
+		return { ...document, views };
+	}
+	/** Every edit replaces the context: reading and results depend on these values, not on edits. */
+	const owner = $derived([projectId, revision, commit, view.id, checkpoint.id].join(':')),
 		path = $derived(checkpoint.image?.path),
 		project = $derived(projectId),
 		at = $derived(commit),
 		reader = $derived(bridge?.gameImageRead);
+	/** A pending result ends with its owner, and when the editor closes. */
 	$effect(() => {
 		void owner;
-		generation++;
 		busy = false;
-		error = note = '';
+		candidate = null;
+		error = changes = '';
+		return () => void generation++;
 	});
 	$effect(() => {
 		const source = ++reading;
@@ -70,31 +90,29 @@
 				.catch(() => {
 					if (source === reading) error = 'Unable to read this checkpoint image.';
 				});
-		return () => {
-			reading++;
-		};
+		return () => void reading++;
 	});
-	// The read effect's own teardown already ends reading; only a pending generation needs ending.
-	onDestroy(() => void generation++);
-	async function generate() {
-		if (!ready || busy || !projectId || !revision || !bridge?.gameImageGenerate) return;
+	/** Each image keeps the guidance before it, so requested changes add to the original intent. */
+	async function generate(request = '') {
+		if (!idle || !projectId || !revision || !bridge?.gameImageGenerate) return;
+		const base = candidate ? candidate.guidance : (checkpoint.imagePrompt ?? '');
+		const guidance = [base, request.trim()].filter(Boolean).join('\n');
 		const source = ++generation,
 			stamp = identity();
 		busy = true;
-		error = note = '';
+		error = '';
 		try {
 			const result = await bridge.gameImageGenerate({
 				projectId,
-				document,
+				document: draft(guidance),
 				viewId: view.id,
 				checkpointId: checkpoint.id,
 				expectedRevision: revision
 			});
-			if (source !== generation || readonly || commit) return;
-			change({ image: result.image });
-			preview = result.dataUrl;
-			if (stamp !== identity())
-				note = 'Made from earlier guidance. Regenerate to match your edits.';
+			if (source !== generation) return;
+			const stale = stamp !== identity();
+			candidate = { image: result.image, url: result.dataUrl, guidance, stale };
+			changes = '';
 		} catch (cause) {
 			if (source === generation)
 				error = cause instanceof Error ? cause.message : 'Image generation failed.';
@@ -102,6 +120,8 @@
 			if (source === generation) busy = false;
 		}
 	}
+	const choose = ({ image, guidance }: Candidate) =>
+		accept(guidance ? { image, imagePrompt: guidance } : { image });
 </script>
 
 <section
@@ -110,110 +130,90 @@
 	aria-label="Checkpoint image"
 	aria-busy={busy}
 >
-	<header>
-		<h3>Gameplay checkpoint image</h3>
-		<small>GPT Image 2</small>
-	</header>
-	{#if preview}<figure>
-			<img src={preview} alt={checkpoint.title + ' gameplay reference'} />
-			<figcaption>
-				{checkpoint.image?.model} · {checkpoint.image?.createdAt.slice(0, 10)}
+	{#if candidate}
+		<figure>
+			<img src={candidate.url} alt={'New checkpoint image for ' + checkpoint.title} />
+			<figcaption class="muted">
+				Not used yet.{candidate.stale ? ' Made before your latest edits.' : ''}
 			</figcaption>
-		</figure>{/if}
-	<label
-		><span>Checkpoint image direction</span><textarea
-			aria-label="Checkpoint image direction"
-			value={checkpoint.imagePrompt ?? ''}
-			disabled={readonly || Boolean(commit)}
-			oninput={(e) => change({ imagePrompt: e.currentTarget.value })}
-			placeholder="Describe the intended look at this checkpoint."
-		></textarea></label
-	>
-	<p class="hint">
-		One paid image per click · medium quality · landscape. Uses the view style and checkpoint
-		guidance.
+		</figure>
+		<label>
+			<span>Request changes</span>
+			<textarea bind:value={changes} disabled={busy} placeholder="Warmer light, lanterns…"
+			></textarea>
+		</label>
+		<div class="actions">
+			<button disabled={!idle || !changes.trim()} onclick={() => generate(changes)}
+				>Generate changes</button
+			>
+			<button class="primary" disabled={busy} onclick={() => choose(candidate!)}
+				>Use this image</button
+			>
+		</div>
+	{:else}
+		{#if preview}
+			<figure>
+				<img src={preview} alt={checkpoint.title + ' gameplay reference'} />
+				<figcaption class="muted">
+					Current image · {checkpoint.image?.createdAt.slice(0, 10)}
+				</figcaption>
+			</figure>
+		{/if}
+		<div class="actions">
+			{#if checkpoint.image && !readonly && !commit}
+				<button class="muted" disabled={busy} onclick={() => change({ image: undefined })}
+					>Remove image reference</button
+				>
+			{/if}
+			<button class="primary" disabled={!idle} onclick={() => generate()}>Generate image</button>
+		</div>
+	{/if}
+	<p class="muted" role="status">
+		{busy
+			? 'Generating an image. This can take a minute.'
+			: reason || 'Each image is one paid GPT Image request.'}
 	</p>
-	{#if !projectId}<p class="hint">Open a local game project to generate images.</p>{/if}
-	{#if commit || readonly}<p class="hint">
-			Saved images are available here; generation requires an editable game.
-		</p>{/if}
-	<div class="row">
-		<button class="primary" disabled={!ready || busy} onclick={generate}
-			>{busy
-				? 'Generating image…'
-				: checkpoint.image
-					? 'Regenerate checkpoint image'
-					: 'Generate checkpoint image'}</button
-		>
-		{#if checkpoint.image}<button
-				disabled={readonly || Boolean(commit) || busy}
-				onclick={() => change({ image: undefined })}>Remove image reference</button
-			>{/if}
-	</div>
 	{#if error}<p role="alert" class="error">{error}</p>{/if}
-	{#if note && checkpoint.image}<p class="hint" role="status">{note}</p>{/if}
-	<p class="hint">
-		Save the graph to keep this reference. Images guide appearance; mechanics stay in the engine.
-	</p>
 </section>
 
 <style>
-	.image-panel {
-		display: grid;
-		gap: 16px;
-		border-top: 1px solid var(--border);
-		padding-top: 20px;
-		min-width: 0;
-	}
-	header {
-		display: flex;
-		justify-content: space-between;
-		gap: 12px;
-		align-items: baseline;
-	}
-	h3 {
-		margin: 0;
-		font-size: 14px;
-	}
-	small,
-	.hint,
-	figcaption {
-		color: var(--muted);
-		font-size: 12px;
-	}
+	.image-panel,
+	figure,
 	label {
 		display: grid;
-		gap: 8px;
-	}
-	label > span {
-		color: var(--muted);
-		font-size: 12px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-	textarea {
-		min-height: 96px;
-		resize: vertical;
-	}
-	figure {
+		gap: 10px;
+		min-width: 0;
 		margin: 0;
-		display: grid;
-		gap: 8px;
 	}
 	img {
 		width: 100%;
-		display: block;
-		border-radius: 8px;
-		border: 1px solid var(--border);
+		max-height: min(420px, 45dvh);
+		object-fit: contain;
+		border: 1px solid var(--line);
+		border-radius: 10px;
+		background: #041624;
 	}
-	.hint {
-		margin: 0;
-		line-height: 1.5;
+	label > span {
+		font-size: 14px;
+		font-weight: 600;
 	}
-	.row {
+	textarea {
+		min-height: 64px;
+		resize: vertical;
+	}
+	textarea:focus-visible {
+		outline: 2px solid var(--gold);
+	}
+	.actions {
+		display: flex;
 		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 8px;
 	}
-	button {
-		white-space: normal;
+	p,
+	figcaption {
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.5;
 	}
 </style>

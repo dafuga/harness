@@ -3,7 +3,7 @@
 	"id": "desktop.component.game-graph",
 	"kind": "component",
 	"title": "GameGraph",
-	"responsibility": "Edit checkpoint dependencies and graph positions while showing eligibility and completed progress.",
+	"responsibility": "Display checkpoint dependencies and progress; edit connections and positions, and open checkpoint creation or inspection.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -42,13 +42,18 @@
 				"name": "GameGraph.readonly",
 				"type": "boolean",
 				"description": "Disable editing and generation for historical or otherwise immutable views."
+			},
+			{
+				"name": "GameGraph.create",
+				"type": "(node: Checkpoint) => void",
+				"description": "Open the new checkpoint in the owning workspace modal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameGraph",
 				"type": "markup",
-				"description": "Edit checkpoint dependencies and graph positions while showing eligibility and completed progress. Renders reactive UI and publishes edits through its callbacks."
+				"description": "Display checkpoint dependencies and progress; edit connections and positions, and open checkpoint creation or inspection."
 			}
 		],
 		"errors": []

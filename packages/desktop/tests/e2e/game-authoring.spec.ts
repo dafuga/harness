@@ -1,50 +1,39 @@
-import { keepEdits, keepTypedFields } from './game-unsaved-fixture';
+import {
+	keepEdits,
+	keepTypedFields,
+	viewSettings,
+	doneCheckpoint,
+	advancedCheckpoint,
+	captureCheckpointViewports,
+	captureGame as capture
+} from './game-unsaved-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 import { fakeProject } from './ui-workspace-fixture';
 if (process.env.TAKE_SCREENSHOT === 'true') test.use({ video: 'on' });
-
-async function capture(page: import('@playwright/test').Page, name: string) {
-	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	await page.locator('h1').first().waitFor();
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode()));
-	});
-	await page.screenshot({ path: 'test-results/' + name + '.png', fullPage: true });
-}
-
 test('game authoring exposes independent mechanics and executable checkpoint graph', async ({
 	page
 }) => {
-	await page.goto('/game');
-	await capture(page, 'game-authoring-before');
-	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
-	await expect(page.getByText(/Demo/).first()).toBeVisible();
-	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
-	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeVisible();
-	await page.getByText('Collect the key', { exact: true }).first().click();
-	await expect(page.getByLabel('Checkpoint title', { exact: true })).toHaveValue('Collect the key');
-	await page.getByLabel('Checkpoint title', { exact: true }).fill('Find the brass key');
-	await expect(page.getByText('Find the brass key', { exact: true }).first()).toBeVisible();
-	await capture(page, 'game-checkpoint-graph');
+	test.setTimeout(90_000);
+	await captureCheckpointViewports(page, capture);
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await expect(page.getByRole('textbox', { name: 'Title', exact: true })).toHaveValue(
 		'Movement and collision'
 	);
-	await capture(page, 'game-mechanics');
 });
-
 for (const dimension of ['2d', '3d'])
 	test(dimension + ' preview executes key-door branching without AI', async ({ page }) => {
 		await page.goto('/game');
+		await viewSettings(page);
 		await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
 		await page.getByLabel('Dimension', { exact: true }).selectOption(dimension);
+		await doneCheckpoint(page);
 		await page.getByRole('button', { name: 'Preview', exact: true }).click();
 		await expect(page.locator('canvas[data-ready="true"]').first()).toBeVisible();
 		await page.getByRole('button', { name: 'Move right', exact: true }).click({ clickCount: 4 });
 		await page.getByRole('button', { name: 'Garden', exact: true }).click();
 		await expect(page.getByText('Reached the garden', { exact: true })).toBeVisible();
 		await capture(page, 'game-preview-' + dimension);
+		await doneCheckpoint(page);
 		await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 		await page.getByText('Collect the key', { exact: true }).first().click();
 		await page.getByLabel('Checkpoint title', { exact: true }).fill('Collected key');
@@ -52,10 +41,10 @@ for (const dimension of ['2d', '3d'])
 			'3 of 4 checkpoints complete'
 		);
 		await capture(page, 'game-progress-preserved-' + dimension);
+		await doneCheckpoint(page);
 		await page.getByRole('button', { name: 'Preview', exact: true }).click();
 		await expect(page.getByRole('button', { name: /Start AI/ })).toBeDisabled();
 	});
-
 test('saved graph edits persist, invalid references block saves and history is read-only', async ({
 	page
 }) => {
@@ -85,17 +74,21 @@ test('saved graph edits persist, invalid references block saves and history is r
 	);
 	const url = '/game?projectId=local-' + 'a'.repeat(64);
 	await page.goto(url);
+	await viewSettings(page);
 	await page.getByLabel('View title', { exact: true }).fill('Saved courtyard');
 	await keepEdits(page);
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
 	await page.reload();
+	await viewSettings(page);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Saved courtyard');
 	await keepTypedFields(page, () =>
 		page.evaluate(() => JSON.parse(localStorage.getItem('game-test-document') ?? 'null'))
 	);
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByText('Collect the key', { exact: true }).first().click();
+	await advancedCheckpoint(page);
 	await page.getByLabel('Prerequisites', { exact: true }).fill('missing-node');
 	await page.getByLabel('Prerequisites', { exact: true }).press('Tab');
 	await expect(page.getByRole('alert')).toContainText('Unknown checkpoint: missing-node');
@@ -104,19 +97,22 @@ test('saved graph edits persist, invalid references block saves and history is r
 	await page.goto(url + '&readonly=1&commit=' + 'c'.repeat(40));
 	await expect(page.getByLabel('View title', { exact: true })).toHaveAttribute('readonly', '');
 	await expect(page.getByRole('button', { name: 'Save', exact: true })).toHaveCount(0);
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Add checkpoint', exact: true })).toHaveCount(0);
 });
-
 test('view creation and checkpoint creation/deletion preserve independent mechanics', async ({
 	page
 }) => {
 	await page.goto('/game');
+	await viewSettings(page);
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	const trace = page.getByText(/^Execution trace/);
 	for (let step = 0; step < 2; step++)
 		await page.getByRole('button', { name: 'Move right' }).click();
 	await page.getByRole('button', { name: 'New view', exact: true }).click();
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('New view');
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await expect(trace, 'a cloned view shares ids but not the courtyard trace').toHaveText(
 		'Execution trace (0)'
@@ -127,6 +123,7 @@ test('view creation and checkpoint creation/deletion preserve independent mechan
 	await expect(page.getByText('Checkpoint 5', { exact: true })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
 	await page.getByRole('textbox', { name: 'Title', exact: true }).fill('Independent movement');
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await expect(page.getByText('Collect the key', { exact: true }).first()).toBeVisible();
 	await page.getByRole('button', { name: 'Mechanics', exact: true }).click();
@@ -134,6 +131,7 @@ test('view creation and checkpoint creation/deletion preserve independent mechan
 		'Independent movement'
 	);
 	await page.getByLabel('View', { exact: true }).selectOption({ label: 'The courtyard' });
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await expect(trace).toHaveText('Execution trace (1)');
 	await trace.click();
@@ -141,7 +139,6 @@ test('view creation and checkpoint creation/deletion preserve independent mechan
 		page.getByRole('list', { name: 'Checkpoint execution trace' }).getByRole('listitem')
 	).toHaveText([/^Collect the key · tick 2/]);
 });
-
 test('3D remains playable when the browser cannot provide WebGL', async ({ page }) => {
 	await page.addInitScript(() => {
 		const original = HTMLCanvasElement.prototype.getContext;
@@ -155,14 +152,15 @@ test('3D remains playable when the browser cannot provide WebGL', async ({ page 
 		} as typeof original;
 	});
 	await page.goto('/game');
+	await viewSettings(page);
 	await page.getByLabel('Dimension', { exact: true }).selectOption('3d');
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-renderer="software3d"][data-ready="true"]')).toBeVisible();
 	await page.getByRole('button', { name: 'Move right', exact: true }).click({ clickCount: 4 });
 	await page.getByRole('button', { name: 'Vault', exact: true }).click();
 	await expect(page.getByText('Reached the vault', { exact: true })).toBeVisible();
 	await capture(page, 'game-preview-3d-software');
 });
-
 test('project creation sends the chosen game type and dimension', async ({ page }) => {
 	const { exampleDocument } = await import('../../../game/src/utils/game-authoring/keyDoor');
 	await fakeProject(page);
@@ -198,10 +196,11 @@ test('project creation sends the chosen game type and dimension', async ({ page 
 	).toEqual({ name: 'created-game', kind: 'game', dimension: '3d' });
 	await expect(page.getByLabel('Dimension', { exact: true })).toHaveValue('3d');
 });
-
 test('held arrow keys animate the 3D game through the vault branch', async ({ page }) => {
 	await page.goto('/game');
+	await viewSettings(page);
 	await page.getByLabel('Dimension', { exact: true }).selectOption('3d');
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-ready="true"]')).toBeVisible();
 	await page.locator('canvas').click();
 	await page.keyboard.down('ArrowRight');
