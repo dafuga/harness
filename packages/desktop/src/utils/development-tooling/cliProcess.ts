@@ -2,7 +2,6 @@ import type { ProcessOptions } from './cliProcess.types';
 export type { ProcessOptions } from './cliProcess.types';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
-import type { ResourceContext } from '../../../../../src/core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
