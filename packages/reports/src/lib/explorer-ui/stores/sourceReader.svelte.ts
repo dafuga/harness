@@ -75,8 +75,11 @@ export function testFiles(unit: HarnessUnit): string[] {
 
 /** Read only text archived with this revision; never substitute a working-copy file. */
 export function archivedSource(unit: HarnessUnit, mediaBase: string, filePath?: string) {
-	const archived = [...(unit.sourceFiles ?? []), ...(unit.testFiles ?? [])];
-	const recorded = Boolean(unit.sourceFiles || unit.testFiles);
+	const inputs = [unit.sourceFiles, unit.testFiles];
+	const archived: NonNullable<HarnessUnit['sourceFiles']> = [];
+	for (const input of inputs)
+		for (let index = 0; index < (input?.length ?? 0); index++) archived.push(input![index]);
+	const recorded = Boolean(inputs[0] || inputs[1]);
 	const files: SourceFiles = async () => {
 		const paths = recorded ? [...new Set([...implementationFiles(unit), ...testFiles(unit)])] : [];
 		return filePath && paths.includes(filePath)
