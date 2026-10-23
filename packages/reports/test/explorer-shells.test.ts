@@ -42,10 +42,10 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 		['pages', 'Pages', 'pages', false],
 		['shells', 'Shells', 'shells', true],
 		['components', 'Components', 'components', false],
+		['models', 'Models', 'database', false],
+		['services', 'Services', 'services', false],
 		['functions', 'Helpers', 'functions', false],
 		['configs', 'Configs', 'configs', false],
-		['services', 'Services', 'services', false],
-		['models', 'Models', 'database', false],
 		['styles', 'Styles', 'styles', false],
 		['platforms', 'Platforms', 'platforms', false]
 	]);
