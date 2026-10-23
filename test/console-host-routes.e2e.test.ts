@@ -201,7 +201,7 @@ test('the installed console names the repository of its recorded history, to the
 	};
 	expect([recorded.kind, recorded.repository.head]).toEqual(['recorded', head]);
 	const page = await adminPage();
-	// The address of the earlier activity view leads to Pages in the current catalog.
+	// The earlier activity address leads to Pages with the current category navigation.
 	await page.goto(worker.url + main(head, 'activity'));
 	await page.waitForURL(`**${main(head, 'pages')}`);
 	await bar(page).getByText(recorded.repository.name, { exact: true }).waitFor();

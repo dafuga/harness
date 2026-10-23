@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/git-source-history/hubHistory.ts",
+			"packages/hub/src/utils/git-source-history/hubHistory.types.ts",
 			"packages/hub/src/utils/hubHistory.ts"
 		],
-		"symbols": ["HubHistoryPage", "hubHistory", "hubHistory"]
+		"symbols": ["hubHistory", "HubHistoryPage", "HubHistoryPage", "hubHistory"]
 	},
 	"contract": {
 		"origin": "declared",

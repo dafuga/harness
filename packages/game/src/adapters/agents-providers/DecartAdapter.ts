@@ -1,7 +1,5 @@
-import type { createDecartClient } from '@decartai/sdk';
+import type { TokenClient } from './DecartAdapter.types';
 import type { RenderSessionRequest, RenderSession } from '../../models/game-authoring/Game.types';
-
-type TokenClient = ReturnType<typeof createDecartClient>['tokens'];
 export class DecartAdapter {
 	private until = 0;
 	constructor(

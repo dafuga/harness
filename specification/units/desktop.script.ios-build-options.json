@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-build-options.ts"],
+		"source": [
+			"packages/desktop/scripts/ios-build-options.ts",
+			"packages/desktop/scripts/ios-build-options.types.ts"
+		],
 		"symbols": [
-			"IosBuildPlan",
 			"fixtureNeedsDebug",
 			"iosBuildPlan",
 			"simulatorEntitlements",
-			"simulatorSigning"
+			"simulatorSigning",
+			"IosBuildPlan",
+			"IosBuildPlan"
 		]
 	},
 	"contract": {

@@ -1,6 +1,6 @@
+import type { Mode } from './ui-evidence-bindings.types';
 import type { ExplorerSide } from '../../../reports/src/models/explorer-ui/Explorer.types';
 import type { EntityEvidenceResult } from '../../src/models/verification-evidence/DesktopEvidence.types';
-type Mode = 'current' | 'commit';
 
 /** What binds one request for bytes: every field the bridge is given, in one fixed order. */
 export const bindingFields = [

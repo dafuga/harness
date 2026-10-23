@@ -9,9 +9,14 @@
 	"owns": {
 		"source": [
 			"src/audit/development-tooling/scaffoldNamingRules.ts",
+			"src/audit/development-tooling/scaffoldNamingRules.types.ts",
 			"src/audit/scaffoldNamingRules.ts"
 		],
-		"symbols": ["auditScaffoldTypeScriptNaming", "auditScaffoldTypeScriptNaming"]
+		"symbols": [
+			"auditScaffoldTypeScriptNaming",
+			"FunctionFileRule",
+			"auditScaffoldTypeScriptNaming"
+		]
 	},
 	"contract": {
 		"origin": "derived",

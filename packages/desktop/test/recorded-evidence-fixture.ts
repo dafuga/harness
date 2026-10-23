@@ -1,10 +1,9 @@
+import type { Recorded, Opened, Reads, At } from './recorded-evidence-fixture.types';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { realpath } from 'node:fs/promises';
-import { indexedRepo, type IndexedCommits } from '../../../test/support/historyIndexFixture';
-import type { VerifyRepo } from '../../../test/support/verifyRepo';
+import { indexedRepo } from '../../../test/support/historyIndexFixture';
 import type { ExplorerCapture } from '../../reports/src/models/Explorer.types';
-import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
@@ -21,19 +20,6 @@ export const notListed = /not listed/;
 export const git = (root: string, ...args: string[]) =>
 	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
 export const sha256 = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
-
-export interface Recorded {
-	repo: VerifyRepo;
-	root: string;
-	commits: IndexedCommits & { merged: string };
-}
-export interface At {
-	commit: string;
-	branch: string;
-	mode: 'current' | 'commit';
-}
-type Reads = Required<Pick<DesktopBridge, 'evidence' | 'artifact'>>;
-export type Opened = Reads & { session: ProjectSessionService; projectId: string };
 
 /**
  * The indexed repository of the root fixtures: a root commit whose record failed, a verified
@@ -100,3 +86,5 @@ export async function shown(reader: Opened, entityId: string, at: At) {
 	const [found] = result.evidence.after.captures;
 	return { scope, result, found, query: binding(result, scope, found) };
 }
+
+export type { Recorded, At, Opened } from './recorded-evidence-fixture.types';

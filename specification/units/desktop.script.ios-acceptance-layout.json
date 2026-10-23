@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-acceptance-layout.ts"],
-		"symbols": ["topLayout", "scrolledLayout"]
+		"source": [
+			"packages/desktop/scripts/ios-acceptance-layout.ts",
+			"packages/desktop/scripts/ios-acceptance-layout.types.ts"
+		],
+		"symbols": ["topLayout", "scrolledLayout", "Measured"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -9,13 +9,17 @@
 	"owns": {
 		"source": [
 			"src/cli/program/ConsoleUninstallService.ts",
+			"src/cli/program/ConsoleUninstallService.types.ts",
 			"src/services/ConsoleUninstallService.ts"
 		],
 		"symbols": [
-			"ConsoleUninstallOptions",
-			"ConsoleUninstallResult",
 			"ConsoleUninstallService",
 			"ConsoleUninstallService.uninstall",
+			"ConsoleUninstallOptions",
+			"ConsoleUninstallResult",
+			"ConsoleUninstallOptions",
+			"ConsoleUninstallResult",
+			"Outcome",
 			"ConsoleUninstallService",
 			"ConsoleUninstallOptions",
 			"ConsoleUninstallResult"

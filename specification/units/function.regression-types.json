@@ -7,16 +7,24 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/regressionTypes.ts", "src/core/verification-evidence/regressionTypes.ts"],
+		"source": [
+			"src/core/regressionTypes.ts",
+			"src/core/verification-evidence/regressionTypes.ts",
+			"src/core/verification-evidence/regressionTypes.types.ts"
+		],
 		"symbols": [
 			"regressionPhaseSchema",
 			"regressionRecordSchema",
 			"regressionViewSchema",
 			"regressionPhaseSchema",
 			"regressionRecordSchema",
+			"regressionViewSchema",
 			"RegressionRecord",
 			"RegressionPhase",
-			"regressionViewSchema",
+			"RegressionPoint",
+			"RegressionView",
+			"RegressionRecord",
+			"RegressionPhase",
 			"RegressionPoint",
 			"RegressionView"
 		]

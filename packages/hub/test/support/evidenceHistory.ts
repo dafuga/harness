@@ -1,3 +1,4 @@
+import type { Files, Notes, Source } from './evidenceHistory.types';
 import type { EvidencePointer, HistoryNote } from '../../../../src/core/historyTypes';
 import { noteLines } from '../../../../src/repositories/history-note-repository/noteLines';
 import { fakeGit, type FakeGit } from './evidenceGit';
@@ -19,8 +20,6 @@ import {
 
 export const notesRef = 'refs/notes/harness';
 export const evidenceRef = 'refs/heads/harness-evidence';
-type Files = Map<string, Uint8Array>;
-type Notes = Map<string, HistoryNote[]>;
 
 /** The evidence branch and the notes of a repository, each grown one commit at a time. */
 export function evidenceStore(git: FakeGit) {
@@ -73,12 +72,6 @@ function reason(commit: string): Extract<HistoryNote, { kind: 'reason' }> {
 			recordedAt: '2026-10-12T08:00:00Z'
 		}
 	};
-}
-
-interface Source {
-	git: FakeGit;
-	root: string;
-	changed: string;
 }
 
 /** The first commit proves both scenarios itself. */
@@ -157,4 +150,4 @@ export function evidenceHistory(options: { screens?: Uint8Array } = {}) {
 	};
 }
 
-export type EvidenceHistory = ReturnType<typeof evidenceHistory>;
+export type { EvidenceHistory } from './evidenceHistory.types';

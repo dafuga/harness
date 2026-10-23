@@ -1,3 +1,4 @@
+import type { Installed } from './console-scale.e2e.test.types';
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -21,10 +22,6 @@ const scaled = test.skipIf(!index);
 const limits = { freeMiB: 3, paidMiB: 10, records: 12 };
 const mebibyte = 1024 * 1024;
 const admin = { cookie: `session=${sessions.admin}` };
-type Installed = {
-	bundle: { files: number; bytes: number; compressedBytes: number } | null;
-	warnings: string[];
-};
 
 let target: SyntheticHost;
 let worker: LocalWorker;

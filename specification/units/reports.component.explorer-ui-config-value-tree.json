@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ConfigValueTree.svelte"],
-		"symbols": ["ConfigValueTree", "ConfigCollection", "collection", "valueMark"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/ConfigValueTree.module.types.ts",
+			"packages/reports/src/components/explorer-ui/ConfigValueTree.svelte"
+		],
+		"symbols": [
+			"ConfigCollection",
+			"ConfigValueTree",
+			"collection",
+			"valueMark",
+			"ConfigCollection"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,14 +1,14 @@
+import { associatedTests, testImporters } from './associatedTests';
+import type { StoredSide } from '../../../utils/explorer-ui/sideImpact';
+import type { Unit } from './SourceArchiveService.types';
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
 import type { TreeEntry } from '../../../core/development-tooling/sourceTypes';
-import type { RevisionRegistry } from '../../../utils/verification-evidence/revision-registry/revisionRegistry';
 import type { SourceFileSnapshot } from '../../../utils/explorer-ui/unitMetadata';
 
-type Unit = RevisionRegistry['units'][number];
-
-/** Retains owned committed text as deduplicated private media, never reading the working tree. */
+/** Retains committed implementations and associated tests as deduplicated private media, never reading the working tree. */
 export class SourceArchiveService {
 	private readonly written = new Map<string, Promise<void>>();
 	constructor(
@@ -16,13 +16,22 @@ export class SourceArchiveService {
 		private readonly out: string
 	) {}
 
-	async archive(commit: string, units: Unit[]): Promise<void> {
+	async archive(commit: string, units: Unit[], side?: StoredSide): Promise<void> {
 		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const entries = await tree.list();
 		const owned = new Map(
 			units.map((unit) => [unit, unit.status === 'active' ? pathsFor(unit, entries) : []])
 		);
-		const paths = [...new Set([...owned.values()].flat())];
+		const imports = testImporters(side);
+		const tests = new Map(
+			units.map((unit) => [
+				unit,
+				unit.status === 'active' && side
+					? associatedTests(unit, owned.get(unit)!, side, imports)
+					: []
+			])
+		);
+		const paths = [...new Set([...owned.values(), ...tests.values()].flat())];
 		const files = new Map<string, SourceFileSnapshot>();
 		await mkdir(join(this.out, 'media'), { recursive: true });
 		for (let start = 0; start < paths.length; start += 64) {
@@ -32,7 +41,10 @@ export class SourceArchiveService {
 				})
 			);
 		}
-		for (const [unit, paths] of owned) unit.sourceFiles = paths.map((path) => files.get(path)!);
+		for (const [unit, paths] of owned) {
+			unit.sourceFiles = paths.map((path) => files.get(path)!);
+			if (side) unit.testFiles = tests.get(unit)!.map((path) => files.get(path)!);
+		}
 	}
 
 	private async file(tree: CommitTreeAdapter, path: string): Promise<SourceFileSnapshot> {

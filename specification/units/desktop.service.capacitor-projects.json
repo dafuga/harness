@@ -9,14 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts",
-			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts"
+			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.types.ts"
 		],
 		"symbols": [
 			"CapacitorProjectsService",
-			"CapacitorProjectsServiceConfig",
 			"CapacitorProjectsService",
 			"CapacitorProjectsService.constructor",
-			"CapacitorProjectsService.connect"
+			"CapacitorProjectsService.connect",
+			"CapacitorProjectsServiceConfig",
+			"CapacitorProjectsServiceConfig",
+			"Key",
+			"Input",
+			"Operation"
 		]
 	},
 	"contract": {

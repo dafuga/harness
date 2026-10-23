@@ -1,15 +1,6 @@
-import type { ProjectSessionService } from '../../services/projects-sessions/project-session-service/ProjectSessionService';
-import type { ProviderDiscoveryService } from '../../services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
-import type { RunEvent, RunRequest } from '../../models/development-tooling/DesktopBridge.types';
+import type { Preparation } from './prepareRun.types';
+import type { RunRequest } from '../../models/development-tooling/DesktopBridge.types';
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
-import type { ImageGenerator } from '../../models/agents-providers/AgentRunner.types';
-
-export interface Preparation {
-	session: ProjectSessionService;
-	providers: ProviderDiscoveryService;
-	generator: ImageGenerator;
-	emit: (event: RunEvent) => void;
-}
 
 export async function imageModel(
 	preparation: Preparation,
@@ -67,3 +58,5 @@ export async function recordRunFailure(context: Omit<RunContext, 'entity'>, erro
 }
 
 export { prepareRun } from '../../services/agents-providers/desktop-run-service/prepareRun';
+
+export type { Preparation } from './prepareRun.types';

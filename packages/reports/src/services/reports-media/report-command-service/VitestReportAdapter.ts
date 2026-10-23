@@ -1,14 +1,7 @@
+import type { VitestData, VitestFile, VitestCase } from './VitestReportAdapter.types';
 import { readFile } from 'node:fs/promises';
 import type { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
 import type { Status } from '../../../models/reports-media/Report.types';
-type VitestCase = { fullName?: string; title?: string; status?: string; duration?: number };
-type VitestFile = { name?: string; assertionResults?: VitestCase[] };
-type VitestData = {
-	testResults?: VitestFile[];
-	numPassedTests?: number;
-	numFailedTests?: number;
-	numPendingTests?: number;
-};
 export class VitestReportAdapter {
 	async ingest(store: ReportRepository, id: string, file: string) {
 		const data = JSON.parse(await readFile(file, 'utf8')) as VitestData;

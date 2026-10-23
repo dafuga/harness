@@ -1,3 +1,4 @@
+import type { Viewport } from './harnessCapture.types';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -10,7 +11,6 @@ export const viewports = [
 	{ id: 'tablet', width: 920, height: 800 },
 	{ id: 'mobile', width: 390, height: 844 }
 ] as const;
-export type Viewport = (typeof viewports)[number];
 
 // Kept only by a run with TAKE_SCREENSHOT=true and a before or after label; fonts and images wait.
 export async function capturePhase(page: Page, name: string): Promise<void> {
@@ -189,3 +189,5 @@ export async function captureSections(
 		await checkpoint(page, name + '-' + label.trim().toLowerCase().replaceAll(' ', '-'));
 	}
 }
+
+export type { Viewport } from './harnessCapture.types';

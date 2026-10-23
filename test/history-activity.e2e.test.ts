@@ -1,3 +1,4 @@
+import type { Recorded } from './history-activity.e2e.test.types';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -7,25 +8,6 @@ import { indexFiles } from '../src/utils/indexFiles';
 import { build, indexedRepo, type IndexedCommits } from './support/historyIndexFixture';
 import { sha256 } from './support/historyRepo';
 import type { VerifyRepo } from './support/verifyRepo';
-
-/**
- * The history index carries what the project did, built from Git alone, so a console installed
- * in a host shows it without Git or a database. It is a record: it holds no live state, it is
- * the same bytes whenever it is built, and it leaves the server only behind the host policy.
- */
-interface Recorded {
-	kind: string;
-	repository: { name: string; branch: string | null; head: string | null };
-	asOf: { commit: string; committedAt: string } | null;
-	loops: { total: number; types: unknown[] };
-	work: Array<{
-		commit: string;
-		subject: string;
-		units: string[];
-		reasons: Array<{ unit: string; behavior: string }>;
-	}>;
-	files: Array<{ path: string; status: string; commit: string; units: string[] }>;
-}
 let repo: VerifyRepo;
 let commits: IndexedCommits;
 let out: string;

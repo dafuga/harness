@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/entity-change/EntityChange.svelte"],
-		"symbols": ["EntityChange"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/entity-change/EntityChange.svelte",
+			"packages/reports/src/components/explorer-ui/entity-change/EntityChange.types.ts"
+		],
+		"symbols": ["EntityChange", "Line"]
 	},
 	"contract": {
 		"origin": "declared",

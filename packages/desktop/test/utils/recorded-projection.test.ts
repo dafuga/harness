@@ -1,3 +1,4 @@
+import type { Mode } from './recorded-projection.test.types';
 import { afterAll, expect, test } from 'vitest';
 import {
 	evidenceRequested,
@@ -7,8 +8,6 @@ import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import { recordedProjection } from '../../src/utils/recorded-answer/recordedProjection';
 import { feed, head, held, home, parent, sampleDetail, sampleScope } from '../recorded-sample';
-
-type Mode = 'direct' | 'same-tree' | 'changed-tree';
 const tree = 'e'.repeat(40);
 const origin = 'f'.repeat(40);
 const revisions = (mode: Mode = 'direct') => {

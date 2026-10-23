@@ -203,17 +203,17 @@
 	.stage {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 14px;
+		gap: var(--hx-space-14);
 	}
 	canvas {
 		width: 100%;
 		aspect-ratio: 1280 / 704;
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		background: #04131d;
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
+		background: var(--hx-bg);
 	}
 	.row {
 		flex-wrap: wrap;
-		margin-top: 14px;
+		margin-top: var(--hx-space-14);
 	}
 </style>

@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/development-tooling/unitTypes.ts", "src/core/unitTypes.ts"],
+		"source": [
+			"src/core/development-tooling/unitTypes.ts",
+			"src/core/development-tooling/unitTypes.types.ts",
+			"src/core/unitTypes.ts"
+		],
 		"symbols": [
 			"unitIdPattern",
 			"dependencyVias",
@@ -22,6 +26,12 @@
 			"executionTargetSchema",
 			"componentManifestSchema",
 			"scenarioManifestSchema",
+			"ContractItem",
+			"UnitDependency",
+			"ComponentManifest",
+			"ScenarioManifest",
+			"RuntimeKind",
+			"ExecutionTarget",
 			"ContractItem",
 			"UnitDependency",
 			"ComponentManifest",

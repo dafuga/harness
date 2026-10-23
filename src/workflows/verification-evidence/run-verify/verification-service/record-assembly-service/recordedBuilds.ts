@@ -1,6 +1,5 @@
+import type { RecordedBuild } from './recordedBuilds.types';
 import type { VerificationRecord } from '../../../../../core/verification-evidence/verificationTypes';
-
-type RecordedBuild = NonNullable<VerificationRecord['builds']>[number];
 
 /**
  * What a record keeps of the builds a run observed: where each one is and the identity of its

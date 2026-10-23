@@ -9,9 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
+			"packages/reports/src/utils/explorer-ui/explorerEvidence.types.ts",
 			"packages/reports/src/utils/explorerEvidence.ts"
 		],
-		"symbols": ["ExplorerRevisions", "explorerEvidence", "explorerEvidence"]
+		"symbols": [
+			"explorerEvidence",
+			"ExplorerRevisions",
+			"ExplorerRevisions",
+			"Named",
+			"explorerEvidence"
+		]
 	},
 	"contract": {
 		"origin": "declared",

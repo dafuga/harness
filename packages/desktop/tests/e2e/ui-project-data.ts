@@ -1,3 +1,4 @@
+import type { Options } from './ui-project-data.types';
 import { nativeImageFixture } from './native-image-fixture';
 
 /** Synthetic projects of one device: two local, one shared. Both locals own `page:activity`. */
@@ -11,17 +12,6 @@ export const sharedCommit = 'f'.repeat(40);
 export const alphaThread = '11111111-1111-4111-8111-111111111111';
 export const openedThread = '22222222-2222-4222-8222-222222222222';
 export const gammaThread = '33333333-3333-4333-8333-333333333333';
-
-interface Options {
-	id: string;
-	name: string;
-	branch: string;
-	shared?: boolean;
-	version?: string;
-	plan?: boolean;
-	/** Left out of the snapshot, so the workspace has to ask the bridge for them. */
-	askCapabilities?: boolean;
-}
 
 function design(version: string, bytes: number) {
 	return {
@@ -162,4 +152,5 @@ export function projectData() {
 		]
 	};
 }
-export type ProjectData = ReturnType<typeof projectData>;
+
+export type { ProjectData } from './ui-project-data.types';

@@ -117,8 +117,10 @@ export const legacyRecordSchema = z.strictObject({
 	)
 });
 
-export type EvidencePointer = z.infer<typeof evidencePointerSchema>;
-export type HistoryNote = z.infer<typeof historyNoteSchema>;
-export type EvidenceFile = z.infer<typeof evidenceFileSchema>;
-export type EvidenceManifest = z.infer<typeof evidenceManifestSchema>;
-export type LegacyRecord = z.infer<typeof legacyRecordSchema>;
+export type {
+	EvidencePointer,
+	HistoryNote,
+	EvidenceFile,
+	EvidenceManifest,
+	LegacyRecord
+} from './historyTypes.types';

@@ -1,21 +1,10 @@
+import type { Command, Held } from './remote-pairing-create-race.test.types';
 import { expect, test } from 'vitest';
 import { HostPairingService, remoteIdentity, remoteKeys } from '../../remote/src/index';
 import type { RemoteHostStatus } from '../../remote/src/index';
 import type { ProjectRegistryService } from '../src/services/ProjectRegistryService';
 import { RemotePairingControlService } from '../src/services/RemotePairingControlService';
 import type { RemoteHostAccess } from '../src/services/RemotePairingControlService';
-
-/**
- * Two offers under way at once, on the real pairing control and the real host pairing. The
- * relay is a link whose answers a test holds back and then gives or refuses. What one opening
- * cleans up is its own offer only: it never closes, returns or withdraws a newer one.
- */
-type Command = { type: string; pairingId: string };
-interface Held {
-	command: Command;
-	answer: () => void;
-	refuse: (error: Error) => void;
-}
 
 async function control() {
 	const keys = await remoteKeys(),

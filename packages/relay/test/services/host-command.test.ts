@@ -1,3 +1,4 @@
+import type { Phone, Address } from './host-command.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { randomId } from '../../../remote/src/index';
 import {
@@ -6,22 +7,11 @@ import {
 	openDevice,
 	pairDevice,
 	registerHost,
-	type TestDevice,
 	type TestHost
 } from '../support/relayActors';
 import { startRelay, type RelayFixture } from '../support/relayFixture';
 import { acceptPacket, helloPacket, sealedPacket } from '../support/relayPackets';
 import type { RelaySocket } from '../support/relaySocket';
-
-interface Phone {
-	device: TestDevice;
-	socket: RelaySocket;
-	connectionId: string;
-}
-interface Address {
-	deviceId: string;
-	connectionId: string;
-}
 let relay: RelayFixture;
 let host: TestHost;
 let socket: RelaySocket;

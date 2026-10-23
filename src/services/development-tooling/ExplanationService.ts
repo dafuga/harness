@@ -1,3 +1,4 @@
+import type { ReasonReport, Fingerprint } from './ExplanationService.types';
 import type {
 	Explanation,
 	ReasonStatus,
@@ -8,15 +9,6 @@ import {
 	writingVersions,
 	type WritingVersion
 } from '../../utils/git-source-history/writing-limits/writingLimits';
-
-export interface ReasonReport {
-	required: ReasonStatus[];
-	/** The reasons that satisfy a requirement, in requirement order. */
-	entries: Explanation[];
-	/** Changes whose reason exceeds the writing limits: explained, and open to a shorter reason. */
-	overlong: RequiredReason[];
-	failures: string[];
-}
 
 const verbs = { added: 'added', modified: 'modified', removed: 'removed' };
 
@@ -54,8 +46,6 @@ export class ExplanationService {
 	}
 }
 
-type Fingerprint = Explanation['from'];
-
 /** The fewest reasons from one content to another, exact first, each step by the last one given. */
 function chain(
 	entries: Explanation[],
@@ -91,3 +81,5 @@ export function describe(status: ReasonStatus): string {
 	const tail = status.state === 'stale' ? 'after its reason was written' : 'without a reason';
 	return `${status.unit}: ${subject} was ${verbs[status.change]} ${tail}`;
 }
+
+export type { ReasonReport } from './ExplanationService.types';

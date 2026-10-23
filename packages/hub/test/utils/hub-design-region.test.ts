@@ -1,17 +1,8 @@
+import type { Fixture, Region, Option } from './hub-design-region.test.types';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { actor, commit, project, unit } from '../support/projectionFixture';
 import { optionsFixture } from '../support/optionsFixture';
-
-/**
- * The rectangle a version revises is read under the rule planning writes it by: inside the
- * image, never empty. A rectangle reaching the right and bottom edges is kept exactly; an empty
- * or overflowing one is refused. SYNTHETIC planning-written Git files as checked out, with only
- * the stored region of v002 changed before the hub reads them.
- */
-type Fixture = Awaited<ReturnType<typeof optionsFixture>>;
-type Region = { x: number; y: number; width: number; height: number };
-type Option = { images: Array<{ sha256: string }> };
 const entity = (f: Fixture) =>
 	f.projection.entity(actor, project.id, { entityId: unit.id, commit, branch: 'main' });
 function stored(region: Region, f: Fixture) {

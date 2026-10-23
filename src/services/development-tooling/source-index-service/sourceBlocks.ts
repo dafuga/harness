@@ -1,3 +1,4 @@
+import type { Region } from './sourceBlocks.types';
 import type { SourceBlock } from '../../../utils/development-tooling/sourceBlocks';
 import { createHash } from 'node:crypto';
 import { blockComplexity } from '../../../utils/development-tooling/blockComplexity';
@@ -8,11 +9,6 @@ import {
 } from '../../../utils/development-tooling/block-spans/blockSpans';
 import { maskSource } from '../../../utils/development-tooling/maskSource';
 import type { SourceLanguage } from '../../../utils/development-tooling/scanImports';
-
-interface Region {
-	text: string;
-	offset: number;
-}
 
 const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script>/g;
 

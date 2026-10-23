@@ -10,7 +10,8 @@
 		"source": [
 			"packages/reports/src/adapters/ConsoleBridgeAdapter.ts",
 			"packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts",
-			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts"
+			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
+			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.types.ts"
 		],
 		"symbols": [
 			"ConsoleBridgeAdapter",
@@ -18,7 +19,8 @@
 			"ConsoleBridgeAdapter",
 			"ConsoleBridgeAdapter.connect",
 			"ConsoleBridgeAdapter.bridge",
-			"ConsoleBridgeAdapter.close"
+			"ConsoleBridgeAdapter.close",
+			"EventBatch"
 		]
 	},
 	"contract": {

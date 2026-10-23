@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"src/workflows/run-budget/UnitBenchmarkService.ts",
-			"src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts"
+			"src/workflows/verification-evidence/run-budget/UnitBenchmarkService.ts",
+			"src/workflows/verification-evidence/run-budget/UnitBenchmarkService.types.ts"
 		],
 		"symbols": [
 			"UnitBenchmarkService",
-			"UnitBenchmark",
 			"UnitBenchmarkService",
 			"UnitBenchmarkService.constructor",
-			"UnitBenchmarkService.measure"
+			"UnitBenchmarkService.measure",
+			"UnitBenchmark",
+			"UnitBenchmark"
 		]
 	},
 	"contract": {

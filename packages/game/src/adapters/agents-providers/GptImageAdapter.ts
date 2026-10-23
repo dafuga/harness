@@ -1,5 +1,5 @@
+import type { ImageFetch } from './GptImageAdapter.types';
 import { Buffer } from 'node:buffer';
-type ImageFetch = (url: string, options: RequestInit) => Promise<Response>;
 /** One explicit image request; authentication stays in the backend header. */
 export class GptImageAdapter {
 	constructor(private send: ImageFetch = globalThis.fetch) {}

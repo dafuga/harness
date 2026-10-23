@@ -1,3 +1,4 @@
+import type { CaptureFacts } from './game-checkpoint-fixture.types';
 import { gameSourceMeasurements, gameRuntimeMeasurements } from './game-measurements-fixture';
 import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/development-tooling/buildStamp';
@@ -143,14 +144,6 @@ export async function recordGameCapture(page: Page, name: string, bytes: Buffer)
 	];
 	await keepGameCapture({ state, viewport, timing, size, measurements }, bytes);
 }
-
-type CaptureFacts = {
-	state: string;
-	viewport: string;
-	timing: { navigation: number | null; stamp?: string | null };
-	size: { width: number; height: number };
-	measurements: ReturnType<typeof gameRuntimeMeasurements>;
-};
 async function keepGameCapture(facts: CaptureFacts, bytes: Buffer) {
 	const { state, viewport, timing, size, measurements } = facts;
 	const directory = resolve(import.meta.dirname, '../../.cache/game-modal-evidence');

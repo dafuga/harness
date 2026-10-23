@@ -1,7 +1,4 @@
-export interface NativePickerIdleValidatorResult {
-	valid: boolean;
-	errors: string[];
-}
+import type { NativePickerIdleValidatorResult } from './NativePickerIdleValidator.types';
 
 export class NativePickerIdleValidator {
 	async validate(input: PickerData, rpc: PickerRpc): Promise<NativePickerIdleValidatorResult> {
@@ -30,3 +27,5 @@ import {
 	type PickerData,
 	type PickerRpc
 } from '../../utils/development-tooling/nativePickerProtocol';
+
+export type { NativePickerIdleValidatorResult } from './NativePickerIdleValidator.types';

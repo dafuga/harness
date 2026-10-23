@@ -1,3 +1,4 @@
+import type { LoopTemplate, ResolvedLoopTemplate, LoopTemplateStep } from './loopTemplates.types';
 import { builtInTemplates } from './builtInLoopTemplates';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -8,30 +9,6 @@ import {
 	isMissingFile,
 	type LoopEvaluator
 } from '../loop-state/loopState';
-
-export interface LoopTemplateStep {
-	id: string;
-	title: string;
-}
-
-export interface LoopTemplate {
-	id: string;
-	title: string;
-	summary: string;
-	extends?: string;
-	steps: LoopTemplateStep[];
-	evaluators?: LoopEvaluator[];
-	source?: 'built-in' | 'project';
-}
-
-export interface ResolvedLoopTemplate {
-	id: string;
-	title: string;
-	summary: string;
-	lineage: string[];
-	steps: LoopTemplateStep[];
-	evaluators: LoopEvaluator[];
-}
 
 export async function listLoopTemplates(root: string): Promise<LoopTemplate[]> {
 	return [...builtInTemplates, ...(await readProjectTemplates(root))].map((template) => ({
@@ -127,3 +104,5 @@ function normalizeEvaluators(evaluators: LoopEvaluator[]): LoopEvaluator[] {
 		step: evaluator.step ? validateLoopId(evaluator.step, 'Loop evaluator step') : undefined
 	}));
 }
+
+export type { LoopTemplateStep, LoopTemplate, ResolvedLoopTemplate } from './loopTemplates.types';

@@ -1,17 +1,8 @@
+import type { PreviewHandle, PreviewResult } from './PreviewServerService.types';
 import { createServer, type Server } from 'node:http';
 import { previewOwner } from './previewOwner';
 import { previewOwnerPath, previewOwnerPort } from '../../../utils/accounts-access/previewOwner';
 import type { PreviewOwner } from '../../../utils/accounts-access/previewOwner';
-
-export interface PreviewHandle {
-	url: string;
-	close(): Promise<void>;
-}
-
-export interface PreviewResult {
-	url: string;
-	reused: boolean;
-}
 
 /** One OS-owned slot shared by all Harness dev entrypoints, even simultaneous processes. */
 export class PreviewServerService {
@@ -89,3 +80,5 @@ export class PreviewServerService {
 		await new Promise<void>((resolve) => server.close(() => resolve()));
 	}
 }
+
+export type { PreviewHandle, PreviewResult } from './PreviewServerService.types';

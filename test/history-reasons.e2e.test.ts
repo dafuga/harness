@@ -1,3 +1,4 @@
+import type { Shown, Persisted } from './history-reasons.e2e.test.types';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -9,20 +10,8 @@ beforeAll(async () => {
 	baseline = await baselineRepo();
 }, 120_000);
 afterAll(() => baseline.dispose());
-
-interface Persisted {
-	commit: string;
-	base: string | null;
-	attached: number;
-	missing: string[];
-}
 const upper = (source: string) => source.replace('toLowerCase', 'toUpperCase');
 const renamed = (from: string, to: string) => (source: string) => source.replaceAll(from, to);
-interface Shown {
-	explanations: Array<{ unit: string; symbol: string; from: string | null; to: string | null }>;
-	rangeReasons: number;
-	records: Array<{ id: string }>;
-}
 /** The reasons a built history shows for one commit, and how many more it keeps apart. */
 async function shown(out: string, commit: string) {
 	const detail = JSON.parse(

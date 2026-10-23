@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/HooksCommand.ts"],
-		"symbols": ["registerHooksCommand"]
+		"source": ["src/cli/program/HooksCommand.ts", "src/cli/program/HooksCommand.types.ts"],
+		"symbols": ["registerHooksCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

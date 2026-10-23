@@ -1,7 +1,8 @@
-import type { Actor, RepositoryIdentity } from 'collaboration';
+import type { Actor } from 'collaboration';
+import type { RepositoryIdentity } from 'collaboration';
+import type { NATIVE_AUDIENCE } from './HubAuthValues';
 
 export type HubEnvironment = 'local' | 'staging' | 'production';
-export const EMAIL_CODE_LENGTH = 8;
 
 /** Every value is optional. A missing or malformed value disables the feature that needs it. */
 export interface AuthEnv {
@@ -125,9 +126,6 @@ export interface GithubRepositories {
 	truncated: boolean;
 }
 
-export const NATIVE_AUDIENCE = 'harness-desktop';
-export const NATIVE_ACTION = 'native-session';
-
 /** POST /api/auth/native/start body. `resource` is `projects` or `project:<projectId>`. */
 export interface NativeStartInput {
 	challenge: string;
@@ -173,3 +171,4 @@ export interface NativeAuthorization {
 	nonce: string;
 	expiresAt: string;
 }
+export { EMAIL_CODE_LENGTH, NATIVE_AUDIENCE, NATIVE_ACTION } from './HubAuthValues';

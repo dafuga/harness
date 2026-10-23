@@ -1,12 +1,6 @@
+import type { LineageSource, Soundness } from './recordLineage.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 import { canonicalJson } from './canonicalJson';
-
-export interface LineageSource {
-	/** The stored record with this id, if there is one. */
-	find(id: string): VerificationRecord | undefined;
-	/** Identity, seal and evidence problems of one record. */
-	problems(record: VerificationRecord): string[];
-}
 
 const short = (id: string): string => id.slice(0, 12);
 
@@ -31,8 +25,6 @@ export function recordLineage(
 	};
 	return visit(record, path);
 }
-
-type Soundness = (dependency: VerificationRecord) => string | undefined;
 
 function baseProblems(
 	record: VerificationRecord,
@@ -81,3 +73,5 @@ function scenarioProblems(
 		return problem ? [`${subject} is not sound: ${problem}`] : [];
 	});
 }
+
+export type { LineageSource } from './recordLineage.types';

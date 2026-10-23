@@ -1,15 +1,9 @@
+import type { ImpactRepo } from './impactRepo.types';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ImpactReport } from '../../src/core/impactTypes';
 import { runCommand } from './cli';
-import { slugifySource, titleServiceSource, unitProject, type UnitProject } from './unitProject';
-
-export interface ImpactRepo extends UnitProject {
-	commit(message: string): Promise<string>;
-	impact(args?: string[]): Promise<ImpactReport>;
-	remove(path: string): Promise<void>;
-	dispose(): Promise<void>;
-}
+import { slugifySource, titleServiceSource, unitProject } from './unitProject';
 
 const identity = [
 	'-c',
@@ -93,3 +87,5 @@ export async function impactRepo(): Promise<ImpactRepo> {
 		dispose: () => rm(join(project.root, '..'), { recursive: true, force: true })
 	};
 }
+
+export type { ImpactRepo } from './impactRepo.types';

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Mark } from './DeploymentProgress.types';
+
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 	/**
 	 * Where one deployment is: its live line and why it failed, if it did, then its steps. The steps
@@ -7,7 +9,6 @@
 	 * in words as well as drawn.
 	 */
 	let { deployment }: { deployment: DeploymentActivity } = $props();
-	type Mark = 'done' | 'running' | 'failed' | 'waiting';
 	const words: Record<Mark, string> = {
 		done: 'done',
 		running: 'in progress',
@@ -45,59 +46,59 @@
 <style>
 	.deployment-progress {
 		display: grid;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	/* The live line, and any failure under it, take the colour of how the deployment stands; their
 	   words say the same. */
 	.now {
 		display: grid;
-		gap: 2px;
-		padding: 8px 12px;
-		border-inline-start: 3px solid;
-		border-radius: 4px;
-		background: rgb(255 208 53 / 0.07);
+		gap: var(--hx-space-2);
+		padding: var(--hx-space-8) var(--hx-space-12);
+		border-inline-start: var(--hx-border-heavy) solid;
+		border-radius: var(--hx-radius-xsmall);
+		background: var(--hx-gold-wash);
 		color: var(--gold);
 	}
 	[data-phase='queued'] .now {
-		background: rgb(165 189 208 / 0.07);
+		background: var(--hx-tint-hover);
 		color: var(--muted);
 	}
 	[data-phase='complete'] .now {
-		background: rgb(127 227 192 / 0.07);
-		color: #7fe3c0;
+		background: var(--hx-pass-soft);
+		color: var(--hx-pass);
 	}
 	[data-phase='failed'] .now {
-		background: rgb(255 171 176 / 0.08);
-		color: #ffabb0;
+		background: var(--hx-danger-soft);
+		color: var(--hx-fail);
 	}
 	p {
 		margin: 0;
-		font-size: 13px;
-		font-weight: 600;
-		line-height: 1.45;
+		font-size: var(--hx-type-size-compact);
+		font-weight: var(--hx-style-weight-semibold);
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
 	.failure {
-		font-size: 12px;
-		font-weight: 400;
-		color: #ffd6d9;
+		font-size: var(--hx-type-size-xs);
+		font-weight: var(--hx-style-weight-regular);
+		color: var(--hx-fail);
 	}
 	ol {
 		display: grid;
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		font-size: 13px;
+		font-size: var(--hx-type-size-compact);
 	}
 	/* One rail joins the steps, filled through those done; the current step is lit on its row. */
 	li {
 		position: relative;
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		min-height: 30px;
-		padding-inline: 8px;
-		border-radius: 6px;
+		padding-inline: var(--hx-space-8);
+		border-radius: var(--hx-radius-compact);
 		color: var(--muted);
 	}
 	li:not(:last-child)::after {
@@ -107,22 +108,22 @@
 		bottom: calc(10px - 50%);
 		left: 15px;
 		width: 2px;
-		border-radius: 1px;
+		border-radius: var(--hx-radius-hairline);
 		background: var(--line);
 	}
 	li.done::after {
-		background: rgb(127 227 192 / 0.45);
+		background: var(--hx-pass-line);
 	}
 	li.done,
 	li[aria-current='step'] {
-		color: #edf4fa;
+		color: var(--hx-text);
 	}
 	li[aria-current='step'] {
-		background: rgb(255 208 53 / 0.08);
-		font-weight: 600;
+		background: var(--hx-gold-wash);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	li.failed {
-		background: rgb(255 171 176 / 0.09);
+		background: var(--hx-danger-soft);
 	}
 	/* A shape for each state, so none is told by its colour alone: ring, dot, tick and cross. */
 	.marker {
@@ -131,10 +132,10 @@
 		flex: none;
 		width: 16px;
 		height: 16px;
-		border: 1.5px solid #3d6479;
-		border-radius: 50%;
-		font-size: 10px;
-		line-height: 1;
+		border: var(--hx-border-medium) solid var(--hx-line-strong);
+		border-radius: var(--hx-radius-round);
+		font-size: var(--hx-type-size-2xs);
+		line-height: var(--hx-style-leading-none);
 	}
 	.running .marker {
 		border-color: var(--gold);
@@ -143,20 +144,20 @@
 		content: '';
 		width: 6px;
 		height: 6px;
-		border-radius: 50%;
+		border-radius: var(--hx-radius-round);
 		background: var(--gold);
 	}
 	.done .marker {
-		border-color: #7fe3c0;
-		background: rgb(127 227 192 / 0.12);
-		color: #7fe3c0;
+		border-color: var(--hx-pass);
+		background: var(--hx-pass-soft);
+		color: var(--hx-pass);
 	}
 	.done .marker::before {
 		content: '✓';
 	}
 	.failed .marker {
-		border-color: #ffabb0;
-		color: #ffabb0;
+		border-color: var(--hx-fail);
+		color: var(--hx-fail);
 	}
 	.failed .marker::before {
 		content: '✕';

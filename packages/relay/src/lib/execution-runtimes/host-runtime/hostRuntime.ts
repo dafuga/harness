@@ -1,3 +1,4 @@
+import type { HostRuntime } from './hostRuntime.types';
 import { HostSocketsAdapter } from './HostSocketsAdapter';
 import { HostStorageAdapter } from './HostStorageAdapter';
 import { HostObjectController } from './HostObjectController';
@@ -14,13 +15,6 @@ import { PairingOfferService } from './PairingOfferService';
 import { RateLimitService } from './RateLimitService';
 import { SocketAcceptService } from './SocketAcceptService';
 import { SocketFrameService } from './socket-frame-service/SocketFrameService';
-
-/** What one host object is made of: its requests, its frames and its alarm. */
-export interface HostRuntime {
-	http: HostObjectController;
-	frames: SocketFrameService;
-	offers: PairingOfferService;
-}
 
 /**
  * Wires one host object. Nothing is read here: an object that wakes for one frame pays for
@@ -53,3 +47,5 @@ export function hostRuntime(state: DurableObjectState, env: RelayEnv): HostRunti
 		offers
 	};
 }
+
+export type { HostRuntime } from './hostRuntime.types';

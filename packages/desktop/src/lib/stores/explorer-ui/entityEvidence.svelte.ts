@@ -1,3 +1,4 @@
+import type { EvidenceTarget } from './entityEvidence.svelte.types';
 import type { ExplorerBehavior } from '../../../../../reports/src/models/Explorer.types';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type {
@@ -8,13 +9,6 @@ import { artifactBytes } from '../../../components/shared-primitives/recorded-pr
 import { artifactQuery, type EvidenceSide } from '../../../utils/development-tooling/artifactQuery';
 import type { EvidenceStatus } from '../../../utils/verification-evidence/evidenceNotice';
 import { evidenceReading } from '../../../utils/verification-evidence/evidenceReading';
-
-/** What decides which evidence is shown; `stamp` names the pinned revisions of the project. */
-export interface EvidenceTarget {
-	scope: EntityEvidenceQuery | null;
-	planned: boolean;
-	stamp: string;
-}
 
 function words(cause: unknown): string {
 	return cause instanceof Error ? cause.message : String(cause);
@@ -110,4 +104,5 @@ class EntityEvidenceState {
 export function createEntityEvidenceStore() {
 	return new EntityEvidenceState();
 }
-export type EntityEvidence = EntityEvidenceState;
+
+export type { EvidenceTarget, EntityEvidence } from './entityEvidence.svelte.types';

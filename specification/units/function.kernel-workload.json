@@ -9,17 +9,22 @@
 	"owns": {
 		"source": [
 			"src/cli/program/run-kernel/kernelWorkload.ts",
+			"src/cli/program/run-kernel/kernelWorkload.types.ts",
 			"src/utils/execution-runtimes/kernelWorkload.ts",
+			"src/utils/execution-runtimes/kernelWorkload.types.ts",
 			"src/utils/kernelWorkload.ts",
 			"src/workflows/run-kernel/kernelWorkload.ts"
 		],
 		"symbols": [
 			"kernelMutations",
 			"kernelTexts",
+			"Loose",
+			"Mutation",
 			"kernelWorkload",
 			"edges",
 			"kernelMutations",
 			"kernelTexts",
+			"Random",
 			"kernelMutations",
 			"kernelTexts",
 			"kernelWorkload",

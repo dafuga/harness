@@ -9,9 +9,15 @@
 	"owns": {
 		"source": [
 			"src/core/browserDiagnostics.ts",
-			"src/core/development-tooling/browserDiagnostics.ts"
+			"src/core/development-tooling/browserDiagnostics.ts",
+			"src/core/development-tooling/browserDiagnostics.types.ts"
 		],
-		"symbols": ["browserDiagnosticSchema", "browserDiagnosticSchema", "BrowserDiagnostic"]
+		"symbols": [
+			"browserDiagnosticSchema",
+			"browserDiagnosticSchema",
+			"BrowserDiagnostic",
+			"BrowserDiagnostic"
+		]
 	},
 	"contract": {
 		"origin": "declared",

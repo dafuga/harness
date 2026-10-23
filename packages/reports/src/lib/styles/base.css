@@ -1,22 +1,14 @@
+@import './app-tokens.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Reports use the shared app palette; its older names are forwarded in app-tokens.css. */
 :root {
-	font-family:
-		Inter,
-		-apple-system,
-		BlinkMacSystemFont,
-		'Segoe UI',
-		sans-serif;
-	color: #eaf0f1;
-	background: #0d171c;
-	font-synthesis: none;
+	font-family: var(--hx-font-family-sans);
+	color: var(--hx-text);
+	background: var(--hx-bg);
+	font-synthesis: var(--hx-style-synthesis-none);
 	color-scheme: dark;
-	--gold: #dbb975;
-	--muted: #a5b9c2;
-	--line: #30444f;
-	--panel: #17262e;
-	--ink: #0d171c;
 }
 * {
 	box-sizing: border-box;
@@ -43,10 +35,10 @@ input,
 select,
 .button {
 	font: inherit;
-	border: 1px solid #536975;
-	border-radius: 9px;
-	padding: 11px 15px;
-	background: #1b2c36;
+	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border-radius: var(--hx-radius-small);
+	padding: var(--hx-space-11) var(--hx-space-15);
+	background: var(--hx-raised);
 	color: inherit;
 }
 button,
@@ -62,7 +54,7 @@ button:hover,
 button.active,
 .button.primary {
 	background: var(--gold);
-	color: #161e22;
+	color: var(--hx-gold-ink);
 	border-color: var(--gold);
 }
 input {
@@ -73,8 +65,8 @@ select {
 	max-width: 100%;
 }
 :focus-visible {
-	outline: 3px solid var(--gold);
-	outline-offset: 4px;
+	outline: var(--hx-border-heavy) solid var(--gold);
+	outline-offset: var(--hx-space-4);
 }
 h1,
 h2,
@@ -83,26 +75,26 @@ p {
 	margin-top: 0;
 }
 h1 {
-	font-size: clamp(2rem, 4vw, 3.5rem);
-	line-height: 1.12;
-	letter-spacing: -0.035em;
-	font-weight: 650;
-	margin-bottom: 20px;
+	font-size: var(--hx-type-size-display);
+	line-height: var(--hx-style-leading-tight);
+	letter-spacing: var(--hx-style-tracking-tight);
+	font-weight: var(--hx-style-weight-semibold);
+	margin-bottom: var(--hx-space-20);
 }
 h2 {
-	font-size: 1.3rem;
-	line-height: 1.35;
-	font-weight: 620;
-	margin-bottom: 16px;
+	font-size: var(--hx-type-size-xl);
+	line-height: var(--hx-style-leading-snug);
+	font-weight: var(--hx-style-weight-semibold);
+	margin-bottom: var(--hx-space-16);
 }
 h3 {
-	font-size: 1.05rem;
-	line-height: 1.5;
-	margin: 12px 0;
+	font-size: var(--hx-type-size-base);
+	line-height: var(--hx-style-leading-normal);
+	margin: var(--hx-space-12) 0;
 }
 p {
-	line-height: 1.65;
-	margin-bottom: 14px;
+	line-height: var(--hx-style-leading-relaxed);
+	margin-bottom: var(--hx-space-14);
 }
 small,
 .muted {
@@ -111,66 +103,66 @@ small,
 pre {
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
-	background: #0b1419;
-	border-radius: 8px;
-	padding: 16px;
-	font-size: 12px;
-	line-height: 1.6;
+	background: var(--hx-bg);
+	border-radius: var(--hx-radius-small);
+	padding: var(--hx-space-16);
+	font-size: var(--hx-type-size-xs);
+	line-height: var(--hx-style-leading-normal);
 	max-height: 380px;
 	overflow: auto;
 }
 code {
-	font-size: 0.88em;
+	font-size: var(--hx-type-size-inline);
 	overflow-wrap: anywhere;
 }
 summary {
-	font-size: 0.83rem;
+	font-size: var(--hx-type-size-compact);
 	color: var(--muted);
-	padding: 8px 0;
+	padding: var(--hx-space-8) 0;
 }
 ul {
-	padding-left: 20px;
+	padding-left: var(--hx-space-20);
 }
 li {
-	line-height: 1.65;
-	margin-bottom: 10px;
+	line-height: var(--hx-style-leading-relaxed);
+	margin-bottom: var(--hx-space-10);
 }
 .report-shell {
 	max-width: 1520px;
 	margin: 0 auto;
-	padding: 0 40px 32px;
+	padding: 0 var(--hx-space-40) var(--hx-space-32);
 }
 .topbar {
 	display: flex;
-	gap: 16px;
+	gap: var(--hx-space-16);
 	justify-content: space-between;
 	align-items: center;
 	min-height: 88px;
-	border-bottom: 1px solid var(--line);
-	margin-bottom: 28px;
+	border-bottom: var(--hx-border-thin) solid var(--line);
+	margin-bottom: var(--hx-space-28);
 }
 .brand {
-	font-weight: 650;
-	font-size: 18px;
+	font-weight: var(--hx-style-weight-semibold);
+	font-size: var(--hx-type-size-lg);
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	gap: var(--hx-space-12);
 }
 .brand-symbol {
-	font-size: 34px;
+	font-size: var(--hx-type-size-3xl);
 	color: var(--gold);
 }
 .workspace-label {
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 0.15em;
+	font-size: var(--hx-type-size-2xs);
+	font-weight: var(--hx-style-weight-semibold);
+	letter-spacing: var(--hx-style-tracking-caps);
 	color: var(--muted);
 }
 .eyebrow {
-	font-size: 12px;
-	letter-spacing: 0.12em;
+	font-size: var(--hx-type-size-xs);
+	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
 	color: var(--gold);
-	margin-bottom: 20px;
-	font-weight: 600;
+	margin-bottom: var(--hx-space-20);
+	font-weight: var(--hx-style-weight-semibold);
 }

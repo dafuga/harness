@@ -7,13 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/legacy-import-service/LegacyReportRepository.ts"],
+		"source": [
+			"src/cli/program/legacy-import-service/LegacyReportRepository.ts",
+			"src/cli/program/legacy-import-service/LegacyReportRepository.types.ts"
+		],
 		"symbols": [
-			"LegacyRun",
 			"LegacyReportRepository",
 			"LegacyReportRepository.constructor",
 			"LegacyReportRepository.runs",
-			"LegacyReportRepository.asset"
+			"LegacyReportRepository.asset",
+			"LegacyRun",
+			"LegacyRun"
 		]
 	},
 	"contract": {

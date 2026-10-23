@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Row } from "./EntityCases.types";
+
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
 	import { artifactCases } from './artifactCases';
 	import RecordedValue from '../../shared-primitives/recorded-value/RecordedValue.svelte';
@@ -13,13 +15,6 @@
 		unit?: string;
 		callable?: boolean;
 	} = $props();
-	type Row = {
-		name: string;
-		description?: string;
-		input: unknown;
-		failed: boolean;
-		result: unknown;
-	};
 	const seen = 'What a test observed end to end';
 	let observed = $derived(
 		callable ? `${seen}; it is not a direct call of this function.` : `${seen}.`
@@ -56,6 +51,7 @@
 		};
 	});
 	let expanded = $state(false);
+
 </script>
 
 <!-- Each input beside what was observed for it, or is documented to give; none says why. -->
@@ -106,9 +102,9 @@
 		container-type: inline-size;
 	}
 	.cases-note {
-		margin: 0 0 12px;
-		font-size: 0.85rem;
-		opacity: 0.75;
+		margin: 0 0 var(--hx-space-12);
+		font-size: var(--hx-type-size-sm);
+		opacity: var(--hx-opacity-secondary);
 	}
 	table {
 		width: 100%;
@@ -128,50 +124,50 @@
 		counter-increment: cases;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-		gap: 14px;
-		margin: 0 0 14px;
-		padding: 16px;
-		border: 1px solid #2c4254;
-		border-radius: 12px;
-		background: #10212e;
+		gap: var(--hx-space-14);
+		margin: 0 0 var(--hx-space-14);
+		padding: var(--hx-space-16);
+		border: var(--hx-border-thin) solid var(--hx-line-strong);
+		border-radius: var(--hx-radius-large);
+		background: var(--hx-surface);
 	}
 	th {
 		grid-column: 1 / -1;
 		text-align: left;
-		font-size: 0.95rem;
-		line-height: 1.5;
+		font-size: var(--hx-type-size-base);
+		line-height: var(--hx-style-leading-normal);
 	}
 	tbody th::before {
 		content: 'Case ' counter(cases, decimal-leading-zero);
 		display: block;
-		margin-bottom: 4px;
-		font-size: 0.7rem;
-		font-weight: 500;
-		color: #9aafc0;
+		margin-bottom: var(--hx-space-4);
+		font-size: var(--hx-type-size-2xs);
+		font-weight: var(--hx-style-weight-medium);
+		color: var(--hx-muted);
 	}
 	.documented tbody th::before {
 		content: 'Example ' counter(cases, decimal-leading-zero);
 	}
 	.case-description {
 		display: block;
-		margin-top: 4px;
-		font-size: 0.85rem;
-		font-weight: 400;
-		color: #b6cad9;
+		margin-top: var(--hx-space-4);
+		font-size: var(--hx-type-size-sm);
+		font-weight: var(--hx-style-weight-regular);
+		color: var(--hx-soft);
 	}
 	td {
 		min-width: 0;
-		padding: 14px;
-		border: 1px solid #263d4d;
-		border-radius: 8px;
-		background: #0b1821;
+		padding: var(--hx-space-14);
+		border: var(--hx-border-thin) solid var(--hx-line);
+		border-radius: var(--hx-radius-small);
+		background: var(--hx-bg);
 	}
 	td::before {
 		content: attr(data-label);
 		display: block;
-		margin-bottom: 10px;
-		font: 600 0.75rem system-ui;
-		color: #a9bfd0;
+		margin-bottom: var(--hx-space-10);
+		font: var(--hx-style-weight-semibold) var(--hx-type-size-xs) var(--hx-font-family-sans);
+		color: var(--hx-soft);
 	}
 	.cases pre {
 		margin: 0;
@@ -179,12 +175,8 @@
 		overflow: auto;
 		white-space: pre-wrap;
 		overflow-wrap: normal;
-		font:
-			0.78rem/1.6 ui-monospace,
-			SFMono-Regular,
-			Menlo,
-			monospace;
-		color: #d5e4ef;
+		font: var(--hx-style-code-small);
+		color: var(--hx-soft);
 	}
 	.case-value {
 		max-height: 25rem;
@@ -192,15 +184,15 @@
 	}
 	.cases-error {
 		display: block;
-		margin-bottom: 6px;
-		color: #f5bd69;
-		font-size: 0.75rem;
+		margin-bottom: var(--hx-space-6);
+		color: var(--hx-warning);
+		font-size: var(--hx-type-size-xs);
 	}
 	summary {
 		cursor: pointer;
-		padding: 8px 0;
-		font-size: 0.8rem;
-		color: #b6cad9;
+		padding: var(--hx-space-8) 0;
+		font-size: var(--hx-type-size-compact);
+		color: var(--hx-soft);
 	}
 	@container (max-width: 800px) {
 		tbody tr {
@@ -209,10 +201,10 @@
 	}
 	@container (max-width: 400px) {
 		tbody tr {
-			padding: 8px;
+			padding: var(--hx-space-8);
 		}
 		td {
-			padding: 8px;
+			padding: var(--hx-space-8);
 		}
 	}
 </style>

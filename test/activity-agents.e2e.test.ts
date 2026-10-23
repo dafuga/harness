@@ -1,3 +1,4 @@
+import type { Roster } from './activity-agents.e2e.test.types';
 import { execFileSync, spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { mkdtemp, rm } from 'node:fs/promises';
@@ -6,36 +7,6 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { AgentRegistryRepository } from '../src/repositories/AgentRegistryRepository';
 import { runHarness } from './support/cli';
-
-/**
- * Who is working in a repository now is what agents say about themselves while they work: a
- * registration, heartbeats and an end. Every checkout of the repository sees the same agents,
- * another repository sees none of them, and what is not known is said instead of counted.
- * Every case may take 60 seconds: each starts several CLI processes, and a loaded machine starts
- * each slowly. That bounds the work of a test. It says nothing of how long an agent may be
- * quiet, which each agent states for itself and which no case here waits out.
- */
-interface Entry {
-	id: string;
-	label: string;
-	provider: string | null;
-	model: string | null;
-	worktree: string;
-	branch: string | null;
-	task: string | null;
-	loop: string | null;
-	units: string[];
-	unknownUnits: string[];
-	state: string;
-	detail: string;
-	outcome?: string;
-}
-interface Roster {
-	tracking: string;
-	working: number | null;
-	unreadable: number;
-	roster: Entry[];
-}
 /** What a live agent allows between heartbeats here, in seconds: far longer than a case runs. */
 const allowed = 600;
 let scratch: string;

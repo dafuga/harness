@@ -7,13 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/create-project/createProject.ts"],
+		"source": [
+			"src/cli/program/create-project/createProject.ts",
+			"src/cli/program/create-project/createProject.types.ts"
+		],
 		"symbols": [
 			"ProjectKind",
+			"createProject",
+			"renderCreateProject",
 			"CreateProjectInput",
 			"CreateProjectResult",
-			"createProject",
-			"renderCreateProject"
+			"CreateProjectInput",
+			"CreateProjectResult"
 		]
 	},
 	"contract": {

@@ -1,3 +1,4 @@
+import type { Fixture } from './project-run.test.types';
 import { rm, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -6,8 +7,6 @@ import { RunCancelled, type AgentTurn } from '../../src/models/AgentRunner.types
 import type { ProjectRunRequest } from '../../src/models/DesktopBridge.types';
 import { createPlanning } from '../../../planning/src/lib/planning/index';
 import { fixture, git } from '../run-fixture';
-
-type Fixture = Awaited<ReturnType<typeof fixture>>;
 const badge = {
 	category: 'components',
 	title: 'Order badge',

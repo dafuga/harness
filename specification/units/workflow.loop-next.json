@@ -7,12 +7,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/loopNext.ts", "src/workflows/loopNext.ts"],
+		"source": [
+			"src/cli/program/loopNext.ts",
+			"src/cli/program/loopNext.types.ts",
+			"src/workflows/loopNext.ts"
+		],
 		"symbols": [
-			"NextLoopStepInput",
-			"NextLoopStepResult",
 			"nextLoopStep",
 			"renderNextLoopStep",
+			"NextLoopStepInput",
+			"NextLoopStepResult",
+			"NextLoopStepInput",
+			"NextLoopStepResult",
 			"nextLoopStep",
 			"renderNextLoopStep",
 			"NextLoopStepInput",

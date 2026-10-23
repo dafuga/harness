@@ -1,23 +1,9 @@
+import type { ReasonSide, Symbol } from './requiredReasons.types';
 import { createHash } from 'node:crypto';
 import type { RequiredReason } from '../../../core/development-tooling/explanationTypes';
-import type { SourceFile } from '../../../core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import { componentVersion } from '../componentVersion';
 import { stableJson } from '../stableJson';
-import type { WritingVersion } from '../../git-source-history/writing-limits/writingLimits';
-
-export interface ReasonSide {
-	index: { files: Map<string, SourceFile> };
-	manifests: ComponentManifest[];
-	/** The version of the writing limits the revision declares; its reasons are held to that one. */
-	writing?: WritingVersion | null;
-}
-
-interface Symbol {
-	file: string;
-	name: string;
-	hash: string;
-}
 
 /** Units that exist at a revision: active and with at least one source file present. */
 export function presentUnits(side: ReasonSide): Map<string, ComponentManifest> {
@@ -119,3 +105,5 @@ function compare(left: string, right: string): number {
 	if (left === right) return 0;
 	return left < right ? -1 : 1;
 }
+
+export type { ReasonSide } from './requiredReasons.types';

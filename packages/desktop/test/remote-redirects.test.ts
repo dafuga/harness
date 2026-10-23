@@ -1,3 +1,4 @@
+import type { Answer } from './remote-redirects.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test } from 'vitest';
 import { createServer } from 'node:http';
@@ -6,12 +7,6 @@ import type { AddressInfo } from 'node:net';
 import { DevicePairingService } from '../../remote/src/index';
 import { RelaySocketAdapter } from '../src/adapters/RelaySocketAdapter';
 import { RemoteRegistrationAdapter } from '../src/adapters/RemoteRegistrationAdapter';
-
-interface Answer {
-	status: number;
-	location?: string;
-	body?: string;
-}
 const servers: Server[] = [];
 afterEach(async () => {
 	await Promise.all(

@@ -9,12 +9,15 @@
 	"owns": {
 		"source": [
 			"src/services/development-tooling/source-index-service/SourceIndexService.ts",
+			"src/services/development-tooling/source-index-service/SourceIndexService.types.ts",
 			"src/services/source-index-service/SourceIndexService.ts"
 		],
 		"symbols": [
-			"SourceIndex",
 			"SourceIndexService",
 			"SourceIndexService.index",
+			"SourceIndex",
+			"SourceIndex",
+			"Parsed",
 			"SourceIndexService"
 		]
 	},

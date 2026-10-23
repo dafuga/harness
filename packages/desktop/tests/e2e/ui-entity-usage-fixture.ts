@@ -1,3 +1,4 @@
+import type { Entity } from './ui-entity-usage-fixture.types';
 import { join } from 'node:path';
 import type { Page, TestInfo } from '@playwright/test';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
@@ -34,7 +35,6 @@ const recorded = [
 export async function related(page: Page): Promise<void> {
 	await page.evaluate(
 		({ id, relationships }) => {
-			type Entity = { id: string; relationships: unknown[] };
 			const bridge = (window as unknown as { harness: { entity(input: object): Promise<Entity> } })
 				.harness;
 			const read = bridge.entity.bind(bridge);

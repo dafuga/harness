@@ -75,6 +75,8 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Code Rules
 
+- Application UI design values belong in the shared app token source documented by Styles. Reports, Desktop/iOS and Hub use one palette. New colors, typography, spacing, borders, shadows, opacity, motion and layering values require named tokens and catalog coverage; do not hide them in component CSS, inline styles or literal fallbacks. Keep the standardized app-style-tokens admission checks in normal Reports verification. Data-derived image/chart geometry and structural CSS keywords remain data/layout, and third-party asset colors retain their provenance.
+
 - Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models define data shapes and schemas. Unknown or effectful functions are not helpers.
 - Reserve shared helper folders for pure callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
 - A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
@@ -123,3 +125,9 @@ folders and titles from the selected source revision for every collection.
 - Do not complete a changed executable unit with applicable metrics left unmeasured. Extend its standard workload coverage and rerun it. If source, runtime, toolchain or safe memory attribution is unavailable, record the exact reason, keep that check open, and report the blocker; absence is never zero or a passing measurement.
 - Refresh prepared history when measurement support changes and verify the delivered data as well as the renderer. Every entity kind must show figures from its selected commit; old missing placeholders must not override current source observations. A portable index without its Git source must be rebuilt from that source rather than borrowing the working tree.
 - Show actual performance observations independently of budget declarations. Preserve workload, target and profile boundaries. A changed unit requires a fresh run; inherited observations of an unchanged unit keep their original revision and label. A focused benchmark does not grant full verification or approve a budget baseline.
+
+## Type Files
+
+Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
+
+Source tabs list implementation files, sibling type files and associated tests from the selected revision. Resolve tests from direct source imports or authored scenario coverage; retain their committed bytes and gaps, and reuse the shared file list and code viewer. Never substitute working-copy or newer test contents.

@@ -1,3 +1,4 @@
+import type { Call, Recorded } from './kernel-closure-capture-guard.test.types';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
@@ -5,7 +6,6 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, test } from 'vitest';
 import { artifactCases } from '../packages/reports/src/components/entity-cases/artifactCases';
-import type { ImpactInput, ImpactOutput } from '../src/core/kernelTypes';
 import { componentManifestSchema, scenarioManifestSchema } from '../src/core/unitTypes';
 import { captureIndex, captureLineSchema } from '../src/core/verifyTypes';
 import { kernelClosure } from '../src/utils/impact-kernel/kernelClosure';
@@ -27,8 +27,6 @@ const guard = 'test/kernel-closure-capture-guard.test.ts';
 const file = 'kernel-closure-cases.json';
 /** The outer run's Vitest state and assertion run id, which the producer run must not share. */
 const foreign = /^VITEST|^HARNESS_ASSERTION_RUN_ID$/;
-type Call = { name: string; input: ImpactInput; output: ImpactOutput };
-type Recorded = Record<string, unknown> & { cases: Call[] };
 const owned: string[] = [];
 afterEach(() => {
 	for (const directory of owned.splice(0)) rmSync(directory, { recursive: true, force: true });

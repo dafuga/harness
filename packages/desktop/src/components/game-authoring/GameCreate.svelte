@@ -99,16 +99,16 @@
 	.game-create {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 14px 12px;
+		gap: var(--hx-space-14) var(--hx-space-12);
 		width: min(100%, 440px);
-		margin: 8px auto 28px;
-		padding: 20px;
+		margin: var(--hx-space-8) auto var(--hx-space-28);
+		padding: var(--hx-space-20);
 		text-align: start;
-		background: radial-gradient(ellipse at top, #0a2636, var(--panel) 70%);
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		box-shadow: 0 18px 40px #00101b99;
-		transition: border-color 0.15s;
+		background: radial-gradient(ellipse at top, var(--hx-raised), var(--panel) 70%);
+		border: var(--hx-border-thin) solid var(--line);
+		border-radius: var(--hx-radius-large);
+		box-shadow: var(--hx-shadow-overlay);
+		transition: border-color var(--hx-motion-fast);
 	}
 	.game-create:focus-within {
 		border-color: color-mix(in srgb, var(--gold) 40%, var(--line));
@@ -119,29 +119,29 @@
 	.intro h2 {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		font-size: 16px;
+		gap: var(--hx-space-8);
+		font-size: var(--hx-type-size-base);
 	}
 	.intro h2::before {
 		content: '';
 		width: 6px;
 		height: 6px;
-		border-radius: 50%;
+		border-radius: var(--hx-radius-round);
 		background: var(--gold);
 	}
 	.intro small {
-		margin-top: 4px;
+		margin-top: var(--hx-space-4);
 	}
 	.field {
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		min-width: 0;
 	}
 	.caption {
 		color: var(--muted);
-		font-size: 11px;
-		font-weight: 600;
-		letter-spacing: 0.06em;
+		font-size: var(--hx-type-size-2xs);
+		font-weight: var(--hx-style-weight-semibold);
+		letter-spacing: var(--hx-style-tracking-wide);
 		text-transform: uppercase;
 	}
 	.field input,
@@ -154,18 +154,18 @@
 	}
 	.field input:focus-visible,
 	.field :global(select:focus-visible) {
-		outline: 2px solid var(--gold);
-		outline-offset: 2px;
+		outline: var(--hx-border-thick) solid var(--gold);
+		outline-offset: var(--hx-border-thick);
 	}
 	/* Above the gate's own spacing of its primary button. */
 	.game-create .primary {
-		margin: 4px 0 0;
+		margin: var(--hx-space-4) 0 0;
 		min-height: 44px;
 	}
 	.game-create .error {
 		margin: 0;
-		border-radius: 8px;
-		font-size: 13px;
+		border-radius: var(--hx-radius-small);
+		font-size: var(--hx-type-size-compact);
 	}
 	@media (max-width: 480px) {
 		.game-create {

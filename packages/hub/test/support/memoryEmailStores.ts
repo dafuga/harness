@@ -1,15 +1,10 @@
+import type { SendRow } from './memoryEmailStores.types';
 import type {
 	EmailLedgerStore,
 	EmailProofRecord,
 	EmailProofStore,
 	VerifiedEmailRecord
 } from '../../src/models/HubAuthStore.types';
-
-interface SendRow {
-	day: number;
-	count: number;
-	lastSentAt: number;
-}
 
 function proofStore(rows: Map<string, EmailProofRecord>): EmailProofStore {
 	return {

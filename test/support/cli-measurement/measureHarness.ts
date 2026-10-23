@@ -1,3 +1,4 @@
+import type { Input, Runner } from './measureHarness.types';
 import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -5,21 +6,6 @@ import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import type { CommandResult } from '../cli';
-
-type Runner = (
-	args: string[],
-	cwd: string,
-	success?: boolean,
-	env?: Record<string, string>
-) => Promise<CommandResult>;
-interface Input {
-	args: string[];
-	cwd: string;
-	expectSuccess: boolean;
-	env: Record<string, string>;
-	command: string[];
-	source: string;
-}
 
 /** Observe successful standard CLI workloads without changing their output or verification context. */
 export async function measureHarness(input: Input, run: Runner): Promise<CommandResult> {

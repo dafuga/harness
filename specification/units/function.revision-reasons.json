@@ -7,8 +7,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/revisionReasons.ts", "src/utils/revisionReasons.ts"],
-		"symbols": ["ReasonSources", "RevisionReasons", "revisionReasons", "revisionReasons"]
+		"source": [
+			"src/utils/development-tooling/revisionReasons.ts",
+			"src/utils/development-tooling/revisionReasons.types.ts",
+			"src/utils/revisionReasons.ts"
+		],
+		"symbols": [
+			"revisionReasons",
+			"ReasonSources",
+			"RevisionReasons",
+			"ReasonSources",
+			"RevisionReasons",
+			"Held",
+			"revisionReasons"
+		]
 	},
 	"contract": {
 		"origin": "declared",

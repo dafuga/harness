@@ -1,3 +1,4 @@
+import type { Entry, Work } from './DeploymentActivityService.types';
 import { basename } from 'node:path';
 import { deploymentSteps } from '../../models/development-tooling/Deployment.types';
 import type {
@@ -7,15 +8,6 @@ import type {
 	DeploymentStep
 } from '../../models/development-tooling/Deployment.types';
 import type { ReviewedDeployment } from './DeploymentService';
-type Work = (
-	update: (phase: DeploymentProgress['phase'], detail: string) => void,
-	predecessor?: DeploymentReceipt
-) => Promise<DeploymentReceipt>;
-interface Entry {
-	root: string;
-	activity: DeploymentActivity;
-	completion: Promise<DeploymentReceipt>;
-}
 /** Host-wide jobs outlive their requesting window. Only equal provider targets share a queue. */
 export class DeploymentActivityService {
 	private entries = new Map<string, Entry>();

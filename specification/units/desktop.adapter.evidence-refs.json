@@ -10,7 +10,8 @@
 		"source": [
 			"packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
 			"packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.types.ts"
 		],
 		"symbols": [
 			"notesRef",
@@ -21,14 +22,16 @@
 			"notesRef",
 			"evidenceRef",
 			"EvidenceRefsAdapter",
-			"PinnedRevisions",
-			"CurrentRefs",
 			"notesRef",
 			"evidenceRef",
 			"EvidenceRefsAdapter",
 			"EvidenceRefsAdapter.constructor",
 			"EvidenceRefsAdapter.current",
-			"EvidenceRefsAdapter.pinned"
+			"EvidenceRefsAdapter.pinned",
+			"PinnedRevisions",
+			"CurrentRefs",
+			"PinnedRevisions",
+			"CurrentRefs"
 		]
 	},
 	"contract": {

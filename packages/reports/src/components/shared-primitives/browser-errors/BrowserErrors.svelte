@@ -56,23 +56,23 @@
 		cursor: pointer;
 	}
 	p {
-		margin: 8px 0;
+		margin: var(--hx-space-8) 0;
 	}
 	ol {
-		padding-left: 24px;
+		padding-left: var(--hx-space-24);
 	}
 	li {
-		margin: 12px 0;
+		margin: var(--hx-space-12) 0;
 	}
 	.metadata {
-		font-size: 0.85rem;
-		opacity: 0.8;
+		font-size: var(--hx-type-size-sm);
+		opacity: var(--hx-opacity-secondary);
 	}
 	pre {
-		margin: 8px 0;
+		margin: var(--hx-space-8) 0;
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 0.8rem;
+		font-family: var(--hx-font-family-mono);
+		font-size: var(--hx-type-size-compact);
 	}
 </style>

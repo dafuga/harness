@@ -1,7 +1,6 @@
+import type { Listener } from './desktop-startup.test.types';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { tmpdir } from 'node:os';
-
-type Listener = (...args: unknown[]) => unknown;
 /** Electron as the main process sees it: app events, one window, its page and native dialogs. */
 const state = vi.hoisted(() => {
 	const listeners = () => {

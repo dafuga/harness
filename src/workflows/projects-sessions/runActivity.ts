@@ -1,20 +1,12 @@
+import type { Shown } from './runActivity.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
-import type {
-	AgentRoster,
-	LiveActivity,
-	ProjectActivity
-} from '../../core/projects-sessions/activityTypes';
+import type { AgentRoster } from '../../core/projects-sessions/activityTypes';
 import { fail } from '../../core/development-tooling/errors';
 import { ProjectWorkRepository } from '../../repositories/projects-sessions/ProjectWorkRepository';
 import { AgentActivityService } from '../../services/agents-providers/agent-activity-service/AgentActivityService';
 import { ProjectActivityService } from '../../services/projects-sessions/project-activity-service/ProjectActivityService';
 import type { AgentInput } from '../../utils/agents-providers/agentStatement';
-
-export interface Shown {
-	activity: ProjectActivity;
-	live: LiveActivity;
-}
 
 /** The checkout a command runs in: the top of its Git checkout, or the directory outside Git. */
 export async function activityRoot(directory = process.cwd()): Promise<string> {
@@ -99,3 +91,5 @@ export function renderShown({ activity, live }: Shown): string {
 		renderRoster(live.agents)
 	].join('\n');
 }
+
+export type { Shown } from './runActivity.types';

@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/accounts-access/buildIdentity.ts", "src/utils/buildIdentity.ts"],
-		"symbols": ["BuiltFile", "buildIdentity", "builtFileHash", "buildIdentity", "builtFileHash"]
+		"source": [
+			"src/utils/accounts-access/buildIdentity.ts",
+			"src/utils/accounts-access/buildIdentity.types.ts",
+			"src/utils/buildIdentity.ts"
+		],
+		"symbols": [
+			"buildIdentity",
+			"builtFileHash",
+			"BuiltFile",
+			"BuiltFile",
+			"buildIdentity",
+			"builtFileHash"
+		]
 	},
 	"contract": {
 		"origin": "declared",

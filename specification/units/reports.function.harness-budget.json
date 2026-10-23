@@ -9,9 +9,19 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/harnessBudget.ts",
+			"packages/reports/src/utils/explorer-ui/harnessBudget.types.ts",
 			"packages/reports/src/utils/harnessBudget.ts"
 		],
-		"symbols": ["FrozenLine", "Reviewed", "harnessBudget", "harnessBudget"]
+		"symbols": [
+			"harnessBudget",
+			"FrozenLine",
+			"Reviewed",
+			"Measurement",
+			"Finding",
+			"FrozenLine",
+			"Reviewed",
+			"harnessBudget"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -9,18 +9,20 @@
 	"owns": {
 		"source": [
 			"src/repositories/UnitRegistryRepository.ts",
-			"src/repositories/verification-evidence/UnitRegistryRepository.ts"
+			"src/repositories/verification-evidence/UnitRegistryRepository.ts",
+			"src/repositories/verification-evidence/UnitRegistryRepository.types.ts"
 		],
 		"symbols": [
 			"UnitRegistryRepository",
-			"RegistryRead",
 			"UnitRegistryRepository",
 			"UnitRegistryRepository.constructor",
 			"UnitRegistryRepository.config",
 			"UnitRegistryRepository.read",
 			"UnitRegistryRepository.write",
 			"UnitRegistryRepository.remove",
-			"UnitRegistryRepository.path"
+			"UnitRegistryRepository.path",
+			"RegistryRead",
+			"RegistryRead"
 		]
 	},
 	"contract": {

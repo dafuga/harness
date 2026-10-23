@@ -1,9 +1,9 @@
+import type { RepositoryLease } from './repositoryLease.types';
 import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-export type RepositoryLease = (() => Promise<void>) & { signal: AbortSignal };
 /** OS advisory lock shared across Web and Electron. A lost helper aborts its protected run. */
 async function advisoryLease(root: string): Promise<RepositoryLease | null> {
 	if (!['darwin', 'linux'].includes(process.platform))
@@ -96,3 +96,5 @@ function ownerAlive(owner: string): boolean {
 		throw cause;
 	}
 }
+
+export type { RepositoryLease } from './repositoryLease.types';

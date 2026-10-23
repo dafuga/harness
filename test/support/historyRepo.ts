@@ -1,3 +1,4 @@
+import type { Attached, HistoryStatus, NoteLine } from './historyRepo.types';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
@@ -8,33 +9,6 @@ import { repoAt, type VerifyRepo } from './verifyRepo';
 
 export const evidenceRef = 'refs/heads/harness-evidence';
 export const notesRef = 'refs/notes/harness';
-
-export interface NoteLine {
-	kind: string;
-	record?: string;
-	status?: string;
-	id?: string;
-	source?: { commit: string; tree: string; base: string | null };
-	evidence?: { commit: string; path: string; manifest: string };
-	explanation?: { unit: string; symbol: string };
-}
-
-export interface Attached {
-	record: string;
-	status: string;
-	source: string;
-	evidence: { commit: string; path: string; manifest: string };
-	note: string;
-	archive: string;
-	created: boolean;
-}
-
-export interface HistoryStatus {
-	commit: string;
-	verified: boolean;
-	records: Array<{ record: string; status: string; valid: boolean; problems: string[] }>;
-	problems: string[];
-}
 
 export const sha256 = (bytes: Buffer | string): string =>
 	createHash('sha256').update(bytes).digest('hex');
@@ -98,3 +72,5 @@ export async function directoryDigest(directory: string, prefix = ''): Promise<s
 
 export const removeRemote = (remote: string): Promise<void> =>
 	rm(join(remote, '..'), { recursive: true, force: true });
+
+export type { NoteLine, Attached, HistoryStatus } from './historyRepo.types';

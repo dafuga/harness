@@ -9,15 +9,14 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/models/Deployment.types.ts",
-			"packages/desktop/src/models/development-tooling/Deployment.types.ts"
+			"packages/desktop/src/models/development-tooling/Deployment.types.ts",
+			"packages/desktop/src/models/development-tooling/DeploymentValues.ts"
 		],
 		"symbols": [
-			"deploymentEnvironments",
 			"DeploymentEnvironment",
 			"DeploymentReceipt",
 			"DeploymentStatus",
 			"DeploymentProgress",
-			"deploymentSteps",
 			"DeploymentStep",
 			"DeploymentActivity",
 			"ProductionPromotion",
@@ -29,7 +28,11 @@
 			"CloudflareTarget",
 			"DeploymentConfig",
 			"DeploymentPlugin",
-			"DeploymentBridge"
+			"DeploymentBridge",
+			"deploymentEnvironments",
+			"deploymentSteps",
+			"deploymentEnvironments",
+			"deploymentSteps"
 		]
 	},
 	"contract": {

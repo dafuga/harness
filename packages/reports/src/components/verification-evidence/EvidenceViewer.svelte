@@ -1,6 +1,10 @@
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { galleryEvidence, screenSize, type ScreenSize } from '../../utils/verification-evidence/reportFilter';
+	import {
+		galleryEvidence,
+		screenSize,
+		type ScreenSize
+	} from '../../utils/verification-evidence/reportFilter';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
 	import ImageZoom from '../shared-primitives/image-zoom/ImageZoom.svelte';
@@ -148,15 +152,15 @@
 <style>
 	.viewer-provenance {
 		max-width: 80ch;
-		margin: 0 auto 12px;
+		margin: 0 auto var(--hx-space-12);
 	}
 	.viewer-note {
 		max-width: 80ch;
-		margin: 14px auto;
+		margin: var(--hx-space-14) auto;
 		text-align: left;
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
-		font-size: 14px;
-		line-height: 1.6;
+		font-size: var(--hx-type-size-sm);
+		line-height: var(--hx-style-leading-normal);
 	}
 </style>

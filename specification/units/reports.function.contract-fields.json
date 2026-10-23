@@ -10,8 +10,10 @@
 		"source": [
 			"packages/reports/src/components/entity-contract/contractFields.ts",
 			"packages/reports/src/components/explorer-ui/entity-contract/contractFields.ts",
+			"packages/reports/src/components/explorer-ui/entity-contract/contractFields.types.ts",
 			"packages/reports/src/utils/contractFields.ts",
-			"packages/reports/src/utils/explorer-ui/contractFields.ts"
+			"packages/reports/src/utils/explorer-ui/contractFields.ts",
+			"packages/reports/src/utils/explorer-ui/contractFields.types.ts"
 		],
 		"symbols": [
 			"typeLabel",
@@ -22,20 +24,26 @@
 			"fieldOf",
 			"contractFields",
 			"contractFacts",
-			"CallableContract",
 			"callableContracts",
 			"returnField",
+			"CallableContract",
+			"Item",
+			"CallableContract",
 			"typeLabel",
 			"contractFields",
 			"contractFacts",
 			"guess",
-			"ContractExample",
-			"ContractField",
-			"ContractGroup",
 			"guess",
 			"typeLabel",
 			"contractFields",
-			"contractFacts"
+			"contractFacts",
+			"ContractExample",
+			"ContractField",
+			"ContractGroup",
+			"Guess",
+			"ContractExample",
+			"ContractField",
+			"ContractGroup"
 		]
 	},
 	"contract": {

@@ -1,23 +1,7 @@
+import type { ServerRecord } from './reportServerRecord.types';
 import { execFile } from 'node:child_process';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-
-/** The server a report store started on one port: which process, and since when. */
-export interface ServerRecord {
-	pid: number;
-	port: number;
-	/** When the process started, as the system reports it; a reused id has another start. */
-	started: string;
-	buildId: string;
-}
-
-export interface StoppedServer {
-	port: number;
-	/** True when the recorded process was running and has been ended. */
-	stopped: boolean;
-	pid?: number;
-	reason?: string;
-}
 
 /** When one process started, or undefined when no process has this id. Only that id is asked. */
 export function processStarted(pid: number): Promise<string | undefined> {
@@ -50,3 +34,5 @@ export function reportServerRecord(root: string, port: number) {
 }
 
 export { stopReportServer } from '../../services/reports-media/report-command-service/report-server-service/reportServerRecord';
+
+export type { ServerRecord, StoppedServer } from './reportServerRecord.types';

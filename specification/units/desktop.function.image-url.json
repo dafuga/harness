@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/development-tooling/imageUrl.ts",
+			"packages/desktop/src/utils/development-tooling/imageUrl.types.ts",
 			"packages/desktop/src/utils/imageUrl.ts"
 		],
-		"symbols": ["ImageRequest", "imageUrl", "imageUrl"]
+		"symbols": ["imageUrl", "ImageRequest", "ImageRequest", "imageUrl"]
 	},
 	"contract": {
 		"origin": "declared",

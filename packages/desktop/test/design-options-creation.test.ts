@@ -1,15 +1,9 @@
+import type { Made } from './design-options-creation.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test, vi } from 'vitest';
 import { PNG } from 'pngjs';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git } from './run-fixture';
-
-/**
- * Something new asked of the project agent: a visual plan it proposes is made as separately
- * directed design options saved as one version, three unless asked otherwise, whatever catalog the
- * request came from; a headless one makes no image; a failed option saves no version.
- */
-type Made = Awaited<ReturnType<typeof fixture>>;
 const contract = {
 	inputs: [{ name: 'milliseconds', type: 'number' }],
 	outputs: [{ name: 'formatted', type: 'string' }],

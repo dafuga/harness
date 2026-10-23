@@ -7,15 +7,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/cleanCodeRubric.ts", "src/audit/development-tooling/cleanCodeRubric.ts"],
+		"source": [
+			"src/audit/cleanCodeRubric.ts",
+			"src/audit/development-tooling/cleanCodeRubric.ts",
+			"src/audit/development-tooling/cleanCodeRubric.types.ts"
+		],
 		"symbols": [
 			"cleanCodeRubricVersion",
 			"cleanCodePrinciples",
 			"cleanCodeQuestions",
 			"cleanCodeRubricVersion",
-			"CleanCodePrinciple",
 			"cleanCodePrinciples",
-			"cleanCodeQuestions"
+			"cleanCodeQuestions",
+			"CleanCodePrinciple",
+			"CleanCodePrinciple"
 		]
 	},
 	"contract": {

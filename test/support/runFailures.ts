@@ -1,26 +1,4 @@
-interface ReportError {
-	message?: string;
-}
-
-interface ReportSuite {
-	specs?: Array<{
-		title: string;
-		file: string;
-		line: number;
-		tests: Array<{
-			status: string;
-			results: Array<{ error?: ReportError; errors?: ReportError[] }>;
-		}>;
-	}>;
-	suites?: ReportSuite[];
-}
-
-/** The part of Playwright's JSON report that says which tests failed and why. */
-export interface RunReport {
-	/** Failures outside any test, such as a server that did not start. */
-	errors?: ReportError[];
-	suites?: ReportSuite[];
-}
+import type { ReportError, ReportSuite, RunReport } from './runFailures.types';
 
 const colour = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
 const longest = 1500;
@@ -52,3 +30,5 @@ export function runFailures(report: RunReport): string[] {
 		...(report.suites ?? []).flatMap(failed)
 	];
 }
+
+export type { RunReport } from './runFailures.types';

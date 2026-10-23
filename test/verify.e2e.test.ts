@@ -1,3 +1,4 @@
+import type { Capture } from './verify.e2e.test.types';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
@@ -19,17 +20,6 @@ const scenarioOf = (record: { scenarios: Array<{ id: string }> }, id: string) =>
 		states: Array<{ id: string; coverage: string; reason?: string; captures: Capture[] }>;
 	};
 };
-interface Capture {
-	sha256: string;
-	path: string;
-	status: string;
-	viewport?: string;
-	transcript?: string;
-	provenance?: string;
-	mediaType: string;
-	durationSeconds?: number;
-	server?: { revision: string };
-}
 
 test('the fixture baseline verifies clean on an exact commit and tree', async () => {
 	const repo = await cloneRepo(baseline);

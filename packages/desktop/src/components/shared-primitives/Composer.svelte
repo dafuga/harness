@@ -103,10 +103,10 @@
 	.compact {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 8px;
+		gap: var(--hx-space-8);
 		margin: 0;
-		padding: 10px;
-		font-size: 12px;
+		padding: var(--hx-space-10);
+		font-size: var(--hx-type-size-xs);
 	}
 	.compact > :global(*) {
 		grid-column: 1 / -1;
@@ -118,12 +118,12 @@
 	}
 	.compact .mode-options button {
 		min-width: 0;
-		padding: 6px 8px;
+		padding: var(--hx-space-6) var(--hx-space-8);
 		font-size: inherit;
 	}
 	/* The modes are joined, so they read as one control. */
 	.compact .mode-options button:not(:first-child) {
-		margin-inline-start: -1px;
+		margin-inline-start: calc(-1 * var(--hx-space-1));
 		border-start-start-radius: 0;
 		border-end-start-radius: 0;
 	}
@@ -138,7 +138,7 @@
 	.compact :global(.composer-bottom) {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) 34px;
-		gap: 5px;
+		gap: var(--hx-space-5);
 	}
 	/* The model and effort icons sit at the end of the modes' row, beside send. */
 	.compact > :global(.composer-bottom.agent-icons) {
@@ -157,12 +157,12 @@
 		padding: 0;
 	}
 	.compact :global(.send) {
-		font-size: 16px;
+		font-size: var(--hx-type-size-base);
 	}
 	/* On a phone the modes are each still read whole. */
 	@media (max-width: 520px) {
 		.compact {
-			font-size: 11px;
+			font-size: var(--hx-type-size-2xs);
 		}
 	}
 </style>

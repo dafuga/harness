@@ -1,15 +1,5 @@
+import type { GitRunOptions, GitResult } from './GitAdapter.types';
 import { spawn } from 'node:child_process';
-
-export interface GitRunOptions {
-	input?: string | Buffer;
-	env?: Record<string, string>;
-}
-
-export interface GitResult {
-	code: number;
-	stdout: Buffer;
-	stderr: string;
-}
 
 /** Runs git in one repository without changing global or repository configuration. */
 export class GitAdapter {
@@ -60,3 +50,5 @@ export class GitAdapter {
 		return (await this.attempt(['rev-parse', '--is-inside-work-tree'])) === 'true';
 	}
 }
+
+export type { GitRunOptions, GitResult } from './GitAdapter.types';

@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/remote-fixture-control.ts"],
-		"symbols": ["FixtureAction", "remoteFixtureControl"]
+		"source": [
+			"packages/desktop/scripts/remote-fixture-control.ts",
+			"packages/desktop/scripts/remote-fixture-control.types.ts"
+		],
+		"symbols": ["remoteFixtureControl", "FixtureAction", "FixtureAction"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/resolveImport.ts", "src/utils/resolveImport.ts"],
-		"symbols": ["ResolveContext", "resolveImport", "resolveImport"]
+		"source": [
+			"src/utils/development-tooling/resolveImport.ts",
+			"src/utils/development-tooling/resolveImport.types.ts",
+			"src/utils/resolveImport.ts"
+		],
+		"symbols": ["resolveImport", "ResolveContext", "ResolveContext", "resolveImport"]
 	},
 	"contract": {
 		"origin": "declared",

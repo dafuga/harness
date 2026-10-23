@@ -1,3 +1,4 @@
+import type { Reply, FixtureServer } from './runtimeFixtures.types';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 
@@ -23,13 +24,6 @@ export const scripts = {
 	].join('')
 };
 
-export interface FixtureServer {
-	url: string;
-	close(): Promise<void>;
-}
-
-type Reply = { status: number; body: string } | 'hang';
-
 export async function fixtureServer(routes: Record<string, Reply>): Promise<FixtureServer> {
 	const server: Server = createServer((request, response) => {
 		const reply = routes[request.url ?? '/'];
@@ -49,3 +43,5 @@ export async function fixtureServer(routes: Record<string, Reply>): Promise<Fixt
 			})
 	};
 }
+
+export type { FixtureServer } from './runtimeFixtures.types';

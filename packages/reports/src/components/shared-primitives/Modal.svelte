@@ -69,15 +69,15 @@
 		margin: 0;
 		border: 0;
 		border-radius: 0;
-		background: #070d18;
+		background: var(--hx-bg);
 		box-shadow: none;
 		overflow: hidden;
 	}
 	.lightbox .viewer-header {
 		flex: none;
-		padding: 10px 16px 10px 22px;
-		border-bottom-color: #223050;
-		background: #0e1728;
+		padding: var(--hx-space-10) var(--hx-space-16) var(--hx-space-10) var(--hx-space-22);
+		border-bottom-color: var(--hx-line);
+		background: var(--hx-surface);
 	}
 	.lightbox .viewer-header h2 {
 		min-width: 0;

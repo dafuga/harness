@@ -15,7 +15,8 @@
 			"packages/hub/src/lib/verification-evidence/server/auth/request-session-service/authHttp.ts",
 			"packages/hub/src/services/request-session-service/authHttp.ts",
 			"packages/hub/src/utils/authHttp.ts",
-			"packages/hub/src/utils/verification-evidence/authHttp.ts"
+			"packages/hub/src/utils/verification-evidence/authHttp.ts",
+			"packages/hub/src/utils/verification-evidence/authHttp.types.ts"
 		],
 		"symbols": [
 			"authRedirect",
@@ -39,19 +40,22 @@
 			"readJson",
 			"authPath",
 			"baseHeaders",
-			"AuthHttpOptions",
 			"withCookies",
 			"authHttp",
 			"authFailure",
 			"hasAuthorization",
 			"boundedText",
 			"readJson",
-			"AuthRoute",
-			"AuthRoutes",
 			"authPath",
 			"authRedirect",
 			"sameOrigin",
-			"bearerToken"
+			"bearerToken",
+			"AuthHttpOptions",
+			"AuthRoute",
+			"AuthRoutes",
+			"AuthHttpOptions",
+			"AuthRoute",
+			"AuthRoutes"
 		]
 	},
 	"contract": {

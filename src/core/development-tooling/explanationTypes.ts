@@ -28,19 +28,9 @@ export const explanationSchema = z.strictObject({
 	recordedAt: text
 });
 
-export type Explanation = z.infer<typeof explanationSchema>;
-export type ExplanationOutcome = (typeof explanationOutcomes)[number];
-
-/** One change that needs a reason. */
-export interface RequiredReason {
-	unit: string;
-	symbol: string;
-	file?: string;
-	change: 'added' | 'modified' | 'removed';
-	from: string | null;
-	to: string | null;
-}
-
-export interface ReasonStatus extends RequiredReason {
-	state: 'explained' | 'missing' | 'stale';
-}
+export type {
+	Explanation,
+	ExplanationOutcome,
+	RequiredReason,
+	ReasonStatus
+} from './explanationTypes.types';

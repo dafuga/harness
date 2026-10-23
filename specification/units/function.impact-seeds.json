@@ -10,10 +10,11 @@
 		"source": [
 			"src/services/impact-service/impactSeeds.ts",
 			"src/services/reports-media/impact-service/impactSeeds.ts",
+			"src/services/reports-media/impact-service/impactSeeds.types.ts",
 			"src/utils/impactSeeds.ts",
 			"src/utils/reports-media/impactSeeds.ts"
 		],
-		"symbols": ["impactSeeds", "impactSeeds", "impactSeeds", "ImpactSeeds", "impactSeeds"]
+		"symbols": ["impactSeeds", "impactSeeds", "Sides", "impactSeeds", "ImpactSeeds", "impactSeeds"]
 	},
 	"contract": {
 		"origin": "declared",

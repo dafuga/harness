@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-acceptance-simulator.ts"],
+		"source": [
+			"packages/desktop/scripts/ios-acceptance-simulator.ts",
+			"packages/desktop/scripts/ios-acceptance-simulator.types.ts"
+		],
 		"symbols": [
 			"deviceName",
 			"bundleId",
@@ -19,7 +22,9 @@
 			"screenshot",
 			"inspectorSocket",
 			"keychainGroups",
-			"shutdown"
+			"shutdown",
+			"Device",
+			"Runtime"
 		]
 	},
 	"contract": {

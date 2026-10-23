@@ -10,17 +10,19 @@
 		"source": [
 			"packages/remote/src/services/EventLogService.ts",
 			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
+			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.types.ts",
 			"packages/remote/src/services/wire-session-service/EventLogService.ts"
 		],
 		"symbols": [
 			"EventLogService",
-			"EventReplay",
 			"EventReplay",
 			"EventLogService",
 			"EventLogService.constructor",
 			"EventLogService.sequence",
 			"EventLogService.append",
 			"EventLogService.since",
+			"EventReplay",
+			"EventReplay",
 			"EventLogService"
 		]
 	},

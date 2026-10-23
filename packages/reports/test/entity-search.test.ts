@@ -1,3 +1,4 @@
+import type { Row } from './entity-search.test.types';
 import { expect, test } from 'vitest';
 import type { SearchEntry } from '../src/utils/entitySearch';
 import { entitySearch } from '../src/components/entity-search/entitySearch';
@@ -7,13 +8,6 @@ import { entitySearch } from '../src/components/entity-search/entitySearch';
  * purposes and declared contract names, best matches of names and ids first.
  */
 const commit = 'a'.repeat(40);
-type Row = [
-	id: string,
-	category: SearchEntry['category'],
-	name: string,
-	purpose: string,
-	terms?: string[]
-];
 function entry(row: Row): SearchEntry {
 	const [id, category, name, purpose, terms = []] = row;
 	return { id, category, name, purpose, terms, commit };

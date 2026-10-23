@@ -1,14 +1,9 @@
+import type { LedgerRead } from './BudgetLedgerRepository.types';
 import { appendFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { budgetEventSchema, type BudgetEvent } from '../../core/verification-evidence/budgetTypes';
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
 import { budgetsLedger } from '../../core/development-tooling/unitsConfig';
-
-export interface LedgerRead {
-	text: string;
-	events: BudgetEvent[];
-	errors: string[];
-}
 
 /** The append-only budget ledger: one reviewed baseline or approval per line. */
 export class BudgetLedgerRepository {
@@ -42,3 +37,5 @@ function parseLine(line: string): unknown {
 		return undefined;
 	}
 }
+
+export type { LedgerRead } from './BudgetLedgerRepository.types';

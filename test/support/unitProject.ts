@@ -1,16 +1,8 @@
+import type { UnitProject } from './unitProject.types';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { runHarness } from './cli';
-
-export interface UnitProject {
-	root: string;
-	write(path: string, contents: string): Promise<void>;
-	read(path: string): Promise<string>;
-	json<T = Record<string, unknown>>(path: string): Promise<T>;
-	harness(args: string[], expectSuccess?: boolean): ReturnType<typeof runHarness>;
-	harnessJson<T = Record<string, unknown>>(args: string[]): Promise<T>;
-}
 
 export async function unitProject(kind: 'app' | 'lib'): Promise<UnitProject> {
 	const parent = await mkdtemp(join(tmpdir(), `harness-units-${kind}-`));
@@ -81,3 +73,5 @@ export const utcDateExamples = [
 		output: '2026-10-20T00:00:00.000Z'
 	}
 ];
+
+export type { UnitProject } from './unitProject.types';

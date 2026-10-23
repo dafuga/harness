@@ -1,3 +1,4 @@
+import type { Fixture, View } from './remote-fixture-approval.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -5,16 +6,6 @@ import { join } from 'node:path';
 import { DevicePairingService } from '../../remote/src/index';
 import type { RemotePairingOffer } from '../../remote/src/index';
 import { startRemoteFixture } from '../scripts/remote-fixture-host';
-
-/**
- * The fixture computer as the native acceptance run uses it: nobody approves by itself. A phone
- * that scanned waits at the real relay Worker until the control is told to approve or deny it.
- */
-type Fixture = Awaited<ReturnType<typeof startRemoteFixture>>;
-interface View {
-	requests: { deviceId: string; deviceName: string }[];
-	devices: { deviceId: string; name: string; agents: boolean }[];
-}
 let fixture: Fixture, publicDirectory: string;
 const phone = { deviceName: 'Scanning stand-in', platform: 'test' as const };
 const control = async <T = View>(method: string, path: string, body?: object) => {

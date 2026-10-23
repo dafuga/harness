@@ -1,3 +1,4 @@
+import type { Weighed } from './hostScale.types';
 import { createHash, randomBytes } from 'node:crypto';
 import { cp, mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
@@ -38,11 +39,6 @@ export async function withRecordedMedia(
 	return names;
 }
 
-export interface Weighed {
-	files: number;
-	bytes: number;
-}
-
 /** Number and total size of the files under a directory; zero when it does not exist. */
 export async function weighed(directory: string): Promise<Weighed> {
 	const entries = await readdir(directory, { recursive: true, withFileTypes: true }).catch(
@@ -73,3 +69,5 @@ export async function deployedWorker(
 	const script = await readFile(join(host, '.bundled/_worker.js'));
 	return { bytes: script.length, compressedBytes: gzipSync(script).length };
 }
+
+export type { Weighed } from './hostScale.types';

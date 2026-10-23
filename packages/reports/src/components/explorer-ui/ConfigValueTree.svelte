@@ -1,8 +1,8 @@
 <script lang="ts" module>
+	import type { ConfigCollection } from './ConfigValueTree.module.types';
+
 	import type { ConfigValueNode } from '../../../../../src/utils/explorer-ui/unitMetadata';
 	import type { HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
-	/** A value that holds others: the attributes of an object or the items of an array. */
-	export type ConfigCollection = Exclude<ConfigValueNode, { kind: 'expression' }>;
 	/** The object or array a value is, if it is one. */
 	export const collection = (node?: ConfigValueNode): ConfigCollection | undefined =>
 		node?.kind === 'expression' ? undefined : node;
@@ -25,6 +25,8 @@
 		const size = lines > 1 ? `${lines} lines` : `${text.length} chars`;
 		return { icon: 'code' as const, size };
 	}
+
+	export type { ConfigCollection } from './ConfigValueTree.module.types';
 </script>
 
 <script lang="ts">
@@ -86,28 +88,28 @@
 	/* The same raised panel as the source expression, so the two read as one value. */
 	.ex-value-tree {
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		min-width: 0;
-		padding: 10px 16px;
-		border-radius: 8px;
+		padding: var(--hx-space-10) var(--hx-space-16);
+		border-radius: var(--hx-radius-small);
 		background: var(--ex-raised);
 	}
 	/* Room for each disclosure marker, so every key lines up whether or not it opens. */
 	.ex-value-entries {
 		display: grid;
-		gap: 2px;
-		padding-left: 18px;
+		gap: var(--hx-space-2);
+		padding-left: var(--hx-space-18);
 	}
 	.ex-value-entries > li {
 		margin: 0;
-		line-height: 1.5;
+		line-height: var(--hx-style-leading-normal);
 	}
 	.ex-value-nested {
-		margin: 2px 0 6px 4px;
-		border-left: 1px solid var(--ex-line);
+		margin: var(--hx-space-2) 0 var(--hx-space-6) var(--hx-space-4);
+		border-left: var(--hx-border-thin) solid var(--ex-line);
 	}
 	.ex-value-line {
-		padding: 4px 0;
+		padding: var(--hx-space-4) 0;
 		color: var(--ex-text);
 		font-size: inherit;
 	}
@@ -119,18 +121,18 @@
 	/* Key, shape, count and value run on one line, each a space and a little margin apart. */
 	.ex-value-tree :global(.hx-icon) {
 		display: inline-block;
-		margin-right: 2px;
+		margin-right: var(--hx-space-2);
 		vertical-align: -3px;
 	}
 	.ex-value-line .ex-note {
 		display: inline;
-		margin: 0 4px 0 0;
+		margin: 0 var(--hx-space-4) 0 0;
 		white-space: nowrap;
 	}
 	/* A long key breaks on a narrow screen rather than pushing the panel sideways. */
 	.ex-value-key {
-		margin-right: 4px;
-		font-weight: 600;
+		margin-right: var(--hx-space-4);
+		font-weight: var(--hx-style-weight-semibold);
 		overflow-wrap: anywhere;
 	}
 	/* Long expressions wrap where they must, keeping the breaks they were written with. */

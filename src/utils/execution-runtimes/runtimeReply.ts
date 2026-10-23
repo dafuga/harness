@@ -1,15 +1,10 @@
+import type { RuntimeReply } from './runtimeReply.types';
 import {
 	runtimeFailure,
 	type RuntimeRequest,
-	type RuntimeResponse,
 	type UnitRuntime
 } from '../../core/execution-runtimes/runtimeTypes';
 import { notPortable, portableJson } from '../development-tooling/portableJson';
-
-export interface RuntimeReply {
-	status: number;
-	value: RuntimeResponse;
-}
 
 /**
  * What a served unit answers one HTTP request with: one JSON request per POST, and anything
@@ -33,3 +28,5 @@ export async function runtimeReply(
 	if (!portableJson(parsed)) return { status: 400, value: notPortable };
 	return { status: 200, value: await runtime.invoke(parsed as RuntimeRequest) };
 }
+
+export type { RuntimeReply } from './runtimeReply.types';

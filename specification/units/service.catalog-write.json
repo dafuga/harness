@@ -7,12 +7,16 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/git-source-history/CatalogWriteService.ts"],
+		"source": [
+			"src/services/git-source-history/CatalogWriteService.ts",
+			"src/services/git-source-history/CatalogWriteService.types.ts"
+		],
 		"symbols": [
-			"CatalogSnapshot",
 			"CatalogWriteService",
 			"CatalogWriteService.constructor",
-			"CatalogWriteService.replace"
+			"CatalogWriteService.replace",
+			"CatalogSnapshot",
+			"CatalogSnapshot"
 		]
 	},
 	"contract": {

@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/git-source-history/historyTypes.ts", "src/core/historyTypes.ts"],
+		"source": [
+			"src/core/git-source-history/historyTypes.ts",
+			"src/core/git-source-history/historyTypes.types.ts",
+			"src/core/historyTypes.ts"
+		],
 		"symbols": [
 			"evidenceBranch",
 			"evidenceRef",
@@ -22,6 +26,11 @@
 			"evidenceFileSchema",
 			"evidenceManifestSchema",
 			"legacyRecordSchema",
+			"EvidencePointer",
+			"HistoryNote",
+			"EvidenceFile",
+			"EvidenceManifest",
+			"LegacyRecord",
 			"EvidencePointer",
 			"HistoryNote",
 			"EvidenceFile",

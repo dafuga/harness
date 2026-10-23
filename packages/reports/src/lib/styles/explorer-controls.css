@@ -3,38 +3,38 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 10px;
+	gap: var(--hx-space-10);
 	min-height: 44px;
-	padding: 0 16px;
-	border: 1px solid var(--hx-gold, #f3c33b);
-	border-radius: var(--hx-radius-small, 8px);
+	padding: 0 var(--hx-space-16);
+	border: var(--hx-border-thin) solid var(--hx-gold);
+	border-radius: var(--hx-radius-small);
 	background: transparent;
-	color: var(--hx-gold, #f3c33b);
+	color: var(--hx-gold);
 	font: inherit;
-	font-weight: 500;
-	line-height: 1.2;
+	font-weight: var(--hx-style-weight-medium);
+	line-height: var(--hx-style-leading-tight);
 	white-space: nowrap;
 	cursor: pointer;
 }
 .hx-action:hover {
-	border-color: var(--hx-gold, #f3c33b);
-	background: rgba(243, 195, 59, 0.1);
+	border-color: var(--hx-gold);
+	background: var(--hx-gold-soft);
 	text-decoration: none;
 }
 .hx-action.plain,
 .hx-action.plain:hover {
-	border-color: var(--hx-line-strong, #2c4259);
-	color: var(--hx-text, #f2f5fa);
+	border-color: var(--hx-line-strong);
+	color: var(--hx-text);
 }
 .hx-action.plain:hover {
-	background: rgba(255, 255, 255, 0.05);
+	background: var(--hx-tint-hover);
 }
 .hx-action:disabled,
 .hx-action:disabled:hover {
-	border-color: var(--hx-line-strong, #2c4259);
+	border-color: var(--hx-line-strong);
 	background: transparent;
-	color: var(--hx-muted, #8fa1b8);
-	opacity: 0.7;
+	color: var(--hx-muted);
+	opacity: var(--hx-opacity-secondary);
 	cursor: not-allowed;
 }
 /* Said to a screen reader and not drawn. */
@@ -42,7 +42,7 @@
 	position: absolute;
 	width: 1px;
 	height: 1px;
-	margin: -1px;
+	margin: calc(-1 * var(--hx-space-1));
 	overflow: hidden;
 	clip-path: inset(50%);
 	white-space: nowrap;
@@ -50,8 +50,8 @@
 /* The tabs of an entity: the one that is shown is gold, with the gold line under it. */
 .hx-tabs {
 	display: flex;
-	gap: 6px;
-	border-bottom: 1px solid var(--hx-line);
+	gap: var(--hx-space-6);
+	border-bottom: var(--hx-border-thin) solid var(--hx-line);
 	overflow-x: auto;
 }
 .hx-tabs a,
@@ -60,15 +60,15 @@
 	flex: none;
 	align-items: center;
 	min-height: 44px;
-	padding: 0 16px;
+	padding: 0 var(--hx-space-16);
 	border: 0;
-	border-bottom: 2px solid transparent;
+	border-bottom: var(--hx-border-thick) solid transparent;
 	border-radius: 0;
 	background: none;
 	color: var(--hx-soft);
 	font: inherit;
 	white-space: nowrap;
-	outline-offset: -4px;
+	outline-offset: calc(-1 * var(--hx-space-4));
 	cursor: pointer;
 }
 .hx-tabs a:hover,
@@ -92,7 +92,7 @@
 .hx-tabs button:disabled:hover {
 	border-bottom-color: transparent;
 	color: var(--hx-muted);
-	opacity: 0.6;
+	opacity: var(--hx-opacity-dim);
 	cursor: not-allowed;
 }
 /* Compact native revision selectors; full labels and status remain in their hover titles. */
@@ -101,13 +101,13 @@
 	display: flex;
 	align-self: center;
 	align-items: center;
-	gap: 6px;
+	gap: var(--hx-space-6);
 	flex: none;
 	width: max-content;
 	max-width: 100%;
 	margin-left: auto;
-	padding: 0 0 0 12px;
-	border-left: 1px solid var(--hx-line-strong);
+	padding: 0 0 0 var(--hx-space-12);
+	border-left: var(--hx-border-thin) solid var(--hx-line-strong);
 }
 .hx-revision label {
 	position: relative;
@@ -115,15 +115,15 @@
 	width: 116px;
 	min-width: 0;
 	color: var(--hx-text);
-	font-size: 12px;
-	line-height: 1.2;
+	font-size: var(--hx-type-size-xs);
+	line-height: var(--hx-style-leading-tight);
 }
 .hx-revision label:first-of-type {
 	width: 160px;
 }
 .hx-revision label > span:first-child {
 	position: absolute;
-	z-index: 1;
+	z-index: var(--hx-layer-raised);
 	inset-inline-start: 9px;
 	top: 50%;
 	transform: translateY(-50%);
@@ -142,9 +142,9 @@
 	display: block;
 }
 .hx-revision select {
-	padding-inline-start: 28px;
-	border: 1px solid var(--hx-line-strong);
-	border-radius: 6px;
+	padding-inline-start: var(--hx-space-28);
+	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border-radius: var(--hx-radius-compact);
 	background: var(--hx-bg);
 	font: inherit;
 }
@@ -161,7 +161,7 @@
 	min-height: 32px;
 	height: 32px;
 	padding: 0;
-	border-radius: 6px;
+	border-radius: var(--hx-radius-compact);
 }
 @media (pointer: coarse) {
 	.hx-revision .hx-action {

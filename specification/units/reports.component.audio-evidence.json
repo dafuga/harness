@@ -12,9 +12,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/AudioEvidence.svelte",
-			"packages/reports/src/components/verification-evidence/AudioEvidence.svelte"
+			"packages/reports/src/components/verification-evidence/AudioEvidence.svelte",
+			"packages/reports/src/components/verification-evidence/AudioEvidence.types.ts"
 		],
-		"symbols": ["AudioEvidence", "AudioEvidence"]
+		"symbols": ["AudioEvidence", "AudioEvidence", "AudioEvent"]
 	},
 	"contract": {
 		"origin": "declared",

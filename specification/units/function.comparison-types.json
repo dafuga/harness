@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/comparisonTypes.ts", "src/core/development-tooling/comparisonTypes.ts"],
+		"source": [
+			"src/core/comparisonTypes.ts",
+			"src/core/development-tooling/comparisonTypes.ts",
+			"src/core/development-tooling/comparisonTypes.types.ts"
+		],
 		"symbols": [
 			"roundsProtocol",
 			"warmupCalls",
@@ -19,6 +23,7 @@
 			"measurementBoundaries",
 			"metricUnits",
 			"comparisonSchema",
+			"Comparison",
 			"Comparison"
 		]
 	},

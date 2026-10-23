@@ -28,4 +28,4 @@ export const browserDiagnosticSchema = z.strictObject({
 	expected: z.array(expected)
 });
 
-export type BrowserDiagnostic = z.infer<typeof browserDiagnosticSchema>;
+export type { BrowserDiagnostic } from './browserDiagnostics.types';

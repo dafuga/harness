@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/deploymentExecution.ts",
-			"packages/desktop/src/utils/development-tooling/deploymentExecution.ts"
+			"packages/desktop/src/utils/development-tooling/deploymentExecution.ts",
+			"packages/desktop/src/utils/development-tooling/deploymentExecution.types.ts"
 		],
-		"symbols": ["deploymentExecution", "deploymentExecution"]
+		"symbols": ["deploymentExecution", "deploymentExecution", "Runtime", "Captured"]
 	},
 	"contract": {
 		"origin": "declared",

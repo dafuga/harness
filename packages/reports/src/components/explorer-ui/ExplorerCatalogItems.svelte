@@ -68,14 +68,14 @@
 <style>
 	.ex-batched-catalog {
 		display: grid;
-		gap: 14px;
+		gap: var(--hx-space-14);
 		min-width: 0;
 	}
 	/* Three tiles across a desktop, two on a tablet, one on a phone; a lone tile stays a tile. */
 	.ex-catalog-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-		gap: 18px;
+		gap: var(--hx-space-18);
 		min-width: 0;
 	}
 </style>

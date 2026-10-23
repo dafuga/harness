@@ -1,18 +1,8 @@
+import type { DeviceSessionOptions } from './DeviceSessionService.types';
 import { WireSessionService } from '../../../../../../remote/src/index';
-import type { RemoteGrant } from '../../../../../../remote/src/index';
 import { remoteFailureText } from './remoteFailureText';
 import { ClientProjectsService } from './ClientProjectsService';
-import type { ClientProjectsOptions } from './ClientProjectsService';
 import { DeviceOperationsService } from './device-operations-service/DeviceOperationsService';
-
-export interface DeviceSessionOptions extends Omit<ClientProjectsOptions, 'emit'> {
-	host: { id: string; name: string };
-	device: { id: string; name: string };
-	grant: () => RemoteGrant;
-	epoch?: string;
-	/** Whether the screen is locked, once the computer knows; undefined until then. */
-	locked?: () => boolean | undefined;
-}
 
 function hostOf(host: { id: string; name: string }, locked: boolean | undefined) {
 	const known = locked === undefined ? {} : { locked };
@@ -51,3 +41,5 @@ export class DeviceSessionService {
 		this.projects.end();
 	}
 }
+
+export type { DeviceSessionOptions } from './DeviceSessionService.types';

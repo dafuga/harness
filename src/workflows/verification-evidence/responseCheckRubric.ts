@@ -1,13 +1,8 @@
+import type { ResponseCheckDefinition } from './responseCheckRubric.types';
 import type { JevQuestions } from '../../core/agents-providers/jevTypes';
 import type { ResponseCriterion } from '../../core/verification-evidence/responseCheckTypes';
 
 export const responseRubricVersion = 'response-check-v1';
-export interface ResponseCheckDefinition {
-	id: string;
-	title: string;
-	question: string;
-	guidance: string;
-}
 const standardChecks: ResponseCheckDefinition[] = [
 	{
 		id: 'fulfillment',
@@ -76,3 +71,5 @@ export function responseCheckQuestions(definitions: ResponseCheckDefinition[]): 
 		])
 	);
 }
+
+export type { ResponseCheckDefinition } from './responseCheckRubric.types';

@@ -1,3 +1,4 @@
+import type { BrowserRun, Ended, SeededHistory } from './browserRun.types';
 import { spawn } from 'node:child_process';
 import { readdirSync, readFileSync, type Dirent } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
@@ -15,30 +16,6 @@ const ports = [
 	'HARNESS_CONSOLE_E2E_EXPOSED_PORT',
 	'HARNESS_CONSOLE_E2E_SCALE_PORT'
 ];
-
-export interface BrowserRun {
-	/** Address of the application server the run starts for its specs. */
-	url: string;
-	/** Resolves with the exit code once the run and its teardown have finished. */
-	finished: Promise<number>;
-	/** What the run reported about its own tests; readable once it has finished. */
-	results(): { expected: number; unexpected: number; files: string[] };
-	/** Each failed test with the first error it raised; empty while no report is written. */
-	failures(): string[];
-	output(): string;
-	/** Ends a run that is still going, with the servers it started; harmless once it finished. */
-	stop(): Promise<void>;
-}
-
-export interface SeededHistory {
-	/** Top-level directory under the scratch directory that holds this history. */
-	home: string;
-	file: string;
-	commits: Record<string, string>;
-	/** The branch whose commits record a page before and after a change, and that page's unit. */
-	branch: string;
-	page: string;
-}
 
 /** What a run wrote into its report file; readable once it has finished. */
 function reported(file: string): Pick<BrowserRun, 'results' | 'failures'> {
@@ -122,8 +99,6 @@ export async function browserRun(
 		...reported(results)
 	};
 }
-
-type Ended = Pick<BrowserRun, 'finished' | 'failures' | 'output'>;
 
 /**
  * Waits for a run to end. One that failed says which of its tests failed and what each raised
@@ -217,3 +192,5 @@ export async function beforeDeadline<Value>(
 		if (timer) clearTimeout(timer);
 	});
 }
+
+export type { BrowserRun, SeededHistory } from './browserRun.types';

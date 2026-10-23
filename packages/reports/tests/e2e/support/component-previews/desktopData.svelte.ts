@@ -129,8 +129,6 @@ function desktopBridge(entity: EntityDetail): DesktopBridge {
 		}
 	} as unknown as DesktopBridge;
 }
-export type DesktopData = ReturnType<typeof createDesktopData>;
-export type DesktopCase = (data: DesktopData) => Record<string, unknown>;
 
 function configureWorkspace(
 	workspace: ReturnType<typeof createWorkspaceStore>,
@@ -210,3 +208,5 @@ async function whenReady(store: ReturnType<typeof createEntityEvidenceStore>) {
 	}
 	throw new Error('The preview evidence did not become ready.');
 }
+
+export type { DesktopData, DesktopCase } from './desktopData.svelte.types';

@@ -1,17 +1,10 @@
+import type { ProcessOptions } from './cliProcess.types';
 import { spawn } from 'node:child_process';
 import type { CliCommand } from '../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
 import { cliEnvironment } from './cli-environment/cliEnvironment';
 import { streamLines } from './streamLines';
 import { StringDecoder } from 'node:string_decoder';
-export interface ProcessOptions {
-	cwd?: string;
-	input?: string;
-	signal?: AbortSignal;
-	onLine?: (line: string) => void;
-	timeoutMs?: number;
-	maxBytes?: number;
-}
 export function killOwnedProcess(pid: number | undefined): void {
 	if (!pid) return;
 	try {
@@ -82,3 +75,5 @@ export async function cliProcess(
 		child.stdin.end(options.input ?? '');
 	});
 }
+
+export type { ProcessOptions } from './cliProcess.types';
