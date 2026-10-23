@@ -1,0 +1,35 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-tPNCjP/packages/reports
+
+ ✓ test/components/entity-relations.test.ts (6 tests) 58ms
+ ✓ test/components/explorer-usage.test.ts (13 tests) 34ms
+ ✓ test/components/explorer-function-card.test.ts (17 tests) 24ms
+
+ Test Files  3 passed (3)
+      Tests  36 passed (36)
+   Start at  14:39:03
+   Duration  3.41s (transform 1.69s, setup 0ms, collect 2.83s, tests 117ms, environment 0ms, prepare 90ms)
+
+
+Running 18 tests using 1 worker
+
+  ✓   1 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at desktop width (5.6s)
+  ✓   2 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (4.2s)
+  ✓   3 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at desktop width (461ms)
+  ✓   4 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at desktop width (244ms)
+  ✓   5 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at tablet width (5.5s)
+  ✓   6 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (4.5s)
+  ✓   7 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at tablet width (541ms)
+  ✓   8 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at tablet width (208ms)
+  ✓   9 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at mobile width (5.7s)
+  ✓  10 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (4.5s)
+  ✓  11 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at mobile width (506ms)
+  ✓  12 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at mobile width (221ms)
+  ✓  13 test/entity-preview-groups.spec.ts:118:2 › private dependencies reuse module cards at desktop width (786ms)
+  ✓  14 test/entity-preview-groups.spec.ts:123:2 › category folders group every collection and filter together at desktop (2.8s)
+  ✓  15 test/entity-preview-groups.spec.ts:118:2 › private dependencies reuse module cards at tablet width (770ms)
+  ✓  16 test/entity-preview-groups.spec.ts:123:2 › category folders group every collection and filter together at tablet (2.3s)
+  ✓  17 test/entity-preview-groups.spec.ts:118:2 › private dependencies reuse module cards at mobile width (760ms)
+  ✓  18 test/entity-preview-groups.spec.ts:123:2 › category folders group every collection and filter together at mobile (2.4s)
+
+  18 passed (45.0s)
