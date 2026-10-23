@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/config/development-tooling/hubEnvConfig.ts",
+			"packages/hub/src/config/development-tooling/hubEnvConfig.types.ts",
 			"packages/hub/src/config/hubEnvConfig.ts"
 		],
-		"symbols": ["hubEnvConfig", "HubEnv", "hubEnvConfig"]
+		"symbols": ["hubEnvConfig", "HubEnv", "HubEnv", "hubEnvConfig"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -29,13 +30,7 @@
 		],
 		"errors": []
 	},
-	"dependencies": [
-		{
-			"unit": "hub.config.development-tooling-hub-env-config-types",
-			"via": "import",
-			"origin": "derived"
-		}
-	],
+	"dependencies": [],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.ts",
