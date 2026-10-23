@@ -85,6 +85,13 @@ for (const [name, size] of Object.entries(viewports)) {
 					entity: 'app.model.order-input'
 				});
 				await expect(tab.getByRole('heading', { name: 'OrderInput', exact: true })).toBeVisible();
+				await expect(tab.getByText('Settings it provides', { exact: true })).toHaveCount(0);
+				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
+				await capture(tab, `type-definition-${name}`, moduleCard.units);
+				const definition = tab.getByRole('table', { name: 'OrderInput', exact: true });
+				await expect(definition).toContainText('id');
+				await expect(definition).toContainText('string');
+				await expect(tab.getByRole('tab', { name: 'Table', exact: true })).toHaveCount(0);
 			}
 			if (category === 'models') {
 				await expect(tab.getByRole('article', { name: 'OrderInput', exact: true })).toHaveCount(0);
