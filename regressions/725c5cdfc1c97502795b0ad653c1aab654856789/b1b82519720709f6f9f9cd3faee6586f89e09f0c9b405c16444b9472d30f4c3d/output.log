@@ -1,0 +1,135 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-S0CVil/packages/reports
+
+ ✓ test/components/entity-relations.test.ts (6 tests) 58ms
+ ❯ test/components/explorer-usage.test.ts (13 tests | 1 failed) 20ms
+   ✓ component card usage is flat and capped with 0 consumers at current scope 6ms
+   ✓ component card usage is flat and capped with 1 consumers at current scope 1ms
+   ✓ component card usage is flat and capped with 3 consumers at current scope 1ms
+   ✓ component card usage is flat and capped with 4 consumers at current scope 1ms
+   ✓ component card usage is flat and capped with 7 consumers at current scope 1ms
+   ✓ shared usage footers render links and empty usage at current scope 1ms
+   ✓ component card usage is flat and capped with 0 consumers at commit scope 0ms
+   ✓ component card usage is flat and capped with 1 consumers at commit scope 0ms
+   ✓ component card usage is flat and capped with 3 consumers at commit scope 0ms
+   ✓ component card usage is flat and capped with 4 consumers at commit scope 0ms
+   ✓ component card usage is flat and capped with 7 consumers at commit scope 0ms
+   ✓ shared usage footers render links and empty usage at commit scope 0ms
+   × private and unclassified dependencies reuse the shared module card 8ms
+     → Dependencies must be shared cards, not plain Other rows: expected undefined to be defined
+ ❯ test/components/explorer-function-card.test.ts (17 tests | 8 failed) 25ms
+   ✓ function catalog cards stay concise and retain revision links without detail panels 8ms
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 1ms
+   ✓ function calls preserve declared sample values: null 1ms
+   ✓ function calls preserve declared sample values: "" 1ms
+   ✓ function calls preserve declared sample values: %j 0ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 0ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 0ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 1ms
+   × helper usage selects three distinct eligible consumers before truncating 4ms
+     → A fourth eligible consumer must produce an ellipsis: expected ' filterOrders(orders, "SERVICE") Used…' to contain '…'
+   × function footer retains a components consumer in supplied order with overflow 2ms
+     → A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+   × function footer retains a services consumer in supplied order with overflow 1ms
+     → A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+   × function footer retains a models consumer in supplied order with overflow 1ms
+     → A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+   × function footer retains a functions consumer in supplied order with overflow 2ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+   × function footer retains a pages consumer in supplied order with overflow 1ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+   × function footer retains a layouts consumer in supplied order with overflow 1ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+   × function footer retains a configs consumer in supplied order with overflow 1ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > helper usage selects three distinct eligible consumers before truncating
+AssertionError: A fourth eligible consumer must produce an ellipsis: expected ' filterOrders(orders, "SERVICE") Used…' to contain '…'
+
+Expected: [32m"…"[39m
+Received: [31m" filterOrders(orders, "SERVICE") Used In OrderList OrderStore Order "[39m
+
+ ❯ test/components/explorer-function-card.test.ts:120:79
+    118|    expect(card).not.toContain('aria-label="Services"');
+    119|    expect(count(card, /<a\b/g)).toBe(4);
+    120|    expect(words(card), 'A fourth eligible consumer must produce an ell…
+       |                                                                               ^
+    121|    for (const target of [`components/${ids.list}`, `services/${ids.sto…
+    122|     expect(card).toContain(`/branch/feature%2Forders/${target}`);
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/components/explorer-function-card.test.ts:108:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a components consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a services consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a models consumer in supplied order with overflow
+AssertionError: A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+
+Expected: [32m"…"[39m
+Received: [31m"class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"> Used In OrderList OrderStore Order "[39m
+
+ ❯ test/components/explorer-function-card.test.ts:185:74
+    183|     .map((item) => `/harness/branch/feature%2Forders/${item.category}/…
+    184|   );
+    185|   expect(words(footer), 'A fourth distinct module requires an ellipsis…
+       |                                                                          ^
+    186|  }
+    187| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a functions consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a pages consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a layouts consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a configs consumer in supplied order with overflow
+AssertionError: A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "/harness/branch/feature%2Forders/functions/function.call-filter",[39m
+[2m    "/harness/branch/feature%2Forders/components/app.component.order-list",[22m
+[2m    "/harness/branch/feature%2Forders/services/app.service.order-store",[22m
+[31m+   "/harness/branch/feature%2Forders/models/app.model.order",[39m
+[2m  ][22m
+
+ ❯ test/components/explorer-function-card.test.ts:180:89
+    178|   const footer = card.slice(card.indexOf('class="ex-usage'));
+    179|   const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map((…
+    180|   expect(links, 'A valid module consumer keeps its place; self referen…
+       |                                                                                         ^
+    181|    ordered
+    182|     .slice(0, 3)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  test/components/explorer-usage.test.ts > private and unclassified dependencies reuse the shared module card
+AssertionError: Dependencies must be shared cards, not plain Other rows: expected undefined to be defined
+ ❯ test/components/explorer-usage.test.ts:106:76
+    104|     .map((match) => match[0])
+    105|     .find((markup) => markup.includes(`aria-label="${item.name}"`));
+    106|    expect(card, 'Dependencies must be shared cards, not plain Other ro…
+       |                                                                            ^
+    107|    expect(card).toContain('data-harness-component="explorer-ui-explore…
+    108|    expect(card).toContain('aria-label="Used In"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  9 failed | 27 passed (36)
+   Start at  12:42:31
+   Duration  2.01s (transform 867ms, setup 0ms, collect 1.47s, tests 103ms, environment 0ms, prepare 87ms)
+
+error: "vitest" exited with code 1
