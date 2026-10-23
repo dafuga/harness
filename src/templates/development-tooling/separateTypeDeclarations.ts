@@ -27,14 +27,17 @@ export function separateTypeDeclarations(files: PlannedFile[]): PlannedFile[] {
 		return [
 			{
 				...file,
-				contents: `import type { ${names} } from '${specifier}';\n${contents}\nexport type { ${names} } from '${specifier}';\n`
+				contents: `import type { ${names} } from '${specifier}';\n\n${contents.trim()}\n\nexport type { ${names} } from '${specifier}';\n`
 			},
 			{
 				path: types,
 				contents:
-					typeImports(tree, declarations) +
-					declarations.map((node) => node.getFullText(tree)).join('\n') +
-					'\n'
+					[
+						typeImports(tree, declarations).trim(),
+						declarations.map((node) => node.getFullText(tree).trim()).join('\n\n')
+					]
+						.filter(Boolean)
+						.join('\n\n') + '\n'
 			}
 		];
 	});

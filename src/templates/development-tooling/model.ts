@@ -55,7 +55,7 @@ function modelFile(className: string, tableName: string, definition: string): st
 	const createMethod = modelCreateMethod(className);
 
 	return `import type { PersistenceAdapter } from './adapters/types';
-import type { ${className}Attributes, ${className}CreateInput, ${className}UpdateInput } from './${className}.types';
+${modelTypeImport(className)}
 
 const tableName = '${tableName}';
 
@@ -86,6 +86,15 @@ ${createMethod}
 	}
 }
 `;
+}
+
+function modelTypeImport(className: string): string {
+	const names = ['Attributes', 'CreateInput', 'UpdateInput'].map((suffix) => className + suffix);
+	const source = `'./${className}.types'`;
+	const single = `import type { ${names.join(', ')} } from ${source};`;
+	return single.length <= 100
+		? single
+		: `import type {\n\t${names.join(',\n\t')}\n} from ${source};`;
 }
 
 function modelCreateMethod(className: string): string {
