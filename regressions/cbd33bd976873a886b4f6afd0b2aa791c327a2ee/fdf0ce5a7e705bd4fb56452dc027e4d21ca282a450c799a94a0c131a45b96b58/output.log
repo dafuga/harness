@@ -1,0 +1,37 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [192.00ms]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-groups.spec.ts --grep "category folders group every collection"
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at desktop (2.8s)
+  ✓  2 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at tablet (2.3s)
+  ✓  3 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at mobile (2.3s)
+
+  3 passed (10.6s)
+$ vitest run test/module-groups.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-eAZtOH/packages/reports
+
+ ✓ test/module-groups.test.ts (6 tests) 55ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  12:46:04
+   Duration  553ms (transform 202ms, setup 0ms, collect 298ms, tests 55ms, environment 0ms, prepare 36ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-eAZtOH
+
+ ✓ test/project-template.test.ts (4 tests) 98ms
+ ✓ test/utils/unit-metadata.test.ts (42 tests) 74ms
+ ✓ test/utils/explorer-ui/config-values.test.ts (10 tests) 14ms
+ ✓ test/guides.test.ts (7 tests) 6ms
+ ✓ test/case.test.ts (2 tests) 9ms
+
+ Test Files  5 passed (5)
+      Tests  65 passed (65)
+   Start at  12:46:05
+   Duration  2.09s (transform 241ms, setup 181ms, collect 785ms, tests 200ms, environment 0ms, prepare 132ms)
+
