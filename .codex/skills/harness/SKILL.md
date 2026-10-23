@@ -253,6 +253,8 @@ Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pa
 Capture the actual layout with a clearly labelled Child content placeholder passed through its
 real children slot. Never substitute a full page screenshot for a layout preview.
 
+When renaming a category, review every canonical route browser title as well as navigation and card labels. Extend the standard composition check across overview, details and history.
+
 Full-frame previews own their content boundaries. Apply content-container styling inside the
 frame, never around its navigation. When changing fixture context, extend the existing standard
 acceptance assertions for affected controls and inspect retained pixels before accepting the UI.

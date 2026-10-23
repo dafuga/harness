@@ -38,9 +38,8 @@
 		{
 			"id": "browser-proof",
 			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
-			"status": "complete",
-			"evidence": "Pixel inspection caught a shared preview-context leak. The unchanged compact-selector assertion failed at 85419b63e and passed at b9cd6c436, with clean inspected child-slot pixels. Harness guidance now preserves frame/content boundaries; its generated-instruction guard has matching-environment red/green proof. Capture every visual catalog entry and validate actual merged-main cards from the final frozen tree.",
-			"completedAt": "2026-10-23T11:04:55.250Z"
+			"status": "pending",
+			"evidence": "Actual-main browser check found copied Shell document titles on canonical Layout routes. Strengthen the existing all-category composition guard, repair the titles and recapture the final tree."
 		}
 	],
 	"evaluators": [

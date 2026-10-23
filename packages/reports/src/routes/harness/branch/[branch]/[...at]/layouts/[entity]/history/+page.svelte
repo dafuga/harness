@@ -3,4 +3,4 @@
 	import HarnessScreen from '../../../../../../../../components/explorer-ui/HarnessScreen.svelte';
 </script>
 
-<HarnessScreen title="Shell history" content={EntityHistoryScreen} />
+<HarnessScreen title="Layout history" content={EntityHistoryScreen} />
