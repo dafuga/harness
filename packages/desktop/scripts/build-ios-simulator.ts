@@ -1,7 +1,7 @@
 import { scanMarker } from './ios-acceptance-guards';
-import type { IosBuildPlan } from './ios-build-options';
-import { iosBuildPlan, simulatorSigning } from './ios-build-options';
 import { followed } from './ios-build-processes';
+import { iosBuildPlan, simulatorSigning } from './ios-build-options';
+import type { IosBuildPlan } from './ios-build-options';
 import {
 	allowsLocalNetworking,
 	builtProduct,

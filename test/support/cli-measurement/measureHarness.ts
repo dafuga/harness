@@ -78,6 +78,7 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'info:resources': ['guide.resources', 'guide.guide', 'entry.program', 'entry.index'],
 	'resources:status': [
 		'command.resources',
 		'service.resource-queue',
@@ -125,8 +126,10 @@ const measuredWorkloads: Record<string, string[]> = {
 		'function.resource-work'
 	],
 
+	'info:benchmark': ['guide.benchmark', 'guide.guide', 'entry.program', 'entry.index'],
 	'benchmark:run': benchmarkRunUnits,
 	'analytics:benchmarks': [
+		'command.analytics',
 		'service.analytics',
 		'workflow.analytics-metrics',
 		'entry.program',

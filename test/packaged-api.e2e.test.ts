@@ -5,6 +5,7 @@ import { expect, test } from 'vitest';
 import { kernelArtifacts } from '../src/utils/kernelArtifacts';
 import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { runCommand } from './support/cli';
+import { measureProcess } from './support/cli-measurement/measureProcess';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
 
 const consumer = `
@@ -133,7 +134,17 @@ test('public API type build retains configured entry paths across owned workspac
 		for (const path of ['package.json', 'tsconfig.json', 'tsconfig.api.json'])
 			await copyFile(resolve(path), join(root, path));
 		await symlink(resolve('node_modules'), join(root, 'node_modules'), 'dir');
-		const built = await runCommand(['bun', 'scripts/build-api.ts', '--types-only'], root, false);
+		const built = await measureProcess(
+			{
+				units: ['script.build-api'],
+				workload: 'public-api-declaration-build',
+				target: 'process',
+				command: ['bun', 'scripts/build-api.ts', '--types-only'],
+				cwd: root,
+				expectSuccess: false
+			},
+			runCommand
+		);
 		expect(
 			built.exitCode,
 			`public API declaration build succeeds: ${built.stdout}${built.stderr}`
@@ -163,7 +174,16 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
 	const printed: Record<string, unknown> = {};
 	for (const runner of ['bun', 'node']) {
-		const run = await runCommand([runner, 'consumer.ts', manifest, native], project);
+		const run = await measureProcess(
+			{
+				units: ['module.index', 'module.resources', 'module.verification'],
+				workload: `cold-${runner}-packed-sdk`,
+				target: 'module',
+				command: [runner, 'consumer.ts', manifest, native],
+				cwd: project
+			},
+			runCommand
+		);
 		const result = JSON.parse(run.stdout) as Record<string, unknown>;
 		printed[runner] = result;
 		expect(result, runner).toMatchObject({

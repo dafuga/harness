@@ -11,7 +11,8 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { afterAll, expect, test } from 'vitest';
+import { afterAll, expect, onTestFinished, test } from 'vitest';
+import { observeResources } from '../../../test/support/resourceFixture';
 import { signalProcesses, type TrackedProcess } from '../../../src/utils/processDescendants';
 import { runIsolated } from '../../../src/utils/run-isolated/runIsolated';
 
@@ -111,6 +112,13 @@ process.exit(Number(process.env.STAND_IN_EXIT ?? 0));
 
 /** The build script as the native scenario runs it, under the runner that scenario uses. */
 async function built(name: string, env: Record<string, string> = {}) {
+	const finish = observeResources(
+		['desktop.script.build-ios-simulator', 'desktop.script.ios-scan-fixture'],
+		'simulator-script-and-scan-module-initialization-with-Xcode-stand-in'
+	);
+	onTestFinished((context) => {
+		if (context.task.result?.state === 'pass') finish();
+	});
 	const { cwd, path, daemon } = workspace(name);
 	const log = join(root, `${name}.log`);
 	const result = await runIsolated({
