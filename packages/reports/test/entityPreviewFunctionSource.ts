@@ -45,6 +45,14 @@ export async function reviewNamedCallers(page: Page, viewport: string): Promise<
 			await expect(usage).toContainText('…');
 			await expect(usage).not.toContainText('fourthCall');
 			await capture(page, `${variant}-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+			await usage.getByRole('link', { name: 'firstCall', exact: true }).hover();
+			const preview = page.getByRole('tooltip', { name: 'Preview of firstCall', exact: true });
+			await expect(preview).toBeVisible();
+			await capture(page, `${variant}-preview-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+			await expect(
+				preview.locator('code'),
+				'Preview and destination identify the same caller'
+			).toHaveText('firstCall');
 			await usage.getByRole('link', { name: 'firstCall', exact: true }).press('Enter');
 			expect(await where(page)).toMatchObject({
 				branch: 'feature/orders',

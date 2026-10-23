@@ -63,6 +63,9 @@ helper's own unit; duplicate references and the helper itself do not count twice
 classes remain distinct owner units. Private callers never become public Helpers merely because
 they consume a shared helper. Select a recorded callable when available; otherwise open its real
 owner source, preserving template/audit roles without inventing a helper API or entity route.
+When a reference carries a callable identity separately from its owner, the normal mixed-consumer
+matrix must assert that its link text, hover or focus preview, and opened destination identify the
+same callable. Exercise distinct owner and callable names at current and historical revisions.
 
 ## Bug and Regression Loops
 
