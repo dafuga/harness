@@ -87,7 +87,8 @@ for (const [name, size] of Object.entries(viewports)) {
 				await expect(tab.getByRole('heading', { name: 'OrderInput', exact: true })).toBeVisible();
 				await expect(tab.getByText('Settings it provides', { exact: true })).toHaveCount(0);
 				await tab.getByRole('tab', { name: 'Contract', exact: true }).click();
-				await capture(tab, `type-definition-${name}`, moduleCard.units);
+				await expect(tab.locator('[data-harness-component="entity-contract"]')).toBeVisible();
+				await capture(tab, `type-definition-${name}`, ['reports.component.entity-contract']);
 				const definition = tab.getByRole('table', { name: 'OrderInput', exact: true });
 				await expect(definition).toContainText('id');
 				await expect(definition).toContainText('string');
