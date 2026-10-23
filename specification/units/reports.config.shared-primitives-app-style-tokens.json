@@ -3,7 +3,7 @@
 	"id": "reports.config.shared-primitives-app-style-tokens",
 	"kind": "config",
 	"title": "appStyleTokensConfig",
-	"responsibility": "Declares the canonical app token source, color-role usage guidance, catalog groups and design-value admission scope.",
+	"responsibility": "Declares the canonical app token source, color ownership and base/treatment guidance, unassigned-color fallback, catalog groups and design-value admission scope.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -17,7 +17,7 @@
 			{
 				"name": "appStyleTokensConfig",
 				"type": "typeof appStyleTokensConfig",
-				"description": "Application source roots, canonical stylesheet path, semantic color roles, token groups and guarded CSS property patterns."
+				"description": "Application source roots, canonical stylesheet path, semantic color ownership with one primary base and treatments, unassigned-color fallback, token groups and guarded CSS property patterns."
 			}
 		],
 		"errors": []

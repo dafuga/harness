@@ -2,7 +2,7 @@
 	"name": "styles-unified-colors",
 	"goal": "Styles has one Colors section, each variable appears once, and Primary has one base color with subordinate treatments",
 	"createdAt": "2026-10-23T20:53:56.912Z",
-	"updatedAt": "2026-10-23T20:53:56.912Z",
+	"updatedAt": "2026-10-23T21:19:36.006Z",
 	"template": "visual-change",
 	"templateLineage": [
 		"feature",
@@ -13,7 +13,9 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T21:19:36.006Z",
+			"evidence": "User confirmed one Colors section and one primary base. Spec/tests3cb032986 retained accepted responsive red358d2c40; all3before originals validated and inspected."
 		},
 		{
 			"id": "implement",
