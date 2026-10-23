@@ -23,6 +23,7 @@
 		type ConsoleAnswer
 	} from './harness-console/consoleView';
 	import HarnessHeader from './HarnessHeader.svelte';
+	import LoadingState from '../../shared-primitives/LoadingState.svelte';
 	let {
 		base,
 		path,
@@ -176,10 +177,10 @@
 		}}
 	/>
 	<main class="hx-main">
-		{#if !index && !problem}<p class="hc-muted" role="status">Loading history…</p>{/if}
+		{#if !index && !problem}<LoadingState label="Loading history…" />{/if}
 
 		{#if scope && !shown && !problem}
-			<p class="hc-muted" role="status">Loading this revision…</p>
+			<LoadingState label="Loading this revision…" />
 		{/if}
 		{#if shown}
 			{#if !shown.head.registry.available}

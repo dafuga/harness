@@ -65,7 +65,7 @@ const page = (category: string, view: string) =>
 test('the host of a screen names no renderer, not even to read the type of its props', () => {
 	const host = `${components}/explorer-ui/HarnessConsole.svelte`;
 	// With type-only imports counted too: a renderer named for its props would still be an edge.
-	expect(mounts(host, false)).toEqual(['HarnessHeader']);
+	expect(mounts(host, false)).toEqual(['HarnessHeader', 'LoadingState']);
 	expect(mounts(`${components}/HarnessScreen.svelte`, false)).toEqual(['HarnessConsole']);
 	expect(mounts(`${workspaceRoot}/src/models/ExplorerScreen.types.ts`, false)).toEqual([]);
 	expect(drawn(`${components}/HarnessScreen.svelte`)).not.toContain('ExplorerContent');
