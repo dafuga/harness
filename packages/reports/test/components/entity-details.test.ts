@@ -73,14 +73,14 @@ test('source is shown only when the source tab is the open one', () => {
 	const head = withGroups(revision(commits.middle, []));
 	sourceAdmission(head.registry.units.find((unit) => unit.id === ids.store)!);
 	for (const entity of explorerEntities(head)) {
-		const helper = entity.category === 'functions' ? entity.unit.helpers?.[0] : undefined;
+		const { helper, files } = sourceSelection(entity);
 		const source = content(
 			'commit',
 			{
 				category: entity.category,
 				entity: entity.id,
 				tab: 'source',
-				helper: helper?.name
+				helper
 			},
 			{ head }
 		);
@@ -88,10 +88,7 @@ test('source is shown only when the source tab is the open one', () => {
 			source
 		)![1];
 		expect(words(section)).not.toMatch(/Symbols|Execution targets|Identity .*version/);
-		const grouped = entity.unit.owns.source.filter((path) =>
-			path.includes(`/${entity.unit.group!.id}/`)
-		);
-		const files = helper ? [helper.source] : grouped.length ? grouped : entity.unit.owns.source;
+
 		expect(
 			[...section.matchAll(/<li\b[^>]*>(.*?)<\/li>/gs)].map((match) =>
 				words(/<(?:a|code)\b[^>]*>(.*?)<\/(?:a|code)>/s.exec(match[1])?.[1] ?? match[1]).trim()
@@ -100,6 +97,18 @@ test('source is shown only when the source tab is the open one', () => {
 		expect((section.match(/aria-label="View code for /g) ?? []).length).toBe(files.length);
 	}
 });
+
+/** Choose a callable implementation or the selected revision's category sources. */
+function sourceSelection(entity: ReturnType<typeof explorerEntities>[number]) {
+	if (entity.category === 'functions') {
+		const helper = entity.unit.helpers![0];
+		return { helper: helper.name, files: [helper.source] };
+	}
+	const grouped = entity.unit.owns.source.filter((path) =>
+		path.includes(`/${entity.unit.group!.id}/`)
+	);
+	return { helper: undefined, files: grouped.length ? grouped : entity.unit.owns.source };
+}
 
 /** Source accepts indexed arrays before serialization without invoking custom iteration/species. */
 function sourceAdmission(unit: HarnessUnit): void {
