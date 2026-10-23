@@ -45,6 +45,14 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 		for (const entry of captured.regressions![0].green!.captures!) entry.capture.state = state.id;
 		captured.registry = { ...captured.registry, units: [actual], scenarios: [catalog] };
 		const evidence = explorerEvidence(scope('current'), { head: captured, parent: null }, actual);
+		const rejected = {
+			...evidence,
+			after: {
+				...evidence.after,
+				captures: evidence.after.captures.map((entry) => ({ ...entry, usable: false }))
+			}
+		};
+		expect(catalogShot(rejected, actual.preview), id + ' rejects unusable evidence').toBeNull();
 		const choice = actual.preview ?? { scenario: catalog.id, state: state.id, viewport: 'desktop' };
 		for (const viewport of ['desktop', 'tablet', 'mobile'])
 			if (!catalogShot(evidence, { ...choice, viewport })?.file)
