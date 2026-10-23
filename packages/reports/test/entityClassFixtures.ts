@@ -182,3 +182,15 @@ export function consumerModels(seed: HarnessUnit) {
 	};
 	return [model, secondModel, types];
 }
+
+/** The normal unit fixture supplies declaration proof only for registered model modules. */
+export function modelMetadata(id: string, kind: string, extra: Partial<HarnessUnit>) {
+	if (kind !== 'model') return {};
+	const source =
+		extra.owns?.source.find(
+			(path) => !/\.(?:types|d)\.[cm]?tsx?$/.test(path) && !path.endsWith('Values.ts')
+		) ??
+		extra.owns?.source[0] ??
+		`src/${id}.ts`;
+	return { modelDefinitions: [modelDefinition(id.split('.').pop() ?? id, source)] };
+}

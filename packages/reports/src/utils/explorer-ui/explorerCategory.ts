@@ -56,6 +56,15 @@ const nonvisualLayout = (unit: Classified) =>
 	!layoutConfiguration(unit) &&
 	!unit.owns.source.some((path) => path.endsWith('.svelte'));
 
+/** A declared kind is public only when its own callable sharing proof supports it. */
+function declaredCategory(unit: Classified): ExplorerCategory | null {
+	const category = explorerKindCategory(unit.kind);
+	if (category === 'functions' || unit.kind === 'module') {
+		return unit.helpers?.some(helperContract) ? 'functions' : null;
+	}
+	return category === 'pages' ? 'services' : category;
+}
+
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
  * is what renders an address, whatever kind it was registered as; a route file that renders
@@ -69,11 +78,7 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (renders(unit)) return 'pages';
 	if (layoutConfiguration(unit)) return 'configs';
 	if (unit.kind === 'model') return modelCategory(unit);
-	const category = explorerKindCategory(unit.kind);
-	if (category === 'functions' || unit.kind === 'module') {
-		return unit.helpers?.some(helperContract) ? 'functions' : null;
-	}
-	return category === 'pages' ? 'services' : category;
+	return declaredCategory(unit);
 }
 
 /** What a unit is, in words a reader knows: `Page`, `Route loader`, `Audit rule`. */

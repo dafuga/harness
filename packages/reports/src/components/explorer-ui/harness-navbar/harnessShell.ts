@@ -30,6 +30,20 @@ const moduleLabels: Array<[ExplorerCategory, string]> = [
 	['types', 'Types']
 ];
 
+function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory['id']): boolean {
+	if (!place) return false;
+	if (id === 'styles') return place.screen === 'styles';
+	if (place.screen === 'styles') return false;
+	if (id === 'modules') return moduleLabels.some(([category]) => category === place.category);
+	return place.category === id;
+}
+
+function categoryGlyph(id: HarnessShellCategory['id']): HarnessIconName {
+	if (id === 'styles') return 'styles';
+	if (id === 'modules') return 'layers';
+	return categoryIcon[id];
+}
+
 function categoryItem(
 	input: HarnessNavbarInput,
 	id: HarnessShellCategory['id'],
@@ -37,15 +51,8 @@ function categoryItem(
 ): HarnessShellCategory {
 	const place = input.scope?.location ?? null;
 	const to = categoryTarget(place, id);
-	const module = moduleLabels.some(([category]) => category === place?.category);
-	const active =
-		id === 'styles'
-			? place?.screen === 'styles'
-			: place !== null &&
-				place.screen !== 'styles' &&
-				(id === 'modules' ? module : place.category === id);
-	const icon: HarnessIconName =
-		id === 'styles' ? 'styles' : id === 'modules' ? 'layers' : categoryIcon[id];
+	const active = categoryActive(place, id);
+	const icon = categoryGlyph(id);
 	return { id, label, icon, active, href: to ? input.href(to) : null, to };
 }
 
@@ -84,10 +91,11 @@ function categoryTarget(
 	id: HarnessShellCategory['id']
 ): ExplorerLocation | null {
 	if (!place) return null;
+	const category = id === 'modules' ? 'components' : id;
 	const target: ExplorerLocation = {
 		branch: place.branch,
 		commit: place.commit,
-		category: id === 'styles' ? 'pages' : id === 'modules' ? 'components' : id
+		category: category === 'styles' ? 'pages' : category
 	};
 	if (id === 'styles') target.screen = 'styles';
 	return target;

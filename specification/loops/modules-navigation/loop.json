@@ -2,7 +2,7 @@
 	"name": "modules-navigation",
 	"goal": "Show five primary destinations with module categories and separate data-shape Types from persisted Models",
 	"createdAt": "2026-10-23T20:09:18.165Z",
-	"updatedAt": "2026-10-23T22:58:50.337572+00:00",
+	"updatedAt": "2026-10-23T23:08:57.181351+00:00",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -29,7 +29,7 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending",
-			"evidence": "Current-main preflight passes formatting, root/Reports type checks and structure audits, 173 focused root ownership/route/guidance assertions, all 742 Reports tests, units check, Desktop typecheck and affected Desktop tests. Commit-bound packaged-host/browser capture, hosted CI, landing and delivered-main refresh remain required. Full local CLI/native verification remains explicitly deferred; do not promote focused records into that verdict."
+			"evidence": "Earlier current-main preflight passed 173 root assertions, 742 Reports tests, registry, root/Reports types/audits and Desktop compatibility. Frozen915837 attempts are retained: 88db3337 found a Git-dependent registry scan in the non-Git archive; exact clean-checkout registry passed. a7af2753 reached the real owning lint gate and exposed seven violations. Bounded refactor now passes Reports lint/types/audit, 12 ownership assertions and 37 focused Reports assertions. Broader fresh capture, hosted CI, landing and delivered-main refresh remain pending. Full local CLI/native verification remains user-deferred."
 		}
 	],
 	"evaluators": [
