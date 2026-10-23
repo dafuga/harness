@@ -118,26 +118,27 @@ function readValue(value: ts.Expression, name: string, context: ConfigSource): v
 }
 
 /** Decode syntax literals; never import, evaluate, or resolve the host environment. */
-function literalValue(value: ts.Expression): { literal: unknown } | undefined {
-	if (ts.isStringLiteralLike(value)) return { literal: value.text };
-	if (value.kind === ts.SyntaxKind.TrueKeyword) return { literal: true };
-	if (value.kind === ts.SyntaxKind.FalseKeyword) return { literal: false };
-	if (value.kind === ts.SyntaxKind.NullKeyword) return { literal: null };
-	if (ts.isArrayLiteralExpression(value)) {
-		const items = value.elements.map(literalValue);
+function literalValue(expression: ts.Expression): { literal: unknown } | undefined {
+	if (ts.isStringLiteralLike(expression)) return { literal: expression.text };
+	if (expression.kind === ts.SyntaxKind.TrueKeyword) return { literal: true };
+	if (expression.kind === ts.SyntaxKind.FalseKeyword) return { literal: false };
+	if (expression.kind === ts.SyntaxKind.NullKeyword) return { literal: null };
+	if (ts.isArrayLiteralExpression(expression)) {
+		const items = expression.elements.map(literalValue);
 		if (items.every((item) => item !== undefined))
 			return { literal: items.map((item) => item.literal) };
 		return undefined;
 	}
-	return numericValue(value);
+	return numericValue(expression);
 }
 
-function numericValue(value: ts.Expression): { literal: number } | undefined {
+function numericValue(expression: ts.Expression): { literal: number } | undefined {
 	let number: number;
-	if (ts.isNumericLiteral(value)) number = Number(value.text);
-	else if (ts.isPrefixUnaryExpression(value) && ts.isNumericLiteral(value.operand)) {
-		if (value.operator === ts.SyntaxKind.MinusToken) number = -Number(value.operand.text);
-		else if (value.operator === ts.SyntaxKind.PlusToken) number = Number(value.operand.text);
+	if (ts.isNumericLiteral(expression)) number = Number(expression.text);
+	else if (ts.isPrefixUnaryExpression(expression) && ts.isNumericLiteral(expression.operand)) {
+		if (expression.operator === ts.SyntaxKind.MinusToken) number = -Number(expression.operand.text);
+		else if (expression.operator === ts.SyntaxKind.PlusToken)
+			number = Number(expression.operand.text);
 		else return undefined;
 	} else return undefined;
 	return Number.isFinite(number) ? { literal: number } : undefined;
