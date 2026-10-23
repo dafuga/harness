@@ -78,8 +78,10 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'info:benchmark': ['guide.benchmark', 'guide.guide', 'entry.program', 'entry.index'],
 	'benchmark:run': benchmarkRunUnits,
 	'analytics:benchmarks': [
+		'command.analytics',
 		'service.analytics',
 		'workflow.analytics-metrics',
 		'entry.program',

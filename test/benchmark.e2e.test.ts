@@ -39,6 +39,8 @@ test('benchmark validation pins a contract task without changing the checkout', 
 				candidates: [{ id: 'codex', runner: 'codex', model: 'explicit-model', effort: 'medium' }]
 			})
 		);
+		const guidance = await runHarness(['info', 'benchmark', '--json'], root);
+		expect(JSON.parse(guidance.stdout).topic).toBe('benchmark');
 		const before = await runCommand(['git', 'status', '--porcelain'], root);
 		const result = await runHarness(
 			['benchmark', 'validate', 'benchmark.json', '--json'],
