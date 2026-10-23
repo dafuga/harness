@@ -8,7 +8,7 @@ import type { Page, TestInfo } from '@playwright/test';
 
 const kinds = [
 	['Models', 'models', 'Order', 'app.model.order', 'src/models/orders/Order.ts'],
-	['Helpers', 'functions', 'filterOrders', ids.filter, 'src/functions/orders/filterOrders.ts'],
+	['Helpers', 'functions', 'filterOrders', ids.filter, 'src/helpers/orders/filterOrders.ts'],
 	['Pages', 'pages', 'Orders page', ids.page, 'src/routes/orders/+page.svelte'],
 	['Components', 'components', 'OrderCard', ids.card, 'src/components/orders/OrderCard.ts'],
 	['Shells', 'shells', 'OrderFrame', frameId, 'src/shells/orders/OrderFrame.svelte'],
@@ -93,6 +93,10 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
 			await expect(action, 'Every source file has its own code action').toBeVisible();
 			await fileLink(page, path, commits.tip);
+			if (category === 'functions')
+				await expect(
+					page.getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+				).toHaveCount(1);
 			const started = await page.evaluate(() => performance.now());
 			await action.click();
 			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });
@@ -147,12 +151,12 @@ test('Source opens file contents in a modal and older histories state an explici
 	await expect(page.locator('pre')).toHaveCount(0);
 	await page
 		.getByRole('button', {
-			name: 'View code for src/functions/orders/filterOrders.ts',
+			name: 'View code for src/helpers/orders/filterOrders.ts',
 			exact: true
 		})
 		.click();
 	await expect(page.getByRole('dialog').locator('pre')).toHaveText(
-		sourceText(commits.middle, 'src/functions/orders/filterOrders.ts')
+		sourceText(commits.middle, 'src/helpers/orders/filterOrders.ts')
 	);
 	await open(page, route);
 	await page

@@ -71,3 +71,14 @@ test('Rails-ish scaffolds create their expected code shapes', () => {
 		'src/routes/article/+page.svelte'
 	);
 });
+
+test('helper scaffolds emit pure camelCase functions with domain parameters', () => {
+	const files = pieceFiles('helper', 'formatLabel');
+	const source = files.find((file) => file.path === 'src/helpers/formatLabel.ts');
+	expect(source?.contents).toContain('/** @pure */');
+	expect(source?.contents).toContain('export function formatLabel(textToFormat: string): string');
+	expect(source?.contents).not.toContain('class ');
+	expect(files.find((file) => file.path.startsWith('test/helpers/'))?.contents).toContain(
+		"formatLabel('  label  ')"
+	);
+});
