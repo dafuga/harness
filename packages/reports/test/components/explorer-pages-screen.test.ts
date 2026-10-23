@@ -45,7 +45,10 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 		for (const entry of captured.regressions![0].green!.captures!) entry.capture.state = state.id;
 		captured.registry = { ...captured.registry, units: [actual], scenarios: [catalog] };
 		const evidence = explorerEvidence(scope('current'), { head: captured, parent: null }, actual);
-		if (!catalogShot(evidence, actual.preview)?.file) unavailable.push(id);
+		const choice = actual.preview ?? { scenario: catalog.id, state: state.id, viewport: 'desktop' };
+		for (const viewport of ['desktop', 'tablet', 'mobile'])
+			if (!catalogShot(evidence, { ...choice, viewport })?.file)
+				unavailable.push(id + ':' + viewport);
 	}
 	expect(unavailable, 'Captured previews visible through each registered preview choice').toEqual(
 		[]
