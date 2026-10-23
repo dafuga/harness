@@ -2,7 +2,7 @@
 	"name": "console-default-preview",
 	"goal": "Default Console previews show the settled catalog capture while loading states remain selectable.",
 	"createdAt": "2026-10-23T14:31:53.383Z",
-	"updatedAt": "2026-10-23T14:41:08.587Z",
+	"updatedAt": "2026-10-23T14:51:13.654Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,7 +32,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T14:51:13.654Z",
+			"evidence": "Reviewed Console as the visual routing component that renders ExplorerLayout, loading notices and the supplied screen, without a children slot. Correct its single legacy shell declaration to component and declare the settled catalog preview. Stable ID and existing component category are preserved; no classifier, selector or provenance rule changes. Normal units index canonicalizes metadata order."
 		},
 		{
 			"id": "green",

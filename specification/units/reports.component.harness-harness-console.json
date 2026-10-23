@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "reports.component.harness-harness-console",
-	"kind": "shell",
+	"kind": "component",
 	"title": "Explorer console",
 	"responsibility": "Loads recorded repository revisions and supplies the selected explorer screen with navigation, entities and evidence.",
 	"responsibilityOrigin": "declared",
@@ -163,14 +163,14 @@
 		]
 	},
 	"scenarios": ["harness-console"],
-	"budgets": {
-		"size": "frozen",
-		"complexity": "frozen",
-		"performance": []
-	},
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "reports-component-harness-harness-console",
 		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
 	}
 }
