@@ -44,7 +44,7 @@ export const harnessClassFileRules = [
 /** Naming is about actual source declarations, never a recased descriptive label. */
 export const harnessNamingRules: Record<string, string> = {
 	helper:
-		'Naming: Helpers are pure camelCase functions in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder.',
+		'Naming: Helpers are pure camelCase functions in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder. If a package export name is already occupied, preserve it and expose the new helper with a Helper alias; keep the source function name unchanged.',
 	...(Object.fromEntries(
 		harnessClassFileRules.map(({ kind, suffix }) => [
 			kind,
