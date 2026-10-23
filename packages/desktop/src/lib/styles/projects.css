@@ -2,9 +2,9 @@
 .project-switcher {
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	border-inline: 1px solid var(--line);
-	padding: 8px 14px;
+	gap: var(--hx-space-6);
+	border-inline: var(--hx-border-thin) solid var(--line);
+	padding: var(--hx-space-8) var(--hx-space-14);
 	min-width: 0;
 }
 .project-switcher label {
@@ -15,7 +15,7 @@
 	height: 36px;
 	min-height: 36px !important;
 	max-width: 190px;
-	font-size: 14px;
+	font-size: var(--hx-type-size-sm);
 	border-color: transparent;
 	background: transparent;
 	padding-block: 0;
@@ -29,22 +29,22 @@
 	width: 30px;
 	height: 30px;
 	padding: 0;
-	font-size: 18px;
-	line-height: 1;
+	font-size: var(--hx-type-size-lg);
+	line-height: var(--hx-style-leading-none);
 	color: var(--muted);
 }
 .account {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	border-left: 1px solid var(--line);
-	padding-left: 16px;
-	font-size: 12px;
+	gap: var(--hx-space-10);
+	border-left: var(--hx-border-thin) solid var(--line);
+	padding-left: var(--hx-space-16);
+	font-size: var(--hx-type-size-xs);
 }
 .go-to-tip {
 	align-self: center;
-	font-size: 12px;
-	padding: 8px 10px;
+	font-size: var(--hx-type-size-xs);
+	padding: var(--hx-space-8) var(--hx-space-10);
 	white-space: nowrap;
 }
 .revision-picker small.historical,
@@ -54,20 +54,20 @@
 }
 .recent-projects {
 	display: grid;
-	gap: 8px;
-	margin-top: 28px;
+	gap: var(--hx-space-8);
+	margin-top: var(--hx-space-28);
 	text-align: left;
 }
 .recent-projects h2 {
-	font-size: 13px;
-	font-weight: 500;
+	font-size: var(--hx-type-size-compact);
+	font-weight: var(--hx-style-weight-medium);
 	color: var(--muted);
 }
 .recent-projects button {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 16px;
+	gap: var(--hx-space-16);
 	text-align: left;
 }
 .recent-projects small {
@@ -80,7 +80,7 @@
 .base-panels {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 14px;
+	gap: var(--hx-space-14);
 	align-items: start;
 }
 .base-panels .panel {
@@ -95,7 +95,7 @@
 .before-after {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 14px;
+	gap: var(--hx-space-14);
 	align-items: end;
 }
 .prior-image {
@@ -105,86 +105,84 @@
 	display: flex;
 	align-items: center;
 	min-height: 33px;
-	margin: 12px 0;
-	font-size: 12px;
-	font-weight: 600;
+	margin: var(--hx-space-12) 0;
+	font-size: var(--hx-type-size-xs);
+	font-weight: var(--hx-style-weight-semibold);
 }
 .prior-image img {
 	display: block;
 	width: 100%;
-	border: 1px solid var(--line);
-	border-radius: 6px;
+	border: var(--hx-border-thin) solid var(--line);
+	border-radius: var(--hx-radius-compact);
 }
 .image-caption {
 	margin-right: auto;
 	align-self: center;
-	font-size: 12px;
+	font-size: var(--hx-type-size-xs);
 }
 
 /* Human comments. */
 .message.pending {
-	border-left: 2px dashed #6f8798;
-	padding-left: 10px;
+	border-left: var(--hx-border-thick) dashed var(--hx-muted);
+	padding-left: var(--hx-space-10);
 }
 .comment-saved {
-	margin: 8px 0 0;
-	font-size: 12px;
-	color: #7fe3c0;
+	margin: var(--hx-space-8) 0 0;
+	font-size: var(--hx-type-size-xs);
+	color: var(--hx-pass);
 }
 .composer-hint {
 	flex: 1;
-	font-size: 11px;
+	font-size: var(--hx-type-size-2xs);
 }
 .thread-links small {
 	flex-basis: 100%;
-	font-size: 10px;
+	font-size: var(--hx-type-size-2xs);
 }
 
 /* This device's connection to shared projects, and the paged history of a shared entity. */
 .hosted-connection {
 	display: grid;
-	gap: 8px;
+	gap: var(--hx-space-8);
 	justify-items: start;
-	margin-top: 28px;
-	padding-top: 20px;
-	border-top: 1px solid var(--line);
+	margin-top: var(--hx-space-28);
+	padding-top: var(--hx-space-20);
+	border-top: var(--hx-border-thin) solid var(--line);
 	text-align: left;
-	font-size: 13px;
+	font-size: var(--hx-type-size-compact);
 }
 .hosted-connection.compact {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 10px;
+	gap: var(--hx-space-10);
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 12px;
+	font-size: var(--hx-type-size-xs);
 }
 .hosted-connection.compact button {
-	font-size: 11px;
-	padding: 3px 8px;
+	font-size: var(--hx-type-size-2xs);
+	padding: var(--hx-space-3) var(--hx-space-8);
 }
 .hosted-connection .error {
-	padding: 6px 10px;
-	border-radius: 5px;
+	padding: var(--hx-space-6) var(--hx-space-10);
+	border-radius: var(--hx-radius-xsmall);
 }
 .user-code {
-	font:
-		600 22px ui-monospace,
-		monospace;
-	letter-spacing: 3px;
+	font: var(--hx-style-weight-semibold) var(--hx-type-size-2xl) var(--hx-font-family-mono);
+	letter-spacing: var(--hx-style-tracking-code);
 	color: var(--gold);
 }
 .hosted-connection.compact .user-code {
-	font-size: 14px;
-	letter-spacing: 1px;
+	font-size: var(--hx-type-size-sm);
+	letter-spacing: var(--hx-style-tracking-caps);
 }
 .hosted-address {
-	font-family: ui-monospace, monospace;
+	font-family: var(--hx-font-family-mono);
 	overflow-wrap: anywhere;
 	user-select: all;
 }
 .history-more {
-	margin: 4px 8px 12px;
+	margin: var(--hx-space-4) var(--hx-space-8) var(--hx-space-12);
 }

@@ -134,24 +134,24 @@
 <style>
 	.ex-contract {
 		display: grid;
-		gap: 16px;
+		gap: var(--hx-space-16);
 		min-width: 0;
 	}
 	/* One compact section per callable or method, separated by a rule; a long signature wraps. */
 	.callable {
 		display: grid;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		min-width: 0;
 	}
 	.callable + .callable {
-		padding-top: 16px;
-		border-top: 1px solid var(--ex-line);
+		padding-top: var(--hx-space-16);
+		border-top: var(--hx-border-thin) solid var(--ex-line);
 	}
 	.callable h3 {
 		margin: 0;
 		color: var(--ex-text);
-		font-size: 1rem;
-		font-weight: 600;
+		font-size: var(--hx-type-size-base);
+		font-weight: var(--hx-style-weight-semibold);
 		overflow-wrap: anywhere;
 	}
 </style>

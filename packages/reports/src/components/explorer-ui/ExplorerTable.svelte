@@ -191,7 +191,7 @@
 	.ex-value {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: var(--hx-space-10);
 	}
 	.ex-value :global(.hx-action) {
 		width: 44px;
@@ -200,10 +200,10 @@
 	.ex-config-values :global(.viewer-dialog .ex-value-full) {
 		max-height: min(70dvh, 720px);
 		margin: 0;
-		padding: 14px 16px;
-		border-radius: 8px;
+		padding: var(--hx-space-14) var(--hx-space-16);
+		border-radius: var(--hx-radius-small);
 		background: var(--ex-raised);
-		font-size: 0.95rem;
+		font-size: var(--hx-type-size-base);
 		white-space: pre;
 	}
 	.ex-config-values :global(.viewer-header h2) {

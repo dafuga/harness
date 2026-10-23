@@ -46,7 +46,12 @@
 		{/snippet}
 	</SourceFileList>
 	<h2 class="source-tests-title">Test files</h2>
-	<SourceFileList files={tests} label="Test files" empty="No test files recorded at this revision." href={sourceLink}>
+	<SourceFileList
+		files={tests}
+		label="Test files"
+		empty="No test files recorded at this revision."
+		href={sourceLink}
+	>
 		{#snippet children(path)}
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
 		{/snippet}
@@ -57,5 +62,7 @@
 </section>
 
 <style>
-	.source-tests-title { margin-top: 28px; }
+	.source-tests-title {
+		margin-top: var(--hx-space-28);
+	}
 </style>

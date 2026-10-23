@@ -34,6 +34,6 @@
 
 <style>
 	input:focus-visible {
-		outline: 2px solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--gold);
 	}
 </style>

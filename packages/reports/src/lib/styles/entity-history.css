@@ -1,7 +1,7 @@
 /* The tables of a collection and of a history, and the change a history row stands for. */
 .ex-content .ex-table {
 	width: 100%;
-	border: 1px solid var(--ex-line);
+	border: var(--hx-border-thin) solid var(--ex-line);
 	border-radius: var(--ex-radius);
 	border-collapse: separate;
 	border-spacing: 0;
@@ -11,30 +11,30 @@
    it sideways in its own frame instead of breaking names apart. */
 .ex-content .ex-table th,
 .ex-content .ex-table td {
-	padding: 16px 18px;
-	border-top: 1px solid var(--ex-line);
+	padding: var(--hx-space-16) var(--hx-space-18);
+	border-top: var(--hx-border-thin) solid var(--ex-line);
 	text-align: left;
 	vertical-align: middle;
-	font-weight: 500;
+	font-weight: var(--hx-style-weight-medium);
 	overflow-wrap: normal;
 	word-break: normal;
 }
 .ex-content .ex-table thead th {
 	border-top: 0;
 	color: var(--ex-soft);
-	font-size: 0.9rem;
+	font-size: var(--hx-type-size-sm);
 	white-space: nowrap;
 }
 .ex-content .ex-row-name {
 	display: flex;
 	align-items: center;
-	gap: 16px;
+	gap: var(--hx-space-16);
 	min-width: 200px;
 }
 .ex-content .ex-row-name a {
-	margin-right: 8px;
-	font-size: 1.08rem;
-	font-weight: 600;
+	margin-right: var(--hx-space-8);
+	font-size: var(--hx-type-size-lg);
+	font-weight: var(--hx-style-weight-semibold);
 }
 /* A title that wraps is one solid rectangle to press, not lines of text with gaps between. */
 .ex-content .ex-row-name a,
@@ -53,16 +53,16 @@
 /* Six columns share one row: a heading or a pill wraps between its words to narrow a column. */
 .ex-content .ex-history th,
 .ex-content .ex-history td {
-	padding: 14px 10px;
+	padding: var(--hx-space-14) var(--hx-space-10);
 	vertical-align: top;
-	font-size: 0.93rem;
+	font-size: var(--hx-type-size-sm);
 }
 .ex-content .ex-history thead th,
 .ex-content .ex-pill.wraps {
 	white-space: normal;
 }
 .ex-content .ex-pill.wraps {
-	border-radius: 10px;
+	border-radius: var(--hx-radius);
 }
 /* Dates and commit links stay whole; the behavior column takes the remaining room. */
 .ex-content .ex-history td:first-child,
@@ -76,25 +76,25 @@
 }
 .ex-content .ex-said .ex-text-button {
 	display: block;
-	margin-top: 4px;
+	margin-top: var(--hx-space-4);
 }
 .ex-content .ex-history tr.viewed td {
 	background: color-mix(in srgb, var(--ex-gold) 9%, transparent);
 }
 .ex-content .ex-history tr.viewed td:first-child {
-	box-shadow: inset 3px 0 0 var(--ex-gold);
+	box-shadow: inset var(--hx-border-heavy) 0 0 var(--ex-gold);
 }
 .ex-content .ex-history tr.selected td {
 	border-top-color: var(--ex-gold);
 }
 .ex-content .ex-hash {
-	padding: 3px 8px;
-	border: 1px solid var(--ex-line-strong);
-	border-radius: 6px;
+	padding: var(--hx-space-3) var(--hx-space-8);
+	border: var(--hx-border-thin) solid var(--ex-line-strong);
+	border-radius: var(--hx-radius-compact);
 	background: var(--ex-raised);
 	color: var(--ex-text);
-	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-	font-size: 0.9rem;
+	font-family: var(--hx-font-family-mono);
+	font-size: var(--hx-type-size-sm);
 	cursor: pointer;
 }
 .ex-content .ex-hash[aria-pressed='true'] {
@@ -103,10 +103,10 @@
 }
 .ex-content .ex-profile {
 	display: grid;
-	gap: 4px;
+	gap: var(--hx-space-4);
 	min-width: 220px;
 	color: var(--ex-soft);
-	font-size: 0.85rem;
+	font-size: var(--hx-type-size-sm);
 }
 /* The heading of a change is one sentence: it wraps as words do, not as a row of parts. */
 .ex-content .ex-selected h2 {
@@ -115,19 +115,19 @@
 .ex-content .ex-change-grid {
 	display: grid;
 	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-	gap: 18px;
+	gap: var(--hx-space-18);
 	align-items: start;
 }
 .ex-content .ex-change-grid > div {
 	display: grid;
-	gap: 10px;
+	gap: var(--hx-space-10);
 	min-width: 0;
 }
 .ex-content .ex-approval {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 8px 12px;
+	gap: var(--hx-space-8) var(--hx-space-12);
 	color: var(--ex-soft);
 }
 /* What was written in full, opened on request beside its summary. */
@@ -135,13 +135,13 @@
 	width: fit-content;
 	min-height: 32px;
 	color: var(--ex-gold);
-	line-height: 32px;
+	line-height: var(--hx-space-32);
 	cursor: pointer;
 }
 .ex-content .ex-full ul {
 	display: grid;
-	gap: 10px;
-	padding-left: 18px;
+	gap: var(--hx-space-10);
+	padding-left: var(--hx-space-18);
 	list-style: disc;
 }
 .ex-content .ex-full li p {
@@ -150,7 +150,7 @@
 	overflow-wrap: anywhere;
 }
 .ex-content .ex-full > p {
-	margin: 6px 0 0;
+	margin: var(--hx-space-6) 0 0;
 	color: var(--ex-soft);
 	overflow-wrap: anywhere;
 }
@@ -158,10 +158,10 @@
 	color: var(--ex-text);
 }
 .ex-content .ex-eyebrow {
-	margin: 10px 0 4px;
+	margin: var(--hx-space-10) 0 var(--hx-space-4);
 	color: var(--ex-soft);
-	font-size: 0.8rem;
-	letter-spacing: 0.06em;
+	font-size: var(--hx-type-size-compact);
+	letter-spacing: var(--hx-style-tracking-wide);
 	text-transform: uppercase;
 }
 @media (max-width: 900px) {
@@ -170,6 +170,6 @@
 	}
 	.ex-content .ex-table th,
 	.ex-content .ex-table td {
-		padding: 12px;
+		padding: var(--hx-space-12);
 	}
 }

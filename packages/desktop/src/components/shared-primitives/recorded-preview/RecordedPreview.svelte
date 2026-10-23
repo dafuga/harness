@@ -77,19 +77,19 @@
 		object-fit: contain;
 	}
 	figcaption {
-		padding: 8px 10px;
-		border-top: 1px solid var(--line);
-		font-size: 12px;
+		padding: var(--hx-space-8) var(--hx-space-10);
+		border-top: var(--hx-border-thin) solid var(--line);
+		font-size: var(--hx-type-size-xs);
 		color: var(--muted);
 	}
 	.placeholder {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: var(--hx-space-8);
 		align-items: center;
 		justify-content: center;
-		padding: 18px;
+		padding: var(--hx-space-18);
 		text-align: center;
 	}
 	small {

@@ -1,5 +1,8 @@
 <script lang="ts">
-	import type { ContractExample as Example, ContractField } from '../../utils/explorer-ui/contractFields';
+	import type {
+		ContractExample as Example,
+		ContractField
+	} from '../../utils/explorer-ui/contractFields';
 	import RecordedValue from './recorded-value/RecordedValue.svelte';
 	/** One field of a contract as its example view says it: what it is, then what it looks like. */
 	let { field }: { field: ContractField } = $props();
@@ -58,24 +61,24 @@
 <style>
 	.contract-example {
 		display: grid;
-		gap: 18px;
+		gap: var(--hx-space-18);
 		min-width: 0;
 		overflow-wrap: anywhere;
 	}
 	.about {
 		display: grid;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		margin: 0;
 	}
 	.about > div {
 		display: grid;
 		grid-template-columns: 7rem minmax(0, 1fr);
 		align-items: baseline;
-		gap: 4px 12px;
+		gap: var(--hx-space-4) var(--hx-space-12);
 	}
 	dt {
 		color: var(--ex-soft);
-		font-size: 0.85rem;
+		font-size: var(--hx-type-size-sm);
 	}
 	dd {
 		min-width: 0;
@@ -86,37 +89,37 @@
 		color: var(--ex-soft);
 	}
 	.type {
-		padding: 2px 8px;
-		border: 1px solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
-		border-radius: 6px;
+		padding: var(--hx-space-2) var(--hx-space-8);
+		border: var(--hx-border-thin) solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
+		border-radius: var(--hx-radius-compact);
 		color: var(--ex-gold);
-		font-size: 0.88rem;
+		font-size: var(--hx-type-size-sm);
 	}
 	.examples {
 		display: grid;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		min-width: 0;
-		padding-top: 14px;
-		border-top: 1px solid var(--ex-line);
+		padding-top: var(--hx-space-14);
+		border-top: var(--hx-border-thin) solid var(--ex-line);
 	}
 	h3 {
 		margin: 0;
-		font-size: 0.95rem;
-		font-weight: 600;
+		font-size: var(--hx-type-size-base);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 	.declared {
 		color: var(--ex-gold);
 	}
 	.illustrative {
-		font-style: italic;
+		font-style: var(--hx-style-font-italic);
 	}
 	.note {
 		margin: 0;
-		font-size: 0.85rem;
+		font-size: var(--hx-type-size-sm);
 	}
 	ul {
 		display: grid;
-		gap: 10px;
+		gap: var(--hx-space-10);
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -128,32 +131,28 @@
 	.literal {
 		display: block;
 		margin: 0;
-		padding: 8px 10px;
-		border-radius: 6px;
+		padding: var(--hx-space-8) var(--hx-space-10);
+		border-radius: var(--hx-radius-compact);
 		background: var(--ex-raised);
-		font:
-			0.88rem/1.5 ui-monospace,
-			SFMono-Regular,
-			Menlo,
-			monospace;
+		font: var(--hx-style-code);
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
 	}
 	.whole {
-		margin-top: 8px;
+		margin-top: var(--hx-space-8);
 	}
 	.whole summary {
 		color: var(--ex-gold);
-		font-size: 0.85rem;
+		font-size: var(--hx-type-size-sm);
 		cursor: pointer;
 	}
 	.whole summary:focus-visible {
-		border-radius: 4px;
-		outline: 2px solid var(--ex-gold);
-		outline-offset: 2px;
+		border-radius: var(--hx-radius-xsmall);
+		outline: var(--hx-border-thick) solid var(--ex-gold);
+		outline-offset: var(--hx-border-thick);
 	}
 	.whole .literal {
-		margin-top: 6px;
+		margin-top: var(--hx-space-6);
 	}
 	@media (max-width: 480px) {
 		.about > div {

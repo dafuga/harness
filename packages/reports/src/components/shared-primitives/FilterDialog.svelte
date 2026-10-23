@@ -51,20 +51,20 @@
 		width: 48px;
 		height: 48px;
 		padding: 0;
-		border: 1px solid var(--line, #2c4259);
-		border-radius: 8px;
-		background: var(--panel, #102131);
-		color: var(--muted, #9fb0c6);
+		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border-radius: var(--hx-radius-small);
+		background: var(--panel, var(--hx-surface));
+		color: var(--muted, var(--hx-muted));
 		cursor: pointer;
 	}
 	.filter-trigger:hover,
 	.filter-trigger.active {
-		border-color: var(--gold, #f3c33b);
-		color: var(--gold, #f3c33b);
+		border-color: var(--gold, var(--hx-gold));
+		color: var(--gold, var(--hx-gold));
 	}
 	.filter-trigger:focus-visible {
-		outline: 2px solid var(--gold, #f3c33b);
-		outline-offset: 2px;
+		outline: var(--hx-border-thick) solid var(--gold, var(--hx-gold));
+		outline-offset: var(--hx-border-thick);
 	}
 	.catalog-filter-dialog :global(.viewer-dialog[open]) {
 		box-sizing: border-box;
@@ -72,50 +72,50 @@
 		height: fit-content;
 		max-height: calc(100dvh - 32px);
 		padding: 0;
-		border: 1px solid var(--line, #2c4259);
-		border-radius: 14px;
-		background: var(--panel, #102131);
-		color: var(--text, #eef2f8);
-		box-shadow: 0 24px 80px #0009;
+		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border-radius: var(--hx-radius-xlarge);
+		background: var(--panel, var(--hx-surface));
+		color: var(--text, var(--hx-text));
+		box-shadow: var(--hx-shadow-dialog);
 	}
 	.catalog-filter-dialog :global(.viewer-dialog::backdrop) {
-		background: #030a0fc9;
-		backdrop-filter: blur(3px);
+		background: var(--hx-scrim);
+		backdrop-filter: var(--hx-effect-blur-subtle);
 	}
 	.catalog-filter-dialog :global(.viewer-header) {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 16px;
-		padding: 12px 20px;
-		border-bottom: 1px solid var(--line, #2c4259);
+		gap: var(--hx-space-16);
+		padding: var(--hx-space-12) var(--hx-space-20);
+		border-bottom: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
 		background: transparent;
 	}
 	.catalog-filter-dialog :global(.viewer-header h2) {
 		margin: 0;
-		font-size: 18px;
+		font-size: var(--hx-type-size-lg);
 	}
 	.catalog-filter-dialog :global(.viewer-header button) {
 		width: 40px;
 		height: 40px;
 		border: 0;
-		border-radius: 8px;
+		border-radius: var(--hx-radius-small);
 		background: transparent;
 		color: inherit;
-		font-size: 24px;
+		font-size: var(--hx-type-size-2xl);
 		cursor: pointer;
 	}
 	.catalog-filter-dialog :global(.viewer-content) {
-		padding: 20px;
+		padding: var(--hx-space-20);
 	}
 	.filter-fields {
 		display: grid;
-		gap: 18px;
+		gap: var(--hx-space-18);
 	}
 	.filter-fields :global(.filter-field) {
 		display: grid;
-		gap: 7px;
-		font-size: 14px;
+		gap: var(--hx-space-7);
+		font-size: var(--hx-type-size-sm);
 	}
 	.filter-fields :global(.report-select) {
 		display: block;
@@ -124,36 +124,36 @@
 		box-sizing: border-box;
 		width: 100%;
 		min-height: 44px;
-		padding: 8px 42px 8px 12px;
-		border: 1px solid var(--line, #2c4259);
-		border-radius: 8px;
-		background: var(--bg, #0c1a26);
+		padding: var(--hx-space-8) var(--hx-space-42) var(--hx-space-8) var(--hx-space-12);
+		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border-radius: var(--hx-radius-small);
+		background: var(--bg, var(--hx-bg));
 		color: inherit;
 		font: inherit;
 	}
 	.filter-fields :global(input[type='checkbox']) {
-		accent-color: var(--gold, #f3c33b);
+		accent-color: var(--hx-gold);
 	}
 	.catalog-filter-dialog :global(footer) {
 		display: flex;
 		justify-content: space-between;
-		gap: 12px;
-		padding: 16px 20px;
-		border-top: 1px solid var(--line, #2c4259);
+		gap: var(--hx-space-12);
+		padding: var(--hx-space-16) var(--hx-space-20);
+		border-top: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
 	}
 	.filter-reset,
 	.filter-done {
 		min-height: 44px;
-		padding: 8px 16px;
-		border: 1px solid var(--line, #2c4259);
-		border-radius: 8px;
+		padding: var(--hx-space-8) var(--hx-space-16);
+		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border-radius: var(--hx-radius-small);
 		background: transparent;
 		color: inherit;
 		font: inherit;
 		cursor: pointer;
 	}
 	.filter-done {
-		border-color: var(--gold, #f3c33b);
-		color: var(--gold, #f3c33b);
+		border-color: var(--gold, var(--hx-gold));
+		color: var(--gold, var(--hx-gold));
 	}
 </style>

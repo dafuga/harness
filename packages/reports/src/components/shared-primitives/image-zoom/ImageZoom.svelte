@@ -134,46 +134,46 @@
 
 <style>
 	.zoom {
-		--view-height: max(320px, calc(100dvh - 340px));
+		--view-height: var(--hx-layout-zoom-view);
 	}
 	.zoom-bar {
 		position: sticky;
 		top: 0;
-		z-index: 1;
+		z-index: var(--hx-layer-raised);
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		justify-content: center;
-		gap: 6px;
-		padding-bottom: 8px;
-		background: #070d18;
+		gap: var(--hx-space-6);
+		padding-bottom: var(--hx-space-8);
+		background: var(--hx-bg);
 	}
 	.zoom-bar button {
 		min-height: 36px;
-		padding: 6px 12px;
-		font-size: 13px;
-		line-height: 1.2;
+		padding: var(--hx-space-6) var(--hx-space-12);
+		font-size: var(--hx-type-size-compact);
+		line-height: var(--hx-style-leading-tight);
 	}
 	.zoom-bar .step {
 		min-width: 40px;
-		padding: 4px 10px;
-		font-size: 18px;
+		padding: var(--hx-space-4) var(--hx-space-10);
+		font-size: var(--hx-type-size-lg);
 	}
 	.zoom-bar .active {
 		border-color: var(--gold);
 		background: var(--gold);
-		color: #161e22;
+		color: var(--hx-gold-ink);
 	}
 	.zoom-bar [aria-disabled='true'] {
-		opacity: 0.45;
+		opacity: var(--hx-opacity-disabled);
 		cursor: not-allowed;
 	}
 	.scale {
 		min-width: 4.5ch;
-		color: #e6edf5;
-		font-size: 13px;
-		font-weight: 600;
-		font-variant-numeric: tabular-nums;
+		color: var(--hx-text);
+		font-size: var(--hx-type-size-compact);
+		font-weight: var(--hx-style-weight-semibold);
+		font-variant-numeric: var(--hx-style-numeric-tabular);
 	}
 	.stage img {
 		max-height: var(--view-height);
@@ -182,11 +182,11 @@
 		max-height: var(--view-height);
 		overflow: auto;
 		overscroll-behavior: contain;
-		border: 1px solid #223050;
-		border-radius: 8px;
-		background: #0a1220;
+		border: var(--hx-border-thin) solid var(--hx-line);
+		border-radius: var(--hx-radius-small);
+		background: var(--hx-bg);
 		cursor: grab;
-		scrollbar-color: #3d5078 transparent;
+		scrollbar-color: var(--hx-line-strong) transparent;
 	}
 	.stage.zoomed img {
 		max-width: none;
@@ -197,19 +197,19 @@
 		user-select: none;
 	}
 	.stage:focus-visible {
-		outline: 2px solid var(--gold);
-		outline-offset: -2px;
+		outline: var(--hx-border-thick) solid var(--gold);
+		outline-offset: calc(-1 * var(--hx-space-2));
 	}
 	@media (max-width: 650px) {
 		.zoom {
-			--view-height: max(320px, calc(100dvh - 132px));
+			--view-height: var(--hx-layout-zoom-view-compact);
 		}
 		.zoom-bar {
-			gap: 4px;
+			gap: var(--hx-space-4);
 		}
 		.zoom-bar button {
 			min-height: 44px;
-			padding: 6px 10px;
+			padding: var(--hx-space-6) var(--hx-space-10);
 		}
 		.zoom-bar .step {
 			min-width: 44px;

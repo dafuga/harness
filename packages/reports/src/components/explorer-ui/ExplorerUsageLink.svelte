@@ -143,21 +143,21 @@
 	}
 	.ex-usage-preview {
 		position: fixed;
-		z-index: 40;
+		z-index: var(--hx-layer-popover);
 		top: 0;
 		left: 0;
 		display: grid;
-		gap: 6px;
+		gap: var(--hx-space-6);
 		width: min(280px, calc(100vw - 16px));
-		padding: 8px;
-		border: 1px solid var(--ex-line-strong);
-		border-radius: 8px;
+		padding: var(--hx-space-8);
+		border: var(--hx-border-thin) solid var(--ex-line-strong);
+		border-radius: var(--hx-radius-small);
 		background: var(--ex-raised);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+		box-shadow: var(--hx-shadow-popover);
 		color: var(--ex-soft);
-		font-size: 0.8rem;
-		font-weight: 400;
-		line-height: 1.4;
+		font-size: var(--hx-type-size-compact);
+		font-weight: var(--hx-style-weight-regular);
+		line-height: var(--hx-style-leading-snug);
 		text-align: left;
 		white-space: normal;
 		overflow-wrap: anywhere;
@@ -170,7 +170,7 @@
 		width: 100%;
 		aspect-ratio: 16 / 10;
 		object-fit: contain;
-		border-radius: 4px;
+		border-radius: var(--hx-radius-xsmall);
 		background: var(--ex-surface);
 	}
 </style>

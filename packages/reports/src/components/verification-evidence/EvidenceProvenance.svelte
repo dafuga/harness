@@ -17,25 +17,25 @@
 <style>
 	.evidence-provenance {
 		display: grid;
-		gap: 4px;
-		margin: 10px 0 0;
-		font-size: 12px;
-		line-height: 1.45;
+		gap: var(--hx-space-4);
+		margin: var(--hx-space-10) 0 0;
+		font-size: var(--hx-type-size-xs);
+		line-height: var(--hx-style-leading-normal);
 		text-align: left;
 		overflow-wrap: anywhere;
 	}
 	.evidence-provenance div {
 		display: grid;
 		grid-template-columns: minmax(0, 9.5em) minmax(0, 1fr);
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	.evidence-provenance dt {
-		color: var(--muted, #6b7280);
+		color: var(--muted, var(--hx-muted));
 	}
 	.evidence-provenance dd {
 		margin: 0;
 	}
 	.evidence-provenance div:first-child dd {
-		font-weight: 600;
+		font-weight: var(--hx-style-weight-semibold);
 	}
 </style>
