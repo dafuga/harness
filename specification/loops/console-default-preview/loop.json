@@ -2,7 +2,7 @@
 	"name": "console-default-preview",
 	"goal": "Default Console previews show the settled catalog capture while loading states remain selectable.",
 	"createdAt": "2026-10-23T14:31:53.383Z",
-	"updatedAt": "2026-10-23T14:34:24.340Z",
+	"updatedAt": "2026-10-23T14:41:08.587Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T14:41:08.587Z",
+			"evidence": "At test-only f8ce3c10a, record 2cc2db98 reproduces the actual Console default caller choosing loading-history instead of its settled capture; the other standardized cases pass. Test inputs preflight format/lint/types/audit pass."
 		},
 		{
 			"id": "implement",
