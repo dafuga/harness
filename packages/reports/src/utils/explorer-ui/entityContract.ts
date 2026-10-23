@@ -18,4 +18,4 @@ export {
 	entityContract
 } from '../../components/explorer-ui/entity-sections/entityContract';
 
-export { humanize } from '../../helpers/explorer-ui/humanize';
+export { humanize } from '../../helpers/strings/humanize';

@@ -10,7 +10,7 @@
 		"source": [
 			"src/core/case.ts",
 			"src/core/development-tooling/case.ts",
-			"src/helpers/development-tooling/case.ts"
+			"src/helpers/strings/case.ts"
 		],
 		"symbols": [
 			"toKebabCase",
@@ -87,7 +87,7 @@
 	"helperContracts": [
 		{
 			"name": "toKebabCase",
-			"source": "src/helpers/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toKebabCase.textToConvert",
@@ -260,7 +260,7 @@
 		},
 		{
 			"name": "toPascalCase",
-			"source": "src/helpers/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toPascalCase.textToConvert",
@@ -401,7 +401,7 @@
 		},
 		{
 			"name": "toCamelCase",
-			"source": "src/helpers/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toCamelCase.textToConvert",
@@ -486,7 +486,7 @@
 		},
 		{
 			"name": "toSnakeCase",
-			"source": "src/helpers/development-tooling/case.ts",
+			"source": "src/helpers/strings/case.ts",
 			"inputs": [
 				{
 					"name": "toSnakeCase.textToConvert",

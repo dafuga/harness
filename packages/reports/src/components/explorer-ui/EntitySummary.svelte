@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { notMeasured, type EntityMeasure } from '../../utils/explorer-ui/entityMeasure';
-	import { shortCommit } from '../../helpers/explorer-ui/shortCommit';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { metricChanges, type MetricComparison } from '../../utils/explorer-ui/metricChanges';
 	import HarnessIcon from './HarnessIcon.svelte';
 	let {

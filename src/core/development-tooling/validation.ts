@@ -1,4 +1,4 @@
-import { toCamelCase, toKebabCase } from '../../helpers/development-tooling/case';
+import { toCamelCase, toKebabCase } from '../../helpers/strings/case';
 import { fail } from './errors';
 
 const safeNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9 _-]*$/;

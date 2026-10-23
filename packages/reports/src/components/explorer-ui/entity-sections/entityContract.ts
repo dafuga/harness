@@ -1,5 +1,5 @@
 import type { ContractRow, ContractFacts } from '../../../utils/explorer-ui/entityContract';
-import { humanize } from '../../../helpers/explorer-ui/humanize';
+import { humanize } from '../../../helpers/strings/humanize';
 import type { HarnessScenario, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import { scenarioFor } from '../../../utils/explorer-ui/explorerState';
 

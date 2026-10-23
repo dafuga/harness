@@ -10,7 +10,7 @@
 	import type { HarnessIndex, HarnessRevision } from '../../../models/explorer-ui/Harness.types';
 	import { entityHistory, historyListed, historyProfiles } from './entityHistory';
 	import { entityLens, type EntityNav } from '../../../utils/explorer-ui/entityLens';
-	import { shortCommit } from '../../../helpers/explorer-ui/shortCommit';
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
 	import { historyDetail } from './explorerHistory';
 	import type { HarnessClient } from '../../../utils/explorer-ui/harnessClient';
 	import Select from '../../shared-primitives/Select.svelte';

@@ -4,7 +4,7 @@
 	import { explorerEntity } from '../../utils/explorer-ui/explorerEntities';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
-	import { shortCommit } from '../../helpers/explorer-ui/shortCommit';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { screenOptions } from '../../utils/explorer-ui/entityScreens';
 	import {
 		entityChanged,

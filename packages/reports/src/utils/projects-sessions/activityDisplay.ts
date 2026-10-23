@@ -20,4 +20,4 @@ export function activityTime(iso: string): string {
 export { commitHref } from '../../components/projects-sessions/project-activity/activityDisplay';
 export { activityDisplay } from '../../components/projects-sessions/activity-agents/activityDisplay';
 
-export { plural } from '../../helpers/projects-sessions/plural';
+export { plural } from '../../helpers/strings/plural';

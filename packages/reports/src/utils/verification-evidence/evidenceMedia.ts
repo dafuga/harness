@@ -25,4 +25,4 @@ export function evidenceMedia(item: Pick<Evidence, 'mediaType' | 'file'>): 'imag
 	);
 }
 
-export { formatDuration } from '../../helpers/verification-evidence/formatDuration';
+export { formatDuration } from '../../helpers/strings/formatDuration';

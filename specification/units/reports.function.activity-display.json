@@ -12,7 +12,7 @@
 			"packages/reports/src/components/project-activity/activityDisplay.ts",
 			"packages/reports/src/components/projects-sessions/activity-agents/activityDisplay.ts",
 			"packages/reports/src/components/projects-sessions/project-activity/activityDisplay.ts",
-			"packages/reports/src/helpers/projects-sessions/plural.ts",
+			"packages/reports/src/helpers/strings/plural.ts",
 			"packages/reports/src/utils/activityDisplay.ts",
 			"packages/reports/src/utils/projects-sessions/activityDisplay.ts"
 		],
@@ -117,7 +117,7 @@
 	"helperContracts": [
 		{
 			"name": "plural",
-			"source": "packages/reports/src/helpers/projects-sessions/plural.ts",
+			"source": "packages/reports/src/helpers/strings/plural.ts",
 			"inputs": [
 				{
 					"name": "plural.count",

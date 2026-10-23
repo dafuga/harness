@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatDuration } from '../../helpers/verification-evidence/formatDuration';
+	import { formatDuration } from '../../helpers/strings/formatDuration';
 	import { REPLAY_SPEEDS } from '../../utils/reports-media/replayFrames';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import Select from '../shared-primitives/Select.svelte';

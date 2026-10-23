@@ -106,4 +106,4 @@ export function entityLens(from: ExplorerLocation, to: Target): ExplorerLocation
 	return place;
 }
 
-export { shortCommit } from '../../helpers/explorer-ui/shortCommit';
+export { shortCommit } from '../../helpers/strings/shortCommit';

@@ -15,7 +15,7 @@
 			"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
 			"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts",
 			"packages/desktop/src/helpers/networking-security/identityLabel.ts",
-			"packages/desktop/src/helpers/networking-security/plural.ts",
+			"packages/desktop/src/helpers/strings/plural.ts",
 			"packages/desktop/src/utils/networking-security/remoteLabels.ts",
 			"packages/desktop/src/utils/remoteLabels.ts"
 		],
@@ -247,7 +247,7 @@
 		},
 		{
 			"name": "plural",
-			"source": "packages/desktop/src/helpers/networking-security/plural.ts",
+			"source": "packages/desktop/src/helpers/strings/plural.ts",
 			"inputs": [
 				{
 					"name": "plural.count",

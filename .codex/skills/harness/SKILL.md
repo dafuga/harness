@@ -260,3 +260,5 @@ real children slot. Never substitute a full page screenshot for a layout preview
 Full-frame previews own their content boundaries. Apply content-container styling inside the
 frame, never around its navigation. When changing fixture context, extend the existing standard
 acceptance assertions for affected controls and inspect retained pixels before accepting the UI.
+
+General string transformations belong in `src/helpers/strings/`, independent of their consumers. Keep domain-specific helpers such as device-key identity formatting in their domain. Derive each callable category from its own implementation source; use that category for catalog cards, filters and breadcrumbs. Preserve each revision's taxonomy and each helper's registered identity.

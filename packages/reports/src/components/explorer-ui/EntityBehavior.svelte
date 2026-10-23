@@ -3,7 +3,7 @@
 	import type { ExplorerBehavior, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import { entityBehavior } from '../../utils/explorer-ui/entityBehavior';
 	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
-	import { shortCommit } from '../../helpers/explorer-ui/shortCommit';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { notMeasured } from '../../utils/explorer-ui/entityMeasure';
 	import type { EntityReasons as Reasons } from '../../utils/explorer-ui/entityReasons';
 	import { explorerReading } from '../../utils/explorer-ui/explorer-reading/explorerReading';

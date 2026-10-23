@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { humanize } from '../../../helpers/explorer-ui/humanize';
+	import { humanize } from '../../../helpers/strings/humanize';
 	import { recordedValue } from './recordedValue';
 	import { type RecordedNode } from '../../../utils/shared-primitives/recordedValue';
 	let {

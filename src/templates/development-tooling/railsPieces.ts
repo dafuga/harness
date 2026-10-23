@@ -1,4 +1,4 @@
-import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/development-tooling/case';
+import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { apiFiles, e2eFiles, viewFiles } from './appPieces';
 import { adapterTypeFiles } from './adapterTypes';

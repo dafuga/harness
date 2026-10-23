@@ -8,7 +8,7 @@
 	} from '../../../models/explorer-ui/Explorer.types';
 	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/explorer-ui/entityHistory';
 	import { type EntityNav } from '../../../utils/explorer-ui/entityLens';
-	import { shortCommit } from '../../../helpers/explorer-ui/shortCommit';
+	import { shortCommit } from '../../../helpers/strings/shortCommit';
 	import { byteSize, notMeasured } from '../../../utils/explorer-ui/entityMeasure';
 	import { boundedText, entityReasons } from '../../../utils/explorer-ui/entityReasons';
 	import { timeAgo } from '../../../utils/reports-media/reportDisplay';

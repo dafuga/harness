@@ -36,6 +36,6 @@ export {
 	remoteLabels
 } from '../../components/networking-security/remote-phone-panel/remoteLabels';
 
-export { plural } from '../../helpers/networking-security/plural';
+export { plural } from '../../helpers/strings/plural';
 
 export { identityLabel } from '../../helpers/networking-security/identityLabel';

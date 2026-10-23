@@ -3,4 +3,4 @@ export {
 	toCamelCase,
 	toPascalCase,
 	toSnakeCase
-} from '../../helpers/development-tooling/case';
+} from '../../helpers/strings/case';

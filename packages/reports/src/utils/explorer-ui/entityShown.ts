@@ -41,6 +41,7 @@ export function helperEntity(
 		purpose: output?.description ?? `Helper defined in ${unit.title}.`,
 		unit: {
 			...unit,
+			...(helper.group ? { group: helper.group } : {}),
 			title: helperName,
 			helpers: [helper],
 			...(unit.sourceFiles

@@ -1,5 +1,5 @@
 import type { PlannedFile } from '../../core/development-tooling/files';
-import { toKebabCase, toCamelCase, toPascalCase } from '../../helpers/development-tooling/case';
+import { toKebabCase, toCamelCase, toPascalCase } from '../../helpers/strings/case';
 import { fail } from '../../core/development-tooling/errors';
 import type { PieceContext } from '../development-tooling/pieces';
 
