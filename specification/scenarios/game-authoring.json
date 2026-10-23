@@ -317,6 +317,28 @@
 				"desktop.component.game-checkpoint-image",
 				"desktop.component.game-checkpoint-editor"
 			]
+		},
+		{
+			"id": "level-entry-2d",
+			"title": "Level planning entry 2d",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-graph"
+			]
+		},
+		{
+			"id": "level-entry-3d",
+			"title": "Level planning entry 3d",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-graph"
+			]
 		}
 	],
 	"viewports": [
@@ -476,6 +498,23 @@
 				"checkpoint-image-review",
 				"checkpoint-advanced-rules"
 			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		},
+		{
+			"id": "level-planning-screens",
+			"kind": "screenshot",
+			"states": ["level-entry-2d", "level-entry-3d"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "level-planning-workload",
+			"kind": "benchmark",
+			"states": ["level-entry-2d", "level-entry-3d"],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true
 		}

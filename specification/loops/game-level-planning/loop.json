@@ -1,0 +1,41 @@
+{
+	"name": "game-level-planning",
+	"goal": "Describe, generate, review and approve each 2D/3D level before building it and creating checkpoints",
+	"createdAt": "2026-10-23T15:32:16.572Z",
+	"updatedAt": "2026-10-23T15:44:32.646511Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T15:44:32.646511Z",
+			"evidence": "Concept, level brief, LLM layout review, approval, build, then checkpoints. Legacy views remain editable. Current authoring test has no planning entry; engine and document tests omit draft gates/schema. Extend those unchanged standards before repair."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
