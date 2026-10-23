@@ -1,0 +1,15 @@
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nAWYOA/packages/desktop
+
+ ✓ test/catalog-listing.test.ts (6 tests) 1418ms
+   ✓ the tip lists every ordinary entity and no page manifest that only loads for an address  318ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  589ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  461ms
+ ✓ test/shells-category.test.ts (6 tests) 6ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  13:11:14
+   Duration  2.50s (transform 413ms, setup 87ms, collect 640ms, tests 1.42s, environment 0ms, prepare 55ms)
+
