@@ -80,14 +80,18 @@ function changed(path: string): Promise<ImpactReport> {
 const owner = (path: string | undefined) =>
 	loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path ?? ''))
 		?.id;
-const consumers = () => written.filter((item) => item.to === select);
+const consumers = () =>
+	written.filter(
+		(item) => item.to === select && loaded.index.files.get(item.from)?.classification !== 'test'
+	);
 test('no import written through a build alias of any package is left as a package from outside', () => {
 	const declared = Object.fromEntries(
 		Object.entries(builds).filter(([, own]) => Object.keys(own).length)
 	);
 	expect(declared).toEqual({
 		desktop: { $desktop: './src', $shared: '../reports/src/components' },
-		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' }
+		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' },
+		reports: { $desktop: '../desktop/src', $shared: './src/components' }
 	});
 	const resolved = (item: Written) =>
 		loaded.index.files
@@ -104,6 +108,11 @@ test('no import written through a build alias of any package is left as a packag
 });
 test('the registry stores Select as a derived dependency of each of its consumers, and is not stale', () => {
 	expect(loaded.index.files.get(selectTest)?.classification).toBe('test');
+	expect(
+		written
+			.filter((item) => item.to === select && !consumers().includes(item))
+			.map((item) => item.from)
+	).toEqual([selectTest]);
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
 		...[
@@ -166,7 +175,6 @@ test('a change of Select reaches its consumers, the pages that show them, and th
 	);
 	expect([report.expanded, report.tests.excluded.length > 0]).toEqual([false, true]);
 }, 60_000);
-
 test('a change of Select reaches every unit, test and scenario that a change of a consumer reaches', async () => {
 	const target = await changed(select);
 	const reached = new Set([...target.units.direct, ...target.units.indirect]);
@@ -189,7 +197,6 @@ test('a change of Select reaches every unit, test and scenario that a change of 
 	}
 	expect(omitted).toEqual([]);
 }, 60_000);
-
 test('declaring the Select imports moves those references alone: packages and uncertainties stay', async () => {
 	// Only the Select imports are undeclared; every other declaration, the shared search included, stays.
 	const kept = loaded.config.references.filter(
