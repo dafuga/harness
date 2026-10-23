@@ -12,6 +12,7 @@ import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
 const shared = '$shared';
+const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
 const analysis = new ImpactService(new HandlerRuntimeAdapter(impactKernel));
 const reports = new Map<string, Promise<ImpactReport>>();
@@ -28,14 +29,12 @@ beforeAll(async () => {
 	builds = Object.fromEntries(readdirSync('packages').map((name) => [name, aliases(name)]));
 	written = [...loaded.index.files.keys()].flatMap(imports);
 }, 60_000);
-/** The build aliases a package's Svelte configuration declares, each with the place it names. */
 function aliases(name: string): Record<string, string> {
 	const file = join('packages', name, 'svelte.config.js');
 	const stated = existsSync(file) ? /alias:\s*\{([^}]*)\}/.exec(readFileSync(file, 'utf8')) : null;
 	const pairs = [...(stated?.[1] ?? '').matchAll(/(\$\w+):\s*'([^']+)'/g)];
 	return Object.fromEntries(pairs.map(([, alias, target]) => [alias, target]));
 }
-/** The alias imports one file really writes, each with the tracked file its build sends it to. */
 function imports(from: string): Written[] {
 	const [, name = ''] = /^packages\/([^/]+)\//.exec(from) ?? [];
 	const language = /\.(svelte|css|ts)$/.exec(from)?.[1] as 'svelte' | 'css' | 'ts' | undefined;
@@ -54,7 +53,6 @@ function imports(from: string): Written[] {
 		return [{ from, specifier: item.specifier, to }];
 	});
 }
-/** One tree as the impact analysis reads it, with the registry as it is stored. */
 function side(index: sourceIndex.SourceIndex): ImpactSide {
 	return {
 		revision: 'working-tree',
@@ -65,7 +63,6 @@ function side(index: sourceIndex.SourceIndex): ImpactSide {
 		graph: new SourceGraphService().build(index, loaded.stored, loaded.scenarios)
 	};
 }
-/** What the analysis reports when only this file's content differs from the tree as it is. */
 function changed(path: string): Promise<ImpactReport> {
 	const head = side(loaded.index);
 	const entries = head.entries.map((entry) =>
@@ -79,14 +76,18 @@ function changed(path: string): Promise<ImpactReport> {
 const owner = (path: string | undefined) =>
 	loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path ?? ''))
 		?.id;
-const consumers = () => written.filter((item) => item.to === select);
+const consumers = () =>
+	written.filter(
+		(item) => item.to === select && loaded.index.files.get(item.from)?.classification !== 'test'
+	);
 test('no import written through a build alias of any package is left as a package from outside', () => {
 	const declared = Object.fromEntries(
 		Object.entries(builds).filter(([, own]) => Object.keys(own).length)
 	);
 	expect(declared).toEqual({
 		desktop: { $desktop: './src', $shared: '../reports/src/components' },
-		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' }
+		hub: { $desktop: '../desktop/src', $shared: '../reports/src/components' },
+		reports: { $desktop: '../desktop/src', $shared: './src/components' }
 	});
 	const resolved = (item: Written) =>
 		loaded.index.files
@@ -102,6 +103,12 @@ test('no import written through a build alias of any package is left as a packag
 	expect(outside.map((file) => file.path)).toEqual([]);
 });
 test('the registry stores Select as a derived dependency of each of its consumers, and is not stale', () => {
+	expect(loaded.index.files.get(selectTest)?.classification).toBe('test');
+	expect(
+		written
+			.filter((item) => item.to === select && !consumers().includes(item))
+			.map((item) => item.from)
+	).toEqual([selectTest]);
 	const units = consumers().map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
 		...[
@@ -164,14 +171,12 @@ test('a change of Select reaches its consumers, the pages that show them, and th
 	);
 	expect([report.expanded, report.tests.excluded.length > 0]).toEqual([false, true]);
 }, 60_000);
-
 test('a change of Select reaches every unit, test and scenario that a change of a consumer reaches', async () => {
 	const target = await changed(select);
 	const reached = new Set([...target.units.direct, ...target.units.indirect]);
 	const omitted: string[] = [];
 	for (const item of consumers()) {
 		const importer = await changed(item.from);
-		// A file no test covers selects every test when it changes: of it only its unit is asked for.
 		const units = importer.expanded
 			? [owner(item.from) ?? 'no owner']
 			: [...importer.units.direct, ...importer.units.indirect];
@@ -187,9 +192,7 @@ test('a change of Select reaches every unit, test and scenario that a change of 
 	}
 	expect(omitted).toEqual([]);
 }, 60_000);
-
 test('declaring the Select imports moves those references alone: packages and uncertainties stay', async () => {
-	// Only the Select imports are undeclared; every other declaration, the shared search included, stays.
 	const kept = loaded.config.references.filter(
 		(entry) => entry.specifier !== `${shared}/Select.svelte`
 	);
