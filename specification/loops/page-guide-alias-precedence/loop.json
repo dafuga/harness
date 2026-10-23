@@ -2,7 +2,7 @@
 	"name": "page-guide-alias-precedence",
 	"goal": "Preserve canonical topic and plural precedence when adding page help aliases; guard the shared topic resolver through its standardized lookup matrix",
 	"createdAt": "2026-10-23T13:38:02.712Z",
-	"updatedAt": "2026-10-23T13:38:38.862Z",
+	"updatedAt": "2026-10-23T13:41:13.413Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,27 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:41:09.083Z",
+			"evidence": "Checkpoint 9284d7f7 on e510943a reproduces the canonical-topic collision in the standard guide lookup matrix."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:41:09.950Z",
+			"evidence": "Keep canonical candidates before the view fallback; require collision and normalization coverage before extending an alias resolver."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:41:10.993Z",
+			"evidence": "Preserve page before view and add the reusable alias review gate to repository agent instructions; keep the standard lookup test unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:41:12.155Z",
+			"evidence": "Checkpoint 22d74c09 at ce231cafa passes the same frozen guide test and retains fresh behavior timing and worker memory."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:41:13.413Z",
+			"evidence": "After repair, independent clean-snapshot capture 92a2340e reruns e510943a and fails the unchanged guard; restored ce231cafa passes in 22d74c09."
 		},
 		{
 			"id": "verify",
