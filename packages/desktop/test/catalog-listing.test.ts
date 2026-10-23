@@ -46,7 +46,7 @@ test('implemented pages select their declared screenshot rather than an absent p
 		} as ComponentManifest;
 		expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
 		expectVisualPreviews(unit);
-		expectPreviewReads(unit);
+		expectPreviewReads(unit, preview);
 		const service = {
 			...unit,
 			kind: 'service',
@@ -99,9 +99,12 @@ function expectVisualPreviews(unit: ComponentManifest): void {
 	expect(catalogUnit(options, new Set())?.thumbnail).toBeNull();
 }
 
-function expectPreviewReads(unit: ComponentManifest): void {
+function expectPreviewReads(
+	unit: ComponentManifest,
+	declaredPreview: NonNullable<ComponentManifest['preview']>
+): void {
 	const reads: string[] = [];
-	const preview = { ...unit.preview, state: 'before-summary' };
+	const preview = { ...declaredPreview, state: 'before-summary' };
 	const observed = {
 		...unit,
 		get preview() {
