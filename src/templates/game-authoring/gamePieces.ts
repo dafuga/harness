@@ -8,7 +8,7 @@ export function gameViewFiles(name: string, { dimension }: PieceContext): Planne
 	const symbol = toCamelCase(name) + 'ViewConfig';
 	return [
 		{
-			path: 'src/config/' + symbol + '.ts',
+			path: 'src/configs/' + symbol + '.ts',
 			contents: `import type { GameView } from '../lib/game/models/Game.types';\n\nexport const ${symbol}: GameView = {\n\tid: '${toKebabCase(name)}',\n\ttitle: '${toPascalCase(name)}',\n\tdimension: '${dimension}',\n\tstyle: '',\n\tcheckpoints: []\n};\n`
 		}
 	];
@@ -31,7 +31,7 @@ export function checkpointFiles(name: string): PlannedFile[] {
 	const symbol = toCamelCase(name) + 'CheckpointConfig';
 	return [
 		{
-			path: 'src/config/' + symbol + '.ts',
+			path: 'src/configs/' + symbol + '.ts',
 			contents: `import type { Checkpoint } from '../lib/game/models/Game.types';\n\nexport const ${symbol}: Checkpoint = {\n\tid: '${toKebabCase(name)}',\n\ttitle: '${toPascalCase(name)}',\n\tdescription: '',\n\tx: 0,\n\ty: 0,\n\trequires: [],\n\tconditions: [],\n\tactions: []\n};\n`
 		}
 	];

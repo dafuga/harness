@@ -1,7 +1,7 @@
 import type { Scene } from './socket-frame.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { remoteLimits } from '../../../remote/src/index';
-import { relayConfig } from '../../src/config/relayConfig';
+import { relayConfig } from '../../src/configs/relayConfig';
 import { connectHost, openDevice, pairDevice, registerHost } from '../support/relayActors';
 import { startRelay, type RelayFixture } from '../support/relayFixture';
 import { acceptPacket, sealedPacket } from '../support/relayPackets';

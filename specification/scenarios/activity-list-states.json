@@ -58,7 +58,7 @@
 			"id": "states",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts",
+			"target": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts",
 			"cwd": "packages/reports"
 		}
 	],

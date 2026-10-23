@@ -24,6 +24,7 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		emptyLabel: '""',
 		retryCount: '0',
 		fallback: 'null',
+		regions: '["ca", "us"]',
 		schema: configExpression(commit),
 		archivePath: longConfigValue,
 		steps: '[{label: "Pack", flags: [true, false]}, "Ship"]',
@@ -33,6 +34,7 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		configValues: Object.entries(values).map(([name, value]) => ({
 			name: `orderSettings.${name}`,
 			value,
+			...(['schema', 'archivePath', 'steps'].includes(name) ? {} : { literal: JSON.parse(value) }),
 			source: unit.owns.source[0],
 			...structuredFixture(name, value)
 		}))
@@ -65,6 +67,8 @@ function schemaStructure(source: string) {
 }
 
 function structuredFixture(name: string, source: string) {
+	if (name === 'regions')
+		return { structure: array(source, [expression('"ca"'), expression('"us"')]) };
 	if (name === 'emptySteps') return { structure: array(source, []) };
 	if (name === 'schema') return { structure: schemaStructure(source) };
 	if (name !== 'steps') return {};

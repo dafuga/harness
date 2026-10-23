@@ -1,7 +1,7 @@
 import { relayCloseCodes, SecurePacketValidator } from '../../../../../../remote/src/index';
 import type { RelayNotice, SecureHello, SecureSealed } from '../../../../../../remote/src/index';
 import type { HostSocketsAdapter } from '../HostSocketsAdapter';
-import { relayConfig } from '../../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../../configs/networking-security/relayConfig';
 import type {
 	DeviceAttachment,
 	RateRecord

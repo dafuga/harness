@@ -1,7 +1,7 @@
 import postcss from 'postcss';
 import { namedCssColors } from './namedCssColors';
 import { parse } from 'svelte/compiler';
-import { appStyleTokensConfig as config } from '../../../src/config/shared-primitives/appStyleTokensConfig';
+import { appStyleTokensConfig as config } from '../../../src/configs/shared-primitives/appStyleTokensConfig';
 
 /** Inspect design declarations, including literal inline styles, without changing layout CSS. */
 export function styleTokenViolations(source: string, path: string): string[] {

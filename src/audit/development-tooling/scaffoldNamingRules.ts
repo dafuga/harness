@@ -60,6 +60,7 @@ function auditModelFileName(file: AuditFile): AuditFinding[] {
 }
 
 function auditGeneratedFunctionFile(file: AuditFile): AuditFinding[] {
+	if (typeScriptStem(file.relativePath).endsWith('.types')) return [];
 	const rule = functionFileRule(file);
 	if (!rule) return [];
 	const findings = rule.validFileName
@@ -77,7 +78,7 @@ function auditGeneratedFunctionFile(file: AuditFile): AuditFinding[] {
 }
 
 function auditConfigFileName(file: AuditFile): AuditFinding[] {
-	if (!file.relativePath.startsWith('src/config/')) return [];
+	if (!/^src\/configs?\//.test(file.relativePath)) return [];
 	if (/^[a-z][A-Za-z0-9]*Config$/.test(typeScriptStem(file.relativePath))) return [];
 	return [fileNameFinding(file, 'Config files should be named <camelName>Config.ts.')];
 }

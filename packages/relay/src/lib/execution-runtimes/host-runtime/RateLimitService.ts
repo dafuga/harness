@@ -1,5 +1,5 @@
 import type { RateStore } from './RateLimitService.types';
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { RateBucket } from '../../../models/networking-security/RelayHost.types';
 
 /** A fixed-window limit per host object and bucket. */

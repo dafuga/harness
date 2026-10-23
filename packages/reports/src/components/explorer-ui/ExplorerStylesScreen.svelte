@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { appStyleTokensConfig } from '../../config/shared-primitives/appStyleTokensConfig';
+	import { appStyleTokensConfig } from '../../configs/shared-primitives/appStyleTokensConfig';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
 		StyleGroupName,
