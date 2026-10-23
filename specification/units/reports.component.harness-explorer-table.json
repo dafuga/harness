@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
 	"title": "Entity catalog table",
-	"responsibility": "Lists config variables and source values in two columns, and remaining nonvisual entities with their category columns.",
+	"responsibility": "Lists config variables with compact source values and full-value inspection, and remaining nonvisual entities with their category columns.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -24,7 +24,7 @@
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
-				"description": "Required catalog rows in display order. Config rows contain variable names and committed source values, with links to their owning config."
+				"description": "Required catalog rows in display order. Config rows contain variable names and committed source values; long values have compact previews and full-value inspection."
 			},
 			{
 				"name": "ExplorerTable.nav",
@@ -51,7 +51,7 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A two-column Variable/Value table for configs. Other nonvisual categories retain their module facts and shared usage links. All links remain scoped to the selected revision."
+				"description": "A Variable/Value table with compact previews and read-only full-value dialogs for long config expressions. Other categories retain their columns. Links preserve the selected revision."
 			}
 		],
 		"errors": []
@@ -83,6 +83,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-catalog",
 			"via": "import",
 			"origin": "derived"
@@ -104,6 +109,11 @@
 		},
 		{
 			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.gallery",
 			"via": "import",
 			"origin": "derived"
 		}

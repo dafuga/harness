@@ -372,6 +372,12 @@
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
 			"reason": "Checkpoint authoring reuses the shared accessible modal rather than a separate dialog primitive."
+		},
+		{
+			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerTable.svelte",
+			"specifier": "../../shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "Configuration values use the registered shared read-only dialog."
 		}
 	]
 }
