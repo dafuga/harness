@@ -11,8 +11,9 @@ export function observedProviderExit(runtime: string, transport: string, delay: 
 		const cli = fileURLToPath(
 			new URL('../src/utils/development-tooling/cliProcess.ts', import.meta.url)
 		);
-		const rpc = new URL('../src/utils/agents-providers/codex-rpc/codexRpc.ts', import.meta.url)
-			.href;
+		const rpc = fileURLToPath(
+			new URL('../src/utils/agents-providers/codex-rpc/codexRpc.ts', import.meta.url)
+		);
 		const source = join(root, 'fixture.ts');
 		const script = `import { cliProcess } from ${JSON.stringify(cli)};
 import { codexRpc } from ${JSON.stringify(rpc)};
