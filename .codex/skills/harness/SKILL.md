@@ -251,3 +251,7 @@ implementation rather than promoting everything previously called a shell. Keep 
 Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pages that use them.
 Capture the actual layout with a clearly labelled Child content placeholder passed through its
 real children slot. Never substitute a full page screenshot for a layout preview.
+
+Full-frame previews own their content boundaries. Apply content-container styling inside the
+frame, never around its navigation. When changing fixture context, extend the existing standard
+acceptance assertions for affected controls and inspect retained pixels before accepting the UI.
