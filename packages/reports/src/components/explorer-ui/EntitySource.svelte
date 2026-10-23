@@ -40,7 +40,11 @@
 	data-harness-component="harness-entity-source"
 >
 	<h2 id="ex-source-title">Source files</h2>
-	<SourceFileList {files} href={sourceLink}>
+	<SourceFileList
+		{files}
+		href={sourceLink}
+		relativeTo={unit.kind === 'service' ? 'src/services/' : ''}
+	>
 		{#snippet children(path)}
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
 		{/snippet}

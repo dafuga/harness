@@ -4,12 +4,14 @@
 		files,
 		label = 'Source files',
 		empty = 'No source files recorded at this revision.',
+		relativeTo = '',
 		href,
 		children
 	}: {
 		files: string[];
 		label?: string;
 		empty?: string;
+		relativeTo?: string;
 		href: (path: string) => string | undefined;
 		children: Snippet<[string]>;
 	} = $props();
@@ -19,9 +21,10 @@
 	<ul class="source-files" aria-label={label}>
 		{#each files as path, position (position)}
 			{@const url = href(path)}
-			{@const split = path.lastIndexOf('/')}
-			{@const folder = split < 0 ? '' : path.slice(0, split)}
-			{@const name = path.slice(split + 1)}
+			{@const shown = path.startsWith(relativeTo) ? path.slice(relativeTo.length) : path}
+			{@const split = shown.lastIndexOf('/')}
+			{@const folder = split < 0 ? '' : shown.slice(0, split)}
+			{@const name = shown.slice(split + 1)}
 			<li>
 				{#if url}<a href={url} target="_blank" rel="noreferrer" title={path} aria-label={path}>
 						{#if folder}<span class="source-folder">{folder}</span>{/if}<span class="source-name"

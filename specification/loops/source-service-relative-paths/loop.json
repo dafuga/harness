@@ -2,7 +2,7 @@
 	"name": "source-service-relative-paths",
 	"goal": "Hide the implied Services source root in labels while preserving full file identities",
 	"createdAt": "2026-10-23T15:16:09.999Z",
-	"updatedAt": "2026-10-23T15:16:11.479Z",
+	"updatedAt": "2026-10-23T15:18:14.183Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T15:18:13.032Z",
+			"evidence": "Immutable red checkpoint on310cb86db fails Source labels omit only the implied root; original destinations, row limits and code actions remain checked."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T15:18:14.183Z",
+			"evidence": "SourceFileList accepts an optional display prefix. EntitySource supplies src/services/ only for service implementation labels; original paths still drive titles, accessibility, links and actions."
 		},
 		{
 			"id": "green",
