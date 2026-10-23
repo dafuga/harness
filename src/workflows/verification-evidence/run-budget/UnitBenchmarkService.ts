@@ -3,7 +3,7 @@ export type { UnitBenchmark } from './UnitBenchmarkService.types';
 import { PerformanceProfileService } from '../../../services/verification-evidence/PerformanceProfileService';
 import { createHash } from 'node:crypto';
 import { fail } from '../../../core/development-tooling/errors';
-import type { Comparison } from '../../../core/development-tooling/comparisonTypes';
+
 import type { ComponentManifest, RuntimeKind } from '../../../core/development-tooling/unitTypes';
 import type { Workload } from '../../../core/verification-evidence/verifyTypes';
 import type { RuntimeResponse } from '../../../core/execution-runtimes/runtimeTypes';

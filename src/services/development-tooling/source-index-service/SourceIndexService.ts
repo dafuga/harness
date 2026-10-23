@@ -2,7 +2,6 @@ import type { SourceIndex, Parsed } from './SourceIndexService.types';
 export type { SourceIndex, Parsed } from './SourceIndexService.types';
 import { extname } from 'node:path';
 import type {
-	ExportedSymbol,
 	ResolvedReference,
 	SourceFile,
 	SourceTree,
@@ -19,7 +18,7 @@ import {
 	type SourceLanguage,
 	type SourceReference
 } from '../../../utils/development-tooling/scanImports';
-import { type SourceBlock } from '../../../utils/development-tooling/sourceBlocks';
+
 import { complexityCoverage } from './complexityCoverage';
 import { scanComponent } from './scanComponent';
 import { scanImports } from './scanImports';

@@ -22,7 +22,6 @@ import {
 	validateRequiredText,
 	writeLoop,
 	writeNewLoop,
-	type LoopInput,
 	type LoopState,
 	type LoopStatus,
 	type LoopStep
@@ -92,7 +91,7 @@ export async function completeLoopStep(input: CompleteLoopStepInput): Promise<Lo
 	if (state.enforceOrder && pending && pending.id !== step)
 		fail(`Complete loop step "${pending.id}" before "${step}".`);
 	await enforceRegressionStep(loopRoot(input), state, step);
-	await auditLoopCompletion(loopRoot(input), state, step);
+	await auditLoopCompletion(loopRoot(input), state);
 
 	const completedAt = timestamp(input.now);
 	Object.assign(item, { status: 'complete' as const, completedAt, evidence });
@@ -131,7 +130,7 @@ export function renderLoopStatus(status: LoopStatus): string {
 	return [...lines, ...status.state.steps.flatMap(renderStep)].join('\n');
 }
 
-async function auditLoopCompletion(root: string, state: LoopState, step: string): Promise<void> {
+async function auditLoopCompletion(root: string, state: LoopState): Promise<void> {
 	const final = state.steps.filter((candidate) => candidate.status === 'pending').length === 1;
 	if (state.completion && final)
 		await new TaskCompletionService(root).require({

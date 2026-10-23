@@ -4,12 +4,10 @@ import type { ImpactReport } from '../../../../../core/development-tooling/impac
 import type { ComponentManifest } from '../../../../../core/development-tooling/unitTypes';
 import type {
 	Measurement,
-	ScenarioResult,
-	VerificationProfile,
 	VerificationRecord
 } from '../../../../../core/verification-evidence/verificationTypes';
 import { BudgetLedgerRepository } from '../../../../../repositories/verification-evidence/BudgetLedgerRepository';
-import type { VerificationStoreRepository } from '../../../../../repositories/verification-evidence/VerificationStoreRepository';
+
 import type {
 	BudgetReport,
 	BudgetSubject
@@ -20,7 +18,7 @@ import { sdkPackage } from '../../../../../utils/development-tooling/buildStamp'
 import { sealRecord } from '../../../../../utils/sealRecord';
 import { emittedTargets, unitMeasurements } from '../../../../../utils/unitMeasurements';
 import { PerformanceEvidenceValidator } from '../../../../../validators/verification-evidence/PerformanceEvidenceValidator';
-import type { RevisionSide } from '../../../../loadRevisions';
+
 import type { Executed } from '../SnapshotRunService';
 import { recordedBuilds } from './recordedBuilds';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
