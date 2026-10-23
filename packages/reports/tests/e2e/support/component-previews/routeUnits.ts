@@ -1,6 +1,6 @@
 import type { HarnessUnit } from '../../../../src/models/Harness.types';
 import { ids, units } from '../../../../test/entityUnits';
-/** The two kinds the orders history has no unit of, so Shells and Models each open one. */
+/** The two kinds the orders history has no unit of, so Layouts and Models each open one. */
 export const routeIds = { shell: 'app.shell.orders-frame', model: 'app.model.order' };
 const card = units.find((unit) => unit.id === ids.card)!;
 const settings = units.find((unit) => unit.id === ids.settings)!;
@@ -19,7 +19,7 @@ export const routeUnits: HarnessUnit[] = [
 		id: routeIds.shell,
 		kind: 'layout',
 		title: 'OrdersFrame',
-		responsibility: 'Synthetic preview shell: frames the screens of the orders fixture.',
+		responsibility: 'Synthetic preview layout: frames the screens of the orders fixture.',
 		contract: {
 			inputs: [{ name: 'OrdersFrame.children', type: 'Snippet' }],
 			outputs: [{ name: 'OrdersFrame.markup', type: 'markup' }],

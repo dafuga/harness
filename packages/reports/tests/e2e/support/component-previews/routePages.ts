@@ -4,7 +4,7 @@ import { routeIds } from './routeUnits';
 import { text, type PreviewProps } from './shared';
 /** Where the route history is shown: the tip of its feature branch, where the explorer opens. */
 const branch = '/harness/branch/feature%2Forders';
-/** The entity each category opens on; Shells and Models open the synthetic route units. */
+/** The entity each category opens on; Layouts and Models open the synthetic route units. */
 const opened: Record<string, string> = {
 	pages: ids.page,
 	layouts: routeIds.shell,
