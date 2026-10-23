@@ -43,6 +43,11 @@ async function inspectConfigValues(page: Page, viewport: string, commit: string)
 async function configVariables(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	await expect(page.getByRole('table'), 'each source config gets its own table').toHaveCount(2);
+	for (const source of ['deliverySettings', 'orderSettings'])
+		await expect(
+			page.getByRole('heading', { level: 2, name: new RegExp(`^${source} \\d+$`) }),
+			'the table heading names its config source rather than the responsibility category'
+		).toBeVisible();
 	await expect(page.getByRole('table', { name: 'deliverySettings', exact: true })).toContainText(
 		'deliverySettings.enabled'
 	);
