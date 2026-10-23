@@ -99,6 +99,17 @@ console.log(JSON.stringify({
 }));
 `;
 
+const expected = {
+	planningAudit: 'accepted',
+	comparable: ['passed', 'incompatible', 'incompatible', 'incomplete'],
+	required: 1,
+	requested: true,
+	recorded: true,
+	media: { error: 'missing PNG signature' },
+	findings: ['missing-measurement', 'missing-measurement', 'missing-measurement'],
+	parsed: [true, true, true]
+};
+
 test('a packed consumer uses the verification contracts and evidence protocol', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-verification-api-'));
 	const tarball = join(root, 'harness.tgz');
@@ -135,17 +146,10 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	const scenario = await readFile('specification/scenarios/package-api.json', 'utf8');
 	const evidence = join(root, 'evidence');
 	const env = { HARNESS_EVIDENCE_DIR: evidence, TAKE_SCREENSHOT: '1' };
-	const run = await runCommand(['bun', 'consumer.ts', scenario], project, true, env);
-	expect(JSON.parse(run.stdout)).toEqual({
-		planningAudit: 'accepted',
-		comparable: ['passed', 'incompatible', 'incompatible', 'incomplete'],
-		required: 1,
-		requested: true,
-		recorded: true,
-		media: { error: 'missing PNG signature' },
-		findings: ['missing-measurement', 'missing-measurement', 'missing-measurement'],
-		parsed: [true, true, true]
-	});
+	for (const runner of ['bun', 'node']) {
+		const run = await runCommand([runner, 'consumer.ts', scenario], project, true, env);
+		expect(JSON.parse(run.stdout), runner).toEqual(expected);
+	}
 	expect(await readFile(join(evidence, 'out.txt'), 'utf8')).toBe('hello');
 	expect(await readFile(join(evidence, 'captures.ndjson'), 'utf8')).toContain('"file":"out.txt"');
 	await forwardProfiles(evidence);
