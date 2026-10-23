@@ -274,7 +274,7 @@
 		{
 			"from": "packages/reports/src/components/explorer-ui/SourceCodeAction.svelte",
 			"specifier": "./harness/HarnessAction.svelte",
-			"to": "packages/reports/src/components/explorer-ui/harness/HarnessAction.svelte",
+			"to": "packages/reports/src/components/explorer-ui/HarnessAction.svelte",
 			"reason": "The source reader renders this shared component at its registered implementation address."
 		},
 		{
@@ -298,7 +298,7 @@
 		{
 			"from": "packages/reports/src/components/explorer-ui/SourceViewer.svelte",
 			"specifier": "./harness/HarnessIcon.svelte",
-			"to": "packages/reports/src/components/explorer-ui/harness/HarnessIcon.svelte",
+			"to": "packages/reports/src/components/explorer-ui/HarnessIcon.svelte",
 			"reason": "The source reader renders this shared component at its registered implementation address."
 		},
 		{
@@ -308,37 +308,37 @@
 			"reason": "The source reader renders this shared component at its registered implementation address."
 		},
 		{
-			"from": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"from": "packages/reports/src/components/explorer-ui/EntitySource.svelte",
 			"specifier": "../SourceCodeAction.svelte",
 			"to": "packages/reports/src/components/explorer-ui/SourceCodeAction.svelte",
 			"reason": "The source reader renders this shared component at its registered implementation address."
 		},
 		{
-			"from": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"from": "packages/reports/src/components/explorer-ui/EntitySource.svelte",
 			"specifier": "../SourceFileList.svelte",
 			"to": "packages/reports/src/components/explorer-ui/SourceFileList.svelte",
 			"reason": "The source reader renders this shared component at its registered implementation address."
 		},
 		{
-			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
+			"from": "packages/reports/src/components/explorer-ui/ExplorerFrame.svelte",
 			"specifier": "./EntityMissing.svelte",
-			"to": "packages/reports/src/components/explorer-ui/harness/EntityMissing.svelte",
+			"to": "packages/reports/src/components/explorer-ui/EntityMissing.svelte",
 			"reason": "The source reader renders this shared component at its registered implementation address."
 		},
 		{
-			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
+			"from": "packages/reports/src/components/explorer-ui/ExplorerFrame.svelte",
 			"specifier": "../SourceDialog.svelte",
 			"to": "packages/reports/src/components/explorer-ui/SourceDialog.svelte",
 			"reason": "The source reader renders this shared component at its registered implementation address."
 		},
 		{
-			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerFrame.svelte",
+			"from": "packages/reports/src/components/explorer-ui/ExplorerFrame.svelte",
 			"specifier": "../../../lib/explorer-ui/stores/sourceReader.svelte",
 			"to": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
 			"reason": "Source sessions and category paths use the registered reader store without importing a screen-specific pane."
 		},
 		{
-			"from": "packages/reports/src/components/explorer-ui/harness/EntitySource.svelte",
+			"from": "packages/reports/src/components/explorer-ui/EntitySource.svelte",
 			"specifier": "../../../lib/explorer-ui/stores/sourceReader.svelte",
 			"to": "packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
 			"reason": "Source sessions and category paths use the registered reader store without importing a screen-specific pane."
@@ -374,8 +374,8 @@
 			"reason": "Checkpoint authoring reuses the shared accessible modal rather than a separate dialog primitive."
 		},
 		{
-			"from": "packages/reports/src/components/explorer-ui/harness/ExplorerTable.svelte",
-			"specifier": "../../shared-primitives/Modal.svelte",
+			"from": "packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
+			"specifier": "../shared-primitives/Modal.svelte",
 			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
 			"reason": "Configuration values use the registered shared read-only dialog."
 		}

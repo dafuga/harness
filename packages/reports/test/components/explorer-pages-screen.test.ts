@@ -6,7 +6,7 @@ import { withFocused } from '../entityStates';
 import { unit } from '../explorerFixture';
 import type { HarnessUnit } from '../../src/models/Harness.types';
 import { expect, test } from 'vitest';
-import ExplorerPagesScreen from '../../src/components/harness/ExplorerPagesScreen.svelte';
+import ExplorerPagesScreen from '../../src/components/explorer-ui/ExplorerPagesScreen.svelte';
 import { revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
 import { commits } from '../entityUnits';

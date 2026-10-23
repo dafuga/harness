@@ -1,6 +1,6 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import EntityRun from '../../src/components/harness/EntityRun.svelte';
+import EntityRun from '../../src/components/explorer-ui/EntityRun.svelte';
 import { entityBehavior } from '../../src/utils/entityBehavior';
 import { answers, view } from '../entityPlaces';
 import { verdicts, words } from '../entityRender';

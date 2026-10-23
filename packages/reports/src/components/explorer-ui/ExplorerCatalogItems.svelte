@@ -4,8 +4,8 @@
 	import type { CatalogRow } from '../../utils/entityCatalog';
 	import type { EntityLens, EntityNav } from '../../utils/entityLens';
 	import ExplorerModuleCard from './ExplorerModuleCard.svelte';
-	import ExplorerTable from '../harness/ExplorerTable.svelte';
-	import HarnessAction from '../harness/HarnessAction.svelte';
+	import ExplorerTable from './ExplorerTable.svelte';
+	import HarnessAction from './HarnessAction.svelte';
 	let {
 		category,
 		rows,

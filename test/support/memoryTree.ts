@@ -122,26 +122,36 @@ export function relocatedSource(
 export function helperMoveGaps(
 	root: string,
 	moves: Array<{ unit: string; name: string; to: string; ownerSource: string; definition: string }>,
-	followUps: Array<{ unit: string; name: string; definition: string }>
+	followUps: Array<{
+		unit: string;
+		name: string;
+		definition: string;
+		to?: string;
+		ownerSource?: string;
+	}>
 ): string[] {
 	const gaps: string[] = [];
 	for (const move of moves) {
-		const target = resolve(root, move.to);
+		const current = {
+			...move,
+			...followUps.find((item) => item.unit === move.unit && item.name === move.name)
+		};
+		const location = current.to;
+		const owner = current.ownerSource;
+		const target = resolve(root, location);
 		if (!existsSync(target)) {
 			gaps.push(`${move.name}: owner-local source is missing`);
 			continue;
 		}
-		if (posix.dirname(move.to) !== posix.dirname(move.ownerSource))
+		if (posix.dirname(location) !== posix.dirname(owner))
 			gaps.push(`${move.name}: different owner folder`);
-		if (!existsSync(resolve(root, move.ownerSource)))
-			gaps.push(`${move.name}: owner source is missing`);
-		const reviewed = followUps.find((item) => item.unit === move.unit && item.name === move.name);
-		if (movedDefinition(move.to, move.name) !== (reviewed?.definition ?? move.definition))
+		if (!existsSync(resolve(root, owner))) gaps.push(`${move.name}: owner source is missing`);
+		if (movedDefinition(location, move.name) !== current.definition)
 			gaps.push(`${move.name}: definition changed`);
 		const unit = JSON.parse(
 			readFileSync(resolve(root, `specification/units/${move.unit}.json`), 'utf8')
 		) as ComponentManifest;
-		if (unit.id !== move.unit || !unit.owns.source.includes(move.to))
+		if (unit.id !== move.unit || !unit.owns.source.includes(location))
 			gaps.push(`${move.name}: registered identity lost`);
 	}
 

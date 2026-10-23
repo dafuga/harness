@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExplorerStylesScreen from '../../../../../../components/explorer-ui/harness/ExplorerStylesScreen.svelte';
+	import ExplorerStylesScreen from '../../../../../../components/explorer-ui/ExplorerStylesScreen.svelte';
 	import HarnessScreen from '../../../../../../components/explorer-ui/HarnessScreen.svelte';
 </script>
 

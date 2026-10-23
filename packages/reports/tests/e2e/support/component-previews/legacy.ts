@@ -1,7 +1,7 @@
 import { children, noop } from './shared';
 import type { PreviewCases } from './shared';
 import * as d from './explorerData';
-import ExplorerContent from '../../../../src/components/harness/ExplorerContent.svelte';
+import ExplorerContent from '../../../../src/components/explorer-ui/ExplorerContent.svelte';
 const components = '/branch/feature%2Forders/components';
 const navbar = {
 	base: '/harness',

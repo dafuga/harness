@@ -44,4 +44,4 @@ export function impactView(report: ImpactReport, base: string | null): SourceImp
 }
 
 export { storedSide } from '../../services/explorer-ui/revision-detail-service/source-impact-service/sideImpact';
-export { sideImpact } from '../../../packages/reports/src/components/harness/harness-compare/sideImpact';
+export { sideImpact } from '../../../packages/reports/src/components/explorer-ui/harness-compare/sideImpact';

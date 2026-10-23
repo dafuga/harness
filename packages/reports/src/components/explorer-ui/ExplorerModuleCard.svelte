@@ -11,8 +11,8 @@
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../ExplorerUsage.svelte';
-	import EntityLink from './harness/EntityLink.svelte';
-	import HarnessIcon from './harness/HarnessIcon.svelte';
+	import EntityLink from './EntityLink.svelte';
+	import HarnessIcon from './HarnessIcon.svelte';
 	let {
 		row,
 		nav,

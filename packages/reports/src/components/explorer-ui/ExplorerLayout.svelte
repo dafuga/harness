@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HarnessNavbarInput } from '../../utils/explorer-ui/harnessShell';
-	import HarnessHeader from './harness/HarnessHeader.svelte';
+	import HarnessHeader from './HarnessHeader.svelte';
 	let {
 		base,
 		problem,

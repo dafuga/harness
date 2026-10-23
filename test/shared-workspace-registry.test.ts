@@ -118,6 +118,27 @@ test('declaring those imports changes them alone: no other reference or uncertai
 }, 60_000);
 
 test('every active visual module has its own required capture state', () => {
+	const redundant = [...loaded.index.files.keys()].filter((path) =>
+		/\/components\/(?:explorer-ui\/)?harness\//.test(path)
+	);
+	expect(
+		redundant,
+		'Components use their responsibility folder without a redundant harness namespace'
+	).toEqual([]);
+	const owned = loaded.stored
+		.filter((unit) => unit.status === 'active')
+		.flatMap((unit) => unit.owns.source);
+	expect(owned.filter((path) => /\/components\/(?:explorer-ui\/)?harness\//.test(path))).toEqual(
+		[]
+	);
+	const entries = loaded.stored
+		.filter((unit) => unit.status === 'active')
+		.map((unit) => unit.runtime.entry);
+	expect(
+		entries.some(
+			(path) => path?.includes('/components/harness/') || path?.includes('/explorer-ui/harness/')
+		)
+	).toBe(false);
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
 		.filter((unit) => {

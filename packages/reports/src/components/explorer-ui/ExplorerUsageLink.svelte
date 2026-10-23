@@ -3,7 +3,7 @@
 	import { catalogShot } from '../../utils/entityScreens';
 	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../utils/entityLens';
 	import { tooltipPlace } from '../../utils/tooltipPlace';
-	import EntityLink from '../harness/EntityLink.svelte';
+	import EntityLink from './EntityLink.svelte';
 	let {
 		entity,
 		nav,

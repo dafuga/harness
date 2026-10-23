@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
-	import HarnessAction from './harness/HarnessAction.svelte';
+	import HarnessAction from './HarnessAction.svelte';
 	let {
 		entity,
 		nav,

@@ -2,7 +2,7 @@
 	"name": "layout-catalog",
 	"goal": "Layouts contains reusable visual frames and shows each child slot in the shared title, image and page-usage card",
 	"createdAt": "2026-10-23T09:21:46.411Z",
-	"updatedAt": "2026-10-23T10:03:48.081Z",
+	"updatedAt": "2026-10-23T10:47:31.615Z",
 	"template": "visual-change",
 	"templateLineage": ["feature", "visual-change"],
 	"enforceOrder": false,
@@ -38,7 +38,9 @@
 		{
 			"id": "browser-proof",
 			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T10:47:31.615Z",
+			"evidence": "Retained responsive feature captures at fe9c84462 and refreshed layout list/detail/history captures at 6371b8b14 show marked child slots, shared cards and page links. Integrated 7df30b1d3 with 691 Reports tests, all owning typechecks and registry guards passing. Final frozen-tree capture and merged-main readback follow; full CLI/native suites remain deferred."
 		}
 	],
 	"evaluators": [

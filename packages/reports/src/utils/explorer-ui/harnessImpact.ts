@@ -30,4 +30,4 @@ export interface ComparedSides {
 export {
 	harnessImpact,
 	comparedSides
-} from '../../components/explorer-ui/harness/harness-compare/harnessImpact';
+} from '../../components/explorer-ui/harness-compare/harnessImpact';

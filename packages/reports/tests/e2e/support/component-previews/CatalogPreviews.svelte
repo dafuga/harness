@@ -24,7 +24,7 @@
 		);
 	// What the explorer draws inside its content, as it is drawn there.
 	const explorer =
-		Boolean(unit.source?.includes('/components/explorer-ui/harness/')) ||
+		Boolean(unit.source?.includes('/components/explorer-ui/')) ||
 		[
 			'explorer-catalog-items',
 			'explorer-function-card',

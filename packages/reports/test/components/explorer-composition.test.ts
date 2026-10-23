@@ -63,7 +63,7 @@ const page = (category: string, view: string) =>
 	`${routes}/branch/[branch]/[...at]/${category}${view}/+page.svelte`;
 
 test('the host of a screen names no renderer, not even to read the type of its props', () => {
-	const host = `${components}/harness/HarnessConsole.svelte`;
+	const host = `${components}/explorer-ui/HarnessConsole.svelte`;
 	// With type-only imports counted too: a renderer named for its props would still be an edge.
 	expect(mounts(host, false)).toEqual(['ExplorerLayout', 'LoadingState']);
 	expect(mounts(`${components}/explorer-ui/ExplorerLayout.svelte`, false)).toEqual([
@@ -79,7 +79,7 @@ test('the renderer of any screen is named only where the screen is not known', (
 		(path) => isComponent(path) && mounts(path, false).includes('ExplorerContent')
 	);
 	expect(generic.sort()).toEqual([
-		entry(`${components}/harness/HarnessShell.svelte`),
+		entry(`${components}/explorer-ui/HarnessShell.svelte`),
 		`${routes}/[...view]/+page.svelte`
 	]);
 });
