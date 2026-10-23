@@ -83,6 +83,7 @@ const summary = (whole: string) => /<summary\b.*?<\/summary>/s.exec(whole)?.[0] 
 const text = (markup: string): string =>
 	markup
 		.replace(/<!--.*?-->/gs, '')
+		.replace(/<span class="source-(?:folder|name)(?: [^"]*)?"[^>]*>([^<]*)<\/span>/g, '$1')
 		.replace(/<[^>]+>/g, ' ')
 		.replace(/\s+/g, ' ');
 
