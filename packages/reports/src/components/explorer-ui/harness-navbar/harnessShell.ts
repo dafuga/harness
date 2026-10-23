@@ -17,10 +17,10 @@ const labels: Array<[ExplorerCategory | 'styles', string]> = [
 	['pages', 'Pages'],
 	['shells', 'Shells'],
 	['components', 'Components'],
+	['models', 'Models'],
+	['services', 'Services'],
 	['functions', 'Helpers'],
 	['configs', 'Configs'],
-	['services', 'Services'],
-	['models', 'Models'],
 	['styles', 'Styles'],
 	['platforms', 'Platforms']
 ];
