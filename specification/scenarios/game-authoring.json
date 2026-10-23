@@ -261,6 +261,62 @@
 			"title": "3d returns to the game project catalog",
 			"coverage": "required",
 			"units": ["desktop.component.nav-bar"]
+		},
+		{
+			"id": "checkpoint-map",
+			"title": "checkpoint map",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-view-fields",
+				"desktop.component.game-graph"
+			]
+		},
+		{
+			"id": "checkpoint-modal",
+			"title": "checkpoint modal",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image"
+			]
+		},
+		{
+			"id": "checkpoint-image-first",
+			"title": "checkpoint image first",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image"
+			]
+		},
+		{
+			"id": "checkpoint-image-review",
+			"title": "checkpoint image review",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image"
+			]
+		},
+		{
+			"id": "checkpoint-advanced-rules",
+			"title": "Expanded checkpoint rules",
+			"coverage": "required",
+			"units": [
+				"desktop.page.game",
+				"desktop.component.game-workspace",
+				"desktop.component.game-checkpoint-pane",
+				"desktop.component.game-checkpoint-image",
+				"desktop.component.game-checkpoint-editor"
+			]
 		}
 	],
 	"viewports": [
@@ -288,6 +344,14 @@
 			"target": "bun ../../test/verification-output.ts playwright tests/e2e/game-native.spec.ts",
 			"cwd": "packages/desktop",
 			"timeoutMs": 300000
+		},
+		{
+			"id": "browser-checkpoint-review",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/game-authoring.spec.ts -g 'game authoring exposes independent mechanics and executable checkpoint graph'",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
 		}
 	],
 	"evidence": [
@@ -383,6 +447,35 @@
 			"id": "game-native-startup",
 			"kind": "benchmark",
 			"states": ["2d-creation", "3d-creation"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		},
+		{
+			"id": "checkpoint-modal-screens",
+			"kind": "screenshot",
+			"states": [
+				"checkpoint-map",
+				"checkpoint-modal",
+				"checkpoint-image-first",
+				"checkpoint-image-review",
+				"checkpoint-advanced-rules"
+			],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "full-page",
+			"required": true
+		},
+		{
+			"id": "checkpoint-modal-workload",
+			"kind": "benchmark",
+			"states": [
+				"checkpoint-map",
+				"checkpoint-modal",
+				"checkpoint-image-first",
+				"checkpoint-image-review",
+				"checkpoint-advanced-rules"
+			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true
 		}

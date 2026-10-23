@@ -73,6 +73,11 @@ export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 		title: 'Models',
 		one: 'Model',
 		subtitle: 'The data types and schemas used by the app.'
+	},
+	platforms: {
+		title: 'Platforms',
+		one: 'Platform',
+		subtitle: 'Build and deployment configuration for each app platform.'
 	}
 };
 

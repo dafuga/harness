@@ -8,14 +8,17 @@
 	import type { Checkpoint, GameRun } from '../../../../game/src/models/game-authoring/Game.types';
 	/**
 	 * The checkpoint graph of one view. Checkpoints stay the source of truth: nodes and edges are
-	 * rebuilt from them, and every drag, connection, addition or removal reaches the parent as a new
-	 * checkpoint list, never as state kept here. An edge runs from a prerequisite to its dependant.
+	 * rebuilt from them, and every drag or connection reaches the parent as a new checkpoint list,
+	 * never as state kept here. An edge runs from a prerequisite to its dependant. Clicking a
+	 * checkpoint, or Enter on a focused one, opens it through `select`; Add hands the parent a new
+	 * checkpoint through `create`.
 	 */
 	let {
 		checkpoints,
 		run,
 		selected,
 		select,
+		create,
 		change,
 		readonly = false
 	}: {
@@ -23,13 +26,13 @@
 		run: GameRun;
 		selected: string | null;
 		select: (id: string) => void;
+		create: (node: Checkpoint) => void;
 		change: (nodes: Checkpoint[]) => void;
 		readonly?: boolean;
 	} = $props();
 	let nodes = $state.raw<Node[]>([]);
 	let edges = $state.raw<Edge[]>([]);
 	const done = $derived(checkpoints.filter((c) => run.completed.includes(c.id)).length);
-	const current = $derived(checkpoints.find((c) => c.id === selected));
 	/** Reads only props and writes only the flow, so a parent update never feeds back into itself. */
 	$effect.pre(() => {
 		const ids = new Set(checkpoints.map((c) => c.id));
@@ -88,33 +91,34 @@
 		const ids = new Set(checkpoints.map((c) => c.id));
 		let n = checkpoints.length + 1;
 		while (ids.has(`checkpoint-${n}`)) n++;
-		const id = `checkpoint-${n}`;
-		const anchor = current ?? checkpoints.at(-1);
+		const anchor = checkpoints.at(-1);
 		const [x, y] = anchor ? [anchor.x + 260, anchor.y] : [80, 80];
-		const node = { id, title: `Checkpoint ${n}`, description: '', x, y };
-		change([...checkpoints, { ...node, requires: [], conditions: [], actions: [] }]);
-		select(id);
+		const node = { id: `checkpoint-${n}`, title: `Checkpoint ${n}`, description: '', x, y };
+		create({ ...node, requires: [], conditions: [], actions: [] });
 	}
-	function remove() {
-		const id = current?.id;
-		if (!id) return;
-		const rest = checkpoints
-			.filter((c) => c.id !== id)
-			.map((c) => ({ ...c, requires: c.requires.filter((r) => r !== id) }));
-		change(rest);
-		if (rest[0]) select(rest[0].id);
+	/** Enter on a focused checkpoint opens it, as a click does; the library keeps its own keys. */
+	function openOnEnter(canvas: HTMLElement) {
+		const keydown = (event: KeyboardEvent) => {
+			const node = (event.target as Element).closest('.svelte-flow__node');
+			const id = node?.getAttribute('data-id');
+			if (event.key === 'Enter' && id) select(id);
+		};
+		canvas.addEventListener('keydown', keydown);
+		return { destroy: () => canvas.removeEventListener('keydown', keydown) };
 	}
 </script>
 
 <section class="game-graph" data-harness-component="game-graph" aria-label="Checkpoint graph">
 	<header>
-		<p><strong>{done}</strong> of {checkpoints.length} checkpoints complete</p>
+		<p>
+			<strong>{done}</strong> of {checkpoints.length} checkpoints complete
+			<span>· Select a checkpoint to {readonly ? 'view' : 'edit'} it</span>
+		</p>
 		{#if !readonly}
-			<button type="button" onclick={add}>Add checkpoint</button>
-			<button type="button" disabled={!current} onclick={remove}>Delete checkpoint</button>
+			<button type="button" onclick={add}><span aria-hidden="true">+</span> Add checkpoint</button>
 		{/if}
 	</header>
-	<div class="canvas">
+	<div class="canvas" use:openOnEnter>
 		<SvelteFlow
 			bind:nodes
 			bind:edges
@@ -141,9 +145,7 @@
 <style>
 	.game-graph {
 		display: grid;
-		grid-template-rows: auto minmax(0, 1fr);
-		gap: 16px;
-		height: 100%;
+		gap: 12px;
 	}
 	header {
 		display: flex;
@@ -159,12 +161,16 @@
 	header strong {
 		color: var(--gold);
 	}
+	header p span {
+		font-size: 13px;
+	}
 	button:hover:not(:disabled) {
 		border-color: var(--gold);
 		color: var(--gold);
 	}
+	/* The map is the page: tall enough to work in, short enough to stay in sight with its controls. */
 	.canvas {
-		min-height: 380px;
+		height: clamp(380px, 65dvh, 880px);
 		overflow: hidden;
 		border: 1px solid var(--line);
 		border-radius: 12px;

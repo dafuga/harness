@@ -10,6 +10,7 @@ export function correctedLocation(
 	at: ExplorerLocation,
 	entities: Array<Pick<ExplorerEntity, 'id' | 'category'> & Partial<Pick<ExplorerEntity, 'unit'>>>
 ): ExplorerLocation | null {
+	if (at.category === 'platforms') return null;
 	if (at.category === 'functions' && at.helper && !at.entity) {
 		const owners = helperOwners(at, entities);
 		return owners.length === 1 ? { ...at, entity: owners[0].id } : null;

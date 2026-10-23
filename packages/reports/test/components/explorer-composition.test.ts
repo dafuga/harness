@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { expect, test } from 'vitest';
-import { explorerCategories } from '../../../../src/utils/explorerRoute';
+import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
 import { resolveImport } from '../../../../src/utils/resolveImport';
 import { scanImports } from '../../../../src/services/source-index-service/scanImports';
 

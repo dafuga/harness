@@ -3,6 +3,7 @@ import { test } from 'vitest';
 import type { CatalogEntity, ProjectSnapshot } from '../../src/models/Desktop.types';
 import { workspaceSearch } from '../../src/components/nav-bar/workspaceSearch';
 import { explorerName } from '../../../reports/src/utils/explorerName';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 
 /**
  * The search of the top bar holds the entities of exactly the shown project and revision, each at
@@ -56,14 +57,15 @@ test('while a project or revision is read, nothing of the one shown before is of
 	}
 });
 
-test('a listed result opens in the project, branch and commit it was read at', () => {
-	const atTip = read(tip);
-	expect(atTip.at(atTip.entries![0])).toBe(`${alpha}/shells/app.shell.order-frame`);
-	const pinned = read(earlier, true);
-	expect(pinned.at(pinned.entries![0])).toBe(
-		`${alpha}/commit/${earlier}/shells/app.shell.order-frame`
-	);
-});
+test('a listed result opens in the project, branch and commit it was read at', () =>
+	measureWorkload('desktop.function.workspace-search', 'workspace-result-routing', () => {
+		const atTip = read(tip);
+		expect(atTip.at(atTip.entries![0])).toBe(`${alpha}/shells/app.shell.order-frame`);
+		const pinned = read(earlier, true);
+		expect(pinned.at(pinned.entries![0])).toBe(
+			`${alpha}/commit/${earlier}/shells/app.shell.order-frame`
+		);
+	}));
 
 test('a result the shown entries did not list is refused, also one equal to a listed result', () => {
 	const before = read(tip);
@@ -73,4 +75,7 @@ test('a result the shown entries did not list is refused, also one equal to a li
 	expect(read(tip, false, 'local-beta').at(before.entries![0])).toBeNull();
 	const loading = workspaceSearch({ snapshot: snapshot(tip), pinned: false, busy: true });
 	expect(loading.at(before.entries![0])).toBeNull();
+	const listed = now.entries![0];
+	listed.category = 'platforms';
+	expect(now.at(listed)).toBeNull();
 });

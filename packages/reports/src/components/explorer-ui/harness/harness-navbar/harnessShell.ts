@@ -21,7 +21,8 @@ const labels: Array<[ExplorerCategory | 'styles', string]> = [
 	['configs', 'Configs'],
 	['services', 'Services'],
 	['models', 'Models'],
-	['styles', 'Styles']
+	['styles', 'Styles'],
+	['platforms', 'Platforms']
 ];
 
 function viewed(scope: ExplorerScope): string {

@@ -35,6 +35,7 @@
 	type Column = [string, ((row: CatalogRow) => string) | null];
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
 	const columns: Record<Kind, Column[]> = {
+		platforms: [],
 		shells: [
 			['Used on', null],
 			['Contains', (row) => listed(row.contains, 2)]

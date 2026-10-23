@@ -78,18 +78,20 @@ export async function openShellPage(
 export async function captureShell(
 	page: Page,
 	home: string,
-	shown: { state: string; viewport: string }
+	shown: { state: string; viewport: string; slot?: string }
 ): Promise<void> {
 	if (!evidenceRequested()) return;
 	const served = await new BuildIdentityService().identify(home);
 	const revision = process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40);
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
 	const bytes = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+	const { state, viewport, slot = 'screens' } = shown;
 	recordCapture(
 		{
-			evidence: 'screens',
+			evidence: slot,
 			kind: 'screenshot',
-			...shown,
+			state,
+			viewport,
 			file: `${shown.state}-${shown.viewport}.png`,
 			mediaType: 'image/png',
 			provenance: 'actual-capture',

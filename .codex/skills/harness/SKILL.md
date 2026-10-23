@@ -150,6 +150,8 @@ Use descriptive behavior titles, never numbered placeholders. Choose one represe
 
 ## Route identity and UI state
 
+When changing explorer routes or tab canonicalization, run `test/utils/explorer-route.test.ts`, `test/utils/explorer-legacy.test.ts` and `test/utils/console-canonical.test.ts` together, alongside the affected public-entry tests. Check page-specific aliases and retained contracts for other module types against the selected revision; keep both assertions.
+
 When changing URL structure or moving tabs between query strings and paths, key the rendered page by its logical entity, helper, branch, revision and section; tab or canonical-alias changes must preserve the frame. Extend the existing host browser matrix to assert DOM continuity across tabs, refresh and correctly scoped links. Capture after canonical navigation, fonts and layout settle, and inspect the original images; a passing text assertion alone does not establish a ready screenshot.
 
 ## Shared Catalog Interaction Review

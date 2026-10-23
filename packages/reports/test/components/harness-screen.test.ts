@@ -1,13 +1,13 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { explorerCategories } from '../../../../src/utils/explorerRoute';
+import { explorerEntityCategories } from '../../../../src/utils/explorerRoute';
 
 const routes = join(import.meta.dirname, '../../src/routes/harness/branch/[branch]/[...at]');
 
 test('every category has a page of its own for its catalog and for each view of an entity', () => {
 	const screens = ['', '/[entity]', '/[entity]/details', '/[entity]/history'];
-	for (const category of explorerCategories) {
+	for (const category of explorerEntityCategories) {
 		for (const screen of screens) {
 			const file = join(routes, `${category}${screen}`, '+page.svelte');
 			expect([file.slice(routes.length), existsSync(file)]).toEqual([
@@ -16,4 +16,9 @@ test('every category has a page of its own for its catalog and for each view of 
 			]);
 		}
 	}
+});
+
+test('platform configuration has catalog and detail pages without source-entity history pages', () => {
+	for (const screen of ['', '/[entity]'])
+		expect(existsSync(join(routes, `platforms${screen}`, '+page.svelte'))).toBe(true);
 });
