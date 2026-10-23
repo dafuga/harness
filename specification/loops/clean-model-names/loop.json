@@ -2,11 +2,9 @@
 	"name": "clean-model-names",
 	"goal": "Shared type-only models keep their identities and use clean names across cards, usage links and detail headings.",
 	"createdAt": "2026-10-23T17:52:00.241Z",
-	"updatedAt": "2026-10-23T17:56:06.864Z",
+	"updatedAt": "2026-10-23T17:57:43.778Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -34,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:57:39.522Z",
+			"evidence": "The shared naming helper strips only terminal .types from model stems before resolving names. Keep source filenames, IDs and existing catalog eligibility. Shared naming rules teach the same distinction in generated app and library guidance."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:57:43.778Z",
+			"evidence": "Record 0213ba41 at 4505baad passes the same unchanged guide, template, naming and three-viewport mixed-card command as red 08a641ea; 174 original screenshots and 360 measured observations retained. Full CLI/native verification remains explicitly deferred."
 		},
 		{
 			"id": "verify",
