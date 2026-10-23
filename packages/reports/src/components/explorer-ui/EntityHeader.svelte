@@ -2,10 +2,7 @@
 	import type { Place } from "./EntityHeader.types";
 
 	import type { Snippet } from 'svelte';
-	import type {
-		ExplorerEntity,
-		ExplorerLocation
-	} from '../../models/explorer-ui/Explorer.types';
+	import type { ExplorerEntity, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import { explorerCategory } from '../../utils/explorer-ui/explorerCategory';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
@@ -17,7 +14,8 @@
 		entity,
 		owner,
 		nav,
-		preview
+		preview,
+		usesAvailable = true
 	}: {
 		entity: ExplorerEntity;
 		/** The sole owner of a private function, when the revision records one. */
@@ -25,6 +23,8 @@
 		nav: EntityNav;
 		/** What stays between the identity and the tabs on every tab: the screenshots of a component. */
 		preview?: Snippet;
+		/** A selected helper exposes Uses only when a helper call is recorded. */
+		usesAvailable?: boolean;
 	} = $props();
 	let label = $derived(entityLabels[entity.category]);
 	let privateFunction = $derived(
@@ -58,7 +58,8 @@
 			.filter(
 				(label) =>
 					(entity.category !== 'pages' || label !== 'Used In') &&
-					(label !== 'Audio' || entity.category === 'components')
+					(label !== 'Audio' || entity.category === 'components') &&
+					(label !== 'Uses' || usesAvailable)
 			)
 			.map((label) => {
 				const title =

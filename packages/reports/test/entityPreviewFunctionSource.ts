@@ -50,7 +50,12 @@ export async function testFile(page: Page, id: string, commit: string): Promise<
 	await expect(dialog).toHaveCount(0);
 }
 
-async function sourceReadMeasurements(page: Page, started: number, commit: string): Promise<void> {
+async function sourceReadMeasurements(
+	page: Page,
+	started: number,
+	commit: string,
+	id: string
+): Promise<void> {
 	const observed = await page.evaluate(
 		(start) => ({
 			ms: performance.now() - start,

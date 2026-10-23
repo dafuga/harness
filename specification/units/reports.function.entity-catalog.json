@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-catalog",
 	"kind": "function",
 	"title": "Entity collection rows",
-	"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner.",
+	"responsibility": "Lists concrete instantiated classes and pure helper exports; collections require shared owners, while relationships retain classes private to one owner. Relationship cards include pure single-consumer callees, while the public Helpers collection retains its shared eligibility rule.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
