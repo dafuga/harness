@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import { runCommand, runHarness } from './support/cli';
+import { runHarness } from './support/cli';
 const homes: string[] = [];
 afterEach(async () => {
 	await Promise.all(homes.splice(0).map((p) => rm(p, { recursive: true, force: true })));
@@ -33,13 +33,30 @@ test('resources status reports overall CPU, available cores, memory and the shar
 	expect(status.jobs).toEqual([]);
 }, 15000);
 test.each(['.', 'packages/desktop'])(
-	'managed %s scripts forward caller arguments',
+	'managed %s scripts forward caller arguments within a bounded lease',
 	async (workspace) => {
 		const { version } = JSON.parse(
 			await readFile(join(process.cwd(), 'node_modules/prettier/package.json'), 'utf8')
 		) as { version: string };
-		const result = await runCommand(
-			['bun', 'run', 'format:check', '--version'],
+		// Bound this fixture's parent lease so argument forwarding does not request whole-host capacity.
+		const result = await runHarness(
+			[
+				'resources',
+				'run',
+				'--cpus',
+				'1',
+				'--memory-mib',
+				'1024',
+				'--wait-timeout',
+				'5000',
+				'--timeout',
+				'5000',
+				'--',
+				'bun',
+				'run',
+				'format:check',
+				'--version'
+			],
 			join(process.cwd(), workspace),
 			false,
 			await environment()
