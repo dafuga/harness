@@ -24,6 +24,10 @@ test.each([
 	['font: inherit', false],
 	['font-family: monospace', true],
 	['font-weight: 600', true],
+	['font-weight: var(--hx-style-weight-semibold)', false],
+	['border: 1px solid var(--hx-line)', true],
+	['border-radius: 50%', true],
+	['transition: color .15s ease', true],
 	['box-shadow: 0 4px 8px black', true],
 	['opacity: .5', true],
 	['background: color-mix(in srgb, var(--hx-gold) 20%, transparent)', false]
