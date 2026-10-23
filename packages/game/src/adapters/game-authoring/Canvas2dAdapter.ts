@@ -17,6 +17,7 @@ export function create2d(canvas: HTMLCanvasElement): FrameSource {
 export function draw2d(canvas: HTMLCanvasElement, run: GameRun, view: GameView): void {
 	const ctx = canvas.getContext('2d');
 	if (!ctx) return;
+	if (view.world) return drawLevel(ctx, canvas, run, view.world);
 	const w = canvas.width,
 		h = canvas.height;
 	ctx.fillStyle = '#152c29';
@@ -59,4 +60,37 @@ export function draw2d(canvas: HTMLCanvasElement, run: GameRun, view: GameView):
 	ctx.font = '16px sans-serif';
 	ctx.fillText(view.title, 24, 32);
 	canvas.dataset.ready = 'true';
+}
+
+function drawLevel(
+	ctx: CanvasRenderingContext2D,
+	canvas: HTMLCanvasElement,
+	run: GameRun,
+	world: NonNullable<GameView['world']>
+) {
+	const scale = Math.min(canvas.width / (world.width + 2), canvas.height / (world.depth + 2));
+	const left = (canvas.width - world.width * scale) / 2,
+		top = (canvas.height - world.depth * scale) / 2;
+	ctx.fillStyle = '#152c29';
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	ctx.fillStyle = '#476755';
+	ctx.fillRect(left, top, world.width * scale, world.depth * scale);
+	for (const o of world.objects) {
+		ctx.fillStyle = o.kind === 'goal' ? '#f5d77d' : '#c7995d';
+		ctx.fillRect(
+			left + (o.x - o.width / 2) * scale,
+			top + (o.z - o.depth / 2) * scale,
+			o.width * scale,
+			o.depth * scale
+		);
+	}
+	ctx.fillStyle = '#acd8ee';
+	ctx.fillRect(
+		left + (Number(run.state.x) - 0.2) * scale,
+		top + (Number(run.state.y) - 0.2) * scale,
+		0.4 * scale,
+		0.4 * scale
+	);
+	canvas.dataset.ready = 'true';
+	canvas.dataset.dimension = '2d';
 }
