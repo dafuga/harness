@@ -24,6 +24,8 @@ export interface UnitMetadata {
 	/** Committed initializer expressions, never values read from the host environment. */
 	configValues?: ConfigVariable[];
 	sourceFiles?: SourceFileSnapshot[];
+	/** Associated test snapshots derived from direct imports or authored scenarios at this revision. */
+	testFiles?: SourceFileSnapshot[];
 	catalog?: { visibility: 'public' | 'internal' };
 	group?: { id: string; title: string };
 	documentation?: UnitDocumentation;

@@ -2,7 +2,7 @@
 	"name": "entity-source-tests",
 	"goal": "Show source and associated test files from the selected revision with working code viewing",
 	"createdAt": "2026-10-23T10:20:13.649Z",
-	"updatedAt": "2026-10-23T11:05:26.810Z",
+	"updatedAt": "2026-10-23T11:18:34.065Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:18:34.065Z",
+			"evidence": "Immutable f6feade5d6 at 13a876b75 fails the real associated-test archive, Source list and admission assertions, retaining before images for all seven kinds at three widths."
 		},
 		{
 			"id": "implement",

@@ -3,7 +3,7 @@
 	"id": "reports.store.source-reader",
 	"kind": "store",
 	"title": "sourceReader",
-	"responsibility": "Owns revision-bound archived source access, category paths, selection, loading, errors and cancellation.",
+	"responsibility": "Reads revision-bound implementation and test archives, managing file selection, loading, errors and cancellation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -15,6 +15,7 @@
 		"symbols": [
 			"createSourceReaderStore",
 			"implementationFiles",
+			"testFiles",
 			"archivedSource",
 			"SourceState",
 			"SourceFiles",
@@ -36,7 +37,7 @@
 			{
 				"name": "archivedSource.unit",
 				"type": "HarnessUnit",
-				"description": "The selected revision’s owned files and source snapshots."
+				"description": "The selected revision’s implementation and test snapshots."
 			},
 			{
 				"name": "archivedSource.mediaBase",
@@ -52,6 +53,11 @@
 				"name": "implementationFiles.unit",
 				"type": "HarnessUnit",
 				"description": "A source-owning unit with optional responsibility category."
+			},
+			{
+				"name": "testFiles.unit",
+				"type": "HarnessUnit",
+				"description": "Selected revision unit with associated test snapshots; paths are read by index without caller iteration."
 			}
 		],
 		"outputs": [
@@ -69,6 +75,11 @@
 				"name": "archivedSource",
 				"type": "{ files: SourceFiles; read: SourceRead; empty?: string }",
 				"description": "Reads only archived committed text; missing source is an explicit gap and never uses a working copy."
+			},
+			{
+				"name": "testFiles",
+				"type": "string[]",
+				"description": "Associated test paths, independently of the implementation category folder."
 			}
 		],
 		"errors": []

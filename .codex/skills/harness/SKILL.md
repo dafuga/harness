@@ -245,3 +245,5 @@ Component implementations belong directly in their responsibility category, with
 For structural relocations, rewrite resolved import addresses without normalizing unrelated URL literals. Directory URLs retain their trailing slash. Review the complete URL diff and run the existing catalog-listing and preview-binding tests alongside the visual catalog before sealing final evidence.
 
 When integrating main during a relocation, reconcile the latest landed definitions and adjust newly added imports and explicit reference origins for their new depth. Preserve every landed feature and assertion; verify the final source bodies against that main before freezing test inputs and final evidence.
+
+Source tabs list implementation files, sibling type files and associated tests from the selected revision. Resolve tests from direct source imports or authored scenario coverage; retain their committed bytes and gaps, and reuse the shared file list and code viewer. Never substitute working-copy or newer test contents.

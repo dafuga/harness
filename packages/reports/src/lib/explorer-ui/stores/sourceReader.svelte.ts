@@ -65,11 +65,22 @@ export function implementationFiles(unit: HarnessUnit): string[] {
 	return categorized.length ? categorized : source;
 }
 
+/** Preserve indexed paths without invoking a caller's iterator or array species. */
+export function testFiles(unit: HarnessUnit): string[] {
+	const paths: string[] = [];
+	for (let index = 0; index < (unit.testFiles?.length ?? 0); index++)
+		paths.push(unit.testFiles![index].path);
+	return paths;
+}
+
 /** Read only text archived with this revision; never substitute a working-copy file. */
 export function archivedSource(unit: HarnessUnit, mediaBase: string, filePath?: string) {
-	const archived = unit.sourceFiles;
+	const archived = [...(unit.sourceFiles ?? []), ...(unit.testFiles ?? [])];
 	const files: SourceFiles = async () => {
-		const paths = archived ? implementationFiles(unit) : [];
+		const paths =
+			unit.sourceFiles || unit.testFiles
+				? [...new Set([...implementationFiles(unit), ...testFiles(unit)])]
+				: [];
 		return filePath && paths.includes(filePath)
 			? [filePath, ...paths.filter((path) => path !== filePath)]
 			: paths;
@@ -83,7 +94,10 @@ export function archivedSource(unit: HarnessUnit, mediaBase: string, filePath?: 
 		if (!response.ok) throw new Error(`${path} could not be read (${response.status}).`);
 		return await response.text();
 	};
-	const empty = archived ? undefined : 'Source contents are not recorded for this revision.';
+	const empty =
+		unit.sourceFiles || unit.testFiles
+			? undefined
+			: 'Source contents are not recorded for this revision.';
 	return { files, read, empty };
 }
 
