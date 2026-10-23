@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Place } from "./EntityHeader.types";
+	import type { Place } from './EntityHeader.types';
 
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
@@ -42,6 +42,7 @@
 	const row: Record<string, Place> = {
 		overview: {},
 		contract: { tab: 'contract' },
+		table: { tab: 'table' },
 		models: { tab: 'models' },
 		'used-in': { tab: 'used-in' },
 		uses: { tab: 'uses' },
@@ -52,12 +53,24 @@
 		history: { section: 'history' },
 		source: { tab: 'source' }
 	};
-	const labels = ['Overview', 'Contract', 'Used In', 'Uses', 'Audio', 'Tests', 'History', 'Source'];
+	const labels = [
+		'Overview',
+		'Contract',
+		'Table',
+		'Used In',
+		'Uses',
+		'Audio',
+		'Tests',
+		'History',
+		'Source'
+	];
+	// A model documents the database table it declares beside its contract.
 	let tabs = $derived(
 		labels
 			.filter(
 				(label) =>
 					(entity.category !== 'pages' || label !== 'Used In') &&
+					(label !== 'Table' || entity.category === 'models') &&
 					(label !== 'Audio' || entity.category === 'components') &&
 					(label !== 'Uses' || usesAvailable)
 			)
@@ -87,7 +100,6 @@
 	let active = $derived(nav.route.section === 'history' ? 'history' : asked);
 	// A page keeps its purpose in Overview and data relationships in Models.
 	let concise = $derived(entity.category === 'pages');
-
 </script>
 
 <nav class="ex-crumbs" aria-label="Breadcrumb">
