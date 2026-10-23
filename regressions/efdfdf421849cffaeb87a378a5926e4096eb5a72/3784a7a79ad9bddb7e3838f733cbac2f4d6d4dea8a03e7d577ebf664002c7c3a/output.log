@@ -1,0 +1,51 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DDAtIE/packages/reports
+
+ ❯ test/components/explorer-composition.test.ts (6 tests | 1 failed) 1813ms
+   ✓ the host of a screen names no renderer, not even to read the type of its props 18ms
+   ✓ the renderer of any screen is named only where the screen is not known 54ms
+   × every page mounts the host with one screen of its own, and none draws every screen 82ms
+     → Canonical route title: layouts overview: expected '<script lang="ts">\n\timport EntityVi…' to contain 'title="Layout"'
+   ✓ the four screens of a category are made of different components  455ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  1203ms
+   ✓ screen normalization keeps semantic content, attributes and ordinary containers 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-composition.test.ts > every page mounts the host with one screen of its own, and none draws every screen
+AssertionError: Canonical route title: layouts overview: expected '<script lang="ts">\n\timport EntityVi…' to contain 'title="Layout"'
+
+- Expected
++ Received
+
+- title="Layout"
++ <script lang="ts">
++ 	import EntityVisualScreen from '../../../../../../../components/explorer-ui/EntityVisualScreen.svelte';
++ 	import HarnessScreen from '../../../../../../../components/explorer-ui/HarnessScreen.svelte';
++ </script>
++
++ <HarnessScreen title="Shell" content={EntityVisualScreen} />
++
+
+ ❯ test/components/explorer-composition.test.ts:97:7
+     95|      readFileSync(join(repo, page(category, view)), 'utf8'),
+     96|      `Canonical route title: ${category} ${screen}`
+     97|     ).toContain(`title="${singular}${suffix}"`);
+       |       ^
+     98|    }
+     99|    expect([category, screen, mounted.length, mounted.includes('Harness…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  12:55:17
+   Duration  3.99s (transform 1.21s, setup 0ms, collect 1.65s, tests 1.81s, environment 0ms, prepare 57ms)
+
