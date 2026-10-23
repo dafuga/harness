@@ -125,7 +125,7 @@
 				onpointerleave={leave}
 			>
 				{#if !visual}
-					<code>{entity.unit.title}</code><span>{entity.role}</span>
+					<code>{entity.caller?.symbol ?? entity.unit.title}</code><span>{entity.role}</span>
 				{:else if pictured && shot}
 					<img
 						src={mediaBase + file}
