@@ -83,3 +83,15 @@ export function shellScope(location: ExplorerLocation): ExplorerScope {
 export function shellHref(to: ExplorerLocation): string {
 	return `${shellMount}${explorerRoutePath(to)}`;
 }
+
+export const shellCategories = [
+	'Pages',
+	'Shells',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models',
+	'Styles',
+	'Platforms'
+];

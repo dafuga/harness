@@ -11,6 +11,7 @@ import {
 	revisionDivider
 } from './support/shellChecks';
 import { sha, shellBranch, shellMount, longBranch } from './support/shellData';
+import { shellCategories as categories } from './support/shellData';
 import {
 	buildShellFixture,
 	captureShell,
@@ -18,8 +19,6 @@ import {
 	removeShellFixture,
 	shellOrigin
 } from './support/shellFixture';
-/** The bar, its navigation and revision selectors across three viewports. */
-const categories = 'Pages Shells Components Helpers Configs Services Models Styles'.split(' ');
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;
@@ -126,6 +125,8 @@ for (const [screen, width, height] of screens) {
 		expect(await fits(page)).toBe(true);
 		await links.filter({ hasText: 'Styles' }).click();
 		await expect(page).toHaveURL(at(`${scoped}/styles`));
+		await links.filter({ hasText: 'Platforms' }).click();
+		await expect(page).toHaveURL(at(`${scoped}/platforms`));
 		await links.filter({ hasText: 'Helpers' }).click();
 		await expect(page).toHaveURL(at(`${scoped}/functions`));
 	});

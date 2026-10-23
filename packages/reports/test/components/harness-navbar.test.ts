@@ -66,17 +66,25 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
-		['Pages', 'Shells', 'Components', 'Helpers', 'Configs', 'Services', 'Models', 'Styles'].map(
-			(label) => ({
-				label,
-				href:
-					label === 'Styles'
-						? `${scoped}/commit/${sha(4)}/styles`
-						: `${scoped}/commit/${sha(4)}/${label === 'Helpers' ? 'functions' : label.toLowerCase()}`,
-				current: label === 'Helpers',
-				iconThenLabel: true
-			})
-		)
+		[
+			'Pages',
+			'Shells',
+			'Components',
+			'Helpers',
+			'Configs',
+			'Services',
+			'Models',
+			'Styles',
+			'Platforms'
+		].map((label) => ({
+			label,
+			href:
+				label === 'Styles'
+					? `${scoped}/commit/${sha(4)}/styles`
+					: `${scoped}/commit/${sha(4)}/${label === 'Helpers' ? 'functions' : label.toLowerCase()}`,
+			current: label === 'Helpers',
+			iconThenLabel: true
+		}))
 	);
 	const brand = /<a\b[^>]*class="hx-brand"[^>]*>(.*?)<\/a>/s.exec(html);
 	expect(brand?.[0]).toContain(`href="${scoped}/pages"`);
@@ -149,10 +157,10 @@ test('both selectors are the shared select, and the bar writes no field of its o
 test('without a resolved address the bar keeps its navigation and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
 	expect(text(categories(html))).toBe(
-		'Pages Shells Components Helpers Configs Services Models Styles'
+		'Pages Shells Components Helpers Configs Services Models Styles Platforms'
 	);
 	expect(links(html)).toEqual([]);
-	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(8);
+	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(9);
 	expect(html).not.toMatch(/<select\b|Go to tip|hx-repository/);
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });

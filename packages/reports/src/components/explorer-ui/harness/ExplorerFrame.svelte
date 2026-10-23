@@ -13,10 +13,13 @@
 	import SourceDialog from '../SourceDialog.svelte';
 	let {
 		host,
-		children
+		children,
+		registryRequired = true
 	}: {
 		/** What the host of the explorer gives the screen. */
 		host: ExplorerScreenProps;
+		/** Platform declarations are readable independently of a source-unit registry. */
+		registryRequired?: boolean;
 		/** The screen itself, drawn only where the revision has a registry to read it from. */
 		children: Snippet<[EntityNav]>;
 	} = $props();
@@ -69,7 +72,7 @@
 <!-- The marker of the frame draws no box: the content is laid out as the column holds it. -->
 <div class="ex-frame" data-harness-component="harness-explorer-frame">
 	<div class="ex-content" data-mode={host.scope.mode}>
-		{#if !registry.available}
+		{#if registryRequired && !registry.available}
 			<EntityMissing
 				title="No registry at this revision"
 				message={`${gap}.`}

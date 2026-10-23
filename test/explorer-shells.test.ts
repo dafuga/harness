@@ -27,7 +27,8 @@ test('the explorer has seven categories, Shells after Pages', () => {
 		'functions',
 		'configs',
 		'services',
-		'models'
+		'models',
+		'platforms'
 	]);
 });
 

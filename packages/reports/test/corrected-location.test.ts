@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../../test/support/measureWorkload';
 import type { ExplorerEntity, ExplorerLocation } from '../src/models/Explorer.types';
 import { correctedLocation } from '../src/utils/correctedLocation';
 
@@ -24,10 +25,17 @@ test('a shell addressed under Components is led to Shells, keeping branch, commi
 	expect(correctedLocation(tip, listed('shells'))).toEqual({ ...tip, category: 'shells' });
 });
 
-test('where the unit is a component at that revision, or is not there, the address stays', () => {
-	expect(correctedLocation(at, listed('components'))).toBeNull();
-	expect(correctedLocation(at, [])).toBeNull();
-	expect(correctedLocation({ ...at, entity: undefined }, listed('shells'))).toBeNull();
+test('where the unit is a component at that revision, or is not there, the address stays', async () => {
+	await measureWorkload(
+		'reports.function.corrected-location',
+		'preserve-revision-route-identity',
+		() => {
+			expect(correctedLocation(at, listed('components'))).toBeNull();
+			expect(correctedLocation(at, [])).toBeNull();
+			expect(correctedLocation({ ...at, entity: undefined }, listed('shells'))).toBeNull();
+			expect(correctedLocation({ ...at, category: 'platforms' }, listed('components'))).toBeNull();
+		}
+	);
 });
 
 test('helper names resolve only against one owner in the viewed revision', () => {

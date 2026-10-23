@@ -9,6 +9,7 @@
 	import EntityVisualScreen from './EntityVisualScreen.svelte';
 	import ExplorerCatalogScreen from './ExplorerCatalogScreen.svelte';
 	import ExplorerPagesScreen from './ExplorerPagesScreen.svelte';
+	import ExplorerPlatforms from '../ExplorerPlatforms.svelte';
 	let host: ExplorerScreenProps = $props();
 	type Screen = Component<ExplorerScreenProps>;
 	const overviews: Record<ExplorerCategory, Screen> = {
@@ -18,7 +19,8 @@
 		functions: EntityBehaviorScreen,
 		services: EntityBehaviorScreen,
 		configs: EntityConfigScreen,
-		models: EntityConfigScreen
+		models: EntityConfigScreen,
+		platforms: ExplorerPlatforms
 	};
 	// An entity opens as the kind it is at this revision, whatever its address calls it.
 	let kind = $derived(
@@ -27,6 +29,7 @@
 	/** The one screen an address is; this content holds none of its own. */
 	let Shown = $derived.by((): Screen => {
 		const { category, entity, section } = host.route;
+		if (category === 'platforms') return ExplorerPlatforms;
 		if (!entity && !host.route.helper)
 			return category === 'pages' ? ExplorerPagesScreen : ExplorerCatalogScreen;
 		if (section === 'details') return EntityDetailsScreen;

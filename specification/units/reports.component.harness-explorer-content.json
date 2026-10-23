@@ -94,6 +94,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-ui-explorer-platforms",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-entity-behavior-screen",
 			"via": "import",
 			"origin": "derived"

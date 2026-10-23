@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { explorerCategories } from '../../../../src/utils/explorerRoute';
+import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../../src/models/Harness.types';
 import { explorerCategory, explorerRole } from '../../src/utils/explorerCategory';
 import { unit } from '../explorerFixture';
@@ -135,7 +135,7 @@ test("the policy holds for Harness's own registry", () => {
 	// Every unit has a category of the five or none, and a role either way.
 	for (const item of units) {
 		const category = explorerCategory(item);
-		expect(category === null || explorerCategories.includes(category)).toBe(true);
+		expect(category === null || explorerCategories.some((known) => known === category)).toBe(true);
 		expect(explorerRole(item)).toMatch(/^[A-Z][a-z]+( [a-z]+)*$/);
 	}
 	expect(listed('functions')).toEqual([]); // Raw manifests have no source-derived helper proof.

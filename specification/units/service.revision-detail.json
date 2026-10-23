@@ -84,6 +84,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.explorer-ui-platform-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.media-place",
 			"via": "import",
 			"origin": "derived"
@@ -150,6 +155,11 @@
 		},
 		{
 			"unit": "service.budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.explorer-ui-revision-detail-service-platform-catalog",
 			"via": "import",
 			"origin": "derived"
 		},
