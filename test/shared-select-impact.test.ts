@@ -29,14 +29,12 @@ beforeAll(async () => {
 	builds = Object.fromEntries(readdirSync('packages').map((name) => [name, aliases(name)]));
 	written = [...loaded.index.files.keys()].flatMap(imports);
 }, 60_000);
-/** The build aliases a package's Svelte configuration declares, each with the place it names. */
 function aliases(name: string): Record<string, string> {
 	const file = join('packages', name, 'svelte.config.js');
 	const stated = existsSync(file) ? /alias:\s*\{([^}]*)\}/.exec(readFileSync(file, 'utf8')) : null;
 	const pairs = [...(stated?.[1] ?? '').matchAll(/(\$\w+):\s*'([^']+)'/g)];
 	return Object.fromEntries(pairs.map(([, alias, target]) => [alias, target]));
 }
-/** The alias imports one file really writes, each with the tracked file its build sends it to. */
 function imports(from: string): Written[] {
 	const [, name = ''] = /^packages\/([^/]+)\//.exec(from) ?? [];
 	const language = /\.(svelte|css|ts)$/.exec(from)?.[1] as 'svelte' | 'css' | 'ts' | undefined;
@@ -55,7 +53,6 @@ function imports(from: string): Written[] {
 		return [{ from, specifier: item.specifier, to }];
 	});
 }
-/** One tree as the impact analysis reads it, with the registry as it is stored. */
 function side(index: sourceIndex.SourceIndex): ImpactSide {
 	return {
 		revision: 'working-tree',
@@ -66,7 +63,6 @@ function side(index: sourceIndex.SourceIndex): ImpactSide {
 		graph: new SourceGraphService().build(index, loaded.stored, loaded.scenarios)
 	};
 }
-/** What the analysis reports when only this file's content differs from the tree as it is. */
 function changed(path: string): Promise<ImpactReport> {
 	const head = side(loaded.index);
 	const entries = head.entries.map((entry) =>
@@ -181,7 +177,6 @@ test('a change of Select reaches every unit, test and scenario that a change of 
 	const omitted: string[] = [];
 	for (const item of consumers()) {
 		const importer = await changed(item.from);
-		// A file no test covers selects every test when it changes: of it only its unit is asked for.
 		const units = importer.expanded
 			? [owner(item.from) ?? 'no owner']
 			: [...importer.units.direct, ...importer.units.indirect];
@@ -198,7 +193,6 @@ test('a change of Select reaches every unit, test and scenario that a change of 
 	expect(omitted).toEqual([]);
 }, 60_000);
 test('declaring the Select imports moves those references alone: packages and uncertainties stay', async () => {
-	// Only the Select imports are undeclared; every other declaration, the shared search included, stays.
 	const kept = loaded.config.references.filter(
 		(entry) => entry.specifier !== `${shared}/Select.svelte`
 	);
