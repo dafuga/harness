@@ -1,0 +1,43 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [187.00ms]
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9j0o0m/packages/desktop
+
+ ❯ test/utils/workspace-search.test.ts (5 tests | 1 failed) 6ms
+   ✓ at the tip every entity is an entry of that commit, with its display name and purpose 1ms
+   ✓ at a pinned commit the scope names the commit, and each entry carries the full commit 0ms
+   ✓ while a project or revision is read, nothing of the one shown before is offered 0ms
+   ✓ a listed result opens in the project, branch and commit it was read at 2ms
+   × a result the shown entries did not list is refused, also one equal to a listed result 2ms
+     → expected '/projects/local-alpha/harness/branch/…' to be null
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/workspace-search.test.ts > a result the shown entries did not list is refused, also one equal to a listed result
+AssertionError: expected '/projects/local-alpha/harness/branch/…' to be null
+
+- Expected: 
+null
+
++ Received: 
+"/projects/local-alpha/harness/branch/feat%2Falpha/commit/cccccccccccccccccccccccccccccccccccccccc/platforms/app.shell.order-frame"
+
+ ❯ test/utils/workspace-search.test.ts:80:25
+     78|  const listed = now.entries![0];
+     79|  listed.category = 'platforms';
+     80|  expect(now.at(listed)).toBeNull();
+       |                         ^
+     81| });
+     82| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  01:31:30
+   Duration  279ms (transform 63ms, setup 64ms, collect 44ms, tests 6ms, environment 0ms, prepare 35ms)
+
+error: "vitest" exited with code 1
