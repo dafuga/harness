@@ -2,7 +2,7 @@
 	"name": "layout-catalog",
 	"goal": "Layouts contains reusable visual frames and shows each child slot in the shared title, image and page-usage card",
 	"createdAt": "2026-10-23T09:21:46.411Z",
-	"updatedAt": "2026-10-23T09:56:02.912Z",
+	"updatedAt": "2026-10-23T09:58:15.613Z",
 	"template": "visual-change",
 	"templateLineage": [
 		"feature",
@@ -27,7 +27,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:58:15.613Z",
+			"evidence": "Committed failing category/route checks and six before captures. Focused green: 90 root behavior tests; 689 Reports tests; 29 Desktop, 7 Planning, 2 Hub and collaboration checks; 18 layout-preview browser cases and 24 navbar/search cases. Source-ownership review guards retain original proofs."
 		},
 		{
 			"id": "verify",

@@ -4897,7 +4897,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			]
@@ -4943,6 +4943,13 @@
 			"commit": "29e1c2a4fde4307f8346f40a436552906776ea88",
 			"reason": "Add Styles navigation with branch and selected-commit context while preserving entity catalog destinations.",
 			"definition": "a9ab137632380c549b3b0ba62da1e339416922baf69d5fd64af95156f5a8acb8"
+		},
+		{
+			"unit": "hub.function.hub-metadata-paths",
+			"name": "hubMetadataPaths",
+			"commit": "ae9e65325",
+			"reason": "Include layout planning metadata alongside legacy shell metadata.",
+			"definition": "9a1709bd49893223f8b60758a6164ba814fc2a59fc4c96e97adf804857465ee0"
 		}
 	]
 }
