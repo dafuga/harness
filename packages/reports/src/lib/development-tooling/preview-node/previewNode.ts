@@ -46,7 +46,7 @@ export async function previewNode(args: string[]): Promise<number> {
 	}
 }
 async function buildPreviewWorker() {
-	const cache = fileURLToPath(new URL('../../../../.cache', import.meta.url));
+	const cache = fileURLToPath(new URL('../../../../.cache/', import.meta.url));
 	await mkdir(cache, { recursive: true });
 	const directory = await mkdtemp(join(cache, 'preview-node-'));
 	const built = await Bun.build({

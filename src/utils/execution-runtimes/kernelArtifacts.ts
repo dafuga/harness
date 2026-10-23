@@ -33,9 +33,9 @@ export interface KernelArtifacts {
 /** Where built kernels may live: an override, beside a bundle, or in a source checkout. */
 function candidates(env: Environment): string[] {
 	const beside = [
-		new URL('../kernel', import.meta.url),
-		new URL('../../kernel', import.meta.url),
-		new URL('../../../target/kernel', import.meta.url)
+		new URL('../kernel/', import.meta.url),
+		new URL('../../kernel/', import.meta.url),
+		new URL('../../../target/kernel/', import.meta.url)
 	].map((url) => fileURLToPath(url));
 	return env.HARNESS_KERNEL_DIR ? [resolve(env.HARNESS_KERNEL_DIR)] : beside;
 }
