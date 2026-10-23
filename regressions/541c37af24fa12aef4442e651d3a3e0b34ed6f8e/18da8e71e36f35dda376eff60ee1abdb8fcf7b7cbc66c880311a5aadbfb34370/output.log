@@ -1,0 +1,130 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [165.00ms]
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+vite v6.4.4 building SSR bundle for production...
+transforming...
+"handleConnectionChange" is imported from external module "@xyflow/system" but never used in "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/@xyflow/svelte/dist/lib/hooks/useNodeConnections.svelte.js" and "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/@xyflow/svelte/dist/lib/components/Handle/Handle.svelte".
+✓ 599 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 841 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                            0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                          7.90 kB │ gzip:   1.19 kB
+.svelte-kit/output/client/_app/immutable/assets/6.BYAcUGNB.css         0.63 kB │ gzip:   0.30 kB
+.svelte-kit/output/client/_app/immutable/assets/Modal.kBAwaAf6.css     0.82 kB │ gzip:   0.39 kB
+.svelte-kit/output/client/_app/immutable/assets/design.D7kzdb1M.css   23.96 kB │ gzip:   5.63 kB
+.svelte-kit/output/client/_app/immutable/assets/3.4QThkNVc.css        25.35 kB │ gzip:   4.75 kB
+.svelte-kit/output/client/_app/immutable/assets/2.C8bWsq6o.css        40.95 kB │ gzip:   8.40 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cpmqpfp-.js            0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bzak7iHL.js            0.10 kB │ gzip:   0.10 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CAmZbuB0.js       0.12 kB │ gzip:   0.11 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.DppfdBYU.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.DppfdBYU.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/B3BHYGM_.js            0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/chunks/Dc7msS3m.js            0.28 kB │ gzip:   0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.C-W2yMg9.js           0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/ClwhBhLN.js            0.37 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.CpzTsVAl.js           0.41 kB │ gzip:   0.28 kB
+.svelte-kit/output/client/_app/immutable/chunks/BBUcQNsz.js            0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/chunks/BVthCS_w.js            0.52 kB │ gzip:   0.33 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js            1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/PbTSQf7l.js            2.19 kB │ gzip:   1.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/DDEUxeUA.js            2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.l816v7ZB.js           2.29 kB │ gzip:   1.21 kB
+.svelte-kit/output/client/_app/immutable/chunks/DqwN3t87.js            2.98 kB │ gzip:   1.35 kB
+.svelte-kit/output/client/_app/immutable/chunks/BqkZ8Iah.js            3.17 kB │ gzip:   1.48 kB
+.svelte-kit/output/client/_app/immutable/chunks/DsQ_R6h-.js            6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.DAVovpT7.js         7.09 kB │ gzip:   3.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/g4BxH8da.js           11.81 kB │ gzip:   4.97 kB
+.svelte-kit/output/client/_app/immutable/chunks/BTHyfeZN.js           15.31 kB │ gzip:   6.76 kB
+.svelte-kit/output/client/_app/immutable/chunks/DgaKam68.js           21.31 kB │ gzip:   8.22 kB
+.svelte-kit/output/client/_app/immutable/chunks/hul_s3qq.js           31.65 kB │ gzip:  12.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/CYArVJLW.js           65.33 kB │ gzip:  21.51 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.C6pTKIPK.js         314.12 kB │ gzip: 108.11 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.CO5wFTPc.js         691.22 kB │ gzip: 190.63 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.95s
+.svelte-kit/output/server/.vite/manifest.json                                                     6.44 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BYAcUGNB.css                                0.63 kB
+.svelte-kit/output/server/_app/immutable/assets/Modal.BpA01tBB.css                                0.80 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.C2y8cBVg.css                               16.22 kB
+.svelte-kit/output/server/_app/immutable/assets/design.DUP3FhM1.css                              23.75 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BAgRJz-M.css                               36.02 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/state.svelte.js                                                  0.43 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       0.73 kB
+.svelte-kit/output/server/entries/pages/game/_page.svelte.js                                      0.93 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/composeModes.js                                                  3.68 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.32 kB
+.svelte-kit/output/server/chunks/Modal.svelte_svelte_type_style_lang.js                           6.00 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         287.69 kB
+✓ built in 4.14s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+97fb4ef53c723559568b817d6420bda565f92eb5c7e1e69d0f1072d10e0cbcaf
+$ playwright test --project=chromium --config .cache/game-capture.config.ts game-authoring.spec.ts checkpoint-images.spec.ts
+
+Running 11 tests using 1 worker
+
+(node:44117) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/checkpoint-images.spec.ts:4:1 › checkpoint image generation persists with the graph and history stays read-only (648ms)
+  ✓   2 [chromium] › tests/e2e/checkpoint-images.spec.ts:57:1 › generation errors preserve the graph and late results never attach to another checkpoint (593ms)
+  -   3 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint
+  ✓   4 [chromium] › tests/e2e/game-authoring.spec.ts:13:1 › game authoring exposes independent mechanics and executable checkpoint graph (6.3s)
+  ✓   5 [chromium] › tests/e2e/game-authoring.spec.ts:24:2 › 2d preview executes key-door branching without AI (534ms)
+  ✓   6 [chromium] › tests/e2e/game-authoring.spec.ts:24:2 › 3d preview executes key-door branching without AI (720ms)
+  ✓   7 [chromium] › tests/e2e/game-authoring.spec.ts:48:1 › saved graph edits persist, invalid references block saves and history is read-only (20.1s)
+  ✓   8 [chromium] › tests/e2e/game-authoring.spec.ts:104:1 › view creation and checkpoint creation/deletion preserve independent mechanics (528ms)
+  ✓   9 [chromium] › tests/e2e/game-authoring.spec.ts:142:1 › 3D remains playable when the browser cannot provide WebGL (260ms)
+  ✓  10 [chromium] › tests/e2e/game-authoring.spec.ts:164:1 › project creation sends the chosen game type and dimension (225ms)
+  ✓  11 [chromium] › tests/e2e/game-authoring.spec.ts:199:1 › held arrow keys animate the 3D game through the vault branch (2.2s)
+
+  1 skipped
+  10 passed (33.6s)
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0C0jFs/packages/desktop
+
+ ✓ test/utils/workspace-search.test.ts (5 tests) 7ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  01:36:04
+   Duration  312ms (transform 83ms, setup 67ms, collect 65ms, tests 7ms, environment 0ms, prepare 40ms)
+
