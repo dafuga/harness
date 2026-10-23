@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { entityLens, shortCommit, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/explorer-ui/shortCommit';
 	import type { EntityReasons as Reasons } from '../../utils/explorer-ui/entityReasons';
 	import {
 		entityScreens,

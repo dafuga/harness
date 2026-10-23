@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { ExplorerEntity, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
-	import { humanize } from '../../utils/explorer-ui/entityContract';
-	import { entityLens, shortCommit, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { humanize } from '../../helpers/explorer-ui/humanize';
+	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/explorer-ui/shortCommit';
 	import HarnessAction from './HarnessAction.svelte';
 	let {
 		entity,

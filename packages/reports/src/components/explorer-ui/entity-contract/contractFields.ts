@@ -6,7 +6,8 @@ import type {
 import { guess } from '../../../utils/explorer-ui/contractFields';
 import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
-import { humanize, type ContractRow } from '../../../utils/explorer-ui/entityContract';
+import { type ContractRow } from '../../../utils/explorer-ui/entityContract';
+import { humanize } from '../../../helpers/explorer-ui/humanize';
 
 type Item = HarnessUnit['contract']['inputs'][number];
 

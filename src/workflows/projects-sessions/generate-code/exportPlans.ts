@@ -1,4 +1,4 @@
-import { toCamelCase, toKebabCase, toPascalCase } from '../../../core/development-tooling/case';
+import { toCamelCase, toKebabCase, toPascalCase } from '../../../helpers/development-tooling/case';
 import type { ExportPlan } from '../../../core/projects-sessions/exports';
 import type { AdapterName } from '../../../templates/development-tooling/model';
 import type { PieceKind } from '../../../templates/development-tooling/scaffoldTypes';

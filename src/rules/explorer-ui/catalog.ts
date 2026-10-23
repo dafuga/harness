@@ -36,7 +36,6 @@ export const harnessClassFileRules = [
 	{ kind: 'notification', folder: 'notifications', suffix: 'Notification' },
 	{ kind: 'command', folder: 'commands', suffix: 'Command' },
 	{ kind: 'mailer', folder: 'mailers', suffix: 'Mailer' },
-	{ kind: 'helper', folder: 'helpers', suffix: 'Helper' },
 	{ kind: 'channel', folder: 'channels', suffix: 'Channel' },
 	{ kind: 'form', folder: 'forms', suffix: 'Form' },
 	{ kind: 'middleware', folder: 'middleware', suffix: 'Middleware' }
@@ -44,6 +43,8 @@ export const harnessClassFileRules = [
 
 /** Naming is about actual source declarations, never a recased descriptive label. */
 export const harnessNamingRules: Record<string, string> = {
+	helper:
+		'Naming: Helpers are pure camelCase functions in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder.',
 	...(Object.fromEntries(
 		harnessClassFileRules.map(({ kind, suffix }) => [
 			kind,

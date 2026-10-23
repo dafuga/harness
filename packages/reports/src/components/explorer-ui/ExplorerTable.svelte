@@ -4,7 +4,7 @@
 	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import { listed, type CatalogRow } from '../../utils/explorer-ui/entityCatalog';
-	import { humanize } from '../../utils/explorer-ui/entityContract';
+	import { humanize } from '../../helpers/explorer-ui/humanize';
 	import {
 		entityLabels,
 		entityLens,

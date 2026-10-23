@@ -1,4 +1,4 @@
-import { toCamelCase, toKebabCase, toPascalCase } from '../../core/development-tooling/case';
+import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/development-tooling/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { apiFiles, e2eFiles, viewFiles } from './appPieces';
 import { adapterTypeFiles } from './adapterTypes';
@@ -39,16 +39,15 @@ export function mailerFiles(name: string): PlannedFile[] {
 }
 
 export function helperFiles(name: string): PlannedFile[] {
-	const className = `${toPascalCase(name)}Helper`;
-	const fileName = toKebabCase(name);
-	const contents = `export class ${className} {\n\tformat(value: string): string {\n\t\treturn value.trim();\n\t}\n}\n`;
-
-	return classEntityFiles({
+	const functionName = toCamelCase(name);
+	return functionFiles({
 		folder: 'helpers',
-		fileName,
-		className,
-		contents,
-		expectation: 'formats values'
+		name: toKebabCase(name),
+		functionName,
+		body: `/** @pure */\nexport function ${functionName}(textToFormat: string): string {\n\treturn textToFormat.trim();\n}\n`,
+		expectation: 'trims display text',
+		call: `${functionName}('  label  ')`,
+		expected: "'label'"
 	});
 }
 

@@ -1,5 +1,5 @@
 import type { UnitIdentity } from '../unitIdentity';
-import { toKebabCase } from '../../../core/development-tooling/case';
+import { toKebabCase } from '../../../helpers/development-tooling/case';
 
 interface FolderKind {
 	kind: string;
