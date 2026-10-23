@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
 	"title": "Entity catalog table",
-	"responsibility": "Lists config variables with compact source values and full-value inspection, and remaining nonvisual entities with their category columns.",
+	"responsibility": "Lists config variables with typed icon controls, collection counts and expandable inspection, and remaining nonvisual entities with their category columns.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -21,7 +21,7 @@
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
-				"description": "Required catalog rows in display order. Config rows contain variable names and committed source values; long values have compact previews and full-value inspection."
+				"description": "Required catalog rows in display order. Config rows contain committed expression text and optional static object/array structures with exact known counts."
 			},
 			{
 				"name": "ExplorerTable.nav",
@@ -48,12 +48,17 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A Variable/Value table with compact previews and read-only full-value dialogs for long config expressions. Other categories retain their columns. Links preserve the selected revision."
+				"description": "A Variable/Value table with object/array icon controls and read-only expandable dialogs. Scalars remain inline; opaque long expressions retain source inspection. Other categories and revision-scoped links are preserved."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-config-value-tree",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.explorer-usage",
 			"via": "import",
