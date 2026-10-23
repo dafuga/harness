@@ -109,10 +109,8 @@ function execute(run: IsolatedRun, output: Buffer[]): Promise<Outcome> {
 	const child = isolatedChild(run);
 	const descendants = processDescendants(child.pid ?? -1, run.platform?.table);
 	const guard = guarding(run, child.pid ?? -1);
-	const looking = setInterval(() => void descendants.look(), lookMs);
-	void descendants.look();
+	let looking: ReturnType<typeof setInterval> | undefined;
 	let timedOut = false;
-	captureIsolatedOutput(child, output, run.maxLogBytes);
 	return new Promise((resolve) => {
 		let ended = false;
 		const running = { run, child, descendants, guard };
@@ -141,6 +139,9 @@ function execute(run: IsolatedRun, output: Buffer[]): Promise<Outcome> {
 			if (!guard) signalGroup(child, 'SIGKILL');
 			setTimeout(() => finish(code), 50);
 		});
+		captureIsolatedOutput(child, output, run.maxLogBytes);
+		looking = setInterval(() => void descendants.look(), lookMs);
+		void descendants.look();
 		try {
 			if (child.pid) run.onSpawn?.(child.pid);
 		} catch {

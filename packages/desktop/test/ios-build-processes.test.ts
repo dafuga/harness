@@ -114,7 +114,7 @@ process.exit(Number(process.env.STAND_IN_EXIT ?? 0));
 async function built(name: string, env: Record<string, string> = {}) {
 	const finish = observeResources(
 		['desktop.script.build-ios-simulator', 'desktop.script.ios-scan-fixture'],
-		'simulator-script-and-scan-module-initialization-with-Xcode-stand-in'
+		'simulator-script-and-scan-module-initialization-with-xcode-stand-in'
 	);
 	onTestFinished((context) => {
 		if (context.task.result?.state === 'pass') finish();
