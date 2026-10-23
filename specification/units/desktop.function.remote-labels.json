@@ -15,7 +15,8 @@
 			"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
 			"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts",
 			"packages/desktop/src/utils/networking-security/remoteLabels.ts",
-			"packages/desktop/src/utils/remoteLabels.ts"
+			"packages/desktop/src/utils/remoteLabels.ts",
+			"packages/desktop/src/utils/strings/plural.ts"
 		],
 		"symbols": [
 			"relayName",
@@ -63,7 +64,8 @@
 			"plural",
 			"keyLabel",
 			"identityLabel",
-			"grantLabel"
+			"grantLabel",
+			"plural"
 		]
 	},
 	"contract": {
@@ -208,8 +210,42 @@
 	],
 	"helperContracts": [
 		{
-			"name": "plural",
+			"name": "identityLabel",
 			"source": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
+			"inputs": [
+				{
+					"name": "identityLabel.deviceId",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Group the whole identity in fours, retaining the final group",
+					"call": "identityLabel(\"0123456789abcde\")",
+					"input": ["0123456789abcde"],
+					"output": "0123 4567 89ab cde"
+				},
+				{
+					"name": "Leave an empty identity blank",
+					"call": "identityLabel(\"\")",
+					"input": [""],
+					"output": ""
+				}
+			],
+			"consumers": [
+				{
+					"unit": "desktop.component.remote-approval"
+				},
+				{
+					"unit": "desktop.component.remote-phone-panel"
+				}
+			]
+		},
+		{
+			"name": "plural",
+			"source": "packages/desktop/src/utils/strings/plural.ts",
 			"inputs": [
 				{
 					"name": "plural.count",
@@ -244,40 +280,6 @@
 				{
 					"unit": "desktop.function.remote-labels",
 					"symbol": "hostSummary"
-				}
-			]
-		},
-		{
-			"name": "identityLabel",
-			"source": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
-			"inputs": [
-				{
-					"name": "identityLabel.deviceId",
-					"type": "string"
-				}
-			],
-			"output": "string",
-			"pure": true,
-			"examples": [
-				{
-					"name": "Group the whole identity in fours, retaining the final group",
-					"call": "identityLabel(\"0123456789abcde\")",
-					"input": ["0123456789abcde"],
-					"output": "0123 4567 89ab cde"
-				},
-				{
-					"name": "Leave an empty identity blank",
-					"call": "identityLabel(\"\")",
-					"input": [""],
-					"output": ""
-				}
-			],
-			"consumers": [
-				{
-					"unit": "desktop.component.remote-approval"
-				},
-				{
-					"unit": "desktop.component.remote-phone-panel"
 				}
 			]
 		}

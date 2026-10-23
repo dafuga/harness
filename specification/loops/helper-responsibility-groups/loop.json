@@ -2,7 +2,7 @@
 	"name": "helper-responsibility-groups",
 	"goal": "Generic text helpers live in Strings; helper cards and breadcrumbs use each callable source category, independent of consumers",
 	"createdAt": "2026-10-23T11:25:47.463Z",
-	"updatedAt": "2026-10-23T11:45:44.346Z",
+	"updatedAt": "2026-10-23T11:48:24.358Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:45:46.340Z",
+			"evidence": "Generic text implementations now live in Strings. Callable-source categories drive headings and breadcrumbs independently of module owners; public imports, authored examples and IDs remain stable. Shared Harness guidance includes the rule."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:48:24.358Z",
+			"evidence": "cbd33bd97 passed the unchanged committed command: all 3 viewport cases, 6 Reports unit cases and 65 root cases. Git readback verified 90 decoded captures and 220 contextual measurements."
 		},
 		{
 			"id": "verify",
