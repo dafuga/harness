@@ -1826,10 +1826,10 @@
 			"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "d37a29605c59257ddd1188681880cdae10f63a40",
+				"commit": "f6a7a2129082367586bf18808f438ebefac25427",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 				"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
-				"reason": "Retain main's level proposal operation through the existing session and provider context, preserving earlier game and deployment delegates."
+				"reason": "Adds provider-backed gameLevelGenerate to the existing owner-local bridge while preserving other game operations and registered identity."
 			},
 			"previousReviews": [
 				{
@@ -1849,6 +1849,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "c5d1707a8b06b0eef43e1c8475e6fb4cb5cf3658f9aadc72a3653ce3f0f51b59",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "d37a29605c59257ddd1188681880cdae10f63a40",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
+					"reason": "Retain main's level proposal operation through the existing session and provider context, preserving earlier game and deployment delegates."
 				}
 			]
 		},
@@ -3801,10 +3807,10 @@
 			"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "d37a29605c59257ddd1188681880cdae10f63a40",
+				"commit": "f6a7a2129082367586bf18808f438ebefac25427",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 				"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
-				"reason": "Retain main's typed gameLevelGenerate IPC helper while preserving every existing bridge channel and invocation."
+				"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
 			},
 			"previousReviews": [
 				{
@@ -3824,6 +3830,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "5e70fde5519a15663434e7eb8cdbef8b775393db4614423de72a5fc0bebce6e8",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "d37a29605c59257ddd1188681880cdae10f63a40",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
+					"reason": "Retain main's typed gameLevelGenerate IPC helper while preserving every existing bridge channel and invocation."
 				}
 			]
 		},

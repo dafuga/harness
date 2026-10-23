@@ -16,6 +16,9 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
 The Layouts update also retains implementation commit `ae9e65325` for layout design,
 planning writes and immutable formatter ignores.
 
+The level planning review retains implementation commit `f6a7a2129` for the desktop bridge
+factory and isolated preload.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git
