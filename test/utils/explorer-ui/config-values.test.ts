@@ -40,6 +40,10 @@ test.each([
 	],
 	['const a = b; const b = a; export const loop = a;', [['loop', 'a']]],
 	[
+		'export default defineConfig(({ mode }) => ({ mode }));',
+		[['settings', '({ mode }) => ({ mode })']]
+	],
+	[
 		'export const settings = {self: settings, "a.b": false, "1": 0};',
 		[
 			['settings.self', 'settings'],
@@ -72,17 +76,45 @@ test('revision metadata carries nested config values from its own source', async
 		unitMetadata(memoryTree(files), registry.units)
 	);
 	expect(registry.units[0]).toHaveProperty('configValues', [
-		{ name: 'settings.build.outDir', value: '"dist"', source }
+		{ name: 'settings.build.outDir', value: '"dist"', source, literal: 'dist' }
 	]);
 });
 
 test('JSON config keys keep their actual scalar values', () => {
 	expect(configValues('{"port": 8080, "feature": {"enabled": false}}', 'settings.json')).toEqual([
-		{ name: 'settings.port', value: '8080', source: 'settings.json' },
-		{ name: 'settings.feature.enabled', value: 'false', source: 'settings.json' }
+		{ name: 'settings.port', value: '8080', source: 'settings.json', literal: 8080 },
+		{ name: 'settings.feature.enabled', value: 'false', source: 'settings.json', literal: false }
 	]);
 });
 
+test.each([
+	["'A \\'quoted\\' name'", "A 'quoted' name"],
+	['"<orders> & details"', '<orders> & details'],
+	['false', false],
+	['0', 0],
+	['-1', -1],
+	['null', null],
+	['""', ''],
+	["['ca', 'us', false, 0]", ['ca', 'us', false, 0]]
+])('decodes static config literals while retaining source: %s', (expression, literal) => {
+	expect(
+		configValues(`export const setting = ${expression};`, 'src/configs/settings.ts').map(
+			({ name, value, source, literal }) => ({ name, value, source, literal })
+		)
+	).toEqual([{ name: 'setting', value: expression, source: 'src/configs/settings.ts', literal }]);
+});
+
+test.each(['process.env.SECRET', '[...defaults]', '[readSecret()]', '`hello ${readSecret()}`'])(
+	'keeps computed config expressions unevaluated: %s',
+	(expression) => {
+		const [setting] = configValues(
+			`export const setting = ${expression};`,
+			'src/configs/settings.ts'
+		);
+		expect(setting.value).toBe(expression);
+		expect(setting).not.toHaveProperty('literal');
+	}
+);
 // Structural inspection is data read from the AST, alongside the unchanged source-value contract.
 test.each([
 	[

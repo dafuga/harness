@@ -4,7 +4,7 @@ import {
 	moduleGroupsConfig,
 	moduleGroupsFile,
 	type ModuleGroupsConfig
-} from '../../config/development-tooling/moduleGroupsConfig';
+} from '../../configs/development-tooling/moduleGroupsConfig';
 import { fail } from '../../core/development-tooling/errors';
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
 

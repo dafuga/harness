@@ -8,8 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/relay/src/config/networking-security/relayConfig.ts",
-			"packages/relay/src/config/relayConfig.ts"
+			"packages/relay/src/configs/networking-security/relayConfig.ts",
+			"packages/relay/src/configs/relayConfig.ts"
 		],
 		"symbols": ["relayConfig", "relayConfig"]
 	},
@@ -27,11 +27,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/relay/src/config/networking-security/relayConfig.ts",
+		"entry": "packages/relay/src/configs/networking-security/relayConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/relay/src/config/networking-security/relayConfig.ts"
+				"entry": "packages/relay/src/configs/networking-security/relayConfig.ts"
 			}
 		]
 	},

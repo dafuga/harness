@@ -1619,14 +1619,22 @@
 			"unit": "workflow.export-plans",
 			"from": "src/workflows/exportPlans.ts",
 			"to": "src/workflows/projects-sessions/generate-code/exportPlans.ts",
-			"definition": "68da0a8a4a75db0a1cf6f6399568a33f6844e244c6a5d9189e881ed6828da991",
+			"definition": "9e22950471a1feb2757e88749270a9ad826b4ac830bd00b92d87a56a41c49b82",
 			"relocationDefinition": "c9339ec6bedaa209dcec34bf6434e5486c3ca3a3bfb80759c7759765bc6c34cf",
 			"review": {
-				"commit": "b708b7a4e6d950b7f0fc735948f5e30c00b45cf9",
+				"commit": "771b3e5c92d489064a85c37132ffcd7ee01aaba4",
 				"path": "src/workflows/projects-sessions/generate-code/exportPlans.ts",
-				"definition": "68da0a8a4a75db0a1cf6f6399568a33f6844e244c6a5d9189e881ed6828da991",
-				"reason": "Pure helper scaffolds emit a camelCase function file; derive its matching SDK export instead of the removed Helper class filename."
-			}
+				"definition": "9e22950471a1feb2757e88749270a9ad826b4ac830bd00b92d87a56a41c49b82",
+				"reason": "Config scaffolds now emit under configs/; the SDK export plan follows that actual generated path while retaining helper export behavior."
+			},
+			"previousReviews": [
+				{
+					"commit": "b708b7a4e6d950b7f0fc735948f5e30c00b45cf9",
+					"path": "src/workflows/projects-sessions/generate-code/exportPlans.ts",
+					"definition": "68da0a8a4a75db0a1cf6f6399568a33f6844e244c6a5d9189e881ed6828da991",
+					"reason": "Pure helper scaffolds emit a camelCase function file; derive its matching SDK export instead of the removed Helper class filename."
+				}
+			]
 		},
 		{
 			"unit": "service.regression-proof",

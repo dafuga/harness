@@ -15,6 +15,9 @@ function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {
 	return {
 		...unit,
 		group,
+		...(unit.configValues
+			? { configValues: unit.configValues.map((setting) => ({ ...setting, source: source[0] })) }
+			: {}),
 		...(unit.id === ids.filter ? textHelper(unit, commit) : {}),
 		owns: {
 			...unit.owns,
@@ -35,8 +38,26 @@ function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {
 	};
 }
 
+function deliveryConfig(settings: HarnessUnit): HarnessUnit {
+	return {
+		...settings,
+		id: 'app.config.delivery-settings',
+		title: 'deliverySettings',
+		owns: { source: ['src/configs/orders/deliverySettings.ts'], symbols: ['deliverySettings'] },
+		configValues: [
+			{
+				name: 'deliverySettings.enabled',
+				value: 'true',
+				source: 'src/configs/orders/deliverySettings.ts',
+				literal: true
+			}
+		]
+	};
+}
+
 /** Every collection shares revision-bound groups and physical implementation addresses. */
 export function categorySources(detail: HarnessRevision): HarnessRevision {
+	const delivery = deliveryConfig(detail.registry.units.find((unit) => unit.id === ids.settings)!);
 	const model = {
 		...units[1],
 		id: 'app.model.order',
@@ -58,6 +79,7 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 			...detail.registry,
 			units: [
 				...detail.registry.units,
+				delivery,
 				...(detail.registry.units.some((unit) => unit.id === model.id) ? [] : [model, types])
 			].map((unit) =>
 				categoryUnit(

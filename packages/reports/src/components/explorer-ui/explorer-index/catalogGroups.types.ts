@@ -4,4 +4,5 @@ export interface CatalogSection {
 	id: string;
 	title: string;
 	rows: CatalogRow[];
+	source?: string;
 }

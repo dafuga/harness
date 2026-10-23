@@ -113,6 +113,7 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('parameter names describe their domain role');
 			expect(text).toContain('earliest responsible generator, skill or review checkpoint');
 			expect(text).toContain('one selected callable per detail page');
+			expect(text).toContain('src/configs/<category>/');
 		}
 	}
 );

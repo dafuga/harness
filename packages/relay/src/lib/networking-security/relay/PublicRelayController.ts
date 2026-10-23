@@ -1,6 +1,6 @@
 import type { HostRoute } from './PublicRelayController.types';
 import { REMOTE_PROTOCOL } from '../../../../../remote/src/index';
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import { ConnectGuardMiddleware } from './ConnectGuardMiddleware';
 import type { PairingRoute, RelayEnv } from '../../../models/networking-security/RelayHost.types';
 import { publicRoute } from '../../../utils/development-tooling/publicRoute';

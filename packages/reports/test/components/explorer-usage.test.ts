@@ -1,10 +1,13 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { render } from 'svelte/server';
 import ExplorerUsage from '../../src/components/ExplorerUsage.svelte';
 import ExplorerPageCard from '../../src/components/explorer-ui/ExplorerPageCard.svelte';
 import { entityCatalog } from '../../src/utils/entityCatalog';
-import { hostProps, words } from '../entityRender';
+import { content, hostProps, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
+import { withHelpers, withNamedConsumers } from '../entityPreviewHelpers';
+import { explorerRelations } from '../../src/utils/explorerRelations';
 
 for (const mode of ['current', 'commit'] as const) {
 	test.each([0, 1, 3, 4, 7])(
@@ -31,7 +34,7 @@ for (const mode of ['current', 'commit'] as const) {
 		}
 	);
 
-	test(`shared usage footers render links and empty usage at ${mode} scope`, () => {
+	test(`shared usage footers render links and empty usage at ${mode} scope`, async () => {
 		const host = hostProps(mode);
 		const nav = { route: host.route, href: host.lens.href, go: host.onroute };
 		const props = { nav, lens: host.lens, mediaBase: host.mediaBase };
@@ -73,5 +76,71 @@ for (const mode of ['current', 'commit'] as const) {
 		const empty = render(ExplorerUsage, { props: { ...props, consumers: [] } }).body;
 		expect(words(empty).trim()).toBe('Used In —');
 		expect(empty).not.toContain('<a');
+		await measureWorkload('reports.function.entity-usage', `named-helper-consumers-${mode}`, () => {
+			for (const sameOwner of [false, true]) assertNamedUsage(mode, sameOwner);
+		});
 	});
 }
+
+function assertNamedUsage(mode: 'current' | 'commit', sameOwner: boolean): void {
+	const head = withNamedConsumers(hostProps(mode).head, sameOwner);
+	const body = content(mode, { category: 'functions' }, { head });
+	const cards = [...body.matchAll(/<article\b[^]*?<\/article>/g)];
+	expect(
+		cards,
+		'Private named callers establish sharing without becoming catalog cards'
+	).toHaveLength(1);
+	const footer = cards[0][0].slice(cards[0][0].indexOf('class="ex-usage'));
+	for (const name of ['firstCall', 'secondCall', 'thirdCall'])
+		expect(words(footer)).toContain(name);
+	expect(words(footer)).not.toContain('fourthCall');
+	expect(words(footer), 'Four distinct named consumers retain overflow').toContain('…');
+	expect([...footer.matchAll(/<a\b/g)]).toHaveLength(3);
+	const helper = head.registry.units.find((unit) => unit.id === ids.filter)!.helpers![0];
+	const first = helper.consumers![0];
+	for (const consumers of [
+		[first, first],
+		[first, { unit: ids.filter, symbol: helper.name }],
+		[first, { unit: 'missing', symbol: 'notHere' }]
+	]) {
+		helper.consumers = consumers;
+		expect(content(mode, { category: 'functions' }, { head })).not.toContain('<article');
+	}
+}
+
+test('private and unclassified dependencies reuse the shared module card', () => {
+	for (const mode of ['current', 'commit'] as const) {
+		const head = withHelpers(hostProps(mode).head);
+		const shape = 'app.model.order-shape-types';
+		const template = head.registry.units.find((unit) => unit.id === ids.filter)!;
+		head.registry.units.push({
+			...template,
+			id: shape,
+			kind: 'model',
+			title: 'OrderShape.types',
+			helpers: [],
+			owns: { source: ['src/models/OrderShape.types.ts'], symbols: ['OrderShape'] }
+		});
+		head.registry.units
+			.find((unit) => unit.id === ids.list)!
+			.dependencies.push({ unit: shape, via: 'import' });
+		const body = content(mode, { category: 'components', entity: ids.list, tab: 'uses' }, { head });
+		const support = explorerRelations(head, ids.list).support.filter((item) =>
+			['function.single', shape].includes(item.id)
+		);
+		expect(support).toHaveLength(2);
+		for (const item of support) {
+			const card = [...body.matchAll(/<article\b[^]*?<\/article>/g)]
+				.map((match) => match[0])
+				.find((markup) => markup.includes(`aria-label="${item.name}"`));
+			expect(card, 'Dependencies must be shared cards, not plain Other rows').toBeDefined();
+			expect(card).toContain('data-harness-component="explorer-ui-explorer-module-card"');
+			expect(card).toContain('aria-label="Used In"');
+			expect(card).not.toContain('ex-pill');
+			if (item.id === 'function.single') expect(card).toContain('/functions/function.single');
+			else
+				for (const category of ['models', 'functions'])
+					expect(card).not.toContain(`/${category}/${shape}`);
+		}
+	}
+});

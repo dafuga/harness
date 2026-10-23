@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-index",
 	"kind": "component",
 	"title": "Entity catalog",
-	"responsibility": "Groups and searches a category’s entities with accessible status and empty-state guidance.",
+	"responsibility": "Groups and searches catalog entities; configs get a separate table per source file while other kinds retain responsibility categories.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,7 +12,13 @@
 			"packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.ts",
 			"packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.types.ts"
 		],
-		"symbols": ["ExplorerIndex", "catalogSections", "catalogGroups", "CatalogSection"]
+		"symbols": [
+			"ExplorerIndex",
+			"configSections",
+			"catalogSections",
+			"catalogGroups",
+			"CatalogSection"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +43,7 @@
 			{
 				"name": "ExplorerIndex",
 				"type": "markup",
-				"description": "Catalog with a local search field and alphabetical ordering. Shows count status, distinct no-registry/no-match states and a Show all action that clears search. Adds verification legend and category-specific guidance."
+				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action."
 			}
 		],
 		"errors": []

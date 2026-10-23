@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
-import { hubEnvConfig } from '../../../config/development-tooling/hubEnvConfig';
+import { hubEnvConfig } from '../../../configs/development-tooling/hubEnvConfig';
 import { hubRuntime } from './hubRuntime';
 import { HubApiController } from './hub-api-controller/HubApiController';
 import { hubRateLimit } from './hubRateLimit';

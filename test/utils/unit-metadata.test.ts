@@ -41,7 +41,7 @@ test('revision metadata derives project categories from the same committed sourc
 	const settings = registry.units.find((unit) => unit.kind === 'config')!;
 	expect(settings, 'configs record their committed variable values').toHaveProperty(
 		'configValues',
-		[{ name: 'example', value: '1', source: paths[4] }]
+		[{ name: 'example', value: '1', source: paths[4], literal: 1 }]
 	);
 	files[paths[4]] = 'export const example = 2;';
 	await unitMetadata(
@@ -55,7 +55,7 @@ test('revision metadata derives project categories from the same committed sourc
 		{ id: 'payments', title: 'Billing' }
 	);
 	expect(settings).toHaveProperty('configValues', [
-		{ name: 'example', value: '2', source: paths[4] }
+		{ name: 'example', value: '2', source: paths[4], literal: 2 }
 	]);
 	await unitMetadata(memoryTree(files), registry.units);
 	for (const unit of registry.units) expect(unit).not.toHaveProperty('group');

@@ -2,6 +2,7 @@
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
+	import type { SupportRow } from '../../utils/explorer-ui/entityUsage';
 	import { entityLens, type EntityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
@@ -17,31 +18,34 @@
 		category,
 		shot
 	}: {
-		row: CatalogRow;
+		/** A collection's row, or what a module uses that no collection lists. */
+		row: CatalogRow | SupportRow;
 		nav: EntityNav;
 		lens: EntityLens;
 		mediaBase: string;
 		/** The collection it is listed in; the row's own kind when not given. */
-		category?: ExplorerCategory;
+		category?: ExplorerCategory | null;
 		/** A visual card's own screenshot, or null for its gap; read from the lens when omitted. */
 		shot?: Evidence | null;
 	} = $props();
-	let kind = $derived(category ?? row.entity.category);
-	// Pages, layouts and components are pictured; helpers, services and models have no image area.
+	// A dependency no collection lists has no kind of its own; only a private function has a page.
+	let entry = $derived('support' in row ? null : row);
+	let opens = $derived('support' in row ? row.opens : null);
+	let kind = $derived(category ?? entry?.entity.category);
+	// Pages, layouts and components are pictured; helpers, services, models and configs are not.
 	let page = $derived(kind === 'pages');
-	let visual = $derived(page || kind === 'layouts' || kind === 'components');
-	let to = $derived(
-		entityLens(nav.route, {
-			category: kind,
-			entity: row.entity.id,
-			helper: row.helper?.name,
-			tab: visual ? undefined : 'contract'
-		})
-	);
+	let visual = $derived(page || kind === 'components' || kind === 'layouts');
+	// A config opens its values as its row did; other code opens its contract. Nothing is invented.
+	let to = $derived.by(() => {
+		if (!entry) return opens && entityLens(nav.route, { category: opens, entity: row.id });
+		const tab = visual || kind === 'configs' ? undefined : 'contract';
+		const helper = entry.helper?.name;
+		return entityLens(nav.route, { category: kind, entity: entry.entity.id, helper, tab });
+	});
 	// The entity's own capture at the shown revision, or null for its gap; never another's.
 	let capture = $derived.by(() => {
-		if (shot !== undefined || !visual) return shot ?? null;
-		return catalogShot(lens.evidence(row.entity.unit), row.entity.unit.preview, true);
+		if (shot !== undefined || !visual || !entry) return shot ?? null;
+		return catalogShot(lens.evidence(entry.entity.unit), entry.entity.unit.preview, true);
 	});
 	let file = $derived(capture && !capture.missing ? capture.file : '');
 	// A failure belongs to one file: the file of another revision is tried afresh.
@@ -55,11 +59,9 @@
 	let origin = $derived(`${taken} ${shortCommit(capture?.source ?? '')}`);
 	let provenance = $derived(pictured && capture ? `${capture.title} · ${origin}` : undefined);
 	/** A call from this revision's documented values; unspecified arguments stay named variables. */
-	function invocation(unit: CatalogRow['entity']['unit']): string {
-		const helper = row.helper;
+	function invocation({ helper, entity: { unit } }: CatalogRow): string {
 		const name = helper?.name ?? '';
-		const inputs = helper?.inputs ?? [];
-		const owner = name;
+		if (!name) return unit.title;
 		const documented = unit.documentation?.examples[0]?.input;
 		const values =
 			unit.contract.inputs[0]?.name.startsWith(`${name}.`) &&
@@ -68,8 +70,8 @@
 			!Array.isArray(documented)
 				? (documented as Record<string, unknown>)
 				: {};
-		const args = inputs
-			.filter((input) => !owner || input.name.startsWith(`${owner}.`))
+		const args = (helper?.inputs ?? [])
+			.filter((input) => input.name.startsWith(`${name}.`))
 			.map((input) => {
 				const parameter = input.name.split('.').at(-1)!;
 				if (Object.hasOwn(values, parameter)) return JSON.stringify(values[parameter]);
@@ -77,10 +79,10 @@
 				if (declared?.examples?.length) return JSON.stringify(declared.examples[0]);
 				return parameter;
 			});
-		if (!name) return unit.title;
 		return `${name}(${args.join(', ')})`;
 	}
-	let call = $derived(row.helper ? invocation(row.entity.unit) : row.name);
+	let call = $derived(entry?.helper ? invocation(entry) : row.name);
+	const hint = 'Example usage; arguments without recorded sample values remain named variables.';
 </script>
 
 {#snippet picture()}
@@ -94,7 +96,9 @@
 		/>
 	{:else}
 		<span class="ex-thumb-gap">
-			<HarnessIcon name={categoryIcon[kind]} size={28} />
+			{#if kind}
+				<HarnessIcon name={categoryIcon[kind]} size={28} />
+			{/if}
 			<span>No screenshot is recorded at this revision</span>
 		</span>
 	{/if}
@@ -112,14 +116,14 @@
 	aria-label={row.name}
 	data-harness-component="explorer-ui-explorer-module-card"
 >
-	{#if page}
+	{#if page && to}
 		<EntityLink {to} {nav} class="ex-page-open" label={`Open ${row.name}`} title={provenance}>
 			<h2>{row.name}</h2>
 			<span class="ex-thumb">{@render picture()}</span>
 		</EntityLink>
 		<!-- Beside the page's link, never inside it: a link holds no other link. -->
 		{@render usage()}
-	{:else if visual}
+	{:else if visual && to}
 		<figure class="ex-card-shot">
 			<EntityLink {to} {nav} class="ex-thumb" label={`Open ${row.name}`}>
 				{@render picture()}
@@ -129,23 +133,20 @@
 			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
 			{@render usage()}
 		</div>
-	{:else}
-		<EntityLink
-			{to}
-			{nav}
-			class="ex-function-call"
-			title={row.helper
-				? 'Example usage; arguments without recorded sample values remain named variables.'
-				: undefined}
-		>
+	{:else if to}
+		<EntityLink {to} {nav} class="ex-function-call" title={entry?.helper ? hint : undefined}>
 			<code>{call}</code>
 		</EntityLink>
+		{@render usage()}
+	{:else}
+		<!-- A dependency without a page of its own is named, never linked to an invented one. -->
+		<span class="ex-function-call"><code>{call}</code></span>
 		{@render usage()}
 	{/if}
 </article>
 
 <style>
-	/* A helper, service or model card: its call or name in code type above its Used In list. */
+	/* Any code card: its call or name in code type above its Used In list. */
 	.ex-function-tile {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);

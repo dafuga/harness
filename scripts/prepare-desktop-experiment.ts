@@ -3,7 +3,7 @@ import { homedir } from 'node:os';
 import { access, mkdir, rename } from 'node:fs/promises';
 import { DesktopArchiveAdapter } from './prepare-desktop-experiment/DesktopArchiveAdapter';
 import { DesktopExperimentService } from './prepare-desktop-experiment/DesktopExperimentService';
-import { desktopPatchConfig } from '../src/config/development-tooling/desktopPatchConfig';
+import { desktopPatchConfig } from '../src/configs/development-tooling/desktopPatchConfig';
 import { DesktopIntegrityAdapter } from './prepare-desktop-experiment/DesktopIntegrityAdapter';
 
 const source = '/Applications/ChatGPT.app';

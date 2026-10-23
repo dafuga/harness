@@ -8,8 +8,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/config/development-tooling/shellViteConfig.ts",
-			"packages/reports/src/config/shellViteConfig.ts"
+			"packages/reports/src/configs/development-tooling/shellViteConfig.ts",
+			"packages/reports/src/configs/shellViteConfig.ts"
 		],
 		"symbols": ["default", "default"]
 	},
@@ -22,11 +22,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/config/development-tooling/shellViteConfig.ts",
+		"entry": "packages/reports/src/configs/development-tooling/shellViteConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/config/development-tooling/shellViteConfig.ts"
+				"entry": "packages/reports/src/configs/development-tooling/shellViteConfig.ts"
 			}
 		]
 	},

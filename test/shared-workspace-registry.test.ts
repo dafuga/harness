@@ -39,6 +39,16 @@ beforeAll(async () => {
 	loaded = await loadUnits(process.cwd(), undefined, indexer);
 }, 60_000);
 
+test('cataloged application configs keep their implementation and entries under configs', () => {
+	const configs = loaded.stored.filter(
+		(unit) => unit.status === 'active' && unit.kind === 'config'
+	);
+	expect(configs.length).toBeGreaterThan(0);
+	for (const unit of configs)
+		for (const source of unit.owns.source)
+			expect(source, `${unit.id} config source`).toMatch(/(?:^|\/)src\/configs\//);
+});
+
 /** The alias imports the Web workspace really writes, as its source states them. */
 function written(): string[] {
 	const found = scanImports(readFileSync(hosted, 'utf8'), 'svelte');

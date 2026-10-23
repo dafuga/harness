@@ -6,7 +6,9 @@
 	import ExplorerIndex from './explorer-index/ExplorerIndex.svelte';
 	let host: ExplorerScreenProps = $props();
 	let category = $derived(host.route.category);
-	let rows = $derived(entityCatalog(host.entities, category, host.lens.relations));
+	let rows = $derived(
+		entityCatalog(host.entities, category, host.lens.relations, { revision: host.head })
+	);
 </script>
 
 <!-- The catalog of one kind; the marker of the screen draws no box. -->

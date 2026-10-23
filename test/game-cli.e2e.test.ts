@@ -42,10 +42,10 @@ test.each([
 			expect(await readFile(join(cwd, 'src/utils/combat.ts'), 'utf8')).toContain(
 				'Readonly<GameState>'
 			);
-			expect(await readFile(join(cwd, 'src/config/victoryCheckpointConfig.ts'), 'utf8')).toContain(
+			expect(await readFile(join(cwd, 'src/configs/victoryCheckpointConfig.ts'), 'utf8')).toContain(
 				'victory'
 			);
-			expect(await readFile(join(cwd, 'src/config/battleViewConfig.ts'), 'utf8')).toContain(
+			expect(await readFile(join(cwd, 'src/configs/battleViewConfig.ts'), 'utf8')).toContain(
 				`dimension: '${dimension}'`
 			);
 			expect(() =>

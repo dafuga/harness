@@ -53,7 +53,7 @@ test('a test file that needs its own command gets it, and every other file keeps
 		checks: [
 			{
 				path: picker,
-				command: 'bun x playwright test --config src/config/pickerPlaywrightConfig.ts {target}',
+				command: 'bun x playwright test --config src/configs/pickerPlaywrightConfig.ts {target}',
 				timeoutMs: 120_000
 			}
 		]
@@ -63,7 +63,7 @@ test('a test file that needs its own command gets it, and every other file keeps
 		id: picker,
 		cwd: 'packages/reports',
 		command:
-			'bun x playwright test --config src/config/pickerPlaywrightConfig.ts tests/e2e/provider-picker.spec.ts',
+			'bun x playwright test --config src/configs/pickerPlaywrightConfig.ts tests/e2e/provider-picker.spec.ts',
 		timeoutMs: 120_000
 	});
 	expect([hub.command, unit.command]).toEqual([

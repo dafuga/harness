@@ -1,5 +1,5 @@
 import { bytesText, concatBytes } from '../../../../remote/src/index';
-import { relayConfig } from '../../config/networking-security/relayConfig';
+import { relayConfig } from '../../configs/networking-security/relayConfig';
 import { isRecord } from './isRecord';
 
 /**

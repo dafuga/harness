@@ -2,7 +2,7 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { at, expectNoOverflow, expectPath, tip } from './support/explorer';
 import { capturePhase, viewports } from './support/harnessCapture';
 import { seeded } from './support/harnessHistory';
-import { appStyleTokensConfig } from '../../src/config/shared-primitives/appStyleTokensConfig';
+import { appStyleTokensConfig } from '../../src/configs/shared-primitives/appStyleTokensConfig';
 import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
 
 const { commits } = seeded();

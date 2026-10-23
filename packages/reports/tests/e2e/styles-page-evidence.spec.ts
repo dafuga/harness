@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { expect, test } from '../../../../test/support/browserTest';
 import { benchmarkCaptureSchema } from '../../../../src/core/verification-evidence/verifyTypes';
 import { expectNoOverflow, tip } from './support/explorer';
-import { appStyleTokensConfig } from '../../src/config/shared-primitives/appStyleTokensConfig';
+import { appStyleTokensConfig } from '../../src/configs/shared-primitives/appStyleTokensConfig';
 import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
 import { captureScreen, evidenceDirectory, viewports } from './support/harnessCapture';
 

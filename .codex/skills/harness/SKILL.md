@@ -21,7 +21,7 @@ Choose component colors from Styles → Color roles, defined in `appStyleTokensC
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
 7. Verify with `bun run check` before handing work back.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
-9. Config changes: name owned helpers from the owning config file; run root and every inheriting workspace's test entrypoint before a full check.
+9. Config changes: name owned helpers from the owning config file; update generator output and public SDK export plans together, then run the standard every-scaffold export-to-emission guard. Run root and every inheriting workspace's test entrypoint before a full check.
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
 11. Helpers are pure synchronous value transformations with explicit reviewed `@pure` contracts and no I/O, mutation, hidden state, clocks or randomness. Service classes and models have separate catalog categories. A shared helper needs at least two distinct component, service or named-function consumers. Keep a single-consumer helper in its owner's folder. Preserve unit identity/history and update imports, tests and owned source when moving it; split mixed shared/private modules. Check public API and runtime references before changing an unused export. When moving definitions behind forwarding exports, extend the owning standardized test to cold-import and call both public and owner entries in fresh runtimes; a warm test-module graph does not prove initialization safety. For moved import.meta.url code, test source and packaged layouts separately; bundled output-relative addresses must keep their artifact paths. Before a broad suite for moves reachable from public SDK exports, run `bun scripts/build-api.ts --types-only`; retain the published import and type-entry addresses.
 
@@ -53,10 +53,21 @@ remains effectful even when the function has a clear name.
 For helpers recorded by `specification/loops/local-helper-ownership/migration.json`, preserve the original move definition and update the existing intentional `followUps` record with the implementation commit, reason and current definition. Run the root `test/services/unit-index.test.ts` guard alongside the owning workspace's tests before landing; workspace-only checks do not cover this repository-wide ownership record.
 
 When a reuse threshold controls catalog inclusion, derive that decision and the
-visible usage links from the same resolved, distinct consumer set. Cover zero,
+visible usage links from the same resolved, distinct consumer set. Keep every resolved module
+category eligible for usage links, exclude the callable itself, and cover all supported kinds
+in the normal card matrix; a legacy category whitelist can silently lose valid consumers. Cover zero,
 one and multiple eligible consumers in the standardized catalog tests, including
 duplicate references and excluded or missing consumers. A passing display test
-must not accept a row that contradicts the collection's inclusion rule.
+must not accept a row that contradicts the collection's inclusion rule. Resolve consumer owners
+from the selected revision's full active registry, independently of public catalog filtering.
+Distinct named procedural callers use owner-plus-symbol identity, including siblings in the
+helper's own unit; duplicate references and the helper itself do not count twice. Components and
+classes remain distinct owner units. Private callers never become public Helpers merely because
+they consume a shared helper. Select a recorded callable when available; otherwise open its real
+owner source, preserving template/audit roles without inventing a helper API or entity route.
+When a reference carries a callable identity separately from its owner, the normal mixed-consumer
+matrix must assert that its link text, hover or focus preview, and opened destination identify the
+same callable. Exercise distinct owner and callable names at current and historical revisions.
 
 ## Bug and Regression Loops
 
@@ -110,6 +121,7 @@ must not accept a row that contradicts the collection's inclusion rule.
 
 - Every code change must collect source bytes, source lines, complexity and dependency counts for each added or directly changed unit from the exact committed tree. Measure each applicable emitted target from that snapshot's real build output. A failed or missing full verification record must not hide readable source measurements.
 - Every changed executable unit must also have a representative measured workload in its normal behavior tests, even without a performance budget. Record fresh timing and a meaningful memory observation with the unit or callable, workload, method, samples, target, runtime profile and tested revision. Focused regression evidence and full verification both retain these observations.
+- After source ownership changes, compare workload unit IDs with the current indexed owners. Preserve historical IDs at their original revisions; current captures must use the new ownership.
 - For pages, collect real route navigation timing and page JavaScript heap after fonts and images settle. Bind the capture to the server's verified build and revision. A client-side route change must not borrow the previous document's navigation timing. Name whole-page heap or whole-process RSS accurately, including shared code or runner overhead; never describe it as isolated unit memory.
 - Page screenshot scenarios require navigation timing and scoped renderer memory at every required viewport. Collect both through the shared capture helper and retain them with the images.
 - Do not complete a changed executable unit with applicable metrics left unmeasured. Extend its standard workload coverage and rerun it. If source, runtime, toolchain or safe memory attribution is unavailable, record the exact reason, keep that check open, and report the blocker; absence is never zero or a passing measurement.
@@ -137,6 +149,8 @@ Keep registered test titles stable when extending naming coverage; verification 
 Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.
 
 ## Responsibility Categories
+
+Config modules use the plural `src/configs/<category>/` folder, one focused source file per config. Generate new configs there and preserve stable IDs when relocating existing files. The Configs explorer shows one table per source file; responsibility grouping must not combine unrelated configs. Decode only static source literals for presentation, preserve raw expressions for inspection, and never execute configuration or read host secrets to populate the catalog. Extend the standard mixed-config browser fixture whenever grouping or value presentation changes.
 
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
@@ -169,7 +183,11 @@ When reusing a catalog item in relationships or another context, review the rend
 variants and their supplied data, not only the component import. The existing
 standardized catalog and relationship matrix must exercise the same consumer
 footer, clickable references, hover/focus preview and branch/revision navigation.
-Include empty usage and missing screenshots. A class-name or entity-name assertion
+Include empty usage and missing screenshots. Inventory every relationship input, including
+private callables and unclassified support dependencies; checking only existing article
+elements cannot detect modules that bypass the card renderer. Keep at least one fourth
+eligible consumer through the data projection and assert both three visible links and
+the overflow indicator. A class-name or entity-name assertion
 alone does not prove interaction parity. Keep screenshot evidence at the failing
 and passing checkpoints; do not substitute another entity or revision's image.
 
@@ -182,10 +200,12 @@ and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
 
-When changing a previously relocated helper's behavior, review its ownership
+When changing a previously relocated helper or service workflow's behavior, review its ownership
 migration follow-up as well as its callers and contract. Keep the original move
 and identity intact; record the intentional new definition and source commit in
-the existing follow-up ledger, then run the standardized unit-index guard.
+the existing follow-up ledger, retain earlier reviews, and regenerate its committed
+review-object pack when present. Then run the standardized unit-index guard,
+including the recorded service-move case for workflow changes.
 
 ## Native Unload Verification
 

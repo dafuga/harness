@@ -3,15 +3,16 @@
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
 	"title": "Entity catalog table",
-	"responsibility": "Lists config variables with typed icon controls, collection counts and expandable inspection, and remaining nonvisual entities with their category columns.",
+	"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/ExplorerTable.svelte",
-			"packages/reports/src/components/explorer-ui/ExplorerTable.types.ts"
+			"packages/reports/src/components/explorer-ui/ExplorerTable.types.ts",
+			"packages/reports/src/components/explorer-ui/explorer-table/ConfigValue.svelte"
 		],
-		"symbols": ["ExplorerTable", "Kind", "Column"]
+		"symbols": ["ExplorerTable", "Kind", "Column", "ConfigValue"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -24,7 +25,7 @@
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
-				"description": "Required catalog rows in display order. Config rows contain committed expression text and optional static object/array structures with exact known counts."
+				"description": "Required rows in display order. A config table receives one source file with committed expressions, decoded literals and static collection structures."
 			},
 			{
 				"name": "ExplorerTable.nav",
@@ -51,12 +52,17 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A Variable/Value table with object/array icon controls and read-only expandable dialogs. Scalars remain inline; opaque long expressions retain source inspection. Other categories and revision-scoped links are preserved."
+				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.explorer-ui-config-value-tree",
 			"via": "import",
