@@ -84,17 +84,36 @@ function modelsOf(graph: Graph, from: string): HarnessUnit[] {
 	return models;
 }
 
+/** Framework layouts are mounted by routing, without an explicit page import. */
+function routeLayouts(unit: HarnessUnit, active: HarnessUnit[]): string[] {
+	const pages = unit.owns.source.filter((path) => path.endsWith('/+page.svelte'));
+	return active
+		.filter(
+			(layout) =>
+				layout.kind === 'layout' &&
+				layout.owns.source.some(
+					(path) =>
+						path.endsWith('/+layout.svelte') &&
+						pages.some((page) => page.startsWith(path.slice(0, -14)))
+				)
+		)
+		.map((layout) => layout.id);
+}
+
 /** The active units of a revision and their edges; each list of users is made once and grown. */
 function graphOf(head: HarnessRevision): Graph {
 	const active = head.registry.units.filter((unit) => unit.status === 'active');
 	const uses: Edges = new Map();
 	const consumers: Edges = new Map();
 	for (const unit of active) {
-		uses.set(
-			unit.id,
-			unit.dependencies.map((dependency) => dependency.unit)
-		);
-		for (const { unit: used } of unit.dependencies) {
+		const dependencies = [
+			...new Set([
+				...unit.dependencies.map((dependency) => dependency.unit),
+				...routeLayouts(unit, active)
+			])
+		];
+		uses.set(unit.id, dependencies);
+		for (const used of dependencies) {
 			const users = consumers.get(used);
 			if (users) users.push(unit.id);
 			else consumers.set(used, [unit.id]);
@@ -146,7 +165,7 @@ function related(graph: Graph, id: string, entity: Entity): ExplorerRelations {
 	const of = (category: string) => inside.filter((found) => found.category === category);
 	return {
 		pages: entities(held ? pagesOf(graph, id) : []),
-		shells: of('shells'),
+		layouts: of('layouts'),
 		components: of('components'),
 		functions: of('functions'),
 		configs: of('configs'),

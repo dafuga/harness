@@ -29,7 +29,7 @@
 		label?: string;
 	} = $props();
 	// Settings are variables with values, not modules: they keep their table of values. Every
-	// module, a config or shell included, is the one module card.
+	// module, a config or layout included, is the one module card.
 	const setting = (row: Row): row is CatalogRow => !('support' in row) && Boolean(row.setting);
 	let pages = $state(1);
 	let root = $state<HTMLDivElement>();

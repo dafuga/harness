@@ -20,7 +20,7 @@ const entity = (id: string, category: CatalogEntity['category'], kind: string, t
 	}) as CatalogEntity;
 const entities = [
 	entity('app.function.format-time', 'functions', 'function', 'Format time'),
-	entity('app.shell.order-frame', 'shells', 'shell', 'Order frame')
+	entity('app.shell.order-frame', 'layouts', 'shell', 'Order frame')
 ];
 function workspace(commit: string) {
 	const shown = createWorkspaceStore();
@@ -62,7 +62,7 @@ test('a unit the agent names is a link to its address, a shell under Shells', ()
 	);
 	expect(links(body)).toEqual([
 		[`${branch}/functions/app.function.format-time`, explorerName(entities[0])],
-		[`${branch}/shells/app.shell.order-frame`, explorerName(entities[1])]
+		[`${branch}/layouts/app.shell.order-frame`, explorerName(entities[1])]
 	]);
 	expect(content(body)).toBe(
 		`I change ${explorerName(entities[0])} in ${explorerName(entities[1])}.`
@@ -95,7 +95,7 @@ test('markup in agent text is shown as text and never interpreted', () => {
 	const body = drawn(text);
 	expect(body).not.toMatch(/<img\b|<a\b[^>]*href="https:\/\/evil/);
 	expect(links(body)).toEqual([
-		[`${branch}/shells/app.shell.order-frame`, explorerName(entities[1])]
+		[`${branch}/layouts/app.shell.order-frame`, explorerName(entities[1])]
 	]);
 });
 

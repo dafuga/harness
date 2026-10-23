@@ -1,21 +1,23 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { isWorkspacePath, workspacePath, workspaceRoute } from '../../src/utils/workspaceRoute';
 
 const commit = 'a'.repeat(40);
 
-test('a project link names project, encoded branch, full commit, entity and section', () => {
-	const path = `/projects/local-1/harness/branch/feat%2Factivity/commit/${commit}/pages/page%3Aactivity/history`;
-	const route = workspaceRoute(path);
-	expect(route).toEqual({
-		projectId: 'local-1',
-		branch: 'feat/activity',
-		commit,
-		category: 'pages',
-		entityId: 'page:activity',
-		suffix: 'history'
-	});
-	expect(workspacePath(route)).toBe(path);
-});
+test('a project link names project, encoded branch, full commit, entity and section', () =>
+	measureWorkload('desktop.function.workspace-route', 'layout-catalog-behavior', () => {
+		const path = `/projects/local-1/harness/branch/feat%2Factivity/commit/${commit}/pages/page%3Aactivity/history`;
+		const route = workspaceRoute(path);
+		expect(route).toEqual({
+			projectId: 'local-1',
+			branch: 'feat/activity',
+			commit,
+			category: 'pages',
+			entityId: 'page:activity',
+			suffix: 'history'
+		});
+		expect(workspacePath(route)).toBe(path);
+	}));
 
 test('a branch link has no commit and a legacy link has no project', () => {
 	expect(workspaceRoute('/projects/p/harness/branch/main/services/service.mail/details')).toEqual({

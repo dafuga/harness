@@ -31,7 +31,7 @@
 	/** A component keeps its runtime evidence between its name and every section it opens. */
 	const pictured = $derived(workspace.entity?.category === 'components');
 	const visual = $derived(
-		['pages', 'components', 'shells'].includes(workspace.entity?.category ?? '')
+		['pages', 'components', 'layouts'].includes(workspace.entity?.category ?? '')
 	);
 	const names = $derived(
 		(Object.keys(sections) as Section[]).filter(

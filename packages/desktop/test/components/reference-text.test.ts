@@ -11,7 +11,7 @@ import type { CatalogEntity, ProjectSnapshot } from '../../src/models/Desktop.ty
  */
 const tip = 'a'.repeat(40);
 const frame = {
-	...{ id: 'app.shell.order-frame', category: 'shells', kind: 'shell', title: 'Order frame' },
+	...{ id: 'app.shell.order-frame', category: 'layouts', kind: 'shell', title: 'Order frame' },
 	planned: false
 } as CatalogEntity;
 function drawn(text: string, entity: CatalogEntity | null = null) {

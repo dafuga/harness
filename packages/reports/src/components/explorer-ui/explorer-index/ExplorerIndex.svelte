@@ -23,7 +23,7 @@
 	/** The kinds whose entities carry a category; any other kind is listed whole. */
 	const grouped = new Set<string>([
 		'pages',
-		'shells',
+		'layouts',
 		'components',
 		'functions',
 		'configs',
@@ -62,8 +62,10 @@
 	<p class="ex-lead">{label.subtitle}</p>
 	{#if category === 'components'}
 		<p class="ex-soft">A component can contain other components.</p>
-	{:else if category === 'shells'}
-		<p class="ex-soft">A shell frames the pages of a host and holds the components they show.</p>
+	{:else if category === 'layouts'}
+		<p class="ex-soft">
+			The highlighted child area shows where each page renders within its layout.
+		</p>
 	{/if}
 	<ExplorerControls {noun} bind:filter />
 	<p class="ex-hidden" role="status">{listed.length} of {rows.length} {noun} shown</p>

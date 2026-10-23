@@ -15,7 +15,7 @@ const found = (page: Page) =>
  */
 export const searchStates: Record<string, (page: Page) => Promise<void>> = {
 	async search(page) {
-		await page.goto(tip(shellsBranch, 'shells'));
+		await page.goto(tip(shellsBranch, 'layouts'));
 		await page.getByRole('button', { name: 'Search entities', exact: true }).click();
 		await field(page).fill('title');
 		await expect(found(page).filter({ hasText: 'TitleFrame' })).toContainText('Shell');

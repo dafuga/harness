@@ -16,7 +16,15 @@ import {
 } from '../../planning-collaboration/parseCollaborationInput';
 import { ensureAncestry } from '../githubHistory';
 
-const categorySchema = z.enum(['page', 'shell', 'component', 'function', 'config', 'service']);
+const categorySchema = z.enum([
+	'page',
+	'shell',
+	'layout',
+	'component',
+	'function',
+	'config',
+	'service'
+]);
 
 const image = z.object({ file: z.string(), sha256: hash, state: z.string(), viewport: z.string() });
 
@@ -47,7 +55,9 @@ async function entityPlan(adapter: SourceAdapter, repository: RepositoryIdentity
 		category = manifest.kind;
 	}
 	const plans = entries.filter((e) =>
-		/^src\/(?:pages|shells|components|functions|configs|services)\/[^/]+\/plan\.json$/.test(e.path)
+		/^src\/(?:pages|shells|layouts|components|functions|configs|services)\/[^/]+\/plan\.json$/.test(
+			e.path
+		)
 	);
 	const matched: string[] = [];
 	for (const entry of plans) {

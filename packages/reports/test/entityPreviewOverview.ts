@@ -9,7 +9,7 @@ export async function reviewMeasuredSources(
 ): Promise<void> {
 	const routes = [
 		{ category: 'pages' as const, entity: ids.page },
-		{ category: 'shells' as const, entity: 'app.shell.orders' },
+		{ category: 'layouts' as const, entity: 'app.shell.orders' },
 		{ category: 'components' as const, entity: ids.list },
 		{ category: 'functions' as const, entity: ids.filter },
 		{ category: 'configs' as const, entity: ids.settings },

@@ -10,6 +10,7 @@ import { assertClean, type Files } from '../../../../utils/planning-collaboratio
 const formatterIgnores = [
 	'pages',
 	'shells',
+	'layouts',
 	'components',
 	'functions',
 	'services',
