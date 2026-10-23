@@ -78,8 +78,10 @@ test.each(
 		const legacy = await import(`../src/utils/${entry}.ts`);
 		const canonical = await import(`../src/utils/strings/${name}.ts`);
 		expect(legacy[name]).toBe(canonical[name]);
-		await measureWorkload(unit, `strings-${name}`, () =>
-			expect(canonical[name](...args)).toBe(output)
+		await measureWorkload(
+			unit,
+			`strings-${name.replace(/[A-Z]/g, (letter) => '-' + letter.toLowerCase())}`,
+			() => expect(canonical[name](...args)).toBe(output)
 		);
 	}
 );
