@@ -2,7 +2,7 @@
 	"name": "page-feature-groups",
 	"goal": "Group related list, detail and history pages by feature and teach that structure in generated agent guidance while preserving routes and unit identities",
 	"createdAt": "2026-10-23T13:19:32.048Z",
-	"updatedAt": "2026-10-23T13:26:07.872Z",
+	"updatedAt": "2026-10-23T13:32:19.556Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:32:19.556Z",
+			"evidence": "Checkpoint 66ef7836f3d4f219197877c87b532fa61bf1e6d76a3474c8a93c93f7f756b719 passes the same frozen unit, generated-guidance and three-viewport browser command at 242d0cec; references red 69c2faca, preserves 90 images and 200 observations."
 		},
 		{
 			"id": "verify",
