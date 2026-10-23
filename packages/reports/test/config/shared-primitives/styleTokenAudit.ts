@@ -86,3 +86,14 @@ function inlineStyle(item: Record<string, unknown>): string | undefined {
 	if (['fill', 'stroke', 'color'].includes(String(item.name)))
 		return `${String(item.name)}:${value}`;
 }
+
+/** CSS variables cannot occur in query conditions; compare their literal thresholds to the catalog. */
+export function responsiveThresholds(source: string, path: string): number[] {
+	const css = path.endsWith('.css') ? source : (parse(source).css?.content.styles ?? '');
+	const widths: number[] = [];
+	postcss.parse(css).walkAtRules(/^(?:media|container)$/, (rule) => {
+		for (const match of rule.params.matchAll(/(?:min|max)-(?:width|height):\s*(\d+)px/g))
+			widths.push(Number(match[1]));
+	});
+	return widths;
+}

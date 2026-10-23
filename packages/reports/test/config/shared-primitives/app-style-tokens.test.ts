@@ -3,7 +3,7 @@ import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import postcss from 'postcss';
 import { appStyleTokensConfig as config } from '../../../src/config/shared-primitives/appStyleTokensConfig';
-import { styleTokenViolations } from './styleTokenAudit';
+import { responsiveThresholds, styleTokenViolations } from './styleTokenAudit';
 
 const root = resolve(import.meta.dirname, '../../../../..');
 function sources(directory: string): string[] {
@@ -76,4 +76,18 @@ test('all public app token references are declared in the canonical catalog', ()
 			.map((match) => `${path}: ${match[1]}`);
 	});
 	expect([...new Set(unknown)], 'Every public app token must be documented').toEqual([]);
+});
+
+test('every responsive media and container threshold is documented in Styles', () => {
+	const declared = [
+		...readFileSync(join(root, config.tokenFile), 'utf8').matchAll(
+			/--hx-breakpoint-[\w-]+:\s*(\d+)px/g
+		)
+	].map((match) => Number(match[1]));
+	const missing = config.roots.flatMap(sources).flatMap((path) =>
+		responsiveThresholds(readFileSync(join(root, path), 'utf8'), path)
+			.filter((width) => !declared.some((known) => Math.abs(width - known) <= 1))
+			.map((width) => `${path}: ${width}px`)
+	);
+	expect(missing).toEqual([]);
 });
