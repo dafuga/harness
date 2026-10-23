@@ -45,6 +45,7 @@ test('implemented pages select their declared screenshot rather than an absent p
 			preview
 		} as ComponentManifest;
 		expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+		expectVisualPreviews(unit);
 		const service = {
 			...unit,
 			kind: 'service',
@@ -78,8 +79,24 @@ test('implemented pages select their declared screenshot rather than an absent p
 			viewport: image.viewport
 		});
 		// A backend cannot make a headless unit reserve room for a design or screenshot.
-		expect(catalogUnit({ ...unit, kind: 'function' }, new Set())?.thumbnail).toBeNull();
+		for (const kind of ['function', 'service', 'config'])
+			expect(catalogUnit({ ...unit, kind }, new Set())?.thumbnail).toBeNull();
 	}));
+
+function expectVisualPreviews(unit: ComponentManifest): void {
+	for (const kind of ['layout', 'component']) {
+		const visual = { ...unit, kind, owns: { source: ['src/Frame.svelte'], symbols: ['Frame'] } };
+		expect(catalogUnit(visual, new Set())?.thumbnail).toEqual({
+			source: 'recorded',
+			...unit.preview
+		});
+		expect(catalogUnit({ ...visual, preview: undefined }, new Set())?.thumbnail).toEqual(
+			kind === 'layout' ? { source: 'recorded' } : null
+		);
+	}
+	const options = { ...unit, kind: 'layout', owns: { source: ['src/+layout.ts'], symbols: [] } };
+	expect(catalogUnit(options, new Set())?.thumbnail).toBeNull();
+}
 
 test('the tip lists every ordinary entity and no page manifest that only loads for an address', async () => {
 	const f = await project();
