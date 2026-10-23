@@ -56,3 +56,13 @@ test('parallel test workers partition the parent CPU and memory budget for their
 	expect(Number(options.env?.HARNESS_RESOURCE_MEMORY_MIB) * 3).toBeLessThanOrEqual(1792);
 	expect(options.env?.CARGO_BUILD_JOBS).toBe('1');
 });
+
+test('a caller ceiling retains its one-worker limit and full per-worker memory reservation', () => {
+	const options = resourceWorkers(
+		{ HARNESS_RESOURCE_CPUS: '3', HARNESS_RESOURCE_MEMORY_MIB: '1792' },
+		1
+	);
+	expect(options.maxWorkers).toBe(1);
+	expect(options.env?.HARNESS_RESOURCE_CPUS).toBe('1');
+	expect(options.env?.HARNESS_RESOURCE_MEMORY_MIB).toBe('1792');
+});

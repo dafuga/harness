@@ -1,3 +1,4 @@
+import { observedProviderExit } from './cli-process-fixture';
 import { Buffer } from 'node:buffer';
 import { spawn } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
@@ -135,4 +136,23 @@ test.each(['codex-text', 'claude-text'])(
 			queue.close();
 		}
 	}
+);
+
+test.each(
+	['bun', 'node'].flatMap((runtime) =>
+		['cli', 'rpc'].flatMap((transport) => [0, 150].map((delay) => ({ runtime, transport, delay })))
+	)
+)(
+	'$runtime $transport retains fast child results during a $delay ms resource observer',
+	({ runtime, transport, delay }) => {
+		const result = observedProviderExit(runtime, transport, delay);
+		expect(result.exit, result.stderr + result.stdout).toBe(0);
+		expect(result.stderr).toBe('');
+		expect(JSON.parse(result.stdout)).toEqual(
+			transport === 'cli'
+				? { status: 'passed', result: 'out\n' }
+				: { status: 'rejected', message: 'Codex connection closed.' }
+		);
+	},
+	30_000
 );
