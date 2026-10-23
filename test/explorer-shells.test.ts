@@ -19,10 +19,10 @@ import { planningArtifactPaths } from '../src/audit/structure-rules/planningArti
 const commit = 'a'.repeat(40);
 const shell = 'desktop.component.workspace-shell';
 
-test('the explorer has seven categories, Shells after Pages', () => {
+test('the explorer has entity categories, Layouts after Pages', () => {
 	expect([...explorerCategories]).toEqual([
 		'pages',
-		'shells',
+		'layouts',
 		'components',
 		'functions',
 		'configs',
@@ -32,9 +32,9 @@ test('the explorer has seven categories, Shells after Pages', () => {
 	]);
 });
 
-test('only a unit declared a shell is listed under Shells; components, partials and layouts stay', () => {
-	expect(explorerKindCategory('shell')).toBe('shells');
-	for (const kind of ['component', 'partial', 'layout']) {
+test('layout frames have their own collection while shell hosts remain components', () => {
+	expect(explorerKindCategory('layout')).toBe('layouts');
+	for (const kind of ['component', 'partial', 'shell']) {
 		expect([kind, explorerKindCategory(kind)]).toEqual([kind, 'components']);
 	}
 });
@@ -47,23 +47,23 @@ test('a shell has an address at a branch tip and at a selected commit, with its 
 	expect(at).toEqual({
 		branch: 'feat/x',
 		commit,
-		category: 'shells',
+		category: 'layouts',
 		entity: shell,
 		section: 'details',
 		tab: 'source'
 	});
 	expect(explorerRoutePath(at!)).toBe(
-		`/branch/feat%2Fx/commit/${commit}/shells/${shell}?tab=source`
+		`/branch/feat%2Fx/commit/${commit}/layouts/${shell}?tab=source`
 	);
 	expect(explorerRoute('/branch/main/shells')).toEqual({
 		branch: 'main',
 		commit: null,
-		category: 'shells'
+		category: 'layouts'
 	});
 	expect(explorerRoute(`/commit/${commit}/shells/${shell}/history`)).toEqual({
 		branch: null,
 		commit,
-		category: 'shells',
+		category: 'layouts',
 		entity: shell,
 		section: 'history'
 	});

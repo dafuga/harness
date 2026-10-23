@@ -28,7 +28,7 @@ const categoryOf = (head: HarnessRevision, id: string) =>
 	explorerEntities(head).find((entity) => entity.id === id)?.category;
 
 test('the bar has entity categories and a separate Styles screen link', () => {
-	const location = { branch: shellBranch, commit: null, category: 'shells' as const };
+	const location = { branch: shellBranch, commit: null, category: 'layouts' as const };
 	const { categories } = harnessShell({
 		base: shellMount,
 		repository: 'synthetic-repository',
@@ -40,7 +40,7 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 	});
 	expect(categories.map((item) => [item.id, item.label, item.icon, item.active])).toEqual([
 		['pages', 'Pages', 'pages', false],
-		['shells', 'Shells', 'shells', true],
+		['layouts', 'Layouts', 'layouts', true],
 		['components', 'Components', 'components', false],
 		['models', 'Models', 'database', false],
 		['services', 'Services', 'services', false],
@@ -49,7 +49,7 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 		['styles', 'Styles', 'styles', false],
 		['platforms', 'Platforms', 'platforms', false]
 	]);
-	expect(categoryIcon.shells).not.toBe(categoryIcon.components);
+	expect(categoryIcon.layouts).not.toBe(categoryIcon.components);
 });
 
 test('a unit declared a shell is a Shell; a component, a partial and a layout stay where they were', () => {
@@ -58,38 +58,44 @@ test('a unit declared a shell is a Shell; a component, a partial and a layout st
 		owns: { source: [`src/x/${kind}.svelte`], symbols: [] }
 	});
 	expect([explorerCategory(owned('shell')), explorerRole(owned('shell'))]).toEqual([
-		'shells',
+		'components',
 		'Shell'
 	]);
 	expect(explorerCategory(owned('component'))).toBe('components');
 	expect(explorerCategory(owned('partial'))).toBe('components');
+	expect(
+		explorerCategory({ kind: 'layout', owns: { source: ['src/routes/+layout.ts'], symbols: [] } })
+	).toBe('configs');
+	expect(
+		explorerCategory({ kind: 'layout', owns: { source: ['src/loader.ts'], symbols: [] } })
+	).toBeNull();
 	expect([explorerCategory(owned('layout')), explorerRole(owned('layout'))]).toEqual([
-		'components',
+		'layouts',
 		'Layout'
 	]);
 });
 
 test('each revision lists the unit under what its own manifest declares', () => {
-	const tip = framed(commits.tip, 'shell');
+	const tip = framed(commits.tip, 'layout');
 	const first = framed(commits.first, 'component');
-	expect(categoryOf(tip, frame)).toBe('shells');
+	expect(categoryOf(tip, frame)).toBe('layouts');
 	expect(categoryOf(first, frame)).toBe('components');
-	const shells = explorerEntities(tip).filter((entity) => entity.category === 'shells');
+	const shells = explorerEntities(tip).filter((entity) => entity.category === 'layouts');
 	expect(shells.map((entity) => entity.id)).toEqual([frame]);
 	expect(categoryOf(tip, ids.list)).toBe('components');
 	// Shells are listed after the pages and before the components.
 	const order = explorerEntities(tip).map((entity) => entity.category);
-	expect(order.indexOf('shells')).toBeGreaterThan(order.lastIndexOf('pages'));
-	expect(order.lastIndexOf('shells')).toBeLessThan(order.indexOf('components'));
+	expect(order.indexOf('layouts')).toBeGreaterThan(order.lastIndexOf('pages'));
+	expect(order.lastIndexOf('layouts')).toBeLessThan(order.indexOf('components'));
 });
 
 test('Uses names the shell a page mounts, the shell uses its components, and they are used in both', () => {
-	const tip = framed(commits.tip, 'shell');
+	const tip = framed(commits.tip, 'layout');
 	const page = entityUsage(explorerRelations(tip, ids.page));
 	expect(page.uses.map((group) => [group.title, group.items.map((item) => item.id)])).toEqual(
-		expect.arrayContaining([['Shells', [frame]]])
+		expect.arrayContaining([['Layouts', [frame]]])
 	);
-	expect(page.uses[0].title).toBe('Shells');
+	expect(page.uses[0].title).toBe('Layouts');
 	const shell = entityUsage(explorerRelations(tip, frame));
 	expect(shell.uses.map((group) => group.title)).toEqual(['Components']);
 	expect(shell.usedIn.map((item) => item.id)).toEqual([ids.page]);
