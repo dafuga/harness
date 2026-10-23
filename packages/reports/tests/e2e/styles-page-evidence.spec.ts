@@ -4,7 +4,7 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { benchmarkCaptureSchema } from '../../../../src/core/verification-evidence/verifyTypes';
 import { expectNoOverflow, tip } from './support/explorer';
 import { appStyleTokensConfig } from '../../src/configs/shared-primitives/appStyleTokensConfig';
-import { declaredStyleTokens } from './support/styleCatalog';
+import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
 import { captureScreen, evidenceDirectory, viewports } from './support/harnessCapture';
 
 const pageUnit = 'reports.page.harness-branch-branch-at-styles';
@@ -65,6 +65,7 @@ for (const viewport of viewports) {
 			directory: evidenceDirectory,
 			evidence: `${state}-screen`
 		});
+		await expectColorRoles(page.locator('main'));
 		expectCapturedMeasurements(state, viewport.id);
 	});
 }

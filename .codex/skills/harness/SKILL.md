@@ -11,6 +11,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 Harness application's own UI uses the documented shared design tokens across Reports, Desktop/iOS and Hub. Add missing design categories or named tokens to Styles before using them; run the standardized app-style-tokens admission checks. This application-specific palette must not be imposed on generated tenant projects. Preserve data-derived geometry, structural CSS and external asset branding.
 
+Choose component colors from Styles → Color roles, defined in `appStyleTokensConfig`. Follow each role's usage guidance and the shared control's actual variant; decorative accents do not define action semantics. Keep that guide and the standard Styles assertions aligned when adding a semantic use.
+
 1. Treat `harness info`, Harness generators, and `harness audit` as mandatory project controls.
 2. Run `bun run dev -- info <topic>` or `bun run dev -- info scaffolds --json` before creating unfamiliar code shapes.
 3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
