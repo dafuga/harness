@@ -2,9 +2,11 @@
 
 A deterministic TypeScript runtime for independently authored mechanics and checkpoint graphs. Browser renderers provide simple 2D Canvas or 3D Three.js scenes; A provider adapter can transform their appearance while the engine retains control of game outcomes. Live AI is currently disabled pending a credential-safe transport.
 
-`createRun(seed)` creates state. `stepGame(run, input, view, mechanics?)` advances one 1/60-second tick. Custom mechanics return disjoint state patches from a shared read-only snapshot; conflicting writes fail explicitly. Checkpoints test the resulting snapshot, then apply actions in stable ID order. They fire once per run unless repeatable.
+`createRun(seed, view?)` creates state, using the planned spawn when a built view is provided. `stepGame(run, input, view, mechanics?)` advances one 1/60-second tick. Custom mechanics return disjoint state patches from a shared read-only snapshot; conflicting writes fail explicitly. Checkpoints test the resulting snapshot, then apply actions in stable ID order. They fire once per run unless repeatable.
 
 `game.json` contains views and independent mechanics contracts. Each view owns visual direction and checkpoint nodes: stable IDs, positions, prerequisites, structured conditions/actions and AI guidance. Save through the desktop bridge to enforce project identity, current-branch writes and optimistic concurrency. Git retains historical versions. Graph descriptions are specifications, not executable code.
+
+New Desktop games and **New level** start with a concept and a level brief. Choose 2D or 3D and an available local CLI model, then generate a bounded layout proposal. Review its rendered floor, spawn and objects; request changes or approve it explicitly. **Build level** materializes the approved geometry and unlocks Preview and Checkpoints. Save persists the planning and built layout in `game.json`. Editing the concept, brief or dimension withdraws approval and build readiness while preserving earlier work. Generation never saves, approves or builds automatically, and history cannot generate or approve. Existing views without planning retain the starter behavior.
 
 The starter includes key, door and garden/vault branch checkpoints. Movement, key acquisition, collision and outcomes remain identical with or without AI video. `draw2d` and `create3d` implement the basic visuals. Custom mechanics are authored in TypeScript and passed to `stepGame`; editing their contract does not itself generate implementation code.
 

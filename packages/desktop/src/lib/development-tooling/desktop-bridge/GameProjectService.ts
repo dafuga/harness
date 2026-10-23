@@ -26,6 +26,7 @@ export class GameProjectService {
 		});
 		try {
 			await createProject({ ...input, parent });
+			if (input.kind === 'game') await initializePlanning(target);
 			await initialize(new GitAdapter(target), input.kind);
 		} catch (error) {
 			// Only this call created the target, so a failed attempt leaves nothing to block a retry.
@@ -54,4 +55,18 @@ async function initialize(git: GitAdapter, kind: string) {
 	await git.run(['init', '-b', 'main']);
 	await git.run(['add', '.']);
 	await git.run(['commit', '-m', 'feat: initialize ' + kind + ' project']);
+}
+
+async function initializePlanning(root: string) {
+	const repository = new GameDocumentRepository(root),
+		saved = await repository.read();
+	const document = {
+		...saved.document,
+		views: saved.document.views.map((view) => ({
+			...view,
+			checkpoints: [],
+			planning: { concept: '', description: '' }
+		}))
+	};
+	await repository.save(document, saved.revision);
 }

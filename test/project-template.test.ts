@@ -111,6 +111,13 @@ test.each(['app', 'lib'] as const)(
 
 function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
 	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain(
+			'Group related list, detail and history pages by feature'
+		);
+		expect(fileContents(files, path)).toContain(
+			'use route groups when public URLs must stay unchanged'
+		);
+		expect(fileContents(files, path)).toContain('Shared model names omit the .types file suffix');
 		expect(fileContents(files, path)).toContain('canonical and compatibility titles and links');
 		expect(fileContents(files, path)).toContain(
 			'affected downstream consumer tests alongside their typechecks'

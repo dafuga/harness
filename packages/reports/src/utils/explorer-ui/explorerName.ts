@@ -75,7 +75,8 @@ function codeName(unit: Named): string | undefined {
 				.at(-1)!
 				.replace(/\.[^.]+$/, '')
 				.replace(/\.(?:client|server|svelte|d)$/, '')
-		);
+		)
+		.map((stem) => (unit.kind === 'model' ? stem.replace(/\.types$/, '') : stem));
 	const symbol = stems.find((stem) => unit.owns?.symbols.includes(stem));
 	if (symbol) return symbol;
 	const module = stems.find(

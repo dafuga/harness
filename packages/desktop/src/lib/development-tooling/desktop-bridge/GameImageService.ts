@@ -1,3 +1,4 @@
+import { LevelValidator } from '../../../../../game/src/validators/game-authoring/LevelValidator';
 import type { Request } from './GameImageService.types';
 import { GameDocumentRepository } from '../../../../../game/src/repositories/game-authoring/GameDocumentRepository';
 import { CheckpointImageRepository } from '../../../../../game/src/repositories/game-authoring/CheckpointImageRepository';
@@ -35,6 +36,8 @@ export class GameImageService {
 		const view = input.document.views.find((v) => v.id === input.viewId);
 		const node = view?.checkpoints.find((c) => c.id === input.checkpointId);
 		if (!view || !node) throw new Error('Select an existing game checkpoint.');
+		if (!LevelValidator.isReady(view))
+			throw new Error('Approve and build the level before creating checkpoint images.');
 		const saved = await new GameDocumentRepository(root).read();
 		if (saved.revision !== input.expectedRevision)
 			throw new Error('The game changed. Reload before generating.');

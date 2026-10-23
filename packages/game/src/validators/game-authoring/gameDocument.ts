@@ -1,3 +1,4 @@
+import { LevelValidator } from './LevelValidator';
 import type { RecordValue } from './gameDocument.types';
 import type { GameDocument } from '../../models/game-authoring/Game.types';
 const safe = (v: unknown): v is string =>
@@ -61,6 +62,7 @@ function validateView(view: RecordValue, views: RecordValue[], errors: string[])
 		errors.push('Invalid game view');
 		return;
 	}
+	validateLevel(view, errors);
 	const nodes = view.checkpoints.filter(record);
 	if (nodes.length !== view.checkpoints.length) errors.push('Invalid checkpoint');
 	unique(nodes, errors);
@@ -160,4 +162,11 @@ function validImage(value: unknown): boolean {
 
 function validVisual(node: RecordValue): boolean {
 	return (node.imagePrompt === undefined || text(node.imagePrompt)) && validImage(node.image);
+}
+
+function validateLevel(view: RecordValue, errors: string[]) {
+	if (view.planning !== undefined && !LevelValidator.planning(view.planning))
+		errors.push('Invalid level planning');
+	if (view.world !== undefined && !LevelValidator.layout(view.world))
+		errors.push('Invalid level layout');
 }

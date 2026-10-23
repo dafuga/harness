@@ -1,3 +1,4 @@
+import { LevelValidator } from '../../validators/game-authoring/LevelValidator';
 import type {
 	GameRun,
 	GameInput,
@@ -7,11 +8,28 @@ import type {
 import { checkpointGraph } from './checkpointGraph';
 import { keyDoor } from './keyDoor';
 
-export function createRun(seed = 1): GameRun {
+export function createRun(seed = 1, view?: GameView): GameRun {
+	const world = view?.world;
 	return {
 		tick: 0,
 		seed: seed >>> 0,
-		state: { x: 0, y: 0, hasKey: false, doorOpen: false, outcome: '', choice: '' },
+		state: {
+			x: 0,
+			y: 0,
+			hasKey: false,
+			doorOpen: false,
+			outcome: '',
+			choice: '',
+			...(world && view
+				? {
+						x: world.spawn.x,
+						y: world.spawn.z,
+						level: view.id + ':' + view.planning?.built,
+						view: view.id
+					}
+				: {})
+		},
+		...(world && view ? { viewId: view.id } : {}),
 		completed: [],
 		events: [],
 		trace: []
@@ -25,14 +43,25 @@ export function stepGame(
 	view: GameView,
 	mechanics?: Mechanic[]
 ): GameRun {
+	if (!LevelValidator.isReady(view)) throw new Error('Approve and build the level before playing.');
 	if (!Number.isFinite(input.x) || !Number.isFinite(input.y))
 		throw new Error('Movement must be finite.');
 	run = enterView(run, view.id);
+	if (view.world && run.state.level !== view.id + ':' + view.planning?.built)
+		run = {
+			...run,
+			state: {
+				...run.state,
+				x: view.world.spawn.x,
+				y: view.world.spawn.z,
+				level: view.id + ':' + view.planning?.built
+			}
+		};
 	const snapshot = Object.freeze({ ...run.state, view: view.id });
 	const frozenInput = Object.freeze({ ...input });
-	const state = mechanics
-		? runMechanics(snapshot, frozenInput, mechanics)
-		: keyDoor(snapshot, frozenInput);
+	const defaultStep = () =>
+		view.world ? levelMovement(snapshot, frozenInput, view.world) : keyDoor(snapshot, frozenInput);
+	const state = mechanics ? runMechanics(snapshot, frozenInput, mechanics) : defaultStep();
 	return checkpointGraph({ ...run, state, tick: run.tick + 1, seed: nextSeed(run.seed) }, view);
 }
 
@@ -72,4 +101,20 @@ export function enterView(run: GameRun, id: string): GameRun {
 		progress,
 		completed: previous === id ? run.completed : (progress[id] ?? [])
 	};
+}
+
+function levelMovement(
+	state: GameRun['state'],
+	input: GameInput,
+	world: NonNullable<GameView['world']>
+) {
+	const x = Math.max(0.25, Math.min(world.width - 0.25, Number(state.x) + input.x));
+	const y = Math.max(0.25, Math.min(world.depth - 0.25, Number(state.y) + input.y));
+	const blocked = world.objects.some(
+		(o) =>
+			o.kind === 'wall' &&
+			Math.abs(x - o.x) < o.width / 2 + 0.2 &&
+			Math.abs(y - o.z) < o.depth / 2 + 0.2
+	);
+	return { ...state, ...(blocked ? {} : { x, y }) };
 }

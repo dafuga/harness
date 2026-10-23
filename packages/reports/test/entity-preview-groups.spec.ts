@@ -11,6 +11,28 @@ import {
 import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
+
+async function pageFamilies(page: Page): Promise<void> {
+	for (const [feature, count] of [
+		['Components', 3],
+		['Configs', 3],
+		['Helpers', 3],
+		['Layouts', 3],
+		['Models', 3],
+		['Pages', 3],
+		['Services', 3],
+		['Platforms', 2],
+		['Styles', 1]
+	] as const) {
+		await expect
+			.soft(
+				page.getByRole('heading', { level: 2, name: `${feature} ${count}`, exact: true }),
+				'Page families follow their feature folders'
+			)
+			.toBeVisible({ timeout: 500 });
+	}
+}
+
 async function configVariables(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	await expect(page.getByRole('table'), 'each source config gets its own table').toHaveCount(2);
@@ -89,6 +111,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				await expect
 					.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
 					.toBeVisible();
+			if (category === 'pages') await pageFamilies(page);
 			expect(await fits(page)).toBe(true);
 			if (category === 'configs') await configVariables(page, viewport);
 			if (category === 'functions') await helperFolders(page, viewport);

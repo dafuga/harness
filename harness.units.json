@@ -390,6 +390,12 @@
 			"specifier": "./HarnessIcon.svelte",
 			"to": "packages/reports/src/components/explorer-ui/HarnessIcon.svelte",
 			"reason": "Source collections reuse the explorer icon catalog and its accessible SVG component."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameLevelBrief.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Level briefs reuse the shared Select control for the generated level dimension."
 		}
 	]
 }
