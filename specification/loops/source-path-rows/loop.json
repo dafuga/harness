@@ -2,7 +2,7 @@
 	"name": "source-path-rows",
 	"goal": "Source paths and code actions fit one desktop line and at most two mobile lines",
 	"createdAt": "2026-10-23T14:50:06.746Z",
-	"updatedAt": "2026-10-23T14:57:44.622Z",
+	"updatedAt": "2026-10-23T14:58:44.392Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T14:58:44.392Z",
+			"evidence": "Immutable green record passes the unchanged four existing service/selection cases on bf62eba2d. Corrected red a43ed1d54 and record bc23c82d retained; all pixel bytes and workload measurements are Git-backed."
 		},
 		{
 			"id": "verify",
