@@ -1,3 +1,4 @@
+import { callableUsesFixture } from '../entityPreviewCallables';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { content, words } from '../entityRender';
@@ -113,15 +114,8 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 	const head = revision(commits.tip, []);
 	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
 	unit.helpers = [
-		{ name: 'first', source: 'helpers.ts', inputs: [], output: 'string', pure: true },
-		{
-			name: 'second',
-			source: 'helpers.ts',
-			inputs: [],
-			output: 'number',
-			pure: true,
-			consumers: [{ unit: ids.filter, symbol: 'first' }]
-		}
+		{ name: 'first', source: 'helpers.ts', inputs: [], output: 'string' },
+		{ name: 'second', source: 'helpers.ts', inputs: [], output: 'number' }
 	];
 	unit.contract = {
 		inputs: [],
@@ -172,22 +166,8 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 });
 test('selected callable Uses exclude module dependencies and hide empty navigation', async () => {
 	const head = revision(commits.tip, []);
-	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
-	unit.helpers = [
-		{ name: 'outer', source: 'helpers.ts', inputs: [], pure: true },
-		{
-			name: 'inner',
-			source: 'helpers.ts',
-			inputs: [],
-			pure: true,
-			consumers: [{ unit: ids.filter, symbol: 'outer' }]
-		},
-		{ name: 'sibling', source: 'helpers.ts', inputs: [], pure: true }
-	];
-	unit.dependencies = [
-		{ unit: ids.settings, via: 'import' },
-		{ unit: ids.store, via: 'import' }
-	];
+	const unit = callableUsesFixture(head.registry.units.find((item) => item.id === ids.filter)!);
+	head.registry.units = head.registry.units.map((item) => (item.id === unit.id ? unit : item));
 	head.registry.units.push({
 		...unit,
 		id: 'app.function.external',

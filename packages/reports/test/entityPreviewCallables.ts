@@ -1,17 +1,18 @@
 import type { HarnessUnit } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
 
+const returnNames: Record<string, string> = {
+	toKebabCase: 'kebabCaseText',
+	countWords: 'wordCount',
+	reset: 'noReturnValue'
+};
+const exampleReturns: Record<string, string | number | null> = {
+	toKebabCase: 'hello-world',
+	countWords: 2,
+	reset: null
+};
+
 export function callableFixture(unit: HarnessUnit): HarnessUnit {
-	const returnNames: Record<string, string> = {
-		toKebabCase: 'kebabCaseText',
-		countWords: 'wordCount',
-		reset: 'noReturnValue'
-	};
-	const exampleReturns: Record<string, string | number | null> = {
-		toKebabCase: 'hello-world',
-		countWords: 2,
-		reset: null
-	};
 	const helpers = [
 		['toKebabCase', 'string'],
 		['countWords', 'number'],
@@ -59,5 +60,27 @@ export function callableFixture(unit: HarnessUnit): HarnessUnit {
 				}
 			]
 		}
+	};
+}
+
+/** Independent siblings and a private same-module callee, despite unrelated module imports. */
+export function callableUsesFixture(unit: HarnessUnit): HarnessUnit {
+	return {
+		...unit,
+		helpers: [
+			{ name: 'outer', source: 'helpers.ts', inputs: [], pure: true },
+			{
+				name: 'inner',
+				source: 'helpers.ts',
+				inputs: [],
+				pure: true,
+				consumers: [{ unit: ids.filter, symbol: 'outer' }]
+			},
+			{ name: 'sibling', source: 'helpers.ts', inputs: [], pure: true }
+		],
+		dependencies: [
+			{ unit: ids.settings, via: 'import' },
+			{ unit: ids.store, via: 'import' }
+		]
 	};
 }
