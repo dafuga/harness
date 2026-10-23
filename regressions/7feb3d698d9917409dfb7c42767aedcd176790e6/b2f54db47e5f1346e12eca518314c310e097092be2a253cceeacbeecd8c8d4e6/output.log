@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QWn0fp
+
+ ✓ test/utils/explorer-ui/config-values.test.ts (17 tests) 24ms
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  14:13:23
+   Duration  2.68s (transform 165ms, setup 68ms, collect 471ms, tests 24ms, environment 0ms, prepare 36ms)
+
+
+Running 3 tests using 1 worker
+
+(node:2915) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop (2.9s)
+  ✓  2 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet (2.4s)
+  ✓  3 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile (2.6s)
+
+  3 passed (11.2s)
