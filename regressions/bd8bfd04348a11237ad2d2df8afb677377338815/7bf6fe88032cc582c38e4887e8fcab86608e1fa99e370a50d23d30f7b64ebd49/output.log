@@ -1,0 +1,49 @@
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-groups.spec.ts --grep "category folders group every" "--max-failures=1"
+
+Running 3 tests using 1 worker
+
+(node:59673) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-groups.spec.ts:84:2 › category folders group every collection and filter together at desktop (6.0s)
+Testing stopped early after 1 maximum allowed failures.
+
+
+  1) test/entity-preview-groups.spec.ts:84:2 › category folders group every collection and filter together at desktop 
+
+    Error: each source config gets its own table
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table')
+    Expected: 2
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - each source config gets its own table getByRole('table') with timeout 5000ms
+      - waiting for getByRole('table')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      43 | async function configVariables(page: Page, viewport: string): Promise<void> {
+      44 | 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
+    > 45 | 	await expect(page.getByRole('table'), 'each source config gets its own table').toHaveCount(2);
+         | 	                                                                               ^
+      46 | 	await expect(page.getByRole('table', { name: 'deliverySettings', exact: true })).toContainText(
+      47 | 		'deliverySettings.enabled'
+      48 | 	);
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ib8TjM/packages/reports/test/entity-preview-groups.spec.ts:45:81)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ib8TjM/packages/reports/test/entity-preview-groups.spec.ts:111:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/error-context.md
+
+  1 failed
+    test/entity-preview-groups.spec.ts:84:2 › category folders group every collection and filter together at desktop 
+  2 did not run
+  1 error was not a part of any test, see above for details
+error: script "test:entities" exited with code 1
