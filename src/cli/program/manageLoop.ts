@@ -146,8 +146,7 @@ export function renderLoopStatus(status: LoopStatus): string {
 
 async function auditLoopCompletion(root: string, state: LoopState, step: string): Promise<void> {
 	const final = state.steps.filter((candidate) => candidate.status === 'pending').length === 1;
-	const regressionVerify = state.regressionCommits === 1 && step === 'verify';
-	if ((state.completion && final) || regressionVerify)
+	if (state.completion && final)
 		await new TaskCompletionService(root).require({
 			kind: state.completion?.kind ?? 'coding',
 			plan: state.completion?.plan,

@@ -1,11 +1,10 @@
+import { promoteChange } from '../../../../utils/development-tooling/promoteChange';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { TaskCompletionService } from '../../../../../../../src/services/verification-evidence/TaskCompletionService';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
-import { hostChanges } from '../../../../utils/development-tooling/hostChanges';
-import { promoteChange } from '../../../../utils/development-tooling/promoteChange';
 import { sourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
+import { hostChanges } from '../../../../utils/development-tooling/hostChanges';
 import { changeExecute, recordChange } from './changeExecute';
 
 export class ChangeRunService {
@@ -17,11 +16,6 @@ export class ChangeRunService {
 			let failure: Error | null = null;
 			try {
 				await changeExecute(context, { directory, observe: host.observe });
-				await new TaskCompletionService(context.root).require({
-					kind: 'coding',
-					goal: context.request.text,
-					units: [context.entity.id]
-				});
 			} catch (error) {
 				failure = error instanceof Error ? error : new Error(String(error));
 			}

@@ -17,7 +17,7 @@ export async function newLoopState(
 	if (input.kind && !['coding', 'planning'].includes(input.kind))
 		fail('Task kind must be coding or planning.');
 	return {
-		completion: completion(input, Boolean(inherited)),
+		...(input.kind ? { completion: completion(input) } : {}),
 		name: input.name,
 		goal: input.goal,
 		createdAt: input.createdAt,
@@ -26,11 +26,11 @@ export async function newLoopState(
 	};
 }
 
-function completion(
-	input: { kind?: 'coding' | 'planning'; plan?: string },
-	inherited: boolean
-): LoopState['completion'] {
-	if (!inherited && !input.kind) return undefined;
+function completion(input: {
+	kind?: 'coding' | 'planning';
+	plan?: string;
+}): LoopState['completion'] {
+	if (!input.kind) return undefined;
 	return { version: 1, kind: input.kind ?? 'coding', plan: input.plan };
 }
 

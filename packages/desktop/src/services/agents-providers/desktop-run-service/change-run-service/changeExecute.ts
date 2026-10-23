@@ -1,16 +1,15 @@
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { taskCompletionInstructions } from '../../../../../../../src/services/verification-evidence/TaskCompletionService';
 import { unitOwners } from '../../../../../../../src/utils/unitOwners';
-import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
+import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import { changedUnits } from '../../../../utils/development-tooling/changedUnits';
-import type { hostChanges } from '../../../../utils/development-tooling/hostChanges';
-import { runContext } from '../../../../utils/development-tooling/runContext';
-import { sourceChanges } from '../../../../utils/development-tooling/sourceChanges';
 import { isUnitId } from '../../../../utils/explorer-ui/entityReferences';
-import type { SourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
+import { runContext } from '../../../../utils/development-tooling/runContext';
 import { sourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
+import type { SourceSnapshot } from '../../../../utils/verification-evidence/sourceSnapshot';
+import { sourceChanges } from '../../../../utils/development-tooling/sourceChanges';
+import type { hostChanges } from '../../../../utils/development-tooling/hostChanges';
 
 /** What the agent of a change said in public, kept for its notice also when the run failed. */
 const replies = new WeakMap<RunContext, string>();
@@ -58,8 +57,6 @@ export async function changeExecute(
 		cwd: context.root,
 		prompt:
 			(await runContext(context)) +
-			'\n' +
-			taskCompletionInstructions().join('\n') +
 			'\nImplement exactly approval ' +
 			JSON.stringify(request.approval) +
 			'. Approved visual: ' +
@@ -112,7 +109,7 @@ export async function recordChange(
 	const status = changeStatus(context, outcome.failure);
 	const paths = changes.map((c) => c.path);
 	const units = await owners(context, paths);
-	const summary = `Change ${status}: ${changes.length} project files; ${hostFiles.length} observed host operations. ${units ? units + ' ' : ''}${outcome.failure ? 'Completion audit or execution failed.' : 'Harness task completion audit passed.'}`;
+	const summary = `Change ${status}: ${changes.length} project files; ${hostFiles.length} observed host operations. ${units ? units + ' ' : ''}Verification pending.`;
 	const said = reply(context);
 	await planning.appendMessage({
 		entityId: entity.id,

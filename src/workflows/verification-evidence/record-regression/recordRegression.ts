@@ -86,7 +86,7 @@ export async function requireRegressionProof(root: string, loop: string, step: s
 			`Record the committed ${phase === 'red' ? 'failing test' : 'passing fix'} with harness loop record before completing ${step}.`
 		);
 	const proof = await repository.load(note);
-	if (['red', 'green', 'guard'].includes(step) && proof.record.source.commit !== commit)
+	if (['red', 'green', 'guard', 'verify'].includes(step) && proof.record.source.commit !== commit)
 		fail('Complete this regression step at its current tested commit.');
 	if (phase === 'green') await requirePairedProof(root, repository, proof.record);
 }

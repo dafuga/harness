@@ -2,7 +2,7 @@
 
 ## Overview
 
-Harness audits coding and planning completion using committed source and actual evidence. Runtime profiling remains separate from performance budget approval. Structural heuristics expose missing proof and retain uncertainty.
+Harness provides opt-in coding and planning audits using committed source and actual evidence. Runtime profiling remains separate from performance budget approval. Structural heuristics expose missing proof and retain uncertainty.
 
 ## Acceptance Criteria
 
@@ -11,7 +11,7 @@ Harness audits coding and planning completion using committed source and actual 
 - Explicit observation APIs preserve one-pass effects, receivers, returned values and promise identity. Replayed benchmarks require explicit caller-selected workloads and counts.
 - Standard test-runner profiling observes only eligible registered source, excludes its own bootstrap and explicit benchmark boundaries, and leaves production build artifacts unchanged.
 - Missing or unsupported source attribution, stale observations, failed operations and incomplete scopes never become successful measurements.
-- New task loops, registered agent completion and Desktop coding/planning completion share the same checks. Failed or cancelled work remains recoverable and recordable.
+- The CLI and public verification API share the same checks. Loops opt in explicitly with `--kind coding` or `--kind planning`; existing loop, agent and Desktop completion behavior stays unchanged.
 - Recent catalog controls, cards, Layouts, helper links, loading states and config behavior remain the current main implementation.
 - Existing historical evidence remains readable; absent profiling cannot satisfy a new completion claim.
 

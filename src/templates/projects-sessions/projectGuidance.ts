@@ -1,10 +1,9 @@
 import {
-	harnessModuleGroupRules,
 	harnessNamingRules,
+	harnessModuleGroupRules,
 	harnessRuleLimits,
 	harnessRuleSummaries
 } from '../../rules/explorer-ui/catalog';
-import { taskCompletionInstructions } from '../../services/verification-evidence/TaskCompletionService';
 import { bugRepairPolicy } from '../../utils/development-tooling/bugRepairPolicy';
 
 export function agentRules(projectType: string): string {
@@ -16,18 +15,7 @@ export function skillRules(projectType: string): string {
 }
 
 function regressionLoopRules(): string {
-	return `## Task Completion
-
-${taskCompletionInstructions()
-	.map((rule) => `- ${rule}`)
-	.join('\n')}
-
-## Visual Component Evidence
-
-- Every active visual component requires a preview bound to its own required screenshot state and viewport. Capture the actual component with representative parameters; verify fresh or validated inherited screenshots at the selected revision. A missing image or failed verdict blocks handoff: inspect and repair its registry, scenario, reason, ledger and budget failures; never hide the failure, substitute another component, or relabel a capture. Component titles name the component, with state labels confined to scenario states.
-- Reproduce required parent layout and CSS selectors in isolated previews, isolate app themes, and assert their computed layout. Provide semantic table containers for row components. Reject caught fixture errors and blank icons; use representative dates with the preview clock. Label synthetic media inputs; reject undeclared media instead of substituting a generic screenshot. Inspect the final pixels before accepting captures.
-
-## Callable usage examples
+	return `## Callable usage examples
 
 - Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.
 - Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests, not the Examples tab.
@@ -45,7 +33,6 @@ ${bugRepairPolicy()
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
 - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
-- Test Node server imports with external dependencies and packaged CJS bundles; cold-import and call the operation in each supported mode. Prefer public package entries over internal build files.
 `;
 }
 
