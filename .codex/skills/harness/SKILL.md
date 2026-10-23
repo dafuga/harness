@@ -306,3 +306,5 @@ General string transformations belong in `src/helpers/strings/`, independent of 
 When changing a scaffold shape or name, update emitted source, generated tests and public export plans together. Run the standard all-scaffold export-coherence assertion and the existing focused CLI project-check scenario before accepting the generator change; source-only scaffold assertions are insufficient.
 
 Pure helper SDK exports keep their callable names. When an existing SDK binding already uses that name, preserve it and qualify the helper export with a Helper suffix (then a numeric suffix if necessary); regenerating the helper must be idempotent. Keep the same-name util/helper CLI compilation scenario alongside export-to-emitted-file coherence coverage when changing helper scaffolds.
+
+When changing a shared Game renderer, include the root `test/game-runtime.test.ts` consumer guard in owning qualification, even when full CLI/native suites are deferred. Verify semantic object visibility and retained references; inactive scene containers must not change what a visibility assertion means.
