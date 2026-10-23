@@ -2,6 +2,7 @@ import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
+import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
 const configUnits = [
@@ -98,7 +99,17 @@ for (const [viewport, size] of Object.entries(viewports)) {
 						})
 				);
 			});
-			await capture(page, `source-${category}-${viewport}`);
+			await capture(page, `source-${category}-${viewport}`, [
+				'reports.component.harness-entity-header'
+			]);
+			const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
+			await expect
+				.soft(crumbs.getByRole('listitem'))
+				.toHaveText([
+					entityLabels[category].title,
+					'Orders',
+					await page.getByRole('heading', { level: 1 }).innerText()
+				]);
 			const section = page.locator('section[aria-labelledby="ex-source-title"]');
 			await expect
 				.soft(section.getByRole('heading', { name: /Symbols|Execution targets/ }))
@@ -108,5 +119,26 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				.toHaveText(file, { timeout: 500 });
 			expect(await fits(page)).toBe(true);
 		}
+		const service = { category: 'services' as const, entity: ids.store };
+		for (const commit of [null, commits.first]) {
+			await open(page, { ...service, commit, tab: 'contract' }, 'groups');
+			const group = commit ? 'Purchases' : 'Orders';
+			const crumbs = page.getByRole('navigation', { name: 'Breadcrumb' });
+			await capture(page, `folder-contract-${commit ? 'historical' : 'current'}-${viewport}`, [
+				'reports.component.harness-entity-header'
+			]);
+			await expect.soft(crumbs.getByRole('listitem')).toHaveText(['Services', group, 'OrderStore']);
+			await page.getByRole('tab', { name: 'History', exact: true }).click();
+			await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+				'reports.component.harness-entity-header'
+			]);
+			await expect
+				.soft(crumbs.getByRole('listitem'))
+				.toHaveText(['Services', group, 'OrderStore', 'History']);
+		}
+		await open(page, service);
+		await expect(
+			page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+		).toHaveText(['Services', 'OrderStore']);
 	});
 }
