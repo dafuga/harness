@@ -2,11 +2,27 @@ import type { Locator, Page } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';
 import { capture, fits, open, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
+import { reviewNamedCallers } from './entityPreviewFunctionSource';
 
 /** Private functions stay reachable from their owner at the tip and a historical commit. */
 export async function reviewPrivateFunctions(page: Page, viewport: string): Promise<void> {
 	for (const commit of [null, commits.middle]) {
 		await open(page, { category: 'components', entity: ids.list, tab: 'uses', commit }, 'helpers');
+		await capture(
+			page,
+			`${process.env.SCREENSHOT_LABEL ?? 'run'}-private-card-${commit ? 'commit' : 'tip'}-${viewport}`,
+			[
+				'reports.component.harness-entity-relations',
+				'reports.component.explorer-ui-explorer-module-card',
+				'reports.component.explorer-catalog-items'
+			]
+		);
+		const card = page.getByRole('article', { name: 'single', exact: true });
+		await expect(card, 'Private dependencies reuse the canonical module card').toHaveAttribute(
+			'data-harness-component',
+			'explorer-ui-explorer-module-card'
+		);
+		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toBeVisible();
 		await page
 			.getByRole('region', { name: 'Uses', exact: true })
 			.getByRole('link', { name: 'single', exact: true })
@@ -63,6 +79,7 @@ export async function reviewHelperCard(page: Page, cards: Locator): Promise<void
 
 /** Consumer links are limited to three eligible units and retain current or selected-commit scope. */
 export async function reviewHelperUsage(page: Page, viewport: string): Promise<void> {
+	await reviewNamedCallers(page, viewport);
 	for (const commit of [null, commits.middle]) {
 		await open(page, { category: 'functions', commit }, 'helpers');
 		await page.evaluate(async () => {
@@ -72,7 +89,8 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		const card = page.getByRole('article');
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
-		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
+		await expect(usage.getByRole('link')).toHaveText(['Orders page', 'OrderList', 'OrderStore']);
+		await expect(usage, 'Four eligible consumers retain the overflow indicator').toContainText('…');
 		for (const kind of ['Components', 'Services', 'Models'])
 			await expect(usage.getByRole('list', { name: kind, exact: true })).toHaveCount(0);
 		await reviewConsumerPreview(page, usage, commit, viewport);
@@ -85,7 +103,7 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		for (const [label, category, entity] of [
 			['OrderList', 'components', ids.list],
 			['OrderStore', 'services', ids.store],
-			['Order', 'models', 'app.model.order']
+			['Orders page', 'pages', ids.page]
 		] as const) {
 			await page
 				.getByRole('group', { name: 'Used In', exact: true })

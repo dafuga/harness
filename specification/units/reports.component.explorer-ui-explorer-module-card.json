@@ -15,8 +15,8 @@
 		"inputs": [
 			{
 				"name": "ExplorerModuleCard.row",
-				"type": "CatalogRow",
-				"description": "Selected module, helper identity, linked title and revision-scoped consumers."
+				"type": "CatalogRow | SupportRow",
+				"description": "Selected module or support dependency with its actual identity and revision-scoped consumers."
 			},
 			{
 				"name": "ExplorerModuleCard.nav",
@@ -40,7 +40,7 @@
 			},
 			{
 				"name": "ExplorerModuleCard.category",
-				"type": "ExplorerCategory",
+				"type": "ExplorerCategory | null",
 				"description": "Module category, defaulting to the row category. Visual and nonvisual cards share this renderer."
 			}
 		],
@@ -48,7 +48,7 @@
 			{
 				"name": "ExplorerModuleCard",
 				"type": "markup",
-				"description": "One linked name or helper invocation, an optional visual capture, and one Used In footer with at most three distinct linked consumers; no consumer category labels."
+				"description": "One name or helper invocation, its own image for visual modules, and at most three distinct Used In links followed by an ellipsis when more exist. Unsupported dependencies have no invented detail link."
 			}
 		],
 		"errors": []
@@ -81,6 +81,11 @@
 		},
 		{
 			"unit": "reports.function.entity-screens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-usage",
 			"via": "import",
 			"origin": "derived"
 		},

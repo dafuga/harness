@@ -117,13 +117,11 @@ test('helper usage selects three distinct eligible consumers before truncating',
 			expect(card).not.toContain('aria-label="Components"');
 			expect(card).not.toContain('aria-label="Services"');
 			expect(count(card, /<a\b/g)).toBe(4);
-			for (const target of [
-				`components/${ids.list}`,
-				`services/${ids.store}`,
-				'models/app.model.order'
-			])
+			expect(words(card), 'A fourth eligible consumer must produce an ellipsis').toContain('…');
+			for (const target of [`components/${ids.list}`, `services/${ids.store}`, `pages/${ids.page}`])
 				expect(card).toContain(`/branch/feature%2Forders/${target}`);
-			for (const excluded of [ids.page, ids.card, 'missing']) expect(card).not.toContain(excluded);
+			for (const excluded of ['app.model.order', ids.card, 'missing'])
+				expect(card).not.toContain(excluded);
 			const helper = head.registry.units.find((unit) => unit.id === ids.filter)!;
 			for (const consumers of [
 				[{ unit: ids.page }, { unit: ids.filter }],
@@ -141,3 +139,69 @@ test('helper usage selects three distinct eligible consumers before truncating',
 		}
 	);
 });
+
+test.each(['components', 'services', 'models', 'functions', 'pages', 'layouts', 'configs'])(
+	'function footer retains a %s consumer in supplied order with overflow',
+	(category) => {
+		const head = withHelpers(revision(commits.tip, []));
+		const owner = head.registry.units.find((unit) => unit.id === ids.filter)!;
+		const caller = functionConsumer(owner);
+		head.registry.units.push(caller, {
+			...owner,
+			id: 'app.layout.consumer',
+			kind: 'layout',
+			helpers: [],
+			owns: { source: ['src/routes/+layout.svelte'], symbols: ['+layout'] }
+		});
+		const consumers = [
+			{ category: 'components', id: ids.list },
+			{ category: 'services', id: ids.store },
+			{ category: 'models', id: 'app.model.order' },
+			{ category: 'functions', id: caller.id },
+			{ category: 'pages', id: ids.page },
+			{ category: 'layouts', id: 'app.layout.consumer' },
+			{ category: 'configs', id: ids.settings }
+		];
+		const ordered = [
+			...consumers.filter((item) => item.category === category),
+			...consumers.filter((item) => item.category !== category)
+		];
+		owner.helpers![0].consumers = [
+			{ unit: owner.id },
+			...ordered.map(({ id }) => ({ unit: id })),
+			{ unit: ordered[0].id }
+		];
+		const body = screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head });
+		const card = [...body.matchAll(/<article\b[^]*?<\/article>/g)].find((match) =>
+			match[0].includes('aria-label="filterOrders"')
+		)![0];
+		const footer = card.slice(card.indexOf('class="ex-usage'));
+		const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map((match) => match[1]);
+		expect(links, 'A valid module consumer keeps its place; self references stay absent').toEqual(
+			ordered
+				.slice(0, 3)
+				.map((item) => `/harness/branch/feature%2Forders/${item.category}/${item.id}`)
+		);
+		expect(words(footer), 'A fourth distinct module requires an ellipsis').toContain('…');
+	}
+);
+
+function functionConsumer(owner: ReturnType<typeof revision>['registry']['units'][number]) {
+	const source = 'src/functions/callFilter.ts';
+	return {
+		...owner,
+		id: 'function.call-filter',
+		title: 'callFilter',
+		catalog: { visibility: 'internal' as const },
+		owns: { source: [source], symbols: ['callFilter'] },
+		helpers: [
+			{
+				...owner.helpers![0],
+				name: 'callFilter',
+				pure: false,
+				source,
+				consumers: [{ unit: ids.list }, { unit: ids.store }]
+			}
+		]
+	};
+}
