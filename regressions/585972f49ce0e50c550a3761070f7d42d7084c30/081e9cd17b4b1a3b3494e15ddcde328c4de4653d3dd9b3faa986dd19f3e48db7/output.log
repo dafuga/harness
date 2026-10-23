@@ -1,0 +1,99 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-D1OXge/packages/reports
+
+ ✓ test/components/entity-relations.test.ts (6 tests) 67ms
+ ❯ test/components/explorer-usage.test.ts (13 tests | 2 failed) 32ms
+   ✓ component card usage is flat and capped with 0 consumers at current scope 7ms
+   ✓ component card usage is flat and capped with 1 consumers at current scope 2ms
+   ✓ component card usage is flat and capped with 3 consumers at current scope 1ms
+   ✓ component card usage is flat and capped with 4 consumers at current scope 1ms
+   ✓ component card usage is flat and capped with 7 consumers at current scope 1ms
+   × shared usage footers render links and empty usage at current scope 7ms
+     → Private named callers establish sharing without becoming catalog cards: expected [] to have a length of 1 but got +0
+   ✓ component card usage is flat and capped with 0 consumers at commit scope 1ms
+   ✓ component card usage is flat and capped with 1 consumers at commit scope 0ms
+   ✓ component card usage is flat and capped with 3 consumers at commit scope 0ms
+   ✓ component card usage is flat and capped with 4 consumers at commit scope 0ms
+   ✓ component card usage is flat and capped with 7 consumers at commit scope 0ms
+   × shared usage footers render links and empty usage at commit scope 1ms
+     → Private named callers establish sharing without becoming catalog cards: expected [] to have a length of 1 but got +0
+   ✓ private and unclassified dependencies reuse the shared module card 10ms
+ ❯ test/components/explorer-function-card.test.ts (17 tests | 1 failed) 21ms
+   ✓ function catalog cards stay concise and retain revision links without detail panels 7ms
+   ✓ function calls preserve declared sample values: false 0ms
+   ✓ function calls preserve declared sample values: 0 0ms
+   ✓ function calls preserve declared sample values: null 0ms
+   ✓ function calls preserve declared sample values: "" 0ms
+   ✓ function calls preserve declared sample values: %j 0ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 0ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 0ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 1ms
+   ✓ helper usage selects three distinct eligible consumers before truncating 4ms
+   ✓ function footer retains a components consumer in supplied order with overflow 1ms
+   ✓ function footer retains a services consumer in supplied order with overflow 0ms
+   ✓ function footer retains a models consumer in supplied order with overflow 0ms
+   × function footer retains a functions consumer in supplied order with overflow 4ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+   ✓ function footer retains a pages consumer in supplied order with overflow 1ms
+   ✓ function footer retains a layouts consumer in supplied order with overflow 1ms
+   ✓ function footer retains a configs consumer in supplied order with overflow 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a functions consumer in supplied order with overflow
+AssertionError: A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "/harness/branch/feature%2Forders/functions/function.call-filter",[39m
+[2m    "/harness/branch/feature%2Forders/components/app.component.order-list",[22m
+[2m    "/harness/branch/feature%2Forders/services/app.service.order-store",[22m
+[31m+   "/harness/branch/feature%2Forders/models/app.model.order",[39m
+[2m  ][22m
+
+ ❯ test/components/explorer-function-card.test.ts:180:89
+    178|   const footer = card.slice(card.indexOf('class="ex-usage'));
+    179|   const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map((…
+    180|   expect(links, 'A valid module consumer keeps its place; self referen…
+       |                                                                                         ^
+    181|    ordered
+    182|     .slice(0, 3)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/components/explorer-usage.test.ts > shared usage footers render links and empty usage at current scope
+ FAIL  test/components/explorer-usage.test.ts > shared usage footers render links and empty usage at commit scope
+AssertionError: Private named callers establish sharing without becoming catalog cards: expected [] to have a length of 1 but got +0
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 0[39m
+
+ ❯ assertNamedUsage test/components/explorer-usage.test.ts:89:4
+     87|   cards,
+     88|   'Private named callers establish sharing without becoming catalog ca…
+     89|  ).toHaveLength(1);
+       |    ^
+     90|  const footer = cards[0][0].slice(cards[0][0].indexOf('class="ex-usage…
+     91|  for (const name of ['firstCall', 'secondCall', 'thirdCall'])
+ ❯ test/components/explorer-usage.test.ts:78:42
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  3 failed | 33 passed (36)
+   Start at  14:09:39
+   Duration  2.02s (transform 849ms, setup 0ms, collect 1.45s, tests 121ms, environment 0ms, prepare 91ms)
+
+error: "vitest" exited with code 1
