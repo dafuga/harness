@@ -1,7 +1,7 @@
-import { spawnSync } from 'node:child_process';
+import { observedLoop } from './support/loop-repair/observedLoop';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { expectFailedCapture } from './support/loop-repair/captureFixture';
@@ -69,21 +69,7 @@ test('loop CLI creates from templates, searches, guides next, and evaluates', as
 			root
 		);
 		const next = await runHarness(['loop', 'next', 'proof-loop', '--json'], root);
-		const evaluated = spawnSync(
-			'bun',
-			[resolve('src/index.ts'), 'loop', 'evaluate', 'proof-loop', '--json'],
-			{
-				cwd: root,
-				encoding: 'utf8',
-				timeout: 5000,
-				killSignal: 'SIGKILL',
-				env: {
-					...process.env,
-					HARNESS_RESOURCES_HOME: join(root, 'resources'),
-					HARNESS_RESOURCE_LEASE: ''
-				}
-			}
-		);
+		const evaluated = await observedLoop(root);
 		expect(evaluated.status, evaluated.stderr).toBe(0);
 
 		expect(JSON.parse(search.stdout).map((result: { id: string }) => result.id)).toContain('proof');
