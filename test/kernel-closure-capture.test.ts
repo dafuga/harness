@@ -1,8 +1,9 @@
+import type { Case } from './kernel-closure-capture.test.types';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { test } from 'vitest';
-import type { ImpactInput, ImpactOutput, KernelGraph } from '../src/core/kernelTypes';
+import type { KernelGraph } from '../src/core/kernelTypes';
 import { kernelClosure } from '../src/utils/impact-kernel/kernelClosure';
 import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { expect } from './verificationExpect';
@@ -17,7 +18,6 @@ import { expect } from './verificationExpect';
  */
 const root = resolve(import.meta.dirname, '..');
 const source = 'src/utils/kernelClosure.ts';
-type Case = { name: string; input: ImpactInput; expected: ImpactOutput };
 
 /** The label uses the formatter, the page uses the label, and the test uses the page. */
 const chain: KernelGraph = {

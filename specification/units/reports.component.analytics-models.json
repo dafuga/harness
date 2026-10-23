@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/AnalyticsModels.svelte",
-			"packages/reports/src/components/reports-media/AnalyticsModels.svelte"
+			"packages/reports/src/components/reports-media/AnalyticsModels.svelte",
+			"packages/reports/src/components/reports-media/AnalyticsModels.types.ts"
 		],
-		"symbols": ["AnalyticsModels", "AnalyticsModels"]
+		"symbols": ["AnalyticsModels", "AnalyticsModels", "Models", "Check", "Usage"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -9,9 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/explorerCategory.ts",
+			"packages/reports/src/utils/explorer-ui/explorerCategory.types.ts",
 			"packages/reports/src/utils/explorerCategory.ts"
 		],
-		"symbols": ["explorerCategory", "explorerRole", "explorerCategory", "explorerRole"]
+		"symbols": [
+			"explorerCategory",
+			"explorerRole",
+			"Classified",
+			"explorerCategory",
+			"explorerRole"
+		]
 	},
 	"contract": {
 		"origin": "declared",

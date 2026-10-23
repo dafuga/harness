@@ -1,3 +1,4 @@
+import type { Fixture } from './remote-relay-workerd.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { afterAll, beforeAll, test } from 'vitest';
 import { startRelay } from '../../relay/test/support/relayFixture';
@@ -35,7 +36,6 @@ async function register(input: RemoteHostRegisterInput) {
 	if (!response.ok) throw new Error('The relay refused the registration.');
 	return { ...((await response.json()) as RelayRegistered), origin: relay.origin };
 }
-type Fixture = Awaited<ReturnType<typeof hostFixture>>;
 async function computer(f: Fixture) {
 	const host = new RemoteHostService(f.options({ register, open, link: { retryMs: [100] } }));
 	await host.enable();

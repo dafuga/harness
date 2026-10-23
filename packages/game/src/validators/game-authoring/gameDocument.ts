@@ -1,6 +1,5 @@
+import type { RecordValue } from './gameDocument.types';
 import type { GameDocument } from '../../models/game-authoring/Game.types';
-
-type RecordValue = Record<string, unknown>;
 const safe = (v: unknown): v is string =>
 	typeof v === 'string' &&
 	v.length > 0 &&

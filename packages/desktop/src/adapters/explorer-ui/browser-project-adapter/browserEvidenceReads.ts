@@ -1,11 +1,9 @@
+import type { Guard } from './browserEvidenceReads.types';
 import { evidencePayload } from '../../../utils/verification-evidence/evidencePayload';
 import { browserArtifact } from './browserArtifact';
 import type { EntityEvidenceResult } from '../../../models/verification-evidence/DesktopEvidence.types';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
-import type { ProjectContext } from '../../../models/projects-sessions/ProjectContext.types';
 import type { BrowserApi } from '../../../models/development-tooling/BrowserApi.types';
-
-type Guard = <T>(context: ProjectContext, read: (base: string) => Promise<T>) => Promise<T>;
 
 /** Browser evidence uses the same permission guard as every other project read. */
 export function browserEvidenceReads(

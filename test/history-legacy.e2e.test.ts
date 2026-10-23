@@ -1,3 +1,4 @@
+import type { Imported, LegacyEntry } from './history-legacy.e2e.test.types';
 import { chmod, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -12,35 +13,6 @@ import {
 } from './support/historyRepo';
 import { legacyRun, png } from './support/legacyStore';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
-
-interface Imported {
-	imported: Array<{
-		id: string;
-		status: string;
-		startedAt: string;
-		revision: string | null;
-		linked: string | null;
-		media: number;
-		created: boolean;
-	}>;
-	skipped: Array<{ id: string; reason: string }>;
-}
-interface LegacyEntry {
-	id: string;
-	status: string;
-	startedAt: string;
-	updatedAt: string;
-	revision: string | null;
-	linked: string | null;
-	gap?: string;
-	media: Array<{
-		file: string;
-		provenance: string;
-		media: string | null;
-		sha256: string;
-		capturedAt?: string;
-	}>;
-}
 
 let repo: VerifyRepo;
 let store: string;

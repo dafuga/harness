@@ -5,13 +5,17 @@ export interface RemoteKeyPair {
 	publicKey: Uint8Array;
 	privateKey: CryptoKey;
 }
+
 /** How a pair is kept at rest (encrypted by the OS store): both values base64url. */
 export interface StoredRemoteKeys {
 	d: string;
 	publicKey: string;
 }
+
 export type SecureRole = 'device' | 'host';
+
 export type SecureDirection = 'd2h' | 'h2d';
+
 export interface SessionKeys {
 	send: CryptoKey;
 	receive: CryptoKey;
@@ -24,6 +28,7 @@ export interface SecureHello {
 	ephemeralKey: string;
 	nonce: string;
 }
+
 export interface SecureAccept {
 	type: 'accept';
 	version: 1;
@@ -31,16 +36,19 @@ export interface SecureAccept {
 	nonce: string;
 	generation: number;
 }
+
 export interface SecureReject {
 	type: 'reject';
 	reason: 'revoked' | 'unknown-device' | 'version' | 'busy';
 }
+
 export interface SecureSealed {
 	type: 'sealed';
 	counter: number;
 	more: boolean;
 	data: string;
 }
+
 /** Everything a relay forwards between a device and its host. */
 export type SecurePacket = SecureHello | SecureAccept | SecureReject | SecureSealed;
 
@@ -52,6 +60,7 @@ export interface PairingSecret {
 	platform: 'ios' | 'test';
 	challenge: string;
 }
+
 /** What the host seals back once the person approved that exact device key. */
 export interface PairingApproval {
 	deviceId: string;
@@ -61,10 +70,4 @@ export interface PairingApproval {
 }
 
 export type SecureFailureReason = 'state' | 'packet' | 'counter' | 'tag' | 'size';
-/** A violation of the secure channel. The connection is closed; nothing is answered. */
-export class SecureFailure extends Error {
-	constructor(readonly reason: SecureFailureReason) {
-		super(`Secure channel ${reason}`);
-		this.name = 'SecureFailure';
-	}
-}
+export { SecureFailure } from './RemoteSecureValues';

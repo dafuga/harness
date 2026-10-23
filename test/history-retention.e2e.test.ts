@@ -1,3 +1,4 @@
+import type { Index } from './history-retention.e2e.test.types';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { attach, evidenceRef, harnessJson, statusOf } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
@@ -7,11 +8,6 @@ beforeAll(async () => {
 	baseline = await baselineRepo();
 }, 120_000);
 afterAll(() => baseline.dispose());
-
-interface Index {
-	branches: Array<{ name: string; head: string }>;
-	revisions: Array<{ commit: string; coverage: string; retained: boolean; branches: string[] }>;
-}
 const upper = (source: string) => source.replace('toLowerCase', 'toUpperCase');
 const built = (repo: VerifyRepo) =>
 	harnessJson<{ index: Index }>(repo, ['history', 'build', '--out', '.cache/history-test']).then(

@@ -9,16 +9,20 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/WireFramingService.ts",
-			"packages/remote/src/services/networking-security/WireFramingService.ts"
+			"packages/remote/src/services/networking-security/WireFramingService.ts",
+			"packages/remote/src/services/networking-security/WireFramingService.types.ts"
 		],
 		"symbols": [
 			"WireFramingService",
-			"WireFramingOptions",
 			"WireFramingService",
 			"WireFramingService.constructor",
 			"WireFramingService.send",
 			"WireFramingService.accept",
-			"WireFramingService.reset"
+			"WireFramingService.reset",
+			"WireFramingOptions",
+			"WireFramingOptions",
+			"Outgoing",
+			"Assembly"
 		]
 	},
 	"contract": {

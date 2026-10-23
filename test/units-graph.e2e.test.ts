@@ -1,13 +1,8 @@
+import type { Graph } from './units-graph.e2e.test.types';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { slugifySource, titleServiceSource, unitProject } from './support/unitProject';
-
-interface Graph {
-	nodes: Array<{ id: string; kind: string; unit?: string }>;
-	edges: Array<{ from: string; to: string; via: string }>;
-	uncertain: Array<{ node: string; reason: string; detail: string }>;
-}
 
 const loaderSource = [
 	'export class LoaderService {',

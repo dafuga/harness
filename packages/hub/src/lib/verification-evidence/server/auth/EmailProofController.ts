@@ -1,8 +1,7 @@
+import type { EmailProofControllerOptions } from './EmailProofController.types';
 import type { SignInResult } from '../../../../models/accounts-access/HubAuth.types';
 import { BROWSER_TTL } from '../../../../repositories/projects-sessions/SessionRepository';
 import { PENDING_TTL } from '../../../../services/verification-evidence/email-proof-service/EmailProofService';
-import type { EmailProofService } from '../../../../services/verification-evidence/email-proof-service/EmailProofService';
-import type { RequestSessionService } from './request-session-service/RequestSessionService';
 import {
 	EMAIL_PROOF_COOKIE,
 	SESSION_COOKIE,
@@ -18,11 +17,6 @@ import {
 } from '../../../../utils/verification-evidence/authHttp';
 import type { AuthRoutes } from '../../../../utils/verification-evidence/authHttp';
 import { AuthRequestValidator } from '../../../../validators/accounts-access/AuthRequestValidator';
-
-export interface EmailProofControllerOptions {
-	proofs: EmailProofService;
-	sessions: RequestSessionService;
-}
 
 /** `/api/auth/email/*`. The code travels in a JSON body; the proof is found by its cookie alone. */
 export class EmailProofController {
@@ -67,3 +61,5 @@ export class EmailProofController {
 		return authHttp(result, { cookies });
 	}
 }
+
+export type { EmailProofControllerOptions } from './EmailProofController.types';

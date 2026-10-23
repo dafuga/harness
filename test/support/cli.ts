@@ -1,3 +1,4 @@
+import type { CommandResult } from './cli.types';
 import { measureHarness } from './cli-measurement/measureHarness';
 import { spawn } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
@@ -6,12 +7,6 @@ import { fileURLToPath } from 'node:url';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const cliPath = join(repoRoot, 'src/index.ts');
-
-export interface CommandResult {
-	exitCode: number;
-	stdout: string;
-	stderr: string;
-}
 
 /** What `harness verify` gives a check; a command under test must not inherit it by accident. */
 const verificationContext = [
@@ -92,3 +87,5 @@ function grace(): Promise<void> {
 export function commandOutput(result: CommandResult): string {
 	return `${result.stdout}\n${result.stderr}`;
 }
+
+export type { CommandResult } from './cli.types';

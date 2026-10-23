@@ -1,3 +1,4 @@
+import type { Flags } from './ConsoleCommand.types';
 import type { Command } from 'commander';
 import {
 	consoleObjects,
@@ -6,11 +7,8 @@ import {
 	renderConsoleChange,
 	renderConsoleInstall,
 	restoreConsoleFile,
-	uninstallConsole,
-	type ConsoleInstallFlags
+	uninstallConsole
 } from './installConsole';
-
-type Flags = ConsoleInstallFlags & { json?: boolean };
 
 export function registerConsoleCommand(program: Command): Command {
 	const console_ = program

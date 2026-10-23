@@ -1,3 +1,4 @@
+import type { Request, GitHubTransport } from './githubTransport.types';
 import { z } from 'zod';
 import type { GitHubOptions } from '../../models/planning-collaboration/Collaboration.types';
 import {
@@ -7,8 +8,6 @@ import {
 	safePath,
 	sha
 } from '../planning-collaboration/parseCollaborationInput';
-
-type Request = { method?: string; body?: unknown; statuses?: number[] };
 
 async function request(
 	options: GitHubOptions,
@@ -76,8 +75,6 @@ export function githubTransport(options: GitHubOptions, permission: 'read' | 'wr
 	};
 }
 
-export type GitHubTransport = ReturnType<typeof githubTransport>;
-
 export function refPath(ref: string): string {
 	if (!/^refs\/(heads|notes|tags)\/.+/.test(ref)) return fail('invalid-ref');
 	safePath(ref);
@@ -122,3 +119,5 @@ async function unavailable(response: Response): Promise<never> {
 }
 
 export { exactRef } from './create-git-hub-source/exactRef';
+
+export type { GitHubTransport } from './githubTransport.types';

@@ -1,9 +1,9 @@
+import type { SourceSnapshot } from './sourceSnapshot.types';
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { lstat, readlink } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { gitRead } from '../projects-sessions/gitRead';
-export type SourceSnapshot = Map<string, string>;
 export async function fileHash(path: string): Promise<string | null> {
 	try {
 		const stat = await lstat(path);
@@ -31,3 +31,5 @@ export async function sourceSnapshot(root: string): Promise<SourceSnapshot> {
 	);
 	return new Map(entries.filter((entry): entry is readonly [string, string] => entry[1] !== null));
 }
+
+export type { SourceSnapshot } from './sourceSnapshot.types';

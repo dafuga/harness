@@ -1,46 +1,11 @@
+import type { CatalogOrder, Relations, CatalogRow } from './entityCatalog.types';
 import { helperContract } from '../../../../../src/utils/helperContract';
 import { explorerCategory } from './explorerCategory';
 import { helperConsumers, usageOwners } from './entityUsage';
 import type { HarnessRevision } from '../../models/explorer-ui/Harness.types';
-import type {
-	ExplorerCategory,
-	ExplorerEntity,
-	ExplorerRelations,
-	ExplorerVerdict
-} from '../../models/explorer-ui/Explorer.types';
-
-type Relations = Pick<ExplorerRelations, 'pages' | 'usedBy' | 'components'>;
-
-export interface CatalogRow {
-	setting?: NonNullable<ExplorerEntity['unit']['configValues']>[number];
-	group?: { id: string; title: string };
-	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** Revision-scoped consumers for linked usage previews; every eligible one, so a footer knows of more. */
-	usedIn?: ExplorerEntity[];
-	entity: ExplorerEntity;
-	id: string;
-	name: string;
-	summary: string;
-	/** True when the shown commit changed or added the entity itself. */
-	changed: boolean;
-	/** True when more than one entity uses it itself, or more than one page shows it. */
-	shared: boolean;
-	verdict: ExplorerVerdict;
-	/** Names of the pages that show it. */
-	usedOn: string[];
-	/** Names of what uses it directly and is not a page. */
-	usedBy: string[];
-	/** Names of the components it contains. */
-	contains: string[];
-	/** The execution targets it declares. */
-	targets: string[];
-	/** How many components it contains. */
-	components: number;
-}
+import type { ExplorerCategory, ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 
 export const catalogOrders = ['name', 'name-desc', 'changed', 'failed'] as const;
-
-export type CatalogOrder = (typeof catalogOrders)[number];
 
 export const orderLabels: Record<CatalogOrder, string> = {
 	name: 'Name (A → Z)',
@@ -48,15 +13,6 @@ export const orderLabels: Record<CatalogOrder, string> = {
 	changed: 'Changed first',
 	failed: 'Failed first'
 };
-
-export interface CatalogFilter {
-	search: string;
-	changedOnly: boolean;
-	order: CatalogOrder;
-	verification?: string;
-	usage?: string;
-	groups?: string[];
-}
 
 const names = (entities: ExplorerEntity[]) => entities.map((entity) => entity.name);
 
@@ -200,3 +156,5 @@ export function listed(names: string[], most = 1): string {
 }
 
 export { catalogFilter } from '../../components/explorer-ui/explorer-index/entityCatalog';
+
+export type { CatalogRow, CatalogOrder, CatalogFilter } from './entityCatalog.types';

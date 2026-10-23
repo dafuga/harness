@@ -1,7 +1,5 @@
-import type { HistoryNote } from '../../core/git-source-history/historyTypes';
+import type { Note } from './verificationNoteIdentity.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
-
-type Note = Extract<HistoryNote, { kind: 'verification' }>;
 
 /** Notes index sealed records; none of their identity fields may contradict the original. */
 export function verificationNoteIdentity(

@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte",
-			"packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.ts"
+			"packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.ts",
+			"packages/reports/src/components/explorer-ui/explorer-index/catalogGroups.types.ts"
 		],
-		"symbols": ["ExplorerIndex", "catalogSections", "catalogGroups"]
+		"symbols": ["ExplorerIndex", "catalogSections", "catalogGroups", "CatalogSection"]
 	},
 	"contract": {
 		"origin": "declared",

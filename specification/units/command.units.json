@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/UnitsCommand.ts"],
-		"symbols": ["registerUnitsCommand"]
+		"source": ["src/cli/program/UnitsCommand.ts", "src/cli/program/UnitsCommand.types.ts"],
+		"symbols": ["registerUnitsCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

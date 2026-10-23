@@ -1,11 +1,8 @@
+import type { Sealed, Manifest } from './hubAttachedRecord.types';
 import type { HubAttachedRecord } from '../../../../utils/verification-evidence/hubAttachedRecord';
 import { hubRecordJson } from '../../../../utils/verification-evidence/hubAttachedRecord';
 import { recordIntact } from '../../../../../../../src/utils/sealRecord';
 import { VerificationRecordValidator } from '../../../../../../../src/validators/VerificationRecordValidator';
-
-type Manifest = NonNullable<HubAttachedRecord['manifest']>;
-
-type Sealed = NonNullable<HubAttachedRecord['record']>;
 
 /** Every file the record itself names: its test logs, and captures of scenarios it ran. */
 function declaredFiles(record: Sealed) {

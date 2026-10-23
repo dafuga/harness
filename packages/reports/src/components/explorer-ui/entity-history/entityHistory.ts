@@ -1,11 +1,10 @@
+import type { Coverage } from './entityHistory.types';
 import type { HistoryTiming } from '../../../utils/explorer-ui/entityHistory';
 import type {
 	ExplorerHistoryDetail,
 	ExplorerHistoryRow
 } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessIndex } from '../../../models/explorer-ui/Harness.types';
-
-type Coverage = ExplorerHistoryRow['coverage'];
 
 const verdicts: Record<Coverage, { passed: boolean; label: string }> = {
 	verified: { passed: true, label: 'Full coverage passed' },

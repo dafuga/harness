@@ -1,8 +1,6 @@
+import type { Bindings, CollectionNode } from './configValueStructure.types';
 import ts from 'typescript';
 import type { ConfigValueNode } from '../../../utils/explorer-ui/unitMetadata';
-
-type Bindings = Map<string, ts.Expression>;
-type CollectionNode = Extract<ConfigValueNode, { kind: 'object' | 'array' }>;
 const shapePreserving = new Set([
 	'optional',
 	'nullable',

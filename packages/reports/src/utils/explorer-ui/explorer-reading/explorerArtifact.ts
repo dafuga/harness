@@ -1,3 +1,4 @@
+import type { Assertion, Fields } from './explorerArtifact.types';
 import type { ArtifactFetcher } from '../explorerArtifact';
 import type {
 	ExplorerArtifact,
@@ -5,8 +6,6 @@ import type {
 } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessCapture } from '../../../models/explorer-ui/Harness.types';
 import { mediaFile } from '../harnessEvidence';
-
-type Fields = Record<string, unknown>;
 
 /** The names a run may give what it was asked and what it answered; the first one found is read. */
 const asked = ['input', 'inputs', 'request'];
@@ -28,8 +27,6 @@ const text = (value: unknown) => (typeof value === 'string' ? value : null);
 const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : []);
 
 const named = ['name', 'title', 'id', 'passed', 'status'];
-
-type Assertion = ExplorerArtifactBehavior['assertions'][number];
 
 /** One assertion as it was recorded: a sentence, or a name with whether it held and what else. */
 function assertion(item: unknown): Assertion {

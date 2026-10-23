@@ -10,6 +10,7 @@
 		"source": [
 			"src/utils/platformServices.ts",
 			"src/utils/reports-media/platformServices.ts",
+			"src/utils/reports-media/platformServices.types.ts",
 			"src/utils/reports-media/run-isolated/stillPrivate.ts",
 			"src/utils/run-isolated/stillPrivate.ts"
 		],
@@ -21,10 +22,6 @@
 			"macAuthority",
 			"platformServices",
 			"classifyProcess",
-			"ServiceAuthority",
-			"Standing",
-			"Verdict",
-			"ServiceContext",
 			"sameTime",
 			"named",
 			"probing",
@@ -32,6 +29,15 @@
 			"platformServices",
 			"classifyProcess",
 			"stillPrivate",
+			"ServiceAuthority",
+			"Standing",
+			"Verdict",
+			"ServiceContext",
+			"ServiceAuthority",
+			"Standing",
+			"Verdict",
+			"ServiceContext",
+			"Facts",
 			"stillPrivate",
 			"stillPrivate"
 		]

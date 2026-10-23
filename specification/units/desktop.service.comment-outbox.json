@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/CommentOutboxService.ts",
-			"packages/desktop/src/services/projects-sessions/CommentOutboxService.ts"
+			"packages/desktop/src/services/projects-sessions/CommentOutboxService.ts",
+			"packages/desktop/src/services/projects-sessions/CommentOutboxService.types.ts"
 		],
 		"symbols": [
 			"CommentOutboxService",
 			"CommentOutboxService",
 			"CommentOutboxService.constructor",
 			"CommentOutboxService.save",
-			"CommentOutboxService.list"
+			"CommentOutboxService.list",
+			"PendingComment"
 		]
 	},
 	"contract": {

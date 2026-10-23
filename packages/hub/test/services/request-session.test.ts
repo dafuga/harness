@@ -1,15 +1,8 @@
+import type { Call } from './request-session.test.types';
 import { expect, test } from 'vitest';
 import { RequestSessionService } from '../../src/services/request-session-service/RequestSessionService';
 import { SESSION_COOKIE } from '../../src/utils/authCookies';
 import { ORIGIN, ada, authFixture, browserGrant } from '../support/authFixture';
-
-interface Call {
-	path?: string;
-	method?: string;
-	cookie?: string;
-	bearer?: string;
-	origin?: string;
-}
 
 function request(call: Call): Request {
 	const headers = new Headers();

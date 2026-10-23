@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/entity-view/EntityView.svelte",
-			"packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte"
+			"packages/desktop/src/components/explorer-ui/entity-view/EntityView.svelte",
+			"packages/desktop/src/components/explorer-ui/entity-view/EntityView.types.ts"
 		],
-		"symbols": ["EntityView", "EntityView"]
+		"symbols": ["EntityView", "EntityView", "Section"]
 	},
 	"contract": {
 		"origin": "declared",

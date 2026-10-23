@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/image-zoom/ImageZoom.svelte",
-			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte"
+			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte",
+			"packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.types.ts"
 		],
-		"symbols": ["ImageZoom", "ImageZoom"]
+		"symbols": ["ImageZoom", "ImageZoom", "Point", "DragStart"]
 	},
 	"contract": {
 		"origin": "declared",

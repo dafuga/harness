@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Candidate } from './GameCheckpointImage.types';
 	import type {
 		Checkpoint,
 		CheckpointImage,
@@ -33,7 +34,6 @@
 		change: (patch: Partial<Checkpoint>) => void;
 		accept: (patch: Partial<Checkpoint>) => void;
 	} = $props();
-	type Candidate = { image: CheckpointImage; url: string; guidance: string; stale: boolean };
 	let preview = $state(''),
 		candidate = $state.raw<Candidate | null>(null),
 		changes = $state(''),

@@ -1,6 +1,7 @@
-/** Deployment declarations are public repository metadata, never host credential values. */
-export const platformIds = ['web', 'ios', 'android', 'desktop'] as const;
+import type { platformIds } from './PlatformValues';
+
 export type PlatformId = (typeof platformIds)[number];
+
 export type PlatformStatus = 'configured' | 'setup-required' | 'not-configured';
 
 export interface PlatformEntry {
@@ -20,3 +21,4 @@ export interface PlatformCatalog {
 	/** Missing and invalid manifests are explicit; no other revision supplies their settings. */
 	gap?: string;
 }
+export { platformIds } from './PlatformValues';

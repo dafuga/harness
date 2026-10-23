@@ -1,3 +1,4 @@
+import type { Box } from './ui-search-fit.spec.types';
 import {
 	expect,
 	test,
@@ -8,15 +9,6 @@ import {
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { alpha, searchFixture } from './ui-search-fixture';
-
-/**
- * The search of the top bar at every supported width. Closed, focused or with its results open,
- * the field and its focus ring meet neither revision field, which keep the widths they have at that
- * width without the search, the results cover neither, and no page is wider than the screen. A
- * result opens in place, and with a modifier in another tab. A screenshot is kept when
- * TAKE_SCREENSHOT=true.
- */
-type Box = { x: number; y: number; width: number; height: number };
 const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390, 320];
 const bar = (page: Page) => page.getByRole('banner');

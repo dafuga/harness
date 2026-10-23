@@ -1,18 +1,6 @@
+import type { LoginChallenge, NativeRequest } from './browserAuth.types';
 import type { AuthStatus, SignInResult } from '../../models/accounts-access/HubAuth.types';
 import type { BrowserApi } from '../browserApi';
-
-export interface LoginChallenge {
-	/** Given to Google Identity Services, which returns it inside the signed credential. */
-	nonce: string;
-	/** Sent back with the credential, in the body. */
-	csrf: string;
-}
-
-/** What a desktop app that waits for approval asks for; `resource` names its scope. */
-export interface NativeRequest {
-	status: 'pending' | 'approved' | 'expired';
-	resource: string | null;
-}
 
 /** Sign-in as the page sees it. The server alone decides who is signed in. */
 export function browserAuth(api: BrowserApi) {
@@ -37,4 +25,5 @@ export function browserAuth(api: BrowserApi) {
 			})
 	};
 }
-export type BrowserAuth = ReturnType<typeof browserAuth>;
+
+export type { LoginChallenge, NativeRequest, BrowserAuth } from './browserAuth.types';

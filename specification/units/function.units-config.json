@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/development-tooling/unitsConfig.ts", "src/core/unitsConfig.ts"],
+		"source": [
+			"src/core/development-tooling/unitsConfig.ts",
+			"src/core/development-tooling/unitsConfig.types.ts",
+			"src/core/unitsConfig.ts"
+		],
 		"symbols": [
 			"unitsConfigFile",
 			"unitsDirectory",
@@ -15,10 +19,11 @@
 			"budgetsLedger",
 			"workloadsDirectory",
 			"unitsConfigSchema",
-			"UnitsConfig",
 			"defaultGlobalFiles",
 			"defaultUnitsConfig",
 			"pathMatches",
+			"UnitsConfig",
+			"UnitsConfig",
 			"unitsConfigFile",
 			"unitsDirectory",
 			"scenariosDirectory",

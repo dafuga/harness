@@ -1,19 +1,10 @@
+import type { GithubOwnerOptions } from './GithubOwnerService.types';
 import type { Actor, RepositoryIdentity } from 'collaboration';
-import type { GithubApiAdapter } from './GithubApiAdapter';
 import type {
 	GithubRepositories,
 	GithubRepositoryOption
 } from '../../../../models/accounts-access/HubAuth.types';
 import { authFail } from '../../../../utils/accounts-access/authFail';
-import type { GithubGrantService } from './GithubGrantService';
-import type { InstallationTokenService } from './installation-token-service/InstallationTokenService';
-
-export interface GithubOwnerOptions {
-	grants: GithubGrantService;
-	tokens: InstallationTokenService;
-	api: GithubApiAdapter;
-	appId: number;
-}
 
 const MAX_INSTALLATIONS = 10;
 const MAX_PAGES = 3;
@@ -87,3 +78,5 @@ export class GithubOwnerService {
 		return true;
 	}
 }
+
+export type { GithubOwnerOptions } from './GithubOwnerService.types';

@@ -1,10 +1,4 @@
-/** What one surface reads again to stay current, and how often while it is shown. */
-export interface ProjectSyncOptions {
-	/** One read of who is signed in and of their projects; it reports its own failures. */
-	refresh: () => Promise<unknown>;
-	/** Milliseconds between reads while the surface is shown; half a minute by default. */
-	interval?: number;
-}
+import type { ProjectSyncOptions } from './ProjectSyncService.types';
 
 /**
  * Keeps one surface's projects current: a read on focus, on becoming visible and on coming back
@@ -87,3 +81,5 @@ export class ProjectSyncService {
 		};
 	}
 }
+
+export type { ProjectSyncOptions } from './ProjectSyncService.types';

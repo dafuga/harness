@@ -10,16 +10,18 @@
 		"source": [
 			"packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
 			"packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts",
-			"packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts"
+			"packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.types.ts"
 		],
 		"symbols": [
 			"ElectronEnvironmentAdapter",
 			"ElectronEnvironmentAdapterConfig",
 			"ElectronEnvironmentAdapter",
-			"ElectronEnvironmentAdapterConfig",
 			"ElectronEnvironmentAdapter",
 			"ElectronEnvironmentAdapter.constructor",
-			"ElectronEnvironmentAdapter.connect"
+			"ElectronEnvironmentAdapter.connect",
+			"ElectronEnvironmentAdapterConfig",
+			"ElectronEnvironmentAdapterConfig"
 		]
 	},
 	"contract": {

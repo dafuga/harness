@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/runKernelBoundary.ts"],
-		"symbols": ["boundaryUnit", "BoundaryBenchmark", "kernelBoundary"]
+		"source": [
+			"src/cli/program/runKernelBoundary.ts",
+			"src/cli/program/runKernelBoundary.types.ts"
+		],
+		"symbols": ["boundaryUnit", "kernelBoundary", "BoundaryBenchmark", "BoundaryBenchmark"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -9,17 +9,19 @@
 	"owns": {
 		"source": [
 			"src/services/UnitRuntimeService.ts",
-			"src/services/execution-runtimes/UnitRuntimeService.ts"
+			"src/services/execution-runtimes/UnitRuntimeService.ts",
+			"src/services/execution-runtimes/UnitRuntimeService.types.ts"
 		],
 		"symbols": [
 			"UnitRuntimeService",
-			"RuntimeServiceOptions",
 			"UnitRuntimeService",
 			"UnitRuntimeService.constructor",
 			"UnitRuntimeService.forTarget",
 			"UnitRuntimeService.forUnit",
 			"UnitRuntimeService.kernelDefault",
-			"UnitRuntimeService.kernel"
+			"UnitRuntimeService.kernel",
+			"RuntimeServiceOptions",
+			"RuntimeServiceOptions"
 		]
 	},
 	"contract": {

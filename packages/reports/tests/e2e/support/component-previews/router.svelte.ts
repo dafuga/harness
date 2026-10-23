@@ -1,5 +1,5 @@
+import type { Leaving } from './router.svelte.types';
 import { onDestroy } from 'svelte';
-type Leaving = { cancel: () => void; willUnload: boolean };
 /**
  * The route given to components mounted without the SvelteKit application shell. A route module
  * is opened under its route, and its params are read from the address as SvelteKit reads them.

@@ -1,14 +1,9 @@
+import type { RequestSessionOptions } from './RequestSessionService.types';
 import type { SessionRecord } from '../../../../../models/accounts-access/HubAuthStore.types';
-import type { SessionRepository } from '../../../../../repositories/projects-sessions/SessionRepository';
 import { SESSION_COOKIE, authCookies } from '../../../../../utils/accounts-access/authCookies';
 import { authFail } from '../../../../../utils/accounts-access/authFail';
 import { bearerToken, sameOrigin } from './authHttp';
 import { hasAuthorization } from '../../../../../utils/verification-evidence/authHttp';
-
-export interface RequestSessionOptions {
-	sessions: SessionRepository;
-	origin: string;
-}
 
 const SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS'];
 
@@ -67,3 +62,5 @@ export class RequestSessionService {
 		return session?.kind === 'browser' ? session : null;
 	}
 }
+
+export type { RequestSessionOptions } from './RequestSessionService.types';

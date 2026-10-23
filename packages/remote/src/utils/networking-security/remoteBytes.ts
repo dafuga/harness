@@ -1,10 +1,9 @@
+import type { CryptoSource } from './remoteBytes.types';
 const encoder = new TextEncoder();
 
 const decoder = new TextDecoder('utf-8', { fatal: true });
 
 const base64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
-
-export type CryptoSource = Parameters<SubtleCrypto['digest']>[1];
 
 /** WebCrypto takes these bytes as they are; the cast only names the buffer type it expects. */
 export function cryptoSource(bytes: Uint8Array): CryptoSource {
@@ -80,3 +79,5 @@ export function safeEqual(left: string, right: string): boolean {
 }
 
 export { stableJson } from '../../services/networking-security/wire-session-service/remoteBytes';
+
+export type { CryptoSource } from './remoteBytes.types';

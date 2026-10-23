@@ -9,11 +9,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/development-tooling/threadComments.svelte.ts",
+			"packages/desktop/src/lib/stores/development-tooling/threadComments.svelte.types.ts",
 			"packages/desktop/src/lib/stores/threadComments.svelte.ts"
 		],
 		"symbols": [
-			"CommentInput",
 			"createThreadCommentsStore",
+			"CommentInput",
+			"ThreadComments",
+			"ThreadCommentsState",
+			"CommentInput",
 			"ThreadComments",
 			"createThreadCommentsStore"
 		]

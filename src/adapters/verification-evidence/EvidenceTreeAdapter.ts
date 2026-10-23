@@ -1,22 +1,9 @@
+import type { TreeCommit, TreeFile } from './EvidenceTreeAdapter.types';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { commitIdentity } from '../../utils/git-source-history/commitIdentity';
 import { GitAdapter } from '../git-source-history/GitAdapter';
-
-export interface TreeFile {
-	/** Path inside the tree. */
-	path: string;
-	/** Content, a file on disk whose bytes are stored unchanged, or a blob Git already has. */
-	content: { bytes: Buffer | string } | { file: string } | { blob: string };
-}
-
-export interface TreeCommit {
-	/** First parent supplies the starting tree; further parents record a merge. */
-	parents: string[];
-	files: TreeFile[];
-	message: string;
-}
 
 const absent = '0'.repeat(40);
 
@@ -142,3 +129,5 @@ function batchBlobs(bytes: Buffer, hashes: string[]): Map<string, Buffer> {
 	if (offset !== bytes.length) throw new Error('Invalid Git batch response');
 	return blobs;
 }
+
+export type { TreeFile, TreeCommit } from './EvidenceTreeAdapter.types';

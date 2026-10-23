@@ -1,6 +1,6 @@
+import type { SnapshotPort, HeldDiscovery } from './ProjectDiscoveryService.types';
 import { createHash } from 'node:crypto';
 import type { CacheIdentity } from '../../../../../../collaboration/src/models/Collaboration.types';
-import type { ProjectSnapshot } from '../../../../models/development-tooling/Desktop.types';
 import type { DesktopProject } from '../../../../models/projects-sessions/ProjectContext.types';
 import type {
 	HostedHttpAdapter,
@@ -14,17 +14,6 @@ import type {
 
 /** The read every discovery is kept under; HostedReadService scopes it by origin and principal. */
 const discovery = { projectId: '$projects', key: 'projects' };
-
-/** What this device kept of a principal's last current list, and the identity it is bound to. */
-interface HeldDiscovery {
-	projects: DesktopProject[];
-	identity: CacheIdentity;
-}
-
-/** Reads a project's tip once, which keeps it for when the hub is away. */
-interface SnapshotPort {
-	snapshot(input: { projectId: string; branch: null; commit: null }): Promise<ProjectSnapshot>;
-}
 
 /**
  * Lists a principal's hosted projects, owned and joined. The list is read every time; a snapshot

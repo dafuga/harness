@@ -1,21 +1,15 @@
+import type { Selection } from './generationGroup.types';
 import { writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { ModuleCategoryService } from '../../../services/development-tooling/ModuleCategoryService';
 import {
 	moduleGroupConfig,
-	moduleGroupsFile,
-	type ModuleGroup
+	moduleGroupsFile
 } from '../../../config/development-tooling/moduleGroupsConfig';
 import { matchingGroups } from '../../../utils/development-tooling/moduleGroup';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { fail } from '../../../core/development-tooling/errors';
 import type { FileWriteResult } from '../../../core/development-tooling/files';
-
-interface Selection {
-	root: string;
-	group: ModuleGroup;
-	add: boolean;
-}
 
 /** Legacy projects retain old entries until category adoption; categorized projects require a clear choice. */
 export function generationGroup(

@@ -1,16 +1,10 @@
+import type { Fixture } from './change-reply.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { RunCancelled } from '../src/models/AgentRunner.types';
 import { approve, fixture, git, settled } from './run-fixture';
-
-/**
- * What the agent of a Change said is kept in the notice of that change, so a thread that is
- * opened again shows it with its references. A run that failed or was cancelled keeps what was
- * said until then, above a notice that says how it ended and that verification is pending.
- */
-type Fixture = Awaited<ReturnType<typeof fixture>>;
 async function notice(f: Fixture) {
 	const head = git(f.root, 'rev-parse', 'HEAD');
 	const said = await f.planning.messages(f.request.entityId, f.request.threadId, head);

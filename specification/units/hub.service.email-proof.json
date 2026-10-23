@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/services/email-proof-service/EmailProofService.ts",
-			"packages/hub/src/services/verification-evidence/email-proof-service/EmailProofService.ts"
+			"packages/hub/src/services/verification-evidence/email-proof-service/EmailProofService.ts",
+			"packages/hub/src/services/verification-evidence/email-proof-service/EmailProofService.types.ts"
 		],
 		"symbols": [
 			"PENDING_TTL",
@@ -25,7 +26,6 @@
 			"SEND_INTERVAL",
 			"DAILY_SENDS",
 			"PROOF_TTL",
-			"EmailProofOptions",
 			"EmailProofService",
 			"EmailProofService.constructor",
 			"EmailProofService.proven",
@@ -33,7 +33,10 @@
 			"EmailProofService.status",
 			"EmailProofService.start",
 			"EmailProofService.verify",
-			"EmailProofService.cancel"
+			"EmailProofService.cancel",
+			"EmailProofOptions",
+			"EmailProofOptions",
+			"Pending"
 		]
 	},
 	"contract": {

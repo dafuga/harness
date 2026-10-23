@@ -7,14 +7,19 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/inspectUnits.ts", "src/workflows/inspectUnits.ts"],
+		"source": [
+			"src/cli/program/inspectUnits.ts",
+			"src/cli/program/inspectUnits.types.ts",
+			"src/workflows/inspectUnits.ts"
+		],
 		"symbols": [
-			"UnitDetail",
 			"unitSchema",
 			"listUnits",
 			"unitsGraph",
 			"showUnit",
 			"renderUnit",
+			"UnitDetail",
+			"UnitDetail",
 			"unitSchema",
 			"listUnits",
 			"unitsGraph",

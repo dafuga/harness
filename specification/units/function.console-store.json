@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/consoleStore.ts", "src/utils/development-tooling/consoleStore.ts"],
-		"symbols": ["consoleStore", "ConsoleObject", "ConsoleBucket", "consoleStore"]
+		"source": [
+			"src/utils/consoleStore.ts",
+			"src/utils/development-tooling/consoleStore.ts",
+			"src/utils/development-tooling/consoleStore.types.ts"
+		],
+		"symbols": [
+			"consoleStore",
+			"consoleStore",
+			"ConsoleObject",
+			"ConsoleBucket",
+			"ConsoleObject",
+			"ConsoleBucket"
+		]
 	},
 	"contract": {
 		"origin": "declared",

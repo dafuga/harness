@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/validators/RemoteInputValidator.ts",
-			"packages/remote/src/validators/networking-security/RemoteInputValidator.ts"
+			"packages/remote/src/validators/networking-security/RemoteInputValidator.ts",
+			"packages/remote/src/validators/networking-security/RemoteInputValidator.types.ts"
 		],
 		"symbols": [
 			"RemoteInputValidator",
@@ -19,7 +20,8 @@
 			"RemoteInputValidator.revision",
 			"RemoteInputValidator.approval",
 			"RemoteInputValidator.pairing",
-			"RemoteInputValidator.device"
+			"RemoteInputValidator.device",
+			"Fields"
 		]
 	},
 	"contract": {

@@ -1,3 +1,4 @@
+import type { Upload } from './cloudflare-screenshot-upload.spec.types';
 import { expect, test, type APIRequestContext } from '../../../../test/support/browserTest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -16,8 +17,6 @@ async function capture(page: import('@playwright/test').Page, name: string) {
 	});
 	await page.screenshot({ path: `${directory}/${name}.png`, fullPage: true });
 }
-
-type Upload = { reportId: string; title: string; viewport?: string };
 
 /**
  * Posts a before/after pair to the upload service, as the removed form of the report page did.

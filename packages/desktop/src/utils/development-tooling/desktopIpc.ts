@@ -4,10 +4,6 @@
  */
 export const bootstrapChannel = 'transport:bootstrap';
 
-/** `ipcMain`, or a stand-in. */
-export interface DesktopIpcPort {
-	handle(channel: string, listener: (event: unknown) => Promise<unknown>): unknown;
-	removeHandler(channel: string): unknown;
-}
-
 export { desktopIpc } from '../../lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc';
+
+export type { DesktopIpcPort } from './desktopIpc.types';

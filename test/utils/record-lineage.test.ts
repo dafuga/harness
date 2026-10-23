@@ -1,3 +1,4 @@
+import type { Scenario } from './record-lineage.test.types';
 import { expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { recordLineage } from '../../src/utils/recordLineage';
@@ -7,7 +8,6 @@ import { recordIntact, sealRecord } from '../../src/utils/sealRecord';
 
 const commitOf = (letter: string) => letter.repeat(40);
 const idOf = (letter: string) => letter.repeat(64);
-type Scenario = VerificationRecord['scenarios'][number];
 
 function record(
 	letter: string,

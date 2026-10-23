@@ -1,11 +1,7 @@
+import type { ReportSettings } from './reportsEnvironment.types';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-
-interface ReportSettings {
-	configFile?: string;
-	cloudflareConfigHome?: string;
-}
 
 export function reportsEnvironment(): typeof process.env {
 	const file =

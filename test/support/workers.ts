@@ -1,16 +1,10 @@
+import type { LocalWorker } from './workers.types';
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import { join, resolve } from 'node:path';
 import { ownEnvironment } from './cli';
 
 const wrangler = resolve(import.meta.dirname, '../../node_modules/.bin/wrangler');
-
-export interface LocalWorker {
-	url: string;
-	/** Everything Wrangler and workerd printed so far. */
-	output(): string;
-	stop(): Promise<void>;
-}
 
 /** A loopback port that was free a moment ago. */
 export function freePort(): Promise<number> {
@@ -74,3 +68,5 @@ export async function startWorker(
 	await stop();
 	throw new Error(`the local Workers runtime did not start\n${output()}`);
 }
+
+export type { LocalWorker } from './workers.types';

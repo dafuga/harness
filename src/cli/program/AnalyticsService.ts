@@ -1,3 +1,4 @@
+import type { AnalyticsOptions } from './AnalyticsService.types';
 import { projectIdentity } from '../../workflows/reports-media/analyticsRecord';
 import { resolve } from 'node:path';
 import { writeFile } from 'node:fs/promises';
@@ -7,14 +8,6 @@ import { importAnalytics } from '../../workflows/reports-media/importAnalytics';
 import type { AnalyticsFilter } from '../../core/reports-media/analyticsTypes';
 import { analyticsHtml } from './analyticsHtml';
 import { sameSite } from '../../utils/accounts-access/repository-identity/repositoryIdentity';
-
-export interface AnalyticsOptions extends AnalyticsFilter {
-	json?: boolean;
-	/** Limits everything to events recorded in checkouts of the repository at this path. */
-	site?: string;
-	root?: string;
-	output?: string;
-}
 export class AnalyticsService {
 	async execute(operation: string, options: AnalyticsOptions): Promise<void> {
 		if (operation === 'import') {
@@ -82,3 +75,5 @@ async function renderResult(
 		process.stdout.write(`${output}\n`, (error) => (error ? reject(error) : resolveOutput()));
 	});
 }
+
+export type { AnalyticsOptions } from './AnalyticsService.types';

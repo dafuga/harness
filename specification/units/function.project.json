@@ -11,14 +11,16 @@
 			"src/core/project.ts",
 			"src/core/projects-sessions/project.ts",
 			"src/workflows/generate-code/project.ts",
-			"src/workflows/projects-sessions/generate-code/project.ts"
+			"src/workflows/projects-sessions/generate-code/project.ts",
+			"src/workflows/projects-sessions/generate-code/project.types.ts"
 		],
 		"symbols": [
 			"DetectedProjectKind",
 			"detectProjectKind",
 			"detectProjectKind",
 			"detectGameDimension",
-			"DetectedProjectKind"
+			"DetectedProjectKind",
+			"PackageManifest"
 		]
 	},
 	"contract": {

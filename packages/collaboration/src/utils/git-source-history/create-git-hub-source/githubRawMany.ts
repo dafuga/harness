@@ -1,19 +1,11 @@
+import type { Context } from './githubRawMany.types';
 import type {
-	GitHubOptions,
 	RepositoryIdentity,
-	SourceAdapter,
 	SourceHistoryAdapter,
 	SourceEntry
 } from '../../../models/planning-collaboration/Collaboration.types';
 import { fail, parse, safePath, sha } from '../../planning-collaboration/parseCollaborationInput';
 import { githubGraphql } from './githubGraphql';
-
-interface Context {
-	adapter: SourceAdapter;
-	options: Omit<GitHubOptions, 'repository'>;
-	cache: Map<string, Promise<Uint8Array>>;
-	key(repo: RepositoryIdentity, ref: string): string;
-}
 
 function attestPaths(entries: SourceEntry[], paths: string[]) {
 	const tree = new Map(entries.map((entry) => [entry.path, entry]));

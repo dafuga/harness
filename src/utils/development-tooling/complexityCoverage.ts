@@ -1,11 +1,5 @@
 import { extname } from 'node:path';
 
-/**
- * How far the decision points of one file are known: counted, none to count because the file
- * declares and does not decide, or not counted because nothing here reads its language.
- */
-export type ComplexityCoverage = 'counted' | 'declarative' | 'unsupported';
-
 const named: Record<string, string> = {
 	'.rs': 'Rust',
 	'.py': 'Python',
@@ -29,3 +23,5 @@ export function uncountedLanguage(path: string): string {
 }
 
 export { complexityCoverage } from '../../services/development-tooling/source-index-service/complexityCoverage';
+
+export type { ComplexityCoverage } from './complexityCoverage.types';

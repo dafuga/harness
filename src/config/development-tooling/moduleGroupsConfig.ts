@@ -30,5 +30,4 @@ export const moduleGroupsConfig = z
 			context.addIssue({ code: 'custom', message: 'Category ids must be unique.' });
 	});
 
-export type ModuleGroup = z.infer<typeof moduleGroupConfig>;
-export type ModuleGroupsConfig = z.infer<typeof moduleGroupsConfig>;
+export type { ModuleGroup, ModuleGroupsConfig } from './moduleGroupsConfig.types';

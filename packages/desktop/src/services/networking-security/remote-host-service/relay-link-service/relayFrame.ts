@@ -1,11 +1,10 @@
+import type { Fields } from './relayFrame.types';
 import {
 	SecurePacketValidator,
 	remoteLimits,
 	remotePatterns
 } from '../../../../../../remote/src/index';
 import type { RelayHostFrame } from '../../../../../../remote/src/index';
-
-type Fields = Record<string, unknown>;
 
 const packets = new SecurePacketValidator();
 

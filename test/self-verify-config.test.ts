@@ -1,11 +1,8 @@
+import type { Manifest } from './self-verify-config.test.types';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
-
-interface Manifest {
-	owns: { source: string[] };
-}
 
 /** Every file under a directory of this repository, as repository paths. */
 function under(directory: string): string[] {

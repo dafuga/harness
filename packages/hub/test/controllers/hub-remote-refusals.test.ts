@@ -1,3 +1,4 @@
+import type { Attempt } from './hub-remote-refusals.test.types';
 import { expect, test } from 'vitest';
 import type { HubEnv } from '../../src/config/hubEnvConfig';
 import { project, projectionFixture } from '../support/projectionFixture';
@@ -10,8 +11,6 @@ import {
 	remoteFixture
 } from '../support/remoteFixture';
 import type { HostIdentity, RemoteFixture } from '../support/remoteFixture';
-
-type Attempt = [method: string, path: string, body?: unknown];
 
 function everyRoute(host: HostIdentity): Attempt[] {
 	const path = `/hosts/${host.hostId}`;

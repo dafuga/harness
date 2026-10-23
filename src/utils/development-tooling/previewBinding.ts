@@ -1,6 +1,5 @@
-import type { ComponentManifest, ScenarioManifest } from '../../core/development-tooling/unitTypes';
-
-type PreviewUnit = Pick<ComponentManifest, 'id' | 'scenarios' | 'preview'>;
+import type { PreviewUnit } from './previewBinding.types';
+import type { ScenarioManifest } from '../../core/development-tooling/unitTypes';
 
 function stateFor(unit: PreviewUnit, scenario: ScenarioManifest, id: string) {
 	const state = scenario.states.find((item) => item.id === id);

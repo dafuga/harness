@@ -1,6 +1,7 @@
+import type { Manifest } from './service-contract.test.types';
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import type { HarnessRevision, HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessRevision } from '../../src/models/Harness.types';
 import { content, words } from '../entityRender';
 import { record, revision } from '../entityFixture';
 import {
@@ -10,8 +11,6 @@ import {
 	withServiceContracts
 } from '../entityServiceContract';
 import { commits, ids } from '../entityUnits';
-
-type Manifest = Pick<HarnessUnit, 'owns' | 'contract' | 'runtime'>;
 
 const head = () => withServiceContracts(revision(commits.tip, [record(commits.tip)]));
 const contractOf = (entity: string, detail: HarnessRevision = head()) =>

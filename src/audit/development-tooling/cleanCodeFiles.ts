@@ -1,12 +1,7 @@
+import type { ReviewInputFile } from './cleanCodeFiles.types';
 import { createHash } from 'node:crypto';
 import { lstat, readFile, realpath } from 'node:fs/promises';
 import { isAbsolute, join, relative } from 'node:path';
-
-export interface ReviewInputFile {
-	path: string;
-	contents: string;
-	hash: string;
-}
 
 export function reviewHash(value: string): string {
 	return createHash('sha256').update(value).digest('hex');
@@ -45,3 +40,5 @@ export async function reviewInputsCurrent(
 		return false;
 	}
 }
+
+export type { ReviewInputFile } from './cleanCodeFiles.types';

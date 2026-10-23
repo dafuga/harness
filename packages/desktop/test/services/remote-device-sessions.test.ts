@@ -1,3 +1,4 @@
+import type { Side } from './remote-device-sessions.test.types';
 import { expect, test } from 'vitest';
 import {
 	SecureChannelService,
@@ -15,12 +16,6 @@ import type { DeviceAddress } from '../../src/services/RemoteDeviceSessionsServi
 import { remoteFixture } from '../remote-fixture';
 
 const pause = (milliseconds = 0) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-interface Side {
-	sessions: RemoteDeviceSessionsService;
-	inbox: Map<string, (packet: SecurePacket) => void>;
-	hostId: string;
-	hostKey: Uint8Array;
-}
 /** The phone's end of one connection, with the keys it claims to hold. */
 function phoneOf(side: Side, keys: RemoteKeyPair, deviceId: string) {
 	const { sessions, hostId } = side,

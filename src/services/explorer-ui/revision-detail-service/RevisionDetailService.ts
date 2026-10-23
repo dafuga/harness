@@ -1,9 +1,8 @@
-import type { BudgetEvent } from '../../../core/budgetTypes';
+import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
 import { BudgetService } from '../../budget-service/BudgetService';
 import { CommitTreeAdapter } from '../../../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../../../adapters/GitAdapter';
-import type { Explanation } from '../../../core/explanationTypes';
 import type { VerificationRecord } from '../../../core/verificationTypes';
 import { ScenarioRepository } from '../../../repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';
@@ -12,63 +11,11 @@ import { recordView, type RecordView, type ResolvedMedia } from '../../../utils/
 import { revisionReasons, type RevisionReasons } from '../../../utils/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { AttachedRecord } from '../../history-status-service/attached-record-service/AttachedRecordService';
-import type {
-	CommitStatus,
-	HistoryStatusService
-} from '../../history-status-service/HistoryStatusService';
-import type { StoredSide } from '../../../utils/sideImpact';
+import type { HistoryStatusService } from '../../history-status-service/HistoryStatusService';
 import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../../repositories/RegressionProofRepository';
-import type { RegressionView } from '../../../core/regressionTypes';
 import { unitMetadata } from './unitMetadata';
 import { readPlatformCatalog } from './platformCatalog';
-import type { PlatformCatalog } from '../../../core/explorer-ui/Platform.types';
-export interface RevisionDetail {
-	schemaVersion: 1;
-	commit: string;
-	platforms?: PlatformCatalog;
-	registry: RevisionRegistry;
-	/** What the latest usable record compared this revision with, as that record stated it. */
-	comparison: {
-		base: string | null;
-		record: string;
-		units: VerificationRecord['impact']['units'];
-		changed: VerificationRecord['impact']['changed'];
-		/** Scenarios this record tested afresh because the change reached them. */
-		scenarios: string[];
-		/** References the impact analysis could not resolve, which widened what was rerun. */
-		uncertain: VerificationRecord['impact']['uncertain'];
-	} | null;
-	/** Source changes against the first parent; null for unreadable trees. Needs no verification. */
-	sourceImpact: sourceImpact.SourceImpact | null;
-	/** Stored source-tree side, relative to the index; null when its tree cannot be read. */
-	side: string | null;
-	records: RecordView[];
-	/** The reasons for what this commit itself changed against its first parent. */
-	explanations: Explanation[];
-	/**
-	 * How many more reasons its notes and records hold that are not this commit's: a record may
-	 * verify a longer range. They stay where they were written and are dated to no commit here.
-	 */
-	rangeReasons: number;
-	/** Separate failing-test and fix commits, without granting a verification verdict. */
-	regressions?: RegressionView[];
-}
-interface Stored {
-	platforms: PlatformCatalog;
-	registry: RevisionRegistry;
-	ledger: BudgetEvent[];
-}
-export interface BuiltRevision {
-	detail: RevisionDetail;
-	/** The stored side to write at `detail.side`; revisions with one tree share one. */
-	side?: StoredSide;
-	status: CommitStatus;
-	/** Attached records of this commit that are intact, whatever their outcome. */
-	sound: VerificationRecord[];
-	/** The budget ledger as this revision stores it. */
-	ledger: BudgetEvent[];
-}
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
@@ -215,3 +162,5 @@ async function regressionProofs(
 	const repository = new RegressionProofRepository(root, history.pinned?.evidence);
 	return repository.history(commit, await history.all(), media);
 }
+
+export type { RevisionDetail, BuiltRevision } from './RevisionDetailService.types';

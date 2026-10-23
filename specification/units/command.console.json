@@ -7,8 +7,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/ConsoleCommand.ts"],
-		"symbols": ["registerConsoleCommand"]
+		"source": ["src/cli/program/ConsoleCommand.ts", "src/cli/program/ConsoleCommand.types.ts"],
+		"symbols": ["registerConsoleCommand", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",

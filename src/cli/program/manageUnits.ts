@@ -1,3 +1,4 @@
+import type { UnitsOptions, IndexReport, CheckReport } from './manageUnits.types';
 import { fail } from '../../core/development-tooling/errors';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { UnitIndexResult } from '../../workflows/development-tooling/load-units/unit-index-service/UnitIndexService';
@@ -8,25 +9,6 @@ import {
 	loadUnits,
 	type LoadedUnits
 } from '../../workflows/development-tooling/load-units/loadUnits';
-
-export interface UnitsOptions {
-	root?: string;
-	json?: boolean;
-	write?: boolean;
-	now?: () => string;
-}
-
-export type IndexReport = Omit<UnitIndexResult, 'manifests'> & {
-	units: number;
-	written: string[];
-	uncertain: number;
-};
-
-export interface CheckReport {
-	units: number;
-	uncertain: number;
-	errors: string[];
-}
 
 /** Reconciles the registry with source; writes manifests only when asked. */
 export async function indexUnits(options: UnitsOptions = {}): Promise<IndexReport> {
@@ -125,3 +107,5 @@ export function renderCheck(report: CheckReport): string {
 	const plural = report.uncertain === 1 ? '' : 's';
 	return `Units registry is valid: ${report.units} units, ${report.uncertain} uncertain reference${plural}.`;
 }
+
+export type { UnitsOptions, IndexReport, CheckReport } from './manageUnits.types';

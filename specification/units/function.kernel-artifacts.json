@@ -7,13 +7,21 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/execution-runtimes/kernelArtifacts.ts", "src/utils/kernelArtifacts.ts"],
+		"source": [
+			"src/utils/execution-runtimes/kernelArtifacts.ts",
+			"src/utils/execution-runtimes/kernelArtifacts.types.ts",
+			"src/utils/kernelArtifacts.ts"
+		],
 		"symbols": [
+			"kernelArtifacts",
 			"Environment",
 			"KernelBuild",
 			"KernelFile",
 			"KernelArtifacts",
-			"kernelArtifacts",
+			"Environment",
+			"KernelBuild",
+			"KernelFile",
+			"KernelArtifacts",
 			"kernelArtifacts"
 		]
 	},

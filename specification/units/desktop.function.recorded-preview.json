@@ -10,12 +10,14 @@
 		"source": [
 			"packages/desktop/src/components/recorded-preview/recordedPreview.ts",
 			"packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.ts",
+			"packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.types.ts",
 			"packages/desktop/src/utils/recordedPreview.ts",
 			"packages/desktop/src/utils/shared-primitives/recordedPreview.ts"
 		],
 		"symbols": [
 			"recordedPreview",
 			"recordedPreview",
+			"PreviewPick",
 			"recordedPreview",
 			"RecordedThumbnail",
 			"PreviewState",

@@ -1,3 +1,10 @@
+import type {
+	HostOptions,
+	RemoteHost,
+	Listener,
+	Change,
+	Grant
+} from './ui-remote-host-fixture.types';
 import type { Page } from '@playwright/test';
 import { alpha, beta, projectFixture } from './ui-project-fixture';
 export * from './ui-project-fixture';
@@ -20,32 +27,6 @@ export const phone = {
 	name: 'Ada iPhone',
 	fingerprint: '4f2a 91c0 7b3e'
 };
-
-type Listener = (status: unknown) => void;
-type Grant = { deviceId: string; projectIds: string[]; agents: boolean };
-interface HostOptions {
-	enabled: boolean;
-	origin: string;
-	/** How long each synthetic offer claims to live. */
-	ttlMs: number;
-	later: string[];
-	pairing: typeof pairing;
-	phone: typeof phone;
-	projects: { id: string; name: string }[];
-}
-type Change = Record<string, unknown>;
-interface HostState {
-	status: { devices: Record<string, unknown>[] };
-	listeners: Set<Listener>;
-	copy: () => unknown;
-	done: (op: string, input: object, change: Change) => Promise<unknown>;
-	request: () => void;
-}
-interface RemoteHost {
-	harnessRemote: Record<string, unknown>;
-	__calls: Record<string, unknown>[];
-	__remoteHost: HostState;
-}
 
 /** SYNTHETIC desktop state: what the port is told is recorded, what it says is fixture data. */
 function installHostState(options: HostOptions) {

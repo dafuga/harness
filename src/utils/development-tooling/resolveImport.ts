@@ -1,13 +1,7 @@
+import type { ResolveContext } from './resolveImport.types';
 import { posix } from 'node:path';
 import type { ResolvedReference } from '../../core/development-tooling/sourceTypes';
 import type { SourceReference } from './scanImports';
-
-export interface ResolveContext {
-	/** Every repository-relative path in the tree being indexed. */
-	files: ReadonlySet<string>;
-	/** Repository-relative root of the workspace that owns the importing file. */
-	workspaceRoot: string;
-}
 
 const suffixes = ['', '.ts', '.tsx', '.js', '.mjs', '.svelte', '.svelte.ts', '.json', '.css'];
 const indexes = ['/index.ts', '/index.js', '/index.svelte'];
@@ -65,3 +59,5 @@ function packageName(specifier: string): string {
 	const parts = specifier.split('/');
 	return specifier.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
 }
+
+export type { ResolveContext } from './resolveImport.types';

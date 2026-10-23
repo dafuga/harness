@@ -1,3 +1,4 @@
+import type { Fields } from './explorerReading.types';
 import type {
 	ExplorerArtifact,
 	ExplorerBehavior,
@@ -30,8 +31,6 @@ const says = new Map<string, (value: unknown) => boolean>([
 export const artifactRun = { field: 'harnessRun', version: 1, metadata: [...says.keys()] } as const;
 
 const unreadable = 'A recorded result could not be read and checked, so it is not compared.';
-
-type Fields = Record<string, unknown>;
 
 const isObject = (value: unknown): value is Fields =>
 	typeof value === 'object' && value !== null && !Array.isArray(value);

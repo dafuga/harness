@@ -1,10 +1,11 @@
+import { testFile, sourceMetrics } from './entityPreviewFunctionSource';
 import { expect as browserExpect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 import { sourceText } from './entitySourceFixture';
 import { createHash } from 'node:crypto';
-import type { Page, TestInfo } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 const kinds = [
 	['Models', 'models', 'Order', 'app.model.order', 'src/models/orders/Order.ts'],
@@ -18,22 +19,6 @@ const kinds = [
 test.use({ actionTimeout: 3000 });
 const expect = browserExpect.configure({ timeout: 2000 });
 const phase = process.env.SCREENSHOT_LABEL ?? 'run';
-async function sourceMetrics(page: Page, info: TestInfo, started: number) {
-	await info.attach('source-view-metrics', {
-		body: JSON.stringify(
-			await page.evaluate(
-				(start) => ({
-					openMs: performance.now() - start,
-					pageHeapBytes:
-						(performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
-							?.usedJSHeapSize ?? null
-				}),
-				started
-			)
-		),
-		contentType: 'application/json'
-	});
-}
 async function fileLink(page: Page, path: string, commit: string) {
 	const files = page.getByRole('list', { name: 'Source files', exact: true });
 	const link = files.getByRole('link', { name: path, exact: true });
@@ -65,6 +50,7 @@ async function historicalFile(
 		'source'
 	);
 	await fileLink(page, item.path, commits.middle);
+	await testFile(page, item.id, commits.middle);
 	await page.getByRole('button', { name: `View code for ${item.path}`, exact: true }).click();
 	await expect(page.getByRole('dialog').locator('pre')).toHaveText(
 		sourceText(commits.middle, item.path)
@@ -97,9 +83,13 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				page.locator('.ex-head').getByRole('button', { name: /^View code for / })
 			).toHaveCount(0);
 			await expect(page.locator('pre')).toHaveCount(0);
-			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+			await capture(page, `${phase}-source-action-${category}-${viewport}`, [
+				'reports.component.harness-entity-source',
+				'reports.component.source-file-list'
+			]);
 			await expect(action, 'Every source file has its own code action').toBeVisible();
 			await fileLink(page, path, commits.tip);
+			await testFile(page, id, commits.tip);
 			if (category === 'functions')
 				await expect(
 					page.getByRole('list', { name: 'Source files', exact: true }).getByRole('link')

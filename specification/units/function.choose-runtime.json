@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/chooseRuntime.ts", "src/utils/execution-runtimes/chooseRuntime.ts"],
-		"symbols": ["chooseRuntime", "RuntimeChoiceInput", "RuntimeChoice", "chooseRuntime"]
+		"source": [
+			"src/utils/chooseRuntime.ts",
+			"src/utils/execution-runtimes/chooseRuntime.ts",
+			"src/utils/execution-runtimes/chooseRuntime.types.ts"
+		],
+		"symbols": [
+			"chooseRuntime",
+			"chooseRuntime",
+			"RuntimeChoiceInput",
+			"RuntimeChoice",
+			"RuntimeChoiceInput",
+			"RuntimeChoice"
+		]
 	},
 	"contract": {
 		"origin": "declared",

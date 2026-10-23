@@ -1,3 +1,4 @@
+import type { Words } from './remoteLabels.types';
 import {
 	grantLabel,
 	awakeNote,
@@ -22,8 +23,6 @@ function awake(status: RemoteNativeStatus): string {
 	if (typeof status.locked !== 'boolean') return awakeNote;
 	return status.locked ? lockedNote : unlockedNote;
 }
-
-type Words = (host: string, status: RemoteNativeStatus) => { title: string; detail: string };
 
 const words: Record<RemoteMobileStatus['state'], Words> = {
 	unpaired: () => ({ title: 'Connect to computer', detail: '' }),

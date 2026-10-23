@@ -1,3 +1,4 @@
+import type { RuntimeDeadline } from './runtimeResponse.types';
 import {
 	runtimeFailure,
 	runtimeTimeout,
@@ -32,13 +33,6 @@ function isEnvelope(value: unknown): value is RuntimeResponse {
 	);
 }
 
-export interface RuntimeDeadline {
-	/** Resolves with a timeout failure once the deadline passes, if a timer can fire. */
-	expired: Promise<RuntimeResponse>;
-	/** Returns the response, or a timeout failure when it arrived after the deadline. */
-	settle(response: RuntimeResponse): RuntimeResponse;
-}
-
 /**
  * Starts the clock for one call. The timer covers work that yields; `settle` covers work that
  * blocked the thread, where no timer could fire before the result was ready.
@@ -57,3 +51,5 @@ export function runtimeDeadline(timeoutMs: number): RuntimeDeadline {
 		}
 	};
 }
+
+export type { RuntimeDeadline } from './runtimeResponse.types';

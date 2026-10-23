@@ -1,9 +1,5 @@
+import type { BlobRequest } from './gitBlobs.types';
 import { execFile } from 'node:child_process';
-
-interface BlobRequest {
-	revision: string;
-	paths: string[];
-}
 
 export async function gitBlobs(root: string, request: BlobRequest): Promise<Map<string, Buffer>> {
 	if (!request.paths.length) return new Map();

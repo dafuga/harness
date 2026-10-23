@@ -1,4 +1,4 @@
-import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
+import type { NativeConnectionOptions } from './NativeConnectionService.types';
 import {
 	NativeSessionAdapter,
 	type NativeEncryption
@@ -6,14 +6,6 @@ import {
 import { HostedHttpAdapter } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import { RemoteHttpProjectAdapter } from './remote-http-project-adapter/RemoteHttpProjectAdapter';
 import { NativeAuthService } from './NativeAuthService';
-import type { ProjectionCacheService } from './projection-cache-service/ProjectionCacheService';
-interface NativeConnectionOptions {
-	origin?: string;
-	onCacheStatus?: (status: CacheStatus) => void;
-	file: string;
-	cache: ProjectionCacheService;
-	open: (url: string) => Promise<void>;
-}
 export class NativeConnectionService {
 	create(options: NativeConnectionOptions, encryption: NativeEncryption) {
 		if (!options.origin) return {};

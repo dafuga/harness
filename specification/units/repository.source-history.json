@@ -9,15 +9,18 @@
 	"owns": {
 		"source": [
 			"src/repositories/git-source-history/source-history-repository/SourceHistoryRepository.ts",
+			"src/repositories/git-source-history/source-history-repository/SourceHistoryRepository.types.ts",
 			"src/repositories/source-history-repository/SourceHistoryRepository.ts"
 		],
 		"symbols": [
-			"SourceRevision",
-			"SourceHistory",
 			"SourceHistoryRepository",
 			"SourceHistoryRepository.constructor",
 			"SourceHistoryRepository.read",
 			"SourceHistoryRepository.revision",
+			"SourceRevision",
+			"SourceHistory",
+			"SourceRevision",
+			"SourceHistory",
 			"SourceHistoryRepository"
 		]
 	},

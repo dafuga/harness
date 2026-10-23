@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ExplorerStylesScreen.svelte"],
-		"symbols": ["ExplorerStylesScreen"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerStylesScreen.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerStylesScreen.types.ts"
+		],
+		"symbols": ["ExplorerStylesScreen", "GroupName", "StyleToken"]
 	},
 	"contract": {
 		"origin": "declared",

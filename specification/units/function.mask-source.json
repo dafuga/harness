@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/maskSource.ts", "src/utils/maskSource.ts"],
-		"symbols": ["MaskOptions", "maskSource", "maskSource"]
+		"source": [
+			"src/utils/development-tooling/maskSource.ts",
+			"src/utils/development-tooling/maskSource.types.ts",
+			"src/utils/maskSource.ts"
+		],
+		"symbols": ["maskSource", "MaskOptions", "MaskOptions", "Cursor", "maskSource"]
 	},
 	"contract": {
 		"origin": "declared",

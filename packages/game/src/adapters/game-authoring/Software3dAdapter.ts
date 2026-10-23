@@ -1,6 +1,5 @@
+import type { Point, Box } from './Software3dAdapter.types';
 import type { FrameSource, GameRun, GameView } from '../../models/game-authoring/Game.types';
-type Point = [number, number, number];
-type Box = { id: string; at: Point; size: Point; color: string };
 
 /** The same primitive world projected onto Canvas when WebGL is unavailable. */
 export class Software3dAdapter implements FrameSource {

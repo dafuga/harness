@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/services/agent-activity-service/AgentActivityService.ts",
-			"src/services/agents-providers/agent-activity-service/AgentActivityService.ts"
+			"src/services/agents-providers/agent-activity-service/AgentActivityService.ts",
+			"src/services/agents-providers/agent-activity-service/AgentActivityService.types.ts"
 		],
 		"symbols": [
 			"AgentActivityService",
@@ -19,7 +20,8 @@
 			"AgentActivityService.register",
 			"AgentActivityService.heartbeat",
 			"AgentActivityService.finish",
-			"AgentActivityService.roster"
+			"AgentActivityService.roster",
+			"RosterContext"
 		]
 	},
 	"contract": {
@@ -130,7 +132,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["agent-activity"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

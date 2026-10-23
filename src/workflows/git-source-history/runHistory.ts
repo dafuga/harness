@@ -1,3 +1,4 @@
+import type { HistoryOptions } from './runHistory.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../core/development-tooling/errors';
@@ -11,14 +12,6 @@ import {
 	HistoryStatusService,
 	type CommitStatus
 } from '../../services/verification-evidence/history-status-service/HistoryStatusService';
-
-export interface HistoryOptions {
-	root?: string;
-	/** Source commit; `HEAD` by default. */
-	commit?: string;
-	/** Record id or record file; the latest record of the commit when omitted. */
-	record?: string;
-}
 
 /** Resolves a revision to a commit of this repository. */
 export async function sourceCommit(root: string, reference = 'HEAD'): Promise<string> {
@@ -65,3 +58,5 @@ export function renderStatus(status: CommitStatus): string {
 		...status.problems.map((problem) => `  ${problem}`)
 	].join('\n');
 }
+
+export type { HistoryOptions } from './runHistory.types';

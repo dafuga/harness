@@ -1,9 +1,4 @@
-export interface SourceNesting {
-	/** Curly-brace depth before each character. */
-	brace: Int32Array;
-	/** Parenthesis and square-bracket depth before each character. */
-	group: Int32Array;
-}
+import type { SourceNesting } from './sourceNesting.types';
 
 /** Computes bracket depths over masked source so literal contents never count. */
 export function sourceNesting(masked: string): SourceNesting {
@@ -46,3 +41,5 @@ function delta(char: string, open: string, close: string): number {
 }
 
 export { statementEnd } from './block-spans/statementEnd';
+
+export type { SourceNesting } from './sourceNesting.types';

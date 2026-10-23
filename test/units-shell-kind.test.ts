@@ -1,17 +1,8 @@
+import type { Manifest } from './units-shell-kind.test.types';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { unitProject } from './support/unitProject';
-
-/**
- * A shell is a kind a person declares on a manifest. Reindexing keeps it and the id it has, adds
- * no second unit for the same source, and the component generator still makes components.
- */
-interface Manifest {
-	id: string;
-	kind: string;
-	owns: { source: string[] };
-}
 
 test('a declared shell kind survives reindexing under the same id, and new components stay components', async () => {
 	const project = await unitProject('app');

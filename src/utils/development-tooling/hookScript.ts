@@ -13,8 +13,6 @@ export const enabledFile = 'harness-hooks';
 /** The stages Harness offers: a push is verified, and the message of a commit is measured. */
 export const hookStages = ['pre-push', 'commit-msg'] as const;
 
-export type HookStage = (typeof hookStages)[number];
-
 /**
  * The file that opts a worktree into one stage. The hooks directory is shared, so a stage that
  * is offered later is installed for worktrees that asked an earlier Harness for pushes only:
@@ -25,3 +23,5 @@ export function stageFile(stage: string): string {
 }
 
 export { hookScript, managedHook } from '../../cli/program/hook-install-service/hookScript';
+
+export type { HookStage } from './hookScript.types';

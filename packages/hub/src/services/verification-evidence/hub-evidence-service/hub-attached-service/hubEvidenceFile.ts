@@ -1,18 +1,10 @@
+import type { Input, Checked } from './hubEvidenceFile.types';
 import { evidenceFileLimit } from '../../../../utils/verification-evidence/hubEvidenceFile';
 import { createHash } from 'node:crypto';
-import type { EvidenceFile, EvidencePointer } from '../../../../../../../src/core/historyTypes';
+import type { EvidenceFile } from '../../../../../../../src/core/historyTypes';
 import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import { hubMaterializedHash } from '../../../../utils/development-tooling/hubRaw';
 import { hubFail } from '../../../../utils/development-tooling/hubJson';
-
-type Input = { pointer: EvidencePointer; file: EvidenceFile };
-
-/** What one declared file turned out to be: its bytes and frozen fact only when intact. */
-interface Checked {
-	bytes?: Uint8Array;
-	problems: string[];
-	fact?: Readonly<EvidenceFile & { blob: string }>;
-}
 
 /** Exactly one declared file at a time. Neither the byte cache nor source memo retains it. */
 export async function hubEvidenceFile(base: HubSourceContext, input: Input) {

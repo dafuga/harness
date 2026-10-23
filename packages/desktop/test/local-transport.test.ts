@@ -1,3 +1,4 @@
+import type { Fixture } from './local-transport.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -11,8 +12,6 @@ import { remoteBinary } from '../src/utils/remoteBinary';
 import { largeGame, largeImage, localFixture } from './local-transport-fixture';
 import { deferred } from './remote-fixture';
 import { git } from './run-fixture';
-
-type Fixture = Awaited<ReturnType<typeof localFixture>>;
 const settle = { timeout: 15000 },
 	view = { branch: null, commit: null },
 	pause = () => new Promise((resolve) => setTimeout(resolve, 0)),

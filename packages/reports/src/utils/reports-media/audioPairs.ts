@@ -1,6 +1,6 @@
+import type { Comparable } from './audioPairs.types';
 import type { Evidence } from '../../models/reports-media/Report.types';
 import { evidenceMedia } from '../verification-evidence/evidenceMedia';
-type Comparable = Evidence & { phase: 'before' | 'after'; comparison: string };
 function comparable(item: Evidence): item is Comparable {
 	return (
 		evidenceMedia(item) === 'audio' &&

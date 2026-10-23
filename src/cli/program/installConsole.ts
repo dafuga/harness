@@ -1,3 +1,4 @@
+import type { ConsoleInstallFlags, ConsoleObjectEntry } from './installConsole.types';
 import { join, resolve } from 'node:path';
 import {
 	ConsoleInstallService,
@@ -11,18 +12,6 @@ import {
 } from '../../utils/development-tooling/consoleManifest';
 import { indexFiles } from '../../utils/development-tooling/indexFiles';
 
-export interface ConsoleInstallFlags {
-	host: string;
-	policy: string;
-	policyExport: string;
-	base: string;
-	data?: string;
-	bucket?: string;
-	prefix?: string;
-	update?: boolean;
-	keep?: boolean;
-}
-
 /** Installs the console into a SvelteKit host behind that host's own policy. */
 export function installConsole(flags: ConsoleInstallFlags): Promise<ConsoleInstallResult> {
 	return new ConsoleInstallService().install({
@@ -30,13 +19,6 @@ export function installConsole(flags: ConsoleInstallFlags): Promise<ConsoleInsta
 		host: resolve(flags.host),
 		...(flags.data ? { data: resolve(flags.data) } : {})
 	});
-}
-
-export interface ConsoleObjectEntry {
-	/** Name of the object in the bucket. */
-	key: string;
-	/** The file of the index it is uploaded from. */
-	file: string;
 }
 
 const indexed =
@@ -121,3 +103,5 @@ export function renderConsoleInstall(result: ConsoleInstallResult): string {
 		...result.warnings.map((warning) => `Warning: ${warning}`)
 	].join('\n');
 }
+
+export type { ConsoleInstallFlags, ConsoleObjectEntry } from './installConsole.types';

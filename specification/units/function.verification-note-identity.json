@@ -9,9 +9,10 @@
 	"owns": {
 		"source": [
 			"src/utils/verification-evidence/verificationNoteIdentity.ts",
+			"src/utils/verification-evidence/verificationNoteIdentity.types.ts",
 			"src/utils/verificationNoteIdentity.ts"
 		],
-		"symbols": ["verificationNoteIdentity", "verificationNoteIdentity"]
+		"symbols": ["verificationNoteIdentity", "Note", "verificationNoteIdentity"]
 	},
 	"contract": {
 		"origin": "declared",

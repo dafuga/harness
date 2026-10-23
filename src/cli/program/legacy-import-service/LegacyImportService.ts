@@ -1,3 +1,4 @@
+import type { LegacyImport } from './LegacyImportService.types';
 import { createHash } from 'node:crypto';
 import { realpathSync } from 'node:fs';
 import type { TreeFile } from '../../../adapters/verification-evidence/EvidenceTreeAdapter';
@@ -16,20 +17,6 @@ import { legacyReport } from './legacyReport';
 import { type LegacyReport } from '../../../utils/reports-media/legacyReport';
 import { lfsPointer, lfsStored } from '../../../utils/verification-evidence/lfsPointer';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
-
-export interface LegacyImport {
-	imported: Array<{
-		id: string;
-		status: string;
-		startedAt: string;
-		revision: string | null;
-		/** The commit of this repository the recorded revision resolves to, if it does. */
-		linked: string | null;
-		media: number;
-		created: boolean;
-	}>;
-	skipped: Array<{ id: string; reason: string }>;
-}
 
 /**
  * Imports the old reports of this repository into Git as they were recorded. The old store is
@@ -170,3 +157,5 @@ function real(path: string): string {
 function sha256(bytes: Buffer | string): string {
 	return createHash('sha256').update(bytes).digest('hex');
 }
+
+export type { LegacyImport } from './LegacyImportService.types';

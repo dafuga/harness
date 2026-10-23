@@ -1,3 +1,4 @@
+import type { RegistryRead } from './UnitRegistryRepository.types';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import type { SourceTree } from '../../core/development-tooling/sourceTypes';
@@ -16,14 +17,6 @@ import {
 	ComponentManifestValidator,
 	schemaErrors
 } from '../../validators/development-tooling/ComponentManifestValidator';
-
-export interface RegistryRead {
-	manifests: ComponentManifest[];
-	/** Problems with stored manifests; the registry is unusable for gating while any exist. */
-	errors: string[];
-	/** Units whose stored file is not in canonical form. */
-	unformatted: string[];
-}
 
 /** Stores unit manifests as one canonical JSON file per unit in the repository. */
 export class UnitRegistryRepository {
@@ -94,3 +87,5 @@ async function current(path: string): Promise<string | undefined> {
 		return undefined;
 	}
 }
+
+export type { RegistryRead } from './UnitRegistryRepository.types';

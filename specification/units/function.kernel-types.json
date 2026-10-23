@@ -7,9 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/execution-runtimes/kernelTypes.ts", "src/core/kernelTypes.ts"],
+		"source": [
+			"src/core/execution-runtimes/kernelTypes.ts",
+			"src/core/execution-runtimes/kernelTypes.types.ts",
+			"src/core/kernelTypes.ts"
+		],
 		"symbols": [
 			"kernelContract",
+			"KernelGraph",
+			"ImpactInput",
+			"AffectedNode",
+			"ImpactOutput",
 			"KernelGraph",
 			"ImpactInput",
 			"AffectedNode",

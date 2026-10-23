@@ -9,9 +9,16 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.types.ts",
 			"packages/desktop/src/lib/stores/threadRun.svelte.ts"
 		],
-		"symbols": ["createThreadRunStore", "ThreadRun", "createThreadRunStore"]
+		"symbols": [
+			"createThreadRunStore",
+			"ThreadRun",
+			"ThreadRunState",
+			"ThreadRun",
+			"createThreadRunStore"
+		]
 	},
 	"contract": {
 		"origin": "derived",

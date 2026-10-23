@@ -1,3 +1,4 @@
+import type { Event } from './cli-fixture.types';
 import { afterEach, vi } from 'vitest';
 import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -53,16 +54,6 @@ if(mode.startsWith('claude')){
  });
 }
 `;
-interface Event {
-	kind: string;
-	pid?: number;
-	argv?: string[];
-	cwd?: string;
-	env?: string[];
-	method?: string;
-	params?: Record<string, unknown>;
-	input?: string;
-}
 afterEach(async () => {
 	vi.unstubAllEnvs();
 	for (const pid of pids.splice(0)) {

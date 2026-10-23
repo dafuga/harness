@@ -1,16 +1,5 @@
 import { byteSize } from './entityMeasure';
 
-export interface HistoryTiming {
-	profile: string;
-	workload: string;
-	metric: string;
-	target: string | null;
-	unit: string;
-	/** The value of the same profile at the commit listed before; never another profile's. */
-	before?: number;
-	after: number;
-}
-
 const sign = (delta: number) => (delta > 0 ? '+' : '−');
 
 /** A change of size with its direction; nothing when there is no earlier size to compare. */
@@ -32,3 +21,5 @@ export {
 	historyProfiles
 } from '../../components/explorer-ui/entity-history/entityHistory';
 export { reviewChanges } from '../../components/explorer-ui/entity-change/entityHistory';
+
+export type { HistoryTiming } from './entityHistory.types';

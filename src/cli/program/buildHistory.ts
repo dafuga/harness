@@ -1,3 +1,4 @@
+import type { BuildOptions } from './buildHistory.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../core/development-tooling/errors';
@@ -6,14 +7,6 @@ import {
 	type BuiltHistory
 } from './history-index-service/HistoryIndexService';
 import { LegacyHistoryService } from './LegacyHistoryService';
-
-export interface BuildOptions {
-	root?: string;
-	/** Output directory for the index, the revision details and the media. */
-	out?: string;
-	/** Newest commits to include; older ones are left out and the index says so. */
-	limit?: string;
-}
 
 /** Builds the portable history index from the Git refs of this repository. */
 export async function buildHistory(options: BuildOptions = {}): Promise<BuiltHistory> {
@@ -41,3 +34,5 @@ export function renderBuild(built: BuiltHistory): string {
 		...built.problems.map((problem) => `  ${problem}`)
 	].join('\n');
 }
+
+export type { BuildOptions } from './buildHistory.types';

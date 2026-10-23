@@ -1,10 +1,9 @@
-import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
+import type { Bridge, HostedInput } from './HostedProjectService.types';
 import type { ProjectSessionService } from '../../projects-sessions/project-session-service/ProjectSessionService';
 import type {
 	RemoteProjectPort,
 	HumanCommentDraft
 } from '../../../models/projects-sessions/ProjectContext.types';
-type Bridge = Omit<DesktopBridge, 'onRunEvent'>;
 /** A shared project dispatches only the reads its hosted port offers. */
 const unread = 'Recorded evidence of a shared project is not read on this computer yet.';
 export class HostedProjectService {
@@ -87,8 +86,6 @@ export class HostedProjectService {
 		return readOperation(this.remote, key, input);
 	}
 }
-
-type HostedInput = Record<string, unknown> & { projectId: string };
 function agent(remote: RemoteProjectPort, key: keyof Bridge, input: HostedInput) {
 	if (remote.agent) return remote.agent(key, input, input.projectId);
 	if (key === 'providers') return [];

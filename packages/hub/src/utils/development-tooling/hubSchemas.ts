@@ -91,12 +91,11 @@ export const hubApprovalSchema = z.object({
 	/** The one option approved, when its version has options. */
 	option: optionId.optional()
 });
-export type HubPlan = z.infer<typeof hubPlanSchema>;
-export type HubDesign = z.infer<typeof hubDesignSchema>;
-export type HubApproval = z.infer<typeof hubApprovalSchema>;
 export function hubSchemas<T>(schema: z.ZodType<T>, value: unknown): T {
 	const parsed = schema.safeParse(value);
 	if (!parsed.success)
 		throw Object.assign(new Error('Invalid Harness artifact'), { code: 'artifact-corrupt' });
 	return parsed.data;
 }
+
+export type { HubPlan, HubDesign, HubApproval } from './hubSchemas.types';

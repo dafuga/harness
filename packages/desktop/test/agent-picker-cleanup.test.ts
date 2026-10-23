@@ -1,18 +1,10 @@
+import type { AstNode, Unit } from './agent-picker-cleanup.test.types';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { parse, parseCss, type AST } from 'svelte/compiler';
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 import { scanImports } from '../../../src/services/source-index-service/scanImports';
-
-/**
- * The model and effort pickers are two lists of choices behind one modal dialog. The dialog is
- * owned once, wherever it lives and whatever it is called: it is found through the imports the
- * two pickers really write. What nothing uses is gone: no composer row style without markup, and
- * HubView, mounted by nothing, is retired with its history kept and no legacy redirect changed.
- */
-type AstNode = Record<string, unknown>;
-type Unit = { id: string; status: string; owns: { source: string[] } };
 const desktop = resolve(import.meta.dirname, '..');
 const root = resolve(desktop, '../..');
 const src = join(desktop, 'src');

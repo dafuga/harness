@@ -7,7 +7,10 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/ios-products.ts"],
+		"source": [
+			"packages/desktop/scripts/ios-products.ts",
+			"packages/desktop/scripts/ios-products.types.ts"
+		],
 		"symbols": [
 			"desktopRoot",
 			"derivedData",
@@ -22,8 +25,9 @@
 			"allowsLocalNetworking",
 			"inspectable",
 			"productFacts",
+			"changedCopy",
 			"ProductChange",
-			"changedCopy"
+			"ProductChange"
 		]
 	},
 	"contract": {

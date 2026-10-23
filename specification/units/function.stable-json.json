@@ -7,8 +7,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/stableJson.ts", "src/utils/stableJson.ts"],
-		"symbols": ["stableJson", "stableJson"]
+		"source": [
+			"src/utils/development-tooling/stableJson.ts",
+			"src/utils/development-tooling/stableJson.types.ts",
+			"src/utils/stableJson.ts"
+		],
+		"symbols": ["stableJson", "Position", "stableJson"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,3 +1,4 @@
+import type { ResolvedAuditConfig } from './config.types';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { AuditConfig, AuditIgnore } from './adapters/types';
@@ -5,16 +6,9 @@ import type { AuditFinding } from './types';
 import { fail } from '../../core/development-tooling/errors';
 import { harnessRuleLimits, type HarnessRuleLimits } from '../../rules/explorer-ui/catalog';
 import { resolveCleanCodeSettings } from './cleanCodeConfig';
-import type { CleanCodeSettings } from './cleanCodeTypes';
 
 const configFile = 'harness.audit.json';
 const limitKeys = Object.keys(harnessRuleLimits) as Array<keyof HarnessRuleLimits>;
-
-export interface ResolvedAuditConfig {
-	cleanCode: CleanCodeSettings;
-	ignore: AuditIgnore[];
-	limits: HarnessRuleLimits;
-}
 
 export function readAuditConfig(root: string): ResolvedAuditConfig {
 	const path = join(root, configFile);
@@ -67,3 +61,5 @@ function pathMatches(path: string, pattern: string): boolean {
 function ruleMatches(finding: AuditFinding, ignore: AuditIgnore): boolean {
 	return !ignore.rule || finding.rule === ignore.rule;
 }
+
+export type { ResolvedAuditConfig } from './config.types';

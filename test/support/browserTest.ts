@@ -1,27 +1,10 @@
+import type { BrowserError, ExpectedBrowserError, DiagnosticInfo } from './browserTest.types';
 import { test as base, expect } from '@playwright/test';
-import type { BrowserContext, ConsoleMessage, TestInfo, WebError } from '@playwright/test';
+import type { BrowserContext, ConsoleMessage, WebError } from '@playwright/test';
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 export * from '@playwright/test';
-
-interface BrowserError {
-	type: 'console' | 'pageerror';
-	message: string;
-	page: string;
-	source?: string;
-	line?: number;
-	column?: number;
-	stack?: string;
-}
-interface ExpectedBrowserError {
-	type: BrowserError['type'];
-	message: string;
-	reason: string;
-	source?: string;
-}
-type DiagnosticInfo = Pick<TestInfo, 'attach'> &
-	Partial<Pick<TestInfo, 'titlePath' | 'file' | 'config' | 'project' | 'retry'>>;
 
 /** Normal flows require no errors. Deliberate failures declare exact expected diagnostics. */
 export const test = base.extend<{ browserErrors: ReturnType<typeof browserErrorCollector> }>({

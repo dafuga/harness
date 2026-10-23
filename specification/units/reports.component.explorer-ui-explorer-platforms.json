@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte"],
-		"symbols": ["ExplorerPlatforms"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte",
+			"packages/reports/src/components/explorer-ui/ExplorerPlatforms.types.ts"
+		],
+		"symbols": ["ExplorerPlatforms", "Card"]
 	},
 	"contract": {
 		"origin": "declared",

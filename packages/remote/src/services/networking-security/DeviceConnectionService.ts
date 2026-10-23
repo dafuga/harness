@@ -1,33 +1,19 @@
+import type {
+	RemoteSocket,
+	Reply,
+	DeviceStatus,
+	DeviceConnectionOptions
+} from './DeviceConnectionService.types';
 import { remoteLimits } from '../../models/networking-security/Remote.types';
-import type { AttachInput, RemoteAttachment } from '../../models/networking-security/Remote.types';
+import type { RemoteAttachment } from '../../models/networking-security/Remote.types';
 import { relayCloseCodes, relayHeaders } from '../../models/networking-security/RemoteRelay.types';
 import type { SecurePacket } from '../../models/networking-security/RemoteSecure.types';
 import { relaySocketUrl } from '../../utils/networking-security/relayOrigin';
 import { fromBase64Url } from '../../utils/networking-security/remoteBytes';
 import { importRemoteKeys } from '../../utils/networking-security/remoteKeys';
 import { SecurePacketValidator } from '../../validators/networking-security/SecurePacketValidator';
-import type { DeviceCredentials } from './device-pairing-service/DevicePairingService';
 import { SecureChannelService } from './secure-channel-service/SecureChannelService';
 import { WireClientService } from './WireClientService';
-
-/** The few things a transport must offer. Text frames only. */
-export interface RemoteSocket {
-	opened: Promise<void>;
-	send(text: string): void;
-	close(code?: number): void;
-	onMessage(listener: (text: string) => void): void;
-	onClose(listener: (code: number) => void): void;
-}
-export type DeviceStatus = 'online' | 'offline' | 'revoked';
-export interface DeviceConnectionOptions {
-	credentials: DeviceCredentials;
-	client: AttachInput['client'];
-	/** Opens the socket with these request headers. The credential is in a header, never the URL. */
-	open: (url: string, headers: Record<string, string>) => RemoteSocket;
-	handshakeMs?: number;
-	wire?: WireClientService;
-}
-type Reply = (packet: SecurePacket | null) => void;
 
 function within<T>(work: Promise<T>, milliseconds: number): Promise<T> {
 	return new Promise((resolve, reject) => {
@@ -150,3 +136,9 @@ export class DeviceConnectionService {
 	}
 	private reported = false;
 }
+
+export type {
+	RemoteSocket,
+	DeviceStatus,
+	DeviceConnectionOptions
+} from './DeviceConnectionService.types';
