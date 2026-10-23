@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
 import { retainedBranch } from '../../src/utils/harnessAncestry';
-import { harnessShell } from '../../src/components/harness/harness-navbar/harnessShell';
+import { harnessShell } from '../../src/components/explorer-ui/harness-navbar/harnessShell';
 import { plainClick, type HarnessNavbarInput } from '../../src/utils/harnessShell';
 import {
 	sha,

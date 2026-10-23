@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { HarnessIndex, HarnessRevisionSummary } from '../../src/models/Harness.types';
-import { branchCommits } from '../../src/components/harness/harness-navbar/harnessAncestry';
+import { branchCommits } from '../../src/components/explorer-ui/harness-navbar/harnessAncestry';
 import {
 	branchNames,
 	branchOf,

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import EntityBehaviorScreen from '../../src/components/harness/EntityBehaviorScreen.svelte';
+import EntityBehaviorScreen from '../../src/components/explorer-ui/EntityBehaviorScreen.svelte';
 import { record, revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
 import { capture, commits, ids } from '../entityUnits';

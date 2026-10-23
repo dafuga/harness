@@ -1,7 +1,7 @@
 import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import HarnessAction from '../../src/components/harness/HarnessAction.svelte';
+import HarnessAction from '../../src/components/explorer-ui/HarnessAction.svelte';
 import { harnessIcons } from '../../src/utils/harnessIcons';
 
 const words = createRawSnippet(() => ({ render: () => '<span>Go to tip</span>' }));

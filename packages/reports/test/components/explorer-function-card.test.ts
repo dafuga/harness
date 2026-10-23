@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import ExplorerCatalogScreen from '../../src/components/harness/ExplorerCatalogScreen.svelte';
+import ExplorerCatalogScreen from '../../src/components/explorer-ui/ExplorerCatalogScreen.svelte';
 import { revision } from '../entityFixture';
 import { count, drawn, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';

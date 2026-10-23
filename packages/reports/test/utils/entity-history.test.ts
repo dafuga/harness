@@ -4,11 +4,11 @@ import {
 	historyListed,
 	historyProfiles,
 	historyVerdict
-} from '../../src/components/harness/entity-history/entityHistory';
-import { reviewChanges } from '../../src/components/harness/entity-change/entityHistory';
+} from '../../src/components/explorer-ui/entity-history/entityHistory';
+import { reviewChanges } from '../../src/components/explorer-ui/entity-change/entityHistory';
 import { signedBytes, signedCount } from '../../src/utils/entityHistory';
 import { explorerHistory } from '../../src/utils/explorer-history/explorerHistory';
-import { historyDetail } from '../../src/components/harness/entity-history/explorerHistory';
+import { historyDetail } from '../../src/components/explorer-ui/entity-history/explorerHistory';
 import { index, record, revision } from '../entityFixture';
 import { answers, view } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { harnessFailures } from '../../src/components/harness/harness-failures/harnessFailures';
+import { harnessFailures } from '../../src/components/explorer-ui/harness-failures/harnessFailures';
 
 const baseline = 'no baseline is established; a reviewer must establish one';
 const units = Array.from({ length: 539 }, (_, index) => `unit.number-${index}`);

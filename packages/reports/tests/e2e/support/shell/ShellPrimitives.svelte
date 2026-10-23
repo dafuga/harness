@@ -1,10 +1,10 @@
 <script lang="ts">
-	import HarnessAction from '../../../../src/components/harness/HarnessAction.svelte';
-	import HarnessIcon from '../../../../src/components/harness/HarnessIcon.svelte';
-	import HarnessNavbar from '../../../../src/components/harness/harness-navbar/HarnessNavbar.svelte';
-	import HarnessSelectors from '../../../../src/components/harness/harness-selectors/HarnessSelectors.svelte';
-	import HarnessTabs from '../../../../src/components/harness/HarnessTabs.svelte';
-	import HarnessVerdict from '../../../../src/components/harness/harness-verdict/HarnessVerdict.svelte';
+	import HarnessAction from '../../../../src/components/explorer-ui/HarnessAction.svelte';
+	import HarnessIcon from '../../../../src/components/explorer-ui/HarnessIcon.svelte';
+	import HarnessNavbar from '../../../../src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte';
+	import HarnessSelectors from '../../../../src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte';
+	import HarnessTabs from '../../../../src/components/explorer-ui/HarnessTabs.svelte';
+	import HarnessVerdict from '../../../../src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte';
 	import { harnessIcons, type HarnessIconName } from '../../../../src/utils/harnessIcons';
 	import { sha, shellBranch, shellCommits, shellHref, shellIndex, shellMount } from '../shellData';
 	// Every shared piece of the shell once, inside the explorer, and the two rows of the console
