@@ -1,0 +1,717 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts "$@"' -- test/entity-preview-groups.spec.ts -g "category folders group every collection and filter together"
+
+Running 3 tests using 1 worker
+
+(node:83846) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop (25.2s)
+(node:84427) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet (24.9s)
+(node:85108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile (24.8s)
+
+
+  1) test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop 
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/error-context.md
+
+  2) test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet 
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/error-context.md
+
+  3) test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile 
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('img', { name: 'String orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/orders/', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.archivePath' }).getByRole('button', { name: 'View value for orderSettings.archivePath', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: decoded strings are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - decoded strings are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true }) with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('img', { name: 'String Review the order checklist before packing, confirm every delivery address, and attach the shipping label.\nKeep <orders> & details together so the delivery team can match each parcel with its instructions and contact the customer before dispatch.', exact: true })
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+      64 | 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+    > 65 | 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+         | 		                                                              ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:65:65)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.fulfilmentNote' }).getByRole('button', { name: 'View value for orderSettings.fulfilmentNote', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(literal);
+      71 | 		const layout = await text.evaluate((element) => {
+        at inspectConfigStrings (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entityPreviewConfigs.ts:19:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UTWCDH/packages/reports/test/entity-preview-groups.spec.ts:116:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/error-context.md
+
+  3 failed
+    test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop 
+    test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet 
+    test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile 
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:entities" exited with code 1
