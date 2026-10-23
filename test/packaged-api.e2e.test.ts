@@ -176,7 +176,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 	for (const runner of ['bun', 'node']) {
 		const run = await measureProcess(
 			{
-				units: ['module.index', 'module.resources'],
+				units: ['module.index', 'module.resources', 'module.verification'],
 				workload: `cold-${runner}-packed-sdk`,
 				target: 'module',
 				command: [runner, 'consumer.ts', manifest, native],
