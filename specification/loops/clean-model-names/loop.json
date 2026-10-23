@@ -2,7 +2,7 @@
 	"name": "clean-model-names",
 	"goal": "Shared type-only models keep their identities and use clean names across cards, usage links and detail headings.",
 	"createdAt": "2026-10-23T17:52:00.241Z",
-	"updatedAt": "2026-10-23T17:53:28.900Z",
+	"updatedAt": "2026-10-23T17:56:06.864Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:56:06.864Z",
+			"evidence": "Unchanged shared naming and three-viewport mixed-card matrix fails at 72386ab4: clean Order is required but Order.types is rendered. Record 08a641ea retains six before screenshots and 20 observations. Guidance assertions also reject missing instructions."
 		},
 		{
 			"id": "implement",

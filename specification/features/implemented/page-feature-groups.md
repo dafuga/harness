@@ -17,6 +17,10 @@ through Harness scaffold guidance and generated project instructions.
 - The standard category browser scenario proves the headings at desktop, tablet
   and mobile, retains before/after images, and reports no unexpected errors.
 
+- Shared models keep their identities, source filenames and classification. Their
+  names omit the `.types` suffix on cards, links and detail headings. Generated
+  guidance teaches the same logical naming rule.
+
 ## Future Enhancements
 
 Other applications can extend their own project taxonomy as their features grow.

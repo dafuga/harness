@@ -102,6 +102,8 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Module Naming
 
+Shared model names omit the .types file suffix. Preserve shared type-only models, registered IDs, source paths and classification; use the same clean name on cards, links and headings.
+
 Before extending an alias resolver, strengthen its standard lookup matrix with
 canonical-name collisions, plural forms and normalization. Canonical names keep
 precedence over new aliases.
