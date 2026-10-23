@@ -160,7 +160,11 @@ When reusing a catalog item in relationships or another context, review the rend
 variants and their supplied data, not only the component import. The existing
 standardized catalog and relationship matrix must exercise the same consumer
 footer, clickable references, hover/focus preview and branch/revision navigation.
-Include empty usage and missing screenshots. A class-name or entity-name assertion
+Include empty usage and missing screenshots. Inventory every relationship input, including
+private callables and unclassified support dependencies; checking only existing article
+elements cannot detect modules that bypass the card renderer. Keep at least one fourth
+eligible consumer through the data projection and assert both three visible links and
+the overflow indicator. A class-name or entity-name assertion
 alone does not prove interaction parity. Keep screenshot evidence at the failing
 and passing checkpoints; do not substitute another entity or revision's image.
 

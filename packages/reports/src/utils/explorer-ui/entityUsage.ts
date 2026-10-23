@@ -21,6 +21,17 @@ export interface EntityUsage {
 	count: number;
 }
 
+/** One of `other` on its module card: its own name and users, with no kind or page invented. */
+export interface SupportRow {
+	support: ExplorerSupport;
+	id: string;
+	name: string;
+	/** What uses it at the shown revision, as a catalog row lists them. */
+	usedIn: ExplorerEntity[];
+	/** A private function opens its existing page under Functions; any other unit has none. */
+	opens: 'functions' | null;
+}
+
 export {
 	entityUsage,
 	usageGroups
