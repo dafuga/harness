@@ -131,6 +131,8 @@
 			"BenchmarkDefinitionValidator",
 			"BenchmarkRepository",
 			"BenchmarkService",
+			"registerResourcesCommand",
+			"ResourceQueueService",
 			"TaskCompletionService",
 			"PerformanceProfileService",
 			"registerTaskCommand",
@@ -181,11 +183,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "adapter.source-profile",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "adapter.sqlite",
 			"via": "reexport",
 			"origin": "derived"
@@ -206,7 +203,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "command.task",
+			"unit": "command.resources",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -626,11 +623,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.performance-profile",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "service.picker-preview",
 			"via": "reexport",
 			"origin": "derived"
@@ -651,7 +643,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.task-completion",
+			"unit": "service.resource-queue",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -676,11 +668,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "validator.performance-evidence",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "workflow.analytics-record",
 			"via": "import",
 			"origin": "derived"
@@ -693,6 +680,31 @@
 		{
 			"unit": "workflow.run-activity",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.source-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.performance-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.performance-evidence",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],

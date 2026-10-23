@@ -78,6 +78,53 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'resources:status': [
+		'command.resources',
+		'service.resource-queue',
+		'service.resource-monitor',
+		'adapter.host-resources',
+		'function.host-memory',
+		'function.host-resource-limits',
+		'function.resource-cpu',
+		'function.resource-config',
+		'function.resource-database',
+		'repository.resource-queue',
+		'function.resource-types',
+		'entry.program',
+		'entry.index',
+		'function.command-action'
+	],
+	'resources:run': [
+		'command.resources',
+		'service.resource-queue',
+		'service.resource-monitor',
+		'adapter.host-resources',
+		'function.host-memory',
+		'function.host-resource-limits',
+		'function.resource-cpu',
+		'function.resource-config',
+		'function.resource-database',
+		'repository.resource-queue',
+		'function.resource-types',
+		'function.resource-policy',
+		'function.resource-context',
+		'function.resource-command',
+		'function.resource-request',
+		'function.resource-identity',
+		'function.resource-workers',
+		'function.isolated-child',
+		'function.run-isolated',
+		'entry.program',
+		'entry.index',
+		'function.command-action'
+	],
+	'verify:run': [
+		'command.verify',
+		'workflow.run-verify',
+		'service.check-run',
+		'function.resource-work'
+	],
+
 	'benchmark:run': benchmarkRunUnits,
 	'analytics:benchmarks': [
 		'service.analytics',

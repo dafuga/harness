@@ -1,3 +1,4 @@
+import { resourcesGuide } from '../execution-runtimes/resources';
 import type { Guide } from './guide.types';
 import { loopGuide } from './loop';
 import { benchmarkGuide } from '../agents-providers/benchmark';
@@ -21,6 +22,7 @@ import { verificationGuides } from '../verification-evidence/verification';
 
 export const guides: Guide[] = [
 	benchmarkGuide,
+	resourcesGuide,
 	gameGuide,
 	analyticsGuide,
 	activityGuide,

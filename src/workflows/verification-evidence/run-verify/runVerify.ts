@@ -3,6 +3,7 @@ export type { VerifyOptions } from './runVerify.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
+import { resourcePriority } from '../../../core/execution-runtimes/resourceTypes';
 import {
 	defaultVerifyConfig,
 	verifyConfigFile,
@@ -80,7 +81,10 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		config,
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
-		env: process.env,
+		env: {
+			...process.env,
+			HARNESS_RESOURCE_PRIORITY: verificationPriority(options.priority)
+		},
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () =>
@@ -158,4 +162,8 @@ export function renderVerify(stored: StoredRecord): string {
 
 function requiresPerformance(options: VerifyOptions, config: VerifyConfig): boolean {
 	return options.requirePerformance === true || config.performanceRequired === 1;
+}
+
+function verificationPriority(priority: string | undefined): string {
+	return resourcePriority.parse(priority ?? process.env.HARNESS_RESOURCE_PRIORITY ?? 'environment');
 }

@@ -5,6 +5,7 @@ import { registerBenchmarkCommand } from './program/BenchmarkCommand';
 import { registerAnalyticsCommand } from './program/AnalyticsCommand';
 import { registerActivityCommand } from './program/ActivityCommand';
 import { registerReportCommand } from './program/ReportCommand';
+import { registerResourcesCommand } from './program/ResourcesCommand';
 import { Command } from 'commander';
 import { registerResponseCheckCommand } from './program/ResponseCheckCommand';
 import { registerAuditCommand } from './program/audit';
@@ -33,6 +34,7 @@ export function buildProgram(): Command {
 
 	registerCodexCommand(program);
 	registerBenchmarkCommand(program);
+	registerResourcesCommand(program);
 	registerAnalyticsCommand(program);
 	registerActivityCommand(program);
 	registerReportCommand(program);

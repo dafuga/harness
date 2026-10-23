@@ -1,9 +1,9 @@
-import { recordCapture } from '../src/utils/record-capture/recordCapture';
-import { mkdir, mkdtemp, readFile, rm, writeFile, cp, copyFile, symlink } from 'node:fs/promises';
+import { copyFile, cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { kernelArtifacts } from '../src/utils/kernelArtifacts';
+import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { runCommand } from './support/cli';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';
 
@@ -32,12 +32,14 @@ import {
 	type UnitRuntime,
 	type ExecutionTarget
 } from '@dafuga01/harness/runtime';
+import { resourceConfigSchema, resourceRequestSchema, type ResourceRequest } from '@dafuga01/harness/resources';
 import * as root from '@dafuga01/harness';
 import { consolePolicy, consoleAccess, consoleRoutePath } from '@dafuga01/harness/console';
 const sdkPolicy = consolePolicy({ mode: 'loopback', bind: '127.0.0.1' });
 const sdkAccess = consoleAccess({ policy: sdkPolicy, data: { json: async () => undefined, media: async () => undefined } });
 const sdkRoute: string = consoleRoutePath({ branch: null, commit: 'a', view: 'map' });
 void [sdkAccess, sdkRoute];
+const resourceRequest: ResourceRequest = resourceRequestSchema.parse({ priority: 'agent-test' });
 
 const request: RuntimeRequest = { operation: 'version' };
 const manifest: ComponentManifest = componentManifestSchema.parse(JSON.parse(process.argv[2]));
@@ -58,6 +60,7 @@ for (const runtime of runtimes) responses.push(await runtime.invoke(request));
 await Promise.all(runtimes.map((runtime) => runtime.close()));
 await served.close();
 console.log(JSON.stringify({
+	resources: { request: resourceRequest.priority, reserve: resourceConfigSchema.parse({}).cpuReservePercent },
 	id: manifest.id,
 	errors,
 	scenario: scenario === undefined,
@@ -164,6 +167,7 @@ test('a packed consumer imports typed contracts and calls real adapters without 
 		const result = JSON.parse(run.stdout) as Record<string, unknown>;
 		printed[runner] = result;
 		expect(result, runner).toMatchObject({
+			resources: { request: 'agent-test', reserve: 10 },
 			id: 'function.stable-json',
 			errors: [],
 			scenario: true,

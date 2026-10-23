@@ -1,6 +1,6 @@
-import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
 import type { VerificationRecord } from '../../../../../core/verification-evidence/verificationTypes';
 import type { Gathered } from '../../../../../utils/verification-evidence/gatherCaptures';
+import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
 
 export interface RunContext {
 	/** Clean export of the commit; every check runs inside it. */

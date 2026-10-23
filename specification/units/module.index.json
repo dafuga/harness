@@ -33,6 +33,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "module.resources",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "module.runtime",
 			"via": "reexport",
 			"origin": "derived"

@@ -14,9 +14,12 @@
 			"src/utils/runIsolated.ts"
 		],
 		"symbols": [
-			"runIsolated",
 			"IsolatedRun",
 			"IsolatedResult",
+			"Outcome",
+			"Followed",
+			"Running",
+			"runIsolated",
 			"IsolatedRun",
 			"IsolatedResult",
 			"Outcome",
@@ -54,6 +57,11 @@
 		},
 		{
 			"unit": "function.group-teardown",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.isolated-child",
 			"via": "import",
 			"origin": "derived"
 		},

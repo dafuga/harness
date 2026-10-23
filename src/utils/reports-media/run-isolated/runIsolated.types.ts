@@ -1,13 +1,18 @@
-import type { ServiceAuthority } from '../platformServices';
-import type { ServiceContext } from '../platformServices';
-import type { ProcessTable } from '../../development-tooling/processDescendants';
-import type { TrackedProcess } from '../../development-tooling/processDescendants';
-import type { processDescendants } from '../../development-tooling/processDescendants';
-import type { ProcessProbes } from '../../development-tooling/processProbes';
 import type { ChildProcess } from 'node:child_process';
+import type {
+	processDescendants,
+	ProcessTable,
+	TrackedProcess
+} from '../../development-tooling/processDescendants';
+import type { ProcessProbes } from '../../development-tooling/processProbes';
+import type { ServiceAuthority, ServiceContext } from '../platformServices';
 
 export interface IsolatedRun {
 	command: string;
+	/** Transparent stdio for managed coding CLIs; captured logs remain the default. */
+	stdio?: 'inherit';
+	signal?: AbortSignal;
+	onSpawn?: (pid: number) => void;
 	args: string[];
 	cwd: string;
 	env: Record<string, string | undefined>;
@@ -46,16 +51,13 @@ export interface IsolatedResult {
 	/** What the command left could not be established; nothing more was signalled for it. */
 	unknown?: boolean;
 }
-
-/** `unknown`: what the command left could not be read, so it is not known to be nothing. */
-export type Outcome = Pick<IsolatedResult, 'exitCode' | 'timedOut' | 'survivors'> & {
+export /** `unknown`: what the command left could not be read, so it is not known to be nothing. */
+type Outcome = Pick<IsolatedResult, 'exitCode' | 'timedOut' | 'survivors'> & {
 	stopped: number;
 	resisted: number;
 	unknown: boolean;
 };
-
 export type Followed = ReturnType<typeof processDescendants>;
-
 export interface Running {
 	run: IsolatedRun;
 	child: ChildProcess;

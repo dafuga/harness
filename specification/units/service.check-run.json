@@ -26,12 +26,12 @@
 			"CheckOutcome",
 			"CheckRunService",
 			"CheckRunService",
+			"RunContext",
+			"CheckOutcome",
 			"CheckRunService",
 			"CheckRunService.constructor",
 			"CheckRunService.run",
 			"CheckRunService.version",
-			"RunContext",
-			"CheckOutcome",
 			"RunContext",
 			"CheckOutcome"
 		]
@@ -72,6 +72,21 @@
 		},
 		{
 			"unit": "function.read-browser-diagnostics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-environment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
 			"via": "import",
 			"origin": "derived"
 		},

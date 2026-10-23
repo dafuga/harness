@@ -177,6 +177,8 @@ export { ClaudeBenchmarkAdapter } from './cli/program/benchmark-service/benchmar
 export { BenchmarkDefinitionValidator } from './cli/program/benchmark-service/benchmark-definition/BenchmarkDefinitionValidator';
 export { BenchmarkRepository } from './repositories/agents-providers/BenchmarkRepository';
 export { BenchmarkService } from './cli/program/benchmark-service/BenchmarkService';
+export { registerResourcesCommand } from './cli/program/ResourcesCommand';
+export { ResourceQueueService } from './services/execution-runtimes/ResourceQueueService';
 export { TaskCompletionService } from './services/verification-evidence/TaskCompletionService';
 export { PerformanceProfileService } from './services/verification-evidence/PerformanceProfileService';
 export { registerTaskCommand } from './cli/program/TaskCommand';

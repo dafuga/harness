@@ -1,4 +1,5 @@
 export interface VerifyOptions {
+	priority?: string;
 	/** Mandatory for task completion; historical verification contracts remain readable. */
 	requirePerformance?: boolean;
 	root?: string;

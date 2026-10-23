@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"id": "guide.resources",
+	"kind": "guide",
+	"title": "resources",
+	"responsibility": "Documents shared admission, reserve floors, priorities and the distinction between running work and new admissions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/guides/execution-runtimes/resources.ts"],
+		"symbols": ["resourcesGuide"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "resourcesGuide",
+				"type": "Guide",
+				"description": "CLI guidance describing priorities, host reserves, waiting, cancellation and monitoring limits."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "guide.guide",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/guides/execution-runtimes/resources.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/guides/execution-runtimes/resources.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

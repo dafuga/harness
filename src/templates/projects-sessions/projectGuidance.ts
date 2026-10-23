@@ -1,13 +1,13 @@
 import {
-	harnessNamingRules,
 	harnessModuleGroupRules,
+	harnessNamingRules,
 	harnessRuleLimits,
 	harnessRuleSummaries
 } from '../../rules/explorer-ui/catalog';
 import { bugRepairPolicy } from '../../utils/development-tooling/bugRepairPolicy';
 
 export function agentRules(projectType: string): string {
-	return `# AGENTS.md\n\nThis is a Harness ${projectType}. Treat Harness as the operating contract for every code change in this project.\n\n## Required Harness Workflow\n\n- Read this file and the \`.codex/skills/harness/SKILL.md\` skill before changing code.\n- Use Harness generators for supported code shapes instead of hand-rolling new structure.\n- Ask \`harness info <topic>\` before adding unfamiliar code or choosing a scaffold shape.\n- For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n- Add or update a feature spec before implementation.\n- Keep files small, focused, and aligned with \`harness.audit.json\` limits.\n- Run \`bun run check\` before handing work back; it includes formatting, type checks, lint, tests, build, and \`bun run audit\`.\n\n## Clean Code Review\n\n- Use \`harness info clean-code\` for optional Jev reviews.\n- Preview with \`harness audit . --clean-code --dry-run\`; reviews remain disabled until enabled.\n- Configure a project-owned credential and assess advisory results before enabling the gate.\n- Keep uncertain judgments visible and never call incomplete reviews clean.\n\n${regressionLoopRules()}\n${namingRules()}\n${screenshotRules()}\n## Code Rules\n\n${harnessRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${harnessRuleLimits.maxFileLines}, functions ${harnessRuleLimits.maxFunctionLines}, classes ${harnessRuleLimits.maxClassLines}, methods ${harnessRuleLimits.maxMethodLines}, nesting ${harnessRuleLimits.maxNestingDepth}.\n`;
+	return `# AGENTS.md\n\nThis is a Harness ${projectType}. Treat Harness as the operating contract for every code change in this project.\n\n## Required Harness Workflow\n\n- Read this file and the \`.codex/skills/harness/SKILL.md\` skill before changing code.\n- Use Harness generators for supported code shapes instead of hand-rolling new structure.\n- Ask \`harness info <topic>\` before adding unfamiliar code or choosing a scaffold shape.\n- For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n- Add or update a feature spec before implementation.\n- Keep files small, focused, and aligned with \`harness.audit.json\` limits.\n- Run \`bun run check\` before handing work back; it includes formatting, type checks, lint, tests, build, and \`bun run audit\`.\n\n${machineResourceRules()}\n## Clean Code Review\n\n- Use \`harness info clean-code\` for optional Jev reviews.\n- Preview with \`harness audit . --clean-code --dry-run\`; reviews remain disabled until enabled.\n- Configure a project-owned credential and assess advisory results before enabling the gate.\n- Keep uncertain judgments visible and never call incomplete reviews clean.\n\n${regressionLoopRules()}\n${namingRules()}\n${screenshotRules()}\n## Code Rules\n\n${harnessRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${harnessRuleLimits.maxFileLines}, functions ${harnessRuleLimits.maxFunctionLines}, classes ${harnessRuleLimits.maxClassLines}, methods ${harnessRuleLimits.maxMethodLines}, nesting ${harnessRuleLimits.maxNestingDepth}.\n`;
 }
 
 export function skillRules(projectType: string): string {
@@ -80,4 +80,16 @@ function namingRules(): string {
 	]
 		.map((rule) => `- ${rule}`)
 		.join('\n')}\n`;
+}
+
+function machineResourceRules(): string {
+	return [
+		'## Machine Resources',
+		'',
+		'- Run coding tools through `harness resources run --priority coding --cpus auto --memory-mib auto -- <command>`.',
+		'- Queue agent-needed tests with `--priority agent-test`; use `--priority environment` for background checks.',
+		'- Use `harness resources status --json` before heavy work. Keep 10% CPU and max(10% RAM, 2 GiB) free.',
+		'- Finish current tests under pressure and hold subsequent work; never suspend unrelated processes.',
+		''
+	].join('\n');
 }

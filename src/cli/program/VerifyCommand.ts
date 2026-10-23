@@ -15,6 +15,7 @@ export function registerVerifyCommand(program: Command): void {
 		.description('Verify an exact commit in a clean snapshot and gate on its record.');
 	verify
 		.command('run')
+		.option('--priority <kind>', 'agent-test, coding or environment; default environment.')
 		.option(
 			'--commit <revision>',
 			'Commit to verify; uncommitted changes are never included.',
