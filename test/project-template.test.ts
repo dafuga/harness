@@ -1,52 +1,62 @@
+import { measureWorkload } from './support/measureWorkload';
 import { expect, test } from 'vitest';
 import { projectFiles } from '../src/templates/project';
 import { format, type Options } from 'prettier';
 
-test('app projects include SvelteKit and specification files', () => {
-	const files = projectFiles({ kind: 'app', name: 'demo-app' });
-	const paths = files.map((file) => file.path);
-	const packageJson = JSON.parse(
-		files.find((file) => file.path === 'package.json')?.contents ?? '{}'
-	);
-
-	expect(paths).toContain('svelte.config.js');
-	expect(paths).toContain('playwright.config.ts');
-	expect(paths).toContain('eslint.config.js');
-	expect(paths).toContain('eslint.harness-rules.js');
-	expect(paths).toContain('harness.audit.json');
-	expect(paths).toContain('.prettierrc');
-	expect(paths).toContain('.prettierignore');
-	expect(paths).toContain('scripts/harness-audit.ts');
-	expect(paths).toContain('src/app.html');
-	expect(paths).toContain('specification/README.md');
-	expect(paths).toContain('.codex/skills/harness/SKILL.md');
-	expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
-	expect(fileContents(files, 'AGENTS.md')).toContain('bun run check');
-	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
-		'Use this skill whenever'
-	);
-	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
-		'harness info scaffolds --json'
-	);
-	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
-		expect(fileContents(files, path)).toContain('Callable usage examples');
-		expect(fileContents(files, path), 'Behavior-focused example guidance').toContain(
-			'one representative example per distinct behavior'
+test('app projects include SvelteKit and specification files', () =>
+	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
+		const files = projectFiles({ kind: 'app', name: 'demo-app' });
+		const paths = files.map((file) => file.path);
+		const packageJson = JSON.parse(fileContents(files, 'package.json'));
+		expect(paths).toContain('svelte.config.js');
+		expect(paths).toContain('playwright.config.ts');
+		expect(paths).toContain('eslint.config.js');
+		expect(paths).toContain('eslint.harness-rules.js');
+		expect(paths).toContain('harness.audit.json');
+		expect(paths).toContain('.prettierrc');
+		expect(paths).toContain('.prettierignore');
+		expect(paths).toContain('scripts/harness-audit.ts');
+		expect(paths).toContain('src/app.html');
+		expect(paths).toContain('specification/README.md');
+		expect(paths).toContain('.codex/skills/harness/SKILL.md');
+		expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
+		expect(fileContents(files, 'AGENTS.md')).toContain('bun run check');
+		expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
+			'Use this skill whenever'
 		);
-		expect(fileContents(files, path)).toContain('descriptive behavior titles');
-	}
-	expect(auditConfig(files).limits.maxMethodLines).toBe(35);
-	expect(packageJson.harness.kind).toBe('app');
-	expect(packageJson.scripts['test:e2e']).toBe('playwright test');
-	expect(packageJson.scripts.audit).toContain('harness-audit');
-	expect(packageJson.scripts.check).toContain('format:check');
-	expect(packageJson.scripts.check).toContain('audit');
-	expect(packageJson.scripts['format:check']).toContain('prettier --check');
-	expect(packageJson.scripts.lint).toContain('eslint');
-	expect(packageJson.scripts.typecheck).toContain('svelte-check');
-	expect(packageJson.devDependencies.eslint).toBeDefined();
-	expect(packageJson.devDependencies.prettier).toBeDefined();
-});
+		expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
+			'harness info scaffolds --json'
+		);
+		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+			expect(fileContents(files, path)).toContain('Callable usage examples');
+			expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
+			expect(fileContents(files, path)).toContain(
+				'reusable visual frames with a child-content slot'
+			);
+			expect(fileContents(files, path)).toContain('Child content');
+			expect(fileContents(files, path)).toContain(
+				'Full-frame previews own their content boundaries'
+			);
+			expect(fileContents(files, path), 'Behavior-focused example guidance').toContain(
+				'one representative example per distinct behavior'
+			);
+			expect(fileContents(files, path)).toContain('descriptive behavior titles');
+			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
+			expect(fileContents(files, path)).toContain('selected callable implementation');
+		}
+		expectRenameGuidance(files);
+		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
+		expect(packageJson.harness.kind).toBe('app');
+		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
+		expect(packageJson.scripts.audit).toContain('harness-audit');
+		expect(packageJson.scripts.check).toContain('format:check');
+		expect(packageJson.scripts.check).toContain('audit');
+		expect(packageJson.scripts['format:check']).toContain('prettier --check');
+		expect(packageJson.scripts.lint).toContain('eslint');
+		expect(packageJson.scripts.typecheck).toContain('svelte-check');
+		expect(packageJson.devDependencies.eslint).toBeDefined();
+		expect(packageJson.devDependencies.prettier).toBeDefined();
+	}));
 
 test('library projects include Bun TypeScript test structure', () => {
 	const files = projectFiles({ kind: 'lib', name: 'demo-lib' });
@@ -74,6 +84,7 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
 		expect(fileContents(files, path)).toContain('instantiated classes');
 	}
+	expectRenameGuidance(files);
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -97,6 +108,16 @@ test.each(['app', 'lib'] as const)(
 		}
 	}
 );
+
+function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain('canonical and compatibility titles and links');
+		expect(fileContents(files, path)).toContain(
+			'affected downstream consumer tests alongside their typechecks'
+		);
+		expect(fileContents(files, path)).toContain('affected package lint and audit');
+	}
+}
 
 function fileContents(files: ReturnType<typeof projectFiles>, path: string): string {
 	return files.find((file) => file.path === path)?.contents ?? '';

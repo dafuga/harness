@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../test/support/measureWorkload';
 import { readdirSync, readFileSync } from 'node:fs';
 import { afterEach, test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
@@ -6,7 +7,7 @@ import { explorerCategory, explorerRole } from '../../reports/src/utils/explorer
 import { CatalogService } from '../src/services/catalog-service/CatalogService';
 import { catalogUnit, planCatalog } from '../src/utils/catalogUnit';
 import { manifest } from './catalog-listing-manifests';
-import { imagelessDesign, listingProject, pagePlan } from './catalog-listing-fixture';
+import { imagelessDesign, listingProject, pagePlan, previewReads } from './catalog-listing-fixture';
 import {
 	analytics,
 	charted,
@@ -36,48 +37,77 @@ const ids = (entities: { id: string }[]) => entities.map((entity) => entity.id).
 const kept = idsOf([...ordinary, twin]);
 const redirects = ['analytics', 'harness-analytics', 'harness-reports', 'harness-reports-id'];
 
-test('implemented pages select their declared screenshot rather than an absent planning image', async () => {
-	const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
-	const unit = {
-		...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
-		preview
-	} as ComponentManifest;
-	expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
-	const service = {
-		...unit,
-		kind: 'service',
-		id: 'service.payment',
-		title: 'Take payments',
-		owns: {
-			source: ['src/lib/checkout/PaymentService.ts'],
-			symbols: ['PaymentOptions', 'PaymentService']
+test('implemented pages select their declared screenshot rather than an absent planning image', () =>
+	measureWorkload('desktop.function.catalog-unit', 'layout-catalog-behavior', async () => {
+		const preview = { scenario: 'orders', state: 'loaded', viewport: 'desktop' };
+		const unit = {
+			...manifest(['page.orders', 'Orders', 'Shows orders.', ['src/routes/orders/+page.svelte']]),
+			preview
+		} as ComponentManifest;
+		expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
+		expectVisualPreviews(unit);
+		expectPreviewReads(unit, preview);
+		const service = {
+			...unit,
+			kind: 'service',
+			id: 'service.payment',
+			title: 'Take payments',
+			owns: {
+				source: ['src/lib/checkout/PaymentService.ts'],
+				symbols: ['PaymentOptions', 'PaymentService']
+			}
+		};
+		expect(catalogUnit(service, new Set())?.title).toBe('PaymentService');
+		const source = { units: async () => [unit], changed: async () => new Set<string>() };
+		for (const versions of [[], [imagelessDesign]]) {
+			const plan = pagePlan(unit, versions);
+			const planning = { plans: async () => [plan] };
+			const catalog = new CatalogService(source as never, planning as never);
+			expect((await catalog.list('HEAD'))[0]).toMatchObject({
+				planned: false,
+				hasPlan: true,
+				thumbnail: { source: 'recorded', ...preview }
+			});
+			// A plan with no implementation still has no screenshot to display.
+			expect(planCatalog(plan, null, new Set()).thumbnail).toBeNull();
 		}
-	};
-	expect(catalogUnit(service, new Set())?.title).toBe('PaymentService');
-	const source = { units: async () => [unit], changed: async () => new Set<string>() };
-	for (const versions of [[], [imagelessDesign]]) {
-		const plan = pagePlan(unit, versions);
-		const planning = { plans: async () => [plan] };
-		const catalog = new CatalogService(source as never, planning as never);
-		expect((await catalog.list('HEAD'))[0]).toMatchObject({
-			planned: false,
-			hasPlan: true,
-			thumbnail: { source: 'recorded', ...preview }
+		const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 100 };
+		const designed = pagePlan(unit, [{ ...imagelessDesign, images: [image] }]);
+		expect(planCatalog(designed, catalogUnit(unit, new Set()), new Set()).thumbnail).toEqual({
+			version: 'v001',
+			sha256: image.sha256,
+			state: image.state,
+			viewport: image.viewport
 		});
-		// A plan with no implementation still has no screenshot to display.
-		expect(planCatalog(plan, null, new Set()).thumbnail).toBeNull();
+		// A backend cannot make a headless unit reserve room for a design or screenshot.
+		for (const kind of ['function', 'service', 'config'])
+			expect(catalogUnit({ ...unit, kind }, new Set())?.thumbnail).toBeNull();
+	}));
+
+function expectVisualPreviews(unit: ComponentManifest): void {
+	for (const kind of ['layout', 'component']) {
+		const visual = { ...unit, kind, owns: { source: ['src/Frame.svelte'], symbols: ['Frame'] } };
+		expect(catalogUnit(visual, new Set())?.thumbnail).toEqual({
+			source: 'recorded',
+			...unit.preview
+		});
+		expect(catalogUnit({ ...visual, preview: undefined }, new Set())?.thumbnail).toEqual(
+			kind === 'layout' ? { source: 'recorded' } : null
+		);
 	}
-	const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 100 };
-	const designed = pagePlan(unit, [{ ...imagelessDesign, images: [image] }]);
-	expect(planCatalog(designed, catalogUnit(unit, new Set()), new Set()).thumbnail).toEqual({
-		version: 'v001',
-		sha256: image.sha256,
-		state: image.state,
-		viewport: image.viewport
-	});
-	// A backend cannot make a headless unit reserve room for a design or screenshot.
-	expect(catalogUnit({ ...unit, kind: 'function' }, new Set())?.thumbnail).toBeNull();
-});
+	const options = { ...unit, kind: 'layout', owns: { source: ['src/+layout.ts'], symbols: [] } };
+	expect(catalogUnit(options, new Set())?.thumbnail).toBeNull();
+}
+
+function expectPreviewReads(
+	unit: ComponentManifest,
+	declaredPreview: NonNullable<ComponentManifest['preview']>
+): void {
+	const { reads, preview, observed } = previewReads(unit, declaredPreview);
+	const entry = catalogUnit(observed, new Set());
+	expect(reads).toEqual(['preview', 'summary']);
+	expect(entry?.thumbnail).toEqual({ source: 'recorded', ...preview });
+}
 
 test('the tip lists every ordinary entity and no page manifest that only loads for an address', async () => {
 	const f = await project();

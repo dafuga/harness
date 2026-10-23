@@ -11,7 +11,7 @@ import { unitLinks } from '../../src/components/reference-text/unitLinks';
 const [tip, earlier, next] = ['a'.repeat(40), 'c'.repeat(40), 'd'.repeat(40)];
 const unit = (id: string, category: CatalogEntity['category'], title: string) =>
 	({ id, category, kind: category.slice(0, -1), title, planned: false }) as CatalogEntity;
-const frame = unit('app.shell.order-frame', 'shells', 'Order frame');
+const frame = unit('app.shell.order-frame', 'layouts', 'Order frame');
 const time = unit('app.function.format-time', 'functions', 'Format time');
 function show(shown: Workspace, project: string, commit: string, entities: CatalogEntity[]) {
 	shown.snapshot = {
@@ -28,7 +28,7 @@ const at = (rest: string) => `/projects/local-alpha/harness/branch/feat%2Falpha/
 
 test('a shell leads under Shells and a pinned commit is kept in the address', () => {
 	expect(unitLinks(alpha())('app.shell.order-frame')).toEqual({
-		...{ to: at('shells/app.shell.order-frame'), name: 'Order frame', category: 'shells' }
+		...{ to: at('layouts/app.shell.order-frame'), name: 'Order frame', category: 'layouts' }
 	});
 	expect(unitLinks(alpha(earlier))('app.function.format-time')?.to).toBe(
 		at(`commit/${earlier}/functions/app.function.format-time`)
@@ -41,7 +41,7 @@ test('a resolver made for one project and commit resolves nothing once another i
 	show(shown, 'local-beta', tip, [frame, time]);
 	expect(link('app.shell.order-frame')).toBeNull();
 	expect(unitLinks(shown)('app.shell.order-frame')?.to).toBe(
-		'/projects/local-beta/harness/branch/feat%2Falpha/shells/app.shell.order-frame'
+		'/projects/local-beta/harness/branch/feat%2Falpha/layouts/app.shell.order-frame'
 	);
 	const moved = alpha(earlier);
 	const before = unitLinks(moved);

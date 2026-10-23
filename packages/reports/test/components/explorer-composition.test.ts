@@ -65,7 +65,10 @@ const page = (category: string, view: string) =>
 test('the host of a screen names no renderer, not even to read the type of its props', () => {
 	const host = `${components}/explorer-ui/HarnessConsole.svelte`;
 	// With type-only imports counted too: a renderer named for its props would still be an edge.
-	expect(mounts(host, false)).toEqual(['HarnessHeader', 'LoadingState']);
+	expect(mounts(host, false)).toEqual(['ExplorerLayout', 'LoadingState']);
+	expect(mounts(`${components}/explorer-ui/ExplorerLayout.svelte`, false)).toEqual([
+		'HarnessHeader'
+	]);
 	expect(mounts(`${components}/HarnessScreen.svelte`, false)).toEqual(['HarnessConsole']);
 	expect(mounts(`${workspaceRoot}/src/models/ExplorerScreen.types.ts`, false)).toEqual([]);
 	expect(drawn(`${components}/HarnessScreen.svelte`)).not.toContain('ExplorerContent');
@@ -85,6 +88,14 @@ test('every page mounts the host with one screen of its own, and none draws ever
 	for (const category of explorerCategories) {
 		for (const [screen, view] of Object.entries(screens)) {
 			const mounted = mounts(page(category, view), false);
+			if (screen !== 'catalog') {
+				const singular = category[0].toUpperCase() + category.slice(1, -1);
+				const suffix = screen === 'overview' ? '' : ` ${screen}`;
+				expect(
+					readFileSync(join(repo, page(category, view)), 'utf8'),
+					`Canonical route title: ${category} ${screen}`
+				).toContain(`title="${singular}${suffix}"`);
+			}
 			expect([category, screen, mounted.length, mounted.includes('HarnessScreen')]).toEqual([
 				category,
 				screen,

@@ -15,7 +15,19 @@ function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {
 	return {
 		...unit,
 		group,
-		owns: { ...unit.owns, source: [...new Set([...unit.owns.source, ...source])] },
+		...(unit.id === ids.filter ? textHelper(unit, commit) : {}),
+		owns: {
+			...unit.owns,
+			source: [
+				...new Set([
+					...unit.owns.source,
+					...source,
+					...(unit.id === ids.filter
+						? ['src/helpers/orders/filterOrders.ts', 'src/helpers/strings/plural.ts']
+						: [])
+				])
+			]
+		},
 		runtime: {
 			...unit.runtime,
 			targets: unit.runtime.targets.map((target) => ({ ...target, entry: source[0] }))
@@ -62,6 +74,39 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 					detail.commit
 				)
 			)
+		}
+	};
+}
+
+/** A text export keeps its own folder even when its owning module serves orders. */
+function textHelper(unit: HarnessUnit, commit: string) {
+	const group = { id: 'strings', title: commit === 'a'.repeat(40) ? 'Words' : 'Strings' };
+	return {
+		helpers: [
+			...(unit.helpers ?? []).map((helper) => ({
+				...helper,
+				source: 'src/helpers/orders/filterOrders.ts'
+			})),
+			{
+				name: 'plural',
+				source: 'src/helpers/strings/plural.ts',
+				pure: true,
+				group,
+				inputs: [
+					{ name: 'plural.count', type: 'number' },
+					{ name: 'plural.word', type: 'string' }
+				],
+				consumers: [{ unit: ids.list }, { unit: ids.card }]
+			}
+		],
+		contract: {
+			...unit.contract,
+			inputs: [
+				...unit.contract.inputs,
+				{ name: 'plural.count', type: 'number', examples: [2] },
+				{ name: 'plural.word', type: 'string', examples: ['item'] }
+			],
+			outputs: [...unit.contract.outputs, { name: 'plural', type: 'string', examples: ['2 items'] }]
 		}
 	};
 }

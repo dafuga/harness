@@ -63,7 +63,7 @@
 			{
 				"name": "catalogUnit",
 				"type": "CatalogEntity | null",
-				"description": "A catalog entry, or null for an inactive or uncategorized unit. New entries start with unknown verification, no plan, no design versions and zero threads. Pages receive a recorded-thumbnail request even without an explicit preview; components receive one only with a preview; other categories have no thumbnail."
+				"description": "A catalog entry, or null for an inactive or uncategorized unit. New entries start with unknown verification, no plan, no design versions and zero threads. Pages and visual layouts receive a recorded-thumbnail request even without an explicit preview; components receive one only with a preview; nonvisual categories have no thumbnail."
 			},
 			{
 				"name": "catalogListed",
@@ -101,6 +101,11 @@
 		},
 		{
 			"unit": "module.contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-category",
 			"via": "import",
 			"origin": "derived"
 		},

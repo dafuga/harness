@@ -24,7 +24,7 @@ export const defaultDesignCount = 3;
 
 /** Pages, shells and components are planned as images; every other kind as notes and cases. */
 export function visualCategory(category: string): boolean {
-	return ['pages', 'shells', 'components'].includes(category);
+	return ['pages', 'layouts', 'components'].includes(category);
 }
 
 export { composeModes } from '../../components/explorer-ui/thread-panel/composeModes';

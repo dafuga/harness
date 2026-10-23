@@ -1,9 +1,10 @@
-import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
+import type { ExplorerEntity, ExplorerRelations } from '../../models/explorer-ui/Explorer.types';
 import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
 import { type ContractRow } from './entityContract';
 import { type EntityMeasure } from './entityMeasure';
 import { entityReasons, type EntityReasons } from './entityReasons';
+import { explorerEntity } from './explorerEntities';
 
 export interface EntityShown {
 	contract: ContractRow[];
@@ -40,8 +41,12 @@ export function helperEntity(
 		purpose: output?.description ?? `Helper defined in ${unit.title}.`,
 		unit: {
 			...unit,
+			...(helper.group ? { group: helper.group } : {}),
 			title: helperName,
 			helpers: [helper],
+			...(unit.sourceFiles
+				? { sourceFiles: unit.sourceFiles.filter((file) => file.path === helper.source) }
+				: {}),
 			owns: { source: [helper.source], symbols: [helperName] },
 			contract: helperFields(unit, helperName),
 			documentation: helperDocumentation(unit, helper)
@@ -67,5 +72,40 @@ function helperFields(unit: HarnessUnit, helperName: string): HarnessUnit['contr
 			(field) => field.name === helperName || field.name.startsWith(`${helperName}.`)
 		),
 		errors: unit.contract.errors.filter((field) => only || field.name.startsWith(`${helperName}.`))
+	};
+}
+
+/** A selected helper uses only callees attributed to that named function at this revision. */
+export function helperRelations(
+	host: Pick<ExplorerScreenProps, 'head' | 'route'>,
+	entity: ExplorerEntity,
+	relations: ExplorerRelations
+): ExplorerRelations {
+	const caller = host.route.helper;
+	if (!caller || entity.category !== 'functions') return relations;
+	const functions = host.head.registry.units.flatMap((unit) => {
+		if (unit.status !== 'active') return [];
+		const helpers =
+			unit.helpers?.filter(
+				(helper) =>
+					helper.pure === true &&
+					!(unit.id === entity.id && helper.name === caller) &&
+					helper.consumers?.some((user) => user.unit === entity.id && user.symbol === caller)
+			) ?? [];
+		if (!helpers.length) return [];
+		const target = explorerEntity(host.head, unit, true);
+		if (!target || target.category !== 'functions') return [];
+		const narrowed = { ...target, unit: { ...unit, helpers } };
+		return [helpers.length === 1 ? helperEntity(target, helpers[0].name)! : narrowed];
+	});
+	return {
+		...relations,
+		layouts: [],
+		components: [],
+		functions,
+		services: [],
+		configs: [],
+		models: [],
+		support: []
 	};
 }

@@ -16,7 +16,7 @@ const context = {
 		contract: { inputs: [], outputs: [], errors: [] },
 		sources: [],
 		relationships: [
-			{ id: 'app.shell.order-frame', title: 'Order frame', category: 'shells', direction: 'uses' },
+			{ id: 'app.shell.order-frame', title: 'Order frame', category: 'layouts', direction: 'uses' },
 			{
 				id: 'app.function.format-time',
 				title: 'Format time',
@@ -26,7 +26,7 @@ const context = {
 			{
 				id: 'app.shell.order-frame',
 				title: 'Order frame',
-				category: 'shells',
+				category: 'layouts',
 				direction: 'used-by'
 			}
 		]

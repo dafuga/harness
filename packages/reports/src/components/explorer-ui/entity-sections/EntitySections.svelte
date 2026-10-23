@@ -5,6 +5,7 @@
 	import type { EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { entityMetricComparison } from '../../../utils/explorer-ui/entityMetricComparison';
 	import { entityShown } from './entityShown';
+	import { helperRelations } from '../../../utils/explorer-ui/entityShown';
 	import EntityContract from '../entity-contract/EntityContract.svelte';
 	import EntitySource from '../EntitySource.svelte';
 	import EntityOverview from '../EntityOverview.svelte';
@@ -29,14 +30,19 @@
 	let comparison = $derived(
 		entityMetricComparison(host, entity, summary.measure, host.route.helper)
 	);
+	let relations = $derived(helperRelations(host, entity, host.lens.relations(entity.id)));
+	let usesAvailable = $derived(
+		!host.route.helper || entity.category !== 'functions' || relations.functions.length > 0
+	);
 	const said = { 'used-in': 'used in', uses: 'uses' } as const;
 	let direction = $derived(
-		(host.route.tab === 'used-in' && entity.category !== 'pages') || host.route.tab === 'uses'
+		(host.route.tab === 'used-in' && entity.category !== 'pages') ||
+			(host.route.tab === 'uses' && usesAvailable)
 			? host.route.tab
 			: null
 	);
 	let removed = $derived(entity.change === 'removed');
-	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	let visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
 	// Functions and services show their authored uses; their former Tests address opens them too.
 	let examples = $derived(
 		['functions', 'services'].includes(entity.category) &&
@@ -50,23 +56,11 @@
 	<!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
 	{#if entity.category === 'pages' && (host.route.tab === 'models' || host.route.tab === 'contract')}
 		<div role="tabpanel" aria-label={`${entity.name} models`}>
-			<EntityRelations
-				{host}
-				relations={host.lens.relations(entity.id)}
-				{nav}
-				show="models"
-				{removed}
-			/>
+			<EntityRelations {host} {relations} {nav} show="models" {removed} />
 		</div>
 	{:else if direction}
 		<div role="tabpanel" aria-label={`${entity.name} ${said[direction]}`}>
-			<EntityRelations
-				{host}
-				relations={host.lens.relations(entity.id)}
-				{nav}
-				show={direction}
-				{removed}
-			/>
+			<EntityRelations {host} {relations} {nav} show={direction} {removed} />
 		</div>
 	{:else if examples}
 		<div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">

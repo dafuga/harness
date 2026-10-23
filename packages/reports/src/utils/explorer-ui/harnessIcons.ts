@@ -22,7 +22,7 @@ export const harnessIcons = {
 	pages:
 		'M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5',
 	// A frame: the bar across the top, a side and the content beside it.
-	shells: 'M3 4h18v16H3zM3 9h18M8 9v11',
+	layouts: 'M3 4h18v16H3zM3 9h18M8 9v11',
 	components: cube,
 	styles:
 		'M12 3a9 9 0 1 0 0 18h1.2a2.2 2.2 0 0 0 1.6-3.7c-.8-.8-.2-2.3 1-2.3H18a3 3 0 0 0 3-3a9 9 0 0 0-9-9zM7.5 12.5h.1M10 8h.1M14 7.5h.1M17 10h.1',
@@ -111,7 +111,7 @@ export const solidIcons: ReadonlySet<HarnessIconName> = new Set(['passed', 'fail
 /** The icon each category has in the bar, in the lists and at the head of an entity. */
 export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	pages: 'pages',
-	shells: 'shells',
+	layouts: 'layouts',
 	components: 'components',
 	functions: 'functions',
 	configs: 'configs',

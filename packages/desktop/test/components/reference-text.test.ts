@@ -11,7 +11,7 @@ import type { CatalogEntity, ProjectSnapshot } from '../../src/models/Desktop.ty
  */
 const tip = 'a'.repeat(40);
 const frame = {
-	...{ id: 'app.shell.order-frame', category: 'shells', kind: 'shell', title: 'Order frame' },
+	...{ id: 'app.shell.order-frame', category: 'layouts', kind: 'shell', title: 'Order frame' },
 	planned: false
 } as CatalogEntity;
 function drawn(text: string, entity: CatalogEntity | null = null) {
@@ -31,7 +31,7 @@ function drawn(text: string, entity: CatalogEntity | null = null) {
 test('a reference is one link holding a hidden icon and the unit name, and nothing wraps the text', () => {
 	const body = drawn('In [[unit:app.shell.order-frame]], now.');
 	expect(body).toMatch(
-		/^In <a class="unit-reference[^"]*" href="\/projects\/local-alpha\/harness\/branch\/main\/shells\/app\.shell\.order-frame"[^>]*><svg[^>]*aria-hidden="true"[^>]*>.*?<\/svg>Order frame<\/a>, now\.$/s
+		/^In <a class="unit-reference[^"]*" href="\/projects\/local-alpha\/harness\/branch\/main\/layouts\/app\.shell\.order-frame"[^>]*><svg[^>]*aria-hidden="true"[^>]*>.*?<\/svg>Order frame<\/a>, now\.$/s
 	);
 });
 

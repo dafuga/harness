@@ -3,9 +3,14 @@
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import { explorerEntity } from '../../utils/explorer-ui/explorerEntities';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
-	import { entityLens, shortCommit, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import { screenOptions } from '../../utils/explorer-ui/entityScreens';
-	import { entityChanged, helperEntity } from '../../utils/explorer-ui/entityShown';
+	import {
+		entityChanged,
+		helperEntity,
+		helperRelations
+	} from '../../utils/explorer-ui/entityShown';
 	import EntityLink from './EntityLink.svelte';
 	import EntityHeader from './EntityHeader.svelte';
 	import EntityMissing from './EntityMissing.svelte';
@@ -46,6 +51,12 @@
 		};
 	});
 	let entity = $derived(helperEntity(moduleEntity, host.route.helper));
+	let usesAvailable = $derived(
+		!entity ||
+			!host.route.helper ||
+			entity.category !== 'functions' ||
+			helperRelations(host, entity, host.lens.relations(entity.id)).functions.length > 0
+	);
 	let choosing = $derived(
 		moduleEntity?.category === 'functions' &&
 			!host.route.helper &&
@@ -98,12 +109,7 @@
 					</ul>
 				</section>
 			{:else if entity}
-				<EntityHeader
-					{entity}
-					{owner}
-					{nav}
-					preview={screens}
-				/>
+				<EntityHeader {entity} {usesAvailable} {owner} {nav} preview={screens} />
 				{@render screen(entity, nav)}
 			{:else}
 				<EntityMissing

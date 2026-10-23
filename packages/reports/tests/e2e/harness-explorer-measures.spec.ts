@@ -55,7 +55,7 @@ for (const viewport of viewports)
 		);
 		for (const category of [
 			'pages',
-			'shells',
+			'layouts',
 			'components',
 			'functions',
 			'configs',

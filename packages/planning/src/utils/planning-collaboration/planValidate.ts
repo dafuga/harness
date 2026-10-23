@@ -8,6 +8,7 @@ import { fail, hash, planData } from './planData';
 export const categories = {
 	page: 'pages',
 	shell: 'shells',
+	layout: 'layouts',
 	component: 'components',
 	function: 'functions',
 	config: 'configs',

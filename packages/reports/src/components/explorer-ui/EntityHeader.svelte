@@ -1,9 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type {
-		ExplorerEntity,
-		ExplorerLocation
-	} from '../../models/explorer-ui/Explorer.types';
+	import type { ExplorerEntity, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import { explorerCategory } from '../../utils/explorer-ui/explorerCategory';
 	import { entityLabels, entityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
@@ -15,7 +12,8 @@
 		entity,
 		owner,
 		nav,
-		preview
+		preview,
+		usesAvailable = true
 	}: {
 		entity: ExplorerEntity;
 		/** The sole owner of a private function, when the revision records one. */
@@ -23,13 +21,15 @@
 		nav: EntityNav;
 		/** What stays between the identity and the tabs on every tab: the screenshots of a component. */
 		preview?: Snippet;
+		/** A selected helper exposes Uses only when a helper call is recorded. */
+		usesAvailable?: boolean;
 	} = $props();
 	type Place = Pick<ExplorerLocation, 'section' | 'tab'>;
 	let label = $derived(entityLabels[entity.category]);
 	let privateFunction = $derived(
 		entity.category === 'functions' && explorerCategory(entity.unit) === null
 	);
-	let visual = $derived(['pages', 'components', 'shells'].includes(entity.category));
+	let visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
 	let evidenceTab: 'states' | 'examples' | 'tests' = $derived.by(() => {
 		if (visual) return 'states';
 		// Functions and services are shown by their authored uses; other kinds by their tests.
@@ -57,7 +57,8 @@
 			.filter(
 				(label) =>
 					(entity.category !== 'pages' || label !== 'Used In') &&
-					(label !== 'Audio' || entity.category === 'components')
+					(label !== 'Audio' || entity.category === 'components') &&
+					(label !== 'Uses' || usesAvailable)
 			)
 			.map((label) => {
 				const title =

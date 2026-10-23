@@ -3,14 +3,16 @@ import { explorerName } from '../../../../reports/src/utils/explorerName';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { CatalogEntity, DesignVersion } from '../../models/development-tooling/Desktop.types';
 import type { PlanRecord } from '../../models/planning-collaboration/PlanningPort.types';
+import { explorerCategory } from '../../../../reports/src/utils/explorerCategory';
 import { categoryOf } from '../development-tooling/categoryOf';
 function ownsChange(paths: string[], changed: Set<string>) {
 	return paths.some((p) => [...changed].some((c) => c === p || c.startsWith(p + '/')));
 }
 export function catalogUnit(unit: ComponentManifest, changed: Set<string>): CatalogEntity | null {
-	const category = categoryOf(unit.kind);
+	const classified = unit.kind === 'layout' ? explorerCategory(unit) : categoryOf(unit.kind);
+	const category = classified === 'platforms' ? null : classified;
 	if (!category || unit.status !== 'active') return null;
-	const preview = category === 'pages' || category === 'components' ? unit.preview : undefined;
+	const preview = catalogPreview(unit, category);
 	return {
 		...(unit.helperContracts?.length ? { helperContracts: unit.helperContracts } : {}),
 		id: unit.id,
@@ -27,8 +29,21 @@ export function catalogUnit(unit: ComponentManifest, changed: Set<string>): Cata
 		latestVersion: null,
 		approvedVersion: null,
 		threadCount: 0,
-		thumbnail: preview || category === 'pages' ? { source: 'recorded', ...preview } : null
+		thumbnail: catalogThumbnail(preview, category)
 	};
+}
+function catalogPreview(unit: ComponentManifest, category: CatalogEntity['category']) {
+	return category === 'pages' || category === 'layouts' || category === 'components'
+		? unit.preview
+		: undefined;
+}
+function catalogThumbnail(
+	preview: ComponentManifest['preview'],
+	category: CatalogEntity['category']
+) {
+	return preview || category === 'pages' || category === 'layouts'
+		? { source: 'recorded' as const, ...preview }
+		: null;
 }
 /** The route files that load for an address and render nothing of it. */
 const loader = /(^|\/)\+page(\.server)?\.[jt]s$/;

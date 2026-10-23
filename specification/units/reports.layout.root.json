@@ -2,26 +2,28 @@
 	"schemaVersion": 1,
 	"id": "reports.layout.root",
 	"kind": "layout",
-	"title": "/",
-	"responsibility": "Owns the / route layout.",
-	"responsibilityOrigin": "derived",
+	"title": "Reports root layout",
+	"responsibility": "Applies report styles and renders the current page with the explorer chat where available.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/routes/+layout.svelte"],
 		"symbols": ["+layout"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "+layout.children",
-				"type": "import('svelte').Snippet"
+				"type": "import('svelte').Snippet",
+				"description": "Page content rendered through the layout children snippet."
 			}
 		],
 		"outputs": [
 			{
 				"name": "+layout",
-				"type": "markup"
+				"type": "markup",
+				"description": "Rendered child page with the shared styles and session context."
 			}
 		],
 		"errors": []
