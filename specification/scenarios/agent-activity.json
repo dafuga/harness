@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"id": "agent-activity",
+	"title": "Agent activity lifecycle",
+	"kind": "headless",
+	"units": ["service.agent-activity"],
+	"states": [
+		{
+			"id": "lifecycle",
+			"title": "Register, update, finish and list agents",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "lifecycle",
+			"kind": "integration",
+			"runner": "vitest",
+			"target": "test/activity-agents.e2e.test.ts"
+		}
+	],
+	"evidence": []
+}

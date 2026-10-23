@@ -53,6 +53,9 @@ async function assertSource(out: string, commit: string, expected: string, expec
 	expect(files, 'owned source is retained with the selected revision').toBeDefined();
 	const path = files?.find((item) => item.path === 'src/utils/slugify.ts')?.media;
 	expect(await readFile(join(out, path!), 'utf8')).toBe(expected);
+	expect(detail.registry.scenarios.map((scenario: { id: string }) => scenario.id)).toContain(
+		'slugify'
+	);
 	const tests = units.find((item) => item.id === 'function.slugify')?.testFiles;
 	expect(
 		tests?.map((file) => file.path),
