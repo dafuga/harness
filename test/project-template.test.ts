@@ -44,6 +44,7 @@ test('app projects include SvelteKit and specification files', () =>
 			);
 			expect(fileContents(files, path)).toContain('descriptive behavior titles');
 		}
+		expectRenameGuidance(files);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
@@ -83,6 +84,7 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
 		expect(fileContents(files, path)).toContain('instantiated classes');
 	}
+	expectRenameGuidance(files);
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -106,6 +108,16 @@ test.each(['app', 'lib'] as const)(
 		}
 	}
 );
+
+function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain('canonical and compatibility titles and links');
+		expect(fileContents(files, path)).toContain(
+			'affected downstream consumer tests alongside their typechecks'
+		);
+		expect(fileContents(files, path)).toContain('affected package lint and audit');
+	}
+}
 
 function fileContents(files: ReturnType<typeof projectFiles>, path: string): string {
 	return files.find((file) => file.path === path)?.contents ?? '';
