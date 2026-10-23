@@ -43,9 +43,10 @@ export class UnitIndexService {
 		const groups = new Map<string, Group>();
 		for (const file of index.files.values()) {
 			if (file.classification !== 'source' || !file.identity) continue;
-			const group = groups.get(file.identity.id) ?? { ...file.identity, files: [] };
+			const identity = companionIdentity(file, index);
+			const group = groups.get(identity.id) ?? { ...identity, files: [] };
 			group.files.push(file);
-			groups.set(file.identity.id, group);
+			groups.set(identity.id, group);
 		}
 		return [...groups.values()].sort((left, right) => (left.id < right.id ? -1 : 1));
 	}
@@ -124,6 +125,26 @@ export class UnitIndexService {
 			);
 		}
 	}
+}
+
+/** New companion files join their concrete sibling; explicit registry ownership still wins. */
+function companionIdentity(
+	file: SourceFile,
+	index: SourceIndex
+): NonNullable<SourceFile['identity']> {
+	if (!file.path.endsWith('.types.ts')) return file.identity!;
+	const base = file.path.slice(0, -'.types.ts'.length);
+	const candidates = [
+		base + '.ts',
+		base + '.tsx',
+		base + '.svelte',
+		base.replace(/\.module$/, '') + '.svelte'
+	];
+	const siblings = [...new Set(candidates)].flatMap((path) => {
+		const sibling = index.files.get(path);
+		return sibling?.classification === 'source' && sibling.identity ? [sibling.identity] : [];
+	});
+	return siblings.length === 1 ? siblings[0] : file.identity!;
 }
 
 /** These groups are fresh internal arrays; the caller's source map retains its order. */
