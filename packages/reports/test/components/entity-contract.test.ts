@@ -1,8 +1,9 @@
+import { callableUsesFixture } from '../entityPreviewCallables';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { content, words } from '../entityRender';
 import { record, revision } from '../entityFixture';
 import { commits, ids } from '../entityUnits';
-
 const route = { category: 'components' as const, entity: ids.list, tab: 'contract' as const };
 test('a component contract lists prop types and examples without an output section', () => {
 	for (const mode of ['current', 'commit'] as const) {
@@ -47,7 +48,6 @@ test('a component contract lists prop types and examples without an output secti
 		expect(body).not.toMatch(/src\/|\.svelte\b/);
 	}
 });
-
 test('legacy contract tables retain types and example controls for opaque fields', () => {
 	const head = revision(commits.tip, [record(commits.tip)]);
 	head.registry.units = head.registry.units.map((unit) =>
@@ -70,7 +70,6 @@ test('legacy contract tables retain types and example controls for opaque fields
 	expect(body).toContain('View example for Context');
 	expect(body).toContain('PrivateContext');
 });
-
 test('callable contracts preserve actual parameters and associate their returns', () => {
 	const head = revision(commits.tip, [record(commits.tip)]);
 	head.registry.units = head.registry.units.map((unit) =>
@@ -111,7 +110,6 @@ test('callable contracts preserve actual parameters and associate their returns'
 	expect(words(body)).not.toContain('No errors declared.');
 	expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
 });
-
 test('a selected callable page excludes sibling APIs and rejects missing symbols', () => {
 	const head = revision(commits.tip, []);
 	const unit = head.registry.units.find((item) => item.id === ids.filter)!;
@@ -165,4 +163,43 @@ test('a selected callable page excludes sibling APIs and rejects missing symbols
 		expect(legacy).toContain(`/helpers/second/in/${ids.filter}/contract`);
 		expect(legacy).not.toContain('aria-label="first contract"');
 	}
+});
+test('selected callable Uses exclude module dependencies and hide empty navigation', async () => {
+	const head = revision(commits.tip, []);
+	const unit = callableUsesFixture(head.registry.units.find((item) => item.id === ids.filter)!);
+	head.registry.units = head.registry.units.map((item) => (item.id === unit.id ? unit : item));
+	head.registry.units.push({
+		...unit,
+		id: 'app.function.external',
+		title: 'externalHelpers',
+		helpers: [
+			{
+				name: 'external',
+				source: 'external.ts',
+				inputs: [],
+				pure: true,
+				consumers: [{ unit: ids.filter, symbol: 'outer' }]
+			}
+		]
+	});
+	const uses = (helper: string) =>
+		content(
+			'current',
+			{ category: 'functions', entity: ids.filter, helper, tab: 'uses' },
+			{ head }
+		);
+	const outer = await measureWorkload(
+		'reports.function.entity-shown',
+		'selected-callable-uses',
+		() =>
+			measureWorkload('reports.function.entity-catalog', 'private-callable-card', () =>
+				uses('outer')
+			)
+	);
+	expect(words(outer)).toContain('inner()');
+	expect(words(uses('outer'))).toContain('external()');
+	expect(uses('outer')).not.toContain('aria-label="Configs uses"');
+	expect(uses('inner')).not.toContain('aria-label="inner uses"');
+	expect(words(uses('inner'))).not.toMatch(/\bUses\b/);
+	expect(words(uses('sibling'))).not.toMatch(/\bUses\b/);
 });

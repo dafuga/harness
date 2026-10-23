@@ -32,6 +32,11 @@
 				"name": "EntityHeader.owner",
 				"type": "ExplorerEntity | undefined",
 				"description": "Sole recorded consumer for a private function breadcrumb; absent when ownership is unknown or not unique."
+			},
+			{
+				"name": "EntityHeader.usesAvailable",
+				"type": "boolean | undefined",
+				"description": "Optional Uses visibility; false for a selected helper with no recorded helper callees."
 			}
 		],
 		"outputs": [
