@@ -24,6 +24,9 @@ const seen = {
 	mediaBase: '/media/'
 };
 export const explorerCases: PreviewCases = {
+	'reports.component.explorer-ui-config-value-tree': {
+		node: d.configRows.find((row) => row.name === 'orderSettings.steps')!.setting!.structure
+	},
 	'reports.component.explorer-ui-explorer-platforms': d.platformHost() as unknown as Record<
 		string,
 		unknown

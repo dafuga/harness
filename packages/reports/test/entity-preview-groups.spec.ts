@@ -3,7 +3,7 @@ import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
 import { configExpression, longConfigValue } from './entityConfigFixtures';
-import { reviewServiceFolders } from './entityPreviewFunctions';
+import { helperFolders, reviewServiceFolders } from './entityPreviewFunctions';
 import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
@@ -22,10 +22,25 @@ async function inspectConfigValues(page: Page, viewport: string, commit: string)
 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
 		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
 		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
-		await inspect.click();
+		expect(
+			await inspect.innerText(),
+			'value controls have icons without View value text'
+		).not.toContain('View value');
+		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
+		if (name === 'schema') await expect(row).toContainText('5 attributes');
+		await inspect.press('Enter');
 		const dialog = page.getByRole('dialog', { name: `orderSettings.${name} · Value`, exact: true });
 		await capture(page, `groups-config-${name}-${commit.slice(0, 7)}-${viewport}`, configUnits);
 		await expect(dialog).toBeVisible();
+		if (name === 'schema') {
+			await expect(
+				dialog.getByRole('region', { name: 'Value contents', exact: true })
+			).toContainText('pageSize');
+			await expect(dialog).toContainText(
+				commit === commits.first ? 'z.literal(10)' : 'z.literal(25)'
+			);
+			await dialog.getByText('Source expression', { exact: true }).click();
+		}
 		expect(await dialog.locator('pre code').textContent()).toBe(value);
 		await expect(dialog.locator('orders')).toHaveCount(0);
 		expect(await fits(page)).toBe(true);
@@ -39,6 +54,39 @@ async function inspectConfigValues(page: Page, viewport: string, commit: string)
 	expect(await table.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
 }
 
+async function inspectConfigCollections(page: Page, viewport: string): Promise<void> {
+	const table = page.getByRole('table', { name: 'Configs', exact: true });
+	const schema = table.getByRole('row').filter({ hasText: 'orderSettings.schema' });
+	const steps = table.getByRole('row').filter({ hasText: 'orderSettings.steps' });
+	const inspect = steps.getByRole('button', {
+		name: 'View value for orderSettings.steps',
+		exact: true
+	});
+	await capture(page, `groups-config-collections-${viewport}`, configUnits);
+	await expect(steps).toContainText('2 items');
+	await expect(
+		table.getByRole('row').filter({ hasText: 'orderSettings.emptySteps' })
+	).toContainText('0 items');
+	expect(await steps.locator('button svg path').getAttribute('d')).not.toBe(
+		await schema.locator('button svg path').getAttribute('d')
+	);
+	await inspect.press('Enter');
+	const dialog = page.getByRole('dialog', { name: 'orderSettings.steps · Value', exact: true });
+	const contents = dialog.getByRole('region', { name: 'Value contents', exact: true });
+	await contents.locator('summary').filter({ hasText: /^0\b/ }).click();
+	await contents
+		.locator('summary')
+		.filter({ hasText: /^flags\b/ })
+		.click();
+	await capture(page, `groups-config-collections-expanded-${viewport}`, configUnits);
+	await expect(contents).toContainText('Pack');
+	await expect(contents).toContainText('true');
+	await expect(contents).toContainText('false');
+	expect(await fits(page)).toBe(true);
+	await page.keyboard.press('Escape');
+	await expect(inspect).toBeFocused();
+}
+
 async function configVariables(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'Configs', exact: true });
 	await expect(table.getByRole('columnheader'), 'only variable and value columns').toHaveText([
@@ -49,6 +97,7 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 		'25'
 	);
 	await inspectConfigValues(page, viewport, commits.middle);
+	await inspectConfigCollections(page, viewport);
 	await page.getByRole('searchbox').fill('newest');
 	await expect(table.getByRole('row')).toHaveCount(2);
 	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
@@ -149,33 +198,4 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		}
 		await reviewServiceFolders(page, viewport);
 	});
-}
-
-/** Helper source folders stay consistent between catalog and selected-callable breadcrumbs. */
-async function helperFolders(page: Page, viewport: string) {
-	for (const [commit, title] of [
-		[commits.middle, 'Strings'],
-		[commits.first, 'Words']
-	]) {
-		await open(page, { category: 'functions', commit }, 'groups');
-		await capture(page, `helper-folder-list-${commit.slice(0, 7)}-${viewport}`);
-		await expect
-			.soft(
-				page.getByRole('heading', { name: new RegExp(`^${title} 1$`), level: 2 }),
-				'Helper folder follows callable source'
-			)
-			.toBeVisible();
-		await page.getByRole('link', { name: 'plural(2, "item")', exact: true }).click();
-		await capture(page, `helper-folder-detail-${commit.slice(0, 7)}-${viewport}`, [
-			'reports.component.harness-entity-frame',
-			'reports.component.harness-entity-header',
-			'reports.component.harness-entity-sections'
-		]);
-		await expect(
-			page.getByRole('navigation', { name: 'Breadcrumb' }),
-			'Helper folder follows callable source'
-		).toContainText(title);
-		await page.reload();
-		await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(title);
-	}
 }
