@@ -26,14 +26,75 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		fallback: 'null',
 		regions: '["ca", "us"]',
 		schema: configExpression(commit),
-		archivePath: longConfigValue
+		archivePath: longConfigValue,
+		steps: '[{label: "Pack", flags: [true, false]}, "Ship"]',
+		emptySteps: '[]'
 	};
 	return Object.assign({}, unit, {
 		configValues: Object.entries(values).map(([name, value]) => ({
 			name: `orderSettings.${name}`,
 			value,
-			...(['schema', 'archivePath'].includes(name) ? {} : { literal: JSON.parse(value) }),
-			source: unit.owns.source[0]
+			...(['schema', 'archivePath', 'steps'].includes(name) ? {} : { literal: JSON.parse(value) }),
+			source: unit.owns.source[0],
+			...structuredFixture(name, value)
 		}))
 	});
+}
+
+/** Static nodes model committed expressions; the browser never evaluates config code. */
+const expression = (source: string) => ({ kind: 'expression' as const, source });
+const array = (source: string, nodes: ReturnType<typeof expression>[]) => ({
+	kind: 'array' as const,
+	source,
+	count: nodes.length,
+	entries: nodes.map((node, index) => ({ name: String(index), node }))
+});
+
+function schemaStructure(source: string) {
+	const fields = {
+		title: 'z.string()',
+		terms: 'z.string()',
+		pageSize: /z.literal\((10|25)\)/.exec(source)![0],
+		label: 'z.literal("<orders> & details")',
+		folders: 'z.string()'
+	};
+	return {
+		kind: 'object' as const,
+		source,
+		count: 5,
+		entries: Object.entries(fields).map(([name, value]) => ({ name, node: expression(value) }))
+	};
+}
+
+function structuredFixture(name: string, source: string) {
+	if (name === 'regions')
+		return { structure: array(source, [expression('"ca"'), expression('"us"')]) };
+	if (name === 'emptySteps') return { structure: array(source, []) };
+	if (name === 'schema') return { structure: schemaStructure(source) };
+	if (name !== 'steps') return {};
+	return {
+		structure: {
+			kind: 'array' as const,
+			source,
+			count: 2,
+			entries: [
+				{
+					name: '0',
+					node: {
+						kind: 'object' as const,
+						source: '{label: "Pack", flags: [true, false]}',
+						count: 2,
+						entries: [
+							{ name: 'label', node: expression('"Pack"') },
+							{
+								name: 'flags',
+								node: array('[true, false]', [expression('true'), expression('false')])
+							}
+						]
+					}
+				},
+				{ name: '1', node: expression('"Ship"') }
+			]
+		}
+	};
 }

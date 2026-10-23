@@ -1,5 +1,4 @@
 <script lang="ts">
-	// The shared dialog's own sheet, so the desktop host draws it as the reports do.
 	import '../../lib/styles/gallery.css';
 	import { tick } from 'svelte';
 	import { listed, type CatalogRow } from '../../utils/explorer-ui/entityCatalog';
@@ -13,6 +12,7 @@
 	import { categoryIcon } from '../../utils/explorer-ui/harnessIcons';
 	import ExplorerUsage from '../ExplorerUsage.svelte';
 	import Modal from '../shared-primitives/Modal.svelte';
+	import ConfigValueTree, { collection } from './ConfigValueTree.svelte';
 	import EntityLink from './EntityLink.svelte';
 	import HarnessAction from './HarnessAction.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
@@ -58,23 +58,18 @@
 	};
 	let shown = $derived(columns[category]);
 	let one = $derived(entityLabels[category].one);
-	// A shell is described under its name; the other kinds have a column for it.
 	let described = $derived(category === 'layouts');
-	// The variables of one source file are one table, named as the file is; a mix keeps the kind's.
-	let heading = $derived.by(() => {
-		const file = rows[0]?.configFile;
-		return category === 'configs' &&
-			file &&
-			rows.every((row) => row.configFile?.source === file.source)
-			? file.title
-			: entityLabels[category].title;
-	});
+	let heading = $derived(
+		category === 'configs' && new Set(rows.map((row) => row.configFile?.source)).size === 1
+			? (rows[0]?.configFile?.title ?? entityLabels[category].title)
+			: entityLabels[category].title
+	);
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
-	/** A config value as written, which its cell types and its dialog shows whole. */
 	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';
 	/** A name stays one text, breaking after a dot or between camel-case words, never inside one. */
 	const words = (name: string) => name.match(/.+?(?:\.|[a-z\d](?=[A-Z])|$)/g) ?? [];
 	let chosen = $state.raw<CatalogRow | null>(null);
+	let contents = $derived(collection(chosen?.setting?.structure));
 	let opener: HTMLElement | null = null;
 	function view(row: CatalogRow, event: MouseEvent) {
 		opener = event.currentTarget instanceof HTMLElement ? event.currentTarget : null;
@@ -85,10 +80,8 @@
 		await tick();
 		opener?.focus();
 	}
-	// Another revision or search brings other rows: a value they no longer hold is not left open.
 	$effect.pre(() => {
-		const held = chosen && value(chosen);
-		if (!rows.some((row) => row.name === chosen?.name && value(row) === held)) chosen = null;
+		if (chosen && !rows.includes(chosen)) chosen = null;
 	});
 </script>
 
@@ -131,6 +124,7 @@
 								name={row.name}
 								source={value(row)}
 								literal={row.setting?.literal}
+								structure={row.setting?.structure}
 								onview={(event) => view(row, event)}
 							/>
 						</td>
@@ -171,12 +165,19 @@
 		</tbody>
 	</table>
 	<Modal open={chosen !== null} title={`${chosen?.name} · Value`} variant="text" onClose={close}>
-		{#if chosen}<pre class="ex-value-full"><code>{value(chosen)}</code></pre>{/if}
+		{#if contents}
+			<ConfigValueTree node={contents} />
+			<details class="ex-full">
+				<summary>Source expression</summary>
+				<pre class="ex-value-full"><code>{chosen?.setting?.value}</code></pre>
+			</details>
+		{:else if chosen}
+			<pre class="ex-value-full"><code>{value(chosen)}</code></pre>
+		{/if}
 	</Modal>
 </div>
 
 <style>
-	/* Two columns at every width: the name of a variable, then its value. */
 	.ex-config-values .ex-table {
 		table-layout: fixed;
 	}

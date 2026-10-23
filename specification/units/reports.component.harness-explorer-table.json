@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-explorer-table",
 	"kind": "component",
 	"title": "Entity catalog table",
-	"responsibility": "Lists each config file’s variables with typed literal values and exact source inspection; retains category columns for other nonvisual entities.",
+	"responsibility": "Lists each config file with typed values, collection counts and expandable source inspection; retains other category columns.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -25,7 +25,7 @@
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
-				"description": "Required catalog rows in display order. A config table receives one source file’s variables, raw expressions and optional decoded literals; long values retain full source inspection."
+				"description": "Required rows in display order. A config table receives one source file with committed expressions, decoded literals and static collection structures."
 			},
 			{
 				"name": "ExplorerTable.nav",
@@ -52,12 +52,17 @@
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A source-named Variable/Value table with distinct scalar and array presentation and exact-source dialogs. Other categories retain their columns; links preserve the selected revision."
+				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-config-value-tree",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.explorer-usage",
 			"via": "import",

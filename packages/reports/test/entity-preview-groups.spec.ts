@@ -2,44 +2,11 @@ import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
-import { configExpression, longConfigValue } from './entityConfigFixtures';
-import { reviewServiceFolders } from './entityPreviewFunctions';
+import { configUnits, inspectConfigValues, inspectConfigCollections } from './entityPreviewConfigs';
+import { helperFolders, reviewServiceFolders } from './entityPreviewFunctions';
 import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
-const configUnits = [
-	'reports.component.harness-explorer-table',
-	'reports.component.harness-explorer-index',
-	'reports.component.harness-explorer-content'
-];
-
-async function inspectConfigValues(page: Page, viewport: string, commit: string): Promise<void> {
-	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
-	await capture(page, `groups-config-values-${commit.slice(0, 7)}-${viewport}`, configUnits);
-	for (const [name, value] of [
-		['schema', configExpression(commit)],
-		['archivePath', longConfigValue]
-	]) {
-		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
-		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
-		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
-		await inspect.click();
-		const dialog = page.getByRole('dialog', { name: `orderSettings.${name} · Value`, exact: true });
-		await capture(page, `groups-config-${name}-${commit.slice(0, 7)}-${viewport}`, configUnits);
-		await expect(dialog).toBeVisible();
-		expect(await dialog.locator('pre code').textContent()).toBe(value);
-		await expect(dialog.locator('orders')).toHaveCount(0);
-		expect(await fits(page)).toBe(true);
-		await page.keyboard.press('Escape');
-		await expect(dialog).toHaveCount(0);
-		await expect(inspect).toBeFocused();
-	}
-	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.enabled' })).toContainText(
-		'false'
-	);
-	expect(await table.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
-}
-
 async function configVariables(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	await expect(page.getByRole('table'), 'each source config gets its own table').toHaveCount(2);
@@ -72,6 +39,7 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 		'25'
 	);
 	await inspectConfigValues(page, viewport, commits.middle);
+	await inspectConfigCollections(page, viewport);
 	await page.getByRole('searchbox').fill('newest');
 	await expect(page.getByRole('table')).toHaveCount(1);
 	await expect(table.getByRole('row')).toHaveCount(2);
@@ -174,33 +142,4 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		}
 		await reviewServiceFolders(page, viewport);
 	});
-}
-
-/** Helper source folders stay consistent between catalog and selected-callable breadcrumbs. */
-async function helperFolders(page: Page, viewport: string) {
-	for (const [commit, title] of [
-		[commits.middle, 'Strings'],
-		[commits.first, 'Words']
-	]) {
-		await open(page, { category: 'functions', commit }, 'groups');
-		await capture(page, `helper-folder-list-${commit.slice(0, 7)}-${viewport}`);
-		await expect
-			.soft(
-				page.getByRole('heading', { name: new RegExp(`^${title} 1$`), level: 2 }),
-				'Helper folder follows callable source'
-			)
-			.toBeVisible();
-		await page.getByRole('link', { name: 'plural(2, "item")', exact: true }).click();
-		await capture(page, `helper-folder-detail-${commit.slice(0, 7)}-${viewport}`, [
-			'reports.component.harness-entity-frame',
-			'reports.component.harness-entity-header',
-			'reports.component.harness-entity-sections'
-		]);
-		await expect(
-			page.getByRole('navigation', { name: 'Breadcrumb' }),
-			'Helper folder follows callable source'
-		).toContainText(title);
-		await page.reload();
-		await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(title);
-	}
 }

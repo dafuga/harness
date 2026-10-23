@@ -3,11 +3,12 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Reads selected-revision config values, helper contracts, service class proof and actual runtime consumers.",
+	"responsibility": "Reads selected-revision config expressions and inspectable structures, helper contracts, service class proof and actual runtime consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/explorer-ui/revision-detail-service/configValueStructure.ts",
 			"src/services/explorer-ui/revision-detail-service/configValues.ts",
 			"src/services/explorer-ui/revision-detail-service/configValues.types.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelperCalls.ts",
@@ -21,6 +22,7 @@
 			"src/utils/unitMetadata.ts"
 		],
 		"symbols": [
+			"configValueStructure",
 			"configValues",
 			"ConfigSource",
 			"pureGlobals",
@@ -35,6 +37,7 @@
 			"PublicHelper",
 			"PublicServiceClass",
 			"UnitMetadata",
+			"ConfigValueNode",
 			"ConfigVariable",
 			"SourceFileSnapshot",
 			"unitMetadata"
@@ -58,7 +61,7 @@
 			{
 				"name": "unitMetadata",
 				"type": "Promise<void>",
-				"description": "Attaches committed config initializers, helper contracts and service facts from the selected revision. Missing source never borrows values from another revision."
+				"description": "Attaches committed config expressions and statically inspectable object/array contents, helper contracts and service facts from the selected revision. Config modules are never executed; unresolved sizes stay unknown."
 			}
 		],
 		"errors": []

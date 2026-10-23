@@ -1,4 +1,5 @@
 import ts from 'typescript';
+import { configValueStructure } from './configValueStructure';
 import type { ConfigSource } from './configValues.types';
 import type { ConfigVariable } from '../../../utils/explorer-ui/unitMetadata';
 
@@ -109,10 +110,12 @@ function readValue(value: ts.Expression, name: string, context: ConfigSource): v
 		}
 		return;
 	}
+	const structure = configValueStructure(resolved, context.bindings);
 	context.values.set(name, {
 		name,
 		value: resolved.getText(context.file),
 		source: context.source,
+		...(structure.kind === 'expression' ? {} : { structure }),
 		...literalValue(resolved)
 	});
 }

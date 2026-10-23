@@ -97,9 +97,11 @@ test.each([
 	['""', ''],
 	["['ca', 'us', false, 0]", ['ca', 'us', false, 0]]
 ])('decodes static config literals while retaining source: %s', (expression, literal) => {
-	expect(configValues(`export const setting = ${expression};`, 'src/configs/settings.ts')).toEqual([
-		{ name: 'setting', value: expression, source: 'src/configs/settings.ts', literal }
-	]);
+	expect(
+		configValues(`export const setting = ${expression};`, 'src/configs/settings.ts').map(
+			({ name, value, source, literal }) => ({ name, value, source, literal })
+		)
+	).toEqual([{ name: 'setting', value: expression, source: 'src/configs/settings.ts', literal }]);
 });
 
 test.each(['process.env.SECRET', '[...defaults]', '[readSecret()]', '`hello ${readSecret()}`'])(
@@ -113,3 +115,90 @@ test.each(['process.env.SECRET', '[...defaults]', '[readSecret()]', '`hello ${re
 		expect(setting).not.toHaveProperty('literal');
 	}
 );
+// Structural inspection is data read from the AST, alongside the unchanged source-value contract.
+test.each([
+	[
+		'export const schema = z\n  .strictObject({schemaVersion: z.literal(1), groups: z.array(group), legacy: z.array(z.string())})\n  .superRefine(check);',
+		'schema',
+		{
+			kind: 'object',
+			count: 3,
+			entries: [
+				{ name: 'schemaVersion', node: { kind: 'expression', source: 'z.literal(1)' } },
+				{ name: 'groups', node: { kind: 'array' } },
+				{ name: 'legacy', node: { kind: 'array' } }
+			]
+		}
+	],
+	['export const schema = z\n  .array(z.string());', 'schema', { kind: 'array', schema: true }],
+	[
+		'export const schema = z.strictObject({id: z.string(), groups: z.array(z.string())}).superRefine(check);',
+		'schema',
+		{
+			kind: 'object',
+			count: 2,
+			entries: [
+				{ name: 'id', node: { kind: 'expression', source: 'z.string()' } },
+				{ name: 'groups', node: { kind: 'array', source: 'z.array(z.string())' } }
+			]
+		}
+	],
+	[
+		'export const values = [{name: "First", flags: [true, false]}, "Second"];',
+		'values',
+		{
+			kind: 'array',
+			count: 2,
+			entries: [
+				{
+					name: '0',
+					node: {
+						kind: 'object',
+						count: 2,
+						entries: [
+							{ name: 'name', node: { kind: 'expression', source: '"First"' } },
+							{ name: 'flags', node: { kind: 'array', count: 2 } }
+						]
+					}
+				},
+				{ name: '1', node: { kind: 'expression', source: '"Second"' } }
+			]
+		}
+	],
+	['export const empty = [];', 'empty', { kind: 'array', count: 0, entries: [] }],
+	[
+		'export const schema = z.object({settings: z.strictObject({enabled: z.boolean()})});',
+		'schema',
+		{
+			kind: 'object',
+			count: 1,
+			entries: [{ name: 'settings', node: { kind: 'object', count: 1 } }]
+		}
+	]
+])(
+	'reads inspectable collection structure without execution: %s',
+	async (source, name, structure) => {
+		await measureWorkload('function.unit-metadata', 'config-collection-structure', () => {
+			const result = configValues(source, 'settings.ts').find((item) => item.name === name);
+			expect(result, 'committed collection structure is inspectable').toMatchObject({
+				name,
+				structure
+			});
+		});
+	}
+);
+
+test('unresolved collection sizes stay unknown and source code is never executed', async () => {
+	await measureWorkload('function.unit-metadata', 'config-unknown-collection-size', () => {
+		const source =
+			'export const values = [first(), ...rest]; export const schema = z.object({...base, id: z.string()}); export const unsafe = (() => { throw Error("must not run") })();';
+		const values = configValues(source, 'settings.ts');
+		expect(values).toMatchObject([
+			{ name: 'values', structure: { kind: 'array' } },
+			{ name: 'schema', structure: { kind: 'object' } },
+			{ name: 'unsafe', value: '(() => { throw Error("must not run") })()' }
+		]);
+		for (const value of values.slice(0, 2)) expect(value).not.toHaveProperty('structure.count');
+		expect(values[2]).not.toHaveProperty('structure');
+	});
+});

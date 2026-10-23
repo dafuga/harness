@@ -1,26 +1,25 @@
 <script lang="ts">
+	import type { ConfigValueNode } from '../../../../../../src/utils/explorer-ui/unitMetadata';
+	import { valueMark } from '../ConfigValueTree.svelte';
 	import HarnessAction from '../HarnessAction.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	let {
 		name,
 		source,
 		literal,
+		structure,
 		onview
 	}: {
-		/** The full name of the variable, carried by the action that opens its value. */
 		name: string;
-		/** The value exactly as committed. */
+		/** The initializer exactly as committed; never executed. */
 		source: string;
-		/** The decoded literal; absent for a computed expression, which is never evaluated. */
 		literal?: unknown;
-		/** Opens the whole value as written. */
+		structure?: ConfigValueNode;
 		onview: (event: MouseEvent) => void;
 	} = $props();
 	const scalar = (item: unknown) =>
 		item === null || ['string', 'number', 'boolean'].includes(typeof item);
 	const shown = (item: unknown) => (item === '' ? 'Empty string' : String(item));
-	const count = (size: number) => `${size} ${size === 1 ? 'item' : 'items'}`;
-	// A few short items read inline; a longer or nested list is previewed as it is written.
 	let items = $derived(
 		Array.isArray(literal) &&
 			literal.length <= 10 &&
@@ -29,20 +28,18 @@
 			? literal
 			: null
 	);
-	let text = $derived(typeof literal === 'string' ? literal : source);
-	let lines = $derived(text.split(/\r?\n/));
-	// Past one line or 48 characters a string or an expression is previewed, and opened whole.
-	let long = $derived(lines.length > 1 || text.length > 48);
-	let size = $derived(
-		Array.isArray(literal)
-			? count(literal.length)
-			: lines.length > 1
-				? `${lines.length} lines`
-				: `${text.length} chars`
-	);
+	let mark = $derived(valueMark(structure, source));
 </script>
 
 <div class="cv" data-harness-part="config-value">
+	{#if mark}
+		<span class="inspect">
+			<HarnessAction tone="plain" label={`View value for ${name}`} onclick={onview}>
+				<HarnessIcon name={mark.icon} size={18} />
+			</HarnessAction>
+			<span class="ex-note">{mark.size}</span>
+		</span>
+	{/if}
 	{#if typeof literal === 'boolean'}
 		<span class="pill" class:on={literal} role="img" aria-label={`Boolean ${literal}`}
 			><HarnessIcon name={literal ? 'passed' : 'failed'} size={14} />{String(literal)}</span
@@ -54,7 +51,10 @@
 	{:else if literal === ''}
 		<span class="chip blank" role="img" aria-label="Empty string">Empty string</span>
 	{:else if items}
-		<ul class="items" aria-label={`Array, ${count(items.length)}`}>
+		<ul
+			class="items"
+			aria-label={`Array, ${items.length} ${items.length === 1 ? 'item' : 'items'}`}
+		>
 			{#each items as item, position (position)}
 				<li
 					class="chip"
@@ -64,31 +64,11 @@
 				>
 					{shown(item)}
 				</li>
-			{:else}
-				<li class="chip blank">Empty array</li>
-			{/each}
+			{:else}<li class="chip blank">Empty array</li>{/each}
 		</ul>
-	{:else if long}
-		<!-- The first lines as written: what does not fit is cut at the edge, never rewritten. -->
-		{#if typeof literal === 'string'}
-			<span
-				class="preview string"
-				class:more={lines.length > 2}
-				role="img"
-				aria-label={`String ${literal}`}>{lines.slice(0, 2).join('\n')}</span
-			>
-		{:else}
-			<code class="preview" class:more={lines.length > 2}>{lines.slice(0, 2).join('\n')}</code>
-		{/if}
-		<span class="ex-note">{size}</span>
-		<HarnessAction tone="plain" label={`View value for ${name}`} onclick={onview}
-			>View value</HarnessAction
-		>
-	{:else if typeof literal === 'string'}
+	{:else if !mark && typeof literal === 'string'}
 		<span class="string" role="img" aria-label={`String ${literal}`}>{literal}</span>
-	{:else}
-		<code class="source">{source}</code>
-	{/if}
+	{:else if !mark}<code class="source">{source}</code>{/if}
 </div>
 
 <style>
@@ -100,6 +80,15 @@
 		gap: 6px 12px;
 		min-width: 0;
 		line-height: 1.5;
+	}
+	.inspect {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.inspect :global(.hx-action) {
+		width: 44px;
+		padding: 0;
 	}
 	.pill {
 		display: inline-flex;
@@ -170,15 +159,5 @@
 	}
 	.source {
 		color: var(--ex-soft);
-	}
-	.preview {
-		flex: 1 1 14rem;
-		min-width: 0;
-		overflow: hidden;
-		white-space: pre;
-		text-overflow: ellipsis;
-	}
-	.preview.more {
-		mask-image: linear-gradient(black 45%, transparent);
 	}
 </style>
