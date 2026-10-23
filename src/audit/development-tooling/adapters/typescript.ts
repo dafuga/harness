@@ -1,4 +1,4 @@
-import { auditArchitecture } from '../architectureRules';
+import { auditArchitecture, auditTypePlacement } from '../architectureRules';
 import { auditBlocks } from '../blockRules';
 import { auditClassCount, auditFileLength } from '../commonRules';
 import { auditTypeScriptNaming } from '../namingRules';
@@ -18,6 +18,7 @@ export const typeScriptAdapter: AuditAdapter = {
 			...auditClassCount(file.relativePath, file.structuralLines, file.limits),
 			...auditBlocks(file.relativePath, file.structuralLines, file.limits),
 			...auditArchitecture(file.relativePath, file.structuralLines),
+			...auditTypePlacement(file),
 			...auditTypeScriptNaming(file),
 			...auditReactComponentName(file)
 		];

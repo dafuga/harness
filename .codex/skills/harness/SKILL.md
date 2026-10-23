@@ -236,3 +236,7 @@ Attribution-only DOM containers require the full Reports component suite, alongs
 A successful capture count does not prove catalog delivery. The standardized Pages screen test must project every registered visual unit's dedicated capture through its actual preview choice and require a displayed file. Keep unit preview metadata aligned with the captured catalog state, and verify the prepared main index's cards in the browser before landing/handoff. Preserve exact state selection and missing-state gaps for explicitly requested previews.
 
 When adding or changing workspace build aliases, run the existing `test/shared-select-impact.test.ts` before broad verification. Keep all alias imports resolved, distinguish indexed test imports from runtime owner units using source classification, and prove test selection separately from production dependency reachability; never discard an unresolved runtime owner to satisfy the check.
+
+## Type Files
+
+Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations.

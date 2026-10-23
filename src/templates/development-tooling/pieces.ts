@@ -1,3 +1,4 @@
+import { separateTypeDeclarations } from './separateTypeDeclarations';
 import { toKebabCase, toPascalCase } from '../../core/development-tooling/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import {
@@ -86,7 +87,7 @@ export function pieceFiles(
 	name: string,
 	context: PieceContext = {}
 ): PlannedFile[] {
-	return pieceBuilders[kind](name, context);
+	return separateTypeDeclarations(pieceBuilders[kind](name, context));
 }
 
 function testFiles(name: string): PlannedFile[] {

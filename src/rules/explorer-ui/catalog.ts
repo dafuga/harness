@@ -117,6 +117,8 @@ export function harnessRuleSummariesFor(limits: HarnessRuleLimits): string[] {
 		...harnessModuleGroupRules,
 		'Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.',
 		'Classes should not use catch-all Manager names.',
+		'Keep named interfaces and type aliases in sibling .types.ts files; import them with import type and preserve public type paths with type-only re-exports.',
+		'Separate type declarations from runtime values in components, services, helpers, configs, tests and scripts. Keep shared type models with their established owner.',
 		'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
 		'Core, template, workflow, and command imports move in one direction.',
 		'Harness audit applies ecosystem adapters for app and library code surfaces.',

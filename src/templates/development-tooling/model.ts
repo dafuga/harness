@@ -1,3 +1,4 @@
+import { separateTypeDeclarations } from './separateTypeDeclarations';
 import { toKebabCase, toPascalCase, toSnakeCase } from '../../core/development-tooling/case';
 import type { Field } from '../../core/development-tooling/fields/fields';
 import type { PlannedFile } from '../../core/development-tooling/files';
@@ -16,7 +17,7 @@ export function modelFiles(input: ModelInput): PlannedFile[] {
 	const tableName = `${toSnakeCase(input.name)}s`;
 	const kebabName = toKebabCase(input.name);
 
-	return [
+	return separateTypeDeclarations([
 		{
 			path: `src/models/${className}.types.ts`,
 			contents: typeFile(className, input.fields)
@@ -37,7 +38,7 @@ export function modelFiles(input: ModelInput): PlannedFile[] {
 			path: `test/models/${kebabName}.test.ts`,
 			contents: modelTestFile(className)
 		}
-	];
+	]);
 }
 
 function typeFile(className: string, fields: Field[]): string {

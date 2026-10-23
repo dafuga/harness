@@ -25,6 +25,7 @@ import { adapterExportPlan, modelExportPlans, pieceExportPlans } from './exportP
 import { groupedFiles, groupedExports, assertUniqueGroupedNames } from './groupedFiles';
 import { generationGroup, saveGenerationGroup } from './generationGroup';
 import { ModelDependencyService } from '../../../services/development-tooling/ModelDependencyService';
+import { separateTypeDeclarations } from '../../../templates/development-tooling/separateTypeDeclarations';
 
 export { scaffoldKinds };
 
@@ -94,7 +95,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const selection = source ? generationGroup(root, input) : undefined;
 	const dimension = projectKind === 'game' ? await detectGameDimension(root) : undefined;
 	const grouped = groupedFiles(pieceFiles(input.kind, name, { dimension }), selection?.group.id);
-	const files = [...grouped.files, ...support];
+	const files = separateTypeDeclarations([...grouped.files, ...support]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });

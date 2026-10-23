@@ -1,5 +1,36 @@
 import { join } from 'node:path';
 import type { AuditFinding } from './types';
+import ts from 'typescript';
+import type { AuditFile } from './adapters/types';
+
+/** Named declarations belong in a sibling type module, rather than beside executable code. */
+export function auditTypePlacement(file: AuditFile): AuditFinding[] {
+	if (file.relativePath.endsWith('.d.ts')) return [];
+	const contents =
+		file.extension === '.svelte'
+			? [...file.contents.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)]
+					.map((match) => match[1])
+					.join('\n')
+			: file.contents;
+	const tree = ts.createSourceFile(file.relativePath, contents, ts.ScriptTarget.Latest, true);
+	const runtime = tree.statements.some(
+		(node) =>
+			ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node) || ts.isVariableStatement(node)
+	);
+	if (!runtime) return [];
+	const findings: AuditFinding[] = [];
+	const visit = (node: ts.Node) => {
+		if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node))
+			findings.push({
+				path: file.relativePath,
+				rule: 'separate-type-declarations',
+				message: `Move ${node.name.text} to a sibling .types.ts file and import its type.`
+			});
+		ts.forEachChild(node, visit);
+	};
+	visit(tree);
+	return findings;
+}
 
 export function auditArchitecture(path: string, lines: string[]): AuditFinding[] {
 	return lines.flatMap((line, index) => architectureFinding(path, line, index));
