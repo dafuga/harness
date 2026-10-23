@@ -30,7 +30,10 @@ export function sourceCatalog(detail: HarnessRevision): HarnessRevision {
 						},
 						helpers: unit.helpers?.map((helper) => ({
 							...helper,
-							source: 'src/helpers/orders/filterOrders.ts'
+							source:
+								helper.name === 'filterOrders'
+									? 'src/helpers/orders/filterOrders.ts'
+									: helper.source
 						}))
 					};
 				return unit.id === ids.store

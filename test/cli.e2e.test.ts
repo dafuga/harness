@@ -21,10 +21,7 @@ test('CLI scaffolds and checks a lib project', async () => {
 	);
 
 	for (const kind of packageKinds) {
-		await runHarness(
-			['generate', kind, kind === 'helper' ? 'FormatPostTitle' : 'PublishPost'],
-			project
-		);
+		await runHarness(['generate', kind, 'PublishPost'], project);
 	}
 
 	await runCommand(['bun', 'install'], project);
@@ -52,7 +49,7 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 	await runHarness(['generate', 'resource', 'Article'], project);
 
 	for (const kind of packageKinds) {
-		await runHarness(['g', kind, kind === 'helper' ? 'FormatPostTitle' : 'PublishPost'], project);
+		await runHarness(['g', kind, 'PublishPost'], project);
 	}
 
 	await runCommand(['bun', 'install'], project);
