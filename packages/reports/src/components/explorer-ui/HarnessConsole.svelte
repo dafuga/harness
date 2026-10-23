@@ -23,7 +23,7 @@
 		type ConsoleAnswer
 	} from './harness-console/consoleView';
 	import HarnessHeader from './HarnessHeader.svelte';
-	import LoadingState from '../../shared-primitives/LoadingState.svelte';
+	import LoadingState from '../shared-primitives/LoadingState.svelte';
 	let {
 		base,
 		path,
