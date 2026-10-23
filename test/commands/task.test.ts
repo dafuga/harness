@@ -23,7 +23,17 @@ test('feature completion rejects an unsupported free-text verification claim', a
 	const root = await mkdtemp(join(tmpdir(), 'harness-loop-completion-'));
 	try {
 		await runHarness(
-			['loop', 'create', 'delivery', '--from', 'feature', '--goal', 'Deliver search'],
+			[
+				'loop',
+				'create',
+				'delivery',
+				'--from',
+				'feature',
+				'--kind',
+				'coding',
+				'--goal',
+				'Deliver search'
+			],
 			root
 		);
 		for (const step of ['spec', 'implement', 'test'])

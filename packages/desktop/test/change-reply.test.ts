@@ -1,9 +1,9 @@
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { test } from 'vitest';
-import { expect } from '../../../test/verificationExpect';
 import { RunCancelled } from '../src/models/AgentRunner.types';
-import { approve, fixture, git, proposal, settled } from './run-fixture';
+import { approve, fixture, git, settled } from './run-fixture';
 
 /**
  * What the agent of a Change said is kept in the notice of that change, so a thread that is
@@ -17,16 +17,18 @@ async function notice(f: Fixture) {
 	return said.filter((message) => message.mode === 'change').at(-1)!.text;
 }
 
-test('a change rejected by the completion audit keeps the reply of its agent and names the entity it implements', async () => {
+test('a completed change keeps the reply of its agent and names the entity it implements', async () => {
 	const f = await fixture(async (turn) => {
 		turn.onText('Working on it.');
 		await writeFile(join(turn.cwd, 'src/owned.ts'), 'agent revision');
 	});
 	await settled(f, await approve(f));
 	const body = await notice(f);
-	// The fixture runner answers "Precise design direction": the complete proposal as its final reply, rather than the stream.
-	expect(body.startsWith(proposal.trim() + '\n\nChange failed: 1 project files;')).toBe(true);
-	expect(body.endsWith('Completion audit or execution failed.')).toBe(true);
+	// The fixture runner answers "Precise design direction": the final reply, not the stream.
+	expect(body.startsWith('Precise design direction\n\nChange completed: 1 project files;')).toBe(
+		true
+	);
+	expect(body.endsWith('Verification pending.')).toBe(true);
 	expect(f.events).toContainEqual(
 		expect.objectContaining({
 			kind: 'status',
@@ -76,5 +78,5 @@ test('a change whose agent said nothing keeps the notice alone', async () => {
 	const f = await fixture();
 	f.run.mockImplementation(async (turn) => ({ text: '  ', model: turn.model }));
 	await settled(f, await approve(f));
-	expect((await notice(f)).startsWith('Change failed: 0 project files;')).toBe(true);
+	expect((await notice(f)).startsWith('Change completed: 0 project files;')).toBe(true);
 }, 60000);

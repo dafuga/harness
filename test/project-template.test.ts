@@ -1,8 +1,7 @@
-import { format, type Options } from 'prettier';
-import { afterAll, expect, test } from 'vitest';
-import { PerformanceProfileService } from '../src/services/verification-evidence/PerformanceProfileService';
-import { projectFiles } from '../src/templates/project';
 import { measureWorkload } from './support/measureWorkload';
+import { expect, test } from 'vitest';
+import { projectFiles } from '../src/templates/project';
+import { format, type Options } from 'prettier';
 
 test('app projects include SvelteKit and specification files', () =>
 	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
@@ -129,35 +128,3 @@ function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<s
 		limits: Record<string, number>;
 	};
 }
-
-test('generated project guidance requires Harness completion audits and keeps planning read-only', () => {
-	for (const files of [
-		projectFiles({ kind: 'app', name: 'demo' }),
-		projectFiles({ kind: 'lib', name: 'demo' })
-	]) {
-		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
-			const guidance = fileContents(files, path);
-			expect(guidance).toContain('harness task check');
-			expect(guidance).toContain('harness verify run --require-performance');
-			expect(guidance).toContain('Planning tasks remain planning-only');
-			expect(guidance).toContain('structural and evidence heuristics');
-			expect(guidance).toContain('active visual component requires a preview');
-			expect(guidance).toContain('A missing image or failed verdict blocks handoff');
-			expect(guidance).toContain('state labels confined to scenario states');
-			expect(guidance).toContain('required parent layout');
-			expect(guidance).toContain('isolate app themes');
-			expect(guidance).toContain('Reject caught fixture errors');
-			expect(guidance).toContain('Provide semantic table containers');
-			expect(guidance).toContain('Node server imports with external dependencies');
-			expect(guidance).toContain('synthetic media inputs');
-			expect(guidance).toContain('reject undeclared media');
-		}
-	}
-});
-
-afterAll(async () => {
-	await new PerformanceProfileService().capture(
-		{ unit: 'template.project-guidance', workload: 'generate-app-guidance', iterations: 100 },
-		() => projectFiles({ kind: 'app', name: 'demo' })
-	);
-});

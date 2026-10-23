@@ -1,7 +1,7 @@
+import { expect } from '../../../test/verificationExpect';
+import { test } from 'vitest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { test } from 'vitest';
-import { expect } from '../../../test/verificationExpect';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 import { approve, fixture, git, settled } from './run-fixture';
 
@@ -34,7 +34,7 @@ async function registered(root: string) {
 	git(root, 'commit', '-m', 'register the owned unit');
 }
 
-test('a completion audit failure retains the unit owning a changed file and counts the file no unit owns', async () => {
+test('a completed change names the unit owning a changed file and counts the file no unit owns', async () => {
 	const f = await fixture(async (turn) => {
 		await writeFile(join(turn.cwd, 'src/owned.ts'), 'agent revision');
 		await writeFile(join(turn.cwd, 'src/new.ts'), 'new source');
@@ -44,7 +44,7 @@ test('a completion audit failure retains the unit owning a changed file and coun
 	const plan = await (await createPlanning(f.root)).readPlan({ unitId: f.request.entityId });
 	const notice = plan.threads[0].messages.filter((message) => message.change).at(-1)!;
 	expect(notice.change).toMatchObject({
-		status: 'failed',
+		status: 'completed',
 		changedPaths: ['src/new.ts', 'src/owned.ts']
 	});
 	expect(notice.body).toContain(

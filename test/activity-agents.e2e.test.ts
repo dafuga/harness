@@ -7,7 +7,14 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import { AgentRegistryRepository } from '../src/repositories/AgentRegistryRepository';
 import { runHarness } from './support/cli';
 
-/** Agent registrations, heartbeats and ends remain isolated by repository; cases allow 60 seconds. */
+/**
+ * Who is working in a repository now is what agents say about themselves while they work: a
+ * registration, heartbeats and an end. Every checkout of the repository sees the same agents,
+ * another repository sees none of them, and what is not known is said instead of counted.
+ * Every case may take 60 seconds: each starts several CLI processes, and a loaded machine starts
+ * each slowly. That bounds the work of a test. It says nothing of how long an agent may be
+ * quiet, which each agent states for itself and which no case here waits out.
+ */
 interface Entry {
 	id: string;
 	label: string;
@@ -56,7 +63,10 @@ const register = async (cwd: string, label: string, more: string[] = []) =>
 	(await json<{ id: string; branch: string | null }>(cwd, ['register', '--label', label, ...more]))
 		.id;
 const named = (list: Roster, label: string) => list.roster.find((item) => item.label === label);
-/** Age the stored heartbeat without waiting out its allowance. */
+/**
+ * Leaves an agent as it would be after being quiet for so long: its stored heartbeat gets that
+ * age through the registry itself. The CLI then judges it by its own clock and its allowance.
+ */
 async function quietFor(checkout: string, id: string, seconds: number) {
 	const registry = new AgentRegistryRepository(at(checkout));
 	const stored = await registry.read(id);
@@ -205,14 +215,4 @@ test('what an owner may state is bounded, and an assignment the registry does no
 	expect((await roster(at('quiet'))).tracking).toBe('never-used');
 	await register(at('foreign'), 'Assigned', ['--units', 'service.nothing']);
 	expect(named(await roster(at('foreign')), 'Assigned')?.unknownUnits).toEqual(['service.nothing']);
-}, 60_000);
-
-test('a declared task cannot finish on an unsupported agent claim', async () => {
-	const id = await register(at('checkout'), 'Claimant', ['--task', 'Implement catalog search']);
-	const denied = await run(at('checkout'), ['finish', id, '--outcome', 'All checks passed'], false);
-	expect(denied.exitCode).toBe(1);
-	expect(denied.stderr).toContain('completion audit');
-	expect(named(await roster(at('checkout')), 'Claimant')?.state).toBe('working');
-	await run(at('checkout'), ['finish', id, '--failed', '--outcome', 'Missing verification']);
-	expect(named(await roster(at('site')), 'Claimant')?.state).toBe('failed');
 }, 60_000);

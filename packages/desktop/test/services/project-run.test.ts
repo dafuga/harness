@@ -1,11 +1,10 @@
-import { readFile, rm, writeFile } from 'node:fs/promises';
+import { rm, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
-import { planningProposal } from '../../../../test/support/taskAuditRepo';
-import { createPlanning } from '../../../planning/src/lib/planning/index';
 import { RunCancelled, type AgentTurn } from '../../src/models/AgentRunner.types';
 import type { ProjectRunRequest } from '../../src/models/DesktopBridge.types';
+import { createPlanning } from '../../../planning/src/lib/planning/index';
 import { fixture, git } from '../run-fixture';
 
 type Fixture = Awaited<ReturnType<typeof fixture>>;
@@ -13,7 +12,7 @@ const badge = {
 	category: 'components',
 	title: 'Order badge',
 	goal: 'Shows the state of one order.',
-	proposal: planningProposal('A rounded order badge with the state in words.'),
+	proposal: 'A rounded badge with the state in words.',
 	contract: {
 		inputs: [{ name: 'state', type: 'OrderState' }],
 		outputs: [{ name: 'badge', type: 'markup' }],

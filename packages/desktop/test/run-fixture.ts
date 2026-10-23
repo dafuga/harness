@@ -1,29 +1,17 @@
-import { execFileSync } from 'node:child_process';
-import { mkdir, mkdtemp, realpath, rm, writeFile } from 'node:fs/promises';
+import { expect } from '../../../test/verificationExpect';
+import { afterEach, vi } from 'vitest';
+import { mkdtemp, mkdir, writeFile, rm, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { PNG } from 'pngjs';
-import { afterEach, vi } from 'vitest';
-import { expect } from '../../../test/verificationExpect';
-import { createPlanning } from '../../planning/src/lib/planning/index';
-import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/AgentRunner.types';
-import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { DesktopRunService } from '../src/services/desktop-run-service/DesktopRunService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
+import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/AgentRunner.types';
+import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
+import { createPlanning } from '../../planning/src/lib/planning/index';
 const roots: string[] = [];
-export const proposal = `# Target proposal
-## Overview
-Precise design direction for the requested target and its contract.
-## Acceptance Criteria
-- The target renders its approved state and preserves the stated behavior.
-## Dependencies
-Use the existing project components and the approved target contract.
-## Verification
-Run the target unit tests and browser state checks before accepting implementation.
-## Performance
-Profile representative target rendering workloads for latency and memory through Harness during implementation.
-`;
 export const bytes = PNG.sync.write(new PNG({ width: 2, height: 2 }));
 export const git = (root: string, ...args: string[]) =>
 	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
@@ -33,7 +21,7 @@ afterEach(async () => {
 function fakeRunner(action: (turn: AgentTurn) => Promise<void>) {
 	const run = vi.fn(async (turn: AgentTurn) => {
 		await action(turn);
-		return { text: proposal, model: turn.model };
+		return { text: 'Precise design direction', model: turn.model };
 	});
 	const runner: AgentRunner = {
 		run,
