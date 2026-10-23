@@ -2,7 +2,7 @@
 	"name": "page-feature-groups",
 	"goal": "Group related list, detail and history pages by feature and teach that structure in generated agent guidance while preserving routes and unit identities",
 	"createdAt": "2026-10-23T13:19:32.048Z",
-	"updatedAt": "2026-10-23T13:22:21.350Z",
+	"updatedAt": "2026-10-23T13:26:07.872Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:26:05.126Z",
+			"evidence": "Checkpoint adc7354abf371012a86a84f33325b89570b4706ec0025e59e6c7efbe3110167f at e6c96d32: emitted guidance, real-manifest catalog groups and all three browser viewports fail the unchanged acceptance assertions; original images and 196 contextual observations retained."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T13:26:07.872Z",
+			"evidence": "Added nine specific route-folder taxonomy aliases and one shared feature-folder rule consumed by guides and generated instructions; synchronized repository agent guidance without changing route sources, unit IDs or shared cards."
 		},
 		{
 			"id": "green",

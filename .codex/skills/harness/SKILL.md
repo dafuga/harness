@@ -134,6 +134,10 @@ Shared Services lists require source-proven concrete instantiated classes with m
 
 ## Responsibility Categories
 
+Group related list, detail and history pages by feature in meaningful domain
+folders. Reuse that feature category with `--group`; use route groups when public
+URLs must stay unchanged. Avoid broad technical catch-alls when a feature is known.
+
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
 new code; a new explicit group extends the taxonomy. Reuse an existing category
