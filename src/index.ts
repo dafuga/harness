@@ -171,3 +171,9 @@ export type {
 	CatalogScenarioUpdateInput
 } from './models/git-source-history/CatalogScenario.types';
 export { ModelDependencyService } from './services/development-tooling/ModelDependencyService';
+export { registerBenchmarkCommand } from './cli/program/BenchmarkCommand';
+export { CodexBenchmarkAdapter } from './cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter';
+export { ClaudeBenchmarkAdapter } from './cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter';
+export { BenchmarkDefinitionValidator } from './cli/program/benchmark-service/benchmark-definition/BenchmarkDefinitionValidator';
+export { BenchmarkRepository } from './repositories/agents-providers/BenchmarkRepository';
+export { BenchmarkService } from './cli/program/benchmark-service/BenchmarkService';

@@ -1,0 +1,47 @@
+{
+	"name": "older-pr-integration",
+	"goal": "Integrate wanted benchmark, resource queue and completion-evidence changes without reversing recent main fixes",
+	"createdAt": "2026-10-23T11:24:35.191Z",
+	"updatedAt": "2026-10-23T17:17:07.437Z",
+	"template": "refactor",
+	"templateLineage": ["feature", "refactor"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Name the responsibility boundary and unchanged behavior.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:17:05.911Z",
+			"evidence": "Recover reproducible benchmark trials and analytics while preserving current main contracts and UI."
+		},
+		{
+			"id": "implement",
+			"title": "Extract or reorganize one responsibility at a time.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:17:06.570Z",
+			"evidence": "Port the CLI, native runner adapters, validation, repository and analytics; retain current main product UI without old branch implementations."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:17:07.009Z",
+			"evidence": "Accepted benchmark red c5941178 and unchanged green a8bce13a remain retained. Current catalog, route and Desktop proposal checks preserve Layouts and current controls."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-23T17:17:07.437Z",
+			"evidence": "Exact b9445e97 focused capture passes build, benchmark and analytics tests, and all 18 browser cases. All 14 original image hashes are verified and all 12 unique images inspected. This is focused proof; full repository gates remain separate."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

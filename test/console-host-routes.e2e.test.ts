@@ -76,6 +76,8 @@ test('the host redirects the root and the query form to page paths, for the admi
 		tip('pages'),
 		main(head, 'functions'),
 		`${slashed}/pages`,
+		tip('layouts'),
+		main(head, 'layouts'),
 		tip('shells'),
 		main(head, 'shells')
 	];

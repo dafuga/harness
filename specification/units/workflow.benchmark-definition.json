@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.benchmark-definition",
+	"kind": "workflow",
+	"title": "benchmarkDefinition",
+	"responsibility": "Pins a benchmark to committed source, validates its contract and checks configured runner availability.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/benchmark-service/benchmarkDefinition.ts"],
+		"symbols": ["BenchmarkRunners", "PreparedBenchmark", "benchmarkRunners", "prepareBenchmark"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "prepareBenchmark.path",
+				"type": "string",
+				"description": "Path to the trusted benchmark definition JSON file."
+			},
+			{
+				"name": "prepareBenchmark.runners",
+				"type": "BenchmarkRunners",
+				"description": "Codex and Claude runner implementations used to preflight the named candidates."
+			}
+		],
+		"outputs": [
+			{
+				"name": "benchmarkRunners",
+				"type": "BenchmarkRunners",
+				"description": "Native Codex and Claude adapters keyed by their configured runner names."
+			},
+			{
+				"name": "prepareBenchmark",
+				"type": "Promise<PreparedBenchmark>",
+				"description": "Normalized definition, pinned source revision, fingerprint, runner versions and trial count."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects invalid definitions, non-root projects, unresolved revisions or unavailable runners."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.claude-benchmark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.codex-benchmark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "entry.program-benchmark-service-benchmark-definition-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.benchmark-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.benchmark-workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/benchmark-service/benchmarkDefinition.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/benchmark-service/benchmarkDefinition.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
