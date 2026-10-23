@@ -7,7 +7,8 @@
 	} from '../../utils/explorer-ui/explorer-platforms/platformStatus';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
-	import { shortCommit, type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { type EntityNav } from '../../utils/explorer-ui/entityLens';
+	import { shortCommit } from '../../helpers/strings/shortCommit';
 	import '../../lib/styles/platforms.css';
 	import EntityLink from './EntityLink.svelte';
 	import EntityMissing from './EntityMissing.svelte';

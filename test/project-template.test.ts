@@ -7,10 +7,7 @@ test('app projects include SvelteKit and specification files', () =>
 	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
 		const files = projectFiles({ kind: 'app', name: 'demo-app' });
 		const paths = files.map((file) => file.path);
-		const packageJson = JSON.parse(
-			files.find((file) => file.path === 'package.json')?.contents ?? '{}'
-		);
-
+		const packageJson = JSON.parse(fileContents(files, 'package.json'));
 		expect(paths).toContain('svelte.config.js');
 		expect(paths).toContain('playwright.config.ts');
 		expect(paths).toContain('eslint.config.js');
@@ -32,6 +29,7 @@ test('app projects include SvelteKit and specification files', () =>
 		);
 		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
 			expect(fileContents(files, path)).toContain('Callable usage examples');
+			expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
 			expect(fileContents(files, path)).toContain(
 				'reusable visual frames with a child-content slot'
 			);
@@ -43,6 +41,8 @@ test('app projects include SvelteKit and specification files', () =>
 				'one representative example per distinct behavior'
 			);
 			expect(fileContents(files, path)).toContain('descriptive behavior titles');
+			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
+			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
 		expectRenameGuidance(files);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);

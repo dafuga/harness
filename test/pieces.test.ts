@@ -1,3 +1,5 @@
+import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
+import { posix } from 'node:path';
 import { expect, test } from 'vitest';
 import { pieceFiles } from '../src/templates/pieces';
 import { isAppOnlyScaffold, scaffoldKinds } from '../src/templates/scaffoldTypes';
@@ -9,6 +11,11 @@ test.each(['2d', '3d'] as const)(
 		for (const kind of scaffoldKinds) {
 			const files = pieceFiles(kind, 'BlogPost', { dimension });
 			expect(files.length, kind).toBeGreaterThan(0);
+			for (const plan of pieceExportPlans(kind, 'BlogPost'))
+				expect(
+					files.map((file) => file.path),
+					'Every public export targets an emitted scaffold'
+				).toContain(posix.normalize(`src/${plan.source}.ts`));
 			expect(
 				files.every((file) => file.path.length > 0 && file.contents.length > 0),
 				kind
@@ -48,9 +55,7 @@ test('Rails-ish scaffolds create their expected code shapes', async () => {
 	expect(pieceFiles('mailer', 'Welcome').map((file) => file.path)).toContain(
 		'src/mailers/WelcomeMailer.ts'
 	);
-	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain(
-		'src/helpers/PostHelper.ts'
-	);
+	expect(pieceFiles('helper', 'Post').map((file) => file.path)).toContain('src/helpers/post.ts');
 	expect(pieceFiles('concern', 'Publishable').map((file) => file.path)).toContain(
 		'src/concerns/withPublishable.ts'
 	);
@@ -73,5 +78,16 @@ test('Rails-ish scaffolds create their expected code shapes', async () => {
 	);
 	expect(pieceFiles('resource', 'Article').map((file) => file.path)).toContain(
 		'src/routes/article/+page.svelte'
+	);
+});
+
+test('helper scaffolds emit pure camelCase functions with domain parameters', () => {
+	const files = pieceFiles('helper', 'formatLabel');
+	const source = files.find((file) => file.path === 'src/helpers/formatLabel.ts');
+	expect(source?.contents).toContain('/** @pure */');
+	expect(source?.contents).toContain('export function formatLabel(textToFormat: string): string');
+	expect(source?.contents).not.toContain('class ');
+	expect(files.find((file) => file.path.startsWith('test/helpers/'))?.contents).toContain(
+		"formatLabel('  label  ')"
 	);
 });

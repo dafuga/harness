@@ -114,6 +114,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 					.toBeVisible();
 			expect(await fits(page)).toBe(true);
 			if (category === 'configs') await configVariables(page, viewport);
+			if (category === 'functions') await helperFolders(page, viewport);
 		}
 		await open(page, { category: 'components', commit: commits.middle }, 'groups');
 		await page.getByRole('searchbox').fill('SearchBox');
@@ -133,28 +134,24 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		for (const [category, entity, file] of [
 			['services', ids.store, 'src/services/orders/OrderStore.ts'],
 			['components', ids.list, 'src/components/orders/OrderList.ts'],
-			['functions', ids.filter, 'src/functions/orders/filterOrders.ts'],
+			['functions', ids.filter, 'src/helpers/orders/filterOrders.ts'],
 			['configs', ids.settings, 'src/configs/orders/orderSettings.ts'],
 			['models', 'app.model.order', 'src/models/orders/Order.ts'],
 			['layouts', frameId, 'src/layouts/orders/OrderFrame.svelte'],
 			['pages', ids.page, 'src/routes/orders/+page.svelte']
 		] as const) {
-			await open(page, { category, entity, commit: commits.middle, tab: 'source' }, 'groups');
-			await page.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all(
-					[...document.images]
-						.filter((image) => {
-							const box = image.getBoundingClientRect();
-							return box.width > 0 && box.height > 0 && box.top < innerHeight && box.bottom > 0;
-						})
-						.map(async (image) => {
-							await image.decode();
-							if (!image.complete || !image.naturalWidth || !image.naturalHeight)
-								throw new Error('Image not ready');
-						})
-				);
-			});
+			await open(
+				page,
+				{
+					category,
+					entity,
+					commit: commits.middle,
+					tab: 'source',
+					...(category === 'functions' ? { helper: 'filterOrders' } : {})
+				},
+				'groups'
+			);
+			await ready(page);
 			await capture(page, `source-${category}-${viewport}`, [
 				'reports.component.harness-entity-header'
 			]);
@@ -177,4 +174,33 @@ for (const [viewport, size] of Object.entries(viewports)) {
 		}
 		await reviewServiceFolders(page, viewport);
 	});
+}
+
+/** Helper source folders stay consistent between catalog and selected-callable breadcrumbs. */
+async function helperFolders(page: Page, viewport: string) {
+	for (const [commit, title] of [
+		[commits.middle, 'Strings'],
+		[commits.first, 'Words']
+	]) {
+		await open(page, { category: 'functions', commit }, 'groups');
+		await capture(page, `helper-folder-list-${commit.slice(0, 7)}-${viewport}`);
+		await expect
+			.soft(
+				page.getByRole('heading', { name: new RegExp(`^${title} 1$`), level: 2 }),
+				'Helper folder follows callable source'
+			)
+			.toBeVisible();
+		await page.getByRole('link', { name: 'plural(2, "item")', exact: true }).click();
+		await capture(page, `helper-folder-detail-${commit.slice(0, 7)}-${viewport}`, [
+			'reports.component.harness-entity-frame',
+			'reports.component.harness-entity-header',
+			'reports.component.harness-entity-sections'
+		]);
+		await expect(
+			page.getByRole('navigation', { name: 'Breadcrumb' }),
+			'Helper folder follows callable source'
+		).toContainText(title);
+		await page.reload();
+		await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(title);
+	}
 }

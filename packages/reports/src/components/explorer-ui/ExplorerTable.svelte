@@ -3,7 +3,7 @@
 	import '../../lib/styles/gallery.css';
 	import { tick } from 'svelte';
 	import { listed, type CatalogRow } from '../../utils/explorer-ui/entityCatalog';
-	import { humanize } from '../../utils/explorer-ui/entityContract';
+	import { humanize } from '../../helpers/strings/humanize';
 	import {
 		entityLabels,
 		entityLens,

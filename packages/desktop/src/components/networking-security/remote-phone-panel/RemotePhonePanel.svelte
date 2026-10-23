@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { RemotePhone } from '../../../lib/stores/networking-security/remotePhone.svelte';
 	import { grantSummary, remoteLabels } from './remoteLabels';
-	import { identityLabel } from '../../../utils/networking-security/remoteLabels';
+	import { identityLabel } from '../../../helpers/networking-security/identityLabel';
 	let { store, compact = false }: { store: RemotePhone; compact?: boolean } = $props();
 	/**
 	 * This phone's connection to a computer. A person names the phone and scans the code the
