@@ -2,7 +2,7 @@
 	"name": "resource-observer-order",
 	"goal": "Preserve fast native Bun exits and output when process-table probes synchronously yield child events",
 	"createdAt": "2026-10-23T15:35:07.066Z",
-	"updatedAt": "2026-10-23T15:35:07.066Z",
+	"updatedAt": "2026-10-23T17:08:08.011Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,32 +11,44 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:03.919Z",
+			"evidence": "Retain fast native child output and exit even when its first process-table observation blocks for 150 milliseconds."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:04.378Z",
+			"evidence": "The standard native Bun and Node runner matrix delayed spawn observers but not the first process-table observation. Add that input to the same matrix."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:05.096Z",
+			"evidence": "Accepted immutable failing checkpoint 603444fcab370bcce417e5cef3f2248d19657b81; tests were committed before product repair."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:05.894Z",
+			"evidence": "Install stream and exit handlers before the first descendants observation; retain bounded ownership cleanup."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:06.932Z",
+			"evidence": "Accepted unchanged-test passing checkpoint 3572a10a55bdfebf3f28afa952156811bf217c42 with its retained paired red record."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T17:08:08.011Z",
+			"evidence": "The unchanged native observer matrix passes. Valid focused capture retains timing and RSS for all 43 executable queue units; global checks remain separate."
 		}
 	],
 	"evaluators": [
