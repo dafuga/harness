@@ -41,7 +41,7 @@ const typeCollection = (unit: Classified) =>
 	unit.owns.source.every((path) => /\.(?:types|d)\.[cm]?tsx?$/.test(path));
 
 const unlisted = (unit: Classified) =>
-	unit.catalog?.visibility === 'internal' || typeCollection(unit);
+	unit.catalog?.visibility === 'internal' || typeCollection(unit) || nonvisualLayout(unit);
 
 /** A SvelteKit options module configures rendering but renders no pixels itself. */
 const layoutConfiguration = (unit: Classified) =>
@@ -50,7 +50,9 @@ const layoutConfiguration = (unit: Classified) =>
 	unit.owns.source.every((path) => /\+layout(?:\.server)?\.[cm]?[jt]s$/.test(path));
 
 const nonvisualLayout = (unit: Classified) =>
-	unit.kind === 'layout' && !unit.owns.source.some((path) => path.endsWith('.svelte'));
+	unit.kind === 'layout' &&
+	!layoutConfiguration(unit) &&
+	!unit.owns.source.some((path) => path.endsWith('.svelte'));
 
 /**
  * The one category a unit is listed under, or null for a unit that is none of the six. A page
@@ -64,7 +66,6 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	if (layoutConfiguration(unit)) return 'configs';
-	if (nonvisualLayout(unit)) return null;
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'functions' || unit.kind === 'module') {
 		return unit.helpers?.some(helperContract) ? 'functions' : null;
