@@ -1,0 +1,45 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (6.6s)
+
+
+  1) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+
+    Error: Preview and destination identify the same caller
+
+    expect(locator).toHaveText(expected) failed
+
+    Locator:  getByRole('tooltip', { name: 'Preview of firstCall', exact: true }).locator('code')
+    Expected: "firstCall"
+    Received: "namedUsers"
+    Timeout:  5000ms
+
+    Call log:
+      - Preview and destination identify the same caller getByRole('tooltip', { name: 'Preview of firstCall', exact: true }).locator('code') with timeout 5000ms
+      - waiting for getByRole('tooltip', { name: 'Preview of firstCall', exact: true }).locator('code')
+        14 × locator resolved to <code>namedUsers</code>
+           - unexpected value "namedUsers"
+
+
+       at entityPreviewFunctionSource.ts:55
+
+      53 | 				preview.locator('code'),
+      54 | 				'Preview and destination identify the same caller'
+    > 55 | 			).toHaveText('firstCall');
+         | 			  ^
+      56 | 			await usage.getByRole('link', { name: 'firstCall', exact: true }).press('Enter');
+      57 | 			expect(await where(page)).toMatchObject({
+      58 | 				branch: 'feature/orders',
+        at reviewNamedCallers (/private/tmp/harness-snapshot-stRDCs/packages/reports/test/entityPreviewFunctionSource.ts:55:6)
+        at reviewHelperUsage (/private/tmp/harness-snapshot-stRDCs/packages/reports/test/entityPreviewFunctions.ts:82:2)
+        at /private/tmp/harness-snapshot-stRDCs/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/error-context.md
+
+  1 failed
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 

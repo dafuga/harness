@@ -1,0 +1,241 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [23.28s]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts --grep "Models code opens only from the detail Source tab at desktop width"
+
+Running 1 test using 1 worker
+
+  ✘  1 test/entity-preview-source.spec.ts:21:3 › Models code opens only from the detail Source tab at desktop width (5.8s)
+
+
+  1) test/entity-preview-source.spec.ts:21:3 › Models code opens only from the detail Source tab at desktop width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: /^View code for / })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: /^View code for / }) with timeout 5000ms
+      - waiting for getByRole('button', { name: /^View code for / })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      26 | 			await page.evaluate(() => document.fonts.ready);
+      27 | 			await capture(page, `${phase}-source-catalog-${category}-${viewport}`);
+    > 28 | 			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+         | 			                                                                    ^
+      29 | 			await open(page, { category, entity: id }, 'source');
+      30 | 			await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+      31 | 			await page.getByRole('tab', { name: 'Source', exact: true }).click();
+        at /private/tmp/harness-snapshot-pMRYVz/packages/reports/test/entity-preview-source.spec.ts:28:72
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/error-context.md
+
+  1 failed
+    test/entity-preview-source.spec.ts:21:3 › Models code opens only from the detail Source tab at desktop width 
+error: script "test:entities" exited with code 1
+$ vitest run test/components/explorer-function-card.test.ts test/components/entity-details-screen.test.ts
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-pMRYVz/packages/reports
+
+ ❯ test/components/explorer-function-card.test.ts (12 tests | 3 failed) 45ms
+   × model cards share the concise code-and-consumers layout at current scope 26ms
+     → expected 1 to be +0 // Object.is equality
+   × model cards share the concise code-and-consumers layout at commit scope 2ms
+     → expected 1 to be +0 // Object.is equality
+   × function catalog cards stay concise and retain revision links without detail panels 3ms
+     → expected 1 to be +0 // Object.is equality
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 1ms
+   ✓ function calls preserve declared sample values: null 1ms
+   ✓ function calls preserve declared sample values: "" 1ms
+   ✓ function calls preserve declared sample values: %j 2ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 1ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 1ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 1ms
+   ✓ helper usage selects three distinct eligible consumers before truncating 5ms
+ ❯ test/components/entity-details-screen.test.ts (3 tests | 1 failed) 47ms
+   × details of every kind open on the contract, size and performance, with no source 30ms
+     → app.page.orders: expected ' Pages Orders page Orders page Page L…' not to contain 'View code'
+   ✓ its tabs open measurements, and the source only where the source is asked for 9ms
+   ✓ details of an entity the revision does not hold say that it is missing 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-details-screen.test.ts > details of every kind open on the contract, size and performance, with no source
+AssertionError: app.page.orders: expected ' Pages Orders page Orders page Page L…' not to contain 'View code'
+
+Expected: [32m"View code"[39m
+Received: [31m" Pages Orders page Orders page Page Lists the orders of an account. App route /orders View code Overview Contract Used In Uses States History Source Contract Purpose Lists the orders of an account. App route /orders Required states default, empty Declared examples are written in the contract. Illustrative ones are placeholders shaped by the type alone. Neither is the result of a test. Inputs 2 Name Type Example Account id string Illustrative "example" Search text string "SERVICE" Outputs 1 Name Type Example Markup string Illustrative "example" Errors 0 No errors declared. Size Source size Not measured Emitted size Not measured This unit declares no process or Wasm output. Complexity Not measured Performance profile Latency Not measured Memory Not measured No benchmark is recorded for this revision. "[39m
+
+ ❯ test/components/entity-details-screen.test.ts:24:41
+     22|   }
+     23|   expect(words(body), place.entity).not.toMatch(owned);
+     24|   expect(words(body), place.entity).not.toContain('View code');
+       |                                         ^
+     25|   expect(drawn(body), place.entity).toBe(drawn(content('commit', at)));
+     26|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > model cards share the concise code-and-consumers layout at current scope
+ FAIL  test/components/explorer-function-card.test.ts > model cards share the concise code-and-consumers layout at commit scope
+AssertionError: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ test/components/explorer-function-card.test.ts:19:37
+     17|   for (const consumer of ['Order list', 'Order store']) expect(words(c…
+     18|   expect(card).not.toMatch(/<h2|<p\b|ex-pill|hx-verdict/);
+     19|   expect(count(card, /<button\b/g)).toBe(0);
+       |                                     ^
+     20|   expect(card).not.toContain('View code');
+     21|   expect(body).not.toContain('ex-legend');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function catalog cards stay concise and retain revision links without detail panels
+AssertionError: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ test/components/explorer-function-card.test.ts:51:37
+     49|   );
+     50|   expect(card).not.toContain('ex-function-open');
+     51|   expect(count(card, /<button\b/g)).toBe(0);
+       |                                     ^
+     52|   expect(card).not.toContain('View code');
+     53|   const commit = mode === 'current' ? '' : `/commit/${commits.middle}`;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 11 passed (15)
+   Start at  12:39:04
+   Duration  5.78s (transform 2.74s, setup 0ms, collect 4.54s, tests 93ms, environment 0ms, prepare 243ms)
+
+error: script "test:unit" exited with code 1
+$ playwright test entity-source-code.spec.ts --grep "1440px"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/entity-source-code.spec.ts:20:2 › only the detail Source tab opens code at the selected revision at 1440px (7.4s)
+
+
+  1) tests/e2e/entity-source-code.spec.ts:20:2 › only the detail Source tab opens code at the selected revision at 1440px 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: /^View code for / })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: /^View code for / }) with timeout 5000ms
+      - waiting for getByRole('button', { name: /^View code for / })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      28 | 		await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+      29 | 		await page.getByRole('link', { name: 'Open filterOrders', exact: true }).click();
+    > 30 | 		await expect(page.getByRole('button', { name: /^View code for / })).toHaveCount(0);
+         | 		                                                                    ^
+      31 | 		await page.getByRole('button', { name: 'Source', exact: true }).click();
+      32 | 		const button = page.getByRole('button', { name: 'View code for Filter orders', exact: true });
+      33 | 		await expect(
+        at /private/tmp/harness-snapshot-pMRYVz/packages/desktop/tests/e2e/entity-source-code.spec.ts:30:71
+
+    Error Context: test-results/entity-source-code-only-th-ba923-selected-revision-at-1440px/error-context.md
+
+  1 failed
+    tests/e2e/entity-source-code.spec.ts:20:2 › only the detail Source tab opens code at the selected revision at 1440px 
+error: script "test:e2e" exited with code 1
+$ bun run sync:shared && vitest run test/function-examples.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-pMRYVz/packages/desktop
+
+ ❯ test/function-examples.test.ts (8 tests | 1 failed) 19ms
+   ✓ each recorded call of a function is a row: its input, then the output or the error observed 5ms
+   ✓ a result that states an input and an output is one row, said to be what a test observed 1ms
+   ✓ what an assertion expected and found is never a row, and what is malformed or of another unit says so 2ms
+   ✓ a result that is absent, not stored, unread or not what its hash says shows no row 1ms
+   ✓ outside a function a recorded result is the same row, and nothing is said of a function 1ms
+   × the card of a function has no design picture or placeholder, and opens its plan 8ms
+     → expected 'filterOrders View code' to be 'filterOrders' // Object.is equality
+   ✓ the card of a planned page keeps its design picture and its designs link 1ms
+   ✓ the plan of an entity has an address, and the address of designs is still read 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/function-examples.test.ts > the card of a function has no design picture or placeholder, and opens its plan
+AssertionError: expected 'filterOrders View code' to be 'filterOrders' // Object.is equality
+
+Expected: [32m"filterOrders"[39m
+Received: [31m"filterOrders[7m View code[27m"[39m
+
+ ❯ test/function-examples.test.ts:124:23
+    122|  expect(words(plain)).not.toMatch(/design/i);
+    123|  expect(plain).toContain('href="/harness/functions/function.filter"');
+    124|  expect(words(plain)).toBe('filterOrders');
+       |                       ^
+    125|  expect(plain).not.toContain('View code');
+    126|  expect(plain).toContain('aria-label="Open filterOrders"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  12:39:28
+   Duration  2.27s (transform 1.05s, setup 0ms, collect 1.76s, tests 19ms, environment 0ms, prepare 133ms)
+
+error: script "test:unit" exited with code 1

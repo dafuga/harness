@@ -1,0 +1,37 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.63s]
+$ vitest run test/components/entity-overview.test.ts test/utils/entity-screens.test.ts
+
+ RUN  v3.2.4 /Users/danielfugere/.cache/ht/harness-snapshot-Pgg3Sf/packages/reports
+
+ ✓ test/components/entity-overview.test.ts (11 tests) 42ms
+ ✓ test/utils/entity-screens.test.ts (11 tests) 7ms
+
+ Test Files  2 passed (2)
+      Tests  22 passed (22)
+   Start at  16:29:23
+   Duration  1.86s (transform 883ms, setup 0ms, collect 1.26s, tests 49ms, environment 0ms, prepare 77ms)
+

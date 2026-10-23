@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/adapters/pinned-history.test.ts (3 tests) 4437ms
+   ✓ a commit without a note is built from Git alone, and nothing is written for it  1192ms
+   ✓ a note is read at the revision it is pinned to, never at where the ref is now  2020ms
+   ✓ one commit is built once for the revisions it is pinned to  1225ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  11:10:34
+   Duration  4.95s (transform 234ms, setup 0ms, collect 369ms, tests 4.44s, environment 0ms, prepare 27ms)
+

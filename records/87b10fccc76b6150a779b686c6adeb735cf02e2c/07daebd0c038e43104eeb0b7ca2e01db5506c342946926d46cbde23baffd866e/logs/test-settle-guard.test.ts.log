@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N
+
+ ✓ test/settle-guard.test.ts (5 tests) 7032ms
+   ✓ a process replaced while another is still being judged is not signalled  3732ms
+   ✓ what a possible service started stays protected after that service is gone  2113ms
+   ✓ another process under the id of a possible service lends no protection  515ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  04:27:57
+   Duration  7.25s (transform 36ms, setup 9ms, collect 31ms, tests 7.03s, environment 0ms, prepare 37ms)
+

@@ -1,0 +1,12 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop[39m
+
+ [32m✓[39m test/test-preview-refusal.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 979[2mms[22m[39m
+   [33m[2m✓[22m[39m a server that already answers on the preview port is refused, and no test is run on it [33m 552[2mms[22m[39m
+   [33m[2m✓[22m[39m a port override that is no port is refused by its name before anything starts [33m 426[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m   Start at [22m 19:41:00
+[2m   Duration [22m 1.23s[2m (transform 27ms, setup 0ms, collect 20ms, tests 979ms, environment 0ms, prepare 46ms)[22m
+

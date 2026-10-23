@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1[39m
+
+ [32m✓[39m test/cli.e2e.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 48388[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI scaffolds and checks a lib project [33m 15803[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI scaffolds and checks an app project with routes [33m 25553[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI reports edge errors cleanly [33m 2323[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI supports force overwrites and generated lint failures [33m 4705[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 21:49:15
+[2m   Duration [22m 48.66s[2m (transform 33ms, setup 10ms, collect 28ms, tests 48.39s, environment 0ms, prepare 40ms)[22m
+

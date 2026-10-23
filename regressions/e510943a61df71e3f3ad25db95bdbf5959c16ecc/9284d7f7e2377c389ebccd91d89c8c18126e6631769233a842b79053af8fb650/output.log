@@ -1,0 +1,39 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-O83kwK
+
+ ❯ test/guides.test.ts (7 tests | 1 failed) 11ms
+   ✓ model guidance is available for agents 3ms
+   ✓ guidance covers every non-model scaffold topic 2ms
+   ✓ code-rules guidance exposes hard Harness limits 0ms
+   ✓ loop guidance describes loop driven development 0ms
+   ✓ scaffold guidance tells agents what generated code contains 0ms
+   × guide lookup accepts common scaffold aliases 4ms
+     → Canonical topics precede aliases: expected 'view' to be 'page' // Object.is equality
+   ✓ available guide topics are unique for CLI error output 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/guides.test.ts > guide lookup accepts common scaffold aliases
+AssertionError: Canonical topics precede aliases: expected 'view' to be 'page' // Object.is equality
+
+Expected: [32m"page"[39m
+Received: [31m"view"[39m
+
+ ❯ test/guides.test.ts:98:6
+     96|     )?.topic,
+     97|     'Canonical topics precede aliases'
+     98|    ).toBe(canonical);
+       |      ^
+     99|   }
+    100|  }));
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/guides.test.ts:78:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  14:38:42
+   Duration  2.30s (transform 76ms, setup 52ms, collect 72ms, tests 11ms, environment 0ms, prepare 34ms)
+

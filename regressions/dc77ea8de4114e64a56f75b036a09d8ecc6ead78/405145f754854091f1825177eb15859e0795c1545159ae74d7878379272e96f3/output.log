@@ -1,0 +1,58 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [8.10s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-qVUSXd/packages/reports
+
+ ❯ test/components/entity-sections.test.ts (2 tests | 1 failed) 17ms
+   × a visual overview leads with evidence and keeps usage in its dedicated tabs 7ms
+     → expected '<!--[--><!--[-1--><div role="tabpanel…' to contain '<summary>Measurements and frozen limi…'
+   ✓ what it uses and its tests replace the overview, and its evidence pane with it 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-sections.test.ts > a visual overview leads with evidence and keeps usage in its dedicated tabs
+AssertionError: expected '<!--[--><!--[-1--><div role="tabpanel…' to contain '<summary>Measurements and frozen limi…'
+
+Expected: "<summary>Measurements and frozen limits</summary>"
+Received: "<!--[--><!--[-1--><div role="tabpanel" aria-label="Orders page overview"><!--[0--><p>the evidence of its kind</p><!----><!----><!--]--> <div class="ex-summary svelte-9u3o22 compact"><section class="ex-card" aria-label="Size"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9M8 5.3l8 4.5"></path></svg><!----> Size</h2> <dl class="ex-rows ex-figures"><!--[--><div><dt>Source size</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><div><dt>Emitted size</dt> <dd title="This unit declares no process or Wasm output." class="unmeasured">Not measured <!--[0--><span class="ex-note svelte-9u3o22">This unit declares no process or Wasm output.</span><!--]--></dd></div><div><dt>Complexity</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><!--]--></dl></section> <section class="ex-card" aria-label="Performance profile"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4.5 17a8.5 8.5 0 1 1 15 0M12 13l3.5-4M12 14.2a1.2 1.2 0 1 0 0-2.4a1.2 1.2 0 0 0 0 2.4z"></path></svg><!----> Performance profile</h2> <!--[0--><dl class="ex-rows ex-figures"><div><dt>Latency</dt> <dd class="unmeasured">Not measured</dd></div> <div><dt>Memory</dt> <dd class="unmeasured">Not measured</dd></div></dl> <p class="ex-note svelte-9u3o22">No benchmark is recorded for this revision.</p><!--]--></section></div><!----> <!--[-1--><!--]--></div><!--]--><!--]-->"
+
+ ❯ test/components/entity-sections.test.ts:20:15
+     18|  const body = sections();
+     19|  expect(body).toContain('aria-label="Orders page overview"');
+     20|  expect(body).toContain('<summary>Measurements and frozen limits</summ…
+       |               ^
+     21|  expect(body).toContain('aria-label="Measurements and frozen limits"');
+     22|  expect(words(body)).not.toContain('Metric Measured Limit Note');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  02:24:46
+   Duration  937ms (transform 575ms, setup 0ms, collect 779ms, tests 17ms, environment 0ms, prepare 28ms)
+

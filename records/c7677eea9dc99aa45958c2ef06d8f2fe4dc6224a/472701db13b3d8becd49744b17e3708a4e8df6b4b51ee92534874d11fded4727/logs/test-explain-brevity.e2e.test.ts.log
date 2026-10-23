@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5
+
+ ✓ test/explain-brevity.e2e.test.ts (4 tests) 16269ms
+   ✓ an overlong note is refused when it is written, and nothing is stored  1845ms
+   ✓ an overlong reason put into the store by hand fails the check and the verification  3118ms
+   ✓ a repository that has not adopted the limits keeps its long reasons valid  2169ms
+   ✓ an overlong reason is replaced through explain add --replace, and the earlier one stays stored  4514ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  19:40:48
+   Duration  16.50s (transform 33ms, setup 6ms, collect 49ms, tests 16.27s, environment 0ms, prepare 22ms)
+

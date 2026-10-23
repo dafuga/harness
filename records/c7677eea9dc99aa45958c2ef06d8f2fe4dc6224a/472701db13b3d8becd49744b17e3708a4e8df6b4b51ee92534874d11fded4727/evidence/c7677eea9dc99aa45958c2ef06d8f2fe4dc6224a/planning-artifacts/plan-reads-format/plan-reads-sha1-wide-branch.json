@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "rev-parse --verify aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa^{commit}"
+				]
+			},
+			"output": {
+				"answer": "d21d124375f10deb773b20500ce88d8206d0b3ca",
+				"reachedGit": 1
+			}
+		},
+		{
+			"name": "rev-parse --verify aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa^{commit}"
+				]
+			},
+			"output": {
+				"answer": "b48b3ffabdc38ac35607422960e170e8a9106aa8",
+				"reachedGit": 2
+			}
+		},
+		{
+			"name": "rev-parse --verify d21d124375f10deb773b20500ce88d8206d0b3ca^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"d21d124375f10deb773b20500ce88d8206d0b3ca^{commit}"
+				]
+			},
+			"output": {
+				"answer": "d21d124375f10deb773b20500ce88d8206d0b3ca",
+				"reachedGit": 3
+			}
+		},
+		{
+			"name": "rev-parse --verify d21d124375f10deb773b20500ce88d8206d0b3ca^{commit}",
+			"input": {
+				"args": [
+					"rev-parse",
+					"--verify",
+					"d21d124375f10deb773b20500ce88d8206d0b3ca^{commit}"
+				]
+			},
+			"output": {
+				"answer": "d21d124375f10deb773b20500ce88d8206d0b3ca",
+				"reachedGit": 3
+			}
+		}
+	]
+}

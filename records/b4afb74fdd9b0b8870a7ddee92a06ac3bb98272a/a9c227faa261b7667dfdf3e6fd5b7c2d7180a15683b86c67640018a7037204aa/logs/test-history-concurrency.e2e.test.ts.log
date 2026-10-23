@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/history-concurrency.e2e.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 26179[2mms[22m[39m
+   [33m[2m✓[22m[39m two records with identical media attach at the same time in one repository [33m 5150[2mms[22m[39m
+   [33m[2m✓[22m[39m four writers at once lose nothing [33m 4559[2mms[22m[39m
+   [33m[2m✓[22m[39m two worktrees that share one Git directory attach at the same time [33m 6185[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 16:01:47
+[2m   Duration [22m 26.54s[2m (transform 85ms, setup 24ms, collect 70ms, tests 26.18s, environment 0ms, prepare 82ms)[22m
+

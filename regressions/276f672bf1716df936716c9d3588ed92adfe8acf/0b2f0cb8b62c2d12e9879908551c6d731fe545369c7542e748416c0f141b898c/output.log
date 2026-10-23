@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rjGSoa
+
+ ✓ test/history-index.e2e.test.ts (4 tests | 3 skipped) 30103ms
+   ✓ the index is deterministic and names every commit, verified or not  4151ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 3 skipped (4)
+   Start at  16:51:57
+   Duration  35.23s (transform 102ms, setup 14ms, collect 93ms, tests 30.10s, environment 0ms, prepare 67ms)
+
+$ vitest run test/components/entity-details.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rjGSoa/packages/reports
+
+ ✓ test/components/entity-details.test.ts (7 tests) 93ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  16:52:34
+   Duration  2.76s (transform 1.50s, setup 0ms, collect 2.13s, tests 93ms, environment 0ms, prepare 73ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview.spec.ts --grep "one entity page keeps source"
+
+Running 1 test using 1 worker
+
+(node:23423) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview.spec.ts:163:1 › one entity page keeps source optional without a duplicate Details page (1.5s)
+
+  1 passed (6.5s)

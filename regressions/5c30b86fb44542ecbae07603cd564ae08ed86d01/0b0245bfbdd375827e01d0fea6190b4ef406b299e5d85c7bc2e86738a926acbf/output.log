@@ -1,0 +1,68 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [997.00ms]
+$ playwright test "tests/e2e/ui-evidence-screens.spec.ts" --grep "an inherited capture" --output /tmp/harness-inherited-tests-browser-captures
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5799 --strictPort --port "5868"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+F
+
+  1) tests/e2e/ui-evidence-screens.spec.ts:150:1 › an inherited capture is not the current one, and sides that are not alike are not compared 
+
+    Error: expect(locator).toHaveAccessibleName(expected) failed
+
+    Locator:  locator('.entity-heading .verification')
+    Expected: "Full coverage passed"
+    Received: "Coverage incomplete: The record ran no test."
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAccessibleName" locator('.entity-heading .verification') with timeout 5000ms
+      - waiting for locator('.entity-heading .verification')
+        14 × locator resolved to <button class="verification" title="Coverage incomplete: The record ran no test." aria-label="Coverage incomplete: The record ran no test.">×</button>
+           - unexpected value "Coverage incomplete: The record ran no test."
+
+
+      167 | 	await expect(current.getByRole('img')).toHaveCount(0);
+      168 | 	await runtimeEvidence(page, info, 'inherited');
+    > 169 | 	await expect(page.locator('.entity-heading .verification')).toHaveAccessibleName(
+          | 	                                                            ^
+      170 | 		'Full coverage passed'
+      171 | 	);
+      172 | 	await page.goto(at(`components/${ids.card}`, commits.tip));
+        at /private/tmp/harness-snapshot-2UyO0f/packages/desktop/tests/e2e/ui-evidence-screens.spec.ts:169:62
+
+    Error Context: ../../../../../tmp/harness-inherited-tests-browser-captures/ui-evidence-screens-an-inh-fed2b--not-alike-are-not-compared/error-context.md
+
+  1 failed
+    tests/e2e/ui-evidence-screens.spec.ts:150:1 › an inherited capture is not the current one, and sides that are not alike are not compared 
+error: script "test:e2e" exited with code 1

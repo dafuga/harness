@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+ ✓ test/ios-build-processes.test.ts (4 tests) 16153ms
+   ✓ a build that succeeds leaves no process behind  4222ms
+   ✓ a build that fails leaves no process behind either, and still fails  3159ms
+   ✓ a process the build did not start is never ended, whatever it is called  2821ms
+   ✓ while another build uses the shared Interface Builder tools, nothing is ended  5870ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  09:41:34
+   Duration  16.56s (transform 71ms, setup 0ms, collect 91ms, tests 16.15s, environment 0ms, prepare 54ms)
+

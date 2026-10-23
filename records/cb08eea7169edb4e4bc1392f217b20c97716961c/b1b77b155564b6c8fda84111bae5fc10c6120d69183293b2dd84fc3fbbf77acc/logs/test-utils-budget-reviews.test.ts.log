@@ -1,0 +1,25 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/budget-reviews.test.ts [ test/utils/budget-reviews.test.ts ]
+Error: Cannot find package 'zod' imported from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/core/comparisonTypes.ts'
+ ❯ src/core/comparisonTypes.ts:1:1
+      1| import { z } from 'zod';
+       | ^
+      2| 
+      3| const text = z.string().trim().min(1);
+
+Caused by: Error: Failed to load url zod (resolved id: zod) in /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/core/comparisonTypes.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:22663:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  03:43:24
+   Duration  233ms (transform 24ms, setup 8ms, collect 0ms, tests 0ms, environment 0ms, prepare 52ms)
+

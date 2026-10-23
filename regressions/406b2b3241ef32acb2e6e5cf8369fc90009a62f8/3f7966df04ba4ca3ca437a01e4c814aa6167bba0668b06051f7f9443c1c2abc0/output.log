@@ -1,0 +1,99 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Nmo7hH/packages/reports
+
+ ❯ test/components/explorer-usage.test.ts (12 tests | 8 failed) 30ms
+   ✓ component card usage is flat and capped with 0 consumers at current scope 9ms
+   × component card usage is flat and capped with 1 consumers at current scope 7ms
+     → expected '<div class="ex-usage svelte-1oujjw5" …' not to contain 'ex-usage-kind'
+   × component card usage is flat and capped with 3 consumers at current scope 2ms
+     → expected '<div class="ex-usage svelte-1oujjw5" …' not to contain 'ex-usage-kind'
+   × component card usage is flat and capped with 4 consumers at current scope 2ms
+     → expected 4 to be 3 // Object.is equality
+   × component card usage is flat and capped with 7 consumers at current scope 2ms
+     → expected 7 to be 3 // Object.is equality
+   ✓ shared usage footers render links and empty usage at current scope 1ms
+   ✓ component card usage is flat and capped with 0 consumers at commit scope 1ms
+   × component card usage is flat and capped with 1 consumers at commit scope 1ms
+     → expected '<div class="ex-usage svelte-1oujjw5" …' not to contain 'ex-usage-kind'
+   × component card usage is flat and capped with 3 consumers at commit scope 1ms
+     → expected '<div class="ex-usage svelte-1oujjw5" …' not to contain 'ex-usage-kind'
+   × component card usage is flat and capped with 4 consumers at commit scope 1ms
+     → expected 4 to be 3 // Object.is equality
+   × component card usage is flat and capped with 7 consumers at commit scope 1ms
+     → expected 7 to be 3 // Object.is equality
+   ✓ shared usage footers render links and empty usage at commit scope 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 1 consumers at current scope
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 3 consumers at current scope
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 1 consumers at commit scope
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 3 consumers at commit scope
+AssertionError: expected '<div class="ex-usage svelte-1oujjw5" …' not to contain 'ex-usage-kind'
+
+Expected: [32m"ex-usage-kind"[39m
+Received: [31m"<div class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"><span>Used In</span><!--[-1--><!--]--> <!--[-1--><!--[--><ul aria-label="Pages" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Pages</li> <!--[--><li><!--$s1--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/pages/app.page.orders"><!---->Orders page<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><!--]--><!--]--></div><!----></div><!--]--></article><!--]-->"[39m
+
+ ❯ test/components/explorer-usage.test.ts:28:23
+     26|    const footer = body.slice(body.search(/<div class="ex-usage\b/));
+     27|    expect((footer.match(/<a\b/g) ?? []).length).toBe(Math.min(total, 3…
+     28|    expect(footer).not.toContain('ex-usage-kind');
+       |                       ^
+     29|    expect(words(footer).includes('…')).toBe(total > 3);
+     30|    if (total === 0) expect(words(footer).trim()).toBe('Used In —');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 4 consumers at current scope
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 4 consumers at commit scope
+AssertionError: expected 4 to be 3 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 3[39m
+[31m+ 4[39m
+
+ ❯ test/components/explorer-usage.test.ts:27:49
+     25|    }).body;
+     26|    const footer = body.slice(body.search(/<div class="ex-usage\b/));
+     27|    expect((footer.match(/<a\b/g) ?? []).length).toBe(Math.min(total, 3…
+       |                                                 ^
+     28|    expect(footer).not.toContain('ex-usage-kind');
+     29|    expect(words(footer).includes('…')).toBe(total > 3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 7 consumers at current scope
+ FAIL  test/components/explorer-usage.test.ts > component card usage is flat and capped with 7 consumers at commit scope
+AssertionError: expected 7 to be 3 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 3[39m
+[31m+ 7[39m
+
+ ❯ test/components/explorer-usage.test.ts:27:49
+     25|    }).body;
+     26|    const footer = body.slice(body.search(/<div class="ex-usage\b/));
+     27|    expect((footer.match(/<a\b/g) ?? []).length).toBe(Math.min(total, 3…
+       |                                                 ^
+     28|    expect(footer).not.toContain('ex-usage-kind');
+     29|    expect(words(footer).includes('…')).toBe(total > 3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 4 passed (12)
+   Start at  21:18:15
+   Duration  2.09s (transform 1.05s, setup 0ms, collect 1.86s, tests 30ms, environment 0ms, prepare 44ms)
+
+error: "vitest" exited with code 1

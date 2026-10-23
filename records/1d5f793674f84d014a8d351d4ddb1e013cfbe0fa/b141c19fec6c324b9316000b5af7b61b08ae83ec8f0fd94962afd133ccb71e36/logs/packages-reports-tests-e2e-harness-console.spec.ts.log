@@ -1,0 +1,38 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 vite dev --host 127.0.0.1 --port 5588 --port "58008"
+[WebServer] (node:34049) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 7 tests using 1 worker
+
+(node:34121) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/harness-console.spec.ts:10:1 › the component map is searchable, keyboard operable and has a text alternative (1.0s)
+  ✓  2 tests/e2e/harness-console.spec.ts:56:1 › a comparison shows changed, affected, added and removed units and stays on real ancestry (346ms)
+  ✓  3 tests/e2e/harness-console.spec.ts:102:1 › history shows the recorded states of a revision, its failures, gaps and inherited evidence (818ms)
+  ✓  4 tests/e2e/harness-console.spec.ts:152:1 › growth names the commit and reason of each change and keeps incompatible timings apart (200ms)
+  ✓  5 tests/e2e/harness-console.spec.ts:179:2 › the console fits a desktop viewport without sideways scrolling (497ms)
+  ✓  6 tests/e2e/harness-console.spec.ts:179:2 › the console fits a tablet viewport without sideways scrolling (492ms)
+  ✓  7 tests/e2e/harness-console.spec.ts:179:2 › the console fits a mobile viewport without sideways scrolling (484ms)
+
+  7 passed (1.0m)

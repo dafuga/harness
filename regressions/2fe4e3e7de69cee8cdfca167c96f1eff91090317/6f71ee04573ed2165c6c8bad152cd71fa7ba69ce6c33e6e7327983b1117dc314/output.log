@@ -1,0 +1,1044 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [16.05s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4
+
+stdout | test/history-source.test.ts > history archives owned text from each commit, deduplicates it and states source gaps
+{"workload":"two committed source trees with text and gaps","method":"performance.now wall time; whole Vitest process RSS","buildMs":548.0237079999997,"processRssBytes":146161664}
+
+ ❯ test/history-source.test.ts (1 test | 1 failed) 1986ms
+   × history archives owned text from each commit, deduplicates it and states source gaps 1984ms
+     → owned source is retained with the selected revision: expected undefined to be defined
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-source.test.ts > history archives owned text from each commit, deduplicates it and states source gaps
+AssertionError: owned source is retained with the selected revision: expected undefined to be defined
+ ❯ assertSource test/history-source.test.ts:47:71
+     45|  const units = detail.registry.units as Array<{ id: string; sourceFile…
+     46|  const files = units.find((item) => item.id === 'function.slugify')?.s…
+     47|  expect(files, 'owned source is retained with the selected revision').…
+       |                                                                       ^
+     48|  const path = files?.find((item) => item.path === 'src/utils/slugify.t…
+     49|  expect(await readFile(join(out, path!), 'utf8')).toBe(expected);
+ ❯ test/history-source.test.ts:88:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  20:24:23
+   Duration  6.89s (transform 551ms, setup 9ms, collect 1.29s, tests 1.99s, environment 0ms, prepare 41ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports
+
+ ❯ test/components/entity-details.test.ts (7 tests | 1 failed) 34ms
+   ✓ details opens on the contract with size and performance, and shows no source 12ms
+   ✓ a page has details like every other kind: purpose, address, inputs, output and states 2ms
+   × source is shown only when the source tab is the open one 13ms
+     → expected ' Pages Orders page Orders page Page O…' to contain 'Source files'
+   ✓ measurements name the limit each figure is frozen at, or that none is recorded 1ms
+   ✓ a service has each execution target on a line of its own, never added together 1ms
+   ✓ a recorded note that names a file is shown without it on measurements and on the contract 2ms
+   ✓ a declared contract explains each item in its dedicated tab and details 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-details.test.ts > source is shown only when the source tab is the open one
+AssertionError: expected ' Pages Orders page Orders page Page O…' to contain 'Source files'
+
+Expected: "Source files"
+Received: " Pages Orders page Orders page Page Overview Contract Uses States History Source Source ownership The implementation files at this revision. Files src/routes/orders/+page.svelte "
+
+ ❯ test/components/entity-details.test.ts:70:22
+     68|  }
+     69|  const body = content('commit', { ...page, tab: 'source' });
+     70|  expect(words(body)).toContain('Source files');
+       |                      ^
+     71|  expect(words(body)).toContain('src/routes/orders/+page.svelte');
+     72|  expect(body).toContain(`/commit/${commits.middle}/pages/${ids.page}?t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  20:24:31
+   Duration  1.87s (transform 1.12s, setup 0ms, collect 1.58s, tests 34ms, environment 0ms, prepare 48ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts --grep "code opens only|source file selection|Source opens file|delayed previous"
+
+Running 24 tests using 1 worker
+
+(node:59090) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at desktop width (2.4s)
+(node:59517) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   2 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at desktop width (2.4s)
+(node:59839) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   3 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at desktop width (2.4s)
+(node:60262) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   4 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at desktop width (2.5s)
+(node:60668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   5 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at desktop width (3.2s)
+(node:61224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   6 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at desktop width (2.4s)
+(node:61685) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   7 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at desktop width (2.4s)
+(node:62130) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   8 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at tablet width (2.4s)
+(node:62629) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   9 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at tablet width (2.5s)
+(node:63194) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  10 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at tablet width (2.5s)
+(node:63820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  11 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at tablet width (2.6s)
+(node:64426) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  12 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at tablet width (3.2s)
+(node:65147) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  13 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at tablet width (2.4s)
+(node:65834) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  14 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at tablet width (2.5s)
+(node:66515) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  15 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at mobile width (2.5s)
+(node:67037) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  16 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at mobile width (2.5s)
+(node:67531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  17 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at mobile width (2.5s)
+(node:68227) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  18 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at mobile width (2.4s)
+(node:68850) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  19 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at mobile width (3.1s)
+(node:69800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  20 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at mobile width (2.4s)
+(node:70434) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  21 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at mobile width (2.5s)
+(node:70981) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  22 test/entity-preview-source.spec.ts:119:1 › source file selection and closing retain the detail Source tab (2.2s)
+(node:71631) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  23 test/entity-preview-source.spec.ts:140:1 › Source opens file contents in a modal and older histories state an explicit gap (3.2s)
+(node:72453) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  24 test/entity-preview-source.spec.ts:170:1 › a delayed previous source read cannot replace the selected file (3.2s)
+
+
+  1) test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at desktop width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/error-context.md
+
+  2) test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at desktop width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/error-context.md
+
+  3) test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at desktop width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-d0af9-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-d0af9-Source-tab-at-desktop-width/error-context.md
+
+  4) test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at desktop width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-812f9-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-812f9-Source-tab-at-desktop-width/error-context.md
+
+  5) test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at desktop width 
+
+    TimeoutError: locator.waitFor: Timeout 3000ms exceeded.
+    Call log:
+      - waiting for locator('.ex-content') to be visible
+
+
+       at entityPreviewPage.ts:70
+
+      68 | 	const asked = variant ? `?variant=${variant}` : '';
+      69 | 	await page.goto(`${origin}/${asked}#${encodeURIComponent(JSON.stringify(address))}`);
+    > 70 | 	await page.locator('.ex-content').waitFor();
+         | 	                                  ^
+      71 | }
+      72 | /** The address the content is at, as the preview keeps it. */
+      73 | export const where = (page: Page): Promise<ExplorerLocation> =>
+        at open (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entityPreviewPage.ts:70:36)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:79:4
+
+    Error: Unexpected browser errors or missing expected errors
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+      Object {
+        "missing": Array [],
+    -   "unexpected": Array [],
+    +   "unexpected": Array [
+    +     Object {
+    +       "message": "https://svelte.dev/e/each_key_duplicate",
+    +       "page": "http://localhost:41739/?variant=source#%7B%22branch%22%3A%22feature%2Forders%22%2C%22commit%22%3Anull%2C%22category%22%3A%22shells%22%7D",
+    +       "stack": "Error: https://svelte.dev/e/each_key_duplicate
+    +     at rh (http://localhost:41739/preview.iife.js:1:3617)
+    +     at http://localhost:41739/preview.iife.js:1:42333
+    +     at Tc (http://localhost:41739/preview.iife.js:1:25401)
+    +     at Rn (http://localhost:41739/preview.iife.js:1:26646)
+    +     at yr (http://localhost:41739/preview.iife.js:1:21719)
+    +     at Hn (http://localhost:41739/preview.iife.js:1:22614)
+    +     at ve (http://localhost:41739/preview.iife.js:1:41877)
+    +     at D2 (http://localhost:41739/preview.iife.js:10:20070)
+    +     at G2 (http://localhost:41739/preview.iife.js:10:21621)
+    +     at O (http://localhost:41739/preview.iife.js:10:22579)",
+    +       "type": "pageerror",
+    +     },
+    +   ],
+      }
+
+       at ../../../test/support/browserTest.ts:81
+
+      79 | 				unmatchedErrors(errors, expected),
+      80 | 				'Unexpected browser errors or missing expected errors'
+    > 81 | 			).toEqual({
+         | 			  ^
+      82 | 				unexpected: [],
+      83 | 				missing: []
+      84 | 			});
+        at Object.finish (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/test/support/browserTest.ts:81:6)
+        at Object.base.extend.browserErrors.auto (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/test/support/browserTest.ts:38:5)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Shel-8438a-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Shel-8438a-Source-tab-at-desktop-width/error-context.md
+
+  6) test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at desktop width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-f6b64-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-f6b64-Source-tab-at-desktop-width/error-context.md
+
+  7) test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at desktop width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-7729d-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-7729d-Source-tab-at-desktop-width/error-context.md
+
+  8) test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at tablet width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-6ac6a--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-6ac6a--Source-tab-at-tablet-width/error-context.md
+
+  9) test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at tablet width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/error-context.md
+
+  10) test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at tablet width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-e8afa--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-e8afa--Source-tab-at-tablet-width/error-context.md
+
+  11) test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at tablet width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-b2230--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-b2230--Source-tab-at-tablet-width/error-context.md
+
+  12) test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at tablet width 
+
+    TimeoutError: locator.waitFor: Timeout 3000ms exceeded.
+    Call log:
+      - waiting for locator('.ex-content') to be visible
+
+
+       at entityPreviewPage.ts:70
+
+      68 | 	const asked = variant ? `?variant=${variant}` : '';
+      69 | 	await page.goto(`${origin}/${asked}#${encodeURIComponent(JSON.stringify(address))}`);
+    > 70 | 	await page.locator('.ex-content').waitFor();
+         | 	                                  ^
+      71 | }
+      72 | /** The address the content is at, as the preview keeps it. */
+      73 | export const where = (page: Page): Promise<ExplorerLocation> =>
+        at open (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entityPreviewPage.ts:70:36)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:79:4
+
+    Error: Unexpected browser errors or missing expected errors
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+      Object {
+        "missing": Array [],
+    -   "unexpected": Array [],
+    +   "unexpected": Array [
+    +     Object {
+    +       "message": "https://svelte.dev/e/each_key_duplicate",
+    +       "page": "http://localhost:41739/?variant=source#%7B%22branch%22%3A%22feature%2Forders%22%2C%22commit%22%3Anull%2C%22category%22%3A%22shells%22%7D",
+    +       "stack": "Error: https://svelte.dev/e/each_key_duplicate
+    +     at rh (http://localhost:41739/preview.iife.js:1:3617)
+    +     at http://localhost:41739/preview.iife.js:1:42333
+    +     at Tc (http://localhost:41739/preview.iife.js:1:25401)
+    +     at Rn (http://localhost:41739/preview.iife.js:1:26646)
+    +     at yr (http://localhost:41739/preview.iife.js:1:21719)
+    +     at Hn (http://localhost:41739/preview.iife.js:1:22614)
+    +     at ve (http://localhost:41739/preview.iife.js:1:41877)
+    +     at D2 (http://localhost:41739/preview.iife.js:10:20070)
+    +     at G2 (http://localhost:41739/preview.iife.js:10:21621)
+    +     at O (http://localhost:41739/preview.iife.js:10:22579)",
+    +       "type": "pageerror",
+    +     },
+    +   ],
+      }
+
+       at ../../../test/support/browserTest.ts:81
+
+      79 | 				unmatchedErrors(errors, expected),
+      80 | 				'Unexpected browser errors or missing expected errors'
+    > 81 | 			).toEqual({
+         | 			  ^
+      82 | 				unexpected: [],
+      83 | 				missing: []
+      84 | 			});
+        at Object.finish (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/test/support/browserTest.ts:81:6)
+        at Object.base.extend.browserErrors.auto (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/test/support/browserTest.ts:38:5)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Shel-60e1f--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Shel-60e1f--Source-tab-at-tablet-width/error-context.md
+
+  13) test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at tablet width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-cc625--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-cc625--Source-tab-at-tablet-width/error-context.md
+
+  14) test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at tablet width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-8e56a--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-8e56a--Source-tab-at-tablet-width/error-context.md
+
+  15) test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at mobile width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/models/orders/Order.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-992c7--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-992c7--Source-tab-at-mobile-width/error-context.md
+
+  16) test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at mobile width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/error-context.md
+
+  17) test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at mobile width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/routes/orders/+page.svelte', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-364a4--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-364a4--Source-tab-at-mobile-width/error-context.md
+
+  18) test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at mobile width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/components/orders/OrderCard.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-36be6--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-36be6--Source-tab-at-mobile-width/error-context.md
+
+  19) test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at mobile width 
+
+    TimeoutError: locator.waitFor: Timeout 3000ms exceeded.
+    Call log:
+      - waiting for locator('.ex-content') to be visible
+
+
+       at entityPreviewPage.ts:70
+
+      68 | 	const asked = variant ? `?variant=${variant}` : '';
+      69 | 	await page.goto(`${origin}/${asked}#${encodeURIComponent(JSON.stringify(address))}`);
+    > 70 | 	await page.locator('.ex-content').waitFor();
+         | 	                                  ^
+      71 | }
+      72 | /** The address the content is at, as the preview keeps it. */
+      73 | export const where = (page: Page): Promise<ExplorerLocation> =>
+        at open (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entityPreviewPage.ts:70:36)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:79:4
+
+    Error: Unexpected browser errors or missing expected errors
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+      Object {
+        "missing": Array [],
+    -   "unexpected": Array [],
+    +   "unexpected": Array [
+    +     Object {
+    +       "message": "https://svelte.dev/e/each_key_duplicate",
+    +       "page": "http://localhost:41739/?variant=source#%7B%22branch%22%3A%22feature%2Forders%22%2C%22commit%22%3Anull%2C%22category%22%3A%22shells%22%7D",
+    +       "stack": "Error: https://svelte.dev/e/each_key_duplicate
+    +     at rh (http://localhost:41739/preview.iife.js:1:3617)
+    +     at http://localhost:41739/preview.iife.js:1:42333
+    +     at Tc (http://localhost:41739/preview.iife.js:1:25401)
+    +     at Rn (http://localhost:41739/preview.iife.js:1:26646)
+    +     at yr (http://localhost:41739/preview.iife.js:1:21719)
+    +     at Hn (http://localhost:41739/preview.iife.js:1:22614)
+    +     at ve (http://localhost:41739/preview.iife.js:1:41877)
+    +     at D2 (http://localhost:41739/preview.iife.js:10:20070)
+    +     at G2 (http://localhost:41739/preview.iife.js:10:21621)
+    +     at O (http://localhost:41739/preview.iife.js:10:22579)",
+    +       "type": "pageerror",
+    +     },
+    +   ],
+      }
+
+       at ../../../test/support/browserTest.ts:81
+
+      79 | 				unmatchedErrors(errors, expected),
+      80 | 				'Unexpected browser errors or missing expected errors'
+    > 81 | 			).toEqual({
+         | 			  ^
+      82 | 				unexpected: [],
+      83 | 				missing: []
+      84 | 			});
+        at Object.finish (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/test/support/browserTest.ts:81:6)
+        at Object.base.extend.browserErrors.auto (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/test/support/browserTest.ts:38:5)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Shel-8dbd7--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Shel-8dbd7--Source-tab-at-mobile-width/error-context.md
+
+  20) test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at mobile width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/configs/orders/orderSettings.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-21bee--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-21bee--Source-tab-at-mobile-width/error-context.md
+
+  21) test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at mobile width 
+
+    Error: Every source file has its own code action
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true })
+    Expected: visible
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Every source file has its own code action getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts', exact: true })
+
+
+      92 | 			await expect(page.locator('pre')).toHaveCount(0);
+      93 | 			await capture(page, `${phase}-source-action-${category}-${viewport}`);
+    > 94 | 			await expect(action, 'Every source file has its own code action').toBeVisible();
+         | 			                                                                  ^
+      95 | 			await fileLink(page, path, commits.tip);
+      96 | 			const started = await page.evaluate(() => performance.now());
+      97 | 			await action.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:94:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-e9407--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-e9407--Source-tab-at-mobile-width/error-context.md
+
+  22) test/entity-preview-source.spec.ts:119:1 › source file selection and closing retain the detail Source tab 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/Order types #é.ts', exact: true })
+    Expected: "https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/services/orders/Order%20types%20%23%C3%A9.ts"
+    Timeout: 2000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/Order types #é.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/Order types #é.ts', exact: true })
+
+
+      40 | 	const files = page.getByRole('list', { name: 'Source files', exact: true });
+      41 | 	const link = files.getByRole('link', { name: path, exact: true });
+    > 42 | 	await expect(link).toHaveAttribute(
+         | 	                   ^
+      43 | 		'href',
+      44 | 		`https://github.com/example/orders/blob/${commit}/${path.split('/').map(encodeURIComponent).join('/')}`
+      45 | 	);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:42:21)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:122:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-sour-8f6ef-etain-the-detail-Source-tab/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-sour-8f6ef-etain-the-detail-Source-tab/error-context.md
+
+  23) test/entity-preview-source.spec.ts:140:1 › Source opens file contents in a modal and older histories state an explicit gap 
+
+    TimeoutError: locator.click: Timeout 3000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'View code for src/functions/orders/filterOrders.ts', exact: true })
+
+
+      149 | 			exact: true
+      150 | 		})
+    > 151 | 		.click();
+          | 		 ^
+      152 | 	await expect(page.getByRole('dialog').locator('pre')).toHaveText(
+      153 | 		sourceText(commits.middle, 'src/functions/orders/filterOrders.ts')
+      154 | 	);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:151:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Sour-eedbe-ories-state-an-explicit-gap/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Sour-eedbe-ories-state-an-explicit-gap/error-context.md
+
+  24) test/entity-preview-source.spec.ts:170:1 › a delayed previous source read cannot replace the selected file 
+
+    TimeoutError: page.waitForRequest: Timeout 3000ms exceeded while waiting for event "request"
+    =========================== logs ===========================
+    waiting for request "**/media/314a7921a4724315b21495cb4c80744f44cd5941…"
+    ============================================================
+
+      180 | 		await route.fulfill({ contentType: 'text/plain', body: previous });
+      181 | 	});
+    > 182 | 	const requested = page.waitForRequest(`**/media/${hash}.txt`);
+          | 	                       ^
+      183 | 	await page
+      184 | 		.getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts' })
+      185 | 		.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:182:25
+
+    TimeoutError: locator.click: Timeout 3000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts' })
+
+
+      183 | 	await page
+      184 | 		.getByRole('button', { name: 'View code for src/services/orders/OrderStore.ts' })
+    > 185 | 		.click();
+          | 		 ^
+      186 | 	await requested;
+      187 | 	const dialog = page.getByRole('dialog');
+      188 | 	await dialog
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pOV6V4/packages/reports/test/entity-preview-source.spec.ts:185:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-a-de-f382e-t-replace-the-selected-file/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-a-de-f382e-t-replace-the-selected-file/error-context.md
+
+  24 failed
+    test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:119:1 › source file selection and closing retain the detail Source tab 
+    test/entity-preview-source.spec.ts:140:1 › Source opens file contents in a modal and older histories state an explicit gap 
+    test/entity-preview-source.spec.ts:170:1 › a delayed previous source read cannot replace the selected file 
+error: script "test:entities" exited with code 1

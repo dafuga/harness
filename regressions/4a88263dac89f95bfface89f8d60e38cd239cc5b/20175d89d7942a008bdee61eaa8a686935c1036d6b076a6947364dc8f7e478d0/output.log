@@ -1,0 +1,19 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XVejSU/packages/reports
+
+ ✓ test/components/explorer-composition.test.ts (6 tests) 3097ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  691ms
+   ✓ the four screens of a category are made of different components  573ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  1737ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  12:55:29
+   Duration  5.58s (transform 1.25s, setup 0ms, collect 1.85s, tests 3.10s, environment 0ms, prepare 71ms)
+

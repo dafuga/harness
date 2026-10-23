@@ -1,0 +1,60 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [16.10s]
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-JLndXi
+
+ ✓ test/services/unit-index.test.ts (12 tests) 1152ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  889ms
+ ✓ test/services/service-move-review-ledger.test.ts (1 test) 1ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  22:51:04
+   Duration  3.37s (transform 124ms, setup 113ms, collect 302ms, tests 1.15s, environment 0ms, prepare 56ms)
+
+$ vitest run test/utils/explorer-category.test.ts test/components/entity-relations.test.ts
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-JLndXi/packages/reports
+
+ ✓ test/utils/explorer-category.test.ts (13 tests) 155ms
+ ✓ test/components/entity-relations.test.ts (5 tests) 51ms
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  22:51:09
+   Duration  1.99s (transform 843ms, setup 0ms, collect 1.18s, tests 205ms, environment 0ms, prepare 63ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-contract.spec.ts test/entity-preview-metric-diff.spec.ts
+
+Running 5 tests using 1 worker
+
+  ✓  1 test/entity-preview-contract.spec.ts:9:1 › component contracts expose Props and keep verification states on States (317ms)
+  ✓  2 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at desktop width (767ms)
+  ✓  3 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at tablet width (730ms)
+  ✓  4 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at mobile width (731ms)
+  ✓  5 test/entity-preview-metric-diff.spec.ts:13:1 › a selected page diff shows before, after and performance metric changes (392ms)
+
+  5 passed (5.6s)

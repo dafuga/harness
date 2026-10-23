@@ -1,0 +1,21 @@
+
+Running 14 tests using 1 worker
+
+(node:84242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/ui-search-fit.spec.ts:69:2 › at 1440 pixels the search, closed, focused or open, leaves the revision fields whole (184ms)
+  ✓   2 tests/e2e/ui-search-fit.spec.ts:88:2 › at 1440 pixels a result opens in place, and with a modifier in another tab (236ms)
+  ✓   3 tests/e2e/ui-search-fit.spec.ts:69:2 › at 1379 pixels the search, closed, focused or open, leaves the revision fields whole (155ms)
+  ✓   4 tests/e2e/ui-search-fit.spec.ts:88:2 › at 1379 pixels a result opens in place, and with a modifier in another tab (234ms)
+  ✓   5 tests/e2e/ui-search-fit.spec.ts:69:2 › at 1300 pixels the search, closed, focused or open, leaves the revision fields whole (145ms)
+  ✓   6 tests/e2e/ui-search-fit.spec.ts:88:2 › at 1300 pixels a result opens in place, and with a modifier in another tab (232ms)
+  ✓   7 tests/e2e/ui-search-fit.spec.ts:69:2 › at 1251 pixels the search, closed, focused or open, leaves the revision fields whole (148ms)
+  ✓   8 tests/e2e/ui-search-fit.spec.ts:88:2 › at 1251 pixels a result opens in place, and with a modifier in another tab (221ms)
+  ✓   9 tests/e2e/ui-search-fit.spec.ts:69:2 › at 920 pixels the search, closed, focused or open, leaves the revision fields whole (137ms)
+  ✓  10 tests/e2e/ui-search-fit.spec.ts:88:2 › at 920 pixels a result opens in place, and with a modifier in another tab (215ms)
+  ✓  11 tests/e2e/ui-search-fit.spec.ts:69:2 › at 768 pixels the search, closed, focused or open, leaves the revision fields whole (133ms)
+  ✓  12 tests/e2e/ui-search-fit.spec.ts:88:2 › at 768 pixels a result opens in place, and with a modifier in another tab (236ms)
+  ✓  13 tests/e2e/ui-search-fit.spec.ts:69:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole (141ms)
+  ✓  14 tests/e2e/ui-search-fit.spec.ts:88:2 › at 390 pixels a result opens in place, and with a modifier in another tab (232ms)
+
+  14 passed (3.3s)

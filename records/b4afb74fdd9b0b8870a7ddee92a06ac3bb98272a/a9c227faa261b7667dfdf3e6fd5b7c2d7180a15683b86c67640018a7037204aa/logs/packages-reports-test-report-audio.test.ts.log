@@ -1,0 +1,69 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz/packages/reports[39m
+
+ [31m❯[39m test/report-audio.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 530[2mms[22m[39m
+   [32m✓[39m records original WAV bytes, duration and provenance without changing the outcome[32m 272[2mms[22m[39m
+   [32m✓[39m rejects disguised audio and symlinks without adding evidence[32m 8[2mms[22m[39m
+[31m   [31m×[31m audio survives portable HTML and PDF finalization[39m[32m 127[2mms[22m[39m
+[31m     → PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+[39m
+[31m   [31m×[31m missing audio becomes not proven and exports omit its bytes[39m[32m 122[2mms[22m[39m
+[31m     → PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/report-audio.test.ts[2m > [22maudio survives portable HTML and PDF finalization
+[31m[1mError[22m: PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+[39m
+[36m [2m❯[22m ReportExportService.render src/services/ReportExportService.ts:[2m50:29[22m[39m
+    [90m 48| [39m   appRoot
+    [90m 49| [39m  )[33m;[39m
+    [90m 50| [39m  if (pdf.code !== 0) throw new Error(`PDF export failed: ${pdf.output…
+    [90m   | [39m                            [31m^[39m
+    [90m 51| [39m  [35mconst[39m zip [33m=[39m [35mawait[39m [34mreportProcess[39m(
+    [90m 52| [39m   [34mreportPdf[39m()[33m,[39m
+[90m [2m❯[22m ReportExportService.build src/services/ReportExportService.ts:[2m29:3[22m[39m
+[90m [2m❯[22m reportLock src/utils/reportLock.ts:[2m24:12[22m[39m
+[90m [2m❯[22m test/report-audio.test.ts:[2m68:16[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/report-audio.test.ts[2m > [22mmissing audio becomes not proven and exports omit its bytes
+[31m[1mError[22m: PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+[39m
+[36m [2m❯[22m ReportExportService.render src/services/ReportExportService.ts:[2m50:29[22m[39m
+    [90m 48| [39m   appRoot
+    [90m 49| [39m  )[33m;[39m
+    [90m 50| [39m  if (pdf.code !== 0) throw new Error(`PDF export failed: ${pdf.output…
+    [90m   | [39m                            [31m^[39m
+    [90m 51| [39m  [35mconst[39m zip [33m=[39m [35mawait[39m [34mreportProcess[39m(
+    [90m 52| [39m   [34mreportPdf[39m()[33m,[39m
+[90m [2m❯[22m ReportExportService.build src/services/ReportExportService.ts:[2m29:3[22m[39m
+[90m [2m❯[22m reportLock src/utils/reportLock.ts:[2m24:12[22m[39m
+[90m [2m❯[22m test/report-audio.test.ts:[2m84:16[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 15:50:57
+[2m   Duration [22m 1.23s[2m (transform 153ms, setup 0ms, collect 284ms, tests 530ms, environment 0ms, prepare 181ms)[22m
+
+
+::error file=/tmp/harness-snapshot-iUpwmz/packages/reports/src/services/ReportExportService.ts,title=test/report-audio.test.ts > audio survives portable HTML and PDF finalization,line=50,column=29::Error: PDF export failed: Traceback (most recent call last):%0A  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>%0A    from reportlab.lib import colors%0AModuleNotFoundError: No module named 'reportlab'%0A%0A ❯ ReportExportService.render src/services/ReportExportService.ts:50:29%0A ❯ ReportExportService.build src/services/ReportExportService.ts:29:3%0A ❯ reportLock src/utils/reportLock.ts:24:12%0A ❯ test/report-audio.test.ts:68:16%0A%0A
+
+::error file=/tmp/harness-snapshot-iUpwmz/packages/reports/src/services/ReportExportService.ts,title=test/report-audio.test.ts > missing audio becomes not proven and exports omit its bytes,line=50,column=29::Error: PDF export failed: Traceback (most recent call last):%0A  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>%0A    from reportlab.lib import colors%0AModuleNotFoundError: No module named 'reportlab'%0A%0A ❯ ReportExportService.render src/services/ReportExportService.ts:50:29%0A ❯ ReportExportService.build src/services/ReportExportService.ts:29:3%0A ❯ reportLock src/utils/reportLock.ts:24:12%0A ❯ test/report-audio.test.ts:84:16%0A%0A

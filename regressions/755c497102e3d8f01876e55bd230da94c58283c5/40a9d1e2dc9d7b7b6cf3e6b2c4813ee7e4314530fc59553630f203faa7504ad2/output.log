@@ -1,0 +1,62 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ykolWa
+
+ ❯ test/pieces.test.ts (6 tests | 3 failed) 13ms
+   × every scaffold kind creates at least one file in a 2d project 8ms
+     → Every public export targets an emitted scaffold: expected [ …(2) ] to include 'src/config/blogPostConfig.ts'
+   × every scaffold kind creates at least one file in a 3d project 1ms
+     → Every public export targets an emitted scaffold: expected [ …(2) ] to include 'src/config/blogPostConfig.ts'
+   ✓ view, layout, and api scaffolds use SvelteKit route files 0ms
+   ✓ marks only SvelteKit scaffolds as app-only 0ms
+   × Rails-ish scaffolds create their expected code shapes 2ms
+     → expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+   ✓ helper scaffolds emit pure camelCase functions with domain parameters 0ms
+ ✓ test/utils/unit-metadata.test.ts (42 tests) 67ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/pieces.test.ts > every scaffold kind creates at least one file in a 2d project
+ FAIL  test/pieces.test.ts > every scaffold kind creates at least one file in a 3d project
+AssertionError: Every public export targets an emitted scaffold: expected [ …(2) ] to include 'src/config/blogPostConfig.ts'
+ ❯ test/pieces.test.ts:18:7
+     16|      files.map((file) => file.path),
+     17|      'Every public export targets an emitted scaffold'
+     18|     ).toContain(posix.normalize(`src/${plan.source}.ts`));
+       |       ^
+     19|    expect(
+     20|     files.every((file) => file.path.length > 0 && file.contents.length…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/pieces.test.ts > Rails-ish scaffolds create their expected code shapes
+AssertionError: expected [ { …(2) } ] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "named": [
+        "searchConfig",
+      ],
+-     "source": "./configs/searchConfig",
++     "source": "./config/searchConfig",
+    },
+  ]
+
+ ❯ test/pieces.test.ts:72:47
+     70|   'src/initializers/initializeCache.ts'
+     71|  );
+     72|  expect(pieceExportPlans('config', 'Search')).toEqual([
+       |                                               ^
+     73|   { source: './configs/searchConfig', named: ['searchConfig'] }
+     74|  ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  3 failed | 45 passed (48)
+   Start at  13:51:22
+   Duration  3.23s (transform 189ms, setup 95ms, collect 518ms, tests 80ms, environment 0ms, prepare 65ms)
+

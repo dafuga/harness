@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/verify.e2e.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 15235[2mms[22m[39m
+   [33m[2m✓[22m[39m the fixture baseline verifies clean on an exact commit and tree [33m 2608[2mms[22m[39m
+   [33m[2m✓[22m[39m a shared function change re-verifies its service, page and audio scenarios with fresh evidence [33m 2198[2mms[22m[39m
+   [33m[2m✓[22m[39m each tested revision regenerates evidence even when the bytes are identical [33m 4189[2mms[22m[39m
+   [33m[2m✓[22m[39m scenario contracts list their states, viewports, tests and evidence [33m 1392[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 16:15:47
+[2m   Duration [22m 15.59s[2m (transform 82ms, setup 22ms, collect 66ms, tests 15.23s, environment 0ms, prepare 85ms)[22m
+

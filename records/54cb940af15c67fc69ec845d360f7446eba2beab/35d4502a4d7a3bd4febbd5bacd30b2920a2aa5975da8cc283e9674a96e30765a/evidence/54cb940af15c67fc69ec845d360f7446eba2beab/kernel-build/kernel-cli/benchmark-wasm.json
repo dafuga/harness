@@ -1,0 +1,102 @@
+{
+  "profile": "1db6ce9451b5e530",
+  "target": "wasm",
+  "measurements": [
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "artifact-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 142396,
+      "method": "Byte size recorded by the kernel build.",
+      "workload": null,
+      "target": "wasm"
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "source-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 16559,
+      "method": "Byte size recorded by the kernel build.",
+      "workload": null,
+      "target": "wasm"
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-cold-ms",
+      "unitOfMeasure": "ms",
+      "value": 5.115291000000013,
+      "method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+      "workload": "graph-100",
+      "target": "wasm",
+      "samples": 3
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-warm-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.10972900000001573,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-100",
+      "target": "wasm",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "throughput-ops",
+      "unitOfMeasure": "ops/s",
+      "value": 6600.538075864147,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-100",
+      "target": "wasm",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "memory-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 1179648,
+      "method": "Linear memory size of the instantiated module after the warm loop.",
+      "workload": "graph-100",
+      "target": "wasm"
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-cold-ms",
+      "unitOfMeasure": "ms",
+      "value": 7.356124999999992,
+      "method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+      "workload": "graph-1k",
+      "target": "wasm",
+      "samples": 3
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-warm-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.7593539999998029,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "wasm",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "throughput-ops",
+      "unitOfMeasure": "ops/s",
+      "value": 1275.611732362437,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "wasm",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "memory-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 1769472,
+      "method": "Linear memory size of the instantiated module after the warm loop.",
+      "workload": "graph-1k",
+      "target": "wasm"
+    }
+  ]
+}

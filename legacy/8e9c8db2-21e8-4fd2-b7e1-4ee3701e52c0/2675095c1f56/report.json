@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "8e9c8db2-21e8-4fd2-b7e1-4ee3701e52c0",
+	"project": "harness",
+	"title": "Bug-fix and regression-prevention loops",
+	"mode": "feature",
+	"environment": "local CLI",
+	"status": "passed",
+	"state": "finalized",
+	"startedAt": "2026-10-07T10:45:53.815Z",
+	"updatedAt": "2026-10-07T10:47:21.837Z",
+	"revision": null,
+	"summary": "",
+	"checks": [
+		{
+			"id": "focused",
+			"title": "Ordered templates, inheritance, guidance and CLI retries: 21 tests",
+			"status": "passed"
+		},
+		{
+			"id": "red-green",
+			"title": "Six regressions fail before implementation and pass unchanged afterward; removal challenge rejected and restored implementation passes",
+			"status": "passed"
+		},
+		{
+			"id": "full",
+			"title": "Full repository check: formatting, types, lint, 152 unit, 48 CLI E2E, packaging, builds, audits and 84 report tests",
+			"status": "passed"
+		}
+	],
+	"media": []
+}

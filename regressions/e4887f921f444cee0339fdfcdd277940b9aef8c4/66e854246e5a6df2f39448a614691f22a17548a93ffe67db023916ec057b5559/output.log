@@ -1,0 +1,341 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [10.44s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-73IqKQ
+
+ ❯ test/utils/preview-binding.test.ts (6 tests | 1 failed) 96ms
+   ✓ a preview names a declared screenshot of its own page and viewport 1ms
+   ✓ another page state, unknown scenarios and absent viewports cannot become previews 0ms
+   ✓ a result without screenshot evidence cannot stand in for an image 0ms
+   ✓ strict verification rejects a preview that names no recorded page state 3ms
+   ✓ registered page previews name the state that actually shows that page 83ms
+   × visual components cannot omit required preview coverage while nonvisual units can 4ms
+     → expected '' to contain 'component.orders: active component re…'
+ ✓ test/project-template.test.ts (5 tests) 111ms
+ ✓ test/preview-shells-runner.test.ts (4 tests) 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/preview-binding.test.ts > visual components cannot omit required preview coverage while nonvisual units can
+AssertionError: expected '' to contain 'component.orders: active component re…'
+
+- Expected
++ Received
+
+- component.orders: active component requires a screenshot preview
+
+ ❯ test/utils/preview-binding.test.ts:105:89
+    103|  const original = unitOf(source, 'function.orders');
+    104|  const component = { ...original, id: 'component.orders', kind: 'compo…
+    105|  expect(registryGate({ stored: [] }, { stored: [component], scenarios:…
+       |                                                                                         ^
+    106|   'component.orders: active component requires a screenshot preview'
+    107|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 14 passed (15)
+   Start at  20:29:27
+   Duration  4.05s (transform 252ms, setup 19ms, collect 944ms, tests 211ms, environment 0ms, prepare 107ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-73IqKQ/packages/reports
+
+ ❯ test/utils/entity-catalog.test.ts (10 tests | 2 failed) 53ms
+   ✓ a fresh runtime loads and calls the catalog through '../../src/utils/entityCatalog.ts' 18ms
+   ✓ a fresh runtime loads and calls the catalog through '../../src/components/harness/explorer…' 16ms
+   ✓ a collection lists the entities of its category by the name a person reads 10ms
+   × a component says which pages it is used on and which components it contains 5ms
+     → expected undefined to deeply equal [ { …(3) }, …(1) ]
+   ✓ a page counts the components it contains and a service names its targets 0ms
+   ✓ changed is what the commit changed itself, and the verdict is the one it was given 1ms
+   ✓ search reads names and purposes, changed only keeps changes, and an order sorts 1ms
+   ✓ a list of names is none, one name, or the first and how many more 0ms
+   ✓ shared helper rows require source exports, list every callable and keep owner links 0ms
+   × component usage links are distinct current consumers capped at three 1ms
+     → expected undefined to deeply equal [ 'app.page.orders', …(2) ]
+ ❯ test/components/explorer-catalog-screen.test.ts (9 tests | 2 failed) 394ms
+   ✓ nonvisual collections are tables of their own kind, never image cards 9ms
+   × visual component cards show the selected revision, never the parent or another entity 6ms
+     → expected ' Components Components Reusable piece…' to contain 'Used In'
+   × component previews retain the origin of validated unchanged evidence 2ms
+     → expected ' Components Components Reusable piece…' not to contain 'Reused from'
+   ✓ component cards leave unvalidated captures as explicit gaps 1ms
+   ✓ component cards leave wrong-build captures as explicit gaps 1ms
+   ✓ component cards leave failed captures as explicit gaps 1ms
+   ✓ component cards leave missing captures as explicit gaps 1ms
+   ✓ component cards leave unrelated captures as explicit gaps 1ms
+   ✓ a collection of a revision without a registry shows its gap and no table 1ms
+ ✓ test/utils/harness-keys.test.ts (1 test) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-catalog-screen.test.ts > visual component cards show the selected revision, never the parent or another entity
+AssertionError: expected ' Components Components Reusable piece…' to contain 'Used In'
+
+Expected: "Used In"
+Received: " Components Components Reusable pieces of the app, at any level. A component can contain other components. 3 of 3 components shown In context · orders-page · default Captured at ccccccc Order card Shows one order. Used on Orders page Contains none In context · orders-page · default Captured at ccccccc Order list Arranges orders into a searchable list. Used on Orders page Contains Order card In context · orders-page · default Captured at ccccccc Search box Takes the text orders are searched by. Used on Orders page Contains none Hover, focus or tap a mark to read why. "
+
+ ❯ test/components/explorer-catalog-screen.test.ts:36:23
+     34|   expect(body).not.toContain('src="/harness/media/aaaaaaa-');
+     35|   expect(body).toContain('/components/app.component.order-card');
+     36|   expect(words(body)).toContain('Used In');
+       |                       ^
+     37|   expect(words(body)).not.toMatch(/Contains|Shared|In context|Shows on…
+     38|   expect(body).not.toMatch(/hx-verdict|ex-open-page|figcaption/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/components/explorer-catalog-screen.test.ts > component previews retain the origin of validated unchanged evidence
+AssertionError: expected ' Components Components Reusable piece…' not to contain 'Reused from'
+
+Expected: "Reused from"
+Received: " Components Components Reusable pieces of the app, at any level. A component can contain other components. 3 of 3 components shown In context · orders-page · default Reused from bbbbbbb Order card Shows one order. Used on Orders page Contains none In context · orders-page · default Reused from bbbbbbb Order list Arranges orders into a searchable list. Used on Orders page Contains Order card In context · orders-page · default Reused from bbbbbbb Search box Takes the text orders are searched by. Used on Orders page Contains none Hover, focus or tap a mark to read why. "
+
+ ❯ test/components/explorer-catalog-screen.test.ts:57:26
+     55|  expect(body).toContain('src="/harness/media/bbbbbbb-default-desktop.p…
+     56|  expect(body).toContain('Reused from bbbbbbb');
+     57|  expect(words(body)).not.toContain('Reused from');
+       |                          ^
+     58|  expect(body).not.toContain('src="/harness/media/ccccccc-');
+     59| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > a component says which pages it is used on and which components it contains
+AssertionError: expected undefined to deeply equal [ { …(3) }, …(1) ]
+
+- Expected: 
+[
+  {
+    "category": "components",
+    "id": "app.component.order-list",
+    "name": "Order list",
+  },
+  {
+    "category": "pages",
+    "id": "app.page.orders",
+    "name": "Orders page",
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ test/utils/entity-catalog.test.ts:88:22
+     86|  expect(card.usedOn).toEqual(['Orders page']);
+     87|  expect(card.usedBy).toEqual(['Order list']);
+     88|  expect(card.usedIn).toEqual([
+       |                      ^
+     89|   { id: ids.list, name: 'Order list', category: 'components' },
+     90|   { id: ids.page, name: 'Orders page', category: 'pages' }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > component usage links are distinct current consumers capped at three
+AssertionError: expected undefined to deeply equal [ 'app.page.orders', …(2) ]
+
+- Expected: 
+[
+  "app.page.orders",
+  "app.component.order-list",
+  "app.component.search-box",
+]
+
++ Received: 
+undefined
+
+ ❯ test/utils/entity-catalog.test.ts:211:49
+    209|   components: []
+    210|  }));
+    211|  expect(row.usedIn?.map((entity) => entity.id)).toEqual(
+       |                                                 ^
+    212|   using.slice(0, 3).map((entity) => entity.id)
+    213|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  4 failed | 16 passed (20)
+   Start at  20:29:32
+   Duration  2.09s (transform 786ms, setup 0ms, collect 1.14s, tests 449ms, environment 0ms, prepare 92ms)
+
+
+Running 8 tests using 1 worker
+
+(node:20531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-catalog.spec.ts:10:2 › component and function lists use a card grid at desktop width (1.2s)
+  ✘  2 test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at desktop width (5.2s)
+(node:36093) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 test/entity-preview-catalog.spec.ts:10:2 › component and function lists use a card grid at tablet width (1.1s)
+  ✘  4 test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at tablet width (5.2s)
+(node:55629) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 test/entity-preview-catalog.spec.ts:10:2 › component and function lists use a card grid at mobile width (1.1s)
+  ✘  6 test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at mobile width (5.2s)
+(node:75058) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  7 test/entity-preview-catalog.spec.ts:75:1 › the component catalog labels reused screenshots with their original commit (5.2s)
+(node:76882) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  8 test/entity-preview-catalog.spec.ts:89:1 › branch and commit selection replace component screenshots with that revision (208ms)
+
+
+  1) test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at desktop width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').first()
+    Expected pattern: /Order card\s+Used In\s+Order list\s+Orders page/
+    Received string:  " In context · orders-page · defaultCaptured at ccccccc Order card Shows one order.  Used on Orders page  Contains none     Full coverage passed "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').first() with timeout 5000ms
+      - waiting for getByRole('article').first()
+        14 × locator resolved to <article aria-label="Order card" class="ex-page-card svelte-1ve3xfx">…</article>
+           - unexpected value " In context · orders-page · defaultCaptured at ccccccc Order card Shows one order.  Used on Orders page  Contains none     Full coverage passed "
+
+
+      52 | 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
+      53 | 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
+    > 54 | 			await expect(cards.first()).toHaveText(/Order card\s+Used In\s+Order list\s+Orders page/);
+         | 			                            ^
+      55 | 			await expect(cards.first().locator('button, .hx-verdict, .ex-fact, figcaption')).toHaveCount(
+      56 | 				0
+      57 | 			);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-73IqKQ/packages/reports/test/entity-preview-catalog.spec.ts:54:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-catalog-com-bd796-n-revision-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-catalog-com-bd796-n-revision-at-desktop-width/error-context.md
+
+  2) test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at tablet width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').first()
+    Expected pattern: /Order card\s+Used In\s+Order list\s+Orders page/
+    Received string:  " In context · orders-page · defaultCaptured at ccccccc Order card Shows one order.  Used on Orders page  Contains none     Full coverage passed "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').first() with timeout 5000ms
+      - waiting for getByRole('article').first()
+        14 × locator resolved to <article aria-label="Order card" class="ex-page-card svelte-1ve3xfx">…</article>
+           - unexpected value " In context · orders-page · defaultCaptured at ccccccc Order card Shows one order.  Used on Orders page  Contains none     Full coverage passed "
+
+
+      52 | 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
+      53 | 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
+    > 54 | 			await expect(cards.first()).toHaveText(/Order card\s+Used In\s+Order list\s+Orders page/);
+         | 			                            ^
+      55 | 			await expect(cards.first().locator('button, .hx-verdict, .ex-fact, figcaption')).toHaveCount(
+      56 | 				0
+      57 | 			);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-73IqKQ/packages/reports/test/entity-preview-catalog.spec.ts:54:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-catalog-com-82ab7-wn-revision-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-catalog-com-82ab7-wn-revision-at-tablet-width/error-context.md
+
+  3) test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at mobile width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').first()
+    Expected pattern: /Order card\s+Used In\s+Order list\s+Orders page/
+    Received string:  " In context · orders-page · defaultCaptured at ccccccc Order card Shows one order.  Used on Orders page  Contains none     Full coverage passed "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').first() with timeout 5000ms
+      - waiting for getByRole('article').first()
+        14 × locator resolved to <article aria-label="Order card" class="ex-page-card svelte-1ve3xfx">…</article>
+           - unexpected value " In context · orders-page · defaultCaptured at ccccccc Order card Shows one order.  Used on Orders page  Contains none     Full coverage passed "
+
+
+      52 | 			await expect(shot).toHaveAttribute('src', `/media/${viewed}-default-desktop.png`);
+      53 | 			expect(await shot.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1440);
+    > 54 | 			await expect(cards.first()).toHaveText(/Order card\s+Used In\s+Order list\s+Orders page/);
+         | 			                            ^
+      55 | 			await expect(cards.first().locator('button, .hx-verdict, .ex-fact, figcaption')).toHaveCount(
+      56 | 				0
+      57 | 			);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-73IqKQ/packages/reports/test/entity-preview-catalog.spec.ts:54:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-catalog-com-b1ef1-wn-revision-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-catalog-com-b1ef1-wn-revision-at-mobile-width/error-context.md
+
+  4) test/entity-preview-catalog.spec.ts:75:1 › the component catalog labels reused screenshots with their original commit 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('article', { name: 'Order card', exact: true }).getByRole('link', { name: 'Open Order card', exact: true })
+    Expected pattern: /Reused from bbbbbbb/
+    Received string:  ""
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('article', { name: 'Order card', exact: true }).getByRole('link', { name: 'Open Order card', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article', { name: 'Order card', exact: true }).getByRole('link', { name: 'Open Order card', exact: true })
+        14 × locator resolved to <a class="ex-thumb" aria-label="Open Order card" href="/harness/branch/feature%2Forders/components/app.component.order-card">…</a>
+           - unexpected value "null"
+
+
+      80 | 	const card = tab.getByRole('article', { name: 'Order card', exact: true });
+      81 | 	await expect(card.getByRole('img')).toHaveAttribute('src', '/media/bbbbbbb-default-desktop.png');
+    > 82 | 	await expect(card.getByRole('link', { name: 'Open Order card', exact: true })).toHaveAttribute(
+         | 	                                                                               ^
+      83 | 		'title',
+      84 | 		/Reused from bbbbbbb/
+      85 | 	);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-73IqKQ/packages/reports/test/entity-preview-catalog.spec.ts:82:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-catalog-the-e4e91--with-their-original-commit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-catalog-the-e4e91--with-their-original-commit/error-context.md
+
+  4 failed
+    test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at desktop width 
+    test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at tablet width 
+    test/entity-preview-catalog.spec.ts:37:2 › component screenshot cards follow the shown revision at mobile width 
+    test/entity-preview-catalog.spec.ts:75:1 › the component catalog labels reused screenshots with their original commit 
+  4 passed (29.6s)

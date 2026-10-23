@@ -1,0 +1,69 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-uTMmwX/packages/reports
+
+ ❯ test/components/entity-relations.test.ts (6 tests | 1 failed) 88ms
+   ✓ component cards have identical content in catalogs and every relationship host 47ms
+   ✓ what an entity uses is one section of kinds of their own, and what uses it is another 7ms
+   ✓ each related entity is a link to it in the same branch and commit 20ms
+   ✓ a page leads to its components and a component to the components inside it 2ms
+   ✓ page models include models reached through services and remain bound to the revision 4ms
+   × private functions use the same module card as shared functions in owner relationships 7ms
+     → Private functions must be shared cards, not plain Other rows: expected undefined to be defined
+ ❯ test/components/explorer-function-card.test.ts (10 tests | 1 failed) 26ms
+   ✓ function catalog cards stay concise and retain revision links without detail panels 11ms
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 1ms
+   ✓ function calls preserve declared sample values: null 1ms
+   ✓ function calls preserve declared sample values: "" 1ms
+   ✓ function calls preserve declared sample values: %j 1ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 1ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 1ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 2ms
+   × helper usage selects three distinct eligible consumers before truncating 6ms
+     → A fourth eligible consumer must produce an ellipsis: expected ' filterOrders(orders, "SERVICE") Used…' to contain '…'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-relations.test.ts > private functions use the same module card as shared functions in owner relationships
+AssertionError: Private functions must be shared cards, not plain Other rows: expected undefined to be defined
+ ❯ test/components/entity-relations.test.ts:172:80
+    170|    .map((match) => match[0])
+    171|    .find((item) => item.includes('aria-label="single"'));
+    172|   expect(card, 'Private functions must be shared cards, not plain Othe…
+       |                                                                                ^
+    173|   expect(card).toContain('data-harness-component="explorer-ui-explorer…
+    174|   expect(card).toContain('aria-label="Used In"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > helper usage selects three distinct eligible consumers before truncating
+AssertionError: A fourth eligible consumer must produce an ellipsis: expected ' filterOrders(orders, "SERVICE") Used…' to contain '…'
+
+Expected: [32m"…"[39m
+Received: [31m" filterOrders(orders, "SERVICE") Used In OrderList OrderStore Order "[39m
+
+ ❯ test/components/explorer-function-card.test.ts:120:79
+    118|    expect(card).not.toContain('aria-label="Services"');
+    119|    expect(count(card, /<a\b/g)).toBe(4);
+    120|    expect(words(card), 'A fourth eligible consumer must produce an ell…
+       |                                                                               ^
+    121|    for (const target of [
+    122|     `components/${ids.list}`,
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/components/explorer-function-card.test.ts:108:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 14 passed (16)
+   Start at  11:59:30
+   Duration  2.73s (transform 1.32s, setup 0ms, collect 2.17s, tests 113ms, environment 0ms, prepare 98ms)
+
+error: "vitest" exited with code 1

@@ -1,0 +1,82 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [8.89s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+$ bun run sync:shared && vitest run test/test-preview-refusal.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1NuYzW/packages/desktop
+
+ ❯ test/test-preview-refusal.test.ts (6 tests | 2 failed) 4110ms
+   ✓ a server that already answers on the preview port is refused, and no test is run on it  580ms
+   ✓ public and owner config honor the named port in verification=false  754ms
+   ✓ public and owner config honor the named port in verification=true  828ms
+   × automatic port reaches child workers in verification=false 857ms
+     → One auto-selected port must reach every worker: expected 'http://127.0.0.1:63586' to be 'http://127.0.0.1:63585' // Object.is equality
+   × automatic port reaches child workers in verification=true 789ms
+     → One auto-selected port must reach every worker: expected 'http://127.0.0.1:63588' to be 'http://127.0.0.1:63587' // Object.is equality
+   ✓ a port override that is no port is refused by its name before anything starts  302ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/test-preview-refusal.test.ts > automatic port reaches child workers in verification=false
+AssertionError: One auto-selected port must reach every worker: expected 'http://127.0.0.1:63586' to be 'http://127.0.0.1:63585' // Object.is equality
+
+Expected: "http://127.0.0.1:63585"
+Received: "http://127.0.0.1:63586"
+
+ ❯ test/test-preview-refusal.test.ts:109:78
+    107|   expect(cold.exitCode, cold.stderr).toBe(0);
+    108|   const shown = JSON.parse(cold.stdout);
+    109|   expect(shown.worker.url, 'One auto-selected port must reach every wo…
+       |                                                                              ^
+    110|   expect(shown.port).toBe(shown.serverPort);
+    111|   expect(shown.worker.port).toBe(shown.port);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/test-preview-refusal.test.ts > automatic port reaches child workers in verification=true
+AssertionError: One auto-selected port must reach every worker: expected 'http://127.0.0.1:63588' to be 'http://127.0.0.1:63587' // Object.is equality
+
+Expected: "http://127.0.0.1:63587"
+Received: "http://127.0.0.1:63588"
+
+ ❯ test/test-preview-refusal.test.ts:109:78
+    107|   expect(cold.exitCode, cold.stderr).toBe(0);
+    108|   const shown = JSON.parse(cold.stdout);
+    109|   expect(shown.worker.url, 'One auto-selected port must reach every wo…
+       |                                                                              ^
+    110|   expect(shown.port).toBe(shown.serverPort);
+    111|   expect(shown.worker.port).toBe(shown.port);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  07:06:05
+   Duration  4.36s (transform 65ms, setup 87ms, collect 16ms, tests 4.11s, environment 0ms, prepare 31ms)
+
+error: script "test:unit" exited with code 1

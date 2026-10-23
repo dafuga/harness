@@ -1,0 +1,197 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DseAWT
+
+ ❯ test/history-index.e2e.test.ts (4 tests | 2 failed) 33407ms
+   ✓ the index is deterministic and names every commit, verified or not  1700ms
+   × a revision carries its graph, comparison, inherited provenance, media and reasons 823ms
+     → source metrics exist without a verification record: expected undefined to deeply equal ArrayContaining{…}
+   × growth and benchmarks are kept per unit, and another profile is a separate series 3550ms
+     → expected [ [ …(2) ], [ …(2) ], [ …(2) ] ] to deeply equal ArrayContaining{…}
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  4838ms
+ ❯ test/loop.e2e.test.ts (6 tests | 3 failed) 17623ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  1914ms
+   ✓ generated app and lib instructions mention harness loops  638ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  1262ms
+   × bug-fix CLI records proof and leaves verification pending across failed and passing checks 4830ms
+     → focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+   × fix CLI records proof and leaves verification pending across failed and passing checks 4314ms
+     → focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+   × regression-prevention CLI records proof and leaves verification pending across failed and passing checks 4663ms
+     → focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-index.e2e.test.ts > a revision carries its graph, comparison, inherited provenance, media and reasons
+AssertionError: source metrics exist without a verification record: expected undefined to deeply equal ArrayContaining{…}
+
+- Expected: 
+ArrayContaining [
+  ObjectContaining {
+    "metric": "source-bytes",
+    "testedRevision": "4aee82d3b603455868d4878fcbf073d550ec8f1d",
+    "value": 87,
+  },
+  ObjectContaining {
+    "metric": "complexity",
+    "value": Any<Number>,
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ test/history-index.e2e.test.ts:131:4
+    129|   sourceUnit?.sourceMeasurements,
+    130|   'source metrics exist without a verification record'
+    131|  ).toEqual(
+       |    ^
+    132|   expect.arrayContaining([
+    133|    expect.objectContaining({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/history-index.e2e.test.ts > growth and benchmarks are kept per unit, and another profile is a separate series
+AssertionError: expected [ [ …(2) ], [ …(2) ], [ …(2) ] ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
++ [
++   [
++     "6236cb4c532819ca21582d9c8a06830139c07642",
++     100,
++   ],
+    [
+      "e89049aa07e3397f63cf83bb5ba633195d362d01",
+-     87,
++     100,
+    ],
+    [
+      "97d7db14141d20de68b10d6b4283a0a290587329",
+-     87,
++     100,
+    ],
+  ]
+
+ ❯ test/history-index.e2e.test.ts:158:80
+    156|  const { index } = await build(other, join(other.root, '.cache/history…
+    157|  const slugify = index.units.find((unit) => unit.id === 'function.slug…
+    158|  expect(slugify?.growth.map((point) => [point.commit, point['source-by…
+       |                                                                                ^
+    159|   expect.arrayContaining([
+    160|    [commits.baseline, 87],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/loop.e2e.test.ts > bug-fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+AssertionError: focused proof retains benchmark measurements: expected undefined to deeply equal ArrayContaining{…}
+
+- Expected: 
+ArrayContaining [
+  ObjectContaining {
+    "metric": "latency-warm-ms",
+    "testedRevision": Any<String>,
+    "value": 0.5,
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ phaseProof test/support/loopRepair.ts:138:4
+    136|   JSON.parse(recorded.stdout).measurements,
+    137|   'focused proof retains benchmark measurements'
+    138|  ).toEqual(
+       |    ^
+    139|   expect.arrayContaining([
+    140|    expect.objectContaining({
+ ❯ exerciseRepair test/support/loopRepair.ts:44:4
+ ❯ test/loop.e2e.test.ts:116:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 5 passed (10)
+   Start at  15:12:41
+   Duration  58.87s (transform 112ms, setup 15ms, collect 166ms, tests 51.03s, environment 0ms, prepare 120ms)
+
+$ vitest run test/utils/entity-measure.test.ts test/components/harness-verdict.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DseAWT/packages/reports
+
+ ❯ test/components/harness-verdict.test.ts (6 tests | 1 failed) 7ms
+   ✓ a verdict draws its icon and no words: the green check for a pass 2ms
+   ✓ no caller brings the words back: a label, a frame and the bare look all draw the icon alone 1ms
+   × missing, stale and incomplete evidence use a neutral info icon, actual failure stays red 3ms
+     → expected '<span class="hx-verdict svelte-1lwyhm…' to contain 'unknown'
+   ✓ the mark is a button named by the status, and described by the tooltip that holds the reasons 0ms
+   ✓ a verdict has words of its own, and a pass is given no reasons 0ms
+   ✓ it is made of phrasing content only, so a paragraph, a cell or a heading may hold it 0ms
+ ❯ test/utils/entity-measure.test.ts (8 tests | 1 failed) 5ms
+   ✓ a size is read in bytes, kilobytes or megabytes, and never rounded to nothing 1ms
+   ✓ a measured size is shown and one nothing measured reads Not measured, never zero 0ms
+   ✓ each execution target has its own emitted size, with the reason one could not be built 0ms
+   ✓ a timing names its workload and profile and its tolerance as a percentage 0ms
+   ✓ timings of two profiles stay two rows, and a declared budget nothing measured is not measured 0ms
+   ✓ a tolerance above the five percent policy is marked, not clamped 0ms
+   ✓ why a figure is unavailable is told without the file a recorded note names 0ms
+   × observed performance is visible without a budget and stays scoped to its callable 3ms
+     → measurements do not require a performance budget: expected [] to deeply equal ArrayContaining{…}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/harness-verdict.test.ts > missing, stale and incomplete evidence use a neutral info icon, actual failure stays red
+AssertionError: expected '<span class="hx-verdict svelte-1lwyhm…' to contain 'unknown'
+
+Expected: "unknown"
+Received: "<span class="hx-verdict svelte-1lwyhm3 failed">"
+
+ ❯ test/components/harness-verdict.test.ts:58:22
+     56|  ]) {
+     57|   const body = markup({ passed: false, label });
+     58|   expect(root(body)).toContain('unknown');
+       |                      ^
+     59|   expect(body).not.toContain(`d="${harnessIcons.failed}"`);
+     60|   expect(body).not.toContain(`d="${harnessIcons.passed}"`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/utils/entity-measure.test.ts > observed performance is visible without a budget and stays scoped to its callable
+AssertionError: measurements do not require a performance budget: expected [] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   ObjectContaining {
+-     "profile": "bun-reference",
+-     "tolerance": "—",
+-     "value": "0.12 ms",
+-   },
+- ]
++ []
+
+ ❯ test/utils/entity-measure.test.ts:117:67
+    115|  };
+    116|  const rows = entityMeasure(helper, taken).performance;
+    117|  expect(rows, 'measurements do not require a performance budget').toEq…
+       |                                                                   ^
+    118|   expect.arrayContaining([
+    119|    expect.objectContaining({ profile: 'bun-reference', value: '0.12 ms…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 12 passed (14)
+   Start at  15:13:40
+   Duration  635ms (transform 204ms, setup 0ms, collect 268ms, tests 13ms, environment 0ms, prepare 53ms)
+
+error: script "test:unit" exited with code 1
+Resolving dependencies
+Resolved, downloaded and extracted [1]
+error: GET https://api.github.com/repos/packages/reports/tarball/ - 404

@@ -1,0 +1,76 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [5.03s]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-V7nr7a/packages/desktop
+Getting Svelte diagnostics...
+
+/private/tmp/harness-snapshot-V7nr7a/packages/desktop/src/components/entity-view/EntityView.svelte:195:15
+Error: Object literal may only specify known properties, and 'verification' does not exist in type '$$ComponentProps'. (ts)
+			/>{:else if tab === 'Examples'}<EntityExamples documentation={entity.documentation}>
+				{#snippet verification()}<CoveragePanel {entity} {evidence} {workspace} />{/snippet}
+			</EntityExamples>
+
+====================================
+svelte-check found 1 error and 0 warnings in 1 file
+error: script "typecheck" exited with code 1
+$ playwright test ui-evidence-review.spec.ts --grep "the address decides the section" "--output=/Users/danielfugere/.codex/project-reports/work/desktop-compatibility-latest"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/ui-evidence-review.spec.ts:40:1 › the address decides the section, also when the entity stays the same (6.1s)
+
+
+  1) tests/e2e/ui-evidence-review.spec.ts:40:1 › the address decides the section, also when the entity stays the same 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Recorded tests and verification', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Recorded tests and verification', { exact: true }) with timeout 5000ms
+      - waiting for getByText('Recorded tests and verification', { exact: true })
+
+
+      61 | 	const verification = page.getByText('Recorded tests and verification', { exact: true });
+      62 | 	const coverage = page.getByRole('region', { name: 'Evidence coverage' });
+    > 63 | 	await expect(verification).toBeVisible();
+         | 	                           ^
+      64 | 	await expect(coverage).toBeHidden();
+      65 | 	await verification.click();
+      66 | 	await runtimeEvidence(page, info, 'examples-expanded');
+        at /private/tmp/harness-snapshot-V7nr7a/packages/desktop/tests/e2e/ui-evidence-review.spec.ts:63:29
+
+    Error Context: ../../../../../Users/danielfugere/.codex/project-reports/work/desktop-compatibility-latest/ui-evidence-review-the-add-290e2-n-the-entity-stays-the-same/error-context.md
+
+  1 failed
+    tests/e2e/ui-evidence-review.spec.ts:40:1 › the address decides the section, also when the entity stays the same 
+error: script "test:e2e" exited with code 1

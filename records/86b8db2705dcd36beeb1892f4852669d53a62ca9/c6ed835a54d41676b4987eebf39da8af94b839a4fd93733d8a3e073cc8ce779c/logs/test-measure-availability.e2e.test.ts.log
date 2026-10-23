@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ
+
+ ✓ test/measure-availability.e2e.test.ts (2 tests) 20857ms
+   ✓ complexity nobody counted is stated as unavailable or partial, and a counted zero stays zero  340ms
+   ✓ a baseline freezes what was measured and records what was not, and both are enforced as such  13495ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  06:24:19
+   Duration  21.39s (transform 76ms, setup 36ms, collect 64ms, tests 20.86s, environment 0ms, prepare 94ms)
+

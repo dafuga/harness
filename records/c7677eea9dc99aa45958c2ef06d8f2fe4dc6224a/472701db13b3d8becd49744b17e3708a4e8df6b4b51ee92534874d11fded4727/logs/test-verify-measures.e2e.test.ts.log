@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5
+
+ ✓ test/verify-measures.e2e.test.ts (2 tests) 9380ms
+   ✓ measures that do not apply or were not taken are stated, never left out  1977ms
+   ✓ an artifact built in the snapshot is measured with its hash, and a missing one is stated  2702ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  20:05:52
+   Duration  9.59s (transform 28ms, setup 6ms, collect 22ms, tests 9.38s, environment 0ms, prepare 23ms)
+

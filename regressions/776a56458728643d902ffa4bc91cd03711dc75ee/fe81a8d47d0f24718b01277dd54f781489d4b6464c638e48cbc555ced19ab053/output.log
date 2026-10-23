@@ -1,0 +1,117 @@
+$ vitest run test/components/entity-history.test.ts test/components/entity-history-row.test.ts test/components/entity-history-screen.test.ts
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-U8VjU4/packages/reports
+
+ ❯ test/components/entity-history.test.ts (9 tests | 1 failed) 35ms
+   ✓ history lists the commits that changed the entity through the viewed commit, newest first 15ms
+   ✓ history rows show compact commit metrics without duplicate sections 2ms
+   ✓ timings stay by profile: one is chosen and no profile is compared with another 2ms
+   ✓ view revision opens the entity at that commit, where it is compared with its own parent 1ms
+   × pages have a history too: the commit that added the page is listed as that 6ms
+     → expected ' Pages Orders page History Orders pag…' to contain 'aaaaaaa feat: orders page'
+   ✓ commits of a history that does not record what they changed are said to be unknown 3ms
+   ✓ long reasons of several functions stay a short row, with every original one press away 3ms
+   ✓ one reason within the limits is read whole, with nothing to open 1ms
+   ✓ source-only historical revisions supply size and complexity without verification 1ms
+ ❯ test/components/entity-history-row.test.ts (3 tests | 1 failed) 12ms
+   ✓ a commit with no recorded reason is told by its subject, held to the limit of one 6ms
+   × commit rows omit lifecycle badges from index and revision change metadata 4ms
+     → History lifecycle badges: expected ' 1 week ago bbbbbbb Added feat: regis…' not to match /\bAdded\b|\bRemoved\b/
+   ✓ the commit itself opens the revision without evidence or a duplicate action 1ms
+ ✓ test/components/entity-history-screen.test.ts (2 tests) 21ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-history-row.test.ts > commit rows omit lifecycle badges from index and revision change metadata
+AssertionError: History lifecycle badges: expected ' 1 week ago bbbbbbb Added feat: regis…' not to match /\bAdded\b|\bRemoved\b/
+
+- Expected: 
+/\bAdded\b|\bRemoved\b/
+
++ Received: 
+" 1 week ago bbbbbbb Added feat: register every unit of the analytics client register every unit … Not measured Not measured Not measured "
+
+ ❯ test/components/entity-history-row.test.ts:65:55
+     63|  for (const change of ['added', 'removed', 'direct', 'indirect'] as co…
+     64|   const body = shown(row({ change }));
+     65|   expect(words(body), 'History lifecycle badges').not.toMatch(/\bAdded…
+       |                                                       ^
+     66|   expect(words(body)).toContain('bbbbbbb');
+     67|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/entity-history.test.ts > pages have a history too: the commit that added the page is listed as that
+AssertionError: expected ' Pages Orders page History Orders pag…' to contain 'aaaaaaa feat: orders page'
+
+Expected: "aaaaaaa feat: orders page"
+Received: " Pages Orders page History Orders page Page Lists the orders of an account. App route /orders Overview Contract Used In Uses States History Source History Changes to this entity through bbbbbbb, newest first. Date Commit Behavior change Size Complexity Latency 1 week ago aaaaaaa Added feat: orders page Not measured Not measured Not measured "
+
+ ❯ test/components/entity-history.test.ts:54:22
+     52|  expect(hashes(body)).toEqual(['aaaaaaa']);
+     53|  // No reason was recorded for the page, so the row is told by the sub…
+     54|  expect(words(body)).toContain('aaaaaaa feat: orders page');
+       |                      ^
+     55|  expect(words(body)).not.toContain('Selected change');
+     56|  expect(words(body)).not.toContain('do not record what they changed');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  2 failed | 12 passed (14)
+   Start at  18:11:19
+   Duration  3.00s (transform 1.25s, setup 0ms, collect 2.15s, tests 67ms, environment 0ms, prepare 124ms)
+
+error: script "test:unit" exited with code 1
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview.spec.ts --grep "history lists changes"
+
+Running 1 test using 1 worker
+
+(node:26730) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview.spec.ts:172:1 › history lists changes, keeps profiles apart and opens a revision (5.3s)
+
+
+  1) test/entity-preview.spec.ts:172:1 › history lists changes, keeps profiles apart and opens a revision 
+
+    Error: History lifecycle badges
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-history').getByText(/^(Added|Removed)$/)
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - History lifecycle badges locator('.ex-history').getByText(/^(Added|Removed)$/) with timeout 5000ms
+      - waiting for locator('.ex-history').getByText(/^(Added|Removed)$/)
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      178 | 		tab.locator('.ex-history').getByText(/^(Added|Removed)$/),
+      179 | 		'History lifecycle badges'
+    > 180 | 	).toHaveCount(0);
+          | 	  ^
+      181 | 	await expect(
+      182 | 		tab.getByText('Selected change', { exact: false }),
+      183 | 		'Compact commit history'
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-U8VjU4/packages/reports/test/entity-preview.spec.ts:180:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-history-lis-84367--apart-and-opens-a-revision/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-history-lis-84367--apart-and-opens-a-revision/error-context.md
+
+  1 failed
+    test/entity-preview.spec.ts:172:1 › history lists changes, keeps profiles apart and opens a revision 
+error: script "test:entities" exited with code 1

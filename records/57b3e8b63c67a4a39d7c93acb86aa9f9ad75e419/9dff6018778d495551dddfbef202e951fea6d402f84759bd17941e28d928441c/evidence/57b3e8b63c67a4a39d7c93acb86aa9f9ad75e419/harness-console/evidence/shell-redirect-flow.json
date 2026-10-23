@@ -1,0 +1,34 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "environment": "Chromium against the built reports server",
+  "fixture": "Synthetic Git history seeded for the console",
+  "steps": [
+    "Open /harness/branch/feature%2Fshells/commit/cc369d32299d1efefe31ed6d481d29428f109c24/components/component.title-frame/details?tab=source",
+    "Wait for the shell under Shells, with the source that was asked for",
+    "Read the address, the heading, the categories and the verification marks"
+  ],
+  "input": {
+    "address": "/harness/branch/feature%2Fshells/commit/cc369d32299d1efefe31ed6d481d29428f109c24/components/component.title-frame/details?tab=source"
+  },
+  "output": {
+    "address": "/harness/branch/feature%2Fshells/commit/cc369d32299d1efefe31ed6d481d29428f109c24/shells/component.title-frame/details?tab=source",
+    "heading": "Title frame",
+    "categories": [
+      "Pages",
+      "Shells",
+      "Components",
+      "Functions",
+      "Configs",
+      "Services"
+    ],
+    "category": "Shells",
+    "branch": "feature/shells",
+    "commit": "cc369d32299d1efefe31ed6d481d29428f109c24",
+    "marks": [
+      "Coverage incomplete"
+    ],
+    "paths": [
+      "src/components/TitleFrame.svelte"
+    ]
+  }
+}

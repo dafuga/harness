@@ -1,0 +1,69 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [9.50s]
+$ vitest run test/components/entity-overview.test.ts test/utils/entity-screens.test.ts
+
+ RUN  v3.2.4 /Users/danielfugere/.cache/ht/harness-snapshot-IBeoKu/packages/reports
+
+ ❯ test/components/entity-overview.test.ts (11 tests | 1 failed) 49ms
+   ✓ an overview groups size and timings in Performance profile, with no source 15ms
+   ✓ a page at a selected commit shows the parent and the commit for one state and viewport 2ms
+   ✓ a page at the branch tip shows exactly one screenshot and no before or after 1ms
+   × a side with no capture of the state is a stated gap, never the other side picture 9ms
+     → known focused dimensions override conventional viewport defaults: expected ' Pages Orders page Orders page Page O…' to contain '1280 × 720'
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 2ms
+   ✓ a page lists its components as components, each a link in the same scope 4ms
+   ✓ a function at a selected commit shows its end-to-end results before and after 2ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 3ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 1ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 3ms
+   ✓ contract and details list required states without an overview selector 6ms
+ ✓ test/utils/entity-screens.test.ts (11 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-overview.test.ts > a side with no capture of the state is a stated gap, never the other side picture
+AssertionError: known focused dimensions override conventional viewport defaults: expected ' Pages Orders page Orders page Page O…' to contain '1280 × 720'
+
+Expected: [32m"1280 × 720"[39m
+Received: [31m" Pages Orders page Orders page Page Overview Contract Uses States History Source Lists the orders of an account. Current screenshot Desktop Tablet Mobile 1440 × 900 Branch tip · ccccccc Focused capture Open full size Performance profile Source size Not measured Complexity Not measured Latency Not measured Memory Not measured No benchmark is recorded for this revision. "[39m
+
+ ❯ test/components/entity-overview.test.ts:89:4
+     87|   words(sized),
+     88|   'known focused dimensions override conventional viewport defaults'
+     89|  ).toContain('1280 × 720');
+       |    ^
+     90|  expect(words(sized), 'a stored width never becomes an invented deskto…
+     91|   '1440 × 900'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 21 passed (22)
+   Start at  16:28:08
+   Duration  1.91s (transform 899ms, setup 0ms, collect 1.28s, tests 56ms, environment 0ms, prepare 81ms)
+
+error: script "test:unit" exited with code 1

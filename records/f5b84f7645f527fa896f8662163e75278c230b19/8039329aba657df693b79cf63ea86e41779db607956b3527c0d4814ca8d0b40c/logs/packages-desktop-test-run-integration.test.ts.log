@@ -1,0 +1,19 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/run-integration.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 49421[2mms[22m[39m
+   [33m[2m✓[22m[39m Plan uses read-only CLI and saves a committed immutable version without claiming verification [33m 4826[2mms[22m[39m
+   [33m[2m✓[22m[39m approval alone never runs and Change records untracked and previously dirty source deltas [33m 6852[2mms[22m[39m
+   [33m[2m✓[22m[39m stale approval is rejected before agent execution [33m 5455[2mms[22m[39m
+   [33m[2m✓[22m[39m image generation failure creates no invented image or successful completion [33m 2634[2mms[22m[39m
+   [33m[2m✓[22m[39m failed Change never records a completed outcome [33m 6850[2mms[22m[39m
+   [33m[2m✓[22m[39m cancelled Change records cancellation and cannot cancel another run ID [33m 6882[2mms[22m[39m
+   [33m[2m✓[22m[39m observed host writes retain actual absolute path and hashes in committed change history [33m 6741[2mms[22m[39m
+   [33m[2m✓[22m[39m visual provenance stores actual image orchestration model and exact full generator prompt [33m 4157[2mms[22m[39m
+   [33m[2m✓[22m[39m Plan refuses a generation whose expected latest version changed while the image was running [33m 5023[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m9 passed[39m[22m[90m (9)[39m
+[2m   Start at [22m 19:56:09
+[2m   Duration [22m 50.57s[2m (transform 467ms, setup 0ms, collect 759ms, tests 49.42s, environment 1ms, prepare 96ms)[22m
+

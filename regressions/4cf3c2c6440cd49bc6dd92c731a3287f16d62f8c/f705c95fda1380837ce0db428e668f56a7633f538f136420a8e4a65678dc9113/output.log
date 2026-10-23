@@ -1,0 +1,28 @@
+$ vitest run test/components/entity-history.test.ts test/components/entity-history-row.test.ts test/components/entity-history-screen.test.ts
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oChRC6/packages/reports
+
+ ✓ test/components/entity-history.test.ts (9 tests) 40ms
+ ✓ test/components/entity-history-row.test.ts (3 tests) 11ms
+ ✓ test/components/entity-history-screen.test.ts (2 tests) 21ms
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  17:55:26
+   Duration  3.57s (transform 1.28s, setup 0ms, collect 2.29s, tests 73ms, environment 0ms, prepare 187ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview.spec.ts --grep "history lists changes"
+
+Running 1 test using 1 worker
+
+(node:8934) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview.spec.ts:172:1 › history lists changes, keeps profiles apart and opens a revision (491ms)
+
+  1 passed (6.0s)

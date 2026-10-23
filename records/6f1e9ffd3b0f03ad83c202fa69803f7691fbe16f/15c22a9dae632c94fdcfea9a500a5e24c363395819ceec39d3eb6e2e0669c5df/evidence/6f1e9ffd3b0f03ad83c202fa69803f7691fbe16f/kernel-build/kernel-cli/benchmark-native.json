@@ -1,0 +1,102 @@
+{
+  "profile": "1db6ce9451b5e530",
+  "target": "process",
+  "measurements": [
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "artifact-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 402048,
+      "method": "Byte size recorded by the kernel build.",
+      "workload": null,
+      "target": "process"
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "source-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 14964,
+      "method": "Byte size recorded by the kernel build.",
+      "workload": null,
+      "target": "process"
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-cold-ms",
+      "unitOfMeasure": "ms",
+      "value": 3.729167000000018,
+      "method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+      "workload": "graph-100",
+      "target": "process",
+      "samples": 3
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-warm-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.10643749999996999,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-100",
+      "target": "process",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "throughput-ops",
+      "unitOfMeasure": "ops/s",
+      "value": 9292.730297090144,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-100",
+      "target": "process",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "memory-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 1982464,
+      "method": "Peak resident set size of one native process run, from /usr/bin/time.",
+      "workload": "graph-100",
+      "target": "process"
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-cold-ms",
+      "unitOfMeasure": "ms",
+      "value": 6.0881669999999986,
+      "method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+      "workload": "graph-1k",
+      "target": "process",
+      "samples": 3
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "latency-warm-ms",
+      "unitOfMeasure": "ms",
+      "value": 0.7683335000001534,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "process",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "throughput-ops",
+      "unitOfMeasure": "ops/s",
+      "value": 1273.7296361943284,
+      "method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+      "workload": "graph-1k",
+      "target": "process",
+      "samples": 30
+    },
+    {
+      "unit": "kernel.impact-kernel",
+      "metric": "memory-bytes",
+      "unitOfMeasure": "bytes",
+      "value": 2883584,
+      "method": "Peak resident set size of one native process run, from /usr/bin/time.",
+      "workload": "graph-1k",
+      "target": "process"
+    }
+  ]
+}

@@ -1,0 +1,357 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby
+
+ ❯ test/workspace-test-config.test.ts (15 tests | 6 failed) 4091ms
+   × a workspace without a config of its own runs its tests with the root config and its own setup 662ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × the root runs its own tests and still leaves the workspaces to theirs 704ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × collaboration keeps its own configuration within one worker 643ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × remote keeps its own configuration within one worker 673ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × relay keeps its own configuration within one worker 658ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × game keeps its own configuration within one worker 746ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   ✓ . routes standalone verification and build scripts through admission 1ms
+   ✓ packages/collaboration routes standalone verification and build scripts through admission 0ms
+   ✓ packages/desktop routes standalone verification and build scripts through admission 0ms
+   ✓ packages/game routes standalone verification and build scripts through admission 0ms
+   ✓ packages/hub routes standalone verification and build scripts through admission 0ms
+   ✓ packages/planning routes standalone verification and build scripts through admission 1ms
+   ✓ packages/relay routes standalone verification and build scripts through admission 0ms
+   ✓ packages/remote routes standalone verification and build scripts through admission 0ms
+   ✓ packages/reports routes standalone verification and build scripts through admission 0ms
+ ❯ test/utils/resource-workers.test.ts (4 tests | 1 failed) 6ms
+   ✓ test worker limits use only the managed reservation and retain normal defaults outside it 2ms
+   ✓ native worker budgets preserve stricter caller limits and cap larger values 0ms
+   ✓ parallel test workers partition the parent CPU and memory budget for their subprocesses 0ms
+   × a caller ceiling retains its one-worker limit and full per-worker memory reservation 4ms
+     → expected 3 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspace-test-config.test.ts > a workspace without a config of its own runs its tests with the root config and its own setup
+AssertionError: expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -13,7 +13,7 @@[39m
+[2m      [[22m
+[2m        "packages/nested/test/nested-2.test.ts",[22m
+[2m        "passed",[22m
+[2m      ],[22m
+[2m    ],[22m
+[32m-   1,[39m
+[31m+   3,[39m
+[2m  ][22m
+
+ ❯ test/workspace-test-config.test.ts:158:73
+    156|  const nested = run(root, join(root, 'packages', 'nested'));
+    157|  expect(nested.output).not.toMatch(/ERR_MODULE_NOT_FOUND|ERR_LOAD_URL|…
+    158|  expect([nested.timedOut, nested.status, nested.files, nested.workers]…
+       |                                                                         ^
+    159|   false,
+    160|   0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/workspace-test-config.test.ts > the root runs its own tests and still leaves the workspaces to theirs
+AssertionError: expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -13,7 +13,7 @@[39m
+[2m      [[22m
+[2m        "test/root-2.test.ts",[22m
+[2m        "passed",[22m
+[2m      ],[22m
+[2m    ],[22m
+[32m-   1,[39m
+[31m+   3,[39m
+[2m  ][22m
+
+ ❯ test/workspace-test-config.test.ts:169:61
+    167|  const root = project();
+    168|  const top = run(root, root);
+    169|  expect([top.timedOut, top.status, top.files, top.workers]).toEqual([
+       |                                                             ^
+    170|   false,
+    171|   0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/workspace-test-config.test.ts > collaboration keeps its own configuration within one worker
+ FAIL  test/workspace-test-config.test.ts > remote keeps its own configuration within one worker
+ FAIL  test/workspace-test-config.test.ts > relay keeps its own configuration within one worker
+ FAIL  test/workspace-test-config.test.ts > game keeps its own configuration within one worker
+AssertionError: expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -13,7 +13,7 @@[39m
+[2m      [[22m
+[2m        "packages/nested/test/nested-2.test.ts",[22m
+[2m        "passed",[22m
+[2m      ],[22m
+[2m    ],[22m
+[32m-   1,[39m
+[31m+   3,[39m
+[2m  ][22m
+
+ ❯ test/workspace-test-config.test.ts:182:74
+    180|   const root = project(config);
+    181|   const nested = run(root, join(root, 'packages', 'nested'));
+    182|   expect([nested.timedOut, nested.status, nested.files, nested.workers…
+       |                                                                          ^
+    183|    false,
+    184|    0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/utils/resource-workers.test.ts > a caller ceiling retains its one-worker limit and full per-worker memory reservation
+AssertionError: expected 3 to be 1 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 3[39m
+
+ ❯ test/utils/resource-workers.test.ts:65:29
+     63|   1
+     64|  );
+     65|  expect(options.maxWorkers).toBe(1);
+       |                             ^
+     66|  expect(options.env?.HARNESS_RESOURCE_CPUS).toBe('1');
+     67|  expect(options.env?.HARNESS_RESOURCE_MEMORY_MIB).toBe('1792');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  7 failed | 12 passed (19)
+   Start at  13:53:37
+   Duration  6.59s (transform 40ms, setup 89ms, collect 16ms, tests 4.10s, environment 0ms, prepare 64ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop
+
+ ❯ test/cli-integration.test.ts (20 tests | 8 failed) 1456ms
+   ✓ Codex initializes subscription RPC, discovers models and confines public turn events 204ms
+   ✓ codex-none refuses text or errors as image success 73ms
+   ✓ codex-error refuses text or errors as image success 73ms
+   ✓ completed image returns PNG bytes and transmits its original local image reference 69ms
+   ✓ Claude uses requested model, project cwd, stdin and subscription-only environment 204ms
+   ✓ codex-mismatch rejects false success 65ms
+   ✓ claude-mismatch rejects false success 71ms
+   ✓ claude-error rejects false success 75ms
+   ✓ codex-hang cancellation kills only the owned process group 172ms
+   ✓ claude-hang cancellation kills only the owned process group 170ms
+   ✓ codex-text waits under memory pressure and queued cancellation launches no provider 60ms
+   ✓ claude-text waits under memory pressure and queued cancellation launches no provider 60ms
+   × 'bun' 'cli' retains fast child results during a +0 ms resource observer 21ms
+     → 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-U60zGj/fixture.ts:1:28
+
+   × 'bun' 'cli' retains fast child results during a 150 ms resource observer 20ms
+     → 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-Nn2nIf/fixture.ts:1:28
+
+   × 'bun' 'rpc' retains fast child results during a +0 ms resource observer 18ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-2rAklR/fixture.ts:2:26
+
+   × 'bun' 'rpc' retains fast child results during a 150 ms resource observer 18ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-6baVEu/fixture.ts:2:26
+
+   × 'node' 'cli' retains fast child results during a +0 ms resource observer 19ms
+     → 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-GeFpQx/fixture.ts:1:28
+
+   × 'node' 'cli' retains fast child results during a 150 ms resource observer 18ms
+     → 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-wdAW94/fixture.ts:1:28
+
+   × 'node' 'rpc' retains fast child results during a +0 ms resource observer 19ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-sXQxR8/fixture.ts:2:26
+
+   × 'node' 'rpc' retains fast child results during a 150 ms resource observer 24ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-nR9Nob/fixture.ts:2:26
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli-integration.test.ts > 'bun' 'cli' retains fast child results during a +0 ms resource observer
+Error: 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-U60zGj/fixture.ts:1:28
+
+ ❯ ../../../harness-provider-exit-U60zGj/fixture.ts:1:28
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/cli-integration.test.ts > 'bun' 'cli' retains fast child results during a 150 ms resource observer
+Error: 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-Nn2nIf/fixture.ts:1:28
+
+ ❯ ../../../harness-provider-exit-Nn2nIf/fixture.ts:1:28
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/cli-integration.test.ts > 'bun' 'rpc' retains fast child results during a +0 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-2rAklR/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-2rAklR/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  test/cli-integration.test.ts > 'bun' 'rpc' retains fast child results during a 150 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-6baVEu/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-6baVEu/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  test/cli-integration.test.ts > 'node' 'cli' retains fast child results during a +0 ms resource observer
+Error: 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-GeFpQx/fixture.ts:1:28
+
+ ❯ ../../../harness-provider-exit-GeFpQx/fixture.ts:1:28
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  test/cli-integration.test.ts > 'node' 'cli' retains fast child results during a 150 ms resource observer
+Error: 1 | import { cliProcess } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot
+                               ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/development-tooling/cliProcess.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-wdAW94/fixture.ts:1:28
+
+ ❯ ../../../harness-provider-exit-wdAW94/fixture.ts:1:28
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  test/cli-integration.test.ts > 'node' 'rpc' retains fast child results during a +0 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-sXQxR8/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-sXQxR8/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  test/cli-integration.test.ts > 'node' 'rpc' retains fast child results during a 150 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zpZlby/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-nR9Nob/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-nR9Nob/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:36:33
+     34|    timeout: 20_000
+     35|   });
+     36|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     37|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     38|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 12 passed (20)
+   Start at  13:53:44
+   Duration  2.07s (transform 250ms, setup 69ms, collect 359ms, tests 1.46s, environment 0ms, prepare 36ms)
+

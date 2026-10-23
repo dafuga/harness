@@ -1,0 +1,63 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-WsJJW0
+
+ ❯ test/budget-performance.e2e.test.ts (3 tests | 1 failed) 68805ms
+   ✓ rule fixture: a declared slowdown beyond five percent fails, and one within it passes  14205ms
+   ✓ rule fixture: another profile is incompatible and a missing measurement never passes  8886ms
+   × a real operation that is slowed without changing its result fails the end-to-end gate 35980ms
+     → actual module benchmark memory must be observed: expected 0 to be greater than 0
+ ❯ test/loop.e2e.test.ts (7 tests | 3 failed) 108162ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  5658ms
+   ✓ generated app and lib instructions mention harness loops  3176ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  4141ms
+   × bug-fix CLI records proof and leaves verification pending across failed and passing checks 26337ms
+     → expected 'Error: Complete this regression step …' to contain 'completion audit'
+   × fix CLI records proof and leaves verification pending across failed and passing checks 27498ms
+     → expected 'Error: Complete this regression step …' to contain 'completion audit'
+   × regression-prevention CLI records proof and leaves verification pending across failed and passing checks 30569ms
+     → expected 'Error: Complete this regression step …' to contain 'completion audit'
+   ✓ standalone evidence capture preserves images and measurements without inventing a regression or full verdict  10778ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/budget-performance.e2e.test.ts > a real operation that is slowed without changing its result fails the end-to-end gate
+AssertionError: actual module benchmark memory must be observed: expected 0 to be greater than 0
+ ❯ assertTaskProfile test/budget-performance.e2e.test.ts:176:80
+    174|   (item) => item.unit === 'function.rank' && item.metric === 'process-…
+    175|  );
+    176|  expect(memory?.value ?? 0, 'actual module benchmark memory must be ob…
+       |                                                                                ^
+    177|  expect(profiled.record.failures).toEqual([]);
+    178|  const audit = await new TaskCompletionService(repo.root).check({
+ ❯ test/budget-performance.e2e.test.ts:126:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/loop.e2e.test.ts > bug-fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+AssertionError: expected 'Error: Complete this regression step …' to contain 'completion audit'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- completion audit[39m
+[31m+ Error: Complete this regression step at its current tested commit.[39m
+[31m+[39m
+
+ ❯ test/loop.e2e.test.ts:139:31
+    137|     );
+    138|     expect(completion.exitCode).toBe(1);
+    139|     expect(completion.stderr).toContain('completion audit');
+       |                               ^
+    140|    }
+    141|    const next = await runHarness(['loop', 'next', 'repair', '--json'],…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 6 passed (10)
+   Start at  14:44:31
+   Duration  181.29s (transform 540ms, setup 138ms, collect 993ms, tests 176.97s, environment 0ms, prepare 84ms)
+

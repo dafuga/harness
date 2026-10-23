@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/settlement-evidence.test.ts (3 tests) 7639ms
+   ✓ a process that outlasts its signal and one that was never signalled are told apart  2028ms
+   ✓ a process signalled at the time limit that outlasts it is not reported as not signalled  4983ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  02:40:00
+   Duration  8.04s (transform 74ms, setup 18ms, collect 84ms, tests 7.64s, environment 0ms, prepare 53ms)
+

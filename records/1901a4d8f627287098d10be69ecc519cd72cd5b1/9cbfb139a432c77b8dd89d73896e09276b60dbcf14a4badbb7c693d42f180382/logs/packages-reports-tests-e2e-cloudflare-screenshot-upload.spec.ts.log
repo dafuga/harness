@@ -1,0 +1,9 @@
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/e2e/cloudflare-screenshot-upload.spec.ts:49:1 › the upload service adds a before/after pair that the viewer displays (1.2s)
+  ✓  2 tests/e2e/cloudflare-screenshot-upload.spec.ts:82:1 › an uploaded mobile pair remains visible and the viewer fits a phone (316ms)
+  ✓  3 tests/e2e/cloudflare-screenshot-upload.spec.ts:107:1 › multipart upload accepts realistic screenshots above the default body limit (65ms)
+  ✓  4 tests/e2e/cloudflare-screenshot-upload.spec.ts:134:1 › expired uploads retain a readable report without downloadable image bytes (302ms)
+
+  4 passed (2.6m)

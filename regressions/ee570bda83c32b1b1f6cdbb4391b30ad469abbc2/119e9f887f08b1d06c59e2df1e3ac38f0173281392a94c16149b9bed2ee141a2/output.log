@@ -1,0 +1,70 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.73s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-FiyXRx
+
+ ❯ test/loop.e2e.test.ts (7 tests | 1 failed | 6 skipped) 23599ms
+   ↓ loop CLI traces work and remains audit-safe in generated projects
+   ↓ generated app and lib instructions mention harness loops
+   ↓ loop CLI creates from templates, searches, guides next, and evaluates
+   ↓ feature completion rejects an unsupported free-text verification claim
+   × bug-fix CLI records proof and leaves verification pending across failed and passing checks 23593ms
+     → source-identical history must retain the original sealed checkpoint: expected undefined to be '3c85d26f3a1dfc1feb7a7c85bf8bbe318f935…' // Object.is equality
+   ↓ fix CLI records proof and leaves verification pending across failed and passing checks
+   ↓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/loop.e2e.test.ts > bug-fix CLI records proof and leaves verification pending across failed and passing checks
+AssertionError: source-identical history must retain the original sealed checkpoint: expected undefined to be '3c85d26f3a1dfc1feb7a7c85bf8bbe318f935…' // Object.is equality
+
+- Expected: 
+"3c85d26f3a1dfc1feb7a7c85bf8bbe318f9355c2"
+
++ Received: 
+undefined
+
+ ❯ expectArchivedProof test/support/loop-repair/captureFixture.ts:119:4
+    117|   (await proofs.latest('repair', 'green', squash))?.commit,
+    118|   'source-identical history must retain the original sealed checkpoint'
+    119|  ).toBe(source);
+       |    ^
+    120|  const changed = await tree.commit({
+    121|   parents: [parent],
+ ❯ expectSquashedScreens test/support/loop-repair/captureFixture.ts:47:2
+ ❯ expectSavedScreens test/support/loopRepair.ts:171:2
+ ❯ phaseProof test/support/loopRepair.ts:165:25
+ ❯ exerciseRepair test/support/loopRepair.ts:40:4
+ ❯ test/loop.e2e.test.ts:144:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  01:14:03
+   Duration  27.89s (transform 220ms, setup 126ms, collect 216ms, tests 23.60s, environment 0ms, prepare 37ms)
+

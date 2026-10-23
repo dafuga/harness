@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DDicOZ
+
+ ✓ test/response-check.e2e.test.ts (21 tests) 4061ms
+   ✓ gate rejects violates while advisory completes  332ms
+   ✓ gate rejects uncertain while advisory completes  330ms
+   ✓ combined serialized size is bounded and invalid UTF-8 is rejected  320ms
+   ✓ existing command-based loops reject uncertain response checks  321ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  05:17:04
+   Duration  4.28s (transform 32ms, setup 8ms, collect 13ms, tests 4.06s, environment 0ms, prepare 47ms)
+

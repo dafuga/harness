@@ -1,0 +1,34 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "environment": "Chromium against the built reports server",
+  "fixture": "Synthetic Git history seeded for the console",
+  "steps": [
+    "Open /harness/branch/main/commit/8c9f510b0e06d2489934774e8aece57b1cadbbe0/functions/function.slugify",
+    "Wait until the behaviour of the function is compared with its parent",
+    "Read the address, the heading, the categories and the verification marks"
+  ],
+  "input": {
+    "address": "/harness/branch/main/commit/8c9f510b0e06d2489934774e8aece57b1cadbbe0/functions/function.slugify"
+  },
+  "output": {
+    "address": "/harness/branch/main/commit/8c9f510b0e06d2489934774e8aece57b1cadbbe0/functions/function.slugify",
+    "heading": "Slugify",
+    "categories": [
+      "Pages",
+      "Components",
+      "Functions",
+      "Configs",
+      "Services"
+    ],
+    "category": "Functions",
+    "branch": "main",
+    "commit": "8c9f510b0e06d2489934774e8aece57b1cadbbe0",
+    "marks": [
+      "Full coverage passed",
+      "All results passed",
+      "Passed",
+      "Held"
+    ],
+    "paths": []
+  }
+}

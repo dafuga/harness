@@ -1,0 +1,94 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.97s]
+$ vitest run test/page-benchmark.test.ts
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-07hS22/packages/reports
+
+ ❯ test/page-benchmark.test.ts (12 tests | 1 failed) 30ms
+   × the browser collector satisfies the real page module contract without losing metric names 21ms
+     → expected [ …(8) ] to deeply equal [ Array(1) ]
+   ✓ a navigation to components names its actual framework entry 0ms
+   ✓ a navigation to components/component.order/history names its actual framework entry 0ms
+   ✓ a navigation to functions names its actual framework entry 0ms
+   ✓ a navigation to helpers/slugify/contract names its actual framework entry 0ms
+   ✓ a navigation to helpers/slugify/examples names its actual framework entry 0ms
+   ✓ missing build cannot borrow document measurements 1ms
+   ✓ other revision cannot borrow document measurements 1ms
+   ✓ soft navigation cannot borrow document measurements 1ms
+   ✓ failed heap reads release their session and cannot publish a sample 1ms
+   ✓ an unavailable duration cannot become a measured zero 1ms
+   ✓ an unavailable usedSize cannot become a measured zero 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/page-benchmark.test.ts > the browser collector satisfies the real page module contract without losing metric names
+AssertionError: expected [ …(8) ] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+  [
+    "reports.page.harness-branch-branch-at-components",
++   "reports.component.harness-entity-header",
++   "function.explorer-route",
++   "reports.component.harness-entity-summary",
++   "reports.function.entity-measure",
++   "reports.function.entity-shown",
++   "reports.function.explorer-evidence",
++   "reports.function.explorer-evidence-focused-captures",
+  ]
+
+ ❯ test/page-benchmark.test.ts:54:81
+     52|   );
+     53|   expect(measurements.every((item: { target: string }) => item.target …
+     54|   expect([...new Set(measurements.map((item: { unit: string }) => item…
+       |                                                                                 ^
+     55|    unit.id
+     56|   ]);
+ ❯ Module.isolatedProfileCapture ../../test/support/taskProfiles.ts:24:3
+ ❯ test/page-benchmark.test.ts:47:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  00:34:08
+   Duration  779ms (transform 100ms, setup 115ms, collect 219ms, tests 30ms, environment 0ms, prepare 45ms)
+
+error: script "test:unit" exited with code 1

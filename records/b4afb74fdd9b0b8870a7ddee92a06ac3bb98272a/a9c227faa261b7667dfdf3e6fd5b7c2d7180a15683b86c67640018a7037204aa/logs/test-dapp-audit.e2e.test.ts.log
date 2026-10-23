@@ -1,0 +1,12 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/dapp-audit.e2e.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 843[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI audits Antelope dApps with contract adapters [33m 426[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI fails dApp audits for invalid contract shape [33m 415[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m   Start at [22m 16:00:02
+[2m   Duration [22m 1.17s[2m (transform 49ms, setup 24ms, collect 24ms, tests 843ms, environment 0ms, prepare 60ms)[22m
+

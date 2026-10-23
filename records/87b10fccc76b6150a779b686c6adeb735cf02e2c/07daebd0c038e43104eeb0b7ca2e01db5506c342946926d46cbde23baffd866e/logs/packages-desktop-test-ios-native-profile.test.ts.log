@@ -1,0 +1,560 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N/packages/desktop
+
+stdout | test/ios-native-profile.test.ts > Swift reproduces the backend encrypted protocol vectors
+ok   host public key is the X9.63 point
+ok   device public key is the X9.63 point
+ok   host ephemeral key
+ok   device ephemeral key
+ok   hostId is the hash of the host key
+ok   deviceId is the hash of the device key
+ok   session key device to host
+ok   session key host to device
+ok   packet 0 d2h seals to the vector
+ok   packet 0 d2h opens to the plaintext
+ok   packet 0 is refused under another counter
+ok   packet 1 h2d seals to the vector
+ok   packet 1 h2d opens to the plaintext
+ok   packet 1 is refused under another counter
+ok   packet 2 h2d seals to the vector
+ok   packet 2 h2d opens to the plaintext
+ok   packet 2 is refused under another counter
+ok   the vectors hold packets
+ok   pairing request seals to the vector
+ok   pairing approval opens to the plaintext
+ok   all 68 offer vectors read as TypeScript reads them
+ok   the valid offer reads back field by field
+All vectors reproduced.
+$ bun scripts/check-ios-vectors.ts
+
+
+stdout | test/ios-native-profile.test.ts > native Debug and Release verify authority, redirects, caching and replay
+Harness native checks (Debug)
+ok   an https origin of another machine is a relay
+ok   plain http, a path, user information and this device are refused
+ok   Debug without the opt-in refuses a local relay
+ok   Debug with the opt-in accepts plain http on this machine only
+ok   the opt-in never accepts plain http of another machine
+ok   the socket address holds no credential
+ok   the text a computer writes reads back as its offer
+ok   an offer that is read carries the moment it ends
+ok   an offer that ended this second is expired
+ok   an offer may claim its short life and a minute of a slow clock
+ok   an offer that claims a longer life than one can have is none
+ok   another version is unsupported, not misread
+ok   an offer for another audience is not for this app
+ok   a field, a line or a space around the offer makes it none
+ok   only the exact https origin of a named relay is an offer
+ok   a pairing link of earlier versions is no offer
+ok   text of any other kind or length is no offer
+ok   a build that asks production relays refuses an offer of this machine
+ok   a build that accepts this machine reads its offer
+ok   an offer that names another environment than its relay is none
+ok   a scan ends without an offer in the seven ways the page knows, by the same codes
+ok   each of them has words of its own
+ok   a camera that is refused or missing is said as that
+ok   a scan a person cancelled sends nothing and says so
+ok   a QR code of anything else is not an offer
+ok   a code that expired is not asked with
+ok   a code of another version is not asked with
+ok   a current offer becomes exactly the request of this phone, under its name
+ok   the name of the phone is trimmed
+ok   a phone without a name of at most 80 characters does not scan
+ok   Debug without the opt-in does not ask a relay on this machine
+ok   Debug with the opt-in asks the relay of a local fixture
+ok   and still asks a production relay
+ok   a scan opens the camera once and waits for it
+ok   leaving takes the camera of an open scan away
+ok   leaving answers the page once: the scan was cancelled
+ok   a code read after leaving starts no pairing and asks no relay
+ok   the page hears nothing more of it and the phone stays unpaired
+ok   a second scan does not open a second camera
+ok   the second scan is refused while the first is open
+ok   a cancelled look asks nobody
+ok   after it another look may open, and a code that is no offer asks nobody
+ok   an earlier camera that answers again is not heard
+ok   the look that is under way does ask with the offer it read
+ok   a Disconnect that waits behind what the camera read answers unpaired
+ok   nothing is announced but unpaired: no pairing before it and none after it
+ok   no pairing was begun, so no relay was asked
+ok   the page is answered once: the scan was cancelled
+ok   the camera of that scan was taken away
+ok   and nothing of it comes back later
+ok   a code that is no offer ends its scan at once
+ok   a scan asked for behind it opens, and the leaving behind that ends it
+ok   each scan is answered once and nobody was asked
+ok   only the leaving is announced
+ok   a fresh scan that nobody leaves still asks with the offer it read
+ok   leaving after the pairing began ends that pairing
+ok   a pairing asked for directly begins as it did before
+ok   and a second one beside it is refused as before
+ok   a paired phone is connecting until the computer attached it
+ok   nothing may be asked before a computer attached this phone
+ok   the attach answer makes the computer online
+ok   only attached device methods are offered, never a desktop one
+ok   a lock state the computer reported is stated
+ok   a method that was not attached is refused and never sent
+ok   a Debug build that was not started for a fixture does not say it is one
+ok   a Debug build started for a fixture says so in its status
+ok   the status holds no credential
+ok   a lock state the computer did not report stays unknown
+ok   a locked computer stays online
+ok   an unlocked computer is stated as unlocked
+ok   a computer going to sleep is offline and has no lock state
+ok   a lost link is offline at once
+ok   a new link replaces the lost one
+ok   a callback of the old link restores nothing and sends nothing
+ok   an event of the old link is not handed to the page
+ok   a late revocation of the old link does not wipe the pairing
+ok   after a disconnect an old callback changes nothing and opens nothing
+ok   after a disconnect nothing is kept and nothing is delivered
+ok   an answered read is kept while the pairing holds
+ok   socket closed as unauthorized: the phone says its access was removed
+ok   socket closed as unauthorized: the credential and keys leave the vault
+ok   socket closed as unauthorized: every saved copy is purged
+ok   socket closed as unauthorized: nothing is offered any more
+ok   a read that waited is failed, not answered
+ok   an answer that arrives after the revocation is not kept
+ok   attach refused as revoked: the phone says its access was removed
+ok   attach refused as revoked: the credential and keys leave the vault
+ok   attach refused as revoked: every saved copy is purged
+ok   attach refused as revoked: nothing is offered any more
+ok   revoked event: the phone says its access was removed
+ok   revoked event: the credential and keys leave the vault
+ok   revoked event: every saved copy is purged
+ok   revoked event: nothing is offered any more
+ok   a revocation is not handed on as an ordinary event
+ok   a change pending when the link is lost ends as uncertain
+ok   a read pending when the link is lost keeps waiting
+ok   a change asked while offline is refused and never queued
+ok   after a reconnect under a new epoch only the read is sent again
+ok   the read keeps its first id
+ok   no change is sent again by itself
+ok   the read is answered by the computer, not by a copy
+ok   a change pending when the computer goes to sleep ends as uncertain
+ok   a change pending when the relay loses the computer ends as uncertain
+ok   the list of what is sent again holds reads only, also while a change still waits
+ok   ending the changes leaves the reads waiting
+ok   no more requests wait than the protocol allows
+ok   a request above the size of the protocol is refused before it is sent
+ok   an answer of the computer is not called a copy
+ok   while the computer is away a kept read is answered from its copy
+ok   a copy carries the time it was saved
+ok   a read that was never answered is offline, not invented
+ok   drafts are never answered from a copy
+ok   a change is never answered from a copy
+ok   only the kept read is on disk
+ok   the cache is excluded from backup
+ok   media whose bytes match its hash is kept
+ok   media whose bytes do not match its hash is not kept
+ok   media that is not the hash that was asked for is not kept
+ok   an answer of the computer is not called a copy
+ok   a grant without agents takes the agent methods away at once
+ok   a changed grant purges what was kept under the old one
+ok   nothing of the old grant is answered afterwards
+ok   an answer of the computer is not called a copy
+ok   a new generation of the approval purges what was kept under the old one
+ok   the fixture holds a copy of another authority
+ok   a phone without a pairing keeps no copy of anyone
+ok   a pairing with another authority removes the copies of the earlier one
+ok   a late answer for a purged authority is not written back
+ok   a read asked under the old grant ends when the grant changes
+ok   a change asked under the old grant ends as uncertain
+ok   its late answer reaches neither the page nor the cache
+ok   an answer of the computer is not called a copy
+ok   agents-denied from the computer purges the saved copies
+ok   after agents-denied nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   method-denied from the computer purges the saved copies
+ok   after method-denied nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   not-attached from the computer purges the saved copies
+ok   after not-attached nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   project-denied from the computer purges the saved copies
+ok   after project-denied nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   a request answered as revoked ends the pairing
+ok   an answer of the computer is not called a copy
+ok   an ordinary failure purges nothing and ends nothing
+ok   a copy inside the budget is kept
+ok   a write beyond the budget of copies evicts at once, not at the next start
+ok   the copy that was not used for longest leaves; one that was just read stays
+ok   steady writes never exceed the budget and keep the newest reads
+ok   a smaller budget is enforced on what is found on disk
+ok   the total bytes of the copies stay inside the budget
+ok   the oldest reads leave first when bytes run out
+ok   a copy larger than the whole budget is not kept and evicts nothing
+ok   a long connected session stays inside the budget while it reads
+ok   evicting copies touches neither the pairing nor the connection
+ok   a change names the epoch of the attach it was asked under
+ok   a read names no epoch
+ok   a change asked after a new attach names the new epoch
+ok   the change of the earlier epoch is not sent under the new one
+ok   a refusal of the computer ends the reads that still waited
+ok   a change that waits is not ended by a refusal of another request
+ok   the late answer of an ended read reaches neither page nor cache
+ok   an expired change is reported with the words of the computer and is not repeated
+ok   nothing is sent again after request-expired
+ok   recorded evidence a computer did not attach is refused
+ok   and is never sent
+ok   evidence and artifact are offered once the computer attached them
+ok   evidence is sent with exactly what was asked
+ok   an artifact is sent with its whole binding, and as a read it names no epoch
+ok   an attach that leaves evidence out takes it away
+ok   and it is refused again
+ok   evidence the computer answered is not called a copy
+ok   after a notes update the newer answer replaces the copy of the same question
+ok   while the computer is away evidence is answered from its latest copy
+ok   kept evidence carries the time it was saved
+ok   evidence of another project is never answered from this copy
+ok   evidence asked for another comparison is offline, not invented
+ok   nothing is sent while the computer is away
+ok   an artifact the computer answered is handed on as it came
+ok   while the computer is away an artifact is answered from its copy
+ok   a kept artifact carries the time it was saved
+ok   the artifact of earlier notes is never answered for the question of later ones
+ok   an artifact is never answered for another state of the same entity
+ok   an artifact of another project is never answered from this copy
+ok   an artifact is never answered as a design image of the same hash
+ok   a changed grant purges kept evidence and artifacts
+ok   nothing of the old grant is answered afterwards
+ok   a revocation purges kept evidence and artifacts
+ok   after a revocation neither is answered
+ok   a new generation of the approval purges kept evidence and artifacts
+ok   an artifact asked under the old grant ends when the grant changes
+ok   its late answer reaches neither the page nor the cache
+ok   a pairing with another authority removes the kept evidence of the earlier one
+ok   and never answers a copy of another scope
+ok   of 17 answers only the intact artifact of a safe kind is kept
+ok   the intact one is answered while the computer is away
+ok   an artifact with other bytes under its stated hash is not kept
+ok   an artifact with a hash its bytes do not have is not kept
+ok   an artifact with a length its bytes do not have is not kept
+ok   an artifact with base64 that does not decode is not kept
+ok   an artifact with another encoding is not kept
+ok   an artifact with no media type is not kept
+ok   an artifact with the kind 'text/html' is not kept
+ok   an artifact with the kind 'text/html; charset=utf-8' is not kept
+ok   an artifact with the kind 'application/xhtml+xml' is not kept
+ok   an artifact with the kind 'image/svg+xml' is not kept
+ok   an artifact with the kind 'text/javascript' is not kept
+ok   an artifact with the kind 'application/javascript' is not kept
+ok   an artifact with the kind 'application/octet-stream' is not kept
+ok   an artifact with the kind '' is not kept
+ok   an artifact with another hash than the one that was asked is not kept
+ok   an artifact with no hash in its question is not kept
+ok   pictures, recorded sound, data and plain text are kept and served: 8 kinds
+ok   markup, scripts and every kind outside the fixed list are refused, though their bytes are intact
+ok   and none of them is on disk beside the 8 safe kinds
+ok   an intact artifact is served from its copy
+ok   a copy is never served under another scope
+ok   a copy with its kind changed to markup on disk is not served, and is served again once it is intact
+ok   a copy with its bytes changed on disk is not served, and is served again once it is intact
+ok   a copy with its hash changed on disk is not served, and is served again once it is intact
+ok   a copy with its length changed on disk is not served, and is served again once it is intact
+ok   entering another scope removes the artifact and answers nothing
+ok   an artifact of exactly 11 MiB is accepted
+ok   one byte above 11 MiB is refused, though its bytes are intact
+ok   an artifact above 11 MiB is neither kept nor served
+ok   HTTP 307 from a relay ends the request as a failure
+ok   HTTP 307: the body went to the relay and to no other address
+ok   HTTP 308 from a relay ends the request as a failure
+ok   HTTP 308: the body went to the relay and to no other address
+ok   control: the same fixture is followed by a client that does not refuse redirects
+ok   Debug without the opt-in: a local relay is refused before any connection
+ok   a redirected WebSocket upgrade ends the link and is never ready
+ok   the upgrade reached the relay with its Authorization header
+ok   no upgrade and no Authorization header reached the other address
+ok   an upgrade the relay answers with 401 ends the link as revoked (round 1)
+ok   a socket the relay closes with 4401 ends the link as revoked (round 1)
+ok   an upgrade the relay answers with 401 ends the link as revoked (round 2)
+ok   a socket the relay closes with 4401 ends the link as revoked (round 2)
+ok   an upgrade the relay answers with 401 ends the link as revoked (round 3)
+ok   a socket the relay closes with 4401 ends the link as revoked (round 3)
+ok   an upgrade the relay answers with 401 ends the link as revoked (round 4)
+ok   a socket the relay closes with 4401 ends the link as revoked (round 4)
+ok   an upgrade the relay answers with 401 ends the link as revoked (round 5)
+ok   a socket the relay closes with 4401 ends the link as revoked (round 5)
+ok   a socket closed with another code is a loss, not a revocation
+Debug: 247 passed, 0 failed.
+Harness native checks (Release)
+ok   an https origin of another machine is a relay
+ok   plain http, a path, user information and this device are refused
+ok   Release refuses a local relay; the opt-in does not exist in it
+ok   the socket address holds no credential
+ok   the text a computer writes reads back as its offer
+ok   an offer that is read carries the moment it ends
+ok   an offer that ended this second is expired
+ok   an offer may claim its short life and a minute of a slow clock
+ok   an offer that claims a longer life than one can have is none
+ok   another version is unsupported, not misread
+ok   an offer for another audience is not for this app
+ok   a field, a line or a space around the offer makes it none
+ok   only the exact https origin of a named relay is an offer
+ok   a pairing link of earlier versions is no offer
+ok   text of any other kind or length is no offer
+ok   a build that asks production relays refuses an offer of this machine
+ok   a build that accepts this machine reads its offer
+ok   an offer that names another environment than its relay is none
+ok   a scan ends without an offer in the seven ways the page knows, by the same codes
+ok   each of them has words of its own
+ok   a camera that is refused or missing is said as that
+ok   a scan a person cancelled sends nothing and says so
+ok   a QR code of anything else is not an offer
+ok   a code that expired is not asked with
+ok   a code of another version is not asked with
+ok   a current offer becomes exactly the request of this phone, under its name
+ok   the name of the phone is trimmed
+ok   a phone without a name of at most 80 characters does not scan
+ok   Release never asks a relay on this machine; no switch for it exists
+ok   Release accepts production offers only
+ok   a scan opens the camera once and waits for it
+ok   leaving takes the camera of an open scan away
+ok   leaving answers the page once: the scan was cancelled
+ok   a code read after leaving starts no pairing and asks no relay
+ok   the page hears nothing more of it and the phone stays unpaired
+ok   a second scan does not open a second camera
+ok   the second scan is refused while the first is open
+ok   a cancelled look asks nobody
+ok   after it another look may open, and a code that is no offer asks nobody
+ok   an earlier camera that answers again is not heard
+ok   a Disconnect that waits behind what the camera read answers unpaired
+ok   nothing is announced but unpaired: no pairing before it and none after it
+ok   no pairing was begun, so no relay was asked
+ok   the page is answered once: the scan was cancelled
+ok   the camera of that scan was taken away
+ok   and nothing of it comes back later
+ok   a code that is no offer ends its scan at once
+ok   a scan asked for behind it opens, and the leaving behind that ends it
+ok   each scan is answered once and nobody was asked
+ok   only the leaving is announced
+ok   a paired phone is connecting until the computer attached it
+ok   nothing may be asked before a computer attached this phone
+ok   the attach answer makes the computer online
+ok   only attached device methods are offered, never a desktop one
+ok   a lock state the computer reported is stated
+ok   a method that was not attached is refused and never sent
+ok   Release never states a fixture build
+ok   the status holds no credential
+ok   a lock state the computer did not report stays unknown
+ok   a locked computer stays online
+ok   an unlocked computer is stated as unlocked
+ok   a computer going to sleep is offline and has no lock state
+ok   a lost link is offline at once
+ok   a new link replaces the lost one
+ok   a callback of the old link restores nothing and sends nothing
+ok   an event of the old link is not handed to the page
+ok   a late revocation of the old link does not wipe the pairing
+ok   after a disconnect an old callback changes nothing and opens nothing
+ok   after a disconnect nothing is kept and nothing is delivered
+ok   an answered read is kept while the pairing holds
+ok   socket closed as unauthorized: the phone says its access was removed
+ok   socket closed as unauthorized: the credential and keys leave the vault
+ok   socket closed as unauthorized: every saved copy is purged
+ok   socket closed as unauthorized: nothing is offered any more
+ok   a read that waited is failed, not answered
+ok   an answer that arrives after the revocation is not kept
+ok   attach refused as revoked: the phone says its access was removed
+ok   attach refused as revoked: the credential and keys leave the vault
+ok   attach refused as revoked: every saved copy is purged
+ok   attach refused as revoked: nothing is offered any more
+ok   revoked event: the phone says its access was removed
+ok   revoked event: the credential and keys leave the vault
+ok   revoked event: every saved copy is purged
+ok   revoked event: nothing is offered any more
+ok   a revocation is not handed on as an ordinary event
+ok   a change pending when the link is lost ends as uncertain
+ok   a read pending when the link is lost keeps waiting
+ok   a change asked while offline is refused and never queued
+ok   after a reconnect under a new epoch only the read is sent again
+ok   the read keeps its first id
+ok   no change is sent again by itself
+ok   the read is answered by the computer, not by a copy
+ok   a change pending when the computer goes to sleep ends as uncertain
+ok   a change pending when the relay loses the computer ends as uncertain
+ok   the list of what is sent again holds reads only, also while a change still waits
+ok   ending the changes leaves the reads waiting
+ok   no more requests wait than the protocol allows
+ok   a request above the size of the protocol is refused before it is sent
+ok   an answer of the computer is not called a copy
+ok   while the computer is away a kept read is answered from its copy
+ok   a copy carries the time it was saved
+ok   a read that was never answered is offline, not invented
+ok   drafts are never answered from a copy
+ok   a change is never answered from a copy
+ok   only the kept read is on disk
+ok   the cache is excluded from backup
+ok   media whose bytes match its hash is kept
+ok   media whose bytes do not match its hash is not kept
+ok   media that is not the hash that was asked for is not kept
+ok   an answer of the computer is not called a copy
+ok   a grant without agents takes the agent methods away at once
+ok   a changed grant purges what was kept under the old one
+ok   nothing of the old grant is answered afterwards
+ok   an answer of the computer is not called a copy
+ok   a new generation of the approval purges what was kept under the old one
+ok   the fixture holds a copy of another authority
+ok   a phone without a pairing keeps no copy of anyone
+ok   a pairing with another authority removes the copies of the earlier one
+ok   a late answer for a purged authority is not written back
+ok   a read asked under the old grant ends when the grant changes
+ok   a change asked under the old grant ends as uncertain
+ok   its late answer reaches neither the page nor the cache
+ok   an answer of the computer is not called a copy
+ok   agents-denied from the computer purges the saved copies
+ok   after agents-denied nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   method-denied from the computer purges the saved copies
+ok   after method-denied nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   not-attached from the computer purges the saved copies
+ok   after not-attached nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   project-denied from the computer purges the saved copies
+ok   after project-denied nothing is answered from a copy
+ok   an answer of the computer is not called a copy
+ok   a request answered as revoked ends the pairing
+ok   an answer of the computer is not called a copy
+ok   an ordinary failure purges nothing and ends nothing
+ok   a copy inside the budget is kept
+ok   a write beyond the budget of copies evicts at once, not at the next start
+ok   the copy that was not used for longest leaves; one that was just read stays
+ok   steady writes never exceed the budget and keep the newest reads
+ok   a smaller budget is enforced on what is found on disk
+ok   the total bytes of the copies stay inside the budget
+ok   the oldest reads leave first when bytes run out
+ok   a copy larger than the whole budget is not kept and evicts nothing
+ok   a long connected session stays inside the budget while it reads
+ok   evicting copies touches neither the pairing nor the connection
+ok   a change names the epoch of the attach it was asked under
+ok   a read names no epoch
+ok   a change asked after a new attach names the new epoch
+ok   the change of the earlier epoch is not sent under the new one
+ok   a refusal of the computer ends the reads that still waited
+ok   a change that waits is not ended by a refusal of another request
+ok   the late answer of an ended read reaches neither page nor cache
+ok   an expired change is reported with the words of the computer and is not repeated
+ok   nothing is sent again after request-expired
+ok   recorded evidence a computer did not attach is refused
+ok   and is never sent
+ok   evidence and artifact are offered once the computer attached them
+ok   evidence is sent with exactly what was asked
+ok   an artifact is sent with its whole binding, and as a read it names no epoch
+ok   an attach that leaves evidence out takes it away
+ok   and it is refused again
+ok   evidence the computer answered is not called a copy
+ok   after a notes update the newer answer replaces the copy of the same question
+ok   while the computer is away evidence is answered from its latest copy
+ok   kept evidence carries the time it was saved
+ok   evidence of another project is never answered from this copy
+ok   evidence asked for another comparison is offline, not invented
+ok   nothing is sent while the computer is away
+ok   an artifact the computer answered is handed on as it came
+ok   while the computer is away an artifact is answered from its copy
+ok   a kept artifact carries the time it was saved
+ok   the artifact of earlier notes is never answered for the question of later ones
+ok   an artifact is never answered for another state of the same entity
+ok   an artifact of another project is never answered from this copy
+ok   an artifact is never answered as a design image of the same hash
+ok   a changed grant purges kept evidence and artifacts
+ok   nothing of the old grant is answered afterwards
+ok   a revocation purges kept evidence and artifacts
+ok   after a revocation neither is answered
+ok   a new generation of the approval purges kept evidence and artifacts
+ok   an artifact asked under the old grant ends when the grant changes
+ok   its late answer reaches neither the page nor the cache
+ok   a pairing with another authority removes the kept evidence of the earlier one
+ok   and never answers a copy of another scope
+ok   of 17 answers only the intact artifact of a safe kind is kept
+ok   the intact one is answered while the computer is away
+ok   an artifact with other bytes under its stated hash is not kept
+ok   an artifact with a hash its bytes do not have is not kept
+ok   an artifact with a length its bytes do not have is not kept
+ok   an artifact with base64 that does not decode is not kept
+ok   an artifact with another encoding is not kept
+ok   an artifact with no media type is not kept
+ok   an artifact with the kind 'text/html' is not kept
+ok   an artifact with the kind 'text/html; charset=utf-8' is not kept
+ok   an artifact with the kind 'application/xhtml+xml' is not kept
+ok   an artifact with the kind 'image/svg+xml' is not kept
+ok   an artifact with the kind 'text/javascript' is not kept
+ok   an artifact with the kind 'application/javascript' is not kept
+ok   an artifact with the kind 'application/octet-stream' is not kept
+ok   an artifact with the kind '' is not kept
+ok   an artifact with another hash than the one that was asked is not kept
+ok   an artifact with no hash in its question is not kept
+ok   pictures, recorded sound, data and plain text are kept and served: 8 kinds
+ok   markup, scripts and every kind outside the fixed list are refused, though their bytes are intact
+ok   and none of them is on disk beside the 8 safe kinds
+ok   an intact artifact is served from its copy
+ok   a copy is never served under another scope
+ok   a copy with its kind changed to markup on disk is not served, and is served again once it is intact
+ok   a copy with its bytes changed on disk is not served, and is served again once it is intact
+ok   a copy with its hash changed on disk is not served, and is served again once it is intact
+ok   a copy with its length changed on disk is not served, and is served again once it is intact
+ok   entering another scope removes the artifact and answers nothing
+ok   an artifact of exactly 11 MiB is accepted
+ok   one byte above 11 MiB is refused, though its bytes are intact
+ok   an artifact above 11 MiB is neither kept nor served
+ok   HTTP 307 from a relay ends the request as a failure
+ok   HTTP 307: the body went to the relay and to no other address
+ok   HTTP 308 from a relay ends the request as a failure
+ok   HTTP 308: the body went to the relay and to no other address
+ok   control: the same fixture is followed by a client that does not refuse redirects
+ok   Release: a link to a local relay ends before it starts
+ok   Release: nothing was sent to a local address
+Release: 225 passed, 0 failed.
+$ bun scripts/check-ios-native.ts
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N/packages/desktop/ios/App/App/Remote/RemoteSession.swift:79:13: warning: left side of nil coalescing operator '??' has non-optional type 'Any', so the right side is never used
+ 77 |     var snapshot: [String: Any] {
+ 78 |         let host: Any = record.map { ["id": $0.hostId, "name": $0.hostName] }
+ 79 |             ?? pending.map { ["id": $0.hostId, "name": "your computer"] } ?? NSNull()
+    |             `- warning: left side of nil coalescing operator '??' has non-optional type 'Any', so the right side is never used
+ 80 |         let device: Any = record.map { ["id": $0.deviceId, "name": $0.deviceName] } ?? NSNull()
+ 81 |         var status: [String: Any] = [
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N/packages/desktop/ios/App/App/Remote/RemoteSession.swift:78:25: warning: expression implicitly coerced from '[String : String]?' to 'Any'
+ 76 |     /// words. No key, credential or code is in it. A lock state is stated only when known.
+ 77 |     var snapshot: [String: Any] {
+ 78 |         let host: Any = record.map { ["id": $0.hostId, "name": $0.hostName] }
+    |                         |      |- note: provide a default value to avoid this warning
+    |                         |      |- note: force-unwrap the value to avoid this warning
+    |                         |      `- note: explicitly cast to 'Any' with 'as Any' to silence this warning
+    |                         `- warning: expression implicitly coerced from '[String : String]?' to 'Any'
+ 79 |             ?? pending.map { ["id": $0.hostId, "name": "your computer"] } ?? NSNull()
+ 80 |         let device: Any = record.map { ["id": $0.deviceId, "name": $0.deviceName] } ?? NSNull()
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N/packages/desktop/ios/App/App/Remote/RemoteSession.swift:79:13: warning: left side of nil coalescing operator '??' has non-optional type 'Any', so the right side is never used
+ 77 |     var snapshot: [String: Any] {
+ 78 |         let host: Any = record.map { ["id": $0.hostId, "name": $0.hostName] }
+ 79 |             ?? pending.map { ["id": $0.hostId, "name": "your computer"] } ?? NSNull()
+    |             `- warning: left side of nil coalescing operator '??' has non-optional type 'Any', so the right side is never used
+ 80 |         let device: Any = record.map { ["id": $0.deviceId, "name": $0.deviceName] } ?? NSNull()
+ 81 |         var status: [String: Any] = [
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N/packages/desktop/ios/App/App/Remote/RemoteSession.swift:78:25: warning: expression implicitly coerced from '[String : String]?' to 'Any'
+ 76 |     /// words. No key, credential or code is in it. A lock state is stated only when known.
+ 77 |     var snapshot: [String: Any] {
+ 78 |         let host: Any = record.map { ["id": $0.hostId, "name": $0.hostName] }
+    |                         |      |- note: provide a default value to avoid this warning
+    |                         |      |- note: force-unwrap the value to avoid this warning
+    |                         |      `- note: explicitly cast to 'Any' with 'as Any' to silence this warning
+    |                         `- warning: expression implicitly coerced from '[String : String]?' to 'Any'
+ 79 |             ?? pending.map { ["id": $0.hostId, "name": "your computer"] } ?? NSNull()
+ 80 |         let device: Any = record.map { ["id": $0.deviceId, "name": $0.deviceName] } ?? NSNull()
+
+
+stdout | test/ios-native-profile.test.ts > Swift source remains within the declared native shape limits
+46 Swift files checked; 0 findings.
+$ bun scripts/check-ios-limits.ts
+
+
+ ✓ test/ios-native-profile.test.ts (3 tests) 25320ms
+   ✓ Swift reproduces the backend encrypted protocol vectors  3066ms
+   ✓ native Debug and Release verify authority, redirects, caching and replay  22195ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  02:51:23
+   Duration  25.54s (transform 33ms, setup 0ms, collect 35ms, tests 25.32s, environment 0ms, prepare 38ms)
+

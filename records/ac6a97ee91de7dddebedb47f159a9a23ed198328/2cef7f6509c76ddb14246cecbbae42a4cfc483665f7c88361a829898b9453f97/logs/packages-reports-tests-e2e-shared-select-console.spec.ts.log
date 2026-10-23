@@ -1,0 +1,46 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 9 tests using 1 worker
+
+(node:30999) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/shared-select-console.spec.ts:19:2 › the console selectors are the shared select and each choice is a path at desktop width (502ms)
+  ✓  2 tests/e2e/shared-select-console.spec.ts:49:2 › the comparison choices are the shared select and show what was recorded at desktop width (372ms)
+  ✓  3 tests/e2e/shared-select-console.spec.ts:77:2 › the growth component is the shared select and its choice is a path at desktop width (176ms)
+  ✓  4 tests/e2e/shared-select-console.spec.ts:19:2 › the console selectors are the shared select and each choice is a path at tablet width (327ms)
+  ✓  5 tests/e2e/shared-select-console.spec.ts:49:2 › the comparison choices are the shared select and show what was recorded at tablet width (355ms)
+  ✓  6 tests/e2e/shared-select-console.spec.ts:77:2 › the growth component is the shared select and its choice is a path at tablet width (197ms)
+  ✓  7 tests/e2e/shared-select-console.spec.ts:19:2 › the console selectors are the shared select and each choice is a path at mobile width (341ms)
+  ✓  8 tests/e2e/shared-select-console.spec.ts:49:2 › the comparison choices are the shared select and show what was recorded at mobile width (353ms)
+  ✓  9 tests/e2e/shared-select-console.spec.ts:77:2 › the growth component is the shared select and its choice is a path at mobile width (167ms)
+
+  9 passed (1.8m)

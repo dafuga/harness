@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N
+
+ ✓ test/units-graph.e2e.test.ts (2 tests) 1207ms
+   ✓ source graph resolves imports, re-exports, dynamic imports and Svelte scripts  521ms
+   ✓ unresolved references are uncertain and text inside strings or comments is not a reference  685ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  04:28:28
+   Duration  1.41s (transform 21ms, setup 10ms, collect 13ms, tests 1.21s, environment 0ms, prepare 31ms)
+

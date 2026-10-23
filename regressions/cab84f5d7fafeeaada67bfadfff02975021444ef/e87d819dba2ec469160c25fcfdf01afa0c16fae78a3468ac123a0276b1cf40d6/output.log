@@ -1,0 +1,254 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-SzcdoK
+
+ ❯ test/shared-select-impact.test.ts (5 tests | 3 failed) 4965ms
+   × no import written through a build alias of any package is left as a package from outside 4ms
+     → expected { desktop: { …(2) }, …(2) } to deeply equal { desktop: { …(2) }, hub: { …(2) } }
+   × the registry stores Select as a derived dependency of each of its consumers, and is not stale 1ms
+     → expected [ …(16) ] to deeply equal [ …(15) ]
+   × a change of Select reaches its consumers, the pages that show them, and their tests and scenarios 29ms
+     → expected [ 'adapter.module-runtime', …(152) ] to deeply equal ArrayContaining{…}
+   ✓ a change of Select reaches every unit, test and scenario that a change of a consumer reaches  325ms
+   ✓ declaring the Select imports moves those references alone: packages and uncertainties stay  377ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/shared-select-impact.test.ts > no import written through a build alias of any package is left as a package from outside
+AssertionError: expected { desktop: { …(2) }, …(2) } to deeply equal { desktop: { …(2) }, hub: { …(2) } }
+
+- Expected
++ Received
+
+@@ -5,6 +5,10 @@
+    },
+    "hub": {
+      "$desktop": "../desktop/src",
+      "$shared": "../reports/src/components",
+    },
++   "reports": {
++     "$desktop": "../desktop/src",
++     "$shared": "./src/components",
++   },
+  }
+
+ ❯ test/shared-select-impact.test.ts:88:19
+     86|   Object.entries(builds).filter(([, own]) => Object.keys(own).length)
+     87|  );
+     88|  expect(declared).toEqual({
+       |                   ^
+     89|   desktop: { $desktop: './src', $shared: '../reports/src/components' },
+     90|   hub: { $desktop: '../desktop/src', $shared: '../reports/src/componen…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/shared-select-impact.test.ts > the registry stores Select as a derived dependency of each of its consumers, and is not stale
+AssertionError: expected [ …(16) ] to deeply equal [ …(15) ]
+
+- Expected
++ Received
+
+@@ -12,6 +12,7 @@
+    "desktop.component.remote-approval",
+    "desktop.component.revision-picker",
+    "desktop.component.runtime-screens",
+    "hub.component.invitation-form",
+    "hub.component.project-create",
++   undefined,
+  ]
+
+ ❯ test/shared-select-impact.test.ts:108:23
+    106|  expect(loaded.index.files.get(selectTest)?.classification).toBe('test…
+    107|  const units = consumers().map((item) => owner(item.from));
+    108|  expect(units.sort()).toEqual([
+       |                       ^
+    109|   ...[
+    110|    'agent-controls',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/shared-select-impact.test.ts > a change of Select reaches its consumers, the pages that show them, and their tests and scenarios
+AssertionError: expected [ 'adapter.module-runtime', …(152) ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
++ [
++   "adapter.module-runtime",
++   "command.activity",
++   "command.budget",
++   "command.history",
++   "command.hooks",
++   "command.impact",
++   "command.kernel",
++   "command.report",
++   "command.verify",
++   "desktop.adapter.pinned-history",
+    "desktop.component.agent-controls",
+    "desktop.component.agent-settings",
++   "desktop.component.catalog-view",
++   "desktop.component.composer",
++   "desktop.component.design-panel",
++   "desktop.component.entity-view",
+    "desktop.component.environment-picker",
+-   "desktop.component.runtime-screens",
+-   "desktop.component.catalog-view",
+    "desktop.component.game-checkpoint-editor",
++   "desktop.component.game-checkpoint-pane",
+    "desktop.component.game-create",
++   "desktop.component.game-preview",
+    "desktop.component.game-view-fields",
+-   "desktop.component.game-preview",
++   "desktop.component.game-workspace",
++   "desktop.component.nav-bar",
++   "desktop.component.project-agent",
++   "desktop.component.project-gate",
++   "desktop.component.project-switcher",
+    "desktop.component.remote-approval",
+-   "desktop.component.design-panel",
+-   "desktop.component.project-switcher",
++   "desktop.component.remote-connection",
++   "desktop.component.remote-host-panel",
+    "desktop.component.revision-picker",
++   "desktop.component.runtime-evidence",
++   "desktop.component.runtime-screens",
++   "desktop.component.status-bar",
++   "desktop.component.thread-panel",
++   "desktop.component.workspace-shell",
++   "desktop.function.desktop-bridge",
++   "desktop.function.remote-host-status",
++   "desktop.initializer.initialize-desktop",
++   "desktop.page.game",
++   "desktop.page.harness-path",
++   "desktop.page.projects-project-id-harness-path",
++   "desktop.page.root",
++   "desktop.page.settings",
++   "desktop.script.brand-assets",
++   "desktop.script.build-ios-simulator",
++   "desktop.script.check-ios-limits",
++   "desktop.script.check-ios-native",
++   "desktop.script.check-ios-vectors",
++   "desktop.script.ios-acceptance",
++   "desktop.script.ios-acceptance-layout",
++   "desktop.script.ios-acceptance-pairing",
++   "desktop.script.ios-acceptance-products",
++   "desktop.script.ios-acceptance-release",
++   "desktop.script.ios-acceptance-run",
++   "desktop.script.ios-acceptance-scanning",
++   "desktop.script.ios-acceptance-simulator",
++   "desktop.script.ios-acceptance-source",
++   "desktop.script.ios-acceptance-workspace",
++   "desktop.script.ios-build-options",
++   "desktop.script.ios-build-processes",
++   "desktop.script.ios-products",
++   "desktop.script.ios-scan-fixture",
++   "desktop.script.remote-fixture",
++   "desktop.script.remote-fixture-host",
++   "desktop.service.client-projects",
++   "desktop.service.desktop-bridge",
++   "desktop.service.device-operations",
++   "desktop.service.device-session",
++   "desktop.service.local-client",
++   "desktop.service.recorded-evidence",
++   "desktop.service.remote-device-sessions",
++   "desktop.service.remote-host",
++   "desktop.service.remote-host-runtime",
++   "desktop.service.remote-host-switch",
++   "desktop.service.remote-pairing-control",
++   "entry.index",
++   "entry.program",
++   "function.bench-measurement",
++   "function.kernel-artifacts",
++   "hub.component.hosted-workspace",
++   "hub.component.invitation-form",
++   "hub.component.members-panel",
+    "hub.component.project-create",
+-   "hub.component.invitation-form",
+-   undefined,
++   "hub.page.projects-project-id-harness-path",
++   "hub.page.projects-project-id-members",
++   "hub.page.root",
++   "module.index",
++   "module.runtime",
++   "reports.adapter.report-pages-retention",
++   "reports.command.report",
++   "reports.component.analytics-filters",
++   "reports.component.analytics-history",
++   "reports.component.analytics-models",
++   "reports.component.analytics-tasks",
++   "reports.component.console-chat",
++   "reports.component.site-activity",
++   "reports.config.picker-playwright",
++   "reports.config.shell-vite",
++   "reports.controller.console-agent",
++   "reports.endpoint.api-project-activity",
++   "reports.endpoint.harness-data-path",
++   "reports.endpoint.harness-export-commit",
++   "reports.endpoint.harness-media-file",
++   "reports.entry.hooks-server",
++   "reports.entry.index",
++   "reports.function.activity-client",
++   "reports.function.console-server",
++   "reports.function.e2e-fixtures",
++   "reports.function.preview-health",
++   "reports.function.preview-node",
++   "reports.function.report-pages",
++   "reports.function.report-runtime-root",
++   "reports.function.site-activity",
++   "reports.initializer.initialize-preview",
++   "reports.layout.root",
++   "reports.page.harness-reports-id",
++   "reports.page.harness-view",
++   "reports.script.freeze-build",
++   "reports.script.seed-e2e",
++   "reports.script.seed-harness-console",
++   "reports.script.seed-sites",
++   "reports.seeder.analytics-e2e",
++   "reports.service.console-agent",
++   "reports.service.harness-analytics",
++   "reports.service.preview-worker",
++   "reports.service.report-command",
++   "reports.service.report-export",
++   "reports.service.report-publish",
++   "reports.service.report-retention",
++   "reports.service.report-server",
++   "reports.service.screenshot-retention",
++   "repository.measurement",
++   "script.prepare-desktop-experiment",
++   "service.history-index",
++   "service.hook-run",
++   "service.kernel-benchmark",
++   "service.project-activity",
++   "service.revision-detail",
++   "service.source-impact",
++   "service.unit-benchmark",
++   "service.unit-runtime",
++   "workflow.build-history",
++   "workflow.run-activity",
++   "workflow.run-budget",
++   "workflow.run-hooks",
++   "workflow.run-impact",
++   "workflow.run-kernel",
++   "workflow.run-kernel-bench",
++   "workflow.run-kernel-boundary",
++   "workflow.run-report",
++   "workflow.run-verify",
++   "workflow.sign-budget",
+  ]
+
+ ❯ test/shared-select-impact.test.ts:135:32
+    133|  const report = await changed(select);
+    134|  expect(report.units.direct).toEqual(['reports.component.select']);
+    135|  expect(report.units.indirect).toEqual(
+       |                                ^
+    136|   expect.arrayContaining(consumers().map((item) => owner(item.from)))
+    137|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  04:14:04
+   Duration  7.17s (transform 135ms, setup 43ms, collect 364ms, tests 4.96s, environment 0ms, prepare 26ms)
+

@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5/packages/desktop
+
+ ✓ test/services/project-run.test.ts (9 tests) 19678ms
+   ✓ the agent decides the kind: a component asked for among functions is planned with its contract  5482ms
+   ✓ a draft is named when its thread could not be opened, and it is not removed  1770ms
+   ✓ a draft is named when the request could not be written, and it is not removed  1990ms
+   ✓ a draft is named when its image could not be made, and it is not removed  3022ms
+   ✓ a draft whose entity could not be read back holds the request and says what failed  2861ms
+   ✓ what the agent wrote is told when it answered, and nothing is planned or undone  1108ms
+   ✓ what the agent wrote is told when it failed, and nothing is planned or undone  1082ms
+   ✓ what the agent wrote is told when it was cancelled, and nothing is planned or undone  1127ms
+   ✓ a file the CLI said it wrote outside the project is told with its hash, and nothing is planned  1236ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  18:26:42
+   Duration  20.18s (transform 185ms, setup 0ms, collect 305ms, tests 19.68s, environment 0ms, prepare 31ms)
+

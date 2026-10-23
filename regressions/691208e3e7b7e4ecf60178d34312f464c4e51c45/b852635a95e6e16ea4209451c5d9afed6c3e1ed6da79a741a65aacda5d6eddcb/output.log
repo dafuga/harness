@@ -1,0 +1,23 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [177.00ms]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-words.spec.ts --grep "contract has its own typed example"
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at desktop width (7.3s)
+  ✓  2 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at tablet width (7.0s)
+  ✓  3 test/entity-preview-words.spec.ts:175:2 › contract has its own typed example view at mobile width (7.1s)
+
+  3 passed (24.4s)
+$ vitest run test/components/entity-contract.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5FXlWO/packages/reports
+
+ ✓ test/components/entity-contract.test.ts (5 tests) 30ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  12:01:31
+   Duration  1.35s (transform 790ms, setup 0ms, collect 1.14s, tests 30ms, environment 0ms, prepare 39ms)
+

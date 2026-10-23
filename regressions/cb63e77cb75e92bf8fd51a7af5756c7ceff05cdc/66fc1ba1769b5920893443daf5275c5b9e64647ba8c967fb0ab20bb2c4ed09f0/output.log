@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DkT3a0
+
+ ✓ test/history-index.e2e.test.ts (4 tests) 79965ms
+   ✓ the index is deterministic and names every commit, verified or not  6833ms
+   ✓ a revision carries its graph, comparison, inherited provenance, media and reasons  3030ms
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  12484ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  17298ms
+ ✓ test/loop.e2e.test.ts (6 tests) 64614ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  9469ms
+   ✓ generated app and lib instructions mention harness loops  2284ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  3230ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  13756ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  18542ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  17329ms
+ ✓ test/case.test.ts (2 tests) 10ms
+
+ Test Files  3 passed (3)
+      Tests  12 passed (12)
+   Start at  15:41:03
+   Duration  154.80s (transform 218ms, setup 44ms, collect 333ms, tests 144.59s, environment 1ms, prepare 172ms)
+
+$ vitest run test/utils/entity-measure.test.ts test/components/harness-verdict.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DkT3a0/packages/reports
+
+ ✓ test/components/harness-verdict.test.ts (6 tests) 6ms
+ ✓ test/utils/entity-measure.test.ts (8 tests) 5ms
+
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+   Start at  15:43:39
+   Duration  1.29s (transform 358ms, setup 0ms, collect 499ms, tests 11ms, environment 0ms, prepare 82ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview-marks.spec.ts --grep "measurements at"
+
+Running 3 tests using 1 worker
+
+(node:53391) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (377ms)
+  ✓  2 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (365ms)
+  ✓  3 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (298ms)
+
+  3 passed (4.6s)

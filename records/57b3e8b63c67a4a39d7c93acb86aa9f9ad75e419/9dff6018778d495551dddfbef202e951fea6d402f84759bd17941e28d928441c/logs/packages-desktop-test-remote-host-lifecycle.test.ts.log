@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1/packages/desktop[39m
+
+ [32m✓[39m test/remote-host-lifecycle.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 15558[2mms[22m[39m
+   [33m[2m✓[22m[39m a locked screen changes nothing: the paired phone reads and its run goes on [33m 5216[2mms[22m[39m
+   [33m[2m✓[22m[39m suspension is offline, never success; waking resumes the session without repeating the run [33m 5232[2mms[22m[39m
+   [33m[2m✓[22m[39m revoking a phone closes its socket, cancels its run and voids its credential [33m 2834[2mms[22m[39m
+   [33m[2m✓[22m[39m closing the window keeps an enabled backend; disabling and quitting end it [33m 1137[2mms[22m[39m
+   [33m[2m✓[22m[39m the approval survives a restart of the app, and a new process is a visible gap [33m 1138[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 20:46:04
+[2m   Duration [22m 16.82s[2m (transform 623ms, setup 0ms, collect 993ms, tests 15.56s, environment 0ms, prepare 46ms)[22m
+

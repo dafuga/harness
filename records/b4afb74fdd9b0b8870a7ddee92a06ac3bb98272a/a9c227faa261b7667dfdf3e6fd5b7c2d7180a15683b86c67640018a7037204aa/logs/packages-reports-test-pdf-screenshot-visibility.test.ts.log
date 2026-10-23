@@ -1,0 +1,36 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz/packages/reports[39m
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'PIL'
+ [31m❯[39m test/pdf-screenshot-visibility.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 112[2mms[22m[39m
+[31m   [31m×[31m a downloaded report exposes its screenshots immediately[39m[32m 111[2mms[22m[39m
+[31m     → Command failed: python3 -c from PIL import Image, ImageDraw; import sys; image=Image.new('RGB',(1600,900),'#f8fafc'); draw=ImageDraw.Draw(image); draw.rectangle((120,100,1480,800),fill='#e8f6ee',outline='#15803d',width=12); draw.text((220,220),'Fluora practice screenshot',fill='#17262e'); image.save(sys.argv[1]) /tmp/project-report-pdf-EM06Yd/assets/practice.png
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'PIL'
+[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/pdf-screenshot-visibility.test.ts[2m > [22ma downloaded report exposes its screenshots immediately
+[31m[1mError[22m: Command failed: python3 -c from PIL import Image, ImageDraw; import sys; image=Image.new('RGB',(1600,900),'#f8fafc'); draw=ImageDraw.Draw(image); draw.rectangle((120,100,1480,800),fill='#e8f6ee',outline='#15803d',width=12); draw.text((220,220),'Fluora practice screenshot',fill='#17262e'); image.save(sys.argv[1]) /tmp/project-report-pdf-EM06Yd/assets/practice.png
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'PIL'
+[39m
+[36m [2m❯[22m buildFixture test/pdf-screenshot-visibility.test.ts:[2m12:2[22m[39m
+
+[90m [2m❯[22m test/pdf-screenshot-visibility.test.ts:[2m86:15[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m   Start at [22m 15:50:51
+[2m   Duration [22m 581ms[2m (transform 41ms, setup 0ms, collect 37ms, tests 112ms, environment 0ms, prepare 66ms)[22m
+
+
+::error file=/tmp/harness-snapshot-iUpwmz/packages/reports/test/pdf-screenshot-visibility.test.ts,title=test/pdf-screenshot-visibility.test.ts > a downloaded report exposes its screenshots immediately,line=12,column=2::Error: Command failed: python3 -c from PIL import Image, ImageDraw; import sys; image=Image.new('RGB',(1600,900),'#f8fafc'); draw=ImageDraw.Draw(image); draw.rectangle((120,100,1480,800),fill='#e8f6ee',outline='#15803d',width=12); draw.text((220,220),'Fluora practice screenshot',fill='#17262e'); image.save(sys.argv[1]) /tmp/project-report-pdf-EM06Yd/assets/practice.png%0ATraceback (most recent call last):%0A  File "<string>", line 1, in <module>%0AModuleNotFoundError: No module named 'PIL'%0A%0A ❯ buildFixture test/pdf-screenshot-visibility.test.ts:12:2%0A ❯ test/pdf-screenshot-visibility.test.ts:86:15%0A%0A⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯%0ASerialized Error: { status: 1, signal: null, output: [ null, '<Buffer(0) ...>', '<Buffer(117) ...>' ], pid: 9127, stdout: '<Buffer(0) ...>', stderr: '<Buffer(117) ...>' }%0A

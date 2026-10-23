@@ -1,0 +1,57 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop[39m
+
+[90mstdout[2m | test/ios-simulator-build.test.ts[2m > [22m[2mnormal Debug simulator product has usable signing without fixture exceptions
+[22m[39mDebug simulator build; signature ad hoc, no team, no account.
+/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop/.cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app
+
+
+[90mstdout[2m | test/ios-simulator-build.test.ts[2m > [22m[2mnormal Release simulator product has usable signing without fixture exceptions
+[22m[39mRelease simulator build; signature ad hoc, no team, no account.
+/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop/.cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app
+
+
+[90mstdout[2m | test/ios-simulator-build.test.ts[2m > [22m[2mRelease refuses fixture exceptions before a build can start
+[22m[39mA fixture build is a Debug build: --fixture cannot be combined with --release. A Release product never accepts a local relay.
+
+
+ [32m✓[39m test/ios-simulator-build.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 310970[2mms[22m[39m
+   [33m[2m✓[22m[39m normal Debug simulator product has usable signing without fixture exceptions [33m 170883[2mms[22m[39m
+   [33m[2m✓[22m[39m normal Release simulator product has usable signing without fixture exceptions [33m 140030[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m     Errors [22m [1m[31m1 error[39m[22m
+[2m   Start at [22m 20:48:19
+[2m   Duration [22m 311.32s[2m (transform 67ms, setup 0ms, collect 73ms, tests 310.97s, environment 0ms, prepare 54ms)[22m
+
+JSON report written to /var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-runner-x3TiSb/report.json
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Unhandled Errors [49m[22m[31m⎯⎯⎯⎯⎯⎯[39m
+[31m[1m
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Unhandled Error [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+[31m[1mError[22m: [vitest-worker]: Timeout calling "onTaskUpdate"[39m
+[90m [2m❯[22m Object.onTimeoutError ../../node_modules/vitest/dist/chunks/rpc.-pEldfrD.js:[2m53:10[22m[39m
+[90m [2m❯[22m Timeout._onTimeout ../../node_modules/vitest/dist/chunks/index.B521nVV-.js:[2m59:62[22m[39m
+[90m [2m❯[22m listOnTimeout node:internal/timers:[2m585:17[22m[39m
+[90m [2m❯[22m processTimers node:internal/timers:[2m521:7[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39m
+
+57 | 	status: number | null;
+58 | }
+59 | /** Runner success alone is insufficient: each expected test must have complete actual observations. */
+60 | export function verifiedAssertions(target: VerificationTarget, input: AssertionInput) {
+61 | 	if (input.status !== 0)
+62 | 		throw new Error('Failed or incomplete runner cannot report passed behavior');
+             ^
+error: Failed or incomplete runner cannot report passed behavior
+      at verifiedAssertions (/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/test/verification-assertions.ts:62:9)
+      at collect (/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/test/verification-output.ts:117:15)
+      at run (/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/test/verification-output.ts:98:15)
+      at /private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/test/verification-output.ts:129:20
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)

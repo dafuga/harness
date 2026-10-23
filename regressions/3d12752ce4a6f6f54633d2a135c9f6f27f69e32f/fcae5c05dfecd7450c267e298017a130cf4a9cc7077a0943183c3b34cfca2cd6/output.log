@@ -1,0 +1,626 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [10.67s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OKUskR
+
+ ❯ test/utils/unit-metadata.test.ts (41 tests | 13 failed) 97ms
+   ✓ revision metadata lists standalone shared exports without requiring callers 16ms
+   ✓ revision metadata counts distinct actual consumers: 2 8ms
+   ✓ revision metadata counts distinct actual consumers: 2 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 1ms
+   ✓ revision metadata counts distinct actual consumers: 2 2ms
+   ✓ revision metadata counts distinct actual consumers: 2 7ms
+   ✓ revision metadata counts distinct actual consumers: +0 2ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 2ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function env() { return process.env.MODE; } 2ms
+   ✓ helper purity is an explicit, checked source contract: let state = 0;
+/** @pure */
+export function captured() { return state; } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function writeFile() { console.log("side effect"); return 1; } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function formatDate(iso: string) { return new Date(iso).toISOString(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: export function shared(value: string) { return value.trim(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export async function load() { return fetch("/api"); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function now() { return Date.now(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function random() { return Math.random(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function mutate(input: number[]) { return input.sort(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function write(input: {value: number}) { input.value++; return input; } 1ms
+   ✓ helper purity is an explicit, checked source contract: export function fake() { return "/** @pure */"; } 0ms
+   ✓ revision metadata counts distinct runtime service owners: 2 2ms
+   ✓ revision metadata counts distinct runtime service owners: 2 2ms
+   ✓ revision metadata counts distinct runtime service owners: 1 1ms
+   ✓ revision metadata counts distinct runtime service owners: 1 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 2ms
+   ✓ revision metadata counts distinct runtime service owners: +0 2ms
+   ✓ revision metadata counts distinct runtime service owners: +0 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   × revision metadata proves service class declarations and construction: 'concrete' 7ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'function' 2ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value []
+   × revision metadata proves service class declarations and construction: 'object' 1ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value []
+   × revision metadata proves service class declarations and construction: 'static' 2ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'private' 2ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'abstract' 2ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value []
+   × revision metadata proves service class declarations and construction: 'callback' 1ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'inherited' 1ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'default' 1ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'forward' 1ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'registry' 1ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'factory' 3ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+   × revision metadata proves service class declarations and construction: 'shadow' 3ms
+     → class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+ ❯ test/project-template.test.ts (4 tests | 1 failed) 126ms
+   ✓ app projects include SvelteKit and specification files 2ms
+   × library projects include Bun TypeScript test structure 6ms
+     → expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'instantiated classes'
+   ✓ generated app code and configuration obey their formatter settings 101ms
+   ✓ generated lib code and configuration obey their formatter settings 14ms
+ ❯ test/guides.test.ts (7 tests | 1 failed) 9ms
+   ✓ model guidance is available for agents 1ms
+   ✓ guidance covers every non-model scaffold topic 1ms
+   × code-rules guidance exposes hard Harness limits 5ms
+     → expected 'Naming: Service classes use <PascalNa…' to contain 'instantiated classes'
+   ✓ loop guidance describes loop driven development 0ms
+   ✓ scaffold guidance tells agents what generated code contains 0ms
+   ✓ guide lookup accepts common scaffold aliases 0ms
+   ✓ available guide topics are unique for CLI error output 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 15 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/guides.test.ts > code-rules guidance exposes hard Harness limits
+AssertionError: expected 'Naming: Service classes use <PascalNa…' to contain 'instantiated classes'
+
+- Expected
++ Received
+
+- instantiated classes
++ Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner's folder.
++ Services orchestrate work.
++ Services should not own database adapter details.
+
+ ❯ test/guides.test.ts:31:49
+     29|  expect(naming?.rules.join('\n')).toContain('<camelName>.ts');
+     30|  expect(naming?.rules.join('\n')).toContain('<PascalName>.types.ts');
+     31|  expect(findGuide('service')?.rules.join('\n')).toContain('instantiate…
+       |                                                 ^
+     32| });
+     33| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/15]⎯
+
+ FAIL  test/project-template.test.ts > library projects include Bun TypeScript test structure
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'instantiated classes'
+
+- Expected
++ Received
+
+- instantiated classes
++ # AGENTS.md
++
++ This is a Harness Bun TypeScript library. Treat Harness as the operating contract for every code change in this project.
++
++ ## Required Harness Workflow
++
++ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.
++ - Use Harness generators for supported code shapes instead of hand-rolling new structure.
++ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
++ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
++ - Add or update a feature spec before implementation.
++ - Keep files small, focused, and aligned with `harness.audit.json` limits.
++ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
++
++ ## Clean Code Review
++
++ - Use `harness info clean-code` for optional Jev reviews.
++ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.
++ - Configure a project-owned credential and assess advisory results before enabling the gate.
++ - Keep uncertain judgments visible and never call incomplete reviews clean.
++
++ ## Bug and Regression Loops
++
++ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
++ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
++ - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
++ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.
++ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.
++ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.
++ - When correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.
++ - For helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.
++ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.
++ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
++ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
++ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
++ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
++ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
++ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
++ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
++
++ ## Code Rules
++
++ - Files stay at or below 220 lines.
++ - Functions stay at or below 55 lines.
++ - Classes stay at or below 120 lines.
++ - Methods stay at or below 35 lines.
++ - Nesting stays at or below 4 levels.
++ - Functions and methods take at most 4 parameters.
++ - Cyclomatic complexity stays at or below 10.
++ - Each file defines at most 1 class.
++ - Use harness info naming and the scaffold guide before naming a module.
++ - Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.
++ - Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner's folder.
++ - Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.
++ - Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.
++ - Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.
++ - Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.
++ - Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.
++ - Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.
++ - Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.
++ - Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.
++ - Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.
++ - Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.
++ - Naming: Helper classes use <PascalName>Helper.ts and export the matching class, including inside an owner's folder.
++ - Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.
++ - Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.
++ - Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.
++ - Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.
++ - Naming: Components use <PascalName>.svelte and the same PascalCase import name.
++ - Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.
++ - Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.
++ - Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.
++ - Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.
++ - Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.
++ - Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.
++ - Naming: Config objects use <camelName>Config.ts with a matching camelCase export.
++ - Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.
++ - Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.
++ - Naming: Concerns use with<PascalName>.ts and export with<PascalName>.
++ - Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.
++ - Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.
++ - Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.
++ - Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.
++ - Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.
++ - Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.
++ - Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.
++ - Naming: Unit tests use <kebab-name>.test.ts.
++ - Naming: Browser tests use <kebab-name>.spec.ts.
++ - Naming: Feature specifications use <kebab-name>.md.
++ - Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.
++ - Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.
++ - Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.
++ - Classes should not use catch-all Manager names.
++ - Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ - Core, template, workflow, and command imports move in one direction.
++ - Harness audit applies ecosystem adapters for app and library code surfaces.
++ - Unsupported file types must appear in audit coverage instead of being skipped silently.
++
++ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
++
+
+ ❯ test/project-template.test.ts:68:37
+     66|   expect(fileContents(files, path)).toContain('<PascalName>Service.ts'…
+     67|   expect(fileContents(files, path)).toContain('<camelName>.ts');
+     68|   expect(fileContents(files, path)).toContain('instantiated classes');
+       |                                     ^
+     69|  }
+     70|  expect(packageJson.harness.kind).toBe('lib');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/15]⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'concrete'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'static'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'private'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'callback'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'inherited'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'default'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'forward'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'registry'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'factory'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'shadow'
+AssertionError: class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value [ { name: 'SharedService', …(4) } ]
+
+- Expected: 
+[
+  {
+    "constructedBy": [
+      {
+        "unit": "workflow.first",
+      },
+      {
+        "unit": "workflow.second",
+      },
+    ],
+    "consumers": [
+      {
+        "unit": "workflow.first",
+      },
+      {
+        "unit": "workflow.second",
+      },
+    ],
+    "methods": [
+      "read",
+      "write",
+    ],
+    "name": "SharedService",
+    "source": "src/services/SharedService.ts",
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:163:5
+    161|    service,
+    162|    'class proof is source-derived rather than inferred from a service …
+    163|   ).toHaveProperty(
+       |     ^
+    164|    'serviceClasses',
+    165|    methods === null
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/15]⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'function'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'object'
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata proves service class declarations and construction: 'abstract'
+AssertionError: class proof is source-derived rather than inferred from a service filename: expected { id: 'service.shared', …(14) } to have property "serviceClasses" with value []
+
+- Expected: 
+[]
+
++ Received: 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:163:5
+    161|    service,
+    162|    'class proof is source-derived rather than inferred from a service …
+    163|   ).toHaveProperty(
+       |     ^
+    164|    'serviceClasses',
+    165|    methods === null
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/15]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  15 failed | 37 passed (52)
+   Start at  10:34:00
+   Duration  4.11s (transform 223ms, setup 22ms, collect 666ms, tests 231ms, environment 0ms, prepare 117ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OKUskR/packages/reports
+
+ ❯ test/utils/entity-catalog.test.ts (9 tests | 1 failed) 53ms
+   ✓ a fresh runtime loads and calls the catalog through '../../src/utils/entityCatalog.ts' 19ms
+   ✓ a fresh runtime loads and calls the catalog through '../../src/components/harness/explorer…' 16ms
+   ✓ a collection lists the entities of its category by the name a person reads 8ms
+   ✓ a component says which pages it is used on and which components it contains 0ms
+   × service rows require two distinct resolved runtime owners and use that set for links 7ms
+     → functions, objects, static namespaces, unused classes and unproven history are not class cards: expected [ { entity: { …(9) }, …(12) } ] to deeply equal []
+   ✓ changed is what the commit changed itself, and the verdict is the one it was given 1ms
+   ✓ search reads names and purposes, changed only keeps changes, and an order sorts 1ms
+   ✓ a list of names is none, one name, or the first and how many more 0ms
+   ✓ shared helper rows require source exports, list every callable and keep owner links 0ms
+ ✓ test/components/entity-overview.test.ts (11 tests) 45ms
+ ✓ test/utils/explorer-name.test.ts (18 tests) 4ms
+ ✓ test/components/explorer-function-card.test.ts (10 tests) 23ms
+ ✓ test/components/entity-details-screen.test.ts (3 tests) 30ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > service rows require two distinct resolved runtime owners and use that set for links
+AssertionError: functions, objects, static namespaces, unused classes and unproven history are not class cards: expected [ { entity: { …(9) }, …(12) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "changed": false,
++     "components": 0,
++     "contains": [],
++     "entity": {
++       "appRoute": null,
++       "category": "services",
++       "change": null,
++       "id": "app.service.order-store",
++       "name": "OrderStore",
++       "purpose": "Reads the orders of one account.",
++       "role": "Service",
++       "unit": {
++         "budgets": {
++           "complexity": "frozen",
++           "performance": [],
++           "size": "frozen",
++         },
++         "contract": {
++           "errors": [],
++           "inputs": [
++             {
++               "name": "OrderStore.accountId",
++               "type": "string",
++             },
++           ],
++           "outputs": [
++             {
++               "name": "OrderStore.orders",
++               "type": "string",
++             },
++           ],
++         },
++         "dependencies": [],
++         "id": "app.service.order-store",
++         "kind": "service",
++         "owns": {
++           "source": [
++             "src/services/OrderStore.ts",
++           ],
++           "symbols": [
++             "OrderStoreOptions",
++             "OrderStore",
++             "OrderStoreResult",
++           ],
++         },
++         "responsibility": "Reads the orders of one account.",
++         "runtime": {
++           "kind": "module",
++           "targets": [
++             {
++               "entry": "src/services/OrderStore.ts",
++               "kind": "module",
++             },
++             {
++               "entry": "src/services/OrderStore.ts",
++               "kind": "wasm",
++             },
++             {
++               "entry": "src/services/OrderStore.ts",
++               "kind": "process",
++             },
++           ],
++         },
++         "scenarios": [],
++         "serviceClasses": undefined,
++         "serviceConsumers": [
++           {
++             "unit": "app.component.order-list",
++           },
++           {
++             "unit": "app.component.search-box",
++           },
++         ],
++         "status": "active",
++         "title": "OrderStore",
++         "version": "v-app.service.order-store",
++       },
++       "verdict": {
++         "label": "Full coverage passed",
++         "passed": true,
++         "reasons": [],
++       },
++     },
++     "id": "app.service.order-store",
++     "name": "OrderStore",
++     "shared": true,
++     "summary": "Reads the orders of one account.",
++     "targets": [
++       "module",
++       "wasm",
++       "process",
++     ],
++     "usedBy": [
++       "OrderList",
++       "SearchBox",
++     ],
++     "usedIn": [
++       {
++         "category": "components",
++         "id": "app.component.order-list",
++         "name": "OrderList",
++       },
++       {
++         "category": "components",
++         "id": "app.component.search-box",
++         "name": "SearchBox",
++       },
++     ],
++     "usedOn": [
++       "Orders page",
++     ],
++     "verdict": {
++       "label": "Full coverage passed",
++       "passed": true,
++       "reasons": [],
++     },
++   },
++ ]
+
+ ❯ test/utils/entity-catalog.test.ts:123:5
+    121|    serviceRows({ ...original, unit: { ...original.unit, ...{ serviceCl…
+    122|    'functions, objects, static namespaces, unused classes and unproven…
+    123|   ).toEqual([]);
+       |     ^
+    124|  const unnamed = { ...original, unit: { ...original.unit, owns: { sour…
+    125|  expect(serviceRows(unnamed), 'unowned source cannot prove a class').t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 50 passed (51)
+   Start at  10:34:06
+   Duration  3.19s (transform 1.00s, setup 0ms, collect 1.80s, tests 155ms, environment 0ms, prepare 200ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OKUskR/packages/desktop
+
+ ✓ test/catalog-listing.test.ts (6 tests) 1706ms
+   ✓ the tip lists every ordinary entity and no page manifest that only loads for an address  383ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  666ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  526ms
+ ✓ test/entity-usage.test.ts (4 tests) 5ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  10:34:11
+   Duration  2.97s (transform 486ms, setup 0ms, collect 805ms, tests 1.71s, environment 0ms, prepare 71ms)
+
+
+Running 3 tests using 1 worker
+
+(node:97528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width (6.4s)
+(node:98784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width (6.3s)
+(node:99211) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width (6.4s)
+
+
+  1) test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width 
+
+    Error: collections use cards; helpers require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      78 | 				cards,
+      79 | 				'collections use cards; helpers require two distinct visible consumers'
+    > 80 | 			).toHaveCount({ components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      81 | 			const card = (await cards.first().boundingBox())!;
+      82 | 			const available = (await tab.locator('.ex-index').boundingBox())!;
+      83 | 			if (name !== 'mobile') {
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OKUskR/packages/reports/test/entity-preview-actions.spec.ts:80:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-1e92f--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-1e92f--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width 
+
+    Error: collections use cards; helpers require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      78 | 				cards,
+      79 | 				'collections use cards; helpers require two distinct visible consumers'
+    > 80 | 			).toHaveCount({ components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      81 | 			const card = (await cards.first().boundingBox())!;
+      82 | 			const available = (await tab.locator('.ex-index').boundingBox())!;
+      83 | 			if (name !== 'mobile') {
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OKUskR/packages/reports/test/entity-preview-actions.spec.ts:80:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-de7a4-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-de7a4-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width 
+
+    Error: collections use cards; helpers require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 1
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+      78 | 				cards,
+      79 | 				'collections use cards; helpers require two distinct visible consumers'
+    > 80 | 			).toHaveCount({ components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      81 | 			const card = (await cards.first().boundingBox())!;
+      82 | 			const available = (await tab.locator('.ex-index').boundingBox())!;
+      83 | 			if (name !== 'mobile') {
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OKUskR/packages/reports/test/entity-preview-actions.spec.ts:80:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-58c0d-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-58c0d-a-card-grid-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width 

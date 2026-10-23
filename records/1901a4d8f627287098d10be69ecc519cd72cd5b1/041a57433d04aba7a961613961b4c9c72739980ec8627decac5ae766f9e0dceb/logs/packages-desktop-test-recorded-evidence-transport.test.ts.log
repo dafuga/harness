@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PkpOjJ/packages/desktop
+
+ ✓ test/recorded-evidence-transport.test.ts (2 tests) 14761ms
+   ✓ the window reads recorded evidence and its bytes over the loopback socket  2036ms
+   ✓ a phone reads the evidence of a granted project and of no other  1923ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  20:49:10
+   Duration  15.68s (transform 469ms, setup 0ms, collect 756ms, tests 14.76s, environment 0ms, prepare 29ms)
+

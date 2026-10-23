@@ -1,0 +1,247 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [37.24s]
+
+Running 6 tests using 1 worker
+
+(node:37285) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at desktop width (6.5s)
+(node:44630) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at desktop width (5.6s)
+(node:50175) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at tablet width (6.6s)
+(node:51354) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at tablet width (5.8s)
+(node:52278) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at mobile width (6.6s)
+(node:53484) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  6 test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at mobile width (6.2s)
+
+
+  1) test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at desktop width ─────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true })
+
+
+       at entityPreviewFunctions.ts:175
+
+      173 | 		const used = page.getByRole('region', { name: 'Used In', exact: true });
+      174 | 		for (const kind of ['Pages', 'Components'])
+    > 175 | 			await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
+          | 			                                                                            ^
+      176 | 	}
+      177 | 	const cards = page.locator('.ex-relations article');
+      178 | 	for (const card of await cards.all()) {
+        at reviewUsageCards (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entityPreviewFunctions.ts:175:80)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entity-preview-actions.spec.ts:52:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-usa-fc122-cated-tabs-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-usa-fc122-cated-tabs-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at desktop width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true })
+
+
+       at entityPreviewFunctions.ts:78
+
+      76 | 		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store', 'Order']);
+      77 | 		for (const kind of ['Components', 'Services', 'Models'])
+    > 78 | 			await expect(usage.getByRole('list', { name: kind, exact: true })).toBeVisible();
+         | 			                                                                   ^
+      79 | 		await reviewConsumerPreview(page, usage, commit, viewport);
+      80 | 		const sizes = await card.evaluate((node) => [
+      81 | 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
+        at reviewHelperUsage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entityPreviewFunctions.ts:78:71)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entity-preview-actions.spec.ts:88:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-a2705--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-a2705--card-grid-at-desktop-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at tablet width ──────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true })
+
+
+       at entityPreviewFunctions.ts:175
+
+      173 | 		const used = page.getByRole('region', { name: 'Used In', exact: true });
+      174 | 		for (const kind of ['Pages', 'Components'])
+    > 175 | 			await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
+          | 			                                                                            ^
+      176 | 	}
+      177 | 	const cards = page.locator('.ex-relations article');
+      178 | 	for (const card of await cards.all()) {
+        at reviewUsageCards (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entityPreviewFunctions.ts:175:80)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entity-preview-actions.spec.ts:52:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-usa-6ec41-icated-tabs-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-usa-6ec41-icated-tabs-at-tablet-width/error-context.md
+
+  4) test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at tablet width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true })
+
+
+       at entityPreviewFunctions.ts:78
+
+      76 | 		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store', 'Order']);
+      77 | 		for (const kind of ['Components', 'Services', 'Models'])
+    > 78 | 			await expect(usage.getByRole('list', { name: kind, exact: true })).toBeVisible();
+         | 			                                                                   ^
+      79 | 		await reviewConsumerPreview(page, usage, commit, viewport);
+      80 | 		const sizes = await card.evaluate((node) => [
+      81 | 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
+        at reviewHelperUsage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entityPreviewFunctions.ts:78:71)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entity-preview-actions.spec.ts:88:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-33d29-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-33d29-a-card-grid-at-tablet-width/error-context.md
+
+  5) test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at mobile width ──────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Used In', exact: true }).getByRole('heading', { name: 'Pages 1', exact: true })
+
+
+       at entityPreviewFunctions.ts:175
+
+      173 | 		const used = page.getByRole('region', { name: 'Used In', exact: true });
+      174 | 		for (const kind of ['Pages', 'Components'])
+    > 175 | 			await expect(used.getByRole('heading', { name: `${kind} 1`, exact: true })).toBeVisible();
+          | 			                                                                            ^
+      176 | 	}
+      177 | 	const cards = page.locator('.ex-relations article');
+      178 | 	for (const card of await cards.all()) {
+        at reviewUsageCards (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entityPreviewFunctions.ts:175:80)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entity-preview-actions.spec.ts:52:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-usa-c5852-icated-tabs-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-usa-c5852-icated-tabs-at-mobile-width/error-context.md
+
+  6) test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at mobile width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('list', { name: 'Components', exact: true })
+
+
+       at entityPreviewFunctions.ts:78
+
+      76 | 		await expect(usage.getByRole('link')).toHaveText(['Order list', 'Order store', 'Order']);
+      77 | 		for (const kind of ['Components', 'Services', 'Models'])
+    > 78 | 			await expect(usage.getByRole('list', { name: kind, exact: true })).toBeVisible();
+         | 			                                                                   ^
+      79 | 		await reviewConsumerPreview(page, usage, commit, viewport);
+      80 | 		const sizes = await card.evaluate((node) => [
+      81 | 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
+        at reviewHelperUsage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entityPreviewFunctions.ts:78:71)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-doUOOS/packages/reports/test/entity-preview-actions.spec.ts:88:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-94238-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-94238-a-card-grid-at-mobile-width/error-context.md
+
+  6 failed
+    test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at desktop width ──────
+    test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at tablet width ───────
+    test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:29:2 › usage stays in dedicated tabs at mobile width ───────
+    test/entity-preview-actions.spec.ts:66:2 › component and function lists use a card grid at mobile width 

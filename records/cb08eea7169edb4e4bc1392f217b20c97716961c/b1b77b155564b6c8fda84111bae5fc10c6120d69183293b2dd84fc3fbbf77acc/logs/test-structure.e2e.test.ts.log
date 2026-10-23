@@ -1,0 +1,63 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad
+
+ ❯ test/structure.e2e.test.ts (2 tests | 2 failed) 290ms
+   × generated projects reject bad Harness structure through audit 159ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib bad-structure failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+   × Codex marketplace structure is accepted while unrelated hidden folders are rejected 130ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib marketplace-project failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/structure.e2e.test.ts > generated projects reject bad Harness structure through audit
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib bad-structure failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ test/structure.e2e.test.ts:10:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/structure.e2e.test.ts > Codex marketplace structure is accepted while unrelated hidden folders are rejected
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib marketplace-project failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ test/structure.e2e.test.ts:40:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  03:43:18
+   Duration  513ms (transform 17ms, setup 8ms, collect 9ms, tests 290ms, environment 0ms, prepare 46ms)
+

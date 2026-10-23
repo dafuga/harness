@@ -1,0 +1,22 @@
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort --port "5795"
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:81970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:81978) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:81983) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:81983) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:81994) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/hosted-email.spec.ts:13:1 › the email input follows the server code contract (243ms)
+  ✓  2 tests/e2e/hosted-email.spec.ts:38:1 › another address is pending and reads no project until its code is verified (1.2s)
+  ✓  3 tests/e2e/hosted-email.spec.ts:73:1 › cancel forgets the typed code and returns the Google button (298ms)
+  ✓  4 tests/e2e/hosted-email.spec.ts:87:1 › a pending address opens no project, member list or desktop approval (414ms)
+  ✓  5 tests/e2e/hosted-email.spec.ts:104:1 › a deployment that cannot send email says so and marks nothing as sent (226ms)
+
+  5 passed (5.0s)

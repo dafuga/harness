@@ -1,0 +1,12 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/history-restore.e2e.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 11572[2mms[22m[39m
+   [33m[2m✓[22m[39m attached records are restored from Git when the local cache is gone [33m 3583[2mms[22m[39m
+   [33m[2m✓[22m[39m a record belongs to one commit, and an evidence revision is never verified as source [33m 3088[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m   Start at [22m 16:04:05
+[2m   Duration [22m 11.95s[2m (transform 80ms, setup 23ms, collect 68ms, tests 11.57s, environment 0ms, prepare 68ms)[22m
+

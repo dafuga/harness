@@ -1,0 +1,15 @@
+[WebServer] $ vite dev --host 127.0.0.1 --port 5798 --strictPort
+[WebServer] (node:57854) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:57854) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:57930) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/hosted-native.spec.ts:8:1 › the approval page names what is asked, and takes the typed code in a body, never an address (515ms)
+  ✓  2 tests/e2e/hosted-native.spec.ts:36:1 › a request for one project names that project (252ms)
+  ✓  3 tests/e2e/hosted-native.spec.ts:43:1 › an expired request offers nothing to approve (277ms)
+
+  3 passed (2.8s)

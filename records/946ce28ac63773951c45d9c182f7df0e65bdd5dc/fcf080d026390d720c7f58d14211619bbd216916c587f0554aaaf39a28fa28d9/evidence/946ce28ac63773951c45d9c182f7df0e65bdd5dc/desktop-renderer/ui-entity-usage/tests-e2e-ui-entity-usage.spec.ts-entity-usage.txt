@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-entity-usage.spec.ts:34:1 › the overview of an entity holds Used In and Uses, and no section is named Relationships (459ms)
+  ✓  2 tests/e2e/ui-entity-usage.spec.ts:52:1 › Used In and Uses have addresses of their own, and the former address still opens both (733ms)
+  ✓  3 tests/e2e/ui-entity-usage.spec.ts:76:1 › an entity with nothing recorded around it says so in both sections (374ms)
+
+  3 passed (2.3s)
+(node:57885) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

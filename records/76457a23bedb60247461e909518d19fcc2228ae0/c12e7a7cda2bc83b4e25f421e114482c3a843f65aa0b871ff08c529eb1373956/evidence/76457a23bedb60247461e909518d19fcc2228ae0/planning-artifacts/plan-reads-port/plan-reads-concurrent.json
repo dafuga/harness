@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+				]
+			},
+			"output": "show aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		},
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+				]
+			},
+			"output": "show aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		}
+	],
+	"reachedGit": [
+		[
+			"show",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		]
+	]
+}

@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/reports
+
+ ✓ test/jpeg-pdf-preservation.test.ts (2 tests) 2447ms
+   ✓ full JPEG screenshots retain original bytes without inflating the PDF  389ms
+   ✓ tall JPEG screenshots retain all vertical content across PDF pages  2058ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  10:08:36
+   Duration  2.69s (transform 26ms, setup 0ms, collect 26ms, tests 2.45s, environment 0ms, prepare 42ms)
+

@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L
+
+ ✓ test/reports-concurrent-runs.e2e.test.ts (1 test) 434250ms
+   ✓ two runs at once each keep their own history, media and results, through the teardown of the other  434049ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  01:34:47
+   Duration  434.49s (transform 28ms, setup 9ms, collect 26ms, tests 434.25s, environment 0ms, prepare 34ms)
+

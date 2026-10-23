@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-itDi5c/packages/relay
+
+ ✓ test/services/host-link.test.ts (5 tests) 2489ms
+   ✓ a returning host is told every connection that is still open  518ms
+   ✓ a returning host receives ready, then open connections, then waiting requests  517ms
+   ✓ the host is told when a device comes and when it leaves  513ms
+   ✓ nothing is announced to a host that is not connected, and nothing is kept for it  514ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  02:30:35
+   Duration  2.88s (transform 70ms, setup 0ms, collect 229ms, tests 2.49s, environment 0ms, prepare 26ms)
+

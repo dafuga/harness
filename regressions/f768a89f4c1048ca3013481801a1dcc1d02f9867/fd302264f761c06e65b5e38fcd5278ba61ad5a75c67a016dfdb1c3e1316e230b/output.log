@@ -1,0 +1,154 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [12.55s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9S06fv
+
+ ❯ test/utils/source-blocks.test.ts (7 tests | 3 failed) 16ms
+   ✓ sourceBlocks names functions, methods and the module remainder 5ms
+   × sourceBlocks separates declarations and assigned values: 'uninitialized class callbacks beside …' 5ms
+     → expected [ [ '<module>', +0 ], …(5) ] to deeply equal [ [ '<module>', +0 ], …(2) ]
+   ✓ sourceBlocks separates declarations and assigned values: 'initialized class callbacks with func…' 1ms
+   × sourceBlocks separates declarations and assigned values: 'uninitialized variables and a typed e…' 1ms
+     → expected [ [ '<module>', +0 ], …(3) ] to deeply equal [ [ '<module>', +0 ], [ 'active', 2 ] ]
+   × sourceBlocks separates declarations and assigned values: 'multiline and nested callback declara…' 1ms
+     → expected [ [ '<module>', +0 ], …(2) ] to deeply equal [ [ '<module>', +0 ], …(1) ]
+   ✓ sourceBlocks hashes change only for the edited block 1ms
+   ✓ sourceBlocks separates Svelte script functions, template and style 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/source-blocks.test.ts > sourceBlocks separates declarations and assigned values: 'uninitialized class callbacks beside …'
+AssertionError: expected [ [ '<module>', +0 ], …(5) ] to deeply equal [ [ '<module>', +0 ], …(2) ]
+
+- Expected
++ Received
+
+@@ -2,10 +2,22 @@
+    [
+      "<module>",
+      0,
+    ],
+    [
++     "Store.release",
++     3,
++   ],
++   [
++     "Store.onNavigate",
++     1,
++   ],
++   [
++     "Store.generic",
++     1,
++   ],
++   [
+      "Store.run",
+      2,
+    ],
+    [
+      "Store.set",
+
+ ❯ test/utils/source-blocks.test.ts:84:67
+     82| ])('sourceBlocks separates declarations and assigned values: $title', …
+     83|  const blocks = sourceBlocks(code, 'ts');
+     84|  expect(blocks.map(({ name, complexity }) => [name, complexity])).toEq…
+       |                                                                   ^
+     85|   ['<module>', 0],
+     86|   ...members
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/utils/source-blocks.test.ts > sourceBlocks separates declarations and assigned values: 'uninitialized variables and a typed e…'
+AssertionError: expected [ [ '<module>', +0 ], …(3) ] to deeply equal [ [ '<module>', +0 ], [ 'active', 2 ] ]
+
+- Expected
++ Received
+
+@@ -2,9 +2,17 @@
+    [
+      "<module>",
+      0,
+    ],
+    [
++     "pending",
++     1,
++   ],
++   [
++     "generic",
++     1,
++   ],
++   [
+      "active",
+      2,
+    ],
+  ]
+
+ ❯ test/utils/source-blocks.test.ts:84:67
+     82| ])('sourceBlocks separates declarations and assigned values: $title', …
+     83|  const blocks = sourceBlocks(code, 'ts');
+     84|  expect(blocks.map(({ name, complexity }) => [name, complexity])).toEq…
+       |                                                                   ^
+     85|   ['<module>', 0],
+     86|   ...members
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/utils/source-blocks.test.ts > sourceBlocks separates declarations and assigned values: 'multiline and nested callback declara…'
+AssertionError: expected [ [ '<module>', +0 ], …(2) ] to deeply equal [ [ '<module>', +0 ], …(1) ]
+
+- Expected
++ Received
+
+@@ -2,9 +2,13 @@
+    [
+      "<module>",
+      0,
+    ],
+    [
++     "Store.callback",
++     2,
++   ],
++   [
+      "Store.apply",
+      2,
+    ],
+  ]
+
+ ❯ test/utils/source-blocks.test.ts:84:67
+     82| ])('sourceBlocks separates declarations and assigned values: $title', …
+     83|  const blocks = sourceBlocks(code, 'ts');
+     84|  expect(blocks.map(({ name, complexity }) => [name, complexity])).toEq…
+       |                                                                   ^
+     85|   ['<module>', 0],
+     86|   ...members
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 4 passed (7)
+   Start at  20:52:14
+   Duration  2.84s (transform 60ms, setup 84ms, collect 33ms, tests 16ms, environment 0ms, prepare 36ms)
+

@@ -1,0 +1,207 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hvjehd
+
+ ❯ test/loop.e2e.test.ts (7 tests | 1 failed | 6 skipped) 2048ms
+   ↓ loop CLI traces work and remains audit-safe in generated projects
+   ↓ generated app and lib instructions mention harness loops
+   ↓ loop CLI creates from templates, searches, guides next, and evaluates
+   × feature completion rejects an unsupported free-text verification claim 2047ms
+     → a claim cannot substitute for the completion audit: expected +0 to be 1 // Object.is equality
+   ↓ bug-fix CLI records proof and leaves verification pending across failed and passing checks
+   ↓ fix CLI records proof and leaves verification pending across failed and passing checks
+   ↓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+ ❯ test/verify-measures.e2e.test.ts (3 tests | 1 failed | 2 skipped) 8344ms
+   × task verification rejects missing profiling even without performance budgets 2461ms
+     → task profiling is mandatory without a budget: expected undefined to be 'failed' // Object.is equality
+   ↓ measures that do not apply or were not taken are stated, never left out
+   ↓ an artifact built in the snapshot is measured with its hash, and a missing one is stated
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/loop.e2e.test.ts > feature completion rejects an unsupported free-text verification claim
+AssertionError: a claim cannot substitute for the completion audit: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/loop.e2e.test.ts:99:79
+     97|    false
+     98|   );
+     99|   expect(done.exitCode, 'a claim cannot substitute for the completion …
+       |                                                                               ^
+    100|   expect(done.stderr).toContain('completion audit');
+    101|   const status = await runHarness(['loop', 'status', 'delivery', '--js…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/verify-measures.e2e.test.ts > task verification rejects missing profiling even without performance budgets
+AssertionError: task profiling is mandatory without a budget: expected undefined to be 'failed' // Object.is equality
+
+- Expected: 
+"failed"
+
++ Received: 
+undefined
+
+ ❯ test/verify-measures.e2e.test.ts:19:85
+     17|   const request = { root: repo.root, requirePerformance: true };
+     18|   const { record } = await verifyRun(request);
+     19|   expect(record.gates?.performance, 'task profiling is mandatory witho…
+       |                                                                                     ^
+     20|    'failed'
+     21|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 8 skipped (10)
+   Start at  17:23:37
+   Duration  14.07s (transform 333ms, setup 11ms, collect 801ms, tests 10.39s, environment 0ms, prepare 62ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hvjehd/packages/desktop
+
+ ❯ test/run-integration.test.ts (9 tests | 2 failed | 7 skipped) 9814ms
+   ↓ Plan uses read-only CLI and saves a committed immutable version without claiming verification
+   × approval alone never runs and Change records untracked and previously dirty source deltas 6820ms
+     → unverified coding cannot finish successfully: expected [ { …(4) }, { …(4) }, { …(3) }, …(1) ] to deep equally contain ObjectContaining{…}
+   × Plan rejects an incomplete proposal before generating or saving designs 2993ms
+     → planning requires a completion audit: expected [ { …(4) }, { …(4) }, { …(4) }, …(4) ] to deep equally contain ObjectContaining{…}
+   ↓ stale approval is rejected before agent execution
+   ↓ image generation failure creates no invented image or successful completion
+   ↓ failed Change never records a completed outcome
+   ↓ cancelled Change records cancellation and cannot cancel another run ID
+   ↓ observed host writes retain actual absolute path and hashes in committed change history
+   ↓ Plan refuses a generation whose expected latest version changed while the image was running
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/run-integration.test.ts > approval alone never runs and Change records untracked and previously dirty source deltas
+AssertionError: unverified coding cannot finish successfully: expected [ { …(4) }, { …(4) }, { …(3) }, …(1) ] to deep equally contain ObjectContaining{…}
+
+- Expected: 
+ObjectContaining {
+  "kind": "failed",
+  "message": StringContaining "completion audit",
+}
+
++ Received: 
+[
+  {
+    "detail": "Starting change",
+    "kind": "status",
+    "phase": "queued",
+    "runId": "56f3aec4-c740-41f4-84a3-bf3a74624ff6",
+  },
+  {
+    "detail": "Implementing [[unit:page.target]] with codex / selected",
+    "kind": "status",
+    "phase": "changing",
+    "runId": "56f3aec4-c740-41f4-84a3-bf3a74624ff6",
+  },
+  {
+    "files": [
+      {
+        "change": "added",
+        "path": "src/new.ts",
+      },
+      {
+        "change": "modified",
+        "path": "src/owned.ts",
+      },
+    ],
+    "kind": "changes",
+    "runId": "56f3aec4-c740-41f4-84a3-bf3a74624ff6",
+  },
+  {
+    "kind": "finished",
+    "runId": "56f3aec4-c740-41f4-84a3-bf3a74624ff6",
+    "summary": "Code changes recorded. Verification is still required.",
+    "verified": false,
+  },
+]
+
+ ❯ test/run-integration.test.ts:52:67
+     50|   })
+     51|  );
+     52|  expect(f.events, 'unverified coding cannot finish successfully').toCo…
+       |                                                                   ^
+     53|   expect.objectContaining({
+     54|    kind: 'failed',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/run-integration.test.ts > Plan rejects an incomplete proposal before generating or saving designs
+AssertionError: planning requires a completion audit: expected [ { …(4) }, { …(4) }, { …(4) }, …(4) ] to deep equally contain ObjectContaining{…}
+
+- Expected: 
+ObjectContaining {
+  "kind": "failed",
+  "message": StringContaining "completion audit",
+}
+
++ Received: 
+[
+  {
+    "detail": "Starting plan",
+    "kind": "status",
+    "phase": "queued",
+    "runId": "23b5df16-da38-4715-987d-6320ccfe4593",
+  },
+  {
+    "detail": "Preparing the design with codex / selected",
+    "kind": "status",
+    "phase": "prompting",
+    "runId": "23b5df16-da38-4715-987d-6320ccfe4593",
+  },
+  {
+    "detail": "Generating design option 1 of 3 with GPT Image",
+    "kind": "status",
+    "phase": "generating",
+    "runId": "23b5df16-da38-4715-987d-6320ccfe4593",
+  },
+  {
+    "detail": "Generating design option 2 of 3 with GPT Image",
+    "kind": "status",
+    "phase": "generating",
+    "runId": "23b5df16-da38-4715-987d-6320ccfe4593",
+  },
+  {
+    "detail": "Generating design option 3 of 3 with GPT Image",
+    "kind": "status",
+    "phase": "generating",
+    "runId": "23b5df16-da38-4715-987d-6320ccfe4593",
+  },
+  {
+    "detail": "Committing 3 design options as one version",
+    "kind": "status",
+    "phase": "saving",
+    "runId": "23b5df16-da38-4715-987d-6320ccfe4593",
+  },
+  {
+    "kind": "failed",
+    "message": "Design options repeat an image",
+    "runId": "23b5df16-da38-4715-987d-6320ccfe4593",
+  },
+]
+
+ ❯ test/run-integration.test.ts:68:59
+     66|  f.run.mockResolvedValue({ text: 'Done.', model: 'selected' });
+     67|  await settled(f);
+     68|  expect(f.events, 'planning requires a completion audit').toContainEqu…
+       |                                                           ^
+     69|   expect.objectContaining({
+     70|    kind: 'failed',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 7 skipped (9)
+   Start at  17:23:52
+   Duration  10.77s (transform 459ms, setup 0ms, collect 763ms, tests 9.81s, environment 0ms, prepare 38ms)
+

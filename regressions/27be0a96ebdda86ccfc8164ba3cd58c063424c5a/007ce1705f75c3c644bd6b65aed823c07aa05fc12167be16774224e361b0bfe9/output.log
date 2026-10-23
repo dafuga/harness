@@ -1,0 +1,744 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [12.03s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nMvy1p
+
+ ❯ test/utils/preview-binding.test.ts (6 tests | 1 failed) 1776ms
+   ✓ a preview names a declared screenshot of its own page and viewport 1ms
+   ✓ another page state, unknown scenarios and absent viewports cannot become previews 0ms
+   ✓ a result without screenshot evidence cannot stand in for an image 0ms
+   ✓ strict verification rejects a preview that names no recorded page state 3ms
+   × registered visual previews bind their own required state and every component has one 1762ms
+     → Every active component needs its own required screenshot preview: expected [ …(160) ] to deeply equal []
+   ✓ visual components cannot omit required preview coverage while nonvisual units can 2ms
+ ✓ test/preview-shells-runner.test.ts (5 tests) 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/preview-binding.test.ts > registered visual previews bind their own required state and every component has one
+AssertionError: Every active component needs its own required screenshot preview: expected [ …(160) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "desktop.component.agent-controls: active component requires a screenshot preview",
++   "desktop.component.agent-effort-picker: active component requires a screenshot preview",
++   "desktop.component.agent-model-picker: active component requires a screenshot preview",
++   "desktop.component.agent-settings: active component requires a screenshot preview",
++   "desktop.component.annotated-image: active component requires a screenshot preview",
++   "desktop.component.approval-button: active component requires a screenshot preview",
++   "desktop.component.catalog-view: active component requires a screenshot preview",
++   "desktop.component.choice-dialog: active component requires a screenshot preview",
++   "desktop.component.composer: active component requires a screenshot preview",
++   "desktop.component.contract-panel: active component requires a screenshot preview",
++   "desktop.component.coverage-panel: active component requires a screenshot preview",
++   "desktop.component.design-panel: active component requires a screenshot preview",
++   "desktop.component.details-panel: active component requires a screenshot preview",
++   "desktop.component.entity-card: active component requires a screenshot preview",
++   "desktop.component.entity-view: active component requires a screenshot preview",
++   "desktop.component.history-panel: active component requires a screenshot preview",
++   "desktop.component.hosted-connection: active component requires a screenshot preview",
++   "desktop.component.icon: active component requires a screenshot preview",
++   "desktop.component.image-thumbnail: active component requires a screenshot preview",
++   "desktop.component.measures-panel: active component requires a screenshot preview",
++   "desktop.component.message-list: active component requires a screenshot preview",
++   "desktop.component.nav-bar: active component requires a screenshot preview",
++   "desktop.component.plan-badge: active component requires a screenshot preview",
++   "desktop.component.prior-image: active component requires a screenshot preview",
++   "desktop.component.project-agent: active component requires a screenshot preview",
++   "desktop.component.project-gate: active component requires a screenshot preview",
++   "desktop.component.project-switcher: active component requires a screenshot preview",
++   "desktop.component.recorded-preview: active component requires a screenshot preview",
++   "desktop.component.reference-text: active component requires a screenshot preview",
++   "desktop.component.relationships-panel: active component requires a screenshot preview",
++   "desktop.component.remote-approval: active component requires a screenshot preview",
++   "desktop.component.remote-connection: active component requires a screenshot preview",
++   "desktop.component.remote-devices: active component requires a screenshot preview",
++   "desktop.component.remote-host-panel: active component requires a screenshot preview",
++   "desktop.component.remote-offer-code: active component requires a screenshot preview",
++   "desktop.component.remote-phone-panel: active component requires a screenshot preview",
++   "desktop.component.revision-picker: active component requires a screenshot preview",
++   "desktop.component.run-status: active component requires a screenshot preview",
++   "desktop.component.runtime-artifact: active component requires a screenshot preview",
++   "desktop.component.runtime-audio: active component requires a screenshot preview",
++   "desktop.component.runtime-behavior: active component requires a screenshot preview",
++   "desktop.component.runtime-evidence: active component requires a screenshot preview",
++   "desktop.component.runtime-pane: active component requires a screenshot preview",
++   "desktop.component.runtime-run: active component requires a screenshot preview",
++   "desktop.component.runtime-screens: active component requires a screenshot preview",
++   "desktop.component.segmented-choice: active component requires a screenshot preview",
++   "desktop.component.status-bar: active component requires a screenshot preview",
++   "desktop.component.status-icon: active component requires a screenshot preview",
++   "desktop.component.thread-history: active component requires a screenshot preview",
++   "desktop.component.thread-links: active component requires a screenshot preview",
++   "desktop.component.thread-panel: active component requires a screenshot preview",
++   "desktop.component.workspace-link: active component requires a screenshot preview",
++   "hub.component.email-proof-panel: active component requires a screenshot preview",
++   "hub.component.hub-frame: active component requires a screenshot preview",
++   "hub.component.invitation-form: active component requires a screenshot preview",
++   "hub.component.invite-accept: active component requires a screenshot preview",
++   "hub.component.login-panel: active component requires a screenshot preview",
++   "hub.component.members-panel: active component requires a screenshot preview",
++   "hub.component.native-approval: active component requires a screenshot preview",
++   "hub.component.project-create: active component requires a screenshot preview",
++   "hub.component.project-list: active component requires a screenshot preview",
++   "reports.component.activity-agents: active component requires a screenshot preview",
++   "reports.component.activity-files: active component requires a screenshot preview",
++   "reports.component.activity-list: active component requires a screenshot preview",
++   "reports.component.activity-loops: active component requires a screenshot preview",
++   "reports.component.activity-work: active component requires a screenshot preview",
++   "reports.component.analytics-cpu: active component requires a screenshot preview",
++   "reports.component.analytics-filters: active component requires a screenshot preview",
++   "reports.component.analytics-history: active component requires a screenshot preview",
++   "reports.component.analytics-models: active component requires a screenshot preview",
++   "reports.component.analytics-tasks: active component requires a screenshot preview",
++   "reports.component.audio-comparison-viewer: active component requires a screenshot preview",
++   "reports.component.audio-comparison: active component requires a screenshot preview",
++   "reports.component.audio-evidence: active component requires a screenshot preview",
++   "reports.component.audio-upload-files: active component requires a screenshot preview",
++   "reports.component.brand-mark: active component requires a screenshot preview",
++   "reports.component.browser-errors: active component requires a screenshot preview",
++   "reports.component.console-chat: active component requires a screenshot preview",
++   "reports.component.contract-example: active component requires a screenshot preview",
++   "reports.component.contract-table: active component requires a screenshot preview",
++   "reports.component.coverage-list: active component requires a screenshot preview",
++   "reports.component.entity-cases: active component requires a screenshot preview",
++   "reports.component.entity-contract: active component requires a screenshot preview",
++   "reports.component.entity-examples: active component requires a screenshot preview",
++   "reports.component.entity-search-results: active component requires a screenshot preview",
++   "reports.component.entity-search: active component requires a screenshot preview",
++   "reports.component.entity-states: active component requires a screenshot preview",
++   "reports.component.evidence-card: active component requires a screenshot preview",
++   "reports.component.evidence-grid: active component requires a screenshot preview",
++   "reports.component.evidence-provenance: active component requires a screenshot preview",
++   "reports.component.evidence-viewer: active component requires a screenshot preview",
++   "reports.component.explorer-function-card: active component requires a screenshot preview",
++   "reports.component.floating-chat: active component requires a screenshot preview",
++   "reports.component.gameplay-replay: active component requires a screenshot preview",
++   "reports.component.harness-entity-artifact: active component requires a screenshot preview",
++   "reports.component.harness-entity-audio: active component requires a screenshot preview",
++   "reports.component.harness-entity-behavior-screen: active component requires a screenshot preview",
++   "reports.component.harness-entity-behavior: active component requires a screenshot preview",
++   "reports.component.harness-entity-change: active component requires a screenshot preview",
++   "reports.component.harness-entity-config-screen: active component requires a screenshot preview",
++   "reports.component.harness-entity-config: active component requires a screenshot preview",
++   "reports.component.harness-entity-details-screen: active component requires a screenshot preview",
++   "reports.component.harness-entity-details: active component requires a screenshot preview",
++   "reports.component.harness-entity-frame: active component requires a screenshot preview",
++   "reports.component.harness-entity-header: active component requires a screenshot preview",
++   "reports.component.harness-entity-history-row: active component requires a screenshot preview",
++   "reports.component.harness-entity-history-screen: active component requires a screenshot preview",
++   "reports.component.harness-entity-history: active component requires a screenshot preview",
++   "reports.component.harness-entity-link: active component requires a screenshot preview",
++   "reports.component.harness-entity-measures: active component requires a screenshot preview",
++   "reports.component.harness-entity-missing: active component requires a screenshot preview",
++   "reports.component.harness-entity-overview: active component requires a screenshot preview",
++   "reports.component.harness-entity-reasons: active component requires a screenshot preview",
++   "reports.component.harness-entity-relations: active component requires a screenshot preview",
++   "reports.component.harness-entity-run: active component requires a screenshot preview",
++   "reports.component.harness-entity-screens: active component requires a screenshot preview",
++   "reports.component.harness-entity-sections: active component requires a screenshot preview",
++   "reports.component.harness-entity-source: active component requires a screenshot preview",
++   "reports.component.harness-entity-summary: active component requires a screenshot preview",
++   "reports.component.harness-entity-tests: active component requires a screenshot preview",
++   "reports.component.harness-entity-visual-screen: active component requires a screenshot preview",
++   "reports.component.harness-explorer-content: active component requires a screenshot preview",
++   "reports.component.harness-explorer-controls: active component requires a screenshot preview",
++   "reports.component.harness-explorer-frame: active component requires a screenshot preview",
++   "reports.component.harness-explorer-pages-screen: active component requires a screenshot preview",
++   "reports.component.harness-explorer-table: active component requires a screenshot preview",
++   "reports.component.harness-harness-action: active component requires a screenshot preview",
++   "reports.component.harness-harness-activity: active component requires a screenshot preview",
++   "reports.component.harness-harness-compare-media: active component requires a screenshot preview",
++   "reports.component.harness-harness-compare: active component requires a screenshot preview",
++   "reports.component.harness-harness-emitted-growth: active component requires a screenshot preview",
++   "reports.component.harness-harness-failures: active component requires a screenshot preview",
++   "reports.component.harness-harness-growth: active component requires a screenshot preview",
++   "reports.component.harness-harness-header: active component requires a screenshot preview",
++   "reports.component.harness-harness-history: active component requires a screenshot preview",
++   "reports.component.harness-harness-icon: active component requires a screenshot preview",
++   "reports.component.harness-harness-legacy: active component requires a screenshot preview",
++   "reports.component.harness-harness-map: active component requires a screenshot preview",
++   "reports.component.harness-harness-navbar: active component requires a screenshot preview",
++   "reports.component.harness-harness-selectors: active component requires a screenshot preview",
++   "reports.component.harness-harness-tabs: active component requires a screenshot preview",
++   "reports.component.harness-harness-unit: active component requires a screenshot preview",
++   "reports.component.harness-harness-verdict: active component requires a screenshot preview",
++   "reports.component.image-zoom: active component requires a screenshot preview",
++   "reports.component.modal: active component requires a screenshot preview",
++   "reports.component.project-activity: active component requires a screenshot preview",
++   "reports.component.provider-picker: active component requires a screenshot preview",
++   "reports.component.recorded-value: active component requires a screenshot preview",
++   "reports.component.regression-proof: active component requires a screenshot preview",
++   "reports.component.replay-controls: active component requires a screenshot preview",
++   "reports.component.report-checks: active component requires a screenshot preview",
++   "reports.component.report-findings: active component requires a screenshot preview",
++   "reports.component.report-summary: active component requires a screenshot preview",
++   "reports.component.report-view: active component requires a screenshot preview",
++   "reports.component.select: active component requires a screenshot preview",
++   "reports.component.site-activity: active component requires a screenshot preview",
++   "reports.component.status-badge: active component requires a screenshot preview",
++   "reports.component.upload-audio: active component requires a screenshot preview",
++   "reports.component.upload-comparison: active component requires a screenshot preview",
++   "reports.component.usage-examples-usage-examples: active component requires a screenshot preview",
++ ]
+
+ ❯ test/utils/preview-binding.test.ts:100:87
+     98|   );
+     99|  }
+    100|  expect(problems, 'Every active component needs its own required scree…
+       |                                                                                       ^
+    101| });
+    102| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 10 passed (11)
+   Start at  21:50:12
+   Duration  3.12s (transform 240ms, setup 26ms, collect 720ms, tests 1.78s, environment 0ms, prepare 90ms)
+
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+
+Running 498 tests using 1 worker
+
+(node:92867) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-controls at desktop (725ms)
+  ✓    2 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-effort-picker at desktop (667ms)
+  ✓    3 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-model-picker at desktop (602ms)
+  ✓    4 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-settings at desktop (605ms)
+  ✓    5 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.annotated-image at desktop (927ms)
+  ✓    6 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.approval-button at desktop (720ms)
+  ✓    7 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.catalog-view at desktop (667ms)
+  ✓    8 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.choice-dialog at desktop (610ms)
+  ✓    9 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.composer at desktop (682ms)
+  ✓   10 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.contract-panel at desktop (611ms)
+  ✓   11 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.coverage-panel at desktop (782ms)
+  ✓   12 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.design-panel at desktop (904ms)
+  ✓   13 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.details-panel at desktop (685ms)
+  ✓   14 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.entity-card at desktop (1.1s)
+  ✓   15 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.entity-view at desktop (1.3s)
+  ✓   16 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.history-panel at desktop (563ms)
+  ✓   17 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.hosted-connection at desktop (489ms)
+  ✓   18 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.icon at desktop (459ms)
+  ✓   19 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.image-thumbnail at desktop (713ms)
+  ✓   20 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.measures-panel at desktop (624ms)
+  ✓   21 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.message-list at desktop (750ms)
+  ✓   22 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.nav-bar at desktop (510ms)
+  ✓   23 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.plan-badge at desktop (507ms)
+  ✓   24 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.prior-image at desktop (680ms)
+  ✓   25 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-agent at desktop (537ms)
+  ✓   26 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-gate at desktop (491ms)
+  ✓   27 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-switcher at desktop (560ms)
+  ✓   28 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.recorded-preview at desktop (772ms)
+  ✓   29 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.reference-text at desktop (557ms)
+  ✓   30 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.relationships-panel at desktop (529ms)
+  ✓   31 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-approval at desktop (520ms)
+  ✓   32 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-connection at desktop (533ms)
+  ✓   33 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-devices at desktop (530ms)
+  ✓   34 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-host-panel at desktop (499ms)
+  ✓   35 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-offer-code at desktop (497ms)
+  ✓   36 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-phone-panel at desktop (514ms)
+  ✓   37 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.revision-picker at desktop (527ms)
+  ✓   38 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.run-status at desktop (517ms)
+  ✓   39 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-artifact at desktop (479ms)
+  ✓   40 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-audio at desktop (638ms)
+  ✓   41 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-behavior at desktop (544ms)
+  ✓   42 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-evidence at desktop (611ms)
+  ✓   43 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-pane at desktop (723ms)
+  ✓   44 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-run at desktop (643ms)
+  ✓   45 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-screens at desktop (610ms)
+  ✓   46 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.segmented-choice at desktop (431ms)
+  ✓   47 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.status-bar at desktop (429ms)
+  ✓   48 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.status-icon at desktop (446ms)
+  ✓   49 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-history at desktop (1.0s)
+  ✓   50 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-links at desktop (1.1s)
+  ✓   51 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-panel at desktop (1.1s)
+  ✓   52 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.workspace-link at desktop (611ms)
+  ✓   53 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.account-menu at desktop (853ms)
+  ✓   54 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.email-proof-panel at desktop (637ms)
+  ✓   55 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.hub-frame at desktop (798ms)
+  ✓   56 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.invitation-form at desktop (576ms)
+  ✓   57 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.invite-accept at desktop (590ms)
+  ✓   58 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.login-panel at desktop (753ms)
+  ✓   59 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.members-panel at desktop (613ms)
+  ✓   60 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.native-approval at desktop (632ms)
+  ✓   61 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.project-create at desktop (759ms)
+  ✓   62 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.project-list at desktop (597ms)
+  ✓   63 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-agents at desktop (618ms)
+  ✓   64 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-files at desktop (632ms)
+  ✓   65 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-list at desktop (880ms)
+  ✓   66 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-loops at desktop (776ms)
+  ✓   67 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-work at desktop (662ms)
+  ✓   68 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-cpu at desktop (722ms)
+  ✓   69 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-filters at desktop (531ms)
+  ✓   70 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-history at desktop (566ms)
+  ✓   71 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-models at desktop (568ms)
+  ✓   72 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-tasks at desktop (529ms)
+  ✓   73 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-comparison at desktop (458ms)
+  ✓   74 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-comparison-viewer at desktop (538ms)
+  ✓   75 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-evidence at desktop (494ms)
+  ✓   76 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-upload-files at desktop (566ms)
+  ✓   77 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.brand-mark at desktop (536ms)
+  ✓   78 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.browser-errors at desktop (925ms)
+  ✓   79 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.console-chat at desktop (1.3s)
+  ✓   80 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.contract-example at desktop (562ms)
+  ✓   81 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.contract-table at desktop (589ms)
+  ✓   82 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.coverage-list at desktop (558ms)
+  ✓   83 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-cases at desktop (633ms)
+  ✓   84 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-contract at desktop (616ms)
+  ✓   85 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-examples at desktop (573ms)
+  ✓   86 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-search at desktop (543ms)
+  ✓   87 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-search-results at desktop (596ms)
+  ✓   88 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-states at desktop (1.5s)
+  ✓   89 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-card at desktop (667ms)
+  ✓   90 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-grid at desktop (764ms)
+  ✓   91 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-provenance at desktop (535ms)
+  ✓   92 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-viewer at desktop (852ms)
+  ✓   93 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.explorer-function-card at desktop (798ms)
+  ✓   94 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.filter-dialog at desktop (1.0s)
+  ✓   95 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.floating-chat at desktop (500ms)
+  ✓   96 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.gameplay-replay at desktop (724ms)
+  ✓   97 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-artifact at desktop (420ms)
+  ✓   98 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-audio at desktop (485ms)
+  ✓   99 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-behavior at desktop (484ms)
+  ✓  100 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-behavior-screen at desktop (416ms)
+  ✓  101 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-change at desktop (434ms)
+  ✓  102 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-config at desktop (435ms)
+  ✓  103 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-config-screen at desktop (472ms)
+  ✓  104 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-details at desktop (470ms)
+  ✓  105 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-details-screen at desktop (873ms)
+  ✓  106 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-frame at desktop (881ms)
+  ✓  107 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-header at desktop (467ms)
+  ✓  108 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history at desktop (484ms)
+  ✓  109 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history-row at desktop (471ms)
+  ✓  110 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history-screen at desktop (889ms)
+  ✓  111 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-link at desktop (394ms)
+  ✓  112 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-measures at desktop (422ms)
+  ✓  113 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-missing at desktop (455ms)
+  ✓  114 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-overview at desktop (457ms)
+  ✓  115 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-reasons at desktop (417ms)
+  ✓  116 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-relations at desktop (412ms)
+  ✓  117 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-run at desktop (437ms)
+  ✓  118 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-screens at desktop (815ms)
+  ✓  119 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-sections at desktop (396ms)
+  ✓  120 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-source at desktop (394ms)
+  ✓  121 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-summary at desktop (444ms)
+  ✓  122 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-tests at desktop (1.5s)
+  ✓  123 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-visual-screen at desktop (867ms)
+  ✓  124 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-catalog-screen at desktop (1.1s)
+  ✓  125 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-content at desktop (880ms)
+  ✓  126 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-controls at desktop (432ms)
+  ✓  127 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-frame at desktop (455ms)
+  ✓  128 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-index at desktop (430ms)
+  ✓  129 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-page-card at desktop (580ms)
+  ✓  130 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-pages-screen at desktop (649ms)
+  ✓  131 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-table at desktop (430ms)
+  ✓  132 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-action at desktop (450ms)
+  ✓  133 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-activity at desktop (449ms)
+  ✓  134 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-compare at desktop (1.4s)
+  ✓  135 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-compare-media at desktop (1.4s)
+  ✓  136 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-emitted-growth at desktop (473ms)
+  ✓  137 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-failures at desktop (467ms)
+  ✓  138 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-growth at desktop (422ms)
+  ✓  139 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-header at desktop (414ms)
+  ✓  140 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-history at desktop (1.4s)
+  ✓  141 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-icon at desktop (446ms)
+  ✓  142 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-legacy at desktop (460ms)
+  ✓  143 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-map at desktop (468ms)
+  ✓  144 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-navbar at desktop (460ms)
+  ✓  145 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-selectors at desktop (450ms)
+  ✓  146 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-tabs at desktop (415ms)
+  ✓  147 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-unit at desktop (512ms)
+  ✓  148 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-verdict at desktop (475ms)
+  ✓  149 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.image-zoom at desktop (619ms)
+  ✓  150 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.modal at desktop (438ms)
+  ✓  151 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.project-activity at desktop (487ms)
+  ✓  152 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.provider-picker at desktop (489ms)
+  ✓  153 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.provider-picker-cards at desktop (420ms)
+  ✓  154 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.recorded-value at desktop (467ms)
+  ✓  155 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.regression-proof at desktop (435ms)
+  ✓  156 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.replay-controls at desktop (413ms)
+  ✓  157 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-checks at desktop (416ms)
+  ✓  158 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-findings at desktop (430ms)
+  ✓  159 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-summary at desktop (433ms)
+  ✓  160 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-view at desktop (1.0s)
+  ✓  161 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.select at desktop (455ms)
+  ✓  162 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.site-activity at desktop (487ms)
+  ✓  163 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.status-badge at desktop (428ms)
+  ✓  164 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.upload-audio at desktop (447ms)
+  ✓  165 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.upload-comparison at desktop (430ms)
+  ✓  166 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.usage-examples-usage-examples at desktop (446ms)
+  ✓  167 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-controls at tablet (249ms)
+  ✓  168 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-effort-picker at tablet (229ms)
+  ✓  169 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-model-picker at tablet (261ms)
+  ✓  170 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-settings at tablet (252ms)
+  ✓  171 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.annotated-image at tablet (267ms)
+  ✓  172 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.approval-button at tablet (252ms)
+  ✓  173 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.catalog-view at tablet (266ms)
+  ✓  174 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.choice-dialog at tablet (247ms)
+  ✓  175 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.composer at tablet (247ms)
+  ✓  176 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.contract-panel at tablet (234ms)
+  ✓  177 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.coverage-panel at tablet (302ms)
+  ✓  178 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.design-panel at tablet (268ms)
+  ✓  179 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.details-panel at tablet (250ms)
+  ✓  180 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.entity-card at tablet (286ms)
+  ✓  181 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.entity-view at tablet (308ms)
+  ✓  182 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.history-panel at tablet (234ms)
+  ✓  183 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.hosted-connection at tablet (255ms)
+  ✓  184 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.icon at tablet (248ms)
+  ✓  185 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.image-thumbnail at tablet (269ms)
+  ✓  186 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.measures-panel at tablet (257ms)
+  ✓  187 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.message-list at tablet (254ms)
+  ✓  188 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.nav-bar at tablet (281ms)
+  ✓  189 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.plan-badge at tablet (274ms)
+  ✓  190 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.prior-image at tablet (267ms)
+  ✓  191 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-agent at tablet (249ms)
+  ✓  192 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-gate at tablet (252ms)
+  ✓  193 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-switcher at tablet (246ms)
+  ✓  194 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.recorded-preview at tablet (310ms)
+  ✓  195 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.reference-text at tablet (236ms)
+  ✓  196 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.relationships-panel at tablet (261ms)
+  ✓  197 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-approval at tablet (269ms)
+  ✓  198 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-connection at tablet (253ms)
+  ✓  199 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-devices at tablet (229ms)
+  ✓  200 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-host-panel at tablet (245ms)
+  ✓  201 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-offer-code at tablet (258ms)
+  ✓  202 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-phone-panel at tablet (246ms)
+  ✓  203 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.revision-picker at tablet (214ms)
+  ✓  204 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.run-status at tablet (241ms)
+  ✓  205 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-artifact at tablet (226ms)
+  ✓  206 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-audio at tablet (228ms)
+  ✓  207 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-behavior at tablet (250ms)
+  ✓  208 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-evidence at tablet (264ms)
+  ✓  209 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-pane at tablet (265ms)
+  ✓  210 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-run at tablet (248ms)
+  ✓  211 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-screens at tablet (264ms)
+  ✓  212 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.segmented-choice at tablet (243ms)
+  ✓  213 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.status-bar at tablet (229ms)
+  ✓  214 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.status-icon at tablet (234ms)
+  ✓  215 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-history at tablet (262ms)
+  ✓  216 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-links at tablet (225ms)
+  ✓  217 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-panel at tablet (264ms)
+  ✓  218 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.workspace-link at tablet (282ms)
+  ✓  219 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.account-menu at tablet (247ms)
+  ✓  220 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.email-proof-panel at tablet (233ms)
+  ✓  221 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.hub-frame at tablet (320ms)
+  ✓  222 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.invitation-form at tablet (233ms)
+  ✓  223 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.invite-accept at tablet (249ms)
+  ✓  224 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.login-panel at tablet (273ms)
+  ✓  225 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.members-panel at tablet (253ms)
+  ✓  226 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.native-approval at tablet (237ms)
+  ✓  227 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.project-create at tablet (249ms)
+  ✓  228 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.project-list at tablet (230ms)
+  ✓  229 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-agents at tablet (232ms)
+  ✓  230 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-files at tablet (251ms)
+  ✓  231 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-list at tablet (213ms)
+  ✓  232 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-loops at tablet (245ms)
+  ✓  233 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-work at tablet (230ms)
+  ✓  234 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-cpu at tablet (241ms)
+  ✓  235 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-filters at tablet (215ms)
+  ✓  236 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-history at tablet (249ms)
+  ✓  237 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-models at tablet (291ms)
+  ✓  238 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-tasks at tablet (268ms)
+  ✓  239 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-comparison at tablet (255ms)
+  ✓  240 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-comparison-viewer at tablet (304ms)
+  ✓  241 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-evidence at tablet (241ms)
+  ✓  242 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-upload-files at tablet (257ms)
+  ✓  243 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.brand-mark at tablet (229ms)
+  ✓  244 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.browser-errors at tablet (252ms)
+  ✓  245 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.console-chat at tablet (254ms)
+  ✓  246 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.contract-example at tablet (254ms)
+  ✓  247 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.contract-table at tablet (262ms)
+  ✓  248 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.coverage-list at tablet (230ms)
+  ✓  249 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-cases at tablet (270ms)
+  ✓  250 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-contract at tablet (250ms)
+  ✓  251 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-examples at tablet (235ms)
+  ✓  252 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-search at tablet (248ms)
+  ✓  253 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-search-results at tablet (295ms)
+  ✓  254 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-states at tablet (409ms)
+  ✓  255 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-card at tablet (284ms)
+  ✓  256 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-grid at tablet (281ms)
+  ✓  257 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-provenance at tablet (240ms)
+  ✓  258 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-viewer at tablet (304ms)
+  ✓  259 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.explorer-function-card at tablet (242ms)
+  ✓  260 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.filter-dialog at tablet (248ms)
+  ✓  261 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.floating-chat at tablet (254ms)
+  ✓  262 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.gameplay-replay at tablet (285ms)
+  ✓  263 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-artifact at tablet (250ms)
+  ✓  264 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-audio at tablet (280ms)
+  ✓  265 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-behavior at tablet (273ms)
+  ✓  266 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-behavior-screen at tablet (271ms)
+  ✓  267 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-change at tablet (268ms)
+  ✓  268 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-config at tablet (230ms)
+  ✓  269 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-config-screen at tablet (279ms)
+  ✓  270 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-details at tablet (270ms)
+  ✓  271 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-details-screen at tablet (351ms)
+  ✓  272 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-frame at tablet (351ms)
+  ✓  273 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-header at tablet (247ms)
+  ✓  274 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history at tablet (274ms)
+  ✓  275 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history-row at tablet (232ms)
+  ✓  276 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history-screen at tablet (379ms)
+  ✓  277 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-link at tablet (257ms)
+  ✓  278 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-measures at tablet (278ms)
+  ✓  279 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-missing at tablet (276ms)
+  ✓  280 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-overview at tablet (255ms)
+  ✓  281 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-reasons at tablet (260ms)
+  ✓  282 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-relations at tablet (230ms)
+  ✓  283 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-run at tablet (266ms)
+  ✓  284 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-screens at tablet (312ms)
+  ✓  285 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-sections at tablet (230ms)
+  ✓  286 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-source at tablet (230ms)
+  ✓  287 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-summary at tablet (227ms)
+  ✓  288 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-tests at tablet (431ms)
+  ✓  289 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-visual-screen at tablet (315ms)
+  ✓  290 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-catalog-screen at tablet (365ms)
+  ✓  291 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-content at tablet (340ms)
+  ✓  292 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-controls at tablet (211ms)
+  ✓  293 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-frame at tablet (227ms)
+  ✓  294 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-index at tablet (229ms)
+  ✓  295 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-page-card at tablet (275ms)
+  ✓  296 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-pages-screen at tablet (264ms)
+  ✓  297 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-table at tablet (212ms)
+  ✓  298 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-action at tablet (226ms)
+  ✓  299 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-activity at tablet (284ms)
+  ✓  300 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-compare at tablet (458ms)
+  ✓  301 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-compare-media at tablet (439ms)
+  ✓  302 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-emitted-growth at tablet (256ms)
+  ✓  303 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-failures at tablet (251ms)
+  ✓  304 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-growth at tablet (244ms)
+  ✓  305 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-header at tablet (249ms)
+  ✓  306 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-history at tablet (447ms)
+  ✓  307 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-icon at tablet (228ms)
+  ✓  308 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-legacy at tablet (251ms)
+  ✓  309 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-map at tablet (278ms)
+  ✓  310 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-navbar at tablet (253ms)
+  ✓  311 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-selectors at tablet (252ms)
+  ✓  312 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-tabs at tablet (248ms)
+  ✓  313 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-unit at tablet (256ms)
+  ✓  314 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-verdict at tablet (237ms)
+  ✓  315 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.image-zoom at tablet (268ms)
+  ✓  316 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.modal at tablet (237ms)
+  ✓  317 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.project-activity at tablet (288ms)
+  ✓  318 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.provider-picker at tablet (310ms)
+  ✓  319 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.provider-picker-cards at tablet (234ms)
+  ✓  320 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.recorded-value at tablet (268ms)
+  ✓  321 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.regression-proof at tablet (256ms)
+  ✓  322 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.replay-controls at tablet (248ms)
+  ✓  323 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-checks at tablet (234ms)
+  ✓  324 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-findings at tablet (233ms)
+  ✓  325 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-summary at tablet (234ms)
+  ✓  326 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-view at tablet (355ms)
+  ✓  327 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.select at tablet (267ms)
+  ✓  328 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.site-activity at tablet (292ms)
+  ✓  329 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.status-badge at tablet (270ms)
+  ✓  330 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.upload-audio at tablet (277ms)
+  ✓  331 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.upload-comparison at tablet (236ms)
+  ✓  332 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.usage-examples-usage-examples at tablet (271ms)
+  ✓  333 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-controls at mobile (266ms)
+  ✓  334 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-effort-picker at mobile (231ms)
+  ✓  335 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-model-picker at mobile (230ms)
+  ✓  336 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.agent-settings at mobile (268ms)
+  ✓  337 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.annotated-image at mobile (287ms)
+  ✓  338 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.approval-button at mobile (271ms)
+  ✓  339 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.catalog-view at mobile (269ms)
+  ✓  340 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.choice-dialog at mobile (262ms)
+  ✓  341 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.composer at mobile (244ms)
+  ✓  342 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.contract-panel at mobile (271ms)
+  ✓  343 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.coverage-panel at mobile (285ms)
+  ✓  344 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.design-panel at mobile (284ms)
+  ✓  345 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.details-panel at mobile (230ms)
+  ✓  346 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.entity-card at mobile (279ms)
+  ✓  347 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.entity-view at mobile (303ms)
+  ✓  348 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.history-panel at mobile (251ms)
+  ✓  349 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.hosted-connection at mobile (270ms)
+  ✓  350 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.icon at mobile (229ms)
+  ✓  351 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.image-thumbnail at mobile (261ms)
+  ✓  352 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.measures-panel at mobile (226ms)
+  ✓  353 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.message-list at mobile (229ms)
+  ✓  354 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.nav-bar at mobile (243ms)
+  ✓  355 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.plan-badge at mobile (230ms)
+  ✓  356 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.prior-image at mobile (259ms)
+  ✓  357 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-agent at mobile (226ms)
+  ✓  358 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-gate at mobile (228ms)
+  ✓  359 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.project-switcher at mobile (225ms)
+  ✓  360 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.recorded-preview at mobile (294ms)
+  ✓  361 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.reference-text at mobile (225ms)
+  ✓  362 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.relationships-panel at mobile (245ms)
+  ✓  363 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-approval at mobile (248ms)
+  ✓  364 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-connection at mobile (228ms)
+  ✓  365 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-devices at mobile (231ms)
+  ✓  366 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-host-panel at mobile (248ms)
+  ✓  367 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-offer-code at mobile (212ms)
+  ✓  368 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.remote-phone-panel at mobile (259ms)
+  ✓  369 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.revision-picker at mobile (231ms)
+  ✓  370 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.run-status at mobile (258ms)
+  ✓  371 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-artifact at mobile (210ms)
+  ✓  372 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-audio at mobile (259ms)
+  ✓  373 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-behavior at mobile (280ms)
+  ✓  374 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-evidence at mobile (298ms)
+  ✓  375 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-pane at mobile (261ms)
+  ✓  376 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-run at mobile (281ms)
+  ✓  377 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.runtime-screens at mobile (258ms)
+  ✓  378 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.segmented-choice at mobile (245ms)
+  ✓  379 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.status-bar at mobile (277ms)
+  ✓  380 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.status-icon at mobile (258ms)
+  ✓  381 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-history at mobile (280ms)
+  ✓  382 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-links at mobile (278ms)
+  ✓  383 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.thread-panel at mobile (284ms)
+  ✓  384 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › desktop.component.workspace-link at mobile (229ms)
+  ✓  385 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.account-menu at mobile (265ms)
+  ✓  386 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.email-proof-panel at mobile (249ms)
+  ✓  387 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.hub-frame at mobile (350ms)
+  ✓  388 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.invitation-form at mobile (245ms)
+  ✓  389 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.invite-accept at mobile (249ms)
+  ✓  390 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.login-panel at mobile (262ms)
+  ✓  391 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.members-panel at mobile (228ms)
+  ✓  392 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.native-approval at mobile (246ms)
+  ✓  393 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.project-create at mobile (258ms)
+  ✓  394 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › hub.component.project-list at mobile (226ms)
+  ✓  395 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-agents at mobile (229ms)
+  ✓  396 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-files at mobile (225ms)
+  ✓  397 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-list at mobile (229ms)
+  ✓  398 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-loops at mobile (226ms)
+  ✓  399 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.activity-work at mobile (225ms)
+  ✓  400 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-cpu at mobile (253ms)
+  ✓  401 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-filters at mobile (244ms)
+  ✓  402 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-history at mobile (245ms)
+  ✓  403 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-models at mobile (266ms)
+  ✓  404 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.analytics-tasks at mobile (245ms)
+  ✓  405 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-comparison at mobile (252ms)
+  ✓  406 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-comparison-viewer at mobile (254ms)
+  ✓  407 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-evidence at mobile (228ms)
+  ✓  408 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.audio-upload-files at mobile (231ms)
+  ✓  409 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.brand-mark at mobile (225ms)
+  ✓  410 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.browser-errors at mobile (232ms)
+  ✓  411 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.console-chat at mobile (239ms)
+  ✓  412 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.contract-example at mobile (273ms)
+  ✓  413 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.contract-table at mobile (226ms)
+  ✓  414 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.coverage-list at mobile (227ms)
+  ✓  415 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-cases at mobile (230ms)
+  ✓  416 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-contract at mobile (244ms)
+  ✓  417 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-examples at mobile (243ms)
+  ✓  418 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-search at mobile (231ms)
+  ✓  419 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-search-results at mobile (269ms)
+  ✓  420 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.entity-states at mobile (408ms)
+  ✓  421 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-card at mobile (277ms)
+  ✓  422 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-grid at mobile (297ms)
+  ✓  423 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-provenance at mobile (253ms)
+  ✓  424 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.evidence-viewer at mobile (294ms)
+  ✓  425 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.explorer-function-card at mobile (234ms)
+  ✓  426 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.filter-dialog at mobile (227ms)
+  ✓  427 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.floating-chat at mobile (225ms)
+  ✓  428 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.gameplay-replay at mobile (284ms)
+  ✓  429 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-artifact at mobile (227ms)
+  ✓  430 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-audio at mobile (266ms)
+  ✓  431 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-behavior at mobile (249ms)
+  ✓  432 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-behavior-screen at mobile (211ms)
+  ✓  433 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-change at mobile (231ms)
+  ✓  434 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-config at mobile (233ms)
+  ✓  435 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-config-screen at mobile (264ms)
+  ✓  436 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-details at mobile (273ms)
+  ✓  437 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-details-screen at mobile (333ms)
+  ✓  438 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-frame at mobile (333ms)
+  ✓  439 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-header at mobile (268ms)
+  ✓  440 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history at mobile (309ms)
+  ✓  441 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history-row at mobile (256ms)
+  ✓  442 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-history-screen at mobile (363ms)
+  ✓  443 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-link at mobile (252ms)
+  ✓  444 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-measures at mobile (269ms)
+  ✓  445 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-missing at mobile (269ms)
+  ✓  446 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-overview at mobile (263ms)
+  ✓  447 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-reasons at mobile (266ms)
+  ✓  448 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-relations at mobile (236ms)
+  ✓  449 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-run at mobile (267ms)
+  ✓  450 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-screens at mobile (331ms)
+  ✓  451 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-sections at mobile (228ms)
+  ✓  452 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-source at mobile (232ms)
+  ✓  453 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-summary at mobile (229ms)
+  ✓  454 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-tests at mobile (448ms)
+  ✓  455 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-entity-visual-screen at mobile (315ms)
+  ✓  456 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-catalog-screen at mobile (364ms)
+  ✓  457 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-content at mobile (312ms)
+  ✓  458 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-controls at mobile (226ms)
+  ✓  459 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-frame at mobile (226ms)
+  ✓  460 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-index at mobile (228ms)
+  ✓  461 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-page-card at mobile (260ms)
+  ✓  462 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-pages-screen at mobile (301ms)
+  ✓  463 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-explorer-table at mobile (230ms)
+  ✓  464 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-action at mobile (226ms)
+  ✓  465 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-activity at mobile (246ms)
+  ✓  466 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-compare at mobile (428ms)
+  ✓  467 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-compare-media at mobile (417ms)
+  ✓  468 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-emitted-growth at mobile (281ms)
+  ✓  469 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-failures at mobile (214ms)
+  ✓  470 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-growth at mobile (245ms)
+  ✓  471 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-header at mobile (227ms)
+  ✓  472 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-history at mobile (414ms)
+  ✓  473 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-icon at mobile (225ms)
+  ✓  474 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-legacy at mobile (227ms)
+  ✓  475 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-map at mobile (244ms)
+  ✓  476 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-navbar at mobile (208ms)
+  ✓  477 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-selectors at mobile (227ms)
+  ✓  478 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-tabs at mobile (227ms)
+  ✓  479 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-unit at mobile (245ms)
+  ✓  480 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.harness-harness-verdict at mobile (243ms)
+  ✓  481 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.image-zoom at mobile (259ms)
+  ✓  482 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.modal at mobile (229ms)
+  ✓  483 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.project-activity at mobile (246ms)
+  ✓  484 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.provider-picker at mobile (246ms)
+  ✓  485 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.provider-picker-cards at mobile (226ms)
+  ✓  486 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.recorded-value at mobile (225ms)
+  ✓  487 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.regression-proof at mobile (230ms)
+  ✓  488 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.replay-controls at mobile (226ms)
+  ✓  489 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-checks at mobile (227ms)
+  ✓  490 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-findings at mobile (224ms)
+  ✓  491 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-summary at mobile (213ms)
+  ✓  492 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.report-view at mobile (329ms)
+  ✓  493 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.select at mobile (226ms)
+  ✓  494 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.site-activity at mobile (247ms)
+  ✓  495 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.status-badge at mobile (225ms)
+  ✓  496 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.upload-audio at mobile (241ms)
+  ✓  497 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.upload-comparison at mobile (229ms)
+  ✓  498 tests/e2e/explorer-shell-component-catalog.spec.ts:20:3 › reports.component.usage-examples-usage-examples at mobile (226ms)
+
+  498 passed (3.3m)

@@ -1,0 +1,91 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad
+
+ ❯ test/units-policy.e2e.test.ts (3 tests | 3 failed) 394ms
+   × CLI exposes execution targets and component versions, and refuses relaxed tolerance 134ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+   × CLI records lineage when retired source is recreated under a new identity 131ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+   × CLI labels a supplied responsibility as declared and a generated one as derived 128ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-policy.e2e.test.ts > CLI exposes execution targets and component versions, and refuses relaxed tolerance
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ unitProject test/support/unitProject.ts:17:2
+ ❯ test/units-policy.e2e.test.ts:17:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/units-policy.e2e.test.ts > CLI records lineage when retired source is recreated under a new identity
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ unitProject test/support/unitProject.ts:17:2
+ ❯ test/units-policy.e2e.test.ts:45:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/units-policy.e2e.test.ts > CLI labels a supplied responsibility as declared and a generated one as derived
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ unitProject test/support/unitProject.ts:17:2
+ ❯ test/units-policy.e2e.test.ts:61:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  03:43:20
+   Duration  611ms (transform 26ms, setup 8ms, collect 12ms, tests 394ms, environment 0ms, prepare 44ms)
+

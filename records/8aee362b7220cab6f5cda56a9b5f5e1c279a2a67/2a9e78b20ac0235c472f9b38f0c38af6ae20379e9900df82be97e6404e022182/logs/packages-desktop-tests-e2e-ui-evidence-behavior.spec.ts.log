@@ -1,0 +1,32 @@
+
+Running 5 tests using 1 worker
+F····
+
+  1) tests/e2e/ui-evidence-behavior.spec.ts:34:1 › a function at its branch tip shows the one run that was recorded, with what it was asked and answered 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Recorded runtime evidence' }).getByRole('group', { name: 'Current snapshot · ccccccc' }).getByRole('group', { name: 'output of match' }).getByText('"searchText": "SERVICE"')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Recorded runtime evidence' }).getByRole('group', { name: 'Current snapshot · ccccccc' }).getByRole('group', { name: 'output of match' }).getByText('"searchText": "SERVICE"') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Recorded runtime evidence' }).getByRole('group', { name: 'Current snapshot · ccccccc' }).getByRole('group', { name: 'output of match' }).getByText('"searchText": "SERVICE"')
+
+
+      44 | 	await expect(run.getByText('Search across synthetic orders · match')).toBeVisible();
+      45 | 	const output = run.getByRole('group', { name: 'output of match' });
+    > 46 | 	await expect(output.getByText('"searchText": "SERVICE"')).toBeVisible();
+         | 	                                                          ^
+      47 | 	await expect(output.getByText('Order 1042 · Service call')).toBeVisible();
+      48 | 	await expect(output.getByText('Order 1077 · Service plan')).toBeVisible();
+      49 | 	await output.getByText('Assertions and recorded result').click();
+        at /private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop/tests/e2e/ui-evidence-behavior.spec.ts:46:60
+
+    Error Context: test-results/ui-evidence-behavior-a-fun-59738-t-it-was-asked-and-answered/error-context.md
+
+  1 failed
+    tests/e2e/ui-evidence-behavior.spec.ts:34:1 › a function at its branch tip shows the one run that was recorded, with what it was asked and answered 
+  4 passed (11.7s)

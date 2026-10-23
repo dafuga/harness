@@ -1,0 +1,91 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad
+
+ ❯ test/units.e2e.test.ts (3 tests | 3 failed) 400ms
+   × generic unit generator coexists with the Svelte component generator 139ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new app demo failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+   × index derives contracts and keeps identity stable across re-index, moves and recreation 132ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+   × check rejects invalid manifests and schemas are exposed 129ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units.e2e.test.ts > generic unit generator coexists with the Svelte component generator
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new app demo failed with 1
+
+error: Cannot find package 'base64-js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/plist/lib/build.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ unitProject test/support/unitProject.ts:17:2
+ ❯ test/units.e2e.test.ts:31:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/units.e2e.test.ts > index derives contracts and keeps identity stable across re-index, moves and recreation
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ unitProject test/support/unitProject.ts:17:2
+ ❯ test/units.e2e.test.ts:62:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/units.e2e.test.ts > check rejects invalid manifests and schemas are exposed
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/src/index.ts new lib demo failed with 1
+
+error: Cannot find module './classic/external.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/zod/v4/index.js'
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ unitProject test/support/unitProject.ts:17:2
+ ❯ test/units.e2e.test.ts:117:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  03:43:21
+   Duration  627ms (transform 19ms, setup 8ms, collect 13ms, tests 400ms, environment 0ms, prepare 39ms)
+

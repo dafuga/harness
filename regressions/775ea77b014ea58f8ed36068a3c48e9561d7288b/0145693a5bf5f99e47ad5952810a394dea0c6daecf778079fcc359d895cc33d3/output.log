@@ -1,0 +1,81 @@
+$ bun run sync:shared && vitest run test/utils/deployment-config.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JbMs13/packages/desktop
+
+ ❯ test/utils/deployment-config.test.ts (4 tests | 1 failed) 182ms
+   ✓ Cloudflare jsonc discovery keeps explicit environment mapping and configuration fingerprint 6ms
+   ✓ Cloudflare toml discovery keeps explicit environment mapping and configuration fingerprint 2ms
+   ✓ the bundled Node deployment bundle resolves JSONC parsing without package-relative runtime requires 90ms
+   × the external Node deployment bundle resolves JSONC parsing without package-relative runtime requires 85ms
+     → Command failed: /opt/homebrew/Cellar/node/25.9.0_3/bin/node -e require(process.argv[1]).deploymentConfig(process.argv[2]).then(value => process.stdout.write(value.sourceBranch)) /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-fsEWrQ/deployment.cjs /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-fsEWrQ
+node:internal/modules/esm/resolve:1004
+    throw error;
+    ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JbMs13/node_modules/jsonc-parser/lib/esm/impl/format' imported from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JbMs13/node_modules/jsonc-parser/lib/esm/main.js
+    at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    at moduleResolve (node:internal/modules/esm/resolve:861:10)
+    at defaultResolve (node:internal/modules/esm/resolve:988:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:596:27)
+    at ModuleJobSync.syncLink (node:internal/modules/esm/module_job:162:33)
+    at ModuleJobSync.link (node:internal/modules/esm/module_job:487:17)
+    at new ModuleJobSync (node:internal/modules/esm/module_job:477:26) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JbMs13/node_modules/jsonc-parser/lib/esm/impl/format'
+}
+
+Node.js v25.9.0
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/deployment-config.test.ts > the external Node deployment bundle resolves JSONC parsing without package-relative runtime requires
+Error: Command failed: /opt/homebrew/Cellar/node/25.9.0_3/bin/node -e require(process.argv[1]).deploymentConfig(process.argv[2]).then(value => process.stdout.write(value.sourceBranch)) /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-fsEWrQ/deployment.cjs /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-fsEWrQ
+node:internal/modules/esm/resolve:1004
+    throw error;
+    ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JbMs13/node_modules/jsonc-parser/lib/esm/impl/format' imported from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JbMs13/node_modules/jsonc-parser/lib/esm/main.js
+    at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    at moduleResolve (node:internal/modules/esm/resolve:861:10)
+    at defaultResolve (node:internal/modules/esm/resolve:988:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:596:27)
+    at ModuleJobSync.syncLink (node:internal/modules/esm/module_job:162:33)
+    at ModuleJobSync.link (node:internal/modules/esm/module_job:487:17)
+    at new ModuleJobSync (node:internal/modules/esm/module_job:477:26) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JbMs13/node_modules/jsonc-parser/lib/esm/impl/format'
+}
+
+Node.js v25.9.0
+
+ ❯ test/utils/deployment-config.test.ts:76:19
+     74|     { cwd: process.cwd(), stdio: 'pipe' }
+     75|    );
+     76|    const output = execFileSync(
+       |                   ^
+     77|     process.execPath,
+     78|     [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  22:03:36
+   Duration  446ms (transform 41ms, setup 0ms, collect 83ms, tests 182ms, environment 0ms, prepare 30ms)
+
+error: script "test:unit" exited with code 1

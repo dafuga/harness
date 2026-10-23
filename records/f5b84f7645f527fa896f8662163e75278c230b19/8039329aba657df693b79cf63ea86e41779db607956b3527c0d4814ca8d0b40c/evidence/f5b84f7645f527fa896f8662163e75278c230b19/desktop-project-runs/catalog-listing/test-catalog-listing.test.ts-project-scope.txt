@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/catalog-listing.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 2113[2mms[22m[39m
+   [33m[2m✓[22m[39m the tip lists every ordinary entity and no page manifest that only loads for an address [33m 473[2mms[22m[39m
+   [33m[2m✓[22m[39m what is left out of the list is still opened by its identity, with its sources and history [33m 734[2mms[22m[39m
+   [33m[2m✓[22m[39m the same identity is listed at the earlier commit where it renders, as it was there [33m 869[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 21:29:00
+[2m   Duration [22m 2.80s[2m (transform 233ms, setup 0ms, collect 385ms, tests 2.11s, environment 0ms, prepare 79ms)[22m
+
+JSON report written to /var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-runner-vIL7ZP/report.json

@@ -1,0 +1,324 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [10.51s]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts --grep "Models code opens only from the detail Source tab at desktop width|source file selection and closing"
+
+Running 2 tests using 1 worker
+
+  ✘  1 test/entity-preview-source.spec.ts:73:3 › Models code opens only from the detail Source tab at desktop width (5.5s)
+  ✘  2 test/entity-preview-source.spec.ts:117:1 › source file selection and closing retain the detail Source tab (5.1s)
+
+
+  1) test/entity-preview-source.spec.ts:73:3 › Models code opens only from the detail Source tab at desktop width 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/Order.ts', exact: true })
+    Expected: "https://github.com/fixture/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/models/Order.ts"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/Order.ts', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/Order.ts', exact: true })
+
+
+      38 | 	const files = page.getByRole('list', { name: 'Source files', exact: true });
+      39 | 	const link = files.getByRole('link', { name: path, exact: true });
+    > 40 | 	await expect(link).toHaveAttribute(
+         | 	                   ^
+      41 | 		'href',
+      42 | 		`https://github.com/fixture/orders/blob/${commit}/${path.split('/').map(encodeURIComponent).join('/')}`
+      43 | 	);
+        at fileLink (/private/tmp/harness-snapshot-lAohCq/packages/reports/test/entity-preview-source.spec.ts:40:21)
+        at /private/tmp/harness-snapshot-lAohCq/packages/reports/test/entity-preview-source.spec.ts:92:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/error-context.md
+
+  2) test/entity-preview-source.spec.ts:117:1 › source file selection and closing retain the detail Source tab 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/Order types #é.ts', exact: true })
+    Expected: "https://github.com/fixture/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/services/Order%20types%20%23%C3%A9.ts"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/Order types #é.ts', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/Order types #é.ts', exact: true })
+
+
+      38 | 	const files = page.getByRole('list', { name: 'Source files', exact: true });
+      39 | 	const link = files.getByRole('link', { name: path, exact: true });
+    > 40 | 	await expect(link).toHaveAttribute(
+         | 	                   ^
+      41 | 		'href',
+      42 | 		`https://github.com/fixture/orders/blob/${commit}/${path.split('/').map(encodeURIComponent).join('/')}`
+      43 | 	);
+        at fileLink (/private/tmp/harness-snapshot-lAohCq/packages/reports/test/entity-preview-source.spec.ts:40:21)
+        at /private/tmp/harness-snapshot-lAohCq/packages/reports/test/entity-preview-source.spec.ts:120:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-sour-8f6ef-etain-the-detail-Source-tab/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-sour-8f6ef-etain-the-detail-Source-tab/error-context.md
+
+  2 failed
+    test/entity-preview-source.spec.ts:73:3 › Models code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:117:1 › source file selection and closing retain the detail Source tab 
+error: script "test:entities" exited with code 1
+$ vitest run test/components/entity-details.test.ts test/components/entity-details-screen.test.ts
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-lAohCq/packages/reports
+
+ ❯ test/components/entity-details.test.ts (7 tests | 1 failed) 27ms
+   ✓ details opens on the contract with size and performance, and shows no source 10ms
+   ✓ a page has details like every other kind: purpose, address, inputs, output and states 2ms
+   × source is shown only when the source tab is the open one 8ms
+     → expected ' Pages Orders page Orders page Page L…' to contain 'Source files'
+   ✓ measurements name the limit each figure is frozen at, or that none is recorded 2ms
+   ✓ a service has each execution target on a line of its own, never added together 1ms
+   ✓ a recorded note that names a file is shown without it on measurements and on the contract 1ms
+   ✓ a declared contract explains each item in its dedicated tab and details 2ms
+ ❯ test/components/entity-details-screen.test.ts (3 tests | 1 failed) 29ms
+   ✓ details of every kind open on the contract, size and performance, with no source 20ms
+   × its tabs open measurements, and the source only where the source is asked for 7ms
+     → expected '<!--[--><div class="ex-content" data-…' to contain 'aria-label="View code for src/routes/…'
+   ✓ details of an entity the revision does not hold say that it is missing 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-details-screen.test.ts > its tabs open measurements, and the source only where the source is asked for
+AssertionError: expected '<!--[--><div class="ex-content" data-…' to contain 'aria-label="View code for src/routes/…'
+
+Expected: [32m"aria-label="View code for src/routes/orders/+page.svelte""[39m
+Received: [31m"<!--[--><div class="ex-content" data-mode="commit"><!--[-1--><!--[1--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><!--[-1--><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages"><!---->Pages<!----></a><!--]--></li> <!--[-1--><li aria-current="page">Orders page</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Orders page</h1> <span class="ex-pill">Page</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <p class="ex-lead">Lists the orders of an account.</p></div> <div class="ex-head-actions"><!--[0--><p class="ex-route"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM18 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"></path></svg><!----> <span>App route</span> <!--[0--><a href="/orders" target="_blank" rel="noreferrer"><code>/orders</code><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5.5"></path></svg><!----></a><!--]--></p><!--]--></div></header> <!--[-1--><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Orders page sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders" aria-selected="false">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=states" aria-selected="false">States</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders?tab=source" aria-selected="true">Source</a><!--]--><!--]--></div><!----><!----> <!--[-1--><!--]--> <div role="tabpanel" aria-label="Orders page details"><!--[0--><div class="ex-stack"><section class="ex-card" aria-labelledby="ex-source-title"><h2 id="ex-source-title">Source ownership</h2> <p class="ex-soft">The files and symbols this entity owns at this revision.</p> <div class="ex-config"><div><h3>Files</h3> <!--[-1--><!--]--> <ul class="ex-links ex-mono"><!--[--><li>src/routes/orders/+page.svelte</li><!--]--></ul></div> <div><h3>Symbols</h3> <!--[-1--><!--]--> <ul class="ex-links ex-mono"><!--[--><li>OrdersPage</li><!--]--></ul></div> <div><h3>Execution targets</h3> <ul class="ex-links ex-mono"><!--[--><li>module · src/routes/orders/+page.svelte</li><!--]--></ul></div></div> <p class="ex-note">Identity app.page.orders · version v-app.page.orders</p></section> <section class="ex-card" aria-labelledby="ex-source-code-title"><h2 id="ex-source-code-title">Source code</h2> <!--[-1--><button type="button" class="hx-action plain" aria-label="View code for Orders page"><!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM14 3v5h5"></path></svg><!--]--> <!---->View code<!----> <!--[-1--><!--]--><!----></button><!--]--><!----></section></div><!--]--></div><!----><!--]--><!----><!--]--> <!--[-1--><!--]--></div><!--]-->"[39m
+
+ ❯ test/components/entity-details-screen.test.ts:36:17
+     34|  const source = screen(EntityDetailsScreen, 'commit', { ...at, tab: 's…
+     35|  expect(words(source)).toContain('src/routes/orders/+page.svelte');
+     36|  expect(source).toContain('aria-label="View code for src/routes/orders…
+       |                 ^
+     37|  expect(source).toContain(
+     38|   '/blob/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/src/routes/orders/%2…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/entity-details.test.ts > source is shown only when the source tab is the open one
+AssertionError: expected ' Pages Orders page Orders page Page L…' to contain 'Source files'
+
+Expected: [32m"Source files"[39m
+Received: [31m" Pages Orders page Orders page Page Lists the orders of an account. App route /orders Overview Contract Used In Uses States History Source Source ownership The files and symbols this entity owns at this revision. Files src/routes/orders/+page.svelte Symbols OrdersPage Execution targets module · src/routes/orders/+page.svelte Identity app.page.orders · version v-app.page.orders Source code View code "[39m
+
+ ❯ test/components/entity-details.test.ts:54:22
+     52|  }
+     53|  const body = content('commit', { ...page, tab: 'source' });
+     54|  expect(words(body)).toContain('Source files');
+       |                      ^
+     55|  expect(words(body)).not.toMatch(/Source ownership|Execution targets|S…
+     56|  expect(words(body)).toContain('src/routes/orders/+page.svelte');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 8 passed (10)
+   Start at  16:33:31
+   Duration  1.89s (transform 890ms, setup 0ms, collect 1.41s, tests 55ms, environment 0ms, prepare 73ms)
+
+error: script "test:unit" exited with code 1
+$ playwright test entity-source-code.spec.ts --grep "1440px"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/entity-source-code.spec.ts:48:2 › only the detail Source tab opens code at the selected revision at 1440px (6.1s)
+
+
+  1) tests/e2e/entity-source-code.spec.ts:48:2 › only the detail Source tab opens code at the selected revision at 1440px 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/functions/filterOrders.ts', exact: true })
+    Expected: "https://github.com/fixture/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/functions/filterOrders.ts"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/functions/filterOrders.ts', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/functions/filterOrders.ts', exact: true })
+
+
+      26 | 	for (const path of [first, second]) {
+      27 | 		const link = files.getByRole('link', { name: path, exact: true });
+    > 28 | 		await expect(link).toHaveAttribute(
+         | 		                   ^
+      29 | 			'href',
+      30 | 			`https://github.com/fixture/orders/blob/${commit}/${path.split('/').map(encodeURIComponent).join('/')}`
+      31 | 		);
+        at linkedFiles (/private/tmp/harness-snapshot-lAohCq/packages/desktop/tests/e2e/entity-source-code.spec.ts:28:22)
+        at /private/tmp/harness-snapshot-lAohCq/packages/desktop/tests/e2e/entity-source-code.spec.ts:66:9
+
+    Error Context: test-results/entity-source-code-only-th-ba923-selected-revision-at-1440px/error-context.md
+
+  1 failed
+    tests/e2e/entity-source-code.spec.ts:48:2 › only the detail Source tab opens code at the selected revision at 1440px 
+error: script "test:e2e" exited with code 1
+$ bun run sync:shared && vitest run test/project-integration.test.ts -t "project selection and slash branches"
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-lAohCq/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ❯ test/project-integration.test.ts (4 tests | 1 failed | 3 skipped) 1381ms
+   × project selection and slash branches retain full ancestry and explicit historical views are immutable 1380ms
+     → expected undefined to be 'https://github.com/fixture/orders' // Object.is equality
+   ↓ catalog shows source size and relationships without leaking source bodies or inventing verification
+   ↓ planning drafts stay separate from canonical registry and immutable approvals bind only their original version
+   ↓ existing canonical entities gain bound plans without duplicate draft identities
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-integration.test.ts > project selection and slash branches retain full ancestry and explicit historical views are immutable
+AssertionError: expected undefined to be 'https://github.com/fixture/orders' // Object.is equality
+
+[32m- Expected:[39m 
+"https://github.com/fixture/orders"
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/project-integration.test.ts:10:40
+      8|  git(f.root, 'remote', 'add', 'origin', 'git@github.com:fixture/orders…
+      9|  const current = await f.session.snapshot({ branch: null, commit: null…
+     10|  expect(current.project.repositoryUrl).toBe('https://github.com/fixtur…
+       |                                        ^
+     11|  expect(current.entities).toHaveLength(4);
+     12|  expect(current.entities.map((entity) => entity.id)).not.toContain('fu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  16:33:43
+   Duration  1.93s (transform 198ms, setup 0ms, collect 336ms, tests 1.38s, environment 0ms, prepare 35ms)
+
+error: script "test:unit" exited with code 1
+$ bun run sync:shared && vitest run test/services/hub-projection.test.ts -t "GitHub snapshot"
+$ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-lAohCq/packages/hub
+
+ ❯ test/services/hub-projection.test.ts (3 tests | 1 failed | 2 skipped) 16ms
+   × GitHub snapshot binds exact project, slash branch and all cache revisions 15ms
+     → expected undefined to be 'https://github.com/fixture/harness' // Object.is equality
+   ↓ membership is checked before cached project, source and media reads
+   ↓ source is available only within selected entity ownership
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/hub-projection.test.ts > GitHub snapshot binds exact project, slash branch and all cache revisions
+AssertionError: expected undefined to be 'https://github.com/fixture/harness' // Object.is equality
+
+[32m- Expected:[39m 
+"https://github.com/fixture/harness"
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/services/hub-projection.test.ts:16:37
+     14|   view = await f.projection.snapshot(actor, project.id, { branch: 'fea…
+     15|  expect(view.project.id).toBe(project.id);
+     16|  expect(view.project.repositoryUrl).toBe('https://github.com/fixture/h…
+       |                                     ^
+     17|  expect(view.revision).toMatchObject({ branch: 'feat/a/b', commit, atT…
+     18|  expect(view.capabilities).toMatchObject({ comments: true, agents: fal…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 skipped (3)
+   Start at  16:33:48
+   Duration  1.25s (transform 602ms, setup 0ms, collect 959ms, tests 16ms, environment 0ms, prepare 45ms)
+
+error: script "test:unit" exited with code 1
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-lAohCq
+
+ ❯ test/history-index.e2e.test.ts (4 tests | 1 failed | 3 skipped) 30477ms
+   × the index is deterministic and names every commit, verified or not 5875ms
+     → expected undefined to be 'https://github.com/fixture/orders' // Object.is equality
+   ↓ a revision carries its graph, comparison, inherited provenance, media and reasons
+   ↓ growth and benchmarks are kept per unit, and another profile is a separate series
+   ↓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-index.e2e.test.ts > the index is deterministic and names every commit, verified or not
+AssertionError: expected undefined to be 'https://github.com/fixture/orders' // Object.is equality
+
+[32m- Expected:[39m 
+"https://github.com/fixture/orders"
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/history-index.e2e.test.ts:41:30
+     39|  const { index } = built;
+     40|  await repo.git(['config', '--unset', 'remote.origin.url']);
+     41|  expect(index.repositoryUrl).toBe('https://github.com/fixture/orders');
+       |                              ^
+     42|  expect([index.schemaVersion, index.problems, index.branches]).toEqual…
+     43|   1,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  16:33:50
+   Duration  30.84s (transform 59ms, setup 11ms, collect 57ms, tests 30.48s, environment 0ms, prepare 38ms)
+

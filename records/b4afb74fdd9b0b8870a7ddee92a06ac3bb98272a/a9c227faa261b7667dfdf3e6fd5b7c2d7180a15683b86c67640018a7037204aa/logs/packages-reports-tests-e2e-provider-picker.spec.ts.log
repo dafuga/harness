@@ -1,0 +1,52 @@
+[WebServer] $ bun run --cwd packages/reports build:picker && bun scripts/build-picker.ts
+[WebServer] $ vite build --config src/config/pickerViteConfig.ts
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+
+Running 2 tests using 1 worker
+
+  ✘  1 tests/e2e/provider-picker.spec.ts:5:1 › offers both providers and queues Claude without claiming it is active (3ms)
+  ✘  2 tests/e2e/provider-picker.spec.ts:48:1 › the provider, model and effort fields are the shared select (3ms)
+
+
+  1) tests/e2e/provider-picker.spec.ts:5:1 › offers both providers and queues Claude without claiming it is active 
+
+    Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/provider-picker-offers-bot-6508a-thout-claiming-it-is-active/error-context.md
+
+  2) tests/e2e/provider-picker.spec.ts:48:1 › the provider, model and effort fields are the shared select 
+
+    Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/provider-picker-the-provid-795b1-ields-are-the-shared-select/error-context.md
+
+  2 failed
+    tests/e2e/provider-picker.spec.ts:5:1 › offers both providers and queues Claude without claiming it is active 
+    tests/e2e/provider-picker.spec.ts:48:1 › the provider, model and effort fields are the shared select 
