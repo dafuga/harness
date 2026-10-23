@@ -30,7 +30,7 @@ import { commits, ids } from './entityUnits';
 import { withServiceDocumentation } from './entityPreviewServiceDocs';
 import { withServiceContracts } from './entityServiceContract';
 import { withFocused } from './entityStates';
-import { withHelpers } from './entityPreviewHelpers';
+import { withHelpers, withNamedConsumers } from './entityPreviewHelpers';
 import { callableFixture } from './entityPreviewCallables';
 import { withRelationGroups } from './entityRelationFixtures';
 import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
@@ -64,6 +64,9 @@ if (variant === 'relations')
 	for (const commit of Object.keys(stored)) stored[commit] = withRelationGroups(stored[commit]);
 if (variant === 'helpers')
 	for (const commit of Object.keys(stored)) stored[commit] = withHelpers(stored[commit]);
+if (variant === 'named-callers' || variant === 'sibling-callers')
+	for (const commit of Object.keys(stored))
+		stored[commit] = withNamedConsumers(stored[commit], variant === 'sibling-callers');
 if (variant === 'inherited')
 	stored[commits.tip] = withInherited(stored[commits.tip], commits.middle);
 if (variant === 'documented')

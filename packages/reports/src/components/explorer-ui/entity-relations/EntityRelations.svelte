@@ -1,15 +1,16 @@
 <script lang="ts">
 	import type {
 		ExplorerEntity,
-		ExplorerRelations
+		ExplorerRelations,
+		ExplorerSupport
 	} from '../../../models/explorer-ui/Explorer.types';
 	import { explorerKindCategory } from '../../../../../../src/utils/explorerRoute';
-	import { entityLens, type EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import type { EntityNav } from '../../../utils/explorer-ui/entityLens';
+	import type { SupportRow } from '../../../utils/explorer-ui/entityUsage';
 	import { entityUsage } from './entityUsage';
 	import { entityCatalog } from '../../../utils/explorer-ui/entityCatalog';
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import ExplorerCatalogItems from '../../ExplorerCatalogItems.svelte';
-	import EntityLink from '../EntityLink.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	let {
 		relations,
@@ -38,6 +39,18 @@
 		])
 	);
 	const gone = 'Removed at this commit: ';
+	/** A dependency no collection lists, on its card: its own name and what uses it, as a row has. */
+	const supportRow = (support: ExplorerSupport): SupportRow => {
+		const related = host.lens.relations(support.id);
+		return {
+			support,
+			id: support.id,
+			name: support.name,
+			usedIn: [...related.usedBy, ...related.pages].filter((user) => user.change !== 'removed'),
+			// A private function keeps its existing page; no other kind or page is made up for it.
+			opens: explorerKindCategory(support.unit.kind) === 'functions' ? 'functions' : null
+		};
+	};
 </script>
 
 {#snippet cards(items: ExplorerEntity[], label: string)}
@@ -53,7 +66,8 @@
 				{label}
 				rows={entityCatalog(items, category, host.lens.relations, {
 					related: true,
-					consumers: host.entities
+					consumers: host.entities,
+					revision: host.head
 				})}
 			/>
 		{/key}
@@ -129,21 +143,18 @@
 					<HarnessIcon name="file" size={18} /> Other
 					<span class="ex-count">{usage.other.length}</span>
 				</h3>
-				<ul class="ex-related">
-					{#each usage.other as item (item.id)}
-						<li>
-							<span>
-								{#if explorerKindCategory(item.unit.kind) === 'functions'}
-									<EntityLink
-										to={entityLens(nav.route, { category: 'functions', entity: item.id })}
-										{nav}>{item.name}</EntityLink
-									>
-								{:else}{item.name}{/if}
-								<span class="ex-pill">{item.role}</span>
-							</span>
-						</li>
-					{/each}
-				</ul>
+				{#key scope}
+					<ExplorerCatalogItems
+						category={null}
+						{nav}
+						lens={host.lens}
+						mediaBase={host.mediaBase}
+						verification={false}
+						batch={4}
+						label="Other uses"
+						rows={usage.other.map(supportRow)}
+					/>
+				{/key}
 			{/if}
 		</section>
 	{/if}

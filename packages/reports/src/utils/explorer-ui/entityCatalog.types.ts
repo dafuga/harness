@@ -13,7 +13,7 @@ export interface CatalogRow {
 	setting?: NonNullable<ExplorerEntity['unit']['configValues']>[number];
 	group?: { id: string; title: string };
 	helper?: NonNullable<ExplorerEntity['unit']['helpers']>[number];
-	/** Revision-scoped consumers for linked usage previews; helper rows keep the first three eligible consumers. */
+	/** Every eligible revision-scoped consumer, retained before footer truncation. */
 	usedIn?: ExplorerEntity[];
 	entity: ExplorerEntity;
 	id: string;
