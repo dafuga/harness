@@ -32,7 +32,7 @@ async function openThread(page: Page, at: string) {
 	await expect(thread(page).getByText('Alpha: keep the filters on one line.')).toBeVisible();
 }
 
-test('the units an agent question names are links, and following one opens a shell under Shells', async ({
+test('the units an agent question names are links, and following one opens a shell under Layouts', async ({
 	page
 }, info) => {
 	await referenceFixture(page);
@@ -44,7 +44,7 @@ test('the units an agent question names are links, and following one opens a she
 	await expect(thread(page).getByText('[[unit:javascript:alert(1)]]')).toBeVisible();
 	await expect(thread(page).getByRole('link', { name: /missing|javascript/ })).toHaveCount(0);
 	await thread(page).getByRole('link', { name: 'Order frame', exact: true }).click();
-	await expect(page).toHaveURL(alphaAt('shells/app.shell.order-frame'));
+	await expect(page).toHaveURL(alphaAt('layouts/app.shell.order-frame'));
 	await expect(page.getByRole('heading', { level: 1, name: 'Order frame' })).toBeVisible();
 });
 
