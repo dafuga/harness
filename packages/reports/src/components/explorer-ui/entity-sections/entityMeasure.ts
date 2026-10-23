@@ -3,7 +3,11 @@ import type {
 	PerformanceRow,
 	EntityMeasure
 } from '../../../utils/explorer-ui/entityMeasure';
-import { notMeasured, byteSize, tolerancePolicy } from '../../../utils/explorer-ui/entityMeasure';
+import {
+	notMeasured,
+	byteSize,
+	tolerancePolicy
+} from '../../../utils/explorer-ui/entityMeasure';
 import type { HarnessRecord, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import { humanize } from '../../../utils/explorer-ui/entityContract';
 import { reasonText } from '../../../utils/explorer-ui/explorerState';

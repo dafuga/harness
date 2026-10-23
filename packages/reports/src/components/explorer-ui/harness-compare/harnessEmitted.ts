@@ -1,5 +1,10 @@
 import type { EmittedChange } from '../../../utils/explorer-ui/harnessEmitted';
-import { targetsOf, order, emittedLabel, built } from '../../../utils/explorer-ui/harnessEmitted';
+import {
+	targetsOf,
+	order,
+	emittedLabel,
+	built
+} from '../../../utils/explorer-ui/harnessEmitted';
 import type { HarnessRecord, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 
 /** The emitted size of each target of a unit on both sides of a comparison. */
