@@ -136,6 +136,8 @@ for (const viewport of catalogViewports) {
 				});
 				expect(colors.text, 'The provider label must remain readable').not.toBe(colors.background);
 			}
+			if (unit.id === 'desktop.component.relationships-panel')
+				await expect(component.locator('.chip')).toHaveText(['Page', 'Layout']);
 			if (unit.id === 'reports.component.provider-picker-cards') {
 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
