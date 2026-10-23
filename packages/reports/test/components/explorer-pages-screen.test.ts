@@ -62,3 +62,15 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 		[]
 	);
 });
+
+// Historical manifests may prefer a scenario that was never captured, beside actual own-source proof.
+test('default page cards show their own focused source when a historical preferred state is absent', () => {
+	const captured = withFocused(revision(commits.tip, []));
+	captured.registry = { ...captured.registry, units: structuredClone(captured.registry.units) };
+	const page = captured.registry.units.find((unit) => unit.kind === 'page')!;
+	page.preview = { scenario: 'orders-page', state: 'empty', viewport: 'desktop' };
+	const shown = explorerEvidence(scope('current'), { head: captured, parent: null }, page);
+	expect(catalogShot(shown, page.preview), 'Explicit unavailable state remains a gap').toBeNull();
+	const body = screen(ExplorerPagesScreen, 'current', {}, { head: captured });
+	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
+});
