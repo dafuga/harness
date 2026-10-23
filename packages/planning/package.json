@@ -6,15 +6,15 @@
 		"kind": "lib"
 	},
 	"scripts": {
-		"build": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus auto --memory-mib auto -- sh -c 'bun build src/index.ts --target node --outdir dist \"$@\"' --",
-		"check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit \"$@\"' --",
-		"typecheck": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'tsc --noEmit \"$@\"' --",
-		"format:check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'prettier --check . \"$@\"' --",
-		"format": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus auto --memory-mib auto -- sh -c 'prettier --write . \"$@\"' --",
-		"lint": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus auto --memory-mib auto -- sh -c 'eslint . \"$@\"' --",
+		"build": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun build src/index.ts --target node --outdir dist \"$@\"' --",
+		"check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit \"$@\"' --",
+		"typecheck": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit \"$@\"' --",
+		"format:check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'prettier --check . \"$@\"' --",
+		"format": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'prettier --write . \"$@\"' --",
+		"lint": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'eslint . \"$@\"' --",
 		"audit": "bun scripts/harness-audit.ts",
 		"test": "bun run test:unit",
-		"test:unit": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'vitest run --testTimeout 20000 --hookTimeout 20000 \"$@\"' --"
+		"test:unit": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --testTimeout 20000 --hookTimeout 20000 \"$@\"' --"
 	},
 	"dependencies": {
 		"pngjs": "^7.0.0"

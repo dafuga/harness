@@ -8,17 +8,17 @@
 	},
 	"scripts": {
 		"dev": "bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort",
-		"build": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus auto --memory-mib auto -- sh -c 'bun run sync:shared && vite build \"$@\"' --",
+		"build": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vite build \"$@\"' --",
 		"sync:shared": "bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync",
-		"check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit \"$@\"' --",
-		"typecheck": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json \"$@\"' --",
-		"format:check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'prettier --check . \"$@\"' --",
-		"format": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus auto --memory-mib auto -- sh -c 'prettier --write . \"$@\"' --",
-		"lint": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus auto --memory-mib auto -- sh -c 'svelte-kit sync && eslint . \"$@\"' --",
+		"check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit \"$@\"' --",
+		"typecheck": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json \"$@\"' --",
+		"format:check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'prettier --check . \"$@\"' --",
+		"format": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'prettier --write . \"$@\"' --",
+		"lint": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'svelte-kit sync && eslint . \"$@\"' --",
 		"audit": "bun scripts/harness-audit.ts",
 		"test": "bun run test:unit",
-		"test:unit": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'bun run sync:shared && vitest run \"$@\"' --",
-		"test:e2e": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus auto --memory-mib auto -- sh -c 'playwright test \"$@\"' --"
+		"test:unit": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vitest run \"$@\"' --",
+		"test:e2e": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test \"$@\"' --"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
