@@ -46,6 +46,7 @@ test('implemented pages select their declared screenshot rather than an absent p
 		} as ComponentManifest;
 		expect(catalogUnit(unit, new Set())?.thumbnail).toEqual({ source: 'recorded', ...preview });
 		expectVisualPreviews(unit);
+		expectPreviewReads(unit);
 		const service = {
 			...unit,
 			kind: 'service',
@@ -96,6 +97,26 @@ function expectVisualPreviews(unit: ComponentManifest): void {
 	}
 	const options = { ...unit, kind: 'layout', owns: { source: ['src/+layout.ts'], symbols: [] } };
 	expect(catalogUnit(options, new Set())?.thumbnail).toBeNull();
+}
+
+function expectPreviewReads(unit: ComponentManifest): void {
+	const reads: string[] = [];
+	const preview = { ...unit.preview, state: 'before-summary' };
+	const observed = {
+		...unit,
+		get preview() {
+			reads.push('preview');
+			return preview;
+		},
+		get responsibility() {
+			reads.push('summary');
+			preview.state = 'after-summary';
+			return unit.responsibility;
+		}
+	};
+	const entry = catalogUnit(observed, new Set());
+	expect(reads).toEqual(['preview', 'summary']);
+	expect(entry?.thumbnail).toEqual({ source: 'recorded', ...preview });
 }
 
 test('the tip lists every ordinary entity and no page manifest that only loads for an address', async () => {
