@@ -68,9 +68,14 @@ async function run(
 	return { directory, log, result };
 }
 
-test.each([0, 100])(
-	'commands retain exit codes and output with a %i ms spawn observer',
-	async (delay) => {
+test.each([
+	[0, 0],
+	[100, 0],
+	[0, 150],
+	[100, 150]
+])(
+	'commands retain exit codes and output with %i ms spawn and %i ms table observers',
+	async (delay, tableDelay) => {
 		let pid: number | undefined;
 		const passed = await run('console.log("out"); console.error("err")', 5000, 64000, {
 			onSpawn: (own) => {
@@ -93,22 +98,25 @@ test.each([0, 100])(
 			maxLogBytes: 1000
 		});
 		expect(absent).toMatchObject({ status: 'failed', exitCode: null, timedOut: false });
-		const native = await observedBunExit(delay);
+		const native = await observedBunExit(delay, tableDelay);
 		expect(native.result).toMatchObject({ status: 'passed', exitCode: 0, timedOut: false });
 		expect(native.output).toBe('out\nerr\n');
 	}
 );
 
 /** Native Bun can deliver a child's events while a synchronous observer asks another process. */
-async function observedBunExit(delay: number) {
+async function observedBunExit(delay: number, tableDelay: number) {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-observed-exit-'));
 	const source = new URL('../../src/utils/runIsolated.ts', import.meta.url).href;
+	const table = new URL('../../src/utils/processDescendants.ts', import.meta.url).href;
 	const script = `import {runIsolated} from ${JSON.stringify(source)};
+		import {processTable} from ${JSON.stringify(table)};
 		import {execFileSync} from 'node:child_process';
 		import {readFileSync} from 'node:fs';
 		const result = await runIsolated({command:'sh',args:['-c','printf "out\\n"; printf "err\\n" >&2'],
 		cwd:${JSON.stringify(directory)},env:process.env,timeoutMs:500,
 		log:${JSON.stringify(join(directory, 'run.log'))},maxLogBytes:1000,
+		platform:{table:()=>{if (${tableDelay}) execFileSync('sleep',[String(${tableDelay}/1000)]);return processTable();}},
 		onSpawn:()=>{if (${delay}) execFileSync('sleep',[String(${delay}/1000)])}});
 		console.log(JSON.stringify({result,output:readFileSync(result.log.path,'utf8')}));`;
 	return JSON.parse(execFileSync('bun', ['-e', script], { encoding: 'utf8', timeout: 6000 })) as {
