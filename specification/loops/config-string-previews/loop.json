@@ -2,11 +2,9 @@
 	"name": "config-string-previews",
 	"goal": "Show decoded configuration strings inline, ellipsizing long and multiline text while retaining source-safe inspection for collections and computed expressions.",
 	"createdAt": "2026-10-23T22:58:50.561Z",
-	"updatedAt": "2026-10-23T23:24:20.908Z",
+	"updatedAt": "2026-10-23T23:55:41.779Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T23:55:41.779Z",
+			"evidence": "Passing record 3362b14bbabf935eac102268cc24bd303d2445b5dd1aba8e5932362564eb70c2 at b09e4d0ce91eb5dba0712092b7b91353c7386ca0 preserves the unchanged command, inputs, assertions and normal resource profile of accepted red d24f7b22a7c59de85169a4fc4e19e4674ce686bf6fb2dce481150226877acbf9 at 5476d3784. All three declared viewports pass in current and historical synthetic modes; 132 passing captures and 264 contextual measurements are retained. All 264 original red/green bindings were reopened from evidence Git, hash-checked and decoded as 71 unique original images; twelve representative originals were visually inspected. Owning Reports check and 32 static parser tests pass in capture f1917912021562041d86a216a0e1db8f94dcefb0681db695e7b68de703fcb675. Main integration, shared preview verification and intentionally deferred full CLI/native checks remain pending."
 		},
 		{
 			"id": "verify",
