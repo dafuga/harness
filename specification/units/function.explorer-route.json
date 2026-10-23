@@ -23,6 +23,7 @@
 			"ExplorerTab",
 			"explorerCategories",
 			"ExplorerCategory",
+			"ExplorerScreen",
 			"explorerKindCategory",
 			"explorerSections",
 			"ExplorerSection",
@@ -54,7 +55,7 @@
 			},
 			{
 				"name": "explorerRoute.search",
-				"type": "unknown",
+				"type": "string",
 				"description": "Optional query string containing tab selection; defaults to empty."
 			},
 			{
@@ -67,7 +68,7 @@
 			{
 				"name": "explorerCategories",
 				"type": "unknown",
-				"description": "Navigation categories in order: pages, shells, components, functions, configs and services."
+				"description": "Navigation categories in order: pages, shells, components, functions, configs, services and models. Styles is a separate screen."
 			},
 			{
 				"name": "explorerKindCategory",
@@ -92,7 +93,7 @@
 			{
 				"name": "explorerRoutePath",
 				"type": "string",
-				"description": "Canonical branch or commit path. Helpers use callable-name paths, an optional owner qualifier and a tab path segment; legacy entity query links remain readable."
+				"description": "Canonical scoped path for an entity, callable or Styles screen; helper tabs use path segments and legacy entity tabs use query parameters."
 			}
 		],
 		"errors": []
@@ -108,7 +109,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["harness-styles"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -21,6 +21,7 @@ export function consoleContentKey(location: ExplorerLocation | undefined): strin
 		location?.branch,
 		location?.commit,
 		location?.category,
+		location?.screen,
 		location?.entity,
 		location?.helper,
 		location?.section

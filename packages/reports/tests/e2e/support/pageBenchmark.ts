@@ -124,6 +124,8 @@ async function includedUnits(page: Page, route: string): Promise<string[]> {
 		'reports.function.explorer-evidence',
 		'reports.function.explorer-evidence-focused-captures'
 	];
+	if (route === 'reports.page.harness-branch-branch-at-styles')
+		ran.push('reports.style.explorer-styles');
 	const screened = /-(pages|shells|components)-entity$/.test(route);
 	if (screened) ran.push('reports.function.entity-screens');
 	const units = new Set([route, ...ran, ...(await shownUnits(page, true))]);
@@ -183,7 +185,7 @@ export function pageUnit(address: string): string | undefined {
 	if (/^\/harness\/commit\/[a-f0-9]{40}(?:\/|$)/.test(new URL(address).pathname))
 		return 'reports.page.harness-view';
 	const match =
-		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models)(\/[^/]+)?(\/(?:history|details))?$/.exec(
+		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models|styles)(\/[^/]+)?(\/(?:history|details))?$/.exec(
 			new URL(address).pathname
 		);
 	if (!match) return;
