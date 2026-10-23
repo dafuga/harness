@@ -2,7 +2,7 @@
 	"name": "helper-callable-uses",
 	"goal": "Only actual helper calls appear in a selected helper Uses tab; empty Uses is absent",
 	"createdAt": "2026-10-23T10:45:43.304Z",
-	"updatedAt": "2026-10-23T10:45:59.662Z",
+	"updatedAt": "2026-10-23T10:56:57.491Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T10:56:56.072Z",
+			"evidence": "Committed regression 27d337b2d fails the named Uses visibility assertion at desktop/tablet/mobile; retained focused screenshots and immutable red record."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T10:56:57.491Z",
+			"evidence": "Resolve Uses from exact helper consumer caller symbols; retain private pure callees as callable cards; omit empty Uses tabs and render Overview for legacy empty Uses URLs. Update contracts and Harness skill."
 		},
 		{
 			"id": "green",

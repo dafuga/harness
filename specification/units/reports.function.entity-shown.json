@@ -3,7 +3,7 @@
 	"id": "reports.function.entity-shown",
 	"kind": "function",
 	"title": "Entity overview data",
-	"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance.",
+	"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -21,7 +21,8 @@
 			"Shown",
 			"entityChanged",
 			"entityShown",
-			"helperEntity"
+			"helperEntity",
+			"helperRelations"
 		]
 	},
 	"contract": {
@@ -56,6 +57,21 @@
 				"name": "helperEntity.helperName",
 				"type": "string | undefined",
 				"description": "Optional selected callable name; no matching callable returns undefined."
+			},
+			{
+				"name": "helperRelations.host",
+				"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+				"description": "Selected revision registry and named helper route."
+			},
+			{
+				"name": "helperRelations.entity",
+				"type": "ExplorerEntity",
+				"description": "Selected callable and its real owning unit identity."
+			},
+			{
+				"name": "helperRelations.relations",
+				"type": "ExplorerRelations",
+				"description": "Existing module relationships whose Used In side remains available."
 			}
 		],
 		"outputs": [
@@ -73,6 +89,11 @@
 				"name": "helperEntity",
 				"type": "ExplorerEntity | undefined",
 				"description": "One callable’s actual parameters, return, errors and source. Keeps owning unit id for module evidence; excludes sibling APIs and unscoped multi-callable documentation."
+			},
+			{
+				"name": "helperRelations.relations",
+				"type": "ExplorerRelations",
+				"description": "Selected helper callees from per-callable consumer facts; owner-module dependencies never leak into Uses. Unselected module relationships remain unchanged."
 			}
 		],
 		"errors": []
