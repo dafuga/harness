@@ -5,7 +5,9 @@
 	import GameNavigationGuard from './GameNavigationGuard.svelte';
 	import type { GameWorkspaceProps as Props } from '../../models/game-authoring/GameWorkspace.types';
 	import GameViewFields from './GameViewFields.svelte';
-	import { createRun, enterView } from '../../../../game/src/index';
+	import type { GameSection } from './GameViewFields.types';
+	import GameLevelPlan from './GameLevelPlan.svelte';
+	import { createRun, enterView, LevelValidator } from '../../../../game/src/index';
 	import { exampleDocument, validateDocument } from '../../../../game/src/index';
 	import type { Checkpoint, GameDocument, GameRun, GameView } from '../../../../game/src/index';
 	import GameCheckpointPane from './GameCheckpointPane.svelte';
@@ -13,12 +15,11 @@
 	import GameMechanics from './GameMechanics.svelte';
 	import GamePreview from './game-preview/GamePreview.svelte';
 	import GameTrace from './GameTrace.svelte';
-	const tabs = ['Preview', 'Checkpoints', 'Mechanics'] as const;
 	let { projectId = null, commit, readonly = false, bridge }: Props = $props();
 	let doc = $state.raw<GameDocument>();
 	let revision = $state<string>();
 	let viewId = $state('');
-	let tab = $state<(typeof tabs)[number]>('Checkpoints');
+	let tab = $state<GameSection>('Checkpoints');
 	let run = $state.raw<GameRun>(createRun());
 	let selected = $state<string | null>(null); // The checkpoint open in the editor, if any.
 	/** A new checkpoint and the state before Add, restored if it is closed untouched or deleted. */
@@ -36,6 +37,11 @@
 	const view = $derived(doc?.views.find((item) => item.id === viewId) ?? doc?.views[0]);
 	const checkpoint = $derived(view?.checkpoints.find((item) => item.id === selected));
 	const text = (cause: unknown) => (cause instanceof Error ? cause.message : String(cause));
+	/** A planned level shows its plan until it is built; Mechanics stays open throughout. */
+	const section = $derived.by<GameSection>(() => {
+		if (!view?.planning) return tab === 'Level' ? 'Checkpoints' : tab;
+		return tab === 'Mechanics' || (tab !== 'Level' && LevelValidator.isReady(view)) ? tab : 'Level';
+	});
 	function track(next: GameRun) {
 		const target = String(next.state.view ?? '');
 		const changed = next.tick > run.tick && target !== run.state.view;
@@ -48,8 +54,7 @@
 	});
 	async function load({ projectId, commit, bridge }: Source) {
 		const id = ++request;
-		error = '';
-		conflict = false;
+		[error, conflict] = ['', false];
 		busy = Boolean(projectId && bridge?.gameRead);
 		if (!projectId || !bridge?.gameRead) return open(exampleDocument('2d'));
 		try {
@@ -124,12 +129,6 @@
 	function editMechanics(list: GameDocument['mechanics']) {
 		if (doc) edit({ ...doc, mechanics: list });
 	}
-	function createView() {
-		if (!doc || !view || !editable) return;
-		const id = 'view-' + Date.now().toString(36);
-		edit({ ...doc, views: [...doc.views, { ...structuredClone(view), id, title: 'New view' }] });
-		viewId = id;
-	}
 	$effect(() => {
 		const source = { projectId, commit, bridge };
 		untrack(() => void load(source));
@@ -163,20 +162,21 @@
 			{view}
 			views={doc.views}
 			readonly={locked}
+			bind:section={() => section, (name) => (tab = name)}
 			select={(id) => (viewId = id)}
-			create={createView}
+			create={(level) => doc && edit({ ...doc, views: [...doc.views, level] })}
 			change={editView}
-		>
-			{#each tabs as name (name)}
-				<button class:gold={tab === name} aria-pressed={tab === name} onclick={() => (tab = name)}>
-					{name}
-				</button>
-			{/each}
-		</GameViewFields>
+		/>
 		{#if problems.length}
 			<p class="error" role="alert">Fix before saving or previewing: {problems.join(' ')}</p>
 		{/if}
-		{#if tab === 'Checkpoints'}
+		{#if section === 'Level'}
+			<GameLevelPlan
+				context={{ view, document: doc, projectId, revision, commit, bridge, readonly: locked }}
+				bind:run
+				change={editView}
+			/>
+		{:else if section === 'Checkpoints'}
 			<GameGraph
 				checkpoints={view.checkpoints}
 				{run}
@@ -197,7 +197,7 @@
 				/>
 			{/if}
 			<GameTrace {run} {view} />
-		{:else if tab === 'Mechanics'}
+		{:else if section === 'Mechanics'}
 			<GameMechanics mechanics={doc.mechanics} change={editMechanics} readonly={locked} />
 		{:else if !problems.length}
 			<GamePreview initialRun={run} {view} {projectId} readonly={locked} onRun={track} {bridge} />
