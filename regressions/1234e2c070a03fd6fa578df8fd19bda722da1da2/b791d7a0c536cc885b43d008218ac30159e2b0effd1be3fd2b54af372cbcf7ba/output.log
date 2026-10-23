@@ -1,0 +1,14 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [28.00ms]
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-a160RY/packages/desktop
+
+ ✓ test/utils/workspace-search.test.ts (5 tests) 4ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  01:33:53
+   Duration  236ms (transform 54ms, setup 59ms, collect 39ms, tests 4ms, environment 0ms, prepare 25ms)
+
