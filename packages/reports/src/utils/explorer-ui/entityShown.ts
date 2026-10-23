@@ -19,7 +19,7 @@ export function entityChanged(host: Pick<Shown, 'head'>, unit: string): EntityRe
 	return entityReasons(host.head.explanations.filter((item) => item.unit === unit));
 }
 
-export { entityShown } from '../../components/explorer-ui/harness/entity-sections/entityShown';
+export { entityShown } from '../../components/explorer-ui/entity-sections/entityShown';
 
 /** Select one callable's API without inventing a new unit or borrowing sibling declarations. */
 export function helperEntity(

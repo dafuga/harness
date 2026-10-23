@@ -127,5 +127,5 @@ export function entityReasons(reasons: HarnessExplanation[]): EntityReasons {
 	};
 }
 
-export { reasonsTried } from '../../components/explorer-ui/harness/entity-history-row/entityReasons';
-export { reasonUses } from '../../components/explorer-ui/harness/entity-reasons/entityReasons';
+export { reasonsTried } from '../../components/explorer-ui/entity-history-row/entityReasons';
+export { reasonUses } from '../../components/explorer-ui/entity-reasons/entityReasons';

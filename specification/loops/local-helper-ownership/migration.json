@@ -4783,9 +4783,11 @@
 		{
 			"unit": "reports.function.entity-usage",
 			"name": "entityUsage",
-			"commit": "f549d87bd8bb6eb19418ef2c3df73be55dd5bf30",
-			"reason": "Group reverse dependencies and shared consumer footers by declared module type while preserving ownership and identity.",
-			"definition": "cc6a2de1f4a9b449a903fff1bf56f1fbf4523a8da998c6ea6f840ef113c9fb62"
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"definition": "cc6a2de1f4a9b449a903fff1bf56f1fbf4523a8da998c6ea6f840ef113c9fb62",
+			"to": "packages/reports/src/components/explorer-ui/entity-relations/entityUsage.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
 		},
 		{
 			"unit": "function.unit-documentation",
@@ -4827,8 +4829,8 @@
 			"unit": "reports.function.entity-catalog",
 			"name": "catalogFilter",
 			"definition": "7e14ba1e4fbc322cebec9460d1199b7c13b71d4e9b35243cc67c9e4cd9437276",
-			"reason": "Include config variable source values in the existing revision-scoped catalog search.",
-			"commit": "6847bb6128e3fe7bc85aead4517951cbd48d5b13",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
 			"previousDefinitions": [
 				{
 					"unit": "reports.function.entity-catalog",
@@ -4836,7 +4838,9 @@
 					"definition": "02c7f4bfe0d1462f76004757ca75e3a934f025d9e18301cd40ce9115e244e130",
 					"reason": "Keep spaced descriptive-title search compatible while every catalog surface displays canonical code names."
 				}
-			]
+			],
+			"to": "packages/reports/src/components/explorer-ui/explorer-index/entityCatalog.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
 		},
 		{
 			"unit": "function.helper-references",
@@ -4875,15 +4879,17 @@
 		{
 			"unit": "reports.function.entity-measure",
 			"name": "entityMeasure",
-			"commit": "6b6bea9048e887b98b1ee93b07ed13a0c4bc9d29",
-			"reason": "Review exact-revision source observations added after the relocation; retain runtime measurement grouping and registered ownership.",
-			"definition": "15d6c025c0d07d544925ac1a1418195405751065d5d96b601f668f57082bb29c"
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"definition": "15d6c025c0d07d544925ac1a1418195405751065d5d96b601f668f57082bb29c",
+			"to": "packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts"
 		},
 		{
 			"unit": "reports.function.entity-shown",
 			"name": "entityShown",
-			"commit": "5d44d45c1870b184e34f3a4898bf2002e0ac24ee",
-			"reason": "Keep verification states out of contract facts while preserving selected-revision verdicts and identical-tree focused measurements.",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
 			"definition": "87ce5070b7af2d6d7b8a19f77db4cf359af462f116d94c7a5e294c78864f06b1",
 			"previousDefinitions": [
 				{
@@ -4900,21 +4906,27 @@
 					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
-			]
+			],
+			"to": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"
 		},
 		{
 			"unit": "reports.function.entity-history",
 			"name": "entityHistory",
-			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
-			"reason": "Show only elapsed-time benchmark series as latency in compact commit history.",
-			"definition": "d928e2f493ceb344949fb3fe6c4fde2aa542905fae8b5c9f35c4dfeca0b669a5"
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"definition": "d928e2f493ceb344949fb3fe6c4fde2aa542905fae8b5c9f35c4dfeca0b669a5",
+			"to": "packages/reports/src/components/explorer-ui/entity-history/entityHistory.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"
 		},
 		{
 			"unit": "reports.function.explorer-history",
 			"name": "historyDetail",
-			"commit": "4cf3c2c6440cd49bc6dd92c731a3287f16d62f8c",
-			"reason": "Read source size and complexity from the exact historical revision alongside existing evidence.",
-			"definition": "efd95649c13e63d700372d38417c274df8a18bfb1a955447ee974d61261b679b"
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"definition": "efd95649c13e63d700372d38417c274df8a18bfb1a955447ee974d61261b679b",
+			"to": "packages/reports/src/components/explorer-ui/entity-history/explorerHistory.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"
 		},
 		{
 			"unit": "function.history-series",
@@ -4933,16 +4945,317 @@
 		{
 			"unit": "reports.function.entity-contract",
 			"name": "entityContract",
-			"commit": "17192fb8f8a3ade93c1b49adcdf8511cb4219ebb",
-			"reason": "Review component Props and conditional failure rows, preserving page routes, config provisions and service runtime facts.",
-			"definition": "25a934bb1bb8ea144fe0a2e32c8cd92109dff89e98a8ad9b01fcf00ff8e5c666"
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"definition": "25a934bb1bb8ea144fe0a2e32c8cd92109dff89e98a8ad9b01fcf00ff8e5c666",
+			"to": "packages/reports/src/components/explorer-ui/entity-sections/entityContract.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts"
 		},
 		{
 			"unit": "reports.function.harness-shell",
 			"name": "harnessShell",
-			"commit": "29e1c2a4fde4307f8346f40a436552906776ea88",
-			"reason": "Add Styles navigation with branch and selected-commit context while preserving entity catalog destinations.",
-			"definition": "a9ab137632380c549b3b0ba62da1e339416922baf69d5fd64af95156f5a8acb8"
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"definition": "a9ab137632380c549b3b0ba62da1e339416922baf69d5fd64af95156f5a8acb8",
+			"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+		},
+		{
+			"unit": "function.side-impact",
+			"name": "sideImpact",
+			"to": "packages/reports/src/components/explorer-ui/harness-compare/sideImpact.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-compare/harnessImpact.ts",
+			"definition": "27fbceda5adf80ae4cf583e8f35b75411ca50d9b5b225deb2fa56775bea14868",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"name": "requiredStates",
+			"to": "packages/reports/src/components/explorer-ui/entity-sections/entityContract.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+			"definition": "d057f59de748f549c7081bc21ba679cf1f3f077b075f87877e61c1fddb30dd8d",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"name": "historyVerdict",
+			"to": "packages/reports/src/components/explorer-ui/entity-history/entityHistory.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"definition": "050dc441cd68f97336ea07e36efaa38aff2a28ee118b8f93dc000ff9af05ca4c",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"name": "historyListed",
+			"to": "packages/reports/src/components/explorer-ui/entity-history/entityHistory.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"definition": "ce285b0fcfdf6a74d987436fd1d1eecbd2b8271aacef4c8fa48cc8dcb78408a1",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"name": "historyProfiles",
+			"to": "packages/reports/src/components/explorer-ui/entity-history/entityHistory.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+			"definition": "2f8165df80e7cb32ce1704cffe93e6b9a185d37c4eac43624dfb72c6f642d1e0",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-history",
+			"name": "reviewChanges",
+			"to": "packages/reports/src/components/explorer-ui/entity-change/entityHistory.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-change/EntityChange.svelte",
+			"definition": "13cf97e585e19789b5992a2bd5c43170744c8b0ac2d71728604de061871027b3",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-reasons",
+			"name": "reasonsTried",
+			"to": "packages/reports/src/components/explorer-ui/entity-history-row/entityReasons.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-history-row/EntityHistoryRow.svelte",
+			"definition": "2ff1044e6e1ad38f446dd6fb04fcbb1761221c3ae449d04e5a1dc67b1089033d",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-reasons",
+			"name": "reasonUses",
+			"to": "packages/reports/src/components/explorer-ui/entity-reasons/entityReasons.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-reasons/EntityReasons.svelte",
+			"definition": "efb339d787dc14056e698881e1ba4b0bfd2fa581839891cc0870df7646df140f",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.entity-removed",
+			"name": "entityRemoved",
+			"to": "packages/reports/src/components/explorer-ui/entity-tests/entityRemoved.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+			"definition": "80e6f566c4aa0bbf04aacc6403a5f048493630886f8735342a42f8559f24bdd8",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.focus-view",
+			"name": "focusView",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
+			"definition": "973297a92c0099c24aff8efd50b664a512a450717e8e2e4009645803cb716325",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.focus-view",
+			"name": "focusOn",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"definition": "f4693d7a057bf3764b2a293bcd4f2d6f2cc59f1b84c11a84eba7265eac6e1e66",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.focus-view",
+			"name": "zoomView",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"definition": "5f5f021f577c37ab3c4d5d4e4ecaa284b5f972832864df0152134bf1e724c52e",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.focus-view",
+			"name": "panView",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"definition": "1849f96136b8d060f38145edc07d3dfa70c756f7b74e5015875ee2059110a306",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.focus-view",
+			"name": "drawnEdges",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"definition": "2cca52d9b4cc93d06505c36e02a92c8ef984e48aed524c0bfee35f64f19e51e2",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.focus-view",
+			"name": "nextNode",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/focusView.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"definition": "7e72b1414f1a2108dd4ec9cb489f6a175ea34b5af2356481146582662b988e0d",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-ancestry",
+			"name": "branchCommits",
+			"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessAncestry.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
+			"definition": "074f0b2b63cd9aac2755711e5ddeef6ebcce44bbcebd23293230e0e6ae0310d5",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-ancestry",
+			"name": "revisionLabel",
+			"to": "packages/reports/src/components/explorer-ui/harness-selectors/harnessAncestry.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte",
+			"definition": "2bd0de53c1734cf9123874d464fe4733f58447a74c08be37294037ddae018dca",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-comparison",
+			"name": "comparisonChoices",
+			"to": "packages/reports/src/components/explorer-ui/harness-compare-media/harnessComparison.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-compare-media/HarnessCompareMedia.svelte",
+			"definition": "a4a63237c640aaf86ba00c9a0f3250552f27fbc75f8c1f6a6e5a4d9ac2e82669",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-comparison",
+			"name": "harnessComparison",
+			"to": "packages/reports/src/components/explorer-ui/harness-compare-media/harnessComparison.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-compare-media/HarnessCompareMedia.svelte",
+			"definition": "bf3adbccfb3599f89c68b1875dcea7dab4cdb86620c435b218b212d0027ea3de",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-emitted",
+			"name": "emittedChange",
+			"to": "packages/reports/src/components/explorer-ui/harness-compare/harnessEmitted.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-compare/HarnessCompare.svelte",
+			"definition": "492c403c9ec49bd32f679c7c7ddb4a2fd63b81138248f27140dda00d8de974be",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-emitted",
+			"name": "emittedTargets",
+			"to": "packages/reports/src/components/explorer-ui/harness-growth/harnessEmitted.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-growth/harnessEmittedGrowth.ts",
+			"definition": "16cb80653193cfde2f0ab7caedb020aba737077b7712b2906ba202414dbb59bf",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-emitted-growth",
+			"name": "harnessEmittedGrowth",
+			"to": "packages/reports/src/components/explorer-ui/harness-growth/harnessEmittedGrowth.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-growth/HarnessGrowth.svelte",
+			"definition": "2af718b3d4b64a68a3d47ffc51ad428536a04cb246c364581425a43886b206eb",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-failures",
+			"name": "harnessFailures",
+			"to": "packages/reports/src/components/explorer-ui/harness-failures/harnessFailures.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-failures/HarnessFailures.svelte",
+			"definition": "59d7931563e3d525f71592095614467156afee76194f77490c604a81ca9abffc",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-growth",
+			"name": "harnessGrowth",
+			"to": "packages/reports/src/components/explorer-ui/harness-growth/harnessGrowth.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-growth/HarnessGrowth.svelte",
+			"definition": "2422d2d847bf8a44f2545435a2372c21b125ad87074d3184b44fc095bb959001",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-growth",
+			"name": "unitTimings",
+			"to": "packages/reports/src/components/explorer-ui/harness-growth/harnessGrowth.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-growth/HarnessGrowth.svelte",
+			"definition": "ec1adfb9ea699034e3d33fce185ab3d146a24404811b130abcd4ee44ba160d66",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-impact",
+			"name": "harnessImpact",
+			"to": "packages/reports/src/components/explorer-ui/harness-compare/harnessImpact.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-compare/HarnessCompare.svelte",
+			"definition": "3c91afaa0f0204464b010bb1a0fd79d401f2f493eb7e178a158f692f8b64239b",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-impact",
+			"name": "comparedSides",
+			"to": "packages/reports/src/components/explorer-ui/harness-compare/harnessImpact.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-compare/HarnessCompare.svelte",
+			"definition": "ed4fd57b0a3878d5793a0c0f9dfcb892d8f643dbb504dc4176dc003d96086d7b",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-layout",
+			"name": "mapColumns",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+			"definition": "87f934cc2e969ca6d3055cc8e3fc5bcc16587743c0570efeeaea1cf7f3a05b08",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.harness-layout",
+			"name": "harnessLayout",
+			"to": "packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"definition": "c2cadb5191cfb95513b399a64c347a762598a73fbad07b7ac2bda502d72cff02",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.legacy-evidence",
+			"name": "legacyLink",
+			"to": "packages/reports/src/components/explorer-ui/harness-legacy/legacyEvidence.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-legacy/HarnessLegacy.svelte",
+			"definition": "88776c7c60d9b21705b712b9af8238993d41f26c488f71986d76fbc7d4c85013",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.legacy-evidence",
+			"name": "legacyEvidence",
+			"to": "packages/reports/src/components/explorer-ui/harness-legacy/legacyEvidence.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-legacy/HarnessLegacy.svelte",
+			"definition": "891f4e532632d3da4d0333f7c5d6e5c5c0d8096ff6ce9aa953efa66ed20aa3bf",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.navbar-search",
+			"name": "navbarSearch",
+			"to": "packages/reports/src/components/explorer-ui/harness-navbar/navbarSearch.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
+			"definition": "5d0a81c382153d6ec5b9e806c416ed406df9dee1b5d47160d9a235bde44989c3",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
+		},
+		{
+			"unit": "reports.function.tooltip-place",
+			"name": "tooltipPlace",
+			"to": "packages/reports/src/components/explorer-ui/harness-verdict/tooltipPlace.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/harness-verdict/HarnessVerdict.svelte",
+			"definition": "72da54d7da3dd6518c39557f45e9ca722e15b035eec4d4120e603872af7bb8c1",
+			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement."
 		}
 	]
 }

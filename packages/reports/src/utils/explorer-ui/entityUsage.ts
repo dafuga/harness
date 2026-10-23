@@ -24,4 +24,4 @@ export interface EntityUsage {
 export {
 	entityUsage,
 	usageGroups
-} from '../../components/explorer-ui/harness/entity-relations/entityUsage';
+} from '../../components/explorer-ui/entity-relations/entityUsage';

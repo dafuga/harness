@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SourceState } from '../../lib/explorer-ui/stores/sourceReader.svelte';
-	import HarnessIcon from './harness/HarnessIcon.svelte';
+	import HarnessIcon from './HarnessIcon.svelte';
 	import Select from '../shared-primitives/Select.svelte';
 	let {
 		state,

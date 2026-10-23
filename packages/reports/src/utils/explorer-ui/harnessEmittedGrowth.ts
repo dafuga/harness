@@ -35,4 +35,4 @@ export interface EmittedGrowth {
 	rows: EmittedRow[];
 }
 
-export { harnessEmittedGrowth } from '../../components/explorer-ui/harness/harness-growth/harnessEmittedGrowth';
+export { harnessEmittedGrowth } from '../../components/explorer-ui/harness-growth/harnessEmittedGrowth';

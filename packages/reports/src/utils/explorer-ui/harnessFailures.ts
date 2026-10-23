@@ -16,4 +16,4 @@ export interface FailureSummary {
 	more: number;
 }
 
-export { harnessFailures } from '../../components/explorer-ui/harness/harness-failures/harnessFailures';
+export { harnessFailures } from '../../components/explorer-ui/harness-failures/harnessFailures';

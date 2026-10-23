@@ -8,10 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness/harness-selectors/HarnessSelectors.svelte",
-			"packages/reports/src/components/harness/harness-selectors/HarnessSelectors.svelte"
+			"packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte"
 		],
-		"symbols": ["HarnessSelectors", "HarnessSelectors"]
+		"symbols": ["HarnessSelectors"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -105,11 +104,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/components/explorer-ui/harness/harness-selectors/HarnessSelectors.svelte",
+		"entry": "packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/components/explorer-ui/harness/harness-selectors/HarnessSelectors.svelte"
+				"entry": "packages/reports/src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte"
 			}
 		]
 	},

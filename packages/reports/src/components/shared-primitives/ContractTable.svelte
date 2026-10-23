@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ContractField, ContractGroup } from '../../utils/explorer-ui/contractFields';
-	import HarnessIcon from '../explorer-ui/harness/HarnessIcon.svelte';
+	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
 	/** One group of contract fields as a table: name, type, a clipped example and its info control. */
 	let {
 		group,

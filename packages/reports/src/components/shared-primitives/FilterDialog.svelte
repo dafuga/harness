@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tick, type Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
-	import HarnessIcon from '../explorer-ui/harness/HarnessIcon.svelte';
+	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
 	let {
 		active = 0,
 		onreset,
