@@ -15,8 +15,7 @@ import {
 	loopPaths,
 	loopRoot,
 	readLoop,
-	type LoopEvaluator,
-	type LoopInput
+	type LoopEvaluator
 } from '../../workflows/development-tooling/loop-state/loopState';
 
 export async function evaluateLoop(input: EvaluateLoopInput): Promise<LoopEvaluationResult> {
