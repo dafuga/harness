@@ -96,34 +96,23 @@ test('a screen is recorded on the pages that mount it and on no other route page
 	expect(aliases).toEqual(entity.map((page) => `${page}-details`).sort());
 });
 
-test('a page is under its own states, and a screen under the states of the pages that mount it', () => {
+test('page states do not lend captures to screens they import', () => {
 	expect(statesOf(`${at}pages`)).toEqual(['pages', 'catalog-filters']);
 	expect(statesOf(`${at}configs-entity`)).toEqual(['config', 'config-details']);
 	expect(statesOf(`${at}functions-entity-history`)).toEqual(['history']);
-	// The page of no screen can draw any of them, so its one state shows every screen too.
-	expect(statesOf(`${part}explorer-pages-screen`)).toEqual([
-		'pages',
-		'retained',
-		'shell-retained',
-		'catalog-filters'
+	for (const screen of [
+		'explorer-pages-screen',
+		'entity-config-screen',
+		'entity-history-screen',
+		'entity-history'
+	])
+		expect(statesOf(`${part}${screen}`)).toEqual([]);
+	expect(statesOf('reports.component.entity-contract')).toEqual([
+		'contract',
+		'contract-commit',
+		'contract-example',
+		'contract-example-commit'
 	]);
-	expect(statesOf(`${part}entity-config-screen`)).toEqual([
-		'config',
-		'config-details',
-		'retained',
-		'shell-retained'
-	]);
-	expect(statesOf(`${part}entity-history-screen`)).toEqual([
-		'history',
-		'page-history',
-		'component-history',
-		'config-history',
-		'service-history',
-		'retained',
-		'shell-history',
-		'shell-retained'
-	]);
-	expect(statesOf(`${part}entity-history`)).toEqual(statesOf(`${part}entity-history-screen`));
 });
 
 // What each Shells state shows, written out here rather than read from the scenario: the page it
@@ -176,11 +165,11 @@ const written = [
 	['catalog-filters', ['reports.component.filter-dialog', `${part}explorer-controls`, `${at}pages`]]
 ];
 
-test('what every page is made of is under every state, and each state names a page there is', () => {
+test('shared imports have no implicit captures, and each state names a page there is', () => {
 	const every = scenario.states.map((state) => state.id);
 	expect(every).toHaveLength(49);
-	expect(statesOf(`${part}harness-header`)).toEqual(every);
-	expect(statesOf(`${part}harness-console`)).toEqual(every);
+	expect(statesOf(`${part}harness-header`)).toEqual([]);
+	expect(statesOf(`${part}harness-console`)).toEqual([]);
 	const pages = new Set(units.filter((unit) => unit.kind === 'page').map((unit) => unit.id));
 	const named = new Set(written.map(([id]) => id));
 	// Earlier states name exactly one page; later states also name the shared pieces they show.

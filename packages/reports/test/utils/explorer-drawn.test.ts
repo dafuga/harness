@@ -30,10 +30,24 @@ const units = [
 ];
 const named = (id: string) => units.find((item) => item.id === id) as HarnessUnit;
 const states = [
-	{ id: 'catalog', coverage: 'required' as const, units: ['page.functions'] },
-	{ id: 'entity', coverage: 'required' as const, units: ['page.function'] }
+	{
+		id: 'catalog',
+		coverage: 'required' as const,
+		units: ['page.functions', 'component.host', 'component.header', 'component.table']
+	},
+	{
+		id: 'entity',
+		coverage: 'required' as const,
+		units: [
+			'page.function',
+			'component.host',
+			'component.header',
+			'component.frame',
+			'component.panel'
+		]
+	}
 ];
-// Every state says which page it is a state of, and nothing about what that page is made of.
+// Every state explicitly names the visual pieces the browser actually rendered.
 const scenario = declared({
 	id: 'explorer',
 	title: 'Explorer',
@@ -108,7 +122,7 @@ test('a component is proven by the states that draw it and needs no other', () =
 	expect(explorerVerdict(named('component.header'), at(['catalog', 'entity'])).passed).toBe(true);
 });
 
-test('what draws a component is read from the registry of the revision, not assumed', () => {
+test('an import graph change cannot assign another screen to a component', () => {
 	// The same contract over a registry in which the entity page draws the table too.
 	const moved = units.map((item) =>
 		item.id === 'page.function'
@@ -116,18 +130,44 @@ test('what draws a component is read from the registry of the revision, not assu
 			: item
 	);
 	expect(statesOf('component.table', at(['catalog', 'entity'], scenario, moved))).toEqual([
-		'catalog',
-		'entity'
+		'catalog'
 	]);
 	expect(explorerVerdict(named('component.table'), at(['catalog'], scenario, moved)).passed).toBe(
-		false
+		true
 	);
 });
 
 test('a state that names a component says so itself: where else it is drawn adds nothing', () => {
 	const explicit = declared({
 		...scenario,
-		states: [states[0], { ...states[1], units: ['page.function', 'component.table'] }]
+		states: [
+			{ ...states[0], units: ['page.functions'] },
+			{ ...states[1], units: ['page.function', 'component.table'] }
+		]
 	});
 	expect(statesOf('component.table', at(['catalog', 'entity'], explicit))).toEqual(['entity']);
 });
+
+test.each(['component', 'shell', 'layout', 'partial'])(
+	'a page-only state cannot prove an imported %s was drawn',
+	(kind) => {
+		const pageOnly = declared({
+			...scenario,
+			states: states.map((state) => ({ ...state, units: state.units.slice(0, 1) }))
+		});
+		const registry = units.map((unit) =>
+			unit.id === 'component.table' ? { ...unit, kind } : unit
+		);
+		const head = at(['catalog', 'entity'], pageOnly, registry);
+		expect(statesOf('component.table', head)).toEqual([]);
+		expect(shown('component.table', head).after.captures).toEqual([]);
+		const unscoped = declared({
+			...scenario,
+			states: states.map(({ units: _units, ...state }) => state)
+		});
+		expect(statesOf('component.table', at(['catalog', 'entity'], unscoped, registry))).toEqual([
+			'catalog',
+			'entity'
+		]);
+	}
+);

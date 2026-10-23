@@ -1,4 +1,9 @@
-import { expect, test } from 'vitest';
+import { afterAll, expect, test } from 'vitest';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../../src/utils/record-capture/recordCapture';
+import { scenarioFor } from '../../src/utils/explorerState';
 import type { ExplorerScope } from '../../src/models/Explorer.types';
 import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { explorerVerdict } from '../../src/utils/explorer-verdict/explorerVerdict';
@@ -102,4 +107,56 @@ test('a page whose only states cannot occur has nothing that proves it', () => {
 		label: 'Coverage incomplete'
 	});
 	expect(explorerVerdict(catalog, head).passed).toBe(true);
+});
+
+/** Directly measure state selection; the UI's own measurements remain separate workloads. */
+afterAll(() => {
+	if (!evidenceRequested()) return;
+	const registry = [catalog, entity, route];
+	const samples: number[] = [];
+	let selectedStates = 0;
+	for (let round = 0; round < 6; round++) {
+		const started = performance.now();
+		for (let iteration = 0; iteration < 10000; iteration++)
+			for (const unit of registry)
+				selectedStates += scenarioFor(scenario, unit.id, registry).states.length;
+		if (round > 0) samples.push((performance.now() - started) / (10000 * registry.length));
+	}
+	expect(selectedStates).toBe(240000);
+	const common = {
+		unit: 'reports.function.explorer-state',
+		callable: 'scenarioFor',
+		workload: 'explorer-catalog-and-entity-state-selection',
+		target: 'module',
+		samples: 150000
+	};
+	const measurements = [
+		{
+			...common,
+			metric: 'latency-warm-ms',
+			unitOfMeasure: 'ms',
+			value: samples.sort((a, b) => a - b)[2],
+			method:
+				'Median per call across five batches of 10000 passes over the standard two-page and nonvisual-route fixture, after one warmup batch; returned state counts are consumed and checked.'
+		},
+		{
+			...common,
+			samples: 1,
+			metric: 'memory-bytes',
+			unitOfMeasure: 'bytes',
+			value: process.memoryUsage().heapUsed,
+			method:
+				'Used JavaScript heap of the whole Vitest worker after the state-selection workload; includes test runner and shared code, not isolated selector allocation.'
+		}
+	];
+	recordCapture(
+		{
+			evidence: 'explorer-state-benchmark',
+			kind: 'benchmark',
+			state: 'state-selection',
+			file: 'explorer-state-benchmark.json',
+			mediaType: 'application/json'
+		},
+		JSON.stringify({ measurements })
+	);
 });
