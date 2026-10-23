@@ -56,6 +56,9 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 			explorerCategory(mixed),
 			'runtime constants do not turn interfaces into database models'
 		).toBe('types');
+		expect(explorerRole(mixed), 'the mixed type module keeps its declared role').toBe(
+			'Type definitions'
+		);
 		for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
 			const types = owning('model.order-types', 'model', source);
 			expect(explorerCategory(types), 'Type collections are separate from data models').toBe(
