@@ -87,7 +87,7 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		const card = page.getByRole('article');
 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
-		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
+		await expect(usage.getByRole('link')).toHaveText(['Orders page', 'OrderList', 'OrderStore']);
 		await expect(usage, 'Four eligible consumers retain the overflow indicator').toContainText('…');
 		for (const kind of ['Components', 'Services', 'Models'])
 			await expect(usage.getByRole('list', { name: kind, exact: true })).toHaveCount(0);
@@ -101,7 +101,7 @@ export async function reviewHelperUsage(page: Page, viewport: string): Promise<v
 		for (const [label, category, entity] of [
 			['OrderList', 'components', ids.list],
 			['OrderStore', 'services', ids.store],
-			['Order', 'models', 'app.model.order']
+			['Orders page', 'pages', ids.page]
 		] as const) {
 			await page
 				.getByRole('group', { name: 'Used In', exact: true })

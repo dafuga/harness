@@ -3,8 +3,8 @@ import { ids } from './entityUnits';
 import { serviceClassProof } from './entityClassFixtures';
 
 const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
-	'no-visible': [{ unit: ids.page }, { unit: ids.filter }],
-	'single-visible': [{ unit: ids.list }, { unit: ids.filter }],
+	'no-visible': [{ unit: 'missing' }, { unit: 'function.no-visible' }],
+	'single-visible': [{ unit: ids.list }, { unit: 'function.single-visible' }],
 	unresolved: [{ unit: ids.list }, { unit: 'missing' }],
 	'same-owner-functions': [
 		{ unit: ids.list, symbol: 'first' },
