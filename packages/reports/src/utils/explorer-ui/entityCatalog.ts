@@ -144,6 +144,13 @@ function helperConsumers(
 	return usedIn;
 }
 
+/** Related cards retain private pure callees; public collections require shared ownership. */
+function catalogHelpers(entity: ExplorerEntity, related?: boolean) {
+	return (entity.unit.helpers ?? []).filter((helper) =>
+		related ? helper.pure === true : sharedHelper(helper)
+	);
+}
+
 /**
  * One collection of the explorer: the entities of a category, each with the name, the
  * relations and the verdict a card or a table row shows, in order of name. Shared helper
@@ -181,7 +188,7 @@ export function entityCatalog(
 				return hasRequiredServiceOwners(usedIn.length, options) ? [{ ...row, shared, usedIn }] : [];
 			}
 			if (category !== 'functions') return [row];
-			const helpers = (entity.unit.helpers ?? []).filter(sharedHelper);
+			const helpers = catalogHelpers(entity, options.related);
 			if (options.related && helpers.length === 0) return [row];
 			return helpers
 				.map((helper) => ({

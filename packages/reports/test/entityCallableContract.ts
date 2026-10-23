@@ -1,5 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 import { capture, fits, open, where } from './entityPreviewPage';
+import { ids } from './entityUnits';
 /** Function contracts keep actual parameter names and their own returned value. */
 export async function reviewCallableContract(page: Page, commit: string | null, viewport: string) {
 	for (const [name, result] of [
@@ -24,6 +25,7 @@ export async function reviewCallableContract(page: Page, commit: string | null, 
 		});
 		await capture(page, `callable-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
 		await reviewCallableApi(page, name, result);
+		await reviewCallableUses(page, name, commit, viewport);
 		await page.getByRole('tab', { name: 'Examples', exact: true }).click();
 		await capture(page, `callable-examples-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
 		await expect(
@@ -137,5 +139,39 @@ async function reviewCallableApi(page: Page, name: string, result: string): Prom
 		await thrown.getByRole('button').click();
 		await expect(page.getByRole('dialog')).toContainText('Input text required.');
 		await page.getByRole('button', { name: 'Close viewer', exact: true }).click();
+	}
+}
+
+/** A callable never inherits sibling or module-only dependencies. */
+async function reviewCallableUses(
+	page: Page,
+	name: string,
+	commit: string | null,
+	viewport: string
+) {
+	const units = [
+		'reports.component.harness-entity-frame',
+		'reports.component.harness-entity-header',
+		'reports.component.harness-entity-sections'
+	];
+	await capture(page, `helper-uses-${name}-${commit ? 'commit' : 'tip'}-${viewport}`, units);
+	const tab = page.getByRole('tab', { name: 'Uses', exact: true });
+	await expect(tab, 'Uses tab follows the selected helper calls').toHaveCount(
+		name === 'countWords' ? 1 : 0
+	);
+	await open(
+		page,
+		{ category: 'functions', entity: ids.filter, helper: name, commit, tab: 'uses' },
+		'declared'
+	);
+	if (name === 'countWords') {
+		await expect(
+			page.getByRole('link', { name: 'toKebabCase("hello world")', exact: true })
+		).toBeVisible();
+		await expect(page.getByRole('group', { name: 'Configs uses', exact: true })).toHaveCount(0);
+		await expect(page.getByRole('group', { name: 'Services uses', exact: true })).toHaveCount(0);
+	} else {
+		await expect(tab).toHaveCount(0);
+		await expect(page.getByRole('tabpanel', { name: `${name} uses`, exact: true })).toHaveCount(0);
 	}
 }

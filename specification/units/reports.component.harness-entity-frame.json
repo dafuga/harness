@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-frame",
 	"kind": "component",
 	"title": "EntityFrame",
-	"responsibility": "Finds the entity an address names, heads its screen with it, and says that the entity is missing where the revision does not hold it.",
+	"responsibility": "Finds the entity an address names, heads its screen with it, and says that the entity is missing where the revision does not hold it. Selected-helper Uses visibility follows only the selected callable; empty Uses tabs are omitted.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
