@@ -75,11 +75,8 @@ export function testFiles(unit: HarnessUnit): string[] {
 
 /** Read only text archived with this revision; never substitute a working-copy file. */
 export function archivedSource(unit: HarnessUnit, mediaBase: string, filePath?: string) {
-	const inputs = [unit.sourceFiles, unit.testFiles];
-	const archived: NonNullable<HarnessUnit['sourceFiles']> = [];
-	for (const input of inputs)
-		for (let index = 0; index < (input?.length ?? 0); index++) archived.push(input![index]);
-	const recorded = Boolean(inputs[0] || inputs[1]);
+	const archived = [unit.sourceFiles, unit.testFiles];
+	const recorded = Boolean(archived[0] || archived[1]);
 	const files: SourceFiles = async () => {
 		const paths = recorded ? [...new Set([...implementationFiles(unit), ...testFiles(unit)])] : [];
 		return filePath && paths.includes(filePath)
@@ -92,11 +89,13 @@ export function archivedSource(unit: HarnessUnit, mediaBase: string, filePath?: 
 }
 
 async function readArchivedFile(
-	archived: NonNullable<HarnessUnit['sourceFiles']>,
+	archived: Array<HarnessUnit['sourceFiles']>,
 	mediaBase: string,
 	path: string
 ): Promise<string> {
-	const file = archived.find((entry) => entry.path === path);
+	const file =
+		archived[0]?.find((entry) => entry.path === path) ??
+		archived[1]?.find((entry) => entry.path === path);
 	if (!file?.media) throw new Error(file?.gap ?? `${path} is not archived at this revision.`);
 	if (!/^media\/[a-f0-9]{64}\.txt$/.test(file.media))
 		throw new Error('The recorded source reference is invalid.');
