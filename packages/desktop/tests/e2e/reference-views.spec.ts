@@ -81,7 +81,7 @@ test('a reference opened in a new tab leaves the thread and its draft in place',
 		page.context().waitForEvent('page'),
 		link.click({ modifiers: ['ControlOrMeta'] })
 	]);
-	await expect(opened).toHaveURL(alphaAt('shells/app.shell.order-frame'));
+	await expect(opened).toHaveURL(alphaAt('layouts/app.shell.order-frame'));
 	await expect(page).toHaveURL(alphaAt(designs));
 	await expect(thread(page)).toBeVisible();
 	await expect(draft).toHaveValue('Draft about the frame');
@@ -107,7 +107,7 @@ test('the project agent says its public reply with the units it names as links',
 	);
 	await expect(reply.getByRole('link', { name: 'Order frame', exact: true })).toHaveAttribute(
 		'href',
-		alphaAt('shells/app.shell.order-frame/history')
+		alphaAt('layouts/app.shell.order-frame/history')
 	);
 	await expect(reply.getByRole('link')).toHaveCount(1);
 	await capture(page, info, 'agent-reply');
@@ -141,7 +141,7 @@ test('streamed text and run progress in a thread link the units once they are wh
 	await expect(stream.getByRole('link')).toHaveCount(1);
 	await expect(status.getByRole('link', { name: 'Order frame', exact: true })).toHaveAttribute(
 		'href',
-		alphaAt('shells/app.shell.order-frame')
+		alphaAt('layouts/app.shell.order-frame')
 	);
 	await capture(page, info, 'stream');
 });
