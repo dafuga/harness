@@ -1,3 +1,5 @@
+import { measureWorkload } from '../../../test/support/measureWorkload';
+import { helperEntity } from '../src/utils/entityShown';
 import { categorySources } from './entityPreviewGroups';
 import { expect, test } from 'vitest';
 import { entityCatalog, catalogFilter } from '../src/utils/entityCatalog';
@@ -38,10 +40,20 @@ test('catalog categories survive across kinds and combine with other filters', (
 	);
 });
 
-test('a helper row uses its callable folder instead of its owning module category', () => {
+test('a helper row uses its callable folder instead of its owning module category', async () => {
 	const grouped = categorySources(head);
 	const items = explorerEntities(grouped);
-	const rows = entityCatalog(items, 'functions', (id) => explorerRelations(grouped, id));
+	const rows = await measureWorkload(
+		'reports.function.entity-catalog',
+		'helper-source-folders',
+		() => entityCatalog(items, 'functions', (id) => explorerRelations(grouped, id))
+	);
+	const selected = await measureWorkload(
+		'reports.function.entity-shown',
+		'helper-source-breadcrumb',
+		() => helperEntity(rows.find((row) => row.name === 'plural')?.entity, 'plural')
+	);
+	expect(selected?.unit).toHaveProperty('group', { id: 'strings', title: 'Strings' });
 	expect(rows.find((row) => row.name === 'plural')).toHaveProperty('group', {
 		id: 'strings',
 		title: 'Strings'
@@ -51,3 +63,21 @@ test('a helper row uses its callable folder instead of its owning module categor
 		title: 'Orders'
 	});
 });
+
+const transforms = [
+	['reports.function.entity-contract', 'entityContract', 'humanize', ['HTTPStatus'], 'http status'],
+	['reports.function.entity-lens', 'entityLens', 'shortCommit', ['0123456789'], '0123456'],
+	['reports.function.activity-display', 'activityDisplay', 'plural', [2, 'item'], '2 items'],
+	['reports.function.evidence-media', 'evidenceMedia', 'formatDuration', [90.9], '1:30']
+] as const;
+test.each(transforms)(
+	'Strings relocation preserves public entry %s',
+	async (unit, entry, name, args, output) => {
+		const legacy = await import(`../src/utils/${entry}.ts`);
+		const canonical = await import(`../src/utils/strings/${name}.ts`);
+		expect(legacy[name]).toBe(canonical[name]);
+		await measureWorkload(unit, `strings-${name}`, () =>
+			expect(canonical[name](...args)).toBe(output)
+		);
+	}
+);
