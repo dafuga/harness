@@ -12,16 +12,17 @@
 	import GameMechanics from './GameMechanics.svelte';
 	import GamePreview from './game-preview/GamePreview.svelte';
 	import GameTrace from './GameTrace.svelte';
-
 	type Source = Pick<Props, 'projectId' | 'commit' | 'bridge'>;
 	const tabs = ['Preview', 'Checkpoints', 'Mechanics'] as const;
 	let { projectId = null, commit, readonly = false, bridge }: Props = $props();
 	let doc = $state.raw<GameDocument>();
 	let revision = $state<string>();
 	let viewId = $state('');
-	let tab = $state<(typeof tabs)[number]>('Preview');
+	let tab = $state<(typeof tabs)[number]>('Checkpoints');
 	let run = $state.raw<GameRun>(createRun());
-	let selected = $state<string | null>(null);
+	let selected = $state<string | null>(null); // The checkpoint open in the editor, if any.
+	/** A new checkpoint and the state before Add, restored if it is closed untouched or deleted. */
+	let added = $state.raw<{ node: Checkpoint; before: GameDocument; dirty: boolean } | null>(null);
 	let dirty = $state(false);
 	let busy = $state(false);
 	let conflict = $state(false);
@@ -29,6 +30,7 @@
 	let request = 0;
 	const demo = $derived(!projectId || !bridge?.gameRead);
 	const editable = $derived(!readonly && !commit && (demo || Boolean(bridge?.gameSave)));
+	const locked = $derived(!editable);
 	const problems = $derived(doc ? validateDocument(doc) : []);
 	const savable = $derived(editable && dirty && !busy && !problems.length);
 	const view = $derived(doc?.views.find((item) => item.id === viewId) ?? doc?.views[0]);
@@ -64,7 +66,7 @@
 		run = createRun();
 		revision = at;
 		dirty = false;
-		selected = null;
+		selected = added = null;
 		if (!next.views.some((item) => item.id === viewId)) viewId = next.views[0]?.id ?? '';
 	}
 	async function save() {
@@ -99,6 +101,25 @@
 		const nodes = view.checkpoints.map((item) => (item.id === selected ? node : item));
 		editView({ checkpoints: nodes });
 		selected = node.id;
+	}
+	function addCheckpoint(node: Checkpoint) {
+		if (!doc || !view || !editable) return;
+		added = { node, before: doc, dirty };
+		editView({ checkpoints: [...view.checkpoints, node] });
+		selected = node.id;
+	}
+	function closeCheckpoint(discard = false) {
+		if (added && (discard || JSON.stringify(checkpoint) === JSON.stringify(added.node)))
+			[doc, dirty] = [added.before, added.dirty];
+		selected = added = null;
+	}
+	function removeCheckpoint() {
+		const id = selected;
+		if (added || !view || !id) return closeCheckpoint(true);
+		const rest = view.checkpoints.filter((c) => c.id !== id);
+		const unlinked = rest.map((c) => ({ ...c, requires: c.requires.filter((r) => r !== id) }));
+		closeCheckpoint();
+		editView({ checkpoints: unlinked });
 	}
 	function editMechanics(list: GameDocument['mechanics']) {
 		if (doc) edit({ ...doc, mechanics: list });
@@ -141,53 +162,45 @@
 		<GameViewFields
 			{view}
 			views={doc.views}
-			readonly={!editable}
+			readonly={locked}
 			select={(id) => (viewId = id)}
 			create={createView}
 			change={editView}
-		/>
-		{#if problems.length}
-			<p class="error" role="alert">Fix before saving or previewing: {problems.join(' ')}</p>
-		{/if}
-		<div class="row" style="flex-wrap:wrap" role="group" aria-label="Game sections">
+		>
 			{#each tabs as name (name)}
 				<button class:gold={tab === name} aria-pressed={tab === name} onclick={() => (tab = name)}>
 					{name}
 				</button>
 			{/each}
-		</div>
+		</GameViewFields>
+		{#if problems.length}
+			<p class="error" role="alert">Fix before saving or previewing: {problems.join(' ')}</p>
+		{/if}
 		{#if tab === 'Checkpoints'}
-			<div class="split">
-				<GameGraph
-					checkpoints={view.checkpoints}
-					{run}
-					{selected}
-					select={(id) => (selected = id)}
-					change={(nodes) => editView({ checkpoints: nodes })}
-					readonly={!editable}
+			<GameGraph
+				checkpoints={view.checkpoints}
+				{run}
+				{selected}
+				select={(id) => (selected = id)}
+				create={addCheckpoint}
+				change={(nodes) => editView({ checkpoints: nodes })}
+				readonly={locked}
+			/>
+			{#if checkpoint}
+				<GameCheckpointPane
+					context={{ checkpoint, view, document: doc, projectId, revision, commit, bridge }}
+					adding={added?.node.id === checkpoint.id}
+					readonly={locked}
+					change={editCheckpoint}
+					close={() => closeCheckpoint()}
+					remove={removeCheckpoint}
 				/>
-				{#if checkpoint}
-					<GameCheckpointPane
-						context={{ checkpoint, view, document: doc, projectId, revision, commit, bridge }}
-						change={editCheckpoint}
-						readonly={!editable}
-					/>
-				{:else}
-					<p class="muted">Select a checkpoint to inspect it.</p>
-				{/if}
-			</div>
+			{/if}
 			<GameTrace {run} {view} />
 		{:else if tab === 'Mechanics'}
-			<GameMechanics mechanics={doc.mechanics} change={editMechanics} readonly={!editable} />
+			<GameMechanics mechanics={doc.mechanics} change={editMechanics} readonly={locked} />
 		{:else if !problems.length}
-			<GamePreview
-				initialRun={run}
-				{view}
-				{projectId}
-				readonly={!editable}
-				onRun={track}
-				{bridge}
-			/>
+			<GamePreview initialRun={run} {view} {projectId} readonly={locked} onRun={track} {bridge} />
 		{/if}
 	{:else if busy}
 		<p class="muted">Loading the game…</p>
@@ -202,16 +215,5 @@
 	.back {
 		justify-self: start;
 		color: var(--gold);
-	}
-	.split {
-		display: grid;
-		grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-		gap: 16px;
-		align-items: start;
-	}
-	@media (max-width: 760px) {
-		.split {
-			grid-template-columns: minmax(0, 1fr);
-		}
 	}
 </style>

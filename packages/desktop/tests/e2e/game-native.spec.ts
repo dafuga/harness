@@ -1,4 +1,9 @@
-import { keepNativeNavigation } from './game-unsaved-fixture';
+import {
+	keepNativeNavigation,
+	viewSettings,
+	doneCheckpoint,
+	advancedCheckpoint
+} from './game-unsaved-fixture';
 import {
 	expect,
 	test,
@@ -15,24 +20,16 @@ import {
 	launch,
 	imageProvider,
 	catalogNavigation,
-	fitEveryCheckpoint
+	fitEveryCheckpoint,
+	createNativeGame,
+	approveCheckpointImage
 } from './game-native-fixture';
 import { beginGameFlow, recordRuntime, recordStartup } from './game-runtime-fixture';
 import { nativeImageFixture } from './native-image-fixture';
 import type { GameDocument } from '../../../game/src/models/game-authoring/Game.types';
 test.setTimeout(120_000);
-async function create(page: Page, name: string, dimension: string) {
-	await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();
-	await page.getByLabel('Project type', { exact: true }).selectOption('game');
-	await page.getByLabel('Dimension', { exact: true }).selectOption(dimension);
-	await page.getByRole('textbox', { name: 'Name', exact: true }).fill(name);
-	await capture(page, `${dimension}-creation`);
-	await page.getByRole('button', { name: 'Create project', exact: true }).click();
-	await expect(page.getByRole('heading', { name: 'Game Views', exact: true })).toBeVisible();
-	await expect(page.getByLabel('Dimension', { exact: true })).toHaveValue(dimension);
-	await expect(page.getByText('Demo', { exact: true })).toHaveCount(0);
-}
 async function author(page: Page, dimension: string) {
+	await viewSettings(page);
 	await page.getByLabel('View title', { exact: true }).fill('Authored courtyard');
 	await page.getByRole('button', { name: 'New view', exact: true }).click();
 	await page.getByLabel('View title', { exact: true }).fill('Second view');
@@ -47,6 +44,7 @@ async function author(page: Page, dimension: string) {
 	await page.getByRole('button', { name: 'Checkpoints', exact: true }).click();
 	await page.getByRole('button', { name: 'Add checkpoint', exact: true }).click();
 	await page.getByLabel('Checkpoint title', { exact: true }).fill('After the garden');
+	await advancedCheckpoint(page);
 	await page.getByLabel('Prerequisites', { exact: true }).fill('garden');
 	await page.getByLabel('Prerequisites', { exact: true }).press('Tab');
 	await page.getByRole('button', { name: 'Add condition', exact: true }).click();
@@ -55,6 +53,7 @@ async function author(page: Page, dimension: string) {
 	await page.getByRole('button', { name: 'Add action', exact: true }).click();
 	await page.getByLabel('Action 1 target', { exact: true }).fill('authored');
 	await page.getByLabel('Action 1 target', { exact: true }).press('Tab');
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Fit View', exact: true }).click();
 	await page.getByText('Collect the key', { exact: true }).first().scrollIntoViewIfNeeded();
 	await capture(page, `${dimension}-fit-graph`);
@@ -63,13 +62,7 @@ async function author(page: Page, dimension: string) {
 	});
 	await fitEveryCheckpoint(page, 5);
 	await page.getByText('Collect the key', { exact: true }).first().click();
-	await page
-		.getByLabel('Checkpoint image direction', { exact: true })
-		.fill('A golden key beside the courtyard explorer');
-	await page.getByRole('button', { name: 'Generate checkpoint image', exact: true }).click();
-	await expect(
-		page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
-	).toBeVisible();
+	await approveCheckpointImage(page);
 	await keepNativeNavigation(page);
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
@@ -85,9 +78,13 @@ async function persisted(page: Page, root: string, dimension: string) {
 	});
 	const path = doc.views[0].checkpoints[0].image!.path;
 	expect(await readFile(join(root, path))).toEqual(nativeImageFixture());
+	await page.getByText('Collect the key', { exact: true }).first().click();
 	await capture(page, `${dimension}-saved`);
+	await doneCheckpoint(page);
 	const started = performance.now();
 	await page.reload();
+	await doneCheckpoint(page);
+	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-ready="true"]').first()).toBeVisible();
 	await recordRuntime(page, started, dimension);
 	await expect(page.getByLabel('View title', { exact: true })).toHaveValue('Authored courtyard');
@@ -99,6 +96,7 @@ async function persisted(page: Page, root: string, dimension: string) {
 	await capture(page, `${dimension}-reopened`);
 }
 async function play(page: Page, dimension: string) {
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.locator('canvas[data-ready="true"]').first()).toBeVisible();
 	await expect(page.getByRole('button', { name: /Start AI/ })).toBeDisabled();
@@ -112,6 +110,7 @@ async function play(page: Page, dimension: string) {
 	await expect(page.locator('[data-harness-component=game-graph] header')).toContainText(
 		'3 of 5 checkpoints complete'
 	);
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await expect(page.getByText('Reached the garden', { exact: true })).toBeVisible();
 	await page.getByRole('button', { name: 'Move right', exact: true }).click();
@@ -124,6 +123,7 @@ async function play(page: Page, dimension: string) {
 	await expect(trace).toContainText('After the garden');
 	await expect(trace).toContainText('doorOpen eq true');
 	await capture(page, `${dimension}-trace`);
+	await doneCheckpoint(page);
 	await page.getByRole('button', { name: 'Preview', exact: true }).click();
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByText('Unsaved changes', { exact: true })).toHaveCount(0);
@@ -156,9 +156,8 @@ async function history(page: Page, root: string, dimension: string) {
 		page.getByRole('img', { name: 'Collected key gameplay reference', exact: true })
 	).toBeVisible();
 	await capture(page, `${dimension}-history`);
-	await expect(
-		page.getByRole('button', { name: 'Regenerate checkpoint image', exact: true })
-	).toBeDisabled();
+	await expect(page.getByRole('button', { name: 'Generate image', exact: true })).toBeDisabled();
+	await doneCheckpoint(page);
 	await page.getByRole('link', { name: 'Back to project', exact: true }).click();
 	await expect(
 		page.getByRole('navigation', { name: 'Catalog categories', exact: true })
@@ -191,7 +190,7 @@ for (const { dimension, viewport } of ['2d', '3d'].flatMap((dimension) =>
 			await expect(page.getByRole('button', { name: 'Open Project', exact: true })).toBeVisible();
 			await recordStartup(app, page, started, dimension);
 			beginGameFlow(page);
-			await test.step('Create a game', () => create(page, name, dimension));
+			await test.step('Create a game', () => createNativeGame(page, name, dimension));
 			await imageProvider(root);
 			await test.step('Author rules and image', () => author(page, dimension));
 			await persisted(page, root, dimension);

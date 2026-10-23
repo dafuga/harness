@@ -1,9 +1,10 @@
 import type { WorkspaceSearch } from '../../../utils/projects-sessions/workspaceSearch';
 import type { SearchEntry } from '../../../../../reports/src/utils/entitySearch';
 import { explorerName } from '../../../../../reports/src/utils/explorerName';
-import type {
-	CatalogEntity,
-	ProjectSnapshot
+import {
+	categories,
+	type CatalogEntity,
+	type ProjectSnapshot
 } from '../../../models/development-tooling/Desktop.types';
 import { workspacePath } from '../../../utils/projects-sessions/workspaceRoute';
 
@@ -33,8 +34,10 @@ export function workspaceSearch(shown: {
 		: `${project.name} at the tip of ${revision.branch}`;
 	const entries = snapshot.entities.map((entity) => entry(entity, revision.commit));
 	const held = new Set(entries);
+	const listed = (found: SearchEntry): found is SearchEntry & Pick<CatalogEntity, 'category'> =>
+		held.has(found) && categories.some((category) => category === found.category);
 	const at = (found: SearchEntry) =>
-		held.has(found)
+		listed(found)
 			? workspacePath({
 					...{ projectId: project.id ?? null, branch: revision.branch, commit: kept },
 					...{ category: found.category, entityId: found.id }
