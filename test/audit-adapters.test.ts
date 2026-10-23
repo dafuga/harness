@@ -91,7 +91,16 @@ test('ecosystem adapters report app and library rule violations', async () => {
 			(await auditProject(root, { profile: 'app' })).findings
 				.filter((f) => f.rule === 'separate-type-declarations')
 				.map((f) => f.path)
-		).toEqual(['src/components/Payment.svelte', 'src/lib/checkout/payment.ts']);
+		).toEqual([
+			'src/components/Payment.svelte',
+			'src/lib/checkout/payment.ts',
+			'src/utils/runtime.types.ts'
+		]);
+		expect(
+			(await auditProject(root, { profile: 'app' })).findings.filter((f) =>
+				['src/utils/payment.types.ts', 'src/config/paymentConfig.types.ts'].includes(f.path)
+			)
+		).toEqual([]);
 		expect((await auditProject(root, { profile: 'app' })).findings).toEqual(
 			expect.arrayContaining([
 				expect.objectContaining({ path: 'src/lib/checkout/payment.ts', rule: 'file-name-pattern' })
@@ -150,6 +159,11 @@ test.each([
 });
 
 async function writeTypePlacementFixtures(root: string): Promise<void> {
+	await mkdir(join(root, 'src/utils'), { recursive: true });
+	await mkdir(join(root, 'src/config'), { recursive: true });
+	for (const path of ['src/utils/payment.types.ts', 'src/config/paymentConfig.types.ts'])
+		await writeFile(join(root, path), 'export interface PaymentInput { value: string }\n');
+	await writeFile(join(root, 'src/utils/runtime.types.ts'), 'export const runtime = true;\n');
 	await writeFile(
 		join(root, 'src/lib/checkout/payment.ts'),
 		'export interface PaymentInput { value: string }\nexport class PaymentService {}\n'

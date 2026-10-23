@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-23T10:54:38.113Z","name":"type-companion-audit","goal":"Accept pure companion modules and reject runtime definitions in type files","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-23T10:54:46.780Z","loop":"type-companion-audit","step":"spec","evidence":"Pure sibling type files must pass naming checks; a .types.ts file with runtime values must be rejected."}
+{"event":"step.completed","timestamp":"2026-10-23T10:54:47.510Z","loop":"type-companion-audit","step":"coverage","evidence":"The standard ecosystem adapter fixture covered mixed declarations but omitted utility and config companions and runtime-only type files; extend that fixture and retain its assertions."}
