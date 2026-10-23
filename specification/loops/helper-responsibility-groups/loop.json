@@ -2,7 +2,7 @@
 	"name": "helper-responsibility-groups",
 	"goal": "Generic text helpers live in Strings; helper cards and breadcrumbs use each callable source category, independent of consumers",
 	"createdAt": "2026-10-23T11:25:47.463Z",
-	"updatedAt": "2026-10-23T11:27:44.865Z",
+	"updatedAt": "2026-10-23T11:42:39.997Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:42:38.512Z",
+			"evidence": "Shared folder matrix failed on the committed test-only checkpoint: Helper folder follows callable source. The red proof retains 24 registered viewport captures."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T11:42:39.997Z",
+			"evidence": "2701467e9 relocates generic text implementations into Strings and derives callable categories independently of owner modules. Stable exports and unit IDs remain; source and generated tenant guidance require responsibility-based grouping."
 		},
 		{
 			"id": "green",
