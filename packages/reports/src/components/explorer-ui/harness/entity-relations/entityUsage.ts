@@ -7,7 +7,7 @@ import { categoryIcon } from '../../../../utils/explorer-ui/harnessIcons';
 
 const kinds = [
 	['Pages', 'pages'],
-	['Shells', 'shells'],
+	['Layouts', 'layouts'],
 	['Components', 'components'],
 	['Functions', 'functions'],
 	['Configs', 'configs'],

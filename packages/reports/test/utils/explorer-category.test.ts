@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -19,29 +20,32 @@ test.each(explorerCategories)('compatibility details routes are nonvisual: %s', 
 	).toBe('pages');
 });
 
-test('a unit of a product kind is listed under the category of that kind', () => {
-	expect(explorerCategory(unit('reports.component.select', 'component'))).toBe('components');
-	expect(explorerCategory(unit('function.slugify', 'function'))).toBe('functions');
-	expect(explorerCategory(unit('validator.codex-request', 'validator'))).toBeNull();
-	expect(explorerCategory(unit('serializer.report-export', 'serializer'))).toBeNull();
-	expect(explorerCategory(unit('reports.config.report-vite', 'config'))).toBe('configs');
-	expect(explorerCategory(unit('service.title', 'service'))).toBe('services');
-	expect(explorerCategory(unit('model.order', 'model'))).toBe('models');
-	for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
-		const types = owning('model.order-types', 'model', source);
-		expect(explorerCategory(types), 'Type collections are not data models').toBeNull();
-		expect(explorerRole(types)).toBe('Type definitions');
-	}
-	expect(
-		explorerCategory(
-			owning('model.order', 'model', ['src/models/Order.types.ts', 'src/models/Order.ts'])
-		)
-	).toBe('models');
-	expect(explorerCategory(unit('reports.endpoint.harness-data-path', 'endpoint'))).toBe('services');
-	expect(explorerCategory(unit('adapter.git', 'adapter'))).toBe('services');
-	expect(explorerCategory(unit('repository.budget-ledger', 'repository'))).toBe('services');
-	expect(explorerCategory(unit('workflow.run-verify', 'workflow'))).toBe('services');
-});
+test('a unit of a product kind is listed under the category of that kind', () =>
+	measureWorkload('reports.function.explorer-category', 'layout-catalog-behavior', () => {
+		expect(explorerCategory(unit('reports.component.select', 'component'))).toBe('components');
+		expect(explorerCategory(unit('function.slugify', 'function'))).toBe('functions');
+		expect(explorerCategory(unit('validator.codex-request', 'validator'))).toBeNull();
+		expect(explorerCategory(unit('serializer.report-export', 'serializer'))).toBeNull();
+		expect(explorerCategory(unit('reports.config.report-vite', 'config'))).toBe('configs');
+		expect(explorerCategory(unit('service.title', 'service'))).toBe('services');
+		expect(explorerCategory(unit('model.order', 'model'))).toBe('models');
+		for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
+			const types = owning('model.order-types', 'model', source);
+			expect(explorerCategory(types), 'Type collections are not data models').toBeNull();
+			expect(explorerRole(types)).toBe('Type definitions');
+		}
+		expect(
+			explorerCategory(
+				owning('model.order', 'model', ['src/models/Order.types.ts', 'src/models/Order.ts'])
+			)
+		).toBe('models');
+		expect(explorerCategory(unit('reports.endpoint.harness-data-path', 'endpoint'))).toBe(
+			'services'
+		);
+		expect(explorerCategory(unit('adapter.git', 'adapter'))).toBe('services');
+		expect(explorerCategory(unit('repository.budget-ledger', 'repository'))).toBe('services');
+		expect(explorerCategory(unit('workflow.run-verify', 'workflow'))).toBe('services');
+	}));
 
 test('a page is what renders an address, whatever kind it was registered as', () => {
 	const rendered = ['src/routes/titles/+page.server.ts', 'src/routes/titles/+page.svelte'];
@@ -56,7 +60,7 @@ test('a page is what renders an address, whatever kind it was registered as', ()
 	expect(explorerRole(loader)).toBe('Route loader');
 	// A layout frames pages; it is not an address of its own.
 	const layout = owning('layout.root', 'layout', ['src/routes/+layout.svelte']);
-	expect(explorerCategory(layout)).toBe('components');
+	expect(explorerCategory(layout)).toBe('layouts');
 	expect(explorerRole(layout)).toBe('Layout');
 	const configuration = owning('layout.options', 'layout', ['src/routes/+layout.ts']);
 	expect(explorerCategory(configuration), 'rendering flags have no screenshot').toBe('configs');
@@ -114,7 +118,9 @@ test("the policy holds for Harness's own registry", () => {
 	// Every page renders an address, and every unit that renders one is a page.
 	const rendering = units.filter(
 		(item) =>
-			item.owns.source.some((path) => path.endsWith('/+page.svelte')) && !aliases.has(item.id)
+			item.owns.source.some((path) => path.endsWith('/+page.svelte')) &&
+			!aliases.has(item.id) &&
+			!item.owns.source.some((path) => /\/shells(?:\/|$)/.test(path))
 	);
 	expect(
 		listed('pages')

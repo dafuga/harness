@@ -15,9 +15,9 @@ const owned = (file: string, symbol: string) => ({
 export const routeUnits: HarnessUnit[] = [
 	{
 		...card,
-		...owned('src/shells/OrdersFrame.svelte', 'OrdersFrame'),
+		...owned('src/layouts/OrdersFrame.svelte', 'OrdersFrame'),
 		id: routeIds.shell,
-		kind: 'shell',
+		kind: 'layout',
 		title: 'OrdersFrame',
 		responsibility: 'Synthetic preview shell: frames the screens of the orders fixture.',
 		contract: {

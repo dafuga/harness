@@ -1,8 +1,8 @@
 {
 	"name": "layout-catalog",
-	"goal": "Layouts contains reusable visual frames and shows each child slot in an image-only preview",
+	"goal": "Layouts contains reusable visual frames and shows each child slot in the shared title, image and page-usage card",
 	"createdAt": "2026-10-23T09:21:46.411Z",
-	"updatedAt": "2026-10-23T09:25:44.819Z",
+	"updatedAt": "2026-10-23T09:56:02.912Z",
 	"template": "visual-change",
 	"templateLineage": [
 		"feature",
@@ -20,7 +20,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-23T09:56:02.912Z",
+			"evidence": "Opus 5.5 extracted ExplorerLayout and real child-slot previews. Layout cards reuse title/image/page-usage cards. Routing hosts stay components; layout options stay configs. Canonical URLs, legacy aliases and shared Web/Electron planning categories agree."
 		},
 		{
 			"id": "test",

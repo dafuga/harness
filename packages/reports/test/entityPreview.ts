@@ -94,10 +94,10 @@ if (variant === 'declared') {
 		stored[commit] = withServiceContracts({ ...detail, registry: { ...registry, units } });
 	}
 }
-if (variant === 'shells') {
+if (variant === 'layouts') {
 	stored[commits.first] = withFrame(stored[commits.first], 'component');
 	stored[commits.middle] = withFrame(stored[commits.middle], 'component');
-	stored[commits.tip] = withFrame(stored[commits.tip], 'shell');
+	stored[commits.tip] = withFrame(stored[commits.tip], 'layout');
 }
 const target = document.getElementById('app') as HTMLElement;
 let mounted: ReturnType<typeof mount> | undefined;

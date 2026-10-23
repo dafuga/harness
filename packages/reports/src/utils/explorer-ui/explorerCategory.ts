@@ -31,7 +31,7 @@ const compatibility = (unit: Classified) =>
 	unit.owns.source.some(
 		(path) =>
 			path.startsWith('packages/reports/src/routes/harness/') &&
-			path.endsWith('/[entity]/details/+page.svelte')
+			(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
 	);
 
 /** Type collections describe API shapes; they are not data models. */
@@ -61,6 +61,8 @@ export function explorerCategory(unit: Classified): ExplorerCategory | null {
 	if (compatibility(unit)) return 'services';
 	if (renders(unit)) return 'pages';
 	if (layoutConfiguration(unit)) return 'configs';
+	if (unit.kind === 'layout' && !unit.owns.source.some((path) => path.endsWith('.svelte')))
+		return null;
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'functions' || unit.kind === 'module') {
 		return unit.helpers?.some(helperContract) ? 'functions' : null;

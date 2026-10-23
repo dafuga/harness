@@ -13,6 +13,7 @@ const navbar = {
 	onroute: noop
 };
 export const legacyCases: PreviewCases = {
+	'reports.layout.explorer-layout': { base: '/harness', problem: '', missing: null, navbar },
 	'reports.component.harness-harness-action': {
 		children: children,
 		href: '#review',

@@ -22,13 +22,13 @@ const active = (page: Page, name: string) =>
  */
 export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	async shells(page) {
-		await page.goto(at(shellsBranch, commits.shelled, 'shells'));
-		await titled(page, 'Shells');
+		await page.goto(at(shellsBranch, commits.shelled, 'layouts'));
+		await titled(page, 'Layouts');
 		await listed(page);
 	},
 	async 'shells-tip'(page) {
-		await page.goto(tip(shellsBranch, 'shells'));
-		await titled(page, 'Shells');
+		await page.goto(tip(shellsBranch, 'layouts'));
+		await titled(page, 'Layouts');
 		await listed(page);
 	},
 	// Its overview, what it uses and that nothing uses it yet.
@@ -57,7 +57,7 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 		await page.goto(at(shellsBranch, commits.shelled, `components/${unit}/details?tab=source`));
 		await expectPath(page, at(shellsBranch, commits.shelled, `shells/${unit}?tab=source`));
 		await expect(content(page).getByText('src/components/TitleFrame.svelte').first()).toBeVisible();
-		await active(page, 'Shells');
+		await active(page, 'Layouts');
 	},
 	// Where its own manifest still recorded a component, it stays a component.
 	async 'shell-earlier'(page) {
@@ -69,8 +69,8 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	},
 	// A commit no branch keeps: its address has no branch, and none is invented.
 	async 'shell-retained'(page) {
-		await page.goto(`/harness/commit/${commits.shellRetained}/shells/${unit}/history`);
+		await page.goto(`/harness/commit/${commits.shellRetained}/layouts/${unit}/history`);
 		await titled(page, 'TitleFrame');
-		await active(page, 'Shells');
+		await active(page, 'Layouts');
 	}
 };

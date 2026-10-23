@@ -14,6 +14,7 @@ const text = z
 const categories = {
 	page: 'pages',
 	shell: 'shells',
+	layout: 'layouts',
 	component: 'components',
 	function: 'functions',
 	config: 'configs',
@@ -48,7 +49,8 @@ const planSchema = z.strictObject({
 	contractHash: z.string().regex(/^[a-f0-9]{64}$/)
 });
 
-const planFile = /^src\/(pages|shells|components|functions|configs|services)\/[^/]+\/plan\.json$/;
+const planFile =
+	/^src\/(pages|shells|layouts|components|functions|configs|services)\/[^/]+\/plan\.json$/;
 
 const artifact =
 	/^(?:plan\.json|\.gitattributes|designs\/v\d{3,}\/(?:design\.json|prompt\.md|notes\.md|[a-z0-9][a-z0-9-]*\.png)|designs\/approvals\/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\.json|threads\/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\/(?:thread\.json|messages\.ndjson))$/;

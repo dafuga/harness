@@ -17,6 +17,7 @@ export const previewUnits = Object.values(manifests)
 	.map((unit) => ({
 		id: unit.id,
 		title: unit.title,
+		kind: unit.kind,
 		source: [unit.runtime.entry, ...unit.owns.source].find((path) => path.endsWith('.svelte'))
 	}))
 	.sort((a, b) => a.id.localeCompare(b.id));

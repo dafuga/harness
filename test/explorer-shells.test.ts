@@ -1,3 +1,4 @@
+import { measureWorkload } from './support/measureWorkload';
 import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -69,39 +70,40 @@ test('a shell has an address at a branch tip and at a selected commit, with its 
 	});
 });
 
-test('the plan of a new shell is a planning artifact of its own folder, as a component plan is', async () => {
-	const root = await mkdtemp(join(tmpdir(), 'harness-shell-plan-'));
-	const contract = {
-		responsibility: 'Frames the workspace of a host.',
-		inputs: [],
-		outputs: [],
-		errors: [],
-		states: ['default'],
-		viewports: ['desktop']
-	};
-	const plan = {
-		unitId: 'shell.host-frame',
-		category: 'shell',
-		slug: 'host-frame',
-		path: 'src/shells/host-frame',
-		title: 'Host frame',
-		goal: 'Frames the workspace of a host.',
-		createdAt: '2026-10-14T08:00:00.000Z',
-		createdBy: { kind: 'person', name: 'Local reviewer' },
-		baseRevision: commit,
-		contract,
-		contractHash: createHash('sha256').update(canonicalJson(contract)).digest('hex')
-	};
-	await mkdir(join(root, plan.path), { recursive: true });
-	await writeFile(join(root, plan.path, 'plan.json'), JSON.stringify(plan));
-	const files = [`${plan.path}/plan.json`, `${plan.path}/designs/v001/design.json`];
-	expect([...planningArtifactPaths(root, files)].sort()).toEqual([
-		'src/',
-		'src/shells/',
-		'src/shells/host-frame/',
-		'src/shells/host-frame/designs/',
-		'src/shells/host-frame/designs/v001/',
-		'src/shells/host-frame/designs/v001/design.json',
-		'src/shells/host-frame/plan.json'
-	]);
-});
+test('the plan of a new shell is a planning artifact of its own folder, as a component plan is', () =>
+	measureWorkload('function.planning-artifact-paths', 'layout-catalog-behavior', async () => {
+		const root = await mkdtemp(join(tmpdir(), 'harness-shell-plan-'));
+		const contract = {
+			responsibility: 'Frames the workspace of a host.',
+			inputs: [],
+			outputs: [],
+			errors: [],
+			states: ['default'],
+			viewports: ['desktop']
+		};
+		const plan = {
+			unitId: 'shell.host-frame',
+			category: 'shell',
+			slug: 'host-frame',
+			path: 'src/shells/host-frame',
+			title: 'Host frame',
+			goal: 'Frames the workspace of a host.',
+			createdAt: '2026-10-14T08:00:00.000Z',
+			createdBy: { kind: 'person', name: 'Local reviewer' },
+			baseRevision: commit,
+			contract,
+			contractHash: createHash('sha256').update(canonicalJson(contract)).digest('hex')
+		};
+		await mkdir(join(root, plan.path), { recursive: true });
+		await writeFile(join(root, plan.path, 'plan.json'), JSON.stringify(plan));
+		const files = [`${plan.path}/plan.json`, `${plan.path}/designs/v001/design.json`];
+		expect([...planningArtifactPaths(root, files)].sort()).toEqual([
+			'src/',
+			'src/shells/',
+			'src/shells/host-frame/',
+			'src/shells/host-frame/designs/',
+			'src/shells/host-frame/designs/v001/',
+			'src/shells/host-frame/designs/v001/design.json',
+			'src/shells/host-frame/plan.json'
+		]);
+	}));

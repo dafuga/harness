@@ -153,5 +153,5 @@ function designImages(draft: DesignDraft) {
 }
 
 function visual(category: string) {
-	return ['page', 'shell', 'component'].includes(category);
+	return ['page', 'shell', 'layout', 'component'].includes(category);
 }

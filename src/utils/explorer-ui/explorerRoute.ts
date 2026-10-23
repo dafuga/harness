@@ -36,6 +36,7 @@ export interface ExplorerLocation {
 	tab?: ExplorerTab;
 }
 
+const categoryAlias = new Map([['shells', 'layouts']]);
 const hash = /^[0-9a-f]{40}$/;
 const isCategory = (name: string): name is ExplorerCategory =>
 	explorerCategories.some((known) => known === name);
@@ -93,7 +94,8 @@ function selection(rest: string[], allowSections = true): Selection {
 export function explorerRoute(path: string, search = ''): ExplorerLocation | undefined {
 	const found = scope(path.replace(/\/+$/, '').split('/').slice(1));
 	if (!found) return undefined;
-	const [category = 'pages', ...after] = found.rest;
+	const [requested = 'pages', ...after] = found.rest;
+	const category = categoryAlias.get(requested) ?? requested;
 	if (category === 'helpers') return helperSelection(found, after);
 	if (category === 'styles') return stylesSelection(found);
 	if (!isCategory(category)) return undefined;

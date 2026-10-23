@@ -7,7 +7,7 @@ const branch = '/harness/branch/feature%2Forders';
 /** The entity each category opens on; Shells and Models open the synthetic route units. */
 const opened: Record<string, string> = {
 	pages: ids.page,
-	shells: routeIds.shell,
+	layouts: routeIds.shell,
 	components: ids.list,
 	functions: ids.filter,
 	configs: ids.settings,

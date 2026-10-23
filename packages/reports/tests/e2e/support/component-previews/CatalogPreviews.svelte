@@ -7,17 +7,17 @@
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
-	import HarnessScreen from '../../../../src/components/HarnessScreen.svelte';
-	import ExplorerContent from '../../../../src/components/harness/ExplorerContent.svelte';
-	import HubHome from '../../../../../hub/src/routes/+page.svelte';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
 	if (!unit) throw new Error(`Unknown preview component ${id}`);
 	const fixture = previewFixture(id);
 	const Component = previewComponent(unit.source);
+	// A layout frames a page, so it is given the marked child slot below and never a real page.
+	const layout = unit.kind === 'layout';
 	// A route module draws a whole screen of its application, as the screen components do.
 	const fullFrame =
+		layout ||
 		routePreview(id) ||
 		/(?:harness-(navbar|header|console|shell)|harness-screen|workspace-shell|hosted-workspace)$/.test(
 			id
@@ -63,15 +63,22 @@
 				class:ex-content={explorer}
 				data-preview-unit={unit.id}
 			>
-				{#if id === 'reports.layout.root'}
-					{#snippet pageContent()}<HarnessScreen
-							title="Components"
-							content={ExplorerContent}
-						/>{/snippet}
-					<Component {...fixture.props} children={pageContent} />
-				{:else if id === 'hub.layout.root'}
-					{#snippet hubPageContent()}<HubHome />{/snippet}
-					<Component {...fixture.props} children={hubPageContent} />
+				<!-- SYNTHETIC child: what a layout is given in place of a page, said so where drawn. -->
+				{#snippet layoutChild()}
+					<section class="preview-child" aria-labelledby="preview-child-label">
+						<div class="preview-child-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" width="26" height="26">
+								<rect x="3" y="4" width="18" height="16" rx="2" />
+								<path d="M3 9h18" />
+								<rect class="preview-child-slot" x="7" y="12" width="10" height="5" rx="1" />
+							</svg>
+						</div>
+						<p class="preview-child-label" id="preview-child-label">Child content</p>
+						<p class="preview-child-hint">Your page renders here</p>
+					</section>
+				{/snippet}
+				{#if layout}
+					<Component {...fixture.props} children={layoutChild} />
 				{:else if id === 'reports.component.harness-entity-history-row'}
 					<div class="ex-scroll">
 						<table class="ex-table ex-history" aria-label="History row preview">
@@ -127,5 +134,64 @@
 	}
 	.flow-host {
 		height: 380px;
+	}
+	/* The slot a layout draws its page in: a dashed frame in the theme, as tall as a short page. */
+	.preview-child {
+		display: grid;
+		place-content: center;
+		justify-items: center;
+		gap: 10px;
+		box-sizing: border-box;
+		min-width: 0;
+		min-height: clamp(280px, 55vh, 560px);
+		padding: 32px 20px;
+		border: 2px dashed color-mix(in srgb, var(--gold) 55%, transparent);
+		border-radius: var(--hx-radius, 10px);
+		background:
+			repeating-linear-gradient(
+				135deg,
+				color-mix(in srgb, var(--gold) 5%, transparent) 0 12px,
+				transparent 12px 24px
+			),
+			var(--panel);
+		text-align: center;
+		overflow-wrap: anywhere;
+	}
+	/* A layout that draws nothing around its page leaves the slot the gutters of the preview. */
+	.preview-content > .preview-child {
+		margin: 20px var(--hx-gutter, 20px) 0;
+	}
+	.preview-child-icon {
+		display: grid;
+		place-items: center;
+		width: 56px;
+		height: 56px;
+		margin-bottom: 4px;
+		border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--gold) 12%, var(--panel));
+		color: var(--gold);
+	}
+	.preview-child-icon svg {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.preview-child-slot {
+		stroke-dasharray: 2 2;
+	}
+	.preview-child-label {
+		margin: 0;
+		color: var(--gold);
+		font-size: 1.25rem;
+		font-weight: 600;
+		line-height: 1.3;
+	}
+	.preview-child-hint {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.95rem;
 	}
 </style>

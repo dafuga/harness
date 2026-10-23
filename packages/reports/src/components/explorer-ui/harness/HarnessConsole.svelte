@@ -22,7 +22,7 @@
 		consoleView,
 		type ConsoleAnswer
 	} from '../../harness/harness-console/consoleView';
-	import HarnessHeader from './HarnessHeader.svelte';
+	import ExplorerLayout from '../ExplorerLayout.svelte';
 	let {
 		base,
 		path,
@@ -160,8 +160,9 @@
 	});
 </script>
 
-<div class="hx-shell" data-harness-component="harness-harness-console">
-	<HarnessHeader
+<!-- The console reads and chooses; the frame draws. Its marker draws no box around that frame. -->
+<div class="hx-console" data-harness-component="harness-harness-console">
+	<ExplorerLayout
 		{base}
 		{problem}
 		missing={page?.kind === 'missing' ? page : null}
@@ -174,8 +175,7 @@
 			onroute,
 			search: searchCatalog
 		}}
-	/>
-	<main class="hx-main">
+	>
 		{#if !index && !problem}<p class="hc-muted" role="status">Loading history…</p>{/if}
 
 		{#if scope && !shown && !problem}
@@ -205,5 +205,11 @@
 				/>
 			{/key}
 		{/if}
-	</main>
+	</ExplorerLayout>
 </div>
+
+<style>
+	.hx-console {
+		display: contents;
+	}
+</style>

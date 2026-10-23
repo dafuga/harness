@@ -17,7 +17,7 @@
 		children: Snippet;
 	} = $props();
 	// What is seen opens the overview; what is run or set follows the summary it is read against.
-	const seen = ['pages', 'components', 'shells'];
+	const seen = ['pages', 'components', 'layouts'];
 	let first = $derived(seen.includes(entity.category));
 </script>
 

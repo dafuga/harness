@@ -168,7 +168,7 @@ Relationship sections group references by declared module type. Every catalog an
 relationship module card uses `ExplorerModuleCard`, including visual and nonvisual
 variants; legacy card entries only forward to it. Its sole metadata field is Used In:
 the first three distinct consumer links in provided order, then an ellipsis when more
-exist. Never add consumer category labels or a second card implementation. Screenshot UI belongs to visual pages, shells
+exist. Never add consumer category labels or a second card implementation. Screenshot UI belongs to visual pages, layouts
 and components; helpers, services, models and configs use compact code previews.
 A missing screenshot does not make a visual component nonvisual. Extend the normal
 mixed-consumer browser matrix to prove both visual and nonvisual preview variants.
@@ -236,3 +236,12 @@ Attribution-only DOM containers require the full Reports component suite, alongs
 A successful capture count does not prove catalog delivery. The standardized Pages screen test must project every registered visual unit's dedicated capture through its actual preview choice and require a displayed file. Keep unit preview metadata aligned with the captured catalog state, and verify the prepared main index's cards in the browser before landing/handoff. Preserve exact state selection and missing-state gaps for explicitly requested previews.
 
 When adding or changing workspace build aliases, run the existing `test/shared-select-impact.test.ts` before broad verification. Keep all alias imports resolved, distinguish indexed test imports from runtime owner units using source classification, and prove test selection separately from production dependency reachability; never discard an unresolved runtime owner to satisfy the check.
+
+## Layout catalog review
+
+Layouts are reusable visual frames with a real child-content slot, declared as kind `layout`.
+Routing hosts, data loaders, and options-only route modules are not visual layouts. Review the
+implementation rather than promoting everything previously called a shell. Keep stable unit IDs.
+Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pages that use them.
+Capture the actual layout with a clearly labelled Child content placeholder passed through its
+real children slot. Never substitute a full page screenshot for a layout preview.

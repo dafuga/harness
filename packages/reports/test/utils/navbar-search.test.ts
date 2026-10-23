@@ -8,7 +8,7 @@ import { sha, shellBranch, shellScope } from '../../tests/e2e/support/shellData'
  * to its entity in the branch and commit that are shown.
  */
 const entry = (commit: string): SearchEntry => ({
-	...{ id: 'app.shell.order-frame', category: 'shells', name: 'Order frame', purpose: '' },
+	...{ id: 'app.shell.order-frame', category: 'layouts', name: 'Order frame', purpose: '' },
 	...{ terms: [], commit }
 });
 const tip = shellScope({ branch: shellBranch, commit: null, category: 'pages' });
@@ -21,7 +21,7 @@ test('at the tip a result leads to the entity at the tip, under its own category
 	expect(search.at(entry(sha(5)))).toEqual({
 		branch: shellBranch,
 		commit: null,
-		category: 'shells',
+		category: 'layouts',
 		entity: 'app.shell.order-frame'
 	});
 });
@@ -73,7 +73,7 @@ test('a commit no branch keeps is searched alone, and its result keeps no branch
 	expect(search.at(entry(sha(9)))).toEqual({
 		branch: null,
 		commit: sha(9),
-		category: 'shells',
+		category: 'layouts',
 		entity: 'app.shell.order-frame'
 	});
 });

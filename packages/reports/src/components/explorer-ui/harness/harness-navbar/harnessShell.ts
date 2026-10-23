@@ -15,7 +15,7 @@ import { categoryIcon, type HarnessIconName } from '../../../../utils/explorer-u
 
 const labels: Array<[ExplorerCategory | 'styles', string]> = [
 	['pages', 'Pages'],
-	['shells', 'Shells'],
+	['layouts', 'Layouts'],
 	['components', 'Components'],
 	['models', 'Models'],
 	['services', 'Services'],
