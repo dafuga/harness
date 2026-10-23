@@ -88,10 +88,10 @@ export const shellCategories = [
 	'Pages',
 	'Shells',
 	'Components',
+	'Models',
+	'Services',
 	'Helpers',
 	'Configs',
-	'Services',
-	'Models',
 	'Styles',
 	'Platforms'
 ];
