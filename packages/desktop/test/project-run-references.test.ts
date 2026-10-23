@@ -1,8 +1,9 @@
-import { expect } from '../../../test/verificationExpect';
-import { test } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { test } from 'vitest';
+import { planningProposal } from '../../../test/support/taskAuditRepo';
+import { expect } from '../../../test/verificationExpect';
 import type { ProjectRunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git } from './run-fixture';
 
@@ -75,7 +76,9 @@ async function registered(root: string) {
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'register the owned unit');
 }
-const notes = 'A list of refunds that formats each time with [[unit:app.function.owned]].';
+const notes = planningProposal(
+	'A list of refunds that formats each time with [[unit:app.function.owned]].'
+);
 const proposal = {
 	...{ category: 'functions', title: 'Refund times', goal: 'Lists refund times.', proposal: notes },
 	contract: { inputs: [], outputs: [{ name: 'list', type: 'string[]' }], errors: [] }
@@ -99,9 +102,14 @@ const named = (prompt: string) => /^Units you may name: (.*)$/m.exec(prompt)?.[1
 test('a pages request is asked with a registered function it names, and its checked notes are said', async () => {
 	const f = await fixture();
 	await registered(f.root);
+	const units = await f.session.requireProject().source.units(git(f.root, 'rev-parse', 'HEAD'));
+	expect(units.map((unit) => unit.id)).toContain('app.function.owned');
 	expect(await created(f, JSON.stringify(proposal))).toEqual([notes]);
 	const prompt = f.run.mock.calls[0][0].prompt;
-	expect(named(prompt).startsWith('[[unit:app.function.owned]]')).toBe(true);
+	expect(
+		named(prompt).startsWith('[[unit:app.function.owned]]'),
+		'Registered private functions remain usable in proposals'
+	).toBe(true);
 	// The planned target of the fixture has no registry entry; no source is in the prompt.
 	expect(named(prompt)).not.toContain(f.request.entityId);
 	expect(prompt).not.toContain('committed source');

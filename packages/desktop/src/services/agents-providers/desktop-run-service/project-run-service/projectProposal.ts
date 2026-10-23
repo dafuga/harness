@@ -1,4 +1,4 @@
-import type { ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
+import { taskCompletionInstructions } from '../../../../../../../src/services/verification-evidence/TaskCompletionService';
 import {
 	categories,
 	type Category,
@@ -8,6 +8,7 @@ import type {
 	ProjectRunRequest,
 	ProposedContract
 } from '../../../../models/development-tooling/DesktopBridge.types';
+import type { ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
 import { referencePrompt } from '../../../../utils/development-tooling/referencePrompt';
 
 const most = { answer: 20_000, title: 160, goal: 600, proposal: 6000 } as const;
@@ -122,6 +123,8 @@ export function proposalPrompt(
 		'The title is a name, never a path or a file name. The notes hold no source code, no file',
 		'paths, no instruction to write files and no claim that anything was built, run or verified.',
 		'Code is written only after a person approves the plan.',
+		'The proposal field must include Overview, Acceptance Criteria, Dependencies, Verification and Performance Markdown sections.',
+		...taskCompletionInstructions().slice(2),
 		referencePrompt(known),
 		'The notes may name existing units so; the title names the new unit in plain words.',
 		`The request was made in the ${request.category} catalog. That is a hint: choose the kind`,

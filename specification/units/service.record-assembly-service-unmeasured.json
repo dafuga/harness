@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "service.record-assembly-service-unmeasured",
+	"kind": "service",
+	"title": "unmeasured",
+	"responsibility": "Records explicit unavailable latency and memory entries when no benchmark observed a unit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/unmeasured.ts"
+		],
+		"symbols": ["unmeasured"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "unmeasured.unit",
+				"type": "string",
+				"description": "Registered unit whose exact owned source and runtime target define this observation."
+			},
+			{
+				"name": "unmeasured.testedRevision",
+				"type": "string",
+				"description": "Exact source commit associated with these explicit unavailable measurements."
+			}
+		],
+		"outputs": [
+			{
+				"name": "unmeasured",
+				"type": "Measurement[]",
+				"description": "Two entries with null values and explicit unavailable reasons; missing memory or latency is never represented as zero."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/unmeasured.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/unmeasured.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

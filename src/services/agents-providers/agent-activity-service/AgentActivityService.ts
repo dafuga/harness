@@ -2,23 +2,24 @@ import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { basename, join } from 'node:path';
-import { ProcessIdentityAdapter } from './ProcessIdentityAdapter';
+import { fail } from '../../../core/development-tooling/errors';
 import type {
 	AgentBeat,
 	AgentEntry,
 	AgentRoster,
 	AgentState
 } from '../../../core/projects-sessions/activityTypes';
-import { fail } from '../../../core/development-tooling/errors';
-import { AgentRegistryRepository, type StoredAgent } from './AgentRegistryRepository';
 import type { Checkout } from '../../../repositories/projects-sessions/ProjectWorkRepository';
-import { agentLiveness } from './agentLiveness';
 import { type ProcessFacts } from '../../../utils/agents-providers/agentLiveness';
-import { agentStatement } from './agentStatement';
 import {
 	type AgentInput,
 	type AgentStatement
 } from '../../../utils/agents-providers/agentStatement';
+import { agentLiveness } from './agentLiveness';
+import { AgentRegistryRepository, type StoredAgent } from './AgentRegistryRepository';
+import { agentStatement } from './agentStatement';
+import { ProcessIdentityAdapter } from './ProcessIdentityAdapter';
+import { requireTaskCompletion } from './requireTaskCompletion';
 
 const order: AgentState[] = ['working', 'stale', 'gone', 'failed', 'completed'];
 
@@ -81,7 +82,8 @@ export class AgentActivityService {
 	}
 
 	async finish(id: string, failed: boolean, outcome?: string): Promise<void> {
-		const { registry } = await this.known(id);
+		const { registry, checkout, agent } = await this.known(id);
+		if (!failed) await requireTaskCompletion(checkout.path, agent);
 		const stated = agentStatement({ outcome });
 		const status = failed ? ('failed' as const) : ('completed' as const);
 		const end = { at: new Date().toISOString(), status, outcome: stated.outcome ?? null };

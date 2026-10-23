@@ -11,17 +11,18 @@ import {
 	classifyPath,
 	type PathClass
 } from '../../../utils/accounts-access/classify-path/classifyPath';
-import { complexityCoverage } from './complexityCoverage';
 import { resolveImport } from '../../../utils/development-tooling/resolveImport';
-import { scanComponent } from './scanComponent';
 import { scanExports } from '../../../utils/development-tooling/scanExports';
-import { scanImports } from './scanImports';
 import {
 	type SourceLanguage,
 	type SourceReference
 } from '../../../utils/development-tooling/scanImports';
-import { sourceBlocks } from './sourceBlocks';
 import { type SourceBlock } from '../../../utils/development-tooling/sourceBlocks';
+import { complexityCoverage } from './complexityCoverage';
+import { scanComponent } from './scanComponent';
+import { scanImports } from './scanImports';
+import { sourceBlocks } from './sourceBlocks';
+import { sourceExecution } from './sourceExecution';
 
 export interface SourceIndex {
 	revision: string;
@@ -30,6 +31,7 @@ export interface SourceIndex {
 }
 
 interface Parsed {
+	execution: NonNullable<SourceFile['execution']>;
 	bytes: number;
 	lines: number;
 	references: SourceReference[];
@@ -85,6 +87,7 @@ export class SourceIndexService {
 			lines: parsed.lines,
 			language,
 			read: parsed.read,
+			execution: parsed.execution,
 			decisions: parsed.read ? complexityCoverage(entry.path, parsed.scripted) : 'unsupported',
 			classification: placed.classification,
 			workspace: placed.workspace,
@@ -114,6 +117,7 @@ export class SourceIndexService {
 }
 
 const empty: Parsed = {
+	execution: 'unknown',
 	bytes: 0,
 	lines: 0,
 	references: [],
@@ -127,6 +131,7 @@ const empty: Parsed = {
 function parseText(code: string, language: SourceLanguage, path: string): Parsed {
 	const scan = exportsOf(code, language, path);
 	return {
+		execution: sourceExecution(code, language, path),
 		bytes: Buffer.byteLength(code),
 		lines: code.split('\n').length - (code.endsWith('\n') ? 1 : 0),
 		references: scanImports(code, language),

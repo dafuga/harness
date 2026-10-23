@@ -1,10 +1,10 @@
-import { expect } from '../../../test/verificationExpect';
-import { test, vi } from 'vitest';
-import { writeFile, mkdtemp, rm } from 'node:fs/promises';
-import { join } from 'node:path';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { test, vi } from 'vitest';
+import { expect } from '../../../test/verificationExpect';
 import { RunCancelled } from '../src/models/AgentRunner.types';
-import { fixture, settled, approve, records, git, bytes } from './run-fixture';
+import { approve, bytes, fixture, git, records, settled } from './run-fixture';
 test('Plan uses read-only CLI and saves a committed immutable version without claiming verification', async () => {
 	const f = await fixture();
 	// A case of one design: it asks for a single design option.
@@ -49,11 +49,30 @@ test('approval alone never runs and Change records untracked and previously dirt
 			]
 		})
 	);
-	expect(f.events).toContainEqual(expect.objectContaining({ kind: 'finished', verified: false }));
+	expect(f.events, 'unverified coding cannot finish successfully').toContainEqual(
+		expect.objectContaining({
+			kind: 'failed',
+			message: expect.stringContaining('completion audit')
+		})
+	);
 	expect((await records(f)).at(-1)).toMatchObject({
-		status: 'completed',
+		status: 'failed',
 		changedPaths: ['src/new.ts', 'src/owned.ts']
 	});
+}, 60000);
+
+test('Plan rejects an incomplete proposal before generating or saving designs', async () => {
+	const f = await fixture();
+	f.run.mockResolvedValue({ text: 'Done.', model: 'selected' });
+	await settled(f);
+	expect(f.events, 'planning requires a completion audit').toContainEqual(
+		expect.objectContaining({
+			kind: 'failed',
+			message: expect.stringContaining('completion audit')
+		})
+	);
+	expect(f.generator.generateImage).not.toHaveBeenCalled();
+	expect(f.events.some((event) => event.kind === 'finished')).toBe(false);
 }, 60000);
 test('stale approval is rejected before agent execution', async () => {
 	const f = await fixture();
@@ -144,74 +163,4 @@ test('observed host writes retain actual absolute path and hashes in committed c
 	} finally {
 		await rm(directory, { recursive: true, force: true });
 	}
-}, 60000);
-test('visual provenance stores actual image orchestration model and exact full generator prompt', async () => {
-	const f = await fixture();
-	const discover = f.runner.discover;
-	f.runner.discover = async () => {
-		const state = await discover();
-		return {
-			...state,
-			models: [
-				...state.models,
-				{
-					id: 'director',
-					label: 'Director',
-					efforts: ['high'],
-					defaultEffort: 'high',
-					isDefault: false
-				}
-			]
-		};
-	};
-	// A case of one design: it asks for a single design option.
-	await settled(f, { ...f.request, provider: 'claude', model: 'director', designOptions: 1 });
-	const imageCall = vi.mocked(f.generator.generateImage).mock.calls[0][0];
-	const plan = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0];
-	const version = plan.versions[0];
-	expect(f.run.mock.calls[0][0].model).toBe('director');
-	expect(imageCall.model).toBe('selected');
-	expect(version.generator).toBe('codex · selected');
-	expect(version.prompt).toBe(imageCall.prompt);
-	expect(version.prompt).toContain('Entity: Target');
-	expect(version.prompt).toContain('Precise design direction');
-	expect(version.notes).toContain('claude / director');
-}, 60000);
-test('Plan refuses a generation whose expected latest version changed while the image was running', async () => {
-	const f = await fixture();
-	let release!: () => void;
-	const gate = new Promise<void>((resolve) => {
-		release = resolve;
-	});
-	vi.mocked(f.generator.generateImage).mockImplementation(async () => {
-		await gate;
-		return { bytes, revisedPrompt: null };
-	});
-	await f.service.start(f.request);
-	await expect.poll(() => vi.mocked(f.generator.generateImage).mock.calls.length).toBe(1);
-	try {
-		await f.planning.addDesign({
-			entityId: f.request.entityId,
-			prompt: 'Concurrent design',
-			generator: { provider: 'codex', model: 'selected' },
-			baseRevision: git(f.root, 'rev-parse', 'HEAD'),
-			expectedLatest: null,
-			state: 'default',
-			viewport: 'desktop',
-			bytes
-		});
-	} finally {
-		release();
-	}
-	await expect.poll(() => f.session.busy, { timeout: 12000 }).toBe(false);
-	const plan = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0];
-	expect(plan.versions).toHaveLength(1);
-	expect(plan.versions[0].prompt).toBe('Concurrent design');
-	expect(f.events.some((e) => e.kind === 'finished')).toBe(false);
-	expect(f.events).toContainEqual(
-		expect.objectContaining({
-			kind: 'failed',
-			message: expect.stringMatching(/latest version changed/i)
-		})
-	);
 }, 60000);

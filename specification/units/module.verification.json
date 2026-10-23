@@ -41,6 +41,11 @@
 			"BuildIdentityService",
 			"BuiltIdentity",
 			"IdentifiedBuild",
+			"PerformanceProfileService",
+			"ProfileInput",
+			"TaskCompletionService",
+			"TaskAudit",
+			"TaskAuditInput",
 			"scenarioRequirements",
 			"RequiredCapture",
 			"ScenarioRequirements",
@@ -130,6 +135,16 @@
 		},
 		{
 			"unit": "service.build-identity",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.performance-profile",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
 			"via": "reexport",
 			"origin": "derived"
 		}

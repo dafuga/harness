@@ -171,3 +171,8 @@ export type {
 	CatalogScenarioUpdateInput
 } from './models/git-source-history/CatalogScenario.types';
 export { ModelDependencyService } from './services/development-tooling/ModelDependencyService';
+export { TaskCompletionService } from './services/verification-evidence/TaskCompletionService';
+export { PerformanceProfileService } from './services/verification-evidence/PerformanceProfileService';
+export { registerTaskCommand } from './cli/program/TaskCommand';
+export { PerformanceEvidenceValidator } from './validators/verification-evidence/PerformanceEvidenceValidator';
+export { SourceProfileAdapter } from './adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter';

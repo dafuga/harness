@@ -4,7 +4,12 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { expectFailedCapture } from './support/loop-repair/captureFixture';
-import { prepareRepair, exerciseRepair, expectPendingVerification } from './support/loopRepair';
+import {
+	commitRepairBookkeeping,
+	exerciseRepair,
+	expectPendingVerification,
+	prepareRepair
+} from './support/loopRepair';
 test('loop CLI traces work and remains audit-safe in generated projects', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-loop-e2e-'));
 	try {
@@ -116,12 +121,25 @@ test.each(['bug-fix', 'fix', 'regression-prevention'])(
 			expect(steps.map((step) => step.id)).toContain('coverage');
 			await exerciseRepair(root, steps);
 			await expectPendingVerification(root);
-			await runHarness(
-				['loop', 'complete', 'repair', 'verify', '--evidence', 'bun run check passed after repair'],
-				root
-			);
+			for (const legacy of [false, true]) {
+				await commitRepairBookkeeping(root, legacy);
+				const completion = await runHarness(
+					[
+						'loop',
+						'complete',
+						'repair',
+						'verify',
+						'--evidence',
+						'bun run check passed after repair'
+					],
+					root,
+					false
+				);
+				expect(completion.exitCode).toBe(1);
+				expect(completion.stderr).toContain('completion audit');
+			}
 			const next = await runHarness(['loop', 'next', 'repair', '--json'], root);
-			expect(JSON.parse(next.stdout).step).toBeUndefined();
+			expect(JSON.parse(next.stdout).step.id).toBe('verify');
 			const trace = await readFile(join(root, 'specification/loops/repair/trace.ndjson'), 'utf8');
 			expect(trace).toContain('"passed":false');
 			expect(trace).toContain('"passed":true');

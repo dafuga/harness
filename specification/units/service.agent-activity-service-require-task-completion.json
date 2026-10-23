@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agent-activity-service-require-task-completion",
+	"kind": "service",
+	"title": "requireTaskCompletion",
+	"responsibility": "Applies the committed loop or registered task contract before an agent may report a successful finish.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/agent-activity-service/requireTaskCompletion.ts"],
+		"symbols": ["requireTaskCompletion"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "requireTaskCompletion.root",
+				"type": "string",
+				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+			},
+			{
+				"name": "requireTaskCompletion.agent",
+				"type": "StoredAgent",
+				"description": "Registered agent statement, including its declared task, loop and required unit identities."
+			}
+		],
+		"outputs": [
+			{
+				"name": "requireTaskCompletion",
+				"type": "Promise<void>",
+				"description": "Resolves for an undeclared task or a passed declared audit; an unsupported success claim rejects."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.agent-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.loop-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/agent-activity-service/requireTaskCompletion.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/agent-activity-service/requireTaskCompletion.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

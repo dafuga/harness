@@ -97,12 +97,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.record-assembly-service-unmeasured",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.snapshot-run",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.verification-gates",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.performance-evidence",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,8 +1,12 @@
+import {
+	TaskCompletionService,
+	taskCompletionInstructions
+} from '../../../../../../src/services/verification-evidence/TaskCompletionService';
 import type { RunContext } from '../../../models/development-tooling/RunContext.types';
 import { runContext } from '../../../utils/development-tooling/runContext';
-import { sourceSnapshot } from '../../../utils/verification-evidence/sourceSnapshot';
 import { sourceChanges } from '../../../utils/development-tooling/sourceChanges';
 import { planDesign } from '../../../utils/planning-collaboration/plan-design/planDesign';
+import { sourceSnapshot } from '../../../utils/verification-evidence/sourceSnapshot';
 export class PlanRunService {
 	async run(context: RunContext) {
 		const { request, runner, signal, emit, id } = context;
@@ -19,6 +23,8 @@ export class PlanRunService {
 			cwd: context.root,
 			prompt:
 				(await runContext(context)) +
+				'\n' +
+				taskCompletionInstructions().join('\n') +
 				'\nPlan only. Return a precise design prompt or headless behavior proposal. Do not write project source.',
 			access: 'read-only',
 			signal,
@@ -29,6 +35,7 @@ export class PlanRunService {
 			throw new Error(
 				'The Plan agent changed project files. The changes remain recoverable; no design was approved.'
 			);
+		new TaskCompletionService(context.root).requirePlan(result.text, request.text);
 		return planDesign(context, result.text);
 	}
 }

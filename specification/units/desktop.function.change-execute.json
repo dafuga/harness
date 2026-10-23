@@ -110,6 +110,11 @@
 			"unit": "function.unit-owners",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.task-completion",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

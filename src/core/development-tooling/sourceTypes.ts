@@ -1,7 +1,7 @@
-import type { ContractItem } from './unitTypes';
 import type { ComplexityCoverage } from '../../utils/development-tooling/complexityCoverage';
-import type { SourceBlock } from '../../utils/development-tooling/sourceBlocks';
 import type { ReferenceVia, SourceLanguage } from '../../utils/development-tooling/scanImports';
+import type { SourceBlock } from '../../utils/development-tooling/sourceBlocks';
+import type { ContractItem } from './unitTypes';
 
 export type FileClass = 'source' | 'test' | 'global' | 'registry' | 'ignored' | 'other';
 export type UncertainReason =
@@ -41,6 +41,8 @@ export interface SourceFile {
 	identity?: { id: string; kind: string; name: string };
 	/** False when the file was not read: nothing is known about its content, not even its size. */
 	read: boolean;
+	/** Parsed execution facts; absent or unknown never exempts a file from runtime evidence. */
+	execution?: 'declarative' | 'runtime' | 'unknown';
 	/** Whether its decision points are counted, absent by nature, or not counted at all. */
 	decisions: ComplexityCoverage;
 	references: ResolvedReference[];

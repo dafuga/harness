@@ -1,22 +1,23 @@
 import type { ImpactReport } from '../../../../core/development-tooling/impactTypes';
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
-import type { VerifyConfig } from '../../../../core/verification-evidence/verifyTypes';
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
+import type { VerifyConfig } from '../../../../core/verification-evidence/verifyTypes';
 import {
 	VerificationStoreRepository,
 	type StoredRecord
 } from '../../../../repositories/verification-evidence/VerificationStoreRepository';
+import type { ReasonReport } from '../../../../services/development-tooling/ExplanationService';
 import { machineProfile } from '../../../../utils/development-tooling/machineProfile';
+import { emittedTargets } from '../../../../utils/development-tooling/unitMeasurements';
+import type { RevisionSide } from '../../../development-tooling/loadRevisions';
+import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
 import { scenarioCoverage } from './scenarioCoverage';
 import { referencedScenario } from './sealRecord';
-import { verifyPlan } from './verifyPlan';
-import type { RevisionSide } from '../../../development-tooling/loadRevisions';
-import type { ReasonReport } from '../../../../services/development-tooling/ExplanationService';
-import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
-import { emittedTargets } from '../../../../utils/development-tooling/unitMeasurements';
 import { SnapshotRunService, type Executed } from './SnapshotRunService';
+import { verifyPlan } from './verifyPlan';
 
 export interface VerifyContext {
+	requirePerformance?: boolean;
 	root: string;
 	commit: string;
 	tree: string;

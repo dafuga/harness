@@ -76,3 +76,10 @@ export type {
 	PerformanceBaseline
 } from '../utils/verification-evidence/budgetFindings';
 export { recordIntact, sealRecord } from '../utils/verification-evidence/sealRecord';
+export { PerformanceProfileService } from '../services/verification-evidence/PerformanceProfileService';
+export type { ProfileInput } from '../services/verification-evidence/PerformanceProfileService';
+export { TaskCompletionService } from '../services/verification-evidence/TaskCompletionService';
+export type {
+	TaskAudit,
+	TaskAuditInput
+} from '../services/verification-evidence/TaskCompletionService';

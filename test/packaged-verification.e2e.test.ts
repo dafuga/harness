@@ -1,8 +1,26 @@
+import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import { captureLineSchema } from '../src/core/verification-evidence/verifyTypes';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../src/utils/reports-media/record-capture/recordCapture';
 import { runCommand } from './support/cli';
+import { completeProposal } from './support/taskAuditRepo';
+
+/** Keep actual SDK-consumer profiles in the requesting Harness run before the consumer is removed. */
+async function forwardProfiles(directory: string): Promise<void> {
+	if (!evidenceRequested()) return;
+	const index = await readFile(join(directory, 'captures.ndjson'), 'utf8');
+	for (const line of index.trim().split('\n')) {
+		const capture = captureLineSchema.parse(JSON.parse(line));
+		if (capture.kind === 'benchmark')
+			recordCapture(capture, await readFile(join(directory, capture.file)));
+	}
+}
 
 const consumer = `
 import {
@@ -13,6 +31,8 @@ import {
 	evidenceRequested,
 	explanationSchema,
 	mediaFacts,
+	TaskCompletionService,
+	PerformanceProfileService,
 	recordCapture,
 	scenarioRequirements,
 	verifyConfigSchema,
@@ -24,6 +44,13 @@ import {
 import { scenarioManifestSchema, type ScenarioManifest } from '@dafuga01/harness/contracts';
 
 const scenario: ScenarioManifest = scenarioManifestSchema.parse(JSON.parse(process.argv[2]));
+const audit = new TaskCompletionService(process.cwd());
+const proposal = ${JSON.stringify(completeProposal)};
+for (const unit of ['service.task-completion', 'module.verification'])
+	await new PerformanceProfileService().capture(
+		{ unit, workload: 'public-planning-audit', rounds: 3, iterations: 10 },
+		() => audit.requirePlan(proposal, 'Search proposal')
+	);
 const line: CaptureLine = { evidence: 'output', kind: 'output', state: 'default', file: 'out.txt', mediaType: 'text/plain' };
 const explanation: Explanation | undefined = explanationSchema.safeParse({}).data;
 const event: BudgetEvent | undefined = budgetEventSchema.safeParse({}).data;
@@ -56,6 +83,7 @@ const compare = (measurement: typeof measured | Omit<typeof measured, 'compariso
 	})[0].status;
 const { comparison: _dropped, ...labelOnly } = measured;
 console.log(JSON.stringify({
+	planningAudit: 'accepted',
 	comparable: [
 		compare(measured),
 		compare({ ...measured, unitOfMeasure: 'seconds', value: 0.01 }),
@@ -99,6 +127,8 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	);
 	await writeFile(join(project, 'consumer.ts'), consumer);
 	await runCommand(['bun', 'install'], project);
+	for (const optional of ['svelte', '@sveltejs/kit'])
+		expect(existsSync(join(project, 'node_modules', optional))).toBe(false);
 	const typecheck = await runCommand(['bun', 'x', 'tsc', '-p', '.'], project, false);
 	expect(typecheck.stdout + typecheck.stderr).toBe('');
 
@@ -107,6 +137,7 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	const env = { HARNESS_EVIDENCE_DIR: evidence, TAKE_SCREENSHOT: '1' };
 	const run = await runCommand(['bun', 'consumer.ts', scenario], project, true, env);
 	expect(JSON.parse(run.stdout)).toEqual({
+		planningAudit: 'accepted',
 		comparable: ['passed', 'incompatible', 'incompatible', 'incomplete'],
 		required: 1,
 		requested: true,
@@ -117,5 +148,6 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	});
 	expect(await readFile(join(evidence, 'out.txt'), 'utf8')).toBe('hello');
 	expect(await readFile(join(evidence, 'captures.ndjson'), 'utf8')).toContain('"file":"out.txt"');
+	await forwardProfiles(evidence);
 	await rm(root, { recursive: true, force: true });
 }, 240_000);

@@ -1,8 +1,8 @@
-import { expect } from '../../../../test/verificationExpect';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test, vi } from 'vitest';
 import type { ComponentManifest } from '../../../../src/lib/contracts';
+import { expect } from '../../../../test/verificationExpect';
 import type { ProjectTaskRequest } from '../../src/models/DesktopBridge.types';
 import { fixture, git } from '../run-fixture';
 
@@ -97,7 +97,11 @@ test('Change reports actual registered source owners rather than the requested s
 			detail: expect.stringContaining(`Units changed: ${reference}`)
 		})
 	);
-	expect(f.events.at(-1)).toMatchObject({ kind: 'finished', verified: false });
+	expect(f.events.at(-1)).toMatchObject({
+		kind: 'failed',
+		message: expect.stringContaining('completion audit')
+	});
+	expect(f.events.some((event) => event.kind === 'finished')).toBe(false);
 }, 20000);
 
 test('an unexpected Ask write fails and preserves the changed file for review', async () => {

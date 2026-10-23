@@ -1,25 +1,26 @@
+import { TaskCompletionService } from '../../../../../../../src/services/verification-evidence/TaskCompletionService';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import type {
 	CreatedEntity,
 	RunRequest
 } from '../../../../models/development-tooling/DesktopBridge.types';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
-import { hostChanges } from '../../../../utils/development-tooling/hostChanges';
-import { planDesign } from '../../../../utils/planning-collaboration/plan-design/planDesign';
 import type { ProjectRunContext } from '../../../../utils/agents-providers/prepareProjectRun';
 import {
 	imageModel,
 	messageFor,
 	recordRunFailure
 } from '../../../../utils/agents-providers/prepareRun';
-import { projectProposal, proposalPrompt } from './projectProposal';
 import { type ProjectProposal } from '../../../../utils/agents-providers/projectProposal';
-import { proposalUnits } from './proposalUnits';
+import { hostChanges } from '../../../../utils/development-tooling/hostChanges';
 import { sourceChanges } from '../../../../utils/development-tooling/sourceChanges';
+import { planDesign } from '../../../../utils/planning-collaboration/plan-design/planDesign';
 import {
 	sourceSnapshot,
 	type SourceSnapshot
 } from '../../../../utils/verification-evidence/sourceSnapshot';
+import { projectProposal, proposalPrompt } from './projectProposal';
+import { proposalUnits } from './proposalUnits';
 
 /** The draft a run had written when it failed or was cancelled, by the error it ended with. */
 export const plannedBefore = new WeakMap<object, CreatedEntity>();
@@ -48,6 +49,7 @@ function answered(context: ProjectRunContext, text: string): ProjectProposal {
 	const say = (words: string) => context.emit({ runId: context.id, kind: 'text', text: words });
 	try {
 		const proposal = projectProposal(text);
+		new TaskCompletionService(context.root).requirePlan(proposal.proposal, context.request.text);
 		say(proposal.proposal);
 		return proposal;
 	} catch (error) {

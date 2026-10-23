@@ -7,34 +7,36 @@ import {
 	verifyConfigSchema,
 	type VerifyConfig
 } from '../../../core/verification-evidence/verifyTypes';
+import { ExplanationRepository } from '../../../repositories/verification-evidence/ExplanationRepository';
 import {
 	VerificationStoreRepository,
 	type StoredRecord
 } from '../../../repositories/verification-evidence/VerificationStoreRepository';
+import { ReasonPathService } from '../../../services/development-tooling/ReasonPathService';
+import { UnitRuntimeService } from '../../../services/execution-runtimes/UnitRuntimeService';
+import { CommitMessageService } from '../../../services/git-source-history/commit-message-service/CommitMessageService';
+import { ImpactService } from '../../../services/reports-media/impact-service/ImpactService';
 import {
 	BuildIdentityService,
 	type IdentifiedBuild
 } from '../../../services/verification-evidence/BuildIdentityService';
-import { CommitMessageService } from '../../../services/git-source-history/commit-message-service/CommitMessageService';
 import { EvidenceRestoreService } from '../../../services/verification-evidence/EvidenceRestoreService';
-import { ExplanationRepository } from '../../../repositories/verification-evidence/ExplanationRepository';
-import { ImpactService } from '../../../services/reports-media/impact-service/ImpactService';
-import { ReasonPathService } from '../../../services/development-tooling/ReasonPathService';
-import { TrustedBaseService } from './TrustedBaseService';
-import { UnitRuntimeService } from '../../../services/execution-runtimes/UnitRuntimeService';
 import {
 	VerificationCheckService,
 	type CheckReport
 } from '../../../services/verification-evidence/VerificationCheckService';
-import { VerificationService } from './verification-service/VerificationService';
 import {
 	commitLoader,
 	openRange,
 	type RevisionSide
 } from '../../development-tooling/loadRevisions';
 import { runtimeKind } from '../../development-tooling/runImpact';
+import { TrustedBaseService } from './TrustedBaseService';
+import { VerificationService } from './verification-service/VerificationService';
 
 export interface VerifyOptions {
+	/** Mandatory for task completion; historical verification contracts remain readable. */
+	requirePerformance?: boolean;
 	root?: string;
 	/** Commit to verify; `HEAD` by default. Uncommitted changes are never part of it. */
 	commit?: string;
@@ -75,6 +77,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 	const baseCommit = proven?.commit ?? null;
 	const { base, head } = await openRange({ root, base: baseCommit ?? 'none', head: commit });
 	const runtime = new UnitRuntimeService(root).kernel(runtimeKind(options.runtime));
+	const config = await verifyConfig(head);
 	const impact = await new ImpactService(runtime)
 		.compute(base, head)
 		.finally(() => runtime.close());
@@ -88,7 +91,8 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		base,
 		head,
 		impact,
-		config: await verifyConfig(head),
+		config,
+		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
 		env: process.env,
 		// What was written about the range is held to the writing limits: its reasons, and the
@@ -164,4 +168,8 @@ export function renderVerify(stored: StoredRecord): string {
 		...record.failures.map((failure) => `  ${failure}`),
 		`Record ${record.id.slice(0, 12)} in ${stored.directory}`
 	].join('\n');
+}
+
+function requiresPerformance(options: VerifyOptions, config: VerifyConfig): boolean {
+	return options.requirePerformance === true || config.performanceRequired === 1;
 }
