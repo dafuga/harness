@@ -75,10 +75,9 @@
 		if (workspace.capabilities.agents) return 'Historical revisions are read-only.';
 		return workspace.capabilities.reason || 'Commenting is not available to you in this project.';
 	});
-	const heading = $derived.by(() => {
-		if (thread) return 'Thread #' + thread.pin;
-		return target ? 'New thread' : 'New conversation';
-	});
+	const heading = $derived(
+		thread ? 'Thread #' + thread.pin : target ? 'New thread' : 'New conversation'
+	);
 	onMount(() => {
 		void comments.load();
 		if (workspace.capabilities.agents)
@@ -103,7 +102,6 @@
 				})
 				.catch((cause) => (failure = String(cause)));
 	});
-	/** What was said last stays in view, also a draft that is only pending. */
 	$effect(() => {
 		if (entries.length || run.streaming) scroller?.scrollTo({ top: scroller.scrollHeight });
 	});

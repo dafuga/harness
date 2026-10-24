@@ -1,0 +1,106 @@
+/* The shared modal brings no frame of its own here; this one is framed through its own wrapper. */
+.checkpoint-modal {
+	display: contents;
+}
+.checkpoint-modal :global(.viewer-dialog[open]) {
+	display: flex;
+	flex-direction: column;
+	width: min(640px, calc(100vw - 24px));
+	max-width: calc(100vw - 24px);
+	max-height: calc(100dvh - 24px);
+	padding: 0;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-xlarge);
+	background: var(--hx-color-surface);
+	color: inherit;
+	box-shadow: var(--hx-shadow-dialog);
+	overflow: hidden;
+}
+.checkpoint-modal :global(.viewer-dialog::backdrop) {
+	background: var(--hx-color-scrim);
+}
+.checkpoint-modal :global(.viewer-header),
+.checkpoint-modal :global(footer) {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-8);
+	padding: var(--hx-space-10) var(--hx-space-12) var(--hx-space-10) var(--hx-space-20);
+}
+.checkpoint-modal :global(.viewer-header) {
+	justify-content: space-between;
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.checkpoint-modal :global(.viewer-header button) {
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border-color: transparent;
+	background: none;
+}
+.checkpoint-modal :global(.viewer-content) {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	overscroll-behavior: contain;
+	padding: var(--hx-space-20);
+}
+.checkpoint-modal :global(footer) {
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.fields,
+label {
+	display: grid;
+	gap: var(--hx-space-16);
+}
+label {
+	gap: var(--hx-space-6);
+}
+label > span {
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+}
+textarea {
+	min-height: 96px;
+	resize: vertical;
+}
+input:focus-visible,
+textarea:focus-visible {
+	outline: var(--hx-border-thick) solid var(--hx-color-primary);
+}
+.name {
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: center;
+	gap: var(--hx-space-12);
+}
+.name > span {
+	color: var(--hx-color-text-muted);
+	font-weight: var(--hx-style-weight-regular);
+}
+.name input {
+	padding-block: var(--hx-space-6);
+	background: none;
+}
+.disclosure,
+.quiet {
+	justify-self: start;
+	border-color: transparent;
+	background: none;
+	color: var(--hx-color-text-muted);
+}
+.disclosure {
+	padding-inline: 0;
+}
+.disclosure:hover,
+.disclosure[aria-expanded='true'],
+.quiet:hover {
+	color: var(--hx-color-primary);
+}
+.rules {
+	padding-top: var(--hx-space-16);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.done {
+	margin-inline-start: auto;
+}

@@ -1,0 +1,39 @@
+.image-panel,
+figure,
+label {
+	display: grid;
+	gap: var(--hx-space-10);
+	min-width: 0;
+	margin: 0;
+}
+img {
+	width: 100%;
+	max-height: min(420px, 45dvh);
+	object-fit: contain;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius);
+	background: var(--hx-color-background);
+}
+label > span {
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+}
+textarea {
+	min-height: 64px;
+	resize: vertical;
+}
+textarea:focus-visible {
+	outline: var(--hx-border-thick) solid var(--hx-color-primary);
+}
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: var(--hx-space-8);
+}
+p,
+figcaption {
+	margin: 0;
+	font-size: var(--hx-type-size-xs);
+	line-height: var(--hx-style-leading-normal);
+}
