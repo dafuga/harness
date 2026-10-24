@@ -137,7 +137,10 @@
 			"PerformanceProfileService",
 			"registerTaskCommand",
 			"PerformanceEvidenceValidator",
-			"SourceProfileAdapter"
+			"SourceProfileAdapter",
+			"ApiCommand",
+			"HarnessApiService",
+			"HarnessHttpAdapter"
 		]
 	},
 	"contract": {
@@ -178,6 +181,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.networking-security-harness-http",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.provider-catalog",
 			"via": "reexport",
 			"origin": "derived"
@@ -204,6 +212,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.networking-security-api",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -629,6 +642,11 @@
 		},
 		{
 			"unit": "service.native-picker-switch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api",
 			"via": "reexport",
 			"origin": "derived"
 		},

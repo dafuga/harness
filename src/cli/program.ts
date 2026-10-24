@@ -1,4 +1,5 @@
 import { registerTaskCommand } from './program/TaskCommand';
+import { ApiCommand } from '../commands/networking-security/ApiCommand';
 import { sdkPackage } from '../utils/development-tooling/buildStamp';
 import { registerCodexCommand } from './program/CodexCommand';
 import { registerBenchmarkCommand } from './program/BenchmarkCommand';
@@ -50,6 +51,7 @@ export function buildProgram(): Command {
 	registerBudgetCommand(program);
 	registerVerifyCommand(program);
 	registerTaskCommand(program);
+	new ApiCommand().register(program);
 	registerHistoryCommand(program);
 	registerHooksCommand(program);
 	registerConsoleCommand(program);

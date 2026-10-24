@@ -184,3 +184,6 @@ export { PerformanceProfileService } from './services/verification-evidence/Perf
 export { registerTaskCommand } from './cli/program/TaskCommand';
 export { PerformanceEvidenceValidator } from './validators/verification-evidence/PerformanceEvidenceValidator';
 export { SourceProfileAdapter } from './adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter';
+export { ApiCommand } from './commands/networking-security/ApiCommand';
+export { HarnessApiService } from './services/networking-security/HarnessApiService';
+export { HarnessHttpAdapter } from './adapters/networking-security/HarnessHttpAdapter';

@@ -27,7 +27,11 @@ const allowed = [
 	'cancelRun',
 	'capabilities',
 	'addComment',
-	'pendingComments'
+	'pendingComments',
+	'source',
+	'image',
+	'evidence',
+	'artifact'
 ];
 /** Owner-only HTTP sessions use the same validated bridge and repository lock as the desktop. */
 export class ConsoleAgentService {
