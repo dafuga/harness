@@ -4917,7 +4917,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5327,6 +5327,13 @@
 			"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
 			"reason": "Propagate a bounded resource context to the provider transport without changing model, permission or output validation.",
 			"definition": "674dfb8331fb99851d0a01f11b34a867ed8284345ff1959edf545dbdd696b6ec"
+		},
+		{
+			"unit": "reports.function.replay-locale",
+			"name": "replayLocale",
+			"commit": "74d4daf36",
+			"reason": "Register English and French replay dictionaries from shared resources without changing the English default.",
+			"definition": "69c84c3d2f4e87e22baecca4b1a85587ac66adf65b742c06f622f3cf2717d07c"
 		}
 	]
 }

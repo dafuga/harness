@@ -54,7 +54,7 @@
 				</ol>
 			</nav>
 			<h1 id="translations-title">Translations</h1>
-			<p class="ex-lead">The strings used in the app, side by side in each language.</p>
+			<p class="ex-lead">Registered app strings, side by side in each language.</p>
 			<ExplorerControls noun="translations" bind:filter />
 			{#if !catalog}
 				<p class="ex-empty">No translation catalog is recorded at this revision.</p>
@@ -98,6 +98,8 @@
 											>
 										{/each}
 										<td
+											class="ex-translations-usage"
+											class:ex-translations-unused={!row.usedBy.length}
 											><ul class="ex-translations-callers">
 												{#each row.usedBy as id}{@const entity = host.entities.find(
 														(item) => item.id === id

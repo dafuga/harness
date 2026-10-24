@@ -63,3 +63,37 @@
 .ex-translations-gaps {
 	margin-block: var(--hx-space-4);
 }
+
+/* Match the documented small-tablet breakpoint; keep both requested languages visible together. */
+@media (max-width: 720px) {
+	.ex-translations-scroll {
+		overflow-x: hidden;
+	}
+	.ex-translations table,
+	.ex-translations thead,
+	.ex-translations tbody {
+		display: block;
+	}
+	.ex-translations tr {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.ex-translations th,
+	.ex-translations td {
+		min-width: 0;
+	}
+	.ex-translations thead th:first-child,
+	.ex-translations thead th:last-child {
+		display: none;
+	}
+	.ex-translations tbody th,
+	.ex-translations-usage {
+		grid-column: 1 / -1;
+	}
+	.ex-translations tbody th {
+		background: var(--hx-color-surface-raised);
+	}
+	.ex-translations-usage.ex-translations-unused {
+		display: none;
+	}
+}
