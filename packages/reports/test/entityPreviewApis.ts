@@ -14,6 +14,9 @@ export async function reviewApis(page: Page, viewport: string): Promise<void> {
 	await expect(page.getByRole('status').filter({ hasText: '3 of 3 apis shown' })).toBeVisible();
 	await capture(page, `api-catalog-${viewport}`, [
 		'reports.component.harness-explorer-catalog-screen',
+		'reports.component.harness-explorer-index',
+		'reports.component.explorer-ui-explorer-module-card',
+		'reports.component.harness-explorer-content',
 		'reports.component.harness-harness-navbar'
 	]);
 	const orders = page.getByRole('article', { name: '/api/orders', exact: true });

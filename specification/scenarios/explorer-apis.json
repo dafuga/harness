@@ -9,7 +9,10 @@
 		"reports.component.entity-contract",
 		"reports.component.harness-entity-header",
 		"reports.component.harness-entity-sections",
-		"reports.component.harness-entity-relations"
+		"reports.component.harness-entity-relations",
+		"reports.component.harness-explorer-index",
+		"reports.component.explorer-ui-explorer-module-card",
+		"reports.component.harness-explorer-content"
 	],
 	"states": [
 		{
@@ -24,7 +27,10 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.harness-explorer-catalog-screen",
-				"reports.component.harness-harness-navbar"
+				"reports.component.harness-harness-navbar",
+				"reports.component.harness-explorer-index",
+				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.harness-explorer-content"
 			]
 		},
 		{

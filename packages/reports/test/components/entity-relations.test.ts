@@ -119,7 +119,7 @@ test('a page leads to its components and a component to the components inside it
 	const tabs = [...page.matchAll(/role="tab"[^>]*>(.*?)<\/(?:a|button)>/gs)].map((match) =>
 		words(match[1]).trim()
 	);
-	expect(tabs).toEqual(['Overview', 'Models', 'Uses', 'States', 'History', 'Source']);
+	expect(tabs).toEqual(['Overview', 'Models', 'APIs', 'Uses', 'States', 'History', 'Source']);
 });
 
 test('page models include models reached through services and remain bound to the revision', async () => {

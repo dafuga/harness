@@ -21,6 +21,7 @@ const [commit, tip] = ['a'.repeat(40), 'b'.repeat(40)];
 test('the shared app has seven categories, Shells after Pages', () => {
 	expect([...categories]).toEqual([
 		'pages',
+		'apis',
 		'layouts',
 		'components',
 		'functions',
