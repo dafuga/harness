@@ -56,6 +56,7 @@ export class RevisionDetailService {
 			schemaVersion: 1,
 			commit,
 			platforms: stored.platforms,
+			projectDependencies: stored.projectDependencies,
 			registry: stored.registry,
 			comparison: comparison(sound),
 			sourceImpact: (await this.kept.source.of(commit)) ?? null,
