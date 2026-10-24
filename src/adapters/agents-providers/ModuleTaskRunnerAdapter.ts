@@ -43,12 +43,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 	private claude(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'result');
 		if (code !== 0 || !result || result.is_error) {
-			const quotaRejected = events.some(
-				(e) =>
-					(e.type === 'rate_limit_event' && e.rate_limit_info?.status === 'rejected') ||
-					(e.type === 'assistant' && e.error === 'rate_limit') ||
-					(typeof e.error === 'object' && e.error?.type === 'rate_limit_error')
-			);
+			const quotaRejected = events.some(rejectedQuotaEvent);
 			throw Object.assign(
 				new Error(
 					quotaRejected
@@ -58,21 +53,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 				{ quotaRejected }
 			);
 		}
-		const reported = events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
-		if (result.permission_denials?.length)
-			throw new Error('Claude was denied a required tool; review the preserved worktree.');
-		if (
-			reported !== input.model ||
-			Object.keys(result.modelUsage ?? {}).some((model) => model !== input.model)
-		)
-			throw new Error('Claude ran a different model.');
-		return {
-			provider: input.provider,
-			model: input.model,
-			intelligence: input.intelligence,
-			text: (result.result ?? '').slice(-16000),
-			reportedModel: reported
-		};
+		return completedClaudeTask(events, result, input);
 	}
 	private codex(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'turn.completed');
@@ -112,4 +93,31 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'Read,Edit,Write,Glob,Grep',
 		'--no-session-persistence'
 	];
+}
+function rejectedQuotaEvent(event: TaskPublicEvent): boolean {
+	if (event.type === 'rate_limit_event' && event.rate_limit_info?.status === 'rejected')
+		return true;
+	if (event.type === 'assistant' && event.error === 'rate_limit') return true;
+	return typeof event.error === 'object' && event.error?.type === 'rate_limit_error';
+}
+function completedClaudeTask(
+	events: TaskPublicEvent[],
+	result: TaskPublicEvent,
+	input: TaskRunInput
+): TaskRunResult {
+	const reported = events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
+	if (result.permission_denials?.length)
+		throw new Error('Claude was denied a required tool; review the preserved worktree.');
+	if (
+		reported !== input.model ||
+		Object.keys(result.modelUsage ?? {}).some((model) => model !== input.model)
+	)
+		throw new Error('Claude ran a different model.');
+	return {
+		provider: input.provider,
+		model: input.model,
+		intelligence: input.intelligence,
+		text: (result.result ?? '').slice(-16000),
+		reportedModel: reported
+	};
 }

@@ -36,15 +36,14 @@ export function taskSelection(
 			);
 		return { provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'medium' };
 	}
-	const provider =
-		task.provider ??
-		(task.model.startsWith('claude-')
-			? 'claude'
-			: task.model.startsWith('gpt-')
-				? 'codex'
-				: undefined);
+	const provider = task.provider ?? modelProvider(task.model);
 	if (!provider) throw new Error('Set provider for this exact model id.');
 	if (provider === 'claude' && task.intelligence === 'ultra')
 		throw new Error('Claude does not support ultra intelligence.');
 	return { provider, model: task.model, intelligence: task.intelligence ?? 'medium' };
+}
+function modelProvider(model: string): TaskSelection['provider'] | undefined {
+	if (model.startsWith('claude-')) return 'claude';
+	if (model.startsWith('gpt-')) return 'codex';
+	return undefined;
 }

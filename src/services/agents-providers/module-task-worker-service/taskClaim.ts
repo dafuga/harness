@@ -44,8 +44,13 @@ export function finishTask(
 	result: ModuleTask['result']
 ) {
 	const current = queue.tasks.find((t) => t.id === claimed.id);
-	if (!current || current.status !== 'running' || current.claim?.token !== claimed.claim?.token)
-		throw new Error('Task claim changed; result was not overwritten.');
+	if (
+		current?.status !== 'running' ||
+		current.claim?.token !== claimed.claim?.token ||
+		current.contractHash !== claimed.contractHash ||
+		current.sourceCommit !== claimed.sourceCommit
+	)
+		throw new Error('Task definition or claim changed; result was not overwritten.');
 	current.status = result?.error ? 'failed' : 'review';
 	current.result = result;
 }

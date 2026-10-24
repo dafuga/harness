@@ -22,7 +22,7 @@ export class ModuleTaskRepository {
 	async update<T>(change: (data: ModuleTaskQueue) => T, source?: string) {
 		for (let attempt = 0; attempt < 16; attempt++) {
 			const before = await this.read(),
-				after = structuredClone(before.data);
+				after = JSON.parse(stableJson(before.data)) as ModuleTaskQueue;
 			const value = change(after),
 				text = stableJson(queueSchema.parse(after));
 			if (text === stableJson(before.data)) return { value, commit: before.commit };

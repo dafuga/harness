@@ -11,7 +11,7 @@ export async function taskOwner(git: GitAdapter) {
 	try {
 		await writeFile(path, randomUUID(), { flag: 'wx', mode: 0o600 });
 	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error;
+		if ((error as { code?: string }).code !== 'EEXIST') throw error;
 	}
 	const workspace = (await readFile(path, 'utf8')).trim();
 	if (!/^[a-f0-9-]{36}$/.test(workspace)) throw new Error('Invalid local task owner identity.');

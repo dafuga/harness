@@ -41,9 +41,7 @@ export class ModuleTaskWorkerService {
 			this.root,
 			common,
 			'..',
-			'.cache',
-			'harness',
-			'task-worktrees',
+			'.cache/harness/task-worktrees',
 			task.claim!.token
 		);
 		let result = pendingTaskResult(selection, worktree);
