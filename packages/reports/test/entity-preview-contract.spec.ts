@@ -44,11 +44,34 @@ async function readableTables(scope: Locator): Promise<void> {
 	}
 }
 
-async function modelMarkers(page: Page, contract: boolean): Promise<void> {
+async function reviewModelPane(page: Page, contract: boolean): Promise<void> {
 	const markers = ['harness-entity-header', 'harness-entity-sections'];
 	if (contract) markers.push('entity-contract', 'contract-table');
 	for (const marker of markers)
 		await expect(page.locator(`[data-harness-component="${marker}"]`).first()).toBeVisible();
+	if (!contract) return;
+	await expect(
+		page.getByRole('region', { name: / method$/ }).getByRole('heading', { level: 3 })
+	).toHaveText([
+		'create(input)',
+		'findBy(fields)',
+		'find(id)',
+		'update(id, input)',
+		'delete(id)',
+		'initialize(adapter)'
+	]);
+	const heading = page
+		.getByRole('region', { name: 'create method', exact: true })
+		.getByRole('heading');
+	const nameColor = await heading
+		.getByText('create', { exact: true })
+		.evaluate((node) => getComputedStyle(node).color);
+	const parameterColor = await heading
+		.getByText('input', { exact: true })
+		.evaluate((node) => getComputedStyle(node).color);
+	expect(nameColor, 'method and parameter names have distinct text colors').not.toBe(
+		parameterColor
+	);
 }
 
 async function modelExample(page: Page): Promise<void> {
@@ -98,34 +121,12 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			const route = { category: 'models' as const, entity: 'app.model.order', commit };
 			await open(page, { ...route, tab: 'contract' }, 'groups');
 			await ready(page);
-			await modelMarkers(page, true);
+			await reviewModelPane(page, true);
 			await capture(page, `model-contract-${commit ? 'commit' : 'tip'}-${viewport}`, [
 				'reports.component.entity-contract',
 				'reports.component.contract-table',
 				...modelPanes
 			]);
-			await expect(
-				page.getByRole('region', { name: / method$/ }).getByRole('heading', { level: 3 })
-			).toHaveText([
-				'create(input)',
-				'findBy(fields)',
-				'find(id)',
-				'update(id, input)',
-				'delete(id)',
-				'initialize(adapter)'
-			]);
-			const heading = page
-				.getByRole('region', { name: 'create method', exact: true })
-				.getByRole('heading');
-			const nameColor = await heading
-				.getByText('create', { exact: true })
-				.evaluate((node) => getComputedStyle(node).color);
-			const parameterColor = await heading
-				.getByText('input', { exact: true })
-				.evaluate((node) => getComputedStyle(node).color);
-			expect(nameColor, 'method and parameter names have distinct text colors').not.toBe(
-				parameterColor
-			);
 			for (const method of ['initialize', 'create', 'findBy', 'find', 'update', 'delete'])
 				await expect(
 					page.getByRole('region', { name: `${method} method`, exact: true })
@@ -136,7 +137,7 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			await modelExample(page);
 			await page.getByRole('tab', { name: 'Table', exact: true }).click();
 			await ready(page);
-			await modelMarkers(page, false);
+			await reviewModelPane(page, false);
 			await capture(page, `model-table-${commit ? 'commit' : 'tip'}-${viewport}`, modelPanes);
 			await expect(
 				page.getByRole('heading', { name: commit ? 'purchases' : 'orders', exact: true })
