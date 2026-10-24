@@ -1,0 +1,69 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wUOWPR
+
+ ✓ test/api-cli.e2e.test.ts (10 tests) 13297ms
+   ✓ API CLI discovers resources and reads arbitrary hosted resources, queries and large JSON  994ms
+   ✓ API CLI reads local contracts at the selected revision  1085ms
+   ✓ API CLI reads hosted contracts at the selected revision  980ms
+   ✓ API CLI defines a local contract and preserves explicit agent identity  1969ms
+   ✓ API CLI defines a hosted contract and preserves explicit agent identity  1998ms
+   ✓ API CLI downloads verified local screenshots and retains provenance  978ms
+   ✓ API CLI downloads verified hosted screenshots and retains provenance  963ms
+   ✓ API CLI reuses private local sessions across invocations without exposing credentials  976ms
+   ✓ API CLI refuses redirects, off-origin paths and insecure remote URLs  1906ms
+   ✓ API CLI raw requests retain methods and bodies, binary output and HTTP errors  1446ms
+ ✓ test/api-context.e2e.test.ts (5 tests) 2975ms
+   ✓ API CLI refuses local contract writes when a historical commit is selected  509ms
+   ✓ API CLI refuses hosted contract writes when a historical commit is selected  486ms
+   ✓ API CLI supplies numeric local history pagination while retaining entity and revision binding  995ms
+   ✓ API CLI shows only the selected local run in agent events  506ms
+   ✓ API CLI shows only the selected hosted run in agent events  479ms
+ ✓ test/api-registry.e2e.test.ts (4 tests) 1980ms
+   ✓ API CLI lists every registered local unit, including backend entries outside the catalog  524ms
+   ✓ API CLI lists every registered hosted unit, including backend entries outside the catalog  489ms
+   ✓ API CLI reads local backend contracts without relying on a visual catalog entry  497ms
+   ✓ API CLI reads hosted backend contracts without relying on a visual catalog entry  468ms
+ ✓ test/services/networking-security/api-session.test.ts (1 test) 114ms
+
+ Test Files  4 passed (4)
+      Tests  20 passed (20)
+   Start at  19:25:35
+   Duration  22.41s (transform 100ms, setup 227ms, collect 89ms, tests 18.37s, environment 0ms, prepare 144ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wUOWPR/packages/reports
+
+ ✓ test/console-api.test.ts (3 tests) 23605ms
+   ✓ the real local API bridge returns committed source and hash-bound recorded screenshot bytes  825ms
+   ✓ the real local API bridge saves the proposed contract through planning validation  703ms
+ ✓ test/console-agent.test.ts (3 tests) 8ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  19:25:58
+   Duration  27.43s (transform 1.87s, setup 0ms, collect 3.52s, tests 23.61s, environment 0ms, prepare 77ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wUOWPR/packages/hub
+
+ ✓ test/controllers/hub-agent.test.ts (7 tests) 27ms
+ ✓ test/services/hub-projection.test.ts (4 tests) 20ms
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  19:26:27
+   Duration  1.52s (transform 622ms, setup 0ms, collect 1.20s, tests 47ms, environment 0ms, prepare 68ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wUOWPR/packages/desktop
+
+ ✓ test/utils/project-proposal.test.ts (29 tests) 5ms
+ ✓ test/utils/proposal-units.test.ts (4 tests) 3ms
+ ✓ test/utils/desktop-ipc.test.ts (2 tests) 3ms
+ ✓ test/utils/evidence-payload.test.ts (1 test) 2ms
+
+ Test Files  4 passed (4)
+      Tests  36 passed (36)
+   Start at  19:26:30
+   Duration  885ms (transform 98ms, setup 221ms, collect 86ms, tests 13ms, environment 0ms, prepare 131ms)
+
