@@ -38,7 +38,11 @@
 	</p>
 {/snippet}
 
-<section class="agents" data-harness-component="chat-agents" aria-busy={activity.loading}>
+<section
+	class="agents"
+	data-harness-component="agents-providers-chat-agents"
+	aria-busy={activity.loading}
+>
 	<div class="agents-head">
 		{#if sample}<p class="agents-read">
 				<span><strong>{working ?? 'Unknown'}</strong> working</span>
