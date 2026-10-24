@@ -19,7 +19,9 @@ export async function inspectConfigValues(
 	await inspectConfigStrings(page);
 	await inspectConfigExpressions(page);
 	for (const [name, value] of [['schema', configExpression(commit)]]) {
-		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+		const row = table
+			.getByRole('row')
+			.filter({ has: page.getByRole('link', { name, exact: true }) });
 		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
 		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
 		expect(
@@ -48,9 +50,9 @@ export async function inspectConfigValues(
 		await expect(dialog).toHaveCount(0);
 		await expect(inspect).toBeFocused();
 	}
-	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.enabled' })).toContainText(
-		'false'
-	);
+	await expect(
+		table.getByRole('row').filter({ has: page.getByRole('link', { name: 'enabled', exact: true }) })
+	).toContainText('false');
 	expect(await table.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
 }
 
@@ -58,7 +60,9 @@ export async function inspectConfigValues(
 async function inspectConfigExpressions(page: Page): Promise<void> {
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	for (const [name, source] of Object.entries(configExpressions)) {
-		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+		const row = table
+			.getByRole('row')
+			.filter({ has: page.getByRole('link', { name, exact: true }) });
 		const text = row.locator('td').last().locator('code');
 		await expect
 			.soft(text, 'config expression prefixes are visible inline')
@@ -92,7 +96,9 @@ async function inspectConfigExpressions(page: Page): Promise<void> {
 async function inspectConfigStrings(page: Page): Promise<void> {
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	for (const [name, literal] of Object.entries(configStrings)) {
-		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+		const row = table
+			.getByRole('row')
+			.filter({ has: page.getByRole('link', { name, exact: true }) });
 		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
 		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
 		await expect
@@ -123,8 +129,12 @@ async function inspectConfigStrings(page: Page): Promise<void> {
 
 export async function inspectConfigCollections(page: Page, viewport: string): Promise<void> {
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
-	const schema = table.getByRole('row').filter({ hasText: 'orderSettings.schema' });
-	const steps = table.getByRole('row').filter({ hasText: 'orderSettings.steps' });
+	const schema = table
+		.getByRole('row')
+		.filter({ has: page.getByRole('link', { name: 'schema', exact: true }) });
+	const steps = table
+		.getByRole('row')
+		.filter({ has: page.getByRole('link', { name: 'steps', exact: true }) });
 	const inspect = steps.getByRole('button', {
 		name: 'View value for orderSettings.steps',
 		exact: true
@@ -132,7 +142,9 @@ export async function inspectConfigCollections(page: Page, viewport: string): Pr
 	await capture(page, `groups-config-collections-${viewport}`, configUnits);
 	await expect(steps).toContainText('2 items');
 	await expect(
-		table.getByRole('row').filter({ hasText: 'orderSettings.emptySteps' })
+		table
+			.getByRole('row')
+			.filter({ has: page.getByRole('link', { name: 'emptySteps', exact: true }) })
 	).toContainText('0 items');
 	expect(await steps.locator('button svg path').getAttribute('d')).not.toBe(
 		await schema.locator('button svg path').getAttribute('d')

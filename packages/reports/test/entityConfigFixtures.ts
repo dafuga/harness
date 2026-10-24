@@ -35,6 +35,7 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 	if (unit.kind !== 'config') return unit;
 	const values = {
 		pageSize: commit === commits.first ? '10' : '25',
+		'build.cssCodeSplit': 'true',
 		defaultSort: JSON.stringify(configStrings.defaultSort),
 		enabled: 'false',
 		emptyLabel: '""',
