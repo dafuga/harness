@@ -33,6 +33,8 @@ Keep schemas, protocol invariants, lookup tables, fixture/build machinery and do
 
 ## Shared preview lifecycle
 
+- Land completed work on the common `main` codebase. Fetch and safely incorporate remote `main`, preserve unrelated work and source history, and give the coordinated merger a frozen source head until its merge callback.
+- Show the actual merged `main` version with the change: verify runtime source and served revision data, select current `main`, then capture and inspect fresh pixels. Report pending merge or publication separately; an older commit or feature fixture is not current-main delivery.
 - Keep one persistent Harness browsing preview across chats and worktrees. The shared endpoint is currently `http://127.0.0.1:5690`, with ownership status at `http://127.0.0.1:47840/__harness_preview__`. Verify the live owner and served source/history; Platforms currently owns updates.
 - Reuse that preview. When a different revision or data set is needed, coordinate its update with the owner; do not describe an older served build as proof of unmerged work.
 - Do not evade the singleton through `HARNESS_PREVIEW_OWNER_PORT`, another free port, direct Vite or `build/index.js` launches, or `report serve`. An additional persistent preview requires Daniel's explicit request.

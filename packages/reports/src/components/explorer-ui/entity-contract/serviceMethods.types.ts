@@ -4,7 +4,7 @@ export type Item = HarnessUnit['contract']['inputs'][number];
 
 export type Recorded = NonNullable<HarnessUnit['serviceClasses']>[number];
 
-/** A class of a service and the methods its contract is read by, its constructor first. */
+/** A service class and its declared methods, presented with CRUD actions first. */
 export interface ServiceClass {
 	name: string;
 	methods: string[];
