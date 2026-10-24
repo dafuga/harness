@@ -26,7 +26,7 @@
 		host: ExplorerScreenProps;
 		nav: EntityNav;
 		/** Which of the two sections is drawn; an overview draws both. */
-		show?: 'both' | 'used-in' | 'uses' | 'models';
+		show?: 'both' | 'used-in' | 'uses' | 'models' | 'apis';
 		/** The shown commit removed the entity: its revision holds no relation of it. */
 		removed?: boolean;
 	} = $props();
@@ -42,6 +42,25 @@
 		])
 	);
 	const gone = 'Removed at this commit: ';
+	/** What a page uses through its components and services: its data models, or its APIs. */
+	const reads = {
+		models: {
+			title: 'Models',
+			icon: 'database',
+			about: 'Data models used by this page, including through its components and services.',
+			none: 'No data models are recorded for this page.',
+			lost: 'models are unavailable at this revision.'
+		},
+		apis: {
+			title: 'APIs',
+			icon: 'route',
+			about: 'Requests recorded in the source of this page, its components and services.',
+			none: 'No APIs are recorded for this page.',
+			lost: 'APIs are unavailable at this revision.'
+		}
+	} as const;
+	let read = $derived(show === 'apis' ? reads.apis : reads.models);
+	let reached = $derived((show === 'apis' ? relations.apis : relations.models) ?? []);
 	/** A dependency no collection lists, on its card: its own name and what uses it, as a row has. */
 	const supportRow = (support: ExplorerSupport): SupportRow => {
 		const related = host.lens.relations(support.id);
@@ -79,23 +98,18 @@
 
 <!-- What uses the entity and what it uses are two sections; neither names a file. -->
 <hx-div class="ex-relations" data-harness-component="harness-entity-relations">
-	{#if show === 'models'}
-		<hx-section class="ex-card" aria-label="Models">
+	{#if show === 'models' || show === 'apis'}
+		<hx-section class="ex-card" aria-label={read.title}>
 			<hx-h2>
-				<HarnessIcon name="database" size={22} /> Models
-				<hx-span class="ex-count">{relations.models?.length ?? 0}</hx-span>
+				<HarnessIcon name={read.icon} size={22} />
+				{read.title}
+				<hx-span class="ex-count">{reached.length}</hx-span>
 			</hx-h2>
-			<hx-p class="ex-soft">
-				Data models used by this page, including through its components and services.
-			</hx-p>
-			{#if !relations.models?.length}
-				<hx-p class="ex-soft">
-					{removed
-						? `${gone}models are unavailable at this revision.`
-						: 'No data models are recorded for this page.'}
-				</hx-p>
+			<hx-p class="ex-soft">{read.about}</hx-p>
+			{#if !reached.length}
+				<hx-p class="ex-soft">{removed ? `${gone}${read.lost}` : read.none}</hx-p>
 			{:else}
-				{@render cards(relations.models, 'Models')}
+				{@render cards(reached, read.title)}
 			{/if}
 		</hx-section>
 	{/if}

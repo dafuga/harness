@@ -8,6 +8,7 @@ import type { Workspace } from '../../lib/stores/projects-sessions/workspace.sve
  * `relationships` is the former address of what `used-in` and `uses` show: it is still read.
  */
 export const routeSuffixes = [
+	'apis',
 	'designs',
 	'plan',
 	'used-in',
@@ -23,6 +24,7 @@ export const routeSuffixes = [
 /** Labels and addresses of the shared entity page sections. */
 export const workspaceSections = {
 	Overview: '',
+	APIs: 'apis',
 	Designs: 'designs',
 	Plan: 'plan',
 	'Used In': 'used-in',
