@@ -1,3 +1,4 @@
+import type { ComponentManifest } from '../../../core/unitTypes';
 import { explorerCategories } from '../../../utils/explorerRoute';
 import type { HarnessApiService } from '../../../services/networking-security/HarnessApiService';
 import type { ApiSnapshot } from '../../../services/networking-security/HarnessApiService.types';
@@ -61,6 +62,12 @@ export async function apiResource(
 	const snapshot = await client.snapshot();
 	if (['registry', 'units', 'contracts'].includes(resource))
 		return apiRegistry(client, snapshot, resource, id);
+	if (resource === 'apis') {
+		const units = (await apiRegistry(client, snapshot, 'units')) as ComponentManifest[];
+		return units.filter(
+			(unit) => ['endpoint', 'api'].includes(unit.kind) && unit.status === 'active'
+		);
+	}
 	const collection = catalogResource(snapshot, resource);
 	if (collection !== undefined) return collection;
 	if (!id) fail('Name the entity id after this resource, or use a raw /api/ path.');

@@ -42,7 +42,7 @@ The Explorer’s APIs catalog lists HTTP endpoints and method exports at the sel
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;
-the selected server owns the project data, permissions and agent execution.
+the selected server owns the project data, permissions and agent execution. API reads return active endpoint registry records, including contracts, independently of visual catalog admission.
 The default server is the managed local preview at `http://127.0.0.1:5690`.
 Use `--url` or `HARNESS_API_URL` for another server. Select hosted projects with
 `--project` or `HARNESS_API_PROJECT`; use `--mode hosted` to list hosted projects
