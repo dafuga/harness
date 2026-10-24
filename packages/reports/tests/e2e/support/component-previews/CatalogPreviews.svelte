@@ -15,6 +15,9 @@
 	const Component = previewComponent(unit.source);
 	// A layout frames a page, so it is given the marked child slot below and never a real page.
 	const layout = unit.kind === 'layout';
+	// It is drawn in the Reports root its pages are drawn in, so the chat that root keeps across them
+	// is drawn with it; no other preview loads that root.
+	const Root = layout ? previewComponent('packages/reports/src/routes/+layout.svelte') : null;
 	// A route module draws a whole screen of its application, as the screen components do.
 	const fullFrame =
 		layout ||
@@ -77,8 +80,8 @@
 						<p class="preview-child-hint">Your page renders here</p>
 					</section>
 				{/snippet}
-				{#if layout}
-					<Component {...fixture.props} children={layoutChild} />
+				{#if Root}
+					<Root><Component {...fixture.props} children={layoutChild} /></Root>
 				{:else if id === 'reports.component.harness-entity-history-row'}
 					<div class="ex-scroll">
 						<table class="ex-table ex-history" aria-label="History row preview">
@@ -156,10 +159,6 @@
 			var(--panel);
 		text-align: center;
 		overflow-wrap: anywhere;
-	}
-	/* A layout that draws nothing around its page leaves the slot the gutters of the preview. */
-	.preview-content > .preview-child {
-		margin: 20px var(--hx-gutter, 20px) 0;
 	}
 	.preview-child-icon {
 		display: grid;

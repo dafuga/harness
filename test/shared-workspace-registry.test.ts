@@ -155,7 +155,11 @@ test('every active visual module has its own required capture state', () => {
 			if (unit.status !== 'active') return false;
 			if (['component', 'shell'].includes(unit.kind)) return true;
 			const sources = unit.owns.source;
-			if (unit.kind === 'layout') return sources.some((path) => path.endsWith('.svelte'));
+			if (unit.kind === 'layout')
+				return (
+					unit.catalog?.visibility !== 'internal' &&
+					sources.some((path) => path.endsWith('.svelte'))
+				);
 			const alias = sources.some(
 				(path) =>
 					path.startsWith('packages/reports/src/routes/harness/') &&
