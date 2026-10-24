@@ -104,7 +104,6 @@
 				found.set(name, style.getPropertyValue(name).replace(/\s+/g, ' ').trim());
 		}
 	}
-
 	/** The tokens in the order the token source declares them, with what each one resolves to. */
 	function discoverTokens(): StyleToken[] {
 		const found = new Map<string, string>();
