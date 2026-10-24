@@ -1,0 +1,65 @@
+/* Keep the language comparison scroll inside its frame, including on phones. */
+.ex-translations {
+	min-width: 0;
+}
+.ex-translations-scroll {
+	overflow-x: auto;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius);
+}
+.ex-translations table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+}
+.ex-translations th,
+.ex-translations td {
+	padding: var(--hx-space-4);
+	vertical-align: top;
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+	min-width: calc(var(--hx-space-64) * 3);
+	overflow-wrap: anywhere;
+	white-space: normal;
+}
+.ex-translations thead {
+	background: var(--hx-color-surface-raised);
+}
+.ex-translations thead span,
+.ex-translations small {
+	display: block;
+	color: var(--hx-color-text-muted);
+	font-weight: normal;
+	font-size: var(--hx-type-size-sm);
+}
+.ex-translations tbody th {
+	font-weight: normal;
+}
+.ex-translations code {
+	color: var(--hx-color-text);
+}
+.ex-translations td[lang] {
+	line-height: var(--hx-style-leading-normal);
+}
+.ex-translations tr:last-child > * {
+	border-bottom: none;
+}
+.ex-translations-callers {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-2);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.ex-translations-callers a {
+	text-decoration: underline;
+	text-underline-offset: var(--hx-space-1);
+}
+.ex-translations-missing {
+	color: var(--hx-color-text-muted);
+	font-style: italic;
+}
+.ex-translations-more,
+.ex-translations-gaps {
+	margin-block: var(--hx-space-4);
+}

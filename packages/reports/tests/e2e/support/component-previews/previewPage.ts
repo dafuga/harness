@@ -81,7 +81,8 @@ async function readyRoute(page: Page, id: string) {
 		'desktop.page.projects-project-id-harness-path': 'Pages',
 		'desktop.page.settings': 'Settings',
 		'desktop.page.game': 'Game Views',
-		'reports.page.harness-branch-branch-at-styles': 'Styles'
+		'reports.page.harness-branch-branch-at-styles': 'Styles',
+		'reports.page.harness-branch-branch-at-translations': 'Translations'
 	};
 	if (headings[id])
 		await expect(page.getByRole('heading', { name: headings[id], exact: true })).toBeVisible();

@@ -12,6 +12,7 @@
 	import ExplorerCatalogScreen from './ExplorerCatalogScreen.svelte';
 	import ExplorerPagesScreen from './ExplorerPagesScreen.svelte';
 	import ExplorerPlatforms from './ExplorerPlatforms.svelte';
+	import ExplorerTranslationsScreen from './ExplorerTranslationsScreen.svelte';
 	let host: ExplorerScreenProps = $props();
 	const overviews: Record<ExplorerCategory, Screen> = {
 		pages: EntityVisualScreen,
@@ -31,6 +32,7 @@
 	/** The one screen an address is; this content holds none of its own. */
 	let Shown = $derived.by((): Screen => {
 		const { category, entity, section } = host.route;
+		if (host.route.screen === 'translations') return ExplorerTranslationsScreen;
 		if (category === 'platforms') return ExplorerPlatforms;
 		if (!entity && !host.route.helper)
 			return category === 'pages' ? ExplorerPagesScreen : ExplorerCatalogScreen;

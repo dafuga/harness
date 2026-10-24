@@ -83,6 +83,24 @@ for (const viewport of catalogViewports) {
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
+
+			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations')) {
+				await expect(component.getByRole('columnheader', { name: 'English en' })).toBeVisible();
+				await expect(component.getByRole('columnheader', { name: 'French fr' })).toBeAttached();
+				await expect(component.locator('tbody tr')).toHaveCount(50);
+				await component.getByRole('button', { name: 'View More' }).click();
+				await expect(component.locator('tbody tr')).toHaveCount(100);
+				await component.getByRole('searchbox', { name: 'Search translations' }).fill('Écouter');
+				await expect(component.locator('tbody tr')).toHaveCount(1);
+				await expect(component.locator('tbody')).toContainText('Listen and compare');
+				await expect(component.locator('tbody')).toContainText('Écouter et comparer');
+				await component
+					.getByRole('searchbox', { name: 'Search translations' })
+					.fill('no-such-translation');
+				await expect(component.getByText('No translations match this search.')).toBeVisible();
+				await component.getByRole('searchbox', { name: 'Search translations' }).clear();
+				await expect(component.locator('tbody tr')).toHaveCount(50);
+			}
 			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen') {
 				await expectColorRoles(component);
 				await expectStyleGroups(component);

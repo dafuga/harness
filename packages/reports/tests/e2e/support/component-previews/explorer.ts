@@ -1,3 +1,4 @@
+import { translationPreview } from './translations';
 import { createRawSnippet } from 'svelte';
 import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 import type { PreviewCases } from './shared';
@@ -24,6 +25,9 @@ const seen = {
 	mediaBase: '/media/'
 };
 export const explorerCases: PreviewCases = {
+	'reports.component.explorer-ui-explorer-translations-screen': translationPreview(
+		d.host()
+	) as unknown as Record<string, unknown>,
 	'reports.component.explorer-ui-config-value-tree': {
 		node: d.configRows.find((row) => row.name === 'orderSettings.steps')!.setting!.structure
 	},

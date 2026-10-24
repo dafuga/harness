@@ -3,13 +3,15 @@
 	"id": "reports.function.replay-locale",
 	"kind": "function",
 	"title": "Replay translations",
-	"responsibility": "Registers the English screenshot-replay dictionary once per module instance.",
+	"responsibility": "Registers English and French replay messages while preserving the English runtime default.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"packages/reports/src/components/gameplay-replay/replayLocale.ts",
 			"packages/reports/src/components/reports-media/gameplay-replay/replayLocale.ts",
+			"packages/reports/src/translations/replay/en.json",
+			"packages/reports/src/translations/replay/fr.json",
 			"packages/reports/src/utils/replayLocale.ts"
 		],
 		"symbols": ["replayLocale", "replayLocale", "replayLocale"]
