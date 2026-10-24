@@ -1,3 +1,5 @@
+import type { LiveActivity } from '../../../../src/core/activityTypes';
+import { agentActivityFixture } from './ui-agent-activity-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 import type { Page, TestInfo } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
@@ -175,3 +177,43 @@ for (const viewport of [
 		expect(box!.x + box!.width).toBeLessThanOrEqual(viewport.width);
 	});
 }
+
+test('a long agent roster keeps current module assignments in view', async ({ page }) => {
+	await agentActivityFixture(page);
+	await page.addInitScript(() => {
+		const host = window as unknown as {
+			harness: { agentActivity(): Promise<Pick<LiveActivity, 'sampledAt' | 'agents'>> };
+		};
+		const read = host.harness.agentActivity;
+		host.harness.agentActivity = async () => {
+			const value = await read();
+			const earlier = value.agents.roster[2];
+			value.agents.roster.push(
+				...Array.from({ length: 12 }, (_, index) => ({
+					...earlier,
+					id: `old-${index}`,
+					label: `Earlier session ${index}`
+				}))
+			);
+			return value;
+		};
+	});
+	await page.goto(route('components'));
+	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+	await panel.getByRole('button', { name: 'Agents', exact: true }).click();
+	await expect(panel.getByText('Refine shared component previews', { exact: true })).toBeVisible();
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		mkdirSync('/tmp/chat-agents-evidence', { recursive: true });
+		await page.screenshot({
+			path: `/tmp/chat-agents-evidence/${process.env.SCREENSHOT_LABEL}-long-roster.png`
+		});
+	}
+	await expect(
+		panel
+			.getByRole('region', { name: 'Modules being worked on' })
+			.getByRole('link', { name: 'Card', exact: true })
+	).toBeInViewport();
+	await panel.getByRole('button', { name: 'Show all 15 sessions', exact: true }).click();
+	await expect(panel.getByText('Earlier session 11', { exact: true })).toBeVisible();
+});
