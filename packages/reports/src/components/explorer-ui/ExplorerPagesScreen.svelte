@@ -13,7 +13,11 @@
 <div class="ex-screen" data-harness-component="harness-explorer-pages-screen">
 	<ExplorerFrame {host}>
 		{#snippet children(nav)}
-			<ExplorerIndex category="pages" {rows}>
+			<ExplorerIndex
+				category="pages"
+				{rows}
+				scope={JSON.stringify([host.route.branch, host.scope.commit])}
+			>
 				{#snippet list(listed)}
 					<ExplorerCatalogItems
 						category="pages"
