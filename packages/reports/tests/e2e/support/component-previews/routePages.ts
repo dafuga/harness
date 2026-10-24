@@ -1,4 +1,5 @@
 import type { RoutePreview } from './routePages.types';
+import { apiIds } from '../../../../test/entityApiFixtures';
 import { ids } from '../../../../test/entityUnits';
 import { openRoute, page } from './router.svelte';
 import { routeIds } from './routeUnits';
@@ -8,6 +9,7 @@ const branch = '/harness/branch/feature%2Forders';
 /** The entity each category opens on; Layouts and Models open the synthetic route units. */
 const opened: Record<string, string> = {
 	pages: ids.page,
+	apis: apiIds.orders,
 	layouts: routeIds.shell,
 	components: ids.list,
 	functions: ids.filter,

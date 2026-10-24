@@ -1,3 +1,4 @@
+import { withApis } from '../../../../test/entityApiFixtures';
 import { dependencyData } from './dependencies';
 import { translationData } from './translations';
 import { platformFixture } from '../../../../test/platformFixture';
@@ -37,7 +38,7 @@ let sealed: ReturnType<typeof sealedHistory> | undefined;
  * route already serves for the desktop previews, so every artifact read matches its stated hash.
  */
 export function routeRevision(commit: string): HarnessRevision {
-	const shown = revision(commit, [layoutRecord(commit, results(commit, record(commit)))]);
+	const shown = withApis(revision(commit, [layoutRecord(commit, results(commit, record(commit)))]));
 	const units = shown.registry.units.map((unit) =>
 		unit.id === ids.page
 			? { ...unit, dependencies: [...unit.dependencies, { unit: routeIds.shell, via: 'import' }] }
