@@ -94,3 +94,47 @@ test('CLI labels a supplied responsibility as declared and a generated one as de
 	]);
 	await rm(join(project.root, '..'), { recursive: true, force: true });
 }, 60_000);
+
+test('public configs require real source controls and retain their reviewed declarations', async () => {
+	const project = await unitProject('lib');
+	try {
+		await project.harness(['generate', 'config', 'Downloads']);
+		const path = 'specification/units/config.downloads.json';
+		const manifest = await project.json(path);
+		expect(manifest.catalog).toEqual({ visibility: 'internal' });
+		const source = 'src/configs/downloadsConfig.ts';
+		await project.write(
+			source,
+			'export const downloadsConfig = { maxBytes: 1000, formatVersion: 1 };\n'
+		);
+		const publicConfig = { ...manifest, catalog: { visibility: 'public' } };
+		await project.write(path, JSON.stringify(publicConfig));
+		const missing = await project.harness(['units', 'check'], false);
+		expect(missing.exitCode).toBe(1);
+		expect(missing.stderr).toContain('requires reviewed configControls');
+		const control = {
+			source,
+			name: 'downloadsConfig.maxBytes',
+			audience: 'operator',
+			purpose: 'Bound download storage for the device running the app.'
+		};
+		await project.write(path, JSON.stringify({ ...publicConfig, configControls: [control] }));
+		await project.harness(['units', 'index', '--write']);
+		await project.harness(['units', 'check']);
+		expect((await project.json(path)).configControls).toEqual([control]);
+		for (const controls of [
+			[control, control],
+			[{ ...control, source: 'unowned.ts' }],
+			[{ ...control, name: 'downloadsConfig.missing' }]
+		]) {
+			await project.write(path, JSON.stringify({ ...publicConfig, configControls: controls }));
+			const invalid = await project.harness(['units', 'check'], false);
+			expect(invalid.exitCode).toBe(1);
+			expect(invalid.stderr).toMatch(
+				/duplicate control|unowned source|not a recorded config value/
+			);
+		}
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
+}, 60_000);
