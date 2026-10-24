@@ -191,23 +191,6 @@
 	gap: var(--hx-space-10) var(--hx-space-14);
 	color: var(--ex-soft);
 }
-.ex-content .ex-legend {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--hx-space-14) var(--hx-space-28);
-	padding: var(--hx-space-14) var(--hx-space-18);
-	border: var(--hx-border-thin) solid var(--ex-line);
-	border-radius: var(--ex-radius);
-}
-.ex-content .ex-hint,
-.ex-content .ex-key {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--hx-space-12) var(--hx-space-24);
-}
 @media (max-width: 760px) {
 	.ex-content .ex-page-card {
 		grid-template-columns: minmax(0, 1fr);
