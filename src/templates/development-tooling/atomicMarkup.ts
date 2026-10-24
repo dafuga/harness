@@ -4,9 +4,16 @@ import { atomTag, nativeAtoms } from './htmlElements.js';
 import type { PlannedFile } from '../../core/development-tooling/files';
 
 export function atomicProjectFiles(files: PlannedFile[]): PlannedFile[] {
-	return files.map((file) => ({ ...file,
-		contents: file.path.endsWith('.svelte') && !file.path.includes('/atoms/')
-			? atomicMarkup(file.contents, file.path, file.path.endsWith('+layout.svelte') ? 'layout' : 'page') : file.contents
+	return files.map((file) => ({
+		...file,
+		contents:
+			file.path.endsWith('.svelte') && !file.path.includes('/atoms/')
+				? atomicMarkup(
+						file.contents,
+						file.path,
+						file.path.endsWith('+layout.svelte') ? 'layout' : 'page'
+					)
+				: file.contents
 	}));
 }
 

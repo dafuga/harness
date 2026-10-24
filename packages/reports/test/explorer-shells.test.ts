@@ -57,7 +57,7 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 	});
 	expect(categories.map((item) => [item.id, item.label, item.icon, item.active])).toEqual([
 		['pages', 'Pages', 'pages', false],
-		['modules', 'Modules', 'layers', true],
+		['modules', 'Code', 'layers', true],
 		['styles', 'Styles', 'styles', false],
 		['configs', 'Configs', 'configs', false],
 		['platforms', 'Platforms', 'platforms', false]

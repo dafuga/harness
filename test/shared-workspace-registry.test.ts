@@ -127,7 +127,7 @@ test('declaring those imports changes them alone: no other reference or uncertai
 	expect(side(loaded.index).graph.uncertain).toEqual(side(undeclared).graph.uncertain);
 }, 60_000);
 
-test('every active visual module has its own required capture state', () => {
+function assertNoNestedHarnessSources() {
 	const redundant = [...loaded.index.files.keys()].filter((path) =>
 		/\/components\/(?:explorer-ui\/)?harness\//.test(path)
 	);
@@ -149,6 +149,10 @@ test('every active visual module has its own required capture state', () => {
 			(path) => path?.includes('/components/harness/') || path?.includes('/explorer-ui/harness/')
 		)
 	).toBe(false);
+}
+
+test('every active visual module has its own required capture state', () => {
+	assertNoNestedHarnessSources();
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
 		.filter((unit) => {
@@ -165,11 +169,19 @@ test('every active visual module has its own required capture state', () => {
 					path.startsWith('packages/reports/src/routes/harness/') &&
 					(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
 			);
-			return !alias && sources.some((path) => path.endsWith('/+page.svelte'));
+			return (
+				!alias &&
+				unit.catalog?.visibility !== 'internal' &&
+				sources.some((path) => path.endsWith('/+page.svelte'))
+			);
 		})
 		.map((unit) => unit.id)
 		.sort();
 	expect(catalog?.units.slice().sort()).toEqual(visual);
+	expect(
+		catalog?.states.map((state) => state.units?.[0]),
+		'Catalog preview states follow canonical unit order'
+	).toEqual(catalog?.units.slice().sort((left, right) => left.localeCompare(right)));
 	for (const id of visual) {
 		const states = catalog!.states.filter((state) => state.units?.includes(id));
 		expect(states, id).toHaveLength(1);

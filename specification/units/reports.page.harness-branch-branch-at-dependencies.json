@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.page.harness-branch-branch-at-dependencies",
+	"kind": "page",
+	"title": "/harness/branch/[branch]/[...at]/dependencies",
+	"responsibility": "Shows the selected revision’s direct project package declarations within scoped Code navigation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.explorer-dependencies-screen", "reports.component.harness-screen"]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/harness/branch/[branch]/[...at]/dependencies/+page.svelte"
+		],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup",
+				"description": "Dependencies screen inside the shared Harness frame, retaining branch and commit selection."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-dependencies-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-screen",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/dependencies/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/dependencies/+page.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

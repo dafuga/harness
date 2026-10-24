@@ -83,6 +83,7 @@ async function readyRoute(page: Page, id: string) {
 		'desktop.page.settings': 'Settings',
 		'desktop.page.game': 'Game Views',
 		'reports.page.harness-branch-branch-at-styles': 'Styles',
+		'reports.page.harness-branch-branch-at-dependencies': 'Dependencies',
 		'reports.page.harness-branch-branch-at-translations': 'Translations'
 	};
 	if (headings[id])

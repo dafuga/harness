@@ -1,0 +1,54 @@
+{
+	"name": "code-navigation-menu",
+	"goal": "Code replaces Modules, includes Configs Styles and Dependencies, and retains scoped horizontal tabs",
+	"createdAt": "2026-10-24T14:48:36.364Z",
+	"updatedAt": "2026-10-24T15:43:45.757Z",
+	"template": "visual-change",
+	"templateLineage": ["feature", "visual-change"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:42:19.434Z",
+			"evidence": "Code replaces Modules and groups Configs,Styles,Dependencies with existing code catalogs; Translations stays primary."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:42:20.058Z",
+			"evidence": "Shared horizontal navigation preserves selected scope and latest main Translations entry."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:42:20.623Z",
+			"evidence": "Navbar standard3viewport matrix and SSR contracts pass; matched red83467b75 to green82d5221b retained."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:43:45.228Z",
+			"evidence": "Basic scope:119root contracts,60Reports tests,2installed-route cases,11Desktop route/search tests and3workspace typechecks pass. Root audit/units and Reports lint pass. Inherited main107 Translations audit/style and internal-route catalog mismatch are reported; full/native suite unrun."
+		},
+		{
+			"id": "browser-proof",
+			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:43:45.757Z",
+			"evidence": "Recorddf75ee0e passes18standard browser cases with81captures at2e7888437. Inspected hashed Dependencies component and settled-page images at3viewports; no unexpected browser errors. Installed Code Destinations/Styles pass."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "browser-proof"
+		}
+	]
+}

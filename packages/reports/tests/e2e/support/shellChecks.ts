@@ -86,7 +86,7 @@ export async function revisionDivider(within: Locator): Promise<void> {
 	} else expect(line.content).toBe('none');
 }
 
-/** Modules opens a horizontal category row below the primary navigation. */
+/** Code opens a horizontal category row below the primary navigation. */
 export async function moduleNavigation(
 	page: Page,
 	home: string,
@@ -94,8 +94,8 @@ export async function moduleNavigation(
 	scoped: string
 ): Promise<void> {
 	const bar = page.getByRole('banner');
-	const trigger = bar.getByRole('link', { name: 'Modules', exact: true });
-	const modules = bar.getByRole('tablist', { name: 'Module categories' });
+	const trigger = bar.getByRole('link', { name: 'Code', exact: true });
+	const modules = bar.getByRole('tablist', { name: 'Code categories' });
 	await trigger.click();
 	await pictured(page, `explorer-shell-modules-${screen}`);
 	await captureShell(page, home, { state: 'modules', viewport: screen });
@@ -110,7 +110,10 @@ export async function moduleNavigation(
 		'Models',
 		'Services',
 		'Helpers',
-		'Types'
+		'Types',
+		'Configs',
+		'Styles',
+		'Dependencies'
 	]);
 	const [row, primary] = await Promise.all([box(modules), box(bar.locator('.hx-categories'))]);
 	expect(row.y, 'module categories sit below the primary row').toBeGreaterThanOrEqual(
@@ -126,17 +129,49 @@ export async function moduleNavigation(
 	}
 	await page.keyboard.press('Escape');
 	await expect(modules).toBeVisible();
-	await modules.getByRole('tab', { name: 'Types', exact: true }).click();
-	await expect(page).toHaveURL(`${shellOrigin}${scoped}/types`);
-	await expect(modules.getByRole('tab', { name: 'Types', exact: true })).toHaveAttribute(
-		'aria-selected',
-		'true'
-	);
-	await pictured(page, `explorer-shell-types-${screen}`);
-	await captureShell(page, home, { state: 'types', viewport: screen });
-	expect(await fits(page), 'the module row scrolls without widening the page').toBe(true);
-	await modules.getByRole('tab', { name: 'Helpers', exact: true }).focus();
-	await page.keyboard.press('Enter');
-	await expect(page).toHaveURL(`${shellOrigin}${scoped}/functions`);
-	await expect(modules).toBeVisible();
+	await codeDestinations(page, modules, scoped);
+}
+
+/** Each additional Code destination retains the current branch and commit scope. */
+async function codeDestinations(page: Page, row: Locator, scoped: string): Promise<void> {
+	for (const [name, path] of [
+		['Configs', 'configs'],
+		['Styles', 'styles'],
+		['Dependencies', 'dependencies'],
+		['Types', 'types']
+	]) {
+		const tab = row.getByRole('tab', { name, exact: true });
+		await tab.click();
+		await expect(page).toHaveURL(`${shellOrigin}${scoped}/${path}`);
+		await expect(tab).toHaveAttribute('aria-selected', 'true');
+		await expect(page.getByRole('link', { name: 'Code', exact: true })).toHaveAttribute(
+			'aria-current',
+			'page'
+		);
+	}
+}
+
+/** Package tables retain distinct declarations and search workspace origins at every viewport. */
+export async function dependencyTables(component: Locator, page: Page, width: number) {
+	await expect(
+		component.getByRole('table', { name: 'npm dependencies' }),
+		'Project dependencies include declarations'
+	).toBeVisible();
+	await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+	const npm = component.getByRole('table', { name: 'npm dependencies' });
+	await expect(npm.locator('tbody tr')).toHaveCount(3);
+	await expect(npm).toContainText('^4.0.0');
+	await expect(npm).toContainText('^3.0.0');
+	await expect(npm).toContainText('Development');
+	const search = component.getByRole('searchbox', { name: 'Search dependencies' });
+	await search.fill('packages/web/package.json');
+	await expect(component.locator('tbody tr')).toHaveCount(1);
+	await expect(component.locator('tbody')).toContainText('zod');
+	await search.fill('no-matching-package');
+	await expect(component.getByText('No dependencies match this search.')).toBeVisible();
+	await component.getByRole('button', { name: 'Clear search' }).click();
+	await expect(component.locator('tbody tr')).toHaveCount(4);
+	await expect
+		.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+		.toBeLessThanOrEqual(width);
 }

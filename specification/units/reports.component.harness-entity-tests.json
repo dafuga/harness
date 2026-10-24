@@ -35,9 +35,7 @@
 			"packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
 			"packages/reports/src/components/explorer-ui/entity-tests/coverageLabels.ts"
 		],
-		"symbols": [
-			"EntityTests"
-		]
+		"symbols": ["EntityTests", "coverageLabels"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -214,9 +212,7 @@
 			}
 		]
 	},
-	"scenarios": [
-		"browser-error-evidence"
-	],
+	"scenarios": ["browser-error-evidence"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

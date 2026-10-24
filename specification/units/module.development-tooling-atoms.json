@@ -15,7 +15,7 @@
 		"inputs": [
 			{
 				"name": "atomicComponents.options",
-				"type": "{ aliases?: Record<string, string> }"
+				"type": "{ aliases?: Record<string, string>; }"
 			}
 		],
 		"outputs": [

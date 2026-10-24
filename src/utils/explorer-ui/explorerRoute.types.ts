@@ -2,7 +2,7 @@ import type { ExplorerCategory } from '../explorer-route/explorerTabs';
 import type { ExplorerTab } from '../explorer-route/explorerTabs';
 import type { explorerSections } from './explorerRoute';
 
-export type ExplorerScreen = 'styles' | 'translations';
+export type ExplorerScreen = 'styles' | 'dependencies' | 'translations';
 
 export type ExplorerSection = (typeof explorerSections)[number];
 
@@ -13,7 +13,7 @@ export interface ExplorerLocation {
 	/** The full hash of a selected commit; null shows the branch at whatever its tip is. */
 	commit: string | null;
 	category: ExplorerCategory;
-	/** A design-system screen, separate from the entity categories. */
+	/** A project-wide code screen, separate from the entity categories. */
 	screen?: ExplorerScreen;
 	/** The id of a unit; absent on the index of a category. */
 	entity?: string;

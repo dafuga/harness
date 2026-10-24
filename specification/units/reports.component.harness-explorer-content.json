@@ -9,8 +9,10 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-dependencies-screen",
 			"reports.component.explorer-ui-explorer-platforms",
 			"reports.component.explorer-ui-explorer-translations-screen",
+			"reports.component.explorer-ui-harness-explorer-styles-screen",
 			"reports.component.harness-entity-behavior-screen",
 			"reports.component.harness-entity-config-screen",
 			"reports.component.harness-entity-details-screen",
@@ -109,12 +111,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-dependencies-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.explorer-ui-explorer-platforms",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-translations-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-harness-explorer-styles-screen",
 			"via": "import",
 			"origin": "derived"
 		},

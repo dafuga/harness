@@ -7,6 +7,7 @@
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	import ExplorerControls from './ExplorerControls.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
+	import Select from '../shared-primitives/Select.svelte';
 	import '../../lib/styles/translations.css';
 	let host: ExplorerScreenProps = $props();
 	let filter = $state<CatalogFilter>({
@@ -20,7 +21,13 @@
 	let limit = $state(50);
 	let catalog = $derived(host.head.translations);
 	let query = $derived(filter.search.trim().toLocaleLowerCase());
-	let locales = $derived([...new Set(['en', 'fr', ...(catalog?.locales ?? [])])]);
+	let language = $state('fr');
+	let locales = $derived(
+		[...new Set(catalog?.locales ?? ['fr'])].filter((locale) => locale !== 'en')
+	);
+	let selected = $derived(
+		locales.includes(language) ? language : locales.includes('fr') ? 'fr' : (locales[0] ?? 'fr')
+	);
 	let rows = $derived((catalog?.rows ?? []).filter(matches));
 	let visible = $derived(rows.slice(0, limit));
 	$effect(() => {
@@ -56,8 +63,19 @@
 				</hx-ol>
 			</hx-nav>
 			<hx-h1 id="translations-title">Translations</hx-h1>
-			<hx-p class="ex-lead">Registered app strings, side by side in each language.</hx-p>
-			<ExplorerControls noun="translations" bind:filter />
+			<hx-p class="ex-lead">Compare English with a selected language.</hx-p>
+			<hx-div class="ex-translations-controls">
+				<ExplorerControls noun="translations" bind:filter />
+				{#if locales.length}
+					<hx-label class="ex-translations-language"
+						>Language
+						<Select label="Language" bind:value={() => selected, (locale) => (language = locale)}>
+							{#each locales as locale}<hx-option value={locale}>{languageName(locale)}</hx-option
+								>{/each}
+						</Select>
+					</hx-label>
+				{/if}
+			</hx-div>
 			{#if !catalog}
 				<hx-p class="ex-empty">No translation catalog is recorded at this revision.</hx-p>
 			{:else}
@@ -81,18 +99,15 @@
 						<hx-table>
 							<hx-thead
 								><hx-tr
-									><hx-th scope="col">String</hx-th>{#each locales as locale}<hx-th scope="col"
-											>{languageName(locale)} <hx-span>{locale}</hx-span></hx-th
-										>{/each}<hx-th scope="col">Used In</hx-th></hx-tr
+									><hx-th scope="col">English</hx-th><hx-th scope="col"
+										>{languageName(selected)}</hx-th
+									><hx-th scope="col">Used In</hx-th></hx-tr
 								></hx-thead
 							>
 							<hx-tbody>
 								{#each visible as row (`${row.scope}:${row.key}`)}
-									<hx-tr
-										><hx-th scope="row"
-											><hx-code>{row.key}</hx-code><hx-small>{row.scope}</hx-small></hx-th
-										>
-										{#each locales as locale}
+									<hx-tr>
+										{#each ['en', selected] as locale}
 											<hx-td lang={locale}
 												>{#if Object.hasOwn(row.values, locale)}{#if row.values[locale] === ''}<hx-span
 															class="ex-translations-missing">Empty string</hx-span
@@ -130,8 +145,7 @@
 															>
 														</hx-li>{/if}{/each}
 											</hx-ul>
-											{#if !row.usedBy.length}<hx-span class="ex-translations-missing"
-													>No literal caller recorded</hx-span
+											{#if !row.usedBy.length}<hx-span class="ex-translations-missing">—</hx-span
 												>{/if}</hx-td
 										>
 									</hx-tr>

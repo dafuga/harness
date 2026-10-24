@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-ui-explorer-translations-screen",
 	"kind": "component",
 	"title": "ExplorerTranslationsScreen",
-	"responsibility": "Displays source-revision translation strings across languages with search and links to runtime consumers.",
+	"responsibility": "Compares revision-scoped English strings with a selected language and links to their runtime consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -12,18 +12,19 @@
 			"reports.component.harness-explorer-controls",
 			"reports.component.harness-explorer-frame",
 			"reports.component.harness-harness-icon",
+			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-label",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-nav",
 			"reports.component.shared-primitives-atoms-html-ol",
+			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-summary",
 			"reports.component.shared-primitives-atoms-html-table",
@@ -103,9 +104,9 @@
 		],
 		"outputs": [
 			{
-				"name": "ExplorerStylesScreen",
+				"name": "ExplorerTranslationsScreen",
 				"type": "markup",
-				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; foundation and compatibility tokens remain discoverable exactly once."
+				"description": "Compares English with the selected language, with search, paging and links to recorded consumers."
 			}
 		],
 		"errors": []
@@ -132,17 +133,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-code",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -162,6 +163,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-li",
 			"via": "import",
 			"origin": "derived"
@@ -177,17 +183,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-small",
 			"via": "import",
 			"origin": "derived"
 		},

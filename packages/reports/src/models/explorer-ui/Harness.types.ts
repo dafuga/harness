@@ -1,11 +1,8 @@
-import type { TranslationCatalog } from '../../../../../src/core/explorer-ui/Translation.types';
 import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from '../reports-media/Report.types';
 import type { BrowserDiagnostic } from '../../../../../src/core/browserDiagnostics';
-import type { RegressionView } from '../../../../../src/core/regressionTypes';
 import type { UnitMetadata } from '../../../../../src/utils/unitMetadata';
-import type { PlatformCatalog } from '../../../../../src/core/explorer-ui/Platform.types';
 export type * from './HarnessLegacy.types';
 export interface HarnessRecordSummary {
 	id: string;
@@ -184,38 +181,5 @@ export interface HarnessExplanation {
 	simplification: { attempt: string; outcome: string };
 	performance: { attempt: string; outcome: string };
 }
-export interface HarnessRevision {
-	platforms?: PlatformCatalog;
-	translations?: TranslationCatalog;
-	regressions?: RegressionView[];
-	commit: string;
-	/** Opaque whole-tree identity retained by entity projections, without a cache filename. */
-	sourceTree?: string;
-	registry: {
-		available: boolean;
-		gap?: string;
-		units: HarnessUnit[];
-		scenarios: HarnessScenario[];
-		graph: { edges: Array<{ from: string; to: string; via: string }> };
-	};
-	comparison: {
-		base: string | null;
-		record: string;
-		units: Record<'direct' | 'indirect' | 'added' | 'removed', string[]>;
-		scenarios: string[];
-		uncertain: Array<{ node: string; reason: string; detail: string }>;
-	} | null;
-	sourceImpact?: {
-		base: string | null;
-		expanded: boolean;
-		units: Record<'direct' | 'indirect' | 'added' | 'removed', string[]>;
-		scenarios: string[];
-		uncertain: Array<{ node: string; reason: string; detail: string }>;
-		changed: Array<{ path: string; status: string }>;
-	} | null;
-	side?: string | null;
-	records: HarnessRecord[];
-	explanations: HarnessExplanation[];
-	rangeReasons?: number;
-}
+export type { HarnessRevision } from './HarnessRevision.types';
 export type HarnessMark = 'direct' | 'indirect' | 'added' | 'removed';

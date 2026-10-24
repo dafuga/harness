@@ -1,3 +1,5 @@
+import { assertCompositionFilter } from './support/component-previews/atomicCatalog';
+import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
 import { pictured } from './support/sharedSelect';
@@ -13,24 +15,29 @@ import {
 	capturePreview
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
-import { assertComponentCapture } from './support/component-previews/previewCaptureAssertions';
-import { assertCompositionFilter } from './support/component-previews/atomicCatalog';
+import {
+	assertComponentCapture,
+	assertTranslationControls
+} from './support/component-previews/previewCaptureAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
-test.beforeAll(async () => {
-	test.setTimeout(180_000);
-	home = buildShellFixture(['catalog']);
-});
-test.afterAll(() => removeShellFixture(home));
-test('every active visual component has its own required capture state', () => {
+function assertCatalogRegistry() {
 	const expected = catalogUnits.map((unit) => unit.id);
 	expect([...catalogScenario.units].sort()).toEqual(expected);
-	expect(catalogScenario.states).toEqual(
+	expect(catalogScenario.states, 'Catalog preview states follow canonical unit order').toEqual(
 		catalogUnits.map((unit) =>
 			expect.objectContaining({ id: previewState(unit.id), units: [unit.id] })
 		)
 	);
+}
+test.beforeAll(async () => {
+	test.setTimeout(180_000);
+	assertCatalogRegistry();
+	home = buildShellFixture(['catalog']);
 });
+test.afterAll(() => removeShellFixture(home));
+test('every active visual component has its own required capture state', assertCatalogRegistry);
+
 for (const viewport of catalogViewports) {
 	for (const stage of ['history', 'revision'] as const) {
 		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
@@ -86,26 +93,17 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
+			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(page);
 
-			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations')) {
-				await expect(component.getByRole('columnheader', { name: 'English en' })).toBeVisible();
-				await expect(component.getByRole('columnheader', { name: 'French fr' })).toBeAttached();
-				await expect(component.locator('tbody tr')).toHaveCount(50);
-				await component.getByRole('button', { name: 'View More' }).click();
-				await expect(component.locator('tbody tr')).toHaveCount(100);
-				await component.getByRole('searchbox', { name: 'Search translations' }).fill('Écouter');
-				await expect(component.locator('tbody tr')).toHaveCount(1);
-				await expect(component.locator('tbody')).toContainText('Listen and compare');
-				await expect(component.locator('tbody')).toContainText('Écouter et comparer');
-				await component
-					.getByRole('searchbox', { name: 'Search translations' })
-					.fill('no-such-translation');
-				await expect(component.getByText('No translations match this search.')).toBeVisible();
-				await component.getByRole('searchbox', { name: 'Search translations' }).clear();
-				await expect(component.locator('tbody tr')).toHaveCount(50);
+			if (
+				unit.id === 'reports.component.explorer-dependencies-screen' ||
+				unit.id.endsWith('at-dependencies')
+			) {
+				await dependencyTables(component, page, viewport.width);
 			}
+			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
+				await assertTranslationControls(component);
 			if (unit.id === 'reports.component.harness-explorer-index') {
-				await assertCompositionFilter(component);
 				await expect(
 					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
 					'Catalogs omit the proof legend'
