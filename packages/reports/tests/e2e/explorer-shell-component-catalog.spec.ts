@@ -13,7 +13,10 @@ import {
 	capturePreview
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
-import { assertComponentCapture } from './support/component-previews/previewCaptureAssertions';
+import {
+	assertComponentCapture,
+	assertTranslationControls
+} from './support/component-previews/previewCaptureAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 test.beforeAll(async () => {
@@ -86,43 +89,8 @@ for (const viewport of catalogViewports) {
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
 
-			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations')) {
-				await expect(component.getByRole('combobox', { name: 'Language' })).toHaveValue('fr');
-				await expect(component.getByRole('columnheader')).toHaveText([
-					'English',
-					'French',
-					'Used In'
-				]);
-				await expect(component.locator('tbody code, tbody small')).toHaveCount(0);
-				await expect(
-					component.getByRole('columnheader', { name: 'English', exact: true })
-				).toBeVisible();
-				await expect(
-					component.getByRole('columnheader', { name: 'French', exact: true })
-				).toBeAttached();
-				await expect(component.locator('tbody tr')).toHaveCount(50);
-				await component.getByRole('button', { name: 'View More' }).click();
-				await expect(component.locator('tbody tr')).toHaveCount(100);
-				await component.getByRole('searchbox', { name: 'Search translations' }).fill('Écouter');
-				await expect(component.locator('tbody tr')).toHaveCount(1);
-				await expect(component.locator('tbody')).toContainText('Listen and compare');
-				await expect(component.locator('tbody')).toContainText('Écouter et comparer');
-				await component.getByRole('combobox', { name: 'Language' }).selectOption('de');
-				await expect(component.getByRole('columnheader')).toHaveText([
-					'English',
-					'German',
-					'Used In'
-				]);
-				await expect(component.locator('tbody')).toContainText('Anhören und vergleichen');
-				await expect(component.locator('tbody')).not.toContainText('Écouter et comparer');
-				await component.getByRole('combobox', { name: 'Language' }).selectOption('fr');
-				await component
-					.getByRole('searchbox', { name: 'Search translations' })
-					.fill('no-such-translation');
-				await expect(component.getByText('No translations match this search.')).toBeVisible();
-				await component.getByRole('searchbox', { name: 'Search translations' }).clear();
-				await expect(component.locator('tbody tr')).toHaveCount(50);
-			}
+			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
+				await assertTranslationControls(component);
 			if (unit.id === 'reports.component.harness-explorer-index') {
 				await expect(
 					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
