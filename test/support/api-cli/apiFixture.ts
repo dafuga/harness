@@ -66,6 +66,18 @@ function evidence() {
 function answer(operation: string, input: Record<string, unknown>) {
 	if (operation === 'connect') return { token: 'synthetic-local-secret', snapshot };
 	if (operation === 'snapshot') return snapshot;
+	if (operation === 'registry')
+		return {
+			commit,
+			units: [
+				{ id: 'page.example', kind: 'page', contract },
+				{
+					id: 'entry.program',
+					kind: 'entry',
+					contract: { inputs: [], outputs: [{ name: 'buildProgram', type: 'Command' }], errors: [] }
+				}
+			]
+		};
 	if (operation === 'entity') return { id: input.entityId, contract };
 	if (operation === 'createPlan') return { id: 'function.format-totals', contract: input.contract };
 	if (operation === 'startRun') return { runId: 'run-1' };
@@ -105,6 +117,12 @@ async function observe(request: IncomingMessage): Promise<ApiRequestObservation>
 function respond(response: ServerResponse, observed: ApiRequestObservation, corrupted: boolean) {
 	const { operation, body, input } = observed;
 	const url = new URL(observed.url);
+	if (operation === 'entity' && input.entityId === 'entry.program') {
+		response
+			.writeHead(404, { 'content-type': 'application/json' })
+			.end('{"error":"entity-not-found"}');
+		return;
+	}
 	if (url.pathname === '/api/redirect') {
 		response.writeHead(302, { location: '/api/redirect-target' }).end();
 		return;

@@ -3,6 +3,8 @@ import { measureWorkload } from '../../../test/support/measureWorkload';
 import { afterAll, beforeAll, test, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { ConsoleAgentService } from '../src/services/ConsoleAgentService';
 import { recordedRepo, binding, page, git } from '../../desktop/test/recorded-evidence-fixture';
 import type { Recorded } from '../../desktop/test/recorded-evidence-fixture';
@@ -16,8 +18,40 @@ const site = vi.hoisted(() => ({ root: process.cwd() }));
 vi.mock('../src/utils/reports-media/reportSite', () => ({ reportSite: () => site }));
 let fixture: Recorded;
 let client: ConsoleAgentService;
+let registryCommit: string;
 beforeAll(async () => {
 	fixture = await recordedRepo();
+	const path = 'src/private.ts';
+	await writeFile(
+		join(fixture.root, path),
+		'export function start(): string { return "ready"; }\n'
+	);
+	const unit = {
+		schemaVersion: 1,
+		id: 'entry.private',
+		kind: 'entry',
+		title: 'Private entry',
+		responsibility: 'Starts the backend fixture.',
+		status: 'active',
+		owns: { source: [path], symbols: ['start'] },
+		contract: {
+			origin: 'declared',
+			inputs: [],
+			outputs: [{ name: 'start', type: 'string' }],
+			errors: []
+		},
+		dependencies: [],
+		runtime: { kind: 'module', entry: path, targets: [{ kind: 'module', entry: path }] },
+		scenarios: [],
+		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
+	};
+	await writeFile(
+		join(fixture.root, 'specification/units/entry.private.json'),
+		JSON.stringify(unit)
+	);
+	git(fixture.root, 'add', path, 'specification/units/entry.private.json');
+	git(fixture.root, 'commit', '-m', 'chore: add backend fixture entry');
+	registryCommit = git(fixture.root, 'rev-parse', 'HEAD');
 	site.root = fixture.root;
 	client = new ConsoleAgentService();
 	await client.open();
@@ -25,6 +59,17 @@ beforeAll(async () => {
 afterAll(async () => {
 	client?.close();
 	await fixture?.repo.dispose();
+});
+
+test('the real local API exposes backend unit contracts outside its visual catalog', async () => {
+	const result = (await client.call('registry', { branch: 'main', commit: registryCommit })) as {
+		commit: string;
+		units: Array<{ id: string; contract: { outputs: unknown[] } }>;
+	};
+	expect(result.commit).toBe(registryCommit);
+	expect(result.units.find((unit) => unit.id === 'entry.private')?.contract.outputs).toEqual([
+		{ name: 'start', type: 'string' }
+	]);
 });
 
 test(
