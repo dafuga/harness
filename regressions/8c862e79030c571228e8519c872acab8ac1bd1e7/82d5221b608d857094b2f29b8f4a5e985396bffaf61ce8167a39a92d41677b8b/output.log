@@ -1,0 +1,11 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell.spec.ts --grep "the bar shows its navigation"
+
+Running 3 tests using 1 worker
+
+(node:16867) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width (578ms)
+  ✓  2 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width (507ms)
+  ✓  3 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width (480ms)
+
+  3 passed (3.3s)
