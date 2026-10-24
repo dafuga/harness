@@ -139,7 +139,11 @@ async function observeRegression(
 		result,
 		output,
 		measurements,
-		...(await focusedScreens(captures.gathered, directory, { commit: input.commit, scenarios }))
+		...(await focusedScreens(captures.gathered, directory, {
+			commit: input.commit,
+			scenarios,
+			knownUnits: input.knownUnits
+		}))
 	};
 }
 
