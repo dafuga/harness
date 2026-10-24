@@ -128,10 +128,16 @@ test('shared style roles are real canonical properties consumed by every applica
 	])
 		expect(declared.has(`--hx-${role}`), `Canonical assignment for ${role}`).toBe(true);
 	for (const directory of config.roots) {
-		const consumers = sources(directory)
+		let consumers = sources(directory)
 			.filter((path) => path !== config.tokenFile)
 			.map((path) => readFileSync(join(root, path), 'utf8'))
 			.join('\n');
+		// Hub's real root layout imports the shared Desktop workspace stylesheet.
+		if (consumers.includes("import '$desktop/lib/styles/workspace.css'"))
+			consumers += readFileSync(
+				join(root, 'packages/desktop/src/lib/styles/workspace-0.css'),
+				'utf8'
+			);
 		expect(consumers, `${directory} uses the primary role`).toContain('var(--hx-color-primary)');
 		expect(consumers, `${directory} uses body typography`).toContain('var(--hx-font-family-body)');
 	}
