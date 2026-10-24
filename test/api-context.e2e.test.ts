@@ -60,3 +60,19 @@ test.each(['local', 'hosted'] as const)(
 	},
 	30000
 );
+
+test.each(['local', 'hosted'] as const)(
+	'API CLI lists an empty %s APIs category at the selected revision',
+	async (mode) => {
+		const f = await apiFixture(mode);
+		try {
+			const result = await f.cli(['get', 'apis', '--branch', 'feat/api', '--commit', commit]);
+			expect(JSON.parse(result.stdout)).toEqual([]);
+			const resources = JSON.parse((await f.cli(['resources'])).stdout);
+			expect(resources.resources).toContain('apis');
+		} finally {
+			await f.close();
+		}
+	},
+	30000
+);
