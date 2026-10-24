@@ -73,6 +73,8 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
+- Freeze scenario slot/state declarations and shared browser marker assertions in the test-only checkpoint alongside the strengthened test. The complete test corpus is frozen, including tests outside the declared command. A repair commit changes product source only; partition scenario or fixture corrections before recording the matched pair.
+
 - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
 - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
 - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.

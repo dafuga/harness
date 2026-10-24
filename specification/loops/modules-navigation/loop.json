@@ -2,7 +2,7 @@
 	"name": "modules-navigation",
 	"goal": "Show five primary destinations with module categories and separate data-shape Types from persisted Models",
 	"createdAt": "2026-10-23T20:09:18.165Z",
-	"updatedAt": "2026-10-24T00:27:56.000438+00:00",
+	"updatedAt": "2026-10-24T00:46:34.059082+00:00",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -29,7 +29,7 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending",
-			"evidence": "Committed3984 capture5dc69850063de4e5d680585da178ab5704610bc5f43272317193321999bf0978 passed all18 functional stages, 858bindings and12430observations. Pixel readback found six Modules/Types navbar captures bound to unregistered screens because new states were absent from explorer-shell. Nine Types page captures are valid. Retain original record as FUNCTIONAL PASS / PARTIAL VISUAL. Existing scoped capture admission lacked selected-registry validation after slot fallback. Strengthen its standard standalone capture matrix, reject unregistered actual bindings in explicit unit scope, preserve fixture/unscoped attachment semantics, register real navbar states, and rerun fresh committed qualification. Full local CLI/native remains deferred."
+			"evidence": "3984 capture5dc is retained FUNCTIONAL PASS / PARTIAL VISUAL: all18 functional stages passed but six new navbar images bound literal screens. Standard scoped admission matrix now rejects unregistered actual bindings using exact selected registry; fixture/unscoped and registered retired attachments remain supported. Corrected unchanged pair026ccee3b477e6b152f16ee2d8b4fc95998d8c34e0ff293402941001af6d4100 at133047533 to a39a073743ed240cc61217189c673bb90fbec46fa6ffdc8bef45b13b59ed982d atb0fc91c passed, exact tests/inputs/command/assertion/profile matched. Four broken checkpoint product files were byte-identical to3984. Earlierd330/rejectedGREEN remain retained; lesson: freeze every scenario and shared browser marker assertion in test-only checkpoint before product repair. Existing Harness guidance now states this partition. Fresh frozen broader qualification, registered responsive captures, hosted CI and main delivery remain pending. Full local CLI/native remains deferred."
 		}
 	],
 	"evaluators": [
