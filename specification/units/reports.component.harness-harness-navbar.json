@@ -58,7 +58,7 @@
 			{
 				"name": "HarnessNavbar",
 				"type": "markup",
-				"description": "Five primary controls with a Modules navigation bubble, revision controls and entity search. Opening Modules preserves the address. Escape, outside click and selection close its six scoped links. Unresolved navigation is disabled; modified links retain browser behavior."
+				"description": "Five primary destinations, revision controls and entity search. Modules opens Components; its six scoped category links stay in a horizontal row below the primary navigation. Unresolved navigation is disabled; modified links retain browser behavior."
 			}
 		],
 		"errors": []
@@ -81,6 +81,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-selectors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-tabs",
 			"via": "import",
 			"origin": "derived"
 		},

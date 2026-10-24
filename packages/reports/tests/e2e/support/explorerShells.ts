@@ -10,15 +10,11 @@ const titled = (page: Page, name: string) =>
 const listed = (page: Page) =>
 	expect(content(page).getByRole('link', { name: 'TitleFrame', exact: true })).toBeVisible();
 const active = async (page: Page, name: string) => {
-	const trigger = nav(page).getByRole('button', { name: 'Modules', exact: true });
+	const trigger = nav(page).getByRole('link', { name: 'Modules', exact: true });
 	await expect(trigger).toHaveAttribute('aria-current', 'page');
-	await trigger.click();
 	await expect(
-		page
-			.getByRole('navigation', { name: 'Module categories' })
-			.getByRole('link', { name, exact: true })
-	).toHaveAttribute('aria-current', 'page');
-	await page.keyboard.press('Escape');
+		page.getByRole('tablist', { name: 'Module categories' }).getByRole('tab', { name, exact: true })
+	).toHaveAttribute('aria-selected', 'true');
 };
 
 /**
