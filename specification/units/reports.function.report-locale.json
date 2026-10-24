@@ -8,9 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/reportLocale.ts",
 			"packages/reports/src/utils/reports-media/report-locale/en.json",
 			"packages/reports/src/utils/reports-media/report-locale/fr.json",
-			"packages/reports/src/utils/reportLocale.ts",
 			"packages/reports/src/utils/reports-media/reportLocale.ts"
 		],
 		"symbols": ["t", "reportLocale", "t", "reportLocale"]
