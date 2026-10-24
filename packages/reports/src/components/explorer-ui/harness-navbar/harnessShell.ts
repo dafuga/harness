@@ -16,33 +16,31 @@ import { categoryIcon, type HarnessIconName } from '../../../utils/explorer-ui/h
 
 const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['pages', 'Pages'],
-	['modules', 'Code'],
+	['modules', 'Modules'],
+	['styles', 'Styles'],
+	['configs', 'Configs'],
 	['platforms', 'Platforms']
 ];
-const moduleLabels: Array<[Exclude<HarnessShellCategory['id'], 'modules'>, string]> = [
+const moduleLabels: Array<[ExplorerCategory, string]> = [
 	['layouts', 'Layouts'],
 	['components', 'Components'],
 	['models', 'Models'],
 	['services', 'Services'],
 	['functions', 'Helpers'],
-	['types', 'Types'],
-	['configs', 'Configs'],
-	['styles', 'Styles'],
-	['dependencies', 'Dependencies']
+	['types', 'Types']
 ];
 
 function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory['id']): boolean {
 	if (!place) return false;
-	if (id === 'modules')
-		return Boolean(place.screen) || moduleLabels.some(([category]) => category === place.category);
-	if (place.screen) return id === place.screen;
+	if (id === 'styles') return place.screen === 'styles';
+	if (place.screen === 'styles') return false;
+	if (id === 'modules') return moduleLabels.some(([category]) => category === place.category);
 	return place.category === id;
 }
 
 function categoryGlyph(id: HarnessShellCategory['id']): HarnessIconName {
 	if (id === 'styles') return 'styles';
 	if (id === 'modules') return 'layers';
-	if (id === 'dependencies') return 'code';
 	return categoryIcon[id];
 }
 
@@ -97,16 +95,16 @@ function categoryTarget(
 	const target: ExplorerLocation = {
 		branch: place.branch,
 		commit: place.commit,
-		category: category === 'styles' || category === 'dependencies' ? 'pages' : category
+		category: category === 'styles' ? 'pages' : category
 	};
-	if (id === 'styles' || id === 'dependencies') target.screen = id;
+	if (id === 'styles') target.screen = 'styles';
 	return target;
 }
 
 /**
- * What the bar of the explorer shows for an address: where the brand leads, the primary
- * categories inside the viewed branch and commit, the source catalogs grouped under Code,
- * and the revision controls. Every address is formatted by the host;
+ * What the bar of the explorer shows for an address: where the brand leads, the five
+ * categories inside the branch and commit that are viewed, the six module categories Modules
+ * opens from any of them, and the revision controls. Every address is formatted by the host;
  * none is put together here.
  */
 export function harnessShell(input: HarnessNavbarInput): HarnessShellView {

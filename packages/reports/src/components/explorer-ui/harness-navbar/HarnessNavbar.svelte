@@ -54,10 +54,10 @@
 	</nav>
 	{#if input.scope && moduleActive}
 		<HarnessTabs
-			view={input.scope.location.screen ?? input.scope.location.category}
+			view={input.scope.location.category}
 			onview={openKind}
 			tabs={kinds}
-			label="Code categories"
+			label="Module categories"
 		/>
 	{/if}
 	{#if revision && input.index}
