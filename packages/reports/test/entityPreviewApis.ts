@@ -32,7 +32,7 @@ export async function reviewApis(page: Page, viewport: string): Promise<void> {
 		'reports.component.harness-entity-header'
 	]);
 	await page.getByRole('tab', { name: 'Used In', exact: true }).click();
-	await page.getByRole('link', { name: 'Orders page', exact: true }).first().click();
+	await page.getByRole('link', { name: 'Open Orders page', exact: true }).first().click();
 	await page.getByRole('tab', { name: 'APIs', exact: true }).click();
 	await expect(page.getByRole('tabpanel', { name: 'Orders page apis', exact: true })).toBeVisible();
 	await expect(page.getByRole('article', { name: '/api/orders', exact: true })).toBeVisible();
@@ -61,7 +61,7 @@ async function reviewHistoricalApis(page: Page, viewport: string): Promise<void>
 	await page.getByRole('link', { name: 'Pages', exact: true }).first().click();
 	await page
 		.getByRole('article', { name: 'Orders page', exact: true })
-		.getByRole('link', { name: 'Orders page', exact: true })
+		.getByRole('link', { name: 'Open Orders page', exact: true })
 		.click();
 	await page.getByRole('tab', { name: 'APIs', exact: true }).click();
 	await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);

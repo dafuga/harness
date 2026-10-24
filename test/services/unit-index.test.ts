@@ -1,6 +1,6 @@
 import { assertCompanionOwnership } from './unit-index/ownership';
 import { assertCompositionRegistry } from './unit-index/composition';
-import { assertHttpDependencies } from './unit-index/http';
+import './unit-index/http';
 import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
@@ -16,10 +16,6 @@ import migration from '../../specification/loops/local-helper-ownership/migratio
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
 test('atomic levels follow runtime calls and survive projections', assertCompositionRegistry);
-test(
-	'HTTP requests bind to endpoints in the owning app and selected source tree',
-	assertHttpDependencies
-);
 
 test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
 	const root = import.meta.dirname + '/../..';
