@@ -86,7 +86,7 @@ export async function revisionDivider(within: Locator): Promise<void> {
 	} else expect(line.content).toBe('none');
 }
 
-/** Modules discloses scoped links without navigating or adding another header row. */
+/** Modules opens a horizontal category row below the primary navigation. */
 export async function moduleNavigation(
 	page: Page,
 	home: string,
@@ -94,21 +94,17 @@ export async function moduleNavigation(
 	scoped: string
 ): Promise<void> {
 	const bar = page.getByRole('banner');
-	const trigger = bar
-		.getByRole('button', { name: 'Modules', exact: true })
-		.or(bar.getByRole('link', { name: 'Modules', exact: true }));
-	const modules = bar.getByRole('navigation', { name: 'Module categories' });
-	const types = modules.getByRole('link', { name: 'Types', exact: true });
-	const before = page.url();
-	const height = (await box(bar)).height;
+	const trigger = bar.getByRole('link', { name: 'Modules', exact: true });
+	const modules = bar.getByRole('tablist', { name: 'Module categories' });
 	await trigger.click();
 	await pictured(page, `explorer-shell-modules-${screen}`);
 	await captureShell(page, home, { state: 'modules', viewport: screen });
+	await expect(page).toHaveURL(`${shellOrigin}${scoped}/components`);
+	await expect(trigger).toHaveAttribute('aria-current', 'page');
 	await expect(modules).toBeVisible();
-	await expect(page).toHaveURL(before);
-	await expect(trigger).toHaveAttribute('aria-expanded', 'true');
-	expect((await box(bar)).height, 'the bubble overlays the page').toBe(height);
-	await expect(modules.getByRole('link')).toHaveText([
+	await expect(bar.locator('[popover], [popovertarget]')).toHaveCount(0);
+	const tabs = modules.getByRole('tab');
+	await expect(tabs).toHaveText([
 		'Layouts',
 		'Components',
 		'Models',
@@ -116,28 +112,31 @@ export async function moduleNavigation(
 		'Helpers',
 		'Types'
 	]);
-	await expect(bar.getByRole('tablist', { name: 'Module categories' })).toHaveCount(0);
-	await reachable(modules, (await page.viewportSize())!.width);
+	const [row, primary] = await Promise.all([box(modules), box(bar.locator('.hx-categories'))]);
+	expect(row.y, 'module categories sit below the primary row').toBeGreaterThanOrEqual(
+		primary.y + primary.height
+	);
+	const places = await Promise.all((await tabs.all()).map(box));
+	for (const [index, place] of places.entries()) {
+		expect(
+			Math.abs(place.y - places[0].y),
+			'module categories share one horizontal row'
+		).toBeLessThan(2);
+		if (index) expect(place.x).toBeGreaterThan(places[index - 1].x);
+	}
 	await page.keyboard.press('Escape');
-	await expect(modules).not.toBeVisible();
-	await expect(trigger).toBeFocused();
-	await page.keyboard.press('Enter');
 	await expect(modules).toBeVisible();
-	await bar.getByText('synthetic-repository', { exact: true }).click();
-	await expect(modules).not.toBeVisible();
-	await trigger.click();
-	await types.click();
-	await expect(modules).not.toBeVisible();
-	await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+	await modules.getByRole('tab', { name: 'Types', exact: true }).click();
+	await expect(page).toHaveURL(`${shellOrigin}${scoped}/types`);
+	await expect(modules.getByRole('tab', { name: 'Types', exact: true })).toHaveAttribute(
+		'aria-selected',
+		'true'
+	);
 	await pictured(page, `explorer-shell-types-${screen}`);
 	await captureShell(page, home, { state: 'types', viewport: screen });
-	expect(await fits(page), 'the module bubble stays inside the page').toBe(true);
-	await expect(page).toHaveURL(`${shellOrigin}${scoped}/types`);
-	await expect(trigger).toHaveAttribute('aria-current', 'page');
-	await trigger.click();
-	await expect(types).toHaveAttribute('aria-current', 'page');
-	await modules.getByRole('link', { name: 'Helpers', exact: true }).focus();
+	expect(await fits(page), 'the module row scrolls without widening the page').toBe(true);
+	await modules.getByRole('tab', { name: 'Helpers', exact: true }).focus();
 	await page.keyboard.press('Enter');
 	await expect(page).toHaveURL(`${shellOrigin}${scoped}/functions`);
-	await expect(modules).not.toBeVisible();
+	await expect(modules).toBeVisible();
 }

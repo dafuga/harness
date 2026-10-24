@@ -31,7 +31,7 @@
 			{
 				"name": "serviceContract",
 				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
-				"description": "Constructor-first callable signatures with parameter, return and error groups, plus facts outside discovered methods. Multiple classes keep qualified method names; no discovered methods returns empty arrays."
+				"description": "CRUD-first callable signatures with parameter, return and error groups, plus facts outside discovered methods. Multiple classes keep qualified method names; no discovered methods returns empty arrays."
 			},
 			{
 				"name": "modelContract",

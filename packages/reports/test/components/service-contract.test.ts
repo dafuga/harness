@@ -35,7 +35,9 @@ test('service contracts group parameters, return and errors by method, with init
 	// The former rendering had one class-wide table of each; none of them is left.
 	for (const group of ['Inputs', 'Outputs']) expect(body).not.toContain(`aria-label="${group}"`);
 	const initialize = methodOf(body, 'initialize');
-	expect(read(initialize)).toContain('initialize(timeoutMs: number): Promise<void>');
+	expect(read(initialize)).toContain('initialize(timeoutMs)');
+	expect(read(initialize)).toContain('Promise<void>');
+	expect(read(initialize)).not.toContain('timeoutMs: number');
 	for (const group of ['Parameters', 'Returns'])
 		expect(initialize).toContain(`aria-label="${group}"`);
 	expect(initialize).not.toContain('aria-label="Throws"');
@@ -46,11 +48,12 @@ test('service contracts group parameters, return and errors by method, with init
 	expect(initialize).toContain('View example for timeoutMs');
 	expect(words(initialize)).not.toContain('TimeoutError');
 	const constructed = methodOf(body, 'constructor');
-	expect(read(constructed)).toContain('constructor(accountId: string)');
+	expect(read(constructed)).toContain('constructor(accountId)');
 	expect(constructed).not.toContain('aria-label="Returns"');
 	expect(words(constructed)).toContain('Creates the service.');
 	const latest = methodOf(body, 'latest');
-	expect(read(latest)).toContain('latest(): Promise<Order[]>');
+	expect(read(latest)).toContain('latest()');
+	expect(read(latest)).toContain('Promise<Order[]>');
 	expect(words(latest)).toContain('No parameters.');
 	expect(latest).not.toContain('aria-label="Throws"');
 	expect(words(latest)).not.toContain('No errors declared for this method.');
@@ -65,7 +68,7 @@ test('an older revision without class metadata reads methods from qualified name
 	delete feed.serviceClasses;
 	const body = contractOf(orderFeed.id, detail);
 	expect(methodsIn(body)).toEqual(['constructor', 'initialize', 'latest']);
-	expect(read(methodOf(body, 'initialize'))).toContain('initialize(timeoutMs: number)');
+	expect(read(methodOf(body, 'initialize'))).toContain('initialize(timeoutMs)');
 });
 
 test('each class of a service keeps its own methods, same-named ones apart', () => {
@@ -92,10 +95,11 @@ test('each class of a service keeps its own methods, same-named ones apart', () 
 		'OrderArchive.latest'
 	]);
 	const feed = read(methodOf(body, 'OrderFeed.latest'));
-	expect(feed).toContain('OrderFeed.latest(): Promise<Order[]>');
+	expect(feed).toContain('OrderFeed.latest()');
 	expect(feed).not.toMatch(/before|Archived/);
 	const archive = read(methodOf(body, 'OrderArchive.latest'));
-	expect(archive).toContain('OrderArchive.latest(before: string): Promise<Archived[]>');
+	expect(archive).toContain('OrderArchive.latest(before)');
+	expect(archive).toContain('Promise<Archived[]>');
 	expect(archive).not.toMatch(/Promise<Order\[\]>|TimeoutError/);
 });
 
@@ -138,3 +142,49 @@ test('a service contract that names no method keeps its fields together', () => 
 	expect(body).toContain('aria-label="Outputs"');
 	expect(words(body)).not.toContain('not tied to a method');
 });
+
+test.each([true, false])(
+	'CRUD methods lead in semantic order with recorded class metadata %s',
+	(recorded) => {
+		const methods = [
+			'latest',
+			'update',
+			'findBy',
+			'delete',
+			'create',
+			'find',
+			'read',
+			'initialize',
+			'create'
+		];
+		const unit = serviceUnit({
+			...orderFeed,
+			methods,
+			contract: {
+				...orderFeed.contract,
+				outputs: [
+					...orderFeed.contract.outputs,
+					...['update', 'findBy', 'delete', 'create', 'find', 'read'].map((name) => ({
+						name: `OrderFeed.${name}`,
+						type: 'Promise<Order>'
+					}))
+				]
+			}
+		});
+		if (!recorded) delete unit.serviceClasses;
+		const detail = head();
+		detail.registry.units = detail.registry.units.map((item) =>
+			item.id === unit.id ? unit : item
+		);
+		expect(methodsIn(contractOf(unit.id, detail))).toEqual([
+			'create',
+			'findBy',
+			'find',
+			'read',
+			'update',
+			'delete',
+			'constructor',
+			...(recorded ? ['latest', 'initialize'] : ['initialize', 'latest'])
+		]);
+	}
+);
