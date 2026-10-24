@@ -1,4 +1,5 @@
 import type { AgentEntry } from '../../../../../../src/core/activityTypes';
+import { SvelteMap } from 'svelte/reactivity';
 import { activityReading } from '../../../../../reports/src/utils/projects-sessions/activityReading';
 import type { Workspace } from '../projects-sessions/workspace.svelte';
 
@@ -30,7 +31,7 @@ class AgentRosterState {
 		);
 	}
 	get modules() {
-		const assignments = new Map<string, AgentEntry[]>();
+		const assignments = new SvelteMap<string, AgentEntry[]>();
 		for (const agent of this.sample?.agents.roster ?? []) {
 			if (this.reading?.label(agent) !== 'Working') continue;
 			for (const id of new Set(agent.units)) {
@@ -60,14 +61,19 @@ class AgentRosterState {
 				this.error = '';
 			}
 		} catch {
-			if (this.owns(token, projectId))
-				this.error = this.sample ? 'Could not refresh. Showing the last reading.' : unavailable;
+			if (this.owns(token, projectId)) this.error = this.refreshError;
 		} finally {
-			if (this.active && token === this.generation) this.loading = false;
+			if (this.current(token)) this.loading = false;
 		}
 	};
+	private get refreshError() {
+		return this.sample ? 'Could not refresh. Showing the last reading.' : unavailable;
+	}
+	private current(token: number) {
+		return this.active && token === this.generation;
+	}
 	private owns(token: number, projectId: string) {
-		return this.active && token === this.generation && projectId === this.workspace.projectId;
+		return this.current(token) && projectId === this.workspace.projectId;
 	}
 	listen() {
 		this.active = true;

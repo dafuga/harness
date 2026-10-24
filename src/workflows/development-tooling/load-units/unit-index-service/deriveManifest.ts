@@ -16,8 +16,6 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 	const source = files.map((file) => file.path).sort();
 	const kept = input.previous ?? defaults(input);
 	const preview = kept.preview;
-	const documentation = kept.documentation;
-	const catalog = kept.catalog;
 	const composition = compositionMetadata(input, kept.composition);
 	return {
 		schemaVersion: 1,
@@ -31,9 +29,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		responsibilityOrigin: kept.responsibilityOrigin,
 		status: 'active',
 		...(composition ? { composition } : {}),
-		...(documentation ? { documentation } : {}),
-		...(catalog ? { catalog } : {}),
-		...(kept.configControls ? { configControls: kept.configControls } : {}),
+		...declaredMetadata(kept),
 		...lineage(input),
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
 		contract: kept.contract.origin === 'declared' ? kept.contract : derivedContract(files),
@@ -42,6 +38,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		runtime: runtime(input.previous, source),
 		scenarios: kept.scenarios,
 		...(preview ? { preview } : {}),
+
 		budgets: kept.budgets
 	};
 }
@@ -149,4 +146,13 @@ function title(path: string): string {
 	if (!file.startsWith('+')) return file.replace(/\.[a-z0-9.]+$/i, '');
 	const route = path.slice(path.indexOf('routes/') + 7, -file.length - 1);
 	return `/${route}`.replace(/\/$/, '') || '/';
+}
+
+function declaredMetadata(kept: Declared) {
+	const { documentation, catalog, configControls } = kept;
+	return {
+		...(documentation ? { documentation } : {}),
+		...(catalog ? { catalog } : {}),
+		...(configControls ? { configControls } : {})
+	};
 }
