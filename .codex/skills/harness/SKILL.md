@@ -165,6 +165,12 @@ Use source-and-run-specific output directories for verification attempts. Before
 - Refresh prepared history when measurement support changes and verify the delivered data as well as the renderer. Every entity kind must show figures from its selected commit; old missing placeholders must not override current source observations. A portable index without its Git source must be rebuilt from that source rather than borrowing the working tree.
 - Show actual performance observations independently of budget declarations. Preserve workload, target and profile boundaries. A changed unit requires a fresh run; inherited observations of an unchanged unit keep their original revision and label. A focused benchmark does not grant full verification or approve a budget baseline.
 
+## Module task handoff
+
+Codex sessions assigning module work use `harness task feature <id> --goal <text> --tldr <text>`, then `harness task add --input <file>`. A task must identify a registered module and include a wanted contract with responsibility, inputs, outputs and errors. Admission commits feature context and the contract to `refs/harness/tasks`; source HEAD and unrelated edits stay intact.
+
+Use `--model <exact-id> --intelligence <level>` for explicit selection. Otherwise auto tries `claude-haiku-5-5` at medium and falls back to `gpt-6-luna` at max only for structured Claude quota rejection. Worker prompts begin with the identical shared feature goal/TLDR, then include the overall module goal and committed wanted contract. `harness task worker --worker <id> --watch` picks up matching assignments in isolated worktrees; CLI success leaves changes in review, not verified completion. Use one repository as the active queue owner; `task sync <remote>` exchanges the task ref and refuses divergence.
+
 ## Hard Limits
 
 - Files: 220 lines.

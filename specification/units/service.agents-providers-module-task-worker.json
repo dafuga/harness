@@ -1,0 +1,159 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-worker",
+	"kind": "service",
+	"title": "ModuleTaskWorkerService",
+	"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/ModuleTaskWorkerService.ts",
+			"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+		],
+		"symbols": [
+			"ModuleTaskWorkerService",
+			"ModuleTaskWorkerService.constructor",
+			"ModuleTaskWorkerService.once",
+			"pendingTaskResult",
+			"claimedTask",
+			"finishTask",
+			"taskWrites"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskWorkerService.constructor.root",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskWorkerService.constructor.runner",
+				"type": "TaskRunner"
+			},
+			{
+				"name": "ModuleTaskWorkerService.once.worker",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskWorkerService.once.modules",
+				"type": "string[]"
+			},
+			{
+				"name": "ModuleTaskWorkerService.once.signal",
+				"type": "unknown"
+			},
+			{
+				"name": "pendingTaskResult.selection",
+				"type": "TaskSelection"
+			},
+			{
+				"name": "pendingTaskResult.worktree",
+				"type": "string"
+			},
+			{
+				"name": "claimedTask.queue",
+				"type": "ModuleTaskQueue"
+			},
+			{
+				"name": "claimedTask.worker",
+				"type": "string"
+			},
+			{
+				"name": "claimedTask.modules",
+				"type": "string[]"
+			},
+			{
+				"name": "claimedTask.owner",
+				"type": "NonNullable<ModuleTask['claim']>['owner']"
+			},
+			{
+				"name": "finishTask.queue",
+				"type": "ModuleTaskQueue"
+			},
+			{
+				"name": "finishTask.claimed",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "finishTask.result",
+				"type": "ModuleTask['result']"
+			},
+			{
+				"name": "taskWrites.git",
+				"type": "GitAdapter"
+			},
+			{
+				"name": "taskWrites.task",
+				"type": "ModuleTask"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskWorkerService.once",
+				"type": "unknown"
+			},
+			{
+				"name": "pendingTaskResult",
+				"type": "NonNullable<ModuleTask['result']>"
+			},
+			{
+				"name": "claimedTask",
+				"type": "unknown"
+			},
+			{
+				"name": "finishTask",
+				"type": "unknown"
+			},
+			{
+				"name": "taskWrites",
+				"type": "Promise<string[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/ModuleTaskWorkerService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/ModuleTaskWorkerService.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

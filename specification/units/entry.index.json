@@ -140,7 +140,12 @@
 			"SourceProfileAdapter",
 			"ApiCommand",
 			"HarnessApiService",
-			"HarnessHttpAdapter"
+			"HarnessHttpAdapter",
+			"ModuleTaskCommand",
+			"ModuleTaskRepository",
+			"ModuleTaskService",
+			"ModuleTaskRunnerAdapter",
+			"ModuleTaskWorkerService"
 		]
 	},
 	"contract": {
@@ -150,6 +155,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.claude-benchmark",
 			"via": "reexport",
@@ -197,6 +207,11 @@
 		},
 		{
 			"unit": "adapter.sqlite",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.agents-providers-module-task",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -536,6 +551,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.benchmark",
 			"via": "reexport",
 			"origin": "derived"
@@ -572,6 +592,16 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -736,7 +766,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
