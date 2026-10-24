@@ -131,19 +131,19 @@
 		height: 10px;
 		border: var(--hx-border-thick) solid;
 		border-radius: var(--hx-radius-round);
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	/* Each state has its colour and, on a light, its shape: ring, dot, diamond or haloed dot. A row
 	   says how it stands in the colour of its light. */
 	[data-state='queued'],
 	[data-state='active'] {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	[data-state='recent'] {
-		color: var(--hx-pass);
+		color: var(--hx-color-success);
 	}
 	[data-state='failed'] {
-		color: var(--hx-fail);
+		color: var(--hx-color-error);
 	}
 	.light:is([data-state='recent'], [data-state='failed'], [data-state='active']) {
 		background: currentColor;
@@ -161,7 +161,8 @@
 	}
 	@keyframes pulse {
 		50% {
-			box-shadow: 0 0 0 var(--hx-space-6) color-mix(in srgb, var(--hx-gold) 0%, transparent);
+			box-shadow: 0 0 0 var(--hx-space-6)
+				color-mix(in srgb, var(--hx-color-primary) 0%, transparent);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
@@ -172,7 +173,7 @@
 	h2 {
 		margin: 0;
 		font-size: var(--hx-type-size-base);
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	.error {
 		margin: 0;
@@ -186,7 +187,7 @@
 		list-style: none;
 	}
 	li + li {
-		border-top: var(--hx-border-thin) solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	/* A row names its destination, then its route, how it stands, its project and its commit. */
 	.job {

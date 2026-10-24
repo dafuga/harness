@@ -17,7 +17,7 @@
 	align-items: center;
 	gap: var(--hx-space-12) var(--hx-space-24);
 	padding: var(--hx-space-22) 0 var(--hx-space-18);
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .hc-top nav {
 	display: flex;
@@ -26,7 +26,7 @@
 }
 .hc-top nav a,
 .hc-link {
-	color: var(--gold);
+	color: var(--hx-color-primary);
 }
 .hc-controls {
 	display: flex;
@@ -40,7 +40,7 @@
 	gap: var(--hx-space-4);
 	min-width: 0;
 	flex: 1 1 220px;
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-xs);
 	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
@@ -52,9 +52,9 @@
 	min-width: 0;
 	min-height: 44px;
 	padding: 0 var(--hx-space-12);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
-	background: var(--panel);
+	background: var(--hx-color-surface);
 	color: inherit;
 	font: inherit;
 	letter-spacing: var(--hx-style-tracking-normal);
@@ -64,7 +64,7 @@
 	display: flex;
 	gap: var(--hx-space-4);
 	overflow-x: auto;
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .hc-tabs button {
 	min-height: 44px;
@@ -72,13 +72,13 @@
 	border: 0;
 	border-bottom: var(--hx-border-thick) solid transparent;
 	background: none;
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font: inherit;
 	white-space: nowrap;
 	cursor: pointer;
 }
 .hc-tabs button[aria-selected='true'] {
-	border-color: var(--gold);
+	border-color: var(--hx-color-primary);
 	color: inherit;
 }
 /* On a phone the four views are two rows of two, so none is hidden past the edge. */
@@ -105,9 +105,9 @@
 .hc-card {
 	min-width: 0;
 	padding: var(--hx-space-16);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-large);
-	background: var(--panel);
+	background: var(--hx-color-surface);
 }
 .hc-card p,
 .hc-card li,
@@ -147,11 +147,11 @@
 .hc-list button:hover,
 .hc-list button[aria-current='true'],
 .hc-chip:hover {
-	border-color: var(--gold);
+	border-color: var(--hx-color-primary);
 }
 .hc-list small,
 .hc-muted {
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .hc-map {
 	position: relative;
@@ -176,19 +176,19 @@
 	min-width: 44px;
 	min-height: 44px;
 	padding: 0 var(--hx-space-12);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
-	background: var(--ink);
+	background: var(--hx-color-background);
 	color: inherit;
 	font: inherit;
 	cursor: pointer;
 }
 .hc-node rect {
-	fill: var(--hx-raised);
-	stroke: var(--line);
+	fill: var(--hx-color-surface-raised);
+	stroke: var(--hx-color-border);
 }
 .hc-node text {
-	fill: var(--hx-text);
+	fill: var(--hx-color-text);
 	font-size: var(--hx-type-size-2xs);
 	pointer-events: none;
 }
@@ -197,31 +197,31 @@
 }
 .hc-node:focus-visible rect,
 .hc-node.selected rect {
-	stroke: var(--gold);
+	stroke: var(--hx-color-primary);
 	stroke-width: 2.5;
 }
 .hc-node.dimmed {
 	opacity: var(--hx-opacity-faint);
 }
 .hc-node.direct rect {
-	fill: var(--hx-gold-fill);
+	fill: var(--hx-color-direct);
 }
 .hc-node.indirect rect {
-	fill: var(--hx-accent-fill);
+	fill: var(--hx-color-indirect);
 }
 .hc-node.added rect {
-	fill: var(--hx-pass-fill);
+	fill: var(--hx-color-added);
 }
 .hc-node.removed rect {
-	fill: var(--hx-fail-fill);
+	fill: var(--hx-color-removed);
 	stroke-dasharray: 5 3;
 }
 .hc-edge {
-	stroke: var(--hx-line-strong);
+	stroke: var(--hx-color-border-strong);
 	stroke-width: 1;
 }
 .hc-edge.near {
-	stroke: var(--gold);
+	stroke: var(--hx-color-primary);
 	stroke-width: 1.6;
 }
 .hc-legend {
@@ -246,11 +246,11 @@
 }
 .hc-detail [role='group'] {
 	padding-top: var(--hx-space-12);
-	border-top: var(--hx-border-thin) solid var(--line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .hc-detail h3 {
 	margin: 0 0 var(--hx-space-6);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-xs);
 	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
@@ -271,7 +271,7 @@
 	width: auto;
 	min-height: 0;
 	padding: var(--hx-space-2) var(--hx-space-6);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .hc-groups {
 	display: grid;
@@ -290,12 +290,12 @@
 .hc-table th,
 .hc-table td {
 	padding: var(--hx-space-8) var(--hx-space-10);
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	text-align: left;
 	vertical-align: top;
 }
 .hc-table th {
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-weight: var(--hx-style-weight-medium);
 }
 /* A column of sentences keeps a readable width; on a narrow screen the table scrolls instead. */
@@ -303,15 +303,15 @@
 	min-width: 17rem;
 }
 .hc-up {
-	color: var(--hx-warning);
+	color: var(--hx-color-warning);
 }
 .hc-down {
-	color: var(--hx-pass);
+	color: var(--hx-color-success);
 }
 .hc-notice {
 	padding: var(--hx-space-12) var(--hx-space-14);
-	border-left: var(--hx-border-heavy) solid var(--gold);
-	background: var(--hx-gold-wash);
+	border-left: var(--hx-border-heavy) solid var(--hx-color-primary);
+	background: var(--hx-color-primary-wash);
 }
 .hc-records {
 	display: grid;
@@ -322,15 +322,15 @@
 }
 .hc-records li {
 	padding: var(--hx-space-10) var(--hx-space-12);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius);
 }
 .hc-records li.current {
-	border-color: var(--gold);
+	border-color: var(--hx-color-primary);
 }
 .hc-failures {
 	margin: var(--hx-space-8) 0 0;
-	color: var(--hx-fail);
+	color: var(--hx-color-error);
 	overflow-wrap: anywhere;
 }
 .hc-failures p {
@@ -339,7 +339,7 @@
 .hc-causes p {
 	margin: var(--hx-space-6) 0;
 	padding: var(--hx-space-8) var(--hx-space-12);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 }
 .hc-failures summary {
@@ -351,7 +351,7 @@
 .hc-all {
 	max-height: 50vh;
 	padding: var(--hx-space-6) var(--hx-space-10);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 	overflow: auto;
 }

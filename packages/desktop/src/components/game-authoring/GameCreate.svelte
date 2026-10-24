@@ -104,14 +104,18 @@
 		margin: var(--hx-space-8) auto var(--hx-space-28);
 		padding: var(--hx-space-20);
 		text-align: start;
-		background: radial-gradient(ellipse at top, var(--hx-raised), var(--panel) 70%);
-		border: var(--hx-border-thin) solid var(--line);
+		background: radial-gradient(
+			ellipse at top,
+			var(--hx-color-surface-raised),
+			var(--hx-color-surface) 70%
+		);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
 		box-shadow: var(--hx-shadow-overlay);
 		transition: border-color var(--hx-motion-fast);
 	}
 	.game-create:focus-within {
-		border-color: color-mix(in srgb, var(--gold) 40%, var(--line));
+		border-color: color-mix(in srgb, var(--hx-color-primary) 40%, var(--hx-color-border));
 	}
 	.wide {
 		grid-column: 1 / -1;
@@ -127,7 +131,7 @@
 		width: 6px;
 		height: 6px;
 		border-radius: var(--hx-radius-round);
-		background: var(--gold);
+		background: var(--hx-color-primary);
 	}
 	.intro small {
 		margin-top: var(--hx-space-4);
@@ -138,7 +142,7 @@
 		min-width: 0;
 	}
 	.caption {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-2xs);
 		font-weight: var(--hx-style-weight-semibold);
 		letter-spacing: var(--hx-style-tracking-wide);
@@ -154,7 +158,7 @@
 	}
 	.field input:focus-visible,
 	.field :global(select:focus-visible) {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thick);
 	}
 	/* Above the gate's own spacing of its primary button. */

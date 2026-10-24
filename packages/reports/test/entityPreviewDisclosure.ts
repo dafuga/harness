@@ -77,9 +77,10 @@ export async function reviewGroupDisclosure(page: Page, viewport: string): Promi
 		);
 	}
 	await open(page, { screen: 'styles' });
-	await toggle(
-		page,
-		page.getByRole('heading', { level: 2, name: /^Colors/ }),
-		`disclosure-styles-${viewport}`
-	);
+	for (const group of ['Colors', 'Typography', 'Spacing and corners', 'Type scale'])
+		await toggle(
+			page,
+			page.getByRole('heading', { level: 2, name: new RegExp(`^${group} \\d+$`) }),
+			`disclosure-styles-${group.toLowerCase().replaceAll(' ', '-')}-${viewport}`
+		);
 }

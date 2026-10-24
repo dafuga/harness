@@ -122,7 +122,7 @@
 	small,
 	summary,
 	.note {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.note {
 		font-size: var(--hx-type-size-xs);
@@ -132,16 +132,16 @@
 		resize: vertical;
 	}
 	textarea:focus-visible {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 	}
 	.quiet {
 		margin-inline-end: auto;
 		border-color: transparent;
 		background: none;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.quiet:hover {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	@media (max-width: 1100px) {
 		.review {

@@ -206,9 +206,9 @@
 	canvas {
 		width: 100%;
 		aspect-ratio: 1280 / 704;
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 	}
 	.row {
 		flex-wrap: wrap;

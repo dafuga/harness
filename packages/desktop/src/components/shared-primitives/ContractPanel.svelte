@@ -41,7 +41,7 @@
 		display: grid;
 		gap: var(--hx-space-5);
 		padding: var(--hx-space-10) 0;
-		border-bottom: var(--hx-border-thin) solid var(--line);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	dt {
 		text-transform: capitalize;
@@ -49,12 +49,12 @@
 	}
 	dd {
 		margin: 0;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		line-height: var(--hx-style-leading-normal);
 	}
 	summary {
 		cursor: pointer;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		padding: var(--hx-space-8) 0;
 	}
 	.contract-field {

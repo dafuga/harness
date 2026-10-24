@@ -4,7 +4,7 @@
 	flex-wrap: wrap;
 	gap: 0 var(--hx-space-26);
 	margin: var(--hx-space-22) 0 0;
-	border-bottom: var(--hx-border-thin) solid var(--hx-line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .media-tabs button {
 	position: relative;
@@ -12,7 +12,7 @@
 	padding: var(--hx-space-10) 0 var(--hx-space-12);
 	border: 0;
 	background: transparent;
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-sm);
 	font-weight: var(--hx-style-weight-semibold);
 }
@@ -25,22 +25,22 @@
 .media-tabs button:hover,
 .media-tabs button.active {
 	background: transparent;
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 }
 .media-tabs button.active::after {
-	background: var(--gold);
+	background: var(--hx-color-primary);
 }
 .media-count {
 	display: inline-block;
 	padding: 0 var(--hx-space-7);
 	border-radius: var(--hx-radius-pill);
-	background: var(--hx-raised);
+	background: var(--hx-color-surface-raised);
 	font-size: var(--hx-type-size-2xs);
 	line-height: var(--hx-space-20);
 }
 .media-tabs button.active .media-count {
-	background: var(--hx-gold-soft);
-	color: var(--gold);
+	background: var(--hx-color-primary-soft);
+	color: var(--hx-color-primary);
 }
 .gallery-section .media-tabs + .gallery-filters {
 	margin-top: var(--hx-space-16);
@@ -62,7 +62,8 @@
 	padding: var(--hx-space-18) var(--hx-space-16) var(--hx-space-16);
 	border-radius: var(--hx-radius-small);
 	background:
-		radial-gradient(120% 100% at 0% 0%, var(--hx-gold-wash), transparent 60%), var(--hx-bg);
+		radial-gradient(120% 100% at 0% 0%, var(--hx-color-primary-wash), transparent 60%),
+		var(--hx-color-background);
 	box-shadow: var(--hx-shadow-ring);
 }
 .audio-identity {
@@ -75,14 +76,14 @@
 	place-items: center;
 	width: 40px;
 	height: 40px;
-	border: var(--hx-border-thin) solid var(--hx-gold-line);
+	border: var(--hx-border-thin) solid var(--hx-color-primary-line);
 	border-radius: var(--hx-radius-round);
-	background: var(--hx-gold-wash);
-	color: var(--gold);
+	background: var(--hx-color-primary-wash);
+	color: var(--hx-color-primary);
 }
 .audio-kind {
 	display: block;
-	color: var(--gold);
+	color: var(--hx-color-primary);
 	font-size: var(--hx-type-size-2xs);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-caps);
@@ -90,7 +91,7 @@
 }
 .audio-duration {
 	display: block;
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 	font-size: var(--hx-type-size-lg);
 	font-weight: var(--hx-style-weight-semibold);
 	font-variant-numeric: var(--hx-style-numeric-tabular);
@@ -102,41 +103,41 @@
 }
 .audio-unavailable {
 	padding: var(--hx-space-10) var(--hx-space-12);
-	border: var(--hx-border-thin) dashed var(--hx-warning-line);
+	border: var(--hx-border-thin) dashed var(--hx-color-warning-line);
 	border-radius: var(--hx-radius-small);
-	color: var(--hx-warning);
+	color: var(--hx-color-warning);
 	font-size: var(--hx-type-size-compact);
 	text-align: center;
 }
 .audio-card.unavailable .audio-icon {
-	border-color: var(--hx-warning-line);
-	color: var(--hx-warning);
+	border-color: var(--hx-color-warning-line);
+	color: var(--hx-color-warning);
 }
 .evidence-card.audio-card p {
 	margin: 0;
 }
 .audio-card .audio-source {
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	overflow-wrap: anywhere;
 }
 .audio-source span,
 .audio-detail-label {
 	margin-right: var(--hx-space-6);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-2xs);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
 }
 .audio-details {
-	border-top: var(--hx-border-thin) solid var(--hx-line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .audio-details summary {
 	display: flex;
 	align-items: center;
 	gap: var(--hx-space-9);
 	padding: var(--hx-space-8) 0 0;
-	color: var(--gold);
+	color: var(--hx-color-primary);
 	font-size: var(--hx-type-size-xs);
 	font-weight: var(--hx-style-weight-semibold);
 	list-style: none;
@@ -158,7 +159,7 @@
 .audio-card .audio-details p,
 .audio-transcript {
 	margin: var(--hx-space-8) 0 0;
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-compact);
 	line-height: var(--hx-style-leading-normal);
 	white-space: pre-line;
@@ -166,7 +167,7 @@
 }
 .audio-transcript {
 	padding-left: var(--hx-space-12);
-	border-left: var(--hx-border-thick) solid var(--hx-gold-line);
+	border-left: var(--hx-border-thick) solid var(--hx-color-primary-line);
 }
 .audio-detail-label {
 	display: block;
@@ -184,10 +185,10 @@
 }
 .upload-audio textarea {
 	padding: var(--hx-space-11) var(--hx-space-15);
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 	border-radius: var(--hx-radius-small);
-	background: var(--hx-bg);
-	color: var(--hx-text);
+	background: var(--hx-color-background);
+	color: var(--hx-color-text);
 	font: inherit;
 	resize: vertical;
 }

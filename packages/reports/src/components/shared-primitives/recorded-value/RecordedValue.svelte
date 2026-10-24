@@ -78,7 +78,7 @@
 		min-width: 0;
 		container-type: inline-size;
 		font: var(--hx-style-body-small);
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	.fields {
 		display: block;
@@ -86,7 +86,7 @@
 	}
 	.fields > div {
 		padding: var(--hx-space-9) 0;
-		border-bottom: var(--hx-border-thin) solid var(--hx-line);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	.fields > div:first-child {
 		padding-top: 0;
@@ -98,14 +98,14 @@
 	dt {
 		margin-bottom: var(--hx-space-5);
 		font-weight: var(--hx-style-weight-semibold);
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 	}
 	dd {
 		margin: 0;
 	}
 	dd .fields {
 		padding-left: var(--hx-space-12);
-		border-left: var(--hx-border-thick) solid var(--hx-line-strong);
+		border-left: var(--hx-border-thick) solid var(--hx-color-border-strong);
 	}
 	.scalar {
 		display: inline-flex;
@@ -116,11 +116,11 @@
 	.value-type {
 		font-size: var(--hx-type-size-2xs);
 		font-weight: var(--hx-style-weight-medium);
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 	}
 	.value-note {
 		font-size: var(--hx-type-size-compact);
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 	}
 	.value-list {
 		display: flex;
@@ -133,7 +133,7 @@
 	.value-list > li {
 		max-width: 100%;
 		padding: var(--hx-space-4) var(--hx-space-8);
-		border: var(--hx-border-thin) solid var(--hx-line-strong);
+		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 		border-radius: var(--hx-radius-xsmall);
 	}
 	.value-scroll {
@@ -149,11 +149,11 @@
 	th,
 	td {
 		padding: var(--hx-space-8) var(--hx-space-10);
-		border-bottom: var(--hx-border-thin) solid var(--hx-line-strong);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border-strong);
 		white-space: nowrap;
 	}
 	th {
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
 		font-weight: var(--hx-style-weight-semibold);
 	}
@@ -172,7 +172,7 @@
 		tbody tr {
 			display: grid;
 			padding: var(--hx-space-6) var(--hx-space-10);
-			border: var(--hx-border-thin) solid var(--hx-line-strong);
+			border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 			border-radius: var(--hx-radius-compact);
 		}
 		td {
@@ -185,7 +185,7 @@
 		td::before {
 			content: attr(data-field);
 			font-size: var(--hx-type-size-xs);
-			color: var(--hx-muted);
+			color: var(--hx-color-text-muted);
 		}
 		td:last-child {
 			border-bottom: 0;

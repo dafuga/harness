@@ -6,7 +6,7 @@
 	margin-left: auto;
 }
 .hub-title {
-	border-inline: var(--hx-border-thin) solid var(--line);
+	border-inline: var(--hx-border-thin) solid var(--hx-color-border);
 	padding: var(--hx-space-12) var(--hx-space-22);
 	font-size: var(--hx-type-size-sm);
 }
@@ -21,10 +21,10 @@
 	font-size: var(--hx-type-size-3xl);
 }
 .hub-card {
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 	padding: var(--hx-space-22);
-	background: var(--panel);
+	background: var(--hx-color-surface);
 }
 .hub-card h2 {
 	margin-bottom: var(--hx-space-8);
@@ -38,7 +38,7 @@
 }
 .email-proof input {
 	max-width: 190px;
-	font-family: var(--hx-font-family-mono);
+	font-family: var(--hx-font-family-code);
 	letter-spacing: var(--hx-style-tracking-code);
 }
 .google-button {
@@ -96,13 +96,13 @@
 .members th,
 .members td {
 	padding: var(--hx-space-10) var(--hx-space-8);
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	text-align: left;
 }
 .members th {
 	font-size: var(--hx-type-size-xs);
 	font-weight: var(--hx-style-weight-medium);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .copy-row {
 	display: flex;
@@ -114,7 +114,7 @@
 	min-width: 0;
 }
 .copy-row input {
-	font-family: var(--hx-font-family-mono);
+	font-family: var(--hx-font-family-code);
 	font-size: var(--hx-type-size-xs);
 }
 .account a {

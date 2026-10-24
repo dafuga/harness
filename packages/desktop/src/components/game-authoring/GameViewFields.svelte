@@ -111,12 +111,12 @@
 	}
 	.toggle {
 		margin-inline-start: auto;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.toggle:hover,
 	.toggle[aria-expanded='true'] {
-		border-color: var(--gold);
-		color: var(--gold);
+		border-color: var(--hx-color-primary);
+		color: var(--hx-color-primary);
 	}
 	.settings {
 		display: grid;
@@ -124,9 +124,9 @@
 		align-items: end;
 		gap: var(--hx-space-12) var(--hx-space-16);
 		padding: var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 	}
 	.settings[hidden] {
 		display: none;
