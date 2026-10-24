@@ -15,6 +15,13 @@ export function modelContractFixture(unit: HarnessUnit, commit: string): Harness
 				inputs: [{ name: 'adapter', type: 'PersistenceAdapter' }],
 				output: 'Promise<void>'
 			},
+			{
+				name: 'findBy',
+				inputs: [{ name: 'fields', type: 'Partial<OrderInput>' }],
+				output: 'Promise<Order[]>'
+			},
+			{ name: 'delete', inputs: [{ name: 'id', type: 'string' }], output: 'Promise<boolean>' },
+			{ name: 'find', inputs: [{ name: 'id', type: 'string' }], output: 'Promise<Order | null>' },
 			{ name: 'create', inputs: [{ name: 'input', type: 'OrderInput' }], output: 'Promise<Order>' },
 			{
 				name: 'update',

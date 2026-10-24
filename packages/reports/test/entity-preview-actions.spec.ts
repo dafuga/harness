@@ -151,11 +151,11 @@ for (const [name, size] of Object.entries(viewports)) {
 		const categoryStart = await tab.evaluate(() => performance.now());
 		await tab
 			.getByRole('navigation', { name: 'Harness categories' })
-			.getByRole('button', { name: 'Modules', exact: true })
+			.getByRole('link', { name: 'Modules', exact: true })
 			.click();
 		await tab
-			.getByRole('navigation', { name: 'Module categories' })
-			.getByRole('link', { name: 'Helpers', exact: true })
+			.getByRole('tablist', { name: 'Module categories' })
+			.getByRole('tab', { name: 'Helpers', exact: true })
 			.click();
 		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
 			'1003 of 1003 helpers shown'

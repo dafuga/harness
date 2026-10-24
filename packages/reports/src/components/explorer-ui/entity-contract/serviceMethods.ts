@@ -22,11 +22,21 @@ const methodsNamed = (names: string[], owner: string, whole: boolean): string[] 
 		return found && (whole || found.rest) ? [found.method] : [];
 	});
 
-/** Each method once, the constructor first and the rest in the order given. */
-const constructorFirst = (methods: string[]): string[] =>
-	[...new Set(methods)].sort(
-		(left, right) => Number(right === 'constructor') - Number(left === 'constructor')
+/** CRUD first, then construction and other methods; preserve order within each group. */
+const orderedMethods = (methods: string[]): string[] => {
+	const priority = new Map([
+		['create', 0],
+		['read', 1],
+		['find', 1],
+		['findBy', 1],
+		['update', 2],
+		['delete', 3],
+		['constructor', 4]
+	]);
+	return [...new Set(methods)].sort(
+		(left, right) => (priority.get(left) ?? 5) - (priority.get(right) ?? 5)
 	);
+};
 
 /** Whether a symbol, or a parameter, return or error, is declared under `Class.method`. */
 function declares(unit: HarnessUnit, owner: string): boolean {
@@ -38,29 +48,20 @@ function declares(unit: HarnessUnit, owner: string): boolean {
 	);
 }
 
-/**
- * The classes the revision records, whatever the unit is titled: each public method in its
- * recorded order, the constructor first where a symbol or field declares it. A same-named class
- * of another file is named alike in the contract, so it is one class here. A class whose
- * contract names none of its methods shows no method.
- */
+/** Recorded classes with declared methods: same-named classes share one contract and CRUD order. */
 function recordedClasses(unit: HarnessUnit, recorded: Recorded[]): ServiceClass[] {
 	return [...new Set(recorded.map((found) => found.name))].flatMap((name) => {
 		const listed = recorded
 			.filter((found) => found.name === name)
 			.flatMap((found) => found.methods.filter((method) => method !== 'constructor'));
 		const built = declares(unit, `${name}.constructor`) ? ['constructor'] : [];
-		const methods = constructorFirst([...built, ...listed]);
+		const methods = orderedMethods([...built, ...listed]);
 		const shown = methods.some((method) => declares(unit, `${name}.${method}`));
 		return shown ? [{ name, methods }] : [];
 	});
 }
 
-/**
- * Where an older revision records no class: each class its symbols name, with each method a
- * `Class.method` symbol or a parameter, return or error under it declares. An output named
- * `Class.method` is the return of that method once the class has a declared method.
- */
+/** Legacy classes and methods come from qualified symbols and contract fields, never guesses. */
 function namedClasses(unit: HarnessUnit): ServiceClass[] {
 	const { inputs, outputs, errors } = unit.contract;
 	const fields = [...inputs, ...outputs, ...errors].map((item) => item.name);
@@ -72,15 +73,12 @@ function namedClasses(unit: HarnessUnit): ServiceClass[] {
 			...methodsNamed(fields, name, false)
 		];
 		if (declared.length === 0) return [];
-		const methods = constructorFirst([...declared, ...methodsNamed(returns, name, true)]);
+		const methods = orderedMethods([...declared, ...methodsNamed(returns, name, true)]);
 		return [{ name, methods }];
 	});
 }
 
-/**
- * One method: its literal parameters, its return and the errors declared under it alone. Where a
- * service holds more than one class, the method is named with its class.
- */
+/** One method's parameters, return and errors; multiple classes keep qualified method names. */
 function methodContract(
 	unit: HarnessUnit,
 	of: string,
@@ -124,7 +122,11 @@ function methodContract(
 		});
 	const args = parameters.map((field) => `${field.name}: ${field.type}`).join(', ');
 	const type = returns[0]?.type;
-	return { name, signature: `${name}(${args})${type ? `: ${type}` : ''}`, groups };
+	return {
+		name,
+		signature: `${name}(${args})${type ? `: ${type}` : ''}`,
+		groups
+	};
 }
 
 /** What a service contract declares under no one `Class.method`, said once beside its methods. */
@@ -141,11 +143,7 @@ function unscoped(unit: HarnessUnit, owners: string[]): ContractRow[] {
 	];
 }
 
-/**
- * A service contract by method: each class with its constructor and methods, each with its own
- * parameters, return and errors, and what no one method declares. Same-named methods of two
- * classes stay apart. A contract that names no method has none, and keeps its fields together.
- */
+/** Per-class CRUD-first contracts, keeping qualified methods and unrelated facts distinct. */
 export function serviceContract(unit: HarnessUnit): {
 	methods: CallableContract[];
 	facts: ContractRow[];
