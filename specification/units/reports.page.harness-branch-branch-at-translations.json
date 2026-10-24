@@ -18,7 +18,7 @@
 			{
 				"name": "branch",
 				"type": "string",
-				"description": "The selected project branch, preserved in Styles navigation."
+				"description": "The selected project branch, preserved in Translations navigation."
 			},
 			{
 				"name": "commit",
@@ -30,7 +30,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The Styles design-token catalog under the selected branch and revision."
+				"description": "The translation comparison catalog under the selected branch and revision."
 			}
 		],
 		"errors": []

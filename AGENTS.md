@@ -21,6 +21,8 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 
+When projecting provenance-rich dependencies into query indexes, preserve raw records and cover repeated logical edges, distinct relation types and rollback in the existing catalog boundary tests.
+
 ## Shared Preview
 
 - Keep completed work on the common `main` codebase. Fetch and safely incorporate current remote `main` before landing; preserve unrelated changes and original source history. Route ready, frozen source heads through the coordinated merger so concurrent sessions do not overwrite one another.
