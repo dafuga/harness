@@ -27,6 +27,8 @@ Choose component colors from Styles → Color roles, defined in `appStyleTokensC
 
 ## Service Ownership
 
+Before changing a recorded implementation, search every ownership ledger by its stable unit/class identity and historical, owner and forwarding paths. Catalog privacy does not remove migration ownership. Preserve original move definitions and prior reviews; use the ledger's existing review mechanism and committed-source pack, then run the unchanged unit-index guard before broader qualification.
+
 A shared service needs at least two distinct active runtime owner units. Single-consumer implementations and their private helpers live inside the owner code area. Count runtime references to exported operations or classes; exclude types, unused imports, repeated references by one owner, forwarding modules and indirect page reachability. Keep public entry and route contracts stable, preserve registered identity and source history, and review dynamic/runtime use before relocating an export with no statically proven owner.
 
 Before committing a cross-workspace relocation, run every affected workspace structure audit as well as the root audit. Use supported owner areas such as `src/lib/<owner>` when the original owner folder enforces another scaffold shape, and retain framework or store entry filenames as named forwards.

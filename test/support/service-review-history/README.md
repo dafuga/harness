@@ -64,3 +64,5 @@ The pack's bytes can differ between Git versions; its object ids cannot. Check a
 Benchmark analytics retains implementation commit `9425223b3` for the additive query registration, rendering and snapshot fields.
 
 Resource admission retains implementation commit `43dacd370` for evaluator, verification and priority changes. Original relocation proofs and prior behavior reviews remain present.
+
+Scoped screenshot admission retains implementation commit `b0fc91c01` for selected-revision registry validation. The original service move and every earlier implementation review remain included.
