@@ -38,17 +38,17 @@
 		margin: 0 0 var(--hx-space-8);
 		font-size: var(--hx-type-size-base);
 		font-weight: var(--hx-style-weight-semibold);
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 	}
 	pre {
 		margin: 0;
 		padding: var(--hx-space-14) var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--hx-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	code {
 		font: var(--hx-style-code-compact);

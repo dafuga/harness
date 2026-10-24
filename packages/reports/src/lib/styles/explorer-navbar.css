@@ -6,8 +6,8 @@
 	gap: 0 var(--hx-nav-gap);
 	min-height: 92px;
 	padding: var(--hx-space-8) var(--hx-gutter);
-	border-bottom: var(--hx-border-thin) solid var(--hx-line);
-	background: var(--hx-surface);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+	background: var(--hx-color-surface);
 }
 .hx-nav a:hover {
 	text-decoration: none;
@@ -15,9 +15,9 @@
 .hx-brand {
 	display: flex;
 	align-items: center;
-	gap: var(--hx-space-12);
+	gap: var(--hx-space-inline);
 	min-height: 56px;
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 	font-size: var(--hx-type-size-2xl);
 	font-weight: var(--hx-style-weight-bold);
 	letter-spacing: var(--hx-style-tracking-tight);
@@ -25,7 +25,7 @@
 .hx-mark {
 	display: inline-flex;
 	flex: none;
-	color: var(--hx-gold);
+	color: var(--hx-color-primary);
 }
 .hx-repository {
 	flex: 0 1 auto;
@@ -33,9 +33,9 @@
 	min-width: 0;
 	max-width: 22ch;
 	padding-left: clamp(var(--hx-space-10), 1.1vw, var(--hx-space-22));
-	border-left: var(--hx-border-thin) solid var(--hx-line-strong);
+	border-left: var(--hx-border-thin) solid var(--hx-color-border-strong);
 	overflow: hidden;
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-base);
 	line-height: var(--hx-space-36);
 	text-overflow: ellipsis;
@@ -54,7 +54,7 @@
 	width: 1px;
 	height: 56px;
 	margin-right: clamp(var(--hx-space-6), 0.8vw, var(--hx-space-14));
-	background: var(--hx-line-strong);
+	background: var(--hx-color-border-strong);
 }
 .hx-categories a,
 .hx-category {
@@ -67,7 +67,7 @@
 	min-width: 72px;
 	min-height: 64px;
 	padding: var(--hx-space-6) clamp(var(--hx-space-8), 1.25vw, var(--hx-space-22));
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-base);
 	font-weight: var(--hx-style-weight-medium);
 	line-height: var(--hx-style-leading-tight);
@@ -75,14 +75,14 @@
 	outline-offset: calc(-1 * var(--hx-space-4));
 }
 .hx-categories a:hover {
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 }
 .hx-category {
 	opacity: var(--hx-opacity-dim);
 }
 .hx-categories a[aria-current='page'],
 .hx-categories a[aria-current='page']:hover {
-	color: var(--hx-gold);
+	color: var(--hx-color-primary);
 }
 .hx-categories a[aria-current='page']::after {
 	content: '';
@@ -90,7 +90,7 @@
 	inset: auto 6px 0;
 	height: 3px;
 	border-radius: var(--hx-radius-xsmall) var(--hx-radius-xsmall) 0 0;
-	background: var(--hx-gold);
+	background: var(--hx-color-primary);
 }
 /* The search is one icon that ends the bar; the search itself opens in a dialog. */
 .hx-search {
@@ -104,7 +104,7 @@
 	order: 3;
 	margin: 0 calc(-1 * var(--hx-gutter)) calc(-1 * var(--hx-space-8));
 	padding-inline: var(--hx-gutter);
-	border-top: var(--hx-border-thin) solid var(--hx-line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	border-bottom: 0;
 }
 /* One row from 1420px, ended by the revision and the search: the revision keeps the whole width of
@@ -172,7 +172,7 @@
 		left: calc(-1 * var(--hx-gutter));
 		width: 100vw;
 		height: 1px;
-		background: var(--hx-line);
+		background: var(--hx-color-border);
 		pointer-events: none;
 	}
 	.hx-search {
@@ -204,7 +204,7 @@
 		max-width: none;
 	}
 	.hx-categories {
-		border-top: var(--hx-border-thin) solid var(--hx-line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 		overflow-x: auto;
 	}
 	.hx-categories a,

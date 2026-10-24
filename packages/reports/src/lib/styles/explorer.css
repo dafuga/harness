@@ -1,24 +1,19 @@
 @import './app-tokens.css';
-/* The explorer: the shared app palette, and the frame every route shares. */
+/* The explorer: the shared app choices, and the frame every route shares. The older names the
+   console and the galleries read are forwarded once, at the root, in app-tokens.css. */
 .hx-shell {
-	/* What the console and the galleries read, so everything they draw in here is navy and gold. */
-	--gold: var(--hx-gold);
-	--muted: var(--hx-muted);
-	--line: var(--hx-line);
-	--panel: var(--hx-surface);
-	--ink: var(--hx-bg);
-	font-family: var(--hx-font-family-sans);
-	font-size: var(--hx-type-size-base);
+	font-family: var(--hx-font-family-body);
+	font-size: var(--hx-type-size-body);
 	font-style: var(--hx-style-font-normal);
 	font-weight: var(--hx-style-weight-regular);
 	line-height: var(--hx-style-leading-normal);
 	min-height: 100vh;
-	background: var(--hx-bg);
-	color: var(--hx-text);
+	background: var(--hx-color-background);
+	color: var(--hx-color-text);
 }
 /* The page behind the explorer is the explorer's own colour, also where a scroll overshoots. */
 :root:has(.hx-shell) {
-	background: var(--hx-bg);
+	background: var(--hx-color-background);
 }
 /* The column of a route: inside the gutters of the bar, and never wider than the screen. */
 .hx-main {
@@ -52,21 +47,21 @@
 .hx-notice {
 	margin: 0 0 var(--hx-space-16);
 	padding: var(--hx-space-12) var(--hx-space-14);
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
-	border-left: var(--hx-border-heavy) solid var(--hx-gold);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-left: var(--hx-border-heavy) solid var(--hx-color-primary);
 	border-radius: 0 var(--hx-radius-small) var(--hx-radius-small) 0;
-	background: var(--hx-surface);
+	background: var(--hx-color-surface);
 	overflow-wrap: anywhere;
 }
 .hx-notice.fail {
-	border-left-color: var(--hx-fail);
-	background: var(--hx-danger-soft);
+	border-left-color: var(--hx-color-error);
+	background: var(--hx-color-error-soft);
 }
 .hx-muted {
-	color: var(--hx-muted);
+	color: var(--hx-color-text-muted);
 }
 .hx-mono {
-	font-family: var(--hx-font-family-mono);
+	font-family: var(--hx-font-family-code);
 	font-size: var(--hx-type-size-sm);
 }
 /* What is wider than the screen scrolls inside itself; the page never does. */
@@ -77,25 +72,25 @@
 .hx-card {
 	min-width: 0;
 	padding: var(--hx-space-20);
-	border: var(--hx-border-thin) solid var(--hx-line);
-	border-radius: var(--hx-radius);
-	background: var(--hx-surface);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-panel);
+	background: var(--hx-color-surface);
 }
 .hx-pill {
 	display: inline-flex;
 	align-items: center;
 	min-height: 26px;
 	padding: 0 var(--hx-space-12);
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 	border-radius: var(--hx-radius-pill);
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-compact);
 	white-space: nowrap;
 }
 .hx-pill.gold {
-	border-color: var(--hx-gold);
+	border-color: var(--hx-color-primary);
 	border-radius: var(--hx-radius-small);
-	color: var(--hx-gold);
+	color: var(--hx-color-primary);
 }
 /* Where a route is: the trail from its category, a chevron between its steps. */
 .hx-crumbs ol {
@@ -106,7 +101,7 @@
 	margin: 0 0 var(--hx-space-12);
 	padding: 0;
 	list-style: none;
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-base);
 }
 .hx-crumbs li {
@@ -118,23 +113,23 @@
 }
 .hx-crumbs li + li::before {
 	content: '›';
-	color: var(--hx-muted);
+	color: var(--hx-color-text-muted);
 }
 .hx-crumbs [aria-current='page'] {
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 }
 /* A search box with its icon inside it, and a switch; both keep the size of a finger. */
 .hx-field {
 	display: flex;
 	align-items: center;
-	gap: var(--hx-space-12);
+	gap: var(--hx-space-inline);
 	min-width: 0;
 	min-height: 46px;
-	padding: 0 var(--hx-space-14);
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	padding: 0 var(--hx-space-control);
+	border: var(--hx-border-thin) solid var(--hx-color-secondary);
 	border-radius: var(--hx-radius-small);
-	background: var(--hx-surface);
-	color: var(--hx-muted);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text-muted);
 }
 .hx-field input {
 	flex: 1;
@@ -144,19 +139,19 @@
 	border: 0;
 	border-radius: 0;
 	background: none;
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 }
 .hx-field:focus-within {
-	border-color: var(--hx-gold);
+	border-color: var(--hx-color-primary);
 }
 .hx-shell :focus-visible {
-	outline: var(--hx-border-thick) solid var(--hx-accent);
+	outline: var(--hx-border-thick) solid var(--hx-color-tertiary);
 	outline-offset: var(--hx-space-2);
 }
 .hx-toggle {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--hx-space-12);
+	gap: var(--hx-space-inline);
 	min-height: 44px;
 	cursor: pointer;
 }
@@ -168,23 +163,23 @@
 	height: 26px;
 	margin: 0;
 	padding: 0;
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border: var(--hx-border-thin) solid var(--hx-color-secondary);
 	border-radius: var(--hx-radius-pill);
-	background: var(--hx-raised)
+	background: var(--hx-color-surface-raised)
 		radial-gradient(
 			circle at var(--hx-space-12) 50%,
-			var(--hx-soft) var(--hx-space-8),
+			var(--hx-color-text-supporting) var(--hx-space-8),
 			transparent var(--hx-space-9)
 		);
 	appearance: none;
 	cursor: pointer;
 }
 .hx-toggle input:checked {
-	border-color: var(--hx-gold);
-	background: var(--hx-gold-tint)
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary-tint)
 		radial-gradient(
 			circle at var(--hx-space-32) 50%,
-			var(--hx-gold) var(--hx-space-8),
+			var(--hx-color-primary) var(--hx-space-8),
 			transparent var(--hx-space-9)
 		);
 }

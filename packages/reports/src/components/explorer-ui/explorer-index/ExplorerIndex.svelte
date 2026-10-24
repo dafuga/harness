@@ -150,11 +150,11 @@
 		gap: var(--hx-space-4) var(--hx-space-16);
 		margin: 0 0 var(--hx-space-12);
 		padding-bottom: var(--hx-space-8);
-		border-bottom: var(--hx-border-thin) solid var(--hx-line);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	.ex-group h2 {
 		margin: 0;
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 		font-size: var(--hx-type-size-lg);
 		font-weight: var(--hx-style-weight-semibold);
 		line-height: var(--hx-style-leading-snug);
@@ -162,7 +162,7 @@
 	}
 	.ex-group-count {
 		margin-inline-start: var(--hx-space-4);
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-regular);
 		font-variant-numeric: var(--hx-style-numeric-tabular);

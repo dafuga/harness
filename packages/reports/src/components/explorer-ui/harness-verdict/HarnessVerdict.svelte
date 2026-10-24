@@ -123,14 +123,14 @@
 	.hx-verdict {
 		display: inline-flex;
 		align-items: center;
-		color: var(--hx-fail);
+		color: var(--hx-color-error);
 		vertical-align: middle;
 	}
 	.hx-verdict.unknown {
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 	}
 	.hx-verdict.passed {
-		color: var(--hx-pass);
+		color: var(--hx-color-success);
 	}
 	button {
 		position: relative;
@@ -170,11 +170,11 @@
 		width: max-content;
 		max-width: min(320px, calc(100vw - 16px));
 		padding: var(--hx-space-10) var(--hx-space-12);
-		border: var(--hx-border-thin) solid var(--hx-line-strong);
+		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 		border-radius: var(--hx-radius-small);
-		background: var(--hx-raised);
+		background: var(--hx-color-surface-raised);
 		box-shadow: var(--hx-shadow-popover);
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-regular);
 		line-height: var(--hx-style-leading-snug);
@@ -188,7 +188,7 @@
 		display: none;
 	}
 	.hx-tip strong {
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 		font-weight: var(--hx-style-weight-semibold);
 	}
 	/* The gap to the mark belongs to the tooltip, so a pointer can cross it without closing it. */

@@ -48,7 +48,7 @@
 	.source-files code {
 		min-width: 0;
 		overflow-wrap: anywhere;
-		font: var(--hx-type-size-sm) var(--hx-font-family-mono);
+		font: var(--hx-type-size-sm) var(--hx-font-family-code);
 	}
 	.source-files a {
 		color: inherit;
@@ -59,6 +59,6 @@
 		flex: 0 0 auto;
 	}
 	.source-empty {
-		color: var(--ex-muted, var(--muted));
+		color: var(--ex-muted, var(--hx-color-text-muted));
 	}
 </style>

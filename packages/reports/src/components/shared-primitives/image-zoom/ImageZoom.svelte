@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DragStart, Point } from "./ImageZoom.types";
+	import type { DragStart, Point } from './ImageZoom.types';
 	import { tick } from 'svelte';
 	import { t } from '../../../utils/reports-media/reportLocale';
 	import { imageAnchor, keepPointerInPlace } from './trackpadZoom';
@@ -146,7 +146,7 @@
 		justify-content: center;
 		gap: var(--hx-space-6);
 		padding-bottom: var(--hx-space-8);
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 	}
 	.zoom-bar button {
 		min-height: 36px;
@@ -160,9 +160,9 @@
 		font-size: var(--hx-type-size-lg);
 	}
 	.zoom-bar .active {
-		border-color: var(--gold);
-		background: var(--gold);
-		color: var(--hx-gold-ink);
+		border-color: var(--hx-color-primary);
+		background: var(--hx-color-primary);
+		color: var(--hx-color-primary-contrast);
 	}
 	.zoom-bar [aria-disabled='true'] {
 		opacity: var(--hx-opacity-disabled);
@@ -170,7 +170,7 @@
 	}
 	.scale {
 		min-width: 4.5ch;
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-semibold);
 		font-variant-numeric: var(--hx-style-numeric-tabular);
@@ -182,11 +182,11 @@
 		max-height: var(--view-height);
 		overflow: auto;
 		overscroll-behavior: contain;
-		border: var(--hx-border-thin) solid var(--hx-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 		cursor: grab;
-		scrollbar-color: var(--hx-line-strong) transparent;
+		scrollbar-color: var(--hx-color-border-strong) transparent;
 	}
 	.stage.zoomed img {
 		max-width: none;
@@ -197,7 +197,7 @@
 		user-select: none;
 	}
 	.stage:focus-visible {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: calc(-1 * var(--hx-space-2));
 	}
 	@media (max-width: 650px) {

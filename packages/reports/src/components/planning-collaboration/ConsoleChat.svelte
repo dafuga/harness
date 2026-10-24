@@ -24,12 +24,12 @@
 
 <style>
 	.console-chat {
-		--panel: var(--hx-surface);
-		--ink: var(--hx-bg);
-		--gold: var(--hx-gold);
-		--line: var(--hx-line);
-		--text: var(--hx-text);
-		--muted: var(--hx-muted);
+		--panel: var(--hx-color-surface);
+		--ink: var(--hx-color-background);
+		--gold: var(--hx-color-primary);
+		--line: var(--hx-color-border);
+		--text: var(--hx-color-text);
+		--muted: var(--hx-color-text-muted);
 		display: contents;
 		color: var(--text);
 		font-size: var(--hx-type-size-sm);
@@ -55,8 +55,8 @@
 		max-width: 100%;
 		min-width: 0;
 		padding: var(--hx-space-10);
-		border-top: var(--hx-border-thin) solid var(--line);
-		background: var(--panel);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
+		background: var(--hx-color-surface);
 	}
 	.console-chat :global(textarea),
 	.console-chat :global(input:not([type='checkbox']):not([type='radio'])),
@@ -66,9 +66,9 @@
 		min-width: 0;
 		margin: 0;
 		padding: var(--hx-space-8) var(--hx-space-10);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 		color: var(--text);
 		font: inherit;
 	}
@@ -79,13 +79,13 @@
 	}
 	.console-chat :global(textarea::placeholder),
 	.console-chat :global(input::placeholder) {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.console-chat :global(textarea:focus-visible),
 	.console-chat :global(input:focus-visible),
 	.console-chat :global(select:focus-visible),
 	.console-chat :global(button:focus-visible) {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thin);
 	}
 	.console-chat :global(button:not(.floating-chat-bubble):not(.floating-chat-close)) {
@@ -97,9 +97,9 @@
 		min-height: 2rem;
 		margin: 0;
 		padding: var(--hx-space-6) var(--hx-space-12);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 		color: var(--text);
 		font: inherit;
 		font-size: var(--hx-type-size-compact);
@@ -107,7 +107,7 @@
 		cursor: pointer;
 	}
 	.console-chat :global(button:hover:not(:disabled)) {
-		border-color: var(--gold);
+		border-color: var(--hx-color-primary);
 	}
 	.console-chat :global(button:disabled) {
 		opacity: var(--hx-opacity-dim);
@@ -134,16 +134,16 @@
 	.console-chat :global(button[aria-pressed='true']),
 	.console-chat :global(button[aria-checked='true']),
 	.console-chat :global(button[aria-selected='true']) {
-		border-color: var(--gold);
-		background: color-mix(in srgb, var(--gold) 14%, var(--panel));
-		color: var(--gold);
+		border-color: var(--hx-color-primary);
+		background: color-mix(in srgb, var(--hx-color-primary) 14%, var(--hx-color-surface));
+		color: var(--hx-color-primary);
 	}
 	.console-chat :global(button[type='submit']),
 	.console-chat :global(button.primary),
 	.console-chat :global(button.send) {
-		border-color: var(--gold);
-		background: var(--gold);
-		color: var(--ink);
+		border-color: var(--hx-color-primary);
+		background: var(--hx-color-primary);
+		color: var(--hx-color-background);
 		font-weight: var(--hx-style-weight-semibold);
 	}
 	.console-chat :global(button[type='submit']:hover:not(:disabled)),
@@ -154,17 +154,17 @@
 	.console-chat :global(.error),
 	.console-chat :global([role='alert']) {
 		padding: var(--hx-space-8) var(--hx-space-10);
-		border: var(--hx-border-thin) solid var(--hx-fail);
+		border: var(--hx-border-thin) solid var(--hx-color-error);
 		border-radius: var(--hx-radius-small);
-		background: var(--hx-danger-soft);
-		color: var(--hx-fail);
+		background: var(--hx-color-error-soft);
+		color: var(--hx-color-error);
 		font-size: var(--hx-type-size-compact);
 	}
 	.console-chat :global(small),
 	.console-chat :global(.hint),
 	.console-chat :global(.meta),
 	.console-chat :global(.muted) {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
 		line-height: var(--hx-style-leading-snug);
 	}

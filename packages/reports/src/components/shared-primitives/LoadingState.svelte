@@ -24,10 +24,10 @@
 		max-width: 100%;
 		margin: var(--hx-space-20) 0;
 		padding: var(--hx-space-12) var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--hx-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius);
-		background: var(--hx-surface);
-		color: var(--hx-soft);
+		background: var(--hx-color-surface);
+		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-medium);
 		line-height: var(--hx-style-leading-snug);
@@ -37,8 +37,8 @@
 		box-sizing: border-box;
 		width: 16px;
 		height: 16px;
-		border: var(--hx-border-thick) solid var(--hx-line-strong);
-		border-top-color: var(--hx-gold);
+		border: var(--hx-border-thick) solid var(--hx-color-border-strong);
+		border-top-color: var(--hx-color-primary);
 		border-radius: var(--hx-radius-round);
 		animation: hx-loading-turn var(--hx-motion-spin) var(--hx-motion-linear) infinite;
 	}

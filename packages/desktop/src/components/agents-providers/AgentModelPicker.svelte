@@ -48,9 +48,9 @@
 	h2 {
 		margin: 0;
 		font-size: var(--hx-type-size-xs);
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	small {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 </style>

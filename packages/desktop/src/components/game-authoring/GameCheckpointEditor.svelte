@@ -154,13 +154,13 @@
 	label > span,
 	h3 {
 		margin: 0;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
 		letter-spacing: var(--hx-style-tracking-caps);
 		text-transform: uppercase;
 	}
 	input:focus-visible {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 	}
 	.check {
 		display: flex;
@@ -170,7 +170,7 @@
 	.check input {
 		width: 18px;
 		height: 18px;
-		accent-color: var(--gold);
+		accent-color: var(--hx-color-primary);
 	}
 	.head {
 		display: flex;
@@ -188,11 +188,11 @@
 		}
 	}
 	button:hover:not(:disabled) {
-		border-color: var(--gold);
-		color: var(--gold);
+		border-color: var(--hx-color-primary);
+		color: var(--hx-color-primary);
 	}
 	.hint {
 		margin: 0;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 </style>

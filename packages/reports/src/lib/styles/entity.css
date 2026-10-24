@@ -1,15 +1,15 @@
 /* The body of the explorer. Every rule is under .ex-content, so no other viewer is restyled. */
 .ex-content {
-	--ex-surface: var(--hx-surface);
-	--ex-raised: var(--hx-raised);
-	--ex-line: var(--hx-line);
-	--ex-line-strong: var(--hx-line-strong);
-	--ex-text: var(--hx-text);
-	--ex-soft: var(--hx-soft);
-	--ex-muted: var(--hx-muted);
-	--ex-gold: var(--hx-gold);
-	--ex-pass: var(--hx-pass);
-	--ex-fail: var(--hx-fail);
+	--ex-surface: var(--hx-color-surface);
+	--ex-raised: var(--hx-color-surface-raised);
+	--ex-line: var(--hx-color-border);
+	--ex-line-strong: var(--hx-color-border-strong);
+	--ex-text: var(--hx-color-text);
+	--ex-soft: var(--hx-color-text-supporting);
+	--ex-muted: var(--hx-color-text-muted);
+	--ex-gold: var(--hx-color-primary);
+	--ex-pass: var(--hx-color-success);
+	--ex-fail: var(--hx-color-error);
 	--ex-radius: var(--hx-radius);
 	display: grid;
 	gap: var(--hx-space-18);
@@ -90,7 +90,7 @@
 }
 .ex-content .ex-mono,
 .ex-content code {
-	font-family: var(--hx-font-family-mono);
+	font-family: var(--hx-font-family-code);
 	font-size: var(--hx-type-size-inline);
 }
 .ex-content .ex-hidden {

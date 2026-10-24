@@ -96,7 +96,7 @@
 		overflow-wrap: anywhere;
 	}
 	:global(.entity-card .helper-card-link:focus-visible) {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-space-6);
 	}
 
@@ -106,7 +106,7 @@
 		min-width: 0;
 	}
 	:global(.entity-card .page-card-link:focus-visible) {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-space-6);
 	}
 	.thumbnail.runtime {

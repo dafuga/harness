@@ -4,9 +4,9 @@
 @tailwind utilities;
 /* Reports use the shared app palette; its older names are forwarded in app-tokens.css. */
 :root {
-	font-family: var(--hx-font-family-sans);
-	color: var(--hx-text);
-	background: var(--hx-bg);
+	font-family: var(--hx-font-family-body);
+	color: var(--hx-color-text);
+	background: var(--hx-color-background);
 	font-synthesis: var(--hx-style-synthesis-none);
 	color-scheme: dark;
 }
@@ -35,10 +35,10 @@ input,
 select,
 .button {
 	font: inherit;
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 	border-radius: var(--hx-radius-small);
 	padding: var(--hx-space-11) var(--hx-space-15);
-	background: var(--hx-raised);
+	background: var(--hx-color-surface-raised);
 	color: inherit;
 }
 button,
@@ -48,14 +48,14 @@ summary {
 }
 button:hover,
 .button:hover {
-	border-color: var(--gold);
+	border-color: var(--hx-color-primary);
 	text-decoration: none;
 }
 button.active,
 .button.primary {
-	background: var(--gold);
-	color: var(--hx-gold-ink);
-	border-color: var(--gold);
+	background: var(--hx-color-primary);
+	color: var(--hx-color-primary-contrast);
+	border-color: var(--hx-color-primary);
 }
 input {
 	min-width: 180px;
@@ -65,7 +65,7 @@ select {
 	max-width: 100%;
 }
 :focus-visible {
-	outline: var(--hx-border-heavy) solid var(--gold);
+	outline: var(--hx-border-heavy) solid var(--hx-color-primary);
 	outline-offset: var(--hx-space-4);
 }
 h1,
@@ -98,12 +98,12 @@ p {
 }
 small,
 .muted {
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 pre {
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
-	background: var(--hx-bg);
+	background: var(--hx-color-background);
 	border-radius: var(--hx-radius-small);
 	padding: var(--hx-space-16);
 	font-size: var(--hx-type-size-xs);
@@ -117,7 +117,7 @@ code {
 }
 summary {
 	font-size: var(--hx-type-size-compact);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	padding: var(--hx-space-8) 0;
 }
 ul {
@@ -138,7 +138,7 @@ li {
 	justify-content: space-between;
 	align-items: center;
 	min-height: 88px;
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	margin-bottom: var(--hx-space-28);
 }
 .brand {
@@ -150,19 +150,19 @@ li {
 }
 .brand-symbol {
 	font-size: var(--hx-type-size-3xl);
-	color: var(--gold);
+	color: var(--hx-color-primary);
 }
 .workspace-label {
 	font-size: var(--hx-type-size-2xs);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-caps);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .eyebrow {
 	font-size: var(--hx-type-size-xs);
 	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
-	color: var(--gold);
+	color: var(--hx-color-primary);
 	margin-bottom: var(--hx-space-20);
 	font-weight: var(--hx-style-weight-semibold);
 }

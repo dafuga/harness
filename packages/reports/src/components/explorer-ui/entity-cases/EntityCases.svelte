@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Row } from "./EntityCases.types";
+	import type { Row } from './EntityCases.types';
 
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
 	import { artifactCases } from './artifactCases';
@@ -51,7 +51,6 @@
 		};
 	});
 	let expanded = $state(false);
-
 </script>
 
 <!-- Each input beside what was observed for it, or is documented to give; none says why. -->
@@ -127,9 +126,9 @@
 		gap: var(--hx-space-14);
 		margin: 0 0 var(--hx-space-14);
 		padding: var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--hx-line-strong);
+		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 		border-radius: var(--hx-radius-large);
-		background: var(--hx-surface);
+		background: var(--hx-color-surface);
 	}
 	th {
 		grid-column: 1 / -1;
@@ -143,7 +142,7 @@
 		margin-bottom: var(--hx-space-4);
 		font-size: var(--hx-type-size-2xs);
 		font-weight: var(--hx-style-weight-medium);
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 	}
 	.documented tbody th::before {
 		content: 'Example ' counter(cases, decimal-leading-zero);
@@ -153,21 +152,21 @@
 		margin-top: var(--hx-space-4);
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-regular);
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	td {
 		min-width: 0;
 		padding: var(--hx-space-14);
-		border: var(--hx-border-thin) solid var(--hx-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 	}
 	td::before {
 		content: attr(data-label);
 		display: block;
 		margin-bottom: var(--hx-space-10);
-		font: var(--hx-style-weight-semibold) var(--hx-type-size-xs) var(--hx-font-family-sans);
-		color: var(--hx-soft);
+		font: var(--hx-style-weight-semibold) var(--hx-type-size-xs) var(--hx-font-family-body);
+		color: var(--hx-color-text-supporting);
 	}
 	.cases pre {
 		margin: 0;
@@ -176,7 +175,7 @@
 		white-space: pre-wrap;
 		overflow-wrap: normal;
 		font: var(--hx-style-code-small);
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	.case-value {
 		max-height: 25rem;
@@ -185,14 +184,14 @@
 	.cases-error {
 		display: block;
 		margin-bottom: var(--hx-space-6);
-		color: var(--hx-warning);
+		color: var(--hx-color-warning);
 		font-size: var(--hx-type-size-xs);
 	}
 	summary {
 		cursor: pointer;
 		padding: var(--hx-space-8) 0;
 		font-size: var(--hx-type-size-compact);
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	@container (max-width: 800px) {
 		tbody tr {
