@@ -1,5 +1,7 @@
 import { expect, test } from 'vitest';
-import type { HarnessRevision } from '../src/models/Harness.types';
+import { readFileSync } from 'node:fs';
+import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
+import { catalogUnits } from '../tests/e2e/support/component-previews/catalogUnits';
 import { entityUsage } from '../src/components/explorer-ui/entity-relations/entityUsage';
 import { explorerCategory, explorerRole } from '../src/utils/explorerCategory';
 import { explorerEntities } from '../src/utils/explorerEntities';
@@ -26,6 +28,21 @@ const framed = (commit: string, kind: string) => withFrame(revision(commit, []),
 const frame = frameId;
 const categoryOf = (head: HarnessRevision, id: string) =>
 	explorerEntities(head).find((entity) => entity.id === id)?.category;
+
+test('the public visual layout catalog keeps bootstrap wrappers internal', () => {
+	expect(
+		catalogUnits.filter((unit) => unit.kind === 'layout').map((unit) => unit.id),
+		'Only visual frames belong in Layouts; bootstrap wrappers are internal'
+	).toEqual(['reports.layout.explorer-layout']);
+	for (const id of ['hub.layout.root', 'reports.layout.root']) {
+		const wrapper = JSON.parse(
+			readFileSync(`../../specification/units/${id}.json`, 'utf8')
+		) as HarnessUnit;
+		expect(wrapper.status, 'Framework wrappers remain active internally').toBe('active');
+		expect(wrapper.catalog?.visibility, 'Bootstrap wrapper classification').toBe('internal');
+		expect(explorerCategory(wrapper)).toBeNull();
+	}
+});
 
 test('the bar has entity categories and a separate Styles screen link', () => {
 	const location = { branch: shellBranch, commit: null, category: 'layouts' as const };
