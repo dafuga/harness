@@ -157,6 +157,7 @@ test('every active visual module has its own required capture state', () => {
 	const visual = loaded.stored
 		.filter((unit) => {
 			if (unit.status !== 'active') return false;
+			if (internalAtom(unit)) return false;
 			if (['component', 'shell'].includes(unit.kind)) return true;
 			const sources = unit.owns.source;
 			if (unit.kind === 'layout')
@@ -192,3 +193,7 @@ test('every active visual module has its own required capture state', () => {
 		});
 	}
 });
+
+function internalAtom(unit: LoadedUnits['stored'][number]) {
+	return unit.composition?.level === 'atom' && unit.catalog?.visibility === 'internal';
+}

@@ -1733,13 +1733,13 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "73c1e58c27dfcbcdbdcf895ef78e4ccb6e9faff50c5132aebbb5640326c0905e",
+			"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+				"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "73c1e58c27dfcbcdbdcf895ef78e4ccb6e9faff50c5132aebbb5640326c0905e",
-				"reason": "Add shared native atom generation and composition indexing without changing ownership boundaries."
+				"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
+				"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit."
 			},
 			"previousReviews": [
 				{
@@ -1759,6 +1759,12 @@
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 					"definition": "a9392158cbd962655b65988182ebb1451d02eabf8caed285356f7d4a4ae9c5c1",
 					"reason": "Retain reviewed control declarations and keep new config scaffolds internal."
+				},
+				{
+					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "73c1e58c27dfcbcdbdcf895ef78e4ccb6e9faff50c5132aebbb5640326c0905e",
+					"reason": "Add shared native atom generation and composition indexing without changing ownership boundaries."
 				}
 			]
 		},
@@ -1853,13 +1859,13 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
+			"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-				"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
-				"reason": "Adds provider-backed gameLevelGenerate to the existing owner-local bridge while preserving other game operations and registered identity."
+				"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
+				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
 			},
 			"previousReviews": [
 				{
@@ -1885,6 +1891,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
 					"reason": "Retain main's level proposal operation through the existing session and provider context, preserving earlier game and deployment delegates."
+				},
+				{
+					"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
+					"reason": "Adds provider-backed gameLevelGenerate to the existing owner-local bridge while preserving other game operations and registered identity."
 				}
 			]
 		},
@@ -3850,13 +3862,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
+			"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
-				"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
+				"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
 			},
 			"previousReviews": [
 				{
@@ -3882,6 +3894,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 					"reason": "Retain main's typed gameLevelGenerate IPC helper while preserving every existing bridge channel and invocation."
+				},
+				{
+					"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
+					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
 				}
 			]
 		},
@@ -4290,7 +4308,14 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695"
+			"definition": "72a427eb9b24b46496276564a200629d69420cc691cb1ef8bcb826786fbfe345",
+			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
+			"review": {
+				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+				"definition": "72a427eb9b24b46496276564a200629d69420cc691cb1ef8bcb826786fbfe345",
+				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+			}
 		},
 		{
 			"unit": "service.claude-query",
@@ -4994,161 +5019,121 @@
 			"id": "desktop.service.native-auth",
 			"owner": "desktop.service.native-connection",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts"]
 		},
 		{
 			"id": "workflow.export-plans",
 			"owner": "workflow.generate-code",
 			"ownerFolder": "src/workflows/projects-sessions/generate-code",
-			"source": [
-				"src/workflows/generate-code/exportPlans.ts"
-			]
+			"source": ["src/workflows/generate-code/exportPlans.ts"]
 		},
 		{
 			"id": "service.regression-proof",
 			"owner": "function.record-regression",
 			"ownerFolder": "src/workflows/verification-evidence/record-regression",
-			"source": [
-				"src/workflows/record-regression/RegressionProofService.ts"
-			]
+			"source": ["src/workflows/record-regression/RegressionProofService.ts"]
 		},
 		{
 			"id": "service.unit-index",
 			"owner": "workflow.load-units",
 			"ownerFolder": "src/workflows/development-tooling/load-units/unit-index-service",
-			"source": [
-				"src/workflows/load-units/unit-index-service/UnitIndexService.ts"
-			]
+			"source": ["src/workflows/load-units/unit-index-service/UnitIndexService.ts"]
 		},
 		{
 			"id": "workflow.analytics-jev-metrics",
 			"owner": "workflow.analytics-metrics",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/analyticsJevMetrics.ts"
-			]
+			"source": ["src/cli/program/analyticsJevMetrics.ts"]
 		},
 		{
 			"id": "desktop.adapter.evidence-refs",
 			"owner": "desktop.service.recorded-evidence",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": [
-				"packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts"]
 		},
 		{
 			"id": "desktop.service.hosted-project",
 			"owner": "desktop.service.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/services/development-tooling/desktop-bridge-service",
-			"source": [
-				"packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts"
-			]
+			"source": ["packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts"]
 		},
 		{
 			"id": "workflow.loop-evaluate",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/loopEvaluate.ts"
-			]
+			"source": ["src/cli/program/loopEvaluate.ts"]
 		},
 		{
 			"id": "adapter.desktop-archive",
 			"owner": "script.prepare-desktop-experiment",
 			"ownerFolder": "scripts/prepare-desktop-experiment",
-			"source": [
-				"scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts"
-			]
+			"source": ["scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts"]
 		},
 		{
 			"id": "command.generate",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/generate.ts"
-			]
+			"source": ["src/cli/program/generate.ts"]
 		},
 		{
 			"id": "desktop.service.remote-device-sessions",
 			"owner": "desktop.service.remote-host-runtime",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": [
-				"packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"
-			]
+			"source": ["packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts"]
 		},
 		{
 			"id": "hub.controller.hub-api",
 			"owner": "hub.endpoint.api-path",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]/hub-api-controller",
-			"source": [
-				"packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts"
-			]
+			"source": ["packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts"]
 		},
 		{
 			"id": "adapter.desktop-integrity",
 			"owner": "script.prepare-desktop-experiment",
 			"ownerFolder": "scripts/prepare-desktop-experiment",
-			"source": [
-				"scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts"
-			]
+			"source": ["scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts"]
 		},
 		{
 			"id": "hub.controller.hub-remote",
 			"owner": "hub.controller.hub-api",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]/hub-api-controller",
-			"source": [
-				"packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts"
-			]
+			"source": ["packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts"]
 		},
 		{
 			"id": "reports.adapter.vitest-report",
 			"owner": "reports.service.report-import",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": [
-				"packages/reports/src/services/report-command-service/VitestReportAdapter.ts"
-			]
+			"source": ["packages/reports/src/services/report-command-service/VitestReportAdapter.ts"]
 		},
 		{
 			"id": "remote.service.event-log",
 			"owner": "remote.service.wire-session",
 			"ownerFolder": "packages/remote/src/services/networking-security/wire-session-service",
-			"source": [
-				"packages/remote/src/services/wire-session-service/EventLogService.ts"
-			]
+			"source": ["packages/remote/src/services/wire-session-service/EventLogService.ts"]
 		},
 		{
 			"id": "command.impact",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ImpactCommand.ts"
-			]
+			"source": ["src/cli/program/ImpactCommand.ts"]
 		},
 		{
 			"id": "repository.agent-registry",
 			"owner": "service.agent-activity",
 			"ownerFolder": "src/services/agents-providers/agent-activity-service",
-			"source": [
-				"src/services/agent-activity-service/AgentRegistryRepository.ts"
-			]
+			"source": ["src/services/agent-activity-service/AgentRegistryRepository.ts"]
 		},
 		{
 			"id": "relay.service.host-command",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/HostCommandService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/HostCommandService.ts"]
 		},
 		{
 			"id": "desktop.adapter.electron-environment",
 			"owner": "desktop.function.select-environment",
 			"ownerFolder": "packages/desktop/src/lib/verification-evidence/select-environment",
-			"source": [
-				"packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts"
-			]
+			"source": ["packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts"]
 		},
 		{
 			"id": "hub.service.installation-token",
@@ -5162,41 +5147,31 @@
 			"id": "workflow.import-reports",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/importReports.ts"
-			]
+			"source": ["src/cli/program/importReports.ts"]
 		},
 		{
 			"id": "command.history",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/HistoryCommand.ts"
-			]
+			"source": ["src/cli/program/HistoryCommand.ts"]
 		},
 		{
 			"id": "service.unit-benchmark",
 			"owner": "workflow.run-budget",
 			"ownerFolder": "src/workflows/verification-evidence/run-budget",
-			"source": [
-				"src/workflows/run-budget/UnitBenchmarkService.ts"
-			]
+			"source": ["src/workflows/run-budget/UnitBenchmarkService.ts"]
 		},
 		{
 			"id": "workflow.sign-budget",
 			"owner": "command.budget",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/signBudget.ts"
-			]
+			"source": ["src/cli/program/signBudget.ts"]
 		},
 		{
 			"id": "command.new",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/new.ts"
-			]
+			"source": ["src/cli/program/new.ts"]
 		},
 		{
 			"id": "hub.service.hub-projection",
@@ -5234,17 +5209,13 @@
 			"id": "desktop.service.native-account-status",
 			"owner": "desktop.service.native-auth",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts"]
 		},
 		{
 			"id": "workflow.inspect-units",
 			"owner": "command.units",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/inspectUnits.ts"
-			]
+			"source": ["src/cli/program/inspectUnits.ts"]
 		},
 		{
 			"id": "service.record-assembly",
@@ -5258,33 +5229,25 @@
 			"id": "desktop.adapter.agent-settings",
 			"owner": "desktop.store.agent-settings",
 			"ownerFolder": "packages/desktop/src/lib/agents-providers/agent-settings",
-			"source": [
-				"packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts"
-			]
+			"source": ["packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts"]
 		},
 		{
 			"id": "hub.controller.hub-auth",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/HubAuthController.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/HubAuthController.ts"]
 		},
 		{
 			"id": "desktop.service.remote-lifecycle",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts"]
 		},
 		{
 			"id": "command.codex",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/CodexCommand.ts"
-			]
+			"source": ["src/cli/program/CodexCommand.ts"]
 		},
 		{
 			"id": "reports.adapter.report-pages-retention",
@@ -5298,33 +5261,25 @@
 			"id": "workflow.built-in-loop-templates",
 			"owner": "workflow.loop-templates",
 			"ownerFolder": "src/workflows/development-tooling/loop-templates",
-			"source": [
-				"src/workflows/loop-templates/builtInLoopTemplates.ts"
-			]
+			"source": ["src/workflows/loop-templates/builtInLoopTemplates.ts"]
 		},
 		{
 			"id": "reports.adapter.playwright-report",
 			"owner": "reports.service.report-import",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": [
-				"packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts"
-			]
+			"source": ["packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts"]
 		},
 		{
 			"id": "workflow.manage-units",
 			"owner": "command.units",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/manageUnits.ts"
-			]
+			"source": ["src/cli/program/manageUnits.ts"]
 		},
 		{
 			"id": "command.explain",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ExplainCommand.ts"
-			]
+			"source": ["src/cli/program/ExplainCommand.ts"]
 		},
 		{
 			"id": "desktop.service.catalog",
@@ -5338,33 +5293,25 @@
 			"id": "desktop.service.project-operations",
 			"owner": "desktop.function.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": [
-				"packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts"]
 		},
 		{
 			"id": "relay.middleware.connect-guard",
 			"owner": "relay.controller.public-relay",
 			"ownerFolder": "packages/relay/src/lib/networking-security/relay",
-			"source": [
-				"packages/relay/src/lib/relay/ConnectGuardMiddleware.ts"
-			]
+			"source": ["packages/relay/src/lib/relay/ConnectGuardMiddleware.ts"]
 		},
 		{
 			"id": "hub.adapter.resend-email",
 			"owner": "hub.module.server-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/ResendEmailAdapter.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/ResendEmailAdapter.ts"]
 		},
 		{
 			"id": "hub.controller.email-proof",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/EmailProofController.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/EmailProofController.ts"]
 		},
 		{
 			"id": "reports.service.replay-video",
@@ -5378,9 +5325,7 @@
 			"id": "command.budget",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/BudgetCommand.ts"
-			]
+			"source": ["src/cli/program/BudgetCommand.ts"]
 		},
 		{
 			"id": "desktop.service.remote-artifact-cache",
@@ -5394,129 +5339,97 @@
 			"id": "command.console",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ConsoleCommand.ts"
-			]
+			"source": ["src/cli/program/ConsoleCommand.ts"]
 		},
 		{
 			"id": "workflow.install-console",
 			"owner": "command.console",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/installConsole.ts"
-			]
+			"source": ["src/cli/program/installConsole.ts"]
 		},
 		{
 			"id": "relay.service.host-registry",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/HostRegistryService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/HostRegistryService.ts"]
 		},
 		{
 			"id": "workflow.build-history",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/buildHistory.ts"
-			]
+			"source": ["src/cli/program/buildHistory.ts"]
 		},
 		{
 			"id": "relay.service.socket-frame",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service",
-			"source": [
-				"packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"]
 		},
 		{
 			"id": "service.trusted-base",
 			"owner": "workflow.run-verify",
 			"ownerFolder": "src/workflows/verification-evidence/run-verify",
-			"source": [
-				"src/workflows/run-verify/TrustedBaseService.ts"
-			]
+			"source": ["src/workflows/run-verify/TrustedBaseService.ts"]
 		},
 		{
 			"id": "relay.adapter.host-sockets",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts"]
 		},
 		{
 			"id": "desktop.service.local-transport",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts"]
 		},
 		{
 			"id": "reports.adapter.console-bridge",
 			"owner": "reports.store.console-workspace",
 			"ownerFolder": "packages/reports/src/lib/projects-sessions/console-workspace",
-			"source": [
-				"packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts"
-			]
+			"source": ["packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts"]
 		},
 		{
 			"id": "relay.adapter.host-storage",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/HostStorageAdapter.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/HostStorageAdapter.ts"]
 		},
 		{
 			"id": "command.info",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/info.ts"
-			]
+			"source": ["src/cli/program/info.ts"]
 		},
 		{
 			"id": "relay.service.host-link",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/HostLinkService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/HostLinkService.ts"]
 		},
 		{
 			"id": "hub.service.google-identity",
 			"owner": "hub.module.server-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/GoogleIdentityService.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/GoogleIdentityService.ts"]
 		},
 		{
 			"id": "command.scenarios",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ScenariosCommand.ts"
-			]
+			"source": ["src/cli/program/ScenariosCommand.ts"]
 		},
 		{
 			"id": "workflow.response-check-input",
 			"owner": "workflow.run-response-check",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/responseCheckInput.ts"
-			]
+			"source": ["src/cli/program/responseCheckInput.ts"]
 		},
 		{
 			"id": "service.gateway-events",
 			"owner": "serializer.claude-tools",
 			"ownerFolder": "src/serializers/agents-providers/claude-tools-serializer",
-			"source": [
-				"src/serializers/claude-tools-serializer/GatewayEventsService.ts"
-			]
+			"source": ["src/serializers/claude-tools-serializer/GatewayEventsService.ts"]
 		},
 		{
 			"id": "hub.service.hub-evidence",
@@ -5538,33 +5451,25 @@
 			"id": "desktop.adapter.capacitor-environment",
 			"owner": "desktop.function.select-environment",
 			"ownerFolder": "packages/desktop/src/lib/verification-evidence/select-environment",
-			"source": [
-				"packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts"
-			]
+			"source": ["packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts"]
 		},
 		{
 			"id": "desktop.service.capacitor-projects",
 			"owner": "desktop.adapter.capacitor-environment",
 			"ownerFolder": "packages/desktop/src/lib/verification-evidence/select-environment",
-			"source": [
-				"packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts"
-			]
+			"source": ["packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts"]
 		},
 		{
 			"id": "service.console-install",
 			"owner": "workflow.install-console",
 			"ownerFolder": "src/cli/program/console-install-service",
-			"source": [
-				"src/cli/program/console-install-service/ConsoleInstallService.ts"
-			]
+			"source": ["src/cli/program/console-install-service/ConsoleInstallService.ts"]
 		},
 		{
 			"id": "command.hooks",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/HooksCommand.ts"
-			]
+			"source": ["src/cli/program/HooksCommand.ts"]
 		},
 		{
 			"id": "desktop.adapter.hosted-evidence",
@@ -5578,9 +5483,7 @@
 			"id": "command.activity",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ActivityCommand.ts"
-			]
+			"source": ["src/cli/program/ActivityCommand.ts"]
 		},
 		{
 			"id": "desktop.service.device-session",
@@ -5594,9 +5497,7 @@
 			"id": "repository.legacy-report",
 			"owner": "service.legacy-import",
 			"ownerFolder": "src/cli/program/legacy-import-service",
-			"source": [
-				"src/cli/program/legacy-import-service/LegacyReportRepository.ts"
-			]
+			"source": ["src/cli/program/legacy-import-service/LegacyReportRepository.ts"]
 		},
 		{
 			"id": "desktop.service.projection-cache",
@@ -5610,57 +5511,43 @@
 			"id": "service.desktop-experiment",
 			"owner": "script.prepare-desktop-experiment",
 			"ownerFolder": "scripts/prepare-desktop-experiment",
-			"source": [
-				"scripts/prepare-desktop-experiment/DesktopExperimentService.ts"
-			]
+			"source": ["scripts/prepare-desktop-experiment/DesktopExperimentService.ts"]
 		},
 		{
 			"id": "desktop.service.remote-pairing-control",
 			"owner": "desktop.service.remote-host",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": [
-				"packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts"
-			]
+			"source": ["packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts"]
 		},
 		{
 			"id": "hub.service.hub-record-status",
 			"owner": "hub.function.hub-evidence-scope",
 			"ownerFolder": "packages/hub/src/services/verification-evidence/hub-evidence-service",
-			"source": [
-				"packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts"
-			]
+			"source": ["packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts"]
 		},
 		{
 			"id": "adapter.handler-runtime",
 			"owner": "function.side-impact",
 			"ownerFolder": "packages/reports/src/components/explorer-ui/harness-compare",
-			"source": [
-				"packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts"
-			]
+			"source": ["packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts"]
 		},
 		{
 			"id": "workflow.generate-unit",
 			"owner": "command.generate",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/generateUnit.ts"
-			]
+			"source": ["src/cli/program/generateUnit.ts"]
 		},
 		{
 			"id": "reports.adapter.mira-report",
 			"owner": "reports.service.report-import",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": [
-				"packages/reports/src/services/report-command-service/MiraReportAdapter.ts"
-			]
+			"source": ["packages/reports/src/services/report-command-service/MiraReportAdapter.ts"]
 		},
 		{
 			"id": "relay.controller.pairing",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/PairingController.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/PairingController.ts"]
 		},
 		{
 			"id": "service.attached-record",
@@ -5682,9 +5569,7 @@
 			"id": "workflow.run-hooks",
 			"owner": "command.hooks",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/runHooks.ts"
-			]
+			"source": ["src/cli/program/runHooks.ts"]
 		},
 		{
 			"id": "desktop.adapter.remote-http-project",
@@ -5698,9 +5583,7 @@
 			"id": "service.history-sync",
 			"owner": "workflow.sync-history",
 			"ownerFolder": "src/cli/program/history-sync-service",
-			"source": [
-				"src/cli/program/history-sync-service/HistorySyncService.ts"
-			]
+			"source": ["src/cli/program/history-sync-service/HistorySyncService.ts"]
 		},
 		{
 			"id": "desktop.adapter.git-source",
@@ -5714,33 +5597,25 @@
 			"id": "workflow.inspect-scenarios",
 			"owner": "command.scenarios",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/inspectScenarios.ts"
-			]
+			"source": ["src/cli/program/inspectScenarios.ts"]
 		},
 		{
 			"id": "relay.controller.manage",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/ManageController.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/ManageController.ts"]
 		},
 		{
 			"id": "desktop.adapter.remote-registration",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts"]
 		},
 		{
 			"id": "command.response-check",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ResponseCheckCommand.ts"
-			]
+			"source": ["src/cli/program/ResponseCheckCommand.ts"]
 		},
 		{
 			"id": "service.check-run",
@@ -5755,17 +5630,13 @@
 			"id": "workflow.sync-history",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/syncHistory.ts"
-			]
+			"source": ["src/cli/program/syncHistory.ts"]
 		},
 		{
 			"id": "reports.service.report-storage-sync",
 			"owner": "reports.service.report-command",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": [
-				"packages/reports/src/services/report-command-service/ReportStorageSyncService.ts"
-			]
+			"source": ["packages/reports/src/services/report-command-service/ReportStorageSyncService.ts"]
 		},
 		{
 			"id": "hub.service.request-session",
@@ -5779,81 +5650,61 @@
 			"id": "desktop.service.recorded-evidence",
 			"owner": "desktop.function.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": [
-				"packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts"]
 		},
 		{
 			"id": "desktop.service.remote-host-runtime",
 			"owner": "desktop.service.remote-host",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": [
-				"packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts"
-			]
+			"source": ["packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts"]
 		},
 		{
 			"id": "desktop.service.native-connection",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts"]
 		},
 		{
 			"id": "command.verify",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/VerifyCommand.ts"
-			]
+			"source": ["src/cli/program/VerifyCommand.ts"]
 		},
 		{
 			"id": "workflow.analytics-html",
 			"owner": "service.analytics",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/analyticsHtml.ts"
-			]
+			"source": ["src/cli/program/analyticsHtml.ts"]
 		},
 		{
 			"id": "reports.service.report-import",
 			"owner": "reports.service.report-command",
 			"ownerFolder": "packages/reports/src/services/reports-media/report-command-service",
-			"source": [
-				"packages/reports/src/services/report-command-service/ReportImportService.ts"
-			]
+			"source": ["packages/reports/src/services/report-command-service/ReportImportService.ts"]
 		},
 		{
 			"id": "hub.controller.hub-agent",
 			"owner": "hub.controller.hub-api",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]/hub-api-controller",
-			"source": [
-				"packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts"
-			]
+			"source": ["packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts"]
 		},
 		{
 			"id": "command.report",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ReportCommand.ts"
-			]
+			"source": ["src/cli/program/ReportCommand.ts"]
 		},
 		{
 			"id": "workflow.run-report",
 			"owner": "command.report",
 			"ownerFolder": "src/cli/program/run-report",
-			"source": [
-				"src/cli/program/run-report/runReport.ts"
-			]
+			"source": ["src/cli/program/run-report/runReport.ts"]
 		},
 		{
 			"id": "hub.middleware.hub-responses",
 			"owner": "hub.entry.hooks-server",
 			"ownerFolder": "packages/hub/src/lib/development-tooling/server-hooks",
-			"source": [
-				"packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts"
-			]
+			"source": ["packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts"]
 		},
 		{
 			"id": "desktop.service.device-operations",
@@ -5883,41 +5734,31 @@
 			"id": "workflow.run-kernel-bench",
 			"owner": "command.kernel",
 			"ownerFolder": "src/cli/program/run-kernel-bench",
-			"source": [
-				"src/cli/program/run-kernel-bench/runKernelBench.ts"
-			]
+			"source": ["src/cli/program/run-kernel-bench/runKernelBench.ts"]
 		},
 		{
 			"id": "desktop.service.local-transport-client",
 			"owner": "desktop.initializer.initialize-preload",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/preload-initialization",
-			"source": [
-				"packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts"
-			]
+			"source": ["packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts"]
 		},
 		{
 			"id": "workflow.run-kernel-boundary",
 			"owner": "command.kernel",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/runKernelBoundary.ts"
-			]
+			"source": ["src/cli/program/runKernelBoundary.ts"]
 		},
 		{
 			"id": "workflow.manage-loop",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/manageLoop.ts"
-			]
+			"source": ["src/cli/program/manageLoop.ts"]
 		},
 		{
 			"id": "service.legacy-history",
 			"owner": "workflow.build-history",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/LegacyHistoryService.ts"
-			]
+			"source": ["src/cli/program/LegacyHistoryService.ts"]
 		},
 		{
 			"id": "service.source-impact",
@@ -5939,49 +5780,37 @@
 			"id": "workflow.response-check-evaluate",
 			"owner": "workflow.run-response-check",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/responseCheckEvaluate.ts"
-			]
+			"source": ["src/cli/program/responseCheckEvaluate.ts"]
 		},
 		{
 			"id": "adapter.cpu-process",
 			"owner": "service.cpu-usage",
 			"ownerFolder": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter",
-			"source": [
-				"src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
-			]
+			"source": ["src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"]
 		},
 		{
 			"id": "adapter.claude-gateway",
 			"owner": "service.codex-gateway",
 			"ownerFolder": "src/cli/program/codex-gateway-service",
-			"source": [
-				"src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts"
-			]
+			"source": ["src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts"]
 		},
 		{
 			"id": "reports.controller.console-agent",
 			"owner": "reports.entry.hooks-server",
 			"ownerFolder": "packages/reports/src/lib/development-tooling/server-hooks",
-			"source": [
-				"packages/reports/src/lib/server-hooks/ConsoleAgentController.ts"
-			]
+			"source": ["packages/reports/src/lib/server-hooks/ConsoleAgentController.ts"]
 		},
 		{
 			"id": "relay.service.socket-accept",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/SocketAcceptService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/SocketAcceptService.ts"]
 		},
 		{
 			"id": "workflow.loop-next",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/loopNext.ts"
-			]
+			"source": ["src/cli/program/loopNext.ts"]
 		},
 		{
 			"id": "desktop.service.project-discovery",
@@ -5995,57 +5824,43 @@
 			"id": "workflow.review-clean-code",
 			"owner": "audit.audit",
 			"ownerFolder": "src/audit/development-tooling",
-			"source": [
-				"src/audit/reviewCleanCode.ts"
-			]
+			"source": ["src/audit/reviewCleanCode.ts"]
 		},
 		{
 			"id": "desktop.service.plan-run",
 			"owner": "desktop.service.desktop-run",
 			"ownerFolder": "packages/desktop/src/services/agents-providers/desktop-run-service",
-			"source": [
-				"packages/desktop/src/services/desktop-run-service/PlanRunService.ts"
-			]
+			"source": ["packages/desktop/src/services/desktop-run-service/PlanRunService.ts"]
 		},
 		{
 			"id": "relay.service.device-revocation",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/DeviceRevocationService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/DeviceRevocationService.ts"]
 		},
 		{
 			"id": "hub.adapter.github-api",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/GithubApiAdapter.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/GithubApiAdapter.ts"]
 		},
 		{
 			"id": "service.codex-gateway",
 			"owner": "command.codex",
 			"ownerFolder": "src/cli/program/codex-gateway-service",
-			"source": [
-				"src/cli/program/codex-gateway-service/CodexGatewayService.ts"
-			]
+			"source": ["src/cli/program/codex-gateway-service/CodexGatewayService.ts"]
 		},
 		{
 			"id": "command.analytics",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/AnalyticsCommand.ts"
-			]
+			"source": ["src/cli/program/AnalyticsCommand.ts"]
 		},
 		{
 			"id": "command.units",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/UnitsCommand.ts"
-			]
+			"source": ["src/cli/program/UnitsCommand.ts"]
 		},
 		{
 			"id": "hub.adapter.d1-auth-store",
@@ -6075,81 +5890,61 @@
 			"id": "relay.service.pairing-offer",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/PairingOfferService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/PairingOfferService.ts"]
 		},
 		{
 			"id": "adapter.process-identity",
 			"owner": "service.agent-activity",
 			"ownerFolder": "src/services/agents-providers/agent-activity-service",
-			"source": [
-				"src/services/agent-activity-service/ProcessIdentityAdapter.ts"
-			]
+			"source": ["src/services/agent-activity-service/ProcessIdentityAdapter.ts"]
 		},
 		{
 			"id": "remote.service.response-ledger",
 			"owner": "remote.service.wire-session",
 			"ownerFolder": "packages/remote/src/services/networking-security/wire-session-service",
-			"source": [
-				"packages/remote/src/services/wire-session-service/ResponseLedgerService.ts"
-			]
+			"source": ["packages/remote/src/services/wire-session-service/ResponseLedgerService.ts"]
 		},
 		{
 			"id": "service.console-uninstall",
 			"owner": "workflow.install-console",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/ConsoleUninstallService.ts"
-			]
+			"source": ["src/cli/program/ConsoleUninstallService.ts"]
 		},
 		{
 			"id": "reports.service.console-agent",
 			"owner": "reports.controller.console-agent",
 			"ownerFolder": "packages/reports/src/lib/development-tooling/server-hooks",
-			"source": [
-				"packages/reports/src/lib/server-hooks/ConsoleAgentService.ts"
-			]
+			"source": ["packages/reports/src/lib/server-hooks/ConsoleAgentService.ts"]
 		},
 		{
 			"id": "service.claude-query",
 			"owner": "adapter.claude-gateway",
 			"ownerFolder": "src/cli/program/codex-gateway-service/claude-query-service",
-			"source": [
-				"src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts"
-			]
+			"source": ["src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts"]
 		},
 		{
 			"id": "service.picker-preview",
 			"owner": "command.codex-picker",
 			"ownerFolder": "src/cli/program/codex-picker-command",
-			"source": [
-				"src/cli/program/codex-picker-command/PickerPreviewService.ts"
-			]
+			"source": ["src/cli/program/codex-picker-command/PickerPreviewService.ts"]
 		},
 		{
 			"id": "planning.service.planning",
 			"owner": "planning.entry.index",
 			"ownerFolder": "packages/planning/src/lib/planning-collaboration/planning/planning-service",
-			"source": [
-				"packages/planning/src/lib/planning/planning-service/PlanningService.ts"
-			]
+			"source": ["packages/planning/src/lib/planning/planning-service/PlanningService.ts"]
 		},
 		{
 			"id": "desktop.adapter.pinned-history",
 			"owner": "desktop.service.recorded-evidence",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": [
-				"packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts"]
 		},
 		{
 			"id": "service.snapshot-run",
 			"owner": "service.verification",
 			"ownerFolder": "src/workflows/verification-evidence/run-verify/verification-service",
-			"source": [
-				"src/workflows/run-verify/verification-service/SnapshotRunService.ts"
-			]
+			"source": ["src/workflows/run-verify/verification-service/SnapshotRunService.ts"]
 		},
 		{
 			"id": "repository.codex-session",
@@ -6163,9 +5958,7 @@
 			"id": "hub.service.github-owner",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/GithubOwnerService.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/GithubOwnerService.ts"]
 		},
 		{
 			"id": "reports.adapter.r2-report-retention",
@@ -6187,33 +5980,25 @@
 			"id": "workflow.persist-reasons",
 			"owner": "command.history",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/persistReasons.ts"
-			]
+			"source": ["src/cli/program/persistReasons.ts"]
 		},
 		{
 			"id": "service.runtime-server",
 			"owner": "workflow.run-kernel",
 			"ownerFolder": "src/cli/program/run-kernel",
-			"source": [
-				"src/cli/program/run-kernel/RuntimeServerService.ts"
-			]
+			"source": ["src/cli/program/run-kernel/RuntimeServerService.ts"]
 		},
 		{
 			"id": "workflow.loop-search",
 			"owner": "command.loop",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/loopSearch.ts"
-			]
+			"source": ["src/cli/program/loopSearch.ts"]
 		},
 		{
 			"id": "command.audit",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/audit.ts"
-			]
+			"source": ["src/cli/program/audit.ts"]
 		},
 		{
 			"id": "reports.service.report-publish",
@@ -6227,41 +6012,31 @@
 			"id": "command.codex-picker",
 			"owner": "command.codex",
 			"ownerFolder": "src/cli/program/codex-picker-command",
-			"source": [
-				"src/cli/program/codex-picker-command/CodexPickerCommand.ts"
-			]
+			"source": ["src/cli/program/codex-picker-command/CodexPickerCommand.ts"]
 		},
 		{
 			"id": "relay.service.pairing-exchange",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/PairingExchangeService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/PairingExchangeService.ts"]
 		},
 		{
 			"id": "service.hook-run",
 			"owner": "workflow.run-hooks",
 			"ownerFolder": "src/cli/program/hook-run-service",
-			"source": [
-				"src/cli/program/hook-run-service/HookRunService.ts"
-			]
+			"source": ["src/cli/program/hook-run-service/HookRunService.ts"]
 		},
 		{
 			"id": "service.native-picker-defaults",
 			"owner": "service.native-picker-bridge",
 			"ownerFolder": "src/services/development-tooling/native-picker-bridge-service",
-			"source": [
-				"src/services/native-picker-bridge-service/NativePickerDefaultsService.ts"
-			]
+			"source": ["src/services/native-picker-bridge-service/NativePickerDefaultsService.ts"]
 		},
 		{
 			"id": "workflow.run-audit",
 			"owner": "command.audit",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/runAudit.ts"
-			]
+			"source": ["src/cli/program/runAudit.ts"]
 		},
 		{
 			"id": "hub.controller.github-connection",
@@ -6283,17 +6058,13 @@
 			"id": "service.verification",
 			"owner": "workflow.run-verify",
 			"ownerFolder": "src/workflows/verification-evidence/run-verify/verification-service",
-			"source": [
-				"src/workflows/run-verify/verification-service/VerificationService.ts"
-			]
+			"source": ["src/workflows/run-verify/verification-service/VerificationService.ts"]
 		},
 		{
 			"id": "hub.adapter.relay-manage",
 			"owner": "hub.function.hub-remote",
 			"ownerFolder": "packages/hub/src/routes/api/[...path]",
-			"source": [
-				"packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts"
-			]
+			"source": ["packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts"]
 		},
 		{
 			"id": "desktop.service.remote-host-switch",
@@ -6307,17 +6078,13 @@
 			"id": "hub.service.github-grant",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/GithubGrantService.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/GithubGrantService.ts"]
 		},
 		{
 			"id": "desktop.service.project-image-cache",
 			"owner": "desktop.function.desktop-bridge",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-bridge",
-			"source": [
-				"packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts"]
 		},
 		{
 			"id": "reports.service.report-server",
@@ -6331,129 +6098,97 @@
 			"id": "adapter.wasm-module-runtime",
 			"owner": "adapter.wasm-runtime",
 			"ownerFolder": "src/adapters/execution-runtimes/wasm-runtime-adapter",
-			"source": [
-				"src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"
-			]
+			"source": ["src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts"]
 		},
 		{
 			"id": "hub.controller.native-handoff",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth",
-			"source": [
-				"packages/hub/src/lib/server/auth/NativeHandoffController.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/NativeHandoffController.ts"]
 		},
 		{
 			"id": "desktop.service.local-operations",
 			"owner": "desktop.service.local-client",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts"]
 		},
 		{
 			"id": "desktop.service.local-client",
 			"owner": "desktop.initializer.initialize-desktop",
 			"ownerFolder": "packages/desktop/src/lib/development-tooling/desktop-initialization",
-			"source": [
-				"packages/desktop/src/lib/desktop-initialization/LocalClientService.ts"
-			]
+			"source": ["packages/desktop/src/lib/desktop-initialization/LocalClientService.ts"]
 		},
 		{
 			"id": "relay.service.rate-limit",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/RateLimitService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/RateLimitService.ts"]
 		},
 		{
 			"id": "service.hook-install",
 			"owner": "workflow.run-hooks",
 			"ownerFolder": "src/cli/program/hook-install-service",
-			"source": [
-				"src/cli/program/hook-install-service/HookInstallService.ts"
-			]
+			"source": ["src/cli/program/hook-install-service/HookInstallService.ts"]
 		},
 		{
 			"id": "workflow.analytics-metrics",
 			"owner": "service.analytics",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/analyticsMetrics.ts"
-			]
+			"source": ["src/cli/program/analyticsMetrics.ts"]
 		},
 		{
 			"id": "command.loop",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/loop.ts"
-			]
+			"source": ["src/cli/program/loop.ts"]
 		},
 		{
 			"id": "service.legacy-import",
 			"owner": "workflow.import-reports",
 			"ownerFolder": "src/cli/program/legacy-import-service",
-			"source": [
-				"src/cli/program/legacy-import-service/LegacyImportService.ts"
-			]
+			"source": ["src/cli/program/legacy-import-service/LegacyImportService.ts"]
 		},
 		{
 			"id": "hub.service.native-handoff",
 			"owner": "hub.function.compose-hub-auth",
 			"ownerFolder": "packages/hub/src/lib/verification-evidence/server/auth/native-handoff-service",
-			"source": [
-				"packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts"
-			]
+			"source": ["packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts"]
 		},
 		{
 			"id": "service.native-picker-switch",
 			"owner": "service.native-picker-bridge",
 			"ownerFolder": "src/services/development-tooling/native-picker-bridge-service",
-			"source": [
-				"src/services/native-picker-bridge-service/NativePickerSwitchService.ts"
-			]
+			"source": ["src/services/native-picker-bridge-service/NativePickerSwitchService.ts"]
 		},
 		{
 			"id": "command.kernel",
 			"owner": "entry.program",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/KernelCommand.ts"
-			]
+			"source": ["src/cli/program/KernelCommand.ts"]
 		},
 		{
 			"id": "relay.service.pairing-access",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/PairingAccessService.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/PairingAccessService.ts"]
 		},
 		{
 			"id": "relay.controller.host-object",
 			"owner": "relay.function.host-runtime",
 			"ownerFolder": "packages/relay/src/lib/execution-runtimes/host-runtime",
-			"source": [
-				"packages/relay/src/lib/host-runtime/HostObjectController.ts"
-			]
+			"source": ["packages/relay/src/lib/host-runtime/HostObjectController.ts"]
 		},
 		{
 			"id": "workflow.run-kernel",
 			"owner": "command.kernel",
 			"ownerFolder": "src/cli/program/run-kernel",
-			"source": [
-				"src/cli/program/run-kernel/runKernel.ts"
-			]
+			"source": ["src/cli/program/run-kernel/runKernel.ts"]
 		},
 		{
 			"id": "reports.repository.site-report",
 			"owner": "reports.function.report-http",
 			"ownerFolder": "packages/reports/src/routes/api/health",
-			"source": [
-				"packages/reports/src/routes/api/health/SiteReportRepository.ts"
-			]
+			"source": ["packages/reports/src/routes/api/health/SiteReportRepository.ts"]
 		},
 		{
 			"id": "desktop.service.client-projects",
@@ -6492,49 +6227,37 @@
 			"id": "workflow.create-project",
 			"owner": "command.new",
 			"ownerFolder": "src/cli/program/create-project",
-			"source": [
-				"src/cli/program/create-project/createProject.ts"
-			]
+			"source": ["src/cli/program/create-project/createProject.ts"]
 		},
 		{
 			"id": "workflow.run-response-check",
 			"owner": "command.response-check",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/runResponseCheck.ts"
-			]
+			"source": ["src/cli/program/runResponseCheck.ts"]
 		},
 		{
 			"id": "service.history-index",
 			"owner": "workflow.build-history",
 			"ownerFolder": "src/cli/program/history-index-service",
-			"source": [
-				"src/cli/program/history-index-service/HistoryIndexService.ts"
-			]
+			"source": ["src/cli/program/history-index-service/HistoryIndexService.ts"]
 		},
 		{
 			"id": "relay.controller.public-relay",
 			"owner": "relay.entry.index",
 			"ownerFolder": "packages/relay/src/lib/networking-security/relay",
-			"source": [
-				"packages/relay/src/lib/relay/PublicRelayController.ts"
-			]
+			"source": ["packages/relay/src/lib/relay/PublicRelayController.ts"]
 		},
 		{
 			"id": "desktop.service.remote-host-record",
 			"owner": "desktop.service.remote-host",
 			"ownerFolder": "packages/desktop/src/services/networking-security/remote-host-service",
-			"source": [
-				"packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts"
-			]
+			"source": ["packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts"]
 		},
 		{
 			"id": "service.analytics",
 			"owner": "command.analytics",
 			"ownerFolder": "src/cli/program",
-			"source": [
-				"src/cli/program/AnalyticsService.ts"
-			]
+			"source": ["src/cli/program/AnalyticsService.ts"]
 		},
 		{
 			"id": "desktop.service.project-task",
@@ -6608,45 +6331,31 @@
 	"unowned": [
 		{
 			"id": "reports.endpoint.api-report-audio-comparison",
-			"source": [
-				"packages/reports/src/routes/api/report-audio-comparison/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/report-audio-comparison/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-report-screenshot-upload",
-			"source": [
-				"packages/reports/src/routes/api/report-screenshot-upload/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/report-screenshot-upload/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-report-audio-upload",
-			"source": [
-				"packages/reports/src/routes/api/report-audio-upload/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/report-audio-upload/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-replay-video",
-			"source": [
-				"packages/reports/src/routes/api/replay-video/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/replay-video/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-health",
-			"source": [
-				"packages/reports/src/routes/api/health/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/health/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.harness-media-file",
-			"source": [
-				"packages/reports/src/routes/harness/media/[file]/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/harness/media/[file]/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.harness-data-path",
-			"source": [
-				"packages/reports/src/routes/harness/data/[...path]/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/harness/data/[...path]/+server.ts"]
 		},
 		{
 			"id": "desktop.adapter.ios-remote",
@@ -6685,69 +6394,47 @@
 		},
 		{
 			"id": "reports.command.report",
-			"source": [
-				"packages/reports/src/commands/ReportCommand.ts"
-			]
+			"source": ["packages/reports/src/commands/ReportCommand.ts"]
 		},
 		{
 			"id": "reports.service.harness-analytics",
-			"source": [
-				"packages/reports/src/services/HarnessAnalyticsService.ts"
-			]
+			"source": ["packages/reports/src/services/HarnessAnalyticsService.ts"]
 		},
 		{
 			"id": "service.provider-switch-apply",
-			"source": [
-				"src/services/ProviderSwitchApplyService.ts"
-			]
+			"source": ["src/services/ProviderSwitchApplyService.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-project-activity",
-			"source": [
-				"packages/reports/src/routes/api/project-activity/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/project-activity/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-analytics-cpu",
-			"source": [
-				"packages/reports/src/routes/api/analytics-cpu/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/analytics-cpu/+server.ts"]
 		},
 		{
 			"id": "remote.service.device-pairing",
-			"source": [
-				"packages/remote/src/services/device-pairing-service/DevicePairingService.ts"
-			]
+			"source": ["packages/remote/src/services/device-pairing-service/DevicePairingService.ts"]
 		},
 		{
 			"id": "reports.service.screenshot-retention",
-			"source": [
-				"packages/reports/src/services/ScreenshotRetentionService.ts"
-			]
+			"source": ["packages/reports/src/services/ScreenshotRetentionService.ts"]
 		},
 		{
 			"id": "reports.endpoint.harness-export-commit",
-			"source": [
-				"packages/reports/src/routes/harness/export/[commit]/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/harness/export/[commit]/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-reports-id-type-file",
-			"source": [
-				"packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/reports/[id]/[type]/[file]/+server.ts"]
 		},
 		{
 			"id": "desktop.service.remote-image-cache",
-			"source": [
-				"packages/desktop/src/services/RemoteImageCacheService.ts"
-			]
+			"source": ["packages/desktop/src/services/RemoteImageCacheService.ts"]
 		},
 		{
 			"id": "service.native-picker-bridge",
-			"source": [
-				"src/services/NativePickerBridgeService.ts"
-			]
+			"source": ["src/services/NativePickerBridgeService.ts"]
 		},
 		{
 			"id": "desktop.adapter.ios-account",
@@ -6762,27 +6449,19 @@
 		},
 		{
 			"id": "hub.endpoint.api-path",
-			"source": [
-				"packages/hub/src/routes/api/[...path]/+server.ts"
-			]
+			"source": ["packages/hub/src/routes/api/[...path]/+server.ts"]
 		},
 		{
 			"id": "remote.service.device-connection",
-			"source": [
-				"packages/remote/src/services/DeviceConnectionService.ts"
-			]
+			"source": ["packages/remote/src/services/DeviceConnectionService.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-reports-id",
-			"source": [
-				"packages/reports/src/routes/api/reports/[id]/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/reports/[id]/+server.ts"]
 		},
 		{
 			"id": "reports.endpoint.api-reports",
-			"source": [
-				"packages/reports/src/routes/api/reports/+server.ts"
-			]
+			"source": ["packages/reports/src/routes/api/reports/+server.ts"]
 		}
 	],
 	"originalProof": "16ab6fdf66c235918411bf42bb02e39653653a05"

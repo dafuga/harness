@@ -1,0 +1,137 @@
+/* Settings end the search's own place, so they never take a row of their own. */
+.topbar-search {
+	gap: var(--hx-space-8);
+}
+.topbar-settings {
+	display: inline-grid;
+	place-items: center;
+	flex: none;
+	align-self: center;
+	width: 40px;
+	height: 40px;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	color: inherit;
+}
+.topbar-settings:hover,
+.topbar :global(.agent-icon:hover:not(:disabled)) {
+	color: var(--hx-color-primary);
+	border-color: var(--hx-color-primary);
+}
+/* Project, branch, commit, Deploy and Deployments are icons of one size; each opens a dialog. */
+.topbar :global(.agent-icon) {
+	display: inline-grid;
+	place-items: center;
+	flex: none;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+}
+/* Each part has one named place at every width; each layout arranges the places. */
+header.topbar {
+	display: grid;
+}
+.topbar :global(.brand) {
+	grid-area: brand;
+}
+.topbar :global(.project-switcher) {
+	grid-area: project;
+}
+.topbar :global(.environment-picker) {
+	grid-area: environment;
+}
+.topbar :global(.revision-picker) {
+	grid-area: revision;
+}
+.topbar nav {
+	grid-area: tools;
+}
+.account,
+.topbar > :global(.deployment-activity) {
+	grid-area: account;
+}
+/* Environment and revision share the first row; catalog and search share the last. */
+@media (min-width: 561px) {
+	header.topbar {
+		grid-template:
+			'brand project . environment revision' auto
+			'tools tools tools tools tools' auto
+			/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto;
+		gap: var(--hx-space-8) var(--hx-space-16);
+		padding: var(--hx-space-12) var(--hx-space-26) 0;
+	}
+	header.topbar.with-account,
+	header.topbar.with-activity {
+		grid-template:
+			'brand project . environment revision account' auto
+			'tools tools tools tools tools tools' auto
+			/ auto minmax(0, max-content) 1fr minmax(0, max-content) auto auto;
+	}
+	.topbar :global(.environment-picker) {
+		justify-self: end;
+	}
+	/* The categories are tabs on the bar's bottom edge. */
+	.topbar nav {
+		justify-self: start;
+		justify-content: flex-start;
+		width: auto;
+		height: 58px;
+	}
+	.topbar-search {
+		grid-area: tools;
+		justify-self: end;
+		width: max-content;
+	}
+}
+/* Narrower, the environment and the revision take a row of their own under the project. */
+@media (min-width: 561px) and (max-width: 1250px) {
+	header.topbar.with-account {
+		grid-template:
+			'brand project . account' auto
+			'environment environment environment revision' auto
+			'tools tools tools tools' auto
+			/ auto minmax(0, max-content) 1fr auto;
+	}
+}
+@media (min-width: 561px) and (max-width: 900px) {
+	header.topbar,
+	header.topbar.with-activity {
+		grid-template:
+			'brand project . account' auto
+			'environment environment environment revision' auto
+			'tools tools tools tools' auto
+			/ auto minmax(0, max-content) 1fr auto;
+	}
+}
+/* Narrower still, the search takes that row and the categories end the bar under it. */
+@media (min-width: 561px) and (max-width: 760px) {
+	.topbar nav {
+		grid-area: 4 / 1 / 5 / -1;
+	}
+	.topbar-search {
+		width: 100%;
+	}
+}
+/* Wide enough, a bar without an account is one row, the categories after the project. */
+@media (min-width: 1800px) {
+	header.topbar:not(.with-account) {
+		grid-template:
+			'brand project tools . environment revision search' auto
+			/ auto minmax(0, max-content) auto 1fr max-content auto max-content;
+		column-gap: var(--hx-space-22);
+		padding: 0 var(--hx-space-26);
+	}
+	header.topbar.with-activity {
+		grid-template:
+			'brand project tools . environment revision search account' auto
+			/ auto minmax(0, max-content) auto 1fr max-content auto max-content auto;
+	}
+	.topbar:not(.with-account) nav {
+		height: auto;
+	}
+	.topbar:not(.with-account) .topbar-search {
+		grid-area: search;
+		width: 100%;
+	}
+}
+/* A phone arranges the same places in rows of its own, in responsive.css. */

@@ -8,11 +8,14 @@ import { explorerCategory } from '../../../../src/utils/explorer-ui/explorerCate
 export function visualUnit(unit: PreviewManifest): boolean {
 	if (unit.status !== 'active') return false;
 	// Document metadata and SVG definitions have no independent rendered surface to capture.
-	if (unit.composition?.level === 'atom' && unit.catalog?.visibility === 'internal') return false;
-	if (unit.kind === 'component' || unit.kind === 'shell') return true;
-	if (unit.kind !== 'page' && unit.kind !== 'layout') return false;
+	if (internalAtom(unit)) return false;
+	if (['component', 'shell'].includes(unit.kind)) return true;
+	if (!['page', 'layout'].includes(unit.kind)) return false;
 	const category = explorerCategory(unit);
 	return category === 'pages' || (unit.kind === 'layout' && category === 'layouts');
+}
+function internalAtom(unit: PreviewManifest) {
+	return unit.composition?.level === 'atom' && unit.catalog?.visibility === 'internal';
 }
 /**
  * A route module whose preview opens at its own address: a Reports page or layout over the route

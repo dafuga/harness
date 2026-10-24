@@ -60,8 +60,7 @@ export async function generateModel(input: GenerateModelInput): Promise<Generate
 }
 
 export async function generatePiece(input: GeneratePieceInput): Promise<GenerateResult> {
-	if (input.level && (!['molecule', 'organism'].includes(input.level) || input.kind !== 'component'))
-		fail('Use --level molecule or organism with the component scaffold.');
+	validateComponentLevel(input);
 	const root = input.root ?? process.cwd();
 	const name = validateCodeName(input.name);
 	const projectKind = await detectProjectKind(root);
@@ -78,11 +77,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const library = ui ? atomLibrary(root) : 'src/components/atoms';
 	const pieces = useAtomLibrary(planned, library);
 	const grouped = groupedFiles(pieces, selection?.group.id);
-	const atoms =
-		library === 'src/components/atoms' &&
-		['component', 'view', 'layout', 'partial', 'resource'].includes(input.kind)
-			? atomicComponentFiles().filter((file) => !existsSync(join(root, file.path)))
-			: [];
+	const atoms = missingAtoms(root, input.kind, library);
 	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
@@ -127,3 +122,17 @@ async function maybeExport(root: string, plans: ExportPlan[]): Promise<boolean> 
 }
 
 export type { GenerateModelInput, GeneratePieceInput, GenerateResult } from './generateCode.types';
+
+function validateComponentLevel(input: GeneratePieceInput) {
+	if (
+		input.level &&
+		(!['molecule', 'organism'].includes(input.level) || input.kind !== 'component')
+	)
+		fail('Use --level molecule or organism with the component scaffold.');
+}
+
+function missingAtoms(root: string, kind: PieceKind, library: string) {
+	if (library !== 'src/components/atoms') return [];
+	if (!['component', 'view', 'layout', 'partial', 'resource'].includes(kind)) return [];
+	return atomicComponentFiles().filter((file) => !existsSync(join(root, file.path)));
+}

@@ -1,3 +1,5 @@
+import { AgentActivityService } from '../../../../../../src/services/agent-activity-service/AgentActivityService';
+import { ProjectWorkRepository } from '../../../../../../src/repositories/ProjectWorkRepository';
 import { GameLevelService } from './GameLevelService';
 import type { BridgeContext } from './desktopBridge.types';
 import { GameImageService } from './GameImageService';
@@ -78,6 +80,12 @@ function authentication(session: ProjectSessionService) {
 			session.auth?.disconnect() ?? Promise.resolve({ configured: false, state: 'signed-out' })
 	};
 }
+async function agentActivity(session: ProjectSessionService) {
+	const { root } = session.requireProject();
+	const checkouts = await new ProjectWorkRepository(root).checkouts();
+	const agents = await new AgentActivityService(root, checkouts).roster();
+	return { sampledAt: new Date().toISOString(), agents };
+}
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
 	const operations = new ProjectOperationsService(session);
@@ -107,6 +115,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 			session.requireProject().planning.messages(input.entityId, input.threadId, input.commit),
 		approve: (input) =>
 			exclusive(session, async () => (await writable(context)).planning.approve(input)),
+		agentActivity: () => agentActivity(session),
 		providers: () => providers.list(),
 		startRun: (input) => runs.start(input),
 		cancelRun: async (input) => runs.cancel(input.runId)

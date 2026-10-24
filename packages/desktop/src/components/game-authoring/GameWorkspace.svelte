@@ -214,12 +214,5 @@
 </hx-section>
 
 <style>
-	.game {
-		display: grid;
-		gap: var(--hx-space-16);
-	}
-	.back {
-		justify-self: start;
-		color: var(--hx-color-primary);
-	}
+	@import './game-workspace/gameWorkspace.css';
 </style>

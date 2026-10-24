@@ -101,7 +101,10 @@ test.each(['reports', 'replay'])(
 		const read = (locale: string) =>
 			flattenMessages(
 				JSON.parse(
-					readFileSync(`packages/reports/src/translations/${group}/${locale}.json`, 'utf8')
+					readFileSync(
+						`packages/reports/src/${group === 'reports' ? 'utils/reports-media/report-locale' : 'components/reports-media/gameplay-replay/translations'}/${locale}.json`,
+						'utf8'
+					)
 				)
 			);
 		const english = read('en'),

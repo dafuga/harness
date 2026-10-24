@@ -12,7 +12,7 @@ export class ProjectContextValidator {
 			return parsed;
 		}
 		if (channel === 'thread:comment') return this.comment(input);
-		if (channel === 'thread:pending' || channel === 'project:capabilities')
+		if (['thread:pending', 'project:capabilities', 'project:agents'].includes(channel))
 			return this.context(input ?? {});
 
 		return undefined;

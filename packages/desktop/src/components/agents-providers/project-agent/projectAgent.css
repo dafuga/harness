@@ -1,0 +1,117 @@
+.project-chat {
+	--floating-chat-top: var(--hx-layout-bar-clearance);
+	display: contents;
+}
+@media (max-width: 1409px) {
+	.project-chat {
+		--floating-chat-top: var(--hx-layout-bar-clearance-wrapped);
+	}
+}
+@media (max-width: 1250px) {
+	.project-chat {
+		--floating-chat-top: var(--hx-layout-bar-clearance-stacked);
+	}
+}
+@media (max-width: 560px) {
+	.project-chat {
+		--floating-chat-top: var(--hx-layout-bar-clearance-phone);
+	}
+}
+/* Chat and Agents sit under the title, outside what scrolls; the hidden chat keeps its draft. */
+.chat-views {
+	display: flex;
+	gap: var(--hx-space-5);
+	padding: var(--hx-space-8) var(--hx-space-14);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.chat-views button {
+	padding: var(--hx-space-3) var(--hx-space-12);
+	border: var(--hx-border-thin) solid transparent;
+	border-radius: var(--hx-radius-round);
+	background: none;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-compact);
+}
+.chat-views button:hover {
+	color: var(--hx-color-text);
+}
+.chat-views button[aria-pressed='true'] {
+	border-color: color-mix(in srgb, var(--hx-color-primary) 45%, transparent);
+	color: var(--hx-color-primary);
+}
+.chat-pane:not([hidden]) {
+	display: contents;
+}
+.chat-thread {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-10);
+}
+.chat-log {
+	display: grid;
+	gap: var(--hx-space-8);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.chat-message {
+	max-width: 88%;
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-xlarge);
+	font-size: var(--hx-type-size-sm);
+	line-height: var(--hx-style-leading-normal);
+	overflow-wrap: anywhere;
+	white-space: pre-wrap;
+}
+.chat-message.user {
+	justify-self: end;
+	border-end-end-radius: var(--hx-radius-xsmall);
+	background: var(--hx-color-hover);
+}
+.chat-message.agent {
+	justify-self: start;
+	border-color: color-mix(in srgb, var(--hx-color-primary) 45%, transparent);
+	border-end-start-radius: var(--hx-radius-xsmall);
+}
+/* Who said it is read out; the side of the conversation shows it. */
+.chat-author {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+.chat-note,
+.error {
+	margin: 0;
+	font-size: var(--hx-type-size-compact);
+}
+.chat-note {
+	color: var(--hx-color-text-muted);
+}
+.chat-status {
+	display: flex;
+	gap: var(--hx-space-10);
+	justify-content: space-between;
+	align-items: center;
+}
+.chat-status button {
+	flex: none;
+	padding: var(--hx-space-5) var(--hx-space-10);
+}
+.error {
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border-radius: var(--hx-radius-small);
+}
+.chat-compose {
+	position: sticky;
+	bottom: 0;
+	margin-top: auto;
+	padding: var(--hx-space-2) 0 var(--hx-space-14);
+	background: var(--hx-color-surface);
+}
+.chat-compose :global(.composer textarea) {
+	font-size: var(--hx-type-size-base);
+}

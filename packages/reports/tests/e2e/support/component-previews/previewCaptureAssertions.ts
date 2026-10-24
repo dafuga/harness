@@ -6,6 +6,7 @@ import { catalogScenario, previewState } from './catalogUnits';
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(page: Page, id: string, viewport: string) {
 	assertCaptureSlot(id, viewport);
+	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selector: Record<string, string> = {
@@ -42,6 +43,18 @@ export async function assertComponentCapture(page: Page, id: string, viewport: s
 			`${id} excludes the preview title and empty canvas`
 		).toBeLessThanOrEqual(Math.ceil(actual) + 18);
 	}
+}
+
+async function assertAgentsPreview(page: Page) {
+	const panel = page.locator('[data-harness-component="agents-providers-chat-agents"]');
+	await expect(panel).toBeVisible();
+	await expect(panel).toContainText('1 working');
+	await expect(panel.getByRole('region', { name: 'Main chats' })).toContainText(
+		'Capture component states'
+	);
+	await expect(panel.getByRole('region', { name: 'Modules being worked on' })).toContainText(
+		'Preview agent'
+	);
 }
 
 /** The recorded slot selects the manifest's element rules as well as its required state. */

@@ -62,6 +62,16 @@
 				"examples": ["Ask a question, plan a design, or request a code change."]
 			},
 			{
+				"name": "FloatingChat.navigation",
+				"type": "Snippet | undefined",
+				"description": "Optional navigation rendered below the header, outside the scrolling conversation body."
+			},
+			{
+				"name": "FloatingChat.follow",
+				"type": "boolean",
+				"description": "Whether opening and new content follow the conversation end; true by default. False keeps an activity view at its beginning."
+			},
+			{
 				"name": "FloatingChat.children",
 				"type": "Snippet",
 				"description": "Conversation and input rendered inside the panel as a Svelte snippet.",

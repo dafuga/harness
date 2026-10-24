@@ -31,7 +31,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+			"packages/reports/src/components/explorer-ui/explorer-dependencies-screen/explorerDependenciesScreen.css"
+		],
 		"symbols": ["ExplorerDependenciesScreen"]
 	},
 	"contract": {

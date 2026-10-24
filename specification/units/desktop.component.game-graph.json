@@ -20,7 +20,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/game-authoring/GameGraph.svelte"],
+		"source": [
+			"packages/desktop/src/components/game-authoring/GameGraph.svelte",
+			"packages/desktop/src/components/game-authoring/game-graph/gameGraph.css"
+		],
 		"symbols": ["GameGraph"]
 	},
 	"contract": {

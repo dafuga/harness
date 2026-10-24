@@ -1,3 +1,6 @@
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import { longAgentActivityFixture, readyForAgentCapture } from './ui-agent-activity-fixture';
+import { scenarioCapture } from './scenario-capture';
 import { expect, test } from '../../../../test/support/browserTest';
 import type { Page, TestInfo } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
@@ -175,3 +178,31 @@ for (const viewport of [
 		expect(box!.x + box!.width).toBeLessThanOrEqual(viewport.width);
 	});
 }
+
+test('a long agent roster keeps current module assignments in view', async ({ page }) => {
+	await longAgentActivityFixture(page);
+	await page.goto(route('components'));
+	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+	await panel.getByRole('button', { name: 'Agents', exact: true }).click();
+	await expect(panel.getByText('Refine shared component previews', { exact: true })).toBeVisible();
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await readyForAgentCapture(page);
+		mkdirSync('/tmp/chat-agents-evidence', { recursive: true });
+		await page.screenshot({
+			path: `/tmp/chat-agents-evidence/${process.env.SCREENSHOT_LABEL}-long-roster.png`
+		});
+	}
+	await scenarioCapture(page, scenario as ScenarioManifest, {
+		state: 'chat-agents-many',
+		name: 'long-roster',
+		note: 'Synthetic fifteen-session roster over the compiled renderer; module visibility is asserted at this checkpoint.'
+	});
+	await expect(
+		panel
+			.getByRole('region', { name: 'Modules being worked on' })
+			.getByRole('link', { name: 'Card', exact: true })
+	).toBeInViewport();
+	await panel.getByRole('button', { name: 'Show all 15 sessions', exact: true }).click();
+	await expect(panel.getByText('Earlier session 11', { exact: true })).toBeVisible();
+});
