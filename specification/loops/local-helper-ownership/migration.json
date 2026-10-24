@@ -4917,7 +4917,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5327,6 +5327,13 @@
 			"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
 			"reason": "Propagate a bounded resource context to the provider transport without changing model, permission or output validation.",
 			"definition": "674dfb8331fb99851d0a01f11b34a867ed8284345ff1959edf545dbdd696b6ec"
+		},
+		{
+			"unit": "function.unit-identity",
+			"name": "unitIdentity",
+			"commit": "fa97dd5a1c76d3cd0dbbec7c0ef99298ebcb1fdd",
+			"definition": "c1ed556d07e4885e72f7b4cb9aab7f8e9a67cad48ac179bf74f93d6d08cfc674",
+			"reason": "Recognize the generator canonical configs folder alongside the supported legacy config folder."
 		}
 	]
 }
