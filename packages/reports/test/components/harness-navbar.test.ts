@@ -1,4 +1,5 @@
 import { render } from 'svelte/server';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import HarnessNavbar from '../../src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
@@ -63,8 +64,12 @@ const styles: ExplorerLocation = {
 	screen: 'styles'
 };
 
-test('one bar holds the brand, repository, entity categories and the Styles screen', () => {
-	const html = body(historical);
+test('one bar holds the brand, repository, entity categories and the Styles screen', async () => {
+	const html = await measureWorkload(
+		'reports.component.harness-harness-navbar',
+		'render-scoped-navbar',
+		() => body(historical)
+	);
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
