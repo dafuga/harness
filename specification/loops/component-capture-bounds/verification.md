@@ -19,6 +19,8 @@ Focused integrated checks:
   `test/console-host-routes.e2e.test.ts` size violation; every assertion is unchanged, and formatting
   and ESLint pass. The coordinator also requested removal of six blank lines from the inherited
   Reports shell test size violation; every nonblank line is identical to main. Both audits pass.
+  Two inherited over-limit helper spans and the Styles file were also reduced with whitespace
+  and one reused Types locator; all assertions remain. The existing desktop navbar case passes.
   No unrelated behavior or size-limit relaxation was included here.
 
 Formal isolated regression recording, full CLI/native/workspace suites and exhaustive capture
