@@ -178,9 +178,6 @@
 </div>
 
 <style>
-	.ex-config-values .ex-table {
-		table-layout: fixed;
-	}
 	.ex-config-values.ex-scroll :global(:is(th, td)) {
 		padding-block: var(--hx-space-12);
 		vertical-align: top;
