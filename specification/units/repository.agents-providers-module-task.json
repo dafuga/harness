@@ -1,0 +1,150 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.agents-providers-module-task",
+	"kind": "repository",
+	"title": "ModuleTaskRepository",
+	"responsibility": "Owns the ModuleTaskRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/agents-providers/ModuleTaskRepository.ts",
+			"src/repositories/agents-providers/ModuleTaskRepository.types.ts",
+			"src/repositories/agents-providers/module-task-repository/syncTaskQueue.ts",
+			"src/repositories/agents-providers/module-task-repository/taskSchemas.ts"
+		],
+		"symbols": [
+			"featureSchema",
+			"taskInputSchema",
+			"ModuleTaskRepository",
+			"ModuleTaskRepository.constructor",
+			"ModuleTaskRepository.read",
+			"ModuleTaskRepository.update",
+			"ModuleTaskRepository.sync",
+			"TaskFeature",
+			"ModuleTaskInput",
+			"ModuleTaskQueue",
+			"ModuleTask",
+			"TaskSelection",
+			"TaskRunInput",
+			"TaskRunResult",
+			"TaskRunner",
+			"syncTaskQueue",
+			"featureSchema",
+			"wantedContractSchema",
+			"taskInputSchema",
+			"storedTaskSchema",
+			"queueSchema"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskRepository.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskRepository.update.change",
+				"type": "(data: ModuleTaskQueue) => T"
+			},
+			{
+				"name": "ModuleTaskRepository.update.source",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskRepository.sync.remote",
+				"type": "string"
+			},
+			{
+				"name": "syncTaskQueue.git",
+				"type": "GitAdapter"
+			},
+			{
+				"name": "syncTaskQueue.ref",
+				"type": "string"
+			},
+			{
+				"name": "syncTaskQueue.remote",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskRepository.read",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskRepository.update",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskRepository.sync",
+				"type": "unknown"
+			},
+			{
+				"name": "syncTaskQueue",
+				"type": "unknown"
+			},
+			{
+				"name": "featureSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "wantedContractSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "taskInputSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "storedTaskSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "queueSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/ModuleTaskRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/ModuleTaskRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

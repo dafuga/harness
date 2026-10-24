@@ -9,7 +9,7 @@ import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
 test('module task creation requires a wanted contract and leaves source HEAD and edits intact', async () => {
 	const f = await moduleTaskFixture();
 	try {
-		await f.feature();
+		expect((await f.feature(false)).exitCode, 'module feature context must be committed').toBe(0);
 		const bad = await f.cli(
 			['add', '--input', await f.input({ wantedContract: undefined })],
 			false

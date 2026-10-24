@@ -1,0 +1,159 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task",
+	"kind": "service",
+	"title": "ModuleTaskService",
+	"responsibility": "Owns the ModuleTaskService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/ModuleTaskService.ts",
+			"src/services/agents-providers/module-task-service/taskPrompt.ts"
+		],
+		"symbols": [
+			"ModuleTaskService",
+			"ModuleTaskService.constructor",
+			"ModuleTaskService.feature",
+			"ModuleTaskService.add",
+			"ModuleTaskService.list",
+			"ModuleTaskService.show",
+			"ModuleTaskService.prompt",
+			"ModuleTaskService.prepare",
+			"ModuleTaskService.retry",
+			"moduleTaskPrompt",
+			"taskSelection"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskService.constructor.root",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.feature.input",
+				"type": "TaskFeature"
+			},
+			{
+				"name": "ModuleTaskService.add.input",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.show.id",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.prompt.id",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.prepare.task",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "ModuleTaskService.prepare.commit",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.retry.id",
+				"type": "string"
+			},
+			{
+				"name": "moduleTaskPrompt.task",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "moduleTaskPrompt.commit",
+				"type": "string"
+			},
+			{
+				"name": "taskSelection.task",
+				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskService.feature",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.add",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.list",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.show",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.prompt",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.prepare",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.retry",
+				"type": "unknown"
+			},
+			{
+				"name": "moduleTaskPrompt",
+				"type": "string"
+			},
+			{
+				"name": "taskSelection",
+				"type": "TaskSelection"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/ModuleTaskService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/ModuleTaskService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -10,6 +10,7 @@ import {
 	validateLoopId
 } from '../../workflows/development-tooling/loop-state/loopState';
 import type { Flags } from './TaskCommand.types';
+import { ModuleTaskCommand } from '../../commands/agents-providers/ModuleTaskCommand';
 export type { Flags } from './TaskCommand.types';
 
 /** The CLI delegates all completion decisions to the shared Harness service. */
@@ -40,9 +41,11 @@ function taskInput(
 }
 
 export function registerTaskCommand(program: Command): void {
-	program
+	const task = program
 		.command('task')
-		.description('Evidence-based completion of coding and planning tasks.')
+		.description('Committed module tasks, assigned workers and evidence-based completion.');
+	new ModuleTaskCommand().register(task);
+	task
 		.command('check')
 		.option('--loop <name>', 'Audit the declared loop task.')
 		.option('--kind <kind>', 'coding or planning.', 'coding')

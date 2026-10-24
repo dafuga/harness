@@ -190,3 +190,5 @@ export { HarnessHttpAdapter } from './adapters/networking-security/HarnessHttpAd
 export { ModuleTaskCommand } from './commands/agents-providers/ModuleTaskCommand';
 export { ModuleTaskRepository } from './repositories/agents-providers/ModuleTaskRepository';
 export { ModuleTaskService } from './services/agents-providers/ModuleTaskService';
+export { ModuleTaskRunnerAdapter } from './adapters/agents-providers/ModuleTaskRunnerAdapter';
+export { ModuleTaskWorkerService } from './services/agents-providers/ModuleTaskWorkerService';

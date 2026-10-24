@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "command.agents-providers-module-task",
+	"kind": "command",
+	"title": "ModuleTaskCommand",
+	"responsibility": "Owns the ModuleTaskCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/agents-providers/ModuleTaskCommand.ts",
+			"src/commands/agents-providers/ModuleTaskCommand.types.ts"
+		],
+		"symbols": [
+			"ModuleTaskCommand",
+			"ModuleTaskCommand.constructor",
+			"ModuleTaskCommand.register",
+			"WorkerFlags"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskCommand.constructor.service",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskCommand.register.task",
+				"type": "Command"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskCommand.register",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/agents-providers/ModuleTaskCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/agents-providers/ModuleTaskCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

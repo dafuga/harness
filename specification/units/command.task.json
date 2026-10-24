@@ -63,6 +63,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.task-completion",
 			"via": "import",
 			"origin": "derived"
