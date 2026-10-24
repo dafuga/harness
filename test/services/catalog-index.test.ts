@@ -16,8 +16,9 @@ test.each([false, true])(
 			const service = snapshots.at(-1)!.registry.units.find((unit) => unit.id === 'service.posts')!;
 			const imported = service.dependencies[0];
 			service.dependencies.push({ ...imported, via: 'contract' });
-			if (repeated) service.dependencies.push({ ...imported, origin: 'derived' });
-			const original = structuredClone(service.dependencies);
+			const derived = { ...imported, origin: 'derived' };
+			if (repeated) service.dependencies.push(derived);
+			const original = globalThis.structuredClone(service.dependencies);
 			const writer = new CatalogIndexService();
 			const path = await writer.write(directory, index, snapshots);
 			expect((await stat(path)).mode & 0o777).toBe(0o600);
