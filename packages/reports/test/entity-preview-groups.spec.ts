@@ -23,7 +23,8 @@ async function pageFamilies(page: Page): Promise<void> {
 		['Pages', 3],
 		['Services', 3],
 		['Platforms', 2],
-		['Styles', 1]
+		['Styles', 1],
+		['Types', 3]
 	] as const) {
 		await expect
 			.soft(
@@ -32,6 +33,8 @@ async function pageFamilies(page: Page): Promise<void> {
 			)
 			.toBeVisible({ timeout: 500 });
 	}
+	await expect(page.getByRole('heading', { name: /^Explorer & navigation/ })).toHaveCount(0);
+	await expect(page.getByRole('article', { name: 'Harness view', exact: true })).toHaveCount(0);
 }
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
