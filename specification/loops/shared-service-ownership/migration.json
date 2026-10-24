@@ -1847,13 +1847,13 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
+			"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-				"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
-				"reason": "Adds provider-backed gameLevelGenerate to the existing owner-local bridge while preserving other game operations and registered identity."
+				"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
+				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
 			},
 			"previousReviews": [
 				{
@@ -1879,6 +1879,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
 					"reason": "Retain main's level proposal operation through the existing session and provider context, preserving earlier game and deployment delegates."
+				},
+				{
+					"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
+					"reason": "Adds provider-backed gameLevelGenerate to the existing owner-local bridge while preserving other game operations and registered identity."
 				}
 			]
 		},
@@ -3828,13 +3834,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
+			"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
-				"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
+				"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
 			},
 			"previousReviews": [
 				{
@@ -3860,6 +3866,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 					"reason": "Retain main's typed gameLevelGenerate IPC helper while preserving every existing bridge channel and invocation."
+				},
+				{
+					"commit": "f6a7a2129082367586bf18808f438ebefac25427",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
+					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
 				}
 			]
 		},
@@ -4268,7 +4280,14 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695"
+			"definition": "72a427eb9b24b46496276564a200629d69420cc691cb1ef8bcb826786fbfe345",
+			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
+			"review": {
+				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+				"definition": "72a427eb9b24b46496276564a200629d69420cc691cb1ef8bcb826786fbfe345",
+				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+			}
 		},
 		{
 			"unit": "service.claude-query",
