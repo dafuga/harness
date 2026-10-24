@@ -1,5 +1,6 @@
 import type { ApiRequestObservation } from './apiFixture.types';
 import { createServer } from 'node:http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { readdirSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -76,49 +77,62 @@ function answer(operation: string, input: Record<string, unknown>) {
 	return { ok: true };
 }
 
+async function observe(request: IncomingMessage): Promise<ApiRequestObservation> {
+	const chunks: Buffer[] = [];
+	for await (const chunk of request) chunks.push(Buffer.from(chunk));
+	const text = Buffer.concat(chunks).toString();
+	const body = text ? JSON.parse(text) : {};
+	const url = new URL(request.url!, 'http://127.0.0.1');
+	const operation = body.method ?? url.pathname.split('/').at(-1)!;
+	const input = body.input ?? Object.fromEntries(url.searchParams);
+	for (const name of ['notesRevision', 'evidenceRevision', 'viewport'])
+		if (operation === 'artifact') input[name] ??= null;
+	return {
+		url: url.href,
+		httpMethod: request.method!,
+		operation,
+		body,
+		input,
+		authorization: request.headers.authorization
+	};
+}
+
+function respond(response: ServerResponse, observed: ApiRequestObservation, corrupted: boolean) {
+	const { operation, body, input } = observed;
+	const url = new URL(observed.url);
+	if (url.pathname === '/api/redirect') {
+		response.writeHead(302, { location: '/api/redirect-target' }).end();
+		return;
+	}
+	if (url.pathname === '/api/denied') {
+		response.writeHead(403, { 'content-type': 'application/json' }).end('{"error":"forbidden"}');
+		return;
+	}
+	if (operation === 'artifact' || url.pathname === '/api/raw-image') {
+		response
+			.writeHead(200, { 'content-type': 'image/png' })
+			.end(corrupted ? Buffer.from('corrupt') : png);
+		return;
+	}
+	let value: unknown = answer(operation, input);
+	if (url.pathname === '/api/future')
+		value = { tags: url.searchParams.getAll('tag'), text: 'x'.repeat(70000) };
+	if (url.pathname === '/api/custom') value = { method: observed.httpMethod, body };
+	response.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(value));
+}
+
 export async function apiFixture(mode: 'local' | 'hosted') {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-api-cli-'));
 	const sessions = join(directory, 'sessions');
 	const seen: ApiRequestObservation[] = [];
 	let corrupted = false;
-	const server = createServer(async (request, response) => {
-		const chunks: Buffer[] = [];
-		for await (const chunk of request) chunks.push(Buffer.from(chunk));
-		const text = Buffer.concat(chunks).toString();
-		const body = text ? JSON.parse(text) : {};
-		const url = new URL(request.url!, 'http://127.0.0.1');
-		const operation = body.method ?? url.pathname.split('/').at(-1)!;
-		const input = body.input ?? Object.fromEntries(url.searchParams);
-		for (const name of ['notesRevision', 'evidenceRevision', 'viewport'])
-			if (operation === 'artifact') input[name] ??= null;
-		seen.push({
-			url: url.href,
-			operation,
-			body,
-			input,
-			authorization: request.headers.authorization
-		});
-		if (url.pathname === '/api/redirect') {
-			response.writeHead(302, { location: '/api/redirect-target' }).end();
-			return;
-		}
-		if (url.pathname === '/api/denied') {
-			response.writeHead(403, { 'content-type': 'application/json' }).end('{"error":"forbidden"}');
-			return;
-		}
-		if (operation === 'artifact' || url.pathname === '/api/raw-image') {
-			response
-				.writeHead(200, { 'content-type': 'image/png' })
-				.end(corrupted ? Buffer.from('corrupt') : png);
-			return;
-		}
-		const value =
-			url.pathname === '/api/future'
-				? { tags: url.searchParams.getAll('tag'), text: 'x'.repeat(70000) }
-				: url.pathname === '/api/custom'
-					? { method: request.method, body }
-					: answer(operation, input);
-		response.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(value));
+	const server = createServer((request, response) => {
+		void observe(request)
+			.then((observed) => {
+				seen.push(observed);
+				respond(response, observed, corrupted);
+			})
+			.catch(() => response.writeHead(500).end());
 	});
 	await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
 	const address = server.address() as { port: number };
