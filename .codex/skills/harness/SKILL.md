@@ -167,9 +167,11 @@ Group related list, detail and history pages by feature in meaningful domain
 folders. Reuse that feature category with `--group`; use route groups when public
 URLs must stay unchanged. Avoid broad technical catch-alls when a feature is known.
 
-Config modules use the plural `src/configs/<category>/` folder, one focused source file per config. Generate new configs there and preserve stable IDs when relocating existing files. The Configs explorer shows one table per source file; responsibility grouping must not combine unrelated configs. Decode only static source literals for presentation, preserve raw expressions for inspection, and never execute configuration or read host secrets to populate the catalog. Extend the standard mixed-config browser fixture whenever grouping or value presentation changes.
+Config modules use the plural `src/configs/<category>/` folder, one focused source file per config. Generate new configs there and preserve stable IDs when relocating existing files. The Configs explorer shows one table per source file; responsibility grouping must not combine unrelated configs. Decode only static source literals for presentation, preserve raw expressions for inspection, and never execute configuration or read host secrets to populate the catalog. Variable labels omit only the matching table title plus its dot; preserve nested paths and unrelated export names. Search, inspection and source links retain canonical identities. Extend the standard mixed-config browser fixture whenever grouping or value presentation changes.
 
 For typed-value presentation changes, review the fixture's decoded metadata as well as its source text. Cover short, long and multiline string literals independently from computed expressions and collections; do not omit literal metadata to force an inspection path. The standard parser matrix must prove that these string forms decode without executing code, and the browser matrix must check initial inline text, overflow and inspection behavior at every declared viewport.
+
+Regex and computed-expression source text also stays inline, constrained to one ellipsized line with its full committed source available on hover. Keep collection inspection separate. The standard mixed-config matrix covers short expressions, long regexes and multiline expressions at current and historical revisions without evaluating them.
 
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
