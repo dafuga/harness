@@ -174,6 +174,10 @@ test('every active visual module has its own required capture state', () => {
 		.map((unit) => unit.id)
 		.sort();
 	expect(catalog?.units.slice().sort()).toEqual(visual);
+	expect(
+		catalog?.states.map((state) => state.units?.[0]),
+		'Catalog preview states follow canonical unit order'
+	).toEqual(catalog?.units.slice().sort((left, right) => left.localeCompare(right)));
 	for (const id of visual) {
 		const states = catalog!.states.filter((state) => state.units?.includes(id));
 		expect(states, id).toHaveLength(1);
