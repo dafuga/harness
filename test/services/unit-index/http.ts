@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, test } from 'vitest';
 import { indexFiles } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 import { defaultUnitsConfig } from '../../../src/core/unitsConfig';
@@ -59,3 +59,8 @@ export async function assertHttpDependencies(): Promise<void> {
 		)?.dependencies
 	).toEqual([]);
 }
+
+test(
+	'HTTP requests bind to endpoints in the owning app and selected source tree',
+	assertHttpDependencies
+);
