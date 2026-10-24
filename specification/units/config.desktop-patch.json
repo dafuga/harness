@@ -6,6 +6,9 @@
 	"responsibility": "Owns the desktopPatchConfig typed configuration.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"src/configs/desktopPatchConfig.ts",

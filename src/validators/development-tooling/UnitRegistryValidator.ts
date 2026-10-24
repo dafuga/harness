@@ -10,10 +10,27 @@ export class UnitRegistryValidator {
 			...active.flatMap((unit) => this.missingSource(unit, files)),
 			...active.flatMap((unit) => this.helperExamples(unit)),
 			...active.flatMap((unit) => this.helperSources(unit)),
+			...active.flatMap((unit) => this.configControls(unit)),
 			...active.flatMap((unit) => this.unknownDependencies(unit, known)),
 			...this.sharedSource(active),
 			...active.flatMap((unit) => this.lineage(unit, manifests))
 		];
+	}
+
+	private configControls(unit: ComponentManifest): string[] {
+		if (unit.kind !== 'config' || unit.catalog?.visibility === 'internal') return [];
+		if (!unit.configControls?.length)
+			return [`${unit.id} requires reviewed configControls with a source, audience and purpose`];
+		const seen = new Set<string>();
+		return unit.configControls.flatMap((control) => {
+			const key = `${control.source}#${control.name}`;
+			const issues: string[] = [];
+			if (!unit.owns.source.includes(control.source))
+				issues.push(`${unit.id}: ${control.name} names an unowned source`);
+			if (seen.has(key)) issues.push(`${unit.id}: duplicate control ${control.name}`);
+			seen.add(key);
+			return issues;
+		});
 	}
 
 	private helperSources(unit: ComponentManifest): string[] {
