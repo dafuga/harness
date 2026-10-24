@@ -29,6 +29,10 @@ export async function expectStyleGroups(scope: Locator): Promise<void> {
 		await expect(scope.locator(`[data-style-token="${name}"]`)).toHaveCount(0);
 	const declared = documentedStyleTokens();
 	for (const group of appStyleTokensConfig.groups) {
+		await expect(
+			scope.getByRole('region', { name: new RegExp(`^${group} \\d+$`) }),
+			'Every Styles group uses its heading underline without an extra top divider'
+		).toHaveCSS('border-top-width', '0px');
 		const count = declared.filter(
 			(name) =>
 				appStyleTokensConfig.groups.find((candidate) =>
