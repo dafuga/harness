@@ -1,4 +1,4 @@
-import { observedLoop } from './support/loop-repair/observedLoop';
+import { observedLoop, expectCaptureBindings } from './support/loop-repair/observedLoop';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -204,6 +204,7 @@ test('standalone evidence capture preserves images and measurements without inve
 		const status = await runHarness(['history', 'status', '--json'], root);
 		expect(JSON.parse(status.stdout).verified).toBe(false);
 		await expectFailedCapture(root);
+		await expectCaptureBindings(root);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

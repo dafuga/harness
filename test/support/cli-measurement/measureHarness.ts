@@ -47,6 +47,7 @@ function measuredUnits(args: string[]): string[] {
 		];
 	if (args[0] !== 'loop' || args[1] !== 'record') return [];
 	const units = [
+		'function.record-regression',
 		'service.regression-proof',
 		'repository.regression-proof',
 		'function.regression-types'
