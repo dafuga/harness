@@ -66,6 +66,9 @@ for (const [screen, width, height] of screens) {
 		await navigationSpacing(bar);
 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).locator('a, button');
 		await expect(links, 'Code groups project catalogs').toHaveText(categories);
+		await expect(links.filter({ hasText: 'Code' }), 'Code has one primary destination').toHaveCount(
+			1
+		);
 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
 			0
 		);

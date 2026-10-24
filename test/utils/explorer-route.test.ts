@@ -178,6 +178,8 @@ test.each([
 	'/branch/main/commit/abc/pages',
 	`/branch/main/commit/${sha.toUpperCase()}/pages`,
 	'/branch/main/pages/x/source',
+	'/branch/main/dependencies/x',
+	'/branch/main/dependencies/history',
 	'/branch/main/pages/x/details/extra',
 	'/branch/feature/kept/pages',
 	'/branch/%E0%A4%A/pages',
