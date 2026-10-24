@@ -2,7 +2,7 @@
 	"name": "meaningful-config-controls",
 	"goal": "Only meaningful human or app developer controls appear in Configs; framework and generated skills enforce deliberate settings",
 	"createdAt": "2026-10-24T13:29:28.539Z",
-	"updatedAt": "2026-10-24T13:41:56.634Z",
+	"updatedAt": "2026-10-24T13:58:27.517Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -24,7 +24,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T13:58:27.517Z",
+			"evidence": "68 focused tests passed in seven files at cb397b028: real public-control CLI guard, canonical/legacy folder identities, selected config syntax, ownership records, generator export coherence and emitted tenant guidance. Earlier ENOENT was a fixture indexing gap; canonical configs discovery repaired. No full suite."
 		},
 		{
 			"id": "verify",
