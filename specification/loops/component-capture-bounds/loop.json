@@ -1,0 +1,54 @@
+{
+	"name": "component-capture-bounds",
+	"goal": "Component evidence screenshots bound the rendered component itself, excluding preview titles and empty page canvas while preserving required layout and overlay context",
+	"createdAt": "2026-10-24T13:22:37.838Z",
+	"updatedAt": "2026-10-24T13:24:11.046Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-24T13:24:10.351Z",
+			"evidence": "EnvironmentPicker thumbnails currently show the preview page h1 and empty viewport. Capture rendered component bounds, excluding preview-only chrome, with small framing allowance; preserve full visual layouts and active dialogs."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-24T13:24:11.046Z",
+			"evidence": "Existing component-catalog-previews matrix checks content, readiness and document fit but never compares saved PNG dimensions with component geometry. Extend that same matrix for compact, inline, display-contents and multi-root previews; retain layout/dialog context coverage."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

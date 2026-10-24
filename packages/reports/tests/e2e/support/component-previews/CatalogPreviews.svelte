@@ -65,6 +65,7 @@
 				class:account={id === 'hub.component.account-menu'}
 				class:ex-content={explorer && !fullFrame}
 				data-preview-unit={unit.id}
+				data-preview-frame={fullFrame ? 'full' : 'component'}
 			>
 				<!-- SYNTHETIC child: what a layout is given in place of a page, said so where drawn. -->
 				{#snippet layoutChild()}

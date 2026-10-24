@@ -30,13 +30,11 @@ const underline = (locator: Locator) =>
 		return style.content === 'none' ? null : [parseFloat(style.height), style.backgroundColor];
 	});
 let home = '';
-
 test.beforeAll(() => {
 	test.setTimeout(180_000);
 	home = buildShellFixture(['navbar']);
 });
 test.afterAll(() => removeShellFixture(home));
-
 /** Opens the bar over the made-up history and waits for the name both headers show. */
 async function opened(page: Page, width: number, height: number): Promise<Locator> {
 	await page.setViewportSize({ width, height });
@@ -58,7 +56,6 @@ async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 	await expect(page).toHaveURL(at(`${earlier}/functions`));
 	return functions;
 }
-
 for (const [screen, width, height] of screens) {
 	test(`the bar shows its navigation with an icon above each label at ${screen} width`, async ({
 		page
@@ -152,7 +149,6 @@ for (const [screen, width, height] of screens) {
 		await expect(bar.locator('small').first()).not.toBeVisible();
 		await expect(tip).toBeDisabled();
 		await reachable(tip, width);
-
 		const functions = await earlierFunctions(page, bar);
 		await expect(commit).toHaveAttribute('title', /Historical commit/);
 		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
@@ -180,7 +176,6 @@ for (const [screen, width, height] of screens) {
 		await compactRevision(bar);
 		expect(await fits(page)).toBe(true);
 	});
-
 	test(`Go to tip, back, a reload and another branch each keep their place at ${screen} width`, async ({
 		page
 	}) => {
@@ -197,7 +192,6 @@ for (const [screen, width, height] of screens) {
 		await expect(commit).toHaveAttribute('title', /Current · branch tip/);
 		await expect(bar.getByRole('button', { name: 'Go to tip' })).toBeDisabled();
 		await expect(commit).toHaveValue(sha(5));
-
 		// Back, a reload and forward each show the scope their address names.
 		await page.goBack();
 		await expect(page).toHaveURL(at(`${earlier}/functions`));

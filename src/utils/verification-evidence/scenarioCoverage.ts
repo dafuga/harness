@@ -44,9 +44,7 @@ function imageProblem(
 		return `capture ${line.file} is not a valid PNG image: ${factsError(facts, 'not an image')}`;
 	}
 	const viewport = input.scenario.viewports.find((entry) => entry.id === line.viewport);
-	const size = viewport
-		? sizeProblem(facts, viewport, evidence?.capture === 'full-page')
-		: undefined;
+	const size = viewport ? sizeProblem(facts, viewport, evidence?.capture, line.clip) : undefined;
 	return size ? `capture ${line.file} ${size}` : stampProblem(input, item, evidence);
 }
 
@@ -54,8 +52,11 @@ function imageProblem(
 function sizeProblem(
 	image: { width: number; height: number },
 	viewport: Viewport,
-	fullPage: boolean
+	mode: Evidence['capture'],
+	clip: Gathered['line']['clip']
 ): string | undefined {
+	if (mode === 'element') return elementSizeProblem(image, viewport, clip);
+	const fullPage = mode === 'full-page';
 	const scale = viewport.scale ?? 1;
 	const width = viewport.width * scale;
 	const height = viewport.height * scale;
@@ -63,6 +64,23 @@ function sizeProblem(
 	if (image.width === width && tall) return undefined;
 	const expected = fullPage ? `${width} wide and at least ${height} tall` : `${width}x${height}`;
 	return `is ${image.width}x${image.height} but viewport ${viewport.id} requires ${expected}`;
+}
+
+/** Element evidence must name its crop, fit the viewport width and match the decoded pixels. */
+function elementSizeProblem(
+	image: { width: number; height: number },
+	viewport: Viewport,
+	clip: Gathered['line']['clip']
+): string | undefined {
+	if (!clip) return 'requires capture bounds for element evidence';
+	if (clip.x + clip.width > viewport.width) return 'has capture bounds outside viewport width';
+	const scale = viewport.scale ?? 1;
+	if (
+		Math.abs(image.width - clip.width * scale) <= 0.5 &&
+		Math.abs(image.height - clip.height * scale) <= 0.5
+	)
+		return undefined;
+	return `is ${image.width}x${image.height} and does not match its declared capture bounds`;
 }
 
 function audioProblem(

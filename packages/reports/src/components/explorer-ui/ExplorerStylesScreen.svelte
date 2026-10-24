@@ -15,7 +15,6 @@
 	import HarnessGroup from './HarnessGroup.svelte';
 	import '../../lib/styles/explorer-styles.css';
 	let host: ExplorerScreenProps = $props();
-
 	const unclassified: UnclassifiedGroupName = 'Unclassified tokens';
 	const { groupPrefixes: prefixes, groupDescriptions: descriptions } = appStyleTokensConfig;
 	const roles: Partial<Record<string, readonly StyleRole[]>> = appStyleTokensConfig.roles;
