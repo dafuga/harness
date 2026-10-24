@@ -3,7 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest';
 import { browserErrorCollector } from './support/browserTest';
-import { sessions, visitCodeCatalogs } from './support/consoleHost';
+import { sessions, visitCodeCatalogs, visitApiCatalog } from './support/consoleHost';
 import {
 	installAndBuild,
 	pagesDev,
@@ -98,13 +98,7 @@ test('in a browser each branch, commit and category of the installed console is 
 		.getByRole('navigation', { name: 'Harness categories' })
 		.locator('a, button');
 	expect(await controls.allInnerTexts()).toEqual(categories);
-	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
-		0
-	);
-	await bar(page).getByRole('link', { name: 'APIs', exact: true }).click();
-	await page.waitForURL(`**${tip('apis')}`);
-	await page.getByRole('heading', { level: 1, name: 'APIs', exact: true }).waitFor();
-	expect(await commit.inputValue()).toBe(head);
+	await visitApiCatalog(page, tip('apis'), head);
 	await bar(page).getByRole('link', { name: 'Code', exact: true }).click();
 	const modules = bar(page).getByRole('tablist', { name: 'Code categories' });
 	await modules.getByRole('tab', { name: 'Layouts', exact: true }).click();
