@@ -265,6 +265,8 @@ After editing acceptance fixtures, run their owning workspace typecheck, formatt
 and audit before a broad check, even when only imports or casts changed. Test files
 share the workspace size limits; a passing runtime case does not prove that audit.
 
+When changing collection table sizing, run both the standard word-geometry and typed Configs groups matrices. Preserve the original fitting-content boundary and a genuinely wider input: both must keep words inside their cells and the document inside the viewport; only content wider than its frame requires internal scrolling. Size-contained value wrappers must retain usable inline strings, ellipsis and keyboard inspection.
+
 Review fixture actions as well as assertions: adding scroll, focus or navigation can
 weaken the original acceptance state. A control required to fit at first paint must
 still fit before scrolling. When catalog destinations grow, update the existing
