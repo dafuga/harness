@@ -1,8 +1,11 @@
+import { explorerCategories } from '../../../utils/explorerRoute';
 import type { HarnessApiService } from '../../../services/networking-security/HarnessApiService';
 import type { ApiSnapshot } from '../../../services/networking-security/HarnessApiService.types';
 import { apiQuery } from './apiInput';
 import { apiRegistry } from './apiRegistry';
 import { fail } from '../../../core/development-tooling/errors';
+
+const catalogs: readonly string[] = [...explorerCategories, 'styles'];
 
 export const apiResources = {
 	resources: [
@@ -19,7 +22,8 @@ export const apiResources = {
 		'evidence',
 		'activity',
 		'build',
-		'agents'
+		'agents',
+		...catalogs
 	],
 	reads: [
 		'registry',
@@ -96,18 +100,8 @@ function catalogResource(snapshot: ApiSnapshot, resource: string): unknown {
 	if (['branches', 'commits', 'capabilities'].includes(resource))
 		return (snapshot as unknown as Record<string, unknown>)[resource];
 	if (
-		[
-			'pages',
-			'layouts',
-			'components',
-			'functions',
-			'models',
-			'services',
-			'configs',
-			'types',
-			'platforms',
-			'styles'
-		].includes(resource)
+		catalogs.includes(resource) ||
+		snapshot.entities.some((entity) => entity.category === resource)
 	)
 		return snapshot.entities.filter((entity) => entity.category === resource);
 	return undefined;

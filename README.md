@@ -37,6 +37,8 @@ bun run dev -- verify run
 bun run check
 ```
 
+The Explorer’s APIs catalog lists HTTP endpoints and method exports at the selected project revision. Each page has an APIs tab for source-recorded usage through its components and services. API cards open contracts and consumer links in the same revision. Computed or external requests are not presented as confirmed same-app endpoint dependencies.
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;
@@ -51,6 +53,7 @@ harness api resources
 harness api get entities --branch main
 harness api get units --branch main
 harness api get pages
+harness api get apis
 harness api contracts get page.checkout
 harness api contracts get entry.program
 harness api get source page.checkout --query path=src/routes/checkout/+page.svelte
