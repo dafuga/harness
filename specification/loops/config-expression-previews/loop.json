@@ -1,0 +1,60 @@
+{
+	"name": "config-expression-previews",
+	"goal": "Show committed regex and computed config expressions inline with ellipsis, preserving structured inspection and source safety.",
+	"createdAt": "2026-10-24T09:58:10.169Z",
+	"updatedAt": "2026-10-24T10:27:45.240Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-24T10:00:34.886Z",
+			"evidence": "Committed regex and expression prefixes stay inline with one-line ellipsis and full-source hover; collections keep their inspector. No config evaluation."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-24T10:00:35.565Z",
+			"evidence": "The groups matrix deliberately expected a modal for long computed source and lacked a long regex. Extend its typed fixtures and shared assertions at current and historical revisions across all declared viewports."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-24T10:27:30.212Z",
+			"evidence": "Record673cec617d retains failing inline-expression assertions at b560bea31, all three viewports and both synthetic revisions. Originals reopened from evidence Git;608 red/green image bindings hash-checked,168 unique images decoded and12 relevant originals inspected."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-24T10:27:36.397Z",
+			"evidence": "Commit c546723d0 limits inspection marks to static collections and shows expression source as one ellipsized line with full-source title. Daniel explicitly authorized application and browser verification while automated proof was queued."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T10:27:45.240Z",
+			"evidence": "Record acb9979ae0 passes the same16 unchanged tests, inputs, assertions and profile78e814b3 as RED673cec617d. Collection keyboard inspection, escaped source, short/long/multiline values, revision boundaries and table word geometry pass. Broader integration verification remains pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

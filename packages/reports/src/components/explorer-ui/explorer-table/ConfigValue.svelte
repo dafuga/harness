@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ConfigValueNode } from '../../../../../../src/utils/explorer-ui/unitMetadata';
-	import { valueMark } from '../ConfigValueTree.svelte';
+	import { collection, valueMark } from '../ConfigValueTree.svelte';
 	import HarnessAction from '../HarnessAction.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	let {
@@ -28,7 +28,7 @@
 			? literal
 			: null
 	);
-	let mark = $derived(typeof literal === 'string' ? undefined : valueMark(structure, source));
+	let mark = $derived(collection(structure) ? valueMark(structure, source) : undefined);
 </script>
 
 <div class="cv" data-harness-part="config-value">
@@ -68,7 +68,7 @@
 		</ul>
 	{:else if typeof literal === 'string'}
 		<span class="string" role="img" aria-label={`String ${literal}`}>{literal}</span>
-	{:else if !mark}<code class="source">{source}</code>{/if}
+	{:else if !mark}<code class="source" title={source}>{source}</code>{/if}
 </div>
 
 <style>
@@ -149,7 +149,8 @@
 	.keyword {
 		color: var(--ex-muted);
 	}
-	.string {
+	.string,
+	.source {
 		color: var(--ex-text);
 		max-width: 100%;
 		overflow: hidden;
@@ -162,7 +163,5 @@
 	}
 	.source {
 		color: var(--ex-soft);
-		white-space: pre-wrap;
-		overflow-wrap: anywhere;
 	}
 </style>
