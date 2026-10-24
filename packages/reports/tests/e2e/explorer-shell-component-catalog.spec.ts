@@ -101,6 +101,13 @@ for (const viewport of catalogViewports) {
 				expect(box!.width).toBeGreaterThan(200);
 				expect(box!.height).toBeGreaterThan(250);
 				await expect(slot).toContainText('Your page renders here');
+				const bubble = component.locator('.floating-chat-bubble');
+				await expect(bubble, 'The complete layout includes exactly one chat bubble').toHaveCount(1);
+				await expect(bubble).toBeVisible();
+				const bubbleBox = await bubble.boundingBox();
+				expect(bubbleBox!.x).toBeGreaterThanOrEqual(0);
+				expect(bubbleBox!.y + bubbleBox!.height).toBeLessThanOrEqual(viewport.height);
+				expect(bubbleBox!.x + bubbleBox!.width).toBeLessThanOrEqual(viewport.width);
 			}
 			if (unit.id === 'reports.page.harness-branch-branch-at-layouts') {
 				const card = component.locator('article').filter({ hasText: 'OrdersFrame' });
