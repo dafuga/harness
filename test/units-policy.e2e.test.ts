@@ -99,6 +99,7 @@ test('public configs require real source controls and retain their reviewed decl
 	const project = await unitProject('lib');
 	try {
 		await project.harness(['generate', 'config', 'Downloads']);
+		await project.harness(['units', 'index', '--write']);
 		const path = 'specification/units/config.downloads.json';
 		const manifest = await project.json(path);
 		expect(manifest.catalog).toEqual({ visibility: 'internal' });
