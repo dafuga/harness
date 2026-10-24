@@ -1033,6 +1033,12 @@
 			"units": ["reports.component.explorer-catalog-items"]
 		},
 		{
+			"id": "reports-component-explorer-dependencies-screen",
+			"title": "ExplorerDependenciesScreen",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
 			"id": "reports-component-explorer-function-card",
 			"title": "Function card",
 			"coverage": "required",
@@ -1627,6 +1633,12 @@
 			"units": ["reports.page.harness-branch-branch-at-configs-entity-history"]
 		},
 		{
+			"id": "reports-page-harness-branch-branch-at-dependencies",
+			"title": "Dependencies",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-dependencies"]
+		},
+		{
 			"id": "reports-page-harness-branch-branch-at-functions",
 			"title": "/harness/branch/[branch]/[...at]/functions",
 			"coverage": "required",
@@ -1757,18 +1769,6 @@
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
-		},
-		{
-			"id": "reports-component-explorer-dependencies-screen",
-			"title": "ExplorerDependenciesScreen",
-			"coverage": "required",
-			"units": ["reports.component.explorer-dependencies-screen"]
-		},
-		{
-			"id": "reports-page-harness-branch-branch-at-dependencies",
-			"title": "Dependencies",
-			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-dependencies"]
 		}
 	],
 	"viewports": [
