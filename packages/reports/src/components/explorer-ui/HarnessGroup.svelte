@@ -1,0 +1,107 @@
+<script lang="ts">
+	import type { HarnessGroupProps } from './HarnessGroup.types';
+	import HarnessIcon from './HarnessIcon.svelte';
+	let {
+		title,
+		count,
+		icon,
+		source,
+		description,
+		level = 2,
+		variant = 'catalog',
+		resetKey = '',
+		children
+	}: HarnessGroupProps = $props();
+	const id = $props.id();
+	let expanded = $state(true);
+	let previous = $state<string>();
+	$effect(() => {
+		if (previous !== resetKey) {
+			previous = resetKey;
+			expanded = true;
+		}
+	});
+</script>
+
+<section
+	class="hx-module-group {variant}"
+	aria-labelledby={`${id}-heading`}
+	data-harness-component="explorer-ui-harness-group"
+>
+	<svelte:element this={level === 3 ? 'h3' : 'h2'} id={`${id}-heading`} title={source}>
+		<button
+			type="button"
+			aria-expanded={expanded}
+			aria-controls={`${id}-body`}
+			onclick={() => (expanded = !expanded)}
+		>
+			<HarnessIcon name={expanded ? 'chevron-down' : 'chevron-right'} size={18} />
+			{#if icon}<HarnessIcon name={icon} size={18} />{/if}
+			<span class="hx-group-title">{title}</span>
+			<span class="hx-group-count">{count}</span>
+		</button>
+	</svelte:element>
+	<div id={`${id}-body`} hidden={!expanded}>
+		{#if description}<p class="ex-soft">{description}</p>{/if}
+		{@render children()}
+	</div>
+</section>
+
+<style>
+	.hx-module-group {
+		min-width: 0;
+	}
+	h2,
+	h3 {
+		margin: 0 0 var(--hx-space-12);
+		font-size: var(--hx-type-size-lg);
+		line-height: var(--hx-style-leading-snug);
+	}
+	h3 {
+		font-size: var(--hx-type-size-base);
+	}
+	.relation {
+		margin-top: var(--hx-space-20);
+	}
+	.styles h2 {
+		font-size: var(--hx-type-size-xl);
+	}
+	button {
+		display: flex;
+		align-items: center;
+		gap: var(--hx-space-8);
+		width: 100%;
+		min-height: var(--hx-space-48);
+		padding: var(--hx-space-8) 0;
+		border: 0;
+		border-bottom: var(--hx-border-thin) solid var(--hx-line);
+		background: transparent;
+		color: var(--hx-text);
+		text-align: start;
+		font: inherit;
+		font-weight: var(--hx-style-weight-semibold);
+		cursor: pointer;
+	}
+	button:hover {
+		background: var(--hx-tint-hover);
+	}
+	button:focus-visible {
+		outline: var(--hx-border-thick) solid var(--hx-gold);
+		outline-offset: var(--hx-space-2);
+		border-radius: var(--hx-radius-small);
+	}
+	.hx-group-title {
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+	.hx-group-count {
+		color: var(--hx-muted);
+		font-size: var(--hx-type-size-compact);
+		font-weight: var(--hx-style-weight-regular);
+		font-variant-numeric: var(--hx-style-numeric-tabular);
+		white-space: nowrap;
+	}
+	[hidden] {
+		display: none;
+	}
+</style>

@@ -15,7 +15,11 @@
 <div class="ex-screen" data-harness-component="harness-explorer-catalog-screen">
 	<ExplorerFrame {host}>
 		{#snippet children(nav)}
-			<ExplorerIndex {category} {rows}>
+			<ExplorerIndex
+				{category}
+				{rows}
+				scope={JSON.stringify([host.route.branch, host.scope.commit])}
+			>
 				{#snippet list(listed)}
 					<ExplorerCatalogItems
 						{category}
