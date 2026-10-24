@@ -115,7 +115,7 @@ export async function capturePreview(page: Page, home: string, id: string, viewp
 	const served = await new BuildIdentityService().identify(home);
 	recordCapture(
 		{
-			evidence: id,
+			evidence: 'screens',
 			kind: 'screenshot',
 			state,
 			viewport,
