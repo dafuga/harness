@@ -1,3 +1,4 @@
+import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
 import { BudgetService } from '../../budget-service/BudgetService';
@@ -54,7 +55,7 @@ export class RevisionDetailService {
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
-			platforms: stored.platforms,
+			...catalogFields(stored),
 			registry: stored.registry,
 			comparison: comparison(sound),
 			sourceImpact: (await this.kept.source.of(commit)) ?? null,
@@ -119,7 +120,12 @@ export class RevisionDetailService {
 		const limits = new BudgetService().baselines(ledger, units.manifests);
 		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
 		await unitMetadata(tree, registry.units);
-		const stored = { registry, ledger, platforms: await readPlatformCatalog(tree) };
+		const stored = {
+			registry,
+			ledger,
+			platforms: await readPlatformCatalog(tree),
+			translations: await translationCatalog(tree, registry.units)
+		};
 		this.kept.registries.set(key, stored);
 		return stored;
 	}
@@ -164,3 +170,7 @@ async function regressionProofs(
 }
 
 export type { RevisionDetail, BuiltRevision } from './RevisionDetailService.types';
+
+function catalogFields(stored: Stored) {
+	return { platforms: stored.platforms, translations: stored.translations };
+}

@@ -19,6 +19,7 @@ const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['modules', 'Modules'],
 	['styles', 'Styles'],
 	['configs', 'Configs'],
+	['translations', 'Translations'],
 	['platforms', 'Platforms']
 ];
 const moduleLabels: Array<[ExplorerCategory, string]> = [
@@ -32,14 +33,15 @@ const moduleLabels: Array<[ExplorerCategory, string]> = [
 
 function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory['id']): boolean {
 	if (!place) return false;
-	if (id === 'styles') return place.screen === 'styles';
-	if (place.screen === 'styles') return false;
+	if (id === 'styles' || id === 'translations') return place.screen === id;
+	if (place.screen) return false;
 	if (id === 'modules') return moduleLabels.some(([category]) => category === place.category);
 	return place.category === id;
 }
 
 function categoryGlyph(id: HarnessShellCategory['id']): HarnessIconName {
 	if (id === 'styles') return 'styles';
+	if (id === 'translations') return 'web';
 	if (id === 'modules') return 'layers';
 	return categoryIcon[id];
 }
@@ -95,9 +97,9 @@ function categoryTarget(
 	const target: ExplorerLocation = {
 		branch: place.branch,
 		commit: place.commit,
-		category: category === 'styles' ? 'pages' : category
+		category: category === 'styles' || category === 'translations' ? 'pages' : category
 	};
-	if (id === 'styles') target.screen = 'styles';
+	if (id === 'styles' || id === 'translations') target.screen = id;
 	return target;
 }
 

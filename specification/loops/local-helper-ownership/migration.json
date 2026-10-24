@@ -5329,6 +5329,13 @@
 			"definition": "674dfb8331fb99851d0a01f11b34a867ed8284345ff1959edf545dbdd696b6ec"
 		},
 		{
+			"unit": "reports.function.replay-locale",
+			"name": "replayLocale",
+			"commit": "74d4daf36",
+			"reason": "Register English and French replay dictionaries from shared resources without changing the English default.",
+			"definition": "69c84c3d2f4e87e22baecca4b1a85587ac66adf65b742c06f622f3cf2717d07c"
+		},
+		{
 			"unit": "function.unit-identity",
 			"name": "unitIdentity",
 			"commit": "fa97dd5a1c76d3cd0dbbec7c0ef99298ebcb1fdd",
