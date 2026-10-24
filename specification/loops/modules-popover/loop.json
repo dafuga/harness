@@ -2,12 +2,9 @@
 	"name": "modules-popover",
 	"goal": "Modules opens a scoped category bubble without a persistent navigation row",
 	"createdAt": "2026-10-24T09:59:44.608Z",
-	"updatedAt": "2026-10-24T10:09:09.588Z",
+	"updatedAt": "2026-10-24T10:36:02.227Z",
 	"template": "visual-change",
-	"templateLineage": [
-		"feature",
-		"visual-change"
-	],
+	"templateLineage": ["feature", "visual-change"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -20,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T10:36:02.227Z",
+			"evidence": "Opus5.5/xhigh edited the three assigned navbar files; reviewed native popover lifecycle, scoped links, tokens and modified-click handling. Source7c451d888, redc05092f2 preserved; corrected semantic-locator red is queued."
 		},
 		{
 			"id": "test",
