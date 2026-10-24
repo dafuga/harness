@@ -4799,11 +4799,22 @@
 		{
 			"unit": "reports.function.entity-usage",
 			"name": "entityUsage",
-			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
-			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
 			"definition": "cc6a2de1f4a9b449a903fff1bf56f1fbf4523a8da998c6ea6f840ef113c9fb62",
 			"to": "packages/reports/src/components/explorer-ui/entity-relations/entityUsage.ts",
-			"ownerSource": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte",
+			"previousDefinitions": [
+				{
+					"unit": "reports.function.entity-usage",
+					"name": "entityUsage",
+					"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+					"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+					"definition": "cc6a2de1f4a9b449a903fff1bf56f1fbf4523a8da998c6ea6f840ef113c9fb62",
+					"to": "packages/reports/src/components/explorer-ui/entity-relations/entityUsage.ts",
+					"ownerSource": "packages/reports/src/components/explorer-ui/entity-relations/EntityRelations.svelte"
+				}
+			]
 		},
 		{
 			"unit": "function.unit-documentation",
@@ -4858,15 +4869,24 @@
 		{
 			"unit": "reports.function.entity-catalog",
 			"name": "catalogFilter",
-			"definition": "7e14ba1e4fbc322cebec9460d1199b7c13b71d4e9b35243cc67c9e4cd9437276",
-			"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
-			"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+			"definition": "0ad0a8b9f7164efdc06655a8df6380052b00476e19de302d084da226a6167e6f",
+			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
+			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
 			"previousDefinitions": [
 				{
 					"unit": "reports.function.entity-catalog",
 					"name": "catalogFilter",
 					"definition": "02c7f4bfe0d1462f76004757ca75e3a934f025d9e18301cd40ce9115e244e130",
 					"reason": "Keep spaced descriptive-title search compatible while every catalog surface displays canonical code names."
+				},
+				{
+					"unit": "reports.function.entity-catalog",
+					"name": "catalogFilter",
+					"definition": "7e14ba1e4fbc322cebec9460d1199b7c13b71d4e9b35243cc67c9e4cd9437276",
+					"reason": "Remove redundant component namespaces while retaining the original helper definition and owner-local placement.",
+					"commit": "c7e051e89ea2d936477e0b6370dfea6587ffeff1",
+					"to": "packages/reports/src/components/explorer-ui/explorer-index/entityCatalog.ts",
+					"ownerSource": "packages/reports/src/components/explorer-ui/explorer-index/ExplorerIndex.svelte"
 				}
 			],
 			"to": "packages/reports/src/components/explorer-ui/explorer-index/entityCatalog.ts",
@@ -4933,7 +4953,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -4993,8 +5013,8 @@
 		{
 			"unit": "reports.function.harness-shell",
 			"name": "harnessShell",
-			"commit": "7c451d88881abb78f46ebd59238964ffcb2210c2",
-			"reason": "Expose scoped module-category links from every resolved route for the Modules bubble while retaining the original migration and owner.",
+			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
 			"definition": "de8a82d7ab645931ab633eb5b7e7c1a50e6cc35dbacc208f7129d97c8277a36e",
 			"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
 			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
@@ -5014,6 +5034,15 @@
 					"commit": "caa32de5d477bfd67fdfca82519d2e1f0fe11ef6",
 					"reason": "Group scoped module destinations beneath five primary navigation entries while preserving branch, selected commit and existing entity paths.",
 					"definition": "054b2d015e18f41b054f540e2c67c1aadbe0fbfd7952d85f74f16a970070134d",
+					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
+					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+				},
+				{
+					"unit": "reports.function.harness-shell",
+					"name": "harnessShell",
+					"commit": "7c451d88881abb78f46ebd59238964ffcb2210c2",
+					"reason": "Expose scoped module-category links from every resolved route for the Modules bubble while retaining the original migration and owner.",
+					"definition": "de8a82d7ab645931ab633eb5b7e7c1a50e6cc35dbacc208f7129d97c8277a36e",
 					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
 					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
 				}
@@ -5361,9 +5390,25 @@
 		{
 			"unit": "function.scan-imports",
 			"name": "scanImports",
-			"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
-			"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
-			"definition": "8ce6e488b7982c900be3136155862854f9979c39fef48286e2a90f5c17393642"
+			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
+			"definition": "8ce6e488b7982c900be3136155862854f9979c39fef48286e2a90f5c17393642",
+			"previousDefinitions": [
+				{
+					"unit": "function.scan-imports",
+					"name": "scanImports",
+					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+					"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
+					"definition": "8ce6e488b7982c900be3136155862854f9979c39fef48286e2a90f5c17393642"
+				}
+			]
+		},
+		{
+			"unit": "desktop.function.catalog-detail",
+			"name": "catalogDetail",
+			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
+			"definition": "77fb4e594e25fc7458e591cdd99335d9289431cbab1f4bf222735d2b3d10eaab"
 		}
 	]
 }
