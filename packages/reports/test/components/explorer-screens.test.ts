@@ -76,6 +76,12 @@ test('each of the twenty pages mounts the one entry of its screen, and nothing e
 	}
 });
 
+test('project dependencies have their own scoped page entry', () => {
+	const file = join(routes, 'dependencies/+page.svelte');
+	expect(imported(file).sort()).toEqual(['ExplorerDependenciesScreen', 'HarnessScreen']);
+	expect(readFileSync(file, 'utf8')).toContain('content={ExplorerDependenciesScreen}');
+});
+
 test('no entry reaches the content that shows every screen, or the host that mounts it', () => {
 	for (const entry of Object.values(entries)) {
 		expect(has(entry, ['ExplorerContent', 'HarnessConsole', 'HarnessShell']), entry).toEqual([]);
