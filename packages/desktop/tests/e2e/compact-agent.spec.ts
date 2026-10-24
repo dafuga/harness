@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
+import { agentActivityFixture } from './ui-agent-activity-fixture';
 import { projectFixture, alpha } from './ui-project-fixture';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenario from '../../../../specification/scenarios/agent-creation.json' with { type: 'json' };
@@ -114,3 +115,54 @@ test('compact controls send the selected provider, model, effort and design coun
 			designOptions: 2
 		});
 });
+
+// The standard project-chat matrix also proves the adjacent activity view and retained draft.
+for (const width of [1440, 920, 390]) {
+	test(`project chat shows sessions and module owners at ${width}px`, async ({ page }) => {
+		await page.setViewportSize({ width, height: 900 });
+		await agentActivityFixture(page);
+		await page.goto(`/projects/${alpha}/harness/branch/feat%2Falpha/components`);
+		await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+		await panel.getByRole('textbox', { name: 'Message', exact: true }).fill('Keep my draft.');
+		await evidence(page, width);
+		await panel.getByRole('button', { name: /^Agents/ }).click();
+		await expect(panel.getByRole('heading', { name: 'Main chats', exact: true })).toBeVisible();
+		await expect(
+			panel.getByText('Refine shared component previews', { exact: true })
+		).toBeVisible();
+		await expect(
+			panel.getByText('Review card usage on the home page', { exact: true })
+		).toBeVisible();
+		await expect(panel.getByText('Stale', { exact: true })).toBeVisible();
+		const modules = panel.getByRole('region', { name: 'Modules being worked on', exact: true });
+		await expect(modules.getByText('2 agents', { exact: true })).toBeVisible();
+		await expect(modules.getByRole('link', { name: 'Card', exact: true })).toBeVisible();
+		await expect(modules.getByText('Old assignment', { exact: true })).toHaveCount(0);
+		await evidence(page, width, 'agents');
+		await scenarioCapture(page, scenario as ScenarioManifest, {
+			state: 'chat-agents',
+			name: String(width),
+			note: 'Compiled renderer with synthetic declared sessions; no live model requests.'
+		});
+		await modules.getByRole('link', { name: 'Card', exact: true }).click();
+		await expect(page).toHaveURL(/components\/component.card/);
+		await panel.getByRole('button', { name: 'Chat', exact: true }).click();
+		await expect(panel.getByRole('textbox', { name: 'Message', exact: true })).toHaveValue(
+			'Keep my draft.'
+		);
+	});
+}
+
+async function evidence(page: Page, width: number, state = 'chat') {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	await page.mouse.move(0, 0);
+	mkdirSync('/tmp/chat-agents-evidence', { recursive: true });
+	await page.screenshot({
+		path: `/tmp/chat-agents-evidence/${process.env.SCREENSHOT_LABEL}-${width}-${state}.png`
+	});
+}

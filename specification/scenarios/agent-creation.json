@@ -60,6 +60,12 @@
 				"desktop.component.agent-controls",
 				"desktop.component.project-agent"
 			]
+		},
+		{
+			"id": "chat-agents",
+			"title": "Project chat lists registered sessions and module ownership while preserving drafts",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent", "desktop.component.chat-agents"]
 		}
 	],
 	"viewports": [
@@ -81,6 +87,11 @@
 		{
 			"id": "agent-phone",
 			"width": 390,
+			"height": 900
+		},
+		{
+			"id": "agents-tablet",
+			"width": 920,
 			"height": 900
 		}
 	],
@@ -183,6 +194,15 @@
 			"kind": "screenshot",
 			"states": ["compact-agent-functions", "compact-agent-components"],
 			"viewports": ["desktop", "agent-phone"],
+			"required": true,
+			"build": "desktop-renderer",
+			"capture": "viewport"
+		},
+		{
+			"id": "chat-agents",
+			"kind": "screenshot",
+			"states": ["chat-agents"],
+			"viewports": ["desktop", "agents-tablet", "agent-phone"],
 			"required": true,
 			"build": "desktop-renderer",
 			"capture": "viewport"
