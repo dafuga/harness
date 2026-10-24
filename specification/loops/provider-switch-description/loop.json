@@ -1,0 +1,60 @@
+{
+	"name": "provider-switch-description",
+	"goal": "Describe ProviderSwitch as a wrapper for the switches table and preserve the declared responsibility during indexing",
+	"createdAt": "2026-10-24T11:20:23.518Z",
+	"updatedAt": "2026-10-24T11:25:47.623Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-24T11:21:04.347Z",
+			"evidence": "ProviderSwitch delegates find/findBy/create/update/delete to an injected adapter over the switches table. Its visible responsibility is a derived Owns placeholder; replace it with reviewed wrapper wording."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-24T11:21:05.203Z",
+			"evidence": "test/readable-unit-contracts.test.ts reviews SQLite helper functions but omits persisted models. Extend that existing matrix with ProviderSwitch and assert the wrapper and table description; existing unit-index test already proves declared responsibility survives re-indexing."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-24T11:25:44.906Z",
+			"evidence": "Committed standard test fails on Owns placeholder instead of wraps. Recordfaf3b8a0856fa69a6dd6c0f7c785c974b8bef8ffdcd3a1309ff658d78c141b5b preserves13passes and1failure."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-24T11:25:46.262Z",
+			"evidence": "8014a5b46 declares the switches-table wrapper description and reviews existing method descriptions. No persistence code changes."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T11:25:47.623Z",
+			"evidence": "Unchanged14tests pass at8014a5b46. Recordccfd2a3bedc938fe3001b34fd797991be259a503474e7c6b5c58c4c03f61cfe8 retains proof."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

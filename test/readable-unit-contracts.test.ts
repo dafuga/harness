@@ -29,7 +29,7 @@ test('every active function and component explains its contract without requirin
 	);
 });
 
-test('SQLite catalog functions publish declared human-readable contracts', () => {
+test('SQLite catalog functions and persisted models publish declared human-readable contracts', () => {
 	const directory = resolve(import.meta.dirname, '../specification/units');
 	const ids = [
 		'function.catalog-models',
@@ -37,7 +37,8 @@ test('SQLite catalog functions publish declared human-readable contracts', () =>
 		'function.sqlite-input',
 		'function.sqlite-row',
 		'function.sqlite-table-sql',
-		'function.sqlite-types'
+		'function.sqlite-types',
+		'model.provider-switch'
 	];
 	const gaps: string[] = [];
 	for (const id of ids) {
@@ -46,6 +47,10 @@ test('SQLite catalog functions publish declared human-readable contracts', () =>
 		);
 		if (unit.responsibilityOrigin !== 'declared' || /^Owns the\b/.test(unit.responsibility))
 			gaps.push(`${id}: responsibility is not declared`);
+		if (id === 'model.provider-switch') {
+			expect(unit.responsibility).toMatch(/\bwraps\b/i);
+			expect(unit.responsibility).toMatch(/\bswitches\b/);
+		}
 		if (unit.contract.origin !== 'declared') gaps.push(`${id}: contract is not declared`);
 		for (const group of ['inputs', 'outputs', 'errors'] as const)
 			for (const field of unit.contract[group])
