@@ -31,7 +31,7 @@ export async function observed(page: Page): Promise<Observed> {
 	return {
 		address: url.pathname + url.search,
 		heading: await text(page, '.ex-content h1'),
-		categories: await nav(page).getByRole('link').allTextContents(),
+		categories: await nav(page).locator('a, button').allTextContents(),
 		category: await nav(page)
 			.locator('[aria-current="page"]')
 			.textContent()

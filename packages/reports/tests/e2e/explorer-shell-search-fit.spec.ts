@@ -43,7 +43,7 @@ async function opened(page: Page, width: number): Promise<void> {
 	await expect(trigger(page)).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
 	const destinations = bar(page).getByRole('navigation', { name: 'Harness categories' });
-	await expect(destinations.getByRole('link')).toHaveText(shellCategories);
+	await expect(destinations.locator('a, button')).toHaveText(shellCategories);
 }
 async function fits(page: Page, width: number): Promise<void> {
 	const search = await box(trigger(page));
