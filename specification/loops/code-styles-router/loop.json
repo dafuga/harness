@@ -1,0 +1,62 @@
+{
+	"name": "code-styles-router",
+	"goal": "Embedded Code navigation renders Styles through its actual screen entry",
+	"createdAt": "2026-10-24T15:38:49.082Z",
+	"updatedAt": "2026-10-24T15:43:48.209Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:42:22.947Z",
+			"evidence": "Embedded Code Styles destination rendered Pages; expected actual Styles screen. Installed-console navigation exposed the gap."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:42:23.510Z",
+			"evidence": "Standard composition and embedded catalog rendering lacked Styles; expanded both unchanged assertions plus installed navigation coverage."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:43:16.981Z",
+			"evidence": "Test-only0cf18d3f5; record59a2b786 failed Embedded Code navigation renders Styles."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:43:18.205Z",
+			"evidence": "Product-only2e7888437 selects existing ExplorerStylesScreen in embedded router."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:43:19.585Z",
+			"evidence": "Unchanged command,corpus and profile recordbae8709c passes at2e7888437; installed-console affected2cases pass."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-10-24T15:43:48.209Z",
+			"evidence": "Recorddf75ee0e passes18standard browser cases with81captures at2e7888437. Inspected hashed Dependencies component and settled-page images at3viewports; no unexpected browser errors. Installed Code Destinations/Styles pass."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
