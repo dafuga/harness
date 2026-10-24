@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { ModuleTaskRepository } from '../../../src/repositories/agents-providers/ModuleTaskRepository';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { observedTaskOperation } from '../../support/taskProfiles';

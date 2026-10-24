@@ -2,7 +2,7 @@
 	"name": "module-task-analytics",
 	"goal": "Committed module task attempts retain model, intelligence, provider token usage and API price provenance; explicit incomplete reviews requeue the preserved work and produce an auditable bounce rate in existing analytics.",
 	"createdAt": "2026-10-24T22:47:26.487Z",
-	"updatedAt": "2026-10-24T22:47:26.487Z",
+	"updatedAt": "2026-10-24T23:32:04.575Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -12,17 +12,23 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T23:32:03.454Z",
+			"evidence": "Tasks report every provider execution, reported versus requested model, token counters and API price provenance. Explicit accepted/incomplete reviews define bounce rate; repairs preserve committed work and wanted contracts."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T23:32:04.076Z",
+			"evidence": "Source review 344f3f46efa5cd8b7279d3e374ebdcf53bedc02f implements review-bound repairs and additive task analytics. Focused tests and remote synthetic CLI acceptance pass; full verification remains pending."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T23:32:04.575Z",
+			"evidence": "Remote candidate: 28/28 CLI, assertion-capture and Mac cleanup tests passed. Primary: 118/118 analytics, profiler, admission and ownership checks passed. These use synthetic provider output, not paid live-model completion."
 		},
 		{
 			"id": "verify",

@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { observedTaskOperation } from '../../support/taskProfiles';
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {

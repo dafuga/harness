@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from './verificationExpect';
 import { analyticsSnapshot } from '../src/workflows/analyticsMetrics';
 import type { AnalyticsEvent } from '../src/core/analyticsTypes';
 import { measureWorkload } from './support/measureWorkload';
@@ -16,42 +17,42 @@ function attempt(id: string, status: string, extra: Partial<AnalyticsEvent> = {}
 		...extra
 	};
 }
-test('module task analytics retain model usage and count rejected completions once', () => {
-	const event = (id: string, action: string, run: string) =>
-		({
-			id,
-			timestamp: '2026-10-24T12:00:00Z',
-			project: '/project',
-			kind: 'task',
-			action,
-			task: 'orders',
-			agentModel: 'gpt-6-luna',
-			moduleTask: {
-				attempt: run,
-				feature: 'checkout',
-				module: 'service.orders',
-				provider: 'codex',
-				model: 'gpt-6-luna',
-				intelligence: 'max',
-				reportedModel: 'gpt-6-luna',
-				usage: { inputTokens: 100, outputTokens: 20, cacheReadTokens: 30, cacheWriteTokens: 0 },
-				apiCost: {
-					usd: 0.002,
-					minimumUsd: 0.002,
-					maximumUsd: 0.002,
-					basis: 'standard-api-estimate'
-				}
+const taskEvent = (id: string, action: string, run: string) =>
+	({
+		id,
+		timestamp: '2026-10-24T12:00:00Z',
+		project: '/project',
+		kind: 'task',
+		action,
+		task: 'orders',
+		agentModel: 'gpt-6-luna',
+		moduleTask: {
+			attempt: run,
+			feature: 'checkout',
+			module: 'service.orders',
+			provider: 'codex',
+			model: 'gpt-6-luna',
+			intelligence: 'max',
+			reportedModel: 'gpt-6-luna',
+			usage: { inputTokens: 100, outputTokens: 20, cacheReadTokens: 30, cacheWriteTokens: 0 },
+			apiCost: {
+				usd: 0.002,
+				minimumUsd: 0.002,
+				maximumUsd: 0.002,
+				basis: 'standard-api-estimate'
 			}
-		}) as unknown as AnalyticsEvent;
+		}
+	}) as unknown as AnalyticsEvent;
+test('module task analytics retain model usage and count rejected completions once', async () => {
 	const events = [
-		event('1', 'executed', 'first'),
-		event('2', 'submitted', 'first'),
-		event('3', 'incomplete', 'first'),
-		event('4', 'executed', 'second'),
-		event('5', 'submitted', 'second'),
-		event('6', 'accepted', 'second')
+		taskEvent('1', 'executed', 'first'),
+		taskEvent('2', 'submitted', 'first'),
+		taskEvent('3', 'incomplete', 'first'),
+		taskEvent('4', 'executed', 'second'),
+		taskEvent('5', 'submitted', 'second'),
+		taskEvent('6', 'accepted', 'second')
 	];
-	const snapshot = measureWorkload(
+	const snapshot = await measureWorkload(
 		'workflow.analytics-metrics',
 		'module-task-model-usage-and-bounces',
 		() => analyticsSnapshot([...events, events[2]])
