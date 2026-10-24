@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.agents-providers-chat-agents",
+	"kind": "component",
+	"title": "Agents panel",
+	"responsibility": "Shows declared agent sessions, their current tasks and live module assignments within project chat.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/components/agents-providers/ChatAgents.svelte"],
+		"symbols": ["ChatAgents"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ChatAgents.workspace",
+				"type": "Workspace",
+				"description": "The selected project, revision, catalog and bridge used to read live registrations and resolve module links."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ChatAgents",
+				"type": "markup",
+				"description": "Main session tasks and statuses plus modules grouped by current declared owners. Missing tracking remains unknown; stale readings lose current ownership claims."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.reference-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.unit-links",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.agents-providers-agent-roster",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/agents-providers/ChatAgents.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/agents-providers/ChatAgents.svelte"
+			}
+		]
+	},
+	"scenarios": ["agent-creation"],
+	"preview": {
+		"scenario": "agent-creation",
+		"state": "chat-agents",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

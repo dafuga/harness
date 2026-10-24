@@ -1,3 +1,4 @@
+import type { LiveActivity } from '../../../../../src/core/activityTypes';
 import type { ProjectContext } from '../projects-sessions/ProjectContext.types';
 import type { CacheStatus } from '../projects-sessions/ProjectContext.types';
 import type { NativeHostedStatus } from '../projects-sessions/ProjectContext.types';
@@ -130,6 +131,8 @@ export interface ProjectRunRequest extends ProjectContext {
 
 /** What the preload script exposes as `window.harness`. Without it a page is a preview. */
 export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
+	/** Live registrations of the selected repository; absent on unsupported hosts. */
+	agentActivity?(input: ProjectContext): Promise<Pick<LiveActivity, 'sampledAt' | 'agents'>>;
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }

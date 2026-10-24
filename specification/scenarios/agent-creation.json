@@ -18,7 +18,8 @@
 		"desktop.model.desktop-bridge-types",
 		"desktop.service.desktop-run",
 		"desktop.service.project-run",
-		"desktop.store.project-agent"
+		"desktop.store.project-agent",
+		"desktop.component.agents-providers-chat-agents"
 	],
 	"states": [
 		{
@@ -65,7 +66,7 @@
 			"id": "chat-agents",
 			"title": "Project chat lists registered sessions and module ownership while preserving drafts",
 			"coverage": "required",
-			"units": ["desktop.component.project-agent", "desktop.component.chat-agents"]
+			"units": ["desktop.component.project-agent", "desktop.component.agents-providers-chat-agents"]
 		}
 	],
 	"viewports": [

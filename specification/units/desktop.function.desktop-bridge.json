@@ -114,6 +114,16 @@
 			"unit": "desktop.service.recorded-evidence",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "repository.project-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agent-activity",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

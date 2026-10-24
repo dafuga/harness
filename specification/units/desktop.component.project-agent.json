@@ -33,6 +33,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.agents-providers-chat-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.composer",
 			"via": "import",
 			"origin": "derived"

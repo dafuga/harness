@@ -1,3 +1,4 @@
+import type { ActivityHost } from './ui-agent-activity-fixture.types';
 import type { Page } from '@playwright/test';
 import { projectFixture } from './ui-project-fixture';
 
@@ -5,10 +6,12 @@ import { projectFixture } from './ui-project-fixture';
 export async function agentActivityFixture(page: Page) {
 	await projectFixture(page);
 	await page.addInitScript(() => {
-		const host = window as unknown as {
-			harness: Record<string, unknown>;
-			__activityFailed: boolean;
-		};
+		const host = window as unknown as ActivityHost;
+		const card = host.__projects.data.projects[0].entities.find(
+			(entity) => entity.category === 'components'
+		)!;
+		card.id = 'component.card';
+		card.title = 'Card';
 		host.harness.agentActivity = async () => {
 			if (host.__activityFailed) throw new Error('Synthetic activity unavailable');
 			const now = Date.now();
@@ -17,13 +20,13 @@ export async function agentActivityFixture(page: Page) {
 					id: 'chat-components',
 					label: 'Components',
 					task: 'Refine shared component previews',
-					units: ['component:button']
+					units: ['component.card']
 				},
 				{
 					id: 'chat-pages',
 					label: 'Pages',
 					task: 'Review card usage on the home page',
-					units: ['component:button', 'page:activity']
+					units: ['component.card', 'page:activity']
 				},
 				{
 					id: 'chat-stale',

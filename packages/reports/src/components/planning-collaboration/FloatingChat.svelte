@@ -1,21 +1,23 @@
 <script lang="ts">
 	import { tick, type Snippet } from 'svelte';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
-	/** Persistent round launcher; Escape closes its panel and returns focus. */
 	let {
 		open = $bindable(false),
 		label,
 		panelLabel,
 		title,
 		notice = '',
+		navigation,
+		follow = true,
 		children
 	}: {
 		open?: boolean;
 		label: string;
 		panelLabel: string;
 		title: string;
-		/** What this conversation offers here, said under the title. */
 		notice?: string;
+		navigation?: Snippet;
+		follow?: boolean;
 		children: Snippet;
 	} = $props();
 	const id = $props.id();
@@ -23,11 +25,10 @@
 	let bubble = $state<HTMLButtonElement>();
 	let panel = $state<HTMLElement>();
 	let body = $state<HTMLElement>();
-	/** Once opened, the panel is only hidden, so a message being written is kept. */
 	let kept = $state(false);
 	let following = true;
 	function reveal() {
-		if (body) body.scrollTop = body.scrollHeight;
+		if (body) body.scrollTop = follow ? body.scrollHeight : 0;
 		following = true;
 	}
 	function track() {
@@ -35,7 +36,8 @@
 	}
 	$effect(() => {
 		if (!body) return;
-		const watcher = new MutationObserver(() => void (following && reveal()));
+		reveal();
+		const watcher = new MutationObserver(() => void (follow && following && reveal()));
 		watcher.observe(body, { childList: true, subtree: true, characterData: true });
 		return () => watcher.disconnect();
 	});
@@ -44,9 +46,8 @@
 		await tick();
 		if (!next) return bubble?.focus();
 		reveal();
-		(panel?.querySelector<HTMLElement>('textarea:enabled') ?? panel)?.focus();
+		(panel?.querySelector<HTMLElement>('textarea:enabled:not([hidden] *)') ?? panel)?.focus();
 	}
-	/** A control inside that answers its own Escape, such as a picker, keeps the panel open. */
 	function escape(event: KeyboardEvent) {
 		if (!open || event.key !== 'Escape' || event.defaultPrevented) return;
 		if (!root?.contains(event.target as Node)) return;
@@ -65,7 +66,6 @@
 			d="M5 4.5h14a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2h-6.5L8 20.5V17H5a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2zM7.5 9h9M7.5 12.5h6"
 		/></svg
 	>{/snippet}
-
 <svelte:window onkeydown={escape} />
 <div class="floating-chat" bind:this={root}>
 	{#if open || kept}<aside
@@ -89,6 +89,7 @@
 					onclick={() => show(false)}><HarnessIcon name="close" size={16} /></button
 				>
 			</header>
+			{@render navigation?.()}
 			<div class="floating-chat-body" bind:this={body} onscroll={track}>{@render children()}</div>
 		</aside>{/if}
 	<button
@@ -210,7 +211,6 @@
 		overflow-y: auto;
 		overscroll-behavior: contain;
 	}
-	/* A short screen gives the conversation the height the bar would keep. */
 	@media (max-height: 560px) {
 		.floating-chat-panel {
 			max-height: calc(100dvh - var(--fc-above) - 12px - env(safe-area-inset-top, 0px));

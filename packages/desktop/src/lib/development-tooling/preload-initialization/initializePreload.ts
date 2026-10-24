@@ -65,6 +65,7 @@ const bridge: DesktopBridge = {
 	messages: call('messages'),
 	approve: call('approve'),
 	providers: call('providers'),
+	agentActivity: call('agentActivity'),
 	startRun: call('startRun'),
 	cancelRun: call('cancelRun'),
 	onRunEvent: (listener) => transport.on('run', (value) => listener(value as RunEvent))
