@@ -69,6 +69,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.resource-types",
 			"via": "import",
 			"origin": "derived"

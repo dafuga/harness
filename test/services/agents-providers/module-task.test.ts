@@ -1,4 +1,6 @@
-import { expect, test } from 'vitest';
+import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile } from 'node:fs/promises';
@@ -86,3 +88,58 @@ test('auto owns model and intelligence, while exact model choices retain their e
 		'does not support'
 	);
 });
+
+test.each([
+	['claude-haiku-5-5', 100, 0.00002, 0.00002],
+	['claude-haiku-5-5', 100001, 0.0100101, 0.0500505],
+	['unpriced-model', 100, null, null]
+])(
+	'API quotes use versioned rates and preserve unknown models (%s, %i input)',
+	async (model, inputTokens, minimum, maximum) => {
+		const f = await moduleTaskFixture();
+		try {
+			const service = new ModuleTaskService(f.root);
+			await service.feature({
+				id: 'checkout',
+				goal: 'Reliable checkout',
+				tldr: 'Build validated orders.'
+			});
+			await service.add(
+				JSON.parse(
+					await readFile(
+						await f.input({ model, provider: 'claude', intelligence: 'medium' }),
+						'utf8'
+					)
+				)
+			);
+			const worker = new ModuleTaskWorkerService(f.root, {
+				run: async (input) => ({
+					provider: input.provider,
+					model: input.model,
+					intelligence: input.intelligence,
+					text: 'Done',
+					reportedModel: input.model,
+					usage: {
+						inputTokens: Number(inputTokens),
+						outputTokens: 20,
+						cacheReadTokens: 0,
+						cacheWriteTokens: 0,
+						cacheWriteLongTokens: 0,
+						reportedCostUsd: null
+					}
+				})
+			});
+			await worker.once('owner');
+			const quote = (await service.show('orders-validation')).task.result?.executions?.[0].apiCost;
+			if (minimum === null)
+				expect(quote).toMatchObject({ usd: null, minimumUsd: null, maximumUsd: null });
+			else {
+				expect(quote?.minimumUsd).toBeCloseTo(Number(minimum), 10);
+				expect(quote?.maximumUsd).toBeCloseTo(Number(maximum), 10);
+			}
+			expect(quote).toHaveProperty('rateCard');
+		} finally {
+			await f.dispose();
+		}
+	}
+);
