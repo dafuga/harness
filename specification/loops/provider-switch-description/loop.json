@@ -2,7 +2,7 @@
 	"name": "provider-switch-description",
 	"goal": "Describe ProviderSwitch as a wrapper for the switches table and preserve the declared responsibility during indexing",
 	"createdAt": "2026-10-24T11:20:23.518Z",
-	"updatedAt": "2026-10-24T11:21:05.203Z",
+	"updatedAt": "2026-10-24T11:25:47.623Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:25:44.906Z",
+			"evidence": "Committed standard test fails on Owns placeholder instead of wraps. Recordfaf3b8a0856fa69a6dd6c0f7c785c974b8bef8ffdcd3a1309ff658d78c141b5b preserves13passes and1failure."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:25:46.262Z",
+			"evidence": "8014a5b46 declares the switches-table wrapper description and reviews existing method descriptions. No persistence code changes."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:25:47.623Z",
+			"evidence": "Unchanged14tests pass at8014a5b46. Recordccfd2a3bedc938fe3001b34fd797991be259a503474e7c6b5c58c4c03f61cfe8 retains proof."
 		},
 		{
 			"id": "verify",
