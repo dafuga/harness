@@ -1,0 +1,69 @@
+{
+	"name": "modules-horizontal-navbar",
+	"goal": "Modules opens a horizontal category row below the primary navigation at every viewport",
+	"createdAt": "2026-10-24T14:00:32.887Z",
+	"updatedAt": "2026-10-24T14:00:32.887Z",
+	"template": "visual-change",
+	"templateLineage": ["feature", "visual-change"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"evidence": [
+				{
+					"note": "Preference change from popover to persistent horizontal module tabs below primary categories. Existing shellChecks.moduleNavigation explicitly required overlay and no extra row; replace those assertions while preserving branch, revision, keyboard and modified-link contracts."
+				}
+			]
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"evidence": [
+				{
+					"note": "Restores shared HarnessTabs below primary destinations; module routes retain branch/commit and narrow strips scroll horizontally. No helper or new route changes."
+				}
+			]
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"evidence": [
+				{
+					"note": "Existing navbar tests changed first in 9ece48e7b. Before repair: two unit assertions failed (Modules href absent), and all three viewport cases timed out seeking the missing Modules link. Logs: /tmp/harness-horizontal-modules-red.log and /tmp/harness-horizontal-modules-browser-red.log. After daaedd68a: 30 scoped units and all nine standard shell browser cases passed; original test checkpoint retained."
+				}
+			]
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending",
+			"evidence": [
+				{
+					"note": "Focused scope per Daniel; reports typecheck passes both configurations. Registry/import/contract guards and formatter results recorded in PR; no broad/full/native verification claimed."
+				}
+			]
+		},
+		{
+			"id": "browser-proof",
+			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
+			"status": "pending",
+			"evidence": [
+				{
+					"note": "Standard desktop/tablet/mobile shell screenshots captured and desktop/mobile images inspected. Shared5690 publication and real-main screenshot remain pending with publisher."
+				}
+			]
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "browser-proof"
+		}
+	]
+}
