@@ -32,6 +32,7 @@ beforeAll(async () => {
 		kind: 'entry',
 		title: 'Private entry',
 		responsibility: 'Starts the backend fixture.',
+		responsibilityOrigin: 'declared',
 		status: 'active',
 		owns: { source: [path], symbols: ['start'] },
 		contract: {
