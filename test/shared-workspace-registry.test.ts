@@ -127,7 +127,7 @@ test('declaring those imports changes them alone: no other reference or uncertai
 	expect(side(loaded.index).graph.uncertain).toEqual(side(undeclared).graph.uncertain);
 }, 60_000);
 
-test('every active visual module has its own required capture state', () => {
+function assertNoNestedHarnessSources() {
 	const redundant = [...loaded.index.files.keys()].filter((path) =>
 		/\/components\/(?:explorer-ui\/)?harness\//.test(path)
 	);
@@ -149,6 +149,10 @@ test('every active visual module has its own required capture state', () => {
 			(path) => path?.includes('/components/harness/') || path?.includes('/explorer-ui/harness/')
 		)
 	).toBe(false);
+}
+
+test('every active visual module has its own required capture state', () => {
+	assertNoNestedHarnessSources();
 	const catalog = loaded.scenarios.find((scenario) => scenario.id === 'component-catalog-previews');
 	const visual = loaded.stored
 		.filter((unit) => {
