@@ -15,6 +15,7 @@ import { explorerEntities } from '../src/utils/explorerEntities';
 import { index, revision } from './entityFixture';
 import { lens, place, viewOf } from './entityPlaces';
 import {
+	shellVariants,
 	declaredContract,
 	legacyReasons,
 	previewRecord,
@@ -139,7 +140,7 @@ function asked(): ExplorerLocation {
 	);
 }
 window.addEventListener('hashchange', () => show(asked()));
-if (variant === 'console' || variant === 'platforms' || variant === 'apis') {
+if (shellVariants.has(variant ?? '')) {
 	const fetcher = window.fetch;
 	window.fetch = Object.assign(
 		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {

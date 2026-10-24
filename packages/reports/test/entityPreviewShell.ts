@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { PreviewVariant } from './entityPreviewData';
+import { shellVariants, type PreviewVariant } from './entityPreviewData';
 import { previewIdentity } from './entityPreviewCapture';
 
 export async function previewShell(home: string, variant: PreviewVariant = ''): Promise<string> {
@@ -8,7 +8,7 @@ export async function previewShell(home: string, variant: PreviewVariant = ''): 
 	const hashes = readFileSync(join(home, 'hashes.json'), 'utf8');
 	const links = sheets.map((name) => `<link rel="stylesheet" href="/${name}">`).join('');
 	const build = JSON.stringify(await previewIdentity());
-	const root = ['console', 'platforms'].includes(variant)
+	const root = shellVariants.has(variant)
 		? '<div id="app"></div>'
 		: '<div class="hx-shell"><main class="hx-main" id="app"></main></div>';
 	return `<!doctype html><html lang="en"><head><meta charset="utf-8">
