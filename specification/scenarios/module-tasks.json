@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "module-tasks",
+	"title": "Committed module contracts and exclusive Claude/Codex assignment pickup",
+	"kind": "headless",
+	"units": [
+		"command.task",
+		"command.agents-providers-module-task",
+		"repository.agents-providers-module-task",
+		"service.agents-providers-module-task",
+		"service.agents-providers-module-task-worker",
+		"adapter.agents-providers-module-task-runner",
+		"template.project-guidance",
+		"entry.index"
+	],
+	"states": [
+		{
+			"id": "contract-admission",
+			"title": "Only wanted-contract tasks enter the committed queue",
+			"coverage": "required"
+		},
+		{
+			"id": "assigned-worker",
+			"title": "Assigned model and intelligence run in isolated worktrees",
+			"coverage": "required"
+		},
+		{
+			"id": "quota-fallback",
+			"title": "Only Claude quota rejection selects Luna 6 max",
+			"coverage": "required"
+		},
+		{
+			"id": "owner-recovery",
+			"title": "Active owners are preserved and abandoned claims remain in history",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "cli",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/module-tasks.e2e.test.ts",
+			"timeoutMs": 240000
+		},
+		{
+			"id": "units",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/commands/agents-providers/module-task.test.ts test/repositories/agents-providers/module-task.test.ts test/services/agents-providers/module-task.test.ts test/services/agents-providers/module-task-worker.test.ts test/adapters/agents-providers/module-task-runner.test.ts test/project-template.test.ts --maxWorkers=1 --no-file-parallelism",
+			"timeoutMs": 120000
+		}
+	],
+	"evidence": [
+		{
+			"id": "module-task-output",
+			"kind": "output",
+			"states": ["contract-admission", "assigned-worker", "quota-fallback", "owner-recovery"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "module-task-assertions",
+			"kind": "assertions",
+			"states": ["contract-admission", "assigned-worker", "quota-fallback", "owner-recovery"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
