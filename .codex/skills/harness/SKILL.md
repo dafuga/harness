@@ -107,6 +107,7 @@ same callable. Exercise distinct owner and callable names at current and histori
 - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
 - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
+- Before accepting scenario evidence, run its declared command through registered-target admission and actual assertion capture. A custom loop command does not prove the declared scenario works. Headless wrapper declarations are checked by `test/self-verify-config.test.ts`; `verification-output` accepts one registered test file per command.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 
 ## API and Naming Corrections

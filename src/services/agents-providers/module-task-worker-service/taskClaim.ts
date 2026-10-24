@@ -16,6 +16,7 @@ export function pendingTaskResult(
 		worktree,
 		changedFiles: [],
 		fallback: false,
+		executions: [],
 		finishedAt: new Date().toISOString()
 	};
 }
@@ -45,10 +46,14 @@ export function finishTask(
 ) {
 	const current = queue.tasks.find((t) => t.id === claimed.id);
 	if (
-		current?.status !== 'running' ||
-		current.claim?.token !== claimed.claim?.token ||
-		current.contractHash !== claimed.contractHash ||
-		current.sourceCommit !== claimed.sourceCommit
+		!current ||
+		![
+			current.status === 'running',
+			current.claim?.token === claimed.claim?.token,
+			current.contractHash === claimed.contractHash,
+			current.sourceCommit === claimed.sourceCommit,
+			current.repairCommit === claimed.repairCommit
+		].every(Boolean)
 	)
 		throw new Error('Task definition or claim changed; result was not overwritten.');
 	current.status = result?.error ? 'failed' : 'review';

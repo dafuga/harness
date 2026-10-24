@@ -1,57 +1,65 @@
 {
-	"schemaVersion": 1,
-	"id": "command.analytics",
-	"kind": "command",
-	"title": "AnalyticsCommand",
-	"responsibility": "Owns the AnalyticsCommand command registration.",
-	"responsibilityOrigin": "derived",
-	"status": "active",
-	"owns": {
-		"source": ["src/cli/program/AnalyticsCommand.ts", "src/commands/AnalyticsCommand.ts"],
-		"symbols": ["registerAnalyticsCommand", "registerAnalyticsCommand"]
-	},
-	"contract": {
-		"origin": "derived",
-		"inputs": [
-			{
-				"name": "registerAnalyticsCommand.program",
-				"type": "Command"
-			}
-		],
-		"outputs": [
-			{
-				"name": "registerAnalyticsCommand",
-				"type": "void"
-			}
-		],
-		"errors": []
-	},
-	"dependencies": [
-		{
-			"unit": "service.analytics",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.cpu-usage",
-			"via": "import",
-			"origin": "derived"
-		}
-	],
-	"runtime": {
-		"kind": "module",
-		"entry": "src/cli/program/AnalyticsCommand.ts",
-		"targets": [
-			{
-				"kind": "module",
-				"entry": "src/cli/program/AnalyticsCommand.ts"
-			}
-		]
-	},
-	"scenarios": [],
-	"budgets": {
-		"size": "frozen",
-		"complexity": "frozen",
-		"performance": []
-	}
+  "schemaVersion": 1,
+  "id": "command.analytics",
+  "kind": "command",
+  "title": "AnalyticsCommand",
+  "responsibility": "Owns the AnalyticsCommand command registration.",
+  "responsibilityOrigin": "derived",
+  "status": "active",
+  "owns": {
+    "source": [
+      "src/cli/program/AnalyticsCommand.ts",
+      "src/commands/AnalyticsCommand.ts"
+    ],
+    "symbols": [
+      "registerAnalyticsCommand",
+      "registerAnalyticsCommand"
+    ]
+  },
+  "contract": {
+    "origin": "derived",
+    "inputs": [
+      {
+        "name": "registerAnalyticsCommand.program",
+        "type": "Command"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "registerAnalyticsCommand",
+        "type": "void"
+      }
+    ],
+    "errors": []
+  },
+  "dependencies": [
+    {
+      "unit": "service.analytics",
+      "via": "import",
+      "origin": "derived"
+    },
+    {
+      "unit": "service.cpu-usage",
+      "via": "import",
+      "origin": "derived"
+    }
+  ],
+  "runtime": {
+    "kind": "module",
+    "entry": "src/cli/program/AnalyticsCommand.ts",
+    "targets": [
+      {
+        "kind": "module",
+        "entry": "src/cli/program/AnalyticsCommand.ts"
+      }
+    ]
+  },
+  "scenarios": [
+    "module-tasks"
+  ],
+  "budgets": {
+    "size": "frozen",
+    "complexity": "frozen",
+    "performance": []
+  }
 }

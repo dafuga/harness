@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { contractItemSchema, unitIdPattern } from '../../../core/development-tooling/unitTypes';
+import { taskUsageSchema, taskExecutionSchema, taskReviewSchema } from './taskUsage';
 const id = z.string().regex(unitIdPattern).max(150);
 const text = z.string().trim().min(1).max(16000);
 const commit = z.string().regex(/^[a-f0-9]{40}$/);
@@ -43,7 +44,12 @@ const result = z.strictObject({
 	changedFiles: z.array(path),
 	error: z.string().optional(),
 	fallback: z.boolean(),
-	finishedAt: z.iso.datetime()
+	finishedAt: z.iso.datetime(),
+	attempt: z.uuid().optional(),
+	sourceCommit: commit.optional(),
+	checkpointCommit: commit.optional(),
+	usage: taskUsageSchema.optional(),
+	executions: z.array(taskExecutionSchema).default([])
 });
 const claim = z.strictObject({
 	worker: id,
@@ -56,7 +62,9 @@ export const storedTaskSchema = taskInputSchema.omit({ module: true, feature: tr
 	module: z.strictObject({ id, goal: text, files: z.array(path).min(1) }),
 	sourceCommit: commit,
 	contractHash: z.string().regex(/^[a-f0-9]{64}$/),
-	status: z.enum(['queued', 'running', 'review', 'failed']),
+	status: z.enum(['queued', 'running', 'review', 'failed', 'accepted']),
+	repairCommit: commit.optional(),
+	reviews: z.array(taskReviewSchema).default([]),
 	createdAt: z.iso.datetime(),
 	claim: claim.optional(),
 	claimHistory: z.array(claim).default([]),

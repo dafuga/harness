@@ -192,3 +192,5 @@ export { ModuleTaskRepository } from './repositories/agents-providers/ModuleTask
 export { ModuleTaskService } from './services/agents-providers/ModuleTaskService';
 export { ModuleTaskRunnerAdapter } from './adapters/agents-providers/ModuleTaskRunnerAdapter';
 export { ModuleTaskWorkerService } from './services/agents-providers/ModuleTaskWorkerService';
+export { ModuleTaskAnalyticsService } from './services/agents-providers/ModuleTaskAnalyticsService';
+export { ModuleTaskWorktreeAdapter } from './adapters/agents-providers/ModuleTaskWorktreeAdapter';

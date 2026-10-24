@@ -13,4 +13,6 @@ export interface TaskPublicEvent {
 	item?: { type?: string; text?: string };
 	modelUsage?: Record<string, unknown>;
 	permission_denials?: unknown[];
+	usage?: Record<string, unknown>;
+	total_cost_usd?: number;
 }

@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-module-task-worktree",
+	"kind": "adapter",
+	"title": "ModuleTaskWorktreeAdapter",
+	"responsibility": "Preserve submitted task source as Git objects without moving source HEAD or changing user indexes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/ModuleTaskWorktreeAdapter.ts",
+			"src/adapters/agents-providers/ModuleTaskWorktreeAdapter.types.ts"
+		],
+		"symbols": [
+			"ModuleTaskWorktreeAdapter",
+			"ModuleTaskWorktreeAdapter.constructor",
+			"ModuleTaskWorktreeAdapter.checkpoint",
+			"TaskCheckpointInput"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskWorktreeAdapter.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
+				"type": "TaskCheckpointInput"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskWorktreeAdapter.checkpoint",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.commit-identity",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/ModuleTaskWorktreeAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/ModuleTaskWorktreeAdapter.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

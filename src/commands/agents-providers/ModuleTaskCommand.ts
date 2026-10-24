@@ -11,6 +11,7 @@ export class ModuleTaskCommand {
 		this.authoring(task);
 		this.reads(task);
 		this.operations(task);
+		this.reviews(task);
 	}
 	private authoring(task: Command): void {
 		task
@@ -56,6 +57,20 @@ export class ModuleTaskCommand {
 			.command('prompt <id>')
 			.description('Print the committed feature-first task prompt.')
 			.action(async (id) => console.log(await this.service.prompt(id)));
+	}
+	private reviews(task: Command): void {
+		task
+			.command('review <id>')
+			.requiredOption('--attempt <token>', 'Submitted claim token being reviewed.')
+			.requiredOption('--verdict <verdict>', 'accepted or incomplete.')
+			.option('--feedback <text>', 'Required repair instructions for an incomplete review.')
+			.option('--reviewer <id>', 'Reviewer attribution, otherwise unattributed.')
+			.option('--json')
+			.description('Accept a submission or preserve its work and requeue it with repair feedback.')
+			.action(async (id, flags) => {
+				const { attempt, verdict, feedback, reviewer } = flags;
+				print(await this.service.review(id, { attempt, verdict, feedback, reviewer }));
+			});
 	}
 	private operations(task: Command): void {
 		task

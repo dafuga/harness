@@ -20,6 +20,7 @@ export function registerAnalyticsCommand(program: Command): void {
 		'loops',
 		'jev',
 		'models',
+		'tasks',
 		'benchmarks',
 		'events',
 		'import',

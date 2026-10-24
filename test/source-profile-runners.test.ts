@@ -1,7 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { preload, runnerCaptures, runnerFixture, source } from './support/sourceProfileRunners';
+import {
+	assertProjectBootstrap,
+	preload,
+	runnerCaptures,
+	runnerFixture,
+	source
+} from './support/sourceProfileRunners';
 
 test('normal Vitest imports and its Bun commands capture their own real operations', async () => {
 	const fixture = await runnerFixture();
@@ -55,6 +61,7 @@ console.log(JSON.stringify({value:greet('real'),instrumented:bytes.includes('__h
 			'Bun preload requires actual source observations'
 		).toHaveLength(1);
 		expect(measurements.filter((item) => item.unitOfMeasure === 'bytes')).toHaveLength(1);
+		assertProjectBootstrap(fixture.environment);
 	} finally {
 		await fixture.remove();
 	}

@@ -138,6 +138,21 @@
 			"unit": "service.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker-service-task-workspace",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
