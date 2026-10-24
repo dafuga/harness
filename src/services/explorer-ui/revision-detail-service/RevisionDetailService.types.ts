@@ -8,11 +8,13 @@ import type { RegressionView } from '../../../core/regressionTypes';
 import type { BudgetEvent } from '../../../core/budgetTypes';
 import type { StoredSide } from '../../../utils/sideImpact';
 import type { CommitStatus } from '../../history-status-service/HistoryStatusService';
+import type { ProjectDependencies } from './projectDependencies.types';
 
 export interface RevisionDetail {
 	schemaVersion: 1;
 	commit: string;
 	platforms?: PlatformCatalog;
+	projectDependencies?: ProjectDependencies;
 	registry: RevisionRegistry;
 	/** What the latest usable record compared this revision with, as that record stated it. */
 	comparison: {
@@ -43,6 +45,7 @@ export interface RevisionDetail {
 
 export interface Stored {
 	platforms: PlatformCatalog;
+	projectDependencies: ProjectDependencies;
 	registry: RevisionRegistry;
 	ledger: BudgetEvent[];
 }

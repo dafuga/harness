@@ -16,6 +16,7 @@ import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../../repositories/RegressionProofRepository';
 import { unitMetadata } from './unitMetadata';
 import { readPlatformCatalog } from './platformCatalog';
+import { projectDependencies } from './projectDependencies';
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
@@ -55,6 +56,7 @@ export class RevisionDetailService {
 			schemaVersion: 1,
 			commit,
 			platforms: stored.platforms,
+			projectDependencies: stored.projectDependencies,
 			registry: stored.registry,
 			comparison: comparison(sound),
 			sourceImpact: (await this.kept.source.of(commit)) ?? null,
@@ -119,7 +121,12 @@ export class RevisionDetailService {
 		const limits = new BudgetService().baselines(ledger, units.manifests);
 		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
 		await unitMetadata(tree, registry.units);
-		const stored = { registry, ledger, platforms: await readPlatformCatalog(tree) };
+		const stored = {
+			registry,
+			ledger,
+			platforms: await readPlatformCatalog(tree),
+			projectDependencies: await projectDependencies(tree)
+		};
 		this.kept.registries.set(key, stored);
 		return stored;
 	}

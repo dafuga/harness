@@ -184,6 +184,7 @@ export interface HarnessExplanation {
 	performance: { attempt: string; outcome: string };
 }
 export interface HarnessRevision {
+	projectDependencies?: import('../../../../../src/services/explorer-ui/revision-detail-service/projectDependencies.types').ProjectDependencies;
 	platforms?: PlatformCatalog;
 	regressions?: RegressionView[];
 	commit: string;
