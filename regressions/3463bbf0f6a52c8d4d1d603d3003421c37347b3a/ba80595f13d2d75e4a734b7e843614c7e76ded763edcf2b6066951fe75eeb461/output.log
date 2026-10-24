@@ -1,0 +1,193 @@
+
+Running 6 tests using 1 worker
+
+(node:53464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at desktop (1.5s)
+(node:54075) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at desktop (1.5s)
+(node:54579) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at tablet (1.4s)
+(node:55082) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at tablet (1.5s)
+(node:55734) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at mobile (1.4s)
+(node:56177) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+the catalog page of the shell fixture did not build:
+(node:56472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+failed to load config from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/src/configs/shellViteConfig.ts
+error during build:
+Error: The service was stopped
+    at /Users/danielfugere/.codex/worktrees/service-errors-last/harness/node_modules/vite/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/danielfugere/.codex/worktrees/service-errors-last/harne
+  ✘  6 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at mobile (0ms)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at desktop 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    414.765625
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-a6396--loading-history-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-a6396--loading-history-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-a6396--loading-history-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at desktop 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    414.765625
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-8c549-loading-revision-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-8c549-loading-revision-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-8c549-loading-revision-at-desktop/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at tablet 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    342.109375
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-998f1-a-loading-history-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-998f1-a-loading-history-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-998f1-a-loading-history-at-tablet/error-context.md
+
+  4) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at tablet 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    342.109375
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-7564d--loading-revision-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7564d--loading-revision-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7564d--loading-revision-at-tablet/error-context.md
+
+  5) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at mobile 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    156
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-1eef5-a-loading-history-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-1eef5-a-loading-history-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-1eef5-a-loading-history-at-mobile/error-context.md
+
+  6) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at mobile 
+
+    Error: Command failed: bun x vite build --config src/configs/shellViteConfig.ts
+    (node:56472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+    (Use `node --trace-warnings ...` to show where the warning was created)
+    failed to load config from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/src/configs/shellViteConfig.ts
+    error during build:
+    Error: The service was stopped
+
+       at support/shellFixture.ts:33
+
+      31 | 		const env = { ...process.env, SHELL_FIXTURE_PAGE: page, SHELL_FIXTURE_OUT: join(home, page) };
+      32 | 		try {
+    > 33 | 			execFileSync('bun', ['x', 'vite', 'build', '--config', config], { env, stdio: 'pipe' });
+         | 			^
+      34 | 		} catch (reason) {
+      35 | 			const said = String((reason as { stderr?: Buffer }).stderr ?? reason);
+      36 | 			console.warn(`the ${page} page of the shell fixture did not build:\n${said.slice(0, 600)}`);
+        at /Users/danielfugere/.codex/worktrees/service-errors-last/harness/node_modules/vite/node_modules/esbuild/lib/main.js:949:34
+        at responseCallbacks.<computed> (/Users/danielfugere/.codex/worktrees/service-errors-last/harness/node_modules/vite/node_modules/esbuild/lib/main.js:603:9)
+        at Socket.afterClose (/Users/danielfugere/.codex/worktrees/service-errors-last/harness/node_modules/vite/node_modules/esbuild/lib/main.js:594:28)
+        at Socket.emit (node:events:521:24)
+        at endReadableNT (node:internal/streams/readable:1729:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+        at /Users/danielfugere/.codex/worktrees/service-errors-last/harness/node_modules/vite/node_modules/esbuild/lib/main.js:949:34
+        at responseCallbacks.<computed> (/Users/danielfugere/.codex/worktrees/service-errors-last/harness/node_modules/vite/node_modules/esbuild/lib/main.js:603:9)
+        at Socket.afterClose (/Users/danielfugere/.codex/worktrees/service-errors-last/harness/node_modules/vite/node_modules/esbuild/lib/main.js:594:28)
+        at buildShellFixture (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/tests/e2e/support/shellFixture.ts:33:4)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZTfH3E/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:20:9
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-60f23--loading-revision-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-60f23--loading-revision-at-mobile/error-context.md
+
+  6 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at mobile 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at mobile 
