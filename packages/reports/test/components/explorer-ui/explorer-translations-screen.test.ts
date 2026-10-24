@@ -7,13 +7,13 @@ import { commits, ids } from '../../entityUnits';
 test('translations compare source text safely with scoped caller links', () => {
 	const head = revision(commits.middle, []);
 	head.translations = {
-		locales: ['en', 'fr'],
+		locales: ['en', 'fr', 'de'],
 		gaps: [],
 		rows: [
 			{
 				scope: 'reports',
 				key: 'hello',
-				values: { en: 'Hello {name}', fr: 'Bonjour {name}' },
+				values: { en: 'Hello {name}', fr: 'Bonjour {name}', de: 'Hallo {name}' },
 				sources: ['src/en.json'],
 				usedBy: [ids.list]
 			},
@@ -33,7 +33,12 @@ test('translations compare source text safely with scoped caller links', () => {
 		{ category: 'pages', screen: 'translations' },
 		{ head }
 	);
-	expect(words(body)).toContain('English en French fr');
+	expect(body).toContain('aria-label="Language"');
+	expect(body).toContain('value="de"');
+	expect(words(body)).toContain('English French Used In');
+	expect(body).not.toContain('<code>hello</code>');
+	expect(body).not.toContain('<small>reports</small>');
+	expect(words(body)).not.toContain('Hallo {name}');
 	expect(words(body)).toContain('Hello {name} Bonjour {name}');
 	expect(words(body)).toContain('Empty string');
 	expect(words(body)).toContain('Not translated');
