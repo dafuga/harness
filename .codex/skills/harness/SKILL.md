@@ -112,6 +112,10 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 Use source-and-run-specific output directories for verification attempts. Before reporting progress or a pass, check the tested commit, served build/revision and capture timestamps; reject logs and images left by an earlier attempt. A reused filename or successful file read does not establish fresh proof.
 
+- For a new or changed table layout, extend its existing viewport matrix beyond text presence
+  and document fit: preserve readable identifiers/types and short labels, contain horizontal
+  scrolling, and exercise full-example keyboard access. Capture both panes before assertions;
+  a compressed unreadable table can fit the page and still fail acceptance.
 - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
 - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
@@ -288,6 +292,11 @@ A successful capture count does not prove catalog delivery. The standardized Pag
 When adding or changing workspace build aliases, run the existing `test/shared-select-impact.test.ts` before broad verification. Keep all alias imports resolved, distinguish indexed test imports from runtime owner units using source classification, and prove test selection separately from production dependency reachability; never discard an unresolved runtime owner to satisfy the check.
 
 ## Type Files
+
+Model contracts use the service method presentation for actual public methods, including static
+persistence methods. Keep shared interface fields and callable members distinct from constants.
+Do not synthesize initialization, CRUD or storage. The Table tab reads selected-revision schema
+syntax only; unknown expressions stay unresolved and no live database rows are accessed.
 
 Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type modules retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
 Component implementations belong directly in their responsibility category, with private code in an owner folder. Do not insert an application-name namespace beneath that category or retain a duplicate internal forwarding tree after relocation. Keep meaningful route prefixes, supported package exports, registered IDs and original migration records stable; record subsequent helper locations as reviewed follow-ups. Run the existing visual registry, import/alias impact, namespace-spy and ownership migration guards before broad verification.

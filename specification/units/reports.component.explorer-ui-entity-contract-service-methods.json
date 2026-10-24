@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-ui-entity-contract-service-methods",
 	"kind": "function",
 	"title": "serviceContract",
-	"responsibility": "Builds constructor-first service method contracts and unscoped facts for the owning contract view.",
+	"responsibility": "Projects source-declared service and model methods into shared parameter, return and error contracts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,7 +11,7 @@
 			"packages/reports/src/components/explorer-ui/entity-contract/serviceMethods.ts",
 			"packages/reports/src/components/explorer-ui/entity-contract/serviceMethods.types.ts"
 		],
-		"symbols": ["serviceContract", "Item", "Recorded", "ServiceClass"]
+		"symbols": ["serviceContract", "Item", "Recorded", "ServiceClass", "modelContract"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -20,6 +20,11 @@
 				"name": "serviceContract.unit",
 				"type": "HarnessUnit",
 				"description": "The viewed service unit, including recorded classes and methods, owned symbols, and declared parameter, return and error fields."
+			},
+			{
+				"name": "modelContract.unit",
+				"type": "HarnessUnit",
+				"description": "The selected model declarations, including static public methods and existing qualified error contracts."
 			}
 		],
 		"outputs": [
@@ -27,6 +32,11 @@
 				"name": "serviceContract",
 				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
 				"description": "Constructor-first callable signatures with parameter, return and error groups, plus facts outside discovered methods. Multiple classes keep qualified method names; no discovered methods returns empty arrays."
+			},
+			{
+				"name": "modelContract",
+				"type": "{ methods: CallableContract[]; facts: ContractRow[]; }",
+				"description": "Method contracts projected through the same service renderer, without inventing persistence methods or treating constants as returns."
 			}
 		],
 		"errors": []

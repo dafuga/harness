@@ -66,6 +66,7 @@ export const explorerTabs = {
 	overview: [
 		'overview',
 		'contract',
+		'table',
 		'models',
 		'used-in',
 		'uses',
@@ -76,7 +77,7 @@ export const explorerTabs = {
 		'states',
 		'source'
 	],
-	details: ['contract', 'models', 'measurements', 'source'],
+	details: ['contract', 'table', 'models', 'measurements', 'source'],
 	history: []
 } as const satisfies Record<string, readonly string[]>;
 
@@ -86,6 +87,7 @@ function invalidAudioTab(asked: string | null, location: ExplorerLocation): bool
 
 /** Page-only tabs and the legacy Contract address retain their category rules. */
 function pageQueryTab(asked: string | null, category: ExplorerLocation['category']) {
+	if (asked === 'table' && category !== 'models') return undefined;
 	if (asked === 'models' && category !== 'pages') return undefined;
 	if (category === 'pages') {
 		if (asked === 'contract') return 'models';

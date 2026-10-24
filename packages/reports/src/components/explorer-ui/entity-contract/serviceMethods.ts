@@ -165,3 +165,55 @@ export function serviceContract(unit: HarnessUnit): {
 		facts: owners.length > 0 ? unscoped(unit, owners) : []
 	};
 }
+
+/** Model declarations share the service method renderer, including static persistence methods. */
+export function modelContract(unit: HarnessUnit): ReturnType<typeof serviceContract> {
+	if (!unit.modelDefinitions) return serviceContract({ ...unit, serviceClasses: undefined });
+	const all = unit.modelDefinitions;
+	const declarations = all.some((item) => item.name === unit.title)
+		? all.filter((item) => item.name === unit.title)
+		: all;
+	const methods = declarations.flatMap((item) =>
+		item.methods.map((method) => ({
+			...method,
+			owner: `${item.name}.${method.name}`
+		}))
+	);
+	const projected = serviceContract({
+		...unit,
+		owns: { ...unit.owns, symbols: methods.map((method) => method.owner) },
+		serviceClasses: declarations.map((item) => ({
+			name: item.name,
+			source: item.source,
+			methods: item.methods.map((method) => method.name),
+			consumers: [],
+			constructedBy: []
+		})),
+		contract: {
+			inputs: methods.flatMap((method) =>
+				method.inputs.map((input) => ({
+					...input,
+					name: `${method.owner}.${input.name}`
+				}))
+			),
+			outputs: methods
+				.filter((method) => method.name !== 'constructor')
+				.map((method) => ({
+					name: `${method.owner}.returnValue`,
+					type: method.output
+				})),
+			errors: unit.contract.errors
+		}
+	});
+	return {
+		...projected,
+		methods: projected.methods.map((method) => ({
+			...method,
+			groups: method.groups.map((group) =>
+				group.id === 'outputs' && /(?:^|\.)constructor$/.test(method.name)
+					? { ...group, none: 'Creates the model.' }
+					: group
+			)
+		}))
+	};
+}

@@ -1,10 +1,64 @@
 import { expect, test } from '../../../test/support/browserTest';
-import { capture, open, ready, viewports, where } from './entityPreviewPage';
+import type { Locator, Page } from '@playwright/test';
+import { capture, fits, open, ready, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 const modelUnits = [
 	'reports.component.explorer-ui-explorer-module-card',
 	'reports.component.harness-entity-relations'
 ];
+const modelPanes = [
+	'reports.component.harness-entity-header',
+	'reports.component.harness-entity-sections'
+];
+
+/** Code and short example labels stay readable; any wider table remains internally scrollable. */
+async function readableTables(scope: Locator): Promise<void> {
+	for (const table of await scope.getByRole('table').all()) {
+		for (const item of await table.locator('tbody th, tbody td code, tbody .example > i').all()) {
+			const geometry = await item.evaluate((node) => {
+				const range = document.createRange();
+				range.selectNodeContents(node);
+				return {
+					lines: range.getClientRects().length,
+					fitsCell: range.getBoundingClientRect().width <= node.closest('th, td')!.clientWidth + 1
+				};
+			});
+			expect.soft(geometry, `Readable complete table text: ${await item.textContent()}`).toEqual({
+				lines: 1,
+				fitsCell: true
+			});
+		}
+		const contained = await table.evaluate((node) => {
+			if (node.getBoundingClientRect().right <= innerWidth + 1) return true;
+			for (let frame = node.parentElement; frame; frame = frame.parentElement)
+				if (['auto', 'scroll'].includes(getComputedStyle(frame).overflowX))
+					return (
+						frame.scrollWidth > frame.clientWidth &&
+						frame.getBoundingClientRect().right <= innerWidth + 1
+					);
+			return false;
+		});
+		expect
+			.soft(contained, 'Wide tables scroll inside their frame rather than the document')
+			.toBe(true);
+	}
+}
+
+async function modelMarkers(page: Page, contract: boolean): Promise<void> {
+	const markers = ['harness-entity-header', 'harness-entity-sections'];
+	if (contract) markers.push('entity-contract', 'contract-table');
+	for (const marker of markers)
+		await expect(page.locator(`[data-harness-component="${marker}"]`).first()).toBeVisible();
+}
+
+async function modelExample(page: Page): Promise<void> {
+	const update = page.getByRole('region', { name: 'update method', exact: true });
+	const button = update.getByRole('button', { name: 'View example for id', exact: true });
+	await button.press('Enter');
+	await expect(page.getByRole('dialog')).toContainText('"example"');
+	await page.keyboard.press('Escape');
+	await expect(button).toBeFocused();
+}
 
 test('component contracts expose Props and keep verification states on States', async ({
 	page: tab
@@ -36,6 +90,44 @@ test('component contracts expose Props and keep verification states on States', 
 });
 
 for (const [viewport, size] of Object.entries(viewports)) {
+	test(`model detail separates method contracts and table structure at ${viewport} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		for (const commit of [null, commits.middle]) {
+			const route = { category: 'models' as const, entity: 'app.model.order', commit };
+			await open(page, { ...route, tab: 'contract' }, 'groups');
+			await ready(page);
+			await modelMarkers(page, true);
+			await capture(page, `model-contract-${commit ? 'commit' : 'tip'}-${viewport}`, [
+				'reports.component.entity-contract',
+				'reports.component.contract-table',
+				...modelPanes
+			]);
+			for (const method of ['initialize', 'create', 'update'])
+				await expect(
+					page.getByRole('region', { name: `${method} method`, exact: true })
+				).toBeVisible();
+			await expect(page.getByRole('table', { name: 'Outputs', exact: true })).toHaveCount(0);
+			await expect(page.getByRole('table', { name: 'Errors', exact: true })).toHaveCount(0);
+			await readableTables(page.getByRole('tabpanel', { name: 'Order contract', exact: true }));
+			await modelExample(page);
+			await page.getByRole('tab', { name: 'Table', exact: true }).click();
+			await ready(page);
+			await modelMarkers(page, false);
+			await capture(page, `model-table-${commit ? 'commit' : 'tip'}-${viewport}`, modelPanes);
+			await expect(
+				page.getByRole('heading', { name: commit ? 'purchases' : 'orders', exact: true })
+			).toBeVisible();
+			await expect(page.getByRole('cell', { name: 'account_id', exact: true })).toBeVisible();
+			await readableTables(page.getByRole('tabpanel', { name: 'Order table', exact: true }));
+			expect(await where(page)).toMatchObject({ ...route, tab: 'table' });
+			expect(await fits(page)).toBe(true);
+			await page.reload();
+			await ready(page);
+			await expect(page.getByRole('cell', { name: 'account_id', exact: true })).toBeVisible();
+		}
+	});
 	test(`page sections show used models instead of a contract at ${viewport} width`, async ({
 		page: tab
 	}) => {

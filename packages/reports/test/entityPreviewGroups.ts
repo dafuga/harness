@@ -3,6 +3,7 @@ import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { ids, units } from './entityUnits';
 import taxonomy from '../../../harness.groups.json' with { type: 'json' };
 import { moduleGroup } from '../../../src/utils/development-tooling/moduleGroup';
+import { modelContractFixture } from './entityModelContract';
 
 import componentsList from '../../../specification/units/reports.page.harness-branch-branch-at-components.json' with { type: 'json' };
 import componentsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-components-entity.json' with { type: 'json' };
@@ -164,17 +165,20 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 				delivery,
 				...(detail.registry.units.some((unit) => unit.id === model.id) ? [] : [model, types])
 			].map((unit) =>
-				categoryUnit(
-					unit.id === ids.store && detail.commit !== 'a'.repeat(40)
-						? {
-								...unit,
-								dependencies: [
-									...unit.dependencies,
-									{ unit: model.id, via: 'import' },
-									{ unit: types.id, via: 'import' }
-								]
-							}
-						: unit,
+				modelContractFixture(
+					categoryUnit(
+						unit.id === ids.store && detail.commit !== 'a'.repeat(40)
+							? {
+									...unit,
+									dependencies: [
+										...unit.dependencies,
+										{ unit: model.id, via: 'import' },
+										{ unit: types.id, via: 'import' }
+									]
+								}
+							: unit,
+						detail.commit
+					),
 					detail.commit
 				)
 			)
