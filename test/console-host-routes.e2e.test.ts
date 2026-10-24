@@ -106,14 +106,14 @@ test('in a browser each branch, commit and category of the installed console is 
 	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
 		0
 	);
-	await bar(page).getByRole('button', { name: 'Modules', exact: true }).click();
-	const modules = bar(page).getByRole('navigation', { name: 'Module categories' });
-	await modules.getByRole('link', { name: 'Layouts', exact: true }).click();
+	await bar(page).getByRole('link', { name: 'Modules', exact: true }).click();
+	const modules = bar(page).getByRole('tablist', { name: 'Module categories' });
+	await modules.getByRole('tab', { name: 'Layouts', exact: true }).click();
 	await page.waitForURL(`**${tip('layouts')}`);
 	await page.getByRole('heading', { level: 1, name: 'Layouts' }).waitFor();
 	expect(await commit.inputValue()).toBe(head);
-	await bar(page).getByRole('button', { name: 'Modules', exact: true }).click();
-	await modules.getByRole('link', { name: 'Helpers', exact: true }).click();
+	await bar(page).getByRole('link', { name: 'Modules', exact: true }).click();
+	await modules.getByRole('tab', { name: 'Helpers', exact: true }).click();
 	await page.waitForURL(`**${tip('functions')}`);
 	expect(await commit.inputValue()).toBe(head);
 	await commit.selectOption(other);
