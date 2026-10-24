@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms atoms -->
 <script lang="ts">
 	import type { ContractField, ContractGroup } from '../../utils/explorer-ui/contractFields';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
@@ -18,59 +20,59 @@
 	let named = $derived(!group.hideNames);
 </script>
 
-<div class="group" data-harness-component="contract-table">
+<hx-div class="group" data-harness-component="contract-table">
 	{#if !plain}
-		<h3>{group.title} <span class="ex-count">{group.fields.length}</span></h3>
+		<hx-h3>{group.title} <hx-span class="ex-count">{group.fields.length}</hx-span></hx-h3>
 	{:else if group.fields.length > 0 || group.keepEmpty}
-		<p class="label">{group.title}</p>
+		<hx-p class="label">{group.title}</hx-p>
 	{/if}
 	{#if group.fields.length === 0 && !group.keepEmpty}
-		<p class="ex-note">{group.none}</p>
+		<hx-p class="ex-note">{group.none}</hx-p>
 	{:else}
-		<div class="frame">
-			<table aria-label={group.title}>
-				<thead>
-					<tr>
-						{#if named}<th scope="col" class="leading">Name</th>{/if}
-						<th scope="col" class="leading">Type</th>
-						<th scope="col">Example</th>
-						<th scope="col" class="act" aria-label="Actions"></th>
-					</tr>
-				</thead>
-				<tbody>
+		<hx-div class="frame">
+			<hx-table aria-label={group.title}>
+				<hx-thead>
+					<hx-tr>
+						{#if named}<hx-th scope="col" class="leading">Name</hx-th>{/if}
+						<hx-th scope="col" class="leading">Type</hx-th>
+						<hx-th scope="col">Example</hx-th>
+						<hx-th scope="col" class="act" aria-label="Actions"></hx-th>
+					</hx-tr>
+				</hx-thead>
+				<hx-tbody>
 					{#if group.fields.length === 0}
-						<tr><td colspan={named ? 4 : 3} class="ex-note">{group.none}</td></tr>
+						<hx-tr><hx-td colspan={named ? 4 : 3} class="ex-note">{group.none}</hx-td></hx-tr>
 					{/if}
 					{#each group.fields as field, position (position)}
 						{@const sample = field.examples[0]}
-						<tr>
-							{#if named}<th scope="row">{field.name}</th>{/if}
-							<td><code class="type">{field.type}</code></td>
-							<td>
-								<div class="example">
-									{#if field.source !== 'declared'}<i>{labels[field.source]}</i>{/if}
-									{#if sample}<code
-											>{sample.text.slice(0, 240)}{sample.text.length > 240 ? '...' : ''}</code
+						<hx-tr>
+							{#if named}<hx-th scope="row">{field.name}</hx-th>{/if}
+							<hx-td><hx-code class="type">{field.type}</hx-code></hx-td>
+							<hx-td>
+								<hx-div class="example">
+									{#if field.source !== 'declared'}<hx-i>{labels[field.source]}</hx-i>{/if}
+									{#if sample}<hx-code
+											>{sample.text.slice(0, 240)}{sample.text.length > 240 ? '...' : ''}</hx-code
 										>{/if}
-								</div>
-							</td>
-							<td class="act">
-								<button
+								</hx-div>
+							</hx-td>
+							<hx-td class="act">
+								<hx-button
 									type="button"
 									class="info"
 									aria-label={`View example for ${field.name}`}
 									aria-haspopup="dialog"
 									onclick={(event) => onexample(field, event.currentTarget)}
-									><HarnessIcon name="info" size={18} /></button
+									><HarnessIcon name="info" size={18} /></hx-button
 								>
-							</td>
-						</tr>
+							</hx-td>
+						</hx-tr>
 					{/each}
-				</tbody>
-			</table>
-		</div>
+				</hx-tbody>
+			</hx-table>
+		</hx-div>
 	{/if}
-</div>
+</hx-div>
 
 <style>
 	.group {

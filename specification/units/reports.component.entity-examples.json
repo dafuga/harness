@@ -6,6 +6,13 @@
 	"responsibility": "Shows documented examples as short titles and code with expected output comments.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.usage-examples-usage-examples"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/EntityExamples.svelte",
@@ -34,6 +41,11 @@
 	"dependencies": [
 		{
 			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "template.development-tooling-atomic-markup",
+	"kind": "template",
+	"title": "atomicMarkup",
+	"responsibility": "Owns the atomicMarkup scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/development-tooling/atomicMarkup.ts"],
+		"symbols": ["atomicMarkup"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "atomicMarkup.source",
+				"type": "string"
+			},
+			{
+				"name": "atomicMarkup.path",
+				"type": "string"
+			},
+			{
+				"name": "atomicMarkup.level",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "atomicMarkup",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "template.development-tooling-atomic-syntax",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.development-tooling-html-elements",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/development-tooling/atomicMarkup.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/development-tooling/atomicMarkup.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

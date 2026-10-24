@@ -6,6 +6,19 @@
 	"responsibility": "Manages computer-side phone access, pairing offers, pending approvals and approved devices.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.remote-approval",
+			"desktop.component.remote-devices",
+			"desktop.component.remote-offer-code",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/networking-security/remote-host-panel/RemoteHostPanel.svelte",
@@ -59,6 +72,31 @@
 		},
 		{
 			"unit": "desktop.store.remote-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		}

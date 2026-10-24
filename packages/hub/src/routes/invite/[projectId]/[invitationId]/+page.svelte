@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import HubFrame from '../../../../components/shared-primitives/HubFrame.svelte';
@@ -9,7 +11,7 @@
 
 <svelte:head><title>Harness · Invitation</title></svelte:head>
 <HubFrame>
-	<h1>Join a shared project</h1>
+	<hx-h1>Join a shared project</hx-h1>
 	{#if session.actor}<InviteAccept
 			projectId={page.params.projectId ?? ''}
 			invitationId={page.params.invitationId ?? ''}

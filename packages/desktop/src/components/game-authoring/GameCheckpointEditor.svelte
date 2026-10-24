@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Props } from './GameCheckpointEditor.types';
 
@@ -40,33 +42,33 @@
 	}
 </script>
 
-<section class="editor" data-harness-component="game-checkpoint-editor" aria-label="Rules">
+<hx-section class="editor" data-harness-component="game-checkpoint-editor" aria-label="Rules">
 	{#if checkpoint}
 		{@const node = checkpoint}
 		{#key node.id}
-			<fieldset disabled={readonly}>
-				<label>
-					<span>Prerequisites</span>
+			<hx-fieldset disabled={readonly}>
+				<hx-label>
+					<hx-span>Prerequisites</hx-span>
 					<GameTextField
 						value={node.requires.join(', ')}
 						placeholder="Checkpoint ids, comma separated"
 						change={(text) => requires(node, text)}
 					/>
-				</label>
-				<label class="check">
-					<input
+				</hx-label>
+				<hx-label class="check">
+					<hx-input
 						type="checkbox"
 						checked={node.repeatable ?? false}
 						onchange={(e) => update({ repeatable: e.currentTarget.checked })}
 					/>
 					Repeatable
-				</label>
-				<div class="head">
-					<h3>Conditions</h3>
-					<button type="button" onclick={() => addCondition(node)}>Add condition</button>
-				</div>
+				</hx-label>
+				<hx-div class="head">
+					<hx-h3>Conditions</hx-h3>
+					<hx-button type="button" onclick={() => addCondition(node)}>Add condition</hx-button>
+				</hx-div>
 				{#each node.conditions as c, i (i)}
-					<div class="row" role="group" aria-label="Condition {i + 1}">
+					<hx-div class="row" role="group" aria-label="Condition {i + 1}">
 						<GameTextField
 							label="Condition {i + 1} field"
 							placeholder="Field"
@@ -77,7 +79,8 @@
 							label="Condition {i + 1} comparison"
 							bind:value={() => c.op, (op) => condition(node, i, { op: op as typeof c.op })}
 						>
-							{#each Object.entries(ops) as [op, t] (op)}<option value={op}>{t}</option>{/each}
+							{#each Object.entries(ops) as [op, t] (op)}<hx-option value={op}>{t}</hx-option
+								>{/each}
 						</Select>
 						<GameTextField
 							label="Condition {i + 1} value"
@@ -85,26 +88,26 @@
 							value={String(c.value)}
 							change={(text) => condition(node, i, { value: parse(text) })}
 						/>
-						<button
+						<hx-button
 							type="button"
 							aria-label="Remove condition {i + 1}"
 							onclick={() => update({ conditions: without(node.conditions, i) })}
 						>
 							Remove
-						</button>
-					</div>
+						</hx-button>
+					</hx-div>
 				{/each}
-				<div class="head">
-					<h3>Actions</h3>
-					<button type="button" onclick={() => addAction(node)}>Add action</button>
-				</div>
+				<hx-div class="head">
+					<hx-h3>Actions</hx-h3>
+					<hx-button type="button" onclick={() => addAction(node)}>Add action</hx-button>
+				</hx-div>
 				{#each node.actions as a, i (i)}
-					<div class="row" role="group" aria-label="Action {i + 1}">
+					<hx-div class="row" role="group" aria-label="Action {i + 1}">
 						<Select
 							label="Action {i + 1} type"
 							bind:value={() => a.type, (t) => action(node, i, { type: t as typeof a.type })}
 						>
-							{#each Object.entries(kinds) as [k, t] (k)}<option value={k}>{t}</option>{/each}
+							{#each Object.entries(kinds) as [k, t] (k)}<hx-option value={k}>{t}</hx-option>{/each}
 						</Select>
 						<GameTextField
 							label="Action {i + 1} target"
@@ -118,22 +121,22 @@
 							value={String(a.value)}
 							change={(text) => action(node, i, { value: parse(text) })}
 						/>
-						<button
+						<hx-button
 							type="button"
 							aria-label="Remove action {i + 1}"
 							onclick={() => update({ actions: without(node.actions, i) })}
 						>
 							Remove
-						</button>
-					</div>
+						</hx-button>
+					</hx-div>
 				{/each}
-				<p class="hint">Values are read as true or false, a number, or text.</p>
-			</fieldset>
+				<hx-p class="hint">Values are read as true or false, a number, or text.</hx-p>
+			</hx-fieldset>
 		{/key}
 	{:else}
-		<p class="hint">Select a checkpoint to edit it.</p>
+		<hx-p class="hint">Select a checkpoint to edit it.</hx-p>
 	{/if}
-</section>
+</hx-section>
 
 <style>
 	.editor,

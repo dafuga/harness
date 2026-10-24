@@ -106,7 +106,15 @@ export const guides: Guide[] = [
 			'Keep data loading outside reusable components.',
 			'Add a component test or page smoke test.'
 		],
-		rules: ['Components should be reusable and visually scoped.', 'Use props for input.'],
+		rules: [
+			'Components should be reusable and visually scoped.',
+			'Use props for input.',
+			'Compose atoms → molecules → organisms → layouts/templates → pages. Keep the feature category separate from the level.',
+			'Install native HTML, input variant and SVG atoms with harness generate elements. Configure atomicComponents() from @dafuga01/harness/atoms before vitePreprocess().',
+			'Use native atom calls such as <hx-button> with a relative @harness-atoms directory to preserve bindings, actions, events and scoped styles.',
+			'Declare @harness-tier. Components default to molecule; --level organism generates a feature composition. Native markup belongs only inside atoms.',
+			'Reuse existing shared controls before introducing another molecule. Keep themed behavior and validation out of generated native atoms.'
+		],
 		antiPatterns: ['Do not embed unrelated feature workflows in one component.'],
 		exampleCommands: ['harness generate component PostCard']
 	},

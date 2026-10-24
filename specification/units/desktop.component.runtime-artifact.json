@@ -6,6 +6,26 @@
 	"responsibility": "Presents recorded test result contents only after a verified read, keeping missing or unreadable evidence explicit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.status-icon",
+			"reports.component.entity-cases",
+			"reports.component.shared-primitives-atoms-html-dd",
+			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-dl",
+			"reports.component.shared-primitives-atoms-html-dt",
+			"reports.component.shared-primitives-atoms-html-h5",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-ol",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-pre",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-summary",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/RuntimeArtifact.svelte",
@@ -59,6 +79,71 @@
 		},
 		{
 			"unit": "reports.component.entity-cases",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dd",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dl",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h5",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-pre",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
 		},

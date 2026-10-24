@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-footer",
+	"kind": "component",
+	"title": "HtmlFooter",
+	"responsibility": "Renders the native footer element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "footer",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlFooter.svelte"],
+		"symbols": ["HtmlFooter"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlFooter.attributes",
+				"type": "SvelteHTMLElements['footer']",
+				"description": "Native footer attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "HtmlFooter.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native footer element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlFooter",
+				"type": "markup",
+				"description": "The actual native footer element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlFooter.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlFooter.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-atoms-html-footer",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

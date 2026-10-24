@@ -6,6 +6,16 @@
 	"responsibility": "Opens a consumer entity and previews its own revision-bound screenshot on hover or keyboard focus.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-entity-link",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-img",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ExplorerUsageLink.svelte",
@@ -49,6 +59,26 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-entity-link",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

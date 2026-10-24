@@ -1,5 +1,10 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { HarnessRevision, HarnessRevisionSummary } from '../../models/explorer-ui/Harness.types';
+	import type {
+		HarnessRevision,
+		HarnessRevisionSummary
+	} from '../../models/explorer-ui/Harness.types';
 	import { harnessEvidence, mediaFile } from '../../utils/explorer-ui/harnessEvidence';
 	import { captureProvenance, scenarioOrigin } from '../../utils/reports-media/captureProvenance';
 	import EvidenceGrid from '../verification-evidence/evidence-grid/EvidenceGrid.svelte';
@@ -45,13 +50,13 @@
 	const summaryOf = (id: string) => summary.records.find((item) => item.id === id);
 </script>
 
-<section class="hc-card" aria-label="Recorded verification">
-	<h2>{summary.subject}</h2>
-	<p class="hc-muted">
+<hx-section class="hc-card" aria-label="Recorded verification">
+	<hx-h2>{summary.subject}</hx-h2>
+	<hx-p class="hc-muted">
 		{summary.commit} · {summary.author} · {summary.committedAt}
 		{summary.retained ? ' · kept only by its archive ref' : ''}
-	</p>
-	<p class="hc-notice">
+	</hx-p>
+	<hx-p class="hc-notice">
 		{#if summary.coverage === 'unverified'}
 			No verification record is attached to this commit. Nothing below was tested for it, and
 			nothing from another commit is shown in its place.
@@ -62,23 +67,23 @@
 		{:else}
 			Records are attached to this commit, but none of them could be validated.
 		{/if}
-	</p>
+	</hx-p>
 	{#if summary.coverage !== 'unverified'}
-		{#each summary.gaps as gap, position (position)}<p class="hc-muted">{gap}</p>{/each}
+		{#each summary.gaps as gap, position (position)}<hx-p class="hc-muted">{gap}</hx-p>{/each}
 	{/if}
-	<ul class="hc-records" aria-label="Verification records">
+	<hx-ul class="hc-records" aria-label="Verification records">
 		{#each detail.records as item (item.id)}
-			<li class:current={item.id === record?.id}>
-				<button type="button" class="hc-chip" onclick={() => onrecord(item.id)}
-					>Record {item.id.slice(0, 12)}</button
+			<hx-li class:current={item.id === record?.id}>
+				<hx-button type="button" class="hc-chip" onclick={() => onrecord(item.id)}
+					>Record {item.id.slice(0, 12)}</hx-button
 				>
-				<span class="badge {item.status}"
-					><span aria-hidden="true">●</span> {status(item.status)}</span
+				<hx-span class="badge {item.status}"
+					><hx-span aria-hidden="true">●</hx-span> {status(item.status)}</hx-span
 				>
-				<span class="hc-muted"
+				<hx-span class="hc-muted"
 					>profile {item.profile} · {item.finishedAt}{item.valid
 						? ''
-						: ' · could not be validated'}</span
+						: ' · could not be validated'}</hx-span
 				>
 				{#if item.failures.length || summaryOf(item.id)?.problems.length}
 					<HarnessFailures
@@ -87,49 +92,51 @@
 						problems={summaryOf(item.id)?.problems ?? []}
 					/>
 				{/if}
-			</li>
+			</hx-li>
 		{/each}
-	</ul>
+	</hx-ul>
 	{#if record}
-		<h3>Scenarios of record {record.id.slice(0, 12)}</h3>
-		<ul class="hc-plain" aria-label="Scenarios">
+		<hx-h3>Scenarios of record {record.id.slice(0, 12)}</hx-h3>
+		<hx-ul class="hc-plain" aria-label="Scenarios">
 			{#each record.scenarios as scenario (scenario.id)}
-				<li>
-					<strong>{scenario.id}</strong>
-					<span class="hc-muted">{scenario.status} · {scenarioOrigin(scenario)}</span>
+				<hx-li>
+					<hx-strong>{scenario.id}</hx-strong>
+					<hx-span class="hc-muted">{scenario.status} · {scenarioOrigin(scenario)}</hx-span>
 					{#each scenario.states.filter((state) => state.coverage !== 'required') as state, position (position)}
-						<br /><span class="hc-muted">{state.id} is {state.coverage}: {state.reason}</span>
+						<hx-br /><hx-span class="hc-muted"
+							>{state.id} is {state.coverage}: {state.reason}</hx-span
+						>
 					{/each}
-				</li>
+				</hx-li>
 			{/each}
-		</ul>
+		</hx-ul>
 		{#if other.length}
-			<h3>Other recorded evidence</h3>
-			<ul class="hc-plain">
+			<hx-h3>Other recorded evidence</hx-h3>
+			<hx-ul class="hc-plain">
 				{#each other as item, position (position)}
-					<li>
+					<hx-li>
 						{item.scenario} · {item.state} · {item.capture.kind} · {item.standing}
 						{#if item.capture.media}
-							<a
+							<hx-a
 								class="hc-link"
 								href={mediaBase + mediaFile(item.capture)}
 								target="_blank"
-								rel="noreferrer">open</a
+								rel="noreferrer">open</hx-a
 							>
-						{:else}<span class="hc-muted">{item.capture.gap}</span>{/if}
-					</li>
+						{:else}<hx-span class="hc-muted">{item.capture.gap}</hx-span>{/if}
+					</hx-li>
 				{/each}
-			</ul>
+			</hx-ul>
 		{/if}
 		{#if exportHref}
-			<p>
-				<a class="hc-link" href={exportHref + '?record=' + record.id}
-					>Download this record as a portable report</a
+			<hx-p>
+				<hx-a class="hc-link" href={exportHref + '?record=' + record.id}
+					>Download this record as a portable report</hx-a
 				>
-			</p>
+			</hx-p>
 		{/if}
 	{/if}
-</section>
+</hx-section>
 {#if record && evidence.length}
 	{#key record.id}<EvidenceGrid items={evidence} assetBase={mediaBase} />{/key}
 {/if}

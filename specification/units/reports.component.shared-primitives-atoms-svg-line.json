@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-line",
+	"kind": "component",
+	"title": "SvgLine",
+	"responsibility": "Renders the native line element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "line",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgLine.svelte"],
+		"symbols": ["SvgLine"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgLine.attributes",
+				"type": "SvelteHTMLElements['line']",
+				"description": "Native line attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgLine.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native line element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgLine",
+				"type": "markup",
+				"description": "The actual native line element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgLine.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgLine.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-atoms-svg-line",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

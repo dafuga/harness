@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-symbol",
+	"kind": "component",
+	"title": "SvgSymbol",
+	"responsibility": "Renders the native symbol element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "symbol",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgSymbol.svelte"],
+		"symbols": ["SvgSymbol"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgSymbol.attributes",
+				"type": "SvelteHTMLElements['symbol']",
+				"description": "Native symbol attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgSymbol.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native symbol element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgSymbol",
+				"type": "markup",
+				"description": "The actual native symbol element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgSymbol.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgSymbol.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../../../../components/shared-primitives/atoms -->
 <script lang="ts">
 	import ExplorerTranslationsScreen from '../../../../../../components/explorer-ui/ExplorerTranslationsScreen.svelte';
 	import HarnessScreen from '../../../../../../components/explorer-ui/HarnessScreen.svelte';

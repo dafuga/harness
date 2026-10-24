@@ -6,6 +6,10 @@
 	"responsibility": "Owns the /harness/[...path] route page.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["desktop.page.root"]
+	},
 	"owns": {
 		"source": ["packages/desktop/src/routes/harness/[...path]/+page.svelte"],
 		"symbols": ["+page"]

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerEntity } from '../../models/Explorer.types';
 	import type { EntityLens, EntityNav } from '../../utils/entityLens';
@@ -29,21 +31,23 @@
 </script>
 
 <!-- One footer for every card and table row: each consumer a link with its own preview. -->
-<div class="ex-usage" role="group" aria-label="Used In">
-	<span>Used In</span>{#if distinct.length === 0}<span>—</span>{:else}
-		<ul>
+<hx-div class="ex-usage" role="group" aria-label="Used In">
+	<hx-span>Used In</hx-span>{#if distinct.length === 0}<hx-span>—</hx-span>{:else}
+		<hx-ul>
 			{#each items as item (usageIdentity(item))}
-				<li><ExplorerUsageLink entity={item} {nav} {lens} {mediaBase} /></li>
+				<hx-li><ExplorerUsageLink entity={item} {nav} {lens} {mediaBase} /></hx-li>
 			{/each}
 			{#if omitted > 0}
-				<li>
-					<span aria-hidden="true">…</span>
-					<span class="ex-usage-more">{omitted} more {omitted === 1 ? 'usage' : 'usages'}</span>
-				</li>
+				<hx-li>
+					<hx-span aria-hidden="true">…</hx-span>
+					<hx-span class="ex-usage-more"
+						>{omitted} more {omitted === 1 ? 'usage' : 'usages'}</hx-span
+					>
+				</hx-li>
 			{/if}
-		</ul>
+		</hx-ul>
 	{/if}
-</div>
+</hx-div>
 
 <style>
 	/* Smaller and quieter than what it belongs to. */

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { ProviderId, ProviderState } from '../../models/development-tooling/Desktop.types';
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
@@ -24,19 +26,19 @@
 <ChoiceDialog label="Choose model" title={tip} width={320} maxHeight={480} gap={14}>
 	{#snippet icon()}<Icon name="model" size={18} />{/snippet}
 	{#snippet children(close: () => void)}
-		{#each providers as item (item.id)}<section>
-				<h2>{item.label}</h2>
-				{#if item.reason}<small>{item.reason}</small>{/if}
-				{#each item.models as option (option.id)}<button
+		{#each providers as item (item.id)}<hx-section>
+				<hx-h2>{item.label}</hx-h2>
+				{#if item.reason}<hx-small>{item.reason}</hx-small>{/if}
+				{#each item.models as option (option.id)}<hx-button
 						type="button"
 						class:active={item.id === provider && option.id === model}
 						aria-pressed={item.id === provider && option.id === model}
 						disabled={!item.available}
-						onclick={() => choose(item.id, option.id, close)}>{option.label}</button
+						onclick={() => choose(item.id, option.id, close)}>{option.label}</hx-button
 					>{/each}
-				{#if item.available && !item.models.length}<small>No models listed.</small>{/if}
-			</section>{/each}
-		{#if !providers.length}<small>No agent provider available.</small>{/if}
+				{#if item.available && !item.models.length}<hx-small>No models listed.</hx-small>{/if}
+			</hx-section>{/each}
+		{#if !providers.length}<hx-small>No agent provider available.</hx-small>{/if}
 	{/snippet}
 </ChoiceDialog>
 

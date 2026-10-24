@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import HubFrame from '../../../../components/shared-primitives/HubFrame.svelte';
@@ -10,6 +12,6 @@
 
 <svelte:head><title>Harness · Members</title></svelte:head>
 <HubFrame>
-	{#if session.actor}{#key projectId}<MembersPanel {projectId} />{/key}{:else}<h1>Members</h1>
+	{#if session.actor}{#key projectId}<MembersPanel {projectId} />{/key}{:else}<hx-h1>Members</hx-h1>
 		<LoginPanel reason="Sign in to see who is in this project." />{/if}
 </HubFrame>

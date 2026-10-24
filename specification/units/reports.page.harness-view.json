@@ -6,6 +6,10 @@
 	"responsibility": "Leads the root, a branch or commit alone and every earlier console address to the explorer page it stands for, and shows a commit that no branch reaches.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.harness-explorer-content", "reports.component.harness-screen"]
+	},
 	"catalog": {
 		"visibility": "internal"
 	},

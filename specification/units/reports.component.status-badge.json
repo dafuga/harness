@@ -6,6 +6,10 @@
 	"responsibility": "Shows a report status using its translated label and status styling.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": []
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/StatusBadge.svelte",

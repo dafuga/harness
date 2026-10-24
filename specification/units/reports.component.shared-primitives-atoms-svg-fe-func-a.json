@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-fe-func-a",
+	"kind": "component",
+	"title": "SvgFeFuncA",
+	"responsibility": "Renders the native feFuncA element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "feFuncA",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgFeFuncA.svelte"],
+		"symbols": ["SvgFeFuncA"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgFeFuncA.attributes",
+				"type": "SvelteHTMLElements['feFuncA']",
+				"description": "Native feFuncA attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgFeFuncA.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native feFuncA element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgFeFuncA",
+				"type": "markup",
+				"description": "The actual native feFuncA element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeFuncA.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeFuncA.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

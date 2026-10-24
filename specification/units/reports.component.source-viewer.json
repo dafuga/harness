@@ -6,6 +6,19 @@
 	"responsibility": "Shows selected source text with its file selector, exact revision and explicit loading or failure states.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-harness-icon",
+			"reports.component.select",
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-pre",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/SourceViewer.svelte",
@@ -54,6 +67,36 @@
 		},
 		{
 			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-pre",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

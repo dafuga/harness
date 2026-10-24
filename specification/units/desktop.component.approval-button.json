@@ -6,6 +6,14 @@
 	"responsibility": "Saves approval of the latest displayed plan or design with its exact contract and selected images.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-small"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/ApprovalButton.svelte",
@@ -64,6 +72,21 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
 			"via": "import",
 			"origin": "derived"
 		}

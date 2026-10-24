@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 	let {
@@ -8,10 +10,13 @@
 	const source = $derived(deployment.sourceEnvironment ?? deployment.branch);
 </script>
 
-<span class="deployment-route" role="group" aria-label="From {source} to {deployment.environment}"
-	><span class="place" class:branch={!deployment.sourceEnvironment}>{source}</span>
-	<span class="arrow" aria-hidden="true">→</span>
-	<span class="place to">{deployment.environment}</span></span
+<hx-span
+	class="deployment-route"
+	role="group"
+	aria-label="From {source} to {deployment.environment}"
+	><hx-span class="place" class:branch={!deployment.sourceEnvironment}>{source}</hx-span>
+	<hx-span class="arrow" aria-hidden="true">→</hx-span>
+	<hx-span class="place to">{deployment.environment}</hx-span></hx-span
 >
 
 <style>

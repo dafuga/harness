@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts" module>
 	import type { ConfigCollection } from './ConfigValueTree.module.types';
 
@@ -41,48 +43,48 @@
 
 {#snippet shape(held: ConfigCollection)}
 	<HarnessIcon name={shapeIcon(held)} size={16} />
-	<span class="ex-note">{holds(held)}</span>
+	<hx-span class="ex-note">{holds(held)}</hx-span>
 {/snippet}
 
 <!-- An expression, or a collection whose entries are not listed, is shown as written. -->
 {#snippet contents(value: ConfigValueNode)}
 	{#if value.kind === 'expression' || (!value.entries.length && value.count !== 0)}
-		<code class="ex-value-code">{value.source}</code>
+		<hx-code class="ex-value-code">{value.source}</hx-code>
 	{:else if value.entries.length}
-		<ul class="ex-value-entries">
+		<hx-ul class="ex-value-entries">
 			{#each value.entries as entry, position (position)}
-				<li>{@render item(entry.name, entry.node)}</li>
+				<hx-li>{@render item(entry.name, entry.node)}</hx-li>
 			{/each}
-		</ul>
+		</hx-ul>
 	{/if}
 {/snippet}
 
 <!-- A collection with entries opens on request; anything else is one line under its key. -->
 {#snippet item(name: string, value: ConfigValueNode)}
 	{#if value.kind !== 'expression' && value.entries.length}
-		<details>
-			<summary class="ex-value-line"
-				><code class="ex-value-key">{name}</code> {@render shape(value)}</summary
+		<hx-details>
+			<hx-summary class="ex-value-line"
+				><hx-code class="ex-value-key">{name}</hx-code> {@render shape(value)}</hx-summary
 			>
-			<div class="ex-value-nested">{@render contents(value)}</div>
-		</details>
+			<hx-div class="ex-value-nested">{@render contents(value)}</hx-div>
+		</hx-details>
 	{:else}
-		<div class="ex-value-line">
-			<code class="ex-value-key">{name}</code>
+		<hx-div class="ex-value-line">
+			<hx-code class="ex-value-key">{name}</hx-code>
 			{#if value.kind !== 'expression'}{@render shape(value)}{/if}
 			{@render contents(value)}
-		</div>
+		</hx-div>
 	{/if}
 {/snippet}
 
-<section
+<hx-section
 	class="ex-value-tree"
 	aria-label="Value contents"
 	data-harness-component="explorer-ui-config-value-tree"
 >
-	{#if node.kind !== 'expression'}<p class="ex-value-line">{@render shape(node)}</p>{/if}
+	{#if node.kind !== 'expression'}<hx-p class="ex-value-line">{@render shape(node)}</hx-p>{/if}
 	{@render contents(node)}
-</section>
+</hx-section>
 
 <style>
 	/* The same raised panel as the source expression, so the two read as one value. */

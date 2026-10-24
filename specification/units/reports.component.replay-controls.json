@@ -6,6 +6,20 @@
 	"responsibility": "Provides playback, frame, scene, speed and fullscreen controls for an evidence replay.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.select",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-svg-path",
+			"reports.component.shared-primitives-atoms-svg-svg"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ReplayControls.svelte",
@@ -99,6 +113,46 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-svg",
 			"via": "import",
 			"origin": "derived"
 		},

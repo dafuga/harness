@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Row } from './EntityCases.types';
 
@@ -55,45 +57,47 @@
 
 <!-- Each input beside what was observed for it, or is documented to give; none says why. -->
 {#if view.gap !== undefined}
-	<p class="cases-note" data-harness-component="entity-cases">{view.gap}</p>
+	<hx-p class="cases-note" data-harness-component="entity-cases">{view.gap}</hx-p>
 {:else}
-	<div class="cases" class:documented data-harness-component="entity-cases">
-		{#if view.note}<p class="cases-note">{view.note}</p>{/if}
-		<table>
-			<thead>
-				<tr
-					><th scope="col">{documented ? 'Example' : 'Case'}</th><th scope="col">Input</th><th
-						scope="col">{verb} output</th
-					></tr
+	<hx-div class="cases" class:documented data-harness-component="entity-cases">
+		{#if view.note}<hx-p class="cases-note">{view.note}</hx-p>{/if}
+		<hx-table>
+			<hx-thead>
+				<hx-tr
+					><hx-th scope="col">{documented ? 'Example' : 'Case'}</hx-th><hx-th scope="col"
+						>Input</hx-th
+					><hx-th scope="col">{verb} output</hx-th></hx-tr
 				>
-			</thead>
-			<tbody>
+			</hx-thead>
+			<hx-tbody>
 				{#each view.rows as item, position (position)}
-					<tr>
-						<th scope="row">
+					<hx-tr>
+						<hx-th scope="row">
 							{item.name}
-							{#if item.description}<span class="case-description">{item.description}</span>{/if}
-						</th>
-						<td data-label="Input"
-							><div class="case-value">
+							{#if item.description}<hx-span class="case-description">{item.description}</hx-span
+								>{/if}
+						</hx-th>
+						<hx-td data-label="Input"
+							><hx-div class="case-value">
 								<RecordedValue value={item.input} {fullValuesLabel} {rowsLabel} />
-							</div></td
+							</hx-div></hx-td
 						>
-						<td data-label="{verb} output">
-							{#if item.failed}<span class="cases-error">{verb} error</span>{/if}
-							<div class="case-value">
+						<hx-td data-label="{verb} output">
+							{#if item.failed}<hx-span class="cases-error">{verb} error</hx-span>{/if}
+							<hx-div class="case-value">
 								<RecordedValue value={item.result} {fullValuesLabel} {rowsLabel} />
-							</div>
-						</td>
-					</tr>
+							</hx-div>
+						</hx-td>
+					</hx-tr>
 				{/each}
-			</tbody>
-		</table>
-		<details bind:open={expanded}>
-			<summary>{fullValuesLabel}</summary>
-			{#if expanded}<pre>{JSON.stringify(documented ? examples : document, null, 2)}</pre>{/if}
-		</details>
-	</div>
+			</hx-tbody>
+		</hx-table>
+		<hx-details bind:open={expanded}>
+			<hx-summary>{fullValuesLabel}</hx-summary>
+			{#if expanded}<hx-pre>{JSON.stringify(documented ? examples : document, null, 2)}</hx-pre
+				>{/if}
+		</hx-details>
+	</hx-div>
 {/if}
 
 <style>

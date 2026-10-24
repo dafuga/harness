@@ -6,6 +6,26 @@
 	"responsibility": "Own game documents, optimistic saves, runtime progress and checkpoint modal lifecycle.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.game-checkpoint-pane",
+			"desktop.component.game-graph",
+			"desktop.component.game-level-plan",
+			"desktop.component.game-mechanics",
+			"desktop.component.game-navigation-guard",
+			"desktop.component.game-preview",
+			"desktop.component.game-trace",
+			"desktop.component.game-view-fields",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/game-authoring/GameWorkspace.svelte",
@@ -79,6 +99,41 @@
 		},
 		{
 			"unit": "game.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		}

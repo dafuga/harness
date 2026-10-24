@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-selectedcontent",
+	"kind": "component",
+	"title": "HtmlSelectedcontent",
+	"responsibility": "Renders the native selectedcontent element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "selectedcontent",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/shared-primitives/atoms/HtmlSelectedcontent.svelte"
+		],
+		"symbols": ["HtmlSelectedcontent"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlSelectedcontent.attributes",
+				"type": "SvelteHTMLElements['selectedcontent']",
+				"description": "Native selectedcontent attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "HtmlSelectedcontent.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native selectedcontent element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlSelectedcontent",
+				"type": "markup",
+				"description": "The actual native selectedcontent element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlSelectedcontent.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlSelectedcontent.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

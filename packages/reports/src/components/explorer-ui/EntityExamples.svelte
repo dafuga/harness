@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { UnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';
 	import UsageExamples from '../shared-primitives/usage-examples/UsageExamples.svelte';
@@ -14,12 +16,12 @@
 
 {#if examples.length}
 	{#if setupTitle && !documentation?.setup}
-		<p class="ex-gap">How to create it is not documented at this commit.</p>
+		<hx-p class="ex-gap">How to create it is not documented at this commit.</hx-p>
 	{/if}
 	<UsageExamples {examples} setup={documentation?.setup} {setupTitle} />
 {:else}
-	<p class="ex-gap">No usage examples are documented at this commit.</p>
-	{#if documentation?.gap}<p class="ex-gap">{documentation.gap}</p>{/if}
+	<hx-p class="ex-gap">No usage examples are documented at this commit.</hx-p>
+	{#if documentation?.gap}<hx-p class="ex-gap">{documentation.gap}</hx-p>{/if}
 {/if}
 
 <style>

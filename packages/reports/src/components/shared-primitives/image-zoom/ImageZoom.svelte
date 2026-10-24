@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../atoms -->
 <script lang="ts">
 	import type { DragStart, Point } from './ImageZoom.types';
 	import { tick } from 'svelte';
@@ -80,32 +82,32 @@
 	}
 </script>
 
-<div class="zoom" data-harness-component="image-zoom">
-	<div class="zoom-bar" role="group" aria-label={$t('zoomControls')}>
-		<button
+<hx-div class="zoom" data-harness-component="image-zoom">
+	<hx-div class="zoom-bar" role="group" aria-label={$t('zoomControls')}>
+		<hx-button
 			class="step"
 			aria-label={$t('zoomOut')}
 			title={$t('zoomOut')}
 			aria-disabled={!zoomed}
-			onclick={zoomOut}>−</button
+			onclick={zoomOut}>−</hx-button
 		>
-		<output class="scale">{percent}</output>
-		<button
+		<hx-output class="scale">{percent}</hx-output>
+		<hx-button
 			class="step"
 			aria-label={$t('zoomIn')}
 			title={$t('zoomIn')}
 			aria-disabled={current >= MAX_SCALE - EPSILON}
-			onclick={zoomIn}>+</button
+			onclick={zoomIn}>+</hx-button
 		>
-		<button class:active={scale === 1} aria-pressed={scale === 1} onclick={() => zoomTo(1)}
-			>{$t('actualSize')}</button
+		<hx-button class:active={scale === 1} aria-pressed={scale === 1} onclick={() => zoomTo(1)}
+			>{$t('actualSize')}</hx-button
 		>
-		<button class:active={!zoomed} aria-pressed={!zoomed} onclick={() => zoomTo(null)}
-			>{$t('fitImage')}</button
+		<hx-button class:active={!zoomed} aria-pressed={!zoomed} onclick={() => zoomTo(null)}
+			>{$t('fitImage')}</hx-button
 		>
-	</div>
+	</hx-div>
 	<!-- svelte-ignore a11y_no_static_element_interactions, a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions focusable so keyboards can pan -->
-	<div
+	<hx-div
 		bind:this={stage}
 		use:trackpadZoom={pinchControls}
 		class="stage"
@@ -120,7 +122,7 @@
 		onpointerup={endDrag}
 		onpointercancel={endDrag}
 	>
-		<img
+		<hx-img
 			bind:this={image}
 			bind:clientWidth={renderedWidth}
 			{src}
@@ -129,9 +131,8 @@
 			style:width={scale === null ? null : `${naturalWidth * scale}px`}
 			onload={() => (naturalWidth = image?.naturalWidth ?? 0)}
 		/>
-	</div>
-</div>
-
+	</hx-div>
+</hx-div>
 <style>
 	.zoom {
 		--view-height: var(--hx-layout-zoom-view);

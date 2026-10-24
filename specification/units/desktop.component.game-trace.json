@@ -6,6 +6,17 @@
 	"responsibility": "Show the current game view checkpoint execution trace in a collapsible list.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-ol",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-summary"
+		]
+	},
 	"owns": {
 		"source": ["packages/desktop/src/components/game-authoring/GameTrace.svelte"],
 		"symbols": ["GameTrace"]
@@ -36,6 +47,36 @@
 	"dependencies": [
 		{
 			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
 			"via": "import",
 			"origin": "derived"
 		}

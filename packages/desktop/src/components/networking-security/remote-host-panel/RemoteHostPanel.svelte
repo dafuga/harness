@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { RemoteHost } from '../../../lib/stores/networking-security/remoteHost.svelte';
 	import { hostLine, hostSummary } from './remoteLabels';
@@ -22,22 +24,22 @@
 	);
 </script>
 
-{#if status}<section class="remote-connection" class:compact aria-label="Phone access">
-		{#if compact}<span>{hostSummary(status)}</span><button
+{#if status}<hx-section class="remote-connection" class:compact aria-label="Phone access">
+		{#if compact}<hx-span>{hostSummary(status)}</hx-span><hx-button
 				type="button"
 				aria-expanded={open}
 				aria-label="Manage phone access"
-				onclick={() => (open = !open)}>{open ? 'Close' : 'Manage'}</button
-			>{/if}{#if !compact || open}<div class="remote-body" class:remote-sheet={compact}>
-				{#if !status.supported}<span class="muted">{status.reason || unavailable}</span
-					>{:else if !status.enabled}<span>Phone access is off.</span>{#if status.reason}<small
-							class="remote-note">{status.reason}</small
-						>{/if}<button type="button" disabled={store.busy} onclick={() => void store.enable()}
-						>Turn on phone access</button
-					>{:else}<span>{hostLine(status)}</span
-					>{#if status.reason && status.state !== 'online'}<small class="remote-note"
-							>{status.reason}</small
-						>{/if}<small class="muted">{lockNote}</small>{#if scannable}<RemoteOfferCode
+				onclick={() => (open = !open)}>{open ? 'Close' : 'Manage'}</hx-button
+			>{/if}{#if !compact || open}<hx-div class="remote-body" class:remote-sheet={compact}>
+				{#if !status.supported}<hx-span class="muted">{status.reason || unavailable}</hx-span
+					>{:else if !status.enabled}<hx-span>Phone access is off.</hx-span
+					>{#if status.reason}<hx-small class="remote-note">{status.reason}</hx-small
+						>{/if}<hx-button type="button" disabled={store.busy} onclick={() => void store.enable()}
+						>Turn on phone access</hx-button
+					>{:else}<hx-span>{hostLine(status)}</hx-span
+					>{#if status.reason && status.state !== 'online'}<hx-small class="remote-note"
+							>{status.reason}</hx-small
+						>{/if}<hx-small class="muted">{lockNote}</hx-small>{#if scannable}<RemoteOfferCode
 							offer={scannable}
 							{store}
 						/>{/if}{#each status.requests as item (item.pairingId)}<RemoteApproval
@@ -45,14 +47,17 @@
 							projects={status.projects}
 							{store}
 						/>{/each}<RemoteDevices devices={status.devices} projects={status.projects} {store} />
-					<div class="remote-actions">
-						{#if !scannable}<button
+					<hx-div class="remote-actions">
+						{#if !scannable}<hx-button
 								type="button"
 								disabled={store.busy || status.state !== 'online'}
-								onclick={() => void store.createPairing()}>Pair a phone</button
-							>{/if}<button type="button" disabled={store.busy} onclick={() => void store.disable()}
-							>Turn off phone access</button
+								onclick={() => void store.createPairing()}>Pair a phone</hx-button
+							>{/if}<hx-button
+							type="button"
+							disabled={store.busy}
+							onclick={() => void store.disable()}>Turn off phone access</hx-button
 						>
-					</div>{/if}{#if store.error}<span class="error" role="alert">{store.error}</span>{/if}
-			</div>{/if}
-	</section>{/if}
+					</hx-div>{/if}{#if store.error}<hx-span class="error" role="alert">{store.error}</hx-span
+					>{/if}
+			</hx-div>{/if}
+	</hx-section>{/if}

@@ -11,6 +11,7 @@ export interface GenerateModelInput {
 }
 
 export interface GeneratePieceInput {
+	level?: 'molecule' | 'organism';
 	kind: PieceKind;
 	name: string;
 	force?: boolean;

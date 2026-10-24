@@ -6,6 +6,20 @@
 	"responsibility": "Lets a person switch between listed projects or open another local project.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.choice-dialog",
+			"desktop.component.icon",
+			"reports.component.select",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-optgroup",
+			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/project-switcher/ProjectSwitcher.svelte",
@@ -54,6 +68,36 @@
 		},
 		{
 			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-optgroup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		}

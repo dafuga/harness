@@ -6,6 +6,23 @@
 	"responsibility": "Finds the entity an address names, heads its screen with it, and says that the entity is missing where the revision does not hold it. Selected-helper Uses visibility follows only the selected callable; empty Uses tabs are omitted.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-entity-header",
+			"reports.component.harness-entity-link",
+			"reports.component.harness-entity-missing",
+			"reports.component.harness-entity-screens",
+			"reports.component.harness-explorer-frame",
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityFrame.svelte"],
 		"symbols": ["EntityFrame"]
@@ -67,6 +84,41 @@
 		},
 		{
 			"unit": "reports.component.harness-explorer-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
 		},

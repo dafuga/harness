@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Select from '$shared/Select.svelte';
@@ -55,44 +57,44 @@
 </script>
 
 {#if ready}
-	<form
+	<hx-form
 		class="game-create"
 		data-harness-component="game-create"
 		aria-label="New project"
 		aria-busy={busy}
 		onsubmit={submit}
 	>
-		<div class="intro wide">
-			<h2>New project</h2>
-			<small
+		<hx-div class="intro wide">
+			<hx-h2>New project</hx-h2>
+			<hx-small
 				>{ready
 					? 'An app or a game, created and opened on this device.'
-					: 'This desktop app cannot create projects yet.'}</small
+					: 'This desktop app cannot create projects yet.'}</hx-small
 			>
-		</div>
-		<label class="field wide">
-			<span class="caption">Name</span>
-			<input bind:value={name} name="name" required autocomplete="off" disabled={locked} />
-		</label>
-		<label class="field" class:wide={!game}>
-			<span class="caption">Project type</span>
+		</hx-div>
+		<hx-label class="field wide">
+			<hx-span class="caption">Name</hx-span>
+			<hx-input bind:value={name} name="name" required autocomplete="off" disabled={locked} />
+		</hx-label>
+		<hx-label class="field" class:wide={!game}>
+			<hx-span class="caption">Project type</hx-span>
 			<Select bind:value={kind} label="Project type" name="kind" disabled={locked}>
-				<option value="app">App</option>
-				<option value="game">Game</option>
+				<hx-option value="app">App</hx-option>
+				<hx-option value="game">Game</hx-option>
 			</Select>
-		</label>
-		{#if game}<label class="field">
-				<span class="caption">Dimension</span>
+		</hx-label>
+		{#if game}<hx-label class="field">
+				<hx-span class="caption">Dimension</hx-span>
 				<Select bind:value={dimension} label="Dimension" name="dimension" disabled={locked}>
-					<option value="2d">2D</option>
-					<option value="3d">3D</option>
+					<hx-option value="2d">2D</hx-option>
+					<hx-option value="3d">3D</hx-option>
 				</Select>
-			</label>{/if}
-		<button class="primary wide" type="submit" disabled={locked || !name.trim()}
-			>{busy ? 'Creating…' : 'Create project'}</button
+			</hx-label>{/if}
+		<hx-button class="primary wide" type="submit" disabled={locked || !name.trim()}
+			>{busy ? 'Creating…' : 'Create project'}</hx-button
 		>
-		{#if error}<p class="error wide" role="alert">{error}</p>{/if}
-	</form>
+		{#if error}<hx-p class="error wide" role="alert">{error}</hx-p>{/if}
+	</hx-form>
 {/if}
 
 <style>

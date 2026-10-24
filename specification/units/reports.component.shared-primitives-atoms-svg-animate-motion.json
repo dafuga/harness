@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-animate-motion",
+	"kind": "component",
+	"title": "SvgAnimateMotion",
+	"responsibility": "Renders the native animateMotion element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "animateMotion",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgAnimateMotion.svelte"],
+		"symbols": ["SvgAnimateMotion"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgAnimateMotion.attributes",
+				"type": "SvelteHTMLElements['animateMotion']",
+				"description": "Native animateMotion attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgAnimateMotion.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native animateMotion element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgAnimateMotion",
+				"type": "markup",
+				"description": "The actual native animateMotion element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgAnimateMotion.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgAnimateMotion.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

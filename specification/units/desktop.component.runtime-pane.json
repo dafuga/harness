@@ -6,6 +6,18 @@
 	"responsibility": "Shows one recorded screenshot or the reason its capture is unavailable.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.status-icon",
+			"reports.component.shared-primitives-atoms-html-figcaption",
+			"reports.component.shared-primitives-atoms-html-figure",
+			"reports.component.shared-primitives-atoms-html-img",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/RuntimePane.svelte",
@@ -54,6 +66,36 @@
 		},
 		{
 			"unit": "desktop.store.entity-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figcaption",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},

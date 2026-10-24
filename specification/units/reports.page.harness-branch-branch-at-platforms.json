@@ -6,6 +6,10 @@
 	"responsibility": "Opens the platform catalog at the selected branch and revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.explorer-ui-explorer-platforms", "reports.component.harness-screen"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/+page.svelte"

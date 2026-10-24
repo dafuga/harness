@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-picture",
+	"kind": "component",
+	"title": "HtmlPicture",
+	"responsibility": "Renders the native picture element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "picture",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlPicture.svelte"],
+		"symbols": ["HtmlPicture"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlPicture.attributes",
+				"type": "SvelteHTMLElements['picture']",
+				"description": "Native picture attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "HtmlPicture.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native picture element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlPicture",
+				"type": "markup",
+				"description": "The actual native picture element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlPicture.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlPicture.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-atoms-html-picture",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

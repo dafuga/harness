@@ -3,6 +3,7 @@ import type { ComponentManifest } from '../../../../core/development-tooling/uni
 export type Declared = Pick<
 	ComponentManifest,
 	| 'kind'
+	| 'composition'
 	| 'title'
 	| 'responsibility'
 	| 'responsibilityOrigin'

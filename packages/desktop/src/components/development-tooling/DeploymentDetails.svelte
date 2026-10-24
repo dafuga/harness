@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 	import { displayTime } from '../../utils/development-tooling/revisionTime';
@@ -16,51 +18,51 @@
 	const receipt = $derived(deployment.phase === 'complete' ? deployment.receipt : null);
 </script>
 
-{#snippet when(name: string, value: string | null)}{#if value}<div>
-			<dt>{name}</dt>
-			<dd><time datetime={value}>{displayTime(value)}</time></dd>
-		</div>{/if}{/snippet}
+{#snippet when(name: string, value: string | null)}{#if value}<hx-div>
+			<hx-dt>{name}</hx-dt>
+			<hx-dd><hx-time datetime={value}>{displayTime(value)}</hx-time></hx-dd>
+		</hx-div>{/if}{/snippet}
 
-<div class="deployment-details">
-	<div class="head">
-		{#if showIdentity}<h2>{deployment.environment} deployment</h2>{/if}
+<hx-div class="deployment-details">
+	<hx-div class="head">
+		{#if showIdentity}<hx-h2>{deployment.environment} deployment</hx-h2>{/if}
 		<DeploymentRoute {deployment} />
-	</div>
-	{#if showIdentity}<dl class="facts">
-			<div>
-				<dt>Project</dt>
-				<dd>{deployment.projectName}</dd>
-			</div>
-			<div>
-				<dt>Branch</dt>
-				<dd><code>{deployment.branch}</code></dd>
-			</div>
-			<div>
-				<dt>Commit</dt>
-				<dd><code>{deployment.commit}</code></dd>
-			</div>
+	</hx-div>
+	{#if showIdentity}<hx-dl class="facts">
+			<hx-div>
+				<hx-dt>Project</hx-dt>
+				<hx-dd>{deployment.projectName}</hx-dd>
+			</hx-div>
+			<hx-div>
+				<hx-dt>Branch</hx-dt>
+				<hx-dd><hx-code>{deployment.branch}</hx-code></hx-dd>
+			</hx-div>
+			<hx-div>
+				<hx-dt>Commit</hx-dt>
+				<hx-dd><hx-code>{deployment.commit}</hx-code></hx-dd>
+			</hx-div>
 			{@render when(
 				deployment.startedAt ? 'Started' : 'Queued',
 				deployment.startedAt ?? deployment.createdAt
 			)}
 			{@render when('Finished', deployment.finishedAt)}
-		</dl>{/if}
+		</hx-dl>{/if}
 	<DeploymentProgress {deployment} />
-	{#if receipt}<div class="receipt">
-			<h3>Verified receipt</h3>
-			<dl>
-				<div>
-					<dt>Deployment</dt>
-					<dd><code>{receipt.deploymentId}</code></dd>
-				</div>
-				<div>
-					<dt>Address</dt>
-					<dd>{receipt.url}</dd>
-				</div>
+	{#if receipt}<hx-div class="receipt">
+			<hx-h3>Verified receipt</hx-h3>
+			<hx-dl>
+				<hx-div>
+					<hx-dt>Deployment</hx-dt>
+					<hx-dd><hx-code>{receipt.deploymentId}</hx-code></hx-dd>
+				</hx-div>
+				<hx-div>
+					<hx-dt>Address</hx-dt>
+					<hx-dd>{receipt.url}</hx-dd>
+				</hx-div>
 				{@render when('Verified', receipt.updatedAt)}
-			</dl>
-		</div>{/if}
-</div>
+			</hx-dl>
+		</hx-div>{/if}
+</hx-div>
 
 <style>
 	.deployment-details {

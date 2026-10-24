@@ -26,6 +26,8 @@ import { groupedFiles, groupedExports, assertUniqueGroupedNames } from './groupe
 import { generationGroup, saveGenerationGroup } from './generationGroup';
 import { ModelDependencyService } from '../../../services/development-tooling/ModelDependencyService';
 import { separateTypeDeclarations } from '../../../templates/development-tooling/separateTypeDeclarations';
+import { atomicComponentFiles } from '../../../templates/development-tooling/atomicComponents';
+import { atomLibrary, useAtomLibrary } from './atomLibrary';
 
 export { scaffoldKinds };
 
@@ -58,6 +60,8 @@ export async function generateModel(input: GenerateModelInput): Promise<Generate
 }
 
 export async function generatePiece(input: GeneratePieceInput): Promise<GenerateResult> {
+	if (input.level && (!['molecule', 'organism'].includes(input.level) || input.kind !== 'component'))
+		fail('Use --level molecule or organism with the component scaffold.');
 	const root = input.root ?? process.cwd();
 	const name = validateCodeName(input.name);
 	const projectKind = await detectProjectKind(root);
@@ -69,8 +73,17 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const source = !['test', 'e2e', 'feature', 'migration'].includes(input.kind);
 	const selection = source ? generationGroup(root, input) : undefined;
 	const dimension = projectKind === 'game' ? await detectGameDimension(root) : undefined;
-	const grouped = groupedFiles(pieceFiles(input.kind, name, { dimension }), selection?.group.id);
-	const files = separateTypeDeclarations([...grouped.files, ...support]);
+	const planned = pieceFiles(input.kind, name, { dimension, level: input.level });
+	const ui = planned.some((file) => file.path.endsWith('.svelte'));
+	const library = ui ? atomLibrary(root) : 'src/components/atoms';
+	const pieces = useAtomLibrary(planned, library);
+	const grouped = groupedFiles(pieces, selection?.group.id);
+	const atoms =
+		library === 'src/components/atoms' &&
+		['component', 'view', 'layout', 'partial', 'resource'].includes(input.kind)
+			? atomicComponentFiles().filter((file) => !existsSync(join(root, file.path)))
+			: [];
+	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });

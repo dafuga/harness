@@ -6,6 +6,10 @@
 	"responsibility": "Shows a read-only source reader in the shared modal without changing the current address.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.modal", "reports.component.source-content"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/SourceDialog.svelte",

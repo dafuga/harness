@@ -1,0 +1,64 @@
+{
+	"schemaVersion": 1,
+	"id": "template.development-tooling-atomic-syntax",
+	"kind": "template",
+	"title": "atomicSyntax",
+	"responsibility": "Owns the atomicSyntax scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/development-tooling/atomicSyntax.js"],
+		"symbols": ["atomicSyntax", "walkAtomicMarkup"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "atomicSyntax.content",
+				"type": "unknown"
+			},
+			{
+				"name": "walkAtomicMarkup.node",
+				"type": "unknown"
+			},
+			{
+				"name": "walkAtomicMarkup.callback",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "atomicSyntax",
+				"type": "unknown"
+			},
+			{
+				"name": "walkAtomicMarkup",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "template.development-tooling-html-elements",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/development-tooling/atomicSyntax.js",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/development-tooling/atomicSyntax.js"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -6,6 +6,16 @@
 	"responsibility": "Opens the shared workspace shell in the Electron and iOS apps, over each runtime's bridge. Plan and Change appear only where a project allows agents at its writable tip.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"desktop.component.hosted-connection",
+			"desktop.component.project-gate",
+			"desktop.component.remote-connection",
+			"desktop.component.workspace-shell",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
 	"owns": {
 		"source": ["packages/desktop/src/routes/+page.svelte"],
 		"symbols": ["+page"]
@@ -79,6 +89,11 @@
 		},
 		{
 			"unit": "desktop.style.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -6,6 +6,15 @@
 	"responsibility": "Owns the /invite/[projectId]/[invitationId] route page.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"hub.component.hub-frame",
+			"hub.component.invite-accept",
+			"hub.component.login-panel",
+			"reports.component.shared-primitives-atoms-html-h1"
+		]
+	},
 	"owns": {
 		"source": ["packages/hub/src/routes/invite/[projectId]/[invitationId]/+page.svelte"],
 		"symbols": ["+page"]
@@ -39,6 +48,11 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
 			"via": "import",
 			"origin": "derived"
 		}

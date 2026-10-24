@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { HarnessGroupProps } from './HarnessGroup.types';
 	import HarnessIcon from './HarnessIcon.svelte';
@@ -23,13 +25,13 @@
 	});
 </script>
 
-<section
+<hx-section
 	class="hx-module-group {variant}"
 	aria-labelledby={`${id}-heading`}
 	data-harness-component="explorer-ui-harness-group"
 >
-	<svelte:element this={level === 3 ? 'h3' : 'h2'} id={`${id}-heading`} title={source}>
-		<button
+	<hx-element this={level === 3 ? 'h3' : 'h2'} id={`${id}-heading`} title={source}>
+		<hx-button
 			type="button"
 			aria-expanded={expanded}
 			aria-controls={`${id}-body`}
@@ -37,15 +39,15 @@
 		>
 			<HarnessIcon name={expanded ? 'chevron-down' : 'chevron-right'} size={18} />
 			{#if icon}<HarnessIcon name={icon} size={18} />{/if}
-			<span class="hx-group-title">{title}</span>
-			<span class="hx-group-count">{count}</span>
-		</button>
-	</svelte:element>
-	<div id={`${id}-body`} hidden={!expanded}>
-		{#if description}<p class="ex-soft">{description}</p>{/if}
+			<hx-span class="hx-group-title">{title}</hx-span>
+			<hx-span class="hx-group-count">{count}</hx-span>
+		</hx-button>
+	</hx-element>
+	<hx-div id={`${id}-body`} hidden={!expanded}>
+		{#if description}<hx-p class="ex-soft">{description}</hx-p>{/if}
 		{@render children()}
-	</div>
-</section>
+	</hx-div>
+</hx-section>
 
 <style>
 	.hx-module-group {

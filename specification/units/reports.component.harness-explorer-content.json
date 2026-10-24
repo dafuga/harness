@@ -6,6 +6,21 @@
 	"responsibility": "Shows any address of the explorer for a host without a page for each screen: picks the one screen entry the address is and draws nothing of its own.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-platforms",
+			"reports.component.explorer-ui-explorer-translations-screen",
+			"reports.component.harness-entity-behavior-screen",
+			"reports.component.harness-entity-config-screen",
+			"reports.component.harness-entity-details-screen",
+			"reports.component.harness-entity-history-screen",
+			"reports.component.harness-entity-visual-screen",
+			"reports.component.harness-explorer-catalog-screen",
+			"reports.component.harness-explorer-pages-screen",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/ExplorerContent.svelte",
@@ -135,6 +150,11 @@
 		},
 		{
 			"unit": "reports.component.harness-explorer-pages-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

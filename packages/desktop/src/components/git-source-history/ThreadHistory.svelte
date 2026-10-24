@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import ImageThumbnail from '../shared-primitives/ImageThumbnail.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -30,14 +32,15 @@
 	}
 </script>
 
-<details class="thread-history">
-	<summary>{entity.kind} history</summary>{#each entity.history as event (event.id)}<article>
-			<strong>{event.title}</strong><small>{event.at}</small>
-			<p>{event.detail}</p>
-		</article>{:else}<p class="muted">No entity history recorded.</p>{/each}
-</details>
-<div class="version-strip" aria-label="Entity image versions">
-	{#each entity.versions as item (item.version)}<button
+<hx-details class="thread-history">
+	<hx-summary>{entity.kind} history</hx-summary
+	>{#each entity.history as event (event.id)}<hx-article>
+			<hx-strong>{event.title}</hx-strong><hx-small>{event.at}</hx-small>
+			<hx-p>{event.detail}</hx-p>
+		</hx-article>{:else}<hx-p class="muted">No entity history recorded.</hx-p>{/each}
+</hx-details>
+<hx-div class="version-strip" aria-label="Entity image versions">
+	{#each entity.versions as item (item.version)}<hx-button
 			class:active={version === item.version}
 			onclick={() => select(item.version)}
 			>{#if thumbnail(item) && !headless}<ImageThumbnail
@@ -46,8 +49,8 @@
 					version={item.version}
 					sha256={thumbnail(item)!.sha256}
 					title={`${entity.title} ${item.version}`}
-				/>{/if}{item.version}<small
-				>{item.approval ? approvedLabel(item) : headless ? 'Plan' : 'Design'}</small
-			></button
+				/>{/if}{item.version}<hx-small
+				>{item.approval ? approvedLabel(item) : headless ? 'Plan' : 'Design'}</hx-small
+			></hx-button
 		>{/each}
-</div>
+</hx-div>

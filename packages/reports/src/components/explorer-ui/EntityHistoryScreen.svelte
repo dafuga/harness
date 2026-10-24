@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import EntityFrame from './EntityFrame.svelte';
@@ -7,7 +9,7 @@
 
 <!-- The history of an entity of any kind, through the shown commit. The marker of the screen
 	draws no box. -->
-<div class="ex-screen" data-harness-component="harness-entity-history-screen">
+<hx-div class="ex-screen" data-harness-component="harness-entity-history-screen">
 	<EntityFrame {host}>
 		{#snippet children(entity, nav)}
 			<!-- A history belongs to one entity at one commit; another one starts from nothing read. -->
@@ -24,7 +26,7 @@
 			{/key}
 		{/snippet}
 	</EntityFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-screen {

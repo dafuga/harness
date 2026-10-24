@@ -6,6 +6,17 @@
 	"responsibility": "Hosts the shared desktop-style workspace in the browser without local-folder access.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.workspace-shell",
+			"hub.component.account-menu",
+			"hub.component.hub-frame",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/hub/src/components/HostedWorkspace.svelte",
@@ -68,6 +79,21 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
 		}

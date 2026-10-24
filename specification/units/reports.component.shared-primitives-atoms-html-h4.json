@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-h4",
+	"kind": "component",
+	"title": "HtmlH4",
+	"responsibility": "Renders the native h4 element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "h4",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlH4.svelte"],
+		"symbols": ["HtmlH4"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlH4.attributes",
+				"type": "SvelteHTMLElements['h4']",
+				"description": "Native h4 attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "HtmlH4.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native h4 element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlH4",
+				"type": "markup",
+				"description": "The actual native h4 element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlH4.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlH4.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-atoms-html-h4",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

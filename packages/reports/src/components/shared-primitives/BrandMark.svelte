@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms atoms -->
 <script lang="ts">
 	import { brandGrid, brandTiles } from '../../utils/development-tooling/brandMark';
 	/**
@@ -7,7 +9,7 @@
 	let { size = '1em', label = '' }: { size?: number | string; label?: string } = $props();
 </script>
 
-<svg
+<hx-svg
 	class="brand-tiles"
 	viewBox="0 0 {brandGrid} {brandGrid}"
 	width={size}
@@ -18,12 +20,12 @@
 	role={label ? 'img' : undefined}
 	aria-label={label || undefined}
 	aria-hidden={label ? undefined : 'true'}
-	>{#each brandTiles as item (item.id)}<rect
+	>{#each brandTiles as item (item.id)}<hx-svg-rect
 			x={item.x}
 			y={item.y}
 			width={item.size}
 			height={item.size}
-		/>{/each}</svg
+		/>{/each}</hx-svg
 >
 
 <style>

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { MechanicDefinition } from '../../../../game/src/index';
 	import GameTextField from './GameTextField.svelte';
@@ -37,69 +39,69 @@
 	}
 </script>
 
-<section class="mechanics" data-harness-component="game-mechanics">
-	<header>
-		<div>
-			<h2>Mechanics</h2>
-			<p>Rules the game follows in every view. Editing them never changes the checkpoints.</p>
-		</div>
-		{#if !readonly}<button type="button" class="gold" onclick={add}>Add mechanic</button>{/if}
-	</header>
+<hx-section class="mechanics" data-harness-component="game-mechanics">
+	<hx-header>
+		<hx-div>
+			<hx-h2>Mechanics</hx-h2>
+			<hx-p>Rules the game follows in every view. Editing them never changes the checkpoints.</hx-p>
+		</hx-div>
+		{#if !readonly}<hx-button type="button" class="gold" onclick={add}>Add mechanic</hx-button>{/if}
+	</hx-header>
 	{#if mechanics.length === 0}
-		<p class="empty">No mechanics yet.</p>
+		<hx-p class="empty">No mechanics yet.</hx-p>
 	{/if}
-	<ol>
+	<hx-ol>
 		{#each mechanics as mechanic, index (index)}
-			<li>
-				<div class="head">
-					<label class="title">
-						<span>Title</span>
-						<input
+			<hx-li>
+				<hx-div class="head">
+					<hx-label class="title">
+						<hx-span>Title</hx-span>
+						<hx-input
 							value={mechanic.title}
 							{readonly}
 							oninput={(event) => update(index, { title: event.currentTarget.value })}
 						/>
-					</label>
-					<code>{mechanic.id}</code>
+					</hx-label>
+					<hx-code>{mechanic.id}</hx-code>
 					{#if !readonly}
-						<button type="button" onclick={() => remove(index)}>
-							Remove <span class="sr">{mechanic.title}</span>
-						</button>
+						<hx-button type="button" onclick={() => remove(index)}>
+							Remove <hx-span class="sr">{mechanic.title}</hx-span>
+						</hx-button>
 					{/if}
-				</div>
-				<label>
-					<span>Description</span>
-					<textarea
+				</hx-div>
+				<hx-label>
+					<hx-span>Description</hx-span>
+					<hx-textarea
 						rows="2"
 						value={mechanic.description}
 						{readonly}
 						oninput={(event) => update(index, { description: event.currentTarget.value })}
-					></textarea>
-				</label>
-				<div class="contract">
-					<label>
-						<span>Inputs</span>
+					></hx-textarea>
+				</hx-label>
+				<hx-div class="contract">
+					<hx-label>
+						<hx-span>Inputs</hx-span>
 						<GameTextField
 							value={mechanic.inputs.join(', ')}
 							placeholder="x, y, choice"
 							{readonly}
 							change={(text) => update(index, { inputs: names(text) })}
 						/>
-					</label>
-					<label>
-						<span>Events</span>
+					</hx-label>
+					<hx-label>
+						<hx-span>Events</hx-span>
 						<GameTextField
 							value={mechanic.events.join(', ')}
 							placeholder="key-collected"
 							{readonly}
 							change={(text) => update(index, { events: names(text) })}
 						/>
-					</label>
-				</div>
-			</li>
+					</hx-label>
+				</hx-div>
+			</hx-li>
 		{/each}
-	</ol>
-</section>
+	</hx-ol>
+</hx-section>
 
 <style>
 	.mechanics {

@@ -22,6 +22,7 @@ export async function generateUnit(input: GenerateUnitInput): Promise<GenerateRe
 		force: input.force,
 		root,
 		group: input.group,
+		level: input.level,
 		responsibility: input.responsibility
 	});
 	const loaded = await loadUnits(root);

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HarnessNavbarInput } from '../../utils/explorer-ui/harnessShell';
@@ -22,9 +24,9 @@
 </script>
 
 <!-- The frame of every explorer page: the bar and its notices above the column a page fills. -->
-<div class="hx-shell" data-harness-component="explorer-ui-explorer-layout">
+<hx-div class="hx-shell" data-harness-component="explorer-ui-explorer-layout">
 	<HarnessHeader {base} {problem} {missing} {navbar} />
-	<main class="hx-main">
+	<hx-main class="hx-main">
 		{@render children()}
-	</main>
-</div>
+	</hx-main>
+</hx-div>

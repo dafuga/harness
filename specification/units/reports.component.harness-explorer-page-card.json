@@ -6,6 +6,10 @@
 	"responsibility": "Legacy visual card entry delegating every catalog and relationship rendering to ExplorerModuleCard.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.explorer-ui-explorer-module-card"]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/ExplorerPageCard.svelte"],
 		"symbols": ["ExplorerPageCard"]

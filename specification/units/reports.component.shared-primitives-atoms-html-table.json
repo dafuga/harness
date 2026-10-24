@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-table",
+	"kind": "component",
+	"title": "HtmlTable",
+	"responsibility": "Renders the native table element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "table",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte"],
+		"symbols": ["HtmlTable"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlTable.attributes",
+				"type": "SvelteHTMLElements['table']",
+				"description": "Native table attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "HtmlTable.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native table element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlTable",
+				"type": "markup",
+				"description": "The actual native table element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-atoms-html-table",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

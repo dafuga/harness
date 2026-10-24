@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.entry.atomic-elements-d",
+	"kind": "entry",
+	"title": "atomic-elements",
+	"responsibility": "Owns the atomic-elements entry point.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/atoms/native-elements.d.ts"
+		],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/atoms/native-elements.d.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/atoms/native-elements.d.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import BrandMark from '$shared/BrandMark.svelte';
 	import type { Snippet } from 'svelte';
@@ -31,26 +33,26 @@
 	});
 </script>
 
-<main class="project-gate">
-	<div class="brand-mark"><BrandMark /></div>
-	<h1>Harness</h1>
-	<p>Understand your project. Design what comes next.</p>
-	{#if local}<button class="primary" disabled={!available || busy} onclick={open}
-			>Open Project</button
+<hx-main class="project-gate">
+	<hx-div class="brand-mark"><BrandMark /></hx-div>
+	<hx-h1>Harness</hx-h1>
+	<hx-p>Understand your project. Design what comes next.</hx-p>
+	{#if local}<hx-button class="primary" disabled={!available || busy} onclick={open}
+			>Open Project</hx-button
 		>{/if}
-	<p class="muted">{hint}</p>
+	<hx-p class="muted">{hint}</hx-p>
 	<!-- A new project is made on this device, so a phone or a browser preview offers none. -->
 	{#if available && local}<GameCreate />{/if}
-	{#if projects.length}<section class="recent-projects" aria-label="Recent projects">
-			<h2>Recent projects</h2>
-			{#each projects as item (item.id)}<button
+	{#if projects.length}<hx-section class="recent-projects" aria-label="Recent projects">
+			<hx-h2>Recent projects</hx-h2>
+			{#each projects as item (item.id)}<hx-button
 					type="button"
 					disabled={busy}
 					aria-label={`Open ${item.name}`}
 					onclick={() => choose(item.id)}
-					><strong>{item.name}</strong><small
-						>{item.kind === 'shared' ? 'Shared project' : item.root || place}</small
-					></button
+					><hx-strong>{item.name}</hx-strong><hx-small
+						>{item.kind === 'shared' ? 'Shared project' : item.root || place}</hx-small
+					></hx-button
 				>{/each}
-		</section>{/if}{@render children?.()}
-</main>
+		</hx-section>{/if}{@render children?.()}
+</hx-main>

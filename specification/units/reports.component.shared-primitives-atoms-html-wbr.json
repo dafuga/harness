@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-wbr",
+	"kind": "component",
+	"title": "HtmlWbr",
+	"responsibility": "Renders the native wbr element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "wbr",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlWbr.svelte"],
+		"symbols": ["HtmlWbr"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlWbr.attributes",
+				"type": "SvelteHTMLElements['wbr']",
+				"description": "Native wbr attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlWbr",
+				"type": "markup",
+				"description": "The actual native wbr element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlWbr.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlWbr.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

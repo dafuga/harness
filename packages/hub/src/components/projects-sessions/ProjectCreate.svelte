@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import { resolve } from '$app/paths';
@@ -47,41 +49,41 @@
 	}
 </script>
 
-<section class="hub-card">
-	<h2>New shared project</h2>
-	{#if !github}<p class="muted">{error || 'Checking the GitHub connection…'}</p>
-	{:else if !github.configured}<p>
+<hx-section class="hub-card">
+	<hx-h2>New shared project</hx-h2>
+	{#if !github}<hx-p class="muted">{error || 'Checking the GitHub connection…'}</hx-p>
+	{:else if !github.configured}<hx-p>
 			The GitHub App is not configured for this deployment, so no project can be created here.
-		</p>{:else if !github.connected}<p>
+		</hx-p>{:else if !github.connected}<hx-p>
 			A project shares one GitHub repository. Connect GitHub first. The server checks that you
 			administer the repository; nothing typed on this page proves access.
-		</p>
-		<a
+		</hx-p>
+		<hx-a
 			class="outline gold"
 			href={resolve('/api/[...path]', { path: 'github/connect' })}
-			data-sveltekit-reload>Connect GitHub</a
-		>{:else}<form
+			data-sveltekit-reload>Connect GitHub</hx-a
+		>{:else}<hx-form
 			class="hub-form"
 			onsubmit={(event) => {
 				event.preventDefault();
 				void create();
 			}}
 		>
-			<label
+			<hx-label
 				>Repository<Select label="Repository" bind:value={repository} required
-					><option value="">Choose a repository</option
-					>{#each repositories as item (item.id)}<option value={String(item.id)}
-							>{item.owner}/{item.name}</option
+					><hx-option value="">Choose a repository</hx-option
+					>{#each repositories as item (item.id)}<hx-option value={String(item.id)}
+							>{item.owner}/{item.name}</hx-option
 						>{/each}</Select
-				></label
-			><label>Project name<input bind:value={name} required maxlength="80" /></label>
-			<button class="primary" disabled={saving || !repository || !name.trim()}
-				>Create project</button
+				></hx-label
+			><hx-label>Project name<hx-input bind:value={name} required maxlength="80" /></hx-label>
+			<hx-button class="primary" disabled={saving || !repository || !name.trim()}
+				>Create project</hx-button
 			>
-			<small
+			<hx-small
 				>Connected as {github.login}. The server checks again that you administer the repository.{truncated
 					? ' Only the first repositories are listed.'
-					: ''}</small
-			>{#if error}<p class="error" role="alert">{error}</p>{/if}
-		</form>{/if}
-</section>
+					: ''}</hx-small
+			>{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+		</hx-form>{/if}
+</hx-section>

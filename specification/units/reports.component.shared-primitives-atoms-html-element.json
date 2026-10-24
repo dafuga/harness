@@ -1,0 +1,68 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-element",
+	"kind": "component",
+	"title": "HtmlElement",
+	"responsibility": "Renders the native element selected by its this property without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "svelte:element",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlElement.svelte"],
+		"symbols": ["HtmlElement"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlElement.attributes",
+				"type": "SvelteHTMLElements['div']",
+				"description": "Native selected-element attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "HtmlElement.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native selected element; native HTML content rules still apply."
+			},
+			{
+				"name": "HtmlElement.this",
+				"type": "string",
+				"description": "Native element tag selected by the caller; the direct component defaults to div."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlElement",
+				"type": "markup",
+				"description": "The actual native selected element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlElement.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlElement.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-atoms-html-element",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -3,4 +3,5 @@ export interface UnitFlags {
 	responsibility?: string;
 	force?: boolean;
 	group?: string;
+	level?: 'molecule' | 'organism';
 }

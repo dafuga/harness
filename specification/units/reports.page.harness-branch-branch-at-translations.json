@@ -6,6 +6,13 @@
 	"responsibility": "Opens the translation comparison screen within the selected branch or commit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"reports.component.explorer-ui-explorer-translations-screen",
+			"reports.component.harness-screen"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/harness/branch/[branch]/[...at]/translations/+page.svelte"

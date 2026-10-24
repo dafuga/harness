@@ -6,6 +6,10 @@
 	"responsibility": "Draws the modular Harness H using the surrounding text color.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": []
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/BrandMark.svelte",

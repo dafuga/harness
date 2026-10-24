@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "template.development-tooling-atomic-preprocess-d",
+	"kind": "template",
+	"title": "atomicPreprocess",
+	"responsibility": "Owns the atomicPreprocess scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/development-tooling/atomicPreprocess.d.ts"],
+		"symbols": ["atomicComponents"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "atomicComponents.options",
+				"type": "{ aliases?: Record<string, string> }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "atomicComponents",
+				"type": "PreprocessorGroup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/development-tooling/atomicPreprocess.d.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/development-tooling/atomicPreprocess.d.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -6,6 +6,13 @@
 	"responsibility": "Offers a labeled group of string-valued choices.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/SegmentedChoice.svelte",
@@ -41,7 +48,18 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte",

@@ -6,6 +6,21 @@
 	"responsibility": "Shows the selected branch, commit or environment with its update time and opens revision choices.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.choice-dialog",
+			"desktop.component.icon",
+			"reports.component.select",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-time"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/RevisionPicker.svelte",
@@ -54,6 +69,41 @@
 		},
 		{
 			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-time",
 			"via": "import",
 			"origin": "derived"
 		},

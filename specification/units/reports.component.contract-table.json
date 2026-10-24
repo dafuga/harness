@@ -6,6 +6,10 @@
 	"responsibility": "Display typed contract fields and examples with accessible detail controls.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.harness-harness-icon"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ContractTable.svelte",

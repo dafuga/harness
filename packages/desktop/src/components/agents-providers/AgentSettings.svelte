@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import { onMount } from 'svelte';
@@ -7,27 +9,28 @@
 	onMount(() => agentSettings.load());
 </script>
 
-<section class="agent-settings" data-harness-component="agent-settings">
-	<h2>Agents</h2>
-	<label class="agent-setting">
-		<span>Design options</span>
+<hx-section class="agent-settings" data-harness-component="agent-settings">
+	<hx-h2>Agents</hx-h2>
+	<hx-label class="agent-setting">
+		<hx-span>Design options</hx-span>
 		<Select
 			label="Design options"
 			bind:value={
 				() => String(agentSettings.designOptions),
 				(value) => agentSettings.setDesignOptions(Number(value))
 			}
-			>{#each designCounts as item (item)}<option value={String(item)}
-					>{item} {item === 1 ? 'design' : 'designs'}</option
+			>{#each designCounts as item (item)}<hx-option value={String(item)}
+					>{item} {item === 1 ? 'design' : 'designs'}</hx-option
 				>{/each}</Select
 		>
-	</label>
-	<small>How many designs a Plan of a page, shell or component asks for. Kept on this device.</small
+	</hx-label>
+	<hx-small
+		>How many designs a Plan of a page, shell or component asks for. Kept on this device.</hx-small
 	>
-	{#if !agentSettings.saved}<p class="agent-settings-error" role="alert">
+	{#if !agentSettings.saved}<hx-p class="agent-settings-error" role="alert">
 			Not saved; this choice resets when the page reloads.
-		</p>{/if}
-</section>
+		</hx-p>{/if}
+</hx-section>
 
 <style>
 	.agent-settings {

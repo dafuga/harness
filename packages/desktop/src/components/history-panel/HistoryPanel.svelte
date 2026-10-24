@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import CategoryImplementation from '../git-source-history/history-panel/HistoryPanel.svelte';
 	import type { ComponentProps } from 'svelte';

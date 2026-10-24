@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-fe-spot-light",
+	"kind": "component",
+	"title": "SvgFeSpotLight",
+	"responsibility": "Renders the native feSpotLight element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "feSpotLight",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgFeSpotLight.svelte"],
+		"symbols": ["SvgFeSpotLight"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgFeSpotLight.attributes",
+				"type": "SvelteHTMLElements['feSpotLight']",
+				"description": "Native feSpotLight attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgFeSpotLight.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native feSpotLight element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgFeSpotLight",
+				"type": "markup",
+				"description": "The actual native feSpotLight element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeSpotLight.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeSpotLight.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

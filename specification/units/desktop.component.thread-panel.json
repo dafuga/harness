@@ -6,6 +6,24 @@
 	"responsibility": "Coordinates an entity conversation, comments, agent requests, selected design and approval controls.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.approval-button",
+			"desktop.component.composer",
+			"desktop.component.message-list",
+			"desktop.component.reference-text",
+			"desktop.component.run-status",
+			"desktop.component.thread-history",
+			"desktop.component.thread-links",
+			"reports.component.shared-primitives-atoms-html-aside",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
@@ -134,6 +152,36 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-aside",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

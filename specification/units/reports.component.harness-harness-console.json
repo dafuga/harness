@@ -6,6 +6,15 @@
 	"responsibility": "Loads recorded repository revisions and supplies the selected explorer screen with navigation, entities and evidence.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-loading-state",
+			"reports.layout.explorer-layout"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/HarnessConsole.svelte",
@@ -68,6 +77,16 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -6,12 +6,30 @@
 	"responsibility": "Keeps a round chat bubble visible and opens a compact conversation with keyboard focus and Escape support.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-harness-icon",
+			"reports.component.shared-primitives-atoms-html-aside",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-svg-path",
+			"reports.component.shared-primitives-atoms-svg-svg"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/FloatingChat.svelte",
-			"packages/reports/src/components/planning-collaboration/FloatingChat.svelte"
+			"packages/reports/src/components/planning-collaboration/FloatingChat.svelte",
+			"packages/reports/src/components/planning-collaboration/floating-chat/floatingChat.css"
 		],
-		"symbols": ["FloatingChat", "FloatingChat"]
+		"symbols": [
+			"FloatingChat",
+			"FloatingChat"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -20,37 +38,49 @@
 				"name": "FloatingChat.open",
 				"type": "boolean",
 				"description": "Bindable panel visibility; closing preserves the mounted conversation.",
-				"examples": [false]
+				"examples": [
+					false
+				]
 			},
 			{
 				"name": "FloatingChat.label",
 				"type": "string",
 				"description": "Accessible name of the round launcher.",
-				"examples": ["Work with agent"]
+				"examples": [
+					"Work with agent"
+				]
 			},
 			{
 				"name": "FloatingChat.panelLabel",
 				"type": "string",
 				"description": "Accessible name of the conversation panel.",
-				"examples": ["Project agent"]
+				"examples": [
+					"Project agent"
+				]
 			},
 			{
 				"name": "FloatingChat.title",
 				"type": "string",
 				"description": "Short heading at the top of the panel.",
-				"examples": ["Project chat"]
+				"examples": [
+					"Project chat"
+				]
 			},
 			{
 				"name": "FloatingChat.notice",
 				"type": "string",
 				"description": "Current capability or connection explanation below the heading.",
-				"examples": ["Ask a question, plan a design, or request a code change."]
+				"examples": [
+					"Ask a question, plan a design, or request a code change."
+				]
 			},
 			{
 				"name": "FloatingChat.children",
 				"type": "Snippet",
 				"description": "Conversation and input rendered inside the panel as a Svelte snippet.",
-				"examples": ["{#snippet children()}<p>No messages yet.</p>{/snippet}"]
+				"examples": [
+					"{#snippet children()}<p>No messages yet.</p>{/snippet}"
+				]
 			}
 		],
 		"outputs": [
@@ -58,7 +88,9 @@
 				"name": "FloatingChat",
 				"type": "markup",
 				"description": "A fixed round launcher and an optional keyboard-accessible conversation panel.",
-				"examples": ["<button aria-expanded=\"false\" aria-label=\"Work with agent\">…</button>"]
+				"examples": [
+					"<button aria-expanded=\"false\" aria-label=\"Work with agent\">…</button>"
+				]
 			}
 		],
 		"errors": []
@@ -66,6 +98,46 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-aside",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-svg",
 			"via": "import",
 			"origin": "derived"
 		}
@@ -80,7 +152,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": [
+		"agent-references"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

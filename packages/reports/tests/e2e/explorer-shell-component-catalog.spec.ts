@@ -14,6 +14,7 @@ import {
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
 import { assertComponentCapture } from './support/component-previews/previewCaptureAssertions';
+import { assertCompositionFilter } from './support/component-previews/atomicCatalog';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 test.beforeAll(async () => {
@@ -104,6 +105,7 @@ for (const viewport of catalogViewports) {
 				await expect(component.locator('tbody tr')).toHaveCount(50);
 			}
 			if (unit.id === 'reports.component.harness-explorer-index') {
+				await assertCompositionFilter(component);
 				await expect(
 					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
 					'Catalogs omit the proof legend'

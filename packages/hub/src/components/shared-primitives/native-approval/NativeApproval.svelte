@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { browserAuth } from '../../../utils/accounts-access/browserAuth';
@@ -43,44 +45,44 @@
 	}
 </script>
 
-<section class="hub-card">
-	{#if framed}<p>Open this page in its own browser tab to approve a device.</p>
-	{:else if done}<h2>Approved</h2>
-		<p role="status">
+<hx-section class="hub-card">
+	{#if framed}<hx-p>Open this page in its own browser tab to approve a device.</hx-p>
+	{:else if done}<hx-h2>Approved</hx-h2>
+		<hx-p role="status">
 			Return to your Harness device; it connects within a few seconds. Signing out here also
 			disconnects it.
-		</p>{:else if request === 'reading'}<p class="muted">Reading the request…</p>
-	{:else if request === 'expired'}<h2>This request has expired</h2>
-		<p>Start again on your Harness device to get a new code.</p>
-	{:else if request === 'approved'}<h2>This request was already approved</h2>
-		<p>Nothing more is needed here.</p>
-	{:else}<h2>A Harness device asks to connect</h2>
-		<p>
-			It asks to open <strong>{scope}</strong> as {session.actor?.email}. Your project role controls
-			access: readers can view, commenters can also comment, and writers can ask agents to make
-			changes.
-		</p>
-		<p>
+		</hx-p>{:else if request === 'reading'}<hx-p class="muted">Reading the request…</hx-p>
+	{:else if request === 'expired'}<hx-h2>This request has expired</hx-h2>
+		<hx-p>Start again on your Harness device to get a new code.</hx-p>
+	{:else if request === 'approved'}<hx-h2>This request was already approved</hx-h2>
+		<hx-p>Nothing more is needed here.</hx-p>
+	{:else}<hx-h2>A Harness device asks to connect</hx-h2>
+		<hx-p>
+			It asks to open <hx-strong>{scope}</hx-strong> as {session.actor?.email}. Your project role
+			controls access: readers can view, commenters can also comment, and writers can ask agents to
+			make changes.
+		</hx-p>
+		<hx-p>
 			Approve only what you started yourself on your own Harness device just now. Never type a code
 			that someone sent you.
-		</p>
-		<form
+		</hx-p>
+		<hx-form
 			class="hub-form"
 			onsubmit={(event) => {
 				event.preventDefault();
 				void approve();
 			}}
 		>
-			<label
-				>Code shown on your Harness device<input
+			<hx-label
+				>Code shown on your Harness device<hx-input
 					bind:value={code}
 					required
 					autocomplete="off"
 					autocapitalize="characters"
 					spellcheck="false"
-				/></label
+				/></hx-label
 			>
-			<button class="primary" disabled={busy || !code.trim()}>Approve this device</button>
-			{#if error}<p class="error" role="alert">{error}</p>{/if}
-		</form>{/if}
-</section>
+			<hx-button class="primary" disabled={busy || !code.trim()}>Approve this device</hx-button>
+			{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+		</hx-form>{/if}
+</hx-section>

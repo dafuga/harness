@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Card } from "./ExplorerPlatforms.types";
+	import type { Card } from './ExplorerPlatforms.types';
 
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
@@ -71,45 +73,47 @@
 		filter.search = '';
 		status = 'all';
 	}
-
 </script>
 
 {#snippet statusFilter()}
-	<label class="filter-field"
-		><span>Status</span>
+	<hx-label class="filter-field"
+		><hx-span>Status</hx-span>
 		<Select label="Status filter" bind:value={status}>
-			{#each statuses as [id, text] (id)}<option value={id}>{text}</option>{/each}
+			{#each statuses as [id, text] (id)}<hx-option value={id}>{text}</hx-option>{/each}
 		</Select>
-	</label>
+	</hx-label>
 {/snippet}
 
 <!-- The whole card opens its platform; the one link in it is the platform's name. -->
 {#snippet platformCard(card: Card, nav: EntityNav)}
-	<article class="pf-card">
-		<header class="pf-card-head">
-			<span class="ex-tile small"><HarnessIcon name={card.icon} size={22} /></span>
-			<h2>
+	<hx-article class="pf-card">
+		<hx-header class="pf-card-head">
+			<hx-span class="ex-tile small"><HarnessIcon name={card.icon} size={22} /></hx-span>
+			<hx-h2>
 				<EntityLink to={at(card.id)} {nav} class="pf-open" label={`View ${card.name} configuration`}
 					>{card.name}</EntityLink
 				>
-			</h2>
-			<span class="pf-chevron"><HarnessIcon name="chevron-right" size={18} /></span>
-		</header>
-		<p class="pf-summary">
+			</hx-h2>
+			<hx-span class="pf-chevron"><HarnessIcon name="chevron-right" size={18} /></hx-span>
+		</hx-header>
+		<hx-p class="pf-summary">
 			{card.entry?.summary ?? `Nothing is declared for ${card.name} at this revision.`}
-		</p>
-		<dl class="pf-facts">
-			<div>
-				<dt>Status</dt>
-				<dd><span class="pf-status" data-status={card.status.id}>{card.status.label}</span></dd>
-			</div>
-			<div>
-				<dt>Runtime</dt>
-				<dd>{card.entry?.runtime ?? 'Not recorded'}</dd>
-			</div>
-		</dl>
-		{#if card.tally}<p class="pf-tally">{card.tally}</p>{/if}
-	</article>
+		</hx-p>
+		<hx-dl class="pf-facts">
+			<hx-div>
+				<hx-dt>Status</hx-dt>
+				<hx-dd
+					><hx-span class="pf-status" data-status={card.status.id}>{card.status.label}</hx-span
+					></hx-dd
+				>
+			</hx-div>
+			<hx-div>
+				<hx-dt>Runtime</hx-dt>
+				<hx-dd>{card.entry?.runtime ?? 'Not recorded'}</hx-dd>
+			</hx-div>
+		</hx-dl>
+		{#if card.tally}<hx-p class="pf-tally">{card.tally}</hx-p>{/if}
+	</hx-article>
 {/snippet}
 
 <!-- The platforms are settings of the selected revision, read whether or not it has a registry. -->
@@ -118,42 +122,46 @@
 		{#if host.route.entity}
 			<ExplorerPlatformDetails {host} {nav} />
 		{:else}
-			<section class="ex-index" aria-labelledby="pf-title">
-				<nav class="ex-crumbs" aria-label="Breadcrumb">
-					<ol>
-						<li><HarnessIcon name={categoryIcon.platforms} size={18} /></li>
-						<li aria-current="page">{label.title}</li>
-					</ol>
-				</nav>
-				<h1 id="pf-title">{label.title}</h1>
-				<p class="ex-lead">{label.subtitle}</p>
-				<p class="ex-soft">
+			<hx-section class="ex-index" aria-labelledby="pf-title">
+				<hx-nav class="ex-crumbs" aria-label="Breadcrumb">
+					<hx-ol>
+						<hx-li><HarnessIcon name={categoryIcon.platforms} size={18} /></hx-li>
+						<hx-li aria-current="page">{label.title}</hx-li>
+					</hx-ol>
+				</hx-nav>
+				<hx-h1 id="pf-title">{label.title}</hx-h1>
+				<hx-p class="ex-lead">{label.subtitle}</hx-p>
+				<hx-p class="ex-soft">
 					Each status is what the repository declares at this revision, not a check of a live
 					deployment.
-				</p>
+				</hx-p>
 				{#if gap}
-					<p class="pf-notice"><HarnessIcon name="info" size={18} /><span>{gap}</span></p>
+					<hx-p class="pf-notice"
+						><HarnessIcon name="info" size={18} /><hx-span>{gap}</hx-span></hx-p
+					>
 				{/if}
-				<div class="pf-controls">
+				<hx-div class="pf-controls">
 					<ExplorerControls noun="platforms" bind:filter />
 					<FilterDialog active={Number(status !== 'all')} onreset={() => (status = 'all')}>
 						{@render statusFilter()}
 					</FilterDialog>
-				</div>
-				<p class="ex-hidden" role="status">{listed.length} of {cards.length} platforms shown</p>
+				</hx-div>
+				<hx-p class="ex-hidden" role="status"
+					>{listed.length} of {cards.length} platforms shown</hx-p
+				>
 				{#if listed.length}
-					<div class="pf-grid">
+					<hx-div class="pf-grid">
 						{#each listed as card (card.id)}{@render platformCard(card, nav)}{/each}
-					</div>
+					</hx-div>
 				{:else}
-					<p class="ex-empty">
+					<hx-p class="ex-empty">
 						No platforms match this search or filter.
-						<button type="button" class="ex-text-button" onclick={showAll}
-							>Show all platforms</button
+						<hx-button type="button" class="ex-text-button" onclick={showAll}
+							>Show all platforms</hx-button
 						>
-					</p>
+					</hx-p>
 				{/if}
-			</section>
+			</hx-section>
 		{/if}
 	{/snippet}
 </ExplorerFrame>

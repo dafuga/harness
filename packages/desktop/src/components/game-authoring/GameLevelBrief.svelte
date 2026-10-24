@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import AgentModelPicker from '../agents-providers/AgentModelPicker.svelte';
@@ -32,82 +34,83 @@
 	});
 </script>
 
-<div class="brief" data-harness-component="game-level-brief">
+<hx-div class="brief" data-harness-component="game-level-brief">
 	{#if step === 'concept'}
-		<label class="field">
-			<span>Concept</span>
-			<textarea
+		<hx-label class="field">
+			<hx-span>Concept</hx-span>
+			<hx-textarea
 				rows="3"
 				value={planning.concept}
 				readonly={status.readonly}
 				placeholder="The idea of this level, in a sentence or two"
 				oninput={(event) => revise({ concept: event.currentTarget.value })}
-			></textarea>
-		</label>
-		<div class="actions">
-			<button
+			></hx-textarea>
+		</hx-label>
+		<hx-div class="actions">
+			<hx-button
 				type="button"
 				class="primary"
 				disabled={!planning.concept.trim()}
-				onclick={() => go('brief')}>Continue to level brief</button
+				onclick={() => go('brief')}>Continue to level brief</hx-button
 			>
-		</div>
+		</hx-div>
 	{:else}
-		<p class="concept">
-			<small>Concept</small>
-			<span>{planning.concept}</span>
+		<hx-p class="concept">
+			<hx-small>Concept</hx-small>
+			<hx-span>{planning.concept}</hx-span>
 			{#if !status.readonly}
-				<button type="button" class="quiet" onclick={() => go('concept')}>Edit concept</button>
+				<hx-button type="button" class="quiet" onclick={() => go('concept')}>Edit concept</hx-button
+				>
 			{/if}
-		</p>
-		<label class="field">
-			<span>Level brief</span>
-			<textarea
+		</hx-p>
+		<hx-label class="field">
+			<hx-span>Level brief</hx-span>
+			<hx-textarea
 				rows="4"
 				value={planning.description}
 				readonly={status.readonly}
 				placeholder="Layout, objectives and obstacles"
 				oninput={(event) => revise({ description: event.currentTarget.value })}
-			></textarea>
-		</label>
-		<div class="options">
-			<span class="option">
-				<small aria-hidden="true">Dimension</small>
+			></hx-textarea>
+		</hx-label>
+		<hx-div class="options">
+			<hx-span class="option">
+				<hx-small aria-hidden="true">Dimension</hx-small>
 				<Select
 					label="Level dimension"
 					bind:value={() => dimension, (next) => reshape(next as Dimension)}
 					disabled={status.readonly}
 				>
-					<option value="2d">2D</option>
-					<option value="3d">3D</option>
+					<hx-option value="2d">2D</hx-option>
+					<hx-option value="3d">3D</hx-option>
 				</Select>
-			</span>
+			</hx-span>
 			{#if providers?.length && !status.readonly}
-				<span class="option">
-					<small aria-hidden="true">Model</small>
-					<span class="model"
-						><AgentModelPicker {providers} bind:provider bind:model />{chosen}</span
+				<hx-span class="option">
+					<hx-small aria-hidden="true">Model</hx-small>
+					<hx-span class="model"
+						><AgentModelPicker {providers} bind:provider bind:model />{chosen}</hx-span
 					>
-				</span>
+				</hx-span>
 			{/if}
-		</div>
-		<div class="actions">
+		</hx-div>
+		<hx-div class="actions">
 			{#if reviewable}
-				<button type="button" onclick={() => go('review')}>Back to review</button>
+				<hx-button type="button" onclick={() => go('review')}>Back to review</hx-button>
 			{/if}
 			{#if !status.readonly}
-				<button
+				<hx-button
 					type="button"
 					class="primary"
 					disabled={status.busy || Boolean(status.reason)}
-					onclick={() => generate()}>Generate level</button
+					onclick={() => generate()}>Generate level</hx-button
 				>
 			{/if}
-		</div>
-		<p class="note" role="status">{note}</p>
-		{#if status.error}<p class="error" role="alert">{status.error}</p>{/if}
+		</hx-div>
+		<hx-p class="note" role="status">{note}</hx-p>
+		{#if status.error}<hx-p class="error" role="alert">{status.error}</hx-p>{/if}
 	{/if}
-</div>
+</hx-div>
 
 <style>
 	.brief,

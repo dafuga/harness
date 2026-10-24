@@ -6,6 +6,10 @@
 	"responsibility": "Opens one selected source file through its host without changing detail navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.harness-harness-action"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/SourceCodeAction.svelte",

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { compositionSchema } from './composition';
 
 export const unitIdPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const identifier = z
@@ -102,6 +103,8 @@ export const componentManifestSchema = z.strictObject({
 	/** `derived` marks the generated placeholder; `declared` marks a statement a person wrote. */
 	responsibilityOrigin: z.enum(['derived', 'declared']),
 	status: z.enum(['active', 'retired']),
+	/** Source-declared atomic composition; absent on older revisions. */
+	composition: compositionSchema.optional(),
 	/** Committed usage documentation, read from the same source tree as this manifest. */
 	documentation: z
 		.string()

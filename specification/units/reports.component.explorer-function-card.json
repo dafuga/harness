@@ -6,6 +6,10 @@
 	"responsibility": "Legacy nonvisual card entry delegating helpers, services and models to ExplorerModuleCard.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.explorer-ui-explorer-module-card"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ExplorerFunctionCard.svelte",

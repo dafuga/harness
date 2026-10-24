@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { emittedChange } from './harnessEmitted';
 	import type { HarnessRevision, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
@@ -64,15 +66,16 @@
 	});
 </script>
 
-<section class="hc-card" aria-label="Impact">
-	<h2>Impact of this change</h2>
-	<p class="hc-notice">
+<hx-section class="hc-card" aria-label="Impact">
+	<hx-h2>Impact of this change</hx-h2>
+	<hx-p class="hc-notice">
 		{#if impact.source === 'recorded'}
 			Recorded by verification {impact.record?.slice(0, 12)}: the dependency graphs of both commits
 			were analysed when the head commit was verified.
 		{:else if impact.source === 'source'}
 			Computed from the source of both commits when the index was built: both trees were indexed and
-			their graphs compared, as <code>harness impact</code> does, across {impact.files} changed files.
+			their graphs compared, as <hx-code>harness impact</hx-code> does, across {impact.files} changed
+			files.
 			{head.records.length === 0
 				? 'This commit has no verification record: what it affects is known, whether it was tested is not.'
 				: ''}
@@ -86,86 +89,95 @@
 			source of one of them was not stored in this index. Unresolved references and changes outside
 			any unit are not known for this pair.
 		{/if}
-	</p>
-	<div class="hc-groups">
+	</hx-p>
+	<hx-div class="hc-groups">
 		{#each groups as [key, title] (key)}
-			<div>
-				<h3>{title} ({impact[key].length})</h3>
-				<ul class="hc-plain" aria-label={title}>
+			<hx-div>
+				<hx-h3>{title} ({impact[key].length})</hx-h3>
+				<hx-ul class="hc-plain" aria-label={title}>
 					{#each impact[key] as id (id)}
-						<li>
-							<button type="button" class="hc-chip" onclick={() => onselect(id)}>{id}</button>
-						</li>
+						<hx-li>
+							<hx-button type="button" class="hc-chip" onclick={() => onselect(id)}>{id}</hx-button>
+						</hx-li>
 					{/each}
-				</ul>
-			</div>
+				</hx-ul>
+			</hx-div>
 		{/each}
-		<div>
-			<h3>Affected scenarios ({impact.scenarios.length})</h3>
-			<ul class="hc-plain" aria-label="Affected scenarios">
-				{#each impact.scenarios as id (id)}<li>{id}</li>{/each}
-			</ul>
-		</div>
-		<div>
-			<h3>Uncertain ({impact.uncertain.length})</h3>
-			<ul class="hc-plain" aria-label="Uncertain">
+		<hx-div>
+			<hx-h3>Affected scenarios ({impact.scenarios.length})</hx-h3>
+			<hx-ul class="hc-plain" aria-label="Affected scenarios">
+				{#each impact.scenarios as id (id)}<hx-li>{id}</hx-li>{/each}
+			</hx-ul>
+		</hx-div>
+		<hx-div>
+			<hx-h3>Uncertain ({impact.uncertain.length})</hx-h3>
+			<hx-ul class="hc-plain" aria-label="Uncertain">
 				{#each impact.uncertain as item, position (position)}
-					<li>{item.detail} <span class="hc-muted">{item.reason} in {item.node}</span></li>
+					<hx-li
+						>{item.detail} <hx-span class="hc-muted">{item.reason} in {item.node}</hx-span></hx-li
+					>
 				{/each}
-			</ul>
+			</hx-ul>
 			{#if impact.uncertain.length === 0}
-				<p class="hc-muted">
+				<hx-p class="hc-muted">
 					{impact.source === 'computed' ? 'Not known here.' : 'Every reference was resolved.'}
-				</p>
+				</hx-p>
 			{/if}
-		</div>
-	</div>
-	<h3>Why it changed</h3>
-	{#if reasons.length === 0}<p class="hc-muted">No reason is recorded for these changes.</p>{/if}
+		</hx-div>
+	</hx-div>
+	<hx-h3>Why it changed</hx-h3>
+	{#if reasons.length === 0}<hx-p class="hc-muted">No reason is recorded for these changes.</hx-p
+		>{/if}
 	<!-- Several reasons may share a unit, a symbol and a text; each is one recorded reason. -->
-	<ul class="hc-plain" aria-label="Reasons">
+	<hx-ul class="hc-plain" aria-label="Reasons">
 		{#each reasons as reason, position (position)}
-			<li>
-				<strong>{reason.unit}</strong>
-				<span class="hc-muted">{reason.symbol}{reason.file ? ` in ${reason.file}` : ''}</span>: {reason.behavior}
-				<br /><span class="hc-muted"
+			<hx-li>
+				<hx-strong>{reason.unit}</hx-strong>
+				<hx-span class="hc-muted">{reason.symbol}{reason.file ? ` in ${reason.file}` : ''}</hx-span
+				>: {reason.behavior}
+				<hx-br /><hx-span class="hc-muted"
 					>Simpler: {reason.simplification.attempt} ({reason.simplification.outcome}). Faster:
-					{reason.performance.attempt} ({reason.performance.outcome}).</span
+					{reason.performance.attempt} ({reason.performance.outcome}).</hx-span
 				>
-			</li>
+			</hx-li>
 		{/each}
-	</ul>
+	</hx-ul>
 	{#if impact.direct.length > 0}
-		<h3>Before and after</h3>
-		<div class="hc-table-wrap">
-			<table class="hc-table" aria-label="Measurements before and after">
-				<thead><tr><th>Component</th><th>Metric</th><th>Before</th><th>After</th></tr></thead>
-				<tbody>
+		<hx-h3>Before and after</hx-h3>
+		<hx-div class="hc-table-wrap">
+			<hx-table class="hc-table" aria-label="Measurements before and after">
+				<hx-thead
+					><hx-tr
+						><hx-th>Component</hx-th><hx-th>Metric</hx-th><hx-th>Before</hx-th><hx-th>After</hx-th
+						></hx-tr
+					></hx-thead
+				>
+				<hx-tbody>
 					{#each impact.direct as id (id)}
 						{#each frozen as metric (metric)}
-							<tr>
-								<td>{id}</td><td>{metric}</td>
-								<td>{shown(measured(base, id, metric))}</td>
-								<td>{shown(measured(head, id, metric))}</td>
-							</tr>
+							<hx-tr>
+								<hx-td>{id}</hx-td><hx-td>{metric}</hx-td>
+								<hx-td>{shown(measured(base, id, metric))}</hx-td>
+								<hx-td>{shown(measured(head, id, metric))}</hx-td>
+							</hx-tr>
 						{/each}
 						{#each emittedChange(id, [sized(base), sized(head)]) as item, position (position)}
-							<tr>
-								<td>{id}</td><td>artifact-bytes ({item.label})</td>
-								<td>{shown(item.before)}</td>
-								<td>{shown(item.after)}</td>
-							</tr>
+							<hx-tr>
+								<hx-td>{id}</hx-td><hx-td>artifact-bytes ({item.label})</hx-td>
+								<hx-td>{shown(item.before)}</hx-td>
+								<hx-td>{shown(item.after)}</hx-td>
+							</hx-tr>
 						{/each}
 					{/each}
-				</tbody>
-			</table>
-		</div>
+				</hx-tbody>
+			</hx-table>
+		</hx-div>
 	{/if}
-</section>
+</hx-section>
 <HarnessCompareMedia {base} {head} {mediaBase} />
-<div class="hc-panel">
+<hx-div class="hc-panel">
 	<HarnessMap {units} marks={impact.marks} {selected} {onselect} />
-</div>
+</hx-div>
 {#if unit}
 	<HarnessUnitView
 		{unit}

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
@@ -71,7 +73,7 @@
 		(timings.get(row.commit) ?? []).find((item) => item.profile === shown);
 </script>
 
-<div
+<hx-div
 	role="tabpanel"
 	aria-label={`${entity.name} history`}
 	class="ex-stack"
@@ -99,42 +101,42 @@
 				})
 			)}
 	/>
-	<section class="ex-card" aria-labelledby="ex-history-title">
-		<header class="ex-evidence-head">
-			<div>
-				<h2 id="ex-history-title"><HarnessIcon name="history" size={24} /> History</h2>
-				<p class="ex-soft">
+	<hx-section class="ex-card" aria-labelledby="ex-history-title">
+		<hx-header class="ex-evidence-head">
+			<hx-div>
+				<hx-h2 id="ex-history-title"><HarnessIcon name="history" size={24} /> History</hx-h2>
+				<hx-p class="ex-soft">
 					Changes to this entity through {shortCommit(scope.commit)}, newest first.
-				</p>
-			</div>
+				</hx-p>
+			</hx-div>
 			{#if profiles.length > 1}
-				<label class="ex-profile"
+				<hx-label class="ex-profile"
 					>Performance profile
 					<Select label="Performance profile" bind:value={() => shown, (next) => (profile = next)}>
-						{#each profiles as id (id)}<option value={id}>{id}</option>{/each}
+						{#each profiles as id (id)}<hx-option value={id}>{id}</hx-option>{/each}
 					</Select>
-				</label>
+				</hx-label>
 			{/if}
-		</header>
+		</hx-header>
 		{#if found.listed.length === 0}
-			<p class="ex-gap">
+			<hx-p class="ex-gap">
 				<HarnessVerdict passed={false} label="No recorded change" />
-				<span>No commit read so far is recorded as a change of this entity.</span>
-			</p>
+				<hx-span>No commit read so far is recorded as a change of this entity.</hx-span>
+			</hx-p>
 		{:else}
-			<div class="ex-scroll">
-				<table class="ex-table ex-history" aria-label={`History of ${entity.name}`}>
-					<thead>
-						<tr>
-							<th scope="col">Date</th>
-							<th scope="col">Commit</th>
-							<th scope="col">Behavior change</th>
-							<th scope="col">Size</th>
-							<th scope="col">Complexity</th>
-							<th scope="col">Latency{shown ? ` (${shown})` : ''}</th>
-						</tr>
-					</thead>
-					<tbody>
+			<hx-div class="ex-scroll">
+				<hx-table class="ex-table ex-history" aria-label={`History of ${entity.name}`}>
+					<hx-thead>
+						<hx-tr>
+							<hx-th scope="col">Date</hx-th>
+							<hx-th scope="col">Commit</hx-th>
+							<hx-th scope="col">Behavior change</hx-th>
+							<hx-th scope="col">Size</hx-th>
+							<hx-th scope="col">Complexity</hx-th>
+							<hx-th scope="col">Latency{shown ? ` (${shown})` : ''}</hx-th>
+						</hx-tr>
+					</hx-thead>
+					<hx-tbody>
 						{#each found.listed as row (row.commit)}
 							<EntityHistoryRow
 								{row}
@@ -145,20 +147,20 @@
 								{nav}
 							/>
 						{/each}
-					</tbody>
-				</table>
-			</div>
+					</hx-tbody>
+				</hx-table>
+			</hx-div>
 		{/if}
 		{#if found.unread.length}
-			<p class="ex-note">
+			<hx-p class="ex-note">
 				{found.unread.length} earlier {found.unread.length === 1 ? 'commit does' : 'commits do'} not record
 				what {found.unread.length === 1 ? 'it' : 'they'} changed; whether this entity changed there is
 				not known until {found.unread.length === 1 ? 'it is' : 'they are'} read.
 				{gaps.join(' ')}
-				<button type="button" class="ex-text-button" disabled={reading} onclick={readMore}
-					>{reading ? 'Reading…' : 'Read the next commits'}</button
+				<hx-button type="button" class="ex-text-button" disabled={reading} onclick={readMore}
+					>{reading ? 'Reading…' : 'Read the next commits'}</hx-button
 				>
-			</p>
+			</hx-p>
 		{/if}
-	</section>
-</div>
+	</hx-section>
+</hx-div>

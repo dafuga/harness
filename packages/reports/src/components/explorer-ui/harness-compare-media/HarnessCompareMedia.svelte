@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { HarnessRevision } from '../../../models/explorer-ui/Harness.types';
 	import { comparisonChoices, harnessComparison } from './harnessComparison';
@@ -39,73 +41,74 @@
 
 {#snippet records(label: string, detail: HarnessRevision, side: 'base' | 'head')}
 	{#if detail.records.length > 1}
-		<label
+		<hx-label
 			>{label}
 			<Select {label} bind:value={picked[side]}>
-				{#each detail.records as item (item.id)}<option value={item.id}>{named(item)}</option
+				{#each detail.records as item (item.id)}<hx-option value={item.id}>{named(item)}</hx-option
 					>{/each}
 			</Select>
-		</label>
+		</hx-label>
 	{/if}
 {/snippet}
 
-<section class="hc-card" aria-label="Recorded states, before and after">
-	<h2>Recorded states, before and after</h2>
+<hx-section class="hc-card" aria-label="Recorded states, before and after">
+	<hx-h2>Recorded states, before and after</hx-h2>
 	{#if !sides}
-		<p class="hc-muted">No base commit is selected.</p>
+		<hx-p class="hc-muted">No base commit is selected.</hx-p>
 	{:else}
 		{#each [sides.base, sides.head] as side, position (position)}
 			{#if !side.record}
-				<p class="hc-notice">
+				<hx-p class="hc-notice">
 					Nothing was recorded for {short(side.detail.commit)}: it has no verification record. Its
 					side of every state below is a gap, not a capture from another commit.
-				</p>
+				</hx-p>
 			{/if}
 		{/each}
 		{#if !current}
-			<p class="hc-muted">Neither commit has recorded screenshots or audio.</p>
+			<hx-p class="hc-muted">Neither commit has recorded screenshots or audio.</hx-p>
 		{:else}
-			<div class="hc-controls">
-				<label
+			<hx-div class="hc-controls">
+				<hx-label
 					>Scenario
 					<Select label="Scenario" bind:value={picked.scenario}>
-						{#each choices as item, position (position)}<option value={item.scenario}
-								>{item.scenario}</option
+						{#each choices as item, position (position)}<hx-option value={item.scenario}
+								>{item.scenario}</hx-option
 							>{/each}
 					</Select>
-				</label>
-				<label
+				</hx-label>
+				<hx-label
 					>State
 					<Select label="State" bind:value={picked.state}>
-						<option value="">Every state</option>
-						{#each current.states as id (id)}<option value={id}>{id}</option>{/each}
+						<hx-option value="">Every state</hx-option>
+						{#each current.states as id (id)}<hx-option value={id}>{id}</hx-option>{/each}
 					</Select>
-				</label>
+				</hx-label>
 				{#if current.viewports.length}
-					<label
+					<hx-label
 						>Viewport
 						<Select label="Viewport" bind:value={picked.viewport}>
-							<option value="">Every viewport</option>
-							{#each current.viewports as id (id)}<option value={id}>{id}</option>{/each}
+							<hx-option value="">Every viewport</hx-option>
+							{#each current.viewports as id (id)}<hx-option value={id}>{id}</hx-option>{/each}
 						</Select>
-					</label>
+					</hx-label>
 				{/if}
 				{@render records('Base record', sides.base.detail, 'base')}
 				{@render records('Head record', sides.head.detail, 'head')}
-			</div>
+			</hx-div>
 			{#if compared}
-				<ul class="hc-plain" aria-label="Aligned states">
+				<hx-ul class="hc-plain" aria-label="Aligned states">
 					{#each compared.aligned as row, position (position)}
-						<li>
-							<strong>{row.label}</strong><br /><span class="hc-muted">before: {row.before}</span
-							><br /><span class="hc-muted">after: {row.after}</span>
-						</li>
+						<hx-li>
+							<hx-strong>{row.label}</hx-strong><hx-br /><hx-span class="hc-muted"
+								>before: {row.before}</hx-span
+							><hx-br /><hx-span class="hc-muted">after: {row.after}</hx-span>
+						</hx-li>
 					{/each}
-				</ul>
+				</hx-ul>
 				{#key current.scenario + picked.base + picked.head + picked.state + picked.viewport}
 					<EvidenceGrid items={compared.items} assetBase={mediaBase} idPrefix="compare-" />
 				{/key}
 			{/if}
 		{/if}
 	{/if}
-</section>
+</hx-section>

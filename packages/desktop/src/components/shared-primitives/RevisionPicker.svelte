@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -48,13 +50,13 @@
 	}
 </script>
 
-{#snippet when(label: string, value: string | null)}<small
+{#snippet when(label: string, value: string | null)}<hx-small
 		>{label}
-		{#if value}<time datetime={value}>{displayTime(value)}</time>{:else}Unknown{/if}</small
+		{#if value}<hx-time datetime={value}>{displayTime(value)}</hx-time>{:else}Unknown{/if}</hx-small
 	>{/snippet}
 
-{#if snapshot && revision}<div class="revision-picker">
-		<div class="revision-choices">
+{#if snapshot && revision}<hx-div class="revision-picker">
+		<hx-div class="revision-choices">
 			<ChoiceDialog
 				label="Choose branch"
 				title="Choose branch"
@@ -63,21 +65,21 @@
 				gap={10}
 			>
 				{#snippet icon()}<Icon name="branch" size={18} />{/snippet}
-				{#snippet children(close: () => void)}<label
+				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
 						onchange={() => chooseBranch(close)}
 						>Branch<Select
 							label="Branch"
 							title={`Tip · ${revision.tip.slice(0, 7)}`}
 							bind:value={branch}
-							>{#each snapshot.branches as item (item.name)}<option value={item.name}
-									>{item.name}</option
+							>{#each snapshot.branches as item (item.name)}<hx-option value={item.name}
+									>{item.name}</hx-option
 								>{/each}</Select
-						></label
+						></hx-label
 					>{@render when(`Branch tip ${revision.tip.slice(0, 7)} committed`, tipped)}{/snippet}
-				{#snippet footer(close: () => void)}<button
+				{#snippet footer(close: () => void)}<hx-button
 						type="button"
-						onclick={() => chooseBranch(close)}>View branch</button
+						onclick={() => chooseBranch(close)}>View branch</hx-button
 					>{/snippet}
 			</ChoiceDialog>
 			<ChoiceDialog
@@ -88,36 +90,36 @@
 				gap={10}
 			>
 				{#snippet icon()}<Icon name="commit" size={18} />{/snippet}
-				{#snippet children(close: () => void)}<label
+				{#snippet children(close: () => void)}<hx-label
 						class="picker-field"
 						onchange={() => chooseCommit(close)}
 						>Commit<Select label="Commit" title={viewed} bind:value={commit}
-							>{#each snapshot.commits as item (item.hash)}<option value={item.hash}
-									>{item.hash.slice(0, 7)} · {item.subject}</option
+							>{#each snapshot.commits as item (item.hash)}<hx-option value={item.hash}
+									>{item.hash.slice(0, 7)} · {item.subject}</hx-option
 								>{/each}</Select
-						></label
+						></hx-label
 					>{@render when('Commit updated', committed)}{/snippet}
-				{#snippet footer(close: () => void)}<button
+				{#snippet footer(close: () => void)}<hx-button
 						type="button"
-						onclick={() => chooseCommit(close)}>View commit</button
+						onclick={() => chooseCommit(close)}>View commit</hx-button
 					>{/snippet}
 			</ChoiceDialog>
-		</div>
-		<div class="revision-summary" aria-label="Viewed context">
-			<strong title={name}>{name}</strong><small
-				>{environment ? '' : '· '}<time datetime={updated ?? undefined} title="Last updated"
-					>{displayTime(updated)}</time
-				></small
+		</hx-div>
+		<hx-div class="revision-summary" aria-label="Viewed context">
+			<hx-strong title={name}>{name}</hx-strong><hx-small
+				>{environment ? '' : '· '}<hx-time datetime={updated ?? undefined} title="Last updated"
+					>{displayTime(updated)}</hx-time
+				></hx-small
 			>
-		</div>
-		{#if !environment && (!revision.atTip || workspace.pinned)}<button
+		</hx-div>
+		{#if !environment && (!revision.atTip || workspace.pinned)}<hx-button
 				type="button"
 				class="go-to-tip"
 				aria-label="Go to tip"
 				title="Go to tip"
-				onclick={() => chooseBranch()}>Go to tip</button
+				onclick={() => chooseBranch()}>Go to tip</hx-button
 			>{/if}
-	</div>{/if}
+	</hx-div>{/if}
 
 <style>
 	/* The icons and the line of what is shown share one row; a pinned commit adds Go to tip. */

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { entityCatalog } from '../../utils/explorer-ui/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
@@ -10,7 +12,7 @@
 
 <!-- The pages of the app as cards: where a person starts, each with its own screenshot. The
 	marker of the screen draws no box. -->
-<div class="ex-screen" data-harness-component="harness-explorer-pages-screen">
+<hx-div class="ex-screen" data-harness-component="harness-explorer-pages-screen">
 	<ExplorerFrame {host}>
 		{#snippet children(nav)}
 			<ExplorerIndex
@@ -30,7 +32,7 @@
 			</ExplorerIndex>
 		{/snippet}
 	</ExplorerFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-screen {

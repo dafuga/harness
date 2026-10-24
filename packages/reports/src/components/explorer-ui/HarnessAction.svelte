@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
@@ -40,20 +42,20 @@
 	{#if icon}<HarnessIcon name={icon} size={18} />{/if}
 {/snippet}
 {#if href && !disabled}
-	<a
+	<hx-a
 		class="hx-action {tone}"
 		data-harness-component="harness-harness-action"
 		{href}
 		aria-label={label}
-		onclick={follow}>{@render inner()}</a
+		onclick={follow}>{@render inner()}</hx-a
 	>
 {:else}
-	<button
+	<hx-button
 		type="button"
 		class="hx-action {tone}"
 		data-harness-component="harness-harness-action"
 		aria-label={label}
 		{disabled}
-		onclick={(event) => onclick?.(event)}>{@render inner()}</button
+		onclick={(event) => onclick?.(event)}>{@render inner()}</hx-button
 	>
 {/if}

@@ -64,6 +64,12 @@ test('scanImports reads Svelte script blocks and stylesheet imports', () => {
 		'./shared',
 		'./Card.svelte'
 	]);
+	expect(
+		scanImports(
+			'<!-- @harness-atoms ./atoms -->\n<hx-button>Save</hx-button><hx-button>Again</hx-button><!-- <hx-input /> -->{"<hx-select>"}',
+			'svelte'
+		)
+	).toEqual([{ specifier: './atoms/HtmlButton.svelte', via: 'import', typeOnly: false }]);
 	expect(scanImports("@import './base.css';\n@import url('theme.css');", 'css')).toEqual([
 		{ specifier: './base.css', via: 'style-import', typeOnly: false },
 		{ specifier: 'theme.css', via: 'style-import', typeOnly: false }

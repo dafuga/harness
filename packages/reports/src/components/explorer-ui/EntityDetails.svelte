@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerEntity, ExplorerTab } from '../../models/explorer-ui/Explorer.types';
 	import type { HarnessRecord } from '../../models/explorer-ui/Harness.types';
@@ -30,7 +32,7 @@
 	} = $props();
 </script>
 
-<div
+<hx-div
 	role="tabpanel"
 	aria-label={`${entity.name} details`}
 	data-harness-component="harness-entity-details"
@@ -41,12 +43,12 @@
 		<EntityMeasures unit={entity.unit} {record} />
 	{:else}
 		<!-- The same typed contract as the Contract tab, with the size and performance it is held to. -->
-		<div class="ex-stack">
+		<hx-div class="ex-stack">
 			<EntityContract unit={entity.unit} category={entity.category} {contract} />
 			<EntitySummary {measure} />
-		</div>
+		</hx-div>
 	{/if}
-</div>
+</hx-div>
 
 <style>
 	.ex-stack {

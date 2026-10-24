@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { DesignVersion, EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -55,11 +57,11 @@
 	}
 </script>
 
-{#if error}<p class="error" role="alert">{error}</p>{/if}<button
+{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}<hx-button
 	class="primary approve"
 	disabled={blocked}
 	onclick={() => void approve()}
-	>{approved ? `${named} ${design.version} approved` : 'Approve ' + design.version}</button
-><small class="approval-note"
-	>Approval saves the exact {named.toLowerCase()}. Code starts with a Change request.</small
+	>{approved ? `${named} ${design.version} approved` : 'Approve ' + design.version}</hx-button
+><hx-small class="approval-note"
+	>Approval saves the exact {named.toLowerCase()}. Code starts with a Change request.</hx-small
 >

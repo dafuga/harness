@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import BrandMark from '$shared/BrandMark.svelte';
 	import { resolve } from '$app/paths';
@@ -34,29 +36,30 @@
 </script>
 
 <!-- Focus follows the rows: project, environment and revision, categories, then search. -->
-<header class="topbar" class:with-account={!!account} class:with-activity={activity && !account}>
+<hx-header class="topbar" class:with-account={!!account} class:with-activity={activity && !account}>
 	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
-		><span class="brand-mark"><BrandMark /></span>
-		<span class="brand-word">Harness</span></WorkspaceLink
+		><hx-span class="brand-mark"><BrandMark /></hx-span>
+		<hx-span class="brand-word">Harness</hx-span></WorkspaceLink
 	>
 	<ProjectSwitcher {workspace} />
 	<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
 	<RevisionPicker {workspace} />
-	<nav aria-label="Catalog categories" bind:this={tabs}>
+	<hx-nav aria-label="Catalog categories" bind:this={tabs}>
 		{#each categories as category (category)}<WorkspaceLink
 				{workspace}
 				to={workspace.path(category)}
 				class={workspace.category === category ? 'active' : ''}
-				><Icon name={category} /><span
+				><Icon name={category} /><hx-span
 					>{category === 'functions'
 						? 'Helpers'
-						: category[0].toUpperCase() + category.slice(1)}</span
+						: category[0].toUpperCase() + category.slice(1)}</hx-span
 				></WorkspaceLink
 			>{/each}
 		<!-- On a phone, Game Views starts a row of its own, which search and settings then end. -->
-		{#if gameViews}<a href={resolve(gameViews as '/')} style:grid-column="1">Game Views</a>{/if}
-	</nav>
-	<div class="topbar-search">
+		{#if gameViews}<hx-a href={resolve(gameViews as '/')} style:grid-column="1">Game Views</hx-a
+			>{/if}
+	</hx-nav>
+	<hx-div class="topbar-search">
 		<EntitySearch
 			entries={search.entries}
 			scope={search.scope}
@@ -65,17 +68,17 @@
 				const path = search.at(entry);
 				if (path) void workspace.navigate(path);
 			}}
-		/>{#if workspace.capabilities.agents}<a
+		/>{#if workspace.capabilities.agents}<hx-a
 				class="topbar-settings"
 				href={resolve(settings as '/')}
 				aria-label="Settings"
-				title="Settings"><Icon name="settings" /></a
+				title="Settings"><Icon name="settings" /></hx-a
 			>{/if}
-	</div>
-	{#if account}<div class="account">
+	</hx-div>
+	{#if account}<hx-div class="account">
 			{@render account()}{#if activity}<DeploymentActivity {workspace} />{/if}
-		</div>{:else if activity}<DeploymentActivity {workspace} />{/if}
-</header>
+		</hx-div>{:else if activity}<DeploymentActivity {workspace} />{/if}
+</hx-header>
 
 <style>
 	/* Settings end the search's own place, so they never take a row of their own. */

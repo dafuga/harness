@@ -6,6 +6,13 @@
 	"responsibility": "Renders a named explorer SVG icon with optional accessible labeling.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-svg-path",
+			"reports.component.shared-primitives-atoms-svg-svg"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/HarnessIcon.svelte"],
 		"symbols": ["HarnessIcon"]
@@ -39,6 +46,16 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-svg",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.harness-icons",
 			"via": "import",

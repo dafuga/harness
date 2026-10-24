@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import WorkspaceShell from '$desktop/components/projects-sessions/WorkspaceShell.svelte';
@@ -62,10 +64,10 @@
 				projectId={workspace.projectId ?? undefined}
 			/>{/snippet}</WorkspaceShell
 	>{:else}<HubFrame
-		><section class="hub-card">
-			{#if workspace.error}<h1>This project could not be opened</h1>
-				<p class="error" role="alert">{workspace.error}</p>{:else}<p class="muted">
+		><hx-section class="hub-card">
+			{#if workspace.error}<hx-h1>This project could not be opened</hx-h1>
+				<hx-p class="error" role="alert">{workspace.error}</hx-p>{:else}<hx-p class="muted">
 					Loading project…
-				</p>{/if}
-		</section></HubFrame
+				</hx-p>{/if}
+		</hx-section></HubFrame
 	>{/if}

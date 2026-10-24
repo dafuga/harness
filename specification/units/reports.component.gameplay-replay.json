@@ -6,12 +6,33 @@
 	"responsibility": "Plays a report’s recorded screenshot frames as a seekable replay.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.replay-controls",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-img",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.status-badge"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/gameplay-replay/GameplayReplay.svelte",
-			"packages/reports/src/components/reports-media/gameplay-replay/GameplayReplay.svelte"
+			"packages/reports/src/components/reports-media/gameplay-replay/GameplayReplay.svelte",
+			"packages/reports/src/components/reports-media/gameplay-replay/replayPresentation.ts"
 		],
-		"symbols": ["GameplayReplay", "GameplayReplay"]
+		"symbols": [
+			"GameplayReplay",
+			"GameplayReplay"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,6 +65,56 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.replay-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},

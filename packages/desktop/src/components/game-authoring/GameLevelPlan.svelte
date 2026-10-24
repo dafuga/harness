@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { LevelValidator } from '../../../../game/src/index';
@@ -145,11 +147,11 @@
 	}
 </script>
 
-<section class="plan" data-harness-component="game-level-plan" aria-busy={busy}>
-	<header>
-		<h2>{titles[step]}</h2>
-		{#if step !== 'built'}<small>Step {order.indexOf(step) + 1} of 3</small>{/if}
-	</header>
+<hx-section class="plan" data-harness-component="game-level-plan" aria-busy={busy}>
+	<hx-header>
+		<hx-h2>{titles[step]}</hx-h2>
+		{#if step !== 'built'}<hx-small>Step {order.indexOf(step) + 1} of 3</hx-small>{/if}
+	</hx-header>
 	{#if step === 'concept' || step === 'brief'}
 		<GameLevelBrief
 			{step}
@@ -180,7 +182,7 @@
 			/>
 		{/key}
 	{/if}
-</section>
+</hx-section>
 
 <style>
 	.plan {

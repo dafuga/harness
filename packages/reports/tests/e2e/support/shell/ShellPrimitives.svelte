@@ -1,5 +1,6 @@
 <script lang="ts">
 	import HarnessAction from '../../../../src/components/explorer-ui/HarnessAction.svelte';
+	import NativeAtomsForm from './NativeAtomsForm.svelte';
 	import HarnessIcon from '../../../../src/components/explorer-ui/HarnessIcon.svelte';
 	import HarnessNavbar from '../../../../src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte';
 	import HarnessSelectors from '../../../../src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte';
@@ -142,3 +143,4 @@
 	/>
 	<HarnessTabs {view} onview={(id) => (view = id)} />
 </section>
+<NativeAtomsForm />

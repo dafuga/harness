@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../atoms -->
 <script lang="ts">
 	import type { BrowserDiagnostic } from '../../../../../../src/core/browserDiagnostics';
 	import { browserErrorRows } from './browserErrorRows';
@@ -10,40 +12,40 @@
 </script>
 
 {#if diagnostics?.length}
-	<div class="browser-errors" role="group" aria-label="Browser errors">
-		<details>
-			<summary
+	<hx-div class="browser-errors" role="group" aria-label="Browser errors">
+		<hx-details>
+			<hx-summary
 				>Browser errors · {diagnostics.reduce(
 					(sum, item) => sum + browserErrorRows(item).length,
 					0
-				)} entries</summary
+				)} entries</hx-summary
 			>
 			{#each diagnostics as run, index (index)}
-				<section aria-label={run.test}>
-					<p><strong>{run.test}</strong></p>
-					<p class="metadata">
+				<hx-section aria-label={run.test}>
+					<hx-p><hx-strong>{run.test}</hx-strong></hx-p>
+					<hx-p class="metadata">
 						{run.file} · {run.project || run.browser || 'Browser'} · Retry {run.retry}
-					</p>
-					<ol>
+					</hx-p>
+					<hx-ol>
 						{#each browserErrorRows(run) as error, position (position)}
-							<li>
-								<p>
-									<strong>{error.status}</strong> · {error.type === 'console'
+							<hx-li>
+								<hx-p>
+									<hx-strong>{error.status}</hx-strong> · {error.type === 'console'
 										? 'console.error'
 										: 'Uncaught exception'}
-								</p>
-								<pre>{error.message}</pre>
-								{#if error.reason}<p>{error.reason}</p>{/if}
-								{#if location(error)}<p class="metadata">Source: {location(error)}</p>{/if}
-								{#if error.page}<p class="metadata">Page: {error.page}</p>{/if}
-								{#if error.stack}<pre>{error.stack}</pre>{/if}
-							</li>
+								</hx-p>
+								<hx-pre>{error.message}</hx-pre>
+								{#if error.reason}<hx-p>{error.reason}</hx-p>{/if}
+								{#if location(error)}<hx-p class="metadata">Source: {location(error)}</hx-p>{/if}
+								{#if error.page}<hx-p class="metadata">Page: {error.page}</hx-p>{/if}
+								{#if error.stack}<hx-pre>{error.stack}</hx-pre>{/if}
+							</hx-li>
 						{/each}
-					</ol>
-				</section>
+					</hx-ol>
+				</hx-section>
 			{/each}
-		</details>
-	</div>
+		</hx-details>
+	</hx-div>
 {/if}
 
 <style>

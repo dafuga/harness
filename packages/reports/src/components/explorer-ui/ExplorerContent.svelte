@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Screen } from './ExplorerContent.types';
 
@@ -43,9 +45,9 @@
 
 <!-- Any address of the explorer, for a host without a page of its own for each screen. Its marker
 	draws no box. -->
-<div class="ex-shown" data-harness-component="harness-explorer-content">
+<hx-div class="ex-shown" data-harness-component="harness-explorer-content">
 	<Shown {...host} />
-</div>
+</hx-div>
 
 <style>
 	.ex-shown {

@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../atoms -->
 <script lang="ts">
 	import { humanize } from '../../../helpers/strings/humanize';
 	import { recordedValue } from './recordedValue';
@@ -21,57 +23,60 @@
 
 {#snippet present(node: RecordedNode)}
 	{#if node.kind === 'scalar'}
-		<span class="scalar"><span class="value-type">{node.type}</span><span>{node.text}</span></span>
-		{#if node.shortened}<span class="value-note">… Preview shortened; see {fullValuesLabel}.</span
+		<hx-span class="scalar"
+			><hx-span class="value-type">{node.type}</hx-span><hx-span>{node.text}</hx-span></hx-span
+		>
+		{#if node.shortened}<hx-span class="value-note"
+				>… Preview shortened; see {fullValuesLabel}.</hx-span
 			>{/if}
 	{:else if node.kind === 'notice'}
-		<span class="value-note">{node.text}</span>
+		<hx-span class="value-note">{node.text}</hx-span>
 	{:else if node.kind === 'fields'}
-		<dl class="fields">
+		<hx-dl class="fields">
 			{#each node.fields as field (field.name)}
-				<div>
-					<dt title={field.name}>{label(field.name)}</dt>
-					<dd>{@render present(field.node)}</dd>
-				</div>
+				<hx-div>
+					<hx-dt title={field.name}>{label(field.name)}</hx-dt>
+					<hx-dd>{@render present(field.node)}</hx-dd>
+				</hx-div>
 			{/each}
-		</dl>
-		{#if node.remaining}<p class="value-note">
+		</hx-dl>
+		{#if node.remaining}<hx-p class="value-note">
 				{node.remaining} more fields in {fullValuesLabel}.
-			</p>{/if}
+			</hx-p>{/if}
 	{:else if node.kind === 'list'}
-		<ol class="value-list">
-			{#each node.items as item, position (position)}<li>{@render present(item)}</li>{/each}
-		</ol>
-		{#if node.remaining}<p class="value-note">
+		<hx-ol class="value-list">
+			{#each node.items as item, position (position)}<hx-li>{@render present(item)}</hx-li>{/each}
+		</hx-ol>
+		{#if node.remaining}<hx-p class="value-note">
 				{node.remaining} more items in {fullValuesLabel}.
-			</p>{/if}
+			</hx-p>{/if}
 	{:else}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex (Keyboard users need to scroll this data table.) -->
-		<div class="value-scroll" tabindex="0" role="region" aria-label={rowsLabel}>
-			<table>
-				<thead
-					><tr
-						>{#each node.columns as column (column)}<th scope="col" title={column}
-								>{label(column)}</th
-							>{/each}</tr
-					></thead
+		<hx-div class="value-scroll" tabindex="0" role="region" aria-label={rowsLabel}>
+			<hx-table>
+				<hx-thead
+					><hx-tr
+						>{#each node.columns as column (column)}<hx-th scope="col" title={column}
+								>{label(column)}</hx-th
+							>{/each}</hx-tr
+					></hx-thead
 				>
-				<tbody
-					>{#each node.rows as row, position (position)}<tr
-							>{#each row as cell, column (column)}<td data-field={label(node.columns[column])}
-									>{@render present(cell)}</td
-								>{/each}</tr
-						>{/each}</tbody
+				<hx-tbody
+					>{#each node.rows as row, position (position)}<hx-tr
+							>{#each row as cell, column (column)}<hx-td data-field={label(node.columns[column])}
+									>{@render present(cell)}</hx-td
+								>{/each}</hx-tr
+						>{/each}</hx-tbody
 				>
-			</table>
-		</div>
-		{#if node.remaining}<p class="value-note">
+			</hx-table>
+		</hx-div>
+		{#if node.remaining}<hx-p class="value-note">
 				{node.remaining} more rows in {fullValuesLabel}.
-			</p>{/if}
+			</hx-p>{/if}
 	{/if}
 {/snippet}
 
-<div class="recorded-value">{@render present(view)}</div>
+<hx-div class="recorded-value">{@render present(view)}</hx-div>
 
 <style>
 	.recorded-value {

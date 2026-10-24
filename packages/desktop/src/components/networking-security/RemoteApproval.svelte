@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '../../../../reports/src/components/Select.svelte';
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';
@@ -33,25 +35,30 @@
 	}
 </script>
 
-<fieldset class="remote-request" aria-label={heading}>
-	<strong>{heading}</strong>
-	<small class="muted">Key {identityLabel(request.deviceId)} · {request.platform}</small>
-	<span>May access:</span>
-	{#each projects as item (item.id)}<label
-			><input type="checkbox" bind:group={chosen} value={item.id} /> {item.name}</label
-		>{/each}{#if !projects.length}<small class="muted">{none}</small>{/if}
-	<label
+<hx-fieldset class="remote-request" aria-label={heading}>
+	<hx-strong>{heading}</hx-strong>
+	<hx-small class="muted">Key {identityLabel(request.deviceId)} · {request.platform}</hx-small>
+	<hx-span>May access:</hx-span>
+	{#each projects as item (item.id)}<hx-label
+			><hx-input type="checkbox" bind:group={chosen} value={item.id} /> {item.name}</hx-label
+		>{/each}{#if !projects.length}<hx-small class="muted">{none}</hx-small>{/if}
+	<hx-label
 		>Access<Select label="Device access" bind:value={access}
-			><option value="read">Read · browse only</option><option value="comment"
-				>Comment · read and comment</option
-			><option value="write">Write · read, comment and ask AI</option></Select
-		></label
+			><hx-option value="read">Read · browse only</hx-option><hx-option value="comment"
+				>Comment · read and comment</hx-option
+			><hx-option value="write">Write · read, comment and ask AI</hx-option></Select
+		></hx-label
 	>
-	<div class="remote-actions">
-		<button type="button" class="primary" disabled={store.busy || !chosen.length} onclick={approve}
-			>Approve</button
-		><button type="button" disabled={store.busy} onclick={() => void store.deny(request.pairingId)}
-			>Deny</button
+	<hx-div class="remote-actions">
+		<hx-button
+			type="button"
+			class="primary"
+			disabled={store.busy || !chosen.length}
+			onclick={approve}>Approve</hx-button
+		><hx-button
+			type="button"
+			disabled={store.busy}
+			onclick={() => void store.deny(request.pairingId)}>Deny</hx-button
 		>
-	</div>
-</fieldset>
+	</hx-div>
+</hx-fieldset>

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import BrandMark from '../../shared-primitives/BrandMark.svelte';
 	import type { ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';
@@ -30,28 +32,28 @@
 	}
 </script>
 
-<header class="hx-nav" data-harness-component="harness-harness-navbar">
-	<a class="hx-brand" href={view.home.href} onclick={(event) => follow(event, view.home.to)}>
-		<span class="hx-mark"><BrandMark size={30} /></span>
-		<span>Harness</span>
-	</a>
-	{#if input.repository}<span class="hx-repository">{input.repository}</span>{/if}
-	<nav class="hx-categories" aria-label="Harness categories">
+<hx-header class="hx-nav" data-harness-component="harness-harness-navbar">
+	<hx-a class="hx-brand" href={view.home.href} onclick={(event) => follow(event, view.home.to)}>
+		<hx-span class="hx-mark"><BrandMark size={30} /></hx-span>
+		<hx-span>Harness</hx-span>
+	</hx-a>
+	{#if input.repository}<hx-span class="hx-repository">{input.repository}</hx-span>{/if}
+	<hx-nav class="hx-categories" aria-label="Harness categories">
 		{#each view.categories as item (item.id)}
 			{#if item.href}
-				<a
+				<hx-a
 					href={item.href}
 					aria-current={item.active ? 'page' : undefined}
 					onclick={(event) => follow(event, item.to)}
-					><HarnessIcon name={item.icon} size={24} /><span>{item.label}</span></a
+					><HarnessIcon name={item.icon} size={24} /><hx-span>{item.label}</hx-span></hx-a
 				>
 			{:else}
-				<span class="hx-category" aria-disabled="true"
-					><HarnessIcon name={item.icon} size={24} /><span>{item.label}</span></span
+				<hx-span class="hx-category" aria-disabled="true"
+					><HarnessIcon name={item.icon} size={24} /><hx-span>{item.label}</hx-span></hx-span
 				>
 			{/if}
 		{/each}
-	</nav>
+	</hx-nav>
 	{#if input.scope && moduleActive}
 		<HarnessTabs
 			view={input.scope.location.category}
@@ -81,7 +83,7 @@
 	{/if}
 	<!-- A bar without an address offers nothing to choose, so it has nothing to search either. -->
 	{#if input.scope}
-		<div class="hx-search">
+		<hx-div class="hx-search">
 			<EntitySearch
 				entries={search.entries}
 				scope={search.scope}
@@ -94,6 +96,6 @@
 					if (to) input.onroute(to);
 				}}
 			/>
-		</div>
+		</hx-div>
 	{/if}
-</header>
+</hx-header>

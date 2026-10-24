@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { BehaviorCell } from '../../utils/explorer-ui/entityBehavior';
 	import { artifactText } from '../../utils/explorer-ui/explorerArtifact';
@@ -43,91 +45,98 @@
 
 {#snippet recorded(run: ExplorerArtifactBehavior)}
 	{#if facts(run).length}
-		<dl class="ex-rows">
+		<hx-dl class="ex-rows">
 			{#each facts(run) as [name, value] (name)}
-				<div>
-					<dt>{name}</dt>
-					<dd>{value}</dd>
-				</div>
+				<hx-div>
+					<hx-dt>{name}</hx-dt>
+					<hx-dd>{value}</hx-dd>
+				</hx-div>
 			{/each}
-		</dl>
+		</hx-dl>
 	{/if}
 	{#if run.steps.length}
-		<h4>Steps</h4>
-		<ol class="ex-steps">
-			{#each run.steps as step, position (position)}<li>{shown(step)}</li>{/each}
-		</ol>
+		<hx-h4>Steps</hx-h4>
+		<hx-ol class="ex-steps">
+			{#each run.steps as step, position (position)}<hx-li>{shown(step)}</hx-li>{/each}
+		</hx-ol>
 	{/if}
 	{#if run.assertions.length}
-		<h4>Assertions</h4>
-		<ul class="ex-checks">
+		<hx-h4>Assertions</hx-h4>
+		<hx-ul class="ex-checks">
 			{#each run.assertions as item, position (position)}
-				<li>
+				<hx-li>
 					{#if item.passed === null}
-						<span class="ex-soft">Not stated</span>
+						<hx-span class="ex-soft">Not stated</hx-span>
 					{:else}
 						<HarnessVerdict passed={item.passed} label={item.passed ? 'Held' : 'Failed'} />
 					{/if}
-					<span>{item.name}</span>
-					{#if item.detail}<pre>{shown(item.detail)}</pre>{/if}
-				</li>
+					<hx-span>{item.name}</hx-span>
+					{#if item.detail}<hx-pre>{shown(item.detail)}</hx-pre>{/if}
+				</hx-li>
 			{/each}
-		</ul>
+		</hx-ul>
 	{/if}
 	{#if run.trace.length}
-		<details>
-			<summary>Trace · {run.trace.length} {run.trace.length === 1 ? 'entry' : 'entries'}</summary>
-			<pre>{shown(run.trace)}</pre>
-		</details>
+		<hx-details>
+			<hx-summary
+				>Trace · {run.trace.length} {run.trace.length === 1 ? 'entry' : 'entries'}</hx-summary
+			>
+			<hx-pre>{shown(run.trace)}</hx-pre>
+		</hx-details>
 	{/if}
 	{#if Object.keys(run.other).length}
-		<details>
-			<summary>Also recorded</summary>
-			<pre>{shown(run.other)}</pre>
-		</details>
+		<hx-details>
+			<hx-summary>Also recorded</hx-summary>
+			<hx-pre>{shown(run.other)}</hx-pre>
+		</hx-details>
 	{/if}
 {/snippet}
 
 {#if !cell.capture}
-	<p class="ex-soft" data-harness-component="harness-entity-artifact">Not recorded</p>
+	<hx-p class="ex-soft" data-harness-component="harness-entity-artifact">Not recorded</hx-p>
 {:else if cell.capture.media === null}
-	<p class="ex-gap" data-harness-component="harness-entity-artifact">
+	<hx-p class="ex-gap" data-harness-component="harness-entity-artifact">
 		<HarnessVerdict passed={false} label="Not stored" />
-		<span>{cell.capture.gap ?? 'Its bytes are not in this history.'}</span>
-	</p>
+		<hx-span>{cell.capture.gap ?? 'Its bytes are not in this history.'}</hx-span>
+	</hx-p>
 {:else}
-	<div
+	<hx-div
 		class="ex-artifact"
 		role="group"
 		aria-label={label}
 		data-harness-component="harness-entity-artifact"
 	>
 		{#if cell.read === undefined && !lost}
-			<p class="ex-soft" role="status">Reading what it holds…</p>
+			<hx-p class="ex-soft" role="status">Reading what it holds…</hx-p>
 		{:else if !cell.read || !cell.read.verified}
-			<p class="ex-gap">
+			<hx-p class="ex-gap">
 				<HarnessVerdict passed={false} label="Not verified" />
-				<span>{cell.read?.problem ?? 'It could not be read and checked against its hash.'}</span>
-			</p>
+				<hx-span
+					>{cell.read?.problem ?? 'It could not be read and checked against its hash.'}</hx-span
+				>
+			</hx-p>
 		{:else}
 			<!-- A result is shown by its rows; what else was recorded stays behind a disclosure. -->
 			<EntityCases document={cell.read.document} {unit} callable={unit !== undefined} />
-			<details>
-				<summary>Assertions and recorded result</summary>
+			<hx-details>
+				<hx-summary>Assertions and recorded result</hx-summary>
 				{#if run}{@render recorded(run)}{/if}
 				{#if cell.read.document === null}
-					<pre>{shown(cell.read.text)}</pre>
+					<hx-pre>{shown(cell.read.text)}</hx-pre>
 				{:else}
 					<!-- All that was read and checked, as it was recorded: a field no row shows is here. -->
-					<details bind:open={asked}>
-						<summary>Recorded JSON</summary>
-						{#if asked}<pre>{shown(cell.read.text)}</pre>{/if}
-					</details>
+					<hx-details bind:open={asked}>
+						<hx-summary>Recorded JSON</hx-summary>
+						{#if asked}<hx-pre>{shown(cell.read.text)}</hx-pre>{/if}
+					</hx-details>
 				{/if}
-			</details>
+			</hx-details>
 		{/if}
-		<a class="ex-link" href={mediaBase + mediaFile(cell.capture)} target="_blank" rel="noreferrer"
-			>Open the recorded {label}</a
+		<hx-a
+			class="ex-link"
+			href={mediaBase + mediaFile(cell.capture)}
+			target="_blank"
+			rel="noreferrer">Open the recorded {label}</hx-a
 		>
-	</div>
+	</hx-div>
 {/if}

@@ -1,9 +1,12 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { HarnessMark, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 	import { harnessLayout } from './harnessLayout';
 	import { nodeSize } from '../../../utils/explorer-ui/harnessLayout';
 	import { drawnEdges, focusOn, nextNode, panView, zoomView } from './focusView';
 	import { wholeView, type MapView } from '../../../utils/explorer-ui/focusView';
+	import { mapUnitLabel } from './mapUnitLabel';
 	let {
 		units,
 		marks = new Map<string, HarnessMark>(),
@@ -15,12 +18,6 @@
 		selected?: string | null;
 		onselect: (id: string) => void;
 	} = $props();
-	const markLabels: Record<HarnessMark, string> = {
-		direct: 'directly changed',
-		indirect: 'indirectly affected',
-		added: 'added',
-		removed: 'removed'
-	};
 	let search = $state('');
 	let svg = $state<SVGSVGElement>();
 	// Null shows the whole map; anything else is where the reader zoomed, panned or was taken.
@@ -67,10 +64,7 @@
 	$effect(() => {
 		if (selected && selected !== picked) view = focusOn(layout, new Set([selected]));
 	});
-	const label = (unit: HarnessUnit) => {
-		const mark = marks.get(unit.id);
-		return `${unit.id}, ${unit.kind}${mark ? `, ${markLabels[mark]}` : ''}`;
-	};
+	const label = (unit: HarnessUnit) => mapUnitLabel(unit, marks.get(unit.id));
 	const short = (id: string) => (id.length > 27 ? `${id.slice(0, 26)}…` : id);
 	/** Map units per screen pixel, for turning a drag into a pan. */
 	function ratio(): number {
@@ -121,43 +115,41 @@
 		pick(id);
 	}
 </script>
-
-<div class="hc-grid">
-	<div class="hc-card">
-		<input
+<hx-div class="hc-grid">
+	<hx-div class="hc-card">
+		<hx-input
 			class="hc-search"
 			type="search"
 			aria-label="Search components"
 			placeholder="Search components"
 			bind:value={search}
 		/>
-		<p class="hc-muted">{listed.length} of {units.length} components</p>
-		<ul class="hc-list" aria-label="Components">
+		<hx-p class="hc-muted">{listed.length} of {units.length} components</hx-p>
+		<hx-ul class="hc-list" aria-label="Components">
 			{#each listed as unit (unit.id)}
-				<li>
-					<button
+				<hx-li>
+					<hx-button
 						type="button"
 						aria-current={unit.id === selected ? 'true' : undefined}
 						onclick={() => onselect(unit.id)}
 						>{unit.id}{#if marks.get(unit.id)}
-							<small> · {markLabels[marks.get(unit.id) as HarnessMark]}</small>{/if}<br /><small
-							>{unit.responsibility}</small
-						></button
+							<hx-small> · {markLabels[marks.get(unit.id) as HarnessMark]}</hx-small>{/if}<hx-br
+						/><hx-small>{unit.responsibility}</hx-small></hx-button
 					>
-				</li>
+				</hx-li>
 			{/each}
-		</ul>
-	</div>
-	<div class="hc-card hc-map">
-		<div class="hc-map-tools">
-			<button type="button" aria-label="Zoom in" onclick={() => scale(1.3)}>+</button>
-			<button type="button" aria-label="Zoom out" onclick={() => scale(1 / 1.3)}>−</button>
-			<button type="button" onclick={() => (view = null)}>Fit</button>
+		</hx-ul>
+	</hx-div>
+	<hx-div class="hc-card hc-map">
+		<hx-div class="hc-map-tools">
+			<hx-button type="button" aria-label="Zoom in" onclick={() => scale(1.3)}>+</hx-button>
+			<hx-button type="button" aria-label="Zoom out" onclick={() => scale(1 / 1.3)}>−</hx-button>
+			<hx-button type="button" onclick={() => (view = null)}>Fit</hx-button>
 			{#if edges.length < layout.edges.length}
-				<span class="hc-muted">Dependencies are drawn for the selected component.</span>
+				<hx-span class="hc-muted">Dependencies are drawn for the selected component.</hx-span>
 			{/if}
-		</div>
-		<svg
+		</hx-div>
+		<hx-svg
 			bind:this={svg}
 			role="group"
 			aria-label="Component map"
@@ -168,7 +160,7 @@
 			onpointercancel={up}
 		>
 			{#each edges as edge (edge.from + '>' + edge.to)}
-				<line
+				<hx-svg-line
 					class="hc-edge"
 					class:near={edge.from === selected || edge.to === selected}
 					x1={edge.x1}
@@ -179,7 +171,7 @@
 			{/each}
 			{#each layout.nodes as node (node.unit.id)}
 				{@const visible = matching.has(node.unit.id)}
-				<g
+				<hx-svg-g
 					class="hc-node {marks.get(node.unit.id) ?? ''}"
 					class:selected={node.unit.id === selected}
 					class:dimmed={!visible || (selected !== null && near.size > 0 && !near.has(node.unit.id))}
@@ -194,26 +186,31 @@
 					onfocus={() => (cursor = node.unit.id)}
 					onkeydown={(event) => key(event, node.unit.id)}
 				>
-					<title>{node.unit.id}</title>
-					<rect width={nodeSize.width} height={nodeSize.height} rx="7" />
-					<text x="9" y="21">{short(node.unit.id)}</text>
-				</g>
+					<hx-title>{node.unit.id}</hx-title>
+					<hx-svg-rect width={nodeSize.width} height={nodeSize.height} rx="7" />
+					<hx-svg-text x="9" y="21">{short(node.unit.id)}</hx-svg-text>
+				</hx-svg-g>
 			{/each}
-		</svg>
+		</hx-svg>
 		{#if marks.size > 0}
-			<div class="hc-legend" aria-label="Map legend">
-				<span
-					><span class="hc-swatch" style="background:var(--hx-color-direct)"></span>Directly changed</span
+			<hx-div class="hc-legend" aria-label="Map legend">
+				<hx-span
+					><hx-span class="hc-swatch" style="background:var(--hx-color-direct)"></hx-span>Directly
+					changed</hx-span
 				>
-				<span
-					><span class="hc-swatch" style="background:var(--hx-color-indirect)"></span>Indirectly
-					affected</span
+				<hx-span
+					><hx-span class="hc-swatch" style="background:var(--hx-color-indirect)"
+					></hx-span>Indirectly affected</hx-span
 				>
-				<span><span class="hc-swatch" style="background:var(--hx-color-added)"></span>Added</span>
-				<span
-					><span class="hc-swatch" style="background:var(--hx-color-removed)"></span>Removed</span
+				<hx-span
+					><hx-span class="hc-swatch" style="background:var(--hx-color-added)"
+					></hx-span>Added</hx-span
 				>
-			</div>
+				<hx-span
+					><hx-span class="hc-swatch" style="background:var(--hx-color-removed)"
+					></hx-span>Removed</hx-span
+				>
+			</hx-div>
 		{/if}
-	</div>
-</div>
+	</hx-div>
+</hx-div>

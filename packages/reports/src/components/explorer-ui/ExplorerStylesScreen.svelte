@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { appStyleTokensConfig } from '../../configs/shared-primitives/appStyleTokensConfig';
@@ -131,58 +133,56 @@
 	{@const [, kind, rule] = drawings.find(([prefix]) => prefix.test(token.name))!}
 	{@const style = rule.replace('$', `var(${token.name})`)}
 	{#if kind === 'text'}
-		<p class="hx-style-specimen" {style}>
-			<span>{sample(token.name)}</span>
-		</p>
+		<hx-p class="hx-style-specimen" {style}>
+			<hx-span>{sample(token.name)}</hx-span>
+		</hx-p>
 	{:else if kind === 'value'}
-		<p class="hx-style-value">{token.value}</p>
+		<hx-p class="hx-style-value">{token.value}</hx-p>
 	{:else}
-		<div class="hx-style-frame" aria-hidden="true">
-			<span class={`hx-style-${kind}`} {style}></span>
-		</div>
+		<hx-div class="hx-style-frame" aria-hidden="true">
+			<hx-span class={`hx-style-${kind}`} {style}></hx-span>
+		</hx-div>
 	{/if}
 {/snippet}
 
 <!-- A role: its purpose, its variable with resolved value and sample, then where it is used. -->
 {#snippet card(group: string, role: StyleRoleCard)}
 	{@const id = headingId(`${group} ${role.name}`)}
-	<article class="hx-style-role" aria-labelledby={id}>
-		<h3 {id}>{role.name}</h3>
+	<hx-article class="hx-style-role" aria-labelledby={id}>
+		<hx-h3 {id}>{role.name}</hx-h3>
 		{#if role.use}
-			<p><strong>Use for</strong> {role.use}</p>
+			<hx-p><hx-strong>Use for</hx-strong> {role.use}</hx-p>
 		{/if}
 		{#each role.sets as { label, base, rows } (label)}
-			<div role="group" aria-labelledby={`${id}-${base}`} class:hx-style-base={base}>
-				<p id={`${id}-${base}`}>{label}</p>
+			<hx-div role="group" aria-labelledby={`${id}-${base}`} class:hx-style-base={base}>
+				<hx-p id={`${id}-${base}`}>{label}</hx-p>
 				{#each rows as token (token.name)}
-					<div data-style-token={token.name}>
-						<code>{token.name}</code>
-						<span>{base ? token.resolved : token.value}</span>
+					<hx-div data-style-token={token.name}>
+						<hx-code>{token.name}</hx-code>
+						<hx-span>{base ? token.resolved : token.value}</hx-span>
 						{@render specimen(token)}
-					</div>
+					</hx-div>
 				{/each}
-			</div>
+			</hx-div>
 			{#if base && role.where}
-				<p><strong>Where used</strong> {role.where}</p>
+				<hx-p><hx-strong>Where used</hx-strong> {role.where}</hx-p>
 			{/if}
 		{/each}
-	</article>
+	</hx-article>
 {/snippet}
-
 <ExplorerFrame {host}>
 	{#snippet children(_nav)}
-		<section
+		<hx-section
 			data-harness-component="explorer-ui-harness-explorer-styles-screen"
 			class="hx-styles-page"
 			aria-labelledby="styles-title"
 		>
-			<header class="hx-styles-intro">
-				<p class="hx-styles-kicker">Design system</p>
-				<h1 id="styles-title">Styles</h1>
-				<p>What each shared choice is for, the value it resolves to and where it is used.</p>
-			</header>
-
-			<div class="hx-styles-groups">
+			<hx-header class="hx-styles-intro">
+				<hx-p class="hx-styles-kicker">Design system</hx-p>
+				<hx-h1 id="styles-title">Styles</hx-h1>
+				<hx-p>What each shared choice is for, the value it resolves to and where it is used.</hx-p>
+			</hx-header>
+			<hx-div class="hx-styles-groups">
 				{#each groups as group (group.name)}
 					<HarnessGroup
 						title={group.name}
@@ -192,28 +192,28 @@
 						resetKey={host.scope.commit}
 					>
 						{#if group.name === appStyleTokensConfig.foundation}
-							<p class="hx-styles-kicker">Foundation</p>
+							<hx-p class="hx-styles-kicker">Foundation</hx-p>
 						{/if}
-						<div class="hx-styles-grid" class:hx-style-roles={!!roles[group.name]}>
+						<hx-div class="hx-styles-grid" class:hx-style-roles={!!roles[group.name]}>
 							{#if roles[group.name]}
 								{#each assignRoles(group) as role (role.name)}
 									{@render card(group.name, role)}
 								{/each}
 							{:else}
 								{#each group.tokens as token (token.name)}
-									<article class="hx-style-token" data-style-token={token.name}>
-										<header class="hx-style-token-head">
-											<code>{token.name}</code>
-											<span>{token.value}</span>
-										</header>
+									<hx-article class="hx-style-token" data-style-token={token.name}>
+										<hx-header class="hx-style-token-head">
+											<hx-code>{token.name}</hx-code>
+											<hx-span>{token.value}</hx-span>
+										</hx-header>
 										{@render specimen(token)}
-									</article>
+									</hx-article>
 								{/each}
 							{/if}
-						</div>
+						</hx-div>
 					</HarnessGroup>
 				{/each}
-			</div>
-		</section>
+			</hx-div>
+		</hx-section>
 	{/snippet}
 </ExplorerFrame>

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms atoms -->
 <script lang="ts">
 	import { t } from '../../utils/reports-media/reportLocale';
 	import HarnessIcon from '../explorer-ui/HarnessIcon.svelte';
@@ -33,7 +35,7 @@
 </script>
 
 {#if shown}
-	<dialog
+	<hx-dialog
 		bind:this={dialog}
 		oncancel={close}
 		onclick={(event) => {
@@ -45,15 +47,15 @@
 		data-harness-component="modal"
 		aria-labelledby="viewer-dialog-title"
 	>
-		<header class="viewer-header">
-			<h2 id="viewer-dialog-title">{title}</h2>
-			<button onclick={close} aria-label={$t('close')}
-				><HarnessIcon name="close" size={24} /></button
+		<hx-header class="viewer-header">
+			<hx-h2 id="viewer-dialog-title">{title}</hx-h2>
+			<hx-button onclick={close} aria-label={$t('close')}
+				><HarnessIcon name="close" size={24} /></hx-button
 			>
-		</header>
-		<div class="viewer-content">{@render children?.()}</div>
-		{#if footer}<footer>{@render footer()}</footer>{/if}
-	</dialog>
+		</hx-header>
+		<hx-div class="viewer-content">{@render children?.()}</hx-div>
+		{#if footer}<hx-footer>{@render footer()}</hx-footer>{/if}
+	</hx-dialog>
 {/if}
 
 <style>

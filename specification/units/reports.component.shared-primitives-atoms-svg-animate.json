@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-animate",
+	"kind": "component",
+	"title": "SvgAnimate",
+	"responsibility": "Renders the native animate element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "animate",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgAnimate.svelte"],
+		"symbols": ["SvgAnimate"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgAnimate.attributes",
+				"type": "SvelteHTMLElements['animate']",
+				"description": "Native animate attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgAnimate.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native animate element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgAnimate",
+				"type": "markup",
+				"description": "The actual native animate element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgAnimate.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgAnimate.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import Select from '../../shared-primitives/Select.svelte';
@@ -57,12 +59,10 @@
 		);
 		return known?.label ?? target.model;
 	}
-
 	function receive(data: PickerSnapshot) {
 		if (!snapshot) provider = data.defaultProvider;
 		snapshot = data;
 	}
-
 	async function run(
 		note: string,
 		name: string,
@@ -83,29 +83,24 @@
 			busy = '';
 		}
 	}
-
 	function bindSession(event: SubmitEvent) {
 		event.preventDefault();
 		const id = draftId.trim();
 		if (id)
 			void run('Binding session…', 'get_provider_status', { session_id: id }, () => (boundId = id));
 	}
-
 	function refresh() {
 		void run('Refreshing…', 'get_provider_status', sessionId ? { session_id: sessionId } : {});
 	}
-
 	function queue() {
 		const target = { session_id: sessionId, provider, model, effort };
 		if (ready)
 			void run('Queueing switch…', 'request_model_switch', target, () => (sessions = null));
 	}
-
 	function cancel() {
 		const target = { session_id: request?.sessionId, request_id: request?.id };
 		if (request) void run('Cancelling…', 'cancel_model_switch', target, () => (sessions = null));
 	}
-
 	function loadSessions() {
 		void run('Loading queued sessions…', 'list_observed_sessions', {}, (data) => {
 			const list = (data as { sessions?: unknown } | null)?.sessions;
@@ -113,7 +108,6 @@
 			sessions = list as SwitchRequest[];
 		});
 	}
-
 	onMount(async () => {
 		try {
 			const opened = await providerPickerClient(receive);
@@ -123,47 +117,49 @@
 			error = cause instanceof Error ? cause.message : 'Could not connect to the model picker.';
 		}
 	});
-
 	onDestroy(() => {
 		closed = true;
 		void client?.close();
 	});
 </script>
-
-<section class="provider-picker" data-harness-component="provider-picker" aria-busy={busy !== ''}>
-	<header class="picker-head">
-		<h2>{label}</h2>
-		{#if snapshot}<span class="picker-badge"
-				><span>{providers[snapshot.defaultProvider]}</span> default</span
+<hx-section
+	class="provider-picker"
+	data-harness-component="provider-picker"
+	aria-busy={busy !== ''}
+>
+	<hx-header class="picker-head">
+		<hx-h2>{label}</hx-h2>
+		{#if snapshot}<hx-span class="picker-badge"
+				><hx-span>{providers[snapshot.defaultProvider]}</hx-span> default</hx-span
 			>{/if}
-		<button type="button" onclick={refresh} disabled={locked}>Refresh</button>
-	</header>
+		<hx-button type="button" onclick={refresh} disabled={locked}>Refresh</hx-button>
+	</hx-header>
 	{#if client?.preview}
-		<p class="picker-note">
+		<hx-p class="picker-note">
 			Local preview: not connected to Codex. The session identity shown is synthetic.
-		</p>
+		</hx-p>
 	{/if}
-	{#if error}<p class="picker-note picker-error" role="alert">{error}</p>{/if}
+	{#if error}<hx-p class="picker-note picker-error" role="alert">{error}</hx-p>{/if}
 	{#if !snapshot}
-		<p class="picker-note" role="status">
+		<hx-p class="picker-note" role="status">
 			{error ? 'No picker state received.' : 'Waiting for picker state…'}
-		</p>
+		</hx-p>
 	{:else}
 		{#if snapshot.message}
-			<p class="picker-note" class:picker-warn={!snapshot.controlConnected} role="status">
+			<hx-p class="picker-note" class:picker-warn={!snapshot.controlConnected} role="status">
 				{snapshot.message}
-			</p>
+			</hx-p>
 		{/if}
 		{#if sessionId}
-			<p class="picker-session">Session <code>{sessionId}</code></p>
+			<hx-p class="picker-session">Session <hx-code>{sessionId}</hx-code></hx-p>
 		{:else}
-			<form class="picker-bind" onsubmit={bindSession}>
-				<label class="picker-field">
-					<span>Session ID</span>
-					<input bind:value={draftId} autocomplete="off" spellcheck="false" disabled={locked} />
-				</label>
-				<button type="submit" disabled={locked || !draftId.trim()}>Bind session</button>
-			</form>
+			<hx-form class="picker-bind" onsubmit={bindSession}>
+				<hx-label class="picker-field">
+					<hx-span>Session ID</hx-span>
+					<hx-input bind:value={draftId} autocomplete="off" spellcheck="false" disabled={locked} />
+				</hx-label>
+				<hx-button type="submit" disabled={locked || !draftId.trim()}>Bind session</hx-button>
+			</hx-form>
 		{/if}
 		<ProviderPickerCards
 			active={snapshot.active}
@@ -173,47 +169,51 @@
 			{locked}
 			oncancel={cancel}
 		/>
-		<div class="picker-fields">
-			<span aria-hidden="true">Provider</span>
+		<hx-div class="picker-fields">
+			<hx-span aria-hidden="true">Provider</hx-span>
 			<Select bind:value={provider} label="Provider" disabled={locked}>
 				{#each Object.entries(providers) as [id, name] (id)}
-					<option value={id} disabled={!models.some((item) => item.provider === id)}>{name}</option>
+					<hx-option value={id} disabled={!models.some((item) => item.provider === id)}
+						>{name}</hx-option
+					>
 				{/each}
 			</Select>
-			<span aria-hidden="true">Model</span>
+			<hx-span aria-hidden="true">Model</hx-span>
 			<Select bind:value={model} label="Model" disabled={locked || !choices.length}>
-				{#each choices as item (item.model)}<option value={item.model}>{item.label}</option>{/each}
+				{#each choices as item (item.model)}<hx-option value={item.model}>{item.label}</hx-option
+					>{/each}
 			</Select>
-			<span aria-hidden="true">Reasoning effort</span>
+			<hx-span aria-hidden="true">Reasoning effort</hx-span>
 			<Select bind:value={effort} label="Reasoning effort" disabled={locked || !current}>
-				{#each current?.efforts ?? [] as level (level)}<option value={level}>{level}</option>{/each}
+				{#each current?.efforts ?? [] as level (level)}<hx-option value={level}>{level}</hx-option
+					>{/each}
 			</Select>
-		</div>
-		<div class="picker-actions">
-			<button type="button" class="picker-primary" onclick={queue} disabled={locked || !ready}
-				>Queue switch</button
+		</hx-div>
+		<hx-div class="picker-actions">
+			<hx-button type="button" class="picker-primary" onclick={queue} disabled={locked || !ready}
+				>Queue switch</hx-button
 			>
-			<p class="picker-hint" role="status">{busy || hint}</p>
-		</div>
-		<div class="picker-queue">
-			<button type="button" onclick={loadSessions} disabled={locked}
-				>{sessions ? 'Reload' : 'Show'} queued sessions</button
+			<hx-p class="picker-hint" role="status">{busy || hint}</hx-p>
+		</hx-div>
+		<hx-div class="picker-queue">
+			<hx-button type="button" onclick={loadSessions} disabled={locked}
+				>{sessions ? 'Reload' : 'Show'} queued sessions</hx-button
 			>
 			{#each sessions ?? [] as item (item.id)}
-				<p>
-					<code>{item.sessionId}</code>
+				<hx-p>
+					<hx-code>{item.sessionId}</hx-code>
 					{labelFor(item.target)} · {item.target.effort} effort · {item.status}
-				</p>
+				</hx-p>
 			{:else}
-				{#if sessions}<p>No queued sessions.</p>{/if}
+				{#if sessions}<hx-p>No queued sessions.</hx-p>{/if}
 			{/each}
-			<p class="picker-hint">
+			<hx-p class="picker-hint">
 				Explicitly queued sessions only, loaded on request. Other native tasks are not listed.
-			</p>
-		</div>
+			</hx-p>
+		</hx-div>
 	{/if}
-	<footer class="picker-foot">
+	<hx-footer class="picker-foot">
 		A queued switch takes effect only after the thread is closed on all clients and a verified
 		resume succeeds. While desktop control is unavailable, the request stays pending.
-	</footer>
-</section>
+	</hx-footer>
+</hx-section>

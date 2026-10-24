@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../models/Explorer.types';
@@ -48,23 +50,23 @@
 	{#if category === 'configs' && rows.every(setting)}
 		<ExplorerTable category="configs" {rows} {nav} {lens} {mediaBase} {verification} />
 	{:else}
-		<div class={category === 'pages' ? 'ex-page-grid' : 'ex-catalog-grid'}>
+		<hx-div class={category === 'pages' ? 'ex-page-grid' : 'ex-catalog-grid'}>
 			{#each rows as row (row.id)}
 				<ExplorerModuleCard {row} {category} {nav} {lens} {mediaBase} />
 			{/each}
-		</div>
+		</hx-div>
 	{/if}
 {/snippet}
 
 {#if batch > 0}
-	<div class="ex-batched-catalog" role="group" aria-label={label} bind:this={root}>
+	<hx-div class="ex-batched-catalog" role="group" aria-label={label} bind:this={root}>
 		{@render items(visible)}
 		{#if visible.length < rows.length}
 			<HarnessAction tone="plain" label={`View more ${label.split(' ')[0]}`} onclick={more}
 				>View More</HarnessAction
 			>
 		{/if}
-	</div>
+	</hx-div>
 {:else}
 	{@render items(rows)}
 {/if}

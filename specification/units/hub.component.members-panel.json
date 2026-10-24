@@ -6,6 +6,21 @@
 	"responsibility": "Lists project members and exposes invitations to owners.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.invitation-form",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-table",
+			"reports.component.shared-primitives-atoms-html-tbody",
+			"reports.component.shared-primitives-atoms-html-td",
+			"reports.component.shared-primitives-atoms-html-th",
+			"reports.component.shared-primitives-atoms-html-thead",
+			"reports.component.shared-primitives-atoms-html-tr"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/hub/src/components/MembersPanel.svelte",
@@ -39,6 +54,51 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-tbody",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-td",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-th",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-thead",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-tr",
 			"via": "import",
 			"origin": "derived"
 		}

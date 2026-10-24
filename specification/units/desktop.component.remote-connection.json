@@ -6,6 +6,10 @@
 	"responsibility": "Chooses connection controls appropriate to the current computer or phone environment.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["desktop.component.remote-host-panel", "desktop.component.remote-phone-panel"]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/RemoteConnection.svelte",

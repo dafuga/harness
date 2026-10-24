@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type { TranslationRow } from '../../../../../src/core/explorer-ui/Translation.types';
@@ -42,65 +44,67 @@
 
 <ExplorerFrame {host} registryRequired={false}>
 	{#snippet children(nav)}
-		<section
+		<hx-section
 			class="ex-translations"
 			data-harness-component="explorer-translations-screen"
 			aria-labelledby="translations-title"
 		>
-			<nav class="ex-crumbs" aria-label="Breadcrumb">
-				<ol>
-					<li><HarnessIcon name="web" size={18} /></li>
-					<li>Translations</li>
-				</ol>
-			</nav>
-			<h1 id="translations-title">Translations</h1>
-			<p class="ex-lead">Registered app strings, side by side in each language.</p>
+			<hx-nav class="ex-crumbs" aria-label="Breadcrumb">
+				<hx-ol>
+					<hx-li><HarnessIcon name="web" size={18} /></hx-li>
+					<hx-li>Translations</hx-li>
+				</hx-ol>
+			</hx-nav>
+			<hx-h1 id="translations-title">Translations</hx-h1>
+			<hx-p class="ex-lead">Registered app strings, side by side in each language.</hx-p>
 			<ExplorerControls noun="translations" bind:filter />
 			{#if !catalog}
-				<p class="ex-empty">No translation catalog is recorded at this revision.</p>
+				<hx-p class="ex-empty">No translation catalog is recorded at this revision.</hx-p>
 			{:else}
-				<p class="ex-note" role="status">{rows.length} of {catalog.rows.length} strings</p>
+				<hx-p class="ex-note" role="status">{rows.length} of {catalog.rows.length} strings</hx-p>
 				{#if catalog.gaps.length}
-					<details class="ex-translations-gaps">
-						<summary>Some translation sources could not be read</summary>
-						<ul>
-							{#each catalog.gaps as gap}<li>{gap}</li>{/each}
-						</ul>
-					</details>
+					<hx-details class="ex-translations-gaps">
+						<hx-summary>Some translation sources could not be read</hx-summary>
+						<hx-ul>
+							{#each catalog.gaps as gap}<hx-li>{gap}</hx-li>{/each}
+						</hx-ul>
+					</hx-details>
 				{/if}
 				{#if rows.length}
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable table must be keyboard reachable.) -->
-					<div
+					<hx-div
 						class="ex-translations-scroll"
 						tabindex="0"
 						role="region"
 						aria-label="Translation strings"
 					>
-						<table>
-							<thead
-								><tr
-									><th scope="col">String</th>{#each locales as locale}<th scope="col"
-											>{languageName(locale)} <span>{locale}</span></th
-										>{/each}<th scope="col">Used In</th></tr
-								></thead
+						<hx-table>
+							<hx-thead
+								><hx-tr
+									><hx-th scope="col">String</hx-th>{#each locales as locale}<hx-th scope="col"
+											>{languageName(locale)} <hx-span>{locale}</hx-span></hx-th
+										>{/each}<hx-th scope="col">Used In</hx-th></hx-tr
+								></hx-thead
 							>
-							<tbody>
+							<hx-tbody>
 								{#each visible as row (`${row.scope}:${row.key}`)}
-									<tr
-										><th scope="row"><code>{row.key}</code><small>{row.scope}</small></th>
+									<hx-tr
+										><hx-th scope="row"
+											><hx-code>{row.key}</hx-code><hx-small>{row.scope}</hx-small></hx-th
+										>
 										{#each locales as locale}
-											<td lang={locale}
-												>{#if Object.hasOwn(row.values, locale)}{#if row.values[locale] === ''}<span
-															class="ex-translations-missing">Empty string</span
-														>{:else}{row.values[locale]}{/if}{:else}<span
-														class="ex-translations-missing">Not translated</span
-													>{/if}</td
+											<hx-td lang={locale}
+												>{#if Object.hasOwn(row.values, locale)}{#if row.values[locale] === ''}<hx-span
+															class="ex-translations-missing">Empty string</hx-span
+														>{:else}{row.values[locale]}{/if}{:else}<hx-span
+														class="ex-translations-missing">Not translated</hx-span
+													>{/if}</hx-td
 											>
 										{/each}
-										<td
+										<hx-td
 											class="ex-translations-usage"
 											class:ex-translations-unused={!row.usedBy.length}
-											><ul class="ex-translations-callers">
+											><hx-ul class="ex-translations-callers">
 												{#each row.usedBy as id}{@const entity = host.entities.find(
 														(item) => item.id === id
 													)}{#if entity}{@const to = {
@@ -109,8 +113,8 @@
 															category: entity.category,
 															entity: id
 														}}
-														<li>
-															<a
+														<hx-li>
+															<hx-a
 																href={nav.href(to)}
 																onclick={(event) => {
 																	if (
@@ -122,26 +126,26 @@
 																		event.preventDefault();
 																		nav.go(to);
 																	}
-																}}>{entity.name}</a
+																}}>{entity.name}</hx-a
 															>
-														</li>{/if}{/each}
-											</ul>
-											{#if !row.usedBy.length}<span class="ex-translations-missing"
-													>No literal caller recorded</span
-												>{/if}</td
+														</hx-li>{/if}{/each}
+											</hx-ul>
+											{#if !row.usedBy.length}<hx-span class="ex-translations-missing"
+													>No literal caller recorded</hx-span
+												>{/if}</hx-td
 										>
-									</tr>
+									</hx-tr>
 								{/each}
-							</tbody>
-						</table>
-					</div>
-					{#if rows.length > visible.length}<button
+							</hx-tbody>
+						</hx-table>
+					</hx-div>
+					{#if rows.length > visible.length}<hx-button
 							type="button"
 							class="ex-button ex-translations-more"
-							onclick={() => (limit += 50)}>View More</button
+							onclick={() => (limit += 50)}>View More</hx-button
 						>{/if}
-				{:else}<p class="ex-empty">No translations match this search.</p>{/if}
+				{:else}<hx-p class="ex-empty">No translations match this search.</hx-p>{/if}
 			{/if}
-		</section>
+		</hx-section>
 	{/snippet}
 </ExplorerFrame>

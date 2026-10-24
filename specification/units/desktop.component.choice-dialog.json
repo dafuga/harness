@@ -6,6 +6,14 @@
 	"responsibility": "Wraps supplied choices in a modal opened from an icon button.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-dialog",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/ChoiceDialog.svelte",
@@ -81,7 +89,23 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",

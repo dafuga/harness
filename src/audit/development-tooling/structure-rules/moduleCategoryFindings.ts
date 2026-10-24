@@ -32,7 +32,9 @@ export function moduleCategoryFindings(structure: AuditStructure): AuditFinding[
 
 function preservedEntry(path: string): boolean {
 	return (
+		/(?:^|\/)src\/lib\/atoms\/native-(?:elements|dom)\.d\.ts$/.test(path) ||
 		/(?:^|\/)src\/routes\//.test(path) ||
+		/(?:^|\/)src\/components\/atoms\//.test(path) ||
 		/(?:^|\/)src\/models\/adapters\//.test(path) ||
 		/(?:^|\/)src\/lib\/(?:styles|assets)\//.test(path)
 	);
@@ -46,7 +48,10 @@ function forwardingEntry(path: string): boolean {
 		/(?:^|\s)(?:module(?:\s|$)|context\s*=\s*['"]module['"])/.test(attributes);
 	const instance = scripts.filter((script) => !isModule(script[1]));
 	const modules = scripts.filter((script) => isModule(script[1]));
-	const markup = text.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '').trim();
+	const markup = text
+		.replace(/^<!-- @harness-(?:tier|atoms) [^\n]* -->\n/gm, '')
+		.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '')
+		.trim();
 	return (
 		instance.length === 1 &&
 		modules.length <= 1 &&
