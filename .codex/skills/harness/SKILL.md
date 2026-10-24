@@ -108,6 +108,8 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Screenshot Evidence
 
+Use source-and-run-specific output directories for verification attempts. Before reporting progress or a pass, check the tested commit, served build/revision and capture timestamps; reject logs and images left by an earlier attempt. A reused filename or successful file read does not establish fresh proof.
+
 - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
 - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
