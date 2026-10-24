@@ -3697,14 +3697,22 @@
 			"unit": "hub.controller.hub-agent",
 			"from": "packages/hub/src/controllers/HubAgentController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
-			"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
+			"definition": "2c186335bae7a55ff319933760ee48de377026384615a87c7db1939c4f825ded",
 			"relocationDefinition": "0d95fa47025cad07d80735fa157260a9afa50cfece897f29a381021ec4253ead",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
-				"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "2c186335bae7a55ff319933760ee48de377026384615a87c7db1939c4f825ded",
+				"reason": "Admits proposed contracts through writer authorization and verified branch-tip execution."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
+					"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "command.report",
@@ -4026,7 +4034,14 @@
 			"unit": "reports.controller.console-agent",
 			"from": "packages/reports/src/controllers/ConsoleAgentController.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
-			"definition": "e69fab551d013e04a4dce4403696335dde5a3d877b52d988f11b9639e7c3d75e"
+			"definition": "1dc7e9b5af820f6006924bfa34fef2e73889ca259b6f19b0ffa8b13dd3d56a5b",
+			"relocationDefinition": "e69fab551d013e04a4dce4403696335dde5a3d877b52d988f11b9639e7c3d75e",
+			"review": {
+				"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
+				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
+				"definition": "1dc7e9b5af820f6006924bfa34fef2e73889ca259b6f19b0ffa8b13dd3d56a5b",
+				"reason": "Accepts native bearer headers and returns original API artifact bytes behind the existing owner guard."
+			}
 		},
 		{
 			"unit": "relay.service.socket-accept",
@@ -4268,7 +4283,14 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695"
+			"definition": "c66b7f1ded5ac0ea5df9c98551c48289f2833965d23a74ed5f69fee02447c606",
+			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
+			"review": {
+				"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
+				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+				"definition": "c66b7f1ded5ac0ea5df9c98551c48289f2833965d23a74ed5f69fee02447c606",
+				"reason": "Exposes source, image and recorded-evidence reads through validated local sessions."
+			}
 		},
 		{
 			"unit": "service.claude-query",

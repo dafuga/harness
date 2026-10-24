@@ -1,3 +1,4 @@
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect } from '../../../../test/verificationExpect';
 import { test, vi } from 'vitest';
 import type { ProjectSummary } from 'collaboration';
@@ -116,30 +117,31 @@ test('removing membership cancels this actor’s runs and denies the running aut
 	expect(f.executor.revoke).toHaveBeenCalledWith(outsider.id, project.id);
 });
 
-test('contract proposals reach only an authorized executor at the verified branch tip', async () => {
-	const f = fixture();
-	const definition = {
-		method: 'createPlan',
-		revision: start.revision,
-		input: {
-			category: 'functions',
-			title: 'Format totals',
-			goal: 'Format a total',
-			contract: { inputs: [], outputs: [], errors: [] }
-		}
-	};
-	expect((await f.handle(definition)).status).toBe(200);
-	expect(f.executor.execute).toHaveBeenLastCalledWith(
-		expect.objectContaining({
+test('contract proposals reach only an authorized executor at the verified branch tip', () =>
+	measureWorkload('hub.controller.hub-agent', 'hosted-contract-admission', async () => {
+		const f = fixture();
+		const definition = {
 			method: 'createPlan',
-			payload: expect.objectContaining({
-				revision: start.revision,
-				input: expect.objectContaining(definition.input)
+			revision: start.revision,
+			input: {
+				category: 'functions',
+				title: 'Format totals',
+				goal: 'Format a total',
+				contract: { inputs: [], outputs: [], errors: [] }
+			}
+		};
+		expect((await f.handle(definition)).status).toBe(200);
+		expect(f.executor.execute).toHaveBeenLastCalledWith(
+			expect.objectContaining({
+				method: 'createPlan',
+				payload: expect.objectContaining({
+					revision: start.revision,
+					input: expect.objectContaining(definition.input)
+				})
 			})
-		})
-	);
-	await expect(fixture('viewer').handle(definition)).rejects.toMatchObject({ code: 'forbidden' });
-	await expect(
-		f.handle({ ...definition, revision: { ...start.revision, commit: 'b'.repeat(40) } })
-	).rejects.toMatchObject({ code: 'revision-mismatch' });
-});
+		);
+		await expect(fixture('viewer').handle(definition)).rejects.toMatchObject({ code: 'forbidden' });
+		await expect(
+			f.handle({ ...definition, revision: { ...start.revision, commit: 'b'.repeat(40) } })
+		).rejects.toMatchObject({ code: 'revision-mismatch' });
+	}));

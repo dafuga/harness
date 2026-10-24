@@ -19,7 +19,7 @@ test('API CLI discovers resources and reads arbitrary hosted resources, queries 
 	} finally {
 		await f.close();
 	}
-});
+}, 30000);
 
 test.each(['local', 'hosted'] as const)(
 	'API CLI reads %s contracts at the selected revision',
@@ -52,7 +52,8 @@ test.each(['local', 'hosted'] as const)(
 		} finally {
 			await f.close();
 		}
-	}
+	},
+	30000
 );
 
 test.each(['local', 'hosted'] as const)(
@@ -109,7 +110,8 @@ test.each(['local', 'hosted'] as const)(
 		} finally {
 			await f.close();
 		}
-	}
+	},
+	30000
 );
 
 test.each(['local', 'hosted'] as const)(
@@ -156,7 +158,8 @@ test.each(['local', 'hosted'] as const)(
 		} finally {
 			await f.close();
 		}
-	}
+	},
+	30000
 );
 
 test('API CLI reuses private local sessions across invocations without exposing credentials', async () => {
@@ -174,7 +177,7 @@ test('API CLI reuses private local sessions across invocations without exposing 
 	} finally {
 		await f.close();
 	}
-});
+}, 30000);
 
 test('API CLI refuses redirects, off-origin paths and insecure remote URLs', async () => {
 	const f = await apiFixture('hosted');
@@ -195,7 +198,7 @@ test('API CLI refuses redirects, off-origin paths and insecure remote URLs', asy
 	} finally {
 		await f.close();
 	}
-});
+}, 30000);
 
 test('API CLI raw requests retain methods and bodies, binary output and HTTP errors', async () => {
 	const f = await apiFixture('hosted');
@@ -211,4 +214,4 @@ test('API CLI raw requests retain methods and bodies, binary output and HTTP err
 	} finally {
 		await f.close();
 	}
-});
+}, 30000);

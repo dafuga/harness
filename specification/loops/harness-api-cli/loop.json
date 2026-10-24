@@ -2,11 +2,9 @@
 	"name": "harness-api-cli",
 	"goal": "CLI users discover and retrieve local or hosted Harness resources, inspect and define contracts, download page screenshots and manage agents using the existing API with permissions and revision identity preserved",
 	"createdAt": "2026-10-24T17:14:42.020Z",
-	"updatedAt": "2026-10-24T17:18:48.371Z",
+	"updatedAt": "2026-10-24T17:37:51.289Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T17:37:51.289Z",
+			"evidence": "CLI and local/hosted API operations implemented at 1c1dcda3a. Immutable red/green record uses unchanged assertions and a 30-second integration-case limit; all 10 acceptance cases pass. Local and hosted controller cases also pass."
 		},
 		{
 			"id": "test",
