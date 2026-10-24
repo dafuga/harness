@@ -2,7 +2,7 @@
 	"name": "centered-loading-state",
 	"goal": "Show a centered spinner during history and revision loading at every viewport",
 	"createdAt": "2026-10-24T11:26:40.350Z",
-	"updatedAt": "2026-10-24T11:26:40.350Z",
+	"updatedAt": "2026-10-24T11:28:46.786Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,22 +11,30 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:28:40.800Z",
+			"evidence": "History and revision loading must show a gold spinner at the viewport center without a card or blocking navigation."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:28:41.534Z",
+			"evidence": "The standard console data-loading matrix checked visibility, reduced motion and overflow, but omitted spinner geometry. Added viewport midpoint assertions at every existing viewport."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:28:42.597Z",
+			"evidence": "Committed 3463bbf0f test; record ba80595f preserves failing midpoint assertions and original loading screenshots."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:28:46.786Z",
+			"evidence": "Opus 5.5 changed shared LoadingState CSS to a transparent fixed centered ring with a label below, shared tokens, pointer pass-through and retained reduced-motion behavior."
 		},
 		{
 			"id": "green",
