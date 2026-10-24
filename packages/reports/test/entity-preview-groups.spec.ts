@@ -42,9 +42,11 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 			'the table heading names its config source rather than the responsibility category'
 		).toBeVisible();
 	await expect(page.getByRole('table', { name: 'deliverySettings', exact: true })).toContainText(
-		'deliverySettings.enabled'
+		'enabled'
 	);
 	await expect(table).not.toContainText('deliverySettings');
+	await expect(table.getByRole('link', { name: 'build.cssCodeSplit', exact: true })).toBeVisible();
+	await expect(table.locator('.ex-config-name')).not.toContainText(['orderSettings.']);
 	for (const label of [
 		'Boolean false',
 		'Number 25',
@@ -61,22 +63,20 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 		'Variable',
 		'Value'
 	]);
-	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
-		'25'
-	);
+	await expect(table.getByRole('row').filter({ hasText: 'pageSize' })).toContainText('25');
 	await inspectConfigValues(page, viewport, commits.middle);
 	await inspectConfigCollections(page, viewport);
 	await page.getByRole('searchbox').fill('newest');
+	await expect(table.getByRole('row')).toHaveCount(2);
+	await page.getByRole('searchbox').fill('orderSettings.defaultSort');
 	await expect(page.getByRole('table')).toHaveCount(1);
 	await expect(table.getByRole('row')).toHaveCount(2);
-	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
+	await page.getByRole('link', { name: 'defaultSort', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'orderSettings', exact: true })).toBeVisible();
 	await open(page, { category: 'configs', commit: commits.first }, 'groups');
 	await capture(page, `groups-configs-historical-${viewport}`, configUnits);
 	await inspectConfigValues(page, viewport, commits.first);
-	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.pageSize' })).toContainText(
-		'10'
-	);
+	await expect(table.getByRole('row').filter({ hasText: 'pageSize' })).toContainText('10');
 }
 
 for (const [viewport, size] of Object.entries(viewports)) {
