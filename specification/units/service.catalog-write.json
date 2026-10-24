@@ -3,8 +3,8 @@
 	"id": "service.catalog-write",
 	"kind": "service",
 	"title": "CatalogWriteService",
-	"responsibility": "Owns the CatalogWriteService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Atomically projects revision snapshots into SQLite, preserving entity metadata and distinct dependency relations.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -20,25 +20,29 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogWriteService.constructor.adapter",
-				"type": "SqliteAdapter"
+				"type": "SqliteAdapter",
+				"description": "Transactional database adapter for replacing the derived catalog tables."
 			},
 			{
 				"name": "CatalogWriteService.replace.index",
-				"type": "HistoryIndex"
+				"type": "HistoryIndex",
+				"description": "History branches, revisions, records and metadata to project."
 			},
 			{
 				"name": "CatalogWriteService.replace.snapshots",
-				"type": "CatalogSnapshot[]"
+				"type": "CatalogSnapshot[]",
+				"description": "Revision registries retained verbatim; identical target and relation pairs share one query edge."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogWriteService.replace",
-				"type": "void"
+				"type": "void",
+				"description": "Replaces catalog tables atomically; repeated dependency keys do not discard raw provenance or distinct relation types."
 			}
 		],
 		"errors": []

@@ -87,13 +87,18 @@ export class CatalogWriteService {
 			responsibility: entity.responsibility,
 			data: entity
 		});
-		for (const dependency of entity.dependencies)
+		const dependencies = new Set<string>();
+		for (const dependency of entity.dependencies) {
+			const key = JSON.stringify([id, dependency.unit, dependency.via]);
+			if (dependencies.has(key)) continue;
+			dependencies.add(key);
 			this.adapter.insert(CatalogDependency.definition.table, {
-				id: JSON.stringify([id, dependency.unit, dependency.via]),
+				id: key,
 				entityId: id,
 				targetId: dependency.unit,
 				via: dependency.via
 			});
+		}
 	}
 }
 
