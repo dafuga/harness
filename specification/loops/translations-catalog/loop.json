@@ -2,11 +2,9 @@
 	"name": "translations-catalog",
 	"goal": "Browse used translation keys and source strings by language at the selected revision with truthful missing values and search",
 	"createdAt": "2026-10-24T13:54:44.864Z",
-	"updatedAt": "2026-10-24T15:27:08.513Z",
+	"updatedAt": "2026-10-24T15:44:19.904Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -32,7 +30,9 @@
 		{
 			"id": "language-selector",
 			"title": "Select a target language and show only English, its translation and Used In",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T15:44:19.904Z",
+			"evidence": "Remote Mac red27baa7cf missing Language; unchanged green46813075 passes all6 cases with6 screenshots/10 scoped measurements;10 screen tests and15 shared guards pass."
 		}
 	],
 	"evaluators": [
