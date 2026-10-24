@@ -32,7 +32,7 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending",
-			"evidence": "Pending: bun run check passes formatting and TypeScript, then fails the unchanged main test/shared-workspace-registry.test.ts:130 max-lines-per-function rule (57 versus 55). Reports Styles also rejects unchanged translations.css font-style:italic. Focused checks, desktop build/typecheck/audit and real registry UI pass. No merge or shared preview publication."
+			"evidence": "Main 735e00832 repairs the registry lint limit. Existing Styles guard reproduced translations.css font-style:italic (33 passed, 1 failed), then passed unchanged (34 tests) using the canonical italic token. Full branch verification and landing remain pending."
 		}
 	],
 	"evaluators": [

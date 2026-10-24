@@ -44,7 +44,7 @@
 }
 .ex-translations-missing {
 	color: var(--hx-color-text-muted);
-	font-style: italic;
+	font-style: var(--hx-style-font-italic);
 }
 .ex-translations-more,
 .ex-translations-gaps {
