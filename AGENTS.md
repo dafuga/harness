@@ -21,6 +21,12 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
 - An agent that works here says so: `bun run dev -- activity register --label <who> --task <what> --units <ids>`, then `activity heartbeat <id>` as it goes (or `HARNESS_AGENT_ID=<id>` on its Harness commands) and `activity finish <id>` at the end. `bun run dev -- info activity` has the rules.
 
+## Shared Preview
+
+- Use one persistent browsing preview across Harness chats and worktrees. Reuse `http://127.0.0.1:5690`; verify the live owner at `http://127.0.0.1:47840/__harness_preview__` and coordinate source/history updates with Platforms.
+- Follow the shared preview lifecycle in `.codex/skills/harness/SKILL.md`. Do not change ownership ports or directly launch Vite, built servers or `report serve` to bypass the existing owner. Another persistent preview requires Daniel's explicit request.
+- Automated fixture servers are temporary: use existing test configuration and guaranteed task-owned teardown on every outcome. Preserve the shared preview, other projects' servers, source/history and evidence.
+
 ## Harness Project Change Communication
 
 These rules apply only to this Harness repository, including requests made in an external coding chat.
