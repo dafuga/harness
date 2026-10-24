@@ -8,13 +8,15 @@
 	import EntitySearch from '../entity-search/EntitySearch.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	import HarnessSelectors from '../harness-selectors/HarnessSelectors.svelte';
-	import HarnessTabs from '../HarnessTabs.svelte';
 	let input: HarnessNavbarInput = $props();
+	const id = $props.id();
 	let view = $derived(harnessShell(input));
 	let revision = $derived(view.revision);
 	let search = $derived(navbarSearch(input.scope, input.search?.entries));
-	// Within a module category its kinds are a strip of tabs, each a link to its own collection.
-	let kinds = $derived(view.modules.map((item) => ({ ...item, href: item.href ?? undefined })));
+	// The bubble Modules opens, whether it is open, and the address that closes it on changing.
+	let bubble = $state<HTMLElement>();
+	let expanded = $state(false);
+	let address = $derived(input.scope ? input.href(input.scope.location) : null);
 	const found = (entry: SearchEntry) => search.at(entry);
 	// A plain click stays in the application; any other is the link it is.
 	function follow(event: MouseEvent, to: ExplorerLocation | null) {
@@ -22,11 +24,20 @@
 		event.preventDefault();
 		input.onroute(to);
 	}
-	// The tabs keep a modified click a link themselves; a plain one opens the kind where it leads.
-	function openKind(id: string) {
-		const to = view.modules.find((item) => item.id === id)?.to;
-		if (to) input.onroute(to);
+	function close() {
+		if (bubble?.matches(':popover-open')) bubble.hidePopover();
 	}
+	// A module category chosen with a plain click closes the bubble; a modified one leaves it open.
+	function choose(event: MouseEvent, to: ExplorerLocation | null) {
+		if (plainClick(event)) close();
+		follow(event, to);
+	}
+	// Another address closes the bubble, also one that takes the bubble away with no toggle.
+	$effect(() => {
+		void address;
+		close();
+		expanded = false;
+	});
 </script>
 
 <header class="hx-nav" data-harness-component="harness-harness-navbar">
@@ -37,7 +48,15 @@
 	{#if input.repository}<span class="hx-repository">{input.repository}</span>{/if}
 	<nav class="hx-categories" aria-label="Harness categories">
 		{#each view.categories as item (item.id)}
-			{#if item.href}
+			{#if item.id === 'modules' && view.modules.length > 0}
+				<button
+					type="button"
+					popovertarget={id}
+					aria-expanded={expanded}
+					aria-current={item.active ? 'page' : undefined}
+					><HarnessIcon name={item.icon} size={24} /><span>{item.label}</span></button
+				>
+			{:else if item.href}
 				<a
 					href={item.href}
 					aria-current={item.active ? 'page' : undefined}
@@ -51,13 +70,24 @@
 			{/if}
 		{/each}
 	</nav>
-	{#if input.scope && kinds.length}
-		<HarnessTabs
-			view={input.scope.location.category}
-			onview={openKind}
-			tabs={kinds}
-			label="Module categories"
-		/>
+	<!-- The six module categories float under Modules, over the page; the bar keeps its height. -->
+	{#if view.modules.length > 0}
+		<nav
+			{id}
+			class="hx-modules"
+			aria-label="Module categories"
+			popover="auto"
+			bind:this={bubble}
+			ontoggle={(event) => (expanded = event.newState === 'open')}
+		>
+			{#each view.modules as item (item.id)}
+				<a
+					href={item.href}
+					aria-current={item.active ? 'page' : undefined}
+					onclick={(event) => choose(event, item.to)}>{item.label}</a
+				>
+			{/each}
+		</nav>
 	{/if}
 	{#if revision && input.index}
 		<HarnessSelectors
