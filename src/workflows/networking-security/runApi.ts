@@ -1,7 +1,7 @@
 import type { HarnessApiOptions } from '../../services/networking-security/HarnessApiService.types';
 import { HarnessApiService } from '../../services/networking-security/HarnessApiService';
 import { apiInput, apiQuery } from './run-api/apiInput';
-import { apiAgent, apiEventCursor } from './run-api/apiAgent';
+import { apiAgent, apiEvents } from './run-api/apiAgent';
 import { apiOutput } from './run-api/apiOutput';
 import { apiResource, apiResources } from './run-api/apiResources';
 import { apiScreenshot } from './run-api/apiScreenshot';
@@ -41,7 +41,7 @@ async function execute(
 		contract: () => apiResource(client, 'contracts', args[0]),
 		providers: () => client.call('providers', {}),
 		cancel: () => client.call('cancelRun', { runId: args[0] }),
-		events: () => client.call('events', { runId: args[0], after: apiEventCursor(options.after) }),
+		events: () => apiEvents(client, args[0]),
 		define: () => apiAgent(client, 'define'),
 		start: () => apiAgent(client, 'start'),
 		call: () => apiAgent(client, 'call', args[0])

@@ -30,14 +30,15 @@ export class HarnessApiService {
 		if (this.hosted) {
 			await this.http.request('GET', '/api/projects');
 		} else {
-			const result = await this.http.request('POST', '/api/agent', {
-				input: { method: 'connect' }
-			});
-			const token = (result.data as { token?: unknown })?.token;
-			if (typeof token !== 'string' || !token) fail('The local API returned no session.');
-			await this.sessions.save(token);
+			await this.sessions.save(await this.createSession());
 		}
 		return { connected: true, server: this.http.origin };
+	}
+	private async createSession(): Promise<string> {
+		const result = await this.http.request('POST', '/api/agent', { input: { method: 'connect' } });
+		const token = (result.data as { token?: unknown })?.token;
+		if (typeof token !== 'string' || !token) fail('The local API returned no session.');
+		return token;
 	}
 	async snapshot(): Promise<ApiSnapshot> {
 		const input = { branch: this.options.branch ?? null, commit: this.options.commit ?? null };
@@ -76,11 +77,7 @@ export class HarnessApiService {
 		input: Record<string, unknown>,
 		requestId?: string
 	): Promise<ApiResponse> {
-		let token = await this.sessions.load();
-		if (!token) {
-			await this.connect();
-			token = await this.sessions.load();
-		}
+		const token = await this.sessions.ensure(() => this.createSession());
 		return this.http.request('POST', '/api/agent', {
 			token,
 			input: { method, input, ...(requestId ? { requestId } : {}) }

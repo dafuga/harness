@@ -15,6 +15,7 @@
 			"ApiSessionRepository",
 			"ApiSessionRepository.constructor",
 			"ApiSessionRepository.load",
+			"ApiSessionRepository.ensure",
 			"ApiSessionRepository.save",
 			"ApiSessionRepository.forget",
 			"ApiSession"
@@ -32,6 +33,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "ApiSessionRepository.ensure.create",
+				"type": "() => Promise<string>"
+			},
+			{
 				"name": "ApiSessionRepository.save.token",
 				"type": "string"
 			}
@@ -40,6 +45,10 @@
 			{
 				"name": "ApiSessionRepository.load",
 				"type": "Promise<string | undefined>"
+			},
+			{
+				"name": "ApiSessionRepository.ensure",
+				"type": "Promise<string>"
 			},
 			{
 				"name": "ApiSessionRepository.save",

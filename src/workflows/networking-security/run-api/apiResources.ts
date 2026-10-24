@@ -61,8 +61,7 @@ export async function apiResource(
 	};
 	if (resource === 'contracts')
 		return ((await client.read('entity', query)).data as { contract: unknown }).contract;
-	if (resource === 'threads' && !client.hosted)
-		return ((await client.read('entity', query)).data as { threads: unknown }).threads;
+	if (resource === 'threads') return threadResource(client, query);
 	const fields: Record<string, unknown> = Object.fromEntries(apiQuery(client.options.query));
 	if (resource === 'history') fields.page = historyPage(fields.page);
 	return client.read(resource, {
@@ -70,6 +69,14 @@ export async function apiResource(
 		...query,
 		mode: client.options.commit ? 'commit' : 'current'
 	});
+}
+
+async function threadResource(
+	client: HarnessApiService,
+	query: Record<string, unknown>
+): Promise<unknown> {
+	if (client.hosted) return client.read('threads', query);
+	return ((await client.read('entity', query)).data as { threads: unknown }).threads;
 }
 
 function historyPage(page: unknown): number {

@@ -31,3 +31,22 @@ export function apiEventCursor(text = '0'): number {
 		fail('Event cursors must be nonnegative integers.');
 	return after;
 }
+
+export async function apiEvents(client: HarnessApiService, runId: string): Promise<unknown> {
+	const result = await client.call('events', {
+		runId,
+		after: apiEventCursor(client.options.after)
+	});
+	const data = result.data as {
+		events: Array<{ value: { runId: string } }>;
+		replay?: Record<string, unknown>;
+	};
+	if (!Array.isArray(data.events)) fail('The API returned no run event list.');
+	return {
+		...data,
+		events: data.events.filter((event) => event.value.runId === runId),
+		...(data.replay
+			? { replay: Object.hasOwn(data.replay, runId) ? { [runId]: data.replay[runId] } : {} }
+			: {})
+	};
+}

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/workflows/networking-security/run-api/apiAgent.ts"],
-		"symbols": ["apiAgent", "apiEventCursor"]
+		"symbols": ["apiAgent", "apiEventCursor", "apiEvents"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -28,6 +28,14 @@
 			{
 				"name": "apiEventCursor.text",
 				"type": "unknown"
+			},
+			{
+				"name": "apiEvents.client",
+				"type": "HarnessApiService"
+			},
+			{
+				"name": "apiEvents.runId",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -38,6 +46,10 @@
 			{
 				"name": "apiEventCursor",
 				"type": "number"
+			},
+			{
+				"name": "apiEvents",
+				"type": "Promise<unknown>"
 			}
 		],
 		"errors": [
