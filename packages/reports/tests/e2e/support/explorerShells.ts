@@ -9,11 +9,17 @@ const titled = (page: Page, name: string) =>
 	expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
 const listed = (page: Page) =>
 	expect(content(page).getByRole('link', { name: 'TitleFrame', exact: true })).toBeVisible();
-const active = (page: Page, name: string) =>
-	expect(nav(page).getByRole('link', { name, exact: true })).toHaveAttribute(
-		'aria-current',
-		'page'
-	);
+const active = async (page: Page, name: string) => {
+	const trigger = nav(page).getByRole('button', { name: 'Modules', exact: true });
+	await expect(trigger).toHaveAttribute('aria-current', 'page');
+	await trigger.click();
+	await expect(
+		page
+			.getByRole('navigation', { name: 'Module categories' })
+			.getByRole('link', { name, exact: true })
+	).toHaveAttribute('aria-current', 'page');
+	await page.keyboard.press('Escape');
+};
 
 /**
  * How Shells is reached in the synthetic history: the title frame its manifest declares a shell,
