@@ -2,6 +2,7 @@ import type { VerifyConfig } from './verifyTypes.types';
 import { z } from 'zod';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { runtimeKinds, unitIdPattern } from '../development-tooling/unitTypes';
+import { captureRegionSchema } from './verificationTypes';
 
 export const verifyConfigFile = 'harness.verify.json';
 /** Scratch store for verification drafts until they are persisted as Git evidence. */
@@ -84,6 +85,7 @@ export const captureLineSchema = z.strictObject({
 	kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 	state: identifier,
 	viewport: identifier.optional(),
+	clip: captureRegionSchema.optional(),
 	/** File name inside the evidence directory. */
 	file: z.string().regex(/^[\w.-]+$/, 'must be a plain file name'),
 	mediaType: text,

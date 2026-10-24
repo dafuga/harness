@@ -93,7 +93,6 @@ const text = (markup: string): string =>
 		.replace(/<span class="source-(?:folder|name)(?: [^"]*)?"[^>]*>([^<]*)<\/span>/g, '$1')
 		.replace(/<[^>]+>/g, ' ')
 		.replace(/\s+/g, ' ');
-
 /**
  * The words a page shows as it is first drawn. What a closed tooltip holds and what a closed
  * disclosure holds under its summary is told on request, so it is not among them.

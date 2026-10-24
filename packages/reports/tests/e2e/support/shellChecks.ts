@@ -98,6 +98,7 @@ export async function moduleNavigation(
 		.getByRole('button', { name: 'Modules', exact: true })
 		.or(bar.getByRole('link', { name: 'Modules', exact: true }));
 	const modules = bar.getByRole('navigation', { name: 'Module categories' });
+	const types = modules.getByRole('link', { name: 'Types', exact: true });
 	const before = page.url();
 	const height = (await box(bar)).height;
 	await trigger.click();
@@ -125,7 +126,7 @@ export async function moduleNavigation(
 	await bar.getByText('synthetic-repository', { exact: true }).click();
 	await expect(modules).not.toBeVisible();
 	await trigger.click();
-	await modules.getByRole('link', { name: 'Types', exact: true }).click();
+	await types.click();
 	await expect(modules).not.toBeVisible();
 	await expect(trigger).toHaveAttribute('aria-expanded', 'false');
 	await pictured(page, `explorer-shell-types-${screen}`);
@@ -134,10 +135,7 @@ export async function moduleNavigation(
 	await expect(page).toHaveURL(`${shellOrigin}${scoped}/types`);
 	await expect(trigger).toHaveAttribute('aria-current', 'page');
 	await trigger.click();
-	await expect(modules.getByRole('link', { name: 'Types', exact: true })).toHaveAttribute(
-		'aria-current',
-		'page'
-	);
+	await expect(types).toHaveAttribute('aria-current', 'page');
 	await modules.getByRole('link', { name: 'Helpers', exact: true }).focus();
 	await page.keyboard.press('Enter');
 	await expect(page).toHaveURL(`${shellOrigin}${scoped}/functions`);
