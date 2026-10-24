@@ -9,6 +9,7 @@ import {
 	reviewServiceFolders
 } from './entityPreviewFunctions';
 import { entityLabels } from '../src/utils/entityLens';
+import { reviewGroupDisclosure } from './entityPreviewDisclosure';
 
 test.setTimeout(90_000);
 
@@ -80,6 +81,13 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 }
 
 for (const [viewport, size] of Object.entries(viewports)) {
+	test(`group headings collapse independently and reopen by keyboard at ${viewport}`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await reviewGroupDisclosure(page, viewport);
+	});
+
 	test(`private dependencies reuse module cards at ${viewport} width`, async ({ page }) => {
 		await page.setViewportSize(size);
 		await reviewPrivateFunctions(page, viewport);

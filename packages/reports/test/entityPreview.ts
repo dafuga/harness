@@ -1,5 +1,6 @@
 import { mount, unmount } from 'svelte';
 import ExplorerContent from '../src/components/explorer-ui/ExplorerContent.svelte';
+import ExplorerStylesScreen from '../src/components/explorer-ui/ExplorerStylesScreen.svelte';
 import HarnessShell from '../src/components/explorer-ui/HarnessShell.svelte';
 import { explorerRoute, explorerRoutePath } from '../../../src/utils/explorerRoute';
 import '../src/lib/styles/base.css';
@@ -108,7 +109,7 @@ function show(route: ExplorerLocation) {
 	if (mounted) void unmount(mounted);
 	const shown = viewOf(route, stored);
 	history.replaceState(null, '', `#${encodeURIComponent(JSON.stringify(route))}`);
-	mounted = mount(ExplorerContent, {
+	mounted = mount(route.screen === 'styles' ? ExplorerStylesScreen : ExplorerContent, {
 		target,
 		props: {
 			index,

@@ -1,0 +1,41 @@
+{
+	"name": "collapsible-module-groups",
+	"goal": "Every Explorer catalog and relationship group can collapse independently with an accessible heading control, remains open by default, and preserves its cards, counts and keyboard navigation",
+	"createdAt": "2026-10-24T12:42:39.782Z",
+	"updatedAt": "2026-10-24T12:45:05.329Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T12:45:05.329Z",
+			"evidence": "Default-open independent heading disclosures across 8 catalog kinds, Used In/Uses groups, and Styles. Heading/count remain visible; Enter, Space and pointer toggle; search reveals matching cards. Preserve card markup and View More paging. Full CLI/native suite remains deferred by Daniel."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
