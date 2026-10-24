@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-ui-explorer-translations-screen",
 	"kind": "component",
 	"title": "ExplorerTranslationsScreen",
-	"responsibility": "Displays source-revision translation strings across languages with search and links to runtime consumers.",
+	"responsibility": "Compares revision-scoped English strings with a selected language and links to their runtime consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -74,9 +74,9 @@
 		],
 		"outputs": [
 			{
-				"name": "ExplorerStylesScreen",
+				"name": "ExplorerTranslationsScreen",
 				"type": "markup",
-				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; foundation and compatibility tokens remain discoverable exactly once."
+				"description": "Compares English with the selected language, with search, paging and links to recorded consumers."
 			}
 		],
 		"errors": []
@@ -99,6 +99,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.select",
 			"via": "import",
 			"origin": "derived"
 		},
