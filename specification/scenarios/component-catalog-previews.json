@@ -253,8 +253,7 @@
 		"reports.page.harness-branch-branch-at-translations",
 		"reports.page.harness-branch-branch-at-types",
 		"reports.page.harness-branch-branch-at-types-entity",
-		"reports.page.harness-branch-branch-at-types-entity-history",
-		"reports.page.harness-view"
+		"reports.page.harness-branch-branch-at-types-entity-history"
 	],
 	"states": [
 		{
@@ -1756,12 +1755,6 @@
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
-		},
-		{
-			"id": "reports-page-harness-view",
-			"title": "/harness/[...view]",
-			"coverage": "required",
-			"units": ["reports.page.harness-view"]
 		}
 	],
 	"viewports": [
@@ -2045,8 +2038,7 @@
 				"reports-page-harness-branch-branch-at-translations",
 				"reports-page-harness-branch-branch-at-types",
 				"reports-page-harness-branch-branch-at-types-entity",
-				"reports-page-harness-branch-branch-at-types-entity-history",
-				"reports-page-harness-view"
+				"reports-page-harness-branch-branch-at-types-entity-history"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

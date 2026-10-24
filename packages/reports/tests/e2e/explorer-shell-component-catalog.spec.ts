@@ -14,7 +14,7 @@ import {
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
 import { assertComponentCapture } from './support/component-previews/previewCaptureAssertions';
-import { declaredStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
+import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
@@ -103,11 +103,21 @@ for (const viewport of catalogViewports) {
 				await component.getByRole('searchbox', { name: 'Search translations' }).clear();
 				await expect(component.locator('tbody tr')).toHaveCount(50);
 			}
+			if (unit.id === 'reports.component.harness-explorer-index') {
+				await expect(
+					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
+					'Catalogs omit the proof legend'
+				).toHaveCount(0);
+				await expect(
+					component.getByRole('button', { name: /^(?:Not proven|Proven)$/ }),
+					'Catalogs omit the standalone proof marks'
+				).toHaveCount(0);
+			}
 			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen') {
 				await expectColorRoles(component);
 				await expectStyleGroups(component);
 				await expect(component.locator('[data-style-token]')).toHaveCount(
-					declaredStyleTokens().length
+					documentedStyleTokens().length
 				);
 			}
 			for (const field of await component.locator('.hx-revision .has-display select').all())
