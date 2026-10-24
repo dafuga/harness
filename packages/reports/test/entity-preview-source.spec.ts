@@ -27,9 +27,19 @@ async function fileLink(page: Page, path: string, commit: string) {
 		`https://github.com/example/orders/blob/${commit}/${path.split('/').map(encodeURIComponent).join('/')}`
 	);
 	await expect(link).toHaveAttribute('target', '_blank');
+	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+	await expect(link).toHaveAttribute('title', path);
+	await expect(link, 'Source labels omit only the implied root').toHaveText(
+		path.replace(/^src\/services\//, '')
+	);
+	const height = await link.locator('..').evaluate((row) => row.clientHeight);
+	expect(height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
 	await expect(
 		link.locator('..').getByRole('button', { name: `View code for ${path}`, exact: true })
 	).toBeVisible();
+	const bounds = (await link.locator('..').getByRole('button').boundingBox())!;
+	expect(bounds.height, 'Code actions stay compact').toBeLessThanOrEqual(28);
+	expect(bounds.width, 'Code actions stay compact').toBeLessThanOrEqual(110);
 	await expect(page.getByText('Source ownership', { exact: true })).toHaveCount(0);
 	await expect(page.getByText('Symbols', { exact: true })).toHaveCount(0);
 	await expect(page.getByText('Execution targets', { exact: true })).toHaveCount(0);

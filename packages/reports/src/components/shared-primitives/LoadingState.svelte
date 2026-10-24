@@ -15,35 +15,39 @@
 </div>
 
 <style>
+	/* A transparent layer over the viewport that clicks pass straight through. */
 	.hx-loading {
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		gap: var(--hx-space-12);
-		width: fit-content;
-		max-width: 100%;
-		margin: var(--hx-space-20) 0;
-		padding: var(--hx-space-12) var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--hx-line);
-		border-radius: var(--hx-radius);
-		background: var(--hx-surface);
+		position: fixed;
+		inset: 0;
+		z-index: var(--hx-layer-floating);
+		display: grid;
+		place-items: center;
+		pointer-events: none;
 		color: var(--hx-soft);
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-medium);
 		line-height: var(--hx-style-leading-snug);
+		letter-spacing: var(--hx-style-tracking-wide);
 	}
+	/* The ring is the only item in the grid, so its own center is the viewport's center. */
 	.hx-loading-indicator {
-		flex: none;
 		box-sizing: border-box;
-		width: 16px;
-		height: 16px;
-		border: var(--hx-border-thick) solid var(--hx-line-strong);
+		width: var(--hx-space-36);
+		height: var(--hx-space-36);
+		border: var(--hx-border-heavy) solid var(--hx-gold-soft);
 		border-top-color: var(--hx-gold);
+		border-left-color: var(--hx-gold-line);
 		border-radius: var(--hx-radius-round);
 		animation: hx-loading-turn var(--hx-motion-spin) var(--hx-motion-linear) infinite;
 	}
+	/* The label hangs below the ring out of flow, half the ring plus a gap down from center,
+	   so a long or wrapping label never moves the ring. */
 	.hx-loading-label {
-		min-width: 0;
+		position: absolute;
+		top: calc(50% + var(--hx-space-36) / 2 + var(--hx-space-16));
+		right: var(--hx-gutter);
+		left: var(--hx-gutter);
+		text-align: center;
 		overflow-wrap: anywhere;
 	}
 	@keyframes hx-loading-turn {
@@ -55,13 +59,6 @@
 	@media (prefers-reduced-motion: reduce) {
 		.hx-loading-indicator {
 			animation: none;
-		}
-	}
-	@media (max-width: 560px) {
-		.hx-loading {
-			gap: var(--hx-space-10);
-			margin: var(--hx-space-16) 0;
-			padding: var(--hx-space-10) var(--hx-space-14);
 		}
 	}
 </style>
