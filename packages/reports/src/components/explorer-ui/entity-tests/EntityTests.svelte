@@ -1,6 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type {
-		CoverageStanding,
 		ExplorerBehavior,
 		ExplorerEntity,
 		ExplorerEvidence,
@@ -10,6 +11,7 @@
 	import { entityLens, shortCommit, type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import RegressionProof from '../../verification-evidence/RegressionProof.svelte';
 	import { entityRemoved } from './entityRemoved';
+	import { coverageLabels as said } from './coverageLabels';
 	import { galleryItems } from '../../../utils/explorer-ui/entityScreens';
 	import EvidenceGrid from '../../verification-evidence/evidence-grid/EvidenceGrid.svelte';
 	import BrowserErrors from '../../shared-primitives/browser-errors/BrowserErrors.svelte';
@@ -36,14 +38,6 @@
 	let record = $derived(evidence.after.record);
 	let media = $derived(galleryItems(evidence));
 	let gone = $derived(entityRemoved(evidence));
-	const said: Record<CoverageStanding, string> = {
-		passed: 'Proven',
-		failed: 'Failed',
-		stale: 'Stale',
-		missing: 'Evidence missing',
-		incomplete: 'Coverage incomplete',
-		inapplicable: 'Not applicable'
-	};
 	const where = (slot: Slot) => `${slot.kind}${slot.viewport ? ` at ${slot.viewport}` : ''}`;
 	const untold = (reasons: string[], slot: Slot) =>
 		slot.standing !== 'passed' && !reasons.includes(slot.reason ?? '');
@@ -55,8 +49,12 @@
 	const job = (scenario: string, test: string) =>
 		record?.tests.find((item) => item.id === `${scenario}:${test}`);
 </script>
-
-<div role="tabpanel" aria-label={`${entity.name} tests`} class="ex-stack" data-harness-component="harness-entity-tests">
+<hx-div
+	role="tabpanel"
+	aria-label={`${entity.name} tests`}
+	class="ex-stack"
+	data-harness-component="harness-entity-tests"
+>
 	<RegressionProof
 		items={evidence.after.detail?.regressions ?? []}
 		unit={entity.id}
@@ -79,32 +77,32 @@
 				})
 			)}
 	/>
-	<section class="ex-card" aria-labelledby="ex-verdict-title">
-		<h2 id="ex-verdict-title">Verification at {shortCommit(scope.commit)}</h2>
-		<p><HarnessVerdict {...entity.verdict} /></p>
+	<hx-section class="ex-card" aria-labelledby="ex-verdict-title">
+		<hx-h2 id="ex-verdict-title">Verification at {shortCommit(scope.commit)}</hx-h2>
+		<hx-p><HarnessVerdict {...entity.verdict} /></hx-p>
 		{#if entity.verdict.reasons.length}
-			<ul class="ex-reasons" aria-label="Why it is not proven">
-				{#each entity.verdict.reasons as reason, position (position)}<li>{reason}</li>{/each}
-			</ul>
+			<hx-ul class="ex-reasons" aria-label="Why it is not proven">
+				{#each entity.verdict.reasons as reason, position (position)}<hx-li>{reason}</hx-li>{/each}
+			</hx-ul>
 		{/if}
 		{#if !record}
-			<p class="ex-soft">No usable verification record judges this revision.</p>
+			<hx-p class="ex-soft">No usable verification record judges this revision.</hx-p>
 		{:else if exportHref}
-			<p>
-				<a class="ex-link" href={`${exportHref}?record=${record.id}`}>Download this record</a>
-			</p>
+			<hx-p>
+				<hx-a class="ex-link" href={`${exportHref}?record=${record.id}`}>Download this record</hx-a>
+			</hx-p>
 		{/if}
-	</section>
+	</hx-section>
 	{#if coverage.length === 0}
-		<p class="ex-gap">
+		<hx-p class="ex-gap">
 			<HarnessVerdict passed={false} label="Evidence missing" />
-			<span>No scenario names this entity, so nothing proves it here.</span>
-		</p>
+			<hx-span>No scenario names this entity, so nothing proves it here.</hx-span>
+		</hx-p>
 	{/if}
 	{#each coverage as scenario, position (position)}
-		<section class="ex-card" aria-label={scenario.title}>
-			<h2>{scenario.title}</h2>
-			<p>
+		<hx-section class="ex-card" aria-label={scenario.title}>
+			<hx-h2>{scenario.title}</hx-h2>
+			<hx-p>
 				<HarnessVerdict
 					passed={scenario.standing === 'passed'}
 					label={scenario.standing === 'passed'
@@ -112,38 +110,38 @@
 						: said[scenario.standing]}
 					reasons={scenario.reasons}
 				/>
-			</p>
-			<p class="ex-soft">
+			</hx-p>
+			<hx-p class="ex-soft">
 				{scenario.kind} scenario{scenario.inheritedFrom
 					? ` · result inherited from ${shortCommit(scenario.inheritedFrom)}`
 					: ''}
-			</p>
+			</hx-p>
 			{#if scenario.reasons.length}
-				<ul class="ex-reasons" aria-label={`Why ${scenario.title} is not proven`}>
-					{#each scenario.reasons as reason}<li>{reason}</li>{/each}
-				</ul>
+				<hx-ul class="ex-reasons" aria-label={`Why ${scenario.title} is not proven`}>
+					{#each scenario.reasons as reason}<hx-li>{reason}</hx-li>{/each}
+				</hx-ul>
 			{/if}
-			<div class="ex-scroll">
-				<table class="ex-mini" aria-label={`States of ${scenario.title}`}>
-					<thead>
-						<tr>
-							<th scope="col">State</th>
-							<th scope="col">Required</th>
-							<th scope="col">Proven</th>
-						</tr>
-					</thead>
-					<tbody>
+			<hx-div class="ex-scroll">
+				<hx-table class="ex-mini" aria-label={`States of ${scenario.title}`}>
+					<hx-thead>
+						<hx-tr>
+							<hx-th scope="col">State</hx-th>
+							<hx-th scope="col">Required</hx-th>
+							<hx-th scope="col">Proven</hx-th>
+						</hx-tr>
+					</hx-thead>
+					<hx-tbody>
 						{#each scenario.states as state}
-							<tr>
-								<th scope="row">{state.state}</th>
-								<td
+							<hx-tr>
+								<hx-th scope="row">{state.state}</hx-th>
+								<hx-td
 									>{state.declared}{declared(scenario.scenario, state.state)
 										? `: ${declared(scenario.scenario, state.state)}`
-										: ''}</td
+										: ''}</hx-td
 								>
-								<td>
+								<hx-td>
 									{#if state.standing === 'inapplicable'}
-										<span class="ex-soft">{said.inapplicable}</span>
+										<hx-span class="ex-soft">{said.inapplicable}</hx-span>
 									{:else}
 										<HarnessVerdict
 											passed={state.standing === 'passed'}
@@ -153,54 +151,54 @@
 									{/if}
 									<!-- Sentences and slots in the order the host gave them; none is a key. -->
 									{#each state.reasons as reason}
-										<span class="ex-soft ex-block">{reason}</span>
+										<hx-span class="ex-soft ex-block">{reason}</hx-span>
 									{/each}
 									<!-- A slot is told where the state has not already said the same of it. -->
 									{#each state.slots.filter((slot) => untold(state.reasons, slot)) as slot}
-										<span class="ex-soft ex-block"
-											>{where(slot)}: {slot.reason ?? said[slot.standing]}</span
+										<hx-span class="ex-soft ex-block"
+											>{where(slot)}: {slot.reason ?? said[slot.standing]}</hx-span
 										>
 									{/each}
-								</td>
-							</tr>
+								</hx-td>
+							</hx-tr>
 						{/each}
-					</tbody>
-				</table>
-			</div>
-			<ul class="ex-checks" aria-label="Checks">
+					</hx-tbody>
+				</hx-table>
+			</hx-div>
+			<hx-ul class="ex-checks" aria-label="Checks">
 				{#each scenario.tests as test}
-					<li>
+					<hx-li>
 						<HarnessVerdict
 							passed={test.status === 'passed'}
 							label={test.status ?? 'not in the record'}
 						/>
-						<span>{test.id}</span>
-						<span class="ex-soft">{test.status ?? 'not in the record'}</span>
+						<hx-span>{test.id}</hx-span>
+						<hx-span class="ex-soft">{test.status ?? 'not in the record'}</hx-span>
 						{#if job(scenario.scenario, test.id)}
-							<span class="ex-soft"
+							<hx-span class="ex-soft"
 								>{job(scenario.scenario, test.id)?.kind} · {job(scenario.scenario, test.id)
-									?.durationMs} ms</span
+									?.durationMs} ms</hx-span
 							>
 						{/if}
-					</li>
+					</hx-li>
 				{/each}
-			</ul>
+			</hx-ul>
 			{#each scenario.tests as check, position (position)}<BrowserErrors
 					diagnostics={check.browserErrors}
 				/>{/each}
-		</section>
+		</hx-section>
 	{/each}
 	{#if gone.length}
-		<section class="ex-card" aria-label="No longer declared">
-			<h2>No longer declared at {shortCommit(scope.commit)}</h2>
-			<p class="ex-soft">
+		<hx-section class="ex-card" aria-label="No longer declared">
+			<hx-h2>No longer declared at {shortCommit(scope.commit)}</hx-h2>
+			<hx-p class="ex-soft">
 				What {shortCommit(scope.parent ?? '')} declared and this commit does not: it has a result before
 				and none after.
-			</p>
-			<ul class="ex-reasons">
-				{#each gone as item}<li>{item}</li>{/each}
-			</ul>
-		</section>
+			</hx-p>
+			<hx-ul class="ex-reasons">
+				{#each gone as item}<hx-li>{item}</hx-li>{/each}
+			</hx-ul>
+		</hx-section>
 	{/if}
 	{#if behavior.rows.length}
 		{#key entity.id + scope.commit}
@@ -216,4 +214,4 @@
 	{#if media.length}
 		<EvidenceGrid items={media} assetBase={mediaBase} idPrefix="entity-" />
 	{/if}
-</div>
+</hx-div>

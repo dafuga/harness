@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { EntityContract } from '../../models/development-tooling/Desktop.types';
 	import { humanize } from '../../../../reports/src/utils/entityContract';
@@ -9,28 +11,30 @@
 	] as const;
 </script>
 
-<section class="panel">
-	<h2>Contract</h2>
+<hx-section class="panel">
+	<hx-h2>Contract</hx-h2>
 	{#each groups as [group, title] (group)}
-		<h3>{title}</h3>
-		<dl>
+		<hx-h3>{title}</hx-h3>
+		<hx-dl>
 			{#each contract[group] as field (field.name)}
-				<div>
-					<dt>{humanize(field.name.split('.').at(-1)!)}</dt>
-					<dd>{field.description ?? 'No description recorded.'}</dd>
-				</div>
-			{:else}<div><dd>Nothing declared.</dd></div>{/each}
-		</dl>
+				<hx-div>
+					<hx-dt>{humanize(field.name.split('.').at(-1)!)}</hx-dt>
+					<hx-dd>{field.description ?? 'No description recorded.'}</hx-dd>
+				</hx-div>
+			{:else}<hx-div><hx-dd>Nothing declared.</hx-dd></hx-div>{/each}
+		</hx-dl>
 	{/each}
-	<details>
-		<summary>Technical contract</summary>
-		{#each groups as [group, title] (group)}<h3>{title}</h3>
+	<hx-details>
+		<hx-summary>Technical contract</hx-summary>
+		{#each groups as [group, title] (group)}<hx-h3>{title}</hx-h3>
 			{#each contract[group] as field (field.name)}
-				<div class="contract-field"><strong>{field.name}</strong><code>{field.type}</code></div>
+				<hx-div class="contract-field"
+					><hx-strong>{field.name}</hx-strong><hx-code>{field.type}</hx-code></hx-div
+				>
 			{/each}
 		{/each}
-	</details>
-</section>
+	</hx-details>
+</hx-section>
 
 <style>
 	dl {

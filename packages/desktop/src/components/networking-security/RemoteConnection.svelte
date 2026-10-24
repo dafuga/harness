@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { RemoteHost } from '../../lib/stores/networking-security/remoteHost.svelte';

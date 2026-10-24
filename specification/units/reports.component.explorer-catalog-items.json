@@ -6,6 +6,15 @@
 	"responsibility": "Renders module collections and relationships through one shared card, retaining tables only for config variable values.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-module-card",
+			"reports.component.harness-explorer-table",
+			"reports.component.harness-harness-action",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ExplorerCatalogItems.svelte",
@@ -80,6 +89,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

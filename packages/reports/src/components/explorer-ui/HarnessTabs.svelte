@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts" generics="View extends string">
 	import { plainClick, type HarnessTab } from '../../utils/explorer-ui/harnessShell';
 	let {
@@ -48,7 +50,7 @@
 	});
 </script>
 
-<div
+<hx-div
 	class={tabs ? 'hx-tabs' : 'hc-tabs'}
 	role="tablist"
 	aria-label={label}
@@ -57,20 +59,20 @@
 >
 	{#each tabs ?? views as item (item.id)}
 		{#if item.href && !item.disabled}
-			<a
+			<hx-a
 				role="tab"
 				href={item.href}
 				aria-selected={view === item.id}
-				onclick={(event) => follow(event, item.id)}>{item.label}</a
+				onclick={(event) => follow(event, item.id)}>{item.label}</hx-a
 			>
 		{:else}
-			<button
+			<hx-button
 				type="button"
 				role="tab"
 				aria-selected={view === item.id}
 				disabled={item.disabled}
-				onclick={() => onview(item.id)}>{item.label}</button
+				onclick={() => onview(item.id)}>{item.label}</hx-button
 			>
 		{/if}
 	{/each}
-</div>
+</hx-div>

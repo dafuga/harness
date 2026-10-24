@@ -6,6 +6,10 @@
 	"responsibility": "Shows the commits that changed one component, with their reasons, sizes and standing.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.harness-entity-history-screen", "reports.component.harness-screen"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/harness/branch/[branch]/[...at]/components/[entity]/history/+page.svelte"

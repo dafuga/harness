@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import { entityShown } from './entity-sections/entityShown';
@@ -8,7 +10,7 @@
 
 <!-- The details of an entity of any kind: contract, measurements, and the source on request. The
 	marker of the screen draws no box. -->
-<div class="ex-screen" data-harness-component="harness-entity-details-screen">
+<hx-div class="ex-screen" data-harness-component="harness-entity-details-screen">
 	<EntityFrame {host}>
 		{#snippet children(entity, nav)}
 			{@const summary = entityShown(host, entity)}
@@ -24,7 +26,7 @@
 			/>
 		{/snippet}
 	</EntityFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-screen {

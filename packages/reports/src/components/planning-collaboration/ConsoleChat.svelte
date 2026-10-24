@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import ProjectAgent from '../../../../desktop/src/components/ProjectAgent.svelte';
@@ -20,7 +22,7 @@
 </script>
 
 <svelte:window onpagehide={() => host.close()} />
-<div class="console-chat"><ProjectAgent bind:open workspace={host.workspace} /></div>
+<hx-div class="console-chat"><ProjectAgent bind:open workspace={host.workspace} /></hx-div>
 
 <style>
 	.console-chat {

@@ -1,3 +1,5 @@
+<!-- @harness-tier layout -->
+<!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
 	import '$desktop/lib/styles/workspace.css';

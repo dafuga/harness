@@ -1,10 +1,19 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Line } from "./EntityChange.types";
+	import type { Line } from './EntityChange.types';
 
-	import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../../models/explorer-ui/Explorer.types';
+	import type {
+		ExplorerHistoryDetail,
+		ExplorerHistoryRow
+	} from '../../../models/explorer-ui/Explorer.types';
 	import { humanize } from '../../../helpers/strings/humanize';
 	import { reviewChanges } from './entityHistory';
-	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/explorer-ui/entityHistory';
+	import {
+		signedBytes,
+		signedCount,
+		type HistoryTiming
+	} from '../../../utils/explorer-ui/entityHistory';
 	import { entityLens, type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 	import { byteSize, notMeasured } from '../../../utils/explorer-ui/entityMeasure';
@@ -71,22 +80,21 @@
 			commit: row.commit
 		})
 	);
-
 </script>
 
-<section
+<hx-section
 	class="ex-card ex-selected"
 	aria-labelledby="ex-change-title"
 	data-harness-component="harness-entity-change"
 >
-	<header class="ex-evidence-head">
-		<div>
-			<h2 id="ex-change-title">
-				Selected change · <span class="ex-mono">{shortCommit(row.commit)}</span> ·
+	<hx-header class="ex-evidence-head">
+		<hx-div>
+			<hx-h2 id="ex-change-title">
+				Selected change · <hx-span class="ex-mono">{shortCommit(row.commit)}</hx-span> ·
 				{row.committedAt.slice(0, 10)}
-			</h2>
-			<p class="ex-lead">{row.subject}</p>
-		</div>
+			</hx-h2>
+			<hx-p class="ex-lead">{row.subject}</hx-p>
+		</hx-div>
 		<HarnessAction href={nav.href(at)} onclick={() => nav.go(at)} tone="plain" icon="arrow-right"
 			>View captured state</HarnessAction
 		>
@@ -95,74 +103,80 @@
 				>Compare with previous</HarnessAction
 			>
 		{/if}
-	</header>
-	<div class="ex-change-grid">
-		<div>
-			<h3>Why it changed</h3>
+	</hx-header>
+	<hx-div class="ex-change-grid">
+		<hx-div>
+			<hx-h3>Why it changed</hx-h3>
 			{#if detail === null}
-				<p class="ex-soft" role="status">Reading what this commit recorded…</p>
+				<hx-p class="ex-soft" role="status">Reading what this commit recorded…</hx-p>
 			{:else if !detail.known}
-				<p class="ex-soft">
+				<hx-p class="ex-soft">
 					This revision stores no registry or no impact, so what it changed is not known.
-				</p>
+				</hx-p>
 			{:else if detail.explanations.length === 0}
-				<p class="ex-soft">This commit recorded no reason for this entity.</p>
+				<hx-p class="ex-soft">This commit recorded no reason for this entity.</hx-p>
 			{/if}
 			{#if reasons.notes.length}
-				<dl class="ex-rows">
-					<div>
-						<dt>Behavior</dt>
-						<dd>{reasons.behavior.text}</dd>
-					</div>
-					<div>
-						<dt>Simplification</dt>
-						<dd>{reasons.simplification.text} · {reasons.simplification.outcomes.join(', ')}</dd>
-					</div>
-					<div>
-						<dt>Performance</dt>
-						<dd>{reasons.performance.text} · {reasons.performance.outcomes.join(', ')}</dd>
-					</div>
-				</dl>
+				<hx-dl class="ex-rows">
+					<hx-div>
+						<hx-dt>Behavior</hx-dt>
+						<hx-dd>{reasons.behavior.text}</hx-dd>
+					</hx-div>
+					<hx-div>
+						<hx-dt>Simplification</hx-dt>
+						<hx-dd
+							>{reasons.simplification.text} · {reasons.simplification.outcomes.join(', ')}</hx-dd
+						>
+					</hx-div>
+					<hx-div>
+						<hx-dt>Performance</hx-dt>
+						<hx-dd>{reasons.performance.text} · {reasons.performance.outcomes.join(', ')}</hx-dd>
+					</hx-div>
+				</hx-dl>
 				<EntityReasons {reasons} bind:open={full} id="ex-reasons-full" />
 			{/if}
 			{#each row.reviews as review, position (position)}
-				<p class="ex-approval">
-					<span class="ex-pill gold"
-						>{review.type === 'approval' ? 'Budget increase approved' : 'Baseline reviewed'}</span
+				<hx-p class="ex-approval">
+					<hx-span class="ex-pill gold"
+						>{review.type === 'approval'
+							? 'Budget increase approved'
+							: 'Baseline reviewed'}</hx-span
 					>
-					<span>{reviewChanges(review).join(', ')}</span>
-					<span class="ex-soft">{review.reviewer}: {noted(review.reason).text}</span>
-				</p>
+					<hx-span>{reviewChanges(review).join(', ')}</hx-span>
+					<hx-span class="ex-soft">{review.reviewer}: {noted(review.reason).text}</hx-span>
+				</hx-p>
 				<!-- A note longer than the limit of a body is read whole on request. -->
 				{#if noted(review.reason).cut}
-					<details class="ex-full">
-						<summary>Full review note <span class="ex-soft">{review.reviewer}</span></summary>
-						<p>{review.reason}</p>
-					</details>
+					<hx-details class="ex-full">
+						<hx-summary
+							>Full review note <hx-span class="ex-soft">{review.reviewer}</hx-span></hx-summary
+						>
+						<hx-p>{review.reason}</hx-p>
+					</hx-details>
 				{/if}
 			{/each}
-		</div>
-		<div class="ex-scroll">
-			<table class="ex-mini" aria-label="Before and after, under matching profiles">
-				<thead>
-					<tr>
-						<th scope="col">Metric</th>
-						<th scope="col">Before{row.previous ? ` (${shortCommit(row.previous)})` : ''}</th>
-						<th scope="col">After ({shortCommit(row.commit)})</th>
-						<th scope="col">Delta</th>
-					</tr>
-				</thead>
-				<tbody>
+		</hx-div>
+		<hx-div class="ex-scroll">
+			<hx-table class="ex-mini" aria-label="Before and after, under matching profiles">
+				<hx-thead>
+					<hx-tr>
+						<hx-th scope="col">Metric</hx-th>
+						<hx-th scope="col">Before{row.previous ? ` (${shortCommit(row.previous)})` : ''}</hx-th>
+						<hx-th scope="col">After ({shortCommit(row.commit)})</hx-th>
+						<hx-th scope="col">Delta</hx-th>
+					</hx-tr>
+				</hx-thead>
+				<hx-tbody>
 					{#each lines as line, position (position)}
-						<tr>
-							<th scope="row">{line.metric}</th>
-							<td class:unmeasured={line.before === notMeasured}>{line.before}</td>
-							<td class:unmeasured={line.after === notMeasured}>{line.after}</td>
-							<td>{line.delta}</td>
-						</tr>
+						<hx-tr>
+							<hx-th scope="row">{line.metric}</hx-th>
+							<hx-td class:unmeasured={line.before === notMeasured}>{line.before}</hx-td>
+							<hx-td class:unmeasured={line.after === notMeasured}>{line.after}</hx-td>
+							<hx-td>{line.delta}</hx-td>
+						</hx-tr>
 					{/each}
-				</tbody>
-			</table>
-		</div>
-	</div>
-</section>
+				</hx-tbody>
+			</hx-table>
+		</hx-div>
+	</hx-div>
+</hx-section>

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { screenOptions } from '../../../../reports/src/utils/entityScreens';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
@@ -36,7 +38,7 @@
 </script>
 
 <!-- What verification captured from running software; a planned design is never shown here. -->
-<section class="panel runtime-evidence" aria-label="Recorded runtime evidence">
+<hx-section class="panel runtime-evidence" aria-label="Recorded runtime evidence">
 	<RegressionProof
 		items={result?.evidence.after.detail?.regressions ?? []}
 		unit={entity.id}
@@ -46,16 +48,21 @@
 				workspace.link({ commit, category: entity.category, entityId: entity.id })
 			)}
 	/>
-	<div class="row">
-		<h2>Recorded runtime evidence</h2>
-		<span class="chip runtime-chip">Runtime capture</span>{#if where}<small>{where}</small>{/if}
-	</div>
-	{#if workspace.offline}<p class="muted">
+	<hx-div class="row">
+		<hx-h2>Recorded runtime evidence</hx-h2>
+		<hx-span class="chip runtime-chip">Runtime capture</hx-span>{#if where}<hx-small
+				>{where}</hx-small
+			>{/if}
+	</hx-div>
+	{#if workspace.offline}<hx-p class="muted">
 			Saved copy{saved}; not checked with the server.
-		</p>{/if}
-	{#if notice}<p class={notice.alert ? 'error' : 'empty'} role={notice.alert ? 'alert' : 'status'}>
+		</hx-p>{/if}
+	{#if notice}<hx-p
+			class={notice.alert ? 'error' : 'empty'}
+			role={notice.alert ? 'alert' : 'status'}
+		>
 			{notice.text}
-		</p>{:else if result}{#if !headless && (visual || options.length)}<RuntimeScreens
+		</hx-p>{:else if result}{#if !headless && (visual || options.length)}<RuntimeScreens
 				{result}
 				{options}
 				{evidence}
@@ -64,4 +71,4 @@
 				{evidence}
 				unit={headless ? entity.id : undefined}
 			/>{/if}<RuntimeAudio {result} {evidence} />{/if}
-</section>
+</hx-section>

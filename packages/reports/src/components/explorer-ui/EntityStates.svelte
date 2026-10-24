@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -97,74 +99,76 @@
 		(item.phase === 'before' ? scope.parent : scope.commit)?.slice(0, 7) ?? '';
 </script>
 
-<section class="states-gallery" aria-label={`${name} supported states`}>
-	<header>
-		<div>
-			<h2>States</h2>
-			<p>Recorded screenshots of each supported state.</p>
-		</div>
-		<div class="state-controls">
+<hx-section class="states-gallery" aria-label={`${name} supported states`}>
+	<hx-header>
+		<hx-div>
+			<hx-h2>States</hx-h2>
+			<hx-p>Recorded screenshots of each supported state.</hx-p>
+		</hx-div>
+		<hx-div class="state-controls">
 			{#if scenarios.length > 1}
-				<label
+				<hx-label
 					>Scenario<Select
 						label="Scenario"
 						bind:value={() => scenario?.id ?? '', (value) => (wanted = value)}
 					>
-						{#each scenarios as option (option.id)}<option value={option.id}>{option.title}</option
+						{#each scenarios as option (option.id)}<hx-option value={option.id}
+								>{option.title}</hx-option
 							>{/each}
-					</Select></label
+					</Select></hx-label
 				>
 			{/if}
 			{#if screen}
-				<label
+				<hx-label
 					>Viewport<Select
 						label="Viewport"
 						bind:value={() => screen?.id ?? '', (value) => (viewport = value)}
 					>
-						{#each scenario.viewports as option (option.id)}<option value={option.id}
-								>{words(option.id)} · {option.width} × {option.height}</option
+						{#each scenario.viewports as option (option.id)}<hx-option value={option.id}
+								>{words(option.id)} · {option.width} × {option.height}</hx-option
 							>{/each}
-					</Select></label
+					</Select></hx-label
 				>
 			{/if}
-		</div>
-	</header>
-	{#if evidence.incomparable.length}<p class="state-gap">{evidence.incomparable.join(' ')}</p>{/if}
-	{#if !rows.length}<p class="state-gap">
+		</hx-div>
+	</hx-header>
+	{#if evidence.incomparable.length}<hx-p class="state-gap">{evidence.incomparable.join(' ')}</hx-p
+		>{/if}
+	{#if !rows.length}<hx-p class="state-gap">
 			No visual states are declared for this entity at this revision.
-		</p>{/if}
-	<div class="state-grid" class:paired={evidence.mode === 'commit'}>
+		</hx-p>{/if}
+	<hx-div class="state-grid" class:paired={evidence.mode === 'commit'}>
 		{#each rows as row (`${scenario.id}-${row.state.id}-${screen?.id}`)}
-			<article class="state-card" aria-label={row.title}>
-				<div class="state-heading">
-					<h3>{row.title}</h3>
-					<small>{screen?.width} × {screen?.height}</small>
-				</div>
-				{#if row.state.coverage !== 'required'}<p class="state-gap">
+			<hx-article class="state-card" aria-label={row.title}>
+				<hx-div class="state-heading">
+					<hx-h3>{row.title}</hx-h3>
+					<hx-small>{screen?.width} × {screen?.height}</hx-small>
+				</hx-div>
+				{#if row.state.coverage !== 'required'}<hx-p class="state-gap">
 						{words(row.state.coverage)}: {row.state.reason ??
 							'This state has no declared capture coverage.'}
-					</p>{/if}
-				{#if row.state.coverage !== 'inapplicable'}<div class="state-panes">
+					</hx-p>{/if}
+				{#if row.state.coverage !== 'inapplicable'}<hx-div class="state-panes">
 						{#each row.items as item (item.id)}
 							{@const shown = prepared(item)}
-							<figure>
-								<figcaption>{phase(item)} <code>{revision(item)}</code></figcaption>
-								{#if shown.missing}<p class="state-gap">
+							<hx-figure>
+								<hx-figcaption>{phase(item)} <hx-code>{revision(item)}</hx-code></hx-figcaption>
+								{#if shown.missing}<hx-p class="state-gap">
 										{shown.note ?? 'No screenshot was recorded.'}
-									</p>
+									</hx-p>
 								{:else}<EvidenceCard
 										compact
 										item={shown}
 										{assetBase}
 										onopen={() => (viewing = shown)}
 									/>{/if}
-							</figure>
+							</hx-figure>
 						{/each}
-					</div>{/if}
-			</article>
+					</hx-div>{/if}
+			</hx-article>
 		{/each}
-	</div>
-</section>
+	</hx-div>
+</hx-section>
 <EvidenceViewer
 	items={items.map(prepared)}
 	navigableItems={items.map(prepared).filter((item) => !item.missing)}

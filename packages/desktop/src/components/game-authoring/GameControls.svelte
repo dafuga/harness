@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { GameControlsProps as Props } from './GameControls.types';
 	/**
@@ -18,30 +20,31 @@
 	const choose = (branch: string) => step({ x: 0, y: 0, choice: branch.toLowerCase() });
 </script>
 
-<div data-harness-component="game-controls">
-	<div class="row">
-		<span class="chip">x {fixed(run.state.x)} · y {fixed(run.state.y)}</span>
+<hx-div data-harness-component="game-controls">
+	<hx-div class="row">
+		<hx-span class="chip">x {fixed(run.state.x)} · y {fixed(run.state.y)}</hx-span>
 		{#if !world}
-			<span class="chip">{run.state.hasKey ? 'Key held' : 'No key yet'}</span>
-			<span class="chip">{run.state.doorOpen ? 'Door open' : 'Door locked'}</span>
+			<hx-span class="chip">{run.state.hasKey ? 'Key held' : 'No key yet'}</hx-span>
+			<hx-span class="chip">{run.state.doorOpen ? 'Door open' : 'Door locked'}</hx-span>
 		{/if}
-		{#if run.state.outcome}<span class="chip gold">Reached the {run.state.outcome}</span>{/if}
-	</div>
-	<div class="row">
+		{#if run.state.outcome}<hx-span class="chip gold">Reached the {run.state.outcome}</hx-span>{/if}
+	</hx-div>
+	<hx-div class="row">
 		{#each buttons as move (move.name)}
-			<button aria-label={move.name} onclick={() => step({ x: move.x, y: move.y })}>
+			<hx-button aria-label={move.name} onclick={() => step({ x: move.x, y: move.y })}>
 				{move.text}
-			</button>
+			</hx-button>
 		{/each}
 		{#if !world}
 			{#each ['Garden', 'Vault'] as branch (branch)}
-				<button disabled={!run.state.doorOpen} onclick={() => choose(branch)}>{branch}</button>
+				<hx-button disabled={!run.state.doorOpen} onclick={() => choose(branch)}>{branch}</hx-button
+				>
 			{/each}
 		{/if}
-		<button onclick={reset}>Reset</button>
-		<small>Or hold the arrow keys.</small>
-	</div>
-</div>
+		<hx-button onclick={reset}>Reset</hx-button>
+		<hx-small>Or hold the arrow keys.</hx-small>
+	</hx-div>
+</hx-div>
 
 <style>
 	.row {

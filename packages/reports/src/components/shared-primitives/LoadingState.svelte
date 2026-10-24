@@ -1,18 +1,20 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms atoms -->
 <script lang="ts">
 	/** A quiet status while page data is read. It reads nothing itself and claims no progress. */
 	let { label = 'Loading…' }: { label?: string } = $props();
 </script>
 
-<div
+<hx-div
 	class="hx-loading"
 	role="status"
 	aria-live="polite"
 	aria-atomic="true"
 	data-harness-component="shared-primitives-loading-state"
 >
-	<span class="hx-loading-indicator" aria-hidden="true"></span>
-	<span class="hx-loading-label">{label}</span>
-</div>
+	<hx-span class="hx-loading-indicator" aria-hidden="true"></hx-span>
+	<hx-span class="hx-loading-label">{label}</hx-span>
+</hx-div>
 
 <style>
 	/* A transparent layer over the viewport that clicks pass straight through. */

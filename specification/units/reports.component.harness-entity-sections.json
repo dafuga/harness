@@ -6,6 +6,34 @@
 	"responsibility": "Shows the selected entity tab, including model Table schema and optional source, while preserving the branch and commit. Selected-helper Uses show only its actual helper callees; old empty Uses links render Overview.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.entity-contract",
+			"reports.component.entity-examples",
+			"reports.component.entity-states",
+			"reports.component.harness-entity-audio",
+			"reports.component.harness-entity-overview",
+			"reports.component.harness-entity-relations",
+			"reports.component.harness-entity-source",
+			"reports.component.harness-entity-tests",
+			"reports.component.harness-harness-icon",
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-summary",
+			"reports.component.shared-primitives-atoms-html-table",
+			"reports.component.shared-primitives-atoms-html-tbody",
+			"reports.component.shared-primitives-atoms-html-td",
+			"reports.component.shared-primitives-atoms-html-th",
+			"reports.component.shared-primitives-atoms-html-thead",
+			"reports.component.shared-primitives-atoms-html-tr"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte"],
 		"symbols": ["EntitySections"]
@@ -86,6 +114,76 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-tbody",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-td",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-th",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-thead",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-tr",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-fe-tile",
+	"kind": "component",
+	"title": "SvgFeTile",
+	"responsibility": "Renders the native feTile element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "feTile",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgFeTile.svelte"],
+		"symbols": ["SvgFeTile"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgFeTile.attributes",
+				"type": "SvelteHTMLElements['feTile']",
+				"description": "Native feTile attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgFeTile.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native feTile element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgFeTile",
+				"type": "markup",
+				"description": "The actual native feTile element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeTile.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeTile.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -6,6 +6,14 @@
 	"responsibility": "Shows an initial portion of a supplied list with a control to reveal the rest.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-element",
+			"reports.component.shared-primitives-atoms-html-li"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ActivityList.svelte",
@@ -75,7 +83,23 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-element",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/components/projects-sessions/ActivityList.svelte",

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Shown } from '../../../../../../src/workflows/runActivity';

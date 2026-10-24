@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type {
 		HarnessIndex,
@@ -39,11 +41,15 @@
 	} = $props();
 </script>
 
-<div class={tip ? 'hx-revision' : 'hc-controls'} data-harness-component="harness-harness-selectors">
-	<label
-		><span
-			>{#if tip}<HarnessIcon name="branch" size={18} />{/if}<span class="revision-name">Branch</span
-			></span
+<hx-div
+	class={tip ? 'hx-revision' : 'hc-controls'}
+	data-harness-component="harness-harness-selectors"
+>
+	<hx-label
+		><hx-span
+			>{#if tip}<HarnessIcon name="branch" size={18} />{/if}<hx-span class="revision-name"
+				>Branch</hx-span
+			></hx-span
 		>
 		<Select
 			label="Branch"
@@ -52,14 +58,15 @@
 			display={tip ? branch : undefined}
 			title={tip ? `${branch} · ${tip.note}` : undefined}
 		>
-			{#each branchNames(index) as name (name)}<option value={name}>{name}</option>{/each}
+			{#each branchNames(index) as name (name)}<hx-option value={name}>{name}</hx-option>{/each}
 		</Select>
-		{#if tip}<small>{tip.note}</small>{/if}
-	</label>
-	<label
-		><span
-			>{#if tip}<HarnessIcon name="commit" size={18} />{/if}<span class="revision-name">Commit</span
-			></span
+		{#if tip}<hx-small>{tip.note}</hx-small>{/if}
+	</hx-label>
+	<hx-label
+		><hx-span
+			>{#if tip}<HarnessIcon name="commit" size={18} />{/if}<hx-span class="revision-name"
+				>Commit</hx-span
+			></hx-span
 		>
 		<Select
 			label="Commit"
@@ -68,20 +75,22 @@
 			display={tip ? commit.slice(0, 7) : undefined}
 			title={tip ? `${commit} · ${tip.viewed}` : undefined}
 		>
-			{#each commits as item (item.commit)}<option value={item.commit}>{revisionLabel(item)}</option
+			{#each commits as item (item.commit)}<hx-option value={item.commit}
+					>{revisionLabel(item)}</hx-option
 				>{/each}
 		</Select>
 		<!-- The closed field has room for the short hash; the whole line of a commit is in its option. -->
-		{#if tip}<small>{tip.viewed}</small>{/if}
-	</label>
+		{#if tip}<hx-small>{tip.viewed}</hx-small>{/if}
+	</hx-label>
 	{#if bases}
-		<label
-			><span>Base commit</span>
+		<hx-label
+			><hx-span>Base commit</hx-span>
 			<Select label="Base commit" bind:value={() => from, onbase}>
-				{#each bases as item (item.commit)}<option value={item.commit}>{revisionLabel(item)}</option
+				{#each bases as item (item.commit)}<hx-option value={item.commit}
+						>{revisionLabel(item)}</hx-option
 					>{/each}
 			</Select>
-		</label>
+		</hx-label>
 	{/if}
 	{#if tip}
 		<HarnessAction
@@ -89,7 +98,7 @@
 			disabled={!tip.href}
 			icon="arrow-right"
 			label="Go to tip"
-			onclick={tip.onfollow}><span class="revision-name">Go to tip</span></HarnessAction
+			onclick={tip.onfollow}><hx-span class="revision-name">Go to tip</hx-span></HarnessAction
 		>
 	{/if}
-</div>
+</hx-div>

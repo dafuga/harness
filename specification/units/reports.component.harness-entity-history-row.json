@@ -6,6 +6,17 @@
 	"responsibility": "A compact commit row: relative date with exact timestamp on hover, commit link, behavior, source size, complexity and measured latency. Long reasons use an inline disclosure; no verdict or duplicate revision control.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-entity-link",
+			"reports.component.harness-entity-reasons",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-td",
+			"reports.component.shared-primitives-atoms-html-time",
+			"reports.component.shared-primitives-atoms-html-tr"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/explorer-ui/entity-history-row/EntityHistoryRow.svelte"
@@ -68,6 +79,26 @@
 		},
 		{
 			"unit": "reports.component.harness-entity-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-td",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-tr",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -72,77 +74,77 @@
 	}
 </script>
 
-<section
+<hx-section
 	class="ex-card ex-evidence"
 	aria-labelledby="ex-screens-title"
 	data-harness-component="harness-entity-screens"
 >
-	<header class="ex-evidence-head">
-		<div>
-			<h2 id="ex-screens-title">
+	<hx-header class="ex-evidence-head">
+		<hx-div>
+			<hx-h2 id="ex-screens-title">
 				{#if !paired}Current screenshot{:else if unlike.length}Before and after, not alike
 				{:else}Commit comparison{/if}
-			</h2>
-		</div>
+			</hx-h2>
+		</hx-div>
 		{#if pick && option}
-			<div class="ex-segments" role="group" aria-label="Viewport">
+			<hx-div class="ex-segments" role="group" aria-label="Viewport">
 				{#each option.viewports as item (item.id)}
-					<button
+					<hx-button
 						type="button"
 						aria-pressed={item.id === pick.viewport}
 						title={item.size}
-						onclick={() => (wanted = item.id)}>{item.label}</button
+						onclick={() => (wanted = item.id)}>{item.label}</hx-button
 					>
 				{/each}
-			</div>
-			{#if size}<span class="ex-soft">{size}</span>{/if}
+			</hx-div>
+			{#if size}<hx-span class="ex-soft">{size}</hx-span>{/if}
 		{/if}
 		{#if paired}
 			<HarnessAction href={nav.href(tests)} onclick={() => nav.go(tests)} icon="arrow-right"
 				>View full comparison</HarnessAction
 			>
 		{/if}
-	</header>
+	</hx-header>
 	{#if unlike.length}
-		<div class="ex-gap">
+		<hx-div class="ex-gap">
 			<HarnessVerdict passed={false} label="Not comparable" reasons={unlike} />
-			<ul class="ex-reasons" aria-label="Why the two sides are not compared">
-				{#each unlike as reason}<li>{reason}</li>{/each}
-			</ul>
-		</div>
+			<hx-ul class="ex-reasons" aria-label="Why the two sides are not compared">
+				{#each unlike as reason}<hx-li>{reason}</hx-li>{/each}
+			</hx-ul>
+		</hx-div>
 	{/if}
-	<div class="ex-panes" class:paired>
+	<hx-div class="ex-panes" class:paired>
 		{#each panes as item (item.id)}
 			{@const named = heading(item)}
-			<figure class="ex-pane" aria-label={named}>
-				<figcaption>
-					<strong>{named}</strong>
-				</figcaption>
+			<hx-figure class="ex-pane" aria-label={named}>
+				<hx-figcaption>
+					<hx-strong>{named}</hx-strong>
+				</hx-figcaption>
 				{#if item.missing}
-					<p class="ex-gap">
+					<hx-p class="ex-gap">
 						<HarnessVerdict passed={false} label="No capture" />
-						<span>{item.note}</span>
-					</p>
+						<hx-span>{item.note}</hx-span>
+					</hx-p>
 				{:else}
-					<button type="button" class="ex-shot" onclick={() => (viewing = item)}>
-						<img src={mediaBase + item.file} alt={`${item.title} at ${item.viewport}`} />
-					</button>
+					<hx-button type="button" class="ex-shot" onclick={() => (viewing = item)}>
+						<hx-img src={mediaBase + item.file} alt={`${item.title} at ${item.viewport}`} />
+					</hx-button>
 				{/if}
-			</figure>
+			</hx-figure>
 		{/each}
-	</div>
+	</hx-div>
 	{#if paired}
-		<div class="ex-change">
+		<hx-div class="ex-change">
 			<HarnessIcon name="change" size={22} />
-			<strong>Behavior change</strong>
-			<span
+			<hx-strong>Behavior change</hx-strong>
+			<hx-span
 				>{reasons.behavior.text ||
-					'This commit records no reason for a change of this entity.'}</span
+					'This commit records no reason for a change of this entity.'}</hx-span
 			>
 			<EntityReasons {reasons} />
-		</div>
+		</hx-div>
 	{/if}
-</section>
+</hx-section>
 <EvidenceViewer
 	items={panes}
 	navigableItems={panes.filter((item) => !item.missing)}

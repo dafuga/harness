@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { View } from "./AudioComparisonViewer.types";
+	import type { View } from './AudioComparisonViewer.types';
 
 	import { onMount } from 'svelte';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -34,7 +36,6 @@
 		if (dialog?.open) dialog.close();
 		onclose();
 	}
-
 </script>
 
 <Modal
@@ -43,16 +44,16 @@
 	variant="lightbox"
 	onclose={close}
 >
-	<div class="viewer-actions toolbar audio-comparison-toolbar">
-		{#each VIEWS as [key, label, text] (key)}<button
+	<hx-div class="viewer-actions toolbar audio-comparison-toolbar">
+		{#each VIEWS as [key, label, text] (key)}<hx-button
 				class:active={view === key}
 				aria-pressed={view === key}
 				aria-label={$t(label)}
-				onclick={() => (view = key)}>{$t(text)}</button
+				onclick={() => (view = key)}>{$t(text)}</hx-button
 			>{/each}
-		<span class="muted">{$t('audioComparisonHint')}</span>
-	</div>
-	<section
+		<hx-span class="muted">{$t('audioComparisonHint')}</hx-span>
+	</hx-div>
+	<hx-section
 		bind:this={region}
 		class="audio-comparison-viewer"
 		class:comparison={view === 'compare'}
@@ -60,10 +61,10 @@
 	>
 		<!-- Keyed by recording: an original leaving the view is destroyed, and AudioEvidence pauses it. -->
 		{#each shown as { item, phase } (item.id)}
-			<div class="audio-comparison-side" role="group" aria-label={$t(phase + 'Recording')}>
-				<span class={'audio-comparison-phase ' + phase} aria-hidden="true">{$t(phase)}</span>
+			<hx-div class="audio-comparison-side" role="group" aria-label={$t(phase + 'Recording')}>
+				<hx-span class={'audio-comparison-phase ' + phase} aria-hidden="true">{$t(phase)}</hx-span>
 				<AudioEvidence {item} {assetBase} idPrefix="audio-viewer-" />
-			</div>
+			</hx-div>
 		{/each}
-	</section>
+	</hx-section>
 </Modal>

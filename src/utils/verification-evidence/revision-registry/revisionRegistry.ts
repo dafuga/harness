@@ -71,6 +71,7 @@ function unitView(
 	return {
 		id: unit.id,
 		kind: unit.kind,
+		...(unit.composition ? { composition: unit.composition } : {}),
 		status: unit.status,
 		title: unit.title,
 		responsibility: unit.responsibility,

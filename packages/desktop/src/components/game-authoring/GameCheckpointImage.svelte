@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Candidate } from './GameCheckpointImage.types';
 	import type {
@@ -124,57 +126,59 @@
 		accept(guidance ? { image, imagePrompt: guidance } : { image });
 </script>
 
-<section
+<hx-section
 	class="image-panel"
 	data-harness-component="game-checkpoint-image"
 	aria-label="Checkpoint image"
 	aria-busy={busy}
 >
 	{#if candidate}
-		<figure>
-			<img src={candidate.url} alt={'New checkpoint image for ' + checkpoint.title} />
-			<figcaption class="muted">
+		<hx-figure>
+			<hx-img src={candidate.url} alt={'New checkpoint image for ' + checkpoint.title} />
+			<hx-figcaption class="muted">
 				Not used yet.{candidate.stale ? ' Made before your latest edits.' : ''}
-			</figcaption>
-		</figure>
-		<label>
-			<span>Request changes</span>
-			<textarea bind:value={changes} disabled={busy} placeholder="Warmer light, lanterns…"
-			></textarea>
-		</label>
-		<div class="actions">
-			<button disabled={!idle || !changes.trim()} onclick={() => generate(changes)}
-				>Generate changes</button
+			</hx-figcaption>
+		</hx-figure>
+		<hx-label>
+			<hx-span>Request changes</hx-span>
+			<hx-textarea bind:value={changes} disabled={busy} placeholder="Warmer light, lanterns…"
+			></hx-textarea>
+		</hx-label>
+		<hx-div class="actions">
+			<hx-button disabled={!idle || !changes.trim()} onclick={() => generate(changes)}
+				>Generate changes</hx-button
 			>
-			<button class="primary" disabled={busy} onclick={() => choose(candidate!)}
-				>Use this image</button
+			<hx-button class="primary" disabled={busy} onclick={() => choose(candidate!)}
+				>Use this image</hx-button
 			>
-		</div>
+		</hx-div>
 	{:else}
 		{#if preview}
-			<figure>
-				<img src={preview} alt={checkpoint.title + ' gameplay reference'} />
-				<figcaption class="muted">
+			<hx-figure>
+				<hx-img src={preview} alt={checkpoint.title + ' gameplay reference'} />
+				<hx-figcaption class="muted">
 					Current image · {checkpoint.image?.createdAt.slice(0, 10)}
-				</figcaption>
-			</figure>
+				</hx-figcaption>
+			</hx-figure>
 		{/if}
-		<div class="actions">
+		<hx-div class="actions">
 			{#if checkpoint.image && !readonly && !commit}
-				<button class="muted" disabled={busy} onclick={() => change({ image: undefined })}
-					>Remove image reference</button
+				<hx-button class="muted" disabled={busy} onclick={() => change({ image: undefined })}
+					>Remove image reference</hx-button
 				>
 			{/if}
-			<button class="primary" disabled={!idle} onclick={() => generate()}>Generate image</button>
-		</div>
+			<hx-button class="primary" disabled={!idle} onclick={() => generate()}
+				>Generate image</hx-button
+			>
+		</hx-div>
 	{/if}
-	<p class="muted" role="status">
+	<hx-p class="muted" role="status">
 		{busy
 			? 'Generating an image. This can take a minute.'
 			: reason || 'Each image is one paid GPT Image request.'}
-	</p>
-	{#if error}<p role="alert" class="error">{error}</p>{/if}
-</section>
+	</hx-p>
+	{#if error}<hx-p role="alert" class="error">{error}</hx-p>{/if}
+</hx-section>
 
 <style>
 	.image-panel,

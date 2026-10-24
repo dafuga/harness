@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import { createRemoteHostStore } from '../lib/stores/networking-security/remoteHost.svelte';
@@ -68,4 +70,4 @@
 		>{#if available}<HostedConnection {workspace} /><RemoteConnection
 				{workspace}
 			/>{/if}</ProjectGate
-	>{#if workspace.error}<p class="error" role="alert">{workspace.error}</p>{/if}{/if}
+	>{#if workspace.error}<hx-p class="error" role="alert">{workspace.error}</hx-p>{/if}{/if}

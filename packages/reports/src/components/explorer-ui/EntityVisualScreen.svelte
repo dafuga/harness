@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import { screenOptions } from '../../utils/explorer-ui/entityScreens';
@@ -11,7 +13,7 @@
 
 <!-- Pages and shells keep recordings in Overview; components keep them in Audio beside their
 	screenshots, which stay above every tab. The marker of the screen draws no box. -->
-<div class="ex-screen" data-harness-component="harness-entity-visual-screen">
+<hx-div class="ex-screen" data-harness-component="harness-entity-visual-screen">
 	<EntityFrame {host}>
 		{#snippet children(entity, nav)}
 			<EntitySections {host} {entity} {nav}>
@@ -35,7 +37,7 @@
 			</EntitySections>
 		{/snippet}
 	</EntityFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-screen {

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { BehaviorOutcome, EntityBehavior } from '../../utils/explorer-ui/entityBehavior';
 	import EntityArtifact from './EntityArtifact.svelte';
@@ -33,28 +35,30 @@
 	);
 </script>
 
-<section class="ex-pane" aria-label={title} data-harness-component="harness-entity-run">
-	<header class="ex-pane-head">
-		<strong>{title}</strong>
-		<span class="ex-pill">{role}</span>
+<hx-section class="ex-pane" aria-label={title} data-harness-component="harness-entity-run">
+	<hx-header class="ex-pane-head">
+		<hx-strong>{title}</hx-strong>
+		<hx-span class="ex-pill">{role}</hx-span>
 		<HarnessVerdict {passed} label={passed ? 'All results passed' : 'Not all results passed'} />
-	</header>
+	</hx-header>
 	{#each shown.groups as group, position (position)}
-		<div class="ex-state">
-			<h3>
+		<hx-div class="ex-state">
+			<hx-h3>
 				<HarnessVerdict passed={group[side] === 'passed'} label={said[group[side]]} />
 				{named(group.scenario)} · {group.state}
-			</h3>
+			</hx-h3>
 			<!-- Each result of the state with what it holds, shown without anything to press. -->
 			{#each group.lines as line}
-				<div class="ex-result">
-					<p>
-						<span class="ex-kind">{line.kind}</span>
-						<span class:failed={line[side].outcome !== 'passed'}>{said[line[side].outcome]}</span>
+				<hx-div class="ex-result">
+					<hx-p>
+						<hx-span class="ex-kind">{line.kind}</hx-span>
+						<hx-span class:failed={line[side].outcome !== 'passed'}
+							>{said[line[side].outcome]}</hx-span
+						>
 						{#if side === 'after' && line.differences.length}
-							<span class="ex-soft">differs at {line.differences.join(', ')}</span>
+							<hx-span class="ex-soft">differs at {line.differences.join(', ')}</hx-span>
 						{/if}
-					</p>
+					</hx-p>
 					<EntityArtifact
 						cell={line[side]}
 						label={`${line.kind} of ${group.state}`}
@@ -62,8 +66,8 @@
 						{lost}
 						{unit}
 					/>
-				</div>
+				</hx-div>
 			{/each}
-		</div>
+		</hx-div>
 	{/each}
-</section>
+</hx-section>

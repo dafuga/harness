@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "template.development-tooling-atomic-syntax-d",
+	"kind": "template",
+	"title": "atomicSyntax",
+	"responsibility": "Owns the atomicSyntax scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/development-tooling/atomicSyntax.d.ts"],
+		"symbols": ["atomicSyntax", "walkAtomicMarkup"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "atomicSyntax.content",
+				"type": "string"
+			},
+			{
+				"name": "walkAtomicMarkup.node",
+				"type": "unknown"
+			},
+			{
+				"name": "walkAtomicMarkup.callback",
+				"type": "(node: Record<string, unknown>) => void"
+			}
+		],
+		"outputs": [
+			{
+				"name": "atomicSyntax",
+				"type": "unknown"
+			},
+			{
+				"name": "walkAtomicMarkup",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/development-tooling/atomicSyntax.d.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/development-tooling/atomicSyntax.d.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

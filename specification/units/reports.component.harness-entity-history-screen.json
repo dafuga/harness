@@ -6,6 +6,14 @@
 	"responsibility": "The history screen of an entity of any kind: the commits that changed it through the shown commit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-entity-frame",
+			"reports.component.harness-entity-history",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityHistoryScreen.svelte"],
 		"symbols": ["EntityHistoryScreen"]
@@ -87,6 +95,11 @@
 		},
 		{
 			"unit": "reports.component.harness-entity-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

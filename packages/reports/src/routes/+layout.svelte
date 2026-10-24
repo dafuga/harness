@@ -1,3 +1,5 @@
+<!-- @harness-tier layout -->
+<!-- @harness-atoms ../components/shared-primitives/atoms -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';

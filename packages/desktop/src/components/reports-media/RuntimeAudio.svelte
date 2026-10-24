@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../../../reports/src/models/Report.types';
 	import { galleryItems } from '../../../../reports/src/utils/entityScreens';
@@ -30,34 +32,37 @@
 		short(side === 'before' ? (result.scope.parent ?? '') : result.scope.commit);
 </script>
 
-{#if declared || clips.length}<div class="runtime-card">
-		<h3>{paired ? 'Audio before and after' : 'Current audio'}</h3>
-		{#each pairs as pair (pair.key)}<div class="runtime-panes" class:paired>
+{#if declared || clips.length}<hx-div class="runtime-card">
+		<hx-h3>{paired ? 'Audio before and after' : 'Current audio'}</hx-h3>
+		{#each pairs as pair (pair.key)}<hx-div class="runtime-panes" class:paired>
 				{#each sides as side (side)}{@const clip = pair[side]}
-					<div
+					<hx-div
 						class="runtime-pane"
 						role="group"
 						aria-label={`${side === 'before' ? 'Before' : paired ? 'After' : 'Current'} · ${at(side)}`}
 					>
-						{#if clip}{#await evidence.url(side, clip.file)}<p class="muted">Reading the clip…</p>
-							{:then url}<audio controls src={url} aria-label={clip.title}></audio>{:catch cause}<p
-									class="runtime-gap"
+						{#if clip}{#await evidence.url(side, clip.file)}<hx-p class="muted"
+									>Reading the clip…</hx-p
 								>
-									<StatusIcon status="failed" reason="Not verified" /><span>{words(cause)}</span>
-								</p>{/await}{#if clip.transcript}<p class="runtime-transcript">
+							{:then url}<hx-audio controls src={url} aria-label={clip.title}
+								></hx-audio>{:catch cause}<hx-p class="runtime-gap">
+									<StatusIcon status="failed" reason="Not verified" /><hx-span
+										>{words(cause)}</hx-span
+									>
+								</hx-p>{/await}{#if clip.transcript}<hx-p class="runtime-transcript">
 									{clip.transcript}
-								</p>{/if}
-							<p class="runtime-standing">{clip.standing} · {clip.status}</p>{:else}<p
+								</hx-p>{/if}
+							<hx-p class="runtime-standing">{clip.standing} · {clip.status}</hx-p>{:else}<hx-p
 								class="runtime-gap"
 							>
-								<StatusIcon status="failed" reason="No clip" /><span
-									>No clip of this state is recorded for {at(side)}.</span
+								<StatusIcon status="failed" reason="No clip" /><hx-span
+									>No clip of this state is recorded for {at(side)}.</hx-span
 								>
-							</p>{/if}
-					</div>{/each}
-			</div>{:else}<p class="runtime-gap">
-				<StatusIcon status="failed" reason="No clip" /><span
-					>A clip is declared for this entity, and none is recorded at {at('after')}.</span
+							</hx-p>{/if}
+					</hx-div>{/each}
+			</hx-div>{:else}<hx-p class="runtime-gap">
+				<StatusIcon status="failed" reason="No clip" /><hx-span
+					>A clip is declared for this entity, and none is recorded at {at('after')}.</hx-span
 				>
-			</p>{/each}
-	</div>{/if}
+			</hx-p>{/each}
+	</hx-div>{/if}

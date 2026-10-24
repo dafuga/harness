@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { tick, type Snippet } from 'svelte';
 	/**
@@ -57,7 +59,7 @@
 	}
 </script>
 
-<button
+<hx-button
 	bind:this={trigger}
 	type="button"
 	class="agent-icon"
@@ -66,9 +68,9 @@
 	data-active={activeCount}
 	{title}
 	{disabled}
-	onclick={open}>{@render icon()}</button
+	onclick={open}>{@render icon()}</hx-button
 >
-<dialog
+<hx-dialog
 	bind:this={dialog}
 	class="agent-picker"
 	class:with-footer={!!footer}
@@ -80,9 +82,9 @@
 	onkeydown={keydown}
 	onclose={() => trigger?.focus()}
 >
-	<div class="agent-picker-body">{@render children(close)}</div>
-	{#if footer}<div class="agent-picker-footer">{@render footer(close)}</div>{/if}
-</dialog>
+	<hx-div class="agent-picker-body">{@render children(close)}</hx-div>
+	{#if footer}<hx-div class="agent-picker-footer">{@render footer(close)}</hx-div>{/if}
+</hx-dialog>
 
 <style>
 	.agent-picker {

@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { ProjectSummary } from 'collaboration';
@@ -58,14 +60,13 @@
 
 <svelte:head><title>Harness · Shared projects</title></svelte:head>
 <HubFrame>
-	<h1>Shared projects</h1>
-	{#if !session.actor}<LoginPanel />{:else}{#if github === 'connected'}<p role="status">
+	<hx-h1>Shared projects</hx-h1>
+	{#if !session.actor}<LoginPanel />{:else}{#if github === 'connected'}<hx-p role="status">
 				GitHub is connected.
-			</p>{:else if github === 'failed'}<p class="error" role="alert">
+			</hx-p>{:else if github === 'failed'}<hx-p class="error" role="alert">
 				GitHub could not be connected. Try again.
-			</p>{/if}{#if error}<p class="error" role="alert">{error}</p>{/if}{#if list}<ProjectList
-				projects={list}
-			/>{:else if !error}<p class="muted">Loading projects…</p>{/if}<ProjectCreate
-			created={open}
-		/>{/if}
+			</hx-p>{/if}{#if error}<hx-p class="error" role="alert">{error}</hx-p
+			>{/if}{#if list}<ProjectList projects={list} />{:else if !error}<hx-p class="muted"
+				>Loading projects…</hx-p
+			>{/if}<ProjectCreate created={open} />{/if}
 </HubFrame>

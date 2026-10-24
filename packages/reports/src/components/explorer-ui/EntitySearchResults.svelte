@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { entityLabels } from '../../utils/explorer-ui/entityLens';
 	import type { SearchEntry } from '../../utils/explorer-ui/entitySearch';
@@ -37,38 +39,41 @@
 	});
 </script>
 
-<div class="entity-search-results" data-harness-component="entity-search-results">
-	<p class="entity-search-note">{scope}</p>
+<hx-div class="entity-search-results" data-harness-component="entity-search-results">
+	<hx-p class="entity-search-note">{scope}</hx-p>
 	{#if query}
-		<ul {id} role="listbox" aria-label="Entities found">
+		<hx-ul {id} role="listbox" aria-label="Entities found">
 			{#each found as entry, index (entry.id)}
-				<li id="{id}-{index}" role="option" aria-selected={index === active}>
-					<a
+				<hx-li id="{id}-{index}" role="option" aria-selected={index === active}>
+					<hx-a
 						href={href(entry)}
 						tabindex="-1"
 						onmousedown={(event) => event.preventDefault()}
 						onclick={(event) => follow(event, entry)}
 					>
-						<span class="entity-search-badge">{entityLabels[entry.category].one}</span>
-						<span class="entity-search-name">{entry.name}</span>
-						{#if entry.purpose}<span class="entity-search-purpose">{entry.purpose}</span>{/if}
-					</a>
-				</li>
+						<hx-span class="entity-search-badge">{entityLabels[entry.category].one}</hx-span>
+						<hx-span class="entity-search-name">{entry.name}</hx-span>
+						{#if entry.purpose}<hx-span class="entity-search-purpose">{entry.purpose}</hx-span>{/if}
+					</hx-a>
+				</hx-li>
 			{/each}
-		</ul>
+		</hx-ul>
 		{#if loading}
-			<p class="entity-search-note" role="status">Loading entities…</p>
+			<hx-p class="entity-search-note" role="status">Loading entities…</hx-p>
 		{:else if !found.length}
-			<p class="entity-search-note" role="status">No entity matches “{query}”</p>
+			<hx-p class="entity-search-note" role="status">No entity matches “{query}”</hx-p>
 		{/if}
 	{:else}
 		<!-- Nothing typed yet: what can be found, and the keys that find it. -->
-		<p class="entity-search-note">Type a name or a purpose to find an entity of this revision.</p>
-		<p class="entity-search-note entity-search-keys">
-			<kbd>↑</kbd> <kbd>↓</kbd> move · <kbd>Enter</kbd> opens · <kbd>Esc</kbd> closes
-		</p>
+		<hx-p class="entity-search-note"
+			>Type a name or a purpose to find an entity of this revision.</hx-p
+		>
+		<hx-p class="entity-search-note entity-search-keys">
+			<hx-kbd>↑</hx-kbd> <hx-kbd>↓</hx-kbd> move · <hx-kbd>Enter</hx-kbd> opens ·
+			<hx-kbd>Esc</hx-kbd> closes
+		</hx-p>
 	{/if}
-</div>
+</hx-div>
 
 <style>
 	/* The body of the dialog the search opens: its field, then these results, the part that scrolls. */

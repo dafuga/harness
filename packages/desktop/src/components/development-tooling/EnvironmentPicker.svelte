@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import { untrack, type Snippet } from 'svelte';
@@ -23,16 +25,16 @@
 	}
 </script>
 
-<div class="environment-picker" class:gated>
-	<div class="environment-choice">
-		<label onchange={choose}
+<hx-div class="environment-picker" class:gated>
+	<hx-div class="environment-choice">
+		<hx-label onchange={choose}
 			><Select label="Environment" bind:value
-				>{#each deploymentEnvironments as item (item)}<option value={item}>{item}</option
+				>{#each deploymentEnvironments as item (item)}<hx-option value={item}>{item}</hx-option
 					>{/each}</Select
-			></label
+			></hx-label
 		>{@render children?.()}
-	</div>
-</div>
+	</hx-div>
+</hx-div>
 
 <style>
 	/* The existing selector and promotion action share the control rail. */

@@ -1,5 +1,7 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Jev, Task } from "./AnalyticsTasks.types";
+	import type { Jev, Task } from './AnalyticsTasks.types';
 
 	import type { AnalyticsSnapshot } from '../../services/explorer-ui/HarnessAnalyticsService';
 	import { analyticsCount } from '../../utils/reports-media/analyticsDisplay';
@@ -23,64 +25,63 @@
 	const toPass = (row: Task) =>
 		row.attemptsToPass === null ? 'Not yet passed' : analyticsCount(row.attemptsToPass);
 	const reportHref = (report: string) => '/harness/reports/' + encodeURIComponent(report);
-
 </script>
 
-<section class="analytics-section" data-harness-component="analytics-tasks">
-	<div class="analytics-heading">
-		<h2>Tasks</h2>
-		<p class="analytics-meta">One row per task, per check type</p>
-	</div>
-	<p class="analytics-note">
+<hx-section class="analytics-section" data-harness-component="analytics-tasks">
+	<hx-div class="analytics-heading">
+		<hx-h2>Tasks</hx-h2>
+		<hx-p class="analytics-meta">One row per task, per check type</hx-p>
+	</hx-div>
+	<hx-p class="analytics-note">
 		Attempts are assessed attempts only. Cached, dry-run and incomplete runs are not assessments and
 		are left out, so a task with none shows as not assessed rather than failed.
-	</p>
+	</hx-p>
 	{#each groups as group (group.kind)}
-		<div class="analytics-card">
-			<div class="analytics-heading">
-				<h3>{group.title}</h3>
-				<p class="analytics-meta">{tally(group.tasks.length)}</p>
-			</div>
+		<hx-div class="analytics-card">
+			<hx-div class="analytics-heading">
+				<hx-h3>{group.title}</hx-h3>
+				<hx-p class="analytics-meta">{tally(group.tasks.length)}</hx-p>
+			</hx-div>
 			{#if group.tasks.length}
-				<div class="analytics-scroll">
-					<table class="analytics-table">
-						<thead>
-							<tr>
-								<th scope="col">Task</th>
-								<th scope="col">Loop / step</th>
-								<th scope="col">Agent model</th>
-								<th scope="col">First pass</th>
-								<th scope="col" class="analytics-num">Assessed attempts</th>
-								<th scope="col" class="analytics-num">Attempts to pass</th>
-								<th scope="col">Report</th>
-							</tr>
-						</thead>
-						<tbody>
+				<hx-div class="analytics-scroll">
+					<hx-table class="analytics-table">
+						<hx-thead>
+							<hx-tr>
+								<hx-th scope="col">Task</hx-th>
+								<hx-th scope="col">Loop / step</hx-th>
+								<hx-th scope="col">Agent model</hx-th>
+								<hx-th scope="col">First pass</hx-th>
+								<hx-th scope="col" class="analytics-num">Assessed attempts</hx-th>
+								<hx-th scope="col" class="analytics-num">Attempts to pass</hx-th>
+								<hx-th scope="col">Report</hx-th>
+							</hx-tr>
+						</hx-thead>
+						<hx-tbody>
 							{#each group.tasks as row}
-								<tr>
-									<td class="analytics-wrap">{text(row.task)}</td>
-									<td>{loopStep(row)}</td>
-									<td>{text(row.agentModel)}</td>
-									<td>{firstPass(row)}</td>
-									<td class="analytics-num">{analyticsCount(row.attempts)}</td>
-									<td class="analytics-num">{toPass(row)}</td>
-									<td>
+								<hx-tr>
+									<hx-td class="analytics-wrap">{text(row.task)}</hx-td>
+									<hx-td>{loopStep(row)}</hx-td>
+									<hx-td>{text(row.agentModel)}</hx-td>
+									<hx-td>{firstPass(row)}</hx-td>
+									<hx-td class="analytics-num">{analyticsCount(row.attempts)}</hx-td>
+									<hx-td class="analytics-num">{toPass(row)}</hx-td>
+									<hx-td>
 										{#if row.report}
-											<a class="text-link" href={reportHref(row.report)}>View report</a>
+											<hx-a class="text-link" href={reportHref(row.report)}>View report</hx-a>
 										{:else}
-											<span class="muted">No report</span>
+											<hx-span class="muted">No report</hx-span>
 										{/if}
-									</td>
-								</tr>
+									</hx-td>
+								</hx-tr>
 							{/each}
-						</tbody>
-					</table>
-				</div>
+						</hx-tbody>
+					</hx-table>
+				</hx-div>
 			{:else}
-				<p class="analytics-empty">
+				<hx-p class="analytics-empty">
 					No {group.kind} tasks in this view yet. They appear here once the harness records them.
-				</p>
+				</hx-p>
 			{/if}
-		</div>
+		</hx-div>
 	{/each}
-</section>
+</hx-section>

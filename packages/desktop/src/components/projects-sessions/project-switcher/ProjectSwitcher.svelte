@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
@@ -20,33 +22,33 @@
 	}
 </script>
 
-<div class="project-switcher">
+<hx-div class="project-switcher">
 	<ChoiceDialog label="Choose workbench" title="Choose workbench" width={320} maxHeight={320}>
 		{#snippet icon()}<Icon name="workbench" size={18} />{/snippet}
-		{#snippet children(close: () => void)}<label
+		{#snippet children(close: () => void)}<hx-label
 				class="picker-field"
 				onchange={() => void choose(close)}
 				>Project<Select label="Project" bind:value
-					>{#if local.length}<optgroup
+					>{#if local.length}<hx-optgroup
 							label={workspace.local ? 'On this device' : 'On your computer'}
-							>{#each local as item (item.id)}<option value={item.id}>{item.name}</option
-								>{/each}</optgroup
-						>{/if}{#if shared.length}<optgroup label="Shared"
-							>{#each shared as item (item.id)}<option value={item.id}>{item.name}</option
-								>{/each}</optgroup
+							>{#each local as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
+								>{/each}</hx-optgroup
+						>{/if}{#if shared.length}<hx-optgroup label="Shared"
+							>{#each shared as item (item.id)}<hx-option value={item.id}>{item.name}</hx-option
+								>{/each}</hx-optgroup
 						>{/if}</Select
-				></label
+				></hx-label
 			>{/snippet}
-	</ChoiceDialog>{#if name}<span class="project-name" title={name}>{name}</span
-		>{/if}{#if workspace.bridge && workspace.local}<button
+	</ChoiceDialog>{#if name}<hx-span class="project-name" title={name}>{name}</hx-span
+		>{/if}{#if workspace.bridge && workspace.local}<hx-button
 			type="button"
 			class="add-project"
 			aria-label="Add local project"
 			title="Add local project"
 			disabled={workspace.busy}
-			onclick={() => void workspace.openProject()}>+</button
+			onclick={() => void workspace.openProject()}>+</hx-button
 		>{/if}
-</div>
+</hx-div>
 
 <style>
 	.project-name {

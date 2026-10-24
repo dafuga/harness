@@ -1,3 +1,4 @@
+import { assertCompositionFilter } from './support/component-previews/atomicCatalog';
 import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
@@ -20,20 +21,23 @@ import {
 } from './support/component-previews/previewCaptureAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
-test.beforeAll(async () => {
-	test.setTimeout(180_000);
-	home = buildShellFixture(['catalog']);
-});
-test.afterAll(() => removeShellFixture(home));
-test('every active visual component has its own required capture state', () => {
+function assertCatalogRegistry() {
 	const expected = catalogUnits.map((unit) => unit.id);
 	expect([...catalogScenario.units].sort()).toEqual(expected);
-	expect(catalogScenario.states).toEqual(
+	expect(catalogScenario.states, 'Catalog preview states follow canonical unit order').toEqual(
 		catalogUnits.map((unit) =>
 			expect.objectContaining({ id: previewState(unit.id), units: [unit.id] })
 		)
 	);
+}
+test.beforeAll(async () => {
+	test.setTimeout(180_000);
+	assertCatalogRegistry();
+	home = buildShellFixture(['catalog']);
 });
+test.afterAll(() => removeShellFixture(home));
+test('every active visual component has its own required capture state', assertCatalogRegistry);
+
 for (const viewport of catalogViewports) {
 	for (const stage of ['history', 'revision'] as const) {
 		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
@@ -89,6 +93,7 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
+			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 
 			if (
 				unit.id === 'reports.component.explorer-dependencies-screen' ||

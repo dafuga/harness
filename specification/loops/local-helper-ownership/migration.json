@@ -4737,12 +4737,17 @@
 		{
 			"unit": "function.project",
 			"entry": "src/workflows/projects-sessions/generate-code/project.ts",
-			"exports": ["detectProjectKind"]
+			"exports": [
+				"detectProjectKind"
+			]
 		},
 		{
 			"unit": "function.exports",
 			"entry": "src/workflows/projects-sessions/generate-code/exports.ts",
-			"exports": ["applyExports", "appendMissingExports"]
+			"exports": [
+				"applyExports",
+				"appendMissingExports"
+			]
 		},
 		{
 			"unit": "function.validation",
@@ -4769,9 +4774,18 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "55e7a7bd5eac71b084e6392d31d93d0105fedf56",
-			"reason": "Preserve reviewed config controls when indexing; new config modules start internal.",
-			"definition": "ac01e017835f13fc239e5e764d9ba247f898871f3e773441f8cf8e1bc39321b5"
+			"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+			"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
+			"definition": "3c6ad72e19d9861a00cb263693f3514f7bb1e05866d993c51bcdea909c3fc225",
+			"previousReviews": [
+				{
+					"unit": "function.derive-manifest",
+					"name": "deriveManifest",
+					"commit": "55e7a7bd5eac71b084e6392d31d93d0105fedf56",
+					"reason": "Preserve reviewed config controls when indexing; new config modules start internal.",
+					"definition": "ac01e017835f13fc239e5e764d9ba247f898871f3e773441f8cf8e1bc39321b5"
+				}
+			]
 		},
 		{
 			"unit": "hub.function.hub-snapshot",
@@ -5341,6 +5355,13 @@
 			"commit": "fa97dd5a1c76d3cd0dbbec7c0ef99298ebcb1fdd",
 			"definition": "c1ed556d07e4885e72f7b4cb9aab7f8e9a67cad48ac179bf74f93d6d08cfc674",
 			"reason": "Recognize the generator canonical configs folder alongside the supported legacy config folder."
+		},
+		{
+			"unit": "function.scan-imports",
+			"name": "scanImports",
+			"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+			"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
+			"definition": "8ce6e488b7982c900be3136155862854f9979c39fef48286e2a90f5c17393642"
 		}
 	]
 }

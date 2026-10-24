@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import Modal from '$shared/Modal.svelte';
@@ -52,28 +54,28 @@
 	}
 </script>
 
-<div class="checkpoint-modal">
+<hx-div class="checkpoint-modal">
 	<Modal open {title} variant="text" onClose={close}>
-		<div class="fields" data-harness-component="game-checkpoint-pane">
-			<label>
-				<span>Describe your checkpoint</span>
-				<textarea
+		<hx-div class="fields" data-harness-component="game-checkpoint-pane">
+			<hx-label>
+				<hx-span>Describe your checkpoint</hx-span>
+				<hx-textarea
 					value={node.description}
 					{readonly}
 					placeholder="What happens here, and what should the player see?"
 					oninput={(e) => update({ description: e.currentTarget.value })}
 					use:focusFirst={adding}
-				></textarea>
-			</label>
-			<label class="name">
-				<span>Title</span>
-				<input
+				></hx-textarea>
+			</hx-label>
+			<hx-label class="name">
+				<hx-span>Title</hx-span>
+				<hx-input
 					aria-label="Checkpoint title"
 					value={node.title}
 					{readonly}
 					oninput={(e) => update({ title: e.currentTarget.value })}
 				/>
-			</label>
+			</hx-label>
 			<GameCheckpointImage
 				checkpoint={node}
 				view={context.view}
@@ -86,27 +88,27 @@
 				change={update}
 				accept={adopt}
 			/>
-			<button
+			<hx-button
 				type="button"
 				class="disclosure"
 				aria-expanded={advanced}
 				aria-controls="checkpoint-rules"
 				onclick={() => (advanced = !advanced)}
 			>
-				<span aria-hidden="true">{advanced ? '▾' : '▸'}</span> Advanced rules
-			</button>
-			<div id="checkpoint-rules" class="rules" hidden={!advanced}>
+				<hx-span aria-hidden="true">{advanced ? '▾' : '▸'}</hx-span> Advanced rules
+			</hx-button>
+			<hx-div id="checkpoint-rules" class="rules" hidden={!advanced}>
 				<GameCheckpointEditor checkpoint={node} {readonly} {change} />
-			</div>
-		</div>
+			</hx-div>
+		</hx-div>
 		{#snippet footer()}
 			{#if !readonly}
-				<button type="button" class="quiet" onclick={remove}>Delete checkpoint</button>
+				<hx-button type="button" class="quiet" onclick={remove}>Delete checkpoint</hx-button>
 			{/if}
-			<button type="button" class="done" onclick={close}>Done</button>
+			<hx-button type="button" class="done" onclick={close}>Done</hx-button>
 		{/snippet}
 	</Modal>
-</div>
+</hx-div>
 
 <style>
 	/* The shared modal brings no frame of its own here; this one is framed through its own wrapper. */

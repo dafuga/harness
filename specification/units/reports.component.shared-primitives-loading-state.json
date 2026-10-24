@@ -6,6 +6,10 @@
 	"responsibility": "Show a reusable, accessible loading status with a decorative indicator while the host waits for data.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": []
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/shared-primitives/LoadingState.svelte"],
 		"symbols": ["LoadingState"]

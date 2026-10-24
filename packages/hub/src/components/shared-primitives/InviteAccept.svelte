@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
@@ -23,28 +25,28 @@
 	}
 </script>
 
-<section class="hub-card">
-	<h2>Enter your invitation code</h2>
-	<p>
+<hx-section class="hub-card">
+	<hx-h2>Enter your invitation code</hx-h2>
+	<hx-p>
 		Signed in as {session.actor?.email}. The invitation works for the Google account it was made
 		for, once.
-	</p>
-	<form
+	</hx-p>
+	<hx-form
 		class="hub-form"
 		onsubmit={(event) => {
 			event.preventDefault();
 			void join();
 		}}
 	>
-		<label
-			>Invitation code<input
+		<hx-label
+			>Invitation code<hx-input
 				bind:value={code}
 				required
 				autocomplete="off"
 				spellcheck="false"
-			/></label
+			/></hx-label
 		>
-		<button class="primary" disabled={joining || !code.trim()}>Join project</button>
-		{#if error}<p class="error" role="alert">{error}</p>{/if}
-	</form>
-</section>
+		<hx-button class="primary" disabled={joining || !code.trim()}>Join project</hx-button>
+		{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+	</hx-form>
+</hx-section>

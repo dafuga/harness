@@ -1,17 +1,19 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	let { item }: { item: Evidence } = $props();
 </script>
 
 {#if item.provenance?.length}
-	<dl class="evidence-provenance" data-harness-component="evidence-provenance">
+	<hx-dl class="evidence-provenance" data-harness-component="evidence-provenance">
 		{#each item.provenance as fact (fact.label)}
-			<div>
-				<dt>{fact.label}</dt>
-				<dd>{fact.value}</dd>
-			</div>
+			<hx-div>
+				<hx-dt>{fact.label}</hx-dt>
+				<hx-dd>{fact.value}</hx-dd>
+			</hx-div>
 		{/each}
-	</dl>
+	</hx-dl>
 {/if}
 
 <style>

@@ -6,6 +6,15 @@
 	"responsibility": "Lets users inspect a recorded image at fitted, actual or enlarged size.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-img",
+			"reports.component.shared-primitives-atoms-html-output"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/image-zoom/ImageZoom.svelte",
@@ -38,6 +47,26 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-output",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.report-locale",
 			"via": "import",

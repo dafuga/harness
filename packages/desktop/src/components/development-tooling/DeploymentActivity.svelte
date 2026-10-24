@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import type { Workspace } from '../../lib/stores/workspace.svelte';
@@ -69,7 +71,7 @@
 	}
 </script>
 
-<div class="deployment-activity">
+<hx-div class="deployment-activity">
 	<ChoiceDialog
 		label="Deployments"
 		{title}
@@ -79,23 +81,23 @@
 		activeCount={activity.activeCount}
 		onopen={() => void opened()}
 	>
-		{#snippet icon()}<span class="light pulse" data-state={light} aria-hidden="true"
-			></span>{/snippet}
-		{#if activity.error}<p class="error" role="alert">{activity.error}</p>{/if}
-		{#if selected}<button
+		{#snippet icon()}<hx-span class="light pulse" data-state={light} aria-hidden="true"
+			></hx-span>{/snippet}
+		{#if activity.error}<hx-p class="error" role="alert">{activity.error}</hx-p>{/if}
+		{#if selected}<hx-button
 				type="button"
 				class="back"
 				bind:this={back}
 				onclick={() => void choose(null)}
-				><span aria-hidden="true">←</span> Back to deployments</button
+				><hx-span aria-hidden="true">←</hx-span> Back to deployments</hx-button
 			>
 			<DeploymentDetails deployment={selected} />
-		{:else}<h2>Deployments</h2>
-			<small role="status">{summary}</small>
-			{#if items.length}<ul bind:this={list}>
+		{:else}<hx-h2>Deployments</hx-h2>
+			<hx-small role="status">{summary}</hx-small>
+			{#if items.length}<hx-ul bind:this={list}>
 					{#each items as item (item.id)}{@const state = lightState(item)}
-						<li>
-							<button
+						<hx-li>
+							<hx-button
 								type="button"
 								class="job"
 								data-id={item.id}
@@ -103,21 +105,21 @@
 									item.branch} to {item.environment}, {item.projectName}, {phase(item)}"
 								onclick={() => void choose(item.id)}
 							>
-								<span class="light" data-state={state} aria-hidden="true"></span>
-								<strong>{item.environment} deployment</strong>
-								<small><DeploymentRoute deployment={item} /></small>
-								<small
-									><span data-state={state}>{phase(item)}</span> · {item.projectName} ·
-									{item.commit.slice(0, 7)}</small
+								<hx-span class="light" data-state={state} aria-hidden="true"></hx-span>
+								<hx-strong>{item.environment} deployment</hx-strong>
+								<hx-small><DeploymentRoute deployment={item} /></hx-small>
+								<hx-small
+									><hx-span data-state={state}>{phase(item)}</hx-span> · {item.projectName} ·
+									{item.commit.slice(0, 7)}</hx-small
 								>
-							</button>
-						</li>{/each}
-				</ul>{:else}<small>
+							</hx-button>
+						</hx-li>{/each}
+				</hx-ul>{:else}<hx-small>
 					Deployments of local projects show here while they run, and for a while after.
-				</small>{/if}
+				</hx-small>{/if}
 		{/if}
 	</ChoiceDialog>
-</div>
+</hx-div>
 
 <style>
 	/* The light keeps the end of the place it is given, on a phone the end of the project's row. */

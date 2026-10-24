@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../atoms -->
 <script lang="ts">
 	import type { UsageExample } from '../../../../../../src/utils/unit-documentation/unitDocumentation';
 	import { usageExamples } from './usageExamples';
@@ -11,20 +13,20 @@
 	let snippets = $derived(usageExamples(examples, lead ? undefined : setup));
 </script>
 
-<div class="examples">
+<hx-div class="examples">
 	{#if lead}
-		<article>
-			<h3>{setupTitle}</h3>
-			<pre><code>{lead}</code></pre>
-		</article>
+		<hx-article>
+			<hx-h3>{setupTitle}</hx-h3>
+			<hx-pre><hx-code>{lead}</hx-code></hx-pre>
+		</hx-article>
 	{/if}
 	{#each examples as example, position (position)}
-		<article>
-			<h3>{example.name}</h3>
-			<pre><code>{snippets[position]}</code></pre>
-		</article>
+		<hx-article>
+			<hx-h3>{example.name}</hx-h3>
+			<hx-pre><hx-code>{snippets[position]}</hx-code></hx-pre>
+		</hx-article>
 	{/each}
-</div>
+</hx-div>
 
 <style>
 	.examples {

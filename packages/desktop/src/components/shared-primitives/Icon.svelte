@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	let { name, size = 22 }: { name: string; size?: number } = $props();
 	const paths: Record<string, string> = {
@@ -22,7 +24,7 @@
 	};
 </script>
 
-<svg
+<hx-svg
 	width={size}
 	height={size}
 	viewBox="0 0 24 24"
@@ -31,5 +33,5 @@
 	stroke-width="1.6"
 	stroke-linecap="round"
 	stroke-linejoin="round"
-	aria-hidden="true"><path d={paths[name] || paths.pages} /></svg
+	aria-hidden="true"><hx-svg-path d={paths[name] || paths.pages} /></hx-svg
 >

@@ -6,6 +6,10 @@
 	"responsibility": "Provides the browser session and shared workspace styles around the current hosted page.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "layout",
+		"uses": []
+	},
 	"catalog": {
 		"visibility": "internal"
 	},

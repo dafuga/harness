@@ -1,6 +1,7 @@
 import { expect, test, type Locator } from '../../../../test/support/browserTest';
 import { fits, pictured, screens, sharedField } from './support/sharedSelect';
 import { box, channels, combo, reachable, styled } from './support/shellChecks';
+import { exerciseNativeAtoms } from './support/nativeAtoms';
 import {
 	buildShellFixture,
 	captureShell,
@@ -152,6 +153,7 @@ for (const [screen, width, height] of screens) {
 		await expect(page.getByRole('status', { name: 'Pressed' })).toHaveText('2');
 		await expect(page).toHaveURL(here);
 		await expect(page.getByRole('button', { name: 'Go to tip' })).toBeDisabled();
+		await exerciseNativeAtoms(page);
 
 		const tabs = page.getByRole('tablist', { name: 'Sections', exact: true });
 		const chosen = tabs.getByRole('tab', { selected: true });

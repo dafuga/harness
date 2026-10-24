@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-fe-flood",
+	"kind": "component",
+	"title": "SvgFeFlood",
+	"responsibility": "Renders the native feFlood element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "feFlood",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgFeFlood.svelte"],
+		"symbols": ["SvgFeFlood"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgFeFlood.attributes",
+				"type": "SvelteHTMLElements['feFlood']",
+				"description": "Native feFlood attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgFeFlood.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native feFlood element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgFeFlood",
+				"type": "markup",
+				"description": "The actual native feFlood element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeFlood.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeFlood.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

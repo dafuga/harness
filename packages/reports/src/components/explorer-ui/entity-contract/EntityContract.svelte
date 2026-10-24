@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
@@ -110,26 +112,26 @@
 	}
 </script>
 
-<section
+<hx-section
 	class="ex-card ex-contract"
 	data-harness-component="entity-contract"
 	aria-label={last ? 'Last contract' : 'Contract'}
 >
-	<h2><HarnessIcon name="contract" size={24} /> {title}</h2>
+	<hx-h2><HarnessIcon name="contract" size={24} /> {title}</hx-h2>
 	{#if last}
-		<p class="ex-note">Removed at the shown commit; this is what its parent held.</p>
+		<hx-p class="ex-note">Removed at the shown commit; this is what its parent held.</hx-p>
 	{/if}
 	{@render summaryRows(facts)}
 	{#each callables as callable, position (position)}
 		{@render callableSection(callable, `${callable.name} contract`)}
 	{:else}
 		{#if bare}
-			<p class="ex-note">This revision records no public methods or fields of this model.</p>
+			<hx-p class="ex-note">This revision records no public methods or fields of this model.</hx-p>
 		{:else}
-			<p class="ex-note">
+			<hx-p class="ex-note">
 				Declared examples are written in the contract. Illustrative ones are placeholders shaped by
 				the type alone. Neither is the result of a test.
-			</p>
+			</hx-p>
 		{/if}
 		{#each shapes as shape, position (position)}
 			{@render callableSection(shape, `${shape.name} fields`)}
@@ -143,32 +145,32 @@
 		{/each}
 	{/each}
 	{#if serviceErrors}<ContractTable group={serviceErrors} onexample={openExample} />{/if}
-</section>
+</hx-section>
 {#snippet summaryRows(rows: ContractRow[])}
 	{#if rows.length > 0}
-		<dl class="ex-rows">
+		<hx-dl class="ex-rows">
 			{#each rows as row, position (position)}
-				<div>
-					<dt>{row.label}</dt>
-					<dd>{row.value}</dd>
-				</div>
+				<hx-div>
+					<hx-dt>{row.label}</hx-dt>
+					<hx-dd>{row.value}</hx-dd>
+				</hx-div>
 			{/each}
-		</dl>
+		</hx-dl>
 	{/if}
 {/snippet}
 {#snippet callableSection(callable: CallableContract, label: string)}
 	{@const parameters = callable.groups.find(
 		(group) => group.id === 'inputs' && group.title === 'Parameters'
 	)}
-	<section class="callable" aria-label={label}>
-		<h3>
-			<code class:call-signature={parameters !== undefined}
-				>{#if parameters}<span class="callable-name">{callable.name}</span
-					>({#each parameters.fields as parameter, index (index)}{index ? ', ' : ''}<span
-							class="callable-parameter">{parameter.name}</span
-						>{/each}){:else}{callable.signature}{/if}</code
+	<hx-section class="callable" aria-label={label}>
+		<hx-h3>
+			<hx-code class:call-signature={parameters !== undefined}
+				>{#if parameters}<hx-span class="callable-name">{callable.name}</hx-span
+					>({#each parameters.fields as parameter, index (index)}{index ? ', ' : ''}<hx-span
+							class="callable-parameter">{parameter.name}</hx-span
+						>{/each}){:else}{callable.signature}{/if}</hx-code
 			>
-		</h3>
+		</hx-h3>
 		{#each callable.groups.filter((group) => !byMethod || group.id !== 'errors') as group (group.id)}
 			<ContractTable
 				{group}
@@ -176,7 +178,7 @@
 				onexample={(field, button) => openExample(field, button, callable.name)}
 			/>
 		{/each}
-	</section>
+	</hx-section>
 {/snippet}
 <Modal open={chosen !== null} title={chosen?.title ?? ''} variant="text" onClose={closeExample}>
 	{#if chosen}<ContractExample field={chosen.field} />{/if}

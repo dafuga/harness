@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms atoms -->
 <script lang="ts">
 	import { tick, type Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
@@ -20,8 +22,8 @@
 	}
 </script>
 
-<div class="catalog-filter-dialog" data-harness-component="filter-dialog">
-	<button
+<hx-div class="catalog-filter-dialog" data-harness-component="filter-dialog">
+	<hx-button
 		bind:this={trigger}
 		type="button"
 		class="filter-trigger"
@@ -30,16 +32,16 @@
 		aria-haspopup="dialog"
 		aria-expanded={opened}
 		title={active ? `Filters · ${active} active` : 'Filters'}
-		onclick={() => (opened = true)}><HarnessIcon name="state" size={21} /></button
+		onclick={() => (opened = true)}><HarnessIcon name="state" size={21} /></hx-button
 	>
 	<Modal open={opened} title="Filters" variant="text" onClose={close}>
-		<div class="filter-fields">{@render children()}</div>
+		<hx-div class="filter-fields">{@render children()}</hx-div>
 		{#snippet footer()}
-			<button class="filter-reset" type="button" onclick={onreset}>Reset filters</button>
-			<button class="filter-done" type="button" onclick={close}>Done</button>
+			<hx-button class="filter-reset" type="button" onclick={onreset}>Reset filters</hx-button>
+			<hx-button class="filter-done" type="button" onclick={close}>Done</hx-button>
 		{/snippet}
 	</Modal>
-</div>
+</hx-div>
 
 <style>
 	.catalog-filter-dialog {

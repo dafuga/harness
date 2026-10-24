@@ -1,5 +1,11 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import { harnessIcons, solidIcons, type HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
+	import {
+		harnessIcons,
+		solidIcons,
+		type HarnessIconName
+	} from '../../utils/explorer-ui/harnessIcons';
 	let {
 		name,
 		size = 20,
@@ -13,7 +19,7 @@
 	} = $props();
 </script>
 
-<svg
+<hx-svg
 	class="hx-icon"
 	class:solid={solidIcons.has(name)}
 	data-harness-component="harness-harness-icon"
@@ -23,7 +29,7 @@
 	role={label ? 'img' : undefined}
 	aria-label={label}
 	aria-hidden={label ? undefined : 'true'}
-	focusable="false"><path d={harnessIcons[name]} /></svg
+	focusable="false"><hx-svg-path d={harnessIcons[name]} /></hx-svg
 >
 
 <style>

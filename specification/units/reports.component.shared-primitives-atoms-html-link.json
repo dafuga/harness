@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-link",
+	"kind": "component",
+	"title": "HtmlLink",
+	"responsibility": "Renders the native link element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "link",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlLink.svelte"],
+		"symbols": ["HtmlLink"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlLink.attributes",
+				"type": "SvelteHTMLElements['link']",
+				"description": "Native link attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlLink",
+				"type": "markup",
+				"description": "The actual native link element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlLink.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlLink.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

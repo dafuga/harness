@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
@@ -27,13 +29,13 @@
 	<title>{title}</title>
 </svelte:head>
 
-<main class="settings-page" data-harness-view="settings">
-	<a class="settings-back" href={resolve(back as '/')}
-		><span aria-hidden="true">←</span> Back to project</a
+<hx-main class="settings-page" data-harness-view="settings">
+	<hx-a class="settings-back" href={resolve(back as '/')}
+		><hx-span aria-hidden="true">←</hx-span> Back to project</hx-a
 	>
-	<h1>{title}</h1>
+	<hx-h1>{title}</hx-h1>
 	<AgentSettings />
-</main>
+</hx-main>
 
 <style>
 	.settings-page {

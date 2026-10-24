@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { browserContext } from '../../../utils/development-tooling/browserContext';
 	import { googleButton } from './googleButton';
@@ -41,21 +43,21 @@
 	});
 </script>
 
-<section class="hub-card login-panel">
-	{#if !status}<p class="muted" role={session.error ? 'alert' : undefined}>
+<hx-section class="hub-card login-panel">
+	{#if !status}<hx-p class="muted" role={session.error ? 'alert' : undefined}>
 			{session.error || 'Checking sign-in…'}
-		</p>{:else if !status.configured}<h2>Sign-in is not configured</h2>
-		<p>
+		</hx-p>{:else if !status.configured}<hx-h2>Sign-in is not configured</hx-h2>
+		<hx-p>
 			Google sign-in is not configured for this deployment. An administrator sets a Google client ID
 			and a session secret; until then nobody can sign in and no project is shown.
-		</p>{:else if proof}<EmailProofPanel {proof} />{:else}<h2>Sign in to Harness</h2>
-		<p>{reason}</p>
-		<p class="muted">
+		</hx-p>{:else if proof}<EmailProofPanel {proof} />{:else}<hx-h2>Sign in to Harness</hx-h2>
+		<hx-p>{reason}</hx-p>
+		<hx-p class="muted">
 			One Google account keeps the same projects on every device where you sign in, and new ones
 			appear without reloading.
-		</p>
-		<div class="google-button" bind:this={holder}></div>
-		{#if failure || session.error}<p class="error" role="alert">
+		</hx-p>
+		<hx-div class="google-button" bind:this={holder}></hx-div>
+		{#if failure || session.error}<hx-p class="error" role="alert">
 				{failure || session.error}
-			</p>{/if}{/if}
-</section>
+			</hx-p>{/if}{/if}
+</hx-section>

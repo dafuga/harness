@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
@@ -17,8 +19,8 @@
 	} = $props();
 </script>
 
-{#if text}<div class="run-status" role="status">
-		<span><ReferenceText {text} {workspace} {entity} /></span>{#if active}<button onclick={cancel}
-				>Cancel run</button
+{#if text}<hx-div class="run-status" role="status">
+		<hx-span><ReferenceText {text} {workspace} {entity} /></hx-span>{#if active}<hx-button
+				onclick={cancel}>Cancel run</hx-button
 			>{/if}
-	</div>{/if}
+	</hx-div>{/if}

@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { CpuSnapshot } from '../../../../../../src/utils/cpuMetrics';
@@ -23,97 +25,97 @@
 	});
 </script>
 
-<section class="analytics-section" data-harness-component="analytics-cpu">
-	<div class="analytics-heading">
-		<h2>Live CPU usage</h2>
-		<button type="button" onclick={refresh}>Refresh CPU</button>
-	</div>
+<hx-section class="analytics-section" data-harness-component="analytics-cpu">
+	<hx-div class="analytics-heading">
+		<hx-h2>Live CPU usage</hx-h2>
+		<hx-button type="button" onclick={refresh}>Refresh CPU</hx-button>
+	</hx-div>
 	{#if pending}
-		<p class="analytics-empty" role="status">Sampling CPU…</p>
+		<hx-p class="analytics-empty" role="status">Sampling CPU…</hx-p>
 	{:else if cpu}
-		<div class="analytics-grid analytics-tiles">
-			<div class="analytics-card analytics-accent" data-testid="cpu-machine">
-				<span class="analytics-label">Whole machine</span>
-				<strong class="analytics-value" class:analytics-quiet={cpu.machinePercent === null}>
+		<hx-div class="analytics-grid analytics-tiles">
+			<hx-div class="analytics-card analytics-accent" data-testid="cpu-machine">
+				<hx-span class="analytics-label">Whole machine</hx-span>
+				<hx-strong class="analytics-value" class:analytics-quiet={cpu.machinePercent === null}>
 					{percent(cpu.machinePercent)}
-				</strong>
-				<small>All processes on this machine</small>
-			</div>
+				</hx-strong>
+				<hx-small>All processes on this machine</hx-small>
+			</hx-div>
 			{#each cpu.groups as group}
-				<div class="analytics-card" data-testid={'cpu-' + group.id}>
-					<span class="analytics-label">{group.label}</span>
-					<strong class="analytics-value">{percent(group.machinePercent)}</strong>
-					<small
+				<hx-div class="analytics-card" data-testid={'cpu-' + group.id}>
+					<hx-span class="analytics-label">{group.label}</hx-span>
+					<hx-strong class="analytics-value">{percent(group.machinePercent)}</hx-strong>
+					<hx-small
 						>{group.id === 'agents' ? 'This repository' : 'All projects on this machine'} · Core
-						{percent(group.corePercent)} · Processes {group.processes}</small
+						{percent(group.corePercent)} · Processes {group.processes}</hx-small
 					>
-				</div>
+				</hx-div>
 			{/each}
-			<div class="analytics-card" data-testid="cpu-tracked">
-				<span class="analytics-label">Tracked combined</span>
-				<strong class="analytics-value">{percent(cpu.trackedPercent)}</strong>
-				<small
+			<hx-div class="analytics-card" data-testid="cpu-tracked">
+				<hx-span class="analytics-label">Tracked combined</hx-span>
+				<hx-strong class="analytics-value">{percent(cpu.trackedPercent)}</hx-strong>
+				<hx-small
 					>Machine-wide Codex and Harness plus this repository's agents; not a figure of this
-					repository</small
+					repository</hx-small
 				>
-			</div>
-		</div>
-		<p class="analytics-note">
+			</hx-div>
+		</hx-div>
+		<hx-p class="analytics-note">
 			Large figures are machine %, the share across all cores. Core % counts 100% as one full core.
-		</p>
-		<p class="analytics-meta">
-			<span>Sampled {cpu.sampledAt.slice(11, 19)} UTC</span>
-			<span>{cpu.logicalCores} logical cores</span>
-			<span>{(cpu.intervalMs / 1000).toFixed(1)} s sample interval</span>
-			<span>Auto-refreshes every 5 s while this tab is visible</span>
-		</p>
-		<div class="panel analytics-grid">
-			<div class="analytics-heading">
-				<h3>Agents working in this repository</h3>
-				<span class="analytics-note"
+		</hx-p>
+		<hx-p class="analytics-meta">
+			<hx-span>Sampled {cpu.sampledAt.slice(11, 19)} UTC</hx-span>
+			<hx-span>{cpu.logicalCores} logical cores</hx-span>
+			<hx-span>{(cpu.intervalMs / 1000).toFixed(1)} s sample interval</hx-span>
+			<hx-span>Auto-refreshes every 5 s while this tab is visible</hx-span>
+		</hx-p>
+		<hx-div class="panel analytics-grid">
+			<hx-div class="analytics-heading">
+				<hx-h3>Agents working in this repository</hx-h3>
+				<hx-span class="analytics-note"
 					>One row per agent process tree running in a checkout of this application. The machine
-					total above covers everything on this computer.</span
+					total above covers everything on this computer.</hx-span
 				>
-			</div>
+			</hx-div>
 			{#if cpu.agents.length}
-				<div class="analytics-scroll">
-					<table class="analytics-table">
-						<thead>
-							<tr>
-								<th>Agent</th>
-								<th class="analytics-num">PID</th>
-								<th class="analytics-num">Processes</th>
-								<th class="analytics-num">Core %</th>
-								<th class="analytics-num">Machine %</th>
-							</tr>
-						</thead>
-						<tbody>
+				<hx-div class="analytics-scroll">
+					<hx-table class="analytics-table">
+						<hx-thead>
+							<hx-tr>
+								<hx-th>Agent</hx-th>
+								<hx-th class="analytics-num">PID</hx-th>
+								<hx-th class="analytics-num">Processes</hx-th>
+								<hx-th class="analytics-num">Core %</hx-th>
+								<hx-th class="analytics-num">Machine %</hx-th>
+							</hx-tr>
+						</hx-thead>
+						<hx-tbody>
 							{#each cpu.agents as agent}
-								<tr>
-									<td class="analytics-wrap">{agent.label}</td>
-									<td class="analytics-num">{agent.pid}</td>
-									<td class="analytics-num">{agent.processes}</td>
-									<td class="analytics-num">{percent(agent.corePercent)}</td>
-									<td class="analytics-num">{percent(agent.machinePercent)}</td>
-								</tr>
+								<hx-tr>
+									<hx-td class="analytics-wrap">{agent.label}</hx-td>
+									<hx-td class="analytics-num">{agent.pid}</hx-td>
+									<hx-td class="analytics-num">{agent.processes}</hx-td>
+									<hx-td class="analytics-num">{percent(agent.corePercent)}</hx-td>
+									<hx-td class="analytics-num">{percent(agent.machinePercent)}</hx-td>
+								</hx-tr>
 							{/each}
-						</tbody>
-					</table>
-				</div>
+						</hx-tbody>
+					</hx-table>
+				</hx-div>
 			{:else}
-				<p class="analytics-empty">No agent was working in this repository in this sample.</p>
+				<hx-p class="analytics-empty">No agent was working in this repository in this sample.</hx-p>
 			{/if}
-		</div>
+		</hx-div>
 	{:else}
-		<div class="notice analytics-alert" role="alert">
-			<strong>CPU usage unavailable</strong>
-			<span>No sample could be read, so no figures are shown.</span>
-			<button type="button" onclick={refresh}>Retry</button>
-		</div>
+		<hx-div class="notice analytics-alert" role="alert">
+			<hx-strong>CPU usage unavailable</hx-strong>
+			<hx-span>No sample could be read, so no figures are shown.</hx-span>
+			<hx-button type="button" onclick={refresh}>Retry</hx-button>
+		</hx-div>
 	{/if}
-	<p class="analytics-note">
+	<hx-p class="analytics-note">
 		Measures local processes only and ignores the history filters. The shared Codex app-server's CPU
 		cannot be split by chat, and cloud model inference CPU is not measured. Samples are not
 		automatically saved or published.
-	</p>
-</section>
+	</hx-p>
+</hx-section>

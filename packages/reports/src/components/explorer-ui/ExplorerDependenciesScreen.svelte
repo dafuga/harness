@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
@@ -27,7 +29,11 @@
 	let listed = $derived(query ? rows.filter((row) => matches(row, query)) : rows);
 	let tables = $derived(
 		Object.entries(ecosystems)
-			.map(([id, title]) => ({ id, title, rows: listed.filter((row) => row.entry.ecosystem === id) }))
+			.map(([id, title]) => ({
+				id,
+				title,
+				rows: listed.filter((row) => row.entry.ecosystem === id)
+			}))
 			.filter((table) => table.rows.length)
 	);
 	/** One row per ecosystem, name, version and kind, naming once each workspace that declares it. */
@@ -58,109 +64,114 @@
 	}
 	function matches(row: ReturnType<typeof group>[number], query: string): boolean {
 		const { name, version, kind } = row.entry;
-		const words = [name, version, kind, ...row.used.flatMap((use) => [use.workspace, ...use.sources])];
+		const words = [
+			name,
+			version,
+			kind,
+			...row.used.flatMap((use) => [use.workspace, ...use.sources])
+		];
 		return words.some((word) => word.toLowerCase().includes(query));
 	}
 </script>
 
 <!-- A gap is a manifest that could not be read; the declarations that could be still show. -->
 {#snippet gapNotice(gaps: string[])}
-	<div class="dep-gaps" role="note">
+	<hx-div class="dep-gaps" role="note">
 		<HarnessIcon name="info" size={18} />
-		<div>
-			<p>Some manifests could not be read, so these declarations may be incomplete.</p>
-			<ul>{#each gaps as gap, position (position)}<li>{gap}</li>{/each}</ul>
-		</div>
-	</div>
+		<hx-div>
+			<hx-p>Some manifests could not be read, so these declarations may be incomplete.</hx-p>
+			<hx-ul
+				>{#each gaps as gap, position (position)}<hx-li>{gap}</hx-li>{/each}</hx-ul
+			>
+		</hx-div>
+	</hx-div>
 {/snippet}
 
 <!-- The version is the requirement as written in the manifest, never a resolved install. -->
 {#snippet inventory(table: (typeof tables)[number])}
-	<div class="dep-group">
-		<h2>
-			{table.title}<span class="ex-pill"
-				>{table.rows.length}<span class="ex-hidden"> declarations</span></span
+	<hx-div class="dep-group">
+		<hx-h2>
+			{table.title}<hx-span class="ex-pill"
+				>{table.rows.length}<hx-span class="ex-hidden"> declarations</hx-span></hx-span
 			>
-		</h2>
-		<div class="ex-scroll dep-scroll">
-			<table class="ex-table dep-table" aria-label={`${table.title} dependencies`}>
-				<thead>
-					<tr>
-						<th scope="col">Package</th>
-						<th scope="col">Version</th>
-						<th scope="col">Type</th>
-						<th scope="col">Used in</th>
-					</tr>
-				</thead>
-				<tbody>
+		</hx-h2>
+		<hx-div class="ex-scroll dep-scroll">
+			<hx-table class="ex-table dep-table" aria-label={`${table.title} dependencies`}>
+				<hx-thead>
+					<hx-tr>
+						<hx-th scope="col">Package</hx-th>
+						<hx-th scope="col">Version</hx-th>
+						<hx-th scope="col">Type</hx-th>
+						<hx-th scope="col">Used in</hx-th>
+					</hx-tr>
+				</hx-thead>
+				<hx-tbody>
 					{#each table.rows as row (row.key)}
-						<tr>
-							<th scope="row"><code class="dep-name">{row.entry.name}</code></th>
-							<td data-label="Version"
-								>{#if row.entry.version}<code>{row.entry.version}</code>{:else}<span
-										class="ex-soft">Not declared</span
-									>{/if}</td
+						<hx-tr>
+							<hx-th scope="row"><hx-code class="dep-name">{row.entry.name}</hx-code></hx-th>
+							<hx-td data-label="Version"
+								>{#if row.entry.version}<hx-code>{row.entry.version}</hx-code>{:else}<hx-span
+										class="ex-soft">Not declared</hx-span
+									>{/if}</hx-td
 							>
-							<td data-label="Type">{kinds[row.entry.kind]}</td>
-							<td data-label="Used in">
-								<ul class="dep-uses">
+							<hx-td data-label="Type">{kinds[row.entry.kind]}</hx-td>
+							<hx-td data-label="Used in">
+								<hx-ul class="dep-uses">
 									{#each row.used as use (use.workspace)}
-										<li title={use.sources.join(', ')}>{use.workspace}</li>
+										<hx-li title={use.sources.join(', ')}>{use.workspace}</hx-li>
 									{/each}
-								</ul>
-							</td>
-						</tr>
+								</hx-ul>
+							</hx-td>
+						</hx-tr>
 					{/each}
-				</tbody>
-			</table>
-		</div>
-	</div>
+				</hx-tbody>
+			</hx-table>
+		</hx-div>
+	</hx-div>
 {/snippet}
 
 {#snippet declared(found: ProjectDependencies)}
 	{#if found.gaps.length}{@render gapNotice(found.gaps)}{/if}
 	{#if rows.length}
 		<ExplorerControls noun="dependencies" bind:filter />
-		<p class="ex-hidden" role="status">{listed.length} of {rows.length} declarations shown</p>
+		<hx-p class="ex-hidden" role="status">{listed.length} of {rows.length} declarations shown</hx-p>
 		{#each tables as table (table.id)}{@render inventory(table)}{/each}
 		{#if !listed.length}
-			<p class="ex-empty">
+			<hx-p class="ex-empty">
 				No dependencies match this search.
-				<button type="button" class="ex-text-button" onclick={() => (filter.search = '')}
-					>Clear search</button
+				<hx-button type="button" class="ex-text-button" onclick={() => (filter.search = '')}
+					>Clear search</hx-button
 				>
-			</p>
+			</hx-p>
 		{/if}
 	{:else}
-		<p class="ex-empty">
+		<hx-p class="ex-empty">
 			{found.gaps.length
 				? 'No declarations could be read from the manifests at this revision.'
 				: 'No dependencies are declared in the manifests at this revision.'}
-		</p>
+		</hx-p>
 	{/if}
 {/snippet}
 
 <!-- Declarations are read from the selected revision, whether or not it has a unit registry. -->
 <ExplorerFrame {host} registryRequired={false}>
 	{#snippet children()}
-		<section
+		<hx-section
 			class="ex-index"
 			aria-labelledby="dep-title"
 			data-harness-component="explorer-dependencies-screen"
 		>
-			<h1 id="dep-title">Dependencies</h1>
-			<p class="ex-lead">Direct package declarations at this revision.</p>
-			<p class="ex-soft">
-				Versions are the requirements each manifest declares.
-			</p>
+			<hx-h1 id="dep-title">Dependencies</hx-h1>
+			<hx-p class="ex-lead">Direct package declarations at this revision.</hx-p>
+			<hx-p class="ex-soft"> Versions are the requirements each manifest declares. </hx-p>
 			{#if record}
 				{@render declared(record)}
 			{:else}
-				<p class="ex-empty">
+				<hx-p class="ex-empty">
 					No dependency record was indexed for this revision. It may predate dependency indexing.
-				</p>
+				</hx-p>
 			{/if}
-		</section>
+		</hx-section>
 	{/snippet}
 </ExplorerFrame>
 

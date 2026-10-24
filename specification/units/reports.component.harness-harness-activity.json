@@ -6,6 +6,14 @@
 	"responsibility": "Loads and displays the activity captured when a repository history was built.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.project-activity",
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/HarnessActivity.svelte"],
 		"symbols": ["HarnessActivity"]
@@ -41,6 +49,16 @@
 		},
 		{
 			"unit": "reports.component.project-activity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

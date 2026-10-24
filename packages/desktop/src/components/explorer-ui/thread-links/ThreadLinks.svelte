@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { ThreadInfo } from '../../../models/development-tooling/Desktop.types';
 	import { sameImage } from './threadAnchor';
@@ -22,15 +24,15 @@
 	);
 </script>
 
-{#each groups as group (group.label)}<div
+{#each groups as group (group.label)}<hx-div
 		class="thread-links"
 		role="group"
 		aria-label={group.label}
 	>
-		<small>{group.label}</small>{#each group.items as item (item.id)}<button
+		<hx-small>{group.label}</hx-small>{#each group.items as item (item.id)}<hx-button
 				type="button"
 				class:active={thread?.id === item.id}
 				aria-pressed={thread?.id === item.id}
-				onclick={() => select(item)}>Thread {item.pin} · {item.version || 'Initial plan'}</button
+				onclick={() => select(item)}>Thread {item.pin} · {item.version || 'Initial plan'}</hx-button
 			>{/each}
-	</div>{/each}
+	</hx-div>{/each}

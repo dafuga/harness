@@ -6,6 +6,10 @@
 	"responsibility": "Applies report styles and renders the current page with the explorer chat where available.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "layout",
+		"uses": ["reports.component.console-chat"]
+	},
 	"catalog": {
 		"visibility": "internal"
 	},

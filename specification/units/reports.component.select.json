@@ -6,6 +6,10 @@
 	"responsibility": "Provides a labeled native selection control with shared report styling.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": []
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/Select.svelte",
