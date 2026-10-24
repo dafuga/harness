@@ -128,7 +128,12 @@ async function observe(request: IncomingMessage): Promise<ApiRequestObservation>
 	};
 }
 
-function respond(response: ServerResponse, observed: ApiRequestObservation, corrupted: boolean) {
+function respond(
+	response: ServerResponse,
+	observed: ApiRequestObservation,
+	corrupted: boolean,
+	endpoints: boolean
+) {
 	const { operation, body, input } = observed;
 	const url = new URL(observed.url);
 	if (operation === 'entity' && input.entityId === 'entry.program') {
