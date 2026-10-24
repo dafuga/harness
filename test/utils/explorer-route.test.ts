@@ -89,7 +89,7 @@ test.each(shapes)('selected commit %s', (tail, selected) => {
 	);
 });
 test('there are twenty-three designed shapes in each scope, and a Page has a history too', () => {
-	expect(shapes).toHaveLength(23);
+	expect(shapes).toHaveLength(25);
 	const history: ExplorerLocation = {
 		branch: 'main',
 		commit: null,
