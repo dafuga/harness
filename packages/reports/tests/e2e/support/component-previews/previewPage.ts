@@ -9,6 +9,7 @@ import {
 import { previewOrigin, servePreview } from './previewApi';
 import { catalogUnits, previewState } from './catalogUnits';
 import { previewNavigation } from './previewNavigation';
+import { previewCaptureBounds } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 const pageUnitIds = new Set(
 	catalogUnits
@@ -97,7 +98,13 @@ async function readyRoute(page: Page, id: string) {
 }
 export async function capturePreview(page: Page, home: string, id: string, viewport: string) {
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
-	const bytes = await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' });
+	const clip = await previewCaptureBounds(page, id);
+	const bytes = await page.screenshot({
+		fullPage: true,
+		clip,
+		animations: 'disabled',
+		caret: 'hide'
+	});
 	const state = previewState(id);
 	if (process.env.COMPONENT_PREVIEW_SHOTS) {
 		mkdirSync(process.env.COMPONENT_PREVIEW_SHOTS, { recursive: true });
@@ -113,10 +120,11 @@ export async function capturePreview(page: Page, home: string, id: string, viewp
 			kind: 'screenshot',
 			state,
 			viewport,
+			clip,
 			file: `${state}-${viewport}.png`,
 			mediaType: 'image/png',
 			provenance: 'actual-capture',
-			note: 'Actual selected UI source rendered with synthetic representative inputs in an isolated preview; real backend and native-device behavior are not reproduced.',
+			note: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.',
 			server: {
 				buildId: served?.buildId ?? 'not-built',
 				revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)

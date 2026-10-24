@@ -99,11 +99,11 @@ export function configFiles(name: string): PlannedFile[] {
 	return [
 		{
 			path: `src/configs/${configName}.ts`,
-			contents: `export const ${configName} = {\n\tname: '${fileName}',\n\tenabled: true\n} as const;\n`
+			contents: `// Add only controls a person needs to change, then declare their audience and purpose\n// in the unit's configControls before making this configuration public.\nexport const ${configName} = {} as const;\n`
 		},
 		{
 			path: `test/config/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${configName} } from '../../src/configs/${configName}';\n\ntest('${configName} is enabled', () => {\n\texpect(${configName}.enabled).toBe(true);\n});\n`
+			contents: `import { expect, test } from 'vitest';\nimport { ${configName} } from '../../src/configs/${configName}';\n\ntest('${configName} starts without invented settings', () => {\n\texpect(${configName}).toEqual({});\n});\n`
 		}
 	];
 }

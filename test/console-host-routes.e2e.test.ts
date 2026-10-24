@@ -12,7 +12,6 @@ import {
 	type SyntheticHost
 } from './support/installedHost';
 import type { LocalWorker } from './support/workers';
-
 let target: SyntheticHost;
 let worker: LocalWorker;
 let browser: Browser;

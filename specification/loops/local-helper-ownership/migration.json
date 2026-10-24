@@ -4769,9 +4769,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "1bf1e0acb",
-			"reason": "Preserve declared catalog assignments when re-indexing module manifests.",
-			"definition": "4e12ef104588f51efedb9dc6ac149fc67cdf8fae4fd7367f9e4870889bd9d5a4"
+			"commit": "55e7a7bd5eac71b084e6392d31d93d0105fedf56",
+			"reason": "Preserve reviewed config controls when indexing; new config modules start internal.",
+			"definition": "ac01e017835f13fc239e5e764d9ba247f898871f3e773441f8cf8e1bc39321b5"
 		},
 		{
 			"unit": "hub.function.hub-snapshot",
@@ -5334,6 +5334,13 @@
 			"commit": "74d4daf36",
 			"reason": "Register English and French replay dictionaries from shared resources without changing the English default.",
 			"definition": "69c84c3d2f4e87e22baecca4b1a85587ac66adf65b742c06f622f3cf2717d07c"
+		},
+		{
+			"unit": "function.unit-identity",
+			"name": "unitIdentity",
+			"commit": "fa97dd5a1c76d3cd0dbbec7c0ef99298ebcb1fdd",
+			"definition": "c1ed556d07e4885e72f7b4cb9aab7f8e9a67cad48ac179bf74f93d6d08cfc674",
+			"reason": "Recognize the generator canonical configs folder alongside the supported legacy config folder."
 		}
 	]
 }

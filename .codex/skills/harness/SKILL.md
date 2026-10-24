@@ -25,6 +25,12 @@ Choose component colors from Styles → Colors, defined in `appStyleTokensConfig
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.
 11. Helpers are pure synchronous value transformations with explicit reviewed `@pure` contracts and no I/O, mutation, hidden state, clocks or randomness. Service classes and models have separate catalog categories. A shared helper needs at least two distinct component, service or named-function consumers. Keep a single-consumer helper in its owner's folder. Preserve unit identity/history and update imports, tests and owned source when moving it; split mixed shared/private modules. Check public API and runtime references before changing an unused export. When moving definitions behind forwarding exports, extend the owning standardized test to cold-import and call both public and owner entries in fresh runtimes; a warm test-module graph does not prove initialization safety. For moved import.meta.url code, test source and packaged layouts separately; bundled output-relative addresses must keep their artifact paths. Before a broad suite for moves reachable from public SDK exports, run `bun scripts/build-api.ts --types-only`; retain the published import and type-entry addresses.
 
+## Configuration review
+
+Expose only important controls a user, operator or app developer actually needs to change. Before adding one, identify who changes it, the behavior they need to control and the sensible default; prefer a fixed implementation value when no tuning need exists. Public config units declare exact source/value names, audience and purpose in `configControls`. Run `units check` to reject missing, duplicate, unowned or unresolved controls, and verify re-indexing preserves the declarations.
+
+Keep schemas, protocol invariants, lookup tables, fixture/build machinery and documentation internal; design tokens belong in Styles. An export or a filename ending in Config does not establish a public setting. New config scaffolds start internal and empty, without invented name/enabled flags. Preserve source, contracts and history when cleaning up existing catalogs. Generated tenant AGENTS and Harness skills inherit this standard from the shared config rules.
+
 ## Shared preview lifecycle
 
 - Keep one persistent Harness browsing preview across chats and worktrees. The shared endpoint is currently `http://127.0.0.1:5690`, with ownership status at `http://127.0.0.1:47840/__harness_preview__`. Verify the live owner and served source/history; Platforms currently owns updates.
@@ -117,6 +123,12 @@ same callable. Exercise distinct owner and callable names at current and histori
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture and watch extra contexts before navigation. Preserve logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears.
 
 ## Screenshot Evidence
+
+Isolated component catalog captures frame the rendered component itself, including fragments,
+visible dialogs and fixed surfaces. Exclude fixture headings and unused page canvas. Declare
+`capture: "element"` and retain the actual CSS-pixel clip bounds; decoded dimensions must match
+those bounds at the declared viewport scale. Keep real layouts and shells in their required app
+context. Never repair component thumbnails by relabeling or stretching older full-page images.
 
 Use source-and-run-specific output directories for verification attempts. Before reporting progress or a pass, check the tested commit, served build/revision and capture timestamps; reject logs and images left by an earlier attempt. A reused filename or successful file read does not establish fresh proof.
 

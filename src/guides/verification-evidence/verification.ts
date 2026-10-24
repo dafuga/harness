@@ -15,8 +15,8 @@ const scenarioGuide: Guide = {
 		'A missing state can occur but is unproven: the scenario cannot pass until it is covered.',
 		'An inapplicable state cannot occur; lacking a fixture is not an applicability reason.',
 		'Every required state needs required evidence, and excluded states need none.',
-		'Screenshots are PNG and must decode to the viewport size, or be at least as tall when ' +
-			'the evidence declares a full-page capture. Audio is WAV, must be playable, and ' +
+		'Screenshots are PNG: viewport size, full-page at viewport width, or element captures ' +
+			'matching explicit clip bounds and viewport scale. Audio is WAV, must be playable, and ' +
 			'carries a transcript and its fixture or actual-capture provenance.',
 		'A capture of running software carries a build stamp naming the verified commit.',
 		'The shared browser fixture keeps error diagnostics with each recorded check, including expected errors and missing expected errors. Component Evidence and Tests show these with their test, retry and original revision.',

@@ -4,7 +4,6 @@ import { measureWorkload } from '../../support/measureWorkload';
 import { unitMetadata } from '../../../src/services/revision-detail-service/unitMetadata';
 import { revisionRegistry } from '../../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../../support/memoryTree';
-
 test.each([
 	[
 		'export const enabled = false; export const retryCount = 0; export const fallback = null; export const label = "";',
@@ -66,20 +65,32 @@ test.each([
 			);
 		})
 );
-
-test('revision metadata carries nested config values from its own source', async () => {
+test('revision metadata selects declared controls without importing internal constants', async () => {
 	const source = 'src/config/settings.ts';
-	const files = { [source]: 'export default defineConfig({build: {outDir: "dist"}});' };
+	const files = {
+		[source]: 'export default defineConfig({limit: 0, documentation: "Internal metadata"});'
+	};
 	const indexed = await indexFiles(files);
 	const registry = revisionRegistry(indexed.result.manifests, []);
+	Object.assign(registry.units[0], {
+		configControls: [
+			{
+				source,
+				name: 'settings.limit',
+				purpose: 'Limit retained reports to fit the available storage.',
+				audience: 'operator'
+			}
+		]
+	});
 	await measureWorkload('function.unit-metadata', 'config-revision-metadata', () =>
 		unitMetadata(memoryTree(files), registry.units)
 	);
 	expect(registry.units[0]).toHaveProperty('configValues', [
-		{ name: 'settings.build.outDir', value: '"dist"', source, literal: 'dist' }
+		{ name: 'settings.limit', value: '0', source, literal: 0 }
 	]);
+	await unitMetadata(memoryTree({}), registry.units);
+	expect(registry.units[0].configValues).toEqual([]);
 });
-
 test('JSON config keys keep their actual scalar values', () => {
 	expect(configValues('{"port": 8080, "feature": {"enabled": false}}', 'settings.json')).toEqual([
 		{ name: 'settings.port', value: '8080', source: 'settings.json', literal: 8080 },
@@ -192,7 +203,6 @@ test.each([
 		});
 	}
 );
-
 test('unresolved collection sizes stay unknown and source code is never executed', async () => {
 	await measureWorkload('function.unit-metadata', 'config-unknown-collection-size', () => {
 		const source =

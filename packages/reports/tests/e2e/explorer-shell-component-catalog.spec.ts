@@ -13,6 +13,7 @@ import {
 	capturePreview
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
+import { assertComponentCapture } from './support/component-previews/previewCaptureAssertions';
 import { declaredStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 test.beforeAll(async () => {
@@ -83,6 +84,7 @@ for (const viewport of catalogViewports) {
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
+			await assertComponentCapture(page, unit.id, viewport.id);
 
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations')) {
 				await expect(component.getByRole('columnheader', { name: 'English en' })).toBeVisible();

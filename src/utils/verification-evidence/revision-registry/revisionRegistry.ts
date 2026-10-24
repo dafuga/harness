@@ -80,6 +80,7 @@ function unitView(
 		contract: { inputs, outputs, errors },
 		...(unit.helperContracts ? { helpers: unit.helperContracts } : {}),
 		...(unit.catalog ? { catalog: unit.catalog } : {}),
+		...(unit.configControls ? { configControls: unit.configControls } : {}),
 		...(unit.preview ? { preview: unit.preview } : {}),
 		...(unit.documentation
 			? { documentation: { path: unit.documentation, examples: [], gap: 'Document not loaded.' } }

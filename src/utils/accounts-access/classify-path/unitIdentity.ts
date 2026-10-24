@@ -11,6 +11,7 @@ const folderKinds: Record<string, FolderKind> = {
 	components: { kind: 'component' },
 	concerns: { kind: 'concern' },
 	config: { kind: 'config', suffix: 'Config' },
+	configs: { kind: 'config', suffix: 'Config' },
 	controllers: { kind: 'controller', suffix: 'Controller' },
 	core: { kind: 'function' },
 	decorators: { kind: 'decorator', suffix: 'Decorator' },

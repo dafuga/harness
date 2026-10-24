@@ -10,11 +10,20 @@ const commit = z.string().regex(/^[0-9a-f]{40}$/, 'must be a full commit or tree
 const sha256 = z.string().regex(/^[0-9a-f]{64}$/, 'must be a sha256 hex digest');
 const outcome = z.enum(['passed', 'failed']);
 
+/** CSS-pixel bounds of an element screenshot within the rendered document. */
+export const captureRegionSchema = z.strictObject({
+	x: z.number().int().nonnegative(),
+	y: z.number().int().nonnegative(),
+	width: z.number().int().positive(),
+	height: z.number().int().positive()
+});
+
 export const captureSchema = z.strictObject({
 	evidence: identifier,
 	kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 	state: identifier,
 	viewport: identifier.optional(),
+	clip: captureRegionSchema.optional(),
 	status: outcome,
 	path: text,
 	sha256,
