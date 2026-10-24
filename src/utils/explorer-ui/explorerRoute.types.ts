@@ -2,7 +2,7 @@ import type { ExplorerCategory } from '../explorer-route/explorerTabs';
 import type { ExplorerTab } from '../explorer-route/explorerTabs';
 import type { explorerSections } from './explorerRoute';
 
-export type ExplorerScreen = 'styles' | 'dependencies';
+export type ExplorerScreen = 'styles' | 'dependencies' | 'translations';
 
 export type ExplorerSection = (typeof explorerSections)[number];
 

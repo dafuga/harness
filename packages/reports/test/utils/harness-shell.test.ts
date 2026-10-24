@@ -42,10 +42,11 @@ test('the bar groups module categories under five scoped primary destinations', 
 		expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 			['pages', 'Pages', 'pages'],
 			['modules', 'Code', 'layers'],
+			['translations', 'Translations', 'web'],
 			['platforms', 'Platforms', 'platforms']
 		]);
 		expect(categories.map((item) => item.href)).toEqual(
-			['pages', 'components', 'platforms'].map(
+			['pages', 'components', 'translations', 'platforms'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
 			)
 		);

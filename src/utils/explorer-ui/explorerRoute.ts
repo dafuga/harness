@@ -20,6 +20,7 @@ export const explorerSections = ['details', 'history'] as const;
 const categoryAlias = new Map([['shells', 'layouts']]);
 const canonicalCategory = (name: string) => categoryAlias.get(name) ?? name;
 const hash = /^[0-9a-f]{40}$/;
+const screens = new Set(['styles', 'translations', 'dependencies']);
 const isCategory = (name: string): name is ExplorerCategory =>
 	explorerCategories.some((known) => known === name);
 const isSection = (name: string): name is ExplorerSection =>
@@ -71,7 +72,7 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 	const [requested = 'pages', ...after] = found.rest;
 	const category = canonicalCategory(requested);
 	if (category === 'helpers') return helperSelection(found, after);
-	if (category === 'styles' || category === 'dependencies') return screenSelection(found, category);
+	if (screens.has(category)) return screenSelection(found, category as ExplorerScreen);
 	if (!isCategory(category)) return undefined;
 	const selected = selection(after, category !== 'platforms');
 	if (!selected) return undefined;
@@ -150,8 +151,7 @@ function helperPane(location: ExplorerLocation, pane?: string): ExplorerLocation
 }
 
 function specialPath(location: ExplorerLocation): string | undefined {
-	if (location.screen === 'styles' || location.screen === 'dependencies')
-		return `/${location.screen}`;
+	if (location.screen) return `/${location.screen}`;
 	if (location.category !== 'functions' || !location.helper) return undefined;
 	const helper = encodeURIComponent(location.helper);
 	const owner = location.entity ? `/in/${encodeURIComponent(location.entity)}` : '';

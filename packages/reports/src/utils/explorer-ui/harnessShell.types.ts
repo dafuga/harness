@@ -39,7 +39,7 @@ export interface HarnessShellLink {
 }
 
 export interface HarnessShellCategory {
-	id: ExplorerCategory | 'styles' | 'dependencies' | 'modules';
+	id: ExplorerCategory | 'styles' | 'dependencies' | 'translations' | 'modules';
 	label: string;
 	icon: HarnessIconName;
 	active: boolean;

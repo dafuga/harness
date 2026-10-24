@@ -1,3 +1,4 @@
+import { translationData } from './translations';
 import { platformFixture } from '../../../../test/platformFixture';
 import { createHash } from 'node:crypto';
 import type {
@@ -44,6 +45,7 @@ export function routeRevision(commit: string): HarnessRevision {
 	return {
 		...shown,
 		platforms: platformFixture,
+		translations: translationData,
 		registry: {
 			...shown.registry,
 			units: [...units, ...routeUnits],

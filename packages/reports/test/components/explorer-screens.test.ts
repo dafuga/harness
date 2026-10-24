@@ -161,6 +161,6 @@ test('details and history share component captures while keeping their own scree
 
 test('the content that shows any address holds no screen of its own: it mounts the entries', () => {
 	expect(direct('ExplorerContent').sort()).toEqual(
-		[...Object.values(entries), 'ExplorerPlatforms'].sort()
+		[...Object.values(entries), 'ExplorerPlatforms', 'ExplorerTranslationsScreen'].sort()
 	);
 });

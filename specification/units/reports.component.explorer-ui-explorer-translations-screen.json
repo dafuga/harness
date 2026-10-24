@@ -1,0 +1,137 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-explorer-translations-screen",
+	"kind": "component",
+	"title": "ExplorerTranslationsScreen",
+	"responsibility": "Displays source-revision translation strings across languages with search and links to runtime consumers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+			"packages/reports/src/lib/styles/translations.css"
+		],
+		"symbols": ["ExplorerTranslationsScreen"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "index",
+				"type": "HarnessIndex",
+				"description": "Available project branches and revisions used by the shared explorer frame."
+			},
+			{
+				"name": "head",
+				"type": "HarnessRevision",
+				"description": "Selected revision shown by the shared navigation and revision controls."
+			},
+			{
+				"name": "parent",
+				"type": "HarnessRevision | null",
+				"description": "First parent for selected-commit comparisons; null at branch tip or without a parent."
+			},
+			{
+				"name": "scope",
+				"type": "ExplorerScope",
+				"description": "Selected branch, commit and resolved address for scoped navigation."
+			},
+			{
+				"name": "route",
+				"type": "ExplorerLocation",
+				"description": "Current Translations address, including its selected branch and optional commit."
+			},
+			{
+				"name": "entities",
+				"type": "ExplorerEntity[]",
+				"description": "Revision-scoped entity catalog supplied to the shared explorer frame."
+			},
+			{
+				"name": "lens",
+				"type": "EntityLens",
+				"description": "Host readers for entity contracts, measurements and captured evidence."
+			},
+			{
+				"name": "client",
+				"type": "Pick<HarnessClient, 'revision'>",
+				"description": "Loads revision data when the shared frame needs historical navigation."
+			},
+			{
+				"name": "mediaBase",
+				"type": "string",
+				"description": "Base URL from which the shared frame resolves captured media."
+			},
+			{
+				"name": "onroute",
+				"type": "(to: ExplorerLocation) => void",
+				"description": "Requests navigation while preserving the selected explorer scope."
+			},
+			{
+				"name": "exportHref",
+				"type": "string",
+				"description": "Project export URL; empty when the host provides no export."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerStylesScreen",
+				"type": "markup",
+				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; foundation and compatibility tokens remain discoverable exactly once."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-ui-translation-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-explorer-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-explorer-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-explorer-ui-explorer-translations-screen",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

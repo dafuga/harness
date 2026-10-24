@@ -3,11 +3,13 @@
 	"id": "reports.function.report-locale",
 	"kind": "function",
 	"title": "Report English locale",
-	"responsibility": "Registers report translations and initializes English as the report locale.",
+	"responsibility": "Registers English and French reports messages while preserving the English runtime default.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/translations/reports/en.json",
+			"packages/reports/src/translations/reports/fr.json",
 			"packages/reports/src/utils/reportLocale.ts",
 			"packages/reports/src/utils/reports-media/reportLocale.ts"
 		],

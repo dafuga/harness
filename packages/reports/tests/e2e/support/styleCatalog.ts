@@ -16,9 +16,18 @@ export function declaredStyleTokens(): string[] {
 	return [...names].sort();
 }
 
+/** Legacy spellings remain valid CSS, but are not choices in the supported Styles catalog. */
+const legacyAliases = ['--hx-bg', '--hx-gold', '--hx-muted', '--hx-font-family-sans'];
+export function documentedStyleTokens(): string[] {
+	return declaredStyleTokens().filter((name) => !legacyAliases.includes(name));
+}
+
 /** Shared disclosure headings identify each semantic group and its actual token count. */
 export async function expectStyleGroups(scope: Locator): Promise<void> {
-	const declared = declaredStyleTokens();
+	await expect(scope.getByRole('heading', { name: /^Compatibility(?: \d+)?$/ })).toHaveCount(0);
+	for (const name of legacyAliases)
+		await expect(scope.locator(`[data-style-token="${name}"]`)).toHaveCount(0);
+	const declared = documentedStyleTokens();
 	for (const group of appStyleTokensConfig.groups) {
 		const count = declared.filter(
 			(name) =>

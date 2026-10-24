@@ -138,6 +138,7 @@
 		"reports.component.explorer-ui-explorer-module-card",
 		"reports.component.explorer-ui-explorer-platform-details",
 		"reports.component.explorer-ui-explorer-platforms",
+		"reports.component.explorer-ui-explorer-translations-screen",
 		"reports.component.explorer-ui-harness-explorer-styles-screen",
 		"reports.component.explorer-ui-harness-group",
 		"reports.component.explorer-usage",
@@ -249,10 +250,10 @@
 		"reports.page.harness-branch-branch-at-services-entity",
 		"reports.page.harness-branch-branch-at-services-entity-history",
 		"reports.page.harness-branch-branch-at-styles",
+		"reports.page.harness-branch-branch-at-translations",
 		"reports.page.harness-branch-branch-at-types",
 		"reports.page.harness-branch-branch-at-types-entity",
-		"reports.page.harness-branch-branch-at-types-entity-history",
-		"reports.page.harness-view"
+		"reports.page.harness-branch-branch-at-types-entity-history"
 	],
 	"states": [
 		{
@@ -1060,6 +1061,12 @@
 			"units": ["reports.component.explorer-ui-explorer-platforms"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"],
+			"coverage": "required",
+			"title": "Translations in English and French"
+		},
+		{
 			"id": "reports-component-explorer-ui-harness-explorer-styles-screen",
 			"title": "ExplorerStylesScreen",
 			"coverage": "required",
@@ -1726,6 +1733,12 @@
 			"units": ["reports.page.harness-branch-branch-at-styles"]
 		},
 		{
+			"id": "reports-page-harness-branch-branch-at-translations",
+			"units": ["reports.page.harness-branch-branch-at-translations"],
+			"coverage": "required",
+			"title": "Translations in English and French"
+		},
+		{
 			"id": "reports-page-harness-branch-branch-at-types",
 			"title": "/harness/branch/[branch]/[...at]/types",
 			"coverage": "required",
@@ -1742,12 +1755,6 @@
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
-		},
-		{
-			"id": "reports-page-harness-view",
-			"title": "/harness/[...view]",
-			"coverage": "required",
-			"units": ["reports.page.harness-view"]
 		}
 	],
 	"viewports": [
@@ -1916,6 +1923,7 @@
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platforms",
+				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-ui-harness-group",
 				"reports-component-explorer-usage",
@@ -2027,10 +2035,10 @@
 				"reports-page-harness-branch-branch-at-services-entity",
 				"reports-page-harness-branch-branch-at-services-entity-history",
 				"reports-page-harness-branch-branch-at-styles",
+				"reports-page-harness-branch-branch-at-translations",
 				"reports-page-harness-branch-branch-at-types",
 				"reports-page-harness-branch-branch-at-types-entity",
-				"reports-page-harness-branch-branch-at-types-entity-history",
-				"reports-page-harness-view"
+				"reports-page-harness-branch-branch-at-types-entity-history"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

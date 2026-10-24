@@ -43,7 +43,7 @@
 			{
 				"name": "ExplorerIndex",
 				"type": "markup",
-				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action."
+				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action. Catalog rows are presented without a standalone proof legend footer."
 			}
 		],
 		"errors": []
@@ -61,11 +61,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-verdict",
 			"via": "import",
 			"origin": "derived"
 		},

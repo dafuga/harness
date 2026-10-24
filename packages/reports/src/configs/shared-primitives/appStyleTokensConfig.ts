@@ -1,5 +1,5 @@
 /** The tokens each group owns, in the order Styles shows them: the purpose-named choices first, then
- *  the foundation scales they draw from and the older names kept for compatibility. */
+ *  the foundation scales they draw from. */
 const groupPrefixes = {
 	Colors: /^--hx-color-/,
 	Typography: /^--hx-(?:font-family-(?:body|heading|code)|type-size-(?:body|heading|caption))$/,
@@ -13,8 +13,7 @@ const groupPrefixes = {
 	'Spacing scale': /^--hx-space-/,
 	'Borders and corners': /^--hx-(?:border|radius)(?:-|$)/,
 	'Effects and opacity': /^--hx-(?:effect|opacity)-/,
-	'Responsive breakpoints': /^--hx-breakpoint-/,
-	Compatibility: /^--hx-(?:bg|gold|muted|font-family-sans)$/
+	'Responsive breakpoints': /^--hx-breakpoint-/
 } as const;
 
 /** App-wide design decisions live in one stylesheet, shared by every renderer. */
@@ -24,6 +23,8 @@ export const appStyleTokensConfig = {
 	groups: Object.keys(groupPrefixes) as (keyof typeof groupPrefixes)[],
 	/** The first group of the foundation inventory, listed compactly after the choices. */
 	foundation: 'Type scale',
+	/** Legacy CSS aliases stay valid for existing consumers, but are not catalog choices. */
+	legacyAliases: /^--hx-(?:bg|gold|muted|font-family-sans)$/,
 	/** A token name no group claims stays unclassified. */
 	groupPrefixes,
 	groupDescriptions: {
@@ -40,8 +41,7 @@ export const appStyleTokensConfig = {
 		'Spacing scale': 'Every padding, margin and gap length, named by its size in pixels.',
 		'Borders and corners': 'Border widths and the corner radii the corner choices draw from.',
 		'Effects and opacity': 'Blur and hover treatments, and the translucency of quieter content.',
-		'Responsive breakpoints': 'Reference widths, repeated literally by media queries.',
-		Compatibility: 'Older names kept for existing stylesheets, forwarded to the choices above.'
+		'Responsive breakpoints': 'Reference widths, repeated literally by media queries.'
 	},
 	/** What each choice is for, the one variable that assigns it, and where the apps read it. A
 	 *  color's treatments are subordinate states of its base variable, never a second base. */
