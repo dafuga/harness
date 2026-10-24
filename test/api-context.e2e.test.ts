@@ -42,3 +42,21 @@ test('API CLI supplies numeric local history pagination while retaining entity a
 		await f.close();
 	}
 }, 30000);
+
+test.each(['local', 'hosted'] as const)(
+	'API CLI shows only the selected %s run in agent events',
+	async (mode) => {
+		const f = await apiFixture(mode);
+		try {
+			const result = await f.cli(['agents', 'events', 'run-1']);
+			expect(
+				JSON.parse(result.stdout).events.map(
+					(event: { value: { runId: string } }) => event.value.runId
+				)
+			).toEqual(['run-1']);
+		} finally {
+			await f.close();
+		}
+	},
+	30000
+);

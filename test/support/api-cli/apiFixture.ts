@@ -72,7 +72,12 @@ function answer(operation: string, input: Record<string, unknown>) {
 	if (operation === 'cancelRun') return true;
 	if (operation === 'providers') return [{ id: 'codex', models: [{ id: 'explicit-model' }] }];
 	if (operation === 'events')
-		return { events: [{ sequence: 4, value: { runId: 'run-1', kind: 'finished' } }] };
+		return {
+			events: [
+				{ sequence: 4, value: { runId: 'run-1', kind: 'finished' } },
+				{ sequence: 5, value: { runId: 'another-run', kind: 'status' } }
+			]
+		};
 	if (operation === 'evidence') return evidence();
 	return { ok: true };
 }
