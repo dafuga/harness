@@ -24,19 +24,6 @@
 .ex-translations thead {
 	background: var(--hx-color-surface-raised);
 }
-.ex-translations thead span,
-.ex-translations small {
-	display: block;
-	color: var(--hx-color-text-muted);
-	font-weight: normal;
-	font-size: var(--hx-type-size-sm);
-}
-.ex-translations tbody th {
-	font-weight: normal;
-}
-.ex-translations code {
-	color: var(--hx-color-text);
-}
 .ex-translations td[lang] {
 	line-height: var(--hx-style-leading-normal);
 }
@@ -64,6 +51,22 @@
 	margin-block: var(--hx-space-4);
 }
 
+.ex-translations-controls {
+	display: flex;
+	align-items: end;
+	gap: var(--hx-space-4);
+	margin-block-end: var(--hx-space-4);
+}
+.ex-translations-controls .ex-controls {
+	flex: 1;
+	margin: 0;
+}
+.ex-translations-language {
+	display: grid;
+	gap: var(--hx-space-2);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-sm);
+}
 /* Match the documented small-tablet breakpoint; keep both requested languages visible together. */
 @media (max-width: 720px) {
 	.ex-translations-scroll {
@@ -82,16 +85,17 @@
 	.ex-translations td {
 		min-width: 0;
 	}
-	.ex-translations thead th:first-child,
 	.ex-translations thead th:last-child {
 		display: none;
 	}
-	.ex-translations tbody th,
 	.ex-translations-usage {
 		grid-column: 1 / -1;
 	}
-	.ex-translations tbody th {
-		background: var(--hx-color-surface-raised);
+	.ex-translations-controls {
+		flex-wrap: wrap;
+	}
+	.ex-translations-controls .ex-controls {
+		flex-basis: 100%;
 	}
 	.ex-translations-usage.ex-translations-unused {
 		display: none;

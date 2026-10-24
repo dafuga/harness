@@ -5,6 +5,7 @@
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	import ExplorerControls from './ExplorerControls.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
+	import Select from '../shared-primitives/Select.svelte';
 	import '../../lib/styles/translations.css';
 	let host: ExplorerScreenProps = $props();
 	let filter = $state<CatalogFilter>({
@@ -18,7 +19,13 @@
 	let limit = $state(50);
 	let catalog = $derived(host.head.translations);
 	let query = $derived(filter.search.trim().toLocaleLowerCase());
-	let locales = $derived([...new Set(['en', 'fr', ...(catalog?.locales ?? [])])]);
+	let language = $state('fr');
+	let locales = $derived(
+		[...new Set(catalog?.locales ?? ['fr'])].filter((locale) => locale !== 'en')
+	);
+	let selected = $derived(
+		locales.includes(language) ? language : locales.includes('fr') ? 'fr' : (locales[0] ?? 'fr')
+	);
 	let rows = $derived((catalog?.rows ?? []).filter(matches));
 	let visible = $derived(rows.slice(0, limit));
 	$effect(() => {
@@ -54,8 +61,18 @@
 				</ol>
 			</nav>
 			<h1 id="translations-title">Translations</h1>
-			<p class="ex-lead">Registered app strings, side by side in each language.</p>
-			<ExplorerControls noun="translations" bind:filter />
+			<p class="ex-lead">Compare English with a selected language.</p>
+			<div class="ex-translations-controls">
+				<ExplorerControls noun="translations" bind:filter />
+				{#if locales.length}
+					<label class="ex-translations-language"
+						>Language
+						<Select label="Language" bind:value={() => selected, (locale) => (language = locale)}>
+							{#each locales as locale}<option value={locale}>{languageName(locale)}</option>{/each}
+						</Select>
+					</label>
+				{/if}
+			</div>
 			{#if !catalog}
 				<p class="ex-empty">No translation catalog is recorded at this revision.</p>
 			{:else}
@@ -79,16 +96,15 @@
 						<table>
 							<thead
 								><tr
-									><th scope="col">String</th>{#each locales as locale}<th scope="col"
-											>{languageName(locale)} <span>{locale}</span></th
-										>{/each}<th scope="col">Used In</th></tr
+									><th scope="col">English</th><th scope="col">{languageName(selected)}</th><th
+										scope="col">Used In</th
+									></tr
 								></thead
 							>
 							<tbody>
 								{#each visible as row (`${row.scope}:${row.key}`)}
-									<tr
-										><th scope="row"><code>{row.key}</code><small>{row.scope}</small></th>
-										{#each locales as locale}
+									<tr>
+										{#each ['en', selected] as locale}
 											<td lang={locale}
 												>{#if Object.hasOwn(row.values, locale)}{#if row.values[locale] === ''}<span
 															class="ex-translations-missing">Empty string</span
