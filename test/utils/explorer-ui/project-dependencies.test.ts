@@ -33,6 +33,10 @@ async function snapshot(files: Record<string, string>) {
 					place: async () => ({ media: null, gap: 'Fixture has no captures' })
 				})
 		);
+		expect(
+			Object.hasOwn(detail, 'projectDependencies'),
+			'Revision detail publishes package catalog'
+		).toBe(true);
 		const catalog = (
 			detail as unknown as {
 				projectDependencies?: {
