@@ -60,14 +60,8 @@ export async function apiResource(
 	if (resource === 'projects')
 		return client.hosted ? client.read('projects') : [(await client.snapshot()).project];
 	const snapshot = await client.snapshot();
-	if (['registry', 'units', 'contracts'].includes(resource))
-		return apiRegistry(client, snapshot, resource, id);
-	if (resource === 'apis') {
-		const units = (await apiRegistry(client, snapshot, 'units')) as ComponentManifest[];
-		return units.filter(
-			(unit) => ['endpoint', 'api'].includes(unit.kind) && unit.status === 'active'
-		);
-	}
+	if (['registry', 'units', 'contracts', 'apis'].includes(resource))
+		return registeredResource(client, snapshot, resource, id);
 	const collection = catalogResource(snapshot, resource);
 	if (collection !== undefined) return collection;
 	if (!id) fail('Name the entity id after this resource, or use a raw /api/ path.');
@@ -112,4 +106,18 @@ function catalogResource(snapshot: ApiSnapshot, resource: string): unknown {
 	)
 		return snapshot.entities.filter((entity) => entity.category === resource);
 	return undefined;
+}
+
+function endpoint(unit: ComponentManifest): boolean {
+	return ['endpoint', 'api'].includes(unit.kind) && unit.status === 'active';
+}
+
+async function registeredResource(
+	client: HarnessApiService,
+	snapshot: ApiSnapshot,
+	resource: string,
+	id?: string
+): Promise<unknown> {
+	const result = await apiRegistry(client, snapshot, resource === 'apis' ? 'units' : resource, id);
+	return resource === 'apis' ? (result as ComponentManifest[]).filter(endpoint) : result;
 }
