@@ -24,7 +24,7 @@ export interface ContractField {
 }
 
 export interface ContractGroup {
-	id: 'inputs' | 'outputs' | 'errors';
+	id: 'inputs' | 'outputs' | 'errors' | `type-${number}`;
 	title: string;
 	/** Some error tables show only type and example; parameter and return tables keep names. */
 	hideNames?: boolean;

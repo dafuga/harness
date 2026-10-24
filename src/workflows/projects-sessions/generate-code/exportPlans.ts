@@ -56,7 +56,7 @@ export function pieceExportPlans(kind: PieceKind, name: string): ExportPlan[] {
 
 	if (kind === 'config') {
 		const configName = `${toCamelCase(name)}Config`;
-		return [{ source: `./config/${configName}`, named: [configName] }];
+		return [{ source: `./configs/${configName}`, named: [configName] }];
 	}
 
 	return [];

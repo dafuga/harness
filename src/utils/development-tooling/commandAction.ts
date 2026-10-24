@@ -1,6 +1,9 @@
 const subcommands: Record<string, string[]> = {
+	benchmark: ['validate', 'run', 'results'],
+	resources: ['status', 'configure', 'run'],
+	task: ['check'],
 	loop: ['create', 'add', 'complete', 'status', 'search', 'next', 'evaluate'],
-	analytics: ['summary', 'loops', 'jev', 'models', 'events', 'import', 'export'],
+	analytics: ['summary', 'loops', 'jev', 'models', 'benchmarks', 'events', 'import', 'export'],
 	activity: ['show', 'register', 'heartbeat', 'finish', 'agents'],
 	report: [
 		'begin',

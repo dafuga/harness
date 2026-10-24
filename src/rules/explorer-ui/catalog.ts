@@ -50,7 +50,7 @@ export const harnessNamingRules: Record<string, string> = {
 	service:
 		'Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.',
 	model:
-		'Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.',
+		'Naming: Models use <PascalName>.ts with a matching persistence class; type collections use <PascalName>.types.ts. Persisted data wrappers belong under Models; existing shared type modules belong under Types. Omit .types from displayed names and preserve registered IDs and source paths.',
 	component: 'Naming: Components use <PascalName>.svelte and the same PascalCase import name.',
 	partial: 'Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.',
 	shell: 'Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.',
@@ -84,6 +84,9 @@ export const harnessNamingRules: Record<string, string> = {
 } satisfies Record<PieceKind, string> & Record<string, string>;
 
 export const harnessModuleGroupRules = [
+	'Group related list, detail and history pages by feature, using meaningful domain folders instead of broad technical catch-alls. Reuse that feature category with --group; use route groups when public URLs must stay unchanged.',
+
+	'Config modules live in src/configs/<category>/, with one focused file per config. Update generator output and public SDK export plans together; prove every planned export targets an emitted file. Keep source-based config documentation static; do not execute configuration to discover values.',
 	'General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatting are reusable operations, not the domains of their callers. Keep domain-specific helpers in their domain and derive each helper category from its own implementation folder.',
 	'Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.',
 	'Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.',
@@ -110,7 +113,7 @@ export function harnessRuleSummariesFor(limits: HarnessRuleLimits): string[] {
 		'Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.',
 		'Classes should not use catch-all Manager names.',
 		'Keep named interfaces and type aliases in sibling .types.ts files; import them with import type and preserve public type paths with type-only re-exports. Index new companions under their implementation unit while retaining existing explicit type-module identities.',
-		'Separate type declarations from runtime values in components, services, helpers, configs, tests and scripts. Keep shared type models with their established owner.',
+		'Separate type declarations from runtime values in components, services, helpers, configs, tests and scripts. Keep existing shared type modules with their established owner.',
 		'Command modules delegate to workflows instead of importing templates or file-generation helpers.',
 		'Core, template, workflow, and command imports move in one direction.',
 		'Harness audit applies ecosystem adapters for app and library code surfaces.',

@@ -45,7 +45,7 @@
 			{
 				"name": "EntityRelations",
 				"type": "markup",
-				"description": "Counted Used In and Uses groups reuse the collection renderer, including revision screenshots and helper calls. Relationship items omit verification marks. Private callables and unknown support dependencies remain accessible."
+				"description": "Counted Uses and Used In groups render every dependency through shared module cards, including private callables, config modules and unclassified support. Cards omit verification marks and retain scoped navigation."
 			}
 		],
 		"errors": []
@@ -58,11 +58,6 @@
 		},
 		{
 			"unit": "reports.component.explorer-catalog-items",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-entity-link",
 			"via": "import",
 			"origin": "derived"
 		},

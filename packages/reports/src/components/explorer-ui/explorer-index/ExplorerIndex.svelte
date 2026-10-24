@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
 	import { catalogFilter } from './entityCatalog';
-	import { catalogSections } from './catalogGroups';
+	import { catalogSections, configSections } from './catalogGroups';
 	import { type CatalogFilter, type CatalogRow } from '../../../utils/explorer-ui/entityCatalog';
 	import { entityLabels } from '../../../utils/explorer-ui/entityLens';
 	import { categoryIcon } from '../../../utils/explorer-ui/harnessIcons';
@@ -28,7 +28,8 @@
 		'functions',
 		'configs',
 		'services',
-		'models'
+		'models',
+		'types'
 	]);
 	let filter = $state<CatalogFilter>({
 		search: '',
@@ -41,8 +42,13 @@
 	let label = $derived(entityLabels[category]);
 	let noun = $derived(label.title.toLowerCase());
 	let listed = $derived(catalogFilter(rows, filter));
+	// Configs are one section for each source file; every other kind is grouped by responsibility.
 	let sections = $derived(
-		grouped.has(category) ? catalogSections(listed).filter((section) => section.rows.length) : []
+		grouped.has(category)
+			? (category === 'configs' ? configSections : catalogSections)(listed).filter(
+					(section) => section.rows.length
+				)
+			: []
 	);
 	let filtered = $derived(Boolean(filter.search.trim()));
 </script>
@@ -91,14 +97,20 @@
 	{:else if sections.length}
 		{#each sections as section (section.id)}
 			<section class="ex-group">
-				<h2>{section.title} <span class="ex-group-count">{section.rows.length}</span></h2>
+				<header class="ex-group-head">
+					<h2 title={section.source}>
+						{section.title} <span class="ex-group-count">{section.rows.length}</span>
+					</h2>
+				</header>
 				{@render list(section.rows)}
 			</section>
 		{/each}
 	{:else}
 		{@render list(listed)}
 	{/if}
-	{#if category !== 'functions' && category !== 'models'}<footer class="ex-legend">
+	{#if category !== 'functions' && category !== 'models' && category !== 'types' && category !== 'configs'}<footer
+			class="ex-legend"
+		>
 			{#if category === 'pages'}
 				<p class="ex-hint">
 					<HarnessIcon name="relationships" size={26} />
@@ -129,10 +141,19 @@
 	.ex-group {
 		margin-top: var(--hx-space-28);
 	}
-	.ex-group h2 {
+	/* The source config's name and variable count form one compact section heading. */
+	.ex-group-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--hx-space-4) var(--hx-space-16);
 		margin: 0 0 var(--hx-space-12);
 		padding-bottom: var(--hx-space-8);
 		border-bottom: var(--hx-border-thin) solid var(--hx-line);
+	}
+	.ex-group h2 {
+		margin: 0;
 		color: var(--hx-text);
 		font-size: var(--hx-type-size-lg);
 		font-weight: var(--hx-style-weight-semibold);

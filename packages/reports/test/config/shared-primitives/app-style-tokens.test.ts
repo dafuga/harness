@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import postcss from 'postcss';
-import { appStyleTokensConfig as config } from '../../../src/config/shared-primitives/appStyleTokensConfig';
+import { appStyleTokensConfig as config } from '../../../src/configs/shared-primitives/appStyleTokensConfig';
 import { responsiveThresholds, styleTokenViolations } from './styleTokenAudit';
 
 const root = resolve(import.meta.dirname, '../../../../..');

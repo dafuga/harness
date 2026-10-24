@@ -1,37 +1,36 @@
+import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
 import { unitMetadata } from '../../src/services/revision-detail-service/unitMetadata';
 import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../support/memoryTree';
 import {
 	referenceCases as cases,
+	declarationSource as source,
+	modelDeclarationSource,
+	modelDeclarations,
 	serviceClassCases,
 	serviceClassFiles
 } from '../support/referenceFixtures';
-const source = [
-	'export type Options = { enabled: boolean };',
-	'export const schema = { parse: true };',
-	'export const count = (1 + 2);',
-	'export const typed: (value: string) => string = (value) => value;',
-	'export const single = value => value;',
-	'function privateHelper() { return 1; }',
-	'export class Internals { run() { return 1; } }',
-	'export function unused(value: number) { return value; }',
-	'export const sharedArrow = (text: string): string => text;'
-].join('\n');
 test('revision metadata derives project categories from the same committed source tree', async () => {
 	const paths = ['services', 'components', 'utils', 'models', 'config'].map(
 		(folder) => `src/${folder}/payments/Example.ts`
 	);
 	const files = Object.fromEntries(paths.map((path) => [path, 'export const example = 1;']));
 	files[paths[2]] = '/** @pure */ export function example() { return 1; }';
+	files[paths[3]] = modelDeclarationSource;
 	const config = (title: string) =>
 		JSON.stringify({ schemaVersion: 1, groups: [{ id: 'payments', title, terms: [] }] });
 	const indexed = await indexFiles(files);
 	const registry = revisionRegistry(indexed.result.manifests, []);
-	await unitMetadata(
-		memoryTree({ ...files, 'harness.groups.json': config('Payments') }),
-		registry.units
+	const tree = memoryTree({ ...files, 'harness.groups.json': config('Payments') });
+	const readDeclarations = () => unitMetadata(tree, registry.units);
+	await measureWorkload('function.unit-metadata', 'model-and-type-declarations', readDeclarations);
+	const model = registry.units.find((unit) => unit.kind === 'model')!;
+	expect(model, 'revision metadata reads model and type declarations').toHaveProperty(
+		'modelDefinitions',
+		modelDeclarations
 	);
+
 	for (const unit of registry.units)
 		expect(unit).toHaveProperty('group', { id: 'payments', title: 'Payments' });
 	expect(registry.units.find((unit) => unit.helpers?.length)?.helpers?.[0]).toHaveProperty(
@@ -41,7 +40,7 @@ test('revision metadata derives project categories from the same committed sourc
 	const settings = registry.units.find((unit) => unit.kind === 'config')!;
 	expect(settings, 'configs record their committed variable values').toHaveProperty(
 		'configValues',
-		[{ name: 'example', value: '1', source: paths[4] }]
+		[{ name: 'example', value: '1', source: paths[4], literal: 1 }]
 	);
 	files[paths[4]] = 'export const example = 2;';
 	await unitMetadata(
@@ -55,11 +54,12 @@ test('revision metadata derives project categories from the same committed sourc
 		{ id: 'payments', title: 'Billing' }
 	);
 	expect(settings).toHaveProperty('configValues', [
-		{ name: 'example', value: '2', source: paths[4] }
+		{ name: 'example', value: '2', source: paths[4], literal: 2 }
 	]);
 	await unitMetadata(memoryTree(files), registry.units);
 	for (const unit of registry.units) expect(unit).not.toHaveProperty('group');
 	await unitMetadata(memoryTree({}), registry.units);
+	expect(model, 'missing source clears declarations').toHaveProperty('modelDefinitions', []);
 	expect(settings, 'missing source cannot keep a previous revision value').toHaveProperty(
 		'configValues',
 		[]

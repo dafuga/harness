@@ -2,93 +2,61 @@ import { expect, test, type Page } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
 import { frameId } from './entityPreviewData';
-import { configExpression, longConfigValue } from './entityConfigFixtures';
-import { helperFolders, reviewServiceFolders } from './entityPreviewFunctions';
+import { configUnits, inspectConfigValues, inspectConfigCollections } from './entityPreviewConfigs';
+import {
+	helperFolders,
+	reviewPrivateFunctions,
+	reviewServiceFolders
+} from './entityPreviewFunctions';
 import { entityLabels } from '../src/utils/entityLens';
 
 test.setTimeout(90_000);
-const configUnits = [
-	'reports.component.harness-explorer-table',
-	'reports.component.harness-explorer-content'
-];
 
-async function inspectConfigValues(page: Page, viewport: string, commit: string): Promise<void> {
-	const table = page.getByRole('table', { name: 'Configs', exact: true });
-	await capture(page, `groups-config-values-${commit.slice(0, 7)}-${viewport}`, configUnits);
-	for (const [name, value] of [
-		['schema', configExpression(commit)],
-		['archivePath', longConfigValue]
-	]) {
-		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
-		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
-		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
-		expect(
-			await inspect.innerText(),
-			'value controls have icons without View value text'
-		).not.toContain('View value');
-		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
-		if (name === 'schema') await expect(row).toContainText('5 attributes');
-		await inspect.press('Enter');
-		const dialog = page.getByRole('dialog', { name: `orderSettings.${name} · Value`, exact: true });
-		await capture(page, `groups-config-${name}-${commit.slice(0, 7)}-${viewport}`, configUnits);
-		await expect(dialog).toBeVisible();
-		if (name === 'schema') {
-			await expect(
-				dialog.getByRole('region', { name: 'Value contents', exact: true })
-			).toContainText('pageSize');
-			await expect(dialog).toContainText(
-				commit === commits.first ? 'z.literal(10)' : 'z.literal(25)'
-			);
-			await dialog.getByText('Source expression', { exact: true }).click();
-		}
-		expect(await dialog.locator('pre code').textContent()).toBe(value);
-		await expect(dialog.locator('orders')).toHaveCount(0);
-		expect(await fits(page)).toBe(true);
-		await page.keyboard.press('Escape');
-		await expect(dialog).toHaveCount(0);
-		await expect(inspect).toBeFocused();
+async function pageFamilies(page: Page): Promise<void> {
+	for (const [feature, count] of [
+		['Components', 3],
+		['Configs', 3],
+		['Helpers', 3],
+		['Layouts', 3],
+		['Models', 3],
+		['Pages', 3],
+		['Services', 3],
+		['Platforms', 2],
+		['Styles', 1]
+	] as const) {
+		await expect
+			.soft(
+				page.getByRole('heading', { level: 2, name: `${feature} ${count}`, exact: true }),
+				'Page families follow their feature folders'
+			)
+			.toBeVisible({ timeout: 500 });
 	}
-	await expect(table.getByRole('row').filter({ hasText: 'orderSettings.enabled' })).toContainText(
-		'false'
-	);
-	expect(await table.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
-}
-
-async function inspectConfigCollections(page: Page, viewport: string): Promise<void> {
-	const table = page.getByRole('table', { name: 'Configs', exact: true });
-	const schema = table.getByRole('row').filter({ hasText: 'orderSettings.schema' });
-	const steps = table.getByRole('row').filter({ hasText: 'orderSettings.steps' });
-	const inspect = steps.getByRole('button', {
-		name: 'View value for orderSettings.steps',
-		exact: true
-	});
-	await capture(page, `groups-config-collections-${viewport}`, configUnits);
-	await expect(steps).toContainText('2 items');
-	await expect(
-		table.getByRole('row').filter({ hasText: 'orderSettings.emptySteps' })
-	).toContainText('0 items');
-	expect(await steps.locator('button svg path').getAttribute('d')).not.toBe(
-		await schema.locator('button svg path').getAttribute('d')
-	);
-	await inspect.press('Enter');
-	const dialog = page.getByRole('dialog', { name: 'orderSettings.steps · Value', exact: true });
-	const contents = dialog.getByRole('region', { name: 'Value contents', exact: true });
-	await contents.locator('summary').filter({ hasText: /^0\b/ }).click();
-	await contents
-		.locator('summary')
-		.filter({ hasText: /^flags\b/ })
-		.click();
-	await capture(page, `groups-config-collections-expanded-${viewport}`, configUnits);
-	await expect(contents).toContainText('Pack');
-	await expect(contents).toContainText('true');
-	await expect(contents).toContainText('false');
-	expect(await fits(page)).toBe(true);
-	await page.keyboard.press('Escape');
-	await expect(inspect).toBeFocused();
 }
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
-	const table = page.getByRole('table', { name: 'Configs', exact: true });
+	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
+	await expect(page.getByRole('table'), 'each source config gets its own table').toHaveCount(2);
+	for (const source of ['deliverySettings', 'orderSettings'])
+		await expect(
+			page.getByRole('heading', { level: 2, name: new RegExp(`^${source} \\d+$`) }),
+			'the table heading names its config source rather than the responsibility category'
+		).toBeVisible();
+	await expect(page.getByRole('table', { name: 'deliverySettings', exact: true })).toContainText(
+		'deliverySettings.enabled'
+	);
+	await expect(table).not.toContainText('deliverySettings');
+	for (const label of [
+		'Boolean false',
+		'Number 25',
+		'String newest',
+		'Empty string',
+		'Null',
+		'Array, 2 items'
+	])
+		await expect(
+			table.getByLabel(label, { exact: true }),
+			'config types have distinct accessible presentations'
+		).toBeVisible();
 	await expect(table.getByRole('columnheader'), 'only variable and value columns').toHaveText([
 		'Variable',
 		'Value'
@@ -99,6 +67,7 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 	await inspectConfigValues(page, viewport, commits.middle);
 	await inspectConfigCollections(page, viewport);
 	await page.getByRole('searchbox').fill('newest');
+	await expect(page.getByRole('table')).toHaveCount(1);
 	await expect(table.getByRole('row')).toHaveCount(2);
 	await page.getByRole('link', { name: 'orderSettings.defaultSort', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'orderSettings', exact: true })).toBeVisible();
@@ -111,6 +80,11 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 }
 
 for (const [viewport, size] of Object.entries(viewports)) {
+	test(`private dependencies reuse module cards at ${viewport} width`, async ({ page }) => {
+		await page.setViewportSize(size);
+		await reviewPrivateFunctions(page, viewport);
+	});
+
 	test(`category folders group every collection and filter together at ${viewport}`, async ({
 		page
 	}) => {
@@ -122,7 +96,8 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			'functions',
 			'configs',
 			'services',
-			'models'
+			'models',
+			'types'
 		] as const) {
 			await open(page, { category, commit: commits.middle }, 'groups');
 			await ready(page);
@@ -133,9 +108,11 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			);
 			await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(0);
 			await expect(page.getByRole('searchbox')).toBeVisible();
-			await expect
-				.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
-				.toBeVisible();
+			if (category !== 'configs')
+				await expect
+					.soft(page.getByRole('heading', { level: 2, name: /^Orders \d+$/ }))
+					.toBeVisible();
+			if (category === 'pages') await pageFamilies(page);
 			expect(await fits(page)).toBe(true);
 			if (category === 'configs') await configVariables(page, viewport);
 			if (category === 'functions') await helperFolders(page, viewport);

@@ -8,9 +8,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/config/development-tooling/hubEnvConfig.ts",
-			"packages/hub/src/config/development-tooling/hubEnvConfig.types.ts",
-			"packages/hub/src/config/hubEnvConfig.ts"
+			"packages/hub/src/configs/development-tooling/hubEnvConfig.ts",
+			"packages/hub/src/configs/development-tooling/hubEnvConfig.types.ts",
+			"packages/hub/src/configs/hubEnvConfig.ts"
 		],
 		"symbols": ["hubEnvConfig", "HubEnv", "HubEnv", "hubEnvConfig"]
 	},
@@ -33,11 +33,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.ts",
+		"entry": "packages/hub/src/configs/development-tooling/hubEnvConfig.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/config/development-tooling/hubEnvConfig.ts"
+				"entry": "packages/hub/src/configs/development-tooling/hubEnvConfig.ts"
 			}
 		]
 	},

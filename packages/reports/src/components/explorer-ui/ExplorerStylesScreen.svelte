@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { appStyleTokensConfig } from '../../config/shared-primitives/appStyleTokensConfig';
+	import { appStyleTokensConfig } from '../../configs/shared-primitives/appStyleTokensConfig';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
 		StyleGroupName,
@@ -14,38 +14,7 @@
 	let host: ExplorerScreenProps = $props();
 
 	const unclassified: UnclassifiedGroupName = 'Unclassified tokens';
-	/** The token prefixes each declared group owns; a name none of them claims stays unclassified. */
-	const prefixes: Record<StyleGroupName, RegExp> = {
-		Colors:
-			/^--hx-(?:bg|surface|raised|line|text|soft|muted|gold|pass|fail|accent|danger|warning|tint|scrim)(?:-|$)/,
-		'Font families': /^--hx-font-family-/,
-		'Type scale': /^--hx-type-size-/,
-		'Text styles': /^--hx-style-/,
-		Spacing: /^--hx-space-/,
-		'Borders and corners': /^--hx-(?:border|radius)(?:-|$)/,
-		Shadows: /^--hx-shadow-/,
-		Effects: /^--hx-effect-/,
-		Opacity: /^--hx-opacity-/,
-		Motion: /^--hx-motion-/,
-		Layering: /^--hx-layer-/,
-		'Layout tokens': /^--hx-(?:gutter$|nav-|layout-)/,
-		'Responsive breakpoints': /^--hx-breakpoint-/
-	};
-	const descriptions: Record<StyleGroupName, string> = {
-		Colors: 'The thirteen palette colors, and treatments mixed only from them.',
-		'Font families': 'Inter for interface text, and a named monospace stack for code.',
-		'Type scale': 'Fixed font sizes, fluid title sizes, and inline text sized to its parent.',
-		'Text styles': 'Weights, styles, leading, tracking, numerals and whole font shorthands.',
-		Spacing: 'Padding, margin and gap lengths, each named by its size in pixels.',
-		'Borders and corners': 'Border widths and corner radii.',
-		Shadows: 'Elevation and outline rings, painted with the shared shadow tint.',
-		Effects: 'Blur and brightness treatments shared by dialogs, galleries and chat.',
-		Opacity: 'Translucency of faint, disabled and secondary content.',
-		Motion: 'Transition and animation durations and easing functions.',
-		Layering: 'Stacking order, from behind content to a full-screen view.',
-		'Layout tokens': 'Gutters, navigation gaps and structural clearances.',
-		'Responsive breakpoints': 'Reference widths, repeated literally by media queries.'
-	};
+	const { groupPrefixes: prefixes, groupDescriptions: descriptions } = appStyleTokensConfig;
 	/** How a group draws its tokens; `$` stands for the token's own reference. */
 	const groupDrawings: Record<StyleGroupName, [StyleSpecimen, string]> = {
 		Colors: ['swatch', '--style-specimen: $'],
@@ -89,6 +58,23 @@
 		if (!rest.length) return declared;
 		const description = 'Shared tokens whose prefix no group above claims.';
 		return [...declared, { name: unclassified, description, tokens: rest }];
+	}
+
+	/** Each color once, under the first role that lists it; a color no role lists is still shown. */
+	function assignColors(palette: StyleToken[]) {
+		const left = new Map(palette.map((token) => [token.name, token] as const));
+		const claim = ([name, job]: readonly [string, string]) => {
+			const token = left.get(name);
+			return left.delete(name) && token ? [{ token, job }] : [];
+		};
+		const roles = appStyleTokensConfig.colorRoles.map(({ name, use, base, tokens }) => {
+			const own = base ? [{ label: 'Base color', base: true, colors: claim(base) }] : [];
+			const label = base ? 'Treatments' : 'Variables';
+			return { name, use, sets: [...own, { label, base: false, colors: tokens.flatMap(claim) }] };
+		});
+		const colors = [...left.values()].map((token) => ({ token, job: 'No role lists it yet' }));
+		const sets = [{ label: 'Variables', base: false, colors }];
+		return colors.length ? [...roles, { ...appStyleTokensConfig.unassignedColors, sets }] : roles;
 	}
 
 	/** Only :root rules publish app tokens; a component stylesheet's own variables are not listed. */
@@ -153,11 +139,7 @@
 
 {#snippet specimen(token: StyleToken)}
 	{@const kind = drawing(token)[0]}
-	{#if kind === 'swatch'}
-		<div class="hx-style-color" style={specimenStyle(token)} aria-hidden="true">
-			<span></span><span></span>
-		</div>
-	{:else if kind === 'text'}
+	{#if kind === 'text'}
 		<p class="hx-style-specimen" style={specimenStyle(token)}>
 			<span>{sample(token)}</span>
 		</p>
@@ -194,16 +176,38 @@
 							<span>{group.tokens.length}</span>
 							<p>{group.description}</p>
 						</div>
-						<div class="hx-styles-grid">
-							{#each group.tokens as token (token.name)}
-								<article class="hx-style-token" data-style-token={token.name}>
-									<header class="hx-style-token-head">
-										<code>{token.name}</code>
-										<span>{token.value}</span>
-									</header>
-									{@render specimen(token)}
-								</article>
-							{/each}
+						<div class="hx-styles-grid" class:hx-color-roles={group.name === 'Colors'}>
+							{#if group.name === 'Colors'}
+								{#each assignColors(group.tokens) as role (role.name)}
+									<article class="hx-color-role" aria-labelledby={headingId(role.name)}>
+										<h3 id={headingId(role.name)}>{role.name}</h3>
+										<p><strong>Use for</strong> {role.use}</p>
+										{#each role.sets as { label, base, colors } (label)}
+											{@const id = headingId(`${role.name} ${label}`)}
+											<div role="group" aria-labelledby={id} class:hx-color-base={base}>
+												<p {id}>{label}</p>
+												{#each colors as { token, job } (token.name)}
+													<div data-style-token={token.name} style={specimenStyle(token)}>
+														<code>{token.name}</code>
+														<span>{job}</span>
+														<span>{token.value}</span>
+													</div>
+												{/each}
+											</div>
+										{/each}
+									</article>
+								{/each}
+							{:else}
+								{#each group.tokens as token (token.name)}
+									<article class="hx-style-token" data-style-token={token.name}>
+										<header class="hx-style-token-head">
+											<code>{token.name}</code>
+											<span>{token.value}</span>
+										</header>
+										{@render specimen(token)}
+									</article>
+								{/each}
+							{/if}
 						</div>
 					</section>
 				{/each}

@@ -69,3 +69,23 @@ export async function reviewFlatModelUsage(usage: Locator): Promise<void> {
 			'model cards omit category headings'
 		).toHaveCount(0);
 }
+
+/** Shared type modules retain the common card and source declaration detail. */
+export async function reviewTypeCard(page: Page, viewport: string): Promise<void> {
+	const typeCard = page.getByRole('article', { name: 'OrderInput', exact: true });
+	await expect(typeCard).toBeVisible();
+	await typeCard.getByRole('link', { name: 'OrderInput', exact: true }).click();
+	expect(await where(page)).toMatchObject({
+		category: 'types',
+		entity: 'app.model.order-input'
+	});
+	await expect(page.getByRole('heading', { name: 'OrderInput', exact: true })).toBeVisible();
+	await expect(page.getByText('Settings it provides', { exact: true })).toHaveCount(0);
+	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+	await expect(page.locator('[data-harness-component="entity-contract"]')).toBeVisible();
+	await capture(page, `type-definition-${viewport}`, ['reports.component.entity-contract']);
+	const definition = page.getByRole('table', { name: 'OrderInput', exact: true });
+	await expect(definition).toContainText('id');
+	await expect(definition).toContainText('string');
+	await expect(page.getByRole('tab', { name: 'Table', exact: true })).toHaveCount(0);
+}

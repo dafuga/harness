@@ -88,7 +88,11 @@ export function canonicalExplorerLocation(location: ExplorerLocation): ExplorerL
 	const canonical = { ...location };
 	delete canonical.section;
 	if (location.tab === 'measurements') delete canonical.tab;
-	else if (location.tab === 'source') canonical.tab = 'source';
+	else if (
+		location.tab === 'source' ||
+		(location.category === 'models' && location.tab === 'table')
+	)
+		canonical.tab = location.tab;
 	else canonical.tab = location.category === 'pages' ? 'models' : 'contract';
 	return canonical;
 }

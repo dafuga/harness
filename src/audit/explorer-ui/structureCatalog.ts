@@ -8,6 +8,7 @@ export const allowedSrcFolders = new Set([
 	'components',
 	'concerns',
 	'config',
+	'configs',
 	'controllers',
 	'core',
 	'decorators',

@@ -1,4 +1,4 @@
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { RelayEnv } from '../../../models/networking-security/RelayHost.types';
 import { connectClaims } from '../../../utils/development-tooling/connectClaims';
 import { relayError } from '../../../utils/networking-security/relayResponse';

@@ -98,6 +98,7 @@ export function helperRelations(
 		services: [],
 		configs: [],
 		models: [],
+		types: [],
 		support: []
 	};
 }

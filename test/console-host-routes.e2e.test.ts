@@ -31,8 +31,7 @@ const main = (commit: string, rest: string) => `/harness/branch/main/commit/${co
 const tip = (rest: string) => `/harness/branch/main/${rest}`;
 /** The whole branch is one segment of an explorer address. */
 const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
-const categories =
-	'Pages,Layouts,Components,Models,Services,Helpers,Configs,Styles,Platforms'.split(',');
+const categories = 'Pages,Modules,Styles,Configs,Platforms'.split(',');
 const pathOf = (page: Page) => new URL(page.url()).pathname;
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
@@ -76,7 +75,12 @@ test('the host redirects the root and the query form to page paths, for the admi
 		tip('pages'),
 		main(head, 'functions'),
 		`${slashed}/pages`,
+		tip('layouts'),
+		main(head, 'layouts'),
 		tip('shells'),
+		tip('types'),
+		main(head, 'types'),
+		`${slashed}/types`,
 		main(head, 'shells')
 	];
 	const before = [main(head, 'map'), `/harness/branch/release/1.0%23rc/commit/${head}/map`];
@@ -104,11 +108,13 @@ test('in a browser each branch, commit and category of the installed console is 
 	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
 		0
 	);
-	await links.filter({ hasText: 'Layouts' }).click();
+	await links.filter({ hasText: 'Modules' }).click();
+	const modules = bar(page).getByRole('tablist', { name: 'Module categories' });
+	await modules.getByRole('tab', { name: 'Layouts', exact: true }).click();
 	await page.waitForURL(`**${tip('layouts')}`);
 	await page.getByRole('heading', { level: 1, name: 'Layouts' }).waitFor();
 	expect(await commit.inputValue()).toBe(head);
-	await links.filter({ hasText: 'Helpers' }).click();
+	await modules.getByRole('tab', { name: 'Helpers', exact: true }).click();
 	await page.waitForURL(`**${tip('functions')}`);
 	expect(await commit.inputValue()).toBe(head);
 	await commit.selectOption(other);

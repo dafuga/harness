@@ -1,8 +1,13 @@
 import type { UnitBenchmark } from './UnitBenchmarkService.types';
+export type { UnitBenchmark } from './UnitBenchmarkService.types';
+import { PerformanceProfileService } from '../../../services/verification-evidence/PerformanceProfileService';
 import { createHash } from 'node:crypto';
 import { fail } from '../../../core/development-tooling/errors';
+
 import type { ComponentManifest, RuntimeKind } from '../../../core/development-tooling/unitTypes';
 import type { Workload } from '../../../core/verification-evidence/verifyTypes';
+import type { RuntimeResponse } from '../../../core/execution-runtimes/runtimeTypes';
+import type { RoundResult } from '../../../utils/development-tooling/benchSamples';
 import { benchRounds, roundMeasurements } from '../../../utils/development-tooling/benchSamples';
 import { comparisonContext } from '../../../utils/development-tooling/comparison-context/comparisonContext';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
@@ -29,27 +34,51 @@ export class UnitBenchmarkService {
 				);
 			}
 			const result = await benchRounds(runtime, workload.request, workload);
-			const where =
-				`${workload.rounds} rounds of ${workload.iterations} end-to-end calls through the declared ` +
-				`${runtime.kind} target`;
-			const shared = {
-				unit: manifest.id,
-				workload: workload.id,
-				target: runtime.kind,
-				samples: result.samples,
-				comparison: comparisonContext(workload.request, workload)
-			};
-			return {
-				unit: manifest.id,
-				workload: workload.id,
-				target: runtime.kind,
-				responseDigest: createHash('sha256').update(stableJson(response)).digest('hex'),
-				measurements: roundMeasurements(result, where).map((entry) => ({ ...shared, ...entry }))
-			};
+			return benchmarkResult(manifest.id, workload, { target: runtime.kind, result, response });
 		} finally {
 			await runtime.close();
 		}
 	}
 }
 
-export type { UnitBenchmark } from './UnitBenchmarkService.types';
+function processMemory(target: RuntimeKind) {
+	if (target !== 'module') return [];
+	return [
+		{
+			metric: 'process-peak-rss-bytes',
+			unitOfMeasure: 'bytes',
+			value: PerformanceProfileService.peakProcessRssBytes(),
+			method:
+				'Peak RSS of the Harness benchmark process, normalized to bytes for this runtime, including runner overhead and earlier work; excludes separate target processes and is not callable-attributed memory.'
+		}
+	];
+}
+
+function boundary(workload: Workload, kind: RuntimeKind): string {
+	return `${workload.rounds} rounds of ${workload.iterations} end-to-end calls through the declared ${kind} target`;
+}
+
+function benchmarkResult(
+	unit: string,
+	workload: Workload,
+	context: { target: RuntimeKind; result: RoundResult; response: RuntimeResponse }
+): UnitBenchmark {
+	const { target, result, response } = context;
+	const shared = {
+		unit,
+		workload: workload.id,
+		target,
+		samples: result.samples,
+		comparison: comparisonContext(workload.request, workload)
+	};
+	return {
+		unit,
+		workload: workload.id,
+		target,
+		responseDigest: createHash('sha256').update(stableJson(response)).digest('hex'),
+		measurements: [
+			...roundMeasurements(result, boundary(workload, target)),
+			...processMemory(target)
+		].map((entry) => ({ ...shared, ...entry }))
+	};
+}

@@ -16,6 +16,9 @@ it does not hold, or another path does not verify. Nothing falls back to a surro
 The Layouts update also retains implementation commit `ae9e65325` for layout design,
 planning writes and immutable formatter ignores.
 
+The level planning review retains implementation commit `f6a7a2129` for the desktop bridge
+factory and isolated preload.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git
@@ -57,3 +60,9 @@ git pack-objects --stdout --threads=1 < ids.txt > test/support/service-review-hi
 
 The pack's bytes can differ between Git versions; its object ids cannot. Check a new pack with
 `git index-pack --stdin` into an empty bare repository, then run `test/services/unit-index.test.ts`.
+
+Benchmark analytics retains implementation commit `9425223b3` for the additive query registration, rendering and snapshot fields.
+
+Resource admission retains implementation commit `43dacd370` for evaluator, verification and priority changes. Original relocation proofs and prior behavior reviews remain present.
+
+Scoped screenshot admission retains implementation commit `b0fc91c01` for selected-revision registry validation. The original service move and every earlier implementation review remain included.

@@ -111,7 +111,7 @@
 	"checks": [
 		{
 			"path": "packages/reports/tests/e2e/provider-picker.spec.ts",
-			"command": "bun x playwright test --config src/config/pickerPlaywrightConfig.ts"
+			"command": "bun x playwright test --config src/configs/pickerPlaywrightConfig.ts"
 		},
 		{
 			"path": "packages/planning/test/planning-canonical.test.ts",
@@ -210,31 +210,31 @@
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell.spec.ts"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell.spec.ts"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-pieces.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-pieces.spec.ts"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-pieces.spec.ts"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-verdict.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-verdict.spec.ts"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-verdict.spec.ts"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-search.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-search.spec.ts"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-search.spec.ts"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-search-scope.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-search-scope.spec.ts"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-search-scope.spec.ts"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-search-fit.spec.ts"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-search-fit.spec.ts"
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-capture-readiness.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts {target}"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts {target}"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-actions.spec.ts",
@@ -274,12 +274,12 @@
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-browser-errors.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-browser-errors.spec.ts",
 			"timeoutMs": 180000
 		},
 		{
 			"path": "packages/reports/tests/e2e/explorer-shell-activity-list.spec.ts",
-			"command": "bun x playwright test --config src/config/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts"
+			"command": "bun x playwright test --config src/configs/shellPlaywrightConfig.ts explorer-shell-activity-list.spec.ts"
 		},
 		{
 			"path": "packages/reports/test/entity-preview-groups.spec.ts",

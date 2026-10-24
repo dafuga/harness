@@ -3,34 +3,8 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
 import { auditPath } from '../src/audit/audit';
-
-const ruleFixtures: Record<string, string> = {
-	'small-class': [
-		'export class BigClass {',
-		...Array.from({ length: 121 }, (_, index) => `\tvalue${index} = ${index};`),
-		'}'
-	].join('\n'),
-	'method-length': [
-		'export class BigMethod {',
-		'\trun(): void {',
-		...Array.from({ length: 36 }, () => '\t\tvoid 1;'),
-		'\t}',
-		'}'
-	].join('\n'),
-	'max-complexity': [
-		'export function branchy(): void {',
-		...Array.from({ length: 11 }, (_, index) => `\tif (${index} > -1) void ${index};`),
-		'}'
-	].join('\n'),
-	'max-nesting':
-		'export function nested(): void {\n\tif (true) {\n\t\tif (true) {\n\t\t\tif (true) {\n\t\t\t\tif (true) {\n\t\t\t\t\tif (true) {\n\t\t\t\t\t\tvoid 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n',
-	'max-parameters':
-		'export function tooMany(a: string, b: string, c: string, d: string, e: string): string {\n\treturn a + b + c + d + e;\n}\n',
-	'max-classes-per-file':
-		"export class FirstThing {\n\tvalue = 'first';\n}\n\nexport class SecondThing {\n\tvalue = 'second';\n}\n",
-	'no-manager-name':
-		"export class ReportManager {\n\trun(): string {\n\t\treturn 'report';\n\t}\n}\n"
-};
+import { ruleFixtures } from './support/auditFixtures';
+import { measureWorkload } from './support/measureWorkload';
 
 test('audit reports oversized files', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
@@ -121,27 +95,41 @@ test('audit reports Harness scaffold file and function naming violations', async
 	await mkdir(join(root, 'src/services'), { recursive: true });
 	await mkdir(join(root, 'src/utils'), { recursive: true });
 	await mkdir(join(root, 'src/concerns'), { recursive: true });
+	await mkdir(join(root, 'src/configs'), { recursive: true });
 	await mkdir(join(root, 'db/migrations'), { recursive: true });
 
-	await writeFile(
-		join(root, 'src/services/post-service.ts'),
-		"export class PostService {\n\trun(): string {\n\t\treturn 'ok';\n\t}\n}\n"
-	);
-	await writeFile(
-		join(root, 'src/utils/format-date.ts'),
-		'export function format_date(value: string): string {\n\treturn value;\n}\n'
-	);
-	await writeFile(
-		join(root, 'src/concerns/publishable.ts'),
-		'export function publishable<T extends object>(input: T): T {\n\treturn input;\n}\n'
-	);
-	await writeFile(join(root, 'db/migrations/CreatePosts.sql'), '-- reversible: ok\n');
+	const fixtures = {
+		'src/services/post-service.ts':
+			"export class PostService {\n\trun(): string {\n\t\treturn 'ok';\n\t}\n}\n",
+		'src/utils/format-date.ts':
+			'export function format_date(value: string): string {\n\treturn value;\n}\n',
+		'src/utils/configValue.types.ts': 'export interface ConfigValue { literal?: unknown; }\n',
+		'src/concerns/publishable.ts':
+			'export function publishable<T extends object>(input: T): T {\n\treturn input;\n}\n',
+		'db/migrations/CreatePosts.sql': '-- reversible: ok\n',
+		'src/configs/bad-config.ts': 'export const badConfig = { enabled: true };\n'
+	};
+	for (const [file, source] of Object.entries(fixtures)) await writeFile(join(root, file), source);
 
-	const findings = await auditPath(root);
+	const findings = await measureWorkload(
+		'audit.scaffold-naming-rules',
+		'audit-config-and-type-naming',
+		() => auditPath(root)
+	);
 	const rules = findings.map((finding) => finding.rule);
 
 	expect(rules).toContain('file-name-pattern');
 	expect(rules).toContain('function-name-pattern');
+	expect(findings.filter((finding) => finding.path === 'src/utils/configValue.types.ts')).toEqual(
+		[]
+	);
+	expect(findings.filter((finding) => finding.rule === 'harness-source-structure')).toEqual([]);
+	expect(
+		findings.some(
+			(finding) =>
+				finding.path === 'src/configs/bad-config.ts' && finding.rule === 'file-name-pattern'
+		)
+	).toBe(true);
 	await rm(root, { recursive: true, force: true });
 });
 

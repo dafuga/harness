@@ -8,16 +8,24 @@
 	import EntitySearch from '../entity-search/EntitySearch.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	import HarnessSelectors from '../harness-selectors/HarnessSelectors.svelte';
+	import HarnessTabs from '../HarnessTabs.svelte';
 	let input: HarnessNavbarInput = $props();
 	let view = $derived(harnessShell(input));
 	let revision = $derived(view.revision);
 	let search = $derived(navbarSearch(input.scope, input.search?.entries));
+	// Within a module category its kinds are a strip of tabs, each a link to its own collection.
+	let kinds = $derived(view.modules.map((item) => ({ ...item, href: item.href ?? undefined })));
 	const found = (entry: SearchEntry) => search.at(entry);
 	// A plain click stays in the application; any other is the link it is.
 	function follow(event: MouseEvent, to: ExplorerLocation | null) {
 		if (!to || !plainClick(event)) return;
 		event.preventDefault();
 		input.onroute(to);
+	}
+	// The tabs keep a modified click a link themselves; a plain one opens the kind where it leads.
+	function openKind(id: string) {
+		const to = view.modules.find((item) => item.id === id)?.to;
+		if (to) input.onroute(to);
 	}
 </script>
 
@@ -43,6 +51,14 @@
 			{/if}
 		{/each}
 	</nav>
+	{#if input.scope && kinds.length}
+		<HarnessTabs
+			view={input.scope.location.category}
+			onview={openKind}
+			tabs={kinds}
+			label="Module categories"
+		/>
+	{/if}
 	{#if revision && input.index}
 		<HarnessSelectors
 			index={input.index}

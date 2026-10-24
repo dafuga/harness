@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-workers",
+	"kind": "function",
+	"title": "resourceWorkers",
+	"responsibility": "Bounds test and native worker concurrency by the managed CPU reservation and partitions memory for child workers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/execution-runtimes/resourceWorkers.ts"],
+		"symbols": ["resourceWorkers", "resourceThreads"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resourceWorkers.env",
+				"type": "Record<string, string | undefined>",
+				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+			},
+			{
+				"name": "resourceWorkers.maximumWorkers",
+				"type": "number",
+				"description": "Optional caller ceiling of at least one worker; the default keeps the reservation-derived limit. Memory is divided by the actual capped worker count."
+			},
+			{
+				"name": "resourceThreads.env",
+				"type": "Record<string, string | undefined>",
+				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceWorkers",
+				"type": "{ maxWorkers?: number; minWorkers?: number; env?: Record<string, string>; }",
+				"description": "Vitest worker limits and child CPU, memory and native-thread environment; empty without a valid reservation."
+			},
+			{
+				"name": "resourceThreads",
+				"type": "Record<string, string>",
+				"description": "Native thread variables capped by the CPU reservation while retaining stricter caller values."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects an invalid caller worker ceiling instead of returning an unusable worker configuration."
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/execution-runtimes/resourceWorkers.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/execution-runtimes/resourceWorkers.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

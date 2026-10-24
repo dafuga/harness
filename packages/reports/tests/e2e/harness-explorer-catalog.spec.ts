@@ -3,7 +3,7 @@ import { generatedUnits } from '../../scripts/harness-scale-data';
 import { at, branch, checkpoint, commit, expectPath, explorer, tip } from './support/explorer';
 import { viewports } from './support/harnessCapture';
 import { seeded } from './support/harnessHistory';
-import { fits, screens, sharedField, typed } from './support/sharedSelect';
+import { fits, screens, sharedField } from './support/sharedSelect';
 
 const { commits, keptBranch } = seeded();
 const { explorerUnits: units } = explorer();
@@ -11,8 +11,11 @@ const scale = `http://127.0.0.1:${Number(process.env.HARNESS_CONSOLE_E2E_SCALE_P
 const cards = (page: Page) => page.getByRole('main').getByRole('article');
 const shown = (page: Page) => page.getByRole('main').getByRole('status');
 const search = (page: Page) => page.getByRole('searchbox', { name: /^Search / });
-const order = (page: Page) => page.getByRole('combobox', { name: 'Order' });
-const changedOnly = (page: Page) => page.getByRole('switch', { name: 'Changed only' });
+const noFilters = async (page: Page) => {
+	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('combobox', { name: 'Order', exact: true })).toHaveCount(0);
+	await expect(page.getByRole('switch', { name: 'Changed only', exact: true })).toHaveCount(0);
+};
 /** The name link of a card, apart from its test and open actions. */
 const titled = (page: Page) => cards(page).first().getByRole('link').first();
 const named = (page: Page, name: string) =>
@@ -32,7 +35,7 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(cards(page).locator('code')).toHaveText(/^slugify\(/);
 	await expect(cards(page).getByRole('heading')).toHaveCount(0);
 	await expect(cards(page).getByRole('button')).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'Models', exact: true })).toBeVisible();
+	await expect(page.getByRole('tab', { name: 'Models', exact: true })).toBeVisible();
 	// The title itself is clicked, as a reader does, not an address that the test put together.
 	await titled(page).click();
 	await expectPath(page, at('main', commits.approved, 'helpers/slugify/contract'));
@@ -40,10 +43,10 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(page.getByRole('heading', { level: 1, name: 'slugify', exact: true })).toBeVisible();
 	await page.goBack();
 	await expectPath(page, at('main', commits.approved, 'functions'));
-	await page.getByRole('link', { name: 'Models', exact: true }).click();
+	await page.getByRole('tab', { name: 'Models', exact: true }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Models' })).toBeVisible();
 	await expectPath(page, at('main', commits.approved, 'models'));
-	await page.getByRole('link', { name: 'Services', exact: true }).click();
+	await page.getByRole('tab', { name: 'Services', exact: true }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Services' })).toBeVisible();
 	await expect(commit(page)).toHaveValue(commits.approved);
 });
@@ -87,24 +90,16 @@ for (const viewport of viewports) {
 	});
 }
 
-test('the keyboard reaches the controls, changes the order and opens an entity', async ({
-	page
-}) => {
+test('the keyboard searches the current catalog and opens an entity', async ({ page }) => {
 	await page.goto(at('main', commits.approved, 'functions'));
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await sharedField(order(page));
-	await typed(page, order(page), 'Order: Name (Z');
-	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(cards(page).first()).toHaveAttribute('aria-label', 'slugify');
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await changedOnly(page).focus();
-	await page.keyboard.press('Space');
-	await page.getByRole('button', { name: 'Done', exact: true }).click();
+	await noFilters(page);
+	await search(page).focus();
+	await page.keyboard.type('missing-helper');
 	await expect(shown(page)).toHaveText('0 of 1 helpers shown');
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await changedOnly(page).focus();
-	await page.keyboard.press('Space');
-	await page.getByRole('button', { name: 'Done', exact: true }).click();
+	await page.keyboard.press('ControlOrMeta+A');
+	await page.keyboard.type('slug');
+	await expect(shown(page)).toHaveText('1 of 1 helpers shown');
+	await expect(cards(page).first()).toHaveAttribute('aria-label', 'slugify');
 	await titled(page).focus();
 	await page.keyboard.press('Enter');
 	await expectPath(page, at('main', commits.approved, 'helpers/slugify/contract'));
@@ -119,10 +114,8 @@ test('private helpers stay off the shared catalog while their historical pages r
 		await expect(named(page, 'extra')).toHaveCount(0);
 	}
 	await page.goto(at('main', commits.added, 'functions'));
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await changedOnly(page).click();
-	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(shown(page)).toHaveText('0 of 1 helpers shown');
+	await noFilters(page);
+	await expect(shown(page)).toHaveText('1 of 1 helpers shown');
 	await page.goto(at('main', commits.approved, 'functions/function.extra'));
 	await expect(
 		page.getByRole('heading', { name: 'Not at this revision', exact: true })
@@ -142,16 +135,14 @@ test('private helpers stay off the shared catalog while their historical pages r
 	).toHaveCount(0);
 });
 
-test('a commit nobody verified still marks what its source changed, and proves none of it', async ({
+test('an unverified commit retains its catalog and marks missing evidence on source details', async ({
 	page
 }) => {
 	await page.goto(tip('main', 'functions'));
 	await expect(commit(page)).toHaveValue(commits.sourceOnly);
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await changedOnly(page).click();
-	await page.getByRole('button', { name: 'Done', exact: true }).click();
+	await noFilters(page);
 	await checkpoint(page, 'catalog-unverified-change');
-	await expect(shown(page)).toHaveText('0 of 1 helpers shown');
+	await expect(shown(page)).toHaveText('1 of 1 helpers shown');
 	await page.goto(tip('main', 'services/service.clock?tab=uses'));
 	await page.locator('a[href*="/functions/function.clock"]').click();
 	await expect(
@@ -159,22 +150,19 @@ test('a commit nobody verified still marks what its source changed, and proves n
 	).toBeVisible();
 	// What only depends on the changed function was not changed by this commit itself.
 	await page.goto(tip('main', 'services'));
-	await page.getByRole('button', { name: 'Filters', exact: true }).click();
-	await changedOnly(page).click();
-	await page.getByRole('button', { name: 'Done', exact: true }).click();
-	await expect(shown(page)).toContainText('0 of ');
+	await noFilters(page);
+	const services = await cards(page).count();
+	await expect(shown(page)).toHaveText(`${services} of ${services} services shown`);
 });
 
 for (const [screen, width, height] of screens) {
-	test(`branch, commit and order are shared fields and each choice is a path at ${screen} width`, async ({
+	test(`branch and commit are shared fields and each choice is a path at ${screen} width`, async ({
 		page
 	}) => {
 		await page.setViewportSize({ width, height });
 		await page.goto(tip('main', 'functions'));
 		for (const field of [branch(page), commit(page)]) await sharedField(field);
-		await page.getByRole('button', { name: 'Filters', exact: true }).click();
-		await sharedField(order(page));
-		await page.getByRole('button', { name: 'Done', exact: true }).click();
+		await noFilters(page);
 		await branch(page).selectOption(keptBranch);
 		await expectPath(page, tip(keptBranch, 'functions'));
 		await commit(page).selectOption(commits.baseline);
@@ -198,13 +186,11 @@ test.describe('a registry of several hundred units', () => {
 		// Ten units are numbered 300 to 309; a few more may say 30 in what they are for.
 		expect(await cards(page).count()).toBeGreaterThanOrEqual(10);
 		expect(await cards(page).count()).toBeLessThan(20);
-		await page.getByRole('button', { name: 'Filters', exact: true }).click();
-		await typed(page, order(page), 'Order: Name (Z');
-		await page.getByRole('button', { name: 'Done', exact: true }).click();
-		await expect(cards(page).first()).toHaveAttribute('aria-label', 'unit309');
+		await noFilters(page);
+		await expect(cards(page).first()).toHaveAttribute('aria-label', 'unit030');
 		await titled(page).focus();
 		await page.keyboard.press('Enter');
-		await expectPath(page, tip('main', 'helpers/unit309/contract'));
+		await expectPath(page, tip('main', 'helpers/unit030/contract'));
 	});
 
 	test('on a phone the list reaches any unit without scrolling sideways', async ({ page }) => {

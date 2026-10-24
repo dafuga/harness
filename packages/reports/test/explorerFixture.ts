@@ -1,3 +1,4 @@
+import { modelMetadata } from './entityClassFixtures';
 import type { RecordScenario } from './explorerFixture.types';
 import type {
 	HarnessCapture,
@@ -40,6 +41,7 @@ export function unit(id: string, kind: string, extra: Partial<HarnessUnit> = {})
 					]
 				}
 			: {}),
+		...modelMetadata(id, kind, extra),
 		...extra
 	};
 }

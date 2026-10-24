@@ -1,4 +1,4 @@
-import type { HubEnv } from '../../src/config/hubEnvConfig';
+import type { HubEnv } from '../../src/configs/hubEnvConfig';
 import type { HubApiRuntime } from '../../src/utils/hubRuntime';
 import type { remoteFixture } from './remoteFixture';
 

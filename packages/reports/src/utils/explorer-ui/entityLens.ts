@@ -1,7 +1,7 @@
 import type { EntityLabel, Target } from './entityLens.types';
 import type { ExplorerCategory, ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 
-/** The six collections, pages first, with what each is called and described as. */
+/** Each collection, pages first, with its name and description. */
 export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 	pages: { title: 'Pages', one: 'Page', subtitle: 'Start with the pages people use.' },
 	layouts: {
@@ -32,7 +32,12 @@ export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
 	models: {
 		title: 'Models',
 		one: 'Model',
-		subtitle: 'The data types and schemas used by the app.'
+		subtitle: 'Persisted data models and their database schemas.'
+	},
+	types: {
+		title: 'Types',
+		one: 'Type',
+		subtitle: 'Shared interfaces and type aliases used by the app.'
 	},
 	platforms: {
 		title: 'Platforms',

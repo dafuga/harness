@@ -88,6 +88,60 @@
 			"folders": ["packages/reports/src/routes/harness/"]
 		},
 		{
+			"id": "component-catalog",
+			"title": "Components",
+			"terms": ["component catalog", "component details", "component history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/components/"]
+		},
+		{
+			"id": "config-catalog",
+			"title": "Configs",
+			"terms": ["config catalog", "config details", "config history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/configs/"]
+		},
+		{
+			"id": "helper-catalog",
+			"title": "Helpers",
+			"terms": ["helper catalog", "helper details", "helper history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/functions/"]
+		},
+		{
+			"id": "layout-catalog",
+			"title": "Layouts",
+			"terms": ["layout catalog", "layout details", "layout history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/layouts/"]
+		},
+		{
+			"id": "model-catalog",
+			"title": "Models",
+			"terms": ["model catalog", "model details", "model history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/models/"]
+		},
+		{
+			"id": "page-catalog",
+			"title": "Pages",
+			"terms": ["page catalog", "page details", "page history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/pages/"]
+		},
+		{
+			"id": "service-catalog",
+			"title": "Services",
+			"terms": ["service catalog", "service details", "service history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/services/"]
+		},
+		{
+			"id": "platform-catalog",
+			"title": "Platforms",
+			"terms": ["platform catalog", "platform details", "platform history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/platforms/"]
+		},
+		{
+			"id": "style-catalog",
+			"title": "Styles",
+			"terms": ["style catalog", "style details", "style history"],
+			"folders": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/styles/"]
+		},
+		{
 			"id": "development-tooling",
 			"title": "Development & tooling",
 			"terms": [
@@ -647,7 +701,7 @@
 		"packages/hub/src/components/login-panel/googleButton.ts",
 		"packages/hub/src/components/native-approval/NativeApproval.svelte",
 		"packages/hub/src/components/native-approval/nativeScope.ts",
-		"packages/hub/src/config/hubEnvConfig.ts",
+		"packages/hub/src/configs/hubEnvConfig.ts",
 		"packages/hub/src/controllers/HubAgentController.ts",
 		"packages/hub/src/controllers/github-connection-controller/authHttp.ts",
 		"packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
@@ -835,7 +889,7 @@
 		"packages/planning/src/utils/planThread.ts",
 		"packages/planning/src/utils/planValidate.ts",
 		"packages/planning/src/utils/planWrite.ts",
-		"packages/relay/src/config/relayConfig.ts",
+		"packages/relay/src/configs/relayConfig.ts",
 		"packages/relay/src/controllers/HostObjectController.ts",
 		"packages/relay/src/index.ts",
 		"packages/relay/src/lib/host-runtime/DeviceRevocationService.ts",
@@ -1081,12 +1135,12 @@
 		"packages/reports/src/components/site-activity/activityClient.ts",
 		"packages/reports/src/components/usage-examples/UsageExamples.svelte",
 		"packages/reports/src/components/usage-examples/usageExamples.ts",
-		"packages/reports/src/config/consoleViteConfig.ts",
-		"packages/reports/src/config/pickerPlaywrightConfig.ts",
-		"packages/reports/src/config/pickerViteConfig.ts",
-		"packages/reports/src/config/reportViteConfig.ts",
-		"packages/reports/src/config/shellPlaywrightConfig.ts",
-		"packages/reports/src/config/shellViteConfig.ts",
+		"packages/reports/src/configs/consoleViteConfig.ts",
+		"packages/reports/src/configs/pickerPlaywrightConfig.ts",
+		"packages/reports/src/configs/pickerViteConfig.ts",
+		"packages/reports/src/configs/reportViteConfig.ts",
+		"packages/reports/src/configs/shellPlaywrightConfig.ts",
+		"packages/reports/src/configs/shellViteConfig.ts",
 		"packages/reports/src/controllers/ConsoleAgentController.ts",
 		"packages/reports/src/hooks.server.ts",
 		"packages/reports/src/initializers/initializePreview.ts",
@@ -1438,8 +1492,8 @@
 		"src/cli/program/syncHistory.ts",
 		"src/commands/AnalyticsCommand.ts",
 		"src/commands/CodexCommand.ts",
-		"src/config/desktopPatchConfig.ts",
-		"src/config/moduleGroupsConfig.ts",
+		"src/configs/desktopPatchConfig.ts",
+		"src/configs/moduleGroupsConfig.ts",
 		"src/core/activityTypes.ts",
 		"src/core/analyticsTypes.ts",
 		"src/core/benchmarkTypes.ts",

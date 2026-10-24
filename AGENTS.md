@@ -15,6 +15,7 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - When changing shared explorer frames or their imports, include `packages/reports/test/components/explorer-screens.test.ts` in the focused regression command. Keep data readers in data/store modules so frames do not import entity-specific panes.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
 - When changing a helper recorded by `local-helper-ownership`, keep its original migration definition and record the intentional update in `followUps` with the implementation commit and reason. Run `test/services/unit-index.test.ts` alongside the owning workspace's checks before landing.
+- Ownership review follows ledger membership, including bridge factories and initializers in `shared-service-ownership`. When their behavior changes, preserve earlier reviews, record the new committed definition, regenerate the review object pack and run the same unit-index guard even when full CLI/native suites are deferred.
 - When adding, editing or regenerating unit registry manifests or contracts, review the real responsibility and every field description against the implementation. Run `bun run dev -- units check` and the unchanged `bun x vitest run test/readable-unit-contracts.test.ts`, even when broad CLI/native suites are deferred. Keep the guard assertions intact.
 - When widening shared catalog or search categories, run desktop typecheck and the existing workspace-search and workspace-route tests. Shared categories must not silently expand a consumer's supported routes.
 - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit`.
@@ -75,9 +76,14 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Code Rules
 
+- Scheduler changes must prove progress across mixed nesting depths, occupied ancestor budgets and pending siblings while preserving priority and headroom.
+- Process-runner observer changes must prove fast exit, retained output and delayed synchronous observers in both Bun and Node before broad verification.
+- Workspace verification and build entrypoints must join admission and preserve caller arguments; keep the existing workspace entrypoint inventory current. Standalone commands default to one CPU and 2 GiB; inherit supplied reservation limits.
 - Application UI design values belong in the shared app token source documented by Styles. Reports, Desktop/iOS and Hub use one palette. New colors, typography, spacing, borders, shadows, opacity, motion and layering values require named tokens and catalog coverage; do not hide them in component CSS, inline styles or literal fallbacks. Keep the standardized app-style-tokens admission checks in normal Reports verification. Data-derived image/chart geometry and structural CSS keywords remain data/layout, and third-party asset colors retain their provenance.
 
-- Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models define data shapes and schemas. Unknown or effectful functions are not helpers.
+- Before choosing component colors, consult Styles → Colors and its definitions in `appStyleTokensConfig`. Use the documented role and shared control variant; a decorative accent does not establish an action style. Update role guidance and standardized Styles coverage when introducing a new semantic use. Keep one base primary color; document fill, border and contrasting-text treatments beneath it in the same Colors inventory.
+
+- Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models wrap persisted data; shared interfaces and aliases belong under Types. Unknown or effectful functions are not helpers.
 - Reserve shared helper folders for pure callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
 - A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
 - Preserve registered identities, contracts and history when relocating helpers. Update imports, tests and owned source together. Mixed shared/private modules must be split by responsibility rather than moving a shared helper into one consumer's folder. An unused export has no proven owner; check public API contracts and dynamic/runtime use before removing or relocating it.
@@ -101,11 +107,23 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Module Naming
 
+Models are persisted data wrappers with source-declared storage schemas. Existing shared type modules belong under Types. Preserve their registered IDs and source paths; omit the .types suffix on cards, links and headings.
+
+Before extending an alias resolver, strengthen its standard lookup matrix with
+canonical-name collisions, plural forms and normalization. Canonical names keep
+precedence over new aliases.
+
 Read `harness info naming` and the scaffold guide before naming a module. Classes keep PascalCase and their role suffix; models and components keep PascalCase; functions, pure helpers and value modules keep their actual camelCase name. Match source filenames and primary declarations, preserve framework entries and stable registered IDs, and keep descriptive responsibilities separate from code names. Use the same canonical code identity on cards, usage links and detail headings. Standard catalog coverage compares those surfaces for class, callable, component and model consumers at current and historical revisions; card-only naming overrides are not allowed.
 
 Shared Services lists require source-proven concrete instantiated classes with multiple public instance methods (including inherited methods) and two distinct active runtime owner units for that class. Exclude functions, objects, static namespaces and source-unproven historical entries. Preserve actual PascalCase class identifiers; never capitalize a function label to imply a class. Review responsibilities and real method usage separately: structural eligibility cannot prove absence of semantic redundancy.
 
 ## Responsibility Categories
+
+Group related list, detail and history pages by feature in meaningful domain
+folders. Reuse that feature category with `--group`; use route groups when public
+URLs must stay unchanged. Avoid broad technical catch-alls when a feature is known.
+
+Application config modules belong in `src/configs/<category>/`, with one focused file per config. Update generator output and public SDK export plans together; run the standard every-scaffold export-to-emission guard for config relocations. The Configs catalog renders one table per source file, with typed literal values and source-preserving inspection of computed expressions. Do not execute configuration to populate it. Keep framework-required entry files at their supported addresses.
 
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
@@ -128,6 +146,14 @@ folders and titles from the selected source revision for every collection.
 
 ## Type Files
 
-Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
+Model contracts show source-declared public methods with the shared service method tables.
+Shared interfaces expose their actual fields and callable members; exported constants are not
+returned values. Never invent initialization, CRUD or database tables. The separate Table tab
+documents committed storage definitions without importing model code or reading live rows.
+Keep dynamic schema gaps and each historical revision's own declarations explicit.
+
+Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type modules retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
 
 Source tabs list implementation files, sibling type files and associated tests from the selected revision. Resolve tests from direct source imports or authored scenario coverage; retain their committed bytes and gaps, and reuse the shared file list and code viewer. Never substitute working-copy or newer test contents.
+
+When changing a shared Game renderer, include the root `test/game-runtime.test.ts` consumer guard in owning qualification, even when full CLI/native suites are deferred. Verify semantic object visibility and retained references; inactive scene containers must not change what a visibility assertion means.

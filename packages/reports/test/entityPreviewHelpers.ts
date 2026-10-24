@@ -1,10 +1,11 @@
+import { withConsumers } from './entityRelationFixtures';
 import type { HarnessRevision } from '../src/models/Harness.types';
 import { ids } from './entityUnits';
 import { serviceClassProof } from './entityClassFixtures';
 
 const helperUsers: Record<string, Array<{ unit: string; symbol?: string }>> = {
-	'no-visible': [{ unit: ids.page }, { unit: ids.filter }],
-	'single-visible': [{ unit: ids.list }, { unit: ids.filter }],
+	'no-visible': [{ unit: 'missing' }, { unit: 'function.no-visible' }],
+	'single-visible': [{ unit: ids.list }, { unit: 'function.single-visible' }],
 	unresolved: [{ unit: ids.list }, { unit: 'missing' }],
 	'same-owner-functions': [
 		{ unit: ids.list, symbol: 'first' },
@@ -72,58 +73,6 @@ export function withHelpers(detail: HarnessRevision): HarnessRevision {
 	};
 }
 
-/** Mixed consumer kinds, duplicates and a fourth eligible consumer exercise every card's limit. */
-function withConsumers(detail: HarnessRevision): HarnessRevision {
-	const model = {
-		...detail.registry.units.find((unit) => unit.id === ids.store)!,
-		id: 'app.model.order',
-		kind: 'model',
-		title: 'Order',
-		owns: { source: ['src/models/Order.ts'], symbols: ['Order'] }
-	};
-	const secondModel = {
-		...model,
-		id: 'app.model.invoice',
-		title: 'Invoice',
-		owns: { source: ['src/models/Invoice.ts'], symbols: ['Invoice'] }
-	};
-	const consumers = [
-		ids.page,
-		ids.filter,
-		'missing',
-		ids.list,
-		ids.list,
-		ids.store,
-		model.id,
-		ids.card
-	].map((unit) => ({ unit }));
-	return {
-		...detail,
-		registry: {
-			...detail.registry,
-			units: [
-				...detail.registry.units.map((unit) => {
-					if (unit.id === ids.filter)
-						return { ...unit, helpers: unit.helpers?.map((helper) => ({ ...helper, consumers })) };
-					if (unit.id === ids.list || unit.id === ids.store)
-						return {
-							...unit,
-							dependencies: [
-								...unit.dependencies,
-								{ unit: model.id, via: 'import' },
-								{ unit: secondModel.id, via: 'import' },
-								...(unit.id === ids.store ? [{ unit: ids.card, via: 'import' }] : [])
-							]
-						};
-					return unit;
-				}),
-				model,
-				secondModel
-			]
-		}
-	};
-}
-
 /** Private services stay linked to their owners but never enter the shared catalog. */
 function withServices(detail: HarnessRevision): HarnessRevision {
 	const template = detail.registry.units.find((unit) => unit.id === ids.store)!;
@@ -177,3 +126,35 @@ export const privateServiceUsers = [
 	[{ unit: ids.list }, { unit: 'missing' }],
 	undefined
 ];
+
+/** Actual named callers may be private functions, including siblings in the helper's unit. */
+export function withNamedConsumers(detail: HarnessRevision, sameOwner = false): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.id === ids.filter)!;
+	const ownerId = sameOwner ? ids.filter : 'function.named-users';
+	const source = 'src/functions/namedUsers.ts';
+	const names = ['firstCall', 'secondCall', 'thirdCall', 'fourthCall'];
+	const consumers = names.map((symbol) => ({ unit: ownerId, symbol }));
+	const helper = { ...template.helpers![0], consumers };
+	const owner = {
+		...template,
+		id: ownerId,
+		title: 'namedUsers',
+		...(sameOwner ? {} : { catalog: { visibility: 'internal' as const } }),
+		owns: { source: [...template.owns.source, source], symbols: [...names, 'filterOrders'] },
+		helpers: [
+			...(sameOwner ? [helper] : []),
+			...names.map((name) => ({ ...helper, name, source, pure: false, consumers: [] }))
+		]
+	};
+	const target = sameOwner ? owner : { ...template, helpers: [helper] };
+	return {
+		...detail,
+		registry: {
+			...detail.registry,
+			units: [
+				...detail.registry.units.map((unit) => (unit.id === ids.filter ? target : unit)),
+				...(sameOwner ? [] : [owner])
+			]
+		}
+	};
+}

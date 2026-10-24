@@ -1,8 +1,7 @@
 import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';
 
-/** Pages and components are only ever the shared visual card, never a table row. */
+/** Visual catalogs use the shared card rather than this table. */
 export type Kind = Exclude<ExplorerCategory, 'pages' | 'components'>;
-
-/** A column's words for a row; null for what uses the row, shown as the shared usage footer. */
+/** Null selects the shared usage footer; other columns format the row. */
 export type Column = [string, ((row: CatalogRow) => string) | null];

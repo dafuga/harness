@@ -3,7 +3,7 @@
 	"id": "function.unit-metadata",
 	"kind": "function",
 	"title": "Load revision helper metadata",
-	"responsibility": "Reads selected-revision config expressions and inspectable structures, helper contracts, service class proof and actual runtime consumers.",
+	"responsibility": "Reads selected-revision helper, service, model and config declarations, static structures and actual runtime consumers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -12,6 +12,8 @@
 			"src/services/explorer-ui/revision-detail-service/configValueStructure.types.ts",
 			"src/services/explorer-ui/revision-detail-service/configValues.ts",
 			"src/services/explorer-ui/revision-detail-service/configValues.types.ts",
+			"src/services/explorer-ui/revision-detail-service/modelDefinitions.ts",
+			"src/services/explorer-ui/revision-detail-service/modelTable.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelperCalls.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelpers.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelpers.types.ts",
@@ -21,6 +23,7 @@
 			"src/services/revision-detail-service/pureHelpers.ts",
 			"src/services/revision-detail-service/unitMetadata.ts",
 			"src/utils/explorer-ui/unitMetadata.ts",
+			"src/utils/explorer-ui/unitMetadata.types.ts",
 			"src/utils/unitMetadata.ts"
 		],
 		"symbols": [
@@ -29,6 +32,8 @@
 			"CollectionNode",
 			"configValues",
 			"ConfigSource",
+			"modelDefinitions",
+			"modelTable",
 			"pureGlobals",
 			"pureHelperCalls",
 			"pureHelpers",
@@ -39,13 +44,15 @@
 			"pureHelperCalls",
 			"pureHelpers",
 			"unitMetadata",
+			"unitMetadata",
 			"PublicHelper",
 			"PublicServiceClass",
 			"UnitMetadata",
+			"ModelDefinition",
+			"ModelTable",
 			"ConfigValueNode",
 			"ConfigVariable",
 			"SourceFileSnapshot",
-			"unitMetadata",
 			"unitMetadata"
 		]
 	},
@@ -60,14 +67,14 @@
 			{
 				"name": "unitMetadata.units",
 				"type": "Unit[]",
-				"description": "Registered entities to enrich with revision-bound config values, documentation and exported shared helpers."
+				"description": "Registered entities enriched with revision-bound config values, documentation, helpers, service facts and model definitions."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitMetadata",
 				"type": "Promise<void>",
-				"description": "Attaches committed config expressions and statically inspectable object/array contents, helper contracts and service facts from the selected revision. Config modules are never executed; unresolved sizes stay unknown."
+				"description": "Attaches selected-revision model methods, fields and literal database schemas alongside config structures, helper contracts and service facts. Source modules and live databases are never executed."
 			}
 		],
 		"errors": []
@@ -100,6 +107,16 @@
 		},
 		{
 			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-table-sql",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
 			"via": "import",
 			"origin": "derived"
 		},

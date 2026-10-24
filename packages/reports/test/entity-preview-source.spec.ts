@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto';
 import type { Page } from '@playwright/test';
 
 const kinds = [
-	['Models', 'models', 'Order', 'app.model.order', 'src/models/orders/Order.ts'],
+	['Models', 'models', 'Order', 'app.model.order', 'src/models/orders/Order.types.ts'],
 	['Helpers', 'functions', 'filterOrders', ids.filter, 'src/helpers/orders/filterOrders.ts'],
 	['Pages', 'pages', 'Orders page', ids.page, 'src/routes/orders/+page.svelte'],
 	['Components', 'components', 'OrderCard', ids.card, 'src/components/orders/OrderCard.ts'],

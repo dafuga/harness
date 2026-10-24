@@ -79,9 +79,16 @@ function replaced(body: string, opener: RegExp, tag: string, kept: (whole: strin
 
 const tooltip = /<span[^>]*role="tooltip"[^>]*\shidden\b/;
 const disclosure = /<details\b(?![^>]*\sopen\b)/;
-const summary = (whole: string) => /<summary\b.*?<\/summary>/s.exec(whole)?.[0] ?? '';
+function summary(whole: string): string {
+	return /<summary\b.*?<\/summary>/s.exec(whole)?.[0] ?? '';
+}
 const text = (markup: string): string =>
 	markup
+		// Code decorations and zero-width break opportunities preserve the original identifier.
+		.replace(
+			/<code\b[^>]*>([\s\S]*?)<\/code>/g,
+			(_whole, inline: string) => `<code>${inline.replace(/<\/?(?:span|wbr)\b[^>]*>/g, '')}</code>`
+		)
 		.replace(/<!--.*?-->/gs, '')
 		.replace(/<span class="source-(?:folder|name)(?: [^"]*)?"[^>]*>([^<]*)<\/span>/g, '$1')
 		.replace(/<[^>]+>/g, ' ')

@@ -1,11 +1,14 @@
 import type { RunContext, CheckOutcome } from './CheckRunService.types';
+export type { RunContext, CheckOutcome } from './CheckRunService.types';
 import { readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
-import { gatherCaptures } from './gatherCaptures';
-import {} from '../../../../../utils/verification-evidence/gatherCaptures';
-import { readBrowserDiagnostics } from './readBrowserDiagnostics';
+import { resourcePriority } from '../../../../../core/execution-runtimes/resourceTypes';
+import { resourceEnvironment } from '../../../../../utils/execution-runtimes/resourceEnvironment';
+import { resourceWork } from '../../../../../utils/execution-runtimes/resourceWork';
 import { runIsolated, type IsolatedResult } from '../../../../../utils/run-isolated/runIsolated';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
+import { gatherCaptures } from './gatherCaptures';
+import { readBrowserDiagnostics } from './readBrowserDiagnostics';
 
 const maxLogBytes = 2_000_000;
 
@@ -18,15 +21,7 @@ export class CheckRunService {
 		const slug = check.id.replace(/[^\w.-]+/g, '-');
 		const leaf = check.scenario ? check.name : slug;
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
-		const result = await runIsolated({
-			command: 'sh',
-			args: ['-c', check.command],
-			cwd: join(this.context.snapshot, check.cwd),
-			env: this.environment(check, join(directory, evidencePath)),
-			timeoutMs: check.timeoutMs,
-			log: join(directory, 'logs', `${slug}.log`),
-			maxLogBytes
-		});
+		const result = await this.execute(check, evidencePath, slug);
 		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
 		const captures = result.timedOut
 			? { gathered: [], failures: [] }
@@ -45,6 +40,36 @@ export class CheckRunService {
 			gathered: captures.gathered,
 			failures: [...outcomeFailures(check, result).map((failure) => prefix + failure), ...written]
 		};
+	}
+
+	private execute(
+		check: PlannedCheck,
+		evidencePath: string,
+		slug: string
+	): Promise<IsolatedResult> {
+		const { directory } = this.context;
+		return resourceWork(
+			{
+				priority: resourcePriority.parse(
+					this.context.env.HARNESS_RESOURCE_PRIORITY ?? 'environment'
+				)
+			},
+			(context) =>
+				runIsolated({
+					command: 'sh',
+					args: ['-c', check.command],
+					cwd: join(this.context.snapshot, check.cwd),
+					env: {
+						...this.environment(check, join(directory, evidencePath)),
+						...resourceEnvironment(context.env)
+					},
+					onSpawn: context.track,
+					timeoutMs: check.timeoutMs,
+					log: join(directory, 'logs', `${slug}.log`),
+					maxLogBytes
+				}),
+			this.context.env
+		);
 	}
 
 	/** What a declared tool says it is: the first line it prints, or undefined when it fails. */
@@ -128,5 +153,3 @@ function outcomeFailures(check: PlannedCheck, result: IsolatedResult): string[] 
 			: [`test ${check.name} failed with exit code ${result.exitCode ?? 'unknown'}`];
 	return [...failed, ...leaked];
 }
-
-export type { RunContext, CheckOutcome } from './CheckRunService.types';

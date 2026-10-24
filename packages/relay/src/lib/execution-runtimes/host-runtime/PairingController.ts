@@ -1,5 +1,5 @@
 import type { HostStorageAdapter } from './HostStorageAdapter';
-import { relayConfig } from '../../../config/networking-security/relayConfig';
+import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { PairingRoute } from '../../../models/networking-security/RelayHost.types';
 import type { PairingAccessService } from './PairingAccessService';
 import type { PairingExchangeService } from './PairingExchangeService';

@@ -65,8 +65,8 @@
 			},
 			{
 				"name": "entityCatalog.options",
-				"type": "{ related?: boolean; consumers?: ExplorerEntity[] }",
-				"description": "Relationships retain instantiated classes with one active owner; global collections require two. Resolve usage against the full revision consumer set."
+				"type": "{ related?: boolean; consumers?: ExplorerEntity[]; revision?: HarnessRevision }",
+				"description": "Resolve admission and footer identity from active revision owners, including private named callers; public collections remain filtered."
 			},
 			{
 				"name": "catalogFilter.rows",
@@ -118,7 +118,7 @@
 			{
 				"name": "entityCatalog",
 				"type": "CatalogRow[]",
-				"description": "Sorted category rows retaining full revision-scoped consumer entities for links and previews. Helpers keep up to three distinct eligible consumers and retain the public sharing threshold."
+				"description": "Sorted rows retaining distinct resolved consumers of every module kind, excluding removed entries and helper owner self-references, so rendering can indicate overflow. Related configs produce one module row; config collections expose variable rows."
 			},
 			{
 				"name": "catalogFilter",
@@ -145,12 +145,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.entity-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.explorer-category",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
 		}

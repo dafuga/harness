@@ -1,0 +1,62 @@
+{
+	"name": "config-sdk-export-paths",
+	"goal": "Config generators and SDK export plans use the same plural folder",
+	"createdAt": "2026-10-23T12:50:22.719Z",
+	"updatedAt": "2026-10-23T12:52:06.564Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-23T12:50:23.485Z",
+			"evidence": "Current main75all-scaffolds guard fails twice: generated src/configs/blogPostConfig.ts does not match SDK plan src/config/blogPostConfig.ts. Config move d92da812 updated template paths but missed the pre-existing export plan; main75exposed the omission before landing79."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-23T12:50:24.085Z",
+			"evidence": "Before75the generator shape tests checked created files only, not their SDK export addresses. Preserve main75every-scaffold export-to-emission guard; strengthen its existing Rails-ish case with the exact plural config export and retain generated-library compilation coverage."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-23T12:51:18.279Z",
+			"evidence": "Source755c49710 fails main75every-scaffold export-to-emission guard in both2d and3d, plus the strengthened explicit config export assertion. Typed metadata expectations now retain decoded literal values; the failure is the real generator mapping."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-23T12:51:19.277Z",
+			"evidence": "Updated the config SDK export plan to plural configs, preserving main75all-scaffolds guard and exact named export assertion. Generator relocation guidance now requires output/export-plan parity at this checkpoint for every config move; no tests changed after red."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T12:52:04.667Z",
+			"evidence": "Recordafb8f74c at sourceffc5c6889 passes the unchanged test/pieces and unit-metadata command against red40a9d1e2at755c49710, with identical tests, fixtures, runner and runtime. Both2d/3d all-scaffold checks and exact config export binding pass;6normal generator workload observations retained."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-10-23T12:52:06.564Z",
+			"evidence": "The normal generator/export parity and revision metadata tests pass unchanged. Main75generated-library compilation coverage is preserved; root imports/type checks will rerun after the final shared main integration. This nonvisual mapping correction does not alter the Configs page; full CLI/native suites remain deferred."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -83,6 +83,9 @@ test('project creation initializes a game without overwriting an existing direct
 	expect(created.project.kind).toBe('game');
 	expect(created.project.dimension).toBe('3d');
 	expect(created.writable).toBe(true);
+	const planned = await service.read({ projectId: created.project.id! });
+	expect(planned.document.views[0].planning).toEqual({ concept: '', description: '' });
+	expect(planned.document.views[0].checkpoints).toEqual([]);
 	const log = git(join(root, 'projects', 'test-game'), 'log', '-1', '--format=%an %ae|%cn %ce');
 	expect(log).toBe('Game Author game@example.invalid|Game Author game@example.invalid');
 	await expect(

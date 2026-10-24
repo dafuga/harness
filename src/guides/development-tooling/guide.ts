@@ -1,5 +1,7 @@
+import { resourcesGuide } from '../execution-runtimes/resources';
 import type { Guide } from './guide.types';
 import { loopGuide } from './loop';
+import { benchmarkGuide } from '../agents-providers/benchmark';
 import { gameGuide } from '../game-authoring/game';
 import {
 	harnessNamingRules,
@@ -19,6 +21,8 @@ import { unitGuides } from './units';
 import { verificationGuides } from '../verification-evidence/verification';
 
 export const guides: Guide[] = [
+	benchmarkGuide,
+	resourcesGuide,
 	gameGuide,
 	analyticsGuide,
 	activityGuide,
@@ -36,6 +40,8 @@ export const guides: Guide[] = [
 		],
 		rules: [
 			'One model file owns one table-shaped concept.',
+			'Model contracts document source-declared methods and fields, never exported constants as outputs. Show initialization and persistence methods only when they exist; shared interfaces do not imply database behavior.',
+			'Document database structure from the selected model definition in a separate Table tab. Inspect committed syntax without importing model code or reading a live database; leave dynamic schemas explicitly unresolved.',
 			'Use adapters for D1, SQLite, and Postgres differences.',
 			'Keep queries named by intent instead of scattering SQL.'
 		],

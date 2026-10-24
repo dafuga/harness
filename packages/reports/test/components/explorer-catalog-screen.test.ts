@@ -4,8 +4,17 @@ import ExplorerCatalogScreen from '../../src/components/explorer-ui/ExplorerCata
 import { record, revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
+import { configStrings } from '../entityConfigFixtures';
 
 const kinds = { configs: ['Configs', 'orderSettings'] } as const;
+
+test.each(['initializer', 'entry'])('Configs exclude non-config %s modules', (kind) => {
+	const head = revision(commits.middle, [record(commits.middle)]);
+	head.registry.units.find((unit) => unit.id === ids.settings)!.kind = kind;
+	const body = screen(ExplorerCatalogScreen, 'commit', { category: 'configs' }, { head });
+	expect(count(body, /<table\b/g)).toBe(0);
+	expect(words(body)).toContain('No configs are in the registry of this revision.');
+});
 
 test('nonvisual collections are tables of their own kind, never image cards', () =>
 	measureWorkload(
@@ -13,11 +22,11 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 		'render-nonvisual-catalog-table',
 		() =>
 			measureWorkload('reports.function.entity-catalog', 'config-catalog-render', () => {
-				for (const [category, [title, name]] of Object.entries(kinds)) {
+				for (const [category, [, name]] of Object.entries(kinds)) {
 					const at = { category: category as keyof typeof kinds };
 					const body = screen(ExplorerCatalogScreen, 'commit', at);
 					expect(body, category).toMatch(
-						new RegExp(`<table class="ex-table(?: [^"]*)?" aria-label="${title}"`)
+						new RegExp(`<table class="ex-table(?: [^"]*)?" aria-label="${name}"`)
 					);
 					expect(words(body), category).toContain(name);
 					expect(words(body), 'configs list variable names and source values').toContain(
@@ -25,7 +34,16 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 					);
 					expect(count(body, /scope="col"/g), 'only variable and value columns').toBe(2);
 					expect(words(body)).not.toMatch(/Purpose|Used by|Changed|Verification/);
-					for (const value of ['false', '0', 'null', '""']) expect(words(body)).toContain(value);
+					for (const value of ['false', '0', 'null', 'Empty string'])
+						expect(words(body)).toContain(value);
+					for (const [key, literal] of Object.entries(configStrings)) {
+						expect(words(body), 'decoded strings are initially readable').toContain(
+							literal.split('\n')[0]
+						);
+						expect(body).not.toContain(`aria-label="View value for orderSettings.${key}"`);
+					}
+					expect(body).toContain('&lt;orders> &amp; details');
+					expect(body).not.toContain('<orders>');
 					expect(count(body, /<article\b/g), category).toBe(0);
 					expect(drawn(body), category).toBe(drawn(content('commit', at)));
 				}

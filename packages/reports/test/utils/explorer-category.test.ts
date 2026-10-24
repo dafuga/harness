@@ -29,9 +29,37 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 		expect(explorerCategory(unit('reports.config.report-vite', 'config'))).toBe('configs');
 		expect(explorerCategory(unit('service.title', 'service'))).toBe('services');
 		expect(explorerCategory(unit('model.order', 'model'))).toBe('models');
+		expect(
+			explorerCategory(unit('model.unknown', 'model', { ...{ modelDefinitions: undefined } })),
+			'missing source does not prove a model'
+		).toBeNull();
+		expect(
+			explorerCategory(unit('model.value', 'model', { ...{ modelDefinitions: [] } })),
+			'a value namespace is not a database model or type collection'
+		).toBeNull();
+		const classOnly = unit('model.client', 'model', {
+			...{
+				modelDefinitions: [
+					{ name: 'Client', kind: 'class', source: 'src/model.client.ts', fields: [], methods: [] }
+				]
+			}
+		});
+		expect(
+			explorerCategory(classOnly),
+			'a runtime class alone does not prove persistence'
+		).toBeNull();
+		const mixed = owning('model.input', 'model', [
+			'src/models/Input.types.ts',
+			'src/models/InputValues.ts'
+		]);
+		expect(
+			explorerCategory(mixed),
+			'runtime constants do not turn interfaces into database models'
+		).toBe('types');
+		expect(explorerRole(mixed), 'shared type role').toBe('Type definitions');
 		for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
 			const types = owning('model.order-types', 'model', source);
-			expect(explorerCategory(types), 'Type collections are not data models').toBeNull();
+			expect(explorerCategory(types), 'types are separate').toBe('types');
 			expect(explorerRole(types)).toBe('Type definitions');
 		}
 		expect(
@@ -130,7 +158,6 @@ test("the policy holds for Harness's own registry", () => {
 	expect(listed('pages').map((item) => item.id)).toContain('reports.page.harness-view');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.root');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.layout.root');
-	// No rule, guide, template or model is presented as a function of the product.
 	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];
 	for (const item of units.filter((found) => invented.includes(found.kind))) {
 		expect([item.id, explorerCategory(item)]).toEqual([item.id, null]);
@@ -138,14 +165,16 @@ test("the policy holds for Harness's own registry", () => {
 	for (const item of listed('functions')) {
 		expect(['function', 'validator', 'serializer', 'kernel']).toContain(item.kind);
 	}
-	// Every unit has a category of the five or none, and a role either way.
 	for (const item of units) {
 		const category = explorerCategory(item);
 		expect(category === null || explorerCategories.some((known) => known === category)).toBe(true);
 		expect(explorerRole(item)).toMatch(/^[A-Z][a-z]+( [a-z]+)*$/);
 	}
-	expect(listed('functions')).toEqual([]); // Raw manifests have no source-derived helper proof.
-	for (const category of explorerCategories.filter((kind) => kind !== 'functions')) {
+	for (const category of ['functions', 'models', 'types'])
+		expect(listed(category), 'raw manifests have no source-derived declaration proof').toEqual([]);
+	for (const category of explorerCategories.filter(
+		(kind) => !['functions', 'models', 'types'].includes(kind)
+	)) {
 		expect(listed(category).length).toBeGreaterThan(0);
 	}
 });

@@ -2,8 +2,8 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { at, expectNoOverflow, expectPath, tip } from './support/explorer';
 import { capturePhase, viewports } from './support/harnessCapture';
 import { seeded } from './support/harnessHistory';
-import { appStyleTokensConfig } from '../../src/config/shared-primitives/appStyleTokensConfig';
-import { declaredStyleTokens } from './support/styleCatalog';
+import { appStyleTokensConfig } from '../../src/configs/shared-primitives/appStyleTokensConfig';
+import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
 
 const { commits } = seeded();
 
@@ -22,6 +22,7 @@ for (const viewport of viewports) {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await page.goto(tip('main', 'styles'));
 		await capturePhase(page, `styles-${viewport.id}`);
+		await expectColorRoles(page.locator('main'));
 
 		await expectPath(page, tip('main', 'styles'));
 		await expect(

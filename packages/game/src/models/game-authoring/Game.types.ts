@@ -36,6 +36,8 @@ export interface GameView {
 	dimension: Dimension;
 	style: string;
 	checkpoints: Checkpoint[];
+	planning?: LevelPlanning;
+	world?: LevelLayout;
 }
 export interface MechanicDefinition {
 	id: string;
@@ -105,4 +107,38 @@ export interface GameBridge {
 		expectedRevision: string;
 	}): Promise<{ revision: string }>;
 	startRender(input: RenderSessionRequest): Promise<RenderSession>;
+}
+
+export interface LevelObject {
+	id: string;
+	kind: 'wall' | 'platform' | 'prop' | 'goal';
+	label: string;
+	x: number;
+	z: number;
+	width: number;
+	depth: number;
+	height: number;
+}
+export interface LevelLayout {
+	width: number;
+	depth: number;
+	spawn: { x: number; z: number };
+	objects: LevelObject[];
+}
+export interface LevelProposal {
+	id: string;
+	concept: string;
+	description: string;
+	dimension: Dimension;
+	provider: 'codex' | 'claude';
+	model: string;
+	summary: string;
+	layout: LevelLayout;
+}
+export interface LevelPlanning {
+	concept: string;
+	description: string;
+	proposal?: LevelProposal;
+	approved?: string;
+	built?: string;
 }

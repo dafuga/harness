@@ -3,7 +3,7 @@
 	"id": "reports.function.contract-fields",
 	"kind": "function",
 	"title": "Prepare typed contract fields",
-	"responsibility": "Prepares named parameter and return tables with typed examples, and error tables only for declared errors.",
+	"responsibility": "Prepares declared callable contracts and shared type fields with honest examples and source gaps.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -62,7 +62,7 @@
 			{
 				"name": "contractFields.category",
 				"type": "ExplorerCategory",
-				"description": "The entity category; configs call their outputs Provides."
+				"description": "The entity category; configs provide values and Types show source-declared interfaces and aliases."
 			},
 			{
 				"name": "contractFacts.rows",
@@ -94,7 +94,7 @@
 			{
 				"name": "contractFields",
 				"type": "ContractGroup[]",
-				"description": "Input, output and declared-error groups with descriptions and examples. Empty error groups are omitted. Safe simple types may get labelled placeholders; opaque types keep explicit gaps."
+				"description": "Input, output and declared-error groups, or source-declared type groups. Type fields retain exact names and types without invented examples or runtime behavior."
 			},
 			{
 				"name": "contractFacts",

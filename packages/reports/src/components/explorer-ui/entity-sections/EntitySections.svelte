@@ -4,7 +4,7 @@
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import type { EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { entityMetricComparison } from '../../../utils/explorer-ui/entityMetricComparison';
-	import { entityShown } from './entityShown';
+	import { entityShown, modelTableView } from './entityShown';
 	import { helperRelations } from '../../../utils/explorer-ui/entityShown';
 	import EntityContract from '../entity-contract/EntityContract.svelte';
 	import EntitySource from '../EntitySource.svelte';
@@ -14,6 +14,7 @@
 	import EntityStates from '../EntityStates.svelte';
 	import EntityExamples from '../EntityExamples.svelte';
 	import EntityAudio from '../EntityAudio.svelte';
+	import HarnessIcon from '../HarnessIcon.svelte';
 	let {
 		host,
 		entity,
@@ -50,6 +51,10 @@
 	);
 	// The purpose is the sentence under the name of an overview tab; it is not said twice there.
 	let contract = $derived(summary.contract.filter((row) => row.label !== 'Purpose'));
+	let tableView = $derived(modelTableView(entity.unit));
+	let tables = $derived(tableView.tables);
+	let gaps = $derived(tableView.gaps);
+	let schemaTitle = $derived(entity.lastAt ? `Last table · ${entity.lastAt.slice(0, 7)}` : 'Table');
 </script>
 
 <div class="ex-sections" data-harness-component="harness-entity-sections">
@@ -113,6 +118,58 @@
 				last={entity.lastAt}
 			/>
 		</div>
+	{:else if entity.category === 'models' && host.route.tab === 'table'}
+		<div role="tabpanel" aria-label={`${entity.name} table`}>
+			<section class="ex-card" aria-label={entity.lastAt ? 'Last table' : 'Table'}>
+				<h2><HarnessIcon name="database" size={24} /> {schemaTitle}</h2>
+				{#if entity.lastAt}
+					<p class="ex-note">Removed at the shown commit; this is what its parent held.</p>
+				{/if}
+				{#if tables.length > 0}
+					<p class="ex-note">Read from the committed source; no database is queried.</p>
+				{/if}
+				{#each tables as item, position (position)}
+					<div class="schema">
+						<h3><code>{item.table.name}</code></h3>
+						<p class="ex-note">
+							Declared by <code>{item.name}</code> in <code>{item.source}</code>.
+						</p>
+						<div class="ex-scroll">
+							<table class="ex-table" aria-label={`${item.table.name} columns`}>
+								<thead>
+									<tr>
+										<th scope="col">Column</th>
+										<th scope="col">Property</th>
+										<th scope="col">Type</th>
+										<th scope="col">Primary key</th>
+										<th scope="col">Nullable</th>
+										<th scope="col">Default</th>
+									</tr>
+								</thead>
+								<tbody>
+									{#each item.table.columns as column, columnPosition (columnPosition)}
+										<tr>
+											<td><code>{column.name}</code></td>
+											<td><code>{column.property}</code></td>
+											<td><code>{column.type}</code></td>
+											<td>{column.primaryKey ? 'Yes' : 'No'}</td>
+											<td>{column.nullable ? 'Yes' : 'No'}</td>
+											<td>{column.default ?? 'None'}</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				{/each}
+				{#each gaps as item, position (position)}
+					<p class="ex-note">The table of <code>{item.name}</code> is unresolved: {item.gap}</p>
+				{/each}
+				{#if tables.length === 0 && gaps.length === 0}
+					<p class="ex-note">This revision records no database table for this model.</p>
+				{/if}
+			</section>
+		</div>
 	{:else}
 		<EntityOverview {entity} measure={summary.measure} {comparison}>
 			{@render pane()}
@@ -135,5 +192,20 @@
 <style>
 	.ex-sections {
 		display: contents;
+	}
+	.schema {
+		display: grid;
+		gap: var(--hx-space-10);
+	}
+	.schema td code {
+		white-space: nowrap;
+	}
+	.schema + .schema {
+		padding-top: var(--hx-space-16);
+		border-top: var(--hx-border-thin) solid var(--ex-line);
+	}
+	.schema h3 {
+		color: var(--ex-text);
+		font-weight: var(--hx-style-weight-semibold);
 	}
 </style>

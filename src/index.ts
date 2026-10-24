@@ -78,7 +78,7 @@ export { NativePickerBridgeService } from './services/development-tooling/native
 export { DesktopArchiveAdapter } from '../scripts/prepare-desktop-experiment/DesktopArchiveAdapter';
 export { NativePickerSwitchService } from './services/development-tooling/native-picker-bridge-service/NativePickerSwitchService';
 export { pickerProvider } from './utils/development-tooling/nativePickerProtocol';
-export { desktopPatchConfig } from './config/development-tooling/desktopPatchConfig';
+export { desktopPatchConfig } from './configs/development-tooling/desktopPatchConfig';
 export { DesktopIntegrityAdapter } from '../scripts/prepare-desktop-experiment/DesktopIntegrityAdapter';
 export { NativePickerDefaultsService } from './services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService';
 export { NativePickerIdleValidator } from './validators/development-tooling/NativePickerIdleValidator';
@@ -171,3 +171,16 @@ export type {
 	CatalogScenarioUpdateInput
 } from './models/git-source-history/CatalogScenario.types';
 export { ModelDependencyService } from './services/development-tooling/ModelDependencyService';
+export { registerBenchmarkCommand } from './cli/program/BenchmarkCommand';
+export { CodexBenchmarkAdapter } from './cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter';
+export { ClaudeBenchmarkAdapter } from './cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter';
+export { BenchmarkDefinitionValidator } from './cli/program/benchmark-service/benchmark-definition/BenchmarkDefinitionValidator';
+export { BenchmarkRepository } from './repositories/agents-providers/BenchmarkRepository';
+export { BenchmarkService } from './cli/program/benchmark-service/BenchmarkService';
+export { registerResourcesCommand } from './cli/program/ResourcesCommand';
+export { ResourceQueueService } from './services/execution-runtimes/ResourceQueueService';
+export { TaskCompletionService } from './services/verification-evidence/TaskCompletionService';
+export { PerformanceProfileService } from './services/verification-evidence/PerformanceProfileService';
+export { registerTaskCommand } from './cli/program/TaskCommand';
+export { PerformanceEvidenceValidator } from './validators/verification-evidence/PerformanceEvidenceValidator';
+export { SourceProfileAdapter } from './adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter';

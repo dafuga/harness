@@ -1,3 +1,4 @@
+import { GameLevelService } from './GameLevelService';
 import type { BridgeContext } from './desktopBridge.types';
 import { GameImageService } from './GameImageService';
 import { GameProjectService } from './GameProjectService';
@@ -83,7 +84,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 	const recorded = new RecordedEvidenceService(session);
 	const bridge: Omit<DesktopBridge, 'onRunEvent'> = {
 		...deploymentOperations(session),
-		...gameOperations(session),
+		...gameOperations(context),
 		...authentication(session),
 		listProjects: () => operations.listProjects(),
 		selectProject: (input) => operations.selectProject(input),
@@ -139,12 +140,15 @@ function deploymentOperations(session: ProjectSessionService): DeploymentBridge 
 	};
 }
 
-function gameOperations(session: ProjectSessionService): Required<GameDesktopBridge> {
+function gameOperations(context: BridgeContext): Required<GameDesktopBridge> {
+	const { session, providers } = context;
+	const levels = new GameLevelService(session, providers);
 	const images = new GameImageService(session);
 	const game = new GameProjectService(session),
 		render = new GameRenderService(session);
 	return {
 		gameCreate: (input) => game.create(input),
+		gameLevelGenerate: (input) => levels.generate(input),
 		gameImageGenerate: (input) => images.generate(input),
 		gameImageRead: (input) => images.read(input),
 		gameRead: (input) => game.read(input),

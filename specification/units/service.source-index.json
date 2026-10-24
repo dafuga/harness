@@ -10,14 +10,17 @@
 		"source": [
 			"src/services/development-tooling/source-index-service/SourceIndexService.ts",
 			"src/services/development-tooling/source-index-service/SourceIndexService.types.ts",
+			"src/services/development-tooling/source-index-service/sourceExecution.ts",
 			"src/services/source-index-service/SourceIndexService.ts"
 		],
 		"symbols": [
+			"SourceIndex",
+			"Parsed",
 			"SourceIndexService",
 			"SourceIndexService.index",
 			"SourceIndex",
-			"SourceIndex",
 			"Parsed",
+			"sourceExecution",
 			"SourceIndexService"
 		]
 	},
@@ -31,12 +34,28 @@
 			{
 				"name": "SourceIndexService.index.config",
 				"type": "UnitsConfig"
+			},
+			{
+				"name": "sourceExecution.code",
+				"type": "string"
+			},
+			{
+				"name": "sourceExecution.language",
+				"type": "SourceLanguage"
+			},
+			{
+				"name": "sourceExecution.path",
+				"type": "string"
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceIndexService.index",
 				"type": "Promise<SourceIndex>"
+			},
+			{
+				"name": "sourceExecution",
+				"type": "NonNullable<SourceFile['execution']>"
 			}
 		],
 		"errors": []

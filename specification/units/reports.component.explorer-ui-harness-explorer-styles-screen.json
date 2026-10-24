@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-ui-harness-explorer-styles-screen",
 	"kind": "component",
 	"title": "ExplorerStylesScreen",
-	"responsibility": "Shows every shared application design token by category, with its declared value and a specimen that resolves the token in the browser.",
+	"responsibility": "Displays one role-grouped Colors inventory with a single primary base and subordinate treatments, alongside every other shared design-token category.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -83,7 +83,7 @@
 			{
 				"name": "ExplorerStylesScreen",
 				"type": "markup",
-				"description": "The canonical app design token catalog, including colors, fonts, text, spacing, borders, shadows, opacity, motion, layers, layout and responsive thresholds."
+				"description": "Each color variable appears once with its role, usage, value and swatch; Primary separates one base from treatments. Other token categories retain their browser-resolved specimens."
 			}
 		],
 		"errors": []

@@ -3,7 +3,7 @@ import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { reviewCallableContract } from './entityCallableContract';
 import { commits, ids } from './entityUnits';
 
-/** How many words of an element are drawn across more than one line. */
+/** Count words split across lines or drawn beyond their own column. */
 const broken = (cell: Locator): Promise<number> =>
 	cell.evaluate((element) => {
 		const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
@@ -13,7 +13,11 @@ const broken = (cell: Locator): Promise<number> =>
 				const range = document.createRange();
 				range.setStart(node, found.index);
 				range.setEnd(node, found.index + found[0].length);
-				if (range.getClientRects().length > 1) count += 1;
+				if (
+					range.getClientRects().length > 1 ||
+					range.getBoundingClientRect().right > element.getBoundingClientRect().right + 1
+				)
+					count += 1;
 			}
 		}
 		return count;
@@ -21,24 +25,26 @@ const broken = (cell: Locator): Promise<number> =>
 // Names as long as real ones are: each word is wider than the heading of a narrow column.
 const long = 'Internationalization analytics + 1 more';
 
-test('a long word in a narrow column of a collection stays whole, and the table scrolls', async ({
-	page: tab
-}) => {
-	await tab.setViewportSize(viewports.mobile);
-	await open(tab, { category: 'configs', commit: commits.middle });
-	const cells = tab.locator('.ex-table tbody tr').first().locator('th, td');
-	for (const position of [0, 1]) {
-		await cells.nth(position).evaluate((cell, text) => (cell.textContent = text), long);
-	}
-	await capture(tab, 'collection-long-words-mobile');
-	expect(await broken(cells.nth(0))).toBe(0);
-	expect(await broken(cells.nth(1))).toBe(0);
-	// The table is wider than the window and scrolls inside its own frame; the page does not.
-	expect(
-		await tab.locator('.ex-scroll').evaluate((frame) => frame.scrollWidth > frame.clientWidth)
-	).toBe(true);
-	expect(await fits(tab)).toBe(true);
-});
+for (const wide of [false, true])
+	test(`a long word in a narrow column of a collection stays whole (${wide ? 'scrolling' : 'fitting'})`, async ({
+		page: tab
+	}) => {
+		const text = wide ? long.replace(' ', '') : long;
+		await tab.setViewportSize(viewports.mobile);
+		await open(tab, { category: 'configs', commit: commits.middle });
+		const cells = tab.locator('.ex-table tbody tr').first().locator('th, td');
+		for (const position of [0, 1]) {
+			await cells.nth(position).evaluate((cell, text) => (cell.textContent = text), text);
+		}
+		await capture(tab, `collection-${wide ? 'wide' : 'long'}-words-mobile`);
+		expect(await broken(cells.nth(0))).toBe(0);
+		expect(await broken(cells.nth(1))).toBe(0);
+		// Fitting words use their columns; wider words scroll inside the frame, never the page.
+		expect(
+			await tab.locator('.ex-scroll').evaluate((frame) => frame.scrollWidth > frame.clientWidth)
+		).toBe(wide);
+		expect(await fits(tab)).toBe(true);
+	});
 
 test('a long word in a row of a history stays whole too', async ({ page: tab }) => {
 	await tab.setViewportSize(viewports.mobile);

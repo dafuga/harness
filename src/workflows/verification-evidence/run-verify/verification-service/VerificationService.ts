@@ -1,17 +1,22 @@
 import type { VerifyContext } from './VerificationService.types';
+export type { VerifyContext } from './VerificationService.types';
+
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { ScenarioResult } from '../../../../core/verification-evidence/verificationTypes';
+
 import {
 	VerificationStoreRepository,
 	type StoredRecord
 } from '../../../../repositories/verification-evidence/VerificationStoreRepository';
+
 import { machineProfile } from '../../../../utils/development-tooling/machineProfile';
+import { emittedTargets } from '../../../../utils/development-tooling/unitMeasurements';
+
+import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
 import { scenarioCoverage } from './scenarioCoverage';
 import { referencedScenario } from './sealRecord';
-import { verifyPlan } from './verifyPlan';
-import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
-import { emittedTargets } from '../../../../utils/development-tooling/unitMeasurements';
 import { SnapshotRunService, type Executed } from './SnapshotRunService';
+import { verifyPlan } from './verifyPlan';
 
 /** Verifies one exact commit in a clean snapshot and writes the record, whatever the outcome. */
 export class VerificationService {
@@ -107,5 +112,3 @@ export class VerificationService {
 		};
 	}
 }
-
-export type { VerifyContext } from './VerificationService.types';

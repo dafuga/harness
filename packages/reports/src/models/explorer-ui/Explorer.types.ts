@@ -46,6 +46,8 @@ export interface ExplorerVerdict {
 /** A unit as the explorer lists it at one revision. */
 export interface ExplorerEntity {
 	id: string;
+	/** A named runtime caller; identity stays its real owner plus callable name. */
+	caller?: { symbol: string; sourceOnly: boolean };
 	category: ExplorerCategory;
 	/** What it is in a word: `Page`, `Route loader`, `Endpoint`. */
 	role: string;
@@ -82,6 +84,7 @@ export interface ExplorerRelations {
 	configs: ExplorerEntity[];
 	services: ExplorerEntity[];
 	models?: ExplorerEntity[];
+	types?: ExplorerEntity[];
 	/** Entities that use it directly and are not pages. */
 	usedBy: ExplorerEntity[];
 	/** What it depends on that is none of the five kinds; entities behind these are listed above. */

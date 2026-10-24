@@ -65,6 +65,7 @@ async function renderResult(
 		loops: snapshot.loops,
 		jev: snapshot.jev,
 		models: snapshot.models,
+		benchmarks: snapshot.benchmarks,
 		events: snapshot.events
 	};
 	const value = operation === 'events' ? snapshot : { [operation]: values[operation] };

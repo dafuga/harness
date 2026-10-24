@@ -149,3 +149,39 @@ export function serviceClassFiles(label: string, declaration: string): Record<st
 		'src/workflows/second.ts': `import ${binding} from '../services/${module}'; export function second(${parameter}) { return ${body}; }`
 	};
 }
+
+export const declarationSource = [
+	'export type Options = { enabled: boolean };',
+	'export const schema = { parse: true };',
+	'export const count = (1 + 2);',
+	'export const typed: (value: string) => string = (value) => value;',
+	'export const single = value => value;',
+	'function privateHelper() { return 1; }',
+	'export class Internals { run() { return 1; } }',
+	'export function unused(value: number) { return value; }',
+	'export const sharedArrow = (text: string): string => text;'
+].join('\n');
+
+export const modelDeclarationSource =
+	'export class Example { static readonly definition = { table: "examples", fields: { id: { type: "string" } } }; } export interface ExampleInput { id: string; }';
+export const modelDeclarations = [
+	{
+		name: 'Example',
+		kind: 'class',
+		source: 'src/models/payments/Example.ts',
+		fields: [],
+		methods: [],
+		table: {
+			name: 'examples',
+			primaryKey: 'id',
+			columns: [{ property: 'id', name: 'id', type: 'TEXT', nullable: false, primaryKey: true }]
+		}
+	},
+	{
+		name: 'ExampleInput',
+		kind: 'interface',
+		source: 'src/models/payments/Example.ts',
+		fields: [{ name: 'id', type: 'string', optional: false }],
+		methods: []
+	}
+];

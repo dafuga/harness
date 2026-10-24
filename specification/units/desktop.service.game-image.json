@@ -96,6 +96,11 @@
 			"unit": "game.validator.game-document",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "game.validator.level",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
