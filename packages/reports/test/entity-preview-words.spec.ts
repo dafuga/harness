@@ -3,7 +3,7 @@ import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { reviewCallableContract } from './entityCallableContract';
 import { commits, ids } from './entityUnits';
 
-/** How many words of an element are drawn across more than one line. */
+/** Count words split across lines or drawn beyond their own column. */
 const broken = (cell: Locator): Promise<number> =>
 	cell.evaluate((element) => {
 		const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
@@ -13,7 +13,11 @@ const broken = (cell: Locator): Promise<number> =>
 				const range = document.createRange();
 				range.setStart(node, found.index);
 				range.setEnd(node, found.index + found[0].length);
-				if (range.getClientRects().length > 1) count += 1;
+				if (
+					range.getClientRects().length > 1 ||
+					range.getBoundingClientRect().right > element.getBoundingClientRect().right + 1
+				)
+					count += 1;
 			}
 		}
 		return count;
