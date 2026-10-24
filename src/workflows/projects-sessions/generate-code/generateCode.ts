@@ -60,7 +60,10 @@ export async function generateModel(input: GenerateModelInput): Promise<Generate
 }
 
 export async function generatePiece(input: GeneratePieceInput): Promise<GenerateResult> {
-	if (input.level && (!['molecule', 'organism'].includes(input.level) || input.kind !== 'component'))
+	if (
+		input.level &&
+		(!['molecule', 'organism'].includes(input.level) || input.kind !== 'component')
+	)
 		fail('Use --level molecule or organism with the component scaffold.');
 	const root = input.root ?? process.cwd();
 	const name = validateCodeName(input.name);

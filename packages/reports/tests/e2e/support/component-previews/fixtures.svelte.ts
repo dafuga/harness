@@ -53,7 +53,8 @@ export function previewFixture(id: string) {
 		routeFixture(id) ??
 		route?.props ??
 		hubRoute(id, hub.addresses['hub.component.hosted-workspace'], hub.project.id) ??
-		cases[id] ?? nativeAtomFixture(id);
+		cases[id] ??
+		nativeAtomFixture(id);
 	if (!props) throw new Error(`No representative fixture for ${id}`);
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
