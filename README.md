@@ -49,8 +49,10 @@ on a loopback test server before selecting one.
 ```bash
 harness api resources
 harness api get entities --branch main
+harness api get units --branch main
 harness api get pages
 harness api contracts get page.checkout
+harness api contracts get entry.program
 harness api get source page.checkout --query path=src/routes/checkout/+page.svelte
 harness api get history page.checkout --query page=1
 harness api screenshot page.checkout --viewport desktop --state loaded --output checkout.png
@@ -89,6 +91,13 @@ request, including the exact provider/model and the applicable entity, thread,
 mode and approval. Defining a contract creates a plan; implementation and design
 approval keep their existing gates. Hosted writes additionally require writer
 access and a bound executor. Historical commits remain read-only.
+
+`get entities` reads the app's catalog. `get units` reads every registered kind,
+including private backend entries, commands, adapters, policies and workflows;
+`get registry` also returns the pinned commit. `contracts get ID` keeps the
+catalog's current planning contract when one exists, and reads the registered
+contract for backend units outside that catalog. `get contracts` lists all
+registered contracts.
 
 Screenshot downloads retrieve recorded verification captures and check their
 SHA-256 before saving. `--scenario`, `--state`, `--viewport` and `--side` select

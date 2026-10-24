@@ -8,6 +8,7 @@ import { ClaudeCliAdapter } from '../../../../../desktop/src/adapters/claude-cli
 import { RepositoryArbiterService } from '../../../../../desktop/src/services/RepositoryArbiterService';
 import { IpcRequestValidator } from '../../../../../desktop/src/validators/IpcRequestValidator';
 import { channels, type RunEvent } from '../../../../../desktop/src/models/DesktopBridge.types';
+import type { RevisionQuery } from '../../../../../desktop/src/models/DesktopBridge.types';
 import { join } from 'node:path';
 import { CommentOutboxService } from '../../../../../desktop/src/services/CommentOutboxService';
 import { reportSite } from '../../../utils/reports-media/reportSite';
@@ -86,7 +87,8 @@ export class ConsoleAgentService {
 
 	async call(method: string, input: unknown, requestId?: string): Promise<unknown> {
 		this.touched = Date.now();
-		if (method === 'events') return this.progress(input);
+		const reads = { events: () => this.progress(input), registry: () => this.registry(input) };
+		if (Object.hasOwn(reads, method)) return reads[method as keyof typeof reads]();
 		if (!allowed.includes(method)) throw new Error('Operation unavailable in this web session.');
 		if (method === 'startRun') {
 			if (!requestId || !/^[a-f0-9-]{36}$/.test(requestId))
@@ -110,6 +112,13 @@ export class ConsoleAgentService {
 			});
 		}
 		return work;
+	}
+	private async registry(input: unknown) {
+		const query = new IpcRequestValidator().parse(channels.snapshot, input) as RevisionQuery;
+		this.session.assertProject(query.projectId);
+		const { source } = this.session.requireProject();
+		const revision = await source.revision(query);
+		return { commit: revision.commit, units: await source.units(revision.commit) };
 	}
 }
 const key = Symbol.for('harness.console.agents');

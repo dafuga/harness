@@ -1,6 +1,7 @@
 import type { HarnessApiService } from '../../../services/networking-security/HarnessApiService';
 import type { ApiSnapshot } from '../../../services/networking-security/HarnessApiService.types';
 import { apiQuery } from './apiInput';
+import { apiRegistry } from './apiRegistry';
 import { fail } from '../../../core/development-tooling/errors';
 
 export const apiResources = {
@@ -8,6 +9,8 @@ export const apiResources = {
 		'projects',
 		'snapshot',
 		'entities',
+		'units',
+		'registry',
 		'contracts',
 		'source',
 		'history',
@@ -19,6 +22,7 @@ export const apiResources = {
 		'agents'
 	],
 	reads: [
+		'registry',
 		'snapshot',
 		'entity',
 		'source',
@@ -51,6 +55,8 @@ export async function apiResource(
 	if (resource === 'projects')
 		return client.hosted ? client.read('projects') : [(await client.snapshot()).project];
 	const snapshot = await client.snapshot();
+	if (['registry', 'units', 'contracts'].includes(resource))
+		return apiRegistry(client, snapshot, resource, id);
 	const collection = catalogResource(snapshot, resource);
 	if (collection !== undefined) return collection;
 	if (!id) fail('Name the entity id after this resource, or use a raw /api/ path.');
@@ -59,8 +65,6 @@ export async function apiResource(
 		branch: snapshot.revision.branch,
 		commit: snapshot.revision.commit
 	};
-	if (resource === 'contracts')
-		return ((await client.read('entity', query)).data as { contract: unknown }).contract;
 	if (resource === 'threads') return threadResource(client, query);
 	const fields: Record<string, unknown> = Object.fromEntries(apiQuery(client.options.query));
 	if (resource === 'history') fields.page = historyPage(fields.page);
@@ -88,7 +92,7 @@ function historyPage(page: unknown): number {
 
 function catalogResource(snapshot: ApiSnapshot, resource: string): unknown {
 	if (resource === 'snapshot') return snapshot;
-	if (['entities', 'units'].includes(resource)) return snapshot.entities;
+	if (resource === 'entities') return snapshot.entities;
 	if (['branches', 'commits', 'capabilities'].includes(resource))
 		return (snapshot as unknown as Record<string, unknown>)[resource];
 	if (

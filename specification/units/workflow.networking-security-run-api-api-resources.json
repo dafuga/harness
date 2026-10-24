@@ -58,6 +58,11 @@
 			"unit": "workflow.networking-security-run-api-api-input",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "workflow.networking-security-run-api-api-registry",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
