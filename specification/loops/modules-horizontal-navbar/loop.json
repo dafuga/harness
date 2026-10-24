@@ -20,22 +20,42 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"evidence": [
+				{
+					"note": "Restores shared HarnessTabs below primary destinations; module routes retain branch/commit and narrow strips scroll horizontally. No helper or new route changes."
+				}
+			]
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"evidence": [
+				{
+					"note": "Existing navbar tests changed first in 9ece48e7b. Before repair: two unit assertions failed (Modules href absent), and all three viewport cases timed out seeking the missing Modules link. Logs: /tmp/harness-horizontal-modules-red.log and /tmp/harness-horizontal-modules-browser-red.log. After daaedd68a: 30 scoped units and all nine standard shell browser cases passed; original test checkpoint retained."
+				}
+			]
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": [
+				{
+					"note": "Focused scope per Daniel; reports typecheck passes both configurations. Registry/import/contract guards and formatter results recorded in PR; no broad/full/native verification claimed."
+				}
+			]
 		},
 		{
 			"id": "browser-proof",
 			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": [
+				{
+					"note": "Standard desktop/tablet/mobile shell screenshots captured and desktop/mobile images inspected. Shared5690 publication and real-main screenshot remain pending with publisher."
+				}
+			]
 		}
 	],
 	"evaluators": [
