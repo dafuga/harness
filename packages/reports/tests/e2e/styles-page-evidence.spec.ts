@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { expect, test } from '../../../../test/support/browserTest';
 import { benchmarkCaptureSchema } from '../../../../src/core/verification-evidence/verifyTypes';
 import { expectNoOverflow, tip } from './support/explorer';
-import { declaredStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
+import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { captureScreen, evidenceDirectory, viewports } from './support/harnessCapture';
 
 const pageUnit = 'reports.page.harness-branch-branch-at-styles';
@@ -57,8 +57,8 @@ for (const viewport of viewports) {
 			page.getByRole('heading', { level: 1, name: 'Styles', exact: true })
 		).toBeVisible();
 		await expectStyleGroups(page.locator('main'));
-		await expect(page.locator('[data-style-token]')).toHaveCount(declaredStyleTokens().length);
-		for (const name of declaredStyleTokens())
+		await expect(page.locator('[data-style-token]')).toHaveCount(documentedStyleTokens().length);
+		for (const name of documentedStyleTokens())
 			await expect(page.locator(`[data-style-token="${name}"]`)).toHaveCount(1);
 		await expectNoOverflow(page);
 		const state = `catalog-${viewport.id}`;

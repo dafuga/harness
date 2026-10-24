@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-ui-harness-explorer-styles-screen",
 	"kind": "component",
 	"title": "ExplorerStylesScreen",
-	"responsibility": "Displays purpose-named application style assignments, their resolved values and actual usage, followed by foundation and compatibility tokens.",
+	"responsibility": "Displays purpose-named application style assignments, their resolved values and actual usage, followed by foundation tokens; legacy aliases are omitted.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -85,7 +85,7 @@
 			{
 				"name": "ExplorerStylesScreen",
 				"type": "markup",
-				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; foundation and compatibility tokens remain discoverable exactly once."
+				"description": "Each semantic color, typography and spacing role shows its variable, resolved assignment, specimen and usage; supported foundation tokens appear exactly once and legacy aliases are omitted."
 			}
 		],
 		"errors": []
