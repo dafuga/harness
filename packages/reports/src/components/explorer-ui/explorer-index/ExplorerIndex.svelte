@@ -8,15 +8,18 @@
 	import { categoryIcon } from '../../../utils/explorer-ui/harnessIcons';
 	import ExplorerControls from '../ExplorerControls.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
+	import HarnessGroup from '../HarnessGroup.svelte';
 	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
 	let {
 		category,
 		rows,
+		scope = '',
 		list
 	}: {
 		category: ExplorerCategory;
 		/** Every entity of the category at the shown revision, before any filter. */
 		rows: CatalogRow[];
+		scope?: string;
 		/** How the listed entities of this kind are drawn: cards for pages, a table otherwise. */
 		list: Snippet<[CatalogRow[]]>;
 	} = $props();
@@ -51,6 +54,7 @@
 			: []
 	);
 	let filtered = $derived(Boolean(filter.search.trim()));
+	let resetKey = $derived(JSON.stringify([scope, category, filter]));
 </script>
 
 <section
@@ -97,12 +101,14 @@
 	{:else if sections.length}
 		{#each sections as section (section.id)}
 			<section class="ex-group">
-				<header class="ex-group-head">
-					<h2 title={section.source}>
-						{section.title} <span class="ex-group-count">{section.rows.length}</span>
-					</h2>
-				</header>
-				{@render list(section.rows)}
+				<HarnessGroup
+					title={section.title}
+					count={section.rows.length}
+					source={section.source}
+					{resetKey}
+				>
+					{@render list(section.rows)}
+				</HarnessGroup>
 			</section>
 		{/each}
 	{:else}
@@ -140,32 +146,5 @@
 <style>
 	.ex-group {
 		margin-top: var(--hx-space-28);
-	}
-	/* The source config's name and variable count form one compact section heading. */
-	.ex-group-head {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: var(--hx-space-4) var(--hx-space-16);
-		margin: 0 0 var(--hx-space-12);
-		padding-bottom: var(--hx-space-8);
-		border-bottom: var(--hx-border-thin) solid var(--hx-line);
-	}
-	.ex-group h2 {
-		margin: 0;
-		color: var(--hx-text);
-		font-size: var(--hx-type-size-lg);
-		font-weight: var(--hx-style-weight-semibold);
-		line-height: var(--hx-style-leading-snug);
-		overflow-wrap: anywhere;
-	}
-	.ex-group-count {
-		margin-inline-start: var(--hx-space-4);
-		color: var(--hx-muted);
-		font-size: var(--hx-type-size-compact);
-		font-weight: var(--hx-style-weight-regular);
-		font-variant-numeric: var(--hx-style-numeric-tabular);
-		white-space: nowrap;
 	}
 </style>

@@ -335,6 +335,11 @@ implementation rather than promoting everything previously called a shell. Keep 
 Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pages that use them.
 Capture the actual layout with a clearly labelled Child content placeholder passed through its
 real children slot. Never substitute a full page screenshot for a layout preview.
+A child snippet alone does not establish a visual frame. Mark styles/session/bootstrap wrappers
+internal while preserving their framework files and stable identities. Capture the frame in its
+real app context, including persistent overlays such as project chat; do not move persistent
+chat into per-page hosts merely to make it appear in the screenshot. The normal catalog matrix
+checks both the public layout set and a single visible launcher at each viewport.
 
 Public category or route renames must inventory canonical and compatibility titles and links. Update exposed labels, preserve stable IDs and aliases, and extend the standard composition check across overview, details and history. Run affected downstream consumer tests alongside their typechecks. Run the affected package lint and audit as well. Include the affected public-entry navigation cases even when the full CLI suite is deferred. In this repository, select the affected cases in `test/console-host-routes.e2e.test.ts`; retain branch, commit, compatibility and access assertions.
 

@@ -6,6 +6,9 @@
 	"responsibility": "Provides the browser session and shared workspace styles around the current hosted page.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["packages/hub/src/routes/+layout.svelte", "packages/hub/src/routes/+layout.ts"],
 		"symbols": ["+layout", "ssr"]

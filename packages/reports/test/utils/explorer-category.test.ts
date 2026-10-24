@@ -147,6 +147,7 @@ test("the policy holds for Harness's own registry", () => {
 	const rendering = units.filter(
 		(item) =>
 			item.owns.source.some((path) => path.endsWith('/+page.svelte')) &&
+			item.catalog?.visibility !== 'internal' &&
 			!aliases.has(item.id) &&
 			!item.owns.source.some((path) => /\/shells(?:\/|$)/.test(path))
 	);
@@ -155,7 +156,7 @@ test("the policy holds for Harness's own registry", () => {
 			.map((item) => item.id)
 			.sort()
 	).toEqual(rendering.map((item) => item.id).sort());
-	expect(listed('pages').map((item) => item.id)).toContain('reports.page.harness-view');
+	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.harness-view');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.root');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.layout.root');
 	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];

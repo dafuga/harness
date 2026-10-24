@@ -30,6 +30,10 @@ import servicesHistory from '../../../specification/units/reports.page.harness-b
 import platformsList from '../../../specification/units/reports.page.harness-branch-branch-at-platforms.json' with { type: 'json' };
 import platformsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-platforms-entity.json' with { type: 'json' };
 import stylesList from '../../../specification/units/reports.page.harness-branch-branch-at-styles.json' with { type: 'json' };
+import typesList from '../../../specification/units/reports.page.harness-branch-branch-at-types.json' with { type: 'json' };
+import typesDetail from '../../../specification/units/reports.page.harness-branch-branch-at-types-entity.json' with { type: 'json' };
+import typesHistory from '../../../specification/units/reports.page.harness-branch-branch-at-types-entity-history.json' with { type: 'json' };
+import routingHost from '../../../specification/units/reports.page.harness-view.json' with { type: 'json' };
 
 /** Actual manifests and taxonomy exercise feature folders beside synthetic history. */
 const projectPages = [
@@ -56,15 +60,21 @@ const projectPages = [
 	servicesHistory,
 	platformsList,
 	platformsDetail,
-	stylesList
+	stylesList,
+	typesList,
+	typesDetail,
+	typesHistory,
+	routingHost
 ] as unknown as HarnessUnit[];
 
 export function projectPageSources(detail: HarnessRevision): HarnessRevision {
 	const pages = projectPages.filter((unit) =>
-		unit.owns.source.some((path) =>
-			/\/\[\.\.\.at\]\/(components|configs|functions|layouts|models|pages|services|platforms|styles)\//.test(
-				path
-			)
+		unit.owns.source.some(
+			(path) =>
+				path.includes('/routes/harness/[...view]/') ||
+				/\/\[\.\.\.at\]\/(components|configs|functions|layouts|models|pages|services|platforms|styles|types)\//.test(
+					path
+				)
 		)
 	);
 	return {

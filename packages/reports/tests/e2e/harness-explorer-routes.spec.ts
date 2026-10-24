@@ -23,7 +23,7 @@ test('the explorer has its expected navigation, pages first, and no unrelated de
 	await page.goto('/harness');
 	await checkpoint(page, 'routes-categories');
 	expect(pathOf(page)).toBe('/harness/branch/main/pages');
-	await expect(nav(page).getByRole('link')).toHaveText(categories);
+	await expect(nav(page).locator('a, button')).toHaveText(categories);
 	await expect(nav(page).getByRole('link', { name: 'Pages' })).toHaveAttribute(
 		'aria-current',
 		'page'
@@ -39,7 +39,7 @@ test('an earlier map page of a commit opens the entity in the explorer, without 
 	await page.goto(`/harness/branch/main/commit/${commits.approved}/map/unit/${units.slugify}`);
 	await checkpoint(page, 'routes-earlier-map');
 	expect(pathOf(page)).toBe(at('main', commits.approved, `functions/${units.slugify}`));
-	await expect(nav(page).getByRole('link')).toHaveText(categories);
+	await expect(nav(page).locator('a, button')).toHaveText(categories);
 	await expect(page.getByRole('link', { name: dropped })).toHaveCount(0);
 	await expect(page.getByRole('heading', { level: 1, name: 'slugify' })).toBeVisible();
 	// A commit subject in the selector may name a file; what the entity shows does not.
@@ -102,7 +102,7 @@ test('a branch is one encoded segment, and another branch opens at its own tip',
 	await checkpoint(page, 'routes-branch-change');
 	await page.reload();
 	await expectScope(page, kept);
-	await expect(nav(page).getByRole('link', { name: 'Modules' })).toHaveAttribute(
+	await expect(nav(page).getByRole('button', { name: 'Modules' })).toHaveAttribute(
 		'aria-current',
 		'page'
 	);
@@ -133,7 +133,7 @@ test('earlier addresses, reports and analytics all lead into the explorer', asyn
 	for (const [from, to] of leads) {
 		await page.goto(from);
 		await expect(page, from).toHaveURL(new RegExp(`${to.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`));
-		await expect(nav(page).getByRole('link'), from).toHaveText(categories);
+		await expect(nav(page).locator('a, button'), from).toHaveText(categories);
 	}
 	await checkpoint(page, 'routes-earlier-addresses');
 });

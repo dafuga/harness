@@ -12,6 +12,7 @@
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import ExplorerCatalogItems from '../../ExplorerCatalogItems.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
+	import HarnessGroup from '../HarnessGroup.svelte';
 	let {
 		relations,
 		host,
@@ -110,11 +111,16 @@
 				</p>
 			{/if}
 			{#each usage.usedInGroups as group (group.title)}
-				<h3>
-					<HarnessIcon name={group.icon} size={18} />
-					{group.title} <span class="ex-count">{group.items.length}</span>
-				</h3>
-				{@render cards(group.items, `${group.title} used in`)}
+				<HarnessGroup
+					title={group.title}
+					count={group.items.length}
+					icon={group.icon}
+					level={3}
+					variant="relation"
+					resetKey={scope}
+				>
+					{@render cards(group.items, `${group.title} used in`)}
+				</HarnessGroup>
 			{/each}
 		</section>
 	{/if}
@@ -132,29 +138,39 @@
 				</p>
 			{/if}
 			{#each usage.uses as group, position (position)}
-				<h3>
-					<HarnessIcon name={group.icon} size={18} />
-					{group.title} <span class="ex-count">{group.items.length}</span>
-				</h3>
-				{@render cards(group.items, `${group.title} uses`)}
+				<HarnessGroup
+					title={group.title}
+					count={group.items.length}
+					icon={group.icon}
+					level={3}
+					variant="relation"
+					resetKey={scope}
+				>
+					{@render cards(group.items, `${group.title} uses`)}
+				</HarnessGroup>
 			{/each}
 			{#if usage.other.length}
-				<h3>
-					<HarnessIcon name="file" size={18} /> Other
-					<span class="ex-count">{usage.other.length}</span>
-				</h3>
-				{#key scope}
-					<ExplorerCatalogItems
-						category={null}
-						{nav}
-						lens={host.lens}
-						mediaBase={host.mediaBase}
-						verification={false}
-						batch={4}
-						label="Other uses"
-						rows={usage.other.map(supportRow)}
-					/>
-				{/key}
+				<HarnessGroup
+					title="Other"
+					count={usage.other.length}
+					icon="file"
+					level={3}
+					variant="relation"
+					resetKey={scope}
+				>
+					{#key scope}
+						<ExplorerCatalogItems
+							category={null}
+							{nav}
+							lens={host.lens}
+							mediaBase={host.mediaBase}
+							verification={false}
+							batch={4}
+							label="Other uses"
+							rows={usage.other.map(supportRow)}
+						/>
+					{/key}
+				</HarnessGroup>
 			{/if}
 		</section>
 	{/if}
