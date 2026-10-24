@@ -1,7 +1,12 @@
 import { parse } from 'smol-toml';
 import { pathMatches } from '../../../core/development-tooling/unitsConfig';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
-import type { ProjectDependencies, ProjectDependency } from './projectDependencies.types';
+import type {
+	ProjectDependencies,
+	ProjectDependency,
+	DependencyManifest,
+	DependencySection
+} from './projectDependencies.types';
 
 const object = (value: unknown): Record<string, unknown> =>
 	value && typeof value === 'object' && !Array.isArray(value)
@@ -82,49 +87,50 @@ async function readManifest(tree: SourceTree, source: string, catalog: ProjectDe
 	}
 }
 
-function declarations(
-	input: {
-		manifest: Record<string, unknown>;
-		source: string;
-		npm: boolean;
-		inherited: Record<string, unknown>;
-	},
-	catalog: ProjectDependencies
-) {
-	const { manifest, source, npm, inherited } = input;
+function declarations(input: DependencyManifest, catalog: ProjectDependencies) {
+	const { manifest, source, npm } = input;
 	const packageInfo = npm ? manifest : object(manifest.package);
 	const workspace =
 		typeof packageInfo.name === 'string'
 			? packageInfo.name
 			: source.replace(/\/?(?:package\.json|Cargo\.toml)$/, '') || 'Root';
-	const sections = [{ value: manifest, condition: '' }];
+	const sections: DependencySection[] = [{ value: manifest, condition: '' }];
 	if (!npm)
 		for (const [condition, value] of Object.entries(object(manifest.target)))
 			sections.push({ value: object(value), condition });
-	for (const section of sections)
-		for (const [field, kind] of Object.entries(npm ? npmKinds : cargoKinds)) {
-			for (const [name, specification] of Object.entries(object(section.value[field]))) {
-				const version = npm
-					? typeof specification === 'string'
-						? specification
-						: null
-					: cargoVersion(specification, inherited[name]);
-				if (version === null) {
-					catalog.gaps.push(`${source}: ${name} has no readable version or source declaration.`);
-					continue;
-				}
-				const entry: ProjectDependency = {
-					name,
-					version,
-					kind,
-					ecosystem: npm ? 'npm' : 'cargo',
-					workspace,
-					source
-				};
-				if (section.condition) entry.condition = section.condition;
-				catalog.entries.push(entry);
+	for (const section of sections) sectionDeclarations({ ...input, workspace }, section, catalog);
+}
+
+function sectionDeclarations(
+	input: DependencyManifest & { workspace: string },
+	section: DependencySection,
+	catalog: ProjectDependencies
+) {
+	for (const [field, kind] of Object.entries(input.npm ? npmKinds : cargoKinds))
+		for (const [name, specification] of Object.entries(object(section.value[field]))) {
+			const version = declarationVersion(specification, input.npm, input.inherited[name]);
+			if (version === null) {
+				catalog.gaps.push(
+					`${input.source}: ${name} has no readable version or source declaration.`
+				);
+				continue;
 			}
+			const entry: ProjectDependency = {
+				name,
+				version,
+				kind,
+				ecosystem: input.npm ? 'npm' : 'cargo',
+				workspace: input.workspace,
+				source: input.source
+			};
+			if (section.condition) entry.condition = section.condition;
+			catalog.entries.push(entry);
 		}
+}
+
+function declarationVersion(specification: unknown, npm: boolean, inherited: unknown) {
+	if (!npm) return cargoVersion(specification, inherited);
+	return typeof specification === 'string' ? specification : null;
 }
 
 function cargoVersion(value: unknown, inherited: unknown): string | null {

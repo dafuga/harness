@@ -13,3 +13,14 @@ export interface ProjectDependencies {
 	entries: ProjectDependency[];
 	gaps: string[];
 }
+
+export interface DependencyManifest {
+	manifest: Record<string, unknown>;
+	source: string;
+	npm: boolean;
+	inherited: Record<string, unknown>;
+}
+export interface DependencySection {
+	value: Record<string, unknown>;
+	condition: string;
+}
