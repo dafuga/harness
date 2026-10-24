@@ -3,6 +3,8 @@ import { content, words } from './entityRender';
 import { record, revision } from './entityFixture';
 import { commits, units } from './entityUnits';
 import { modelContractFixture } from './entityModelContract';
+import { modelContract } from '../src/components/explorer-ui/entity-contract/serviceMethods';
+import { measureWorkload } from '../../../test/support/measureWorkload';
 
 const model = modelContractFixture(
 	{
@@ -18,16 +20,41 @@ const model = modelContractFixture(
 const head = revision(commits.tip, [record(commits.tip)]);
 head.registry.units.push(model);
 
-test('model contracts show each real initialization and mutation method with parameter and return tables', () => {
+test('model contracts show each real initialization and mutation method with parameter and return tables', async () => {
 	const body = content(
 		'current',
 		{ category: 'models', entity: model.id, tab: 'contract' },
 		{ head }
 	);
-	for (const method of ['initialize', 'create', 'update'])
+	const projected = await measureWorkload(
+		'reports.component.explorer-ui-entity-contract-service-methods',
+		'model-crud-order',
+		() => modelContract(model)
+	);
+	expect(projected.methods.map((method) => method.name)).toEqual([
+		'create',
+		'findBy',
+		'find',
+		'update',
+		'delete',
+		'initialize'
+	]);
+	for (const method of ['initialize', 'create', 'findBy', 'find', 'update', 'delete'])
 		expect(body).toContain(`aria-label="${method} method"`);
-	expect(words(body)).toContain('initialize(adapter: PersistenceAdapter)');
-	expect(words(body)).toContain('create(input: OrderInput)');
+	const headings = [...body.matchAll(/<h3[^>]*>(.*?)<\/h3>/gs)].map((found) =>
+		words(found[1]).trim()
+	);
+	expect(headings).toEqual([
+		'create(input)',
+		'findBy(fields)',
+		'find(id)',
+		'update(id, input)',
+		'delete(id)',
+		'initialize(adapter)'
+	]);
+	const displayed = words(body).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+	for (const type of ['PersistenceAdapter', 'OrderInput', 'Promise<Order>'])
+		expect(displayed).toContain(type);
 	for (const title of ['Inputs', 'Outputs', 'Errors'])
 		expect(body).not.toContain(`aria-label="${title}"`);
 	expect(body).toContain('aria-label="Parameters"');
@@ -43,4 +70,29 @@ test('model details provide a separate revision-scoped Table tab', () => {
 	for (const value of ['orders', 'account_id', 'TEXT', 'Primary key', 'Nullable'])
 		expect(words(body)).toContain(value);
 	expect(body).not.toContain('aria-label="initialize method"');
+});
+
+test('model fields keep their declaration heading apart from callable methods', () => {
+	const shaped = {
+		...model,
+		modelDefinitions: model.modelDefinitions!.map((item) => ({
+			...item,
+			fields: [{ name: 'id', type: 'string', optional: false }]
+		}))
+	};
+	const detail = {
+		...head,
+		registry: {
+			...head.registry,
+			units: head.registry.units.map((unit) => (unit.id === model.id ? shaped : unit))
+		}
+	};
+	const body = content(
+		'current',
+		{ category: 'models', entity: model.id, tab: 'contract' },
+		{ head: detail }
+	);
+	expect(words(body)).toContain('class Order');
+	expect(words(body)).not.toContain('Order(id)');
+	expect(body).toContain('aria-label="Fields"');
 });
