@@ -46,11 +46,13 @@ async function opened(page: Page, width: number, height: number): Promise<Locato
 }
 /** Chooses an earlier commit, then opens Helpers there with the keyboard. */
 async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
-	const functions = bar.getByRole('tab', { name: 'Helpers', exact: true });
+	const functions = bar
+		.getByRole('navigation', { name: 'Module categories' })
+		.getByRole('link', { name: 'Helpers', exact: true });
 	await expect(combo(bar, 'Commit')).toBeVisible();
 	await combo(bar, 'Commit').selectOption(sha(3));
 	await expect(page).toHaveURL(at(`${earlier}/pages`));
-	await bar.getByRole('link', { name: 'Modules', exact: true }).click();
+	await bar.getByRole('button', { name: 'Modules', exact: true }).click();
 	await functions.focus();
 	await page.keyboard.press('Enter');
 	await expect(page).toHaveURL(at(`${earlier}/functions`));
@@ -65,7 +67,7 @@ for (const [screen, width, height] of screens) {
 		await pictured(page, `explorer-shell-bar-${screen}`);
 		await captureShell(page, home, { state: 'current', viewport: screen });
 		await navigationSpacing(bar);
-		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+		const links = bar.getByRole('navigation', { name: 'Harness categories' }).locator('a, button');
 		await expect(links).toHaveText(categories);
 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
 			0
@@ -154,7 +156,9 @@ for (const [screen, width, height] of screens) {
 		const functions = await earlierFunctions(page, bar);
 		await expect(commit).toHaveAttribute('title', /Historical commit/);
 		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
-		await expect(functions).toHaveAttribute('aria-selected', 'true');
+		await bar.getByRole('button', { name: 'Modules', exact: true }).click();
+		await expect(functions).toHaveAttribute('aria-current', 'page');
+		await page.keyboard.press('Escape');
 		await expect(bar.getByRole('link', { name: 'Pages' })).toHaveAttribute(
 			'href',
 			`${earlier}/pages`
@@ -201,7 +205,9 @@ for (const [screen, width, height] of screens) {
 		await expect(commit).toHaveValue(sha(3));
 		await page.reload();
 		await expect(commit).toHaveValue(sha(3));
-		await expect(functions).toHaveAttribute('aria-selected', 'true');
+		await bar.getByRole('button', { name: 'Modules', exact: true }).click();
+		await expect(functions).toHaveAttribute('aria-current', 'page');
+		await page.keyboard.press('Escape');
 		await page.goForward();
 		await expect(page).toHaveURL(at(`${scoped}/functions`));
 		await expect(commit).toHaveValue(sha(5));

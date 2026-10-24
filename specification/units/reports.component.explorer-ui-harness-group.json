@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-harness-group",
+	"kind": "component",
+	"title": "HarnessGroup",
+	"responsibility": "Groups catalog, relationship and style contents under an accessible default-open collapse control.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/explorer-ui/HarnessGroup.svelte",
+			"packages/reports/src/components/explorer-ui/HarnessGroup.types.ts"
+		],
+		"symbols": ["HarnessGroup", "HarnessGroupProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HarnessGroup.title",
+				"type": "string",
+				"description": "Visible group heading, with count beside it."
+			},
+			{
+				"name": "HarnessGroup.children",
+				"type": "Snippet",
+				"description": "Group contents retained while hidden."
+			},
+			{
+				"name": "HarnessGroup.resetKey",
+				"type": "string",
+				"description": "Revision or filter scope whose changes reveal the group."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessGroup",
+				"type": "markup",
+				"description": "Heading button with expanded state and unique controlled content; keyboard and pointer toggle."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.harness-icons",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/HarnessGroup.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/HarnessGroup.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

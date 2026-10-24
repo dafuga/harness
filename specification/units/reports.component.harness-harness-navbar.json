@@ -58,7 +58,7 @@
 			{
 				"name": "HarnessNavbar",
 				"type": "markup",
-				"description": "Five scoped primary destinations with shared module-category tabs inside Modules, revision controls and entity search. Unresolved navigation is disabled. Plain clicks route inside the host; modified clicks retain their normal link behavior."
+				"description": "Five primary controls with a Modules navigation bubble, revision controls and entity search. Opening Modules preserves the address. Escape, outside click and selection close its six scoped links. Unresolved navigation is disabled; modified links retain browser behavior."
 			}
 		],
 		"errors": []
@@ -81,11 +81,6 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-selectors",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.harness-harness-tabs",
 			"via": "import",
 			"origin": "derived"
 		},
