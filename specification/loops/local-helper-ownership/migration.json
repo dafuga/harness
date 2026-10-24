@@ -4737,17 +4737,12 @@
 		{
 			"unit": "function.project",
 			"entry": "src/workflows/projects-sessions/generate-code/project.ts",
-			"exports": [
-				"detectProjectKind"
-			]
+			"exports": ["detectProjectKind"]
 		},
 		{
 			"unit": "function.exports",
 			"entry": "src/workflows/projects-sessions/generate-code/exports.ts",
-			"exports": [
-				"applyExports",
-				"appendMissingExports"
-			]
+			"exports": ["applyExports", "appendMissingExports"]
 		},
 		{
 			"unit": "function.validation",
