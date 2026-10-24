@@ -165,6 +165,9 @@ const captureCommit = [
 test('standalone evidence capture preserves images and measurements without inventing a regression or full verdict', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-capture-cli-'));
 	try {
+		await runCommand(['git', 'init', '-q'], root);
+		await runCommand(['git', 'config', 'user.name', ''], root);
+		await runCommand(['git', 'config', 'user.email', ''], root);
 		await prepareRepair(root, 'bug-fix');
 		await writeFile(join(root, 'source.ts'), 'export const value = 3;');
 		await runCommand(['git', 'add', 'source.ts'], root);
