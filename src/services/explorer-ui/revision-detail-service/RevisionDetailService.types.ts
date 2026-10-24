@@ -1,3 +1,4 @@
+import type { TranslationCatalog } from '../../../core/explorer-ui/Translation.types';
 import type { PlatformCatalog } from '../../../core/explorer-ui/Platform.types';
 import type { RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { VerificationRecord } from '../../../core/verificationTypes';
@@ -13,6 +14,7 @@ export interface RevisionDetail {
 	schemaVersion: 1;
 	commit: string;
 	platforms?: PlatformCatalog;
+	translations?: TranslationCatalog;
 	registry: RevisionRegistry;
 	/** What the latest usable record compared this revision with, as that record stated it. */
 	comparison: {
@@ -43,6 +45,7 @@ export interface RevisionDetail {
 
 export interface Stored {
 	platforms: PlatformCatalog;
+	translations: TranslationCatalog;
 	registry: RevisionRegistry;
 	ledger: BudgetEvent[];
 }

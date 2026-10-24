@@ -36,3 +36,9 @@ slot is declared as element evidence. It failed with the old unit-ID slot and pa
 after the producer used the scenario's `screens` slot (1 case, 9.4s). This prevents cropped images
 from missing the required slot or being interpreted as viewport images. The original geometry
 and source/build assertions remain in place; this is focused proof, not full scenario verification.
+
+Main `4f06a5c` generated and retained all 211 desktop component/layout captures and 422 runtime
+observations. Every capture case passed. The separate registry assertion failed because the
+scenario still required the routing host made internal by PR95. Its obsolete unit/state was
+removed from this current scenario; the unchanged registry test then passed (9.0s). The original
+capture record keeps its failed overall status and all valid images, source stamps and clips.

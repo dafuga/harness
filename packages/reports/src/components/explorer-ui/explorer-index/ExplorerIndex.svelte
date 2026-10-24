@@ -9,7 +9,6 @@
 	import ExplorerControls from '../ExplorerControls.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	import HarnessGroup from '../HarnessGroup.svelte';
-	import HarnessVerdict from '../harness-verdict/HarnessVerdict.svelte';
 	let {
 		category,
 		rows,
@@ -114,33 +113,6 @@
 	{:else}
 		{@render list(listed)}
 	{/if}
-	{#if category !== 'functions' && category !== 'models' && category !== 'types' && category !== 'configs'}<footer
-			class="ex-legend"
-		>
-			{#if category === 'pages'}
-				<p class="ex-hint">
-					<HarnessIcon name="relationships" size={26} />
-					<span>
-						<strong>Page → Components → Functions &amp; services</strong>
-						<span class="ex-soft ex-block"
-							>Start from a page, explore its components, then the functions and services they use.</span
-						>
-					</span>
-				</p>
-			{/if}
-			<!-- The two marks as every row shows them: each tells what it means when it is asked. -->
-			<p class="ex-key">
-				<HarnessVerdict passed={true} label="Proven" />
-				<HarnessVerdict
-					passed={false}
-					label="Not proven"
-					reasons={[
-						'A required test, state or capture failed, is missing, is stale or is unknown.'
-					]}
-				/>
-				<span class="ex-soft">Hover, focus or tap a mark to read why.</span>
-			</p>
-		</footer>{/if}
 </section>
 
 <style>
