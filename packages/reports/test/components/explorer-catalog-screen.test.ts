@@ -64,7 +64,7 @@ test.each([
 		unit.configValues = [{ name, value: 'false', literal: false, source: unit.owns.source[0] }];
 		const body = screen(ExplorerCatalogScreen, mode, { category: 'configs' }, { head });
 		const names = [...body.matchAll(/<code class="ex-config-name[^"]*">(.*?)<\/code>/gs)];
-		expect(names.map((match) => words(match[1]).trim())).toEqual([label]);
+		expect(names.map((match) => words(match[0]).trim())).toEqual([label]);
 		const scope = `/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commit}`}`;
 		expect(body).toContain(`${scope}/configs/${ids.settings}`);
 	}
