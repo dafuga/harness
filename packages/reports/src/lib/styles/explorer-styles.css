@@ -29,11 +29,6 @@
 	display: grid;
 	gap: var(--hx-space-section);
 }
-/* The foundation starts under a rule, after every purpose-named choice. */
-.hx-module-group:has(> div > .hx-styles-kicker) {
-	padding-top: var(--hx-space-section);
-	border-top: var(--hx-border-thin) solid var(--hx-color-border-strong);
-}
 /* As many columns as fit, never one narrower than the screen allows; a role card is wider. */
 .hx-styles-grid {
 	display: grid;
