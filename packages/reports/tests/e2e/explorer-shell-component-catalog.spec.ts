@@ -1,3 +1,4 @@
+import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
 import { pictured } from './support/sharedSelect';
@@ -90,27 +91,7 @@ for (const viewport of catalogViewports) {
 				unit.id === 'reports.component.explorer-dependencies-screen' ||
 				unit.id.endsWith('at-dependencies')
 			) {
-				await expect(
-					component.getByRole('table', { name: 'npm dependencies' }),
-					'Project dependencies include declarations'
-				).toBeVisible();
-				await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
-				const npm = component.getByRole('table', { name: 'npm dependencies' });
-				await expect(npm.locator('tbody tr')).toHaveCount(3);
-				await expect(npm).toContainText('^4.0.0');
-				await expect(npm).toContainText('^3.0.0');
-				await expect(npm).toContainText('Development');
-				const search = component.getByRole('searchbox', { name: 'Search dependencies' });
-				await search.fill('packages/web/package.json');
-				await expect(component.locator('tbody tr')).toHaveCount(1);
-				await expect(component.locator('tbody')).toContainText('zod');
-				await search.fill('no-matching-package');
-				await expect(component.getByText('No dependencies match this search.')).toBeVisible();
-				await component.getByRole('button', { name: 'Clear search' }).click();
-				await expect(component.locator('tbody tr')).toHaveCount(4);
-				await expect
-					.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
-					.toBeLessThanOrEqual(viewport.width);
+				await dependencyTables(component, page, viewport.width);
 			}
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations')) {
 				await expect(component.getByRole('columnheader', { name: 'English en' })).toBeVisible();

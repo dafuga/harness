@@ -150,3 +150,28 @@ async function codeDestinations(page: Page, row: Locator, scoped: string): Promi
 		);
 	}
 }
+
+/** Package tables retain distinct declarations and search workspace origins at every viewport. */
+export async function dependencyTables(component: Locator, page: Page, width: number) {
+	await expect(
+		component.getByRole('table', { name: 'npm dependencies' }),
+		'Project dependencies include declarations'
+	).toBeVisible();
+	await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+	const npm = component.getByRole('table', { name: 'npm dependencies' });
+	await expect(npm.locator('tbody tr')).toHaveCount(3);
+	await expect(npm).toContainText('^4.0.0');
+	await expect(npm).toContainText('^3.0.0');
+	await expect(npm).toContainText('Development');
+	const search = component.getByRole('searchbox', { name: 'Search dependencies' });
+	await search.fill('packages/web/package.json');
+	await expect(component.locator('tbody tr')).toHaveCount(1);
+	await expect(component.locator('tbody')).toContainText('zod');
+	await search.fill('no-matching-package');
+	await expect(component.getByText('No dependencies match this search.')).toBeVisible();
+	await component.getByRole('button', { name: 'Clear search' }).click();
+	await expect(component.locator('tbody tr')).toHaveCount(4);
+	await expect
+		.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+		.toBeLessThanOrEqual(width);
+}

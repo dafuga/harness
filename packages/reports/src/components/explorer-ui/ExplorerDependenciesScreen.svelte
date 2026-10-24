@@ -170,7 +170,6 @@
 		gap: var(--hx-space-10);
 		min-width: 0;
 	}
-	/* A long name wraps; whatever still cannot fit scrolls here, never the document. */
 	.dep-scroll {
 		overflow-x: auto;
 	}
