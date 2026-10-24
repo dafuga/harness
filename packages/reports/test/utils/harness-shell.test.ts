@@ -41,13 +41,12 @@ test('the bar groups module categories under five scoped primary destinations', 
 		const { categories } = view(historical);
 		expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 			['pages', 'Pages', 'pages'],
-			['modules', 'Modules', 'layers'],
-			['styles', 'Styles', 'styles'],
-			['configs', 'Configs', 'configs'],
+			['modules', 'Code', 'layers'],
+			['translations', 'Translations', 'web'],
 			['platforms', 'Platforms', 'platforms']
 		]);
 		expect(categories.map((item) => item.href)).toEqual(
-			['pages', 'components', 'styles', 'configs', 'platforms'].map(
+			['pages', 'components', 'translations', 'platforms'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
 			)
 		);
@@ -65,13 +64,21 @@ test('the bar groups module categories under five scoped primary destinations', 
 		]) {
 			const place = { ...historical, category } as ExplorerLocation;
 			expect(view(place)).toMatchObject({
-				modules: ['layouts', 'components', 'models', 'services', 'functions', 'types'].map(
-					(id) => ({
-						id,
-						href: `${scoped}/commit/${sha(4)}/${id}`,
-						active: id === category
-					})
-				)
+				modules: [
+					'layouts',
+					'components',
+					'models',
+					'services',
+					'functions',
+					'types',
+					'configs',
+					'styles',
+					'dependencies'
+				].map((id) => ({
+					id,
+					href: `${scoped}/commit/${sha(4)}/${id}`,
+					active: id === category
+				}))
 			});
 		}
 	});
@@ -162,9 +169,8 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 	expect(home).toEqual({ href: shellMount, to: null });
 	expect(categories.map((item) => item.label)).toEqual([
 		'Pages',
-		'Modules',
-		'Styles',
-		'Configs',
+		'Code',
+		'Translations',
 		'Platforms'
 	]);
 	expect(view(null)).toMatchObject({ modules: [] });
@@ -181,8 +187,8 @@ test('Styles stays active across branch and commit selection without becoming an
 		screen: 'styles'
 	};
 	const { categories, revision } = view(styles);
-	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['styles']);
-	expect(categories[2]).toMatchObject({
+	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['modules']);
+	expect(view(styles).modules.find((item) => item.id === 'styles')).toMatchObject({
 		href: `${scoped}/commit/${sha(4)}/styles`,
 		to: styles
 	});

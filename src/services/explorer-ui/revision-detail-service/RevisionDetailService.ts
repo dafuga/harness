@@ -1,3 +1,4 @@
+import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
@@ -17,6 +18,7 @@ import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../../repositories/RegressionProofRepository';
 import { unitMetadata } from './unitMetadata';
 import { readPlatformCatalog } from './platformCatalog';
+import { projectDependencies } from './projectDependencies';
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
@@ -123,8 +125,7 @@ export class RevisionDetailService {
 		const stored = {
 			registry,
 			ledger,
-			platforms: await readPlatformCatalog(tree),
-			translations: await translationCatalog(tree, registry.units)
+			...(await readCatalogs(tree, registry))
 		};
 		this.kept.registries.set(key, stored);
 		return stored;
@@ -172,5 +173,17 @@ async function regressionProofs(
 export type { RevisionDetail, BuiltRevision } from './RevisionDetailService.types';
 
 function catalogFields(stored: Stored) {
-	return { platforms: stored.platforms, translations: stored.translations };
+	return {
+		platforms: stored.platforms,
+		translations: stored.translations,
+		projectDependencies: stored.projectDependencies
+	};
+}
+
+async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
+	return {
+		platforms: await readPlatformCatalog(tree),
+		projectDependencies: await projectDependencies(tree),
+		translations: await translationCatalog(tree, registry.units)
+	};
 }

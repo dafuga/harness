@@ -1,3 +1,4 @@
+import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
 import { pictured } from './support/sharedSelect';
@@ -89,6 +90,12 @@ for (const viewport of catalogViewports) {
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
 
+			if (
+				unit.id === 'reports.component.explorer-dependencies-screen' ||
+				unit.id.endsWith('at-dependencies')
+			) {
+				await dependencyTables(component, page, viewport.width);
+			}
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
 				await assertTranslationControls(component);
 			if (unit.id === 'reports.component.harness-explorer-index') {
