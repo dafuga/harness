@@ -23,6 +23,7 @@ const shell = 'desktop.component.workspace-shell';
 test('the explorer has entity categories, Layouts after Pages', () => {
 	expect([...explorerCategories]).toEqual([
 		'pages',
+		'apis',
 		'layouts',
 		'components',
 		'functions',
