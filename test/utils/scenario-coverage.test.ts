@@ -36,9 +36,11 @@ function gathered(extra: object): Gathered {
 		mediaType: 'application/json',
 		...extra
 	};
+	const { file, ...recorded } = line;
 	const capture = {
-		...line,
-		path: 'evidence/pages-flow.json',
+		...recorded,
+		status: 'passed',
+		path: `evidence/${file}`,
 		sha256: 'c'.repeat(64),
 		bytes: 10,
 		capturedAt: 'now'
