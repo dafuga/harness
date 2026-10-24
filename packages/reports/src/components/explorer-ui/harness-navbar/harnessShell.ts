@@ -12,6 +12,7 @@ import { categoryIcon, type HarnessIconName } from '../../../utils/explorer-ui/h
 
 const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['pages', 'Pages'],
+	['apis', 'APIs'],
 	['modules', 'Code'],
 	['translations', 'Translations'],
 	['platforms', 'Platforms']

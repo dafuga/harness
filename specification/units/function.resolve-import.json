@@ -8,11 +8,18 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/utils/development-tooling/resolve-import/resolveHttpEndpoint.ts",
 			"src/utils/development-tooling/resolveImport.ts",
 			"src/utils/development-tooling/resolveImport.types.ts",
 			"src/utils/resolveImport.ts"
 		],
-		"symbols": ["resolveImport", "ResolveContext", "ResolveContext", "resolveImport"]
+		"symbols": [
+			"resolveHttpEndpoint",
+			"resolveImport",
+			"ResolveContext",
+			"ResolveContext",
+			"resolveImport"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -37,7 +44,7 @@
 			{
 				"name": "resolveImport",
 				"type": "ResolvedReference",
-				"description": "Resolved file path, external package/framework name or non-literal/unresolved uncertainty, retaining via and typeOnly. Tries supported extensions, index files and .js-to-.ts fallback; does not read the filesystem."
+				"description": "Resolved file path, external package/framework name or non-literal/unresolved uncertainty, retaining via and typeOnly. Tries supported extensions, index files and .js-to-.ts fallback; does not read the filesystem. Rooted HTTP requests resolve only to tracked endpoints in the owning workspace, preferring literal routes; external and ambiguous requests stay explicit."
 			}
 		],
 		"errors": []

@@ -84,6 +84,7 @@ export interface ExplorerRelations {
 	configs: ExplorerEntity[];
 	services: ExplorerEntity[];
 	models?: ExplorerEntity[];
+	apis?: ExplorerEntity[];
 	types?: ExplorerEntity[];
 	/** Entities that use it directly and are not pages. */
 	usedBy: ExplorerEntity[];

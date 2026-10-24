@@ -37,13 +37,14 @@
 	let usesAvailable = $derived(
 		!host.route.helper || entity.category !== 'functions' || relations.functions.length > 0
 	);
-	const said = { 'used-in': 'used in', uses: 'uses' } as const;
-	let direction = $derived(
-		(host.route.tab === 'used-in' && entity.category !== 'pages') ||
-			(host.route.tab === 'uses' && usesAvailable)
-			? host.route.tab
-			: null
-	);
+	const said = { 'used-in': 'used in', uses: 'uses', models: 'models', apis: 'apis' } as const;
+	// A page opens its models, at its former Contract address too, and its APIs on their own tabs.
+	let related = $derived.by(() => {
+		const tab = host.route.tab === 'contract' ? 'models' : host.route.tab;
+		if (entity.category === 'pages' && (tab === 'models' || tab === 'apis')) return tab;
+		if (tab === 'used-in' && entity.category !== 'pages') return tab;
+		return tab === 'uses' && usesAvailable ? tab : null;
+	});
 	let removed = $derived(entity.change === 'removed');
 	let visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
 	// Functions and services show their authored uses; their former Tests address opens them too.
@@ -61,13 +62,9 @@
 
 <hx-div class="ex-sections" data-harness-component="harness-entity-sections">
 	<!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
-	{#if entity.category === 'pages' && (host.route.tab === 'models' || host.route.tab === 'contract')}
-		<hx-div role="tabpanel" aria-label={`${entity.name} models`}>
-			<EntityRelations {host} {relations} {nav} show="models" {removed} />
-		</hx-div>
-	{:else if direction}
-		<hx-div role="tabpanel" aria-label={`${entity.name} ${said[direction]}`}>
-			<EntityRelations {host} {relations} {nav} show={direction} {removed} />
+	{#if related}
+		<hx-div role="tabpanel" aria-label={`${entity.name} ${said[related]}`}>
+			<EntityRelations {host} {relations} {nav} show={related} {removed} />
 		</hx-div>
 	{:else if examples}
 		<hx-div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">

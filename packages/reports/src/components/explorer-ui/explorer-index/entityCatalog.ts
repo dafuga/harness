@@ -33,7 +33,10 @@ export function catalogFilter(rows: CatalogRow[], filter: CatalogFilter): Catalo
 			(row) => !filter.usage || filter.usage === 'all' || row.shared === (filter.usage === 'shared')
 		)
 		.filter((row) => {
-			const symbols = row.setting?.value ?? row.helper?.name ?? '';
+			const symbols =
+				row.setting?.value ??
+				row.helper?.name ??
+				(row.entity.category === 'apis' ? row.entity.unit.owns.symbols.join(' ') : '');
 			const text = `${row.name} ${row.entity.name} ${row.entity.unit.title} ${row.summary} ${symbols} ${row.group?.title ?? ''}`;
 			return (
 				!wanted ||

@@ -1,3 +1,4 @@
+import { httpReferences } from './httpReferences';
 import type { LiteralPattern, Found } from './scanImports.types';
 import type {
 	SourceReference,
@@ -53,7 +54,8 @@ function scriptReferences(code: string): SourceReference[] {
 	const masked = maskSource(code);
 	const found = [
 		...literalPatterns.flatMap((entry) => literalReferences(code, masked, entry)),
-		...callPatterns.flatMap((entry) => callReferences(code, masked, entry))
+		...callPatterns.flatMap((entry) => callReferences(code, masked, entry)),
+		...httpReferences(code)
 	];
 	return unique(found.sort((left, right) => left.index - right.index));
 }

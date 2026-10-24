@@ -3,11 +3,12 @@
 	"id": "function.scan-imports",
 	"kind": "function",
 	"title": "Source dependency scanning",
-	"responsibility": "Extracts literal and uncertain module references from script, Svelte and CSS source.",
+	"responsibility": "Extracts module references and source-recorded HTTP requests from scripts, Svelte and CSS.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/development-tooling/source-index-service/httpReferences.ts",
 			"src/services/development-tooling/source-index-service/scanImports.ts",
 			"src/services/development-tooling/source-index-service/scanImports.types.ts",
 			"src/services/source-index-service/scanImports.ts",
@@ -16,6 +17,7 @@
 			"src/utils/scanImports.ts"
 		],
 		"symbols": [
+			"httpReferences",
 			"scanImports",
 			"Found",
 			"LiteralPattern",
@@ -55,7 +57,7 @@
 			{
 				"name": "scanImports",
 				"type": "SourceReference[]",
-				"description": "References with specifier or null, via and typeOnly, plus a short detail for computed calls. Script references are source-ordered and deduplicated by kind/specifier or detail; member calls are excluded."
+				"description": "Source-ordered references with specifier or null, via and typeOnly, plus details for computed calls. Platform fetch URLs become HTTP references; interpolated segments stay unknown. Module member calls are excluded."
 			},
 			{
 				"name": "svelteScripts",

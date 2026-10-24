@@ -46,6 +46,7 @@
 		contract: { tab: 'contract' },
 		table: { tab: 'table' },
 		models: { tab: 'models' },
+		apis: { tab: 'apis' },
 		'used-in': { tab: 'used-in' },
 		uses: { tab: 'uses' },
 		audio: { tab: 'audio' },
@@ -58,6 +59,7 @@
 	const labels = [
 		'Overview',
 		'Contract',
+		'APIs',
 		'Table',
 		'Used In',
 		'Uses',
@@ -66,12 +68,14 @@
 		'History',
 		'Source'
 	];
-	// A model documents the database table it declares beside its contract.
+	// A model documents the database table it declares beside its contract; a page, the APIs it
+	// requests beside its models.
 	let tabs = $derived(
 		labels
 			.filter(
 				(label) =>
 					(entity.category !== 'pages' || label !== 'Used In') &&
+					(label !== 'APIs' || entity.category === 'pages') &&
 					(label !== 'Table' || entity.category === 'models') &&
 					(label !== 'Audio' || entity.category === 'components') &&
 					(label !== 'Uses' || usesAvailable)

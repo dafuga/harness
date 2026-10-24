@@ -4,6 +4,7 @@ import type { ExplorerLocation } from '../../explorerRoute';
 /** The entity collections supported by explorer addresses. */
 export const explorerEntityCategories = [
 	'pages',
+	'apis',
 	'layouts',
 	'components',
 	'functions',
@@ -35,8 +36,8 @@ const kinds = new Map<string, ExplorerCategory>([
 	['initializer', 'configs'],
 	['model', 'models'],
 	['service', 'services'],
-	['endpoint', 'services'],
-	['api', 'services'],
+	['endpoint', 'apis'],
+	['api', 'apis'],
 	['adapter', 'services'],
 	['repository', 'services'],
 	['workflow', 'services'],
@@ -68,6 +69,7 @@ export const explorerTabs = {
 		'contract',
 		'table',
 		'models',
+		'apis',
 		'used-in',
 		'uses',
 		'relationships',
@@ -88,7 +90,7 @@ function invalidAudioTab(asked: string | null, location: ExplorerLocation): bool
 /** Page-only tabs and the legacy Contract address retain their category rules. */
 function pageQueryTab(asked: string | null, category: ExplorerLocation['category']) {
 	if (asked === 'table' && category !== 'models') return undefined;
-	if (asked === 'models' && category !== 'pages') return undefined;
+	if ((asked === 'models' || asked === 'apis') && category !== 'pages') return undefined;
 	if (category === 'pages') {
 		if (asked === 'contract') return 'models';
 		if (asked === 'used-in') return undefined;

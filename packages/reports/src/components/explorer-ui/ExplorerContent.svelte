@@ -20,6 +20,7 @@
 	let host: ExplorerScreenProps = $props();
 	const overviews: Record<ExplorerCategory, Screen> = {
 		pages: EntityVisualScreen,
+		apis: EntityBehaviorScreen,
 		layouts: EntityVisualScreen,
 		components: EntityVisualScreen,
 		functions: EntityBehaviorScreen,

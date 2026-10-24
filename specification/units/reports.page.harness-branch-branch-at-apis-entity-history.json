@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.page.harness-branch-branch-at-apis-entity-history",
+	"kind": "page",
+	"title": "/harness/branch/[branch]/[...at]/apis/[entity]/history",
+	"responsibility": "Owns the /harness/branch/[branch]/[...at]/apis/[entity]/history route page.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.harness-entity-history-screen", "reports.component.harness-screen"]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/harness/branch/[branch]/[...at]/apis/[entity]/history/+page.svelte"
+		],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-entity-history-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-screen",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/apis/[entity]/history/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/apis/[entity]/history/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
