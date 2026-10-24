@@ -42,6 +42,8 @@ test('catalog categories survive across kinds and combine with other filters', (
 	const pages = entityCatalog(explorerEntities(project), 'pages', (id) =>
 		explorerRelations(project, id)
 	);
+	expect(pages.map((row) => row.group?.id)).not.toContain('explorer-ui');
+	expect(pages.map((row) => row.id)).not.toContain('reports.page.harness-view');
 	for (const [feature, title, count] of [
 		['components', 'Components', 3],
 		['configs', 'Configs', 3],
@@ -51,7 +53,8 @@ test('catalog categories survive across kinds and combine with other filters', (
 		['pages', 'Pages', 3],
 		['services', 'Services', 3],
 		['platforms', 'Platforms', 2],
-		['styles', 'Styles', 1]
+		['styles', 'Styles', 1],
+		['types', 'Types', 3]
 	] as const) {
 		const family = pages.filter((row) =>
 			row.entity.unit.owns.source.some((path) => path.includes(`/[...at]/${feature}/`))
