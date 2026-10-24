@@ -162,11 +162,11 @@ test("the policy holds for Harness's own registry", () => {
 		listed('layouts').map((item) => item.id),
 		'Only visual frames belong in Layouts; bootstrap wrappers are internal'
 	).toEqual(['reports.layout.explorer-layout']);
-	for (const id of ['hub.layout.root', 'reports.layout.root'])
-		expect(
-			units.find((unit) => unit.id === id)?.catalog?.visibility,
-			'Bootstrap wrapper classification'
-		).toBe('internal');
+	for (const id of ['hub.layout.root', 'reports.layout.root']) {
+		const wrapper = units.find((unit) => unit.id === id);
+		expect(wrapper?.status, 'Framework wrappers remain active internally').toBe('active');
+		expect(wrapper?.catalog?.visibility, 'Bootstrap wrapper classification').toBe('internal');
+	}
 	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];
 	for (const item of units.filter((found) => invented.includes(found.kind))) {
 		expect([item.id, explorerCategory(item)]).toEqual([item.id, null]);

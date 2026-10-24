@@ -97,7 +97,6 @@
 		"hub.component.native-approval",
 		"hub.component.project-create",
 		"hub.component.project-list",
-		"hub.layout.root",
 		"hub.page.invite-project-id-invitation-id",
 		"hub.page.native-handoff-id",
 		"hub.page.projects-project-id-harness-path",
@@ -225,7 +224,6 @@
 		"reports.component.upload-comparison",
 		"reports.component.usage-examples-usage-examples",
 		"reports.layout.explorer-layout",
-		"reports.layout.root",
 		"reports.page.harness-branch-branch-at-components",
 		"reports.page.harness-branch-branch-at-components-entity",
 		"reports.page.harness-branch-branch-at-components-entity-history",
@@ -813,12 +811,6 @@
 			"title": "Project list",
 			"coverage": "required",
 			"units": ["hub.component.project-list"]
-		},
-		{
-			"id": "hub-layout-root",
-			"title": "/",
-			"coverage": "required",
-			"units": ["hub.layout.root"]
 		},
 		{
 			"id": "hub-page-invite-project-id-invitation-id",
@@ -1583,12 +1575,6 @@
 			"title": "Preview reports.layout.explorer-layout with representative inputs"
 		},
 		{
-			"id": "reports-layout-root",
-			"title": "/",
-			"coverage": "required",
-			"units": ["reports.layout.root"]
-		},
-		{
 			"id": "reports-page-harness-branch-branch-at-components",
 			"title": "/harness/branch/[branch]/[...at]/components",
 			"coverage": "required",
@@ -1882,7 +1868,6 @@
 				"hub-component-native-approval",
 				"hub-component-project-create",
 				"hub-component-project-list",
-				"hub-layout-root",
 				"hub-page-invite-project-id-invitation-id",
 				"hub-page-native-handoff-id",
 				"hub-page-projects-project-id-harness-path",
@@ -2010,7 +1995,6 @@
 				"reports-component-upload-comparison",
 				"reports-component-usage-examples-usage-examples",
 				"reports-layout-explorer-layout",
-				"reports-layout-root",
 				"reports-page-harness-branch-branch-at-components",
 				"reports-page-harness-branch-branch-at-components-entity",
 				"reports-page-harness-branch-branch-at-components-entity-history",
