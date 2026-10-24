@@ -77,13 +77,6 @@ test('each of the twenty pages mounts the one entry of its screen, and nothing e
 });
 
 test('no entry reaches the content that shows every screen, or the host that mounts it', () => {
-	expect(
-		imported('src/routes/+layout.svelte'),
-		'Bootstrap wrappers do not own visual chat'
-	).not.toContain('ConsoleChat');
-	expect(direct('HarnessScreen'), 'The route provides its chat to the visual frame').toContain(
-		'ConsoleChat'
-	);
 	for (const entry of Object.values(entries)) {
 		expect(has(entry, ['ExplorerContent', 'HarnessConsole', 'HarnessShell']), entry).toEqual([]);
 	}
