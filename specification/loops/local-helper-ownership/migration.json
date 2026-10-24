@@ -4769,9 +4769,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
-			"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
-			"definition": "3c6ad72e19d9861a00cb263693f3514f7bb1e05866d993c51bcdea909c3fc225",
+			"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
+			"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
+			"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022",
 			"previousReviews": [
 				{
 					"unit": "function.derive-manifest",
@@ -4779,6 +4779,13 @@
 					"commit": "55e7a7bd5eac71b084e6392d31d93d0105fedf56",
 					"reason": "Preserve reviewed config controls when indexing; new config modules start internal.",
 					"definition": "ac01e017835f13fc239e5e764d9ba247f898871f3e773441f8cf8e1bc39321b5"
+				},
+				{
+					"unit": "function.derive-manifest",
+					"name": "deriveManifest",
+					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+					"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
+					"definition": "3c6ad72e19d9861a00cb263693f3514f7bb1e05866d993c51bcdea909c3fc225"
 				}
 			]
 		},

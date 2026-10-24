@@ -1733,13 +1733,13 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "73c1e58c27dfcbcdbdcf895ef78e4ccb6e9faff50c5132aebbb5640326c0905e",
+			"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+				"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "73c1e58c27dfcbcdbdcf895ef78e4ccb6e9faff50c5132aebbb5640326c0905e",
-				"reason": "Add shared native atom generation and composition indexing without changing ownership boundaries."
+				"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
+				"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit."
 			},
 			"previousReviews": [
 				{
@@ -1759,6 +1759,12 @@
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 					"definition": "a9392158cbd962655b65988182ebb1451d02eabf8caed285356f7d4a4ae9c5c1",
 					"reason": "Retain reviewed control declarations and keep new config scaffolds internal."
+				},
+				{
+					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "73c1e58c27dfcbcdbdcf895ef78e4ccb6e9faff50c5132aebbb5640326c0905e",
+					"reason": "Add shared native atom generation and composition indexing without changing ownership boundaries."
 				}
 			]
 		},
