@@ -253,7 +253,9 @@
 		"reports.page.harness-branch-branch-at-translations",
 		"reports.page.harness-branch-branch-at-types",
 		"reports.page.harness-branch-branch-at-types-entity",
-		"reports.page.harness-branch-branch-at-types-entity-history"
+		"reports.page.harness-branch-branch-at-types-entity-history",
+		"reports.component.explorer-dependencies-screen",
+		"reports.page.harness-branch-branch-at-dependencies"
 	],
 	"states": [
 		{
@@ -1755,6 +1757,18 @@
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen",
+			"title": "ExplorerDependenciesScreen",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-dependencies",
+			"title": "Dependencies",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-dependencies"]
 		}
 	],
 	"viewports": [
@@ -2038,7 +2052,9 @@
 				"reports-page-harness-branch-branch-at-translations",
 				"reports-page-harness-branch-branch-at-types",
 				"reports-page-harness-branch-branch-at-types-entity",
-				"reports-page-harness-branch-branch-at-types-entity-history"
+				"reports-page-harness-branch-branch-at-types-entity-history",
+				"reports-component-explorer-dependencies-screen",
+				"reports-page-harness-branch-branch-at-dependencies"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

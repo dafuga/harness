@@ -1,3 +1,4 @@
+import { dependencyData } from './dependencies';
 import { translationData } from './translations';
 import { platformFixture } from '../../../../test/platformFixture';
 import { createHash } from 'node:crypto';
@@ -46,6 +47,7 @@ export function routeRevision(commit: string): HarnessRevision {
 		...shown,
 		platforms: platformFixture,
 		translations: translationData,
+		projectDependencies: dependencyData,
 		registry: {
 			...shown.registry,
 			units: [...units, ...routeUnits],

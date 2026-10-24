@@ -3,14 +3,16 @@
 	"id": "service.revision-detail",
 	"kind": "service",
 	"title": "RevisionDetailService",
-	"responsibility": "Builds the detail of one revision: its stored registry graph, its attached records with resolved media and inherited provenance, and the reasons for what its commit itself changed.",
+	"responsibility": "Builds revision metadata, direct package declarations, recorded evidence and explanations from the selected source tree.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.ts",
 			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.types.ts",
-			"src/services/revision-detail-service/RevisionDetailService.ts"
+			"src/services/revision-detail-service/RevisionDetailService.ts",
+			"src/services/explorer-ui/revision-detail-service/projectDependencies.ts",
+			"src/services/explorer-ui/revision-detail-service/projectDependencies.types.ts"
 		],
 		"symbols": [
 			"revisionSources",

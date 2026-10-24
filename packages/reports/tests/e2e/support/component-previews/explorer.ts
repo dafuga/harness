@@ -1,3 +1,4 @@
+import { dependencyPreview } from './dependencies';
 import { translationPreview } from './translations';
 import { createRawSnippet } from 'svelte';
 import type { CatalogRow } from '../../../../src/utils/entityCatalog';
@@ -25,6 +26,9 @@ const seen = {
 	mediaBase: '/media/'
 };
 export const explorerCases: PreviewCases = {
+	'reports.component.explorer-dependencies-screen': dependencyPreview(
+		d.host()
+	) as unknown as Record<string, unknown>,
 	'reports.component.explorer-ui-explorer-translations-screen': translationPreview(
 		d.host()
 	) as unknown as Record<string, unknown>,
