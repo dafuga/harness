@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { resolveImport } from '../../src/utils/resolveImport';
 import { scanImports } from '../../src/services/source-index-service/scanImports';
 
 test('scanImports records HTTP requests without reading URL-looking text as calls', () => {
@@ -145,4 +146,18 @@ test('scanImports reports concatenated and commented dynamic arguments as uncert
 			detail: "import(/* lazy */ './chunk')"
 		}
 	]);
+});
+
+test('HTTP resolution prefers a literal route and keeps ambiguous dynamic routes uncertain', () => {
+	const paths = ['orders', '[resource]', '[name]'].map(
+		(route) => `src/routes/api/${route}/+server.ts`
+	);
+	const context = { files: new Set(paths), workspaceRoot: '.' };
+	const request = (specifier: string) => ({ via: 'http' as const, typeOnly: false, specifier });
+	expect(resolveImport('src/services/Orders.ts', request('/api/orders'), context)).toMatchObject({
+		path: paths[0]
+	});
+	expect(resolveImport('src/services/Orders.ts', request('/api/${}'), context)).toMatchObject({
+		uncertain: { reason: 'unresolved-import' }
+	});
 });

@@ -109,3 +109,46 @@ test('local entity documents follow committed Git history and ignore uncommitted
 	expect(second.history.map((entry) => entry.commit)).toContain(after);
 	expect(second.documentation?.text).not.toContain('Uncommitted use');
 }, 60000);
+
+test('page API relationships follow transitive requests at the selected committed revision', async () => {
+	const f = await fixture();
+	const read = async (id: string) =>
+		JSON.parse(await readFile(join(f.root, `specification/units/${id}.json`), 'utf8'));
+	const home = await read('page.home');
+	const service = await read('service.analytics');
+	const endpoint = {
+		...service,
+		id: 'endpoint.orders',
+		kind: 'endpoint',
+		title: '/api/orders',
+		owns: { source: ['src/routes/api/orders/+server.ts'], symbols: ['GET'] },
+		dependencies: [{ unit: service.id, via: 'import', origin: 'declared' }]
+	};
+	const write = (unit: typeof home) =>
+		writeFile(join(f.root, `specification/units/${unit.id}.json`), JSON.stringify(unit));
+	await mkdir(join(f.root, 'src/routes/api/orders'), { recursive: true });
+	await writeFile(
+		join(f.root, endpoint.owns.source[0]),
+		'export function GET() { return new Response("orders"); }'
+	);
+	await write(endpoint);
+	await write({
+		...service,
+		dependencies: [{ unit: endpoint.id, via: 'http', origin: 'derived' }]
+	});
+	await write({ ...home, dependencies: [{ unit: service.id, via: 'import', origin: 'derived' }] });
+	git(f.root, 'add', '.');
+	git(f.root, 'commit', '-m', 'feat: page requests orders through its service');
+	const selected = git(f.root, 'rev-parse', 'HEAD');
+	await write({ ...home, dependencies: [] });
+	const before = await f.catalog.entity(home.id, f.tip);
+	const after = await f.catalog.entity(home.id, selected);
+	expect(before.relationships.filter((item) => item.category === 'apis')).toEqual([]);
+	expect(after.relationships).toContainEqual(
+		expect.objectContaining({ id: endpoint.id, category: 'apis', direction: 'uses' })
+	);
+	expect(await f.catalog.entity(endpoint.id, selected)).toMatchObject({
+		category: 'apis',
+		title: '/api/orders'
+	});
+}, 60000);
