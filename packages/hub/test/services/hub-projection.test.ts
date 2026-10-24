@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { readFileSync } from 'node:fs';
 import {
 	actor,
@@ -71,7 +72,11 @@ test('registry reads include backend contracts and recheck project membership be
 		new Request(
 			`https://fixture.example/api/projects/${project.id}/registry?commit=${commit}&branch=feat%2Fa%2Fb`
 		);
-	const response = await f.controller.handle(request());
+	const response = await measureWorkload('hub.controller.hub-api', 'hosted-api-registry', () =>
+		measureWorkload('hub.service.hub-projection', 'hosted-api-registry', () =>
+			f.controller.handle(request())
+		)
+	);
 	expect(response.status).toBe(200);
 	const result = await response.json();
 	expect(result.commit).toBe(commit);

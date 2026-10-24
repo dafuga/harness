@@ -63,7 +63,9 @@ afterAll(async () => {
 });
 
 test('the real local API exposes backend unit contracts outside its visual catalog', async () => {
-	const result = (await client.call('registry', { branch: 'main', commit: registryCommit })) as {
+	const result = (await measureWorkload('reports.service.console-agent', 'local-api-registry', () =>
+		client.call('registry', { branch: 'main', commit: registryCommit })
+	)) as {
 		commit: string;
 		units: Array<{ id: string; contract: { outputs: unknown[] } }>;
 	};

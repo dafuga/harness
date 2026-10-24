@@ -13,9 +13,11 @@ export function apiMeasuredUnits(args: string[]): string[] {
 	const units = [...common];
 	if (args.includes('get') || args.includes('contracts'))
 		units.push('workflow.networking-security-run-api-api-resources');
+	if (args.includes('contracts') || ['units', 'registry'].includes(args[args.indexOf('get') + 1]))
+		units.push('workflow.networking-security-run-api-api-registry');
 	if (args.includes('screenshot'))
 		units.push('workflow.networking-security-run-api-api-screenshot');
-	if (args.includes('agents') || args.includes('define') || args.includes('call'))
+	if (['agents', 'define', 'call'].some((operation) => args.includes(operation)))
 		units.push('workflow.networking-security-run-api-api-agent');
 	if (args.includes('--input') || args.includes('--query'))
 		units.push('workflow.networking-security-run-api-api-input');
