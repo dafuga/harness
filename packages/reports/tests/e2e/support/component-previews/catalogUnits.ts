@@ -23,4 +23,8 @@ export const catalogScenario = JSON.parse(
 		),
 		'utf8'
 	)
-) as { units: string[]; states: Array<{ id: string; units: string[] }> };
+) as {
+	units: string[];
+	states: Array<{ id: string; units: string[] }>;
+	evidence: Array<{ id: string; capture?: string }>;
+};
