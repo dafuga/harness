@@ -1,0 +1,46 @@
+{
+	"name": "remove-catalog-legend",
+	"goal": "Catalog lists end with their module rows and omit the redundant proof legend footer",
+	"createdAt": "2026-10-24T14:19:15.431Z",
+	"updatedAt": "2026-10-24T14:20:44.480Z",
+	"template": "visual-change",
+	"templateLineage": ["feature", "visual-change"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T14:20:44.480Z",
+			"evidence": "Human selected shared catalog footer and requested removal on main. Existing component-catalog-previews scenario renders ExplorerIndex but lacks assertions excluding the redundant footer. Strengthen its registered per-unit checks; retain unchanged test for red/green and desktop/mobile screenshots."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "browser-proof",
+			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "browser-proof"
+		}
+	]
+}
