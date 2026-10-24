@@ -1,7 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { preload, runnerCaptures, runnerFixture, source } from './support/sourceProfileRunners';
+import { initializedModules } from './support/sourceProfileInitializers';
+import {
+	assertProjectBootstrap,
+	preload,
+	runnerCaptures,
+	runnerFixture,
+	source
+} from './support/sourceProfileRunners';
 
 test('normal Vitest imports and its Bun commands capture their own real operations', async () => {
 	const fixture = await runnerFixture();
@@ -9,6 +16,7 @@ test('normal Vitest imports and its Bun commands capture their own real operatio
 		await fixture.write(
 			'subject.test.ts',
 			`import { expect, test } from 'vitest';
+import { initializedModules } from './support/sourceProfileInitializers';
 import { spawnSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { greet } from './subject';
@@ -55,6 +63,7 @@ console.log(JSON.stringify({value:greet('real'),instrumented:bytes.includes('__h
 			'Bun preload requires actual source observations'
 		).toHaveLength(1);
 		expect(measurements.filter((item) => item.unitOfMeasure === 'bytes')).toHaveLength(1);
+		assertProjectBootstrap(fixture.environment);
 	} finally {
 		await fixture.remove();
 	}
@@ -98,60 +107,6 @@ test('unowned source and fixture copies never borrow a registered unit identity'
 		await fixture.remove();
 	}
 }, 30_000);
-
-const initializedModules = [
-	['Map data', 'export const fields = new Map([["id", 7]]);', "fields.get('id')", '7', 2],
-	['nested data', 'export const fields = { nested: { id: 7 } };', 'fields.nested.id', '7', 2],
-	[
-		'deferred method',
-		'export const fields = { read() { return 7; } };',
-		'Boolean(fields)',
-		'true',
-		0
-	],
-	[
-		'nested callback',
-		'export const fields = { nested: { read: () => 7 } };',
-		'Boolean(fields)',
-		'true',
-		0
-	],
-	[
-		'Map callback',
-		'export const fields = new Map([["read", () => 7]]);',
-		'Boolean(fields)',
-		'true',
-		0
-	],
-	[
-		'imported object callback',
-		'import { isAbsolute } from "node:path"; export const fields = { read: isAbsolute };',
-		'Boolean(fields)',
-		'true',
-		0
-	],
-	[
-		'imported Map callback',
-		'import { isAbsolute } from "node:path"; export const fields = new Map([["read", isAbsolute]]);',
-		'Boolean(fields)',
-		'true',
-		0
-	],
-	[
-		'getter',
-		'export const fields = { get read() { throw Error("not called"); } };',
-		'Boolean(fields)',
-		'true',
-		0
-	],
-	[
-		'nested class',
-		'export const fields = { type: class { read() { return 7; } } };',
-		'Boolean(fields)',
-		'true',
-		0
-	]
-] as const;
 
 test.each(
 	initializedModules.map(([label, source, operation, expected, count]) => ({
