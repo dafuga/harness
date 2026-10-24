@@ -133,7 +133,9 @@ test('callable contracts preserve actual parameters and associate their returns'
 		{ head }
 	);
 	expect(body).toContain('aria-label="countWords contract"');
-	expect(words(body)).toContain('countWords(textToConvert: string): number');
+	expect(words(body)).toContain('countWords(textToConvert)');
+	expect(words(body)).not.toContain('textToConvert: string');
+	for (const type of ['string', 'number']) expect(words(body)).toContain(type);
 	expect(body).toContain('aria-label="Parameters"');
 	expect(body).toContain('aria-label="Returns"');
 	expect(body, 'return table includes the declared value name').toContain(

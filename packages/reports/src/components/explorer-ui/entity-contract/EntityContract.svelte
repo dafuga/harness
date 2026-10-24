@@ -157,8 +157,18 @@
 	{/if}
 {/snippet}
 {#snippet callableSection(callable: CallableContract, label: string)}
+	{@const parameters = callable.groups.find(
+		(group) => group.id === 'inputs' && group.title === 'Parameters'
+	)}
 	<section class="callable" aria-label={label}>
-		<h3><code>{callable.signature}</code></h3>
+		<h3>
+			<code class:call-signature={parameters !== undefined}
+				>{#if parameters}<span class="callable-name">{callable.name}</span
+					>({#each parameters.fields as parameter, index (index)}{index ? ', ' : ''}<span
+							class="callable-parameter">{parameter.name}</span
+						>{/each}){:else}{callable.signature}{/if}</code
+			>
+		</h3>
 		{#each callable.groups.filter((group) => !byMethod || group.id !== 'errors') as group (group.id)}
 			<ContractTable
 				{group}
@@ -178,7 +188,7 @@
 		gap: var(--hx-space-16);
 		min-width: 0;
 	}
-	/* One compact section per callable or method, separated by a rule; a long signature wraps. */
+	/* Shared callable headings keep method names primary and parameters distinct. */
 	.callable {
 		display: grid;
 		gap: var(--hx-space-10);
@@ -187,6 +197,15 @@
 	.callable + .callable {
 		padding-top: var(--hx-space-16);
 		border-top: var(--hx-border-thin) solid var(--ex-line);
+	}
+	.call-signature {
+		color: var(--hx-color-text-muted);
+	}
+	.callable-name {
+		color: var(--hx-color-text);
+	}
+	.callable-parameter {
+		color: var(--hx-color-text-supporting);
 	}
 	.callable h3 {
 		margin: 0;

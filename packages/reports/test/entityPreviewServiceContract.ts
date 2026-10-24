@@ -6,11 +6,11 @@ const shot = (name: string) => `${process.env.SCREENSHOT_LABEL ?? 'run'}-${name}
 
 /** AgentActivityService as declared now: its constructor, then each method, by signature. */
 const agentMethods = [
-	['constructor', 'constructor(root: string, checkouts: Checkout[])'],
-	['register', 'register(input: AgentInput): Promise<StoredAgent>'],
-	['heartbeat', 'heartbeat(id: string, input: AgentInput): Promise<AgentBeat>'],
-	['finish', 'finish(id: string, failed: boolean, outcome: string): Promise<void>'],
-	['roster', 'roster(): Promise<AgentRoster>']
+	['constructor', 'constructor(root, checkouts)'],
+	['register', 'register(input)'],
+	['heartbeat', 'heartbeat(id, input)'],
+	['finish', 'finish(id, failed, outcome)'],
+	['roster', 'roster()']
 ] as const;
 
 /**
@@ -99,16 +99,12 @@ async function reviewInitialize(page: Page, viewport: string): Promise<void> {
 	const names = ['constructor method', 'initialize method', 'latest method'];
 	expect(await methodsOf(pane)).toEqual(names);
 	await expect(methodIn(pane, 'constructor').getByRole('heading', { level: 3 })).toHaveText(
-		'constructor(accountId: string)'
+		'constructor(accountId)'
 	);
-	await expect(methodIn(pane, 'latest').getByRole('heading', { level: 3 })).toHaveText(
-		'latest(): Promise<Order[]>'
-	);
+	await expect(methodIn(pane, 'latest').getByRole('heading', { level: 3 })).toHaveText('latest()');
 	await withoutClassGroups(pane);
 	const initialize = methodIn(pane, 'initialize');
-	await expect(initialize.getByRole('heading', { level: 3 })).toHaveText(
-		'initialize(timeoutMs: number): Promise<void>'
-	);
+	await expect(initialize.getByRole('heading', { level: 3 })).toHaveText('initialize(timeoutMs)');
 	const parameters = initialize.getByRole('table', { name: 'Parameters', exact: true });
 	await expect(parameters.getByRole('rowheader')).toHaveText(['timeoutMs']);
 	const returned = initialize.getByRole('table', { name: 'Returns', exact: true });
