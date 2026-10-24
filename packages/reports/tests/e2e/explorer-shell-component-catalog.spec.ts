@@ -93,7 +93,7 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
-			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(page);
+			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 
 			if (
 				unit.id === 'reports.component.explorer-dependencies-screen' ||

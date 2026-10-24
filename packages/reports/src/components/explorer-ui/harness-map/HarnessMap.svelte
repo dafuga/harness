@@ -6,7 +6,7 @@
 	import { nodeSize } from '../../../utils/explorer-ui/harnessLayout';
 	import { drawnEdges, focusOn, nextNode, panView, zoomView } from './focusView';
 	import { wholeView, type MapView } from '../../../utils/explorer-ui/focusView';
-	import { mapUnitLabel } from './mapUnitLabel';
+	import { mapUnitLabel, markLabels } from './mapUnitLabel';
 	let {
 		units,
 		marks = new Map<string, HarnessMark>(),
