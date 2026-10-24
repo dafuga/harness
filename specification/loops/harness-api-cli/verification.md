@@ -22,7 +22,7 @@ or a broken fixture. These focused records do not grant a full verification verd
 ## Validation and measurement boundaries
 
 Focused checkpoints passed 20 CLI/context/registry/session cases, six real local API cases,
-eleven hosted API cases and 32 existing IPC/proposal/evidence cases. Ownership and
+eleven hosted API cases and 36 existing IPC/proposal/evidence cases. Ownership and
 readable-contract guards pass after integrating main. The final E2E pass runs on
 `harbor-mbp-2`, against disposable Git and HTTP fixtures; no provider is charged and no
 hosted project is changed. The normal `test:e2e` script includes the three CLI suites.
@@ -60,18 +60,71 @@ No frontend UI code was added, so visual UI regression capture is not applicable
 
 ## Pending full verification
 
-`bun run check` is required and remains blocked by inherited main failures. The integrated
-main tree contains formatting failures in generated atom declarations, report support
-files and atomic-component metadata. Direct root lint also reports five unchanged
-failures in `pieces.ts`, `atomicComposition.ts`, `deriveManifest.ts`, `atomLibrary.ts` and
-`generateCode.ts`. The unchanged shared workspace registry test reports 63 missing atom
-preview entries. These checks have not been relaxed. Detailed command logs are retained
-outside Git and the feature report remains in progress.
+`bun run check` was started on `harbor-mbp-2` at
+`2688f658b99f1ca52ca2b3e9b4a71249c77e8fe4`. After integrating main `bb0d5b323`,
+formatting, TypeScript, lint, Rust checks/build and the shared workspace registry
+check pass. The earlier formatting, five lint and 63 atom-preview failures were
+observed before that main integration and are resolved in this tree.
+
+The full run finished with 1,199 passing tests, two failures and 25 skips:
+
+- `test/late-cleanup.test.ts`: "a look that is late is ended itself" expected
+  one tool-start record and received none. The unchanged focused rerun also fails.
+- `test/verification-observations.test.ts`: the `design-option-storage` rules
+  observation exceeded its unchanged 60-second timeout.
+
+**Both failures reproduce in a clean snapshot of unchanged main
+`bb0d5b323e7e93886c3e19f1e88b46af582bed8b` on the same other laptop.** The baseline
+command selected those two original cases; it exited 1 with both failures and no
+surviving processes. Source, assertions and timeouts were unchanged. This confirms
+an existing main/environment blocker rather than an API CLI regression. The full
+pipeline stops at unit tests, so later aggregate E2E, package and workspace gates
+remain unproven. Focused API E2Es ran separately and pass. No safeguards are relaxed.
 
 The loop's `verify` step stays pending. No full-suite, Jev-clean, merged-main, package
 publication, live paid-provider or production claim is made. Existing service migration
 proofs and prior reviews are preserved in their committed-source pack. No screenshots
-are committed. The PR is a draft until the required checks pass.
+are committed. The PR is a draft until the required checks pass. The feature report
+remains in progress.
+
+## Focused observations
+
+The clean-snapshot capture at `2688f658b99f1ca52ca2b3e9b4a71249c77e8fe4` passed
+all **73 tests** (20 CLI/context/registry/session, six local API, eleven hosted API,
+36 IPC/proposal/evidence). Capture
+`38289a78de48e82a9ace123280ea323cee5737185385c9fee2ee34efd2f18231` retains
+578 runtime observations; every directly changed executable unit has timing and
+memory evidence. No isolated function-memory attribution is claimed. The linked
+CLI read 1,776 manifests of every registered kind from the live feature server.
+
+The following 80 source observations were read from that exact committed tree;
+all applicable source metrics are measured. These module units emit no separate
+artifact. The shared built CLI is **14,847,290 bytes**. Later metadata-only
+commits receive their own focused capture; original source checkpoints remain
+labelled with the revision at which they ran.
+
+| Unit                                                                     | Source bytes | Lines | Complexity points | Dependencies |
+| ------------------------------------------------------------------------ | -----------: | ----: | ----------------: | -----------: |
+| `adapter.networking-security-harness-http`                               |         4331 |   113 |                46 |            1 |
+| `command.networking-security-api`                                        |         3902 |   110 |                 5 |            2 |
+| `desktop.function.development-tooling-ipc-payload-plan-payload`          |         1040 |    33 |                 2 |            4 |
+| `desktop.function.ipc-payload`                                           |         7870 |   211 |                58 |            5 |
+| `entry.index`                                                            |        12098 |   189 |                 6 |          116 |
+| `entry.program`                                                          |         2717 |    62 |                 1 |           26 |
+| `hub.controller.hub-agent`                                               |         5343 |   137 |                33 |            6 |
+| `hub.controller.hub-api`                                                 |         7800 |   200 |                59 |            9 |
+| `hub.service.hub-projection`                                             |         5884 |   161 |                20 |           16 |
+| `reports.controller.console-agent`                                       |         2577 |    54 |                19 |            1 |
+| `reports.service.console-agent`                                          |         7243 |   177 |                41 |           13 |
+| `service.networking-security-harness-api`                                |         5358 |   134 |                45 |            3 |
+| `service.networking-security-harness-api-service-api-session-repository` |         3177 |    90 |                25 |            6 |
+| `workflow.networking-security-run-api`                                   |         2290 |    57 |                10 |            7 |
+| `workflow.networking-security-run-api-api-agent`                         |         2044 |    52 |                16 |            4 |
+| `workflow.networking-security-run-api-api-input`                         |         1147 |    31 |                12 |            2 |
+| `workflow.networking-security-run-api-api-output`                        |         1670 |    39 |                17 |            4 |
+| `workflow.networking-security-run-api-api-registry`                      |         1785 |    45 |                13 |            3 |
+| `workflow.networking-security-run-api-api-resources`                     |         3564 |   114 |                22 |            4 |
+| `workflow.networking-security-run-api-api-screenshot`                    |         3815 |    98 |                26 |            7 |
 
 ## Changed registered units
 
