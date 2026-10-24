@@ -57,7 +57,6 @@ export class HarnessApiService {
 		input: Record<string, unknown>,
 		requestId?: string
 	): Promise<ApiResponse> {
-		if (!this.hosted) return this.local(method, input, requestId);
 		const body: Record<string, unknown> = { method, input, ...(requestId ? { requestId } : {}) };
 		if (['createPlan', 'startRun', 'approve', 'openThread'].includes(method)) {
 			const snapshot = await this.snapshot();
@@ -65,6 +64,7 @@ export class HarnessApiService {
 				fail('Agent writes require the writable branch tip, not a historical commit.');
 			body.revision = snapshot.revision;
 		}
+		if (!this.hosted) return this.local(method, input, requestId);
 		return this.http.request('POST', this.projectPath('agent'), { input: body });
 	}
 	private projectPath(resource: string): string {

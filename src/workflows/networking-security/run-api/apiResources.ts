@@ -63,11 +63,20 @@ export async function apiResource(
 		return ((await client.read('entity', query)).data as { contract: unknown }).contract;
 	if (resource === 'threads' && !client.hosted)
 		return ((await client.read('entity', query)).data as { threads: unknown }).threads;
+	const fields: Record<string, unknown> = Object.fromEntries(apiQuery(client.options.query));
+	if (resource === 'history') fields.page = historyPage(fields.page);
 	return client.read(resource, {
-		...Object.fromEntries(apiQuery(client.options.query)),
+		...fields,
 		...query,
 		mode: client.options.commit ? 'commit' : 'current'
 	});
+}
+
+function historyPage(page: unknown): number {
+	const number = page === undefined ? 1 : Number(page);
+	if (!Number.isSafeInteger(number) || number < 1 || number > 10000)
+		fail('History pages must be integers from 1 to 10000.');
+	return number;
 }
 
 function catalogResource(snapshot: ApiSnapshot, resource: string): unknown {
