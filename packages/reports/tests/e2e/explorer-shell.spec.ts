@@ -45,12 +45,12 @@ async function opened(page: Page, width: number, height: number): Promise<Locato
 /** Chooses an earlier commit, then opens Helpers there with the keyboard. */
 async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
 	const functions = bar
-		.getByRole('tablist', { name: 'Module categories' })
+		.getByRole('tablist', { name: 'Code categories' })
 		.getByRole('tab', { name: 'Helpers', exact: true });
 	await expect(combo(bar, 'Commit')).toBeVisible();
 	await combo(bar, 'Commit').selectOption(sha(3));
 	await expect(page).toHaveURL(at(`${earlier}/pages`));
-	await bar.getByRole('link', { name: 'Modules', exact: true }).click();
+	await bar.getByRole('link', { name: 'Code', exact: true }).click();
 	await functions.focus();
 	await page.keyboard.press('Enter');
 	await expect(page).toHaveURL(at(`${earlier}/functions`));
@@ -65,7 +65,7 @@ for (const [screen, width, height] of screens) {
 		await captureShell(page, home, { state: 'current', viewport: screen });
 		await navigationSpacing(bar);
 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).locator('a, button');
-		await expect(links).toHaveText(categories);
+		await expect(links, 'Code groups project catalogs').toHaveText(categories);
 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
 			0
 		);
@@ -123,7 +123,8 @@ for (const [screen, width, height] of screens) {
 			expect(first.x).toBeLessThan((await box(combo(bar, 'Branch'))).x);
 		}
 		expect(await fits(page)).toBe(true);
-		await links.filter({ hasText: 'Styles' }).click();
+		await links.filter({ hasText: 'Code' }).click();
+		await bar.getByRole('tab', { name: 'Styles', exact: true }).click();
 		await expect(page).toHaveURL(at(`${scoped}/styles`));
 		await links.filter({ hasText: 'Platforms' }).click();
 		await expect(page).toHaveURL(at(`${scoped}/platforms`));

@@ -73,19 +73,21 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
-		['Pages', 'Modules', 'Styles', 'Configs', 'Platforms'].map((label) => ({
+		['Pages', 'Code', 'Platforms'].map((label) => ({
 			label,
-			href: `${scoped}/commit/${sha(4)}/${label === 'Modules' ? 'components' : label.toLowerCase()}`,
-			current: label === 'Modules',
+			href: `${scoped}/commit/${sha(4)}/${label === 'Code' ? 'components' : label.toLowerCase()}`,
+			current: label === 'Code',
 			iconThenLabel: true
 		}))
 	);
 	const moduleMenu =
-		/<div\b[^>]*role="tablist"[^>]*aria-label="Module categories"[^>]*>(.*?)<\/div>/s.exec(
+		/<div\b[^>]*role="tablist"[^>]*aria-label="Code categories"[^>]*>(.*?)<\/div>/s.exec(
 			html
 		)?.[1] ?? '';
-	expect(text(moduleMenu)).toBe('Layouts Components Models Services Helpers Types');
-	expect(moduleMenu.match(/role="tab"/g)).toHaveLength(6);
+	expect(text(moduleMenu)).toBe(
+		'Layouts Components Models Services Helpers Types Configs Styles Dependencies'
+	);
+	expect(moduleMenu.match(/role="tab"/g)).toHaveLength(9);
 	expect(html).not.toMatch(/popover|popovertarget|aria-expanded/);
 	const brand = /<a\b[^>]*class="hx-brand"[^>]*>(.*?)<\/a>/s.exec(html);
 	expect(brand?.[0]).toContain(`href="${scoped}/pages"`);
@@ -100,14 +102,23 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 });
 
 test('Styles has its own active state and keeps the selected revision in its address', () => {
-	const menu = links(body(styles));
-	expect(menu.filter((item) => item.current).map((item) => item.label)).toEqual(['Styles']);
-	expect(menu[2]).toMatchObject({
-		label: 'Styles',
-		href: `${scoped}/commit/${sha(4)}/styles`,
-		current: true,
-		iconThenLabel: true
+	const html = body(styles);
+	const menu = links(html);
+	expect(menu.filter((item) => item.current).map((item) => item.label)).toEqual(['Code']);
+	expect(menu[1]).toMatchObject({
+		label: 'Code',
+		href: `${scoped}/commit/${sha(4)}/components`,
+		current: true
 	});
+	const strip =
+		/<div\b[^>]*role="tablist"[^>]*aria-label="Code categories"[^>]*>(.*?)<\/div>/s.exec(
+			html
+		)?.[1] ?? '';
+	const selected = [...strip.matchAll(/<a\b([^>]*)>(.*?)<\/a>/gs)].find(
+		([, , content]) => text(content) === 'Styles'
+	);
+	expect(selected?.[1]).toContain('aria-selected="true"');
+	expect(selected?.[1]).toContain(`href="${scoped}/commit/${sha(4)}/styles"`);
 });
 
 test('the bar has no reports, analytics, activity, growth or legacy view in it', () => {
@@ -132,7 +143,7 @@ test('at the tip of a branch the commit is the tip, said as current, and Go to t
 			.map((item) => item.label)
 	).toEqual(['Pages']);
 	expect(links(html)[1].href).toBe(`${scoped}/components`);
-	expect(html).not.toContain('aria-label="Module categories"');
+	expect(html).not.toContain('aria-label="Code categories"');
 });
 
 test('at a selected commit the tip and the viewed hash differ, and Go to tip is the current route', () => {
@@ -158,9 +169,9 @@ test('both selectors are the shared select, and the bar writes no field of its o
 
 test('without a resolved address the bar keeps its navigation and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
-	expect(text(categories(html))).toBe('Pages Modules Styles Configs Platforms');
+	expect(text(categories(html))).toBe('Pages Code Platforms');
 	expect(links(html)).toEqual([]);
-	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(5);
+	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(3);
 	expect(html).not.toMatch(/<select\b|Go to tip|hx-repository/);
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });

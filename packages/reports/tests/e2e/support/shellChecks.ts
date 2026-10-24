@@ -94,8 +94,8 @@ export async function moduleNavigation(
 	scoped: string
 ): Promise<void> {
 	const bar = page.getByRole('banner');
-	const trigger = bar.getByRole('link', { name: 'Modules', exact: true });
-	const modules = bar.getByRole('tablist', { name: 'Module categories' });
+	const trigger = bar.getByRole('link', { name: 'Code', exact: true });
+	const modules = bar.getByRole('tablist', { name: 'Code categories' });
 	await trigger.click();
 	await pictured(page, `explorer-shell-modules-${screen}`);
 	await captureShell(page, home, { state: 'modules', viewport: screen });
@@ -110,7 +110,10 @@ export async function moduleNavigation(
 		'Models',
 		'Services',
 		'Helpers',
-		'Types'
+		'Types',
+		'Configs',
+		'Styles',
+		'Dependencies'
 	]);
 	const [row, primary] = await Promise.all([box(modules), box(bar.locator('.hx-categories'))]);
 	expect(row.y, 'module categories sit below the primary row').toBeGreaterThanOrEqual(
@@ -126,17 +129,24 @@ export async function moduleNavigation(
 	}
 	await page.keyboard.press('Escape');
 	await expect(modules).toBeVisible();
-	await modules.getByRole('tab', { name: 'Types', exact: true }).click();
-	await expect(page).toHaveURL(`${shellOrigin}${scoped}/types`);
-	await expect(modules.getByRole('tab', { name: 'Types', exact: true })).toHaveAttribute(
-		'aria-selected',
-		'true'
-	);
-	await pictured(page, `explorer-shell-types-${screen}`);
-	await captureShell(page, home, { state: 'types', viewport: screen });
-	expect(await fits(page), 'the module row scrolls without widening the page').toBe(true);
-	await modules.getByRole('tab', { name: 'Helpers', exact: true }).focus();
-	await page.keyboard.press('Enter');
-	await expect(page).toHaveURL(`${shellOrigin}${scoped}/functions`);
-	await expect(modules).toBeVisible();
+	await codeDestinations(page, modules, scoped);
+}
+
+/** Each additional Code destination retains the current branch and commit scope. */
+async function codeDestinations(page: Page, row: Locator, scoped: string): Promise<void> {
+	for (const [name, path] of [
+		['Configs', 'configs'],
+		['Styles', 'styles'],
+		['Dependencies', 'dependencies'],
+		['Types', 'types']
+	]) {
+		const tab = row.getByRole('tab', { name, exact: true });
+		await tab.click();
+		await expect(page).toHaveURL(`${shellOrigin}${scoped}/${path}`);
+		await expect(tab).toHaveAttribute('aria-selected', 'true');
+		await expect(page.getByRole('link', { name: 'Code', exact: true })).toHaveAttribute(
+			'aria-current',
+			'page'
+		);
+	}
 }

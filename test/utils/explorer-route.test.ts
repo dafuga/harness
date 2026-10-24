@@ -12,6 +12,8 @@ const encoded = 'feature%2Fkept%231';
 const entity = 'reports.component.harness-harness-console';
 const shapes: Array<[string, Partial<ExplorerLocation>]> = [
 	['/pages', { category: 'pages' }],
+	['/dependencies', { category: 'pages', screen: 'dependencies' }],
+	['/styles', { category: 'pages', screen: 'styles' }],
 	['/pages/reports.page.titles', { category: 'pages', entity: 'reports.page.titles' }],
 	[
 		'/pages/reports.page.titles/details',
