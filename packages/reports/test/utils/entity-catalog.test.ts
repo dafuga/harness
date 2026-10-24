@@ -9,6 +9,7 @@ import { record, revision } from '../entityFixture';
 import { privateServiceUsers } from '../entityPreviewHelpers';
 import { invalidServiceClasses, serviceMetadata, admission } from '../entityClassFixtures';
 import { commits, ids } from '../entityUnits';
+import { assertApiCatalog } from '../entityApiCatalog';
 const head = revision(commits.middle, [record(commits.middle)]);
 const partial = revision(commits.middle, [record(commits.middle, false)]);
 const rows = (category: Parameters<typeof entityCatalog>[1], detail = head) =>
@@ -217,3 +218,5 @@ test('shared helper rows require source exports, list every callable and keep ow
 		'second'
 	]);
 });
+
+test('APIs list endpoints and revision-scoped transitive usage', assertApiCatalog);

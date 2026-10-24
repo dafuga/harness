@@ -97,6 +97,7 @@ function visualTabs(category: ExplorerLocation['category']): string[] {
 	return [
 		'Overview',
 		category === 'pages' ? 'Models' : 'Contract',
+		...(category === 'pages' ? ['APIs'] : []),
 		'Used In',
 		'Uses',
 		...(category === 'components' ? ['Audio'] : []),

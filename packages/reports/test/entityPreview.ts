@@ -34,6 +34,7 @@ import { withFocused } from './entityStates';
 import { withHelpers, withNamedConsumers } from './entityPreviewHelpers';
 import { callableFixture } from './entityPreviewCallables';
 import { withRelationGroups } from './entityRelationFixtures';
+import { withApis } from './entityApiFixtures';
 import { sourceCatalog, sourceSnapshots } from './entitySourceFixture';
 import { platformFixture } from './platformFixture';
 
@@ -48,6 +49,8 @@ const stored: Record<string, HarnessRevision> = {
 	},
 	[commits.tip]: recorded(commits.tip)
 };
+if (variant === 'apis')
+	for (const commit of Object.keys(stored)) stored[commit] = withApis(stored[commit]);
 if (variant === 'platforms') {
 	for (const commit of [commits.middle, commits.tip])
 		stored[commit] = { ...stored[commit], ...{ platforms: platformFixture } };
@@ -136,7 +139,7 @@ function asked(): ExplorerLocation {
 	);
 }
 window.addEventListener('hashchange', () => show(asked()));
-if (variant === 'console' || variant === 'platforms') {
+if (variant === 'console' || variant === 'platforms' || variant === 'apis') {
 	const fetcher = window.fetch;
 	window.fetch = Object.assign(
 		(input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) => {
@@ -149,7 +152,8 @@ if (variant === 'console' || variant === 'platforms') {
 				path.endsWith(`/revisions/${commit}.json`)
 			)?.[1];
 			if (!data) return fetcher(input, init);
-			if (variant === 'platforms') return Promise.resolve(Response.json(data));
+			if (variant === 'platforms' || variant === 'apis')
+				return Promise.resolve(Response.json(data));
 			const scaled = withScale(data);
 			const units = scaled.registry.units.map((unit) =>
 				unit.id === ids.filter ? callableFixture(unit) : unit

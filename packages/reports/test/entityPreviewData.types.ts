@@ -1,4 +1,5 @@
 export type PreviewVariant =
+	| 'apis'
 	| 'platforms'
 	| 'source'
 	| ''

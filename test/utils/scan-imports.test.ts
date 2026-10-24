@@ -1,6 +1,26 @@
 import { expect, test } from 'vitest';
 import { scanImports } from '../../src/services/source-index-service/scanImports';
 
+test('scanImports records HTTP requests without reading URL-looking text as calls', () => {
+	const code = [
+		"// fetch('/api/comment');",
+		'const text = "fetch(\'/api/text\')";',
+		"await fetch('/api/orders?limit=10');",
+		'await event.fetch(`/api/orders/${id}`);',
+		"await fetch('https://elsewhere.example/api/orders');",
+		'await fetch(address);'
+	].join('\n');
+	expect(scanImports(code, 'ts')).toEqual([
+		{ via: 'http', specifier: '/api/orders?limit=10', typeOnly: false },
+		{ via: 'http', specifier: '/api/orders/${}', typeOnly: false },
+		{ via: 'http', specifier: 'https://elsewhere.example/api/orders', typeOnly: false },
+		{ via: 'http', specifier: null, typeOnly: false, detail: 'fetch(address)' }
+	]);
+	expect(
+		scanImports('<script>fetch("/api/orders")</script><p>fetch("/api/text")</p>', 'svelte')
+	).toEqual([{ via: 'http', specifier: '/api/orders', typeOnly: false }]);
+});
+
 test('scanImports reads static, type, side-effect, re-export, dynamic, require and URL references', () => {
 	const code = [
 		"import defaultValue, { a,\n\tb } from './multi';",

@@ -62,6 +62,7 @@ test('keeps page and module entity categories separate from primary navigation',
 	measureWorkload('function.explorer-route', 'layout-catalog-behavior', () => {
 		expect(explorerCategories).toEqual([
 			'pages',
+			'apis',
 			'layouts',
 			'components',
 			'functions',
@@ -201,4 +202,21 @@ test('Models is a page tab and legacy page Contract links open Models in the sam
 	}
 	expect(explorerRoute('/branch/main/components/card', '?tab=models')?.tab).toBeUndefined();
 	expect(explorerRoute('/branch/main/components/card', '?tab=contract')?.tab).toBe('contract');
+});
+
+test('APIs are scoped catalog addresses and a page keeps its APIs tab', () => {
+	const prefix = `/branch/feature%2Forders/commit/${'a'.repeat(40)}`;
+	expect(explorerRoute(`${prefix}/apis`)?.category).toBe('apis');
+	expect(explorerRoute(`${prefix}/apis/app.endpoint.orders`, '?tab=contract')).toMatchObject({
+		category: 'apis',
+		entity: 'app.endpoint.orders',
+		tab: 'contract'
+	});
+	expect(explorerRoute(`${prefix}/pages/app.page.orders`, '?tab=apis')).toMatchObject({
+		category: 'pages',
+		tab: 'apis'
+	});
+	expect(
+		explorerRoute(`${prefix}/components/app.component.orders`, '?tab=apis')?.tab
+	).toBeUndefined();
 });
