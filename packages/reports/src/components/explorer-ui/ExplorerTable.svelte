@@ -107,14 +107,17 @@
 			{#each rows as row (row.id)}
 				<tr>
 					{#if category === 'configs'}
-						{@const key = row.name.lastIndexOf('.') + 1}
+						{@const name = row.name.startsWith(`${heading}.`)
+							? row.name.slice(heading.length + 1)
+							: row.name}
+						{@const key = name.lastIndexOf('.') + 1}
 						<th scope="row"
 							><EntityLink to={open(row)} {nav}
 								><code class="ex-config-name"
 									><span class="ex-config-scope"
-										>{#each words(row.name.slice(0, key)) as word, position (position)}{word}<wbr
+										>{#each words(name.slice(0, key)) as word, position (position)}{word}<wbr
 											/>{/each}</span
-									>{#each words(row.name.slice(key)) as word, position (position)}{word}<wbr
+									>{#each words(name.slice(key)) as word, position (position)}{word}<wbr
 										/>{/each}</code
 								></EntityLink
 							></th
