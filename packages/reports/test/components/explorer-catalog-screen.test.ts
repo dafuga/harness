@@ -30,8 +30,9 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 					);
 					expect(words(body), category).toContain(name);
 					expect(words(body), 'configs list variable names and source values').toContain(
-						'orderSettings.pageSize 25'
+						'pageSize 25'
 					);
+					expect(words(body)).toContain('build.cssCodeSplit true');
 					expect(count(body, /scope="col"/g), 'only variable and value columns').toBe(2);
 					expect(words(body)).not.toMatch(/Purpose|Used by|Changed|Verification/);
 					for (const value of ['false', '0', 'null', 'Empty string'])
@@ -49,6 +50,25 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 				}
 			})
 	));
+
+test.each([
+	['orderSettings.build.cssCodeSplit', 'build.cssCodeSplit'],
+	['orderSettingsExtra.enabled', 'orderSettingsExtra.enabled'],
+	['otherSettings.enabled', 'otherSettings.enabled'],
+	['orderSettings', 'orderSettings']
+])('config variable %s has an unambiguous label', (name, label) => {
+	for (const mode of ['current', 'commit'] as const) {
+		const commit = mode === 'current' ? commits.tip : commits.middle;
+		const head = revision(commit, [record(commit)]);
+		const unit = head.registry.units.find((unit) => unit.id === ids.settings)!;
+		unit.configValues = [{ name, value: 'false', literal: false, source: unit.owns.source[0] }];
+		const body = screen(ExplorerCatalogScreen, mode, { category: 'configs' }, { head });
+		const names = [...body.matchAll(/<code class="ex-config-name[^"]*">(.*?)<\/code>/gs)];
+		expect(names.map((match) => words(match[1]).trim())).toEqual([label]);
+		const scope = `/branch/feature%2Forders${mode === 'current' ? '' : `/commit/${commit}`}`;
+		expect(body).toContain(`${scope}/configs/${ids.settings}`);
+	}
+});
 
 test('service cards show only the class name and revision-scoped consumer links', () => {
 	for (const mode of ['current', 'commit'] as const) {
