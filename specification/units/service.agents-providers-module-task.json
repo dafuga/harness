@@ -24,6 +24,7 @@
 			"ModuleTaskService.prompt",
 			"ModuleTaskService.prepare",
 			"ModuleTaskService.retry",
+			"ModuleTaskService.review",
 			"queuedTask",
 			"retryableTask",
 			"moduleTaskPrompt",
@@ -64,6 +65,14 @@
 			{
 				"name": "ModuleTaskService.retry.id",
 				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.review.id",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.review.input",
+				"type": "unknown"
 			},
 			{
 				"name": "queuedTask.input",
@@ -136,6 +145,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "ModuleTaskService.review",
+				"type": "unknown"
+			},
+			{
 				"name": "queuedTask",
 				"type": "ModuleTask"
 			},
@@ -187,6 +200,11 @@
 		},
 		{
 			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-service-review-module-task",
 			"via": "import",
 			"origin": "derived"
 		}

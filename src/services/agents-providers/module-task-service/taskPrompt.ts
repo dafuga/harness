@@ -20,7 +20,9 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 		`Task: ${task.title} (${task.id})`,
 		task.instructions,
 		'Implement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.',
-		`Source revision: ${task.sourceCommit}`,
+		`Original source revision: ${task.sourceCommit}`,
+		`Current repair source revision: ${task.repairCommit ?? task.sourceCommit}`,
+		...(task.reviews.length ? [`Latest review feedback: ${task.reviews.at(-1)!.feedback}`] : []),
 		`Committed task: ${commit} on refs/harness/tasks; contract SHA256: ${task.contractHash}`,
 		'Wanted contract:',
 		stableJson(task.wantedContract)
