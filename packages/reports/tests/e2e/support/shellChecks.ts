@@ -94,6 +94,7 @@ export async function moduleNavigation(
 	scoped: string
 ): Promise<void> {
 	const bar = page.getByRole('banner');
+	await expect(bar).toHaveAttribute('data-harness-component', 'harness-harness-navbar');
 	await bar.getByRole('link', { name: 'Modules', exact: true }).click();
 	const modules = bar.getByRole('tablist', { name: 'Module categories' });
 	await pictured(page, `explorer-shell-modules-${screen}`);

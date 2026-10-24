@@ -33,6 +33,18 @@
 			"coverage": "required"
 		},
 		{
+			"id": "modules",
+			"title": "The Modules destination shows six scoped category tabs.",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-navbar"]
+		},
+		{
+			"id": "types",
+			"title": "The Types category keeps Modules active and the branch revision scope.",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-navbar"]
+		},
+		{
 			"id": "historical",
 			"title": "The bar at a selected earlier commit: Functions active, the tip and the viewed hash told apart, Go to tip offered",
 			"coverage": "required"
@@ -127,6 +139,8 @@
 			"kind": "screenshot",
 			"states": [
 				"current",
+				"modules",
+				"types",
 				"historical",
 				"returned",
 				"pieces",
