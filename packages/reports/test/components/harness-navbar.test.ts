@@ -75,16 +75,18 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(links(html)).toEqual(
 		['Pages', 'Modules', 'Styles', 'Configs', 'Platforms'].map((label) => ({
 			label,
-			href: label === 'Modules' ? undefined : `${scoped}/commit/${sha(4)}/${label.toLowerCase()}`,
+			href: `${scoped}/commit/${sha(4)}/${label === 'Modules' ? 'components' : label.toLowerCase()}`,
 			current: label === 'Modules',
 			iconThenLabel: true
 		}))
 	);
 	const moduleMenu =
-		/<nav\b[^>]*aria-label="Module categories"[^>]*>(.*?)<\/nav>/s.exec(html)?.[1] ?? '';
+		/<div\b[^>]*role="tablist"[^>]*aria-label="Module categories"[^>]*>(.*?)<\/div>/s.exec(
+			html
+		)?.[1] ?? '';
 	expect(text(moduleMenu)).toBe('Layouts Components Models Services Helpers Types');
-	expect(html).toMatch(/<button\b[^>]*aria-expanded="false"/);
-	expect(html).not.toContain('role="tablist"');
+	expect(moduleMenu.match(/role="tab"/g)).toHaveLength(6);
+	expect(html).not.toMatch(/popover|popovertarget|aria-expanded/);
 	const brand = /<a\b[^>]*class="hx-brand"[^>]*>(.*?)<\/a>/s.exec(html);
 	expect(brand?.[0]).toContain(`href="${scoped}/pages"`);
 	expect(text(brand?.[1] ?? '')).toBe('Harness');
@@ -129,7 +131,8 @@ test('at the tip of a branch the commit is the tip, said as current, and Go to t
 			.filter((item) => item.current)
 			.map((item) => item.label)
 	).toEqual(['Pages']);
-	expect(links(html)[1].href).toBeUndefined();
+	expect(links(html)[1].href).toBe(`${scoped}/components`);
+	expect(html).not.toContain('aria-label="Module categories"');
 });
 
 test('at a selected commit the tip and the viewed hash differ, and Go to tip is the current route', () => {
