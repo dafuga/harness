@@ -1,0 +1,74 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8vHiq
+
+ ❯ test/api-registry.e2e.test.ts (4 tests | 4 failed) 1708ms
+   × API CLI lists every registered local unit, including backend entries outside the catalog 425ms
+     → expected [ 'page.example' ] to include 'entry.program'
+   × API CLI lists every registered hosted unit, including backend entries outside the catalog 426ms
+     → expected [ 'page.example' ] to include 'entry.program'
+   × API CLI reads local backend contracts without relying on a visual catalog entry 443ms
+     → /usr/bin/time -l -o /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-usage-7alDQ3/usage.txt bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8vHiq/src/index.ts api --url http://127.0.0.1:56775 contracts get entry.program failed with 1
+
+Error: Harness API HTTP 404: entity-not-found
+
+   × API CLI reads hosted backend contracts without relying on a visual catalog entry 413ms
+     → /usr/bin/time -l -o /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-usage-VR32w4/usage.txt bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8vHiq/src/index.ts api --url http://127.0.0.1:56777 --project 22222222-2222-4222-8222-222222222222 contracts get entry.program failed with 1
+
+Error: Harness API HTTP 404: entity-not-found
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/api-registry.e2e.test.ts > API CLI lists every registered local unit, including backend entries outside the catalog
+ FAIL  test/api-registry.e2e.test.ts > API CLI lists every registered hosted unit, including backend entries outside the catalog
+AssertionError: expected [ 'page.example' ] to include 'entry.program'
+ ❯ test/api-registry.e2e.test.ts:11:77
+      9|   try {
+     10|    const result = await f.cli(['get', 'units', '--commit', commit]);
+     11|    expect(JSON.parse(result.stdout).map((unit: { id: string }) => unit…
+       |                                                                             ^
+     12|     'entry.program'
+     13|    );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/api-registry.e2e.test.ts > API CLI reads local backend contracts without relying on a visual catalog entry
+Error: /usr/bin/time -l -o /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-usage-7alDQ3/usage.txt bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8vHiq/src/index.ts api --url http://127.0.0.1:56775 contracts get entry.program failed with 1
+
+Error: Harness API HTTP 404: entity-not-found
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ measureHarness test/support/cli-measurement/measureHarness.ts:24:18
+ ❯ test/api-registry.e2e.test.ts:27:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/api-registry.e2e.test.ts > API CLI reads hosted backend contracts without relying on a visual catalog entry
+Error: /usr/bin/time -l -o /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-usage-VR32w4/usage.txt bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8vHiq/src/index.ts api --url http://127.0.0.1:56777 --project 22222222-2222-4222-8222-222222222222 contracts get entry.program failed with 1
+
+Error: Harness API HTTP 404: entity-not-found
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ measureHarness test/support/cli-measurement/measureHarness.ts:24:18
+ ❯ test/api-registry.e2e.test.ts:27:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  19:14:34
+   Duration  4.32s (transform 54ms, setup 64ms, collect 32ms, tests 1.71s, environment 0ms, prepare 35ms)
+

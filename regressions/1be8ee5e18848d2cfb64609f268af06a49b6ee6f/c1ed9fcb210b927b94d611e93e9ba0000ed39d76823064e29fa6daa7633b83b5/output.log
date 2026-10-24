@@ -1,0 +1,224 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8
+
+ ❯ test/api-cli.e2e.test.ts (10 tests | 10 failed) 12371ms
+   × API CLI discovers resources and reads arbitrary hosted resources, queries and large JSON 978ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51189 --project 22222222-2222-4222-8222-222222222222 resources failed with 1
+
+error: unknown command 'api'
+
+   × API CLI reads local contracts at the selected revision 1085ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51194 contracts get page.example --branch feat/api --commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa failed with 1
+
+error: unknown command 'api'
+
+   × API CLI reads hosted contracts at the selected revision 1066ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51201 --project 22222222-2222-4222-8222-222222222222 contracts get page.example --branch feat/api --commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa failed with 1
+
+error: unknown command 'api'
+
+   × API CLI defines a local contract and preserves explicit agent identity 979ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51202 contracts define --input @/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-nh3EAR/plan.json failed with 1
+
+error: unknown command 'api'
+
+   × API CLI defines a hosted contract and preserves explicit agent identity 975ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51203 --project 22222222-2222-4222-8222-222222222222 contracts define --input @/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-v0R2SK/plan.json failed with 1
+
+error: unknown command 'api'
+
+   × API CLI downloads verified local screenshots and retains provenance 912ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51204 screenshot page.example --viewport desktop --state ready --output /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-BdylJI/page.png failed with 1
+
+error: unknown command 'api'
+
+   × API CLI downloads verified hosted screenshots and retains provenance 880ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51206 --project 22222222-2222-4222-8222-222222222222 screenshot page.example --viewport desktop --state ready --output /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-wRhe0e/page.png failed with 1
+
+error: unknown command 'api'
+
+   × API CLI reuses private local sessions across invocations without exposing credentials 860ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51208 get snapshot failed with 1
+
+error: unknown command 'api'
+
+   × API CLI refuses redirects, off-origin paths and insecure remote URLs 3675ms
+     → expected 'error: unknown command \'api\'\n' to match /HTTPS/i
+   × API CLI raw requests retain methods and bodies, binary output and HTTP errors 958ms
+     → bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51220 --project 22222222-2222-4222-8222-222222222222 request PATCH /api/custom --input {"enabled":true} failed with 1
+
+error: unknown command 'api'
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI discovers resources and reads arbitrary hosted resources, queries and large JSON
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51189 --project 22222222-2222-4222-8222-222222222222 resources failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:10:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI reads local contracts at the selected revision
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51194 contracts get page.example --branch feat/api --commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:29:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI reads hosted contracts at the selected revision
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51201 --project 22222222-2222-4222-8222-222222222222 contracts get page.example --branch feat/api --commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:29:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI defines a local contract and preserves explicit agent identity
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51202 contracts define --input @/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-nh3EAR/plan.json failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:71:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI defines a hosted contract and preserves explicit agent identity
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51203 --project 22222222-2222-4222-8222-222222222222 contracts define --input @/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-v0R2SK/plan.json failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:71:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI downloads verified local screenshots and retains provenance
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51204 screenshot page.example --viewport desktop --state ready --output /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-BdylJI/page.png failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:121:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI downloads verified hosted screenshots and retains provenance
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51206 --project 22222222-2222-4222-8222-222222222222 screenshot page.example --viewport desktop --state ready --output /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-cli-wRhe0e/page.png failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:121:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI reuses private local sessions across invocations without exposing credentials
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51208 get snapshot failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:165:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI refuses redirects, off-origin paths and insecure remote URLs
+AssertionError: expected 'error: unknown command \'api\'\n' to match /HTTPS/i
+
+- Expected: 
+/HTTPS/i
+
++ Received: 
+"error: unknown command 'api'
+"
+
+ ❯ test/api-cli.e2e.test.ts:193:27
+    191|   const insecure = await f.cli(['--url', 'http://example.com', 'get', …
+    192|   expect(insecure.exitCode).toBe(1);
+    193|   expect(insecure.stderr).toMatch(/HTTPS/i);
+       |                           ^
+    194|   expect(f.seen.filter((r) => r.operation === 'redirect-target')).toHa…
+    195|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  test/api-cli.e2e.test.ts > API CLI raw requests retain methods and bodies, binary output and HTTP errors
+Error: bun /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oEClS8/src/index.ts api --url http://127.0.0.1:51220 --project 22222222-2222-4222-8222-222222222222 request PATCH /api/custom --input {"enabled":true} failed with 1
+
+error: unknown command 'api'
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/api-cli.e2e.test.ts:203:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed (10)
+   Start at  18:36:22
+   Duration  15.21s (transform 83ms, setup 94ms, collect 32ms, tests 12.37s, environment 0ms, prepare 32ms)
+

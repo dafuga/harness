@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-M53ddP
+
+ ✓ test/api-context.e2e.test.ts (5 tests) 5770ms
+   ✓ API CLI refuses local contract writes when a historical commit is selected  962ms
+   ✓ API CLI refuses hosted contract writes when a historical commit is selected  958ms
+   ✓ API CLI supplies numeric local history pagination while retaining entity and revision binding  1899ms
+   ✓ API CLI shows only the selected local run in agent events  960ms
+   ✓ API CLI shows only the selected hosted run in agent events  990ms
+ ✓ test/services/networking-security/api-session.test.ts (1 test) 117ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  18:50:10
+   Duration  9.24s (transform 98ms, setup 128ms, collect 57ms, tests 5.89s, environment 0ms, prepare 51ms)
+

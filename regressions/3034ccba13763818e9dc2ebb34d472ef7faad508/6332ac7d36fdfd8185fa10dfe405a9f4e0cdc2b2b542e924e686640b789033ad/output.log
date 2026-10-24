@@ -1,0 +1,26 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell.spec.ts explorer-shell-component-catalog.spec.ts --grep "the bar shows its navigation|(?:reports.component.explorer-dependencies-screen|reports.page.harness-branch-branch-at-dependencies|reports.component.explorer-ui-explorer-translations-screen|reports.page.harness-branch-branch-at-translations|reports.component.harness-explorer-content) at"
+
+Running 18 tests using 1 worker
+
+(node:15322) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.explorer-dependencies-screen at desktop (786ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.explorer-ui-explorer-translations-screen at desktop (852ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.harness-explorer-content at desktop (1.7s)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.page.harness-branch-branch-at-dependencies at desktop (808ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.page.harness-branch-branch-at-translations at desktop (897ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.explorer-dependencies-screen at tablet (451ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.explorer-ui-explorer-translations-screen at tablet (493ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.harness-explorer-content at tablet (414ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.page.harness-branch-branch-at-dependencies at tablet (446ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.page.harness-branch-branch-at-translations at tablet (549ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.explorer-dependencies-screen at mobile (461ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.explorer-ui-explorer-translations-screen at mobile (456ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.component.harness-explorer-content at mobile (434ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.page.harness-branch-branch-at-dependencies at mobile (458ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:82:3 › reports.page.harness-branch-branch-at-translations at mobile (486ms)
+  ✓  16 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width (594ms)
+  ✓  17 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width (573ms)
+  ✓  18 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width (492ms)
+
+  18 passed (23.1s)

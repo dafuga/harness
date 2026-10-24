@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NsilcW
+
+ ✓ test/api-cli.e2e.test.ts (10 tests) 25534ms
+   ✓ API CLI discovers resources and reads arbitrary hosted resources, queries and large JSON  2211ms
+   ✓ API CLI reads local contracts at the selected revision  1859ms
+   ✓ API CLI reads hosted contracts at the selected revision  1811ms
+   ✓ API CLI defines a local contract and preserves explicit agent identity  3686ms
+   ✓ API CLI defines a hosted contract and preserves explicit agent identity  3806ms
+   ✓ API CLI downloads verified local screenshots and retains provenance  1907ms
+   ✓ API CLI downloads verified hosted screenshots and retains provenance  1874ms
+   ✓ API CLI reuses private local sessions across invocations without exposing credentials  1806ms
+   ✓ API CLI refuses redirects, off-origin paths and insecure remote URLs  3663ms
+   ✓ API CLI raw requests retain methods and bodies, binary output and HTTP errors  2909ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  18:36:44
+   Duration  28.92s (transform 107ms, setup 125ms, collect 33ms, tests 25.53s, environment 0ms, prepare 36ms)
+
