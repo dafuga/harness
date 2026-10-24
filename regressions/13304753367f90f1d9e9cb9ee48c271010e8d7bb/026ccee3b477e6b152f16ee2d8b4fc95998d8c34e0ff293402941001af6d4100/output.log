@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RayKRe
+
+ ❯ test/loop.e2e.test.ts (7 tests | 1 failed | 6 skipped) 13179ms
+   ↓ loop CLI traces work and remains audit-safe in generated projects
+   ↓ generated app and lib instructions mention harness loops
+   ↓ loop CLI creates from templates, searches, guides next, and evaluates
+   ↓ bug-fix CLI records proof and leaves verification pending across failed and passing checks
+   ↓ fix CLI records proof and leaves verification pending across failed and passing checks
+   ↓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+   × standalone evidence capture preserves images and measurements without inventing a regression or full verdict 13177ms
+     → unknown-direct: scoped actual captures must resolve to registered units: expected +0 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/loop.e2e.test.ts > standalone evidence capture preserves images and measurements without inventing a regression or full verdict
+AssertionError: unknown-direct: scoped actual captures must resolve to registered units: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ expectBindingResult test/support/loop-repair/observedLoop.ts:163:94
+    161|   false
+    162|  );
+    163|  expect(result.exitCode, name + ': scoped actual captures must resolve…
+       |                                                                                              ^
+    164|   expected
+    165|  );
+ ❯ exerciseBinding test/support/loop-repair/observedLoop.ts:137:3
+ ❯ expectCaptureBindings test/support/loop-repair/observedLoop.ts:64:3
+ ❯ test/loop.e2e.test.ts:207:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  01:44:39
+   Duration  15.94s (transform 124ms, setup 79ms, collect 107ms, tests 13.18s, environment 0ms, prepare 31ms)
+
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
