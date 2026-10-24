@@ -52,7 +52,17 @@ test('the bar groups module categories under five scoped primary destinations', 
 			)
 		);
 		expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['modules']);
-		for (const category of ['layouts', 'components', 'models', 'services', 'functions', 'types']) {
+		for (const category of [
+			'layouts',
+			'components',
+			'models',
+			'services',
+			'functions',
+			'types',
+			'pages',
+			'configs',
+			'platforms'
+		]) {
 			const place = { ...historical, category } as ExplorerLocation;
 			expect(view(place)).toMatchObject({
 				modules: ['layouts', 'components', 'models', 'services', 'functions', 'types'].map(
