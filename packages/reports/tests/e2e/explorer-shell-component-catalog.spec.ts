@@ -58,6 +58,9 @@ for (const viewport of catalogViewports) {
 					status.locator('[aria-hidden="true"]'),
 					'Loading status has a decorative indicator'
 				).toBeVisible();
+				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
 				await page.emulateMedia({ reducedMotion: 'reduce' });
 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
 				await expect
