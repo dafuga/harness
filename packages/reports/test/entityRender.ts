@@ -90,6 +90,7 @@ const text = (markup: string): string =>
 			(_whole, inline: string) => `<code>${inline.replace(/<\/?(?:span|wbr)\b[^>]*>/g, '')}</code>`
 		)
 		.replace(/<!--.*?-->/gs, '')
+		.replace(/<span class="source-(?:folder|name)(?: [^"]*)?"[^>]*>([^<]*)<\/span>/g, '$1')
 		.replace(/<[^>]+>/g, ' ')
 		.replace(/\s+/g, ' ');
 

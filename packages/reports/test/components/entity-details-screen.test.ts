@@ -36,6 +36,15 @@ test('details of every kind open on the contract, size and performance, with no 
 });
 
 test('its tabs open measurements, and the source only where the source is asked for', () => {
+	expect(
+		words(
+			'<span class="source-folder">src/orders</span><span class="source-name">/Order.ts</span>'
+		).trim()
+	).toBe('src/orders/Order.ts');
+	expect(words('<span>src/orders</span><span>/Order.ts</span>').trim()).toBe(
+		'src/orders /Order.ts'
+	);
+
 	const at = { ...places[0], section: 'details' as const };
 	const measured = screen(EntityDetailsScreen, 'commit', { ...at, tab: 'measurements' });
 	expect(words(measured)).toContain('Measurements and frozen limits');
