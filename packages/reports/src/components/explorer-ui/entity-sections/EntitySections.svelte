@@ -205,8 +205,9 @@
 	.schema {
 		display: grid;
 		gap: var(--hx-space-10);
-		min-width: 0;
-		overflow-wrap: anywhere;
+	}
+	.schema td code {
+		white-space: nowrap;
 	}
 	.schema + .schema {
 		padding-top: var(--hx-space-16);

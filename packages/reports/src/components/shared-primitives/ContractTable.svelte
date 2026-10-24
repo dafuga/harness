@@ -46,11 +46,13 @@
 						<tr>
 							{#if named}<th scope="row">{field.name}</th>{/if}
 							<td><code class="type">{field.type}</code></td>
-							<td class="example">
-								{#if field.source !== 'declared'}<i>{labels[field.source]}</i>{/if}
-								{#if sample}<code
-										>{sample.text.slice(0, 240)}{sample.text.length > 240 ? '...' : ''}</code
-									>{/if}
+							<td>
+								<div class="example">
+									{#if field.source !== 'declared'}<i>{labels[field.source]}</i>{/if}
+									{#if sample}<code
+											>{sample.text.slice(0, 240)}{sample.text.length > 240 ? '...' : ''}</code
+										>{/if}
+								</div>
 							</td>
 							<td class="act">
 								<button
@@ -89,7 +91,8 @@
 		font-size: var(--hx-type-size-sm);
 		font-weight: var(--hx-style-weight-semibold);
 	}
-	/* Keep all columns visible on phones and leave room for the trailing touch target. */
+	/* A name or type is never broken: a column is at least as wide as its own, and a table wider
+	   than a phone scrolls sideways inside this frame while the page keeps its width. */
 	.frame {
 		min-width: 0;
 		overflow-x: auto;
@@ -99,9 +102,7 @@
 	}
 	table {
 		width: 100%;
-		min-width: 0;
 		border-collapse: collapse;
-		table-layout: fixed;
 	}
 	th,
 	td {
@@ -109,7 +110,6 @@
 		text-align: start;
 		border-bottom: var(--hx-border-thin) solid var(--ex-line);
 		vertical-align: middle;
-		overflow-wrap: break-word;
 	}
 	tbody tr:last-child > * {
 		border-bottom: 0;
@@ -119,7 +119,11 @@
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-semibold);
 	}
-	/* Name and type keep their width when a returns table hides its name column. */
+	tbody th {
+		white-space: nowrap;
+	}
+	/* Where there is room, name and type keep their width, also when a returns table hides its
+	   names; a longer name or type widens its own column instead. */
 	.leading {
 		width: 30%;
 	}
@@ -129,20 +133,22 @@
 		border-radius: var(--hx-radius-compact);
 		color: var(--ex-gold);
 		font-size: var(--hx-type-size-sm);
+		white-space: nowrap;
 	}
+	/* A preview fills its column but asks no more room than a short value and its label need;
+	   a longer value is clipped with an ellipsis, and its full example opens in the dialog. */
 	.example {
-		color: var(--ex-soft);
+		min-width: 100%;
+		max-width: var(--hx-layout-contract-example);
 		overflow: hidden;
+		color: var(--ex-soft);
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
 	.act {
-		position: sticky;
-		inset-inline-end: 0;
 		width: 60px;
 		padding: var(--hx-space-2) var(--hx-space-8);
 		text-align: end;
-		background: var(--ex-surface);
 	}
 	.info {
 		display: inline-grid;
