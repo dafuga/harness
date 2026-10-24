@@ -1,5 +1,6 @@
-import type { LiveActivity } from '../../../../src/core/activityTypes';
-import { agentActivityFixture } from './ui-agent-activity-fixture';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import { longAgentActivityFixture, readyForAgentCapture } from './ui-agent-activity-fixture';
+import { scenarioCapture } from './scenario-capture';
 import { expect, test } from '../../../../test/support/browserTest';
 import type { Page, TestInfo } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
@@ -179,36 +180,24 @@ for (const viewport of [
 }
 
 test('a long agent roster keeps current module assignments in view', async ({ page }) => {
-	await agentActivityFixture(page);
-	await page.addInitScript(() => {
-		const host = window as unknown as {
-			harness: { agentActivity(): Promise<Pick<LiveActivity, 'sampledAt' | 'agents'>> };
-		};
-		const read = host.harness.agentActivity;
-		host.harness.agentActivity = async () => {
-			const value = await read();
-			const earlier = value.agents.roster[2];
-			value.agents.roster.push(
-				...Array.from({ length: 12 }, (_, index) => ({
-					...earlier,
-					id: `old-${index}`,
-					label: `Earlier session ${index}`
-				}))
-			);
-			return value;
-		};
-	});
+	await longAgentActivityFixture(page);
 	await page.goto(route('components'));
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
 	await panel.getByRole('button', { name: 'Agents', exact: true }).click();
 	await expect(panel.getByText('Refine shared component previews', { exact: true })).toBeVisible();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await readyForAgentCapture(page);
 		mkdirSync('/tmp/chat-agents-evidence', { recursive: true });
 		await page.screenshot({
 			path: `/tmp/chat-agents-evidence/${process.env.SCREENSHOT_LABEL}-long-roster.png`
 		});
 	}
+	await scenarioCapture(page, scenario as ScenarioManifest, {
+		state: 'chat-agents-many',
+		name: 'long-roster',
+		note: 'Synthetic fifteen-session roster over the compiled renderer; module visibility is asserted at this checkpoint.'
+	});
 	await expect(
 		panel
 			.getByRole('region', { name: 'Modules being worked on' })

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
-import { agentActivityFixture } from './ui-agent-activity-fixture';
+import { agentActivityFixture, readyForAgentCapture } from './ui-agent-activity-fixture';
 import { projectFixture, alpha } from './ui-project-fixture';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenario from '../../../../specification/scenarios/agent-creation.json' with { type: 'json' };
@@ -156,10 +156,7 @@ for (const width of [1440, 920, 390]) {
 
 async function evidence(page: Page, width: number, state = 'chat') {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-		await Promise.all([...document.images].map((image) => image.decode()));
-	});
+	await readyForAgentCapture(page);
 	await page.mouse.move(0, 0);
 	mkdirSync('/tmp/chat-agents-evidence', { recursive: true });
 	await page.screenshot({

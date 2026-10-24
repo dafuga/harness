@@ -67,6 +67,12 @@
 			"title": "Project chat lists registered sessions and module ownership while preserving drafts",
 			"coverage": "required",
 			"units": ["desktop.component.project-agent", "desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "chat-agents-many",
+			"title": "A compact long roster keeps module assignments visible",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent", "desktop.component.agents-providers-chat-agents"]
 		}
 	],
 	"viewports": [
@@ -204,6 +210,15 @@
 			"kind": "screenshot",
 			"states": ["chat-agents"],
 			"viewports": ["desktop", "agents-tablet", "agent-phone"],
+			"required": true,
+			"build": "desktop-renderer",
+			"capture": "viewport"
+		},
+		{
+			"id": "chat-agents-many",
+			"kind": "screenshot",
+			"states": ["chat-agents-many"],
+			"viewports": ["desktop"],
 			"required": true,
 			"build": "desktop-renderer",
 			"capture": "viewport"

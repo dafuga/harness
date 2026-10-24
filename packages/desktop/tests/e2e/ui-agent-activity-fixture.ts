@@ -1,3 +1,4 @@
+import type { LiveActivity } from '../../../../src/core/activityTypes';
 import type { ActivityHost } from './ui-agent-activity-fixture.types';
 import type { Page } from '@playwright/test';
 import { projectFixture } from './ui-project-fixture';
@@ -54,5 +55,36 @@ export async function agentActivityFixture(page: Page) {
 				agents: { tracking: 'available', working: 2, unreadable: 0, roster }
 			};
 		};
+	});
+}
+
+/** The same project fixture with enough previous sessions to exercise the compact default. */
+export async function longAgentActivityFixture(page: Page) {
+	await agentActivityFixture(page);
+	await page.addInitScript(() => {
+		const host = window as unknown as {
+			harness: { agentActivity(): Promise<Pick<LiveActivity, 'sampledAt' | 'agents'>> };
+		};
+		const read = host.harness.agentActivity;
+		host.harness.agentActivity = async () => {
+			const value = await read();
+			const earlier = value.agents.roster[2];
+			value.agents.roster.push(
+				...Array.from({ length: 12 }, (_, index) => ({
+					...earlier,
+					id: `old-${index}`,
+					label: `Earlier session ${index}`
+				}))
+			);
+			return value;
+		};
+	});
+}
+
+/** Fonts and content pixels settle before an optional acceptance screenshot. */
+export async function readyForAgentCapture(page: Page) {
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
 	});
 }

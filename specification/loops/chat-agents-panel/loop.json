@@ -2,7 +2,7 @@
 	"name": "chat-agents-panel",
 	"goal": "Project chat shows live agent sessions, their tasks and declared module owners without inventing activity",
 	"createdAt": "2026-10-24T16:06:54.140Z",
-	"updatedAt": "2026-10-24T16:27:26.732Z",
+	"updatedAt": "2026-10-24T16:45:10.891921Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -26,12 +26,13 @@
 			"title": "Add or update focused automated coverage.",
 			"status": "complete",
 			"completedAt": "2026-10-24T16:27:26.732Z",
-			"evidence": "Missing Agents control reproduced on unchanged main with corrected fixture. Same three browser cases pass after implementation; 28 adjacent chat browser cases, 13 data/component tests, 135 remote tests and 15 shared metadata guards pass."
+			"evidence": "Missing Agents control and hidden modules under fifteen sessions each reproduced before repair. Twenty-nine chat browser cases, thirteen data/component tests, 135 remote tests and 27 shared/ownership guards pass. Compiled desktop, tablet and phone captures inspected; real Electron registry and draft retention manually checked."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Pending: bun run check passes formatting and TypeScript, then fails the unchanged main test/shared-workspace-registry.test.ts:130 max-lines-per-function rule (57 versus 55). Reports Styles also rejects unchanged translations.css font-style:italic. Focused checks, desktop build/typecheck/audit and real registry UI pass. No merge or shared preview publication."
 		}
 	],
 	"evaluators": [
