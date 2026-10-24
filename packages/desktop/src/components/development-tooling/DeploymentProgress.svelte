@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Mark } from './DeploymentProgress.types';
 
@@ -28,20 +30,20 @@
 	}
 </script>
 
-<div class="deployment-progress" data-phase={deployment.phase}>
-	<div class="now">
-		<p role="status" aria-live="polite">{deployment.detail}</p>
-		{#if deployment.error}<p class="failure" role="alert">{deployment.error}</p>{/if}
-	</div>
-	<ol aria-label="Deployment steps">
+<hx-div class="deployment-progress" data-phase={deployment.phase}>
+	<hx-div class="now">
+		<hx-p role="status" aria-live="polite">{deployment.detail}</hx-p>
+		{#if deployment.error}<hx-p class="failure" role="alert">{deployment.error}</hx-p>{/if}
+	</hx-div>
+	<hx-ol aria-label="Deployment steps">
 		{#each deployment.steps as step, index (step.id)}{@const kind = mark(index)}
-			<li class={kind} aria-current={index === current ? 'step' : undefined}>
-				<span class="marker" aria-hidden="true"></span>{step.title}<span class="said"
-					>, {words[kind]}</span
+			<hx-li class={kind} aria-current={index === current ? 'step' : undefined}>
+				<hx-span class="marker" aria-hidden="true"></hx-span>{step.title}<hx-span class="said"
+					>, {words[kind]}</hx-span
 				>
-			</li>{/each}
-	</ol>
-</div>
+			</hx-li>{/each}
+	</hx-ol>
+</hx-div>
 
 <style>
 	.deployment-progress {

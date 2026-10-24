@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import BrowserErrors from '../../../../reports/src/components/browser-errors/BrowserErrors.svelte';
 	import EntityStates from '../../../../reports/src/components/EntityStates.svelte';
@@ -41,11 +43,11 @@
 		scope={result.scope}
 		resolveImage={(item) => evidence.url(item.phase === 'before' ? 'before' : 'after', item.file)}
 	/>
-	<details><summary>Verification details</summary>{@render diagnostics()}</details>
+	<hx-details><hx-summary>Verification details</hx-summary>{@render diagnostics()}</hx-details>
 {:else}{@render diagnostics()}{/if}
 
 {#snippet diagnostics()}
-	<section class="panel coverage-panel" aria-label="Evidence coverage">
+	<hx-section class="panel coverage-panel" aria-label="Evidence coverage">
 		{#if workspace}<RegressionProof
 				items={side?.detail?.regressions ?? []}
 				unit={entity.id}
@@ -56,63 +58,69 @@
 						workspace.link({ commit, category: entity.category, entityId: entity.id })
 					)}
 			/>{/if}
-		<div class="row">
-			<h2>Evidence</h2>
-			<span class="chip runtime-chip">Runtime capture</span>{#if side}<small
+		<hx-div class="row">
+			<hx-h2>Evidence</hx-h2>
+			<hx-span class="chip runtime-chip">Runtime capture</hx-span>{#if side}<hx-small
 					>Recorded for {short(side.commit)}{side.record
 						? ` · record ${side.record.id}`
-						: ''}</small
+						: ''}</hx-small
 				>{/if}
-		</div>
-		{#if notice}<p
+		</hx-div>
+		{#if notice}<hx-p
 				class={notice.alert ? 'error' : 'empty'}
 				role={notice.alert ? 'alert' : 'status'}
 			>
 				{notice.text}
-			</p>{:else if side}{#if side.gap}<p class="runtime-gap">
-					<StatusIcon status="failed" reason="Evidence missing" /><span>{side.gap}</span>
-				</p>{/if}{#each side.coverage as item (item.scenario)}<article class="coverage-scenario">
-					<h3>
+			</hx-p>{:else if side}{#if side.gap}<hx-p class="runtime-gap">
+					<StatusIcon status="failed" reason="Evidence missing" /><hx-span>{side.gap}</hx-span>
+				</hx-p>{/if}{#each side.coverage as item (item.scenario)}<hx-article
+					class="coverage-scenario"
+				>
+					<hx-h3>
 						<StatusIcon status={mark(item.standing)} reason={told(item.standing, item.reasons)} />
-						{item.title}<span class="chip">{item.kind}</span>{#if item.inheritedFrom}<small
-								>Inherited from {short(item.inheritedFrom)}</small
+						{item.title}<hx-span class="chip">{item.kind}</hx-span>{#if item.inheritedFrom}<hx-small
+								>Inherited from {short(item.inheritedFrom)}</hx-small
 							>{/if}
-					</h3>
-					<p class="muted">
-						{#each item.tests as test (test.id)}<span
-								>{test.id} · {test.status ?? 'not in the record'}</span
+					</hx-h3>
+					<hx-p class="muted">
+						{#each item.tests as test (test.id)}<hx-span
+								>{test.id} · {test.status ?? 'not in the record'}</hx-span
 							>{/each}
-					</p>
+					</hx-p>
 					{#each item.tests as check, position (position)}<BrowserErrors
 							diagnostics={check.browserErrors}
 						/>{/each}
-					<table>
-						<thead>
-							<tr><th>State</th><th>Declared</th><th>Standing</th><th>Captures</th></tr>
-						</thead>
-						<tbody>
-							{#each item.states as state (state.state)}<tr>
-									<td>{state.state}</td>
-									<td>{state.declared}</td>
-									<td
+					<hx-table>
+						<hx-thead>
+							<hx-tr
+								><hx-th>State</hx-th><hx-th>Declared</hx-th><hx-th>Standing</hx-th><hx-th
+									>Captures</hx-th
+								></hx-tr
+							>
+						</hx-thead>
+						<hx-tbody>
+							{#each item.states as state (state.state)}<hx-tr>
+									<hx-td>{state.state}</hx-td>
+									<hx-td>{state.declared}</hx-td>
+									<hx-td
 										><StatusIcon
 											status={mark(state.standing)}
 											reason={told(state.standing, state.reasons)}
-										/></td
+										/></hx-td
 									>
-									<td>{slots(state).join('; ') || 'None declared'}</td>
-								</tr>{/each}
-						</tbody>
-					</table>
-				</article>{/each}{/if}
+									<hx-td>{slots(state).join('; ') || 'None declared'}</hx-td>
+								</hx-tr>{/each}
+						</hx-tbody>
+					</hx-table>
+				</hx-article>{/each}{/if}
 		<!-- What the tests were given and what they observed, as the overview shows it; never made up. -->
 		{#if !notice && result}{#if result.behavior.rows.length}<RuntimeBehavior
 					{result}
 					{evidence}
 					unit={entity.category === 'functions' ? entity.id : undefined}
-				/>{:else}<p class="empty">
+				/>{:else}<hx-p class="empty">
 					No test recorded an input and an observed output for this entity at
 					{short(result.scope.commit)}.
-				</p>{/if}{/if}
-	</section>
+				</hx-p>{/if}{/if}
+	</hx-section>
 {/snippet}

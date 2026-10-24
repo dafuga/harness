@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Workspace } from '../../lib/stores/workspace.svelte';
 	import type {
@@ -76,13 +78,13 @@
 	}
 </script>
 
-{#snippet commit(name: string, item: DeploymentReceipt | null)}<dl>
-		<dt>{name}</dt>
-		{#if item}<dd><code>{item.commit}</code></dd>
-			<dd class="when">
-				Deployed <time datetime={item.updatedAt}>{displayTime(item.updatedAt)}</time>
-			</dd>{:else}<dd class="when">{promotion ? 'Never deployed' : '…'}</dd>{/if}
-	</dl>{/snippet}
+{#snippet commit(name: string, item: DeploymentReceipt | null)}<hx-dl>
+		<hx-dt>{name}</hx-dt>
+		{#if item}<hx-dd><hx-code>{item.commit}</hx-code></hx-dd>
+			<hx-dd class="when">
+				Deployed <hx-time datetime={item.updatedAt}>{displayTime(item.updatedAt)}</hx-time>
+			</hx-dd>{:else}<hx-dd class="when">{promotion ? 'Never deployed' : '…'}</hx-dd>{/if}
+	</hx-dl>{/snippet}
 
 <ChoiceDialog
 	label="Deploy"
@@ -94,27 +96,27 @@
 	onopen={opened}
 >
 	{#snippet icon()}<Icon name="deploy" size={18} />{/snippet}
-	{#snippet footer()}<div class="promote">
-			{#if !job}<p role="status" aria-live="polite">{status}</p>{/if}
-			<button type="button" class="primary" disabled={!ready} onclick={promote}
-				>Promote to production</button
+	{#snippet footer()}<hx-div class="promote">
+			{#if !job}<hx-p role="status" aria-live="polite">{status}</hx-p>{/if}
+			<hx-button type="button" class="primary" disabled={!ready} onclick={promote}
+				>Promote to production</hx-button
 			>
-		</div>{/snippet}
-	<h2>Promote preprod to production</h2>
-	<div class="compare" class:same>
+		</hx-div>{/snippet}
+	<hx-h2>Promote preprod to production</hx-h2>
+	<hx-div class="compare" class:same>
 		{@render commit('Preprod', promotion?.preprod ?? null)}
-		<div class="between">
-			<span class="arrow" aria-hidden="true">↓</span>
-			{#if distance}<p>{distance}</p>{/if}
-		</div>
+		<hx-div class="between">
+			<hx-span class="arrow" aria-hidden="true">↓</hx-span>
+			{#if distance}<hx-p>{distance}</hx-p>{/if}
+		</hx-div>
 		{@render commit('Production', production)}
-	</div>
-	{#if plan?.blockers.length}<ul class="blockers" aria-label="Blockers">
-			{#each plan.blockers as blocker, index (index)}<li>{blocker}</li>{/each}
-		</ul>{/if}
-	{#if deployments.error && deployments.error !== job?.error}<p class="error" role="alert">
+	</hx-div>
+	{#if plan?.blockers.length}<hx-ul class="blockers" aria-label="Blockers">
+			{#each plan.blockers as blocker, index (index)}<hx-li>{blocker}</hx-li>{/each}
+		</hx-ul>{/if}
+	{#if deployments.error && deployments.error !== job?.error}<hx-p class="error" role="alert">
 			{deployments.error}
-		</p>{/if}
+		</hx-p>{/if}
 	{#if job}<DeploymentDetails deployment={job} showIdentity={false} />{/if}
 </ChoiceDialog>
 

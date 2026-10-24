@@ -5,4 +5,5 @@ export interface GenerateUnitInput {
 	force?: boolean;
 	root?: string;
 	group?: string;
+	level?: 'molecule' | 'organism';
 }

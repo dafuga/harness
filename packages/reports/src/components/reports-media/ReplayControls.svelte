@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { formatDuration } from '../../helpers/strings/formatDuration';
 	import { REPLAY_SPEEDS } from '../../utils/reports-media/replayFrames';
@@ -46,14 +48,14 @@
 	};
 </script>
 
-{#snippet icon(path: string)}<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"
-		><path d={path} /></svg
+{#snippet icon(path: string)}<hx-svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+		><hx-svg-path d={path} /></hx-svg
 	>{/snippet}
 
-<div class="replay-controls">
+<hx-div class="replay-controls">
 	<!-- One step per screenshot: arrows, Home and End move between captured frames. -->
-	<div class="replay-timeline">
-		<input
+	<hx-div class="replay-timeline">
+		<hx-input
 			type="range"
 			min="0"
 			max={last}
@@ -64,68 +66,68 @@
 			aria-valuetext={$t('replay.timelineValue', { values: { frame: index + 1, count, title } })}
 			oninput={(event) => onseek(Number(event.currentTarget.value))}
 		/>
-		<span class="replay-time"
+		<hx-span class="replay-time"
 			>{$t('replay.time', {
 				values: { elapsed: formatDuration(elapsed), total: formatDuration(total) }
-			})}</span
+			})}</hx-span
 		>
-	</div>
-	<div class="replay-bar">
-		<div class="replay-transport" role="group" aria-label={$t('replay.transport')}>
-			<button
+	</hx-div>
+	<hx-div class="replay-bar">
+		<hx-div class="replay-transport" role="group" aria-label={$t('replay.transport')}>
+			<hx-button
 				type="button"
 				aria-label={$t('replay.previous')}
 				title={$t('replay.previous')}
 				disabled={index <= 0}
-				onclick={() => onseek(index - 1)}>{@render icon(icons.previous)}</button
+				onclick={() => onseek(index - 1)}>{@render icon(icons.previous)}</hx-button
 			>
-			<button type="button" class="replay-play" onclick={ontoggle}
+			<hx-button type="button" class="replay-play" onclick={ontoggle}
 				>{@render icon(playing ? icons.pause : icons.play)}
-				{$t(playing ? 'replay.pause' : 'replay.play')}</button
+				{$t(playing ? 'replay.pause' : 'replay.play')}</hx-button
 			>
-			<button
+			<hx-button
 				type="button"
 				aria-label={$t('replay.next')}
 				title={$t('replay.next')}
 				disabled={index >= last}
-				onclick={() => onseek(index + 1)}>{@render icon(icons.next)}</button
+				onclick={() => onseek(index + 1)}>{@render icon(icons.next)}</hx-button
 			>
-		</div>
-		<label class="replay-field">
-			<span>{$t('replay.speed')}</span>
+		</hx-div>
+		<hx-label class="replay-field">
+			<hx-span>{$t('replay.speed')}</hx-span>
 			<Select
 				label={$t('replay.speed')}
 				bind:value={() => String(speed), (value) => (speed = Number(value))}
 			>
-				{#each REPLAY_SPEEDS as value}<option value={String(value)}
-						>{$t('replay.speedValue', { values: { speed: value } })}</option
+				{#each REPLAY_SPEEDS as value}<hx-option value={String(value)}
+						>{$t('replay.speedValue', { values: { speed: value } })}</hx-option
 					>{/each}
 			</Select>
-		</label>
+		</hx-label>
 		{#if scenes.length}
-			<label class="replay-field">
-				<span>{$t('replay.scene')}</span>
+			<hx-label class="replay-field">
+				<hx-span>{$t('replay.scene')}</hx-span>
 				<Select
 					label={$t('replay.scene')}
 					bind:value={() => String(scene ?? ''), (value) => onscene(Number(value))}
 				>
-					{#if scene === null}<option value="" disabled>{$t('replay.noScene')}</option>{/if}
-					{#each scenes as value}<option value={String(value)}
-							>{$t('replay.sceneValue', { values: { scene: value } })}</option
+					{#if scene === null}<hx-option value="" disabled>{$t('replay.noScene')}</hx-option>{/if}
+					{#each scenes as value}<hx-option value={String(value)}
+							>{$t('replay.sceneValue', { values: { scene: value } })}</hx-option
 						>{/each}
 				</Select>
-			</label>
+			</hx-label>
 		{/if}
-		<div class="replay-end">
-			<button type="button" disabled={index >= last} onclick={() => onseek(last)}
-				>{@render icon(icons.latest)} {$t('replay.latest')}</button
+		<hx-div class="replay-end">
+			<hx-button type="button" disabled={index >= last} onclick={() => onseek(last)}
+				>{@render icon(icons.latest)} {$t('replay.latest')}</hx-button
 			>
-			<button
+			<hx-button
 				type="button"
 				aria-label={$t(fullscreen ? 'replay.exitFullscreen' : 'replay.fullscreen')}
 				title={$t(fullscreen ? 'replay.exitFullscreen' : 'replay.fullscreen')}
-				onclick={onfullscreen}>{@render icon(fullscreen ? icons.exit : icons.enter)}</button
+				onclick={onfullscreen}>{@render icon(fullscreen ? icons.exit : icons.enter)}</hx-button
 			>
-		</div>
-	</div>
-</div>
+		</hx-div>
+	</hx-div>
+</hx-div>

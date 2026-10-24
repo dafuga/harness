@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Pair } from "./EntityAudio.types";
+	import type { Pair } from './EntityAudio.types';
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -36,56 +38,55 @@
 	let shown = $derived(paired ? sides : sides.slice(1));
 	const at = (phase: 'before' | 'after') =>
 		shortCommit(phase === 'before' ? (scope.parent ?? '') : scope.commit);
-
 </script>
 
 {#if clips.length}
-	<section
+	<hx-section
 		class="ex-card ex-evidence"
 		aria-labelledby="ex-audio-title"
 		data-harness-component="harness-entity-audio"
 	>
-		<header class="ex-evidence-head">
-			<div>
-				<h2 id="ex-audio-title">{paired ? 'Audio comparison' : 'Current audio'}</h2>
-				<p class="ex-soft">
+		<hx-header class="ex-evidence-head">
+			<hx-div>
+				<hx-h2 id="ex-audio-title">{paired ? 'Audio comparison' : 'Current audio'}</hx-h2>
+				<hx-p class="ex-soft">
 					{paired
 						? 'The same clip before and after the selected commit, each with its transcript.'
 						: `What was recorded at the current branch tip · ${shortCommit(scope.commit)}`}
-				</p>
-			</div>
-		</header>
+				</hx-p>
+			</hx-div>
+		</hx-header>
 		{#each pairs as pair, position (position)}
-			<div class="ex-panes" class:paired>
+			<hx-div class="ex-panes" class:paired>
 				{#each shown as side}
 					{@const clip = pair[side.phase]}
-					<div class="ex-pane" role="group" aria-label={`${side.title} · ${at(side.phase)}`}>
+					<hx-div class="ex-pane" role="group" aria-label={`${side.title} · ${at(side.phase)}`}>
 						{#if paired}
-							<p class="ex-pane-head">
-								<strong>{side.title} · {at(side.phase)}</strong>
-								<span class="ex-pill">{side.role}</span>
-							</p>
+							<hx-p class="ex-pane-head">
+								<hx-strong>{side.title} · {at(side.phase)}</hx-strong>
+								<hx-span class="ex-pill">{side.role}</hx-span>
+							</hx-p>
 						{/if}
 						{#if clip}
 							<AudioEvidence item={clip} assetBase={mediaBase} idPrefix="overview-audio-" />
 						{:else}
-							<p class="ex-gap">
+							<hx-p class="ex-gap">
 								<HarnessVerdict passed={false} label="No clip" />
-								<span>No clip of this state is recorded for {at(side.phase)}.</span>
-							</p>
+								<hx-span>No clip of this state is recorded for {at(side.phase)}.</hx-span>
+							</hx-p>
 						{/if}
-					</div>
+					</hx-div>
 				{/each}
-			</div>
+			</hx-div>
 		{/each}
-	</section>
+	</hx-section>
 {:else if empty}
-	<section
+	<hx-section
 		class="ex-card ex-evidence"
 		aria-labelledby="ex-audio-title"
 		data-harness-component="harness-entity-audio"
 	>
-		<h2 id="ex-audio-title">Audio evidence</h2>
-		<p class="ex-soft">No audio evidence is recorded for this component at this revision.</p>
-	</section>
+		<hx-h2 id="ex-audio-title">Audio evidence</hx-h2>
+		<hx-p class="ex-soft">No audio evidence is recorded for this component at this revision.</hx-p>
+	</hx-section>
 {/if}

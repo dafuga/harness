@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type {
 		BehaviorOutcome,
@@ -37,25 +39,25 @@
 	);
 </script>
 
-<div class="runtime-pane" role="group" aria-label={title}>
-	<p class="runtime-pane-head">
-		<strong>{title}</strong><span class="chip">{role}</span><StatusIcon
+<hx-div class="runtime-pane" role="group" aria-label={title}>
+	<hx-p class="runtime-pane-head">
+		<hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span><StatusIcon
 			status={passed ? 'verified' : 'failed'}
 			reason={passed ? 'All results passed' : 'Not all results passed'}
 		/>
-	</p>
-	{#each shown.groups as group (`${group.scenario}|${group.state}`)}<div class="runtime-state">
-			<h4>
+	</hx-p>
+	{#each shown.groups as group (`${group.scenario}|${group.state}`)}<hx-div class="runtime-state">
+			<hx-h4>
 				<StatusIcon status={mark(group[side])} reason={said[group[side]]} />
 				{named(group.scenario)} · {group.state}
-			</h4>
-			{#each group.lines as line (`${line.evidence}|${line.kind}`)}<div class="runtime-result">
-					<p>
-						<span class="chip">{line.kind}</span><span>{said[line[side].outcome]}</span
-						>{#if side === 'after' && line.differences.length}<span class="muted"
-								>differs at {line.differences.join(', ')}</span
+			</hx-h4>
+			{#each group.lines as line (`${line.evidence}|${line.kind}`)}<hx-div class="runtime-result">
+					<hx-p>
+						<hx-span class="chip">{line.kind}</hx-span><hx-span>{said[line[side].outcome]}</hx-span
+						>{#if side === 'after' && line.differences.length}<hx-span class="muted"
+								>differs at {line.differences.join(', ')}</hx-span
 							>{/if}
-					</p>
+					</hx-p>
 					<RuntimeArtifact
 						cell={line[side]}
 						label={`${line.kind} of ${group.state}`}
@@ -63,6 +65,6 @@
 						refusal={refusals[line[side].capture?.sha256 ?? '']}
 						{unit}
 					/>
-				</div>{/each}
-		</div>{/each}
-</div>
+				</hx-div>{/each}
+		</hx-div>{/each}
+</hx-div>

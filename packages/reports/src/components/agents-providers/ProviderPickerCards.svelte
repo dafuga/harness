@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { SessionObservation, SwitchRequest } from '../../../../../src/core/pickerTypes';
 	import type { PickerModel, ProviderSelection } from '../../../../../src/core/pickerModelTypes';
@@ -30,39 +32,42 @@
 </script>
 
 {#snippet choice(target: ProviderSelection)}
-	<strong>{labelFor(target)}</strong>
-	<p>{providers[target.provider] ?? target.provider} · {target.model} · {target.effort} effort</p>
+	<hx-strong>{labelFor(target)}</hx-strong>
+	<hx-p
+		>{providers[target.provider] ?? target.provider} · {target.model} · {target.effort} effort</hx-p
+	>
 {/snippet}
 
-<div class="picker-cards">
-	<article class="picker-card picker-active">
-		<h3>Active model</h3>
+<hx-div class="picker-cards">
+	<hx-article class="picker-card picker-active">
+		<hx-h3>Active model</hx-h3>
 		{#if active}
 			{@render choice(active.selection)}
-			<p>
+			<hx-p>
 				{active.idle ? 'Idle' : 'In use'} · clients: {active.clients} · observed {when(
 					active.observedAt
 				)}
-			</p>
+			</hx-p>
 		{:else}
-			<strong>Unknown</strong>
-			<p>No verified observation of this session yet.</p>
+			<hx-strong>Unknown</hx-strong>
+			<hx-p>No verified observation of this session yet.</hx-p>
 		{/if}
-	</article>
-	<article class="picker-card picker-request" data-status={request?.status}>
-		<h3>
-			Requested switch <span class="picker-status"
-				>{request ? request.status[0].toUpperCase() + request.status.slice(1) : 'None'}</span
+	</hx-article>
+	<hx-article class="picker-card picker-request" data-status={request?.status}>
+		<hx-h3>
+			Requested switch <hx-span class="picker-status"
+				>{request ? request.status[0].toUpperCase() + request.status.slice(1) : 'None'}</hx-span
 			>
-		</h3>
+		</hx-h3>
 		{#if request}
 			{@render choice(request.target)}
-			<p>Queued {when(request.createdAt)}{request.reason ? ` · ${request.reason}` : ''}</p>
+			<hx-p>Queued {when(request.createdAt)}{request.reason ? ` · ${request.reason}` : ''}</hx-p>
 		{:else}
-			<p>Nothing is queued for this session.</p>
+			<hx-p>Nothing is queued for this session.</hx-p>
 		{/if}
 		{#if request?.status === 'pending'}
-			<button type="button" onclick={oncancel} disabled={locked}>Cancel pending switch</button>
+			<hx-button type="button" onclick={oncancel} disabled={locked}>Cancel pending switch</hx-button
+			>
 		{/if}
-	</article>
-</div>
+	</hx-article>
+</hx-div>

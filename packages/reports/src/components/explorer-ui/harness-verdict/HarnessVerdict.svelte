@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { tooltipPlace } from './tooltipPlace';
 	import HarnessIcon from '../HarnessIcon.svelte';
@@ -82,7 +84,7 @@
 	});
 </script>
 
-<span
+<hx-span
 	class="hx-verdict"
 	class:passed={proven}
 	class:failed={!proven && !unknown}
@@ -91,7 +93,7 @@
 	data-harness-component="harness-harness-verdict"
 	bind:this={root}
 >
-	<button
+	<hx-button
 		type="button"
 		aria-label={words}
 		aria-describedby={id}
@@ -101,9 +103,10 @@
 		onfocus={(event) => (asked.focus = event.currentTarget.matches(':focus-visible'))}
 		onblur={close}
 		onclick={() => (asked.pinned = !asked.pinned)}
-		onkeydown={keyed}><HarnessIcon name={proven ? 'passed' : unknown ? 'info' : 'failed'} /></button
+		onkeydown={keyed}
+		><HarnessIcon name={proven ? 'passed' : unknown ? 'info' : 'failed'} /></hx-button
 	>
-	<span
+	<hx-span
 		class="hx-tip"
 		role="tooltip"
 		{id}
@@ -113,10 +116,11 @@
 		bind:this={tip}
 		onpointerenter={(event) => hovered(event, 'tip', true)}
 		onpointerleave={(event) => hovered(event, 'tip', false)}
-		><strong>{words}</strong>{#each why as reason, position (position)}<span>{reason}</span
-			>{/each}</span
+		><hx-strong>{words}</hx-strong>{#each why as reason, position (position)}<hx-span
+				>{reason}</hx-span
+			>{/each}</hx-span
 	>
-</span>
+</hx-span>
 
 <style>
 	/* A verdict is red unless it passed; there is no colour for anything in between. */

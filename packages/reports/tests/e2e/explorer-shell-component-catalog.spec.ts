@@ -1,3 +1,4 @@
+import { assertCompositionFilter } from './support/component-previews/atomicCatalog';
 import { dependencyTables } from './support/shellChecks';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
@@ -92,6 +93,7 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
+			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 
 			if (
 				unit.id === 'reports.component.explorer-dependencies-screen' ||

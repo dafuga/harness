@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Section } from './EntityView.types';
 
@@ -129,56 +131,57 @@
 	}
 </script>
 
-<div class="entity-layout" class:with-thread={conversation}>
-	<main class="entity-main">
+<hx-div class="entity-layout" class:with-thread={conversation}>
+	<hx-main class="entity-main">
 		<WorkspaceLink {workspace} to={workspace.path()} class="breadcrumb"
 			>{workspace.category} › {name}</WorkspaceLink
 		>
-		<div class="entity-heading">
-			<span class="entity-symbol"><Icon name={entity.category} size={30} /></span>
-			<div>
-				<div class="row">
-					<h1>{name}</h1>
-					<span class="chip">{entity.kind}</span>{#if entity.hasPlan}<PlanBadge />{/if}<StatusIcon
-						status={verdict.status}
-						reason={verdict.reason}
-					/>
-				</div>
-				<p>{entity.summary}</p>
-				{#if route}<p class="app-route"><span>App route</span><code>{route}</code></p>{/if}
-			</div>
-			{#if !conversation}<button onclick={() => (conversation = true)}>Conversation</button>{/if}
-		</div>
+		<hx-div class="entity-heading">
+			<hx-span class="entity-symbol"><Icon name={entity.category} size={30} /></hx-span>
+			<hx-div>
+				<hx-div class="row">
+					<hx-h1>{name}</hx-h1>
+					<hx-span class="chip">{entity.kind}</hx-span>{#if entity.hasPlan}<PlanBadge
+						/>{/if}<StatusIcon status={verdict.status} reason={verdict.reason} />
+				</hx-div>
+				<hx-p>{entity.summary}</hx-p>
+				{#if route}<hx-p class="app-route"
+						><hx-span>App route</hx-span><hx-code>{route}</hx-code></hx-p
+					>{/if}
+			</hx-div>
+			{#if !conversation}<hx-button onclick={() => (conversation = true)}>Conversation</hx-button
+				>{/if}
+		</hx-div>
 		{#if pictured}<RuntimeEvidence {entity} {workspace} {evidence} />{/if}
-		<nav class="entity-tabs" aria-label="Entity sections">
-			{#each names as value (value)}<button
+		<hx-nav class="entity-tabs" aria-label="Entity sections">
+			{#each names as value (value)}<hx-button
 					class:active={tab === value}
 					aria-current={tab === value ? 'page' : undefined}
 					onclick={() => {
 						tab = value;
 						section(sections[value]);
-					}}>{value}</button
+					}}>{value}</hx-button
 				>{/each}
-		</nav>
+		</hx-nav>
 		{#if tab === 'Source'}
 			{#key `${entity.id}:${workspace.snapshot?.revision.commit}`}<DetailsPanel
 					{entity}
 					{workspace}
 				/>{/key}
-		{:else if tab === 'Overview'}<div class="base-panels">
+		{:else if tab === 'Overview'}<hx-div class="base-panels">
 				<ContractPanel contract={entity.contract} /><MeasuresPanel
 					size={entity.size}
 					performance={entity.performance}
 				/>
-				<div class="usage-panels">
+				<hx-div class="usage-panels">
 					<RelationshipsPanel
 						relationships={entity.relationships}
 						{workspace}
 						direction="used-by"
 					/>
 					<RelationshipsPanel relationships={entity.relationships} {workspace} direction="uses" />
-				</div>
-			</div>
+				</hx-div>
+			</hx-div>
 			{#if !pictured}<RuntimeEvidence {entity} {workspace} {evidence} />{/if}
 		{:else if tab === 'Designs' || tab === 'Plan'}<DesignPanel
 				{entity}
@@ -199,7 +202,7 @@
 				{evidence}
 				{workspace}
 			/>{:else}<HistoryPanel {entity} {workspace} {evidence} />{/if}
-	</main>
+	</hx-main>
 	{#if conversation}<ThreadPanel
 			{entity}
 			{workspace}
@@ -209,4 +212,4 @@
 			bind:option={() => shown, (value) => (option = value)}
 			close={() => (conversation = false)}
 		/>{/if}
-</div>
+</hx-div>

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { HarnessExplanation, HarnessIndex } from '../../../models/explorer-ui/Harness.types';
 	import type { HarnessClient } from '../../../utils/explorer-ui/harnessClient';
@@ -45,58 +47,62 @@
 	});
 </script>
 
-<section class="hc-card">
-	<label class="hc-field"
+<hx-section class="hc-card">
+	<hx-label class="hc-field"
 		>Component
 		<Select label="Component" bind:value={() => current, onunit}>
-			{#each index.units as item (item.id)}<option value={item.id}>{item.id}</option>{/each}
+			{#each index.units as item (item.id)}<hx-option value={item.id}>{item.id}</hx-option>{/each}
 		</Select>
-	</label>
-	<div class="hc-table-wrap">
-		<table class="hc-table" aria-label={'Growth of ' + current}>
-			<thead>
-				<tr
-					><th>Commit</th><th>Source bytes</th><th>Complexity</th><th>Dependencies</th><th>Why</th
-					></tr
+	</hx-label>
+	<hx-div class="hc-table-wrap">
+		<hx-table class="hc-table" aria-label={'Growth of ' + current}>
+			<hx-thead>
+				<hx-tr
+					><hx-th>Commit</hx-th><hx-th>Source bytes</hx-th><hx-th>Complexity</hx-th><hx-th
+						>Dependencies</hx-th
+					><hx-th>Why</hx-th></hx-tr
 				>
-			</thead>
-			<tbody>
+			</hx-thead>
+			<hx-tbody>
 				{#each rows as row, position (position)}
-					<tr>
-						<td>{row.commit.slice(0, 7)}<br /><span class="hc-muted">{row.subject}</span></td>
+					<hx-tr>
+						<hx-td
+							>{row.commit.slice(0, 7)}<hx-br /><hx-span class="hc-muted">{row.subject}</hx-span
+							></hx-td
+						>
 						{#each growthMetrics as metric (metric)}
-							<td
+							<hx-td
 								>{row.values[metric] ?? 'unavailable'}
 								{#if row.deltas[metric]}
-									<span class={(row.deltas[metric] ?? 0) > 0 ? 'hc-up' : 'hc-down'}
-										>{signed(row.deltas[metric])}</span
+									<hx-span class={(row.deltas[metric] ?? 0) > 0 ? 'hc-up' : 'hc-down'}
+										>{signed(row.deltas[metric])}</hx-span
 									>
 								{/if}
 								{#if row.notes[metric]}
-									<br /><span class="hc-muted">{row.notes[metric]}</span>
-								{/if}</td
+									<hx-br /><hx-span class="hc-muted">{row.notes[metric]}</hx-span>
+								{/if}</hx-td
 							>
 						{/each}
-						<td>
+						<hx-td>
 							{#each reasons[`${current}\n${row.commit}`] ?? [] as reason, position (position)}
-								<div>{reason.behavior}</div>
+								<hx-div>{reason.behavior}</hx-div>
 							{/each}
 							{#if row.changed}
-								<button type="button" class="hc-chip" onclick={() => oncompare(row.commit)}
-									>Evidence before and after</button
+								<hx-button type="button" class="hc-chip" onclick={() => oncompare(row.commit)}
+									>Evidence before and after</hx-button
 								>
 							{/if}
 							{#if row.changed && !(reasons[`${current}\n${row.commit}`] ?? []).length}
-								<span class="hc-muted">No reason is recorded.</span>
+								<hx-span class="hc-muted">No reason is recorded.</hx-span>
 							{/if}
-						</td>
-					</tr>
+						</hx-td>
+					</hx-tr>
 				{/each}
-			</tbody>
-		</table>
-	</div>
-	{#if rows.length === 0}<p class="hc-muted">No record has measured this component.</p>{/if}
-</section>
+			</hx-tbody>
+		</hx-table>
+	</hx-div>
+	{#if rows.length === 0}<hx-p class="hc-muted">No record has measured this component.</hx-p>{/if}
+</hx-section>
 {#if emitted.targets.length}
 	<HarnessEmittedGrowth
 		unit={current}
@@ -105,39 +111,46 @@
 		{oncompare}
 	/>
 {/if}
-<section class="hc-card hc-panel" aria-label={'Timings of ' + current}>
-	<h2>Timings</h2>
+<hx-section class="hc-card hc-panel" aria-label={'Timings of ' + current}>
+	<hx-h2>Timings</hx-h2>
 	{#if timings.length === 0}
-		<p class="hc-muted">No timing was recorded for this component; it is unavailable, not zero.</p>
+		<hx-p class="hc-muted"
+			>No timing was recorded for this component; it is unavailable, not zero.</hx-p
+		>
 	{/if}
 	{#each timings as benchmark, position (position)}
-		<h3>
+		<hx-h3>
 			{benchmark.metric} on {benchmark.workload}{benchmark.target ? ` (${benchmark.target})` : ''}
-		</h3>
+		</hx-h3>
 		{#if benchmark.incompatible}
-			<p class="hc-notice">
+			<hx-p class="hc-notice">
 				Not comparable: these series were measured on different machines or under different
 				conditions. They are shown side by side and are not joined into one trend.
-			</p>
+			</hx-p>
 		{/if}
 		{#each benchmark.series as series, position (position)}
-			<p class="hc-muted">Profile {series.profile}: {profile(series.profile)}. {series.method}</p>
-			<div class="hc-table-wrap">
-				<table class="hc-table">
-					<thead><tr><th>Commit</th><th>Value ({series.unitOfMeasure})</th></tr></thead>
-					<tbody>
+			<hx-p class="hc-muted"
+				>Profile {series.profile}: {profile(series.profile)}. {series.method}</hx-p
+			>
+			<hx-div class="hc-table-wrap">
+				<hx-table class="hc-table">
+					<hx-thead
+						><hx-tr><hx-th>Commit</hx-th><hx-th>Value ({series.unitOfMeasure})</hx-th></hx-tr
+						></hx-thead
+					>
+					<hx-tbody>
 						{#each series.points as point, position (position)}
-							<tr>
-								<td
+							<hx-tr>
+								<hx-td
 									>{point.commit.slice(0, 7)}
-									<span class="hc-muted">{subject(point.commit)}</span></td
+									<hx-span class="hc-muted">{subject(point.commit)}</hx-span></hx-td
 								>
-								<td>{point.value}</td>
-							</tr>
+								<hx-td>{point.value}</hx-td>
+							</hx-tr>
 						{/each}
-					</tbody>
-				</table>
-			</div>
+					</hx-tbody>
+				</hx-table>
+			</hx-div>
 		{/each}
 	{/each}
-</section>
+</hx-section>

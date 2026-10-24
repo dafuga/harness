@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import BrandMark from '../shared-primitives/BrandMark.svelte';
 	import type { HarnessNavbarInput } from '../../utils/explorer-ui/harnessShell';
@@ -23,25 +25,26 @@
 {#if navbar}
 	<!-- The bar as this header draws it. Its marker draws no box, and the bar and a notice under it
 		lay out as they do without one. -->
-	<div class="hx-header" data-harness-component="harness-harness-header">
+	<hx-div class="hx-header" data-harness-component="harness-harness-header">
 		<HarnessNavbar {base} {...navbar} />
-	</div>
+	</hx-div>
 {:else}
-	<header class="hc-top" data-harness-component="harness-harness-header">
-		<span class="brand-symbol" aria-hidden="true"><BrandMark /></span>
-		<h1>Harness</h1>
-		<span class="hc-muted">Components, impact and recorded evidence of this repository</span>
-		<nav aria-label="Other views">
-			{#each links as link, position (position)}<a href={link.href}>{link.label}</a>{/each}
-		</nav>
-	</header>
+	<hx-header class="hc-top" data-harness-component="harness-harness-header">
+		<hx-span class="brand-symbol" aria-hidden="true"><BrandMark /></hx-span>
+		<hx-h1>Harness</hx-h1>
+		<hx-span class="hc-muted">Components, impact and recorded evidence of this repository</hx-span>
+		<hx-nav aria-label="Other views">
+			{#each links as link, position (position)}<hx-a href={link.href}>{link.label}</hx-a>{/each}
+		</hx-nav>
+	</hx-header>
 {/if}
-{#if problem}<p class="hc-notice" role="alert">{problem}</p>{/if}
+{#if problem}<hx-p class="hc-notice" role="alert">{problem}</hx-p>{/if}
 {#if missing}
-	<p class="hc-notice" role="alert">
+	<hx-p class="hc-notice" role="alert">
 		{missing.message}
-		{#if missing.home}<a class="hc-link" href={base + missing.home}>Open the newest commit</a>{/if}
-	</p>
+		{#if missing.home}<hx-a class="hc-link" href={base + missing.home}>Open the newest commit</hx-a
+			>{/if}
+	</hx-p>
 {/if}
 
 <style>

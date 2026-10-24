@@ -6,6 +6,10 @@
 	"responsibility": "Opens an address within the selected project while preserving normal browser behavior for modified clicks.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.shared-primitives-atoms-html-a"]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/WorkspaceLink.svelte",
@@ -59,6 +63,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		}

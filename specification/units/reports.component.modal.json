@@ -6,6 +6,10 @@
 	"responsibility": "Displays titled evidence or text in a native modal dialog with optional footer content.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.harness-harness-icon"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/Modal.svelte",

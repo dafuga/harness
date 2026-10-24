@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { entityCatalog } from '../../utils/explorer-ui/entityCatalog';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
@@ -12,7 +14,7 @@
 </script>
 
 <!-- The catalog of one kind; the marker of the screen draws no box. -->
-<div class="ex-screen" data-harness-component="harness-explorer-catalog-screen">
+<hx-div class="ex-screen" data-harness-component="harness-explorer-catalog-screen">
 	<ExplorerFrame {host}>
 		{#snippet children(nav)}
 			<ExplorerIndex
@@ -32,7 +34,7 @@
 			</ExplorerIndex>
 		{/snippet}
 	</ExplorerFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-screen {

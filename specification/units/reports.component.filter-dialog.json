@@ -6,6 +6,10 @@
 	"responsibility": "Opens catalog filters and sorting from one compact icon.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.harness-harness-icon", "reports.component.modal"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/FilterDialog.svelte",

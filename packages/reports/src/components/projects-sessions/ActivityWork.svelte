@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { WorkItem } from '../../../../../src/core/activityTypes';
 	import { activityTime } from '../../utils/projects-sessions/activityDisplay';
@@ -16,51 +18,51 @@
 </script>
 
 {#snippet commitRow(item: WorkItem)}
-	<div class="pa-row">
-		<strong>{item.subject}</strong>
-		<a href={href(item.commit)} title={'The page of commit ' + item.commit}
-			>{item.commit.slice(0, 7)}</a
+	<hx-div class="pa-row">
+		<hx-strong>{item.subject}</hx-strong>
+		<hx-a href={href(item.commit)} title={'The page of commit ' + item.commit}
+			>{item.commit.slice(0, 7)}</hx-a
 		>
-	</div>
-	<div class="pa-meta">
-		<time datetime={item.committedAt}>{activityTime(item.committedAt)} UTC</time>
-		<span>{item.branches.length ? item.branches.join(', ') : 'on no branch'}</span>
-		<span>{plural(item.files, 'file')}</span>
-		<span>{plural(item.unitCount ?? item.units.length, 'component')}</span>
-		<span>{plural(item.reasonCount, 'reason')}</span>
-	</div>
+	</hx-div>
+	<hx-div class="pa-meta">
+		<hx-time datetime={item.committedAt}>{activityTime(item.committedAt)} UTC</hx-time>
+		<hx-span>{item.branches.length ? item.branches.join(', ') : 'on no branch'}</hx-span>
+		<hx-span>{plural(item.files, 'file')}</hx-span>
+		<hx-span>{plural(item.unitCount ?? item.units.length, 'component')}</hx-span>
+		<hx-span>{plural(item.reasonCount, 'reason')}</hx-span>
+	</hx-div>
 	{#if item.units.length || item.reasons.length}
-		<details class="pa-detail">
-			<summary>Components and reasons</summary>
-			<div class="pa-tags">
-				{#each item.units as unit (unit)}<span class="pa-chip">{unit}</span>{/each}
+		<hx-details class="pa-detail">
+			<hx-summary>Components and reasons</hx-summary>
+			<hx-div class="pa-tags">
+				{#each item.units as unit (unit)}<hx-span class="pa-chip">{unit}</hx-span>{/each}
 				{#if item.unitCount > item.units.length}
-					<span class="pa-note"
-						>{item.unitCount - item.units.length} more components are on its page.</span
+					<hx-span class="pa-note"
+						>{item.unitCount - item.units.length} more components are on its page.</hx-span
 					>
 				{/if}
-			</div>
+			</hx-div>
 			{#if item.reasons.length}
-				<p class="pa-note">
+				<hx-p class="pa-note">
 					{recorded ? 'Noted on this commit or accepted by its records' : 'Noted on this commit'}:
-				</p>
+				</hx-p>
 			{/if}
 			{#each item.reasons as reason, position (position)}
-				<p class="pa-reason"><span>{reason.unit}</span> {reason.behavior}</p>
+				<hx-p class="pa-reason"><hx-span>{reason.unit}</hx-span> {reason.behavior}</hx-p>
 			{/each}
 			{#if item.reasonCount > item.reasons.length}
-				<small>{item.reasonCount - item.reasons.length} more reasons are on its page.</small>
+				<hx-small>{item.reasonCount - item.reasons.length} more reasons are on its page.</hx-small>
 			{/if}
-		</details>
+		</hx-details>
 	{/if}
-	{#if item.reasonCount === 0}<small>No reason is noted on this commit.</small>{/if}
+	{#if item.reasonCount === 0}<hx-small>No reason is noted on this commit.</hx-small>{/if}
 {/snippet}
 
-<section class="pa-card" aria-label="Recent work">
-	<div class="pa-head">
-		<h2>Recent work</h2>
-		<span class="pa-note">Committed · from Git</span>
-	</div>
+<hx-section class="pa-card" aria-label="Recent work">
+	<hx-div class="pa-head">
+		<hx-h2>Recent work</hx-h2>
+		<hx-span class="pa-note">Committed · from Git</hx-span>
+	</hx-div>
 	{#if work.length}
 		<ActivityList
 			items={work}
@@ -71,6 +73,6 @@
 			row={commitRow}
 		/>
 	{:else}
-		<p class="pa-empty">No commit is in this history yet.</p>
+		<hx-p class="pa-empty">No commit is in this history yet.</hx-p>
 	{/if}
-</section>
+</hx-section>

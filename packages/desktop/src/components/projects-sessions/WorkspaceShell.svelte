@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
@@ -10,10 +12,10 @@
 </script>
 
 <!-- Views are rebuilt per project: an open thread, image or dialog never moves to another one. -->
-<div class="workspace">
-	<NavBar {workspace} {account} />{#if workspace.error}<p class="error" role="alert">
+<hx-div class="workspace">
+	<NavBar {workspace} {account} />{#if workspace.error}<hx-p class="error" role="alert">
 			{workspace.error}
-		</p>{/if}{#if workspace.entity}{#key `${workspace.projectId}:${workspace.entity.id}`}<EntityView
+		</hx-p>{/if}{#if workspace.entity}{#key `${workspace.projectId}:${workspace.entity.id}`}<EntityView
 				{workspace}
 			/>{/key}{:else}{#key workspace.projectId}<CatalogView {workspace} />{/key}{/if}<StatusBar
 		{workspace}
@@ -21,4 +23,4 @@
 	<!-- One conversation per project: it stays through entities, history and pinned commits, and
 	     a request never follows to another project. -->
 	{#key workspace.projectId}<ProjectAgent {workspace} />{/key}
-</div>
+</hx-div>

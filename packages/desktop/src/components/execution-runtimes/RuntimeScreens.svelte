@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import type { Evidence } from '../../../../reports/src/models/Report.types';
@@ -60,40 +62,41 @@
 	}
 </script>
 
-<div class="runtime-card">
-	<h3>{title}</h3>
-	<p class="muted">
+<hx-div class="runtime-card">
+	<hx-h3>{title}</hx-h3>
+	<hx-p class="muted">
 		{#if !paired}{recorded}
 		{:else if unlike.length}The two sides were not recorded alike, so they are not compared.
 		{:else}The same scenario, state and viewport at the parent and at the commit.{/if}
-	</p>
-	{#if unlike.length}<ul class="runtime-gap" aria-label="Why the two sides are not compared">
-			{#each unlike as reason (reason)}<li>
-					<StatusIcon status="failed" reason="Not comparable" /><span>{reason}</span>
-				</li>{/each}
-		</ul>{/if}
-	{#if pick && option}<div class="runtime-controls">
-			<label
+	</hx-p>
+	{#if unlike.length}<hx-ul class="runtime-gap" aria-label="Why the two sides are not compared">
+			{#each unlike as reason (reason)}<hx-li>
+					<StatusIcon status="failed" reason="Not comparable" /><hx-span>{reason}</hx-span>
+				</hx-li>{/each}
+		</hx-ul>{/if}
+	{#if pick && option}<hx-div class="runtime-controls">
+			<hx-label
 				>Scenario<Select
 					label="Scenario"
 					disabled={options.length < 2}
 					bind:value={() => pick?.scenario ?? '', (scenario) => choose({ scenario })}
-					>{#each options as item (item.scenario)}<option value={item.scenario}>{item.title}</option
+					>{#each options as item (item.scenario)}<hx-option value={item.scenario}
+							>{item.title}</hx-option
 						>{/each}</Select
-				></label
-			><label
+				></hx-label
+			><hx-label
 				>State<Select
 					label="State"
 					bind:value={() => pick?.state ?? '', (state) => choose({ state })}
-					>{#each option.states as id (id)}<option value={id}>{id}</option>{/each}</Select
-				></label
+					>{#each option.states as id (id)}<hx-option value={id}>{id}</hx-option>{/each}</Select
+				></hx-label
 			><SegmentedChoice
 				label="Viewport"
 				options={option.viewports.map((item) => item.id)}
 				bind:value={() => pick?.viewport ?? '', (viewport) => choose({ viewport })}
-			/><small>{size}</small>
-		</div>{/if}
-	<div class="runtime-panes" class:paired>
+			/><hx-small>{size}</hx-small>
+		</hx-div>{/if}
+	<hx-div class="runtime-panes" class:paired>
 		{#each panes as item (item.id)}<RuntimePane {item} {evidence} {...heading(item)} />{/each}
-	</div>
-</div>
+	</hx-div>
+</hx-div>

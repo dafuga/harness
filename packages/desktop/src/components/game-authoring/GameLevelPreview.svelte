@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 	import { create2d, create3d, createRun } from '../../../../game/src/index';
@@ -24,12 +26,12 @@
 	};
 </script>
 
-<div class="level-preview" data-harness-component="game-level-preview">
+<hx-div class="level-preview" data-harness-component="game-level-preview">
 	{#key dimension}
-		<canvas use:paint={frame} data-level-preview width="1280" height="704" aria-label={label}
-		></canvas>
+		<hx-canvas use:paint={frame} data-level-preview width="1280" height="704" aria-label={label}
+		></hx-canvas>
 	{/key}
-</div>
+</hx-div>
 
 <style>
 	.level-preview {

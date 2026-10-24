@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { helperContract } from '../../../../../src/utils/helperContract';
 	import Select from '$shared/Select.svelte';
@@ -62,51 +64,56 @@
 	);
 </script>
 
-<main class="catalog">
-	<p class="breadcrumb">{workspace.snapshot?.project.name} › {heading}</p>
-	<div class="row">
-		<div>
-			<h1>{heading}</h1>
-			<p>Browse {heading.toLowerCase()} and understand your project.</p>
-		</div>
-	</div>
+<hx-main class="catalog">
+	<hx-p class="breadcrumb">{workspace.snapshot?.project.name} › {heading}</hx-p>
+	<hx-div class="row">
+		<hx-div>
+			<hx-h1>{heading}</hx-h1>
+			<hx-p>Browse {heading.toLowerCase()} and understand your project.</hx-p>
+		</hx-div>
+	</hx-div>
 	<!-- Right above the list: its search first, then filters that narrow it together. -->
-	<div class="catalog-tools" role="search" aria-label={`Find ${workspace.category}`}>
-		<input
+	<hx-div class="catalog-tools" role="search" aria-label={`Find ${workspace.category}`}>
+		<hx-input
 			type="search"
 			aria-label={`Search ${workspace.category}`}
 			placeholder={`Search ${workspace.category}…`}
 			bind:value={search}
 		/><FilterDialog {active} onreset={resetFilters}
-			><label class="checkbox"><input type="checkbox" bind:checked={changed} /> Changed only</label
-			><label class="filter-field"
-				><span>Verification</span><Select label="Verification filter" bind:value={verification}
-					><option value="all">All verification</option><option value="passed">Verified</option
-					><option value="unproven">Not verified</option></Select
-				></label
-			><label class="filter-field"
-				><span>Planning</span><Select label="Planning filter" bind:value={planning}
-					><option value="all">All planning</option><option value="planned">Planned</option><option
-						value="implemented">Implemented</option
+			><hx-label class="checkbox"
+				><hx-input type="checkbox" bind:checked={changed} /> Changed only</hx-label
+			><hx-label class="filter-field"
+				><hx-span>Verification</hx-span><Select
+					label="Verification filter"
+					bind:value={verification}
+					><hx-option value="all">All verification</hx-option><hx-option value="passed"
+						>Verified</hx-option
+					><hx-option value="unproven">Not verified</hx-option></Select
+				></hx-label
+			><hx-label class="filter-field"
+				><hx-span>Planning</hx-span><Select label="Planning filter" bind:value={planning}
+					><hx-option value="all">All planning</hx-option><hx-option value="planned"
+						>Planned</hx-option
+					><hx-option value="implemented">Implemented</hx-option></Select
+				></hx-label
+			><hx-label class="filter-field"
+				><hx-span>Order</hx-span><Select label="Sort catalog" bind:value={sort}
+					><hx-option value="title">Name</hx-option><hx-option value="version"
+						>Design version</hx-option
 					></Select
-				></label
-			><label class="filter-field"
-				><span>Order</span><Select label="Sort catalog" bind:value={sort}
-					><option value="title">Name</option><option value="version">Design version</option
-					></Select
-				></label
+				></hx-label
 			></FilterDialog
 		>
-	</div>
-	<div class="card-grid">
-		{#each entities as entity (entity.id)}<EntityCard {entity} {workspace} />{:else}<p
+	</hx-div>
+	<hx-div class="card-grid">
+		{#each entities as entity (entity.id)}<EntityCard {entity} {workspace} />{:else}<hx-p
 				class="empty"
 			>
 				No {workspace.category} match this view.
-				<button onclick={reset}>Show all {workspace.category}</button>
-			</p>{/each}
-	</div>
-</main>
+				<hx-button onclick={reset}>Show all {workspace.category}</hx-button>
+			</hx-p>{/each}
+	</hx-div>
+</hx-main>
 
 <style>
 	.catalog-tools {

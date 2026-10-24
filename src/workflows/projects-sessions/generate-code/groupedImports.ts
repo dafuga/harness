@@ -9,6 +9,15 @@ export function groupedImports(
 	paths: Map<string, string>
 ): string {
 	const edits: Array<{ start: number; end: number; text: string }> = [];
+	const atoms = /<!-- @harness-atoms (\S+) -->/.exec(contents);
+	if (atoms) {
+		const start = atoms.index + atoms[0].indexOf(atoms[1]);
+		edits.push({
+			start,
+			end: start + atoms[1].length,
+			text: groupedSpecifier(atoms[1], before, after, paths)
+		});
+	}
 	const scripts = before.endsWith('.svelte')
 		? [...contents.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((match) => ({
 				text: match[1],

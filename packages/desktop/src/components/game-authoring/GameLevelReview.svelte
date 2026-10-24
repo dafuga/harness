@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import GameLevelPreview from './GameLevelPreview.svelte';
 	import type { GameLevelReviewProps as Props } from './GameLevelReview.types';
@@ -30,57 +32,62 @@
 	});
 </script>
 
-<div class="review" data-harness-component="game-level-review">
+<hx-div class="review" data-harness-component="game-level-review">
 	<GameLevelPreview {layout} dimension={proposal.dimension} label="Level preview" />
-	<div class="details">
-		<p class="summary">{proposal.summary}</p>
-		<p class="meta">
-			<span class="chip">{proposal.dimension.toUpperCase()}</span>
-			<span class="chip">{source}</span>
-		</p>
-		<details>
-			<summary>{layout.objects.length} objects on a {layout.width} × {layout.depth} floor</summary>
-			<ul>
+	<hx-div class="details">
+		<hx-p class="summary">{proposal.summary}</hx-p>
+		<hx-p class="meta">
+			<hx-span class="chip">{proposal.dimension.toUpperCase()}</hx-span>
+			<hx-span class="chip">{source}</hx-span>
+		</hx-p>
+		<hx-details>
+			<hx-summary
+				>{layout.objects.length} objects on a {layout.width} × {layout.depth} floor</hx-summary
+			>
+			<hx-ul>
 				{#each layout.objects as item (item.id)}
-					<li>{item.label} <small>{item.kind}</small></li>
+					<hx-li>{item.label} <hx-small>{item.kind}</hx-small></hx-li>
 				{/each}
-			</ul>
-		</details>
+			</hx-ul>
+		</hx-details>
 		{#if built}
-			<p class="note">Built. Preview and Checkpoints are open for this level.</p>
+			<hx-p class="note">Built. Preview and Checkpoints are open for this level.</hx-p>
 		{:else if !status.readonly}
-			<label class="field">
-				<span>Requested changes</span>
-				<textarea
+			<hx-label class="field">
+				<hx-span>Requested changes</hx-span>
+				<hx-textarea
 					rows="2"
 					bind:value={feedback}
 					disabled={status.busy}
 					placeholder="Optional: what should change?"
-				></textarea>
-			</label>
+				></hx-textarea>
+			</hx-label>
 		{/if}
 		{#if !status.readonly}
-			<div class="actions">
-				<button type="button" class="quiet" onclick={edit}>Edit brief</button>
+			<hx-div class="actions">
+				<hx-button type="button" class="quiet" onclick={edit}>Edit brief</hx-button>
 				{#if !built}
-					<button
+					<hx-button
 						type="button"
 						disabled={status.busy || Boolean(status.reason)}
-						onclick={() => regenerate(feedback)}>Regenerate</button
+						onclick={() => regenerate(feedback)}>Regenerate</hx-button
 					>
-					<button type="button" disabled={approved || status.busy} onclick={approve}
-						>Approve level</button
+					<hx-button type="button" disabled={approved || status.busy} onclick={approve}
+						>Approve level</hx-button
 					>
-					<button type="button" class="primary" disabled={!approved || status.busy} onclick={build}
-						>Build level</button
+					<hx-button
+						type="button"
+						class="primary"
+						disabled={!approved || status.busy}
+						onclick={build}>Build level</hx-button
 					>
 				{/if}
-			</div>
+			</hx-div>
 		{/if}
-		{#if !built}<p class="note" role="status">{note}</p>{/if}
-		{#if status.error}<p class="error" role="alert">{status.error}</p>{/if}
-	</div>
-</div>
+		{#if !built}<hx-p class="note" role="status">{note}</hx-p>{/if}
+		{#if status.error}<hx-p class="error" role="alert">{status.error}</hx-p>{/if}
+	</hx-div>
+</hx-div>
 
 <style>
 	.review {

@@ -6,6 +6,17 @@
 	"responsibility": "Owns the / route page.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"hub.component.hub-frame",
+			"hub.component.login-panel",
+			"hub.component.project-create",
+			"hub.component.project-list",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
 	"owns": {
 		"source": ["packages/hub/src/routes/+page.svelte"],
 		"symbols": ["+page"]
@@ -49,6 +60,16 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		}

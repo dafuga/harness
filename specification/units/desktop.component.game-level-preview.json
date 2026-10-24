@@ -6,6 +6,13 @@
 	"responsibility": "Render the generated level geometry for human review before gameplay.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-canvas",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/game-authoring/GameLevelPreview.svelte",
@@ -49,6 +56,16 @@
 		},
 		{
 			"unit": "game.model.game-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-canvas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		}

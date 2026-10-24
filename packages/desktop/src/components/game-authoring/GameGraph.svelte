@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { Background, BackgroundVariant, Controls, Position, SvelteFlow } from '@xyflow/svelte';
 	import type { Connection, Edge, Node } from '@xyflow/svelte';
@@ -108,17 +110,19 @@
 	}
 </script>
 
-<section class="game-graph" data-harness-component="game-graph" aria-label="Checkpoint graph">
-	<header>
-		<p>
-			<strong>{done}</strong> of {checkpoints.length} checkpoints complete
-			<span>· Select a checkpoint to {readonly ? 'view' : 'edit'} it</span>
-		</p>
+<hx-section class="game-graph" data-harness-component="game-graph" aria-label="Checkpoint graph">
+	<hx-header>
+		<hx-p>
+			<hx-strong>{done}</hx-strong> of {checkpoints.length} checkpoints complete
+			<hx-span>· Select a checkpoint to {readonly ? 'view' : 'edit'} it</hx-span>
+		</hx-p>
 		{#if !readonly}
-			<button type="button" onclick={add}><span aria-hidden="true">+</span> Add checkpoint</button>
+			<hx-button type="button" onclick={add}
+				><hx-span aria-hidden="true">+</hx-span> Add checkpoint</hx-button
+			>
 		{/if}
-	</header>
-	<div class="canvas" use:openOnEnter>
+	</hx-header>
+	<hx-div class="canvas" use:openOnEnter>
 		<SvelteFlow
 			bind:nodes
 			bind:edges
@@ -139,8 +143,8 @@
 				<GameGraphFit />
 			</Controls>
 		</SvelteFlow>
-	</div>
-</section>
+	</hx-div>
+</hx-section>
 
 <style>
 	.game-graph {

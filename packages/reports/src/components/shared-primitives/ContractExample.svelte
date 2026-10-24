@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms atoms -->
 <script lang="ts">
 	import type {
 		ContractExample as Example,
@@ -17,46 +19,49 @@
 {#snippet example(item: Example)}
 	{#if item.form === 'structure'}
 		<RecordedValue value={item.value} />
-		<details class="whole">
-			<summary>Full example as JSON</summary>
-			<pre class="literal">{item.text}</pre>
-		</details>
+		<hx-details class="whole">
+			<hx-summary>Full example as JSON</hx-summary>
+			<hx-pre class="literal">{item.text}</hx-pre>
+		</hx-details>
 	{:else if item.form === 'markup'}
-		<pre class="literal">{item.text}</pre>
+		<hx-pre class="literal">{item.text}</hx-pre>
 	{:else}
-		<code class="literal">{item.text}</code>
+		<hx-code class="literal">{item.text}</hx-code>
 	{/if}
 {/snippet}
 
-<div class="contract-example" data-harness-component="contract-example">
-	<dl class="about">
-		<div>
-			<dt>Type</dt>
-			<dd><code class="type">{field.type}</code></dd>
-		</div>
-		<div>
-			<dt>Description</dt>
-			<dd class:none={!field.description}>{field.description ?? 'No description recorded.'}</dd>
-		</div>
-	</dl>
-	<div class="examples">
-		<h3>
+<hx-div class="contract-example" data-harness-component="contract-example">
+	<hx-dl class="about">
+		<hx-div>
+			<hx-dt>Type</hx-dt>
+			<hx-dd><hx-code class="type">{field.type}</hx-code></hx-dd>
+		</hx-div>
+		<hx-div>
+			<hx-dt>Description</hx-dt>
+			<hx-dd class:none={!field.description}
+				>{field.description ?? 'No description recorded.'}</hx-dd
+			>
+		</hx-div>
+	</hx-dl>
+	<hx-div class="examples">
+		<hx-h3>
 			{#if field.source === 'missing'}
 				Example not recorded
 			{:else}
-				<span class={field.source}>{field.source === 'declared' ? 'Declared' : 'Illustrative'}</span
+				<hx-span class={field.source}
+					>{field.source === 'declared' ? 'Declared' : 'Illustrative'}</hx-span
 				>
 				{field.examples.length > 1 ? 'examples' : 'example'}
 			{/if}
-		</h3>
-		<p class="note">{sources[field.source]}</p>
+		</hx-h3>
+		<hx-p class="note">{sources[field.source]}</hx-p>
 		{#if field.examples.length > 0}
-			<ul>
-				{#each field.examples as item, at (at)}<li>{@render example(item)}</li>{/each}
-			</ul>
+			<hx-ul>
+				{#each field.examples as item, at (at)}<hx-li>{@render example(item)}</hx-li>{/each}
+			</hx-ul>
 		{/if}
-	</div>
-</div>
+	</hx-div>
+</hx-div>
 
 <style>
 	.contract-example {

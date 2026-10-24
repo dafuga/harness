@@ -6,6 +6,10 @@
 	"responsibility": "Connects source loading and cancellation to the shared source viewer.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.source-viewer"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/SourceContent.svelte",

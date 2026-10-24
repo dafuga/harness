@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { RemoteHost } from '../../../lib/stores/networking-security/remoteHost.svelte';
 	import type { RemotePairingOffer } from '../../../models/development-tooling/Environment.types';
@@ -30,27 +32,27 @@
 	});
 </script>
 
-<div class="remote-offer">
-	{#if symbol}<span>{how}</span><svg
+<hx-div class="remote-offer">
+	{#if symbol}<hx-span>{how}</hx-span><hx-svg
 			class="remote-qr"
 			role="img"
 			aria-label="Pairing QR code"
 			viewBox="0 0 {side} {side}"
 			shape-rendering="crispEdges"
-			><rect width={side} height={side} fill="var(--hx-color-text)" /><path
+			><hx-svg-rect width={side} height={side} fill="var(--hx-color-text)" /><hx-svg-path
 				d={symbol.path}
 				fill="var(--hx-color-background)"
-			/></svg
-		><small class="muted">Expires in {timeLeft(left)}</small>{:else}<span class="remote-note"
-			>{live ? unshown : expired}</span
+			/></hx-svg
+		><hx-small class="muted">Expires in {timeLeft(left)}</hx-small>{:else}<hx-span
+			class="remote-note">{live ? unshown : expired}</hx-span
 		>{/if}
-	<div class="remote-actions">
-		<button type="button" disabled={store.busy} onclick={() => void store.createPairing()}
-			>New code</button
-		>{#if symbol}<button
+	<hx-div class="remote-actions">
+		<hx-button type="button" disabled={store.busy} onclick={() => void store.createPairing()}
+			>New code</hx-button
+		>{#if symbol}<hx-button
 				type="button"
 				disabled={store.busy}
-				onclick={() => void store.closePairing()}>Hide code</button
+				onclick={() => void store.closePairing()}>Hide code</hx-button
 			>{/if}
-	</div>
-</div>
+	</hx-div>
+</hx-div>

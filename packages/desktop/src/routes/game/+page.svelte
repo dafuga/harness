@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
@@ -40,13 +42,13 @@
 	<title>{title}</title>
 </svelte:head>
 
-<main class="game-page" data-harness-view="game">
-	{#if error}<h1>Game Views</h1>
-		<p role="alert">{error}</p>{/if}
+<hx-main class="game-page" data-harness-view="game">
+	{#if error}<hx-h1>Game Views</hx-h1>
+		<hx-p role="alert">{error}</hx-p>{/if}
 	{#if mounted}
 		<GameWorkspace {projectId} {commit} {readonly} {bridge} />
 	{/if}
-</main>
+</hx-main>
 
 <style>
 	.game-page {

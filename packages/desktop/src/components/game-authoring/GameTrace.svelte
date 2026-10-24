@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { GameRun, GameView } from '../../../../game/src/models/game-authoring/Game.types';
 	let { run, view }: { run: GameRun; view: GameView } = $props();
@@ -5,19 +7,19 @@
 	const entries = $derived(run.trace.filter((entry) => (entry.viewId ?? view.id) === view.id));
 </script>
 
-<details data-harness-component="game-trace">
-	<summary>Execution trace ({entries.length})</summary>
+<hx-details data-harness-component="game-trace">
+	<hx-summary>Execution trace ({entries.length})</hx-summary>
 	{#if entries.length}
-		<ol aria-label="Checkpoint execution trace">
+		<hx-ol aria-label="Checkpoint execution trace">
 			{#each entries as entry, index (index)}
-				<li>
-					<strong
+				<hx-li>
+					<hx-strong
 						>{view.checkpoints.find((node) => node.id === entry.checkpointId)?.title ??
-							entry.checkpointId}</strong
+							entry.checkpointId}</hx-strong
 					>
 					· tick {entry.tick} — {entry.reason}
-				</li>
+				</hx-li>
 			{/each}
-		</ol>
-	{:else}<p>No checkpoints have fired in this preview.</p>{/if}
-</details>
+		</hx-ol>
+	{:else}<hx-p>No checkpoints have fired in this preview.</hx-p>{/if}
+</hx-details>

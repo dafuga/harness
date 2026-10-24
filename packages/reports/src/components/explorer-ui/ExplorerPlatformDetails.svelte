@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Row } from "./ExplorerPlatformDetails.types";
+	import type { Row } from './ExplorerPlatformDetails.types';
 
 	import type { PlatformEntry } from '../../../../../src/core/explorer-ui/Platform.types';
 	import {
@@ -43,72 +45,75 @@
 		if (path.includes('\\') || parts.some((part) => !part || part === '.' || part === '..')) return;
 		return `${repository}/blob/${commit}/${parts.map(encodeURIComponent).join('/')}`;
 	}
-
 </script>
 
 {#snippet table(label: string, column: string, rows: Row[])}
-	<div class="ex-scroll">
-		<table class="ex-mini pf-table" aria-label={label}>
-			<thead><tr><th scope="col">Name</th><th scope="col">{column}</th></tr></thead>
-			<tbody>
+	<hx-div class="ex-scroll">
+		<hx-table class="ex-mini pf-table" aria-label={label}>
+			<hx-thead
+				><hx-tr><hx-th scope="col">Name</hx-th><hx-th scope="col">{column}</hx-th></hx-tr></hx-thead
+			>
+			<hx-tbody>
 				{#each rows as row, position (position)}
-					<tr>
-						<th scope="row">
-							<span>{row.name}</span>
-							{#if row.description}<span class="pf-description">{row.description}</span>{/if}
-						</th>
-						<td><code>{row.value}</code></td>
-					</tr>
+					<hx-tr>
+						<hx-th scope="row">
+							<hx-span>{row.name}</hx-span>
+							{#if row.description}<hx-span class="pf-description">{row.description}</hx-span>{/if}
+						</hx-th>
+						<hx-td><hx-code>{row.value}</hx-code></hx-td>
+					</hx-tr>
 				{/each}
-			</tbody>
-		</table>
-	</div>
+			</hx-tbody>
+		</hx-table>
+	</hx-div>
 {/snippet}
 
 {#snippet sections(declared: PlatformEntry, name: string)}
-	<div class="pf-sections">
-		<section class="ex-card" aria-labelledby="pf-configuration-title">
-			<h2 id="pf-configuration-title">Deployment configuration</h2>
+	<hx-div class="pf-sections">
+		<hx-section class="ex-card" aria-labelledby="pf-configuration-title">
+			<hx-h2 id="pf-configuration-title">Deployment configuration</hx-h2>
 			{#if declared.configuration.length}
 				{@render table(`${name} deployment configuration`, 'Value', declared.configuration)}
-			{:else}<p class="ex-soft">No deployment settings are declared for {name}.</p>{/if}
-		</section>
+			{:else}<hx-p class="ex-soft">No deployment settings are declared for {name}.</hx-p>{/if}
+		</hx-section>
 		{#if commands.length}
-			<section class="ex-card" aria-labelledby="pf-commands-title">
-				<h2 id="pf-commands-title">Commands</h2>
+			<hx-section class="ex-card" aria-labelledby="pf-commands-title">
+				<hx-h2 id="pf-commands-title">Commands</hx-h2>
 				{@render table(`${name} commands`, 'Command', commands)}
-			</section>
+			</hx-section>
 		{/if}
 		{#if declared.requirements.length}
-			<section class="ex-card" aria-labelledby="pf-requirements-title">
-				<h2 id="pf-requirements-title">Release requirements</h2>
-				<ul class="ex-reasons pf-requirements">
+			<hx-section class="ex-card" aria-labelledby="pf-requirements-title">
+				<hx-h2 id="pf-requirements-title">Release requirements</hx-h2>
+				<hx-ul class="ex-reasons pf-requirements">
 					{#each declared.requirements as requirement, position (position)}
-						<li>{requirement}</li>
+						<hx-li>{requirement}</hx-li>
 					{/each}
-				</ul>
-			</section>
+				</hx-ul>
+			</hx-section>
 		{/if}
 		{#if declared.sources.length}
-			<section class="ex-card" aria-labelledby="pf-sources-title">
-				<h2 id="pf-sources-title">Configuration sources</h2>
+			<hx-section class="ex-card" aria-labelledby="pf-sources-title">
+				<hx-h2 id="pf-sources-title">Configuration sources</hx-h2>
 				<SourceFileList files={declared.sources} href={sourceLink}>
 					{#snippet children()}{/snippet}
 				</SourceFileList>
 				{#if !declared.sources.some((path) => sourceLink(path))}
-					<p class="ex-note">GitHub links are unavailable here, so paths are shown as recorded.</p>
+					<hx-p class="ex-note"
+						>GitHub links are unavailable here, so paths are shown as recorded.</hx-p
+					>
 				{/if}
-			</section>
+			</hx-section>
 		{/if}
-	</div>
+	</hx-div>
 {/snippet}
 
-<nav class="ex-crumbs" aria-label="Breadcrumb">
-	<ol>
-		<li><EntityLink to={list} {nav}>Platforms</EntityLink></li>
-		<li aria-current="page">{view?.name ?? 'Not found'}</li>
-	</ol>
-</nav>
+<hx-nav class="ex-crumbs" aria-label="Breadcrumb">
+	<hx-ol>
+		<hx-li><EntityLink to={list} {nav}>Platforms</EntityLink></hx-li>
+		<hx-li aria-current="page">{view?.name ?? 'Not found'}</hx-li>
+	</hx-ol>
+</hx-nav>
 {#if !view}
 	<EntityMissing
 		title="Platform not found"
@@ -118,36 +123,36 @@
 		action="All platforms"
 	/>
 {:else}
-	<header class="ex-head">
-		<span class="ex-tile"><HarnessIcon name={view.icon} size={30} /></span>
-		<div class="ex-head-main">
-			<div class="ex-head-title">
-				<h1>{view.name}</h1>
-				<span class="pf-status" data-status={status.id}>{status.label}</span>
-			</div>
-			<p class="ex-lead">{entry?.summary ?? unrecorded}</p>
+	<hx-header class="ex-head">
+		<hx-span class="ex-tile"><HarnessIcon name={view.icon} size={30} /></hx-span>
+		<hx-div class="ex-head-main">
+			<hx-div class="ex-head-title">
+				<hx-h1>{view.name}</hx-h1>
+				<hx-span class="pf-status" data-status={status.id}>{status.label}</hx-span>
+			</hx-div>
+			<hx-p class="ex-lead">{entry?.summary ?? unrecorded}</hx-p>
 			{#if entry}
-				<dl class="pf-meta">
-					<div>
-						<dt>Runtime</dt>
-						<dd>{entry.runtime}</dd>
-					</div>
-					<div>
-						<dt>Declared at</dt>
-						<dd><code>{shortCommit(host.scope.commit)}</code></dd>
-					</div>
-				</dl>
-				<p class="ex-note">
+				<hx-dl class="pf-meta">
+					<hx-div>
+						<hx-dt>Runtime</hx-dt>
+						<hx-dd>{entry.runtime}</hx-dd>
+					</hx-div>
+					<hx-div>
+						<hx-dt>Declared at</hx-dt>
+						<hx-dd><hx-code>{shortCommit(host.scope.commit)}</hx-code></hx-dd>
+					</hx-div>
+				</hx-dl>
+				<hx-p class="ex-note">
 					A status is what the repository declares; Harness does not check live deployments.
-				</p>
+				</hx-p>
 			{:else}
-				<p class="ex-note">Nothing from another revision is shown in its place.</p>
+				<hx-p class="ex-note">Nothing from another revision is shown in its place.</hx-p>
 			{/if}
-		</div>
-	</header>
+		</hx-div>
+	</hx-header>
 	{#if entry}
 		{@render sections(entry, view.name)}
 	{:else if gap}
-		<p class="pf-notice"><HarnessIcon name="info" size={18} /><span>{gap}</span></p>
+		<hx-p class="pf-notice"><HarnessIcon name="info" size={18} /><hx-span>{gap}</hx-span></hx-p>
 	{/if}
 {/if}

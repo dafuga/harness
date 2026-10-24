@@ -24,6 +24,7 @@ import { scanComponent } from './scanComponent';
 import { scanImports } from './scanImports';
 import { sourceBlocks } from './sourceBlocks';
 import { sourceExecution } from './sourceExecution';
+import { atomicSyntax } from '../../../templates/development-tooling/atomicSyntax.js';
 
 const languages: Record<string, SourceLanguage> = {
 	'.ts': 'ts',
@@ -73,6 +74,7 @@ export class SourceIndexService {
 			classification: placed.classification,
 			workspace: placed.workspace,
 			identity: placed.identity,
+			...(parsed.composition ? { composition: parsed.composition } : {}),
 			references: parsed.references.map((reference) =>
 				resolve(entry.path, reference, { placed, ...context })
 			),
@@ -111,7 +113,17 @@ const empty: Parsed = {
 
 function parseText(code: string, language: SourceLanguage, path: string): Parsed {
 	const scan = exportsOf(code, language, path);
+	const syntax =
+		language === 'svelte' && code.includes('@harness-tier') ? atomicSyntax(code) : undefined;
 	return {
+		...(syntax?.tier
+			? {
+					composition: {
+						level: syntax.tier as NonNullable<SourceFile['composition']>['level'],
+						...(syntax.element ? { element: syntax.element } : {})
+					}
+				}
+			: {}),
 		execution: sourceExecution(code, language, path),
 		bytes: Buffer.byteLength(code),
 		lines: code.split('\n').length - (code.endsWith('\n') ? 1 : 0),

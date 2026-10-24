@@ -6,6 +6,10 @@
 	"responsibility": "Submits before-and-after screenshots and their comparison details to a report.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.select"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/UploadComparison.svelte",

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { behaviorDuration, entityBehavior } from '../../../../reports/src/utils/entityBehavior';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
@@ -45,19 +47,19 @@
 	);
 </script>
 
-<div class="runtime-card">
-	<h3>{paired ? 'End-to-end comparison' : 'Current end-to-end behavior'}</h3>
-	<p class="muted">
+<hx-div class="runtime-card">
+	<hx-h3>{paired ? 'End-to-end comparison' : 'Current end-to-end behavior'}</hx-h3>
+	<hx-p class="muted">
 		{paired
 			? 'The same scenario and the same states at the parent and at the commit.'
 			: `What the end-to-end checks recorded at ${at}.`}
-	</p>
-	<p class="runtime-verdict">
-		<strong role="status">{label}</strong>{#if why}<span>{why}</span>{/if}
-	</p>
-	{#if shown.groups.length === 0}<p class="empty">
+	</hx-p>
+	<hx-p class="runtime-verdict">
+		<hx-strong role="status">{label}</hx-strong>{#if why}<hx-span>{why}</hx-span>{/if}
+	</hx-p>
+	{#if shown.groups.length === 0}<hx-p class="empty">
 			No end-to-end result is recorded for this entity at {at}.
-		</p>{:else}<div class="runtime-panes" class:paired>
+		</hx-p>{:else}<hx-div class="runtime-panes" class:paired>
 			{#if paired}<RuntimeRun
 					{shown}
 					side="before"
@@ -75,13 +77,13 @@
 				refusals={evidence.refusals}
 				{unit}
 			/>
-		</div>{/if}
-	<dl class="runtime-facts">
-		<dt>End-to-end duration</dt>
-		<dd>{duration ?? 'Not measured'}</dd>
-		{#each shown.scenarios as scenario (scenario.id)}<dt>{scenario.title}</dt>
-			<dd>
+		</hx-div>{/if}
+	<hx-dl class="runtime-facts">
+		<hx-dt>End-to-end duration</hx-dt>
+		<hx-dd>{duration ?? 'Not measured'}</hx-dd>
+		{#each shown.scenarios as scenario (scenario.id)}<hx-dt>{scenario.title}</hx-dt>
+			<hx-dd>
 				{paired ? `${scenario.before ?? 'not run'} → ` : ''}{scenario.after ?? 'not run'}
-			</dd>{/each}
-	</dl>
-</div>
+			</hx-dd>{/each}
+	</hx-dl>
+</hx-div>

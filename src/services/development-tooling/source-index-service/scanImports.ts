@@ -5,6 +5,7 @@ import type {
 } from '../../../utils/development-tooling/scanImports';
 import { svelteScripts } from '../../../utils/development-tooling/scanImports';
 import { maskSource } from '../../../utils/development-tooling/maskSource';
+import { atomicSyntax } from '../../../templates/development-tooling/atomicSyntax.js';
 
 const literalPatterns: LiteralPattern[] = [
 	{ via: 'import', pattern: /\bimport\b(\s+type\b)?[^'"\x60;():=]*?(['"])([^'"\n]*)\2/g },
@@ -24,8 +25,28 @@ const callPatterns: LiteralPattern[] = [
 export function scanImports(code: string, language: SourceLanguage): SourceReference[] {
 	if (language === 'css') return styleReferences(code);
 	if (language === 'svelte')
-		return svelteScripts(code).flatMap((script) => scriptReferences(script));
+		return [
+			...svelteScripts(code).flatMap((script) => scriptReferences(script)),
+			...atomReferences(code)
+		];
 	return language === 'ts' ? scriptReferences(code) : [];
+}
+
+function atomReferences(code: string): SourceReference[] {
+	if (!code.includes('<hx-')) return [];
+	let syntax;
+	try {
+		syntax = atomicSyntax(code);
+	} catch {
+		return [];
+	}
+	if (!syntax.directory) return [];
+	const names = new Set(syntax.atoms.flatMap((atom) => atom.definition?.name ?? []));
+	return [...names].map((name) => ({
+		specifier: `${syntax.directory}/${name}.svelte`,
+		via: 'import',
+		typeOnly: false
+	}));
 }
 
 function scriptReferences(code: string): SourceReference[] {

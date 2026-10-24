@@ -3,6 +3,7 @@ import type { ExportedSymbol } from '../../core/development-tooling/sourceTypes'
 import type { z } from 'zod';
 import type { usageExampleSchema } from '../../core/development-tooling/unitTypes';
 import { type UnitDocumentation } from './unit-documentation/unitDocumentation';
+import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 
 export interface PublicHelper extends Pick<ExportedSymbol, 'name' | 'inputs' | 'output'> {
 	source: string;
@@ -23,6 +24,7 @@ export interface PublicServiceClass {
 }
 
 export interface UnitMetadata {
+	composition?: ComponentManifest['composition'];
 	/** Public model declarations and static storage definitions from this exact revision. */
 	modelDefinitions?: ModelDefinition[];
 	/** Committed initializer expressions, never values read from the host environment. */

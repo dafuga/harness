@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import type {
@@ -74,16 +76,16 @@
 	}
 </script>
 
-<section class="history">
-	<h2>Entity history</h2>
+<hx-section class="history">
+	<hx-h2>Entity history</hx-h2>
 	<RegressionProof
 		items={proofs}
 		unit={entity.id}
 		href={there}
 		follow={(commit) => void workspace.navigate(there(commit))}
 	/>
-	{#each events as event (event.id)}<article>
-			<span class="timeline-dot"></span><strong>{event.title}</strong><small
+	{#each events as event (event.id)}<hx-article>
+			<hx-span class="timeline-dot"></hx-span><hx-strong>{event.title}</hx-strong><hx-small
 				>{timeLabel(event.at)}
 				{#if event.commit}·
 					{#if contained.has(event.commit)}<WorkspaceLink
@@ -91,15 +93,15 @@
 							to={there(event.commit)}
 							label={`Show at commit ${event.commit.slice(0, 7)}`}
 							>{event.commit.slice(0, 7)}</WorkspaceLink
-						>{:else}{event.commit.slice(0, 7)}{/if}{/if}</small
+						>{:else}{event.commit.slice(0, 7)}{/if}{/if}</hx-small
 			>
-			<p>{event.detail}</p>
-		</article>{:else}<p class="muted">No history recorded for this entity.</p>{/each}
-	{#if more}<button
+			<hx-p>{event.detail}</hx-p>
+		</hx-article>{:else}<hx-p class="muted">No history recorded for this entity.</hx-p>{/each}
+	{#if more}<hx-button
 			type="button"
 			class="history-more"
 			disabled={loading}
-			onclick={() => void load()}>Load more history</button
-		>{:else if !complete}<p class="muted">Earlier history is not loaded here.</p>{/if}
-	{#if error}<p class="error" role="alert">{error}</p>{/if}
-</section>
+			onclick={() => void load()}>Load more history</hx-button
+		>{:else if !complete}<hx-p class="muted">Earlier history is not loaded here.</hx-p>{/if}
+	{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+</hx-section>

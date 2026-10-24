@@ -6,6 +6,10 @@
 	"responsibility": "Turns known unit references in ordinary text into links within the displayed workspace.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["desktop.component.icon", "desktop.component.workspace-link"]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/explorer-ui/reference-text/ReferenceText.svelte",

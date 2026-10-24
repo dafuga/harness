@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { AgentEntry, AgentRoster } from '../../../../../../src/core/activityTypes';
 	import { activityDisplay } from './activityDisplay';
@@ -23,100 +25,104 @@
 
 {#snippet chips(units: string[], unknown: string[])}
 	{#each units as unit (unit)}
-		<span class="pa-chip"
+		<hx-span class="pa-chip"
 			>{unit}{#if unknown.includes(unit)}
-				<em>not in the registry</em>{/if}</span
+				<hx-em>not in the registry</hx-em>{/if}</hx-span
 		>
 	{/each}
 {/snippet}
 
 {#snippet stated(agent: AgentEntry)}
-	{#if agent.task}<span>Task: {agent.task}</span>{/if}
-	{#if agent.loop}<span>Loop: {agent.loop}</span>{/if}
+	{#if agent.task}<hx-span>Task: {agent.task}</hx-span>{/if}
+	{#if agent.loop}<hx-span>Loop: {agent.loop}</hx-span>{/if}
 {/snippet}
 
 {#snippet agentRow(agent: AgentEntry)}
-	<div class="pa-row">
-		<strong>{agent.label}</strong>
-		<span class={'pa-state ' + agent.state}>{view?.label(agent)}</span>
-	</div>
-	<div class="pa-meta">
-		<span>{[agent.provider, agent.model].filter(Boolean).join(' · ') || 'Model not stated'}</span>
-		<span>{agent.worktree} · branch {agent.branch ?? 'none'}</span>
+	<hx-div class="pa-row">
+		<hx-strong>{agent.label}</hx-strong>
+		<hx-span class={'pa-state ' + agent.state}>{view?.label(agent)}</hx-span>
+	</hx-div>
+	<hx-div class="pa-meta">
+		<hx-span
+			>{[agent.provider, agent.model].filter(Boolean).join(' · ') || 'Model not stated'}</hx-span
+		>
+		<hx-span>{agent.worktree} · branch {agent.branch ?? 'none'}</hx-span>
 		{#if agent.state === 'working'}{@render stated(agent)}{/if}
-	</div>
+	</hx-div>
 	{#if agent.state === 'working'}
 		{#if agent.units.length}
-			<div class="pa-tags">
+			<hx-div class="pa-tags">
 				{@render chips(agent.units.slice(0, named), agent.unknownUnits)}
 				{#if agent.units.length > named}
-					<details class="pa-detail">
-						<summary>and {agent.units.length - named} more</summary>
-						<div class="pa-tags">{@render chips(agent.units.slice(named), agent.unknownUnits)}</div>
-					</details>
+					<hx-details class="pa-detail">
+						<hx-summary>and {agent.units.length - named} more</hx-summary>
+						<hx-div class="pa-tags"
+							>{@render chips(agent.units.slice(named), agent.unknownUnits)}</hx-div
+						>
+					</hx-details>
 				{/if}
-			</div>
+			</hx-div>
 		{/if}
 	{:else if agent.task || agent.loop || agent.units.length}
 		<!-- What an agent that is not working had stated is kept, one control away. -->
-		<details class="pa-detail">
-			<summary>What it stated</summary>
-			<div class="pa-meta">{@render stated(agent)}</div>
-			<div class="pa-tags">{@render chips(agent.units, agent.unknownUnits)}</div>
-		</details>
+		<hx-details class="pa-detail">
+			<hx-summary>What it stated</hx-summary>
+			<hx-div class="pa-meta">{@render stated(agent)}</hx-div>
+			<hx-div class="pa-tags">{@render chips(agent.units, agent.unknownUnits)}</hx-div>
+		</hx-details>
 	{/if}
-	<small>{agent.outcome ? agent.outcome + ' · ' : ''}{agent.detail}</small>
+	<hx-small>{agent.outcome ? agent.outcome + ' · ' : ''}{agent.detail}</hx-small>
 {/snippet}
 
-<section class="pa-card" aria-label="Working agents">
-	<div class="pa-head">
-		<h2>Working agents</h2>
+<hx-section class="pa-card" aria-label="Working agents">
+	<hx-div class="pa-head">
+		<hx-h2>Working agents</hx-h2>
 		{#if agents}
-			<span class="pa-note"
+			<hx-span class="pa-note"
 				>Live · read {read} UTC
 				{#if reading}
-					<button
+					<hx-button
 						type="button"
 						class="pa-more"
 						aria-label="Refresh activity"
-						onclick={reading.refresh}>Refresh</button
+						onclick={reading.refresh}>Refresh</hx-button
 					>
-				{/if}</span
+				{/if}</hx-span
 			>
 		{/if}
-	</div>
+	</hx-div>
 	{#if !agents || !view}
-		<p class="pa-empty">
+		<hx-p class="pa-empty">
 			Live agent activity is not part of a recorded history. A running Harness shows it for its own
 			checkout.
-		</p>
+		</hx-p>
 	{:else}
 		{#if reading?.failed}
-			<p class="pa-warn" role="status">
+			<hx-p class="pa-warn" role="status">
 				Activity could not be read again since {read} UTC{view.current
 					? '.'
 					: '; who is working now is not known.'}
-			</p>
+			</hx-p>
 		{/if}
-		<p class="pa-count">
-			<strong data-testid="agents-working">{view.working ?? 'Unknown'}</strong>
-			<span
+		<hx-p class="pa-count">
+			<hx-strong data-testid="agents-working">{view.working ?? 'Unknown'}</hx-strong>
+			<hx-span
 				>{view.current || agents.working === null
 					? activityDisplay({ ...agents, working: view.working })
-					: 'The last reading is older than a minute, so who is working now is not known.'}</span
+					: 'The last reading is older than a minute, so who is working now is not known.'}</hx-span
 			>
-		</p>
+		</hx-p>
 		{#if agents.tracking === 'never-used'}
-			<p class="pa-note">
-				An agent says that it is working with <code>harness activity register</code>, keeps saying
-				so with <code>harness activity heartbeat</code> and ends with
-				<code>harness activity finish</code>.
-			</p>
+			<hx-p class="pa-note">
+				An agent says that it is working with <hx-code>harness activity register</hx-code>, keeps
+				saying so with <hx-code>harness activity heartbeat</hx-code> and ends with
+				<hx-code>harness activity finish</hx-code>.
+			</hx-p>
 		{/if}
 		{#if agents.unreadable}
-			<p class="pa-note">
+			<hx-p class="pa-note">
 				{agents.unreadable} registrations could not be read and are not counted.
-			</p>
+			</hx-p>
 		{/if}
 		{#if agents.roster.length}
 			<ActivityList
@@ -128,4 +134,4 @@
 			/>
 		{/if}
 	{/if}
-</section>
+</hx-section>

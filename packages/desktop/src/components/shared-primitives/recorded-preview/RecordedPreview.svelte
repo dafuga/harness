@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
@@ -45,21 +47,23 @@
 	});
 </script>
 
-<figure
+<hx-figure
 	bind:this={container}
 	aria-label={`Recorded preview of ${title}`}
 	title={view.caption || view.reason}
 >
 	{#if view.url}
-		<img src={view.url} alt={`Screenshot of ${title}`} loading="lazy" decoding="async" />
-		{#if !compact}<figcaption>{view.caption}</figcaption>{/if}
+		<hx-img src={view.url} alt={`Screenshot of ${title}`} loading="lazy" decoding="async" />
+		{#if !compact}<hx-figcaption>{view.caption}</hx-figcaption>{/if}
 	{:else}
-		<div class="placeholder muted" role="status">
-			<span>{view.status === 'loading' ? 'Loading screenshot…' : 'Screenshot unavailable'}</span>
-			{#if view.reason}<small>{view.reason}</small>{/if}
-		</div>
+		<hx-div class="placeholder muted" role="status">
+			<hx-span
+				>{view.status === 'loading' ? 'Loading screenshot…' : 'Screenshot unavailable'}</hx-span
+			>
+			{#if view.reason}<hx-small>{view.reason}</hx-small>{/if}
+		</hx-div>
 	{/if}
-</figure>
+</hx-figure>
 
 <style>
 	figure {

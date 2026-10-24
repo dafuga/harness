@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { t } from '../../utils/reports-media/reportLocale';
 	let { mode, uploading }: { mode: string; uploading: boolean } = $props();
@@ -15,11 +17,11 @@
 	let names = $state<Record<string, string>>({});
 </script>
 
-<div class="upload-pair upload-files" class:paired>
+<hx-div class="upload-pair upload-files" class:paired>
 	{#each fields as field (field.name)}
-		<label
+		<hx-label
 			>{$t(field.label)}
-			<input
+			<hx-input
 				name={field.name}
 				type="file"
 				accept={ACCEPT}
@@ -29,12 +31,12 @@
 				aria-describedby={`upload-${field.name}-file-hint`}
 				onchange={(event) => (names[field.name] = event.currentTarget.files?.[0]?.name || '')}
 			/>
-			<span class="file-choose" aria-hidden="true">{$t('chooseAudio')}</span>
-			<small
+			<hx-span class="file-choose" aria-hidden="true">{$t('chooseAudio')}</hx-span>
+			<hx-small
 				id={`upload-${field.name}-file-hint`}
 				class:chosen={Boolean(names[field.name])}
-				aria-hidden="true">{names[field.name] || $t('audioFileHint')}</small
+				aria-hidden="true">{names[field.name] || $t('audioFileHint')}</hx-small
 			>
-		</label>
+		</hx-label>
 	{/each}
-</div>
+</hx-div>

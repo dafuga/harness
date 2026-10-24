@@ -6,6 +6,13 @@
 	"responsibility": "Hosts the shared project conversation in the web explorer and connects its backend when the bubble opens.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.project-agent",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ConsoleChat.svelte",
@@ -48,6 +55,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.project-agent",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

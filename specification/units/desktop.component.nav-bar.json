@@ -6,6 +6,25 @@
 	"responsibility": "Provides project, category and revision navigation, workspace search, agent settings access and optional host-account controls.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.deployment-activity",
+			"desktop.component.deployment-dialog",
+			"desktop.component.environment-picker",
+			"desktop.component.icon",
+			"desktop.component.project-switcher",
+			"desktop.component.revision-picker",
+			"desktop.component.workspace-link",
+			"reports.component.brand-mark",
+			"reports.component.entity-search",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-nav",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/nav-bar/NavBar.svelte",
@@ -99,6 +118,31 @@
 		},
 		{
 			"unit": "reports.component.entity-search",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

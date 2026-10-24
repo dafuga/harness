@@ -14,6 +14,7 @@ export interface RevisionRegistry {
 	units: Array<{
 		id: string;
 		kind: string;
+		composition?: ComponentManifest['composition'];
 		status: string;
 		title: string;
 		responsibility: string;

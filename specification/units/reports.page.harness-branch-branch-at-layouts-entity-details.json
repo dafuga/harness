@@ -6,6 +6,10 @@
 	"responsibility": "Shows the contract and measurements of one shell, and its source only when that is asked for.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.harness-entity-details-screen", "reports.component.harness-screen"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/harness/branch/[branch]/[...at]/layouts/[entity]/details/+page.svelte"

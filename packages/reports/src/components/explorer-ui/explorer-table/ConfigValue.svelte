@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ConfigValueNode } from '../../../../../../src/utils/explorer-ui/unitMetadata';
 	import { collection, valueMark } from '../ConfigValueTree.svelte';
@@ -31,45 +33,45 @@
 	let mark = $derived(collection(structure) ? valueMark(structure, source) : undefined);
 </script>
 
-<div class="cv" data-harness-part="config-value">
+<hx-div class="cv" data-harness-part="config-value">
 	{#if mark}
-		<span class="inspect">
+		<hx-span class="inspect">
 			<HarnessAction tone="plain" label={`View value for ${name}`} onclick={onview}>
 				<HarnessIcon name={mark.icon} size={18} />
 			</HarnessAction>
-			<span class="ex-note">{mark.size}</span>
-		</span>
+			<hx-span class="ex-note">{mark.size}</hx-span>
+		</hx-span>
 	{/if}
 	{#if typeof literal === 'boolean'}
-		<span class="pill" class:on={literal} role="img" aria-label={`Boolean ${literal}`}
-			><HarnessIcon name={literal ? 'passed' : 'failed'} size={14} />{String(literal)}</span
+		<hx-span class="pill" class:on={literal} role="img" aria-label={`Boolean ${literal}`}
+			><HarnessIcon name={literal ? 'passed' : 'failed'} size={14} />{String(literal)}</hx-span
 		>
 	{:else if typeof literal === 'number'}
-		<span class="number" role="img" aria-label={`Number ${literal}`}>{literal}</span>
+		<hx-span class="number" role="img" aria-label={`Number ${literal}`}>{literal}</hx-span>
 	{:else if literal === null}
-		<span class="keyword" role="img" aria-label="Null">null</span>
+		<hx-span class="keyword" role="img" aria-label="Null">null</hx-span>
 	{:else if literal === ''}
-		<span class="chip blank" role="img" aria-label="Empty string">Empty string</span>
+		<hx-span class="chip blank" role="img" aria-label="Empty string">Empty string</hx-span>
 	{:else if items}
-		<ul
+		<hx-ul
 			class="items"
 			aria-label={`Array, ${items.length} ${items.length === 1 ? 'item' : 'items'}`}
 		>
 			{#each items as item, position (position)}
-				<li
+				<hx-li
 					class="chip"
 					class:number={typeof item === 'number'}
 					class:keyword={item === null || typeof item === 'boolean'}
 					class:blank={item === ''}
 				>
 					{shown(item)}
-				</li>
-			{:else}<li class="chip blank">Empty array</li>{/each}
-		</ul>
+				</hx-li>
+			{:else}<hx-li class="chip blank">Empty array</hx-li>{/each}
+		</hx-ul>
 	{:else if typeof literal === 'string'}
-		<span class="string" role="img" aria-label={`String ${literal}`}>{literal}</span>
-	{:else if !mark}<code class="source" title={source}>{source}</code>{/if}
-</div>
+		<hx-span class="string" role="img" aria-label={`String ${literal}`}>{literal}</hx-span>
+	{:else if !mark}<hx-code class="source" title={source}>{source}</hx-code>{/if}
+</hx-div>
 
 <style>
 	/* One value in its cell: a typed mark for a literal, the text as written for an expression. */

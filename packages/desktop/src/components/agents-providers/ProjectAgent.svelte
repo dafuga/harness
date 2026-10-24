@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import FloatingChat from '../../../../reports/src/components/FloatingChat.svelte';
 	import { onMount, untrack } from 'svelte';
@@ -29,17 +31,17 @@
 	}
 </script>
 
-{#snippet line(author: 'user' | 'agent', text: string)}<li class="chat-message {author}">
-		<span class="chat-author">{author === 'user' ? 'You: ' : 'Agent: '}</span><ReferenceText
+{#snippet line(author: 'user' | 'agent', text: string)}<hx-li class="chat-message {author}">
+		<hx-span class="chat-author">{author === 'user' ? 'You: ' : 'Agent: '}</hx-span><ReferenceText
 			{text}
 			{workspace}
 			history
 		/>
-	</li>{/snippet}
+	</hx-li>{/snippet}
 
 <!-- One conversation for the project: it stays open through entities, history and pinned commits,
      what it offers is what the store allows here, and a unit it names opens at its history. -->
-<div class="project-chat">
+<hx-div class="project-chat">
 	<FloatingChat
 		bind:open
 		{label}
@@ -47,30 +49,30 @@
 		title="Project chat"
 		notice={agent.notice}
 	>
-		<div class="chat-thread">
-			{#if quiet}<p class="chat-note">No messages yet.</p>{:else}<ol class="chat-log">
+		<hx-div class="chat-thread">
+			{#if quiet}<hx-p class="chat-note">No messages yet.</hx-p>{:else}<hx-ol class="chat-log">
 					{#each agent.messages as message (message.id)}
 						{@render line(message.author, message.text)}
 					{/each}
 					{#if pending('user', agent.asked)}{@render line('user', agent.asked)}{/if}
 					{#if pending('agent', agent.said)}{@render line('agent', agent.said)}{/if}
-				</ol>{/if}
-			{#if agent.status && (agent.active || !agent.messages.at(-1)?.text.includes(agent.status))}<p
-					class="chat-note chat-status"
-					role="status"
-				>
-					<span><ReferenceText text={agent.status} {workspace} history /></span>
-					{#if agent.runId}<button type="button" onclick={() => agent.cancel()}>Cancel</button>{/if}
-				</p>{/if}
-			{#if agent.error}<p class="error" role="alert">{agent.error}</p>{/if}
-			{#if draft}<p class="chat-note chat-status">
-					<span>A draft was saved without your request. Your text is kept here.</span><button
-						type="button"
-						onclick={() => workspace.navigate(draft)}>Open the saved draft</button
+				</hx-ol>{/if}
+			{#if agent.status && (agent.active || !agent.messages
+						.at(-1)
+						?.text.includes(agent.status))}<hx-p class="chat-note chat-status" role="status">
+					<hx-span><ReferenceText text={agent.status} {workspace} history /></hx-span>
+					{#if agent.runId}<hx-button type="button" onclick={() => agent.cancel()}>Cancel</hx-button
+						>{/if}
+				</hx-p>{/if}
+			{#if agent.error}<hx-p class="error" role="alert">{agent.error}</hx-p>{/if}
+			{#if draft}<hx-p class="chat-note chat-status">
+					<hx-span>A draft was saved without your request. Your text is kept here.</hx-span
+					><hx-button type="button" onclick={() => workspace.navigate(draft)}
+						>Open the saved draft</hx-button
 					>
-				</p>{/if}
-		</div>
-		<div class="chat-compose">
+				</hx-p>{/if}
+		</hx-div>
+		<hx-div class="chat-compose">
 			<Composer
 				modes={agent.modes}
 				visual={visualCategory(workspace.category)}
@@ -82,9 +84,9 @@
 				comment={(text) => agent.comment(text)}
 				send={agent.send}
 			/>
-		</div>
+		</hx-div>
 	</FloatingChat>
-</div>
+</hx-div>
 
 <style>
 	/* The panel ends under the bar at the top however far that bar wraps; a phone gives it room. */

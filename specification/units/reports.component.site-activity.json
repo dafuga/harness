@@ -6,6 +6,10 @@
 	"responsibility": "Keeps a supplied project activity snapshot visible while refreshing its live observations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.project-activity"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/projects-sessions/site-activity/SiteActivity.svelte",

@@ -6,9 +6,32 @@
 	"responsibility": "Lets users inspect, search and select units in a dependency diagram or list.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-br",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-title",
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-atoms-svg-g",
+			"reports.component.shared-primitives-atoms-svg-line",
+			"reports.component.shared-primitives-atoms-svg-rect",
+			"reports.component.shared-primitives-atoms-svg-svg",
+			"reports.component.shared-primitives-atoms-svg-text"
+		]
+	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte"],
-		"symbols": ["HarnessMap"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+			"packages/reports/src/components/explorer-ui/harness-map/mapUnitLabel.ts"
+		],
+		"symbols": ["HarnessMap", "markLabels", "mapUnitLabel"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -44,6 +67,81 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-br",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-title",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-g",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-line",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-rect",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-svg",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-text",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.focus-view",
 			"via": "import",

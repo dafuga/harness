@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import type { CatalogRow } from '../../utils/explorer-ui/entityCatalog';

@@ -6,6 +6,15 @@
 	"responsibility": "Selects the environment scope for changes and switches the shared header summary to that environment.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.select",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-option"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/EnvironmentPicker.svelte",
@@ -49,6 +58,21 @@
 		},
 		{
 			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
 			"via": "import",
 			"origin": "derived"
 		}

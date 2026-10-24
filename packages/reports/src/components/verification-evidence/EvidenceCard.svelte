@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { evidenceMedia } from '../../utils/verification-evidence/evidenceMedia';
@@ -30,38 +32,40 @@
 			{assetBase}
 		/>{/if}
 {:else}
-	<article class="evidence-card" id={'evidence-' + item.id}>
-		<button
+	<hx-article class="evidence-card" id={'evidence-' + item.id}>
+		<hx-button
 			class="image-button"
 			onclick={onopen}
 			disabled={missing}
 			aria-label={$t('open', { values: { title: item.title } })}
 		>
-			{#if missing}<span class="missing">{$t('missing')}</span>
-			{:else}<img
+			{#if missing}<hx-span class="missing">{$t('missing')}</hx-span>
+			{:else}<hx-img
 					src={assetBase + item.file}
 					alt={item.title}
 					loading="lazy"
 					onerror={() => (imageError = true)}
 				/>{/if}
-			{#if !missing}<span class="view-hint">↗ {$t('fullSize')}</span>{/if}
-		</button>
+			{#if !missing}<hx-span class="view-hint">↗ {$t('fullSize')}</hx-span>{/if}
+		</hx-button>
 		{#if compact}
-			<details class="card-body">
-				<summary>Capture details</summary><EvidenceProvenance {item} />
-			</details>
-		{:else}<div class="card-body">
-				<div class="card-kicker">
-					<span>{item.category}</span><StatusBadge status={missing ? 'not-proven' : item.status} />
-				</div>
-				<h3><a href={'#evidence-' + item.id}>{item.title}</a></h3>
-				{#if missing && item.note}<p class="muted">{item.note}</p>{/if}
+			<hx-details class="card-body">
+				<hx-summary>Capture details</hx-summary><EvidenceProvenance {item} />
+			</hx-details>
+		{:else}<hx-div class="card-body">
+				<hx-div class="card-kicker">
+					<hx-span>{item.category}</hx-span><StatusBadge
+						status={missing ? 'not-proven' : item.status}
+					/>
+				</hx-div>
+				<hx-h3><hx-a href={'#evidence-' + item.id}>{item.title}</hx-a></hx-h3>
+				{#if missing && item.note}<hx-p class="muted">{item.note}</hx-p>{/if}
 				<EvidenceProvenance {item} />
-				<div class="evidence-meta">
-					{#if item.viewport}<span>{item.viewport}</span>{/if}{#if item.capturedAt}<time
-							datetime={item.capturedAt}>{timeAgo(item.capturedAt)}</time
+				<hx-div class="evidence-meta">
+					{#if item.viewport}<hx-span>{item.viewport}</hx-span>{/if}{#if item.capturedAt}<hx-time
+							datetime={item.capturedAt}>{timeAgo(item.capturedAt)}</hx-time
 						>{/if}
-				</div>
-			</div>{/if}
-	</article>
+				</hx-div>
+			</hx-div>{/if}
+	</hx-article>
 {/if}

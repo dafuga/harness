@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	let {
@@ -18,29 +20,29 @@
 </script>
 
 {#if files.length}
-	<ul class="source-files" aria-label={label}>
+	<hx-ul class="source-files" aria-label={label}>
 		{#each files as path, position (position)}
 			{@const url = href(path)}
 			{@const shown = path.startsWith(relativeTo) ? path.slice(relativeTo.length) : path}
 			{@const split = shown.lastIndexOf('/')}
 			{@const folder = split < 0 ? '' : shown.slice(0, split)}
 			{@const name = shown.slice(split + 1)}
-			<li>
-				{#if url}<a href={url} target="_blank" rel="noreferrer" title={path} aria-label={path}>
-						{#if folder}<span class="source-folder">{folder}</span>{/if}<span class="source-name"
-							>{folder ? '/' : ''}{name}</span
+			<hx-li>
+				{#if url}<hx-a href={url} target="_blank" rel="noreferrer" title={path} aria-label={path}>
+						{#if folder}<hx-span class="source-folder">{folder}</hx-span>{/if}<hx-span
+							class="source-name">{folder ? '/' : ''}{name}</hx-span
 						>
-					</a>
-				{:else}<code title={path}>
-						{#if folder}<span class="source-folder">{folder}</span>{/if}<span class="source-name"
-							>{folder ? '/' : ''}{name}</span
+					</hx-a>
+				{:else}<hx-code title={path}>
+						{#if folder}<hx-span class="source-folder">{folder}</hx-span>{/if}<hx-span
+							class="source-name">{folder ? '/' : ''}{name}</hx-span
 						>
-					</code>{/if}
+					</hx-code>{/if}
 				{@render children(path)}
-			</li>
+			</hx-li>
 		{/each}
-	</ul>
-{:else}<p class="source-empty">{empty}</p>{/if}
+	</hx-ul>
+{:else}<hx-p class="source-empty">{empty}</hx-p>{/if}
 
 <style>
 	.source-files {

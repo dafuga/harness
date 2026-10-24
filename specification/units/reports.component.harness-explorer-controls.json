@@ -6,6 +6,15 @@
 	"responsibility": "Searches the entities on each catalog list page.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-harness-icon",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-label"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/ExplorerControls.svelte"],
 		"symbols": ["ExplorerControls"]
@@ -36,6 +45,21 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
 			"via": "import",
 			"origin": "derived"
 		},

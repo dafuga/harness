@@ -7,6 +7,7 @@
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
+	import NativeAtomPreview from './NativeAtomPreview.svelte';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
@@ -102,6 +103,8 @@
 							</Controls>
 						</SvelteFlow>
 					</div>
+				{:else if unit.source?.includes('/atoms/')}
+					<NativeAtomPreview {Component} source={unit.source} />
 				{:else}
 					<Component {...fixture.props} />
 				{/if}

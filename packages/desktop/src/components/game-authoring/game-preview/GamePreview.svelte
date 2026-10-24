@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onDestroy, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -168,34 +170,34 @@
 <svelte:window onkeydown={keydown} onkeyup={keyup} onblur={() => held.clear()} />
 <svelte:document onvisibilitychange={hidden} />
 
-<section data-harness-component="game-preview" data-readonly={readonly}>
-	<div class="stage">
+<hx-section data-harness-component="game-preview" data-readonly={readonly}>
+	<hx-div class="stage">
 		{#if view.dimension === '3d'}
-			<canvas bind:this={deep} width="1280" height="704" aria-label={view.title}></canvas>
+			<hx-canvas bind:this={deep} width="1280" height="704" aria-label={view.title}></hx-canvas>
 		{:else}
-			<canvas bind:this={flat} width="1280" height="704" aria-label={view.title}></canvas>
+			<hx-canvas bind:this={flat} width="1280" height="704" aria-label={view.title}></hx-canvas>
 		{/if}
 		{#if busy}
 			<GameLiveVideo {stream} />
 		{/if}
-	</div>
+	</hx-div>
 	<!-- The readout stays outside the canvas, so the AI capture never includes it. -->
 	<GameControls {view} {run} {step} {reset} />
-	<div class="row">
+	<hx-div class="row">
 		<Select label="AI video model" bind:value={choice} disabled={!available || busy}>
 			{#each Object.entries(models) as [key, item] (key)}
-				<option value={key}>{item.label} · ${item.rate.toFixed(2)}/min</option>
+				<hx-option value={key}>{item.label} · ${item.rate.toFixed(2)}/min</hx-option>
 			{/each}
 		</Select>
 		{#if busy}
-			<button onclick={() => halt('Stopped.')}>Stop AI video</button>
+			<hx-button onclick={() => halt('Stopped.')}>Stop AI video</hx-button>
 		{:else}
-			<button class="gold" disabled={!available} onclick={start}>Start AI video</button>
+			<hx-button class="gold" disabled={!available} onclick={start}>Start AI video</hx-button>
 		{/if}
-		<small role="status">{summary}</small>
-	</div>
-	{#if error}<p class="error" role="alert">{error}</p>{/if}
-</section>
+		<hx-small role="status">{summary}</hx-small>
+	</hx-div>
+	{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+</hx-section>
 
 <style>
 	.stage {

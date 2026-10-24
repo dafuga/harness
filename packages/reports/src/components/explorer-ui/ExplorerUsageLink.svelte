@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerEntity } from '../../models/Explorer.types';
 	import { catalogShot } from '../../utils/entityScreens';
@@ -97,14 +99,14 @@
 	$effect(() => () => clearTimeout(timer));
 </script>
 
-<span class="ex-usage-link" bind:this={root}
+<hx-span class="ex-usage-link" bind:this={root}
 	>{#if entity.caller?.sourceOnly}
-		<button
+		<hx-button
 			type="button"
 			disabled={!nav.source}
 			onclick={(event) =>
 				nav.source?.(entity, `${entity.name} — ${entity.unit.title}`, event.currentTarget)}
-			>{entity.name}</button
+			>{entity.name}</hx-button
 		>
 	{:else}<EntityLink
 			{to}
@@ -114,7 +116,7 @@
 			onpointerleave={leave}
 			onfocus={(event) => (focused = event.currentTarget.matches(':focus-visible'))}
 			onblur={close}>{entity.name}</EntityLink
-		>{#if open}<span
+		>{#if open}<hx-span
 				class="ex-usage-preview"
 				role="tooltip"
 				{id}
@@ -125,20 +127,22 @@
 				onpointerleave={leave}
 			>
 				{#if !visual}
-					<code>{entity.caller?.symbol ?? entity.unit.title}</code><span>{entity.role}</span>
+					<hx-code>{entity.caller?.symbol ?? entity.unit.title}</hx-code><hx-span
+						>{entity.role}</hx-span
+					>
 				{:else if pictured && shot}
-					<img
+					<hx-img
 						src={mediaBase + file}
 						alt={`Screenshot of ${entity.name}`}
 						decoding="async"
 						onload={(event) => loaded(event.currentTarget)}
 						onerror={() => (failed = file)}
 					/>
-					<span>{origin}</span>
+					<hx-span>{origin}</hx-span>
 				{:else}
-					<span>No screenshot is recorded at this revision</span>
+					<hx-span>No screenshot is recorded at this revision</hx-span>
 				{/if}
-			</span>{/if}{/if}</span
+			</hx-span>{/if}{/if}</hx-span
 >
 
 <style>

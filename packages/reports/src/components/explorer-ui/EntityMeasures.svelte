@@ -1,5 +1,7 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Line } from "./EntityMeasures.types";
+	import type { Line } from './EntityMeasures.types';
 
 	import type { HarnessRecord, HarnessUnit } from '../../models/explorer-ui/Harness.types';
 	import { humanize } from '../../helpers/strings/humanize';
@@ -47,41 +49,40 @@
 			note: finding(budget.metric)?.status
 		}))
 	]);
-
 </script>
 
-<section
+<hx-section
 	class="ex-card"
 	aria-labelledby="ex-measures-title"
 	data-harness-component="harness-entity-measures"
 >
-	<h2 id="ex-measures-title">Measurements and frozen limits</h2>
+	<hx-h2 id="ex-measures-title">Measurements and frozen limits</hx-h2>
 	{#if !record}
-		<p class="ex-soft">No verification record measured this revision.</p>
+		<hx-p class="ex-soft">No verification record measured this revision.</hx-p>
 	{/if}
-	<div class="ex-scroll">
-		<table class="ex-mini" aria-label="Measurements and frozen limits">
-			<thead>
-				<tr>
-					<th scope="col">Metric</th>
-					<th scope="col">Measured</th>
-					<th scope="col">Limit</th>
-					<th scope="col">Note</th>
-				</tr>
-			</thead>
-			<tbody>
+	<hx-div class="ex-scroll">
+		<hx-table class="ex-mini" aria-label="Measurements and frozen limits">
+			<hx-thead>
+				<hx-tr>
+					<hx-th scope="col">Metric</hx-th>
+					<hx-th scope="col">Measured</hx-th>
+					<hx-th scope="col">Limit</hx-th>
+					<hx-th scope="col">Note</hx-th>
+				</hx-tr>
+			</hx-thead>
+			<hx-tbody>
 				{#each lines.map(told) as line, position (position)}
-					<tr>
-						<th scope="row">{line.metric}</th>
-						<td>{line.value}</td>
-						<td>{line.limit}</td>
-						<td>{line.note ?? '—'}</td>
-					</tr>
+					<hx-tr>
+						<hx-th scope="row">{line.metric}</hx-th>
+						<hx-td>{line.value}</hx-td>
+						<hx-td>{line.limit}</hx-td>
+						<hx-td>{line.note ?? '—'}</hx-td>
+					</hx-tr>
 				{/each}
-			</tbody>
-		</table>
-	</div>
+			</hx-tbody>
+		</hx-table>
+	</hx-div>
 	{#if unit.budgets.performance.length === 0}
-		<p class="ex-note">No performance budget is declared for it.</p>
+		<hx-p class="ex-note">No performance budget is declared for it.</hx-p>
 	{/if}
-</section>
+</hx-section>

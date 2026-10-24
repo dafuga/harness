@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-fe-image",
+	"kind": "component",
+	"title": "SvgFeImage",
+	"responsibility": "Renders the native feImage element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "feImage",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgFeImage.svelte"],
+		"symbols": ["SvgFeImage"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgFeImage.attributes",
+				"type": "SvelteHTMLElements['feImage']",
+				"description": "Native feImage attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgFeImage.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native feImage element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgFeImage",
+				"type": "markup",
+				"description": "The actual native feImage element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeImage.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgFeImage.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

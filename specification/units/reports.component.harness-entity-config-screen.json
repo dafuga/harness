@@ -6,6 +6,15 @@
 	"responsibility": "The screen of a config: opens on what it provides and who uses it; a config is not pictured, run or heard.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-entity-config",
+			"reports.component.harness-entity-frame",
+			"reports.component.harness-entity-sections",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityConfigScreen.svelte"],
 		"symbols": ["EntityConfigScreen"]
@@ -92,6 +101,11 @@
 		},
 		{
 			"unit": "reports.component.harness-entity-sections",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

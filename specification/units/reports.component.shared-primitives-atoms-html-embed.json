@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-embed",
+	"kind": "component",
+	"title": "HtmlEmbed",
+	"responsibility": "Renders the native embed element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "embed",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlEmbed.svelte"],
+		"symbols": ["HtmlEmbed"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlEmbed.attributes",
+				"type": "SvelteHTMLElements['embed']",
+				"description": "Native embed attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlEmbed",
+				"type": "markup",
+				"description": "The actual native embed element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlEmbed.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlEmbed.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-atoms-html-embed",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Kind } from "./UploadAudio.types";
+	import type { Kind } from './UploadAudio.types';
 
 	import { onMount } from 'svelte';
 	import type { Report } from '../../models/reports-media/Report.types';
@@ -67,14 +69,14 @@
 			uploading = false;
 		}
 	}
-
 </script>
 
 <!-- Shares the comparison upload framing; `upload-audio` adds the mode, notes field and spacing. -->
-<details class="upload-comparison upload-audio">
-	<summary><span>{$t('addAudio')}</span><span aria-hidden="true">↗</span></summary>
+<hx-details class="upload-comparison upload-audio">
+	<hx-summary><hx-span>{$t('addAudio')}</hx-span><hx-span aria-hidden="true">↗</hx-span></hx-summary
+	>
 	<!-- Mode sits outside the form, so the reset after an upload keeps the chosen mode. -->
-	<label class="upload-mode"
+	<hx-label class="upload-mode"
 		>{$t('audioUploadMode')}
 		<Select
 			bind:value={mode}
@@ -82,51 +84,51 @@
 			name="mode"
 			disabled={uploading || !ready}
 		>
-			<option value="single">{$t('singleRecording')}</option>
-			<option value="comparison">{$t('pairedRecordings')}</option>
+			<hx-option value="single">{$t('singleRecording')}</hx-option>
+			<hx-option value="comparison">{$t('pairedRecordings')}</hx-option>
 		</Select>
-	</label>
-	<form onsubmit={upload}>
-		<div class="upload-fields">
-			<label class="upload-title"
+	</hx-label>
+	<hx-form onsubmit={upload}>
+		<hx-div class="upload-fields">
+			<hx-label class="upload-title"
 				>{$t('audioTitle')}
-				<input
+				<hx-input
 					name="title"
 					maxlength="120"
 					required
 					placeholder={$t('audioTitlePlaceholder')}
 					disabled={uploading}
 				/>
-			</label>
-			<label
+			</hx-label>
+			<hx-label
 				>{$t('source')}
-				<input
+				<hx-input
 					name="source"
 					maxlength="200"
 					placeholder={$t('audioSourcePlaceholder')}
 					disabled={uploading}
 				/>
-			</label>
-		</div>
+			</hx-label>
+		</hx-div>
 		{#key `${mode}:${resetCount}`}<AudioUploadFiles {mode} {uploading} />{/key}
-		<label class="upload-note"
+		<hx-label class="upload-note"
 			>{$t('notes')}
-			<textarea
+			<hx-textarea
 				name="note"
 				maxlength="2000"
 				rows="3"
 				placeholder={$t('audioNotesPlaceholder')}
 				disabled={uploading}
-			></textarea>
-		</label>
-		<p class="upload-storage muted">{$t('audioStorageNote')}</p>
-		<div class="upload-actions">
-			<button class="button primary" type="submit" disabled={uploading || !ready}
-				>{$t(paired ? 'uploadAudioComparison' : 'uploadAudio')}</button
+			></hx-textarea>
+		</hx-label>
+		<hx-p class="upload-storage muted">{$t('audioStorageNote')}</hx-p>
+		<hx-div class="upload-actions">
+			<hx-button class="button primary" type="submit" disabled={uploading || !ready}
+				>{$t(paired ? 'uploadAudioComparison' : 'uploadAudio')}</hx-button
 			>
-			<div class="upload-status" role="status">
-				{#if message}<span class={'badge ' + messageKind}>{message}</span>{/if}
-			</div>
-		</div>
-	</form>
-</details>
+			<hx-div class="upload-status" role="status">
+				{#if message}<hx-span class={'badge ' + messageKind}>{message}</hx-span>{/if}
+			</hx-div>
+		</hx-div>
+	</hx-form>
+</hx-details>

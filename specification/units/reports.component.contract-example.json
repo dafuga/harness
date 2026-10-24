@@ -6,6 +6,10 @@
 	"responsibility": "Shows one contract field as a readable type, description and honestly labelled examples.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.recorded-value"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ContractExample.svelte",

@@ -6,6 +6,13 @@
 	"responsibility": "Shows the layouts of this repository at a branch tip or a selected commit, to search, order and open.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"reports.component.harness-explorer-catalog-screen",
+			"reports.component.harness-screen"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/layouts/+page.svelte"],
 		"symbols": ["+page"]

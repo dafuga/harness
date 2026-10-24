@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Opened } from "./ExplorerFrame.types";
+	import type { Opened } from './ExplorerFrame.types';
 
 	import { tick, type Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
@@ -61,12 +63,11 @@
 	let gap = $derived(
 		registry.gap ?? `No unit registry is stored at ${shortCommit(host.scope.commit)}`
 	);
-
 </script>
 
 <!-- The marker of the frame draws no box: the content is laid out as the column holds it. -->
-<div class="ex-frame" data-harness-component="harness-explorer-frame">
-	<div class="ex-content" data-mode={host.scope.mode}>
+<hx-div class="ex-frame" data-harness-component="harness-explorer-frame">
+	<hx-div class="ex-content" data-mode={host.scope.mode}>
 		{#if registryRequired && !registry.available}
 			<EntityMissing
 				title="No registry at this revision"
@@ -90,8 +91,8 @@
 				onClose={closeSource}
 			/>
 		{/if}
-	</div>
-</div>
+	</hx-div>
+</hx-div>
 
 <style>
 	.ex-frame {

@@ -8,11 +8,14 @@ import { formatConfigFiles } from '../development-tooling/formatConfig';
 import { lintConfigFiles } from '../development-tooling/lintConfig';
 import { agentRules, skillRules } from './projectGuidance';
 import { gameFiles } from '../game-authoring/gameProject';
+import { atomicComponentFiles } from '../development-tooling/atomicComponents';
+import { atomicProjectFiles } from '../development-tooling/atomicMarkup';
 
 export function projectFiles(input: ProjectTemplateInput): PlannedFile[] {
 	if (input.kind === 'lib') return separateTypeDeclarations(libFiles(input.name));
 	const app = appFiles(input.name);
-	return separateTypeDeclarations(input.kind === 'game' ? gameFiles(input, app) : app);
+	const files = input.kind === 'game' ? gameFiles(input, app) : app;
+	return separateTypeDeclarations(atomicProjectFiles(files));
 }
 
 function appFiles(name: string): PlannedFile[] {
@@ -23,6 +26,7 @@ function appFiles(name: string): PlannedFile[] {
 		...lintConfigFiles(),
 		...auditRunnerFiles('app'),
 		...appSourceFiles(name),
+		...atomicComponentFiles(),
 		...appTestFiles()
 	];
 }
@@ -40,7 +44,7 @@ function appConfigFiles(name: string): PlannedFile[] {
 		{
 			path: 'svelte.config.js',
 			contents:
-				"import adapter from '@sveltejs/adapter-auto';\nimport { vitePreprocess } from '@sveltejs/vite-plugin-svelte';\n\nexport default {\n\tkit: {\n\t\tadapter: adapter()\n\t},\n\tpreprocess: vitePreprocess()\n};\n"
+				"import adapter from '@sveltejs/adapter-auto';\nimport { vitePreprocess } from '@sveltejs/vite-plugin-svelte';\nimport { atomicComponents } from './scripts/atomicComponents.js';\n\nexport default {\n\tkit: {\n\t\tadapter: adapter()\n\t},\n\tpreprocess: [atomicComponents(), vitePreprocess()]\n};\n"
 		},
 		{
 			path: 'vite.config.ts',
@@ -81,7 +85,7 @@ function appSourceFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'src/routes/+page.svelte',
-			contents: `<script lang="ts">\n\tconst title = 'Welcome to ${name}';\n</script>\n\n<h1>{title}</h1>\n`
+			contents: `<!-- @harness-tier page -->\n<script lang="ts">\n\timport HtmlH1 from '../components/atoms/HtmlH1.svelte';\n\tconst title = 'Welcome to ${name}';\n</script>\n\n<HtmlH1>{title}</HtmlH1>\n`
 		},
 		{
 			path: 'src/lib/adapters/README.md',
@@ -161,6 +165,7 @@ function appPackage(name: string): Record<string, unknown> {
 			eslint: '^9.25.1',
 			'eslint-config-prettier': '^10.1.2',
 			prettier: '^3.5.3',
+			'magic-string': '^0.30.21',
 			'svelte-check': '^4.0.0',
 			svelte: '^5.0.0',
 			typescript: '^5.8.3',

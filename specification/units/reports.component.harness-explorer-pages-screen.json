@@ -6,6 +6,15 @@
 	"responsibility": "The Pages screen: lists the pages of the app as cards, each with its own screenshot at the shown revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-catalog-items",
+			"reports.component.harness-explorer-frame",
+			"reports.component.harness-explorer-index",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/ExplorerPagesScreen.svelte"],
 		"symbols": ["ExplorerPagesScreen"]
@@ -77,6 +86,11 @@
 		},
 		{
 			"unit": "reports.component.harness-explorer-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

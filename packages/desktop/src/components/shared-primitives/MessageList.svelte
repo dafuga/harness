@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
@@ -25,18 +27,21 @@
 	}
 </script>
 
-<div class="messages" aria-live="polite">
-	{#each messages as message (message.id)}<article class="message" class:pending={message.pending}>
-			<div class="avatar" class:agent={message.author === 'agent'}>{badge(message)}</div>
-			<div>
-				<div class="row">
-					<strong>{name(message)}</strong><small>{timeLabel(message.at)}</small>
-				</div>
-				{#if message.note}<small class="message-note">{message.note}</small>{/if}
-				<p><ReferenceText text={message.text} {workspace} {entity} /></p>
-				{#if message.detail}<small>{message.detail}</small>{/if}{#if message.version}<small
-						>Design · {message.version}</small
+<hx-div class="messages" aria-live="polite">
+	{#each messages as message (message.id)}<hx-article
+			class="message"
+			class:pending={message.pending}
+		>
+			<hx-div class="avatar" class:agent={message.author === 'agent'}>{badge(message)}</hx-div>
+			<hx-div>
+				<hx-div class="row">
+					<hx-strong>{name(message)}</hx-strong><hx-small>{timeLabel(message.at)}</hx-small>
+				</hx-div>
+				{#if message.note}<hx-small class="message-note">{message.note}</hx-small>{/if}
+				<hx-p><ReferenceText text={message.text} {workspace} {entity} /></hx-p>
+				{#if message.detail}<hx-small>{message.detail}</hx-small>{/if}{#if message.version}<hx-small
+						>Design · {message.version}</hx-small
 					>{/if}
-			</div>
-		</article>{:else}<p class="muted">Start a conversation about this design.</p>{/each}
-</div>
+			</hx-div>
+		</hx-article>{:else}<hx-p class="muted">Start a conversation about this design.</hx-p>{/each}
+</hx-div>

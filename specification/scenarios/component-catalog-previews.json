@@ -133,6 +133,7 @@
 		"reports.component.evidence-provenance",
 		"reports.component.evidence-viewer",
 		"reports.component.explorer-catalog-items",
+		"reports.component.explorer-dependencies-screen",
 		"reports.component.explorer-function-card",
 		"reports.component.explorer-ui-config-value-tree",
 		"reports.component.explorer-ui-explorer-module-card",
@@ -214,6 +215,135 @@
 		"reports.component.report-summary",
 		"reports.component.report-view",
 		"reports.component.select",
+		"reports.component.shared-primitives-atoms-html-a",
+		"reports.component.shared-primitives-atoms-html-abbr",
+		"reports.component.shared-primitives-atoms-html-address",
+		"reports.component.shared-primitives-atoms-html-article",
+		"reports.component.shared-primitives-atoms-html-aside",
+		"reports.component.shared-primitives-atoms-html-audio",
+		"reports.component.shared-primitives-atoms-html-b",
+		"reports.component.shared-primitives-atoms-html-bdi",
+		"reports.component.shared-primitives-atoms-html-bdo",
+		"reports.component.shared-primitives-atoms-html-blockquote",
+		"reports.component.shared-primitives-atoms-html-button",
+		"reports.component.shared-primitives-atoms-html-canvas",
+		"reports.component.shared-primitives-atoms-html-caption",
+		"reports.component.shared-primitives-atoms-html-cite",
+		"reports.component.shared-primitives-atoms-html-code",
+		"reports.component.shared-primitives-atoms-html-colgroup",
+		"reports.component.shared-primitives-atoms-html-data",
+		"reports.component.shared-primitives-atoms-html-dd",
+		"reports.component.shared-primitives-atoms-html-del",
+		"reports.component.shared-primitives-atoms-html-details",
+		"reports.component.shared-primitives-atoms-html-dfn",
+		"reports.component.shared-primitives-atoms-html-dialog",
+		"reports.component.shared-primitives-atoms-html-div",
+		"reports.component.shared-primitives-atoms-html-dl",
+		"reports.component.shared-primitives-atoms-html-dt",
+		"reports.component.shared-primitives-atoms-html-element",
+		"reports.component.shared-primitives-atoms-html-em",
+		"reports.component.shared-primitives-atoms-html-embed",
+		"reports.component.shared-primitives-atoms-html-fieldset",
+		"reports.component.shared-primitives-atoms-html-figcaption",
+		"reports.component.shared-primitives-atoms-html-figure",
+		"reports.component.shared-primitives-atoms-html-footer",
+		"reports.component.shared-primitives-atoms-html-form",
+		"reports.component.shared-primitives-atoms-html-h1",
+		"reports.component.shared-primitives-atoms-html-h2",
+		"reports.component.shared-primitives-atoms-html-h3",
+		"reports.component.shared-primitives-atoms-html-h4",
+		"reports.component.shared-primitives-atoms-html-h5",
+		"reports.component.shared-primitives-atoms-html-h6",
+		"reports.component.shared-primitives-atoms-html-header",
+		"reports.component.shared-primitives-atoms-html-hgroup",
+		"reports.component.shared-primitives-atoms-html-hr",
+		"reports.component.shared-primitives-atoms-html-i",
+		"reports.component.shared-primitives-atoms-html-iframe",
+		"reports.component.shared-primitives-atoms-html-img",
+		"reports.component.shared-primitives-atoms-html-input",
+		"reports.component.shared-primitives-atoms-html-input-button",
+		"reports.component.shared-primitives-atoms-html-input-checkbox",
+		"reports.component.shared-primitives-atoms-html-input-color",
+		"reports.component.shared-primitives-atoms-html-input-date",
+		"reports.component.shared-primitives-atoms-html-input-datetime-local",
+		"reports.component.shared-primitives-atoms-html-input-email",
+		"reports.component.shared-primitives-atoms-html-input-file",
+		"reports.component.shared-primitives-atoms-html-input-image",
+		"reports.component.shared-primitives-atoms-html-input-month",
+		"reports.component.shared-primitives-atoms-html-input-number",
+		"reports.component.shared-primitives-atoms-html-input-password",
+		"reports.component.shared-primitives-atoms-html-input-radio",
+		"reports.component.shared-primitives-atoms-html-input-range",
+		"reports.component.shared-primitives-atoms-html-input-reset",
+		"reports.component.shared-primitives-atoms-html-input-search",
+		"reports.component.shared-primitives-atoms-html-input-submit",
+		"reports.component.shared-primitives-atoms-html-input-tel",
+		"reports.component.shared-primitives-atoms-html-input-text",
+		"reports.component.shared-primitives-atoms-html-input-time",
+		"reports.component.shared-primitives-atoms-html-input-url",
+		"reports.component.shared-primitives-atoms-html-input-week",
+		"reports.component.shared-primitives-atoms-html-ins",
+		"reports.component.shared-primitives-atoms-html-kbd",
+		"reports.component.shared-primitives-atoms-html-label",
+		"reports.component.shared-primitives-atoms-html-legend",
+		"reports.component.shared-primitives-atoms-html-li",
+		"reports.component.shared-primitives-atoms-html-main",
+		"reports.component.shared-primitives-atoms-html-mark",
+		"reports.component.shared-primitives-atoms-html-menu",
+		"reports.component.shared-primitives-atoms-html-meter",
+		"reports.component.shared-primitives-atoms-html-nav",
+		"reports.component.shared-primitives-atoms-html-object",
+		"reports.component.shared-primitives-atoms-html-ol",
+		"reports.component.shared-primitives-atoms-html-optgroup",
+		"reports.component.shared-primitives-atoms-html-option",
+		"reports.component.shared-primitives-atoms-html-output",
+		"reports.component.shared-primitives-atoms-html-p",
+		"reports.component.shared-primitives-atoms-html-picture",
+		"reports.component.shared-primitives-atoms-html-pre",
+		"reports.component.shared-primitives-atoms-html-progress",
+		"reports.component.shared-primitives-atoms-html-q",
+		"reports.component.shared-primitives-atoms-html-rp",
+		"reports.component.shared-primitives-atoms-html-rt",
+		"reports.component.shared-primitives-atoms-html-ruby",
+		"reports.component.shared-primitives-atoms-html-s",
+		"reports.component.shared-primitives-atoms-html-samp",
+		"reports.component.shared-primitives-atoms-html-search",
+		"reports.component.shared-primitives-atoms-html-section",
+		"reports.component.shared-primitives-atoms-html-select",
+		"reports.component.shared-primitives-atoms-html-small",
+		"reports.component.shared-primitives-atoms-html-span",
+		"reports.component.shared-primitives-atoms-html-strong",
+		"reports.component.shared-primitives-atoms-html-sub",
+		"reports.component.shared-primitives-atoms-html-summary",
+		"reports.component.shared-primitives-atoms-html-sup",
+		"reports.component.shared-primitives-atoms-html-table",
+		"reports.component.shared-primitives-atoms-html-tbody",
+		"reports.component.shared-primitives-atoms-html-td",
+		"reports.component.shared-primitives-atoms-html-textarea",
+		"reports.component.shared-primitives-atoms-html-tfoot",
+		"reports.component.shared-primitives-atoms-html-th",
+		"reports.component.shared-primitives-atoms-html-thead",
+		"reports.component.shared-primitives-atoms-html-time",
+		"reports.component.shared-primitives-atoms-html-tr",
+		"reports.component.shared-primitives-atoms-html-u",
+		"reports.component.shared-primitives-atoms-html-ul",
+		"reports.component.shared-primitives-atoms-html-var",
+		"reports.component.shared-primitives-atoms-html-video",
+		"reports.component.shared-primitives-atoms-svg-circle",
+		"reports.component.shared-primitives-atoms-svg-ellipse",
+		"reports.component.shared-primitives-atoms-svg-foreign-object",
+		"reports.component.shared-primitives-atoms-svg-g",
+		"reports.component.shared-primitives-atoms-svg-image",
+		"reports.component.shared-primitives-atoms-svg-line",
+		"reports.component.shared-primitives-atoms-svg-path",
+		"reports.component.shared-primitives-atoms-svg-polygon",
+		"reports.component.shared-primitives-atoms-svg-polyline",
+		"reports.component.shared-primitives-atoms-svg-rect",
+		"reports.component.shared-primitives-atoms-svg-svg",
+		"reports.component.shared-primitives-atoms-svg-text",
+		"reports.component.shared-primitives-atoms-svg-text-path",
+		"reports.component.shared-primitives-atoms-svg-tspan",
+		"reports.component.shared-primitives-atoms-svg-use",
 		"reports.component.shared-primitives-loading-state",
 		"reports.component.site-activity",
 		"reports.component.source-code-action",
@@ -232,6 +362,7 @@
 		"reports.page.harness-branch-branch-at-configs",
 		"reports.page.harness-branch-branch-at-configs-entity",
 		"reports.page.harness-branch-branch-at-configs-entity-history",
+		"reports.page.harness-branch-branch-at-dependencies",
 		"reports.page.harness-branch-branch-at-functions",
 		"reports.page.harness-branch-branch-at-functions-entity",
 		"reports.page.harness-branch-branch-at-functions-entity-history",
@@ -253,824 +384,1094 @@
 		"reports.page.harness-branch-branch-at-translations",
 		"reports.page.harness-branch-branch-at-types",
 		"reports.page.harness-branch-branch-at-types-entity",
-		"reports.page.harness-branch-branch-at-types-entity-history",
-		"reports.component.explorer-dependencies-screen",
-		"reports.page.harness-branch-branch-at-dependencies"
+		"reports.page.harness-branch-branch-at-types-entity-history"
 	],
 	"states": [
 		{
 			"id": "desktop-component-agent-controls",
 			"title": "Agent controls",
 			"coverage": "required",
-			"units": ["desktop.component.agent-controls"]
+			"units": [
+				"desktop.component.agent-controls"
+			]
 		},
 		{
 			"id": "desktop-component-agent-effort-picker",
 			"title": "Agent reasoning picker",
 			"coverage": "required",
-			"units": ["desktop.component.agent-effort-picker"]
+			"units": [
+				"desktop.component.agent-effort-picker"
+			]
 		},
 		{
 			"id": "desktop-component-agent-model-picker",
 			"title": "Agent model picker",
 			"coverage": "required",
-			"units": ["desktop.component.agent-model-picker"]
+			"units": [
+				"desktop.component.agent-model-picker"
+			]
 		},
 		{
 			"id": "desktop-component-agent-settings",
 			"title": "Agent settings preference",
 			"coverage": "required",
-			"units": ["desktop.component.agent-settings"]
+			"units": [
+				"desktop.component.agent-settings"
+			]
 		},
 		{
 			"id": "desktop-component-annotated-image",
 			"title": "Annotated image",
 			"coverage": "required",
-			"units": ["desktop.component.annotated-image"]
+			"units": [
+				"desktop.component.annotated-image"
+			]
 		},
 		{
 			"id": "desktop-component-approval-button",
 			"title": "Approval button",
 			"coverage": "required",
-			"units": ["desktop.component.approval-button"]
+			"units": [
+				"desktop.component.approval-button"
+			]
 		},
 		{
 			"id": "desktop-component-catalog-view",
 			"title": "Catalog view",
 			"coverage": "required",
-			"units": ["desktop.component.catalog-view"]
+			"units": [
+				"desktop.component.catalog-view"
+			]
 		},
 		{
 			"id": "desktop-component-choice-dialog",
 			"title": "Choice dialog",
 			"coverage": "required",
-			"units": ["desktop.component.choice-dialog"]
+			"units": [
+				"desktop.component.choice-dialog"
+			]
 		},
 		{
 			"id": "desktop-component-composer",
 			"title": "Composer",
 			"coverage": "required",
-			"units": ["desktop.component.composer"]
+			"units": [
+				"desktop.component.composer"
+			]
 		},
 		{
 			"id": "desktop-component-contract-panel",
 			"title": "Contract panel",
 			"coverage": "required",
-			"units": ["desktop.component.contract-panel"]
+			"units": [
+				"desktop.component.contract-panel"
+			]
 		},
 		{
 			"id": "desktop-component-coverage-panel",
 			"title": "Coverage panel",
 			"coverage": "required",
-			"units": ["desktop.component.coverage-panel"]
+			"units": [
+				"desktop.component.coverage-panel"
+			]
 		},
 		{
 			"id": "desktop-component-deployment-activity",
 			"title": "DeploymentActivity",
 			"coverage": "required",
-			"units": ["desktop.component.deployment-activity"]
+			"units": [
+				"desktop.component.deployment-activity"
+			]
 		},
 		{
 			"id": "desktop-component-deployment-details",
 			"title": "DeploymentDetails",
 			"coverage": "required",
-			"units": ["desktop.component.deployment-details"]
+			"units": [
+				"desktop.component.deployment-details"
+			]
 		},
 		{
 			"id": "desktop-component-deployment-dialog",
 			"title": "DeploymentDialog",
 			"coverage": "required",
-			"units": ["desktop.component.deployment-dialog"]
+			"units": [
+				"desktop.component.deployment-dialog"
+			]
 		},
 		{
 			"id": "desktop-component-deployment-progress",
 			"title": "DeploymentProgress",
 			"coverage": "required",
-			"units": ["desktop.component.deployment-progress"]
+			"units": [
+				"desktop.component.deployment-progress"
+			]
 		},
 		{
 			"id": "desktop-component-deployment-route",
 			"title": "DeploymentRoute",
 			"coverage": "required",
-			"units": ["desktop.component.deployment-route"]
+			"units": [
+				"desktop.component.deployment-route"
+			]
 		},
 		{
 			"id": "desktop-component-design-panel",
 			"title": "Design panel",
 			"coverage": "required",
-			"units": ["desktop.component.design-panel"]
+			"units": [
+				"desktop.component.design-panel"
+			]
 		},
 		{
 			"id": "desktop-component-details-panel",
 			"title": "Source files",
 			"coverage": "required",
-			"units": ["desktop.component.details-panel"]
+			"units": [
+				"desktop.component.details-panel"
+			]
 		},
 		{
 			"id": "desktop-component-entity-card",
 			"title": "Catalog card",
 			"coverage": "required",
-			"units": ["desktop.component.entity-card"]
+			"units": [
+				"desktop.component.entity-card"
+			]
 		},
 		{
 			"id": "desktop-component-entity-view",
 			"title": "Entity view",
 			"coverage": "required",
-			"units": ["desktop.component.entity-view"]
+			"units": [
+				"desktop.component.entity-view"
+			]
 		},
 		{
 			"id": "desktop-component-environment-picker",
 			"title": "EnvironmentPicker",
 			"coverage": "required",
-			"units": ["desktop.component.environment-picker"]
+			"units": [
+				"desktop.component.environment-picker"
+			]
 		},
 		{
 			"id": "desktop-component-game-authoring-game-graph-fit",
 			"title": "GameGraphFit",
 			"coverage": "required",
-			"units": ["desktop.component.game-authoring-game-graph-fit"]
+			"units": [
+				"desktop.component.game-authoring-game-graph-fit"
+			]
 		},
 		{
 			"id": "desktop-component-game-checkpoint-editor",
 			"title": "GameCheckpointEditor",
 			"coverage": "required",
-			"units": ["desktop.component.game-checkpoint-editor"]
+			"units": [
+				"desktop.component.game-checkpoint-editor"
+			]
 		},
 		{
 			"id": "desktop-component-game-checkpoint-image",
 			"title": "GameCheckpointImage",
 			"coverage": "required",
-			"units": ["desktop.component.game-checkpoint-image"]
+			"units": [
+				"desktop.component.game-checkpoint-image"
+			]
 		},
 		{
 			"id": "desktop-component-game-checkpoint-pane",
 			"title": "GameCheckpointPane",
 			"coverage": "required",
-			"units": ["desktop.component.game-checkpoint-pane"]
+			"units": [
+				"desktop.component.game-checkpoint-pane"
+			]
 		},
 		{
 			"id": "desktop-component-game-controls",
 			"title": "GameControls",
 			"coverage": "required",
-			"units": ["desktop.component.game-controls"]
+			"units": [
+				"desktop.component.game-controls"
+			]
 		},
 		{
 			"id": "desktop-component-game-create",
 			"title": "GameCreate",
 			"coverage": "required",
-			"units": ["desktop.component.game-create"]
+			"units": [
+				"desktop.component.game-create"
+			]
 		},
 		{
 			"id": "desktop-component-game-graph",
 			"title": "GameGraph",
 			"coverage": "required",
-			"units": ["desktop.component.game-graph"]
+			"units": [
+				"desktop.component.game-graph"
+			]
 		},
 		{
 			"id": "desktop-component-game-level-brief",
 			"title": "GameLevelBrief",
 			"coverage": "required",
-			"units": ["desktop.component.game-level-brief"]
+			"units": [
+				"desktop.component.game-level-brief"
+			]
 		},
 		{
 			"id": "desktop-component-game-level-plan",
 			"title": "GameLevelPlan",
 			"coverage": "required",
-			"units": ["desktop.component.game-level-plan"]
+			"units": [
+				"desktop.component.game-level-plan"
+			]
 		},
 		{
 			"id": "desktop-component-game-level-preview",
 			"title": "GameLevelPreview",
 			"coverage": "required",
-			"units": ["desktop.component.game-level-preview"]
+			"units": [
+				"desktop.component.game-level-preview"
+			]
 		},
 		{
 			"id": "desktop-component-game-level-review",
 			"title": "GameLevelReview",
 			"coverage": "required",
-			"units": ["desktop.component.game-level-review"]
+			"units": [
+				"desktop.component.game-level-review"
+			]
 		},
 		{
 			"id": "desktop-component-game-live-video",
 			"title": "GameLiveVideo",
 			"coverage": "required",
-			"units": ["desktop.component.game-live-video"]
+			"units": [
+				"desktop.component.game-live-video"
+			]
 		},
 		{
 			"id": "desktop-component-game-mechanics",
 			"title": "GameMechanics",
 			"coverage": "required",
-			"units": ["desktop.component.game-mechanics"]
+			"units": [
+				"desktop.component.game-mechanics"
+			]
 		},
 		{
 			"id": "desktop-component-game-preview",
 			"title": "GamePreview",
 			"coverage": "required",
-			"units": ["desktop.component.game-preview"]
+			"units": [
+				"desktop.component.game-preview"
+			]
 		},
 		{
 			"id": "desktop-component-game-text-field",
 			"title": "GameTextField",
 			"coverage": "required",
-			"units": ["desktop.component.game-text-field"]
+			"units": [
+				"desktop.component.game-text-field"
+			]
 		},
 		{
 			"id": "desktop-component-game-trace",
 			"title": "GameTrace",
 			"coverage": "required",
-			"units": ["desktop.component.game-trace"]
+			"units": [
+				"desktop.component.game-trace"
+			]
 		},
 		{
 			"id": "desktop-component-game-view-fields",
 			"title": "GameViewFields",
 			"coverage": "required",
-			"units": ["desktop.component.game-view-fields"]
+			"units": [
+				"desktop.component.game-view-fields"
+			]
 		},
 		{
 			"id": "desktop-component-game-workspace",
 			"title": "GameWorkspace",
 			"coverage": "required",
-			"units": ["desktop.component.game-workspace"]
+			"units": [
+				"desktop.component.game-workspace"
+			]
 		},
 		{
 			"id": "desktop-component-history-panel",
 			"title": "History panel",
 			"coverage": "required",
-			"units": ["desktop.component.history-panel"]
+			"units": [
+				"desktop.component.history-panel"
+			]
 		},
 		{
 			"id": "desktop-component-hosted-connection",
 			"title": "Hosted connection",
 			"coverage": "required",
-			"units": ["desktop.component.hosted-connection"]
+			"units": [
+				"desktop.component.hosted-connection"
+			]
 		},
 		{
 			"id": "desktop-component-icon",
 			"title": "Entity icon",
 			"coverage": "required",
-			"units": ["desktop.component.icon"]
+			"units": [
+				"desktop.component.icon"
+			]
 		},
 		{
 			"id": "desktop-component-image-thumbnail",
 			"title": "Image thumbnail",
 			"coverage": "required",
-			"units": ["desktop.component.image-thumbnail"]
+			"units": [
+				"desktop.component.image-thumbnail"
+			]
 		},
 		{
 			"id": "desktop-component-measures-panel",
 			"title": "Measures panel",
 			"coverage": "required",
-			"units": ["desktop.component.measures-panel"]
+			"units": [
+				"desktop.component.measures-panel"
+			]
 		},
 		{
 			"id": "desktop-component-message-list",
 			"title": "Message list",
 			"coverage": "required",
-			"units": ["desktop.component.message-list"]
+			"units": [
+				"desktop.component.message-list"
+			]
 		},
 		{
 			"id": "desktop-component-nav-bar",
 			"title": "Nav bar",
 			"coverage": "required",
-			"units": ["desktop.component.nav-bar"]
+			"units": [
+				"desktop.component.nav-bar"
+			]
 		},
 		{
 			"id": "desktop-component-plan-badge",
 			"title": "Plan badge",
 			"coverage": "required",
-			"units": ["desktop.component.plan-badge"]
+			"units": [
+				"desktop.component.plan-badge"
+			]
 		},
 		{
 			"id": "desktop-component-prior-image",
 			"title": "Prior image",
 			"coverage": "required",
-			"units": ["desktop.component.prior-image"]
+			"units": [
+				"desktop.component.prior-image"
+			]
 		},
 		{
 			"id": "desktop-component-project-agent",
 			"title": "Project chat",
 			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
+			"units": [
+				"desktop.component.project-agent"
+			]
 		},
 		{
 			"id": "desktop-component-project-gate",
 			"title": "Project gate",
 			"coverage": "required",
-			"units": ["desktop.component.project-gate"]
+			"units": [
+				"desktop.component.project-gate"
+			]
 		},
 		{
 			"id": "desktop-component-project-switcher",
 			"title": "Project switcher",
 			"coverage": "required",
-			"units": ["desktop.component.project-switcher"]
+			"units": [
+				"desktop.component.project-switcher"
+			]
 		},
 		{
 			"id": "desktop-component-recorded-preview",
 			"title": "RecordedPreview",
 			"coverage": "required",
-			"units": ["desktop.component.recorded-preview"]
+			"units": [
+				"desktop.component.recorded-preview"
+			]
 		},
 		{
 			"id": "desktop-component-reference-text",
 			"title": "Reference text",
 			"coverage": "required",
-			"units": ["desktop.component.reference-text"]
+			"units": [
+				"desktop.component.reference-text"
+			]
 		},
 		{
 			"id": "desktop-component-relationships-panel",
 			"title": "Used In and Uses",
 			"coverage": "required",
-			"units": ["desktop.component.relationships-panel"]
+			"units": [
+				"desktop.component.relationships-panel"
+			]
 		},
 		{
 			"id": "desktop-component-remote-approval",
 			"title": "Remote approval",
 			"coverage": "required",
-			"units": ["desktop.component.remote-approval"]
+			"units": [
+				"desktop.component.remote-approval"
+			]
 		},
 		{
 			"id": "desktop-component-remote-connection",
 			"title": "Remote connection",
 			"coverage": "required",
-			"units": ["desktop.component.remote-connection"]
+			"units": [
+				"desktop.component.remote-connection"
+			]
 		},
 		{
 			"id": "desktop-component-remote-devices",
 			"title": "Remote devices",
 			"coverage": "required",
-			"units": ["desktop.component.remote-devices"]
+			"units": [
+				"desktop.component.remote-devices"
+			]
 		},
 		{
 			"id": "desktop-component-remote-host-panel",
 			"title": "Remote host panel",
 			"coverage": "required",
-			"units": ["desktop.component.remote-host-panel"]
+			"units": [
+				"desktop.component.remote-host-panel"
+			]
 		},
 		{
 			"id": "desktop-component-remote-offer-code",
 			"title": "Remote offer code",
 			"coverage": "required",
-			"units": ["desktop.component.remote-offer-code"]
+			"units": [
+				"desktop.component.remote-offer-code"
+			]
 		},
 		{
 			"id": "desktop-component-remote-phone-panel",
 			"title": "Remote phone panel",
 			"coverage": "required",
-			"units": ["desktop.component.remote-phone-panel"]
+			"units": [
+				"desktop.component.remote-phone-panel"
+			]
 		},
 		{
 			"id": "desktop-component-revision-picker",
 			"title": "Revision picker",
 			"coverage": "required",
-			"units": ["desktop.component.revision-picker"]
+			"units": [
+				"desktop.component.revision-picker"
+			]
 		},
 		{
 			"id": "desktop-component-run-status",
 			"title": "Run status",
 			"coverage": "required",
-			"units": ["desktop.component.run-status"]
+			"units": [
+				"desktop.component.run-status"
+			]
 		},
 		{
 			"id": "desktop-component-runtime-artifact",
 			"title": "Runtime artifact",
 			"coverage": "required",
-			"units": ["desktop.component.runtime-artifact"]
+			"units": [
+				"desktop.component.runtime-artifact"
+			]
 		},
 		{
 			"id": "desktop-component-runtime-audio",
 			"title": "Runtime audio",
 			"coverage": "required",
-			"units": ["desktop.component.runtime-audio"]
+			"units": [
+				"desktop.component.runtime-audio"
+			]
 		},
 		{
 			"id": "desktop-component-runtime-behavior",
 			"title": "Runtime behavior",
 			"coverage": "required",
-			"units": ["desktop.component.runtime-behavior"]
+			"units": [
+				"desktop.component.runtime-behavior"
+			]
 		},
 		{
 			"id": "desktop-component-runtime-evidence",
 			"title": "Runtime evidence",
 			"coverage": "required",
-			"units": ["desktop.component.runtime-evidence"]
+			"units": [
+				"desktop.component.runtime-evidence"
+			]
 		},
 		{
 			"id": "desktop-component-runtime-pane",
 			"title": "Runtime pane",
 			"coverage": "required",
-			"units": ["desktop.component.runtime-pane"]
+			"units": [
+				"desktop.component.runtime-pane"
+			]
 		},
 		{
 			"id": "desktop-component-runtime-run",
 			"title": "Runtime run",
 			"coverage": "required",
-			"units": ["desktop.component.runtime-run"]
+			"units": [
+				"desktop.component.runtime-run"
+			]
 		},
 		{
 			"id": "desktop-component-runtime-screens",
 			"title": "Runtime screens",
 			"coverage": "required",
-			"units": ["desktop.component.runtime-screens"]
+			"units": [
+				"desktop.component.runtime-screens"
+			]
 		},
 		{
 			"id": "desktop-component-segmented-choice",
 			"title": "Segmented choice",
 			"coverage": "required",
-			"units": ["desktop.component.segmented-choice"]
+			"units": [
+				"desktop.component.segmented-choice"
+			]
 		},
 		{
 			"id": "desktop-component-status-bar",
 			"title": "Status bar",
 			"coverage": "required",
-			"units": ["desktop.component.status-bar"]
+			"units": [
+				"desktop.component.status-bar"
+			]
 		},
 		{
 			"id": "desktop-component-status-icon",
 			"title": "Status icon",
 			"coverage": "required",
-			"units": ["desktop.component.status-icon"]
+			"units": [
+				"desktop.component.status-icon"
+			]
 		},
 		{
 			"id": "desktop-component-thread-history",
 			"title": "Thread history",
 			"coverage": "required",
-			"units": ["desktop.component.thread-history"]
+			"units": [
+				"desktop.component.thread-history"
+			]
 		},
 		{
 			"id": "desktop-component-thread-links",
 			"title": "Thread links",
 			"coverage": "required",
-			"units": ["desktop.component.thread-links"]
+			"units": [
+				"desktop.component.thread-links"
+			]
 		},
 		{
 			"id": "desktop-component-thread-panel",
 			"title": "Thread panel",
 			"coverage": "required",
-			"units": ["desktop.component.thread-panel"]
+			"units": [
+				"desktop.component.thread-panel"
+			]
 		},
 		{
 			"id": "desktop-component-workspace-link",
 			"title": "Workspace link",
 			"coverage": "required",
-			"units": ["desktop.component.workspace-link"]
+			"units": [
+				"desktop.component.workspace-link"
+			]
 		},
 		{
 			"id": "desktop-component-workspace-shell",
 			"title": "Shared workspace shell",
 			"coverage": "required",
-			"units": ["desktop.component.workspace-shell"]
+			"units": [
+				"desktop.component.workspace-shell"
+			]
 		},
 		{
 			"id": "desktop-page-game",
 			"title": "/game",
 			"coverage": "required",
-			"units": ["desktop.page.game"]
+			"units": [
+				"desktop.page.game"
+			]
 		},
 		{
 			"id": "desktop-page-harness-path",
 			"title": "/harness/[...path]",
 			"coverage": "required",
-			"units": ["desktop.page.harness-path"]
+			"units": [
+				"desktop.page.harness-path"
+			]
 		},
 		{
 			"id": "desktop-page-projects-project-id-harness-path",
 			"title": "/projects/[projectId]/harness/[...path]",
 			"coverage": "required",
-			"units": ["desktop.page.projects-project-id-harness-path"]
+			"units": [
+				"desktop.page.projects-project-id-harness-path"
+			]
 		},
 		{
 			"id": "desktop-page-root",
 			"title": "Electron and iOS workspace",
 			"coverage": "required",
-			"units": ["desktop.page.root"]
+			"units": [
+				"desktop.page.root"
+			]
 		},
 		{
 			"id": "desktop-page-settings",
 			"title": "Agent settings",
 			"coverage": "required",
-			"units": ["desktop.page.settings"]
+			"units": [
+				"desktop.page.settings"
+			]
 		},
 		{
 			"id": "hub-component-account-menu",
 			"title": "Account menu",
 			"coverage": "required",
-			"units": ["hub.component.account-menu"]
+			"units": [
+				"hub.component.account-menu"
+			]
 		},
 		{
 			"id": "hub-component-email-proof-panel",
 			"title": "Email proof panel",
 			"coverage": "required",
-			"units": ["hub.component.email-proof-panel"]
+			"units": [
+				"hub.component.email-proof-panel"
+			]
 		},
 		{
 			"id": "hub-component-hosted-workspace",
 			"title": "Web workspace",
 			"coverage": "required",
-			"units": ["hub.component.hosted-workspace"]
+			"units": [
+				"hub.component.hosted-workspace"
+			]
 		},
 		{
 			"id": "hub-component-hub-frame",
 			"title": "Hub frame",
 			"coverage": "required",
-			"units": ["hub.component.hub-frame"]
+			"units": [
+				"hub.component.hub-frame"
+			]
 		},
 		{
 			"id": "hub-component-invitation-form",
 			"title": "Invitation form",
 			"coverage": "required",
-			"units": ["hub.component.invitation-form"]
+			"units": [
+				"hub.component.invitation-form"
+			]
 		},
 		{
 			"id": "hub-component-invite-accept",
 			"title": "Invite accept",
 			"coverage": "required",
-			"units": ["hub.component.invite-accept"]
+			"units": [
+				"hub.component.invite-accept"
+			]
 		},
 		{
 			"id": "hub-component-login-panel",
 			"title": "Login panel",
 			"coverage": "required",
-			"units": ["hub.component.login-panel"]
+			"units": [
+				"hub.component.login-panel"
+			]
 		},
 		{
 			"id": "hub-component-members-panel",
 			"title": "Members panel",
 			"coverage": "required",
-			"units": ["hub.component.members-panel"]
+			"units": [
+				"hub.component.members-panel"
+			]
 		},
 		{
 			"id": "hub-component-native-approval",
 			"title": "Native approval",
 			"coverage": "required",
-			"units": ["hub.component.native-approval"]
+			"units": [
+				"hub.component.native-approval"
+			]
 		},
 		{
 			"id": "hub-component-project-create",
 			"title": "Project create",
 			"coverage": "required",
-			"units": ["hub.component.project-create"]
+			"units": [
+				"hub.component.project-create"
+			]
 		},
 		{
 			"id": "hub-component-project-list",
 			"title": "Project list",
 			"coverage": "required",
-			"units": ["hub.component.project-list"]
+			"units": [
+				"hub.component.project-list"
+			]
 		},
 		{
 			"id": "hub-page-invite-project-id-invitation-id",
 			"title": "/invite/[projectId]/[invitationId]",
 			"coverage": "required",
-			"units": ["hub.page.invite-project-id-invitation-id"]
+			"units": [
+				"hub.page.invite-project-id-invitation-id"
+			]
 		},
 		{
 			"id": "hub-page-native-handoff-id",
 			"title": "/native/[handoffId]",
 			"coverage": "required",
-			"units": ["hub.page.native-handoff-id"]
+			"units": [
+				"hub.page.native-handoff-id"
+			]
 		},
 		{
 			"id": "hub-page-projects-project-id-harness-path",
 			"title": "/projects/[projectId]/harness/[...path]",
 			"coverage": "required",
-			"units": ["hub.page.projects-project-id-harness-path"]
+			"units": [
+				"hub.page.projects-project-id-harness-path"
+			]
 		},
 		{
 			"id": "hub-page-projects-project-id-members",
 			"title": "/projects/[projectId]/members",
 			"coverage": "required",
-			"units": ["hub.page.projects-project-id-members"]
+			"units": [
+				"hub.page.projects-project-id-members"
+			]
 		},
 		{
 			"id": "hub-page-root",
 			"title": "/",
 			"coverage": "required",
-			"units": ["hub.page.root"]
+			"units": [
+				"hub.page.root"
+			]
 		},
 		{
 			"id": "reports-component-activity-agents",
 			"title": "Activity agents",
 			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
+			"units": [
+				"reports.component.activity-agents"
+			]
 		},
 		{
 			"id": "reports-component-activity-files",
 			"title": "Activity files",
 			"coverage": "required",
-			"units": ["reports.component.activity-files"]
+			"units": [
+				"reports.component.activity-files"
+			]
 		},
 		{
 			"id": "reports-component-activity-list",
 			"title": "Activity list",
 			"coverage": "required",
-			"units": ["reports.component.activity-list"]
+			"units": [
+				"reports.component.activity-list"
+			]
 		},
 		{
 			"id": "reports-component-activity-loops",
 			"title": "Activity loops",
 			"coverage": "required",
-			"units": ["reports.component.activity-loops"]
+			"units": [
+				"reports.component.activity-loops"
+			]
 		},
 		{
 			"id": "reports-component-activity-work",
 			"title": "Activity work",
 			"coverage": "required",
-			"units": ["reports.component.activity-work"]
+			"units": [
+				"reports.component.activity-work"
+			]
 		},
 		{
 			"id": "reports-component-analytics-cpu",
 			"title": "Analytics cpu",
 			"coverage": "required",
-			"units": ["reports.component.analytics-cpu"]
+			"units": [
+				"reports.component.analytics-cpu"
+			]
 		},
 		{
 			"id": "reports-component-analytics-filters",
 			"title": "Analytics filters",
 			"coverage": "required",
-			"units": ["reports.component.analytics-filters"]
+			"units": [
+				"reports.component.analytics-filters"
+			]
 		},
 		{
 			"id": "reports-component-analytics-history",
 			"title": "Analytics history",
 			"coverage": "required",
-			"units": ["reports.component.analytics-history"]
+			"units": [
+				"reports.component.analytics-history"
+			]
 		},
 		{
 			"id": "reports-component-analytics-models",
 			"title": "Analytics models",
 			"coverage": "required",
-			"units": ["reports.component.analytics-models"]
+			"units": [
+				"reports.component.analytics-models"
+			]
 		},
 		{
 			"id": "reports-component-analytics-tasks",
 			"title": "Analytics tasks",
 			"coverage": "required",
-			"units": ["reports.component.analytics-tasks"]
+			"units": [
+				"reports.component.analytics-tasks"
+			]
 		},
 		{
 			"id": "reports-component-audio-comparison",
 			"title": "Audio comparison",
 			"coverage": "required",
-			"units": ["reports.component.audio-comparison"]
+			"units": [
+				"reports.component.audio-comparison"
+			]
 		},
 		{
 			"id": "reports-component-audio-comparison-viewer",
 			"title": "Audio comparison viewer",
 			"coverage": "required",
-			"units": ["reports.component.audio-comparison-viewer"]
+			"units": [
+				"reports.component.audio-comparison-viewer"
+			]
 		},
 		{
 			"id": "reports-component-audio-evidence",
 			"title": "Audio evidence",
 			"coverage": "required",
-			"units": ["reports.component.audio-evidence"]
+			"units": [
+				"reports.component.audio-evidence"
+			]
 		},
 		{
 			"id": "reports-component-audio-upload-files",
 			"title": "Audio upload files",
 			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
+			"units": [
+				"reports.component.audio-upload-files"
+			]
 		},
 		{
 			"id": "reports-component-brand-mark",
 			"title": "Brand mark",
 			"coverage": "required",
-			"units": ["reports.component.brand-mark"]
+			"units": [
+				"reports.component.brand-mark"
+			]
 		},
 		{
 			"id": "reports-component-browser-errors",
 			"title": "Recorded browser errors",
 			"coverage": "required",
-			"units": ["reports.component.browser-errors"]
+			"units": [
+				"reports.component.browser-errors"
+			]
 		},
 		{
 			"id": "reports-component-console-chat",
 			"title": "Local web project chat",
 			"coverage": "required",
-			"units": ["reports.component.console-chat"]
+			"units": [
+				"reports.component.console-chat"
+			]
 		},
 		{
 			"id": "reports-component-contract-example",
 			"title": "Contract example",
 			"coverage": "required",
-			"units": ["reports.component.contract-example"]
+			"units": [
+				"reports.component.contract-example"
+			]
 		},
 		{
 			"id": "reports-component-contract-table",
 			"title": "Contract field table",
 			"coverage": "required",
-			"units": ["reports.component.contract-table"]
+			"units": [
+				"reports.component.contract-table"
+			]
 		},
 		{
 			"id": "reports-component-coverage-list",
 			"title": "Coverage list",
 			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
+			"units": [
+				"reports.component.coverage-list"
+			]
 		},
 		{
 			"id": "reports-component-entity-cases",
 			"title": "Input and output examples",
 			"coverage": "required",
-			"units": ["reports.component.entity-cases"]
+			"units": [
+				"reports.component.entity-cases"
+			]
 		},
 		{
 			"id": "reports-component-entity-contract",
 			"title": "Typed contract",
 			"coverage": "required",
-			"units": ["reports.component.entity-contract"]
+			"units": [
+				"reports.component.entity-contract"
+			]
 		},
 		{
 			"id": "reports-component-entity-examples",
 			"title": "Usage examples",
 			"coverage": "required",
-			"units": ["reports.component.entity-examples"]
+			"units": [
+				"reports.component.entity-examples"
+			]
 		},
 		{
 			"id": "reports-component-entity-search",
 			"title": "Entity search",
 			"coverage": "required",
-			"units": ["reports.component.entity-search"]
+			"units": [
+				"reports.component.entity-search"
+			]
 		},
 		{
 			"id": "reports-component-entity-search-results",
 			"title": "Entity search results",
 			"coverage": "required",
-			"units": ["reports.component.entity-search-results"]
+			"units": [
+				"reports.component.entity-search-results"
+			]
 		},
 		{
 			"id": "reports-component-entity-states",
 			"title": "Supported states",
 			"coverage": "required",
-			"units": ["reports.component.entity-states"]
+			"units": [
+				"reports.component.entity-states"
+			]
 		},
 		{
 			"id": "reports-component-evidence-card",
 			"title": "Evidence card",
 			"coverage": "required",
-			"units": ["reports.component.evidence-card"]
+			"units": [
+				"reports.component.evidence-card"
+			]
 		},
 		{
 			"id": "reports-component-evidence-grid",
 			"title": "Evidence grid",
 			"coverage": "required",
-			"units": ["reports.component.evidence-grid"]
+			"units": [
+				"reports.component.evidence-grid"
+			]
 		},
 		{
 			"id": "reports-component-evidence-provenance",
 			"title": "Evidence provenance",
 			"coverage": "required",
-			"units": ["reports.component.evidence-provenance"]
+			"units": [
+				"reports.component.evidence-provenance"
+			]
 		},
 		{
 			"id": "reports-component-evidence-viewer",
 			"title": "Evidence viewer",
 			"coverage": "required",
-			"units": ["reports.component.evidence-viewer"]
+			"units": [
+				"reports.component.evidence-viewer"
+			]
 		},
 		{
 			"id": "reports-component-explorer-catalog-items",
 			"title": "ExplorerCatalogItems",
 			"coverage": "required",
-			"units": ["reports.component.explorer-catalog-items"]
+			"units": [
+				"reports.component.explorer-catalog-items"
+			]
 		},
 		{
 			"id": "reports-component-explorer-dependencies-screen",
 			"title": "ExplorerDependenciesScreen",
 			"coverage": "required",
-			"units": ["reports.component.explorer-dependencies-screen"]
+			"units": [
+				"reports.component.explorer-dependencies-screen"
+			]
 		},
 		{
 			"id": "reports-component-explorer-function-card",
 			"title": "Function card",
 			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
+			"units": [
+				"reports.component.explorer-function-card"
+			]
 		},
 		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
 			"coverage": "required",
-			"units": ["reports.component.explorer-ui-config-value-tree"]
+			"units": [
+				"reports.component.explorer-ui-config-value-tree"
+			]
 		},
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
 			"title": "ExplorerModuleCard",
 			"coverage": "required",
-			"units": ["reports.component.explorer-ui-explorer-module-card"]
+			"units": [
+				"reports.component.explorer-ui-explorer-module-card"
+			]
 		},
 		{
 			"id": "reports-component-explorer-ui-explorer-platform-details",
 			"title": "ExplorerPlatformDetails",
 			"coverage": "required",
-			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+			"units": [
+				"reports.component.explorer-ui-explorer-platform-details"
+			]
 		},
 		{
 			"id": "reports-component-explorer-ui-explorer-platforms",
 			"title": "ExplorerPlatforms",
 			"coverage": "required",
-			"units": ["reports.component.explorer-ui-explorer-platforms"]
+			"units": [
+				"reports.component.explorer-ui-explorer-platforms"
+			]
 		},
 		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen",
-			"units": ["reports.component.explorer-ui-explorer-translations-screen"],
+			"units": [
+				"reports.component.explorer-ui-explorer-translations-screen"
+			],
 			"coverage": "required",
 			"title": "Translations in English and French"
 		},
@@ -1078,677 +1479,1935 @@
 			"id": "reports-component-explorer-ui-harness-explorer-styles-screen",
 			"title": "ExplorerStylesScreen",
 			"coverage": "required",
-			"units": ["reports.component.explorer-ui-harness-explorer-styles-screen"]
+			"units": [
+				"reports.component.explorer-ui-harness-explorer-styles-screen"
+			]
 		},
 		{
 			"id": "reports-component-explorer-ui-harness-group",
 			"title": "HarnessGroup",
 			"coverage": "required",
-			"units": ["reports.component.explorer-ui-harness-group"]
+			"units": [
+				"reports.component.explorer-ui-harness-group"
+			]
 		},
 		{
 			"id": "reports-component-explorer-usage",
 			"title": "ExplorerUsage",
 			"coverage": "required",
-			"units": ["reports.component.explorer-usage"]
+			"units": [
+				"reports.component.explorer-usage"
+			]
 		},
 		{
 			"id": "reports-component-explorer-usage-link",
 			"title": "ExplorerUsageLink",
 			"coverage": "required",
-			"units": ["reports.component.explorer-usage-link"]
+			"units": [
+				"reports.component.explorer-usage-link"
+			]
 		},
 		{
 			"id": "reports-component-filter-dialog",
 			"title": "Catalog filters",
 			"coverage": "required",
-			"units": ["reports.component.filter-dialog"]
+			"units": [
+				"reports.component.filter-dialog"
+			]
 		},
 		{
 			"id": "reports-component-floating-chat",
 			"title": "Floating chat",
 			"coverage": "required",
-			"units": ["reports.component.floating-chat"]
+			"units": [
+				"reports.component.floating-chat"
+			]
 		},
 		{
 			"id": "reports-component-gameplay-replay",
 			"title": "Gameplay replay",
 			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
+			"units": [
+				"reports.component.gameplay-replay"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-artifact",
 			"title": "Entity artifact",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-artifact"]
+			"units": [
+				"reports.component.harness-entity-artifact"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-audio",
 			"title": "Entity audio",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-audio"]
+			"units": [
+				"reports.component.harness-entity-audio"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-behavior",
 			"title": "Entity behavior",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-behavior"]
+			"units": [
+				"reports.component.harness-entity-behavior"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-behavior-screen",
 			"title": "EntityBehaviorScreen",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-behavior-screen"]
+			"units": [
+				"reports.component.harness-entity-behavior-screen"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-change",
 			"title": "Entity change",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-change"]
+			"units": [
+				"reports.component.harness-entity-change"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-config",
 			"title": "Entity config",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-config"]
+			"units": [
+				"reports.component.harness-entity-config"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-config-screen",
 			"title": "EntityConfigScreen",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-config-screen"]
+			"units": [
+				"reports.component.harness-entity-config-screen"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-details",
 			"title": "Entity details",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-details"]
+			"units": [
+				"reports.component.harness-entity-details"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-details-screen",
 			"title": "EntityDetailsScreen",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-details-screen"]
+			"units": [
+				"reports.component.harness-entity-details-screen"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-frame",
 			"title": "EntityFrame",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-frame"]
+			"units": [
+				"reports.component.harness-entity-frame"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-header",
 			"title": "Entity header",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-header"]
+			"units": [
+				"reports.component.harness-entity-header"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-history",
 			"title": "Entity history",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-history"]
+			"units": [
+				"reports.component.harness-entity-history"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-history-row",
 			"title": "Entity history row",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-history-row"]
+			"units": [
+				"reports.component.harness-entity-history-row"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-history-screen",
 			"title": "EntityHistoryScreen",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-history-screen"]
+			"units": [
+				"reports.component.harness-entity-history-screen"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-link",
 			"title": "Entity link",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-link"]
+			"units": [
+				"reports.component.harness-entity-link"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-measures",
 			"title": "Entity measurements",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-measures"]
+			"units": [
+				"reports.component.harness-entity-measures"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-missing",
 			"title": "Unavailable entity",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-missing"]
+			"units": [
+				"reports.component.harness-entity-missing"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-overview",
 			"title": "Entity overview",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-overview"]
+			"units": [
+				"reports.component.harness-entity-overview"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-reasons",
 			"title": "Full change reasons",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-reasons"]
+			"units": [
+				"reports.component.harness-entity-reasons"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-relations",
 			"title": "Used In and Uses",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-relations"]
+			"units": [
+				"reports.component.harness-entity-relations"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-run",
 			"title": "Recorded test run",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-run"]
+			"units": [
+				"reports.component.harness-entity-run"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-screens",
 			"title": "Entity screenshots",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-screens"]
+			"units": [
+				"reports.component.harness-entity-screens"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-sections",
 			"title": "Entity sections",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-sections"]
+			"units": [
+				"reports.component.harness-entity-sections"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-source",
 			"title": "Source ownership",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-source"]
+			"units": [
+				"reports.component.harness-entity-source"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-summary",
 			"title": "Measurement summary",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-summary"]
+			"units": [
+				"reports.component.harness-entity-summary"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-tests",
 			"title": "Entity verification details",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-tests"]
+			"units": [
+				"reports.component.harness-entity-tests"
+			]
 		},
 		{
 			"id": "reports-component-harness-entity-visual-screen",
 			"title": "EntityVisualScreen",
 			"coverage": "required",
-			"units": ["reports.component.harness-entity-visual-screen"]
+			"units": [
+				"reports.component.harness-entity-visual-screen"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-catalog-screen",
 			"title": "ExplorerCatalogScreen",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-catalog-screen"]
+			"units": [
+				"reports.component.harness-explorer-catalog-screen"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-content",
 			"title": "ExplorerContent",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-content"]
+			"units": [
+				"reports.component.harness-explorer-content"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-controls",
 			"title": "Catalog controls",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-controls"]
+			"units": [
+				"reports.component.harness-explorer-controls"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-frame",
 			"title": "ExplorerFrame",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-frame"]
+			"units": [
+				"reports.component.harness-explorer-frame"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-index",
 			"title": "Entity catalog",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-index"]
+			"units": [
+				"reports.component.harness-explorer-index"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-page-card",
 			"title": "Visual catalog card",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-page-card"]
+			"units": [
+				"reports.component.harness-explorer-page-card"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-pages-screen",
 			"title": "ExplorerPagesScreen",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-pages-screen"]
+			"units": [
+				"reports.component.harness-explorer-pages-screen"
+			]
 		},
 		{
 			"id": "reports-component-harness-explorer-table",
 			"title": "Entity catalog table",
 			"coverage": "required",
-			"units": ["reports.component.harness-explorer-table"]
+			"units": [
+				"reports.component.harness-explorer-table"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-action",
 			"title": "Explorer action",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-action"]
+			"units": [
+				"reports.component.harness-harness-action"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-activity",
 			"title": "Recorded project activity",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-activity"]
+			"units": [
+				"reports.component.harness-harness-activity"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-compare",
 			"title": "Revision impact comparison",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-compare"]
+			"units": [
+				"reports.component.harness-harness-compare"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-compare-media",
 			"title": "Revision media comparison",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-compare-media"]
+			"units": [
+				"reports.component.harness-harness-compare-media"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-console",
 			"title": "Explorer console",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-console"]
+			"units": [
+				"reports.component.harness-harness-console"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-emitted-growth",
 			"title": "Build output size history",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-emitted-growth"]
+			"units": [
+				"reports.component.harness-harness-emitted-growth"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-failures",
 			"title": "Verification failure details",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-failures"]
+			"units": [
+				"reports.component.harness-harness-failures"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-growth",
 			"title": "Unit measurement history",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-growth"]
+			"units": [
+				"reports.component.harness-harness-growth"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-header",
 			"title": "Explorer header and notices",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-header"]
+			"units": [
+				"reports.component.harness-harness-header"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-history",
 			"title": "Revision verification history",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-history"]
+			"units": [
+				"reports.component.harness-harness-history"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-icon",
 			"title": "Explorer icon",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-icon"]
+			"units": [
+				"reports.component.harness-harness-icon"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-legacy",
 			"title": "Historical report references",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-legacy"]
+			"units": [
+				"reports.component.harness-harness-legacy"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-map",
 			"title": "Unit dependency map",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-map"]
+			"units": [
+				"reports.component.harness-harness-map"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-navbar",
 			"title": "Explorer navigation bar",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-navbar"]
+			"units": [
+				"reports.component.harness-harness-navbar"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-selectors",
 			"title": "Branch and revision selectors",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-selectors"]
+			"units": [
+				"reports.component.harness-harness-selectors"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-shell",
 			"title": "Standalone explorer shell",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-shell"]
+			"units": [
+				"reports.component.harness-harness-shell"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-tabs",
 			"title": "Explorer section tabs",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-tabs"]
+			"units": [
+				"reports.component.harness-harness-tabs"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-unit",
 			"title": "Unit contract and evidence",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-unit"]
+			"units": [
+				"reports.component.harness-harness-unit"
+			]
 		},
 		{
 			"id": "reports-component-harness-harness-verdict",
 			"title": "Verification verdict indicator",
 			"coverage": "required",
-			"units": ["reports.component.harness-harness-verdict"]
+			"units": [
+				"reports.component.harness-harness-verdict"
+			]
 		},
 		{
 			"id": "reports-component-harness-screen",
 			"title": "Explorer route screen",
 			"coverage": "required",
-			"units": ["reports.component.harness-screen"]
+			"units": [
+				"reports.component.harness-screen"
+			]
 		},
 		{
 			"id": "reports-component-image-zoom",
 			"title": "Zoomable evidence image",
 			"coverage": "required",
-			"units": ["reports.component.image-zoom"]
+			"units": [
+				"reports.component.image-zoom"
+			]
 		},
 		{
 			"id": "reports-component-modal",
 			"title": "Evidence dialog",
 			"coverage": "required",
-			"units": ["reports.component.modal"]
+			"units": [
+				"reports.component.modal"
+			]
 		},
 		{
 			"id": "reports-component-project-activity",
 			"title": "Project activity overview",
 			"coverage": "required",
-			"units": ["reports.component.project-activity"]
+			"units": [
+				"reports.component.project-activity"
+			]
 		},
 		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
-			"units": ["reports.component.provider-picker"]
+			"units": [
+				"reports.component.provider-picker"
+			]
 		},
 		{
 			"id": "reports-component-provider-picker-cards",
 			"title": "Active and queued model cards",
 			"coverage": "required",
-			"units": ["reports.component.provider-picker-cards"]
+			"units": [
+				"reports.component.provider-picker-cards"
+			]
 		},
 		{
 			"id": "reports-component-recorded-value",
 			"title": "Recorded test value",
 			"coverage": "required",
-			"units": ["reports.component.recorded-value"]
+			"units": [
+				"reports.component.recorded-value"
+			]
 		},
 		{
 			"id": "reports-component-regression-proof",
 			"title": "Regression proof",
 			"coverage": "required",
-			"units": ["reports.component.regression-proof"]
+			"units": [
+				"reports.component.regression-proof"
+			]
 		},
 		{
 			"id": "reports-component-replay-controls",
 			"title": "Evidence replay controls",
 			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
+			"units": [
+				"reports.component.replay-controls"
+			]
 		},
 		{
 			"id": "reports-component-report-checks",
 			"title": "Recorded report checks",
 			"coverage": "required",
-			"units": ["reports.component.report-checks"]
+			"units": [
+				"reports.component.report-checks"
+			]
 		},
 		{
 			"id": "reports-component-report-findings",
 			"title": "Report findings",
 			"coverage": "required",
-			"units": ["reports.component.report-findings"]
+			"units": [
+				"reports.component.report-findings"
+			]
 		},
 		{
 			"id": "reports-component-report-summary",
 			"title": "Report overview and downloads",
 			"coverage": "required",
-			"units": ["reports.component.report-summary"]
+			"units": [
+				"reports.component.report-summary"
+			]
 		},
 		{
 			"id": "reports-component-report-view",
 			"title": "Report viewer",
 			"coverage": "required",
-			"units": ["reports.component.report-view"]
+			"units": [
+				"reports.component.report-view"
+			]
 		},
 		{
 			"id": "reports-component-select",
 			"title": "Report select control",
 			"coverage": "required",
-			"units": ["reports.component.select"]
+			"units": [
+				"reports.component.select"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-a",
+			"title": "HtmlA",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-a"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-abbr",
+			"title": "HtmlAbbr",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-abbr"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-address",
+			"title": "HtmlAddress",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-address"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-article",
+			"title": "HtmlArticle",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-article"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-aside",
+			"title": "HtmlAside",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-aside"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-audio",
+			"title": "HtmlAudio",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-audio"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-b",
+			"title": "HtmlB",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-b"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-bdi",
+			"title": "HtmlBdi",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-bdi"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-bdo",
+			"title": "HtmlBdo",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-bdo"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-blockquote",
+			"title": "HtmlBlockquote",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-blockquote"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-button",
+			"title": "HtmlButton",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-button"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-canvas",
+			"title": "HtmlCanvas",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-canvas"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-caption",
+			"title": "HtmlCaption",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-caption"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-cite",
+			"title": "HtmlCite",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-cite"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-code",
+			"title": "HtmlCode",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-code"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-colgroup",
+			"title": "HtmlColgroup",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-colgroup"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-data",
+			"title": "HtmlData",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-data"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-dd",
+			"title": "HtmlDd",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-dd"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-del",
+			"title": "HtmlDel",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-del"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-details",
+			"title": "HtmlDetails",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-details"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-dfn",
+			"title": "HtmlDfn",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-dfn"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-dialog",
+			"title": "HtmlDialog",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-dialog"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-div",
+			"title": "HtmlDiv",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-div"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-dl",
+			"title": "HtmlDl",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-dl"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-dt",
+			"title": "HtmlDt",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-dt"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-element",
+			"title": "HtmlElement",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-element"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-em",
+			"title": "HtmlEm",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-em"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-embed",
+			"title": "HtmlEmbed",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-embed"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-fieldset",
+			"title": "HtmlFieldset",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-fieldset"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-figcaption",
+			"title": "HtmlFigcaption",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-figcaption"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-figure",
+			"title": "HtmlFigure",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-figure"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-footer",
+			"title": "HtmlFooter",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-footer"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-form",
+			"title": "HtmlForm",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-form"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h1",
+			"title": "HtmlH1",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-h1"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h2",
+			"title": "HtmlH2",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-h2"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h3",
+			"title": "HtmlH3",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-h3"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h4",
+			"title": "HtmlH4",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-h4"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h5",
+			"title": "HtmlH5",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-h5"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-h6",
+			"title": "HtmlH6",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-h6"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-header",
+			"title": "HtmlHeader",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-header"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-hgroup",
+			"title": "HtmlHgroup",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-hgroup"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-hr",
+			"title": "HtmlHr",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-hr"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-i",
+			"title": "HtmlI",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-i"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-iframe",
+			"title": "HtmlIframe",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-iframe"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-img",
+			"title": "HtmlImg",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-img"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input",
+			"title": "HtmlInput",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-button",
+			"title": "HtmlInputButton",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-button"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-checkbox",
+			"title": "HtmlInputCheckbox",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-checkbox"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-color",
+			"title": "HtmlInputColor",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-color"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-date",
+			"title": "HtmlInputDate",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-date"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-datetime-local",
+			"title": "HtmlInputDatetimeLocal",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-datetime-local"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-email",
+			"title": "HtmlInputEmail",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-email"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-file",
+			"title": "HtmlInputFile",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-file"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-image",
+			"title": "HtmlInputImage",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-image"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-month",
+			"title": "HtmlInputMonth",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-month"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-number",
+			"title": "HtmlInputNumber",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-number"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-password",
+			"title": "HtmlInputPassword",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-password"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-radio",
+			"title": "HtmlInputRadio",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-radio"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-range",
+			"title": "HtmlInputRange",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-range"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-reset",
+			"title": "HtmlInputReset",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-reset"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-search",
+			"title": "HtmlInputSearch",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-search"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-submit",
+			"title": "HtmlInputSubmit",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-submit"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-tel",
+			"title": "HtmlInputTel",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-tel"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-text",
+			"title": "HtmlInputText",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-text"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-time",
+			"title": "HtmlInputTime",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-time"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-url",
+			"title": "HtmlInputUrl",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-url"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-input-week",
+			"title": "HtmlInputWeek",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-input-week"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-ins",
+			"title": "HtmlIns",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-ins"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-kbd",
+			"title": "HtmlKbd",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-kbd"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-label",
+			"title": "HtmlLabel",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-label"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-legend",
+			"title": "HtmlLegend",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-legend"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-li",
+			"title": "HtmlLi",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-li"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-main",
+			"title": "HtmlMain",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-main"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-mark",
+			"title": "HtmlMark",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-mark"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-menu",
+			"title": "HtmlMenu",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-menu"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-meter",
+			"title": "HtmlMeter",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-meter"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-nav",
+			"title": "HtmlNav",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-nav"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-object",
+			"title": "HtmlObject",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-object"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-ol",
+			"title": "HtmlOl",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-ol"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-optgroup",
+			"title": "HtmlOptgroup",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-optgroup"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-option",
+			"title": "HtmlOption",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-option"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-output",
+			"title": "HtmlOutput",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-output"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-p",
+			"title": "HtmlP",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-p"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-picture",
+			"title": "HtmlPicture",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-picture"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-pre",
+			"title": "HtmlPre",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-pre"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-progress",
+			"title": "HtmlProgress",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-progress"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-q",
+			"title": "HtmlQ",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-q"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-rp",
+			"title": "HtmlRp",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-rp"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-rt",
+			"title": "HtmlRt",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-rt"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-ruby",
+			"title": "HtmlRuby",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-ruby"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-s",
+			"title": "HtmlS",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-s"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-samp",
+			"title": "HtmlSamp",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-samp"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-search",
+			"title": "HtmlSearch",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-search"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-section",
+			"title": "HtmlSection",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-section"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-select",
+			"title": "HtmlSelect",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-select"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-small",
+			"title": "HtmlSmall",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-small"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-span",
+			"title": "HtmlSpan",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-span"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-strong",
+			"title": "HtmlStrong",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-strong"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-sub",
+			"title": "HtmlSub",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-sub"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-summary",
+			"title": "HtmlSummary",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-summary"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-sup",
+			"title": "HtmlSup",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-sup"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-table",
+			"title": "HtmlTable",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-table"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-tbody",
+			"title": "HtmlTbody",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-tbody"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-td",
+			"title": "HtmlTd",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-td"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-textarea",
+			"title": "HtmlTextarea",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-textarea"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-tfoot",
+			"title": "HtmlTfoot",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-tfoot"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-th",
+			"title": "HtmlTh",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-th"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-thead",
+			"title": "HtmlThead",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-thead"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-time",
+			"title": "HtmlTime",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-time"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-tr",
+			"title": "HtmlTr",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-tr"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-u",
+			"title": "HtmlU",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-u"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-ul",
+			"title": "HtmlUl",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-ul"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-var",
+			"title": "HtmlVar",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-var"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-video",
+			"title": "HtmlVideo",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-html-video"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-circle",
+			"title": "SvgCircle",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-circle"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-ellipse",
+			"title": "SvgEllipse",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-ellipse"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-foreign-object",
+			"title": "SvgForeignObject",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-foreign-object"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-g",
+			"title": "SvgG",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-g"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-image",
+			"title": "SvgImage",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-image"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-line",
+			"title": "SvgLine",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-line"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-path",
+			"title": "SvgPath",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-path"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-polygon",
+			"title": "SvgPolygon",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-polygon"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-polyline",
+			"title": "SvgPolyline",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-polyline"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-rect",
+			"title": "SvgRect",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-rect"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-svg",
+			"title": "SvgSvg",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-svg"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-text",
+			"title": "SvgText",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-text"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-text-path",
+			"title": "SvgTextPath",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-text-path"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-tspan",
+			"title": "SvgTspan",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-tspan"
+			]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-svg-use",
+			"title": "SvgUse",
+			"coverage": "required",
+			"units": [
+				"reports.component.shared-primitives-atoms-svg-use"
+			]
 		},
 		{
 			"id": "reports-component-shared-primitives-loading-state",
 			"title": "Accessible data loading status",
 			"coverage": "required",
-			"units": ["reports.component.shared-primitives-loading-state"]
+			"units": [
+				"reports.component.shared-primitives-loading-state"
+			]
 		},
 		{
 			"id": "reports-component-site-activity",
 			"title": "Live site activity",
 			"coverage": "required",
-			"units": ["reports.component.site-activity"]
+			"units": [
+				"reports.component.site-activity"
+			]
 		},
 		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
-			"units": ["reports.component.source-code-action"]
+			"units": [
+				"reports.component.source-code-action"
+			]
 		},
 		{
 			"id": "reports-component-source-content",
 			"title": "SourceContent",
 			"coverage": "required",
-			"units": ["reports.component.source-content"]
+			"units": [
+				"reports.component.source-content"
+			]
 		},
 		{
 			"id": "reports-component-source-dialog",
 			"title": "SourceDialog",
 			"coverage": "required",
-			"units": ["reports.component.source-dialog"]
+			"units": [
+				"reports.component.source-dialog"
+			]
 		},
 		{
 			"id": "reports-component-source-file-list",
 			"title": "Source file list",
 			"coverage": "required",
-			"units": ["reports.component.source-file-list"]
+			"units": [
+				"reports.component.source-file-list"
+			]
 		},
 		{
 			"id": "reports-component-source-viewer",
 			"title": "SourceViewer",
 			"coverage": "required",
-			"units": ["reports.component.source-viewer"]
+			"units": [
+				"reports.component.source-viewer"
+			]
 		},
 		{
 			"id": "reports-component-status-badge",
 			"title": "Report status badge",
 			"coverage": "required",
-			"units": ["reports.component.status-badge"]
+			"units": [
+				"reports.component.status-badge"
+			]
 		},
 		{
 			"id": "reports-component-upload-audio",
 			"title": "Audio evidence upload",
 			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
+			"units": [
+				"reports.component.upload-audio"
+			]
 		},
 		{
 			"id": "reports-component-upload-comparison",
 			"title": "Screenshot comparison upload",
 			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
+			"units": [
+				"reports.component.upload-comparison"
+			]
 		},
 		{
 			"id": "reports-component-usage-examples-usage-examples",
 			"title": "Function usage examples",
 			"coverage": "required",
-			"units": ["reports.component.usage-examples-usage-examples"]
+			"units": [
+				"reports.component.usage-examples-usage-examples"
+			]
 		},
 		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
-			"units": ["reports.layout.explorer-layout"],
+			"units": [
+				"reports.layout.explorer-layout"
+			],
 			"title": "Preview reports.layout.explorer-layout with representative inputs"
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-components",
 			"title": "/harness/branch/[branch]/[...at]/components",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-components"]
+			"units": [
+				"reports.page.harness-branch-branch-at-components"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-components-entity",
 			"title": "/harness/branch/[branch]/[...at]/components/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-components-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-components-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-components-entity-history",
 			"title": "/harness/branch/[branch]/[...at]/components/[entity]/history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-components-entity-history"]
+			"units": [
+				"reports.page.harness-branch-branch-at-components-entity-history"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-configs",
 			"title": "/harness/branch/[branch]/[...at]/configs",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-configs"]
+			"units": [
+				"reports.page.harness-branch-branch-at-configs"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-configs-entity",
 			"title": "/harness/branch/[branch]/[...at]/configs/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-configs-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-configs-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-configs-entity-history",
 			"title": "/harness/branch/[branch]/[...at]/configs/[entity]/history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-configs-entity-history"]
+			"units": [
+				"reports.page.harness-branch-branch-at-configs-entity-history"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-dependencies",
 			"title": "Dependencies",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-dependencies"]
+			"units": [
+				"reports.page.harness-branch-branch-at-dependencies"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-functions",
 			"title": "/harness/branch/[branch]/[...at]/functions",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions"]
+			"units": [
+				"reports.page.harness-branch-branch-at-functions"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-functions-entity",
 			"title": "/harness/branch/[branch]/[...at]/functions/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-functions-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-functions-entity-history",
 			"title": "/harness/branch/[branch]/[...at]/functions/[entity]/history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-functions-entity-history"]
+			"units": [
+				"reports.page.harness-branch-branch-at-functions-entity-history"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-layouts",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-layouts"],
+			"units": [
+				"reports.page.harness-branch-branch-at-layouts"
+			],
 			"title": "Preview reports.page.harness-branch-branch-at-layouts with representative inputs"
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-layouts-entity",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-layouts-entity"],
+			"units": [
+				"reports.page.harness-branch-branch-at-layouts-entity"
+			],
 			"title": "Preview reports.page.harness-branch-branch-at-layouts-entity with representative inputs"
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-layouts-entity-history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-layouts-entity-history"],
+			"units": [
+				"reports.page.harness-branch-branch-at-layouts-entity-history"
+			],
 			"title": "Preview reports.page.harness-branch-branch-at-layouts-entity-history with representative inputs"
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-models",
 			"title": "/harness/branch/[branch]/[...at]/models",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-models"]
+			"units": [
+				"reports.page.harness-branch-branch-at-models"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-models-entity",
 			"title": "/harness/branch/[branch]/[...at]/models/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-models-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-models-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-models-entity-history",
 			"title": "/harness/branch/[branch]/[...at]/models/[entity]/history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-models-entity-history"]
+			"units": [
+				"reports.page.harness-branch-branch-at-models-entity-history"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-pages",
 			"title": "/harness/branch/[branch]/[...at]/pages",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-pages"]
+			"units": [
+				"reports.page.harness-branch-branch-at-pages"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-pages-entity",
 			"title": "/harness/branch/[branch]/[...at]/pages/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-pages-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-pages-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-pages-entity-history",
 			"title": "/harness/branch/[branch]/[...at]/pages/[entity]/history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-pages-entity-history"]
+			"units": [
+				"reports.page.harness-branch-branch-at-pages-entity-history"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-platforms",
 			"title": "/harness/branch/[branch]/[...at]/platforms",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-platforms"]
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-platforms-entity",
 			"title": "/harness/branch/[branch]/[...at]/platforms/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-platforms-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-platforms-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-services",
 			"title": "/harness/branch/[branch]/[...at]/services",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-services"]
+			"units": [
+				"reports.page.harness-branch-branch-at-services"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-services-entity",
 			"title": "/harness/branch/[branch]/[...at]/services/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-services-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-services-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-services-entity-history",
 			"title": "/harness/branch/[branch]/[...at]/services/[entity]/history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-services-entity-history"]
+			"units": [
+				"reports.page.harness-branch-branch-at-services-entity-history"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-styles",
 			"title": "/harness/branch/[branch]/[...at]/styles",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-styles"]
+			"units": [
+				"reports.page.harness-branch-branch-at-styles"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-translations",
-			"units": ["reports.page.harness-branch-branch-at-translations"],
+			"units": [
+				"reports.page.harness-branch-branch-at-translations"
+			],
 			"coverage": "required",
 			"title": "Translations in English and French"
 		},
@@ -1756,19 +3415,25 @@
 			"id": "reports-page-harness-branch-branch-at-types",
 			"title": "/harness/branch/[branch]/[...at]/types",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-types"]
+			"units": [
+				"reports.page.harness-branch-branch-at-types"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-types-entity",
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-types-entity"]
+			"units": [
+				"reports.page.harness-branch-branch-at-types-entity"
+			]
 		},
 		{
 			"id": "reports-page-harness-branch-branch-at-types-entity-history",
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
+			"units": [
+				"reports.page.harness-branch-branch-at-types-entity-history"
+			]
 		}
 	],
 	"viewports": [
@@ -1932,6 +3597,7 @@
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-viewer",
 				"reports-component-explorer-catalog-items",
+				"reports-component-explorer-dependencies-screen",
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-explorer-module-card",
@@ -2013,6 +3679,135 @@
 				"reports-component-report-summary",
 				"reports-component-report-view",
 				"reports-component-select",
+				"reports-component-shared-primitives-atoms-html-a",
+				"reports-component-shared-primitives-atoms-html-abbr",
+				"reports-component-shared-primitives-atoms-html-address",
+				"reports-component-shared-primitives-atoms-html-article",
+				"reports-component-shared-primitives-atoms-html-aside",
+				"reports-component-shared-primitives-atoms-html-audio",
+				"reports-component-shared-primitives-atoms-html-b",
+				"reports-component-shared-primitives-atoms-html-bdi",
+				"reports-component-shared-primitives-atoms-html-bdo",
+				"reports-component-shared-primitives-atoms-html-blockquote",
+				"reports-component-shared-primitives-atoms-html-button",
+				"reports-component-shared-primitives-atoms-html-canvas",
+				"reports-component-shared-primitives-atoms-html-caption",
+				"reports-component-shared-primitives-atoms-html-cite",
+				"reports-component-shared-primitives-atoms-html-code",
+				"reports-component-shared-primitives-atoms-html-colgroup",
+				"reports-component-shared-primitives-atoms-html-data",
+				"reports-component-shared-primitives-atoms-html-dd",
+				"reports-component-shared-primitives-atoms-html-del",
+				"reports-component-shared-primitives-atoms-html-details",
+				"reports-component-shared-primitives-atoms-html-dfn",
+				"reports-component-shared-primitives-atoms-html-dialog",
+				"reports-component-shared-primitives-atoms-html-div",
+				"reports-component-shared-primitives-atoms-html-dl",
+				"reports-component-shared-primitives-atoms-html-dt",
+				"reports-component-shared-primitives-atoms-html-element",
+				"reports-component-shared-primitives-atoms-html-em",
+				"reports-component-shared-primitives-atoms-html-embed",
+				"reports-component-shared-primitives-atoms-html-fieldset",
+				"reports-component-shared-primitives-atoms-html-figcaption",
+				"reports-component-shared-primitives-atoms-html-figure",
+				"reports-component-shared-primitives-atoms-html-footer",
+				"reports-component-shared-primitives-atoms-html-form",
+				"reports-component-shared-primitives-atoms-html-h1",
+				"reports-component-shared-primitives-atoms-html-h2",
+				"reports-component-shared-primitives-atoms-html-h3",
+				"reports-component-shared-primitives-atoms-html-h4",
+				"reports-component-shared-primitives-atoms-html-h5",
+				"reports-component-shared-primitives-atoms-html-h6",
+				"reports-component-shared-primitives-atoms-html-header",
+				"reports-component-shared-primitives-atoms-html-hgroup",
+				"reports-component-shared-primitives-atoms-html-hr",
+				"reports-component-shared-primitives-atoms-html-i",
+				"reports-component-shared-primitives-atoms-html-iframe",
+				"reports-component-shared-primitives-atoms-html-img",
+				"reports-component-shared-primitives-atoms-html-input",
+				"reports-component-shared-primitives-atoms-html-input-button",
+				"reports-component-shared-primitives-atoms-html-input-checkbox",
+				"reports-component-shared-primitives-atoms-html-input-color",
+				"reports-component-shared-primitives-atoms-html-input-date",
+				"reports-component-shared-primitives-atoms-html-input-datetime-local",
+				"reports-component-shared-primitives-atoms-html-input-email",
+				"reports-component-shared-primitives-atoms-html-input-file",
+				"reports-component-shared-primitives-atoms-html-input-image",
+				"reports-component-shared-primitives-atoms-html-input-month",
+				"reports-component-shared-primitives-atoms-html-input-number",
+				"reports-component-shared-primitives-atoms-html-input-password",
+				"reports-component-shared-primitives-atoms-html-input-radio",
+				"reports-component-shared-primitives-atoms-html-input-range",
+				"reports-component-shared-primitives-atoms-html-input-reset",
+				"reports-component-shared-primitives-atoms-html-input-search",
+				"reports-component-shared-primitives-atoms-html-input-submit",
+				"reports-component-shared-primitives-atoms-html-input-tel",
+				"reports-component-shared-primitives-atoms-html-input-text",
+				"reports-component-shared-primitives-atoms-html-input-time",
+				"reports-component-shared-primitives-atoms-html-input-url",
+				"reports-component-shared-primitives-atoms-html-input-week",
+				"reports-component-shared-primitives-atoms-html-ins",
+				"reports-component-shared-primitives-atoms-html-kbd",
+				"reports-component-shared-primitives-atoms-html-label",
+				"reports-component-shared-primitives-atoms-html-legend",
+				"reports-component-shared-primitives-atoms-html-li",
+				"reports-component-shared-primitives-atoms-html-main",
+				"reports-component-shared-primitives-atoms-html-mark",
+				"reports-component-shared-primitives-atoms-html-menu",
+				"reports-component-shared-primitives-atoms-html-meter",
+				"reports-component-shared-primitives-atoms-html-nav",
+				"reports-component-shared-primitives-atoms-html-object",
+				"reports-component-shared-primitives-atoms-html-ol",
+				"reports-component-shared-primitives-atoms-html-optgroup",
+				"reports-component-shared-primitives-atoms-html-option",
+				"reports-component-shared-primitives-atoms-html-output",
+				"reports-component-shared-primitives-atoms-html-p",
+				"reports-component-shared-primitives-atoms-html-picture",
+				"reports-component-shared-primitives-atoms-html-pre",
+				"reports-component-shared-primitives-atoms-html-progress",
+				"reports-component-shared-primitives-atoms-html-q",
+				"reports-component-shared-primitives-atoms-html-rp",
+				"reports-component-shared-primitives-atoms-html-rt",
+				"reports-component-shared-primitives-atoms-html-ruby",
+				"reports-component-shared-primitives-atoms-html-s",
+				"reports-component-shared-primitives-atoms-html-samp",
+				"reports-component-shared-primitives-atoms-html-search",
+				"reports-component-shared-primitives-atoms-html-section",
+				"reports-component-shared-primitives-atoms-html-select",
+				"reports-component-shared-primitives-atoms-html-small",
+				"reports-component-shared-primitives-atoms-html-span",
+				"reports-component-shared-primitives-atoms-html-strong",
+				"reports-component-shared-primitives-atoms-html-sub",
+				"reports-component-shared-primitives-atoms-html-summary",
+				"reports-component-shared-primitives-atoms-html-sup",
+				"reports-component-shared-primitives-atoms-html-table",
+				"reports-component-shared-primitives-atoms-html-tbody",
+				"reports-component-shared-primitives-atoms-html-td",
+				"reports-component-shared-primitives-atoms-html-textarea",
+				"reports-component-shared-primitives-atoms-html-tfoot",
+				"reports-component-shared-primitives-atoms-html-th",
+				"reports-component-shared-primitives-atoms-html-thead",
+				"reports-component-shared-primitives-atoms-html-time",
+				"reports-component-shared-primitives-atoms-html-tr",
+				"reports-component-shared-primitives-atoms-html-u",
+				"reports-component-shared-primitives-atoms-html-ul",
+				"reports-component-shared-primitives-atoms-html-var",
+				"reports-component-shared-primitives-atoms-html-video",
+				"reports-component-shared-primitives-atoms-svg-circle",
+				"reports-component-shared-primitives-atoms-svg-ellipse",
+				"reports-component-shared-primitives-atoms-svg-foreign-object",
+				"reports-component-shared-primitives-atoms-svg-g",
+				"reports-component-shared-primitives-atoms-svg-image",
+				"reports-component-shared-primitives-atoms-svg-line",
+				"reports-component-shared-primitives-atoms-svg-path",
+				"reports-component-shared-primitives-atoms-svg-polygon",
+				"reports-component-shared-primitives-atoms-svg-polyline",
+				"reports-component-shared-primitives-atoms-svg-rect",
+				"reports-component-shared-primitives-atoms-svg-svg",
+				"reports-component-shared-primitives-atoms-svg-text",
+				"reports-component-shared-primitives-atoms-svg-text-path",
+				"reports-component-shared-primitives-atoms-svg-tspan",
+				"reports-component-shared-primitives-atoms-svg-use",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-site-activity",
 				"reports-component-source-code-action",
@@ -2031,6 +3826,7 @@
 				"reports-page-harness-branch-branch-at-configs",
 				"reports-page-harness-branch-branch-at-configs-entity",
 				"reports-page-harness-branch-branch-at-configs-entity-history",
+				"reports-page-harness-branch-branch-at-dependencies",
 				"reports-page-harness-branch-branch-at-functions",
 				"reports-page-harness-branch-branch-at-functions-entity",
 				"reports-page-harness-branch-branch-at-functions-entity-history",
@@ -2052,11 +3848,13 @@
 				"reports-page-harness-branch-branch-at-translations",
 				"reports-page-harness-branch-branch-at-types",
 				"reports-page-harness-branch-branch-at-types-entity",
-				"reports-page-harness-branch-branch-at-types-entity-history",
-				"reports-component-explorer-dependencies-screen",
-				"reports-page-harness-branch-branch-at-dependencies"
+				"reports-page-harness-branch-branch-at-types-entity-history"
 			],
-			"viewports": ["desktop", "tablet", "mobile"],
+			"viewports": [
+				"desktop",
+				"tablet",
+				"mobile"
+			],
 			"provenance": "actual-capture",
 			"build": "shell-fixture",
 			"capture": "element",
