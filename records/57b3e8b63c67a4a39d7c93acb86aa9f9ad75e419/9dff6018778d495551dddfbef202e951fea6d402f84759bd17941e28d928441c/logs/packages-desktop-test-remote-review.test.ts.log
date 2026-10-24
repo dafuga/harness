@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1/packages/desktop[39m
+
+ [32m✓[39m test/remote-review.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 9927[2mms[22m[39m
+   [33m[2m✓[22m[39m a view pinned to a commit is read-only even at the tip: a change needs a branch view [33m 2376[2mms[22m[39m
+   [33m[2m✓[22m[39m a comment-only phone can open the thread a comment needs, and nothing more [33m 1980[2mms[22m[39m
+   [33m[2m✓[22m[39m a change that does not name the session epoch is refused before anything runs [33m 4470[2mms[22m[39m
+   [33m[2m✓[22m[39m a phone is told the lock state once the computer knows it, and never a guess [33m 1100[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 20:47:48
+[2m   Duration [22m 11.39s[2m (transform 759ms, setup 0ms, collect 1.23s, tests 9.93s, environment 0ms, prepare 47ms)[22m
+

@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zp1A0w
+
+ ✓ test/utils/run-isolated.test.ts (8 tests) 12357ms
+   ✓ commands retain exit codes and output with 0 ms spawn and 0 ms table observers  563ms
+   ✓ commands retain exit codes and output with 100 ms spawn and 0 ms table observers  542ms
+   ✓ commands retain exit codes and output with 0 ms spawn and 150 ms table observers  658ms
+   ✓ commands retain exit codes and output with 100 ms spawn and 150 ms table observers  748ms
+   ✓ a command that ignores termination is still stopped at its limit  1614ms
+   ✓ children of a timed-out or finished command are torn down with it  3170ms
+   ✓ a process that left the group of a finished command is stopped and reported, never left running  4840ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  16:37:41
+   Duration  15.64s (transform 88ms, setup 88ms, collect 67ms, tests 12.36s, environment 0ms, prepare 48ms)
+

@@ -1,0 +1,37 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-DlhdZO
+
+ ✓ test/utils/explorer-route.test.ts (61 tests) 5ms
+
+ Test Files  1 passed (1)
+      Tests  61 passed (61)
+   Start at  20:10:19
+   Duration  2.54s (transform 26ms, setup 7ms, collect 12ms, tests 5ms, environment 0ms, prepare 29ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-DlhdZO/packages/reports
+
+ ✓ test/entity-usage.test.ts (6 tests) 22ms
+ ✓ test/components/entity-details.test.ts (7 tests) 19ms
+ ✓ test/utils/harness-page.test.ts (7 tests) 5ms
+ ✓ test/components/entity-relations.test.ts (3 tests) 15ms
+
+ Test Files  4 passed (4)
+      Tests  23 passed (23)
+   Start at  20:10:22
+   Duration  1.70s (transform 676ms, setup 0ms, collect 1.09s, tests 60ms, environment 0ms, prepare 103ms)
+
+
+Running 9 tests using 1 worker
+
+  ✓  1 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width (3.5s)
+  ✓  2 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at desktop width (2.4s)
+  ✓  3 test/entity-preview-actions.spec.ts:123:2 › the console keeps a loaded revision responsive at desktop width (321ms)
+  ✓  4 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width (3.1s)
+  ✓  5 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at tablet width (2.3s)
+  ✓  6 test/entity-preview-actions.spec.ts:123:2 › the console keeps a loaded revision responsive at tablet width (303ms)
+  ✓  7 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width (3.0s)
+  ✓  8 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at mobile width (2.1s)
+  ✓  9 test/entity-preview-actions.spec.ts:123:2 › the console keeps a loaded revision responsive at mobile width (300ms)
+
+  9 passed (19.8s)

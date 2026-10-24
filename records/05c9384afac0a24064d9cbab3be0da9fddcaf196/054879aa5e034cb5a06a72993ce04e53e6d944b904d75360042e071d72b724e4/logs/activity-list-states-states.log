@@ -1,0 +1,25 @@
+
+Running 18 tests using 1 worker
+
+(node:60688) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List collapsed at desktop (217ms)
+  ✓   2 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List expanded at desktop (173ms)
+  ✓   3 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List short at desktop (87ms)
+  ✓   4 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List empty at desktop (73ms)
+  ✓   5 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List ordered at desktop (88ms)
+  ✓   6 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List error at desktop (87ms)
+  ✓   7 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List collapsed at tablet (90ms)
+  ✓   8 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List expanded at tablet (137ms)
+  ✓   9 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List short at tablet (71ms)
+  ✓  10 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List empty at tablet (68ms)
+  ✓  11 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List ordered at tablet (85ms)
+  ✓  12 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List error at tablet (84ms)
+  ✓  13 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List collapsed at mobile (84ms)
+  ✓  14 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List expanded at mobile (134ms)
+  ✓  15 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List short at mobile (84ms)
+  ✓  16 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List empty at mobile (68ms)
+  ✓  17 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List ordered at mobile (83ms)
+  ✓  18 tests/e2e/explorer-shell-activity-list.spec.ts:20:3 › Activity List error at mobile (84ms)
+
+  18 passed (2.4s)

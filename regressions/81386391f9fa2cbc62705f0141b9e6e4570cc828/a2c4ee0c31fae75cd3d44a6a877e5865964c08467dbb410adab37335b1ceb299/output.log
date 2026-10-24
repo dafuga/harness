@@ -1,0 +1,155 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [6.03s]
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-03mp5G/packages/desktop
+
+ ✓ test/stores/workspace-projects.test.ts (8 tests) 57ms
+ ✓ test/stores/hosted-connection.test.ts (8 tests) 5ms
+ ✓ test/services/native-auth.test.ts (6 tests) 5ms
+ ❯ test/backend-boundaries.test.ts (5 tests | 1 failed) 16ms
+   ✓ remote pages and child frames cannot use the project bridge 1ms
+   ✓ IPC refuses unknown operations, invalid regions and unapproved changes 1ms
+   ✓ subscription subprocesses omit API overrides without changing the parent 0ms
+   ✓ private reasoning is never forwarded to the renderer 0ms
+   × portable workspace sources must not depend on the Hub app 14ms
+     → portable workspace sources must not depend on the Hub app: expected [ …(6) ] to deeply equal []
+ ✓ test/utils/forget-remote.test.ts (3 tests) 2ms
+ ✓ test/services/remote-projection.test.ts (3 tests) 39ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/capacitor-environment.test.ts [ test/adapters/capacitor-environment.test.ts ]
+TSConfckParseError: failed to resolve "extends":"./.svelte-kit/tsconfig.json" in /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-03mp5G/packages/hub/tsconfig.json
+  Plugin: vite:esbuild
+  File: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-03mp5G/packages/hub/src/utils/browser-bridge/browserBridge.ts
+ ❯ resolveExtends ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5809:8
+ ❯ parseExtends ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5775:71
+ ❯ parse$13 ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5677:23
+ ❯ loadTsconfigJsonForFile ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6286:37
+ ❯ transformWithEsbuild ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6086:55
+ ❯ TransformPluginContext.transform ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6172:20
+ ❯ EnvironmentPluginContainer.transform ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:28801:14
+ ❯ loadAndTransform ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:22670:26
+
+Caused by: Error: Cannot find module './.svelte-kit/tsconfig.json'
+Require stack:
+- /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-03mp5G/packages/hub/tsconfig.json
+ ❯ resolveExtends ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5800:16
+ ❯ parseExtends ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5775:71
+ ❯ parse$13 ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:5677:23
+ ❯ loadTsconfigJsonForFile ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6286:37
+ ❯ transformWithEsbuild ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6086:55
+ ❯ TransformPluginContext.transform ../../node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:6172:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/backend-boundaries.test.ts > portable workspace sources must not depend on the Hub app
+AssertionError: portable workspace sources must not depend on the Hub app: expected [ …(6) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts -> ../../../../hub/src/utils/browser-bridge/browserBridge",
++   "src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts -> ../../../../hub/src/utils/browserApi",
++   "src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts -> ../../../../hub/src/utils/browserApi",
++   "src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts -> ../../../../hub/src/utils/browserError",
++   "src/utils/commentEntries.ts -> ../../../hub/src/utils/browser-bridge/commentEntries",
++   "src/utils/hostedArtifact.ts -> ../../../hub/src/utils/browser-bridge/hostedArtifact",
++ ]
+
+ ❯ test/backend-boundaries.test.ts:100:4
+     98|   [...dependencies, ...upwardAliases],
+     99|   'portable workspace sources must not depend on the Hub app'
+    100|  ).toEqual([]);
+       |    ^
+    101| });
+    102| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 5 passed (7)
+      Tests  1 failed | 32 passed (33)
+   Start at  00:01:27
+   Duration  1.33s (transform 234ms, setup 0ms, collect 405ms, tests 124ms, environment 0ms, prepare 143ms)
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-03mp5G/packages/hub
+
+ ✓ test/stores/session.test.ts (4 tests) 2ms
+ ✓ test/browser-bridge-cold.test.ts (2 tests) 40ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  00:01:30
+   Duration  401ms (transform 85ms, setup 0ms, collect 130ms, tests 42ms, environment 0ms, prepare 42ms)
+
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort --port "5795"
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:84625) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:84633) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:84639) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:84639) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+
+(node:84680) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/hosted-access.spec.ts:6:1 › without configured sign-in the page says so and offers no login (252ms)
+  ✓   2 tests/e2e/hosted-access.spec.ts:17:1 › Google sign-in uses the challenge nonce and posts the credential in a body (263ms)
+  ✓   3 tests/e2e/hosted-access.spec.ts:45:1 › signed in without projects, the page explains how a project appears (123ms)
+  ✓   4 tests/e2e/hosted-access.spec.ts:59:1 › a project is created from a repository the server listed (156ms)
+  ✓   5 tests/e2e/hosted-access.spec.ts:71:1 › an owner invites by a link and a code that are shown apart, and no email is sent (252ms)
+  ✓   6 tests/e2e/hosted-access.spec.ts:99:1 › an invitation asks for sign-in and the code, then opens the project (1.1s)
+  ✓   7 tests/e2e/hosted-access.spec.ts:128:1 › the same Google account automatically discovers owned and joined projects on another open device (222ms)
+  ✓   8 tests/e2e/hosted-access.spec.ts:176:1 › an account changed in another tab replaces the identity and never retains the previous projects (124ms)
+  ✓   9 tests/e2e/hosted-native.spec.ts:8:1 › the approval page names what is asked, and takes the typed code in a body, never an address (312ms)
+  ✓  10 tests/e2e/hosted-native.spec.ts:52:1 › a request for one project names that project (120ms)
+  ✓  11 tests/e2e/hosted-native.spec.ts:59:1 › an expired request offers nothing to approve (123ms)
+
+  11 passed (7.6s)

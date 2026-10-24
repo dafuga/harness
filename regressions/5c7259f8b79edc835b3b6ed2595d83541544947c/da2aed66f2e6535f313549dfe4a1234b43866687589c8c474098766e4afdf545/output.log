@@ -1,0 +1,171 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [14.31s]
+$ vitest run test/components/explorer-usage.test.ts test/components/explorer-function-card.test.ts test/components/service-contract.test.ts
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-6GBt1X/packages/reports
+
+ ❯ test/components/service-contract.test.ts (5 tests | 2 failed) 26ms
+   × service contracts group parameters, return and errors by method, with initialize 15ms
+     → expected 'aria-label="initialize method"><h3 cl…' not to contain 'aria-label="Throws"'
+   ✓ an older revision without class metadata reads methods from qualified names 2ms
+   ✓ each class of a service keeps its own methods, same-named ones apart 1ms
+   × AgentActivityService shows each method it declares now, its class-wide error once 6ms
+     → expected ' Services AgentActivityService AgentA…' not to contain 'Errors not tied to a method'
+   ✓ a service contract that names no method keeps its fields together 1ms
+ ❯ test/components/explorer-function-card.test.ts (10 tests | 2 failed) 24ms
+   × function catalog cards stay concise and retain revision links without detail panels 13ms
+     → expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 1ms
+   ✓ function calls preserve declared sample values: null 1ms
+   ✓ function calls preserve declared sample values: "" 1ms
+   ✓ function calls preserve declared sample values: %j 1ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 1ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 1ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 1ms
+   × helper usage selects three distinct eligible consumers before truncating 3ms
+     → expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+ ❯ test/components/explorer-usage.test.ts (12 tests | 2 failed) 21ms
+   ✓ component card usage is flat and capped with 0 consumers at current scope 8ms
+   ✓ component card usage is flat and capped with 1 consumers at current scope 2ms
+   ✓ component card usage is flat and capped with 3 consumers at current scope 1ms
+   ✓ component card usage is flat and capped with 4 consumers at current scope 1ms
+   ✓ component card usage is flat and capped with 7 consumers at current scope 1ms
+   × shared usage footers render links and empty usage at current scope 4ms
+     → expected '<!--[--><div class="ex-usage svelte-1…' not to match /aria-label="(?:Components|Services)"|…/
+   ✓ component card usage is flat and capped with 0 consumers at commit scope 1ms
+   ✓ component card usage is flat and capped with 1 consumers at commit scope 1ms
+   ✓ component card usage is flat and capped with 3 consumers at commit scope 1ms
+   ✓ component card usage is flat and capped with 4 consumers at commit scope 1ms
+   ✓ component card usage is flat and capped with 7 consumers at commit scope 1ms
+   × shared usage footers render links and empty usage at commit scope 1ms
+     → expected '<!--[--><div class="ex-usage svelte-1…' not to match /aria-label="(?:Components|Services)"|…/
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function catalog cards stay concise and retain revision links without detail panels
+AssertionError: expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+
+Expected: [32m"[7mdata-harness-component="expl[27morer[7m-module-card"[27m"[39m
+Received: [31m"[7m<article class="ex-function-tile svelte-1cfotb4" aria-label="filterOrders"><a class="ex-function-call" title="Example usage; arguments without recorded sample values remain named variables." href="/harness/branch/feature%2Forders/helpers/filterOrders/in/app.function.filter-orders/contract"><code class="svelte-1cfotb4">filterOrders(orders, "SERVICE")</code><!----></a><!----> <div class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"><span>Used In</span><!--[-1--><!--]--> <!--[-1--><!--[--><ul aria-label="Components" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Components</li> <!--[--><li><!--$s1--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2F[27mor[7md[27mer[7ms/components/app.component.order-list"><!---->OrderList<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><ul aria-label="Services" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Services</li> <!--[--><li><!--$s2--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/services/app.service.order-store"><!---->OrderStore<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><!--]--><!--]--></div><!----></article>[27m"[39m
+
+ ❯ test/components/explorer-function-card.test.ts:22:16
+     20|   expect(count(card, /<a\b/g), 'function call and its two consumer lin…
+     21|   expect(words(card)).toContain('Used In');
+     22|   expect(card).toContain('data-harness-component="explorer-module-card…
+       |                ^
+     23|   expect(card).not.toContain('aria-label="Components"');
+     24|   expect(card).not.toContain('aria-label="Services"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > helper usage selects three distinct eligible consumers before truncating
+AssertionError: expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+
+Expected: [32m"[7mdata-harness-component="expl[27morer[7m-module-card"[27m"[39m
+Received: [31m"[7m<article class="ex-function-tile svelte-1cfotb4" aria-label="filterOrders"><a class="ex-function-call" title="Example usage; arguments without recorded sample values remain named variables." href="/harness/branch/feature%2Forders/helpers/filterOrders/in/app.function.filter-orders/contract"><code class="svelte-1cfotb4">filterOrders(orders, "SERVICE")</code><!----></a><!----> <div class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"><span>Used In</span><!--[-1--><!--]--> <!--[-1--><!--[--><ul aria-label="Components" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Components</li> <!--[--><li><!--$s1--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2F[27mor[7md[27mer[7ms/components/app.component.order-list"><!---->OrderList<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><ul aria-label="Services" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Services</li> <!--[--><li><!--$s2--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/services/app.service.order-store"><!---->OrderStore<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><ul aria-label="Models" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Models</li> <!--[--><li><!--$s3--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/models/app.model.order"><!---->Order<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><!--]--><!--]--></div><!----></article>[27m"[39m
+
+ ❯ test/components/explorer-function-card.test.ts:111:15
+    109|  const card = /<article\b.*?<\/article>/s.exec(body)![0];
+    110|  expect(words(card)).toContain('Used In');
+    111|  expect(card).toContain('data-harness-component="explorer-module-card"…
+       |               ^
+    112|  expect(card).not.toContain('aria-label="Components"');
+    113|  expect(card).not.toContain('aria-label="Services"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  test/components/explorer-usage.test.ts > shared usage footers render links and empty usage at current scope
+ FAIL  test/components/explorer-usage.test.ts > shared usage footers render links and empty usage at commit scope
+AssertionError: expected '<!--[--><div class="ex-usage svelte-1…' not to match /aria-label="(?:Components|Services)"|…/
+
+[32m- Expected:[39m 
+/aria-label="(?:Components|Services)"|ex-usage-kind/
+
+[31m+ Received:[39m 
+"<!--[--><div class=\"ex-usage svelte-1oujjw5\" role=\"group\" aria-label=\"Used In\"><span>Used In</span><!--[-1--><!--]--> <!--[-1--><!--[--><ul aria-label=\"Components\" class=\"svelte-1oujjw5\"><li class=\"ex-usage-kind svelte-1oujjw5\">Components</li> <!--[--><li><!--$s1--><span class=\"ex-usage-link svelte-1w7zk6l\"><a href=\"/harness/branch/feature%2Forders/components/app.component.order-list\"><!---->OrderList<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><ul aria-label=\"Services\" class=\"svelte-1oujjw5\"><li class=\"ex-usage-kind svelte-1oujjw5\">Services</li> <!--[--><li><!--$s2--><span class=\"ex-usage-link svelte-1w7zk6l\"><a href=\"/harness/branch/feature%2Forders/services/app.service.order-store\"><!---->OrderStore<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><!--]--><!--]--></div><!--]-->"
+
+ ❯ test/components/explorer-usage.test.ts:41:20
+     39|   const body = render(ExplorerUsage, { props: { ...props, consumers } …
+     40|   expect(words(body)).toContain('Used In');
+     41|   expect(body).not.toMatch(/aria-label="(?:Components|Services)"|ex-us…
+       |                    ^
+     42|   const many = [
+     43|    consumers[0],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  test/components/service-contract.test.ts > service contracts group parameters, return and errors by method, with initialize
+AssertionError: expected 'aria-label="initialize method"><h3 cl…' not to contain 'aria-label="Throws"'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- aria-label="[7mThrows"[27m[39m
+[31m+ aria-label="[7minitialize method"><h3 class="svelte-1awoqrz"><code>initialize(timeoutMs: number): Promise&lt;void></code></h3> <!--[--><div class="group svelte-1c3wa0r" data-harness-component="contract-table"><!--[1--><p class="label svelte-1c3wa0r">Parameters</p><!--]--> <!--[-1--><div class="frame svelte-1c3wa0r"><table aria-label="Parameters" class="svelte-1c3wa0r"><thead class="svelte-1c3wa0r"><tr><!--[0--><th scope="col" class="leading svelte-1c3wa0r">Name</th><!--]--><th scope="col" class="leading svelte-1c3wa0r">Type</th><th scope="col" class="svelte-1c3wa0r">Example</th><th scope="col" class="act svelte-1c3wa0r" aria-label="Actions"></th></tr></thead><tbody class="svelte-1c3wa0r"><!--[-1--><!--]--><!--[--><tr class="svelte-1c3wa0r"><!--[0--><th scope="row" class="svelte-1c3wa0r">timeoutMs</th><!--]--><td class="svelte-1c3wa0r"><code class="type svelte-1c3wa0r">number</code></td><td class="example svelte-1c3wa0r"><!--[-1--><!--]--> <!--[0--><code>500</code><!--]--></td><td class="act svelte-1c3wa0r"><button type="button" class="info svelte-1c3wa0r" aria-label="View example for timeoutMs" aria-haspopup="dialog"><svg class="hx-icon svelte-hvc05" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-1c3wa0r" data-harness-component="contract-table"><!--[1--><p class="label svelte-1c3wa0r">Returns</p><!--]--> <!--[-1--><div class="frame svelte-1c3wa0r"><table aria-label="Returns" class="svelte-1c3wa0r"><thead class="svelte-1c3wa0r"><tr><!--[0--><th scope="col" class="leading svelte-1c3wa0r">Name</th><!--]--><th scope="col" class="leading svelte-1c3wa0r">Type</th><th scope="col" class="svelte-1c3wa0r">Example</th><th scope="col" class="act svelte-1c3wa0r" aria-label="Actions"></th></tr></thead><tbody class="svelte-1c3wa0r"><!--[-1--><!--]--><!--[--><tr class="svelte-1c3wa0r"><!--[0--><th scope="row" class="svelte-1c3wa0r">returnValue</th><!--]--><td class="svelte-1c3wa0r"><code class="type svelte-1c3wa0r">Promise&lt;void></code></td><td class="example svelte-1c3wa0r"><!--[0--><i>Example not recorded</i><!--]--> <!--[-1--><!--]--></td><td class="act svelte-1c3wa0r"><button type="button" class="info svelte-1c3wa0r" aria-label="View example for returnValue" aria-haspopup="dialog"><svg class="hx-icon svelte-hvc05" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-1c3wa0r" data-harness-component="contract-table"><!--[1--><p class="label svelte-1c3wa0r">Throws</p><!--]--> <!--[-1--><div class="frame svelte-1c3wa0r"><table aria-label="Throws" class="svelte-1c3wa0r"><thead class="svelte-1c3wa0r"><tr><!--[-1--><!--]--><th scope="col" class="leading svelte-1c3wa0r">Type</th><th scope="col" class="svelte-1c3wa0r">Example</th><th scope="col" class="act svelte-1c3wa0r" aria-label="Actions"></th></tr></thead><tbody class="svelte-1c3wa0r"><!--[-1--><!--]--><!--[--><tr class="svelte-1c3wa0r"><!--[-1--><!--]--><td class="svelte-1c3wa0r"><code class="type svelte-1c3wa0r">TimeoutError</code></td><td class="example svelte-1c3wa0r"><!--[-1--><!--]--> <!--[0--><code>{[27m[39m
+[31m+   "name": "TimeoutError",[39m
+[31m+   "message": "The feed did not answer in 500 ms."[39m
+[31m+ }</code><!--]--></td><td class="act svelte-1c3wa0r"><button type="button" class="info svelte-1c3wa0r" aria-label="View example for Timeout" aria-haspopup="dialog"><svg class="hx-icon svelte-hvc05" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><!--]-->[39m
+
+ ❯ test/components/service-contract.test.ts:42:25
+     40|  for (const group of ['Parameters', 'Returns'])
+     41|   expect(initialize).toContain(`aria-label="${group}"`);
+     42|  expect(initialize).not.toContain('aria-label="Throws"');
+       |                         ^
+     43|  expect(body.indexOf('aria-label="Errors"')).toBeGreaterThan(
+     44|   body.indexOf('aria-label="latest method"')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  test/components/service-contract.test.ts > AgentActivityService shows each method it declares now, its class-wide error once
+AssertionError: expected ' Services AgentActivityService AgentA…' not to contain 'Errors not tied to a method'
+
+Expected: [32m"Errors not tied to a method"[39m
+Received: [31m" Services AgentActivityService AgentActivityService Service Registers agents, records their heartbeats and ends, and lists the agents of a repository with whether each is working now. Overview Contract Used In Uses Examples History Source Contract Runs as Module Errors not tied to a method ExpectedCliError Declared examples are written in the contract. Illustrative ones are placeholders shaped by the type alone. Neither is the result of a test. constructor(root: string, checkouts: Checkout[]) Parameters Name Type Example root string Illustrative "example" checkouts Checkout[] Example not recorded Creates the service. register(input: AgentInput): Promise&lt;StoredAgent> Parameters Name Type Example input AgentInput Example not recorded Returns Name Type Example returnValue Promise&lt;StoredAgent> Example not recorded heartbeat(id: string, input: AgentInput): Promise&lt;AgentBeat> Parameters Name Type Example id string Illustrative "example" input AgentInput Example not recorded Returns Name Type Example returnValue Promise&lt;AgentBeat> Example not recorded finish(id: string, failed: boolean, outcome: string): Promise&lt;void> Parameters Name Type Example id string Illustrative "example" failed boolean Illustrative true outcome string Illustrative "example" Returns Name Type Example returnValue Promise&lt;void> Example not recorded roster(): Promise&lt;AgentRoster> Parameters Name Type Example No parameters. Returns Name Type Example returnValue Promise&lt;AgentRoster> Example not recorded "[39m
+
+ ❯ test/components/service-contract.test.ts:127:26
+    125|  expect(mirrored, 'the browser fixture shows the same methods').toEqua…
+    126|  expect(words(methodOf(body, 'roster'))).toContain('No parameters.');
+    127|  expect(words(body)).not.toContain('Errors not tied to a method');
+       |                          ^
+    128|  expect(body.indexOf('aria-label="Errors"')).toBeGreaterThan(
+    129|   body.indexOf('aria-label="roster method"')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  6 failed | 21 passed (27)
+   Start at  21:57:58
+   Duration  3.15s (transform 1.13s, setup 0ms, collect 2.10s, tests 71ms, environment 0ms, prepare 117ms)
+
+error: script "test:unit" exited with code 1

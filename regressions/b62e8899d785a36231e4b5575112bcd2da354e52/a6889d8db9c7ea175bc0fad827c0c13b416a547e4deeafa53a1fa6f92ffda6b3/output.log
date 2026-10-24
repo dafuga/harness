@@ -1,0 +1,229 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [35.05s]
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-CDVq4H/packages/reports
+
+ ❯ test/utils/entity-catalog.test.ts (7 tests | 1 failed) 31ms
+   ✓ a collection lists the entities of its category by the name a person reads 16ms
+   ✓ a component says which pages it is used on and which components it contains 1ms
+   ✓ a page counts the components it contains and a service names its targets 1ms
+   ✓ changed is what the commit changed itself, and the verdict is the one it was given 2ms
+   ✓ search reads names and purposes, changed only keeps changes, and an order sorts 2ms
+   ✓ a list of names is none, one name, or the first and how many more 0ms
+   × shared helper rows require source exports, list every callable and keep owner links 7ms
+     → only exported shared helpers are listed: expected [ 'Filter orders', …(2) ] to deeply equal [ 'first', 'second' ]
+ ✓ test/components/explorer-function-card.test.ts (9 tests) 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > shared helper rows require source exports, list every callable and keep owner links
+AssertionError: only exported shared helpers are listed: expected [ 'Filter orders', …(2) ] to deeply equal [ 'first', 'second' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "first",[39m
+[32m-   "second",[39m
+[31m+   "Filter orders",[39m
+[31m+   "Filter orders",[39m
+[31m+   "Filter orders",[39m
+[2m  ][22m
+
+ ❯ test/utils/entity-catalog.test.ts:126:4
+    124|   shown.map((row) => row.name),
+    125|   'only exported shared helpers are listed'
+    126|  ).toEqual(['first', 'second']);
+       |    ^
+    127|  expect(new Set(shown.map((row) => row.id)).size).toBe(2);
+    128|  expect(shown.every((row) => row.entity.id === ids.filter)).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 15 passed (16)
+   Start at  16:29:07
+   Duration  3.69s (transform 1.73s, setup 0ms, collect 2.58s, tests 63ms, environment 0ms, prepare 154ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at desktop width (5.9s)
+  ✘  2 test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at tablet width (5.5s)
+  ✘  3 test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at mobile width (5.8s)
+
+
+  1) test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at desktop width 
+
+    Error: only exported shared helpers are listed
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 1
+    Received: 6
+    Timeout:  5000ms
+
+    Call log:
+      - only exported shared helpers are listed getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 6 elements
+           - unexpected value "6"
+
+
+      67 | 			await capture(tab, `grid-${category}-${name}`);
+      68 | 			const cards = tab.getByRole('article');
+    > 69 | 			await expect(cards, 'only exported shared helpers are listed').toHaveCount(
+         | 			                                                               ^
+      70 | 				category === 'components' ? 3 : 1
+      71 | 			);
+      72 | 			const card = (await cards.first().boundingBox())!;
+        at /private/tmp/harness-snapshot-CDVq4H/packages/reports/test/entity-preview-actions.spec.ts:69:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-a2705--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-a2705--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at tablet width 
+
+    Error: only exported shared helpers are listed
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 1
+    Received: 6
+    Timeout:  5000ms
+
+    Call log:
+      - only exported shared helpers are listed getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 6 elements
+           - unexpected value "6"
+
+
+      67 | 			await capture(tab, `grid-${category}-${name}`);
+      68 | 			const cards = tab.getByRole('article');
+    > 69 | 			await expect(cards, 'only exported shared helpers are listed').toHaveCount(
+         | 			                                                               ^
+      70 | 				category === 'components' ? 3 : 1
+      71 | 			);
+      72 | 			const card = (await cards.first().boundingBox())!;
+        at /private/tmp/harness-snapshot-CDVq4H/packages/reports/test/entity-preview-actions.spec.ts:69:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-33d29-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-33d29-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at mobile width 
+
+    Error: only exported shared helpers are listed
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 1
+    Received: 6
+    Timeout:  5000ms
+
+    Call log:
+      - only exported shared helpers are listed getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        13 × locator resolved to 6 elements
+           - unexpected value "6"
+
+
+      67 | 			await capture(tab, `grid-${category}-${name}`);
+      68 | 			const cards = tab.getByRole('article');
+    > 69 | 			await expect(cards, 'only exported shared helpers are listed').toHaveCount(
+         | 			                                                               ^
+      70 | 				category === 'components' ? 3 : 1
+      71 | 			);
+      72 | 			const card = (await cards.first().boundingBox())!;
+        at /private/tmp/harness-snapshot-CDVq4H/packages/reports/test/entity-preview-actions.spec.ts:69:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-94238-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-94238-a-card-grid-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:59:2 › component and function lists use a card grid at mobile width 
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-CDVq4H
+
+ ❯ test/history-index.e2e.test.ts (4 tests | 1 failed | 3 skipped) 36643ms
+   × the index is deterministic and names every commit, verified or not 3137ms
+     → helper exports are recorded from the selected commit: expected undefined to match object [ { name: 'slugify', …(2) } ]
+   ↓ a revision carries its graph, comparison, inherited provenance, media and reasons
+   ↓ growth and benchmarks are kept per unit, and another profile is a separate series
+   ↓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-index.e2e.test.ts > the index is deterministic and names every commit, verified or not
+AssertionError: helper exports are recorded from the selected commit: expected undefined to match object [ { name: 'slugify', …(2) } ]
+
+[32m- Expected:[39m 
+[
+  {
+    "inputs": [
+      {
+        "name": "slugify.input",
+      },
+    ],
+    "name": "slugify",
+    "source": "src/utils/slugify.ts",
+  },
+]
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/history-index.e2e.test.ts:69:4
+     67|   stored.registry.units.find((unit) => unit.id === 'function.slugify')…
+     68|   'helper exports are recorded from the selected commit'
+     69|  ).toMatchObject([
+       |    ^
+     70|   { name: 'slugify', source: 'src/utils/slugify.ts', inputs: [{ name: …
+     71|  ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  16:29:44
+   Duration  41.90s (transform 139ms, setup 23ms, collect 150ms, tests 36.64s, environment 0ms, prepare 101ms)
+

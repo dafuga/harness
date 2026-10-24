@@ -1,0 +1,35 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [168.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-beX9e7
+
+ ❯ test/utils/unit-identity.test.ts (2 tests | 1 failed) 30ms
+   × unitIdentity derives kind and name from Harness scaffold folders 6ms
+     → expected 'component.entity-contract-service-met…' to be 'function.entity-contract-service-meth…' // Object.is equality
+   ✓ unitIdentity prefixes named workspaces and skips tests and unknown files 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/unit-identity.test.ts > unitIdentity derives kind and name from Harness scaffold folders
+AssertionError: expected 'component.entity-contract-service-met…' to be 'function.entity-contract-service-meth…' // Object.is equality
+
+Expected: "function.entity-contract-service-methods"
+Received: "component.entity-contract-service-methods"
+
+ ❯ test/utils/unit-identity.test.ts:27:65
+     25|   ['db/seed-data/analytics-e2e.ts', 'seeder.analytics-e2e']
+     26|  ];
+     27|  for (const [path, id] of cases) expect(unitIdentity(path)?.id).toBe(i…
+       |                                                                 ^
+     28| });
+     29| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  02:25:52
+   Duration  2.57s (transform 42ms, setup 54ms, collect 13ms, tests 30ms, environment 0ms, prepare 32ms)
+

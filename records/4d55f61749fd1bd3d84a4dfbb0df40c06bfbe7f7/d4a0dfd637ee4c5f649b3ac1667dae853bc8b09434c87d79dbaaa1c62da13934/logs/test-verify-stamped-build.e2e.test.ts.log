@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75
+
+ ✓ test/verify-stamped-build.e2e.test.ts (7 tests) 16256ms
+   ✓ the record of a stamped build is attached to history and found intact there  1218ms
+   ✓ the same files, stamped outside a verification, carry the recorded identity as their stamp  318ms
+   ✓ a build changed after it was stamped is refused; nothing of it is recorded or proven  3043ms
+   ✓ a stamped build that fails only its budgets is a failed record: it loads and attaches as failed  4197ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  12:44:01
+   Duration  16.60s (transform 64ms, setup 12ms, collect 100ms, tests 16.26s, environment 0ms, prepare 47ms)
+

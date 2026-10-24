@@ -1,0 +1,104 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [9.31s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+$ bun run sync:shared && vitest run test/page-workload.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DIj96y/packages/desktop
+
+ ❯ test/page-workload.test.ts (10 tests | 3 failed) 17ms
+   ✓ the Desktop collector names the real page module target and no unrelated scenario units 5ms
+   ✓ other route cannot borrow page timings 1ms
+   ✓ soft navigation cannot borrow page timings 1ms
+   ✓ no navigation cannot borrow page timings 1ms
+   ✓ a failed heap read releases its inspector and publishes no successful observation 1ms
+   × a workflow runs once and never borrows the predecessor navigation measurement 2ms
+     → Browser workflow must execute the caller exactly once: expected "spy" to be called once, but got 0 times
+   × a failed workflow publishes no success and never reads the heap 2ms
+     → promise resolved "undefined" instead of rejecting
+   × without evidence a browser workflow still executes once and reads no browser metrics 0ms
+     → Browser workflow must execute the caller exactly once: expected "spy" to be called once, but got 0 times
+   ✓ missing duration cannot become a zero measurement 1ms
+   ✓ missing usedSize cannot become a zero measurement 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/page-workload.test.ts > a workflow runs once and never borrows the predecessor navigation measurement
+AssertionError: Browser workflow must execute the caller exactly once: expected "spy" to be called once, but got 0 times
+ ❯ test/page-workload.test.ts:143:5
+    141|    operation,
+    142|    'Browser workflow must execute the caller exactly once'
+    143|   ).toHaveBeenCalledOnce();
+       |     ^
+    144|   expect(workflow.surface.navigation).not.toHaveBeenCalled();
+    145|   const { measurements } = JSON.parse(readFileSync(join(directory, 'wo…
+ ❯ isolatedProfileCapture ../../test/support/taskProfiles.ts:24:3
+ ❯ test/page-workload.test.ts:134:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/page-workload.test.ts > a failed workflow publishes no success and never reads the heap
+AssertionError: promise resolved "undefined" instead of rejecting
+
+- Expected: 
+Error {
+  "message": "rejected promise",
+}
+
++ Received: 
+undefined
+
+ ❯ test/page-workload.test.ts:162:3
+    160|     throw Error('workflow refused');
+    161|    })
+    162|   ).rejects.toThrow('workflow refused');
+       |   ^
+    163|   expect(workflow.surface.heap).not.toHaveBeenCalled();
+    164|   expect(existsSync(join(directory, 'captures.ndjson'))).toBe(false);
+ ❯ isolatedProfileCapture ../../test/support/taskProfiles.ts:24:9
+ ❯ test/page-workload.test.ts:156:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/page-workload.test.ts > without evidence a browser workflow still executes once and reads no browser metrics
+AssertionError: Browser workflow must execute the caller exactly once: expected "spy" to be called once, but got 0 times
+ ❯ test/page-workload.test.ts:174:77
+    172|   operation = vi.fn(async () => {});
+    173|  await workflow.run(operation);
+    174|  expect(operation, 'Browser workflow must execute the caller exactly o…
+       |                                                                             ^
+    175|  expect(workflow.surface.navigation).not.toHaveBeenCalled();
+    176|  expect(workflow.surface.heap).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 7 passed (10)
+   Start at  05:58:36
+   Duration  313ms (transform 85ms, setup 83ms, collect 56ms, tests 17ms, environment 0ms, prepare 35ms)
+
+error: script "test:unit" exited with code 1

@@ -1,0 +1,116 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [158.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Dhqqth
+
+failed to load config from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Dhqqth/packages/desktop/vite.config.ts
+Loading Svelte config from Vite config failed: Error: The service was stopped
+    at /Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:603:9)
+    at Socket.afterClose (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:594:28)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) 
+
+Falling back to loading svelte.config.js
+failed to load config from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Dhqqth/packages/hub/vite.config.ts
+Loading Svelte config from Vite config failed: Error: The service was stopped
+    at /Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:603:9)
+    at Socket.afterClose (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:594:28)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) 
+
+Falling back to loading svelte.config.js
+failed to load config from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Dhqqth/packages/reports/vite.config.ts
+Loading Svelte config from Vite config failed: Error: The service was stopped
+    at /Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:603:9)
+    at Socket.afterClose (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:594:28)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) 
+
+Falling back to loading svelte.config.js
+ ❯ test/services/unit-index.test.ts (13 tests | 1 failed) 981ms
+   ✓ recorded source moves retain definitions, owner-local placement and registered identity 176ms
+   ✓ public route filenames retain their registered ownership 0ms
+   ✓ declared preview and documentation survive source re-indexing 5ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 3ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 1ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 1ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 0ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+   ✓ several owned files produce identical metadata after one indexing pass 0ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  788ms
+   × public helper contracts require owned, categorized helper implementation files 4ms
+     → expected [] to include 'function.slugify: slugify must be imp…'
+ ❯ test/utils/unit-documentation.test.ts (3 tests | 1 failed) 40ms
+   ✓ committed documents preserve expected values and never invent observed results 4ms
+   ✓ revision documents come only from their own tree, and their bytes change the unit version 5ms
+   × every committed public helper example executes against its real implementation 31ms
+     → Public helper implementation belongs in src/helpers/<responsibility>: expected 'packages/desktop/src/utils/networking…' to match /(?:^|\/)src\/helpers\/[^/]+\/[^/…/)src\
+ ❯ test/pieces.test.ts (6 tests | 1 failed) 8ms
+   ✓ every scaffold kind creates at least one file in a 2d project 3ms
+   ✓ every scaffold kind creates at least one file in a 3d project 1ms
+   ✓ view, layout, and api scaffolds use SvelteKit route files 0ms
+   ✓ marks only SvelteKit scaffolds as app-only 0ms
+   ✓ Rails-ish scaffolds create their expected code shapes 0ms
+   × helper scaffolds emit pure camelCase functions with domain parameters 2ms
+     → the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/pieces.test.ts > helper scaffolds emit pure camelCase functions with domain parameters
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ test/pieces.test.ts:78:27
+     76|  const files = pieceFiles('helper', 'formatLabel');
+     77|  const source = files.find((file) => file.path === 'src/helpers/format…
+     78|  expect(source?.contents).toContain('/** @pure */');
+       |                           ^
+     79|  expect(source?.contents).toContain('export function formatLabel(textT…
+     80|  expect(source?.contents).not.toContain('class ');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/services/unit-index.test.ts > public helper contracts require owned, categorized helper implementation files
+AssertionError: expected [] to include 'function.slugify: slugify must be imp…'
+ ❯ test/services/unit-index.test.ts:251:24
+    249|   'src/helpers/slugify.ts'
+    250|  ])
+    251|   expect(errors(path)).toContain(
+       |                        ^
+    252|    'function.slugify: slugify must be implemented under src/helpers/<r…
+    253|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/utils/unit-documentation.test.ts > every committed public helper example executes against its real implementation
+AssertionError: Public helper implementation belongs in src/helpers/<responsibility>: expected 'packages/desktop/src/utils/networking…' to match /(?:^|\/)src\/helpers\/[^/]+\/[^/…/)src\
+
+- Expected: 
+/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/
+
++ Received: 
+"packages/desktop/src/utils/networking-security/remoteLabels.ts"
+
+ ❯ test/utils/unit-documentation.test.ts:97:6
+     95|     helper.source,
+     96|     'Public helper implementation belongs in src/helpers/<responsibili…
+     97|    ).toMatch(/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/);
+       |      ^
+     98|    expect(helper.examples?.length, 'Callable examples are required').t…
+     99|    const titles = helper.examples.map((example: { name: string }) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  3 failed | 19 passed (22)
+   Start at  12:04:44
+   Duration  4.36s (transform 178ms, setup 119ms, collect 520ms, tests 1.03s, environment 0ms, prepare 86ms)
+

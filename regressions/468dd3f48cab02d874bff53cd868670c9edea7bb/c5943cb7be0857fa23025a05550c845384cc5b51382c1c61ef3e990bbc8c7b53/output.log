@@ -1,0 +1,64 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [9.80s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-l3xnQ5
+
+ ❯ test/format-ignore.test.ts (3 tests | 1 failed) 46ms
+   ✓ .prettierignore excludes generated launchers while retaining authored preview source 23ms
+   × packages/reports/.prettierignore excludes generated launchers while retaining authored preview source 7ms
+     → expected [ …(2) ] to deeply equal [ …(2) ]
+   ✓ what the reports package generates is not formatted, and none of its source is left out 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/format-ignore.test.ts > packages/reports/.prettierignore excludes generated launchers while retaining authored preview source
+AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]
+
+- Expected
++ Received
+
+  [
+    "packages/reports/.cache/preview-node-example/entry.mjs",
+-   true,
++   false,
+  ]
+
+ ❯ test/format-ignore.test.ts:15:70
+     13|    'packages/reports/.cache/another-generated-runtime/index.js'
+     14|   ])
+     15|    expect([path, (await getFileInfo(path, { ignorePath })).ignored]).t…
+       |                                                                      ^
+     16|   for (const path of [
+     17|    'packages/reports/src/utils/previewNode.ts',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  14:27:46
+   Duration  3.45s (transform 35ms, setup 17ms, collect 31ms, tests 46ms, environment 0ms, prepare 50ms)
+

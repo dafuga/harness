@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-workspace.spec.ts:4:1 › browser preview exposes no writable backend (76ms)
+  ✓  2 tests/e2e/ui-workspace.spec.ts:15:1 › designless Plan preserves truthful status and branch/commit paths (233ms)
+  ✓  3 tests/e2e/ui-workspace.spec.ts:62:1 › catalog search, changed filter and conversational plan request (243ms)
+  ✓  4 tests/e2e/ui-workspace.spec.ts:84:1 › Go to tip exits both historical and explicitly pinned tip revisions (212ms)
+
+  4 passed (1.2s)
+(node:76495) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

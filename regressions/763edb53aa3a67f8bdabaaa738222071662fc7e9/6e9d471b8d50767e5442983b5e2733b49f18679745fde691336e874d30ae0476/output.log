@@ -1,0 +1,107 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-W5siCR/packages/reports
+
+ ❯ test/components/explorer-function-card.test.ts (17 tests | 8 failed) 37ms
+   ✓ function catalog cards stay concise and retain revision links without detail panels 9ms
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 1ms
+   ✓ function calls preserve declared sample values: null 0ms
+   ✓ function calls preserve declared sample values: "" 0ms
+   ✓ function calls preserve declared sample values: %j 1ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 1ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 1ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 1ms
+   × helper usage selects three distinct eligible consumers before truncating 8ms
+     → expected '<article aria-label="filterOrders" da…' to contain '/branch/feature%2Forders/pages/app.pa…'
+   × function footer retains a components consumer in supplied order with overflow 4ms
+     → A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+   × function footer retains a services consumer in supplied order with overflow 3ms
+     → A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+   × function footer retains a models consumer in supplied order with overflow 1ms
+     → A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+   × function footer retains a functions consumer in supplied order with overflow 3ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+   × function footer retains a pages consumer in supplied order with overflow 2ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+   × function footer retains a layouts consumer in supplied order with overflow 1ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+   × function footer retains a configs consumer in supplied order with overflow 1ms
+     → A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > helper usage selects three distinct eligible consumers before truncating
+AssertionError: expected '<article aria-label="filterOrders" da…' to contain '/branch/feature%2Forders/pages/app.pa…'
+
+Expected: [32m"/branch/feature%2Forders/pages/app.page.orders"[39m
+Received: [31m"<article aria-label="filterOrders" data-harness-component="explorer-ui-explorer-module-card" class="svelte-zt5p7c ex-function-tile"><!--[2--><a class="ex-function-call" title="Example usage; arguments without recorded sample values remain named variables." href="/harness/branch/feature%2Forders/helpers/filterOrders/in/app.function.filter-orders/contract" data-harness-component="harness-entity-link"><code class="svelte-zt5p7c">filterOrders(orders, "SERVICE")</code><!----></a><!----> <div class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"><span>Used In</span><!--[-1--><ul class="svelte-1oujjw5"><!--[--><li><!--$s1--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/components/app.component.order-list" data-harness-component="harness-entity-link"><!---->OrderList<!----></a><!----><!--[-1--><!--]--></span><!----></li><li><!--$s2--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/services/app.service.order-store" data-harness-component="harness-entity-link"><!---->OrderStore<!----></a><!----><!--[-1--><!--]--></span><!----></li><li><!--$s3--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/models/app.model.order" data-harness-component="harness-entity-link"><!---->Order<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--> <!--[0--><li><span aria-hidden="true">…</span> <span class="ex-usage-more svelte-1oujjw5">1 more usage</span></li><!--]--></ul><!--]--></div><!----><!--]--></article>"[39m
+
+ ❯ test/components/explorer-function-card.test.ts:122:18
+    120|    expect(words(card), 'A fourth eligible consumer must produce an ell…
+    121|    for (const target of [`components/${ids.list}`, `services/${ids.sto…
+    122|     expect(card).toContain(`/branch/feature%2Forders/${target}`);
+       |                  ^
+    123|    for (const excluded of ['app.model.order', ids.card, 'missing'])
+    124|     expect(card).not.toContain(excluded);
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/components/explorer-function-card.test.ts:108:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a components consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a services consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a models consumer in supplied order with overflow
+AssertionError: A fourth distinct module requires an ellipsis: expected 'class="ex-usage svelte-1oujjw5" role=…' to contain '…'
+
+Expected: [32m"…"[39m
+Received: [31m"class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"> Used In OrderList OrderStore Order "[39m
+
+ ❯ test/components/explorer-function-card.test.ts:185:74
+    183|     .map((item) => `/harness/branch/feature%2Forders/${item.category}/…
+    184|   );
+    185|   expect(words(footer), 'A fourth distinct module requires an ellipsis…
+       |                                                                          ^
+    186|  }
+    187| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a functions consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a pages consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a layouts consumer in supplied order with overflow
+ FAIL  test/components/explorer-function-card.test.ts > function footer retains a configs consumer in supplied order with overflow
+AssertionError: A valid module consumer keeps its place; self references stay absent: expected [ …(3) ] to deeply equal [ …(3) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "/harness/branch/feature%2Forders/functions/function.call-filter",[39m
+[2m    "/harness/branch/feature%2Forders/components/app.component.order-list",[22m
+[2m    "/harness/branch/feature%2Forders/services/app.service.order-store",[22m
+[31m+   "/harness/branch/feature%2Forders/models/app.model.order",[39m
+[2m  ][22m
+
+ ❯ test/components/explorer-function-card.test.ts:180:89
+    178|   const footer = card.slice(card.indexOf('class="ex-usage'));
+    179|   const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map((…
+    180|   expect(links, 'A valid module consumer keeps its place; self referen…
+       |                                                                                         ^
+    181|    ordered
+    182|     .slice(0, 3)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 9 passed (17)
+   Start at  12:31:36
+   Duration  1.66s (transform 988ms, setup 0ms, collect 1.43s, tests 37ms, environment 0ms, prepare 40ms)
+
+error: "vitest" exited with code 1

@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W
+
+ ✓ test/console-install.e2e.test.ts (5 tests) 21340ms
+   ✓ the installer refuses to serve anything without a policy of the host  648ms
+   ✓ the installed host builds for Workers and keeps history out of everything public  3973ms
+   ✓ in workerd only the host administrator reaches the console, its data and its media  1199ms
+   ✓ the mobile build of the same host still succeeds and carries no history  2657ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  20:08:42
+   Duration  21.62s (transform 40ms, setup 5ms, collect 38ms, tests 21.34s, environment 0ms, prepare 27ms)
+

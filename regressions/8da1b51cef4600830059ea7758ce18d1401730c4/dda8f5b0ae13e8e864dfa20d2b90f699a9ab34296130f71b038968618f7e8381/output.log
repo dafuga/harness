@@ -1,0 +1,102 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-wfBTm2/packages/reports
+
+ ✓ test/components/entity-relations.test.ts (6 tests) 48ms
+ ✓ test/components/explorer-usage.test.ts (13 tests) 25ms
+ ✓ test/components/explorer-function-card.test.ts (17 tests) 20ms
+
+ Test Files  3 passed (3)
+      Tests  36 passed (36)
+   Start at  14:33:52
+   Duration  1.62s (transform 676ms, setup 0ms, collect 1.14s, tests 92ms, environment 0ms, prepare 75ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (1.2s)
+  ✘  2 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (1.2s)
+  ✘  3 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (1.1s)
+
+
+  1) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+
+    Error: Capture unit must be an active visual module: reports.function.entity-catalog
+
+       at entityPreviewCapture.ts:114
+
+      112 | 	const registered = JSON.parse(readFileSync(path, 'utf8')) as { kind: string; status: string };
+      113 | 	if (registered.status !== 'active' || !['page', 'component', 'shell'].includes(registered.kind))
+    > 114 | 		throw new Error(`Capture unit must be an active visual module: ${unit}`);
+          | 		      ^
+      115 | }
+      116 |
+      117 | /** Document navigation and current renderer heap are contextual workloads, not isolated allocations. */
+        at assertVisualUnit (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:114:9)
+        at retain (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:84:3)
+        at capture (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:39:2)
+        at reviewNamedCallers (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewFunctionSource.ts:48:4)
+        at reviewHelperUsage (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewFunctions.ts:82:2)
+        at /private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+
+    Error: Capture unit must be an active visual module: reports.function.entity-catalog
+
+       at entityPreviewCapture.ts:114
+
+      112 | 	const registered = JSON.parse(readFileSync(path, 'utf8')) as { kind: string; status: string };
+      113 | 	if (registered.status !== 'active' || !['page', 'component', 'shell'].includes(registered.kind))
+    > 114 | 		throw new Error(`Capture unit must be an active visual module: ${unit}`);
+          | 		      ^
+      115 | }
+      116 |
+      117 | /** Document navigation and current renderer heap are contextual workloads, not isolated allocations. */
+        at assertVisualUnit (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:114:9)
+        at retain (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:84:3)
+        at capture (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:39:2)
+        at reviewNamedCallers (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewFunctionSource.ts:48:4)
+        at reviewHelperUsage (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewFunctions.ts:82:2)
+        at /private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 
+
+    Error: Capture unit must be an active visual module: reports.function.entity-catalog
+
+       at entityPreviewCapture.ts:114
+
+      112 | 	const registered = JSON.parse(readFileSync(path, 'utf8')) as { kind: string; status: string };
+      113 | 	if (registered.status !== 'active' || !['page', 'component', 'shell'].includes(registered.kind))
+    > 114 | 		throw new Error(`Capture unit must be an active visual module: ${unit}`);
+          | 		      ^
+      115 | }
+      116 |
+      117 | /** Document navigation and current renderer heap are contextual workloads, not isolated allocations. */
+        at assertVisualUnit (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:114:9)
+        at retain (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:84:3)
+        at capture (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewCapture.ts:39:2)
+        at reviewNamedCallers (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewFunctionSource.ts:48:4)
+        at reviewHelperUsage (/private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entityPreviewFunctions.ts:82:2)
+        at /private/tmp/harness-snapshot-wfBTm2/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 

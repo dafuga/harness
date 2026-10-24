@@ -1,0 +1,1000 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [57.87s]
+$ bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-reports.ts && bun run build:picker
+$ bun scripts/build-kernel.ts
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling syn v3.0.7
+   Compiling serde_derive v1.0.229
+   Compiling impact-kernel v0.1.0 (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 26.98s
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling impact-kernel v0.1.0 (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 7.55s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+$ bun build src/index.ts --target bun --outdir dist
+Bundled 1344 modules in 372ms
+
+  index.js  14.32 MB  (entry point)
+
+$ bun scripts/build-api.ts
+Built public API: contracts, runtime, verification, history, edge, console and index, declarations in dist/types.
+$ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 1034 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 495 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                           0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                        21.07 kB │ gzip:  2.18 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityDetailsScreen.BiwRoejT.css      0.06 kB │ gzip:  0.08 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogScreen.BWiL00iq.css    1.47 kB │ gzip:  0.59 kB
+.svelte-kit/output/client/_app/immutable/assets/explorerName.BTqLquDb.css             1.87 kB │ gzip:  0.62 kB
+.svelte-kit/output/client/_app/immutable/assets/RegressionProof.WwOTQN5N.css          1.87 kB │ gzip:  0.70 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityFrame.BlHkYAzb.css              2.43 kB │ gzip:  0.86 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPageCard.Ch201oWK.css         2.99 kB │ gzip:  0.92 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySections.Cl1O_ecF.css           4.95 kB │ gzip:  1.48 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySummary.LdfZWK90.css            5.75 kB │ gzip:  1.58 kB
+.svelte-kit/output/client/_app/immutable/assets/HarnessScreen.DtubUGNR.css           36.88 kB │ gzip:  7.47 kB
+.svelte-kit/output/client/_app/immutable/assets/0.Bac8YaNj.css                       41.01 kB │ gzip:  9.02 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CDD5UMLw.js                      0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/lDK2uwKn.js                           0.15 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cjk1jFyq.js                           0.16 kB │ gzip:  0.14 kB
+.svelte-kit/output/client/_app/immutable/nodes/23.DTPJehS1.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/19.NJjGSUhy.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/22.CoGbHfs_.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/31.CCKUhnTv.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/11.DdfhEzIV.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/18.CgxTSDid.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/30.AXCUC4Ol.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/10.blzZxL9D.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/27.Cwe6nz9o.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/15.CJPh2Zqj.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/26.BJbdxoMa.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/7.b09dRAXA.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/14.Dw4cGX0Q.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.B7sYzc94.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/24.BLpPKGcU.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/25.DLyqqcoG.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/20.CoUUdl35.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/21.C0JABrN7.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/32.Cv8Vs_40.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/33.MJXZshZT.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/12.CVPgTwmt.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/13.BVybeKJZ.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/28.DWT1CYjz.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/29.CUDVPYt7.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/16.DeGLGIBs.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/17.Bs7e8dFd.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/8.CW053NB6.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/9.Cp61B-yK.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.B4ZyFiFS.js                          0.38 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/DXYJ5qEO.js                           0.85 kB │ gzip:  0.51 kB
+.svelte-kit/output/client/_app/immutable/chunks/DNwMIa-S.js                           0.97 kB │ gzip:  0.37 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.BFHAo0Tv.js                          1.10 kB │ gzip:  0.58 kB
+.svelte-kit/output/client/_app/immutable/chunks/CFuJW4tm.js                           1.11 kB │ gzip:  0.56 kB
+.svelte-kit/output/client/_app/immutable/chunks/2escab_d.js                           1.21 kB │ gzip:  0.61 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                           1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/B0HN_S2r.js                           2.41 kB │ gzip:  1.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/CysfReCt.js                           2.45 kB │ gzip:  1.30 kB
+.svelte-kit/output/client/_app/immutable/chunks/gMmwSEoE.js                           4.42 kB │ gzip:  1.93 kB
+.svelte-kit/output/client/_app/immutable/chunks/BDcoqtVC.js                           4.51 kB │ gzip:  1.99 kB
+.svelte-kit/output/client/_app/immutable/chunks/DXKbcurq.js                           5.77 kB │ gzip:  2.51 kB
+.svelte-kit/output/client/_app/immutable/chunks/CY00wGkm.js                           5.88 kB │ gzip:  2.63 kB
+.svelte-kit/output/client/_app/immutable/chunks/DtjcyhEm.js                           6.46 kB │ gzip:  2.92 kB
+.svelte-kit/output/client/_app/immutable/chunks/iq-v2v63.js                          10.97 kB │ gzip:  4.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/COiPX_Up.js                          11.81 kB │ gzip:  4.87 kB
+.svelte-kit/output/client/_app/immutable/entry/app.BmmH0U7c.js                       13.50 kB │ gzip:  4.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/Be5DwJN5.js                          18.68 kB │ gzip:  7.19 kB
+.svelte-kit/output/client/_app/immutable/chunks/BNUiWzBb.js                          23.49 kB │ gzip: 10.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/BL-sJ8wA.js                          25.96 kB │ gzip:  9.48 kB
+.svelte-kit/output/client/_app/immutable/chunks/DxPMTqY9.js                          29.90 kB │ gzip: 11.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/BZoiYVQv.js                          30.55 kB │ gzip: 11.79 kB
+.svelte-kit/output/client/_app/immutable/chunks/CFbKhs3m.js                          32.24 kB │ gzip: 12.58 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BNbzGRaa.js                         42.60 kB │ gzip: 15.49 kB
+.svelte-kit/output/client/_app/immutable/chunks/CzdxZNX1.js                          70.44 kB │ gzip: 24.61 kB
+.svelte-kit/output/client/_app/immutable/chunks/D2NMBwUV.js                         116.60 kB │ gzip: 39.79 kB
+✓ built in 3.69s
+.svelte-kit/output/server/.vite/manifest.json                                                                         31.59 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityDetailsScreen.BiwRoejT.css                                       0.06 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogScreen.BWiL00iq.css                                     1.47 kB
+.svelte-kit/output/server/_app/immutable/assets/explorerName.BTqLquDb.css                                              1.87 kB
+.svelte-kit/output/server/_app/immutable/assets/RegressionProof.WwOTQN5N.css                                           1.87 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityFrame.BlHkYAzb.css                                               2.43 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPageCard.aFQD8lOa.css                                          2.95 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySections.Cl1O_ecF.css                                            4.95 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySummary.LdfZWK90.css                                             5.75 kB
+.svelte-kit/output/server/_app/immutable/assets/HarnessScreen.VYw5uCKP.css                                            36.79 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.C5qq5Ahu.css                                                  40.70 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                                                             0.11 kB
+.svelte-kit/output/server/entries/pages/analytics/_page.server.ts.js                                                   0.11 kB
+.svelte-kit/output/server/entries/pages/harness/analytics/_page.server.ts.js                                           0.11 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_page.server.ts.js                                             0.11 kB
+.svelte-kit/output/server/entries/pages/reports/_id_/_page.server.ts.js                                                0.16 kB
+.svelte-kit/output/server/entries/endpoints/harness/data/_...path_/_server.ts.js                                       0.17 kB
+.svelte-kit/output/server/entries/endpoints/harness/media/_file_/_server.ts.js                                         0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                                          0.19 kB
+.svelte-kit/output/server/chunks/entityContract.js                                                                     0.20 kB
+.svelte-kit/output/server/env.js                                                                                       0.23 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_server.ts.js                                                  0.24 kB
+.svelte-kit/output/server/entries/endpoints/harness/export/_commit_/_server.ts.js                                      0.25 kB
+.svelte-kit/output/server/chunks/Desktop.types.js                                                                      0.30 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_server.ts.js                                             0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_page.svelte.js                          0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/_page.svelte.js                 0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/_page.svelte.js               0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/_page.svelte.js            0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_page.svelte.js                        0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_page.svelte.js                       0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_page.svelte.js                      0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_page.svelte.js                     0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/_page.svelte.js              0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                                            0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/details/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/history/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/details/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/history/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/details/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/history/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/details/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/history/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/details/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/history/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/internal.js                                                                                  0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                                             0.45 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.server.ts.js                                           0.48 kB
+.svelte-kit/output/server/chunks/buildStamp.js                                                                         0.51 kB
+.svelte-kit/output/server/entries/endpoints/api/health/_server.ts.js                                                   0.62 kB
+.svelte-kit/output/server/chunks/index2.js                                                                             0.78 kB
+.svelte-kit/output/server/chunks/evidenceMedia.js                                                                      1.06 kB
+.svelte-kit/output/server/chunks/utils.js                                                                              1.09 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_id_/_page.server.ts.js                                        1.12 kB
+.svelte-kit/output/server/chunks/ExplorerPagesScreen.js                                                                1.44 kB
+.svelte-kit/output/server/chunks/EntityVisualScreen.js                                                                 1.51 kB
+.svelte-kit/output/server/chunks/EntityBehaviorScreen.js                                                               1.56 kB
+.svelte-kit/output/server/chunks/mediaResponse.js                                                                      1.84 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-upload/_server.ts.js                                      1.89 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-comparison/_server.ts.js                                  1.99 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.svelte.js                                              2.03 kB
+.svelte-kit/output/server/chunks/reportAssets.js                                                                       2.06 kB
+.svelte-kit/output/server/chunks/writingLimits.js                                                                      2.10 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_type_/_file_/_server.ts.js                               2.10 kB
+.svelte-kit/output/server/chunks/reportBuildIdentity.js                                                                2.23 kB
+.svelte-kit/output/server/chunks/AudioUploadService.js                                                                 2.41 kB
+.svelte-kit/output/server/chunks/index.js                                                                              2.65 kB
+.svelte-kit/output/server/chunks/utils2.js                                                                             3.09 kB
+.svelte-kit/output/server/chunks/EntityConfigScreen.js                                                                 3.26 kB
+.svelte-kit/output/server/chunks/internal.js                                                                           3.40 kB
+.svelte-kit/output/server/chunks/EntityAudio.js                                                                        3.47 kB
+.svelte-kit/output/server/chunks/reportSite.js                                                                         3.69 kB
+.svelte-kit/output/server/entries/endpoints/api/report-screenshot-upload/_server.ts.js                                 4.22 kB
+.svelte-kit/output/server/chunks/RegressionProof.js                                                                    4.67 kB
+.svelte-kit/output/server/chunks/explorerRoute.js                                                                      5.26 kB
+.svelte-kit/output/server/chunks/exports.js                                                                            5.54 kB
+.svelte-kit/output/server/chunks/helperContract.js                                                                     5.91 kB
+.svelte-kit/output/server/chunks/EntityDetailsScreen.js                                                                6.36 kB
+.svelte-kit/output/server/entries/endpoints/api/analytics-cpu/_server.ts.js                                            7.52 kB
+.svelte-kit/output/server/chunks/explorerName.js                                                                       9.02 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogScreen.js                                                              9.20 kB
+.svelte-kit/output/server/entries/endpoints/api/replay-video/_server.ts.js                                             9.27 kB
+.svelte-kit/output/server/chunks/explorerVerdict.js                                                                   14.30 kB
+.svelte-kit/output/server/chunks/ExplorerPageCard.js                                                                  16.40 kB
+.svelte-kit/output/server/chunks/ComponentManifestValidator.js                                                        20.02 kB
+.svelte-kit/output/server/chunks/EntityHistoryScreen.js                                                               23.26 kB
+.svelte-kit/output/server/entries/endpoints/api/project-activity/_server.ts.js                                        24.22 kB
+.svelte-kit/output/server/chunks/reportHttp.js                                                                        26.25 kB
+.svelte-kit/output/server/chunks/shared.js                                                                            34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                                             36.85 kB
+.svelte-kit/output/server/chunks/EntityFrame.js                                                                       38.20 kB
+.svelte-kit/output/server/chunks/EntitySummary.js                                                                     39.82 kB
+.svelte-kit/output/server/chunks/HistoryStatusService.js                                                              43.04 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                                             59.63 kB
+.svelte-kit/output/server/chunks/HarnessScreen.js                                                                     70.16 kB
+.svelte-kit/output/server/chunks/EntitySections.js                                                                    94.61 kB
+.svelte-kit/output/server/index.js                                                                                   130.95 kB
+.svelte-kit/output/server/chunks/root.js                                                                             133.59 kB
+.svelte-kit/output/server/entries/hooks.server.js                                                                    287.40 kB
+.svelte-kit/output/server/chunks/consoleServer.js                                                                    339.84 kB
+✓ built in 25.09s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+Generated an empty chunk: "chunks/internal2.js".
+  ✔ done
+vite v6.4.4 building for production...
+transforming...
+✓ 179 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/viewer/report.css       38.81 kB │ gzip:  8.73 kB
+dist/viewer/report.iife.js  177.46 kB │ gzip: 60.32 kB
+✓ built in 1.93s
+vite v6.4.4 building for production...
+transforming...
+✓ 333 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/console/console.css       88.82 kB │ gzip:  17.67 kB
+dist/console/console.iife.js  358.22 kB │ gzip: 122.33 kB
+✓ built in 3.18s
+$ bun run --cwd packages/reports build:picker && bun scripts/build-picker.ts
+$ vite build --config src/config/pickerViteConfig.ts
+vite v6.4.4 building for production...
+transforming...
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 268 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/picker/picker.css       14.58 kB │ gzip:  3.92 kB
+dist/picker/picker.iife.js  295.06 kB │ gzip: 83.98 kB
+✓ built in 2.81s
+
+ RUN  v3.2.4 /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU
+
+ ✓ test/loop.e2e.test.ts (6 tests) 76209ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  4326ms
+   ✓ generated app and lib instructions mention harness loops  1703ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  3523ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  21063ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  21751ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  23840ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  13:05:58
+   Duration  78.55s (transform 238ms, setup 17ms, collect 392ms, tests 76.21s, environment 0ms, prepare 108ms)
+
+
+ RUN  v3.2.4 /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports
+
+ ✓ test/components/entity-overview.test.ts (11 tests) 49ms
+ ❯ test/utils/entity-screens.test.ts (11 tests | 1 failed) 12ms
+   ✓ a visual entity offers the states and viewports its scenario declares; a function offers none 1ms
+   ✓ the first state and viewport are shown until a person picks; an unknown pick is not kept 0ms
+   ✓ the branch tip shows exactly one screenshot, the one of the picked state and viewport 2ms
+   ✓ a selected commit pairs the parent and the commit for the same state and viewport 0ms
+   ✓ a side with no capture is a stated gap and is never filled from the other side 1ms
+   ✓ a revision without a record has a gap for its screenshot, in the words its side gives 0ms
+   ✓ a first commit has no before pane to fill: its parent side says why 0ms
+   ✓ an inherited capture is never the screenshot of the tip: it is a gap that names its origin 0ms
+   ✓ the gallery gets every screenshot of both sides, each side marked as what it is 1ms
+   × a declared catalog preview selects its exact state and viewport without a fallback 5ms
+     → catalog preview keeps its declared state and viewport: expected 'ccccccc-default-desktop.png' to be 'ccccccc-empty-mobile.png' // Object.is equality
+   ✓ validated unchanged screenshots stay visible with their capture origin 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-screens.test.ts > a declared catalog preview selects its exact state and viewport without a fallback
+AssertionError: catalog preview keeps its declared state and viewport: expected 'ccccccc-default-desktop.png' to be 'ccccccc-empty-mobile.png' // Object.is equality
+
+Expected: [32m"ccccccc-[7mempty-mobile[27m.png"[39m
+Received: [31m"ccccccc-[7mdefault-desktop[27m.png"[39m
+
+ ❯ test/utils/entity-screens.test.ts:153:4
+    151|   catalogShot(focused, preview)?.file,
+    152|   'catalog preview keeps its declared state and viewport'
+    153|  ).toBe('ccccccc-empty-mobile.png');
+       |    ^
+    154|  expect(catalogShot(focused, { ...preview, state: 'uncaptured' })).toB…
+    155| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 21 passed (22)
+   Start at  13:07:18
+   Duration  3.50s (transform 1.75s, setup 0ms, collect 2.66s, tests 61ms, environment 0ms, prepare 108ms)
+
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (2.1s)
+  ✓  2 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (2.0s)
+  ✓  3 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (1.9s)
+
+  3 passed (10.5s)
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+
+Running 50 tests using 1 worker
+
+  ✘   1 tests/e2e/harness-explorer-catalog.spec.ts:20:1 › a catalog is searchable, and a click on a listed entity opens it in the same scope (5.4s)
+  ✘   2 tests/e2e/harness-explorer-catalog.spec.ts:50:1 › the keyboard reaches the controls, changes the order and opens an entity (5.4s)
+  ✘   3 tests/e2e/harness-explorer-catalog.spec.ts:73:1 › private helpers stay off the shared catalog while their historical pages remain reachable (5.4s)
+  ✓   4 tests/e2e/harness-explorer-catalog.spec.ts:93:1 › a commit nobody verified still marks what its source changed, and proves none of it (495ms)
+  ✓   5 tests/e2e/harness-explorer-catalog.spec.ts:117:2 › branch, commit and order are shared fields and each choice is a path at desktop width (302ms)
+  ✓   6 tests/e2e/harness-explorer-catalog.spec.ts:117:2 › branch, commit and order are shared fields and each choice is a path at tablet width (319ms)
+  ✓   7 tests/e2e/harness-explorer-catalog.spec.ts:117:2 › branch, commit and order are shared fields and each choice is a path at mobile width (312ms)
+  ✘   8 tests/e2e/harness-explorer-catalog.spec.ts:140:2 › a registry of several hundred units › stays searchable, ordered and keyboard operable (5.3s)
+  ✘   9 tests/e2e/harness-explorer-catalog.spec.ts:158:2 › a registry of several hundred units › on a phone the list reaches any unit without scrolling sideways (185ms)
+  ✘  10 tests/e2e/harness-explorer-evidence.spec.ts:53:1 › a page leads to its components, those to components, and those to functions (30.0s)
+  ✘  11 tests/e2e/harness-explorer-evidence.spec.ts:77:1 › source is not shown until Details and then Source are opened, on a page too (30.0s)
+  ✓  12 tests/e2e/harness-explorer-evidence.spec.ts:100:1 › a verdict is a green check for complete passing evidence and a red cross for anything else (437ms)
+  ✓  13 tests/e2e/harness-explorer-evidence.spec.ts:127:1 › a branch tip shows one current screenshot and a selected commit shows parent and selected (311ms)
+  ✓  14 tests/e2e/harness-explorer-evidence.spec.ts:145:1 › a component is shown with the states that show it, not every state of its scenario (234ms)
+  ✓  15 tests/e2e/harness-explorer-evidence.spec.ts:161:1 › a function shows its end-to-end run before and after, and says whether behaviour changed (531ms)
+  ✓  16 tests/e2e/harness-explorer-evidence.spec.ts:184:1 › the history of an entity lists the commits behind the shown one, with growth and approvals (259ms)
+  ✓  17 tests/e2e/harness-explorer-evidence.spec.ts:204:2 › the explorer is usable at tablet width without scrolling sideways (431ms)
+  ✓  18 tests/e2e/harness-explorer-evidence.spec.ts:204:2 › the explorer is usable at mobile width without scrolling sideways (418ms)
+  ✓  19 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at desktop width (5.4s)
+  ✓  20 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at tablet width (5.8s)
+  ✓  21 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at mobile width (5.4s)
+  ✘  22 tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at desktop width (5.1s)
+  ✘  23 tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at tablet width (5.2s)
+  ✘  24 tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at mobile width (5.1s)
+  ✘  25 tests/e2e/harness-explorer-measures.spec.ts:133:1 › complexity that was not counted is unavailable and not frozen, beside a counted control (5.2s)
+  ✓  26 tests/e2e/harness-explorer-measures.spec.ts:154:1 › reasons that differ only in the file they are about are told once, and all stay to be read (287ms)
+  ✓  27 tests/e2e/harness-explorer-measures.spec.ts:177:1 › a change is compared with its own parent under matching profiles, with its growth (173ms)
+  ✘  28 tests/e2e/harness-explorer-measures.spec.ts:202:2 › a record with hundreds of failures of other units › tells a unit what failed about it, and nothing about the rest (5.2s)
+  ✓  29 tests/e2e/harness-explorer-media.spec.ts:28:1 › a state is shown as it was recorded before and after, each side from its own record (359ms)
+  ✓  30 tests/e2e/harness-explorer-media.spec.ts:51:1 › a branch tip shows the capture of the tip alone, and it is the one the tip recorded (145ms)
+  ✓  31 tests/e2e/harness-explorer-media.spec.ts:64:1 › a side with no record says so, and nothing of another commit fills the gap (191ms)
+  ✓  32 tests/e2e/harness-explorer-media.spec.ts:79:1 › rejected audio stays to be heard with its transcript, and fails the service it belongs to (279ms)
+  ✓  33 tests/e2e/harness-explorer-media.spec.ts:101:1 › the portable export keeps what each capture really came from (192ms)
+  ✓  34 tests/e2e/harness-explorer-media.spec.ts:123:1 › a link to an earlier report opens the explorer at the commit that report recorded (111ms)
+  ✓  35 tests/e2e/harness-explorer-media.spec.ts:133:2 › before and after fit a desktop screen, and their media stays protected (250ms)
+  ✓  36 tests/e2e/harness-explorer-media.spec.ts:133:2 › before and after fit a tablet screen, and their media stays protected (163ms)
+  ✓  37 tests/e2e/harness-explorer-media.spec.ts:133:2 › before and after fit a mobile screen, and their media stays protected (209ms)
+  ✓  38 tests/e2e/harness-explorer-routes.spec.ts:20:1 › the explorer has exactly six categories, pages first, and nothing else to go to (341ms)
+  ✓  39 tests/e2e/harness-explorer-routes.spec.ts:35:1 › an earlier map page of a commit opens the entity in the explorer, without its source (430ms)
+  ✓  40 tests/e2e/harness-explorer-routes.spec.ts:51:1 › a branch address follows its tip, a chosen commit has its own address, and Go to tip returns (530ms)
+  ✓  41 tests/e2e/harness-explorer-routes.spec.ts:86:1 › a branch is one encoded segment, and another branch opens at its own tip (301ms)
+  ✓  42 tests/e2e/harness-explorer-routes.spec.ts:111:1 › earlier addresses, reports and analytics all lead into the explorer (521ms)
+  ✓  43 tests/e2e/harness-explorer-routes.spec.ts:141:1 › what the history does not hold is said, and no other revision is shown in its place (239ms)
+  ✓  44 tests/e2e/harness-explorer-usage-kinds.spec.ts:20:2 › a config lists what uses it once, under Used In, at desktop width (485ms)
+  ✓  45 tests/e2e/harness-explorer-usage-kinds.spec.ts:20:2 › a config lists what uses it once, under Used In, at tablet width (533ms)
+  ✓  46 tests/e2e/harness-explorer-usage-kinds.spec.ts:20:2 › a config lists what uses it once, under Used In, at mobile width (510ms)
+  ✘  47 tests/e2e/harness-explorer-usage-kinds.spec.ts:43:1 › a service keeps its contract and both usage directions in dedicated tabs (5.3s)
+  ✘  48 tests/e2e/harness-explorer-usage.spec.ts:20:1 › a former relationships address opens the overview without embedded usage sections (5.4s)
+  ✘  49 tests/e2e/harness-explorer-usage.spec.ts:37:1 › Used In and Uses are sections of their own, from the navigation and by address (5.4s)
+  ✓  50 tests/e2e/harness-explorer-usage.spec.ts:63:1 › a function says where it is used, down from the page that shows it (557ms)
+
+
+  1) tests/e2e/harness-explorer-catalog.spec.ts:20:1 › a catalog is searchable, and a click on a listed entity opens it in the same scope 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected: predicate to succeed
+    Received: "http://127.0.0.1:54287/harness/branch/main/commit/458dd196cd1f67be121455cd5592ce37d4175fac/functions/function.slugify?tab=contract&helper=slugify"
+    Timeout:  5000ms
+
+
+       at support/explorer.ts:107
+
+      105 | /** Waits until the address is exactly this path and query. */
+      106 | export async function expectPath(page: Page, path: string): Promise<void> {
+    > 107 | 	await expect(page).toHaveURL((url) => url.pathname + url.search === path);
+          | 	                   ^
+      108 | }
+      109 |
+      110 | interface Judging {
+        at expectPath (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/support/explorer.ts:107:21)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-catalog.spec.ts:37:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-catalog-a-9cf89--opens-it-in-the-same-scope/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-catalog-a-9cf89--opens-it-in-the-same-scope/error-context.md
+
+  2) tests/e2e/harness-explorer-catalog.spec.ts:50:1 › the keyboard reaches the controls, changes the order and opens an entity 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected: predicate to succeed
+    Received: "http://127.0.0.1:54287/harness/branch/main/commit/458dd196cd1f67be121455cd5592ce37d4175fac/functions/function.slugify?tab=contract&helper=slugify"
+    Timeout:  5000ms
+
+
+       at support/explorer.ts:107
+
+      105 | /** Waits until the address is exactly this path and query. */
+      106 | export async function expectPath(page: Page, path: string): Promise<void> {
+    > 107 | 	await expect(page).toHaveURL((url) => url.pathname + url.search === path);
+          | 	                   ^
+      108 | }
+      109 |
+      110 | interface Judging {
+        at expectPath (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/support/explorer.ts:107:21)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-catalog.spec.ts:70:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-catalog-t-9f3a0-e-order-and-opens-an-entity/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-catalog-t-9f3a0-e-order-and-opens-an-entity/error-context.md
+
+  3) tests/e2e/harness-explorer-catalog.spec.ts:73:1 › private helpers stay off the shared catalog while their historical pages remain reachable 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Removed at this commit', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Removed at this commit', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Removed at this commit', exact: true })
+
+
+      88 | 	await expect(
+      89 | 		page.getByRole('button', { name: 'Removed at this commit', exact: true })
+    > 90 | 	).toBeVisible();
+         | 	  ^
+      91 | });
+      92 |
+      93 | test('a commit nobody verified still marks what its source changed, and proves none of it', async ({
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-catalog.spec.ts:90:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-catalog-p-da01a-ical-pages-remain-reachable/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-catalog-p-da01a-ical-pages-remain-reachable/error-context.md
+
+  4) tests/e2e/harness-explorer-catalog.spec.ts:140:2 › a registry of several hundred units › stays searchable, ordered and keyboard operable 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected: predicate to succeed
+    Received: "http://127.0.0.1:54291/harness/branch/main/functions/function.generated-309?tab=contract&helper=unit309"
+    Timeout:  5000ms
+
+
+       at support/explorer.ts:107
+
+      105 | /** Waits until the address is exactly this path and query. */
+      106 | export async function expectPath(page: Page, path: string): Promise<void> {
+    > 107 | 	await expect(page).toHaveURL((url) => url.pathname + url.search === path);
+          | 	                   ^
+      108 | }
+      109 |
+      110 | interface Judging {
+        at expectPath (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/support/explorer.ts:107:21)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-catalog.spec.ts:155:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-catalog-a-7d0f2-dered-and-keyboard-operable/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-catalog-a-7d0f2-dered-and-keyboard-operable/error-context.md
+
+  5) tests/e2e/harness-explorer-catalog.spec.ts:158:2 › a registry of several hundred units › on a phone the list reaches any unit without scrolling sideways 
+
+    Error: locator.click: Error: strict mode violation: getByRole('main').getByRole('article').getByRole('link') resolved to 3 elements:
+        1) <a class="ex-function-call" title="Example usage; arguments without recorded sample values remain named variables." href="/harness/branch/main/functions/function.generated-477?tab=contract&helper=unit477">…</a> aka getByRole('link', { name: 'unit477(input)' })
+        2) <a class="ex-function-consumer" href="/harness/branch/main/components/component.title-row">…</a> aka getByRole('link', { name: 'Title row' })
+        3) <a class="ex-function-consumer" href="/harness/branch/main/services/service.title">…</a> aka getByRole('link', { name: 'Title service' })
+
+    Call log:
+      - waiting for getByRole('main').getByRole('article').getByRole('link')
+
+
+      162 | 		await expect(cards(page)).toHaveCount(1);
+      163 | 		expect(await fits(page)).toBe(true);
+    > 164 | 		await cards(page).getByRole('link').click();
+          | 		                                    ^
+      165 | 		await expectPath(page, tip('main', 'functions/function.generated-477'));
+      166 | 	});
+      167 | });
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-catalog.spec.ts:164:39
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-catalog-a-ceefd--without-scrolling-sideways/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-catalog-a-ceefd--without-scrolling-sideways/error-context.md
+
+  6) tests/e2e/harness-explorer-evidence.spec.ts:53:1 › a page leads to its components, those to components, and those to functions 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.ex-content').getByRole('link', { name: 'Titles', exact: true }).first()
+
+
+      49 | 	content(page).getByRole('status').filter({ hasText: label });
+      50 | const open = (page: Page, name: string) =>
+    > 51 | 	content(page).getByRole('link', { name, exact: true }).first().click();
+         | 	                                                               ^
+      52 |
+      53 | test('a page leads to its components, those to components, and those to functions', async ({
+      54 | 	page
+        at open (/Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-evidence.spec.ts:51:65)
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-evidence.spec.ts:57:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-evidence--ec0ec-ents-and-those-to-functions/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-evidence--ec0ec-ents-and-those-to-functions/error-context.md
+
+  7) tests/e2e/harness-explorer-evidence.spec.ts:77:1 › source is not shown until Details and then Source are opened, on a page too 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.ex-content').getByRole('link', { name: 'Details' })
+
+
+      82 | 	await expect(heading(page, 'Titles')).toBeVisible();
+      83 | 	await expect(content(page).getByText(file)).toHaveCount(0);
+    > 84 | 	await content(page).getByRole('link', { name: 'Details' }).click();
+         | 	                                                           ^
+      85 | 	await expectPath(page, main(`pages/${units.page}/details`));
+      86 | 	await checkpoint(page, 'evidence-page-details');
+      87 | 	for (const section of ['Contract', 'Size', 'Performance profile']) {
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-evidence.spec.ts:84:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-evidence--2d545-ce-are-opened-on-a-page-too/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-evidence--2d545-ce-are-opened-on-a-page-too/error-context.md
+
+  8) tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at desktop width 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) })
+    Expected substring: "5 bytes"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) })
+
+
+      111 | 		// Before any review: both outputs are measured and nothing is frozen for them yet.
+      112 | 		await page.goto(details(commits.emitting, 'function.packer'));
+    > 113 | 		await expect(metric(page, 'emitted size · Wasm')).toContainText('5 bytes');
+          | 		                                                  ^
+      114 | 		await expect(metric(page, 'emitted size · Wasm')).not.toContainText('frozen at');
+      115 | 		// After the first baseline each output has the limit of its own size.
+      116 | 		await page.goto(details(commits.packed, 'function.packer'));
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-measures.spec.ts:113:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-measures--20ad0-navailable-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-measures--20ad0-navailable-at-desktop-width/error-context.md
+
+  9) tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at tablet width 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) })
+    Expected substring: "5 bytes"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) })
+
+
+      111 | 		// Before any review: both outputs are measured and nothing is frozen for them yet.
+      112 | 		await page.goto(details(commits.emitting, 'function.packer'));
+    > 113 | 		await expect(metric(page, 'emitted size · Wasm')).toContainText('5 bytes');
+          | 		                                                  ^
+      114 | 		await expect(metric(page, 'emitted size · Wasm')).not.toContainText('frozen at');
+      115 | 		// After the first baseline each output has the limit of its own size.
+      116 | 		await page.goto(details(commits.packed, 'function.packer'));
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-measures.spec.ts:113:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-measures--a9884-unavailable-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-measures--a9884-unavailable-at-tablet-width/error-context.md
+
+  10) tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at mobile width 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) })
+    Expected substring: "5 bytes"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'emitted size · Wasm', exact: true }) })
+
+
+      111 | 		// Before any review: both outputs are measured and nothing is frozen for them yet.
+      112 | 		await page.goto(details(commits.emitting, 'function.packer'));
+    > 113 | 		await expect(metric(page, 'emitted size · Wasm')).toContainText('5 bytes');
+          | 		                                                  ^
+      114 | 		await expect(metric(page, 'emitted size · Wasm')).not.toContainText('frozen at');
+      115 | 		// After the first baseline each output has the limit of its own size.
+      116 | 		await page.goto(details(commits.packed, 'function.packer'));
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-measures.spec.ts:113:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-measures--20199-unavailable-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-measures--20199-unavailable-at-mobile-width/error-context.md
+
+  11) tests/e2e/harness-explorer-measures.spec.ts:133:1 › complexity that was not counted is unavailable and not frozen, beside a counted control 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'complexity', exact: true }) })
+    Expected substring: "unavailable"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'complexity', exact: true }) }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'Measurements and frozen limits' }).getByRole('row').filter({ has: getByRole('rowheader', { name: 'complexity', exact: true }) })
+
+
+      137 | 	await checkpoint(page, 'measures-unavailable');
+      138 | 	const uncounted = metric(page, 'complexity');
+    > 139 | 	await expect(uncounted).toContainText('unavailable');
+          | 	                        ^
+      140 | 	await expect(uncounted).toContainText('not frozen: reviewed as not measurable');
+      141 | 	await expect(uncounted).not.toContainText(/\b0 points/);
+      142 | 	// A unit with counted and uncounted code has the counted value and says what it leaves out,
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-measures.spec.ts:139:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-measures--8ef9d-en-beside-a-counted-control/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-measures--8ef9d-en-beside-a-counted-control/error-context.md
+
+  12) tests/e2e/harness-explorer-measures.spec.ts:202:2 › a record with hundreds of failures of other units › tells a unit what failed about it, and nothing about the rest 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('article', { name: 'Slugify', exact: true })
+    Expected substring: "Verification failed"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('article', { name: 'Slugify', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article', { name: 'Slugify', exact: true })
+
+
+      209 | 		await checkpoint(page, 'measures-failures');
+      210 | 		const row = page.getByRole('article', { name: 'Slugify', exact: true });
+    > 211 | 		await expect(row).toContainText('Verification failed');
+          | 		                  ^
+      212 | 		await expect(row).toContainText('function.slugify: source-bytes');
+      213 | 		await expect(row).not.toContainText('generated');
+      214 | 		expect(await fits(page)).toBe(true);
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-measures.spec.ts:211:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-measures--9b026--and-nothing-about-the-rest/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-measures--9b026--and-nothing-about-the-rest/error-context.md
+
+  13) tests/e2e/harness-explorer-usage-kinds.spec.ts:43:1 › a service keeps its contract and both usage directions in dedicated tabs 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('tablist', { name: 'Clock service sections' }).getByRole('tab')
+    Timeout: 5000ms
+    - Expected  - 0
+    + Received  + 1
+
+    @@ -3,6 +3,7 @@
+        "Contract",
+        "Used In",
+        "Uses",
+        "Tests",
+        "History",
+    +   "Source",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('tablist', { name: 'Clock service sections' }).getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tablist', { name: 'Clock service sections' }).getByRole('tab')
+        14 × locator resolved to 7 elements
+
+
+      48 | 	await checkpoint(page, 'kinds-service-overview');
+      49 | 	const tabs = page.getByRole('tablist', { name: 'Clock service sections' }).getByRole('tab');
+    > 50 | 	await expect(tabs).toHaveText(named);
+         | 	                   ^
+      51 | 	for (const name of ['Contract', 'Used In', 'Uses']) await expect(card(page, name)).toHaveCount(0);
+      52 | 	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
+      53 | 	await expect(card(page, 'Contract').getByRole('heading', { name: /^Inputs/ })).toBeVisible();
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-usage-kinds.spec.ts:50:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-usage-kin-85cdf-irections-in-dedicated-tabs/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-usage-kin-85cdf-irections-in-dedicated-tabs/error-context.md
+
+  14) tests/e2e/harness-explorer-usage.spec.ts:20:1 › a former relationships address opens the overview without embedded usage sections 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('tablist', { name: 'Titles sections' }).getByRole('tab')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        "Overview",
+        "Contract",
+    -   "Used In",
+        "Uses",
+        "States",
+        "History",
+    +   "Source",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('tablist', { name: 'Titles sections' }).getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tablist', { name: 'Titles sections' }).getByRole('tab')
+        14 × locator resolved to 6 elements
+
+
+      24 | 	await expect(heading(page, 'Titles')).toBeVisible();
+      25 | 	await checkpoint(page, 'usage-former-address');
+    > 26 | 	await expect(sectionsOf(page, 'Titles')).toHaveText(named);
+         | 	                                         ^
+      27 | 	await expect(card(page, 'Used In')).toHaveCount(0);
+      28 | 	await expect(card(page, 'Uses')).toHaveCount(0);
+      29 | 	await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-usage.spec.ts:26:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-usage-a-f-bcfb0-out-embedded-usage-sections/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-usage-a-f-bcfb0-out-embedded-usage-sections/error-context.md
+
+  15) tests/e2e/harness-explorer-usage.spec.ts:37:1 › Used In and Uses are sections of their own, from the navigation and by address 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('tablist', { name: 'Title list sections' }).getByRole('tab')
+    Timeout: 5000ms
+    - Expected  - 0
+    + Received  + 1
+
+    @@ -3,6 +3,7 @@
+        "Contract",
+        "Used In",
+        "Uses",
+        "States",
+        "History",
+    +   "Source",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('tablist', { name: 'Title list sections' }).getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tablist', { name: 'Title list sections' }).getByRole('tab')
+        14 × locator resolved to 7 elements
+
+
+      41 | 	await expect(heading(page, 'Title list')).toBeVisible();
+      42 | 	await checkpoint(page, 'usage-component-overview');
+    > 43 | 	await expect(sectionsOf(page, 'Title list')).toHaveText(named);
+         | 	                                             ^
+      44 | 	await page.getByRole('tab', { name: 'Used In' }).click();
+      45 | 	await expectPath(page, main(`components/${units.list}?tab=used-in`));
+      46 | 	await checkpoint(page, 'usage-used-in');
+        at /Users/danielfugere/.codex/visualizations/2026/10/20/01a159a8-16e8-77a1-b386-ab9ca7d7d2ab/harness-page-capture/tmp/harness-snapshot-aMU6gU/packages/reports/tests/e2e/harness-explorer-usage.spec.ts:43:47
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-explorer-usage-Use-d0323-e-navigation-and-by-address/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-explorer-usage-Use-d0323-e-navigation-and-by-address/error-context.md
+
+  15 failed
+    tests/e2e/harness-explorer-catalog.spec.ts:20:1 › a catalog is searchable, and a click on a listed entity opens it in the same scope 
+    tests/e2e/harness-explorer-catalog.spec.ts:50:1 › the keyboard reaches the controls, changes the order and opens an entity 
+    tests/e2e/harness-explorer-catalog.spec.ts:73:1 › private helpers stay off the shared catalog while their historical pages remain reachable 
+    tests/e2e/harness-explorer-catalog.spec.ts:140:2 › a registry of several hundred units › stays searchable, ordered and keyboard operable 
+    tests/e2e/harness-explorer-catalog.spec.ts:158:2 › a registry of several hundred units › on a phone the list reaches any unit without scrolling sideways 
+    tests/e2e/harness-explorer-evidence.spec.ts:53:1 › a page leads to its components, those to components, and those to functions 
+    tests/e2e/harness-explorer-evidence.spec.ts:77:1 › source is not shown until Details and then Source are opened, on a page too 
+    tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at desktop width 
+    tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at tablet width 
+    tests/e2e/harness-explorer-measures.spec.ts:107:2 › each emitted size has its own limit, and one that is gone is unavailable, at mobile width 
+    tests/e2e/harness-explorer-measures.spec.ts:133:1 › complexity that was not counted is unavailable and not frozen, beside a counted control 
+    tests/e2e/harness-explorer-measures.spec.ts:202:2 › a record with hundreds of failures of other units › tells a unit what failed about it, and nothing about the rest 
+    tests/e2e/harness-explorer-usage-kinds.spec.ts:43:1 › a service keeps its contract and both usage directions in dedicated tabs 
+    tests/e2e/harness-explorer-usage.spec.ts:20:1 › a former relationships address opens the overview without embedded usage sections 
+    tests/e2e/harness-explorer-usage.spec.ts:37:1 › Used In and Uses are sections of their own, from the navigation and by address 
+  35 passed (5.7m)
+$ bun run --cwd packages/planning build && bun run --cwd packages/desktop build
+$ bun build src/index.ts --target node --outdir dist
+Bundled 159 modules in 28ms
+
+  index.js  0.80 MB  (entry point)
+
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 403 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 490 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                            0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                          6.00 kB │ gzip:   0.92 kB
+.svelte-kit/output/client/_app/immutable/assets/5.DbWwJIA3.css         0.63 kB │ gzip:   0.30 kB
+.svelte-kit/output/client/_app/immutable/assets/design.D-YwMQna.css   23.85 kB │ gzip:   5.61 kB
+.svelte-kit/output/client/_app/immutable/assets/2.C4sUXaQH.css        41.12 kB │ gzip:   8.39 kB
+.svelte-kit/output/client/_app/immutable/chunks/a6i_WdGT.js            0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.BkWMXPkG.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.BkWMXPkG.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/BFZObvHH.js            0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BdTNIgOV.js           0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/DZiPonxU.js            0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.BBDsLNpp.js           0.48 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js            1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/0TgkRI1x.js            1.39 kB │ gzip:   0.77 kB
+.svelte-kit/output/client/_app/immutable/chunks/Ds_9q-iQ.js            1.81 kB │ gzip:   0.91 kB
+.svelte-kit/output/client/_app/immutable/chunks/B0wwhDSa.js            2.19 kB │ gzip:   1.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/CGpzyOwG.js            2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.WOnLeM8k.js           2.73 kB │ gzip:   1.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/BOKNYRS-.js            2.77 kB │ gzip:   1.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/C-uhWG5W.js            6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.BcLxIpSR.js         7.07 kB │ gzip:   3.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bc0UXj8l.js            9.23 kB │ gzip:   3.83 kB
+.svelte-kit/output/client/_app/immutable/chunks/QLRKPe5W.js           14.05 kB │ gzip:   6.29 kB
+.svelte-kit/output/client/_app/immutable/entry/start.BhUXJ8hv.js      21.30 kB │ gzip:   8.19 kB
+.svelte-kit/output/client/_app/immutable/chunks/CnMSm5Zs.js           29.47 kB │ gzip:  11.29 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.Daz8H-i6.js         372.97 kB │ gzip: 126.56 kB
+✓ built in 1.52s
+.svelte-kit/output/server/.vite/manifest.json                                                     4.64 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DbWwJIA3.css                                0.63 kB
+.svelte-kit/output/server/_app/immutable/assets/design.DOFRIV6i.css                              23.64 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DncoooIK.css                               37.72 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       1.02 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/design.js                                                        2.91 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.28 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         288.78 kB
+✓ built in 4.07s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+$ bun run src/index.ts verify stamp packages/desktop/build
+b1333cf6962dd19321bebad7d913784b35f143100c5f4e8f8591beed4d7a37f7
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 1440px (476ms)
+  ✓  2 tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 920px (397ms)
+  ✓  3 tests/e2e/agent-settings.spec.ts:14:2 › Settings owns the persistent design count at 390px (386ms)
+  ✓  4 tests/e2e/agent-settings.spec.ts:64:1 › the workspace links to Settings and a headless Plan omits the design count (345ms)
+
+  4 passed (2.5s)

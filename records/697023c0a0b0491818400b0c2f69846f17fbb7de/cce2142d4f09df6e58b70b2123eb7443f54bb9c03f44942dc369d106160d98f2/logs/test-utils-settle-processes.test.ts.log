@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L
+
+ ✓ test/utils/settle-processes.test.ts (6 tests) 19178ms
+   ✓ a vetted service that left a passing command is handed over, never signalled, and recorded  5684ms
+   ✓ a failing command hands it over as well, and still fails  884ms
+   ✓ at its time limit a command's own processes are stopped and the service is not  4460ms
+   ✓ a possible service inside the command's group is reached by no group signal, and fails it  3461ms
+   ✓ when the processes cannot be read nothing is signalled and the command does not pass  818ms
+   ✓ an ordinary process left behind is still stopped and fails the command, Apple-signed or not  3673ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  01:48:51
+   Duration  19.49s (transform 51ms, setup 11ms, collect 57ms, tests 19.18s, environment 0ms, prepare 36ms)
+

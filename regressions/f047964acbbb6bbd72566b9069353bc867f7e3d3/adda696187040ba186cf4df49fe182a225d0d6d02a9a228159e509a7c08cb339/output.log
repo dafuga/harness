@@ -1,0 +1,13 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [107.00ms]
+
+Running 3 tests using 1 worker
+
+(node:53987) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at desktop width (778ms)
+  ✓  2 test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at tablet width (685ms)
+  ✓  3 test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at mobile width (709ms)
+
+  3 passed (4.8s)

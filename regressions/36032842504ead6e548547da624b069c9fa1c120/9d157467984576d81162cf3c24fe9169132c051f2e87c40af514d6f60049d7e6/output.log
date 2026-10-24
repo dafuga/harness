@@ -1,0 +1,88 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.04s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-p013iQ
+
+ ❯ test/services/performance-profile-scopes.test.ts (4 tests | 1 failed) 187ms
+   ✓ explicit awaited scopes preserve one effect, result identity and rejection without replay 6ms
+   ✓ a completed source scope records actual elapsed work and process memory once 2ms
+   ✓ incomplete source scopes and invalid subjects never become successful samples 1ms
+   × child scopes retain actual child RSS and reject failed invocations 178ms
+     → partial boundary survives benchmark parsing: expected [ { …(8) }, { …(8) } ] to deeply equal [ ObjectContaining{…}, …(1) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/performance-profile-scopes.test.ts > child scopes retain actual child RSS and reject failed invocations
+AssertionError: partial boundary survives benchmark parsing: expected [ { …(8) }, { …(8) } ] to deeply equal [ ObjectContaining{…}, …(1) ]
+
+- Expected
++ Received
+
+  [
+-   ObjectContaining {
+-     "partial": "Actual child process only; excludes external integrations and the parent runner.",
++   {
++     "method": "Wall time of one cold child-process workload including startup and shared code; no isolated-unit attribution or warmup.",
++     "metric": "latency-process-ms",
++     "samples": 1,
++     "target": "module",
++     "unit": "script.child-fixture",
++     "unitOfMeasure": "ms",
++     "value": 64.05166700000001,
++     "workload": "cold-node-process",
+    },
+-   ObjectContaining {
+-     "partial": "Actual child process only; excludes external integrations and the parent runner.",
++   {
++     "method": "OS-reported peak RSS for the actual child process workload, including runtime and OS child accounting; excludes the parent test runner. Not isolated unit memory or a summed process-tree peak.",
++     "metric": "process-peak-rss-bytes",
++     "samples": 1,
++     "target": "module",
++     "unit": "script.child-fixture",
++     "unitOfMeasure": "bytes",
++     "value": 48758784,
++     "workload": "cold-node-process",
+    },
+  ]
+
+ ❯ test/services/performance-profile-scopes.test.ts:105:77
+    103|    const benchmark = JSON.parse(await readFile(join(directory, capture…
+    104|    const data = benchmarkCaptureSchema.parse(benchmark);
+    105|    expect(data.measurements, 'partial boundary survives benchmark pars…
+       |                                                                             ^
+    106|     expect.objectContaining({ partial: input.partial }),
+    107|     expect.objectContaining({ partial: input.partial })
+ ❯ isolatedProfileCapture test/support/taskProfiles.ts:24:3
+ ❯ test/services/performance-profile-scopes.test.ts:77:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  00:10:30
+   Duration  3.65s (transform 94ms, setup 92ms, collect 50ms, tests 187ms, environment 0ms, prepare 32ms)
+

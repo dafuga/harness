@@ -1,0 +1,22 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz/packages/reports[39m
+
+ [31m❯[39m test/replay-cloud-storage.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 28[2mms[22m[39m
+[31m   [31m×[31m replay generation uploads a real MP4 and restores the same bytes from R2 without ffmpeg[39m[32m 18[2mms[22m[39m
+[31m     → spawn ffmpeg ENOENT[39m
+[31m   [31m×[31m backfill uploads existing locally generated MP4s without changing the clip[39m[32m 9[2mms[22m[39m
+[31m     → spawn ffmpeg ENOENT[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/replay-cloud-storage.test.ts[2m > [22mreplay generation uploads a real MP4 and restores the same bytes from R2 without ffmpeg
+[41m[1m FAIL [22m[49m test/replay-cloud-storage.test.ts[2m > [22mbackfill uploads existing locally generated MP4s without changing the clip
+[31m[1mError[22m: spawn ffmpeg ENOENT[39m
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m   Start at [22m 15:50:53
+[2m   Duration [22m 859ms[2m (transform 249ms, setup 0ms, collect 421ms, tests 28ms, environment 0ms, prepare 65ms)[22m
+

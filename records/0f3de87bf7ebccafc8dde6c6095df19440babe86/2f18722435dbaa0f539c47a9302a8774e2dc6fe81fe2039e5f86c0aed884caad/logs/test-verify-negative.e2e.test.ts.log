@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2
+
+ ✓ test/verify-negative.e2e.test.ts (8 tests) 44020ms
+   ✓ a missing viewport capture fails the scenario and the failed record is preserved  2253ms
+   ✓ a missing state, a missing transcript and a failing test are each reported  5460ms
+   ✓ a state declared missing fails verification and stays visible with its reason  2375ms
+   ✓ corrupt, truncated, mistyped and wrongly sized media are not accepted as evidence  13023ms
+   ✓ a stale or missing build stamp is rejected  3214ms
+   ✓ a test that mutates tracked source fails the snapshot check  1601ms
+   ✓ a hung test is stopped at its limit together with its children  5966ms
+   ✓ check rejects a wrong revision, a changed tree, tampered evidence and component versions  3072ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  11:56:30
+   Duration  44.31s (transform 40ms, setup 13ms, collect 36ms, tests 44.02s, environment 0ms, prepare 45ms)
+

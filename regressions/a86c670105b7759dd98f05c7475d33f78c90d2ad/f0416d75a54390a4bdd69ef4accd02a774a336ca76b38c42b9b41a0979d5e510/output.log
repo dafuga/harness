@@ -1,0 +1,221 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] (node:40880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:41200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+[WebServer] (node:41200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:41200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/core.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/util.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/smol-toml/dist/struct.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/smol-toml/dist/extract.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+[WebServer] (node:42500) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:42660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 4 tests using 1 worker
+
+(node:43043) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/styles-page.spec.ts:8:1 › Styles navigation preserves the selected branch and commit (5.3s)
+(node:43641) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at desktop width (5.2s)
+(node:44002) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at tablet width (5.1s)
+(node:44428) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at mobile width (5.1s)
+
+
+  1) tests/e2e/styles-page.spec.ts:8:1 › Styles navigation preserves the selected branch and commit 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('link', { name: 'Styles', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('link', { name: 'Styles', exact: true }) with timeout 5000ms
+      - waiting for getByRole('link', { name: 'Styles', exact: true })
+
+
+      10 | 	await capturePhase(page, 'styles-navigation');
+      11 | 	const styles = page.getByRole('link', { name: 'Styles', exact: true });
+    > 12 | 	await expect(styles).toBeVisible();
+         | 	                     ^
+      13 | 	await styles.click();
+      14 | 	await expectPath(page, at('main', commits.approved, 'styles'));
+      15 | 	await expect(page.getByRole('heading', { level: 1, name: 'Styles', exact: true })).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XeCasn/packages/reports/tests/e2e/styles-page.spec.ts:12:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/styles-page-Styles-navigat-c7ddc--selected-branch-and-commit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/styles-page-Styles-navigat-c7ddc--selected-branch-and-commit/error-context.md
+
+  2) tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at desktop width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Styles', exact: true, level: 1 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Styles', exact: true, level: 1 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Styles', exact: true, level: 1 })
+
+
+      23 |
+      24 | 		await expectPath(page, tip('main', 'styles'));
+    > 25 | 		await expect(page.getByRole('heading', { level: 1, name: 'Styles', exact: true })).toBeVisible();
+         | 		                                                                                   ^
+      26 | 		for (const heading of ['Colors', 'Font families', 'Type scale', 'Text styles', 'Layout tokens']) {
+      27 | 			await expect(page.getByRole('heading', { level: 2, name: heading, exact: true })).toBeVisible();
+      28 | 		}
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XeCasn/packages/reports/tests/e2e/styles-page.spec.ts:25:86
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/styles-page-Styles-documen-45b55-ign-tokens-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/styles-page-Styles-documen-45b55-ign-tokens-at-desktop-width/error-context.md
+
+  3) tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at tablet width ─
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Styles', exact: true, level: 1 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Styles', exact: true, level: 1 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Styles', exact: true, level: 1 })
+
+
+      23 |
+      24 | 		await expectPath(page, tip('main', 'styles'));
+    > 25 | 		await expect(page.getByRole('heading', { level: 1, name: 'Styles', exact: true })).toBeVisible();
+         | 		                                                                                   ^
+      26 | 		for (const heading of ['Colors', 'Font families', 'Type scale', 'Text styles', 'Layout tokens']) {
+      27 | 			await expect(page.getByRole('heading', { level: 2, name: heading, exact: true })).toBeVisible();
+      28 | 		}
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XeCasn/packages/reports/tests/e2e/styles-page.spec.ts:25:86
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/styles-page-Styles-documen-ca38d-sign-tokens-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/styles-page-Styles-documen-ca38d-sign-tokens-at-tablet-width/error-context.md
+
+  4) tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at mobile width ─
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Styles', exact: true, level: 1 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Styles', exact: true, level: 1 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Styles', exact: true, level: 1 })
+
+
+      23 |
+      24 | 		await expectPath(page, tip('main', 'styles'));
+    > 25 | 		await expect(page.getByRole('heading', { level: 1, name: 'Styles', exact: true })).toBeVisible();
+         | 		                                                                                   ^
+      26 | 		for (const heading of ['Colors', 'Font families', 'Type scale', 'Text styles', 'Layout tokens']) {
+      27 | 			await expect(page.getByRole('heading', { level: 2, name: heading, exact: true })).toBeVisible();
+      28 | 		}
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XeCasn/packages/reports/tests/e2e/styles-page.spec.ts:25:86
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/styles-page-Styles-documen-344aa-sign-tokens-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/styles-page-Styles-documen-344aa-sign-tokens-at-mobile-width/error-context.md
+
+  4 failed
+    tests/e2e/styles-page.spec.ts:8:1 › Styles navigation preserves the selected branch and commit ─
+    tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at desktop width ─
+    tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at tablet width ──
+    tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at mobile width ──
+error: "playwright" exited with code 1

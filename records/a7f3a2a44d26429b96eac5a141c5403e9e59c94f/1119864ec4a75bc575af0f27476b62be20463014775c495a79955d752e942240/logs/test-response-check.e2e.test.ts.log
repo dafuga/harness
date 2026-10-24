@@ -1,0 +1,23 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/response-check.e2e.test.ts (21 tests) 7494ms
+   ✓ gate rejects violates while advisory completes  563ms
+   ✓ gate rejects uncertain while advisory completes  641ms
+   ✓ dry run is offline and describes coverage  338ms
+   ✓ provider authentication failure is incomplete and sanitized  362ms
+   ✓ guide documents strict gating  332ms
+   ✓ CLI returns incomplete for missing request  343ms
+   ✓ CLI returns incomplete for invalid model  318ms
+   ✓ CLI returns incomplete for missing credential  313ms
+   ✓ CLI rejects empty or oversized request without an API call  309ms
+   ✓ combined serialized size is bounded and invalid UTF-8 is rejected  575ms
+   ✓ existing command-based loops reject uncertain response checks  689ms
+   ✓ provider malformed response is incomplete and sanitized  325ms
+   ✓ provider wrong-model response is incomplete and sanitized  331ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  02:38:06
+   Duration  7.78s (transform 34ms, setup 17ms, collect 27ms, tests 7.49s, environment 0ms, prepare 38ms)
+

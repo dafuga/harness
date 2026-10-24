@@ -1,0 +1,94 @@
+$ bun run sync:shared && vitest run test/utils/deployment-config.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tHRQhm/packages/desktop
+
+ ❯ test/utils/deployment-config.test.ts (4 tests | 1 failed) 173ms
+   ✓ Cloudflare jsonc discovery keeps explicit environment mapping and configuration fingerprint 6ms
+   ✓ Cloudflare toml discovery keeps explicit environment mapping and configuration fingerprint 1ms
+   ✓ the bundled Node deployment bundle resolves JSONC parsing without package-relative runtime requires 86ms
+   × the external Node deployment bundle resolves JSONC parsing without package-relative runtime requires 80ms
+     → Command failed: /opt/homebrew/Cellar/node/25.9.0_3/bin/node -e require(process.argv[1]).deploymentConfig(process.argv[2]).then(value => process.stdout.write(value.sourceBranch)) /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0
+node:internal/modules/cjs/loader:1478
+  throw err;
+  ^
+
+Error: Cannot find module 'jsonc-parser/lib/esm/main.js'
+Require stack:
+- /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs
+- /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tHRQhm/packages/desktop/[eval]
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1475:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1048:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1072:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1093:12)
+    at Module._load (node:internal/modules/cjs/loader:1261:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1575:12)
+    at require (node:internal/modules/helpers:191:16)
+    at Object.<anonymous> (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs:68:19)
+    at Module._compile (node:internal/modules/cjs/loader:1829:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs',
+    '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tHRQhm/packages/desktop/[eval]'
+  ]
+}
+
+Node.js v25.9.0
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/deployment-config.test.ts > the external Node deployment bundle resolves JSONC parsing without package-relative runtime requires
+Error: Command failed: /opt/homebrew/Cellar/node/25.9.0_3/bin/node -e require(process.argv[1]).deploymentConfig(process.argv[2]).then(value => process.stdout.write(value.sourceBranch)) /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0
+node:internal/modules/cjs/loader:1478
+  throw err;
+  ^
+
+Error: Cannot find module 'jsonc-parser/lib/esm/main.js'
+Require stack:
+- /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs
+- /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tHRQhm/packages/desktop/[eval]
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1475:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1048:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1072:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1093:12)
+    at Module._load (node:internal/modules/cjs/loader:1261:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1575:12)
+    at require (node:internal/modules/helpers:191:16)
+    at Object.<anonymous> (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs:68:19)
+    at Module._compile (node:internal/modules/cjs/loader:1829:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cf-bundle-PZQXk0/deployment.cjs',
+    '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tHRQhm/packages/desktop/[eval]'
+  ]
+}
+
+Node.js v25.9.0
+
+ ❯ Object.<anonymous> ../../../harness-cf-bundle-PZQXk0/deployment.cjs:68:19
+ ❯ test/utils/deployment-config.test.ts:76:19
+     74|     { cwd: process.cwd(), stdio: 'pipe' }
+     75|    );
+     76|    const output = execFileSync(
+       |                   ^
+     77|     process.execPath,
+     78|     [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  22:02:46
+   Duration  451ms (transform 46ms, setup 0ms, collect 83ms, tests 173ms, environment 0ms, prepare 31ms)
+
+error: script "test:unit" exited with code 1

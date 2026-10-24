@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:23596) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-verdict.spec.ts:25:2 › a verdict tells its status and reasons when pointed at, focused or tapped at desktop width (710ms)
+  ✓  2 tests/e2e/explorer-shell-verdict.spec.ts:86:2 › more reasons than a short screen has room for are read inside the tooltip at desktop width (367ms)
+  ✓  3 tests/e2e/explorer-shell-verdict.spec.ts:25:2 › a verdict tells its status and reasons when pointed at, focused or tapped at tablet width (676ms)
+  ✓  4 tests/e2e/explorer-shell-verdict.spec.ts:86:2 › more reasons than a short screen has room for are read inside the tooltip at tablet width (373ms)
+  ✓  5 tests/e2e/explorer-shell-verdict.spec.ts:25:2 › a verdict tells its status and reasons when pointed at, focused or tapped at mobile width (648ms)
+  ✓  6 tests/e2e/explorer-shell-verdict.spec.ts:86:2 › more reasons than a short screen has room for are read inside the tooltip at mobile width (384ms)
+
+  6 passed (3.7s)

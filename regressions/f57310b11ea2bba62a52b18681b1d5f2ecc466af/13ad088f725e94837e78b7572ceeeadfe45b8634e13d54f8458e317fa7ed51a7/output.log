@@ -1,0 +1,108 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [22.16s]
+
+Running 65 tests using 1 worker
+
+  ✓   1 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width (5.2s)
+  ✓   2 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at desktop width (2.2s)
+  ✓   3 test/entity-preview-actions.spec.ts:60:2 › component and function lists use a card grid at desktop width (1.7s)
+  ✓   4 test/entity-preview-actions.spec.ts:85:2 › component screenshot cards follow the shown revision at desktop width (897ms)
+  ✓   5 test/entity-preview-actions.spec.ts:111:2 › page cards show only a title and screenshot at desktop width (366ms)
+  ✓   6 test/entity-preview-actions.spec.ts:132:2 › the console keeps a loaded revision responsive at desktop width (622ms)
+  ✓   7 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width (4.7s)
+  ✓   8 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at tablet width (2.5s)
+  ✓   9 test/entity-preview-actions.spec.ts:60:2 › component and function lists use a card grid at tablet width (1.4s)
+  ✓  10 test/entity-preview-actions.spec.ts:85:2 › component screenshot cards follow the shown revision at tablet width (886ms)
+  ✓  11 test/entity-preview-actions.spec.ts:111:2 › page cards show only a title and screenshot at tablet width (421ms)
+  ✓  12 test/entity-preview-actions.spec.ts:132:2 › the console keeps a loaded revision responsive at tablet width (581ms)
+  ✓  13 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width (4.4s)
+  ✓  14 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at mobile width (2.0s)
+  ✓  15 test/entity-preview-actions.spec.ts:60:2 › component and function lists use a card grid at mobile width (1.4s)
+  ✓  16 test/entity-preview-actions.spec.ts:85:2 › component screenshot cards follow the shown revision at mobile width (604ms)
+  ✓  17 test/entity-preview-actions.spec.ts:111:2 › page cards show only a title and screenshot at mobile width (359ms)
+  ✓  18 test/entity-preview-actions.spec.ts:132:2 › the console keeps a loaded revision responsive at mobile width (585ms)
+  ✓  19 test/entity-preview-actions.spec.ts:172:1 › the component catalog labels reused screenshots with their original commit (232ms)
+  ✓  20 test/entity-preview-actions.spec.ts:182:1 › branch and commit selection replace component screenshots with that revision (264ms)
+  ✓  21 test/entity-preview-marks.spec.ts:16:2 › components at desktop: a verdict is the mark alone, told on hover and by the keyboard (334ms)
+  ✓  22 test/entity-preview-marks.spec.ts:16:2 › components at tablet: a verdict is the mark alone, told on hover and by the keyboard (303ms)
+  ✓  23 test/entity-preview-marks.spec.ts:16:2 › components at mobile: a verdict is the mark alone, told on hover and by the keyboard (262ms)
+  ✓  24 test/entity-preview-marks.spec.ts:43:1 › a tap opens what a mark tells, and a tap elsewhere closes it (225ms)
+  ✓  25 test/entity-preview-marks.spec.ts:60:1 › every collection, a header, the tests and a history show marks without status words (739ms)
+  ✓  26 test/entity-preview-marks.spec.ts:95:2 › a long legacy history stays short at desktop, and opens in full on request (300ms)
+  ✓  27 test/entity-preview-marks.spec.ts:95:2 › a long legacy history stays short at tablet, and opens in full on request (285ms)
+  ✓  28 test/entity-preview-marks.spec.ts:95:2 › a long legacy history stays short at mobile, and opens in full on request (275ms)
+  ✓  29 test/entity-preview-marks.spec.ts:133:1 › the overview of a long legacy change is short too, with the same reasons to open (274ms)
+  ✓  30 test/entity-preview-marks.spec.ts:148:1 › a recorded clip plays on the overview: one at the tip, a pair at a commit (485ms)
+  ✓  31 test/entity-preview-marks.spec.ts:181:1 › a title that wraps onto two lines is one solid area to press (237ms)
+  ✓  32 test/entity-preview-shells.spec.ts:28:2 › Shells lists the frame at the branch tip, Components does not, at desktop width (153ms)
+  ✓  33 test/entity-preview-shells.spec.ts:28:2 › Shells lists the frame at the branch tip, Components does not, at mobile width (143ms)
+  ✓  34 test/entity-preview-shells.spec.ts:42:1 › a commit that recorded the frame as a component lists it under Components, not Shells (191ms)
+  ✓  35 test/entity-preview-shells.spec.ts:52:1 › the shell says it is a Shell, uses the order list and is used in the orders page (183ms)
+  ✓  36 test/entity-preview-test-cases.spec.ts:8:1 › the default test view explains input and output without requiring JSON (155ms)
+  ✓  37 test/entity-preview-test-cases.spec.ts:20:2 › service Tests show recorded input and output at desktop width (251ms)
+  ✓  38 test/entity-preview-test-cases.spec.ts:20:2 › service Tests show recorded input and output at tablet width (200ms)
+  ✓  39 test/entity-preview-test-cases.spec.ts:20:2 › service Tests show recorded input and output at mobile width (194ms)
+  ✓  40 test/entity-preview-test-cases.spec.ts:36:1 › service Tests keep parent and selected-commit cases separate (200ms)
+  ✓  41 test/entity-preview-test-cases.spec.ts:50:1 › mobile test values have readable columns without widening the page (193ms)
+  ✓  42 test/entity-preview-test-cases.spec.ts:73:1 › the full recorded result is available even when it has no input and output pair (302ms)
+  ✓  43 test/entity-preview-test-cases.spec.ts:89:1 › the mobile output panel is visible beneath its input (213ms)
+  ✓  44 test/entity-preview-test-cases.spec.ts:115:2 › case names lead roomy input and output panels at desktop width (345ms)
+  ✓  45 test/entity-preview-test-cases.spec.ts:115:2 › case names lead roomy input and output panels at tablet width (318ms)
+  ✓  46 test/entity-preview-test-cases.spec.ts:115:2 › case names lead roomy input and output panels at mobile width (329ms)
+  ✓  47 test/entity-preview-test-cases.spec.ts:141:2 › function Examples show committed uses at desktop width (455ms)
+  ✓  48 test/entity-preview-test-cases.spec.ts:141:2 › function Examples show committed uses at tablet width (463ms)
+  ✓  49 test/entity-preview-test-cases.spec.ts:141:2 › function Examples show committed uses at mobile width (471ms)
+  ✓  50 test/entity-preview-words.spec.ts:23:1 › a long word in a narrow column of a collection stays whole, and the table scrolls (123ms)
+  ✓  51 test/entity-preview-words.spec.ts:38:1 › a long word in a row of a history stays whole too (106ms)
+  ✓  52 test/entity-preview-words.spec.ts:54:1 › the details of a declared contract say what each item is, and fit a phone (434ms)
+  ✓  53 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at desktop width (1.7s)
+  ✓  54 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at tablet width (1.7s)
+  ✓  55 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at mobile width (1.7s)
+  ✓  56 test/entity-preview.spec.ts:7:1 › collections: search, changed only and order change what is listed (827ms)
+  ✓  57 test/entity-preview.spec.ts:47:1 › a row or a card of a collection opens its entity in the same branch and commit (351ms)
+  ✓  58 test/entity-preview.spec.ts:73:1 › a page shows one screenshot at the tip and a matching pair at a commit (378ms)
+  ✓  59 test/entity-preview.spec.ts:102:1 › a function shows its recorded run: steps, input, output and assertions (470ms)
+  ✓  60 test/entity-preview.spec.ts:135:1 › links walk page to component to function, and keep the branch and the commit (337ms)
+  ✓  61 test/entity-preview.spec.ts:162:1 › one entity page keeps source optional without a duplicate Details page (614ms)
+  ✓  62 test/entity-preview.spec.ts:189:1 › history lists changes, keeps profiles apart and opens a revision (293ms)
+  ✓  63 test/entity-preview.spec.ts:202:2 › every screen fits a desktop window without scrolling sideways (645ms)
+  ✓  64 test/entity-preview.spec.ts:202:2 › every screen fits a tablet window without scrolling sideways (653ms)
+  ✓  65 test/entity-preview.spec.ts:202:2 › every screen fits a mobile window without scrolling sideways (775ms)
+
+  65 passed (58.5s)
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-e8K4L7/packages/reports
+
+ ✓ test/utils/explorer-entities.test.ts (9 tests) 7ms
+ ✓ test/utils/entity-catalog.test.ts (9 tests) 78ms
+ ✓ test/utils/explorer-category.test.ts (6 tests) 286ms
+ ✓ test/components/entity-frame.test.ts (2 tests) 11ms
+
+ Test Files  4 passed (4)
+      Tests  26 passed (26)
+   Start at  13:35:35
+   Duration  2.74s (transform 941ms, setup 0ms, collect 1.55s, tests 383ms, environment 0ms, prepare 152ms)
+

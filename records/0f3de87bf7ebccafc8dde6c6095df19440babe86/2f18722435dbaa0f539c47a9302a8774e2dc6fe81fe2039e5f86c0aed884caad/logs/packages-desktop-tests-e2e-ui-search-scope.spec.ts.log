@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:84549) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-search-scope.spec.ts:71:1 › while another project loads, no result of the project left is offered (1.1s)
+  ✓  2 tests/e2e/ui-search-scope.spec.ts:87:1 › while another commit loads, no result of the tip is offered, then only that commit is (2.7s)
+  ✓  3 tests/e2e/ui-search-scope.spec.ts:103:1 › Escape in the search leaves the project agent and its draft as they were (159ms)
+  ✓  4 tests/e2e/ui-search-scope.spec.ts:120:1 › a result opened with a modifier opens its address in another tab and leaves this one (168ms)
+  ✓  5 tests/e2e/ui-search-scope.spec.ts:137:1 › a long name wraps inside the results on a phone, which stay inside the screen (130ms)
+  ✓  6 tests/e2e/ui-search-scope.spec.ts:151:1 › at a wide desktop the search shares the one row of the top bar, overlapping nothing (115ms)
+
+  6 passed (5.0s)

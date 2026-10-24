@@ -1,0 +1,16 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-0UFg8p/packages/desktop[39m
+
+ [32m✓[39m test/local-transport.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 17136[2mms[22m[39m
+   [33m[2m✓[22m[39m the bridge works over a socket that only this machine can reach [33m 2026[2mms[22m[39m
+   [33m[2m✓[22m[39m an image of more than a mebibyte crosses the socket in bounded frames and arrives intact [33m 3340[2mms[22m[39m
+   [33m[2m✓[22m[39m two large answers take turns on the socket and a small one does not wait for them [33m 4046[2mms[22m[39m
+   [33m[2m✓[22m[39m each window is its own client: its own project, its own run events, one repository lock [33m 4631[2mms[22m[39m
+   [33m[2m✓[22m[39m a reload keeps the session of its window; closing the window ends its socket and its run only [33m 2116[2mms[22m[39m
+   [33m[2m✓[22m[39m the control port travels over the same socket, with exactly what the page gave [33m 977[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 20:01:22
+[2m   Duration [22m 18.91s[2m (transform 915ms, setup 0ms, collect 1.47s, tests 17.14s, environment 0ms, prepare 83ms)[22m
+

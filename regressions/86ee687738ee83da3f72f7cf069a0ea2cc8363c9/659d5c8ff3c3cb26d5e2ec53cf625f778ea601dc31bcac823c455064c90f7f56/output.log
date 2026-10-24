@@ -1,0 +1,35 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pxKmKB
+
+ ✓ test/loop.e2e.test.ts (7 tests) 48931ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  2189ms
+   ✓ generated app and lib instructions mention harness loops  694ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  2334ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  12730ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  12229ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  13786ms
+   ✓ standalone evidence capture preserves images and measurements without inventing a regression or full verdict  4968ms
+ ✓ test/resources-cli.e2e.test.ts (5 tests) 4394ms
+   ✓ resources status reports overall CPU, available cores, memory and the shared queue  1027ms
+   ✓ managed . scripts forward caller arguments  854ms
+   ✓ managed packages/desktop scripts forward caller arguments  852ms
+   ✓ an impossible resource request is rejected before a command starts  623ms
+   ✓ an admitted command receives its bounded budget and releases its shared reservation  1037ms
+ ✓ test/resource-queue.e2e.test.ts (3 tests) 1268ms
+   ✓ separate native processes share atomic reservations and honor agent-test, coding, environment order  958ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  14:26:13
+   Duration  57.39s (transform 132ms, setup 129ms, collect 162ms, tests 54.59s, environment 0ms, prepare 95ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pxKmKB/packages/desktop
+
+ ✓ test/cli-integration.test.ts (20 tests) 2129ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  14:27:11
+   Duration  2.59s (transform 206ms, setup 51ms, collect 271ms, tests 2.13s, environment 0ms, prepare 26ms)
+

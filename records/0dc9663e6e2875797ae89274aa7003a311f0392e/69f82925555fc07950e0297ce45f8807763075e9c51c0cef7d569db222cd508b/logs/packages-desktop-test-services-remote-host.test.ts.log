@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ljai0H/packages/desktop
+
+ ✓ test/services/remote-host.test.ts (5 tests) 5325ms
+   ✓ enabling registers a hash under the hosted identity and connects by header  1059ms
+   ✓ without OS encryption, or without a hosted session, remote access stays off  973ms
+   ✓ a phone is paired only after the person approves it with explicit projects  1104ms
+   ✓ approval grants exactly the chosen local projects to exactly that phone  1070ms
+   ✓ a wrong code, or a denied request, never becomes a device  1118ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  00:36:33
+   Duration  6.04s (transform 365ms, setup 0ms, collect 571ms, tests 5.32s, environment 0ms, prepare 25ms)
+

@@ -1,0 +1,216 @@
+
+Running 6 tests using 1 worker
+
+(node:13955) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at desktop (5.4s)
+(node:14515) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at desktop (6.4s)
+(node:15912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at tablet (5.4s)
+(node:16597) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at tablet (6.3s)
+(node:17759) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at mobile (5.3s)
+(node:18622) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  6 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at mobile (6.3s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at desktop ──────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+
+
+      38 | 			if (unit.kind === 'layout') {
+      39 | 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
+    > 40 | 				await expect(slot).toBeVisible();
+         | 				                   ^
+      41 | 				const box = await slot.boundingBox();
+      42 | 				expect(box!.width).toBeGreaterThan(200);
+      43 | 				expect(box!.height).toBeGreaterThan(250);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e1EaFf/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:40:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at desktop ──────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+
+
+      38 | 			if (unit.kind === 'layout') {
+      39 | 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
+    > 40 | 				await expect(slot).toBeVisible();
+         | 				                   ^
+      41 | 				const box = await slot.boundingBox();
+      42 | 				expect(box!.width).toBeGreaterThan(200);
+      43 | 				expect(box!.height).toBeGreaterThan(250);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e1EaFf/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:40:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-8d564-orts-layout-root-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-8d564-orts-layout-root-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-8d564-orts-layout-root-at-desktop/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at tablet ───────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+
+
+      38 | 			if (unit.kind === 'layout') {
+      39 | 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
+    > 40 | 				await expect(slot).toBeVisible();
+         | 				                   ^
+      41 | 				const box = await slot.boundingBox();
+      42 | 				expect(box!.width).toBeGreaterThan(200);
+      43 | 				expect(box!.height).toBeGreaterThan(250);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e1EaFf/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:40:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-tablet/error-context.md
+
+  4) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at tablet ───────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+
+
+      38 | 			if (unit.kind === 'layout') {
+      39 | 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
+    > 40 | 				await expect(slot).toBeVisible();
+         | 				                   ^
+      41 | 				const box = await slot.boundingBox();
+      42 | 				expect(box!.width).toBeGreaterThan(200);
+      43 | 				expect(box!.height).toBeGreaterThan(250);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e1EaFf/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:40:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-03e4d-ports-layout-root-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-03e4d-ports-layout-root-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-03e4d-ports-layout-root-at-tablet/error-context.md
+
+  5) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at mobile ───────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="hub.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+
+
+      38 | 			if (unit.kind === 'layout') {
+      39 | 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
+    > 40 | 				await expect(slot).toBeVisible();
+         | 				                   ^
+      41 | 				const box = await slot.boundingBox();
+      42 | 				expect(box!.width).toBeGreaterThan(200);
+      43 | 				expect(box!.height).toBeGreaterThan(250);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e1EaFf/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:40:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-catalog-hub-layout-root-at-mobile/error-context.md
+
+  6) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at mobile ───────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.layout.root"]').getByRole('region', { name: 'Child content', exact: true })
+
+
+      38 | 			if (unit.kind === 'layout') {
+      39 | 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
+    > 40 | 				await expect(slot).toBeVisible();
+         | 				                   ^
+      41 | 				const box = await slot.boundingBox();
+      42 | 				expect(box!.width).toBeGreaterThan(200);
+      43 | 				expect(box!.height).toBeGreaterThan(250);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e1EaFf/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:40:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-e2b6e-ports-layout-root-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-e2b6e-ports-layout-root-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-e2b6e-ports-layout-root-at-mobile/error-context.md
+
+  6 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at desktop ───────────
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at desktop ───────
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at tablet ────────────
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at tablet ────────
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at mobile ────────────
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at mobile ────────

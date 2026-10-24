@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad
+
+ ✓ test/loop.e2e.test.ts (5 tests) 7787ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  965ms
+   ✓ generated app and lib instructions mention harness loops  313ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  641ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  2589ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  3278ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  03:30:35
+   Duration  8.00s (transform 20ms, setup 8ms, collect 10ms, tests 7.79s, environment 0ms, prepare 46ms)
+

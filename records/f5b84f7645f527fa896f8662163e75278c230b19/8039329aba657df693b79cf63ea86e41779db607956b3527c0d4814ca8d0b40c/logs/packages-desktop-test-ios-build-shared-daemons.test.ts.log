@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/ios-build-shared-daemons.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 80235[2mms[22m[39m
+   [33m[2m✓[22m[39m a shared daemon that another build takes up later is never signalled; it retires by itself [33m 11474[2mms[22m[39m
+   [33m[2m✓[22m[39m when the processes cannot be observed nothing is signalled and the build does not call itself done [33m 310[2mms[22m[39m
+   [33m[2m✓[22m[39m a shared daemon that another build keeps using for long is waited for, not ended or abandoned [33m 68139[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 19:45:48
+[2m   Duration [22m 80.65s[2m (transform 78ms, setup 0ms, collect 119ms, tests 80.24s, environment 0ms, prepare 64ms)[22m
+

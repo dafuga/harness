@@ -1,0 +1,44 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz/packages/reports[39m
+
+ [31m❯[39m test/services/screenshot-retention.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 181[2mms[22m[39m
+   [32m✓[39m 30-day cleanup expires old uploads and preserves newer images; finalized=false[32m 21[2mms[22m[39m
+[31m   [31m×[31m 30-day cleanup expires old uploads and preserves newer images; finalized=true[39m[32m 128[2mms[22m[39m
+[31m     → PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+[39m
+   [32m✓[39m a CLI capture sharing uploaded image bytes is retained[32m 11[2mms[22m[39m
+   [32m✓[39m one cleanup covers uploaded screenshots from every project in the hub[32m 20[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/services/screenshot-retention.test.ts[2m > [22m30-day cleanup expires old uploads and preserves newer images; finalized=true
+[31m[1mError[22m: PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+[39m
+[36m [2m❯[22m ReportExportService.render src/services/ReportExportService.ts:[2m50:29[22m[39m
+    [90m 48| [39m   appRoot
+    [90m 49| [39m  )[33m;[39m
+    [90m 50| [39m  if (pdf.code !== 0) throw new Error(`PDF export failed: ${pdf.output…
+    [90m   | [39m                            [31m^[39m
+    [90m 51| [39m  [35mconst[39m zip [33m=[39m [35mawait[39m [34mreportProcess[39m(
+    [90m 52| [39m   [34mreportPdf[39m()[33m,[39m
+[90m [2m❯[22m ReportExportService.build src/services/ReportExportService.ts:[2m29:3[22m[39m
+[90m [2m❯[22m reportLock src/utils/reportLock.ts:[2m24:12[22m[39m
+[90m [2m❯[22m setup test/services/screenshot-retention.test.ts:[2m55:16[22m[39m
+[90m [2m❯[22m test/services/screenshot-retention.test.ts:[2m74:45[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 15:51:32
+[2m   Duration [22m 909ms[2m (transform 178ms, setup 0ms, collect 308ms, tests 181ms, environment 0ms, prepare 58ms)[22m
+
+
+::error file=/tmp/harness-snapshot-iUpwmz/packages/reports/src/services/ReportExportService.ts,title=test/services/screenshot-retention.test.ts > 30-day cleanup expires old uploads and preserves newer images; finalized=true,line=50,column=29::Error: PDF export failed: Traceback (most recent call last):%0A  File "/tmp/harness-snapshot-iUpwmz/packages/reports/scripts/build_pdf.py", line 8, in <module>%0A    from reportlab.lib import colors%0AModuleNotFoundError: No module named 'reportlab'%0A%0A ❯ ReportExportService.render src/services/ReportExportService.ts:50:29%0A ❯ ReportExportService.build src/services/ReportExportService.ts:29:3%0A ❯ reportLock src/utils/reportLock.ts:24:12%0A ❯ setup test/services/screenshot-retention.test.ts:55:16%0A ❯ test/services/screenshot-retention.test.ts:74:45%0A%0A

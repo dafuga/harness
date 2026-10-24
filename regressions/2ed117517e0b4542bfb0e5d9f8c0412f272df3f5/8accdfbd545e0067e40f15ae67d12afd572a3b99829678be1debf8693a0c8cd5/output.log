@@ -1,0 +1,8 @@
+{"step": "format", "exitCode": 0, "command": ["bun", "run", "format:check"]}
+{"step": "types", "exitCode": 0, "command": ["bun", "run", "typecheck"]}
+{"step": "lint", "exitCode": 0, "command": ["bun", "run", "lint"]}
+{"step": "audit", "exitCode": 0, "command": ["bun", "run", "dev", "--", "audit", "."]}
+{"step": "units", "exitCode": 0, "command": ["bun", "run", "dev", "--", "units", "check", "--json"]}
+{"step": "ownership-and-admission", "exitCode": 0, "command": ["bun", "x", "vitest", "run", "test/regression-loops.test.ts", "test/services/unit-index.test.ts", "test/readable-unit-contracts.test.ts", "test/shared-select-impact.test.ts", "test/shared-search-impact.test.ts"]}
+{"step": "evidence-history", "exitCode": 0, "command": ["bun", "x", "vitest", "run", "test/loop.e2e.test.ts", "test/history-pairs.e2e.test.ts"]}
+

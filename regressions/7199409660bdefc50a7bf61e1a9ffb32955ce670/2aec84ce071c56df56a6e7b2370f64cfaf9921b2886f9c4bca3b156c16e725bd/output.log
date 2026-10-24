@@ -1,0 +1,35 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xPTXIN/packages/reports
+
+ ❯ test/components/entity-details.test.ts (7 tests | 1 failed) 26ms
+   ✓ details opens on the contract with size and performance, and shows no source 9ms
+   ✓ a page contract shows purpose, address, inputs and output without verification states 2ms
+   × source is shown only when the source tab is the open one 9ms
+     → indexed source snapshots retain their recorded gap: expected [Function] to throw error including 'Recorded implementation gap' but got 'src/services/OrderStore.ts is not arc…'
+   ✓ measurements name the limit each figure is frozen at, or that none is recorded 1ms
+   ✓ a service has each execution target on a line of its own, never added together 1ms
+   ✓ a recorded note that names a file is shown without it on measurements and on the contract 2ms
+   ✓ a declared contract explains each item in its dedicated tab and details 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-details.test.ts > source is shown only when the source tab is the open one
+AssertionError: indexed source snapshots retain their recorded gap: expected [Function] to throw error including 'Recorded implementation gap' but got 'src/services/OrderStore.ts is not arc…'
+
+Expected: [32m"Recorded implementation gap"[39m
+Received: [31m"src/services/OrderStore.ts is not archived at this revision."[39m
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  14:21:23
+   Duration  1.53s (transform 802ms, setup 0ms, collect 1.13s, tests 26ms, environment 0ms, prepare 37ms)
+

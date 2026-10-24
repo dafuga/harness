@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pL90hZ
+
+ ✓ test/budget-performance.e2e.test.ts (3 tests) 26963ms
+   ✓ rule fixture: a declared slowdown beyond five percent fails, and one within it passes  5264ms
+   ✓ rule fixture: another profile is incompatible and a missing measurement never passes  3486ms
+   ✓ a real operation that is slowed without changing its result fails the end-to-end gate  13897ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  01:08:22
+   Duration  27.16s (transform 25ms, setup 5ms, collect 20ms, tests 26.96s, environment 0ms, prepare 20ms)
+

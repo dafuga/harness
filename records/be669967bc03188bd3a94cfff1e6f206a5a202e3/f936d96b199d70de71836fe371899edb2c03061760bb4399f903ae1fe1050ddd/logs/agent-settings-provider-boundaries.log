@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/agent-settings-availability.spec.ts:10:1 › unavailable Codex stays disabled and an available Claude model can run (221ms)
+  ✓  2 tests/e2e/agent-settings-availability.spec.ts:38:1 › a model without effort choices uses its default and disables the intelligence icon (125ms)
+  ✓  3 tests/e2e/agent-settings-availability.spec.ts:60:1 › a failed preference save is visible while the chosen value stays usable in the page (66ms)
+  ✓  4 tests/e2e/agent-settings-availability.spec.ts:76:1 › Settings refuses an external return target (56ms)
+  ✓  5 tests/e2e/agent-settings-availability.spec.ts:82:1 › the combined model picker fits a phone and keeps both provider groups reachable (209ms)
+
+  5 passed (1.2s)
+(node:28520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

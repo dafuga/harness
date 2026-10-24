@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+ ✓ test/project-conversation-boundaries.test.ts (7 tests) 20382ms
+   ✓ a pinned commit rejects project creation before any CLI or plan write  3065ms
+   ✓ an unlisted model and the wrong project reject before creation  2295ms
+   ✓ unexpected source writes during proposal generation remain recoverable and create no plan  3497ms
+   ✓ only the owning run may cancel, and a cancelled proposal writes no plan  2740ms
+   ✓ a branch changed during the read-only proposal cannot receive its plan  3106ms
+   ✓ a source revision advanced during proposal generation receives no new plan  3371ms
+   ✓ a creation request without a project refuses before the CLI  2307ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  12:11:51
+   Duration  21.45s (transform 380ms, setup 0ms, collect 693ms, tests 20.38s, environment 0ms, prepare 67ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-uZMxJe/report.json
+Switched to a new branch 'another-branch'

@@ -1,0 +1,85 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [11.06s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tEOgVS
+
+ ✓ test/game-cli.e2e.test.ts (3 tests) 38937ms
+   ✓ CLI creates 2d games and supports app and game generators  17509ms
+   ✓ CLI creates 3d games and supports app and game generators  16315ms
+   ✓ game-only generators reject apps before creating broken imports  5112ms
+ ✓ test/game-project.test.ts (3 tests) 20ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  18:30:19
+   Duration  41.69s (transform 84ms, setup 11ms, collect 125ms, tests 38.96s, environment 0ms, prepare 70ms)
+
+$ bun run sync:shared && vitest run test/services/game-project.test.ts test/utils/project-game-credential.test.ts --no-cache
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tEOgVS/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/services/game-project.test.ts (6 tests) 6279ms
+   ✓ game operations bind project identity, retain historical graphs and reject stale writes  1470ms
+   ✓ project creation initializes a game without overwriting an existing directory  1251ms
+   ✓ failed project creation reports its cause, removes only its own target and can be retried  1381ms
+   ✓ AI preview fails closed before credential access without a safe transport  1126ms
+   ✓ prepared token minting uses only the server HTTP endpoint with bounded header-auth requests  1050ms
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/utils/project-game-credential.test.ts (1 test) 1319ms
+   ✓ game credentials require the current project ignored regular file  1318ms
+
+ Test Files  2 passed (2)
+      Tests  7 passed (7)
+   Start at  18:31:02
+   Duration  8.42s (transform 260ms, setup 0ms, collect 473ms, tests 7.60s, environment 0ms, prepare 67ms)
+
+$ playwright test "tests/e2e/game-authoring.spec.ts" "tests/e2e/checkpoint-images.spec.ts"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:74462) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:74472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+(node:74497) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+··°(node:74563) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+········
+  1 skipped
+  10 passed (29.7s)

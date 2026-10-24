@@ -1,0 +1,84 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [12.06s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5zzLoo
+
+ ❯ test/budget-performance.e2e.test.ts (3 tests | 1 failed) 88178ms
+   ✓ rule fixture: a declared slowdown beyond five percent fails, and one within it passes  13190ms
+   ✓ rule fixture: another profile is incompatible and a missing measurement never passes  8917ms
+   × a real operation that is slowed without changing its result fails the end-to-end gate 55513ms
+     → tiny fresh rank process has sane byte-scale RSS: expected 319069093888 to be less than 8589934592
+ ❯ test/source-profile-runners.test.ts (14 tests | 1 failed) 3738ms
+   × normal Vitest imports and its Bun commands capture their own real operations 1161ms
+     → fresh runtime RSS uses byte units: expected 113732747264 to be less than 888668160
+   ✓ Bun runtime profiling leaves actual build artifacts uninstrumented 196ms
+   ✓ ordinary runs and explicit benchmark boundaries retain the original operation 53ms
+   ✓ unowned source and fixture copies never borrow a registered unit identity 177ms
+   ✓ registered 'Map data' modules retain only actual initialization observations 262ms
+   ✓ registered 'nested data' modules retain only actual initialization observations 241ms
+   ✓ registered 'deferred method' modules retain only actual initialization observations 188ms
+   ✓ registered 'nested callback' modules retain only actual initialization observations 192ms
+   ✓ registered 'Map callback' modules retain only actual initialization observations 181ms
+   ✓ registered 'imported object callback' modules retain only actual initialization observations 181ms
+   ✓ registered 'imported Map callback' modules retain only actual initialization observations 180ms
+   ✓ registered 'getter' modules retain only actual initialization observations 177ms
+   ✓ registered 'nested class' modules retain only actual initialization observations 176ms
+   ✓ failed initialization and type-only modules never gain successful scope observations  371ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/budget-performance.e2e.test.ts > a real operation that is slowed without changing its result fails the end-to-end gate
+AssertionError: tiny fresh rank process has sane byte-scale RSS: expected 319069093888 to be less than 8589934592
+ ❯ test/budget-performance.e2e.test.ts:136:72
+    134|  const rss = fast.measurements.find((entry) => entry.metric === 'proce…
+    135|  expect(rss?.value, 'tiny fresh rank process has sane byte-scale RSS')…
+    136|  expect(rss?.value, 'tiny fresh rank process has sane byte-scale RSS')…
+       |                                                                        ^
+    137|  expect(fast.measurements[0].method).toMatch(
+    138|   /end-to-end calls through the declared module target/
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/source-profile-runners.test.ts > normal Vitest imports and its Bun commands capture their own real operations
+AssertionError: fresh runtime RSS uses byte units: expected 113732747264 to be less than 888668160
+ ❯ assertRunnerMemory test/support/sourceProfileRunners.ts:105:63
+    103|    Math.min(...rss) / 2
+    104|   );
+    105|   expect(measured.value, 'fresh runtime RSS uses byte units').toBeLess…
+       |                                                               ^
+    106|  }
+    107| }
+ ❯ runnerCaptures test/support/sourceProfileRunners.ts:86:24
+ ❯ test/source-profile-runners.test.ts:23:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 15 passed (17)
+   Start at  21:37:19
+   Duration  96.68s (transform 466ms, setup 156ms, collect 913ms, tests 91.92s, environment 0ms, prepare 76ms)
+

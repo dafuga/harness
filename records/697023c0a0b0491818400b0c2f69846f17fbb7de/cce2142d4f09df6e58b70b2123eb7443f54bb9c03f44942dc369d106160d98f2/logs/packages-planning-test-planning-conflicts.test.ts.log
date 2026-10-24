@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L/packages/planning
+
+ ✓ test/planning-conflicts.test.ts (2 tests) 3037ms
+   ✓ Git index locks refuse mutations without advancing HEAD or leaving planning files  951ms
+   ✓ PNG designs require usable Git LFS filters without mutating repository state on refusal  2086ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:13:08
+   Duration  3.50s (transform 106ms, setup 10ms, collect 178ms, tests 3.04s, environment 0ms, prepare 46ms)
+

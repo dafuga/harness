@@ -1,0 +1,64 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [20.92s]
+
+Running 2 tests using 1 worker
+
+(node:65667) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-captures.spec.ts:15:1 › preview captures retain decoded pixels and measured workloads with their served identity (290ms)
+(node:65782) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 test/entity-preview-captures.spec.ts:63:1 › screenshots use their capture commit and comparisons show their paired revisions (868ms)
+
+
+  1) test/entity-preview-captures.spec.ts:15:1 › preview captures retain decoded pixels and measured workloads with their served identity 
+
+    Error: preview captures enter the durable Harness protocol
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 2
+    Received length: 0
+    Received array:  []
+
+      25 | 		const { gathered, failures } = gatherCaptures(directory, 'evidence');
+      26 | 		expect(failures).toEqual([]);
+    > 27 | 		expect(gathered, 'preview captures enter the durable Harness protocol').toHaveLength(2);
+         | 		                                                                        ^
+      28 | 		const screenshot = gathered.find(({ line }) => line.kind === 'screenshot')!;
+      29 | 		const built = await new BuildIdentityService().identify(previewHome());
+      30 | 		expect(screenshot.line).toMatchObject({
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-WdBZct/packages/reports/test/entity-preview-captures.spec.ts:27:75
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-captures-pr-14c0a--with-their-served-identity/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-captures-pr-14c0a--with-their-served-identity/error-context.md
+
+  1 failed
+    test/entity-preview-captures.spec.ts:15:1 › preview captures retain decoded pixels and measured workloads with their served identity 
+  1 passed (6.5s)

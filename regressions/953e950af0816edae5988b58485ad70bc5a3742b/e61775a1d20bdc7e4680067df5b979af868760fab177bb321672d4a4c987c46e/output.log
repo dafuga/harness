@@ -1,0 +1,38 @@
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fD0O82/packages/desktop
+
+ ❯ test/entity-usage.test.ts (4 tests | 1 failed) 6ms
+   × Used In lists what uses the entity once each, with what it is 5ms
+     → layouts uses its canonical singular label: expected 'Used In 1 Consumer Shell' to match /\bLayout$/
+   ✓ Uses keeps what the entity depends on apart by kind, with what is none of the five last 1ms
+   ✓ an entity with nothing recorded says so in each section 0ms
+   ✓ each section has an address, and the former one is still read 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/entity-usage.test.ts > Used In lists what uses the entity once each, with what it is
+AssertionError: layouts uses its canonical singular label: expected 'Used In 1 Consumer Shell' to match /\bLayout$/
+
+- Expected: 
+/\bLayout$/
+
++ Received: 
+"Used In 1 Consumer Shell"
+
+ ❯ test/entity-usage.test.ts:51:5
+     49|    panel('used-by', [link('used-by', `app.${singular}.consumer`, 'Cons…
+     50|    `${category} uses its canonical singular label`
+     51|   ).toMatch(new RegExp(`\\b${singular}$`));
+       |     ^
+     52|  }
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  13:44:11
+   Duration  700ms (transform 294ms, setup 55ms, collect 438ms, tests 6ms, environment 0ms, prepare 37ms)
+

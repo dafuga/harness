@@ -1,0 +1,76 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [23.88s]
+$ bun run test:unit test/components/project-agent.test.ts
+$ bun run sync:shared && vitest run test/components/project-agent.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mP0yDU/packages/desktop
+
+ ❯ test/components/project-agent.test.ts (6 tests | 3 failed) 10ms
+   ✓ a writable catalog offers the agent as one closed control, and no form 2ms
+   ✓ a hosted project still exposes the appropriate closed project chat bubble 0ms
+   × a past commit still exposes the appropriate closed project chat bubble 4ms
+     → expected '<!--[--><div class="project-chat svel…' to contain 'aria-label="Open project chat"'
+   × a view that cannot be written still exposes the appropriate closed project chat bubble 1ms
+     → expected '<!--[--><div class="project-chat svel…' to contain 'aria-label="Open project chat"'
+   × a project without an identity still exposes the appropriate closed project chat bubble 1ms
+     → expected '<!--[--><div class="project-chat svel…' to contain 'aria-label="Open project chat"'
+   ✓ an entity that is open still exposes the appropriate closed project chat bubble 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/project-agent.test.ts > a past commit still exposes the appropriate closed project chat bubble
+ FAIL  test/components/project-agent.test.ts > a view that cannot be written still exposes the appropriate closed project chat bubble
+ FAIL  test/components/project-agent.test.ts > a project without an identity still exposes the appropriate closed project chat bubble
+AssertionError: expected '<!--[--><div class="project-chat svel…' to contain 'aria-label="Open project chat"'
+
+Expected: "aria-label="Open project chat""
+Received: "<!--[--><div class="project-chat svelte-ijhe4a"><!--$s1--><div class="floating-chat svelte-udolf2"><!--[-1--><!--]--> <button type="button" class="floating-chat-bubble svelte-udolf2" aria-label="Work with agent" aria-expanded="false" aria-controls="s1-panel"><!--[-1--><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" class="svelte-udolf2"><path d="M5 4.5h14a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2h-6.5L8 20.5V17H5a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2zM7.5 9h9M7.5 12.5h6"></path></svg><!--]--></button></div><!----></div><!--]-->"
+
+ ❯ test/components/project-agent.test.ts:33:24
+     31|  ['an entity that is open', { entity: { id: 'page.orders' } }, 'Work w…
+     32| ])('%s still exposes the appropriate closed project chat bubble', (_na…
+     33|  expect(drawn(change)).toContain(`aria-label="${label}"`);
+       |                        ^
+     34|  expect(drawn(change)).not.toMatch(/<textarea|<form/);
+     35| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 3 passed (6)
+   Start at  14:49:25
+   Duration  745ms (transform 353ms, setup 0ms, collect 530ms, tests 10ms, environment 0ms, prepare 48ms)
+
+error: script "test:unit" exited with code 1
+error: script "test" exited with code 1

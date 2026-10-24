@@ -1,0 +1,361 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO
+
+ ❯ test/workspace-test-config.test.ts (15 tests | 6 failed) 3921ms
+   × a workspace without a config of its own runs its tests with the root config and its own setup 656ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × the root runs its own tests and still leaves the workspaces to theirs 760ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × collaboration keeps its own configuration within one worker 624ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × remote keeps its own configuration within one worker 612ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × relay keeps its own configuration within one worker 607ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   × game keeps its own configuration within one worker 659ms
+     → expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+   ✓ . routes standalone verification and build scripts through admission 1ms
+   ✓ packages/collaboration routes standalone verification and build scripts through admission 0ms
+   ✓ packages/desktop routes standalone verification and build scripts through admission 0ms
+   ✓ packages/game routes standalone verification and build scripts through admission 0ms
+   ✓ packages/hub routes standalone verification and build scripts through admission 0ms
+   ✓ packages/planning routes standalone verification and build scripts through admission 1ms
+   ✓ packages/relay routes standalone verification and build scripts through admission 0ms
+   ✓ packages/remote routes standalone verification and build scripts through admission 0ms
+   ✓ packages/reports routes standalone verification and build scripts through admission 0ms
+ ❯ test/utils/resource-workers.test.ts (4 tests | 1 failed) 4ms
+   ✓ test worker limits use only the managed reservation and retain normal defaults outside it 1ms
+   ✓ native worker budgets preserve stricter caller limits and cap larger values 0ms
+   ✓ parallel test workers partition the parent CPU and memory budget for their subprocesses 0ms
+   × a caller ceiling retains its one-worker limit and full per-worker memory reservation 3ms
+     → expected 3 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspace-test-config.test.ts > a workspace without a config of its own runs its tests with the root config and its own setup
+AssertionError: expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -13,7 +13,7 @@[39m
+[2m      [[22m
+[2m        "packages/nested/test/nested-2.test.ts",[22m
+[2m        "passed",[22m
+[2m      ],[22m
+[2m    ],[22m
+[32m-   1,[39m
+[31m+   3,[39m
+[2m  ][22m
+
+ ❯ test/workspace-test-config.test.ts:158:73
+    156|  const nested = run(root, join(root, 'packages', 'nested'));
+    157|  expect(nested.output).not.toMatch(/ERR_MODULE_NOT_FOUND|ERR_LOAD_URL|…
+    158|  expect([nested.timedOut, nested.status, nested.files, nested.workers]…
+       |                                                                         ^
+    159|   false,
+    160|   0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/workspace-test-config.test.ts > the root runs its own tests and still leaves the workspaces to theirs
+AssertionError: expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -13,7 +13,7 @@[39m
+[2m      [[22m
+[2m        "test/root-2.test.ts",[22m
+[2m        "passed",[22m
+[2m      ],[22m
+[2m    ],[22m
+[32m-   1,[39m
+[31m+   3,[39m
+[2m  ][22m
+
+ ❯ test/workspace-test-config.test.ts:169:61
+    167|  const root = project();
+    168|  const top = run(root, root);
+    169|  expect([top.timedOut, top.status, top.files, top.workers]).toEqual([
+       |                                                             ^
+    170|   false,
+    171|   0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/workspace-test-config.test.ts > collaboration keeps its own configuration within one worker
+ FAIL  test/workspace-test-config.test.ts > remote keeps its own configuration within one worker
+ FAIL  test/workspace-test-config.test.ts > relay keeps its own configuration within one worker
+ FAIL  test/workspace-test-config.test.ts > game keeps its own configuration within one worker
+AssertionError: expected [ false, +0, [ [ …(2) ], …(2) ], 3 ] to deeply equal [ false, +0, [ [ …(2) ], …(2) ], 1 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -13,7 +13,7 @@[39m
+[2m      [[22m
+[2m        "packages/nested/test/nested-2.test.ts",[22m
+[2m        "passed",[22m
+[2m      ],[22m
+[2m    ],[22m
+[32m-   1,[39m
+[31m+   3,[39m
+[2m  ][22m
+
+ ❯ test/workspace-test-config.test.ts:182:74
+    180|   const root = project(config);
+    181|   const nested = run(root, join(root, 'packages', 'nested'));
+    182|   expect([nested.timedOut, nested.status, nested.files, nested.workers…
+       |                                                                          ^
+    183|    false,
+    184|    0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/utils/resource-workers.test.ts > a caller ceiling retains its one-worker limit and full per-worker memory reservation
+AssertionError: expected 3 to be 1 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 3[39m
+
+ ❯ test/utils/resource-workers.test.ts:65:29
+     63|   1
+     64|  );
+     65|  expect(options.maxWorkers).toBe(1);
+       |                             ^
+     66|  expect(options.env?.HARNESS_RESOURCE_CPUS).toBe('1');
+     67|  expect(options.env?.HARNESS_RESOURCE_MEMORY_MIB).toBe('1792');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  7 failed | 12 passed (19)
+   Start at  13:55:33
+   Duration  6.20s (transform 36ms, setup 72ms, collect 15ms, tests 3.93s, environment 0ms, prepare 53ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop
+
+ ❯ test/cli-integration.test.ts (20 tests | 6 failed) 2811ms
+   ✓ Codex initializes subscription RPC, discovers models and confines public turn events 167ms
+   ✓ codex-none refuses text or errors as image success 60ms
+   ✓ codex-error refuses text or errors as image success 58ms
+   ✓ completed image returns PNG bytes and transmits its original local image reference 61ms
+   ✓ Claude uses requested model, project cwd, stdin and subscription-only environment 168ms
+   ✓ codex-mismatch rejects false success 69ms
+   ✓ claude-mismatch rejects false success 64ms
+   ✓ claude-error rejects false success 67ms
+   ✓ codex-hang cancellation kills only the owned process group 117ms
+   ✓ claude-hang cancellation kills only the owned process group 169ms
+   ✓ codex-text waits under memory pressure and queued cancellation launches no provider 61ms
+   ✓ claude-text waits under memory pressure and queued cancellation launches no provider 58ms
+   ✓ 'bun' 'cli' retains fast child results during a +0 ms resource observer 48ms
+   × 'bun' 'cli' retains fast child results during a 150 ms resource observer 1215ms
+     → expected { status: 'rejected', …(1) } to deeply equal { status: 'passed', result: 'out\n' }
+   × 'bun' 'rpc' retains fast child results during a +0 ms resource observer 20ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-aTWZm6/fixture.ts:2:26
+
+   × 'bun' 'rpc' retains fast child results during a 150 ms resource observer 18ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-5DXAd4/fixture.ts:2:26
+
+   ✓ 'node' 'cli' retains fast child results during a +0 ms resource observer 81ms
+   × 'node' 'cli' retains fast child results during a 150 ms resource observer 237ms
+     → node:events:487
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:1025:11)
+    at Socket._write (node:net:1037:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.end (node:internal/streams/writable:821:17)
+    at Socket.end (node:net:796:31)
+    at file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-hvPK1t/fixture.mjs:148:17
+    at new Promise (<anonymous>)
+Emitted 'error' event on Socket instance at:
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  errno: -32,
+  code: 'EPIPE',
+  syscall: 'write'
+}
+
+Node.js v25.9.0
+: expected 1 to be +0 // Object.is equality
+   × 'node' 'rpc' retains fast child results during a +0 ms resource observer 54ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-YKbA1h/fixture.ts:2:26
+
+   × 'node' 'rpc' retains fast child results during a 150 ms resource observer 18ms
+     → 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-QNLdEx/fixture.ts:2:26
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli-integration.test.ts > 'bun' 'cli' retains fast child results during a 150 ms resource observer
+AssertionError: expected { status: 'rejected', …(1) } to deeply equal { status: 'passed', result: 'out\n' }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "result": "out[39m
+[32m- ",[39m
+[32m-   "status": "passed",[39m
+[31m+   "message": "CLI request timed out.",[39m
+[31m+   "status": "rejected",[39m
+[2m  }[22m
+
+ ❯ test/cli-integration.test.ts:151:37
+    149|   expect(result.exit, result.stderr + result.stdout).toBe(0);
+    150|   expect(result.stderr).toBe('');
+    151|   expect(JSON.parse(result.stdout)).toEqual(
+       |                                     ^
+    152|    transport === 'cli'
+    153|     ? { status: 'passed', result: 'out\n' }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  test/cli-integration.test.ts > 'bun' 'rpc' retains fast child results during a +0 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-aTWZm6/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-aTWZm6/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:39:33
+     37|    timeout: 20_000
+     38|   });
+     39|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     40|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     41|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  test/cli-integration.test.ts > 'bun' 'rpc' retains fast child results during a 150 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-5DXAd4/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-5DXAd4/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:39:33
+     37|    timeout: 20_000
+     38|   });
+     39|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     40|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     41|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  test/cli-integration.test.ts > 'node' 'cli' retains fast child results during a 150 ms resource observer
+AssertionError: node:events:487
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:1025:11)
+    at Socket._write (node:net:1037:8)
+    at writeOrBuffer (node:internal/streams/writable:570:12)
+    at _write (node:internal/streams/writable:499:10)
+    at Writable.end (node:internal/streams/writable:821:17)
+    at Socket.end (node:net:796:31)
+    at file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-hvPK1t/fixture.mjs:148:17
+    at new Promise (<anonymous>)
+Emitted 'error' event on Socket instance at:
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  errno: -32,
+  code: 'EPIPE',
+  syscall: 'write'
+}
+
+Node.js v25.9.0
+: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ ../../../harness-provider-exit-hvPK1t/fixture.mjs:148:17
+ ❯ test/cli-integration.test.ts:149:54
+    147|  ({ runtime, transport, delay }) => {
+    148|   const result = observedProviderExit(runtime, transport, delay);
+    149|   expect(result.exit, result.stderr + result.stdout).toBe(0);
+       |                                                      ^
+    150|   expect(result.stderr).toBe('');
+    151|   expect(JSON.parse(result.stdout)).toEqual(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  test/cli-integration.test.ts > 'node' 'rpc' retains fast child results during a +0 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-YKbA1h/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-YKbA1h/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:39:33
+     37|    timeout: 20_000
+     38|   });
+     39|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     40|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     41|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  test/cli-integration.test.ts > 'node' 'rpc' retains fast child results during a 150 ms resource observer
+Error: 2 | import { codexRpc } from "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapsho
+                             ^
+error: Could not resolve: "file:///private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UlhMXO/packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts". Maybe you need to "bun install"?
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-provider-exit-QNLdEx/fixture.ts:2:26
+
+ ❯ ../../../harness-provider-exit-QNLdEx/fixture.ts:2:26
+ ❯ observedProviderExit test/cli-process-fixture.ts:39:33
+     37|    timeout: 20_000
+     38|   });
+     39|   if (built.status !== 0) throw new Error(built.stderr);
+       |                                 ^
+     40|   const ran = spawnSync(runtime, [runtime === 'bun' ? source : bundle]…
+     41|    encoding: 'utf8',
+ ❯ test/cli-integration.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 14 passed (20)
+   Start at  13:55:40
+   Duration  3.26s (transform 185ms, setup 61ms, collect 249ms, tests 2.81s, environment 0ms, prepare 26ms)
+

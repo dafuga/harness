@@ -1,0 +1,36 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [31m❯[39m test/reports-run-pages.e2e.test.ts [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 25[2mms[22m[39m
+   [2m[90m↓[39m[22m a page one run has open keeps what was opened on it when another run starts its servers
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/reports-run-pages.e2e.test.ts[2m [ test/reports-run-pages.e2e.test.ts ][22m
+[31m[1mError[22m: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝[39m
+[36m [2m❯[22m test/reports-run-pages.e2e.test.ts:[2m31:27[22m[39m
+    [90m 29| [39m[34mbeforeAll[39m([35masync[39m () [33m=>[39m {
+    [90m 30| [39m scratch [33m=[39m [35mawait[39m [34mmkdtemp[39m([34mjoin[39m([34mtmpdir[39m()[33m,[39m [32m'harness-run-pages-'[39m))[33m;[39m
+    [90m 31| [39m browser [33m=[39m [35mawait[39m chromium[33m.[39m[34mlaunch[39m()[33m;[39m
+    [90m   | [39m                          [31m^[39m
+    [90m 32| [39m}[33m,[39m [34m60_000[39m)[33m;[39m
+    [90m 33| [39m[34mafterAll[39m([35masync[39m () [33m=>[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [33m1 skipped[39m[90m (1)[39m
+[2m   Start at [22m 16:10:49
+[2m   Duration [22m 689ms[2m (transform 76ms, setup 24ms, collect 374ms, tests 25ms, environment 0ms, prepare 76ms)[22m
+
+
+::error file=/tmp/harness-snapshot-iUpwmz/test/reports-run-pages.e2e.test.ts,title=test/reports-run-pages.e2e.test.ts,line=31,column=27::Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell%0A╔════════════════════════════════════════════════════════════╗%0A║ Looks like Playwright was just installed or updated.       ║%0A║ Please run the following command to download new browsers: ║%0A║                                                            ║%0A║     npx playwright install                                 ║%0A║                                                            ║%0A║ <3 Playwright Team                                         ║%0A╚════════════════════════════════════════════════════════════╝%0A ❯ test/reports-run-pages.e2e.test.ts:31:27%0A%0A⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯%0ASerialized Error: { log: [] }%0A

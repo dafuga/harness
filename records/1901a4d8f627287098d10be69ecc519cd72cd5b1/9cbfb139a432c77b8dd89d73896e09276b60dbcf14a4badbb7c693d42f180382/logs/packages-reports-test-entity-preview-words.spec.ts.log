@@ -1,0 +1,8 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-words.spec.ts:23:1 › a long word in a narrow column of a collection stays whole, and the table scrolls (353ms)
+  ✓  2 test/entity-preview-words.spec.ts:38:1 › a long word in a row of a history stays whole too (232ms)
+  ✓  3 test/entity-preview-words.spec.ts:54:1 › the details of a declared contract say what each item is, and fit a phone (445ms)
+
+  3 passed (4.3s)

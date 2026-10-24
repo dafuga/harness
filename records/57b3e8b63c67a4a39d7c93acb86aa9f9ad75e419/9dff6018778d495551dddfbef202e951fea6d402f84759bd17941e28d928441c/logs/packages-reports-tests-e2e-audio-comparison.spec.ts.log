@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/audio-comparison.spec.ts:22:2 › paired audio compares, seeks and downloads both originals at 1440px (1.9s)
+  ✓  2 tests/e2e/audio-comparison.spec.ts:22:2 › paired audio compares, seeks and downloads both originals at 920px (1.3s)
+  ✓  3 tests/e2e/audio-comparison.spec.ts:22:2 › paired audio compares, seeks and downloads both originals at 390px (1.4s)
+  ✓  4 tests/e2e/audio-comparison.spec.ts:97:1 › a missing Before recording leaves a usable After with independent status (547ms)
+  ✓  5 tests/e2e/audio-comparison.spec.ts:120:1 › the address of a report page leads into the explorer; the report stays in its viewer (685ms)
+
+  5 passed (2.2m)

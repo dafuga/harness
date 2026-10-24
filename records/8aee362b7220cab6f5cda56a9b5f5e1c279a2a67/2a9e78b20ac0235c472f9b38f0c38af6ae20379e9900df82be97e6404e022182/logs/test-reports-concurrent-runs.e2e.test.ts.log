@@ -1,0 +1,30 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW[39m
+
+ [31m❯[39m test/reports-concurrent-runs.e2e.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 182167[2mms[22m[39m
+[31m   [31m×[31m two runs at once each keep their own history, media and results, through the teardown of the other[39m[33m 181938[2mms[22m[39m
+[31m     → Timed out after 180 s waiting for the longer run to seed its history.[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/reports-concurrent-runs.e2e.test.ts[2m > [22mtwo runs at once each keep their own history, media and results, through the teardown of the other
+[31m[1mError[22m: Timed out after 180 s waiting for the longer run to seed its history.[39m
+[36m [2m❯[22m eventually test/support/browserRun.ts:[2m200:8[22m[39m
+    [90m198| [39m  [35mawait[39m [35mnew[39m [33mPromise[39m((done) [33m=>[39m [34msetTimeout[39m(done[33m,[39m [34m500[39m))[33m;[39m
+    [90m199| [39m }
+    [90m200| [39m throw new Error(`Timed out after ${seconds} s waiting for ${wanted}.`…
+    [90m   | [39m       [31m^[39m
+    [90m201| [39m}
+    [90m202| [39m
+[90m [2m❯[22m test/reports-concurrent-runs.e2e.test.ts:[2m73:2[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m   Start at [22m 20:33:06
+[2m   Duration [22m 182.44s[2m (transform 43ms, setup 11ms, collect 40ms, tests 182.17s, environment 0ms, prepare 31ms)[22m
+
+
+::error file=/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/test/support/browserRun.ts,title=test/reports-concurrent-runs.e2e.test.ts > two runs at once each keep their own history%2C media and results%2C through the teardown of the other,line=200,column=8::Error: Timed out after 180 s waiting for the longer run to seed its history.%0A ❯ eventually test/support/browserRun.ts:200:8%0A ❯ test/reports-concurrent-runs.e2e.test.ts:73:2%0A%0A

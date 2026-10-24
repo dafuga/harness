@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/services/project-registry.test.ts (1 test) 2540ms
+   ✓ registered local projects persist distinct IDs and unknown IDs cannot select another root  2540ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  18:26:38
+   Duration  2.99s (transform 148ms, setup 0ms, collect 247ms, tests 2.54s, environment 0ms, prepare 36ms)
+

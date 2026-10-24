@@ -1,0 +1,56 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [14.87s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rt8x1X
+
+ ✓ test/utils/preview-binding.test.ts (6 tests) 209ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  18:25:01
+   Duration  3.88s (transform 134ms, setup 9ms, collect 409ms, tests 209ms, environment 0ms, prepare 41ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rt8x1X/packages/reports
+
+ ✓ test/utils/entity-catalog.test.ts (10 tests) 92ms
+ ✓ test/components/explorer-catalog-screen.test.ts (9 tests) 41ms
+
+ Test Files  2 passed (2)
+      Tests  19 passed (19)
+   Start at  18:25:05
+   Duration  2.18s (transform 1.04s, setup 0ms, collect 1.49s, tests 133ms, environment 0ms, prepare 81ms)
+
+
+Running 3 tests using 1 worker
+
+(node:32566) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-actions.spec.ts:91:2 › component screenshot cards follow the shown revision at desktop width (920ms)
+  ✓  2 test/entity-preview-actions.spec.ts:91:2 › component screenshot cards follow the shown revision at tablet width (582ms)
+  ✓  3 test/entity-preview-actions.spec.ts:91:2 › component screenshot cards follow the shown revision at mobile width (612ms)
+
+  3 passed (5.5s)

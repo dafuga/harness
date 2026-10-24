@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MqQFuY
+
+ ✓ test/verify.e2e.test.ts (4 tests) 10289ms
+   ✓ the fixture baseline verifies clean on an exact commit and tree  1992ms
+   ✓ a shared function change re-verifies its service, page and audio scenarios with fresh evidence  1467ms
+   ✓ each tested revision regenerates evidence even when the bytes are identical  2885ms
+   ✓ scenario contracts list their states, viewports, tests and evidence  546ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  07:38:06
+   Duration  10.52s (transform 39ms, setup 11ms, collect 21ms, tests 10.29s, environment 0ms, prepare 51ms)
+

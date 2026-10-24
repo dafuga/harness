@@ -1,0 +1,479 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [6.35s]
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-PxbY8M
+
+ ❯ test/services/unit-index.test.ts (9 tests | 1 failed) 18ms
+   × recorded source moves retain definitions, owner-local placement and registered identity 9ms
+     → owner-local helper placement: 411 gaps; addComment: owner-local source is missing; commitRecords: owner-local source is missing; createInvitation: owner-local source is missing; acceptInvitation: owner-local source is missing; createProject: owner-local source is missing; removeMember: owner-local source is missing; readRecords: owner-local source is missing; githubCommitFacts: owner-local source is missing; githubGraphql: owner-local source is missing; githubHistory: owner-local source is missing; githubHistoryPage: owner-local source is missing; githubLfs: owner-local source is missing: expected [ …(411) ] to deeply equal []
+   ✓ declared preview and documentation survive source re-indexing 4ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 2ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 0ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 0ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded source moves retain definitions, owner-local placement and registered identity
+AssertionError: owner-local helper placement: 411 gaps; addComment: owner-local source is missing; commitRecords: owner-local source is missing; createInvitation: owner-local source is missing; acceptInvitation: owner-local source is missing; createProject: owner-local source is missing; removeMember: owner-local source is missing; readRecords: owner-local source is missing; githubCommitFacts: owner-local source is missing; githubGraphql: owner-local source is missing; githubHistory: owner-local source is missing; githubHistoryPage: owner-local source is missing; githubLfs: owner-local source is missing: expected [ …(411) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "addComment: owner-local source is missing",[39m
+[31m+   "commitRecords: owner-local source is missing",[39m
+[31m+   "createInvitation: owner-local source is missing",[39m
+[31m+   "acceptInvitation: owner-local source is missing",[39m
+[31m+   "createProject: owner-local source is missing",[39m
+[31m+   "removeMember: owner-local source is missing",[39m
+[31m+   "readRecords: owner-local source is missing",[39m
+[31m+   "githubCommitFacts: owner-local source is missing",[39m
+[31m+   "githubGraphql: owner-local source is missing",[39m
+[31m+   "githubHistory: owner-local source is missing",[39m
+[31m+   "githubHistoryPage: owner-local source is missing",[39m
+[31m+   "githubLfs: owner-local source is missing",[39m
+[31m+   "githubRawMany: owner-local source is missing",[39m
+[31m+   "githubReaches: owner-local source is missing",[39m
+[31m+   "exactRef: owner-local source is missing",[39m
+[31m+   "validateGitHubAnchor: owner-local source is missing",[39m
+[31m+   "approvalMatch: owner-local source is missing",[39m
+[31m+   "artifactBytes: owner-local source is missing",[39m
+[31m+   "artifactMedia: owner-local source is missing",[39m
+[31m+   "brandIcon: owner-local source is missing",[39m
+[31m+   "offlineView: owner-local source is missing",[39m
+[31m+   "forgetShared: owner-local source is missing",[39m
+[31m+   "cachedSnapshot: owner-local source is missing",[39m
+[31m+   "catalogDetail: owner-local source is missing",[39m
+[31m+   "catalogHistory: owner-local source is missing",[39m
+[31m+   "changeExecute: owner-local source is missing",[39m
+[31m+   "recordChange: owner-local source is missing",[39m
+[31m+   "claudeState: owner-local source is missing",[39m
+[31m+   "claudeTurn: owner-local source is missing",[39m
+[31m+   "codexState: owner-local source is missing",[39m
+[31m+   "codexTurn: owner-local source is missing",[39m
+[31m+   "commentEntries: owner-local source is missing",[39m
+[31m+   "threadInfo: owner-local source is missing",[39m
+[31m+   "pendingEntries: owner-local source is missing",[39m
+[31m+   "requestEntry: owner-local source is missing",[39m
+[31m+   "composeModes: owner-local source is missing",[39m
+[31m+   "rememberCreatedThread: owner-local source is missing",[39m
+[31m+   "createdThread: owner-local source is missing",[39m
+[31m+   "designDirections: owner-local source is missing",[39m
+[31m+   "desktopIpc: owner-local source is missing",[39m
+[31m+   "deviceCapabilities: owner-local source is missing",[39m
+[31m+   "entityReferences: owner-local source is missing",[39m
+[31m+   "evidenceVerdict: owner-local source is missing",[39m
+[31m+   "gitBlobs: owner-local source is missing",[39m
+[31m+   "gitFiles: owner-local source is missing",[39m
+[31m+   "historyPages: owner-local source is missing",[39m
+[31m+   "hostedArtifact: owner-local source is missing",[39m
+[31m+   "hostedEvidencePath: owner-local source is missing",[39m
+[31m+   "hostedImage: owner-local source is missing",[39m
+[31m+   "hostedPublicFailure: owner-local source is missing",[39m
+[31m+   "regionField: owner-local source is missing",[39m
+[31m+   "threadPayload: owner-local source is missing",[39m
+[31m+   "creationPayload: owner-local source is missing",[39m
+[31m+   "runPayload: owner-local source is missing",[39m
+[31m+   "planningConvert: owner-local source is missing",[39m
+[31m+   "planningMessage: owner-local source is missing",[39m
+[31m+   "planningReads: owner-local source is missing",[39m
+[31m+   "readPlanMessages: owner-local source is missing",[39m
+[31m+   "readPlanImage: owner-local source is missing",[39m
+[31m+   "readPlanHistory: owner-local source is missing",[39m
+[31m+   "planningWrites: owner-local source is missing",[39m
+[31m+   "ensurePlan: owner-local source is missing",[39m
+[31m+   "addPlanDesign: owner-local source is missing",[39m
+[31m+   "openPlanThread: owner-local source is missing",[39m
+[31m+   "approvePlanDesign: owner-local source is missing",[39m
+[31m+   "prepareProjectRun: owner-local source is missing",[39m
+[31m+   "prepareProjectTask: owner-local source is missing",[39m
+[31m+   "prepareRun: owner-local source is missing",[39m
+[31m+   "priorImage: owner-local source is missing",[39m
+[31m+   "projectCapabilities: owner-local source is missing",[39m
+[31m+   "projectList: owner-local source is missing",[39m
+[31m+   "projectProposal: owner-local source is missing",[39m
+[31m+   "proposalPrompt: owner-local source is missing",[39m
+[31m+   "projectionCacheDiscard: owner-local source is missing",[39m
+[31m+   "projectionCachePurge: owner-local source is missing",[39m
+[31m+   "proposalUnits: owner-local source is missing",[39m
+[31m+   "taskUnits: owner-local source is missing",[39m
+[31m+   "providerModels: owner-local source is missing",[39m
+[31m+   "validateModel: owner-local source is missing",[39m
+[31m+   "publicCliEvents: owner-local source is missing",[39m
+[31m+   "qrSymbol: owner-local source is missing",[39m
+[31m+   "recordedPreview: owner-local source is missing",[39m
+[31m+   "recordedProjection: owner-local source is missing",[39m
+[31m+   "relayFrame: owner-local source is missing",[39m
+[31m+   "remoteArtifact: owner-local source is missing",[39m
+[31m+   "remoteFailureText: owner-local source is missing",[39m
+[31m+   "remoteGrant: owner-local source is missing",[39m
+[31m+   "remoteHostIdentity: owner-local source is missing",[39m
+[31m+   "registerRemoteHost: owner-local source is missing",[39m
+[31m+   "remoteHostStatus: owner-local source is missing",[39m
+[31m+   "relayName: owner-local source is missing",[39m
+[31m+   "timeLeft: owner-local source is missing",[39m
+[31m+   "grantSummary: owner-local source is missing",[39m
+[31m+   "hostLine: owner-local source is missing",[39m
+[31m+   "hostSummary: owner-local source is missing",[39m
+[31m+   "remoteLabels: owner-local source is missing",[39m
+[31m+   "rendererPolicy: owner-local source is missing",[39m
+[31m+   "rendererAssets: owner-local source is missing",[39m
+[31m+   "rpcMessages: owner-local source is missing",[39m
+[31m+   "rpcRequest: owner-local source is missing",[39m
+[31m+   "scanFailure: owner-local source is missing",[39m
+[31m+   "scrubEnvironment: owner-local source is missing",[39m
+[31m+   "shownApproval: owner-local source is missing",[39m
+[31m+   "versionOption: owner-local source is missing",[39m
+[31m+   "otherOption: owner-local source is missing",[39m
+[31m+   "designTarget: owner-local source is missing",[39m
+[31m+   "threadAnchor: owner-local source is missing",[39m
+[31m+   "sameImage: owner-local source is missing",[39m
+[31m+   "trustedSender: owner-local source is missing",[39m
+[31m+   "unitLinks: owner-local source is missing",[39m
+[31m+   "workspaceSearch: owner-local source is missing",[39m
+[31m+   "agentLiveness: owner-local source is missing",[39m
+[31m+   "agentStatement: owner-local source is missing",[39m
+[31m+   "sizeMeasurements: owner-local source is missing",[39m
+[31m+   "benchSamples: owner-local source is missing",[39m
+[31m+   "templateComplexity: owner-local source is missing",[39m
+[31m+   "budgetFindings: owner-local source is missing",[39m
+[31m+   "budgetReviews: owner-local source is missing",[39m
+[31m+   "frozenLimits: owner-local source is missing",[39m
+[31m+   "emittedLimits: owner-local source is missing",[39m
+[31m+   "writtenMessage: owner-local source is missing",[39m
+[31m+   "commitMessage: owner-local source is missing",[39m
+[31m+   "requestDigest: owner-local source is missing",[39m
+[31m+   "comparisonDifferences: owner-local source is missing",[39m
+[31m+   "complexityCoverage: owner-local source is missing",[39m
+[31m+   "consoleAccess: owner-local source is missing",[39m
+[31m+   "consoleDataModules: owner-local source is missing",[39m
+[31m+   "bundledSize: owner-local source is missing",[39m
+[31m+   "consoleHostFiles: owner-local source is missing",[39m
+[31m+   "loopbackAddress: owner-local source is missing",[39m
+[31m+   "consolePolicy: owner-local source is missing",[39m
+[31m+   "consoleRoute: owner-local source is missing",[39m
+[31m+   "consoleRoutePath: owner-local source is missing",[39m
+[31m+   "cpuMetrics: owner-local source is missing",[39m
+[31m+   "cpuProcesses: owner-local source is missing",[39m
+[31m+   "deriveManifest: owner-local source is missing",[39m
+[31m+   "derivedResponsibility: owner-local source is missing",[39m
+[31m+   "evidenceManifest: owner-local source is missing",[39m
+[31m+   "explorerLegacy: owner-local source is missing",[39m
+[31m+   "applyExports: owner-local source is missing",[39m
+[31m+   "appendMissingExports: owner-local source is missing",[39m
+[31m+   "gatewayMessages: owner-local source is missing",[39m
+[31m+   "gatewayOptions: owner-local source is missing",[39m
+[31m+   "gatewayPrompt: owner-local source is missing",[39m
+[31m+   "gatewayReplay: owner-local source is missing",[39m
+[31m+   "gatewayStream: owner-local source is missing",[39m
+[31m+   "gatewayTypes: owner-local source is missing",[39m
+[31m+   "gatherCaptures: owner-local source is missing",[39m
+[31m+   "groupTeardown: owner-local source is missing",[39m
+[31m+   "helperConsumers: owner-local source is missing",[39m
+[31m+   "helperReferences: owner-local source is missing",[39m
+[31m+   "helperTemplates: owner-local source is missing",[39m
+[31m+   "historyRefs: owner-local source is missing",[39m
+[31m+   "unitGrowth: owner-local source is missing",[39m
+[31m+   "historySeries: owner-local source is missing",[39m
+[31m+   "hookScript: owner-local source is missing",[39m
+[31m+   "managedHook: owner-local source is missing",[39m
+[31m+   "impactKernelText: owner-local source is missing",[39m
+[31m+   "impactReport: owner-local source is missing",[39m
+[31m+   "impactSeeds: owner-local source is missing",[39m
+[31m+   "installableHost: owner-local source is missing",[39m
+[31m+   "hostWarnings: owner-local source is missing",[39m
+[31m+   "kernelClosure: owner-local source is missing",[39m
+[31m+   "kernelRequest: owner-local source is missing",[39m
+[31m+   "kernelMutations: owner-local source is missing",[39m
+[31m+   "kernelTexts: owner-local source is missing",[39m
+[31m+   "legacyReport: owner-local source is missing",[39m
+[31m+   "parseLfsPointer: owner-local source is missing",[39m
+[31m+   "lfsAttributes: owner-local source is missing",[39m
+[31m+   "lineProcess: owner-local source is missing",[39m
+[31m+   "loopUsage: owner-local source is missing",[39m
+[31m+   "pngChecksum: owner-local source is missing",[39m
+[31m+   "mediaFacts: owner-local source is missing",[39m
+[31m+   "mediaPlace: owner-local source is missing",[39m
+[31m+   "noteLine: owner-local source is missing",[39m
+[31m+   "noteLines: owner-local source is missing",[39m
+[31m+   "noteCommit: owner-local source is missing",[39m
+[31m+   "mergeNoteLines: owner-local source is missing",[39m
+[31m+   "peakMemory: owner-local source is missing",[39m
+[31m+   "pickerPaths: owner-local source is missing",[39m
+[31m+   "pinnedToolchain: owner-local source is missing",[39m
+[31m+   "planningArtifactPaths: owner-local source is missing",[39m
+[31m+   "stillPrivate: owner-local source is missing",[39m
+[31m+   "detectProjectKind: owner-local source is missing",[39m
+[31m+   "projectActivity: owner-local source is missing",[39m
+[31m+   "pushedRefs: owner-local source is missing",[39m
+[31m+   "readBrowserDiagnostics: owner-local source is missing",[39m
+[31m+   "evidenceRequested: owner-local source is missing",[39m
+[31m+   "recordedBuilds: owner-local source is missing",[39m
+[31m+   "regressionTestCommit: owner-local source is missing",[39m
+[31m+   "reportsEnvironment: owner-local source is missing",[39m
+[31m+   "sameRepository: owner-local source is missing",[39m
+[31m+   "presentUnits: owner-local source is missing",[39m
+[31m+   "revisionChanges: owner-local source is missing",[39m
+[31m+   "scanComponent: owner-local source is missing",[39m
+[31m+   "scanImports: owner-local source is missing",[39m
+[31m+   "scenarioCoverage: owner-local source is missing",[39m
+[31m+   "recordComponents: owner-local source is missing",[39m
+[31m+   "benchmarkMeasurements: owner-local source is missing",[39m
+[31m+   "referencedScenario: owner-local source is missing",[39m
+[31m+   "haltProcesses: owner-local source is missing",[39m
+[31m+   "settleProcesses: owner-local source is missing",[39m
+[31m+   "settlementReport: owner-local source is missing",[39m
+[31m+   "storedSide: owner-local source is missing",[39m
+[31m+   "sideImpact: owner-local source is missing",[39m
+[31m+   "declaredOutput: owner-local source is missing",[39m
+[31m+   "snapshotAdditions: owner-local source is missing",[39m
+[31m+   "sourceBlocks: owner-local source is missing",[39m
+[31m+   "sourceBranches: owner-local source is missing",[39m
+[31m+   "statementEnd: owner-local source is missing",[39m
+[31m+   "treeChanges: owner-local source is missing",[39m
+[31m+   "unitDocumentation: owner-local source is missing",[39m
+[31m+   "hydrateUnitDocumentation: owner-local source is missing",[39m
+[31m+   "unitIdentity: owner-local source is missing",[39m
+[31m+   "unitLineage: owner-local source is missing",[39m
+[31m+   "unitMetadata: owner-local source is missing",[39m
+[31m+   "validateProjectName: owner-local source is missing",[39m
+[31m+   "validateFieldName: owner-local source is missing",[39m
+[31m+   "validateKebabName: owner-local source is missing",[39m
+[31m+   "verifyPlan: owner-local source is missing",[39m
+[31m+   "writingPolicy: owner-local source is missing",[39m
+[31m+   "writingDeclared: owner-local source is missing",[39m
+[31m+   "authConfig: owner-local source is missing",[39m
+[31m+   "authDisabled: owner-local source is missing",[39m
+[31m+   "authRedirect: owner-local source is missing",[39m
+[31m+   "sameOrigin: owner-local source is missing",[39m
+[31m+   "bearerToken: owner-local source is missing",[39m
+[31m+   "authSecrets: owner-local source is missing",[39m
+[31m+   "userCode: owner-local source is missing",[39m
+[31m+   "normalizeCode: owner-local source is missing",[39m
+[31m+   "emailCode: owner-local source is missing",[39m
+[31m+   "browserApi: owner-local source is missing",[39m
+[31m+   "browserArtifact: owner-local source is missing",[39m
+[31m+   "provideBrowser: owner-local source is missing",[39m
+[31m+   "browserEvidenceReads: owner-local source is missing",[39m
+[31m+   "invitationLink: owner-local source is missing",[39m
+[31m+   "browserProjects: owner-local source is missing",[39m
+[31m+   "composeHubAuth: owner-local source is missing",[39m
+[31m+   "d1CredentialStores: owner-local source is missing",[39m
+[31m+   "d1EmailStores: owner-local source is missing",[39m
+[31m+   "d1GrantStore: owner-local source is missing",[39m
+[31m+   "d1OneTimeStores: owner-local source is missing",[39m
+[31m+   "githubAppKey: owner-local source is missing",[39m
+[31m+   "githubAppJwt: owner-local source is missing",[39m
+[31m+   "googleButton: owner-local source is missing",[39m
+[31m+   "hubApproval: owner-local source is missing",[39m
+[31m+   "hubArtifactCommit: owner-local source is missing",[39m
+[31m+   "hubAttachedRecord: owner-local source is missing",[39m
+[31m+   "hubBodyBytes: owner-local source is missing",[39m
+[31m+   "hubCache: owner-local source is missing",[39m
+[31m+   "hubRelationships: owner-local source is missing",[39m
+[31m+   "hubDesigns: owner-local source is missing",[39m
+[31m+   "hubDesignImage: owner-local source is missing",[39m
+[31m+   "hubEntity: owner-local source is missing",[39m
+[31m+   "hubEntityContract: owner-local source is missing",[39m
+[31m+   "hubEvidenceFile: owner-local source is missing",[39m
+[31m+   "hubEvidenceQuery: owner-local source is missing",[39m
+[31m+   "hubArtifactQuery: owner-local source is missing",[39m
+[31m+   "hubEvidenceRead: owner-local source is missing",[39m
+[31m+   "hubEvidenceRegistry: owner-local source is missing",[39m
+[31m+   "hubEvidenceContext: owner-local source is missing",[39m
+[31m+   "hubEvidencePins: owner-local source is missing",[39m
+[31m+   "hubEvidenceScope: owner-local source is missing",[39m
+[31m+   "hubEvidenceViews: owner-local source is missing",[39m
+[31m+   "hubQuery: owner-local source is missing",[39m
+[31m+   "hubHttpFailure: owner-local source is missing",[39m
+[31m+   "hubMetadataPaths: owner-local source is missing",[39m
+[31m+   "hubNotes: owner-local source is missing",[39m
+[31m+   "hubOptions: owner-local source is missing",[39m
+[31m+   "hubImageOption: owner-local source is missing",[39m
+[31m+   "hubOptionInfos: owner-local source is missing",[39m
+[31m+   "hubRevision: owner-local source is missing",[39m
+[31m+   "hubEvidencePath: owner-local source is missing",[39m
+[31m+   "hubPlanRecord: owner-local source is missing",[39m
+[31m+   "hubPng: owner-local source is missing",[39m
+[31m+   "hubPngChunks: owner-local source is missing",[39m
+[31m+   "hubRateLimit: owner-local source is missing",[39m
+[31m+   "hubRemote: owner-local source is missing",[39m
+[31m+   "hubRuntime: owner-local source is missing",[39m
+[31m+   "hubSize: owner-local source is missing",[39m
+[31m+   "hubSnapshot: owner-local source is missing",[39m
+[31m+   "hubMessages: owner-local source is missing",[39m
+[31m+   "nativeScope: owner-local source is missing",[39m
+[31m+   "planCommit: owner-local source is missing",[39m
+[31m+   "requireLfsFilters: owner-local source is missing",[39m
+[31m+   "planDesign: owner-local source is missing",[39m
+[31m+   "approve: owner-local source is missing",[39m
+[31m+   "planGit: owner-local source is missing",[39m
+[31m+   "containing: owner-local source is missing",[39m
+[31m+   "planHistory: owner-local source is missing",[39m
+[31m+   "validateIdentity: owner-local source is missing",[39m
+[31m+   "planOptions: owner-local source is missing",[39m
+[31m+   "checkOptions: owner-local source is missing",[39m
+[31m+   "heldBy: owner-local source is missing",[39m
+[31m+   "planReads: owner-local source is missing",[39m
+[31m+   "planRegistry: owner-local source is missing",[39m
+[31m+   "planThread: owner-local source is missing",[39m
+[31m+   "append: owner-local source is missing",[39m
+[31m+   "version: owner-local source is missing",[39m
+[31m+   "planWrite: owner-local source is missing",[39m
+[31m+   "frameTooLarge: owner-local source is missing",[39m
+[31m+   "pairingOffer: owner-local source is missing",[39m
+[31m+   "readPairingOffer: owner-local source is missing",[39m
+[31m+   "stableJson: owner-local source is missing",[39m
+[31m+   "pairingCode: owner-local source is missing",[39m
+[31m+   "requestDigest: owner-local source is missing",[39m
+[31m+   "sealPacket: owner-local source is missing",[39m
+[31m+   "openPacket: owner-local source is missing",[39m
+[31m+   "sessionKeys: owner-local source is missing",[39m
+[31m+   "wireDispatch: owner-local source is missing",[39m
+[31m+   "activityClient: owner-local source is missing",[39m
+[31m+   "commitHref: owner-local source is missing",[39m
+[31m+   "activityDisplay: owner-local source is missing",[39m
+[31m+   "activityReading: owner-local source is missing",[39m
+[31m+   "analyticsCpuClient: owner-local source is missing",[39m
+[31m+   "artifactCases: owner-local source is missing",[39m
+[31m+   "browserErrorRows: owner-local source is missing",[39m
+[31m+   "consoleExport: owner-local source is missing",[39m
+[31m+   "consoleDirectory: owner-local source is missing",[39m
+[31m+   "typeLabel: owner-local source is missing",[39m
+[31m+   "contractFields: owner-local source is missing",[39m
+[31m+   "contractFacts: owner-local source is missing",[39m
+[31m+   "e2eFixtures: owner-local source is missing",[39m
+[31m+   "freePorts: owner-local source is missing",[39m
+[31m+   "catalogFilter: owner-local source is missing",[39m
+[31m+   "requiredStates: owner-local source is missing",[39m
+[31m+   "entityContract: owner-local source is missing",[39m
+[31m+   "historyVerdict: owner-local source is missing",[39m
+[31m+   "historyListed: owner-local source is missing",[39m
+[31m+   "entityHistory: owner-local source is missing",[39m
+[31m+   "historyProfiles: owner-local source is missing",[39m
+[31m+   "reviewChanges: owner-local source is missing",[39m
+[31m+   "entityMeasure: owner-local source is missing",[39m
+[31m+   "reasonsTried: owner-local source is missing",[39m
+[31m+   "reasonUses: owner-local source is missing",[39m
+[31m+   "entityRemoved: owner-local source is missing",[39m
+[31m+   "entitySearch: owner-local source is missing",[39m
+[31m+   "entityShown: owner-local source is missing",[39m
+[31m+   "entityUsage: owner-local source is missing",[39m
+[31m+   "artifactBehavior: owner-local source is missing",[39m
+[31m+   "explorerArtifact: owner-local source is missing",[39m
+[31m+   "coverageAffected: owner-local source is missing",[39m
+[31m+   "explorerCoverage: owner-local source is missing",[39m
+[31m+   "historyDetail: owner-local source is missing",[39m
+[31m+   "artifactDifferences: owner-local source is missing",[39m
+[31m+   "explorerScope: owner-local source is missing",[39m
+[31m+   "captureUnbound: owner-local source is missing",[39m
+[31m+   "explorerState: owner-local source is missing",[39m
+[31m+   "focusView: owner-local source is missing",[39m
+[31m+   "focusOn: owner-local source is missing",[39m
+[31m+   "zoomView: owner-local source is missing",[39m
+[31m+   "panView: owner-local source is missing",[39m
+[31m+   "drawnEdges: owner-local source is missing",[39m
+[31m+   "nextNode: owner-local source is missing",[39m
+[31m+   "harnessAncestry: owner-local source is missing",[39m
+[31m+   "branchCommits: owner-local source is missing",[39m
+[31m+   "revisionLabel: owner-local source is missing",[39m
+[31m+   "comparisonChoices: owner-local source is missing",[39m
+[31m+   "harnessComparison: owner-local source is missing",[39m
+[31m+   "emittedChange: owner-local source is missing",[39m
+[31m+   "emittedTargets: owner-local source is missing",[39m
+[31m+   "harnessEmittedGrowth: owner-local source is missing",[39m
+[31m+   "harnessReport: owner-local source is missing",[39m
+[31m+   "harnessFailures: owner-local source is missing",[39m
+[31m+   "harnessGrowth: owner-local source is missing",[39m
+[31m+   "unitTimings: owner-local source is missing",[39m
+[31m+   "harnessImpact: owner-local source is missing",[39m
+[31m+   "comparedSides: owner-local source is missing",[39m
+[31m+   "mapColumns: owner-local source is missing",[39m
+[31m+   "harnessLayout: owner-local source is missing",[39m
+[31m+   "homePath: owner-local source is missing",[39m
+[31m+   "harnessShell: owner-local source is missing",[39m
+[31m+   "legacyLink: owner-local source is missing",[39m
+[31m+   "legacyEvidence: owner-local source is missing",[39m
+[31m+   "navbarSearch: owner-local source is missing",[39m
+[31m+   "portablePage: owner-local source is missing",[39m
+[31m+   "closePreviewSessions: owner-local source is missing",[39m
+[31m+   "previewHealth: owner-local source is missing",[39m
+[31m+   "readPreviewHealth: owner-local source is missing",[39m
+[31m+   "previewOwner: owner-local source is missing",[39m
+[31m+   "providerPickerClient: owner-local source is missing",[39m
+[31m+   "recordedValue: owner-local source is missing",[39m
+[31m+   "replayStart: owner-local source is missing",[39m
+[31m+   "replayLocale: owner-local source is missing",[39m
+[31m+   "replayVideo: owner-local source is missing",[39m
+[31m+   "reportAssets: owner-local source is missing",[39m
+[31m+   "reportCleanupLog: owner-local source is missing",[39m
+[31m+   "reportCli: owner-local source is missing",[39m
+[31m+   "inputData: owner-local source is missing",[39m
+[31m+   "required: owner-local source is missing",[39m
+[31m+   "reportDestination: owner-local source is missing",[39m
+[31m+   "reportDisplay: owner-local source is missing",[39m
+[31m+   "dateLabel: owner-local source is missing",[39m
+[31m+   "reportFiles: owner-local source is missing",[39m
+[31m+   "reportFilter: owner-local source is missing",[39m
+[31m+   "reportHttp: owner-local source is missing",[39m
+[31m+   "reportFile: owner-local source is missing",[39m
+[31m+   "reportIngest: owner-local source is missing",[39m
+[31m+   "reportLocalCleanup: owner-local source is missing",[39m
+[31m+   "reportPages: owner-local source is missing",[39m
+[31m+   "reportPdf: owner-local source is missing",[39m
+[31m+   "reportPublication: owner-local source is missing",[39m
+[31m+   "reportPublicationVerify: owner-local source is missing",[39m
+[31m+   "stopReportServer: owner-local source is missing",[39m
+[31m+   "reportState: owner-local source is missing",[39m
+[31m+   "siteActivity: owner-local source is missing",[39m
+[31m+   "siteProcesses: owner-local source is missing",[39m
+[31m+   "tooltipPlace: owner-local source is missing",[39m
+[31m+   "imageAnchor: owner-local source is missing",[39m
+[31m+   "keepPointerInPlace: owner-local source is missing",[39m
+[31m+   "wavInfo: owner-local source is missing",[39m
+[31m+ ][39m
+
+ ❯ test/services/unit-index.test.ts:72:4
+     70|   gaps,
+     71|   `owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, …
+     72|  ).toEqual([]);
+       |    ^
+     73| });
+     74| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  19:05:55
+   Duration  2.42s (transform 61ms, setup 5ms, collect 240ms, tests 18ms, environment 0ms, prepare 24ms)
+

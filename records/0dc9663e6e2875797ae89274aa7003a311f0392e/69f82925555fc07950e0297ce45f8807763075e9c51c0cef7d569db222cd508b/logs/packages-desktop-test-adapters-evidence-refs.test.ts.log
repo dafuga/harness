@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ljai0H/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/adapters/evidence-refs.test.ts (3 tests) 3711ms
+   ✓ a repository without notes or evidence is pinned to none of either  1353ms
+   ✓ the refs are pinned to their commits, and an earlier commit of each stays readable  1178ms
+   ✓ a revision its ref never held, or none where there is one, is refused  1179ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  00:26:50
+   Duration  4.04s (transform 107ms, setup 0ms, collect 174ms, tests 3.71s, environment 0ms, prepare 26ms)
+

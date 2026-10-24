@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+ ✓ test/cli-integration.test.ts (10 tests) 7423ms
+   ✓ Codex initializes subscription RPC, discovers models and confines public turn events  2097ms
+   ✓ codex-error refuses text or errors as image success  539ms
+   ✓ completed image returns PNG bytes and transmits its original local image reference  446ms
+   ✓ Claude uses requested model, project cwd, stdin and subscription-only environment  1472ms
+   ✓ codex-mismatch rejects false success  394ms
+   ✓ claude-mismatch rejects false success  415ms
+   ✓ claude-error rejects false success  382ms
+   ✓ codex-hang cancellation kills only the owned process group  883ms
+   ✓ claude-hang cancellation kills only the owned process group  517ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  12:03:44
+   Duration  12.10s (transform 1.50s, setup 0ms, collect 2.37s, tests 7.42s, environment 0ms, prepare 514ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-rmNYR4/report.json

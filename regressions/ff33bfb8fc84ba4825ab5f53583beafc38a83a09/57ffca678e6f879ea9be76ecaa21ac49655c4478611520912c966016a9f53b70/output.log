@@ -1,0 +1,27 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [184.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-7fGKsb/packages/reports
+
+ ✓ test/utils/explorer-registry.test.ts (5 tests) 25ms
+ ✓ test/utils/explorer-evidence.test.ts (8 tests) 3ms
+ ✓ test/utils/explorer-drawn.test.ts (9 tests) 4ms
+ ✓ test/utils/explorer-applicable.test.ts (4 tests) 18ms
+ ✓ test/utils/explorer-evidence-pairs.test.ts (3 tests) 3ms
+
+ Test Files  5 passed (5)
+      Tests  29 passed (29)
+   Start at  02:02:44
+   Duration  857ms (transform 80ms, setup 0ms, collect 194ms, tests 53ms, environment 0ms, prepare 116ms)
+
+
+Running 3 tests using 1 worker
+
+(node:23051) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-captures.spec.ts:20:1 › preview captures retain decoded pixels and measured workloads with their served identity (480ms)
+  ✓  2 test/entity-preview-captures.spec.ts:75:1 › screenshots use their capture commit and comparisons show their paired revisions (698ms)
+  ✓  3 test/entity-preview-captures.spec.ts:122:1 › legacy device-qualified captures remain selectable without changing their origin (616ms)
+
+  3 passed (4.1s)

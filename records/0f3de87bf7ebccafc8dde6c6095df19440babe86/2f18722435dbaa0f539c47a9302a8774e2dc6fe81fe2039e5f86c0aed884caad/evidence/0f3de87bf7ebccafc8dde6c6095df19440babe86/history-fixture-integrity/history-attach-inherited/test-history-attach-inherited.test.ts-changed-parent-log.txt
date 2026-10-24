@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2
+
+ ✓ test/history-attach-inherited.test.ts (3 tests) 49040ms
+   ✓ a changed test log of an attached parent refuses its child  14889ms
+   ✓ a changed test log of an attached grandparent refuses its grandchild  19011ms
+   ✓ a changed capture of an attached parent refuses its child  15138ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  12:21:16
+   Duration  49.46s (transform 69ms, setup 19ms, collect 74ms, tests 49.04s, environment 0ms, prepare 66ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-9bm5A0/report.json

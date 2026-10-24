@@ -1,0 +1,887 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [17.42s]
+$ bun scripts/build-kernel.ts
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling syn v3.0.7
+   Compiling serde_derive v1.0.229
+   Compiling impact-kernel v0.1.0 (/private/tmp/harness-snapshot-wTijLn/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 15.92s
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling impact-kernel v0.1.0 (/private/tmp/harness-snapshot-wTijLn/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 5.78s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-wTijLn
+
+ ❯ test/loop.e2e.test.ts (6 tests | 3 failed) 25925ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  3464ms
+   ✓ generated app and lib instructions mention harness loops  1031ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  2123ms
+   × bug-fix CLI records proof and leaves verification pending across failed and passing checks 7882ms
+     → focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+   × fix CLI records proof and leaves verification pending across failed and passing checks 6219ms
+     → focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+   × regression-prevention CLI records proof and leaves verification pending across failed and passing checks 5205ms
+     → focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/loop.e2e.test.ts > bug-fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+AssertionError: focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+
+[32m- Expected:[39m 
+ObjectContaining {
+  "capture": ObjectContaining {
+    "kind": "screenshot",
+    "sha256": Any<String>,
+    "viewport": "desktop",
+  },
+  "unit": "page.sample",
+}
+
+[31m+ Received:[39m 
+[]
+
+ ❯ phaseProof test/support/loopRepair.ts:148:4
+    146|   saved.captures ?? [],
+    147|   'focused screenshots survive the committed checkpoint'
+    148|  ).toContainEqual(
+       |    ^
+    149|   expect.objectContaining({
+    150|    unit: 'page.sample',
+ ❯ exerciseRepair test/support/loopRepair.ts:49:4
+ ❯ test/loop.e2e.test.ts:116:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 3 passed (6)
+   Start at  10:10:17
+   Duration  29.71s (transform 93ms, setup 8ms, collect 170ms, tests 25.93s, environment 0ms, prepare 44ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-wTijLn/packages/reports
+
+ ❯ test/components/entity-overview.test.ts (11 tests | 2 failed) 33ms
+   × an overview groups size and timings in Performance profile, with no source 12ms
+     → expected ' Performance profile Source size 800 …' to contain 'Latency 0.12 ms'
+   ✓ a page at a selected commit shows the parent and the commit for one state and viewport 3ms
+   ✓ a page at the branch tip shows exactly one screenshot and no before or after 1ms
+   × a side with no capture of the state is a stated gap, never the other side picture 3ms
+     → focused screenshots display without a full verification record: expected [] to deeply equal [ 'aaaaaaa-default-desktop.png', …(1) ]
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 1ms
+   ✓ a page lists its components as components, each a link in the same scope 1ms
+   ✓ a function at a selected commit shows its end-to-end results before and after 2ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 2ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 1ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 1ms
+   ✓ contract and details list required states without an overview selector 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-overview.test.ts > an overview groups size and timings in Performance profile, with no source
+AssertionError: expected ' Performance profile Source size 800 …' to contain 'Latency 0.12 ms'
+
+Expected: [32m"Latency 0.12 ms"[39m
+Received: [31m" Performance profile Source size 800 B Complexity Not measured Workload thousand orders Environment bun-reference p95 ms 0.12 ms Tolerance 5% "[39m
+
+ ❯ test/components/entity-overview.test.ts:18:30
+     16|  expect(profile).not.toBeNull();
+     17|  for (const label of ['Source size 800 B', 'Complexity', 'Latency 0.12…
+     18|   expect(words(profile![1])).toContain(label);
+       |                              ^
+     19|  expect(words(profile![1])).not.toContain('Emitted size');
+     20|  expect(body).not.toContain('aria-label="Contract"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/entity-overview.test.ts > a side with no capture of the state is a stated gap, never the other side picture
+AssertionError: focused screenshots display without a full verification record: expected [] to deeply equal [ 'aaaaaaa-default-desktop.png', …(1) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "aaaaaaa-default-desktop.png",[39m
+[32m-   "bbbbbbb-default-desktop.png",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/components/entity-overview.test.ts:75:91
+     73|   parent: withFocused(parent)
+     74|  });
+     75|  expect(shots(focused), 'focused screenshots display without a full ve…
+       |                                                                                           ^
+     76|   'aaaaaaa-default-desktop.png',
+     77|   'bbbbbbb-default-desktop.png'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  10:10:47
+   Duration  1.31s (transform 776ms, setup 0ms, collect 1.08s, tests 33ms, environment 0ms, prepare 36ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (30.0s)
+  ✘  2 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (30.0s)
+  ✘  3 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (30.0s)
+
+
+  1) test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+
+    Error: overview performance has no table
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Performance profile' }).getByRole('table')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - overview performance has no table getByRole('region', { name: 'Performance profile' }).getByRole('table') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' }).getByRole('table')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:152
+
+      150 | export async function reviewScalarMeasurements(page: Page): Promise<void> {
+      151 | 	const profile = page.getByRole('region', { name: 'Performance profile' });
+    > 152 | 	await expect.soft(profile.getByRole('table'), 'overview performance has no table').toHaveCount(0);
+          | 	                                                                                   ^
+      153 | 	const rows = await profile
+      154 | 		.locator('dl > div')
+      155 | 		.evaluateAll((items) =>
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:152:85)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:8)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one latency value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0.12 ms"
+    Received: undefined
+
+       at entityPreviewOverview.ts:163
+
+      161 | 			)
+      162 | 		);
+    > 163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+          | 	                                               ^
+      164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+      165 | 	await reviewProfileRows(page);
+      166 | }
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:163:49)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one memory value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "93 MB"
+    Received: undefined
+
+       at entityPreviewOverview.ts:164
+
+      162 | 		);
+      163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+    > 164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+          | 	                                             ^
+      165 | 	await reviewProfileRows(page);
+      166 | }
+      167 |
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:164:47)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: focused screenshots appear on both committed sides
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - focused screenshots appear on both committed sides locator('section[aria-labelledby="ex-screens-title"]').getByRole('img') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:133
+
+      131 | 	await expect
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+    > 133 | 		.toHaveCount(2);
+          | 		 ^
+      134 | 	await expect.soft(panel).toContainText('Focused capture');
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:133:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: "Focused capture"
+    Received string:    "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:134
+
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      133 | 		.toHaveCount(2);
+    > 134 | 	await expect.soft(panel).toContainText('Focused capture');
+          | 	                         ^
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:134:27)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-desktop.png$/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: every viewport has a capture
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - every viewport has a capture locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true }) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:137
+
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+    > 137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+          | 		                                                          ^
+      138 | 		if (await button.count()) {
+      139 | 			await button.click();
+      140 | 			await expect
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:137:61)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-mobile.png$/
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: locator.all: Target page, context or browser has been closed
+
+       at entityPreviewOverview.ts:143
+
+      141 | 				.soft(panel.locator('img').last())
+      142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+    > 143 | 			for (const image of await panel.getByRole('img').all())
+          | 			                                                 ^
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+      146 | 	}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:143:53)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/error-context.md
+
+  2) test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+
+    Error: overview performance has no table
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Performance profile' }).getByRole('table')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - overview performance has no table getByRole('region', { name: 'Performance profile' }).getByRole('table') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' }).getByRole('table')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:152
+
+      150 | export async function reviewScalarMeasurements(page: Page): Promise<void> {
+      151 | 	const profile = page.getByRole('region', { name: 'Performance profile' });
+    > 152 | 	await expect.soft(profile.getByRole('table'), 'overview performance has no table').toHaveCount(0);
+          | 	                                                                                   ^
+      153 | 	const rows = await profile
+      154 | 		.locator('dl > div')
+      155 | 		.evaluateAll((items) =>
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:152:85)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:8)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one latency value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0.12 ms"
+    Received: undefined
+
+       at entityPreviewOverview.ts:163
+
+      161 | 			)
+      162 | 		);
+    > 163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+          | 	                                               ^
+      164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+      165 | 	await reviewProfileRows(page);
+      166 | }
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:163:49)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one memory value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "93 MB"
+    Received: undefined
+
+       at entityPreviewOverview.ts:164
+
+      162 | 		);
+      163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+    > 164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+          | 	                                             ^
+      165 | 	await reviewProfileRows(page);
+      166 | }
+      167 |
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:164:47)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: focused screenshots appear on both committed sides
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - focused screenshots appear on both committed sides locator('section[aria-labelledby="ex-screens-title"]').getByRole('img') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:133
+
+      131 | 	await expect
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+    > 133 | 		.toHaveCount(2);
+          | 		 ^
+      134 | 	await expect.soft(panel).toContainText('Focused capture');
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:133:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: "Focused capture"
+    Received string:    "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:134
+
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      133 | 		.toHaveCount(2);
+    > 134 | 	await expect.soft(panel).toContainText('Focused capture');
+          | 	                         ^
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:134:27)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-desktop.png$/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: every viewport has a capture
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - every viewport has a capture locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true }) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:137
+
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+    > 137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+          | 		                                                          ^
+      138 | 		if (await button.count()) {
+      139 | 			await button.click();
+      140 | 			await expect
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:137:61)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-mobile.png$/
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: locator.all: Target page, context or browser has been closed
+
+       at entityPreviewOverview.ts:143
+
+      141 | 				.soft(panel.locator('img').last())
+      142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+    > 143 | 			for (const image of await panel.getByRole('img').all())
+          | 			                                                 ^
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+      146 | 	}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:143:53)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/error-context.md
+
+  3) test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+
+    Error: overview performance has no table
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Performance profile' }).getByRole('table')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - overview performance has no table getByRole('region', { name: 'Performance profile' }).getByRole('table') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' }).getByRole('table')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:152
+
+      150 | export async function reviewScalarMeasurements(page: Page): Promise<void> {
+      151 | 	const profile = page.getByRole('region', { name: 'Performance profile' });
+    > 152 | 	await expect.soft(profile.getByRole('table'), 'overview performance has no table').toHaveCount(0);
+          | 	                                                                                   ^
+      153 | 	const rows = await profile
+      154 | 		.locator('dl > div')
+      155 | 		.evaluateAll((items) =>
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:152:85)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:8)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one latency value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0.12 ms"
+    Received: undefined
+
+       at entityPreviewOverview.ts:163
+
+      161 | 			)
+      162 | 		);
+    > 163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+          | 	                                               ^
+      164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+      165 | 	await reviewProfileRows(page);
+      166 | }
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:163:49)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one memory value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "93 MB"
+    Received: undefined
+
+       at entityPreviewOverview.ts:164
+
+      162 | 		);
+      163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+    > 164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+          | 	                                             ^
+      165 | 	await reviewProfileRows(page);
+      166 | }
+      167 |
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:164:47)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: focused screenshots appear on both committed sides
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - focused screenshots appear on both committed sides locator('section[aria-labelledby="ex-screens-title"]').getByRole('img') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:133
+
+      131 | 	await expect
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+    > 133 | 		.toHaveCount(2);
+          | 		 ^
+      134 | 	await expect.soft(panel).toContainText('Focused capture');
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:133:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: "Focused capture"
+    Received string:    "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:134
+
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      133 | 		.toHaveCount(2);
+    > 134 | 	await expect.soft(panel).toContainText('Focused capture');
+          | 	                         ^
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:134:27)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-desktop.png$/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: every viewport has a capture
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - every viewport has a capture locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true }) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:137
+
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+    > 137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+          | 		                                                          ^
+      138 | 		if (await button.count()) {
+      139 | 			await button.click();
+      140 | 			await expect
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:137:61)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-mobile.png$/
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: locator.all: Target page, context or browser has been closed
+
+       at entityPreviewOverview.ts:143
+
+      141 | 				.soft(panel.locator('img').last())
+      142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+    > 143 | 			for (const image of await panel.getByRole('img').all())
+          | 			                                                 ^
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+      146 | 	}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewOverview.ts:143:53)
+        at reviewMeasurements (/private/tmp/harness-snapshot-wTijLn/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-wTijLn/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/error-context.md
+
+  3 failed
+    test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+[WebServer] $ vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at desktop width (5.7s)
+  ✓  2 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at tablet width (5.3s)
+  ✓  3 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at mobile width (5.3s)
+
+  3 passed (2.5m)

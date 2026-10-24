@@ -1,0 +1,103 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [11.66s]
+$ vitest run test/utils/explorer-category.test.ts test/components/entity-relations.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OTfjgr/packages/reports
+
+ ❯ test/utils/explorer-category.test.ts (13 tests | 1 failed) 182ms
+   ✓ compatibility details routes are nonvisual: pages 1ms
+   ✓ compatibility details routes are nonvisual: shells 0ms
+   ✓ compatibility details routes are nonvisual: components 0ms
+   ✓ compatibility details routes are nonvisual: functions 0ms
+   ✓ compatibility details routes are nonvisual: configs 0ms
+   ✓ compatibility details routes are nonvisual: services 0ms
+   ✓ compatibility details routes are nonvisual: models 0ms
+   × a unit of a product kind is listed under the category of that kind 3ms
+     → Type collections are not data models: expected 'models' to be null
+   ✓ a page is what renders an address, whatever kind it was registered as 0ms
+   ✓ what is not one of the five product kinds has no category and says what it is 1ms
+   ✓ a unit inside a category says its role in a word a reader knows 0ms
+   ✓ the policy holds for Harness's own registry 177ms
+   ✓ only explicitly pure functions with distinct runtime consumers are helpers 0ms
+ ❯ test/components/entity-relations.test.ts (5 tests | 1 failed) 52ms
+   ✓ component cards have identical content in catalogs and every relationship host 27ms
+   ✓ what an entity uses is one section of kinds of their own, and what uses it is another 5ms
+   ✓ each related entity is a link to it in the same branch and commit 14ms
+   ✓ a page leads to its components and a component to the components inside it 1ms
+   × page models include models reached through services and remain bound to the revision 4ms
+     → expected [ 'app.model.order', …(1) ] to deeply equal [ 'app.model.order' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-relations.test.ts > page models include models reached through services and remain bound to the revision
+AssertionError: expected [ 'app.model.order', …(1) ] to deeply equal [ 'app.model.order' ]
+
+- Expected
++ Received
+
+  [
+    "app.model.order",
++   "app.model.order-types",
+  ]
+
+ ❯ test/components/entity-relations.test.ts:131:52
+    129|   store.dependencies.push({ unit: 'app.model.retired', via: 'import' }…
+    130|   const relations = explorerRelations(head, ids.page);
+    131|   expect(relations.models?.map((item) => item.id)).toEqual(['app.model…
+       |                                                    ^
+    132|   const body = content(
+    133|    'current',
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/components/entity-relations.test.ts:122:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/utils/explorer-category.test.ts > a unit of a product kind is listed under the category of that kind
+AssertionError: Type collections are not data models: expected 'models' to be null
+
+- Expected: 
+null
+
++ Received: 
+"models"
+
+ ❯ test/utils/explorer-category.test.ts:32:75
+     30|  for (const source of [['src/models/Order.types.ts'], ['src/models/dom…
+     31|   const types = owning('model.order-types', 'model', source);
+     32|   expect(explorerCategory(types), 'Type collections are not data model…
+       |                                                                           ^
+     33|   expect(explorerRole(types)).toBe('Type definitions');
+     34|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 16 passed (18)
+   Start at  21:43:49
+   Duration  2.13s (transform 993ms, setup 0ms, collect 1.48s, tests 234ms, environment 0ms, prepare 67ms)
+
+error: script "test:unit" exited with code 1

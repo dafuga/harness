@@ -1,0 +1,41 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ygLrRN
+
+ ❯ test/pieces.test.ts (6 tests | 2 failed | 4 skipped) 76ms
+   × every scaffold kind creates at least one file in a 2d project 58ms
+     → Generated TypeScript follows the emitted project formatter: src/adapters/BlogPostAdapter.ts: expected false to be true // Object.is equality
+   × every scaffold kind creates at least one file in a 3d project 17ms
+     → Generated TypeScript follows the emitted project formatter: src/adapters/BlogPostAdapter.ts: expected false to be true // Object.is equality
+   ↓ view, layout, and api scaffolds use SvelteKit route files
+   ↓ marks only SvelteKit scaffolds as app-only
+   ↓ Rails-ish scaffolds create their expected code shapes
+   ↓ helper scaffolds emit pure camelCase functions with domain parameters
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/pieces.test.ts > every scaffold kind creates at least one file in a 2d project
+ FAIL  test/pieces.test.ts > every scaffold kind creates at least one file in a 3d project
+AssertionError: Generated TypeScript follows the emitted project formatter: src/adapters/BlogPostAdapter.ts: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/pieces.test.ts:21:7
+     19|      await check(file.contents, { ...options, filepath: file.path }),
+     20|      `Generated TypeScript follows the emitted project formatter: ${fi…
+     21|     ).toBe(true);
+       |       ^
+     22|    expect(files.length, kind).toBeGreaterThan(0);
+     23|    for (const plan of pieceExportPlans(kind, 'BlogPost'))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 skipped (6)
+   Start at  13:53:29
+   Duration  2.62s (transform 70ms, setup 55ms, collect 229ms, tests 76ms, environment 0ms, prepare 33ms)
+

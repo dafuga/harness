@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/cleanup-bounds.test.ts (6 tests) 11172ms
+   ✓ a read of the processes that never answers ends as unknown  1003ms
+   ✓ a judgement that never answers is bounded, and its late answer signals nothing  1899ms
+   ✓ the runner ends within its bound and fails when the processes never answer or fail to  3318ms
+   ✓ at its time limit an unreadable command is a timeout within the bound, and nothing is signalled  4053ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  02:06:06
+   Duration  11.43s (transform 42ms, setup 9ms, collect 46ms, tests 11.17s, environment 0ms, prepare 29ms)
+

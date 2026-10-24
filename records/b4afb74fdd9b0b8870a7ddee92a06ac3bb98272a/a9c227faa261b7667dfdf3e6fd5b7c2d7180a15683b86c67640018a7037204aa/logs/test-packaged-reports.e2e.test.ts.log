@@ -1,0 +1,46 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [31m❯[39m test/packaged-reports.e2e.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 6318[2mms[22m[39m
+[31m   [31m×[31m packed installation serves and finalizes media without a source checkout[39m[33m 1749[2mms[22m[39m
+[31m     → bun /tmp/harness-packed-Yk3UjV/package/dist/index.js report finalize --run 7cb0dca7-0fa2-43a4-ac7f-686d59f8239b failed with 1
+
+PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-packed-Yk3UjV/package/dist/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+
+[39m
+   [33m[2m✓[22m[39m the server a test starts is stopped when the test is done with it, passed or failed [33m 2800[2mms[22m[39m
+   [33m[2m✓[22m[39m the fixture and the environment of the run are gone with it [33m 339[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/packaged-reports.e2e.test.ts[2m > [22mpacked installation serves and finalizes media without a source checkout
+[31m[1mError[22m: bun /tmp/harness-packed-Yk3UjV/package/dist/index.js report finalize --run 7cb0dca7-0fa2-43a4-ac7f-686d59f8239b failed with 1
+
+PDF export failed: Traceback (most recent call last):
+  File "/tmp/harness-packed-Yk3UjV/package/dist/reports/scripts/build_pdf.py", line 8, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+
+[39m
+[36m [2m❯[22m runCommand test/support/cli.ts:[2m72:9[22m[39m
+    [90m 70| [39m
+    [90m 71| [39m [35mif[39m (expectSuccess [33m&&[39m exitCode [33m!==[39m [34m0[39m) {
+    [90m 72| [39m  throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+    [90m   | [39m        [31m^[39m
+    [90m 73| [39m }
+    [90m 74| [39m
+[90m [2m❯[22m test/packaged-reports.e2e.test.ts:[2m37:2[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 16:07:27
+[2m   Duration [22m 6.67s[2m (transform 62ms, setup 24ms, collect 46ms, tests 6.32s, environment 0ms, prepare 69ms)[22m
+
+
+::error file=/tmp/harness-snapshot-iUpwmz/test/support/cli.ts,title=test/packaged-reports.e2e.test.ts > packed installation serves and finalizes media without a source checkout,line=72,column=9::Error: bun /tmp/harness-packed-Yk3UjV/package/dist/index.js report finalize --run 7cb0dca7-0fa2-43a4-ac7f-686d59f8239b failed with 1%0A%0APDF export failed: Traceback (most recent call last):%0A  File "/tmp/harness-packed-Yk3UjV/package/dist/reports/scripts/build_pdf.py", line 8, in <module>%0A    from reportlab.lib import colors%0AModuleNotFoundError: No module named 'reportlab'%0A%0A%0A ❯ runCommand test/support/cli.ts:72:9%0A ❯ test/packaged-reports.e2e.test.ts:37:2%0A%0A

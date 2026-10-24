@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PkpOjJ/packages/desktop
+
+ ✓ test/remote-host-launch-races.test.ts (4 tests) 4528ms
+   ✓ disabling while the stored record is still being read at launch keeps it off  1258ms
+   ✓ quitting while the stored record is still being read starts nothing and keeps it on  1085ms
+   ✓ quitting while the stored keys are being imported at launch starts nothing  1112ms
+   ✓ off and on again during launch: a turning-on that fails leaves it off  1073ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  20:49:49
+   Duration  5.53s (transform 527ms, setup 0ms, collect 844ms, tests 4.53s, environment 0ms, prepare 31ms)
+

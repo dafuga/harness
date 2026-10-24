@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/packages/desktop
+
+ ✓ test/project-conversation.test.ts (2 tests) 9259ms
+   ✓ a project conversation creates the proposed function and retains its original request  7512ms
+   ✓ an invalid creation proposal creates no plan and emits no success  1747ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:36:10
+   Duration  9.74s (transform 160ms, setup 0ms, collect 265ms, tests 9.26s, environment 0ms, prepare 36ms)
+

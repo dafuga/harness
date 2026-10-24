@@ -1,0 +1,576 @@
+$ bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/hub svelte-kit sync && bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-reports.ts && bun run build:picker
+$ bun scripts/build-kernel.ts
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling syn v3.0.7
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling serde_derive v1.0.229
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Q6rwS6/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 17.22s
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Q6rwS6/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 7.05s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+$ bun build src/index.ts --target bun --outdir dist
+Bundled 1441 modules in 238ms
+
+  index.js  14.58 MB  (entry point)
+
+$ bun scripts/build-api.ts
+Built public API: contracts, runtime, verification, history, sqlite, catalog, edge, console and index, declarations in dist/types.
+$ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/configs/reportViteConfig.ts && vite build --config src/configs/consoleViteConfig.ts
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 1237 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 587 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                           0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                        27.47 kB │ gzip:  2.79 kB
+.svelte-kit/output/client/_app/immutable/assets/4.CozlcCPu.css                        0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPagesScreen.mEVg4ihQ.css      0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogScreen.C-_Knw6m.css    0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityHistoryScreen.DIYMT5Fc.css      0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityBehaviorScreen.Cai1Hvjk.css     0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityVisualScreen.Bi3IJWvQ.css       0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityConfigScreen.XeJ8lGby.css       0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerControls.1Z2_OMPb.css         0.09 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityDetailsScreen.ByFMhHZd.css      0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerIndex.BCAnMOUy.css            0.79 kB │ gzip:  0.35 kB
+.svelte-kit/output/client/_app/immutable/assets/SourceFileList.BT0f5p2B.css           0.83 kB │ gzip:  0.33 kB
+.svelte-kit/output/client/_app/immutable/assets/RegressionProof.BQdr0Sr1.css          2.36 kB │ gzip:  0.69 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityFrame.Bfv0jA7b.css              3.12 kB │ gzip:  0.95 kB
+.svelte-kit/output/client/_app/immutable/assets/40.CyPlmHmi.css                       4.15 kB │ gzip:  1.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySections.B3Au_a1y.css           6.36 kB │ gzip:  1.51 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogItems.eoUCuUqk.css     7.41 kB │ gzip:  1.79 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySummary.BB58zPC8.css            7.45 kB │ gzip:  1.61 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPlatforms.4TmDhLQB.css        7.57 kB │ gzip:  1.65 kB
+.svelte-kit/output/client/_app/immutable/assets/gallery.B3eJjDvP.css                 14.97 kB │ gzip:  3.14 kB
+.svelte-kit/output/client/_app/immutable/assets/0.FqzOY1po.css                       44.83 kB │ gzip:  8.93 kB
+.svelte-kit/output/client/_app/immutable/assets/HarnessScreen.B3WjnrKv.css           54.69 kB │ gzip:  9.80 kB
+.svelte-kit/output/client/_app/immutable/entry/start.Dl9sm5Q6.js                      0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/DPVqm5G8.js                           0.15 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/27.DmSaehFI.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/23.BNyddnVI.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/26.BZXzRnFW.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/37.BoTJJ32g.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/11.Ddoideb0.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/19.G9iIXKaI.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/22.Cz_CFOb2.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/36.SeOZhD3x.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/10.DfE3q6Ja.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/18.BeIln6r1.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/33.Be2-yuIe.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/15.BI20Qu4l.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/32.De6B6zfA.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/7.nTqbzHqg.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/14.D2EP3n9b.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/30.9iwwBuq-.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.CCA5s7Is.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/28.BzGsEa1Y.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/29.DkEu6xKc.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/24.BxoYmpLl.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/25.B9fPHxZY.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/38.DbeK05QP.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/39.Cg2kuEVQ.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/12.FgcKwIxx.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/13.DfQsHo6m.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/20.eq_q0oiV.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/21.B7rhSjKt.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/34.BKtY91KI.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/35.BotrKTbq.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/16.DdsUwq0r.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/17.C-5qepll.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/8.Di3Le1Vy.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/9.BXdTEy91.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/31.CPZR1ZAs.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.CAnpbgKu.js                          0.38 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/DGAspfYv.js                           0.58 kB │ gzip:  0.39 kB
+.svelte-kit/output/client/_app/immutable/chunks/CilhT5mX.js                           0.69 kB │ gzip:  0.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/DBp9EpWW.js                           0.83 kB │ gzip:  0.49 kB
+.svelte-kit/output/client/_app/immutable/chunks/jsO34Lte.js                           0.89 kB │ gzip:  0.51 kB
+.svelte-kit/output/client/_app/immutable/chunks/B4yOMQmF.js                           0.98 kB │ gzip:  0.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/BZ0fFTq1.js                           1.12 kB │ gzip:  0.62 kB
+.svelte-kit/output/client/_app/immutable/chunks/BQFuKDN2.js                           1.29 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.BXF8NF1C.js                          1.31 kB │ gzip:  0.69 kB
+.svelte-kit/output/client/_app/immutable/chunks/C-4aO3yw.js                           1.34 kB │ gzip:  0.70 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                           1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/JfMZQMr7.js                           2.64 kB │ gzip:  1.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/yV1OWHTu.js                           3.99 kB │ gzip:  1.75 kB
+.svelte-kit/output/client/_app/immutable/chunks/CfOZ7Uhr.js                           4.80 kB │ gzip:  2.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/CnGpa_G0.js                           5.02 kB │ gzip:  2.14 kB
+.svelte-kit/output/client/_app/immutable/chunks/C7CpnNp2.js                           5.62 kB │ gzip:  2.55 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bb-PwxnC.js                           5.77 kB │ gzip:  2.52 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bwv75tPm.js                           6.45 kB │ gzip:  2.92 kB
+.svelte-kit/output/client/_app/immutable/nodes/40.DLKjAb3N.js                         9.78 kB │ gzip:  4.05 kB
+.svelte-kit/output/client/_app/immutable/chunks/CksCpERz.js                          11.15 kB │ gzip:  4.71 kB
+.svelte-kit/output/client/_app/immutable/chunks/DTCKB6C3.js                          11.81 kB │ gzip:  4.87 kB
+.svelte-kit/output/client/_app/immutable/chunks/CWPD4Ohm.js                          12.33 kB │ gzip:  5.14 kB
+.svelte-kit/output/client/_app/immutable/entry/app.fWti39uk.js                       15.91 kB │ gzip:  4.56 kB
+.svelte-kit/output/client/_app/immutable/chunks/B2CB4Ipf.js                          23.89 kB │ gzip: 10.28 kB
+.svelte-kit/output/client/_app/immutable/chunks/qKmBCDEz.js                          25.25 kB │ gzip:  9.46 kB
+.svelte-kit/output/client/_app/immutable/chunks/4tx9cCym.js                          29.90 kB │ gzip: 11.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/dSt5qly_.js                          30.55 kB │ gzip: 11.79 kB
+.svelte-kit/output/client/_app/immutable/chunks/D1u97w_s.js                          31.62 kB │ gzip: 12.14 kB
+.svelte-kit/output/client/_app/immutable/chunks/CsEQEs8A.js                          35.13 kB │ gzip: 12.42 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BqIRXybs.js                         43.39 kB │ gzip: 15.70 kB
+.svelte-kit/output/client/_app/immutable/chunks/BUPRWDJZ.js                          76.89 kB │ gzip: 26.63 kB
+.svelte-kit/output/client/_app/immutable/chunks/DN8U_cgn.js                         123.35 kB │ gzip: 41.82 kB
+✓ built in 1.81s
+.svelte-kit/output/server/.vite/manifest.json                                                                         39.08 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CozlcCPu.css                                                     0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityHistoryScreen.DIYMT5Fc.css                                       0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogScreen.C-_Knw6m.css                                     0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPagesScreen.mEVg4ihQ.css                                       0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityBehaviorScreen.Cai1Hvjk.css                                      0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityConfigScreen.XeJ8lGby.css                                        0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityVisualScreen.Bi3IJWvQ.css                                        0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerControls.1Z2_OMPb.css                                          0.09 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityDetailsScreen.ByFMhHZd.css                                       0.12 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerIndex.BCAnMOUy.css                                             0.79 kB
+.svelte-kit/output/server/_app/immutable/assets/SourceFileList.BT0f5p2B.css                                            0.83 kB
+.svelte-kit/output/server/_app/immutable/assets/RegressionProof.BQdr0Sr1.css                                           2.36 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityFrame.Bfv0jA7b.css                                               3.12 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CyPlmHmi.css                                                     4.15 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySections.B3Au_a1y.css                                            6.36 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogItems.eoUCuUqk.css                                      7.41 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySummary.BB58zPC8.css                                             7.45 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPlatforms.CsJMq2Uq.css                                         7.50 kB
+.svelte-kit/output/server/_app/immutable/assets/gallery.DwW5fjaa.css                                                  14.92 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.B98nzyth.css                                                  44.56 kB
+.svelte-kit/output/server/_app/immutable/assets/HarnessScreen.CcigMS2C.css                                            54.59 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                                                             0.11 kB
+.svelte-kit/output/server/entries/pages/analytics/_page.server.ts.js                                                   0.11 kB
+.svelte-kit/output/server/entries/pages/harness/analytics/_page.server.ts.js                                           0.11 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_page.server.ts.js                                             0.11 kB
+.svelte-kit/output/server/entries/pages/reports/_id_/_page.server.ts.js                                                0.16 kB
+.svelte-kit/output/server/entries/endpoints/harness/data/_...path_/_server.ts.js                                       0.17 kB
+.svelte-kit/output/server/entries/endpoints/harness/media/_file_/_server.ts.js                                         0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                                          0.19 kB
+.svelte-kit/output/server/env.js                                                                                       0.23 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_server.ts.js                                                  0.24 kB
+.svelte-kit/output/server/entries/endpoints/harness/export/_commit_/_server.ts.js                                      0.25 kB
+.svelte-kit/output/server/chunks/DesktopValues.js                                                                      0.30 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_server.ts.js                                             0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/platforms/_page.svelte.js                      0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_page.svelte.js                          0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/_page.svelte.js                 0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/_page.svelte.js               0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/layouts/_entity_/_page.svelte.js               0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/_page.svelte.js            0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_page.svelte.js                        0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/layouts/_page.svelte.js                        0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_page.svelte.js                       0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_page.svelte.js                      0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_page.svelte.js                     0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/_page.svelte.js              0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                                            0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/platforms/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/details/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/history/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/details/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/history/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/layouts/_entity_/details/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/layouts/_entity_/history/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/details/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/history/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/details/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/history/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/details/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/history/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/internal.js                                                                                  0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                                             0.45 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.server.ts.js                                           0.48 kB
+.svelte-kit/output/server/chunks/buildStamp.js                                                                         0.51 kB
+.svelte-kit/output/server/entries/endpoints/api/health/_server.ts.js                                                   0.62 kB
+.svelte-kit/output/server/chunks/EntityLink.js                                                                         0.62 kB
+.svelte-kit/output/server/chunks/evidenceMedia.js                                                                      0.65 kB
+.svelte-kit/output/server/chunks/index2.js                                                                             0.78 kB
+.svelte-kit/output/server/chunks/ExplorerControls.js                                                                   0.84 kB
+.svelte-kit/output/server/chunks/utils.js                                                                              1.09 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_id_/_page.server.ts.js                                        1.13 kB
+.svelte-kit/output/server/chunks/ExplorerPagesScreen.js                                                                1.24 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogScreen.js                                                              1.33 kB
+.svelte-kit/output/server/chunks/SourceFileList.js                                                                     1.39 kB
+.svelte-kit/output/server/chunks/EntityBehaviorScreen.js                                                               1.69 kB
+.svelte-kit/output/server/chunks/EntityVisualScreen.js                                                                 1.82 kB
+.svelte-kit/output/server/chunks/mediaResponse.js                                                                      1.84 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-upload/_server.ts.js                                      1.89 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-comparison/_server.ts.js                                  1.99 kB
+.svelte-kit/output/server/chunks/reportAssets.js                                                                       2.06 kB
+.svelte-kit/output/server/chunks/writingLimits.js                                                                      2.10 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_type_/_file_/_server.ts.js                               2.10 kB
+.svelte-kit/output/server/chunks/reportBuildIdentity.js                                                                2.23 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.svelte.js                                              2.37 kB
+.svelte-kit/output/server/chunks/AudioUploadService.js                                                                 2.41 kB
+.svelte-kit/output/server/chunks/index.js                                                                              2.65 kB
+.svelte-kit/output/server/chunks/explorerTabs.js                                                                       2.82 kB
+.svelte-kit/output/server/chunks/utils2.js                                                                             3.09 kB
+.svelte-kit/output/server/chunks/explorerName.js                                                                       3.27 kB
+.svelte-kit/output/server/chunks/internal.js                                                                           3.40 kB
+.svelte-kit/output/server/chunks/EntityConfigScreen.js                                                                 3.47 kB
+.svelte-kit/output/server/chunks/reportSite.js                                                                         3.69 kB
+.svelte-kit/output/server/entries/endpoints/api/report-screenshot-upload/_server.ts.js                                 4.22 kB
+.svelte-kit/output/server/chunks/RegressionProof.js                                                                    5.30 kB
+.svelte-kit/output/server/chunks/helperContract.js                                                                     5.39 kB
+.svelte-kit/output/server/chunks/exports.js                                                                            5.54 kB
+.svelte-kit/output/server/chunks/harnessEvidence.js                                                                    5.72 kB
+.svelte-kit/output/server/chunks/entityScreens.js                                                                      6.37 kB
+.svelte-kit/output/server/chunks/EntityDetailsScreen.js                                                                6.82 kB
+.svelte-kit/output/server/entries/endpoints/api/analytics-cpu/_server.ts.js                                            7.52 kB
+.svelte-kit/output/server/chunks/gallery.js                                                                            8.17 kB
+.svelte-kit/output/server/chunks/ExplorerIndex.js                                                                      8.20 kB
+.svelte-kit/output/server/entries/endpoints/api/replay-video/_server.ts.js                                             9.27 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/styles/_page.svelte.js                        11.34 kB
+.svelte-kit/output/server/chunks/EntityHistoryScreen.js                                                               12.88 kB
+.svelte-kit/output/server/chunks/ExplorerPlatforms.js                                                                 16.66 kB
+.svelte-kit/output/server/chunks/explorerVerdict.js                                                                   17.07 kB
+.svelte-kit/output/server/chunks/ComponentManifestValidator.js                                                        20.77 kB
+.svelte-kit/output/server/entries/endpoints/api/project-activity/_server.ts.js                                        24.22 kB
+.svelte-kit/output/server/chunks/reportHttp.js                                                                        26.25 kB
+.svelte-kit/output/server/chunks/shared.js                                                                            34.21 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogItems.js                                                              35.29 kB
+.svelte-kit/output/server/remote-entry.js                                                                             36.85 kB
+.svelte-kit/output/server/chunks/EntityFrame.js                                                                       37.66 kB
+.svelte-kit/output/server/chunks/HistoryStatusService.js                                                              43.04 kB
+.svelte-kit/output/server/chunks/EntitySummary.js                                                                     55.09 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                                             62.14 kB
+.svelte-kit/output/server/chunks/HarnessScreen.js                                                                     71.58 kB
+.svelte-kit/output/server/chunks/EntitySections.js                                                                   103.48 kB
+.svelte-kit/output/server/index.js                                                                                   130.95 kB
+.svelte-kit/output/server/chunks/root.js                                                                             133.59 kB
+.svelte-kit/output/server/chunks/consoleServer.js                                                                    362.94 kB
+.svelte-kit/output/server/entries/hooks.server.js                                                                    416.26 kB
+✓ built in 7.04s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/core.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/util.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/core.js
+Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/smol-toml/dist/struct.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/smol-toml/dist/extract.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/smol-toml/dist/struct.js
+Generated an empty chunk: "chunks/internal2.js".
+  ✔ done
+vite v6.4.4 building for production...
+transforming...
+✓ 181 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/viewer/report.css       55.54 kB │ gzip: 10.62 kB
+dist/viewer/report.iife.js  178.59 kB │ gzip: 60.74 kB
+✓ built in 1.67s
+vite v6.4.4 building for production...
+transforming...
+✓ 400 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/console/console.css      131.56 kB │ gzip:  21.78 kB
+dist/console/console.iife.js  404.12 kB │ gzip: 137.16 kB
+✓ built in 2.54s
+$ bun run --cwd packages/reports build:picker && bun scripts/build-picker.ts
+$ vite build --config src/configs/pickerViteConfig.ts
+vite v6.4.4 building for production...
+transforming...
+../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 269 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/picker/picker.css       23.79 kB │ gzip:  5.68 kB
+dist/picker/picker.iife.js  295.09 kB │ gzip: 83.99 kB
+✓ built in 2.01s
+$ bun run --cwd packages/planning build && bun run --cwd packages/desktop build
+$ bun build src/index.ts --target node --outdir dist
+Bundled 167 modules in 30ms
+
+  index.js  0.82 MB  (entry point)
+
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+vite v6.4.4 building SSR bundle for production...
+transforming...
+"handleConnectionChange" is imported from external module "@xyflow/system" but never used in "../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/@xyflow/svelte/dist/lib/hooks/useNodeConnections.svelte.js" and "../../../../../../../../../Users/danielfugere/.codex/worktrees/older-pr-cleanup/harness/node_modules/@xyflow/svelte/dist/lib/components/Handle/Handle.svelte".
+✓ 620 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 862 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                      0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                    7.97 kB │ gzip:   1.20 kB
+.svelte-kit/output/client/_app/immutable/assets/6.DnakDk5X.css                   0.80 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/assets/AgentModelPicker.D7sityV1.css    1.87 kB │ gzip:   0.69 kB
+.svelte-kit/output/client/_app/immutable/assets/3.C-pQZZam.css                  29.90 kB │ gzip:   5.21 kB
+.svelte-kit/output/client/_app/immutable/assets/design.DXaDG8B_.css             38.02 kB │ gzip:   7.51 kB
+.svelte-kit/output/client/_app/immutable/assets/2.Vsmpnjuv.css                  49.95 kB │ gzip:   8.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cpmqpfp-.js                      0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bzak7iHL.js                      0.10 kB │ gzip:   0.10 kB
+.svelte-kit/output/client/_app/immutable/entry/start.Bce4i0Ne.js                 0.12 kB │ gzip:   0.11 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.evDxOmbd.js                     0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.evDxOmbd.js                     0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/B3BHYGM_.js                      0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/chunks/B7YAvugW.js                      0.28 kB │ gzip:   0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.C-W2yMg9.js                     0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/ClwhBhLN.js                      0.37 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.D2qscQjU.js                     0.41 kB │ gzip:   0.28 kB
+.svelte-kit/output/client/_app/immutable/chunks/BBUcQNsz.js                      0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/chunks/BVthCS_w.js                      0.52 kB │ gzip:   0.33 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                      1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/BoKGgWO2.js                      2.19 kB │ gzip:   1.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/DDEUxeUA.js                      2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.CUBhP2R8.js                     2.29 kB │ gzip:   1.21 kB
+.svelte-kit/output/client/_app/immutable/chunks/BYFBxfTf.js                      3.01 kB │ gzip:   1.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/BqkZ8Iah.js                      3.17 kB │ gzip:   1.48 kB
+.svelte-kit/output/client/_app/immutable/chunks/Caz1jPBZ.js                      6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.B_k1AV1Z.js                   7.10 kB │ gzip:   3.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/g4BxH8da.js                     11.81 kB │ gzip:   4.97 kB
+.svelte-kit/output/client/_app/immutable/chunks/DzVnHWGD.js                     15.34 kB │ gzip:   6.78 kB
+.svelte-kit/output/client/_app/immutable/chunks/C2EK1j9C.js                     21.31 kB │ gzip:   8.22 kB
+.svelte-kit/output/client/_app/immutable/chunks/hul_s3qq.js                     31.65 kB │ gzip:  12.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/BQRapoai.js                     70.08 kB │ gzip:  23.36 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.k97FPpnY.js                   310.60 kB │ gzip: 106.52 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.BE1N2kkv.js                   711.85 kB │ gzip: 196.86 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.66s
+.svelte-kit/output/server/.vite/manifest.json                                                     6.60 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DnakDk5X.css                                0.80 kB
+.svelte-kit/output/server/_app/immutable/assets/AgentModelPicker.B8rYfcfY.css                     1.85 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CrWASipr.css                               16.26 kB
+.svelte-kit/output/server/_app/immutable/assets/design.z1XUWljB.css                              37.81 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BGS9WbWt.css                               43.72 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/state.svelte.js                                                  0.43 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       0.73 kB
+.svelte-kit/output/server/entries/pages/game/_page.svelte.js                                      0.94 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/composeModes.js                                                  3.72 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.32 kB
+.svelte-kit/output/server/chunks/AgentModelPicker.svelte_svelte_type_style_lang.js                6.00 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         289.09 kB
+✓ built in 7.96s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+80e694a628213d86aaf84ff8c1e5766bff35871da4b17965ab1bea7f247a71f7
+
+Running 28 tests using 1 worker
+
+(node:49724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/reference-views.spec.ts:52:2 › desktop: a long unknown reference wraps as text beside a linked unit (647ms)
+  ✓   2 [chromium] › tests/e2e/reference-views.spec.ts:52:2 › tablet: a long unknown reference wraps as text beside a linked unit (365ms)
+  ✓   3 [chromium] › tests/e2e/reference-views.spec.ts:52:2 › mobile: a long unknown reference wraps as text beside a linked unit (359ms)
+  ✓   4 [chromium] › tests/e2e/reference-views.spec.ts:72:1 › a reference opened in a new tab leaves the thread and its draft in place (425ms)
+  ✓   5 [chromium] › tests/e2e/reference-views.spec.ts:90:1 › the project agent says its public reply with the units it names as links (430ms)
+  ✓   6 [chromium] › tests/e2e/reference-views.spec.ts:116:1 › streamed text and run progress in a thread link the units once they are whole (575ms)
+  ✓   7 [chromium] › tests/e2e/reference-views.spec.ts:149:1 › a reference read at a pinned commit opens the unit at that commit (700ms)
+  ✓   8 [chromium] › tests/e2e/reference-views.spec.ts:166:1 › a shared project links a reference in a comment and offers no agent (442ms)
+  ✓   9 [chromium] › tests/e2e/ui-references.spec.ts:35:1 › the units an agent question names are links, and following one opens a shell under Layouts (323ms)
+  ✓  10 [chromium] › tests/e2e/ui-references.spec.ts:51:1 › at a pinned commit a reference leads to the unit at that commit (157ms)
+  ✓  11 [chromium] › tests/e2e/ui-references.spec.ts:59:1 › streamed text shows a reference split across events as text until it is whole, then as a link (317ms)
+  ✓  12 [chromium] › tests/e2e/ui-references.spec.ts:83:1 › the project agent shows the unit its run is working on as a link (256ms)
+  ✓  13 [chromium] › tests/e2e/ui-references.spec.ts:110:1 › a shared project renders a reference in a comment and offers no agent control (165ms)
+  ✓  14 [chromium] › tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on pages (172ms)
+  ✓  15 [chromium] › tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time (158ms)
+  ✓  16 [chromium] › tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time/history (181ms)
+  ✓  17 [chromium] › tests/e2e/ui-search.spec.ts:48:1 › every category of the shown revision is found, and the keyboard opens a shell under Layouts (345ms)
+  ✓  18 [chromium] › tests/e2e/ui-search.spec.ts:74:1 › Escape closes the list and then clears the field, and nothing found is said (294ms)
+  ✓  19 [chromium] › tests/e2e/ui-search.spec.ts:96:1 › at a pinned commit only that commit is searched, and the result keeps the commit (388ms)
+  ✓  20 [chromium] › tests/e2e/ui-search.spec.ts:113:1 › another project is never searched (288ms)
+  ✓  21 [chromium] › tests/e2e/ui-search.spec.ts:127:1 › a shared project, which stays comments-only, has the same search (157ms)
+  ✓  22 [chromium] › tests/e2e/ui-search.spec.ts:139:2 › the search is in the top bar at tablet width and its results fit the screen (257ms)
+  ✓  23 [chromium] › tests/e2e/ui-search.spec.ts:139:2 › the search is in the top bar at mobile width and its results fit the screen (283ms)
+  ✓  24 [chromium] › tests/e2e/ui-shells-hosted.spec.ts:17:2 › a shared project lists its shell under Layouts and offers comments only at desktop width (381ms)
+  ✓  25 [chromium] › tests/e2e/ui-shells-hosted.spec.ts:17:2 › a shared project lists its shell under Layouts and offers comments only at mobile width (334ms)
+  ✓  26 [chromium] › tests/e2e/ui-shells.spec.ts:37:2 › Layouts follows Pages and lists the shared workspace shell at desktop width (824ms)
+  ✓  27 [chromium] › tests/e2e/ui-shells.spec.ts:37:2 › Layouts follows Pages and lists the shared workspace shell at mobile width (725ms)
+  ✓  28 [chromium] › tests/e2e/ui-shells.spec.ts:58:1 › old Components and Shells addresses open the layout, keeping their section (779ms)
+
+  28 passed (12.3s)
+ 14576392 dist/index.js
+   25746 dist/api/catalog.js
+    9257 dist/api/console-export.js
+  787700 dist/api/console-ui.js
+   22768 dist/api/console.js
+   23604 dist/api/contracts.js
+    9174 dist/api/edge.js
+   26985 dist/api/history.js
+     186 dist/api/index.js
+   45806 dist/api/runtime.js
+    8667 dist/api/sqlite.js
+   28910 dist/api/verification.js
+ 15565195 total
+1848f3d9ef84ee38e1052708d509c93ebf96925601c4fcf023a48b4dc03ea2d1  dist/index.js
+30e28545aba23ad0c27f8d01bd8d26e4e19f202069cd2e655725ae654cc96754  dist/api/catalog.js
+ca904d9a9b450dc59397b624ea376379d1913b3f05f59ff4214bb2e50234244e  dist/api/console-export.js
+313602f31a31e54cd6d06d910d61e93b112cda470f9487079b2625ef982c68d0  dist/api/console-ui.js
+a81099ca1ddc2b6e68dda408c7b874aaca70d9980f6b73edb4c11b9ba19f4437  dist/api/console.js
+60e1a1c1bcc4c86b25d5f91b2725001ce50ea1e8288e61b986900ec4d1731862  dist/api/contracts.js
+f07188b50cc94c1439c43c717fd5c7091cd473c8a2b79c6ab2f42a78b6fec178  dist/api/edge.js
+077fb5022fb153d563659bfecff41d4e0776f03aaab7a67b7a88fa5ee9cc0f0c  dist/api/history.js
+734dcdbb8ba35fcb54903d136dae4c4fb258b4e51c65579d3ca408508faaba97  dist/api/index.js
+19f84b94c36599a2712b92b7bf3336e586328e3ac8d67365aa84cf93860850b6  dist/api/runtime.js
+23b20ec9a2f0e55f341583bdf06fb41fb304aafa33372f20de2b850807a77612  dist/api/sqlite.js
+b16c9d15871f2ec03b1b09f297906a720d311a536c47f85a8d44fcb7c415d647  dist/api/verification.js
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Q6rwS6
+
+ ✓ test/benchmark-run.e2e.test.ts (1 test) 4345ms
+   ✓ native adapters run repairs, persist JSON and attribute analytics without touching source  4344ms
+ ✓ test/benchmark.e2e.test.ts (1 test) 1924ms
+   ✓ benchmark validation pins a contract task without changing the checkout  1923ms
+ ✓ test/commands/analytics.test.ts (1 test) 4ms
+
+ Test Files  3 passed (3)
+      Tests  3 passed (3)
+   Start at  21:02:41
+   Duration  7.76s (transform 189ms, setup 275ms, collect 241ms, tests 6.27s, environment 0ms, prepare 154ms)
+
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 25 tests using 1 worker
+
+(node:61580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/harness-explorer-catalog.spec.ts:24:1 › a catalog is searchable, and a click on a listed entity opens it in the same scope (794ms)
+  ✓   2 tests/e2e/harness-explorer-catalog.spec.ts:55:2 › component cards show their title, screenshot and Used In links at desktop width (263ms)
+  ✓   3 tests/e2e/harness-explorer-catalog.spec.ts:55:2 › component cards show their title, screenshot and Used In links at tablet width (266ms)
+  ✓   4 tests/e2e/harness-explorer-catalog.spec.ts:55:2 › component cards show their title, screenshot and Used In links at mobile width (326ms)
+  ✓   5 tests/e2e/harness-explorer-catalog.spec.ts:93:1 › the keyboard searches the current catalog and opens an entity (259ms)
+  ✓   6 tests/e2e/harness-explorer-catalog.spec.ts:108:1 › private helpers stay off the shared catalog while their historical pages remain reachable (749ms)
+  ✓   7 tests/e2e/harness-explorer-catalog.spec.ts:138:1 › an unverified commit retains its catalog and marks missing evidence on source details (459ms)
+  ✓   8 tests/e2e/harness-explorer-catalog.spec.ts:159:2 › branch and commit are shared fields and each choice is a path at desktop width (370ms)
+  ✓   9 tests/e2e/harness-explorer-catalog.spec.ts:159:2 › branch and commit are shared fields and each choice is a path at tablet width (327ms)
+  ✓  10 tests/e2e/harness-explorer-catalog.spec.ts:159:2 › branch and commit are shared fields and each choice is a path at mobile width (343ms)
+  ✓  11 tests/e2e/harness-explorer-catalog.spec.ts:180:2 › a registry of several hundred units › stays searchable, ordered and keyboard operable (471ms)
+  ✓  12 tests/e2e/harness-explorer-catalog.spec.ts:196:2 › a registry of several hundred units › on a phone the list reaches any unit without scrolling sideways (428ms)
+  ✓  13 tests/e2e/harness-explorer-routes.spec.ts:20:1 › the explorer has its expected navigation, pages first, and no unrelated destinations (271ms)
+  ✓  14 tests/e2e/harness-explorer-routes.spec.ts:35:1 › an earlier map page of a commit opens the entity in the explorer, without its source (322ms)
+  ✓  15 tests/e2e/harness-explorer-routes.spec.ts:51:1 › a branch address follows its tip, a chosen commit has its own address, and Go to tip returns (455ms)
+  ✓  16 tests/e2e/harness-explorer-routes.spec.ts:86:1 › a branch is one encoded segment, and another branch opens at its own tip (317ms)
+  ✓  17 tests/e2e/harness-explorer-routes.spec.ts:111:1 › earlier addresses, reports and analytics all lead into the explorer (566ms)
+  ✓  18 tests/e2e/harness-explorer-routes.spec.ts:141:1 › what the history does not hold is said, and no other revision is shown in its place (314ms)
+  ✓  19 tests/e2e/styles-page-evidence.spec.ts:54:2 › Styles records its rendered token catalog at desktop width (774ms)
+  ✓  20 tests/e2e/styles-page-evidence.spec.ts:54:2 › Styles records its rendered token catalog at tablet width (590ms)
+  ✓  21 tests/e2e/styles-page-evidence.spec.ts:54:2 › Styles records its rendered token catalog at mobile width (617ms)
+  ✓  22 tests/e2e/styles-page.spec.ts:10:1 › Styles navigation preserves the selected branch and commit (290ms)
+  ✓  23 tests/e2e/styles-page.spec.ts:21:2 › Styles documents supported design tokens at desktop width (498ms)
+  ✓  24 tests/e2e/styles-page.spec.ts:21:2 › Styles documents supported design tokens at tablet width (512ms)
+  ✓  25 tests/e2e/styles-page.spec.ts:21:2 › Styles documents supported design tokens at mobile width (546ms)
+
+  25 passed (3.2m)

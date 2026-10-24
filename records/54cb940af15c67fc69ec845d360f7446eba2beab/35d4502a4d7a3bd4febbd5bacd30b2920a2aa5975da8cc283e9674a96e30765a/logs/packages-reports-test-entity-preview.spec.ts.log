@@ -1,0 +1,17 @@
+
+Running 10 tests using 1 worker
+
+(node:45254) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview.spec.ts:9:1 › collections: search, changed only and order change what is listed (397ms)
+  ✓   2 test/entity-preview.spec.ts:41:1 › a row or a card of a collection opens its entity in the same branch and commit (277ms)
+  ✓   3 test/entity-preview.spec.ts:69:1 › a page shows one screenshot at the tip and a matching pair at a commit (361ms)
+  ✓   4 test/entity-preview.spec.ts:99:1 › a function shows its recorded run: steps, input, output and assertions (411ms)
+  ✓   5 test/entity-preview.spec.ts:133:1 › links walk page to component to function, and keep the branch and the commit (283ms)
+  ✓   6 test/entity-preview.spec.ts:161:1 › details hide the source until the source tab is opened (246ms)
+  ✓   7 test/entity-preview.spec.ts:174:1 › history lists changes, keeps profiles apart and opens a revision (246ms)
+  ✓   8 test/entity-preview.spec.ts:188:2 › every screen fits a desktop window without scrolling sideways (462ms)
+  ✓   9 test/entity-preview.spec.ts:188:2 › every screen fits a tablet window without scrolling sideways (465ms)
+  ✓  10 test/entity-preview.spec.ts:188:2 › every screen fits a mobile window without scrolling sideways (456ms)
+
+  10 passed (5.3s)

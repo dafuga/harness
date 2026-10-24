@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "316e4f74-825a-4b48-ae6e-8e9cfaf8e7f0",
+	"project": "harness",
+	"title": "Codex provider picker local delivery",
+	"mode": "feature",
+	"environment": "local",
+	"status": "running",
+	"state": "active",
+	"startedAt": "2026-10-08T11:58:49.144Z",
+	"updatedAt": "2026-10-08T12:25:22.870Z",
+	"revision": null,
+	"summary": "",
+	"checks": [
+		{
+			"id": "picker-backend",
+			"title": "Queue, session isolation and MCP metadata",
+			"status": "passed"
+		},
+		{
+			"id": "desktop-gate",
+			"title": "Installed desktop rendering and provider round trip",
+			"status": "blocked"
+		},
+		{
+			"id": "picker-check",
+			"title": "Full repository verification",
+			"status": "passed"
+		},
+		{
+			"id": "picker-browser",
+			"title": "Local picker browser regression and visual proof",
+			"status": "passed"
+		},
+		{
+			"id": "picker-install",
+			"title": "User plugin-cache installation and bundle verification",
+			"status": "passed"
+		},
+		{
+			"id": "picker-main",
+			"title": "Verified source pushed to primary branch",
+			"status": "passed"
+		}
+	],
+	"media": []
+}

@@ -1,0 +1,231 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [15.31s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OTTxvv
+
+$ playwright test "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:92469) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:92511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:92552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F
+
+  1) tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+
+    Error: checkpoint transitions must enter the target view
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Second chamber', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - checkpoint transitions must enter the target view getByRole('heading', { name: 'Second chamber', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Second chamber', exact: true })
+
+
+      177 | 			page.getByRole('heading', { name: 'Second chamber', exact: true }),
+      178 | 			'checkpoint transitions must enter the target view'
+    > 179 | 		).toBeVisible();
+          | 		  ^
+      180 | 		await expect(
+      181 | 			page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
+      182 | 		).toHaveCount(0);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OTTxvv/packages/desktop/tests/e2e/checkpoint-images.spec.ts:179:5
+
+    Error Context: test-results/checkpoint-images-a-genera-27ba7-r-completing-its-checkpoint/error-context.md
+
+  1 failed
+    tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+error: script "test:e2e" exited with code 1
+$ playwright test "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:92909) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:93041) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:93113) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F
+
+  1) tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+
+    Error: checkpoint transitions must enter the target view
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Second chamber', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - checkpoint transitions must enter the target view getByRole('heading', { name: 'Second chamber', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Second chamber', exact: true })
+
+
+      177 | 			page.getByRole('heading', { name: 'Second chamber', exact: true }),
+      178 | 			'checkpoint transitions must enter the target view'
+    > 179 | 		).toBeVisible();
+          | 		  ^
+      180 | 		await expect(
+      181 | 			page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
+      182 | 		).toHaveCount(0);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OTTxvv/packages/desktop/tests/e2e/checkpoint-images.spec.ts:179:5
+
+    Error Context: test-results/checkpoint-images-a-genera-27ba7-r-completing-its-checkpoint/error-context.md
+
+  1 failed
+    tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+error: script "test:e2e" exited with code 1
+$ playwright test "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:93493) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:93512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:93537) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F
+
+  1) tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+
+    Error: checkpoint transitions must enter the target view
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Second chamber', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - checkpoint transitions must enter the target view getByRole('heading', { name: 'Second chamber', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Second chamber', exact: true })
+
+
+      177 | 			page.getByRole('heading', { name: 'Second chamber', exact: true }),
+      178 | 			'checkpoint transitions must enter the target view'
+    > 179 | 		).toBeVisible();
+          | 		  ^
+      180 | 		await expect(
+      181 | 			page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
+      182 | 		).toHaveCount(0);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OTTxvv/packages/desktop/tests/e2e/checkpoint-images.spec.ts:179:5
+
+    Error Context: test-results/checkpoint-images-a-genera-27ba7-r-completing-its-checkpoint/error-context.md
+
+  1 failed
+    tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+error: script "test:e2e" exited with code 1
+$ playwright test "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:94264) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:94382) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:94744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+F
+
+  1) tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+
+    Error: checkpoint transitions must enter the target view
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Second chamber', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - checkpoint transitions must enter the target view getByRole('heading', { name: 'Second chamber', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Second chamber', exact: true })
+
+
+      177 | 			page.getByRole('heading', { name: 'Second chamber', exact: true }),
+      178 | 			'checkpoint transitions must enter the target view'
+    > 179 | 		).toBeVisible();
+          | 		  ^
+      180 | 		await expect(
+      181 | 			page.getByRole('img', { name: 'Collect the key gameplay reference', exact: true })
+      182 | 		).toHaveCount(0);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-OTTxvv/packages/desktop/tests/e2e/checkpoint-images.spec.ts:179:5
+
+    Error Context: test-results/checkpoint-images-a-genera-27ba7-r-completing-its-checkpoint/error-context.md
+
+  1 failed
+    tests/e2e/checkpoint-images.spec.ts:152:1 › a generated game displays the saved reference after completing its checkpoint 
+error: script "test:e2e" exited with code 1
+ ❯ test/game-cli.e2e.test.ts (5 tests | 4 failed) 58807ms
+   × CLI creates 2d games through source and supports app and game generators 14358ms
+     → Command failed: bun run test:e2e tests/e2e/checkpoint-images.spec.ts --grep a generated game displays
+   × CLI creates 3d games through source and supports app and game generators 13046ms
+     → Command failed: bun run test:e2e tests/e2e/checkpoint-images.spec.ts --grep a generated game displays
+   × CLI creates 2d games through bundled and supports app and game generators 13339ms
+     → Command failed: bun run test:e2e tests/e2e/checkpoint-images.spec.ts --grep a generated game displays
+   × CLI creates 3d games through bundled and supports app and game generators 13329ms
+     → Command failed: bun run test:e2e tests/e2e/checkpoint-images.spec.ts --grep a generated game displays
+   ✓ game-only generators reject apps before creating broken imports  4734ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 2d games through source and supports app and game generators
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 3d games through source and supports app and game generators
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 2d games through bundled and supports app and game generators
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 3d games through bundled and supports app and game generators
+Error: Command failed: bun run test:e2e tests/e2e/checkpoint-images.spec.ts --grep a generated game displays
+ ❯ playableGame test/support/playableGame.ts:30:3
+     28|    expect(await response.text()).toContain('<canvas');
+     29|   }
+     30|   execFileSync(
+       |   ^
+     31|    'bun',
+     32|    [
+ ❯ test/game-cli.e2e.test.ts:34:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  18:37:33
+   Duration  61.86s (transform 44ms, setup 8ms, collect 38ms, tests 58.81s, environment 0ms, prepare 37ms)
+

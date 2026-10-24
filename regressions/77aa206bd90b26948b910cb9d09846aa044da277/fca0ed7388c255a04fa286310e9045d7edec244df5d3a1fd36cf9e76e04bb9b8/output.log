@@ -1,0 +1,895 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve
+
+ ❯ test/utils/explorer-route.test.ts (69 tests | 9 failed) 21ms
+   × keeps page and module entity categories separate from primary navigation 7ms
+     → expected [ 'pages', 'layouts', …(6) ] to deeply equal [ 'pages', 'layouts', …(7) ]
+   ✓ current branch /pages 1ms
+   ✓ current branch /pages/reports.page.titles 0ms
+   ✓ current branch /pages/reports.page.titles/details 0ms
+   ✓ current branch /components 0ms
+   ✓ current branch /components/reports.component.harness-harness-console 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/details 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/history 0ms
+   ✓ current branch /functions 0ms
+   ✓ current branch /functions/function.slugify 0ms
+   ✓ current branch /functions/function.slugify/details 0ms
+   ✓ current branch /functions/function.slugify/history 0ms
+   ✓ current branch /configs 0ms
+   ✓ current branch /configs/config.site 0ms
+   ✓ current branch /configs/config.site/details 0ms
+   ✓ current branch /configs/config.site/history 0ms
+   × current branch /types 1ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+   × current branch /types/model.input 1ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+   × current branch /types/model.input/details 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   × current branch /types/model.input/history 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   ✓ current branch /services 0ms
+   ✓ current branch /services/service.clock 0ms
+   ✓ current branch /services/service.clock/details 0ms
+   ✓ current branch /services/service.clock/history 0ms
+   ✓ selected commit /pages 0ms
+   ✓ selected commit /pages/reports.page.titles 0ms
+   ✓ selected commit /pages/reports.page.titles/details 0ms
+   ✓ selected commit /components 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/details 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/history 0ms
+   ✓ selected commit /functions 0ms
+   ✓ selected commit /functions/function.slugify 0ms
+   ✓ selected commit /functions/function.slugify/details 0ms
+   ✓ selected commit /functions/function.slugify/history 0ms
+   ✓ selected commit /configs 0ms
+   ✓ selected commit /configs/config.site 0ms
+   ✓ selected commit /configs/config.site/details 2ms
+   ✓ selected commit /configs/config.site/history 0ms
+   × selected commit /types 1ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+   × selected commit /types/model.input 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+   × selected commit /types/model.input/details 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   × selected commit /types/model.input/history 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   ✓ selected commit /services 0ms
+   ✓ selected commit /services/service.clock 0ms
+   ✓ selected commit /services/service.clock/details 0ms
+   ✓ selected commit /services/service.clock/history 0ms
+   ✓ there are twenty-three designed shapes in each scope, and a Page has a history too 0ms
+   ✓ a branch is one path segment, whatever it contains 0ms
+   ✓ a branch or a commit alone opens Pages in the same scope 0ms
+   ✓ a commit that no branch reaches has no branch invented for it 0ms
+   ✓ a callable has a distinct revision-bound address across tabs and history 1ms
+   ✓ an entity id is one encoded segment 0ms
+   ✓ names no explorer address:  0ms
+   ✓ names no explorer address: / 0ms
+   ✓ names no explorer address: /pages 0ms
+   ✓ names no explorer address: /branch 0ms
+   ✓ names no explorer address: /branch/main/reports 0ms
+   ✓ names no explorer address: /branch/main/analytics 0ms
+   ✓ names no explorer address: /branch/main/activity 0ms
+   ✓ names no explorer address: /branch/main/commit/abc/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages 0ms
+   ✓ names no explorer address: /branch/main/pages/x/source 0ms
+   ✓ names no explorer address: /branch/main/pages/x/details/extra 0ms
+   ✓ names no explorer address: /branch/feature/kept/pages 0ms
+   ✓ names no explorer address: /branch/%E0%A4%A/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map 0ms
+   ✓ a trailing slash names the same address 0ms
+   ✓ Models is a page tab and legacy page Contract links open Models in the same scope 0ms
+ ✓ test/utils/explorer-legacy.test.ts (6 tests) 7ms
+ ✓ test/utils/console-canonical.test.ts (8 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-route.test.ts > keeps page and module entity categories separate from primary navigation
+AssertionError: expected [ 'pages', 'layouts', …(6) ] to deeply equal [ 'pages', 'layouts', …(7) ]
+
+- Expected
++ Received
+
+@@ -4,8 +4,7 @@
+    "components",
+    "functions",
+    "configs",
+    "services",
+    "models",
+-   "types",
+    "platforms",
+  ]
+
+ ❯ test/utils/explorer-route.test.ts:61:30
+     59| test('keeps page and module entity categories separate from primary na…
+     60|  measureWorkload('function.explorer-route', 'layout-catalog-behavior',…
+     61|   expect(explorerCategories).toEqual([
+       |                              ^
+     62|    'pages',
+     63|    'layouts',
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-route.test.ts:60:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > current branch /types
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": null,
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:76:30
+     74|  const location = { branch, commit: null, ...selected } as ExplorerLoc…
+     75|  const path = `/branch/${encoded}${tail}`;
+     76|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     77|  expect(explorerRoutePath(location)).toBe(
+     78|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > current branch /types/model.input
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": null,
+  "entity": "model.input",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:76:30
+     74|  const location = { branch, commit: null, ...selected } as ExplorerLoc…
+     75|  const path = `/branch/${encoded}${tail}`;
+     76|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     77|  expect(explorerRoutePath(location)).toBe(
+     78|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > current branch /types/model.input/details
+ FAIL  test/utils/explorer-route.test.ts > current branch /types/model.input/history
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": null,
+  "entity": "model.input",
+  "section": "details",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:76:30
+     74|  const location = { branch, commit: null, ...selected } as ExplorerLoc…
+     75|  const path = `/branch/${encoded}${tail}`;
+     76|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     77|  expect(explorerRoutePath(location)).toBe(
+     78|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:84:30
+     82|  const location = { branch, commit: sha, ...selected } as ExplorerLoca…
+     83|  const path = `/branch/${encoded}/commit/${sha}${tail}`;
+     84|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     85|  expect(explorerRoutePath(location)).toBe(
+     86|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types/model.input
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "entity": "model.input",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:84:30
+     82|  const location = { branch, commit: sha, ...selected } as ExplorerLoca…
+     83|  const path = `/branch/${encoded}/commit/${sha}${tail}`;
+     84|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     85|  expect(explorerRoutePath(location)).toBe(
+     86|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types/model.input/details
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types/model.input/history
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "entity": "model.input",
+  "section": "details",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:84:30
+     82|  const location = { branch, commit: sha, ...selected } as ExplorerLoca…
+     83|  const path = `/branch/${encoded}/commit/${sha}${tail}`;
+     84|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     85|  expect(explorerRoutePath(location)).toBe(
+     86|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  9 failed | 74 passed (83)
+   Start at  21:33:00
+   Duration  5.61s (transform 150ms, setup 292ms, collect 162ms, tests 34ms, environment 0ms, prepare 146ms)
+
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve/packages/reports
+
+ ❯ test/utils/explorer-category.test.ts (13 tests | 1 failed) 136ms
+   ✓ compatibility details routes are nonvisual: pages 1ms
+   ✓ compatibility details routes are nonvisual: layouts 0ms
+   ✓ compatibility details routes are nonvisual: components 0ms
+   ✓ compatibility details routes are nonvisual: functions 0ms
+   ✓ compatibility details routes are nonvisual: configs 0ms
+   ✓ compatibility details routes are nonvisual: services 0ms
+   ✓ compatibility details routes are nonvisual: models 0ms
+   × a unit of a product kind is listed under the category of that kind 6ms
+     → missing source does not prove a model: expected 'models' to be null
+   ✓ a page is what renders an address, whatever kind it was registered as 0ms
+   ✓ what is not one of the five product kinds has no category and says what it is 1ms
+   ✓ a unit inside a category says its role in a word a reader knows 0ms
+   ✓ the policy holds for Harness's own registry 126ms
+   ✓ only explicitly pure functions with distinct runtime consumers are helpers 1ms
+ ❯ test/utils/harness-shell.test.ts (9 tests | 4 failed) 11ms
+   × the bar groups module categories under five scoped primary destinations 6ms
+     → expected [ [ 'pages', 'Pages', 'pages' ], …(8) ] to deeply equal [ [ 'pages', 'Pages', 'pages' ], …(4) ]
+   × on a current branch route the viewed commit is the tip, and there is no tip to go to 1ms
+     → expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+   ✓ on a selected commit the tip and the viewed commit are told apart, and Go to tip keeps the place 1ms
+   ✓ a selected commit that is the tip says both, and still leads to the current branch route 0ms
+   ✓ a branch stays in current mode on the same entity, and a commit is always an explicit route 0ms
+   ✓ a commit no branch reaches has no tip, says so, and is listed although no branch lists it 0ms
+   × without a resolved address the bar keeps its navigation and offers no revision 0ms
+     → expected [ 'Pages', 'Layouts', …(7) ] to deeply equal [ 'Pages', 'Modules', 'Styles', …(2) ]
+   × Styles stays active across branch and commit selection without becoming an entity category 2ms
+     → expected { id: 'components', …(5) } to match object { …(2) }
+(4 matching properties omitted from actual)
+   ✓ only a plain left click is followed inside the application 0ms
+ ✓ test/components/explorer-screens.test.ts (7 tests) 123ms
+ ❯ test/components/harness-navbar.test.ts (8 tests | 4 failed) 29ms
+   × one bar holds the brand, repository, entity categories and the Styles screen 16ms
+     → expected [ { label: 'Pages', …(3) }, …(8) ] to deeply equal [ { label: 'Pages', …(3) }, …(4) ]
+   × Styles has its own active state and keeps the selected revision in its address 4ms
+     → expected { label: 'Components', …(3) } to match object { label: 'Styles', …(3) }
+   ✓ the bar has no reports, analytics, activity, growth or legacy view in it 3ms
+   × at the tip of a branch the commit is the tip, said as current, and Go to tip is disabled 3ms
+     → expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+   ✓ at a selected commit the tip and the viewed hash differ, and Go to tip is the current route 1ms
+   ✓ both selectors are the shared select, and the bar writes no field of its own 0ms
+   × without a resolved address the bar keeps its navigation and offers nothing to choose 1ms
+     → expected 'Pages Layouts Components Models Servi…' to be 'Pages Modules Styles Configs Platforms' // Object.is equality
+   ✓ a limited history index keeps revision choices without a limitation banner 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/harness-navbar.test.ts > one bar holds the brand, repository, entity categories and the Styles screen
+AssertionError: expected [ { label: 'Pages', …(3) }, …(8) ] to deeply equal [ { label: 'Pages', …(3) }, …(4) ]
+
+- Expected
++ Received
+
+@@ -4,26 +4,50 @@
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/pages",
+      "iconThenLabel": true,
+      "label": "Pages",
+    },
+    {
+-     "current": true,
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/layouts",
++     "iconThenLabel": true,
++     "label": "Layouts",
++   },
++   {
++     "current": false,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+      "iconThenLabel": true,
+-     "label": "Modules",
++     "label": "Components",
+    },
+    {
+      "current": false,
+-     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/models",
+      "iconThenLabel": true,
+-     "label": "Styles",
++     "label": "Models",
++   },
++   {
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/services",
++     "iconThenLabel": true,
++     "label": "Services",
+    },
+    {
++     "current": true,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/functions",
++     "iconThenLabel": true,
++     "label": "Helpers",
++   },
++   {
+      "current": false,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/configs",
+      "iconThenLabel": true,
+      "label": "Configs",
++   },
++   {
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++     "iconThenLabel": true,
++     "label": "Styles",
+    },
+    {
+      "current": false,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/platforms",
+      "iconThenLabel": true,
+
+ ❯ test/components/harness-navbar.test.ts:68:22
+     66|  expect(html).toMatch(/^\s*<header class="hx-nav"/);
+     67|  expect(html.match(/<header\b/g)).toHaveLength(1);
+     68|  expect(links(html)).toEqual(
+       |                      ^
+     69|   ['Pages', 'Modules', 'Styles', 'Configs', 'Platforms'].map((label) =…
+     70|    label,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > Styles has its own active state and keeps the selected revision in its address
+AssertionError: expected { label: 'Components', …(3) } to match object { label: 'Styles', …(3) }
+
+- Expected
++ Received
+
+  {
+-   "current": true,
+-   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++   "current": false,
++   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+    "iconThenLabel": true,
+-   "label": "Styles",
++   "label": "Components",
+  }
+
+ ❯ test/components/harness-navbar.test.ts:95:18
+     93|  const menu = links(body(styles));
+     94|  expect(menu.filter((item) => item.current).map((item) => item.label))…
+     95|  expect(menu[2]).toMatchObject({
+       |                  ^
+     96|   label: 'Styles',
+     97|   href: `${scoped}/commit/${sha(4)}/styles`,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > at the tip of a branch the commit is the tip, said as current, and Go to tip is disabled
+AssertionError: expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+
+Expected: "/harness/branch/feature%2Fshell%231/components"
+Received: "/harness/branch/feature%2Fshell%231/layouts"
+
+ ❯ test/components/harness-navbar.test.ts:124:30
+    122|    .map((item) => item.label)
+    123|  ).toEqual(['Pages']);
+    124|  expect(links(html)[1].href).toBe(`${scoped}/components`);
+       |                              ^
+    125| });
+    126| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > without a resolved address the bar keeps its navigation and offers nothing to choose
+AssertionError: expected 'Pages Layouts Components Models Servi…' to be 'Pages Modules Styles Configs Platforms' // Object.is equality
+
+Expected: "Pages Modules Styles Configs Platforms"
+Received: "Pages Layouts Components Models Services Helpers Configs Styles Platforms"
+
+ ❯ test/components/harness-navbar.test.ts:150:33
+    148| test('without a resolved address the bar keeps its navigation and offe…
+    149|  const html = body(null, { repository: null, index: null });
+    150|  expect(text(categories(html))).toBe('Pages Modules Styles Configs Pla…
+       |                                 ^
+    151|  expect(links(html)).toEqual([]);
+    152|  expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  test/utils/explorer-category.test.ts > a unit of a product kind is listed under the category of that kind
+AssertionError: missing source does not prove a model: expected 'models' to be null
+
+- Expected: 
+null
+
++ Received: 
+"models"
+
+ ❯ test/utils/explorer-category.test.ts:35:5
+     33|    explorerCategory(unit('model.unknown', 'model', { ...{ modelDefinit…
+     34|    'missing source does not prove a model'
+     35|   ).toBeNull();
+       |     ^
+     36|   expect(
+     37|    explorerCategory(unit('model.value', 'model', { ...{ modelDefinitio…
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-category.test.ts:24:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > the bar groups module categories under five scoped primary destinations
+AssertionError: expected [ [ 'pages', 'Pages', 'pages' ], …(8) ] to deeply equal [ [ 'pages', 'Pages', 'pages' ], …(4) ]
+
+- Expected
++ Received
+
+@@ -3,23 +3,43 @@
+      "pages",
+      "Pages",
+      "pages",
+    ],
+    [
+-     "modules",
+-     "Modules",
+-     "layers",
++     "layouts",
++     "Layouts",
++     "layouts",
+    ],
+    [
+-     "styles",
+-     "Styles",
+-     "styles",
++     "components",
++     "Components",
++     "components",
++   ],
++   [
++     "models",
++     "Models",
++     "database",
+    ],
+    [
++     "services",
++     "Services",
++     "services",
++   ],
++   [
++     "functions",
++     "Helpers",
++     "functions",
++   ],
++   [
+      "configs",
+      "Configs",
+      "configs",
++   ],
++   [
++     "styles",
++     "Styles",
++     "styles",
+    ],
+    [
+      "platforms",
+      "Platforms",
+      "platforms",
+
+ ❯ test/utils/harness-shell.test.ts:42:70
+     40|  await measureWorkload('reports.function.harness-shell', 'scoped-navba…
+     41|   const { categories } = view(historical);
+     42|   expect(categories.map((item) => [item.id, item.label, item.icon])).t…
+       |                                                                      ^
+     43|    ['pages', 'Pages', 'pages'],
+     44|    ['modules', 'Modules', 'layers'],
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/utils/harness-shell.test.ts:40:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > on a current branch route the viewed commit is the tip, and there is no tip to go to
+AssertionError: expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+
+Expected: "/harness/branch/feature%2Fshell%231/components"
+Received: "/harness/branch/feature%2Fshell%231/layouts"
+
+ ❯ test/utils/harness-shell.test.ts:80:29
+     78|   to: { branch: shellBranch, commit: null, category: 'pages' }
+     79|  });
+     80|  expect(categories[1].href).toBe(`${scoped}/components`);
+       |                             ^
+     81|  expect(revision).toMatchObject({
+     82|   branch: shellBranch,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > without a resolved address the bar keeps its navigation and offers no revision
+AssertionError: expected [ 'Pages', 'Layouts', …(7) ] to deeply equal [ 'Pages', 'Modules', 'Styles', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "Pages",
+-   "Modules",
+-   "Styles",
++   "Layouts",
++   "Components",
++   "Models",
++   "Services",
++   "Helpers",
+    "Configs",
++   "Styles",
+    "Platforms",
+  ]
+
+ ❯ test/utils/harness-shell.test.ts:153:47
+    151|  expect(revision).toBeNull();
+    152|  expect(home).toEqual({ href: shellMount, to: null });
+    153|  expect(categories.map((item) => item.label)).toEqual([
+       |                                               ^
+    154|   'Pages',
+    155|   'Modules',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > Styles stays active across branch and commit selection without becoming an entity category
+AssertionError: expected { id: 'components', …(5) } to match object { …(2) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+    "to": {
+      "branch": "feature/shell#1",
+-     "category": "pages",
++     "category": "components",
+      "commit": "0404040404040404040404040404040404040404",
+-     "screen": "styles",
+    },
+  }
+
+ ❯ test/utils/harness-shell.test.ts:175:24
+    173|  const { categories, revision } = view(styles);
+    174|  expect(categories.filter((item) => item.active).map((item) => item.id…
+    175|  expect(categories[2]).toMatchObject({
+       |                        ^
+    176|   href: `${scoped}/commit/${sha(4)}/styles`,
+    177|   to: styles
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  3 failed | 1 passed (4)
+      Tests  9 failed | 28 passed (37)
+   Start at  21:33:07
+   Duration  2.34s (transform 550ms, setup 0ms, collect 998ms, tests 300ms, environment 0ms, prepare 173ms)
+
+
+
+Running 3 tests using 1 worker
+
+(node:86229) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width (5.5s)
+(node:87103) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width (5.3s)
+(node:87728) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width (5.2s)
+
+
+  1) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 6
+
+      Array [
+        "Pages",
+    -   "Modules",
+    -   "Styles",
+    +   "Layouts",
+    +   "Components",
+    +   "Models",
+    +   "Services",
+    +   "Helpers",
+        "Configs",
+    +   "Styles",
+        "Platforms",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+        14 × locator resolved to 9 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+    > 68 | 		await expect(links).toHaveText(categories);
+         | 		                    ^
+      69 | 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
+      70 | 			0
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve/packages/reports/tests/e2e/explorer-shell.spec.ts:68:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+  2) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 6
+
+      Array [
+        "Pages",
+    -   "Modules",
+    -   "Styles",
+    +   "Layouts",
+    +   "Components",
+    +   "Models",
+    +   "Services",
+    +   "Helpers",
+        "Configs",
+    +   "Styles",
+        "Platforms",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+        14 × locator resolved to 9 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+    > 68 | 		await expect(links).toHaveText(categories);
+         | 		                    ^
+      69 | 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
+      70 | 			0
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve/packages/reports/tests/e2e/explorer-shell.spec.ts:68:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+  3) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 6
+
+      Array [
+        "Pages",
+    -   "Modules",
+    -   "Styles",
+    +   "Layouts",
+    +   "Components",
+    +   "Models",
+    +   "Services",
+    +   "Helpers",
+        "Configs",
+    +   "Styles",
+        "Platforms",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+        14 × locator resolved to 9 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+    > 68 | 		await expect(links).toHaveText(categories);
+         | 		                    ^
+      69 | 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
+      70 | 			0
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve/packages/reports/tests/e2e/explorer-shell.spec.ts:68:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width 
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width 
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width 
+
+
+Running 3 tests using 1 worker
+
+(node:88669) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (5.3s)
+(node:88911) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (5.3s)
+(node:89628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (5.3s)
+
+
+  1) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+
+    Error: collections use cards; helpers and models require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 2
+    Received: 3
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers and models require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      64 | 				cards,
+      65 | 				'collections use cards; helpers and models require two distinct visible consumers'
+    > 66 | 			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      67 | 			for (const item of await cards.all()) {
+      68 | 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
+      69 | 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve/packages/reports/test/entity-preview-actions.spec.ts:66:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+
+    Error: collections use cards; helpers and models require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 2
+    Received: 3
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers and models require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      64 | 				cards,
+      65 | 				'collections use cards; helpers and models require two distinct visible consumers'
+    > 66 | 			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      67 | 			for (const item of await cards.all()) {
+      68 | 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
+      69 | 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve/packages/reports/test/entity-preview-actions.spec.ts:66:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 
+
+    Error: collections use cards; helpers and models require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 2
+    Received: 3
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers and models require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      64 | 				cards,
+      65 | 				'collections use cards; helpers and models require two distinct visible consumers'
+    > 66 | 			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      67 | 			for (const item of await cards.all()) {
+      68 | 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
+      69 | 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QolDve/packages/reports/test/entity-preview-actions.spec.ts:66:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 
+

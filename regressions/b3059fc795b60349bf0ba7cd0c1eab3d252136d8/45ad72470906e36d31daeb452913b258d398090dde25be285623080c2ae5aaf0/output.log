@@ -1,0 +1,114 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [6.22s]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-3Ne415/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep collections: --timeout "10000"
+
+Running 1 test using 1 worker
+
+  ✘  1 test/entity-preview.spec.ts:7:1 › collections: search, changed only and order change what is listed (5.4s)
+
+
+  1) test/entity-preview.spec.ts:7:1 › collections: search, changed only and order change what is listed 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Filters', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Filters', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Filters', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      16 | 	await expect(rows).toHaveCount(3);
+      17 | 	await capture(tab, 'components-desktop');
+    > 18 | 	await expect(tab.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(1);
+         | 	                                                                        ^
+      19 | 	await expect(tab.getByRole('combobox', { name: 'Order' })).toHaveCount(0);
+      20 | 	await chooseCatalogFilter(tab, 'Verification filter', 'unproven');
+      21 | 	await expect(rows).toHaveCount(0);
+        at /private/tmp/harness-snapshot-3Ne415/packages/reports/test/entity-preview.spec.ts:18:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-collections-5ecb5-order-change-what-is-listed/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-collections-5ecb5-order-change-what-is-listed/error-context.md
+
+  1 failed
+    test/entity-preview.spec.ts:7:1 › collections: search, changed only and order change what is listed 
+error: script "test:entities" exited with code 1
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5799 --strictPort --port "5796"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/ui-catalog-listing.spec.ts:28:1 › Pages of the tip show every ordinary page and no card for an address that only redirects (6.5s)
+
+
+  1) tests/e2e/ui-catalog-listing.spec.ts:28:1 › Pages of the tip show every ordinary page and no card for an address that only redirects 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Filters', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Filters', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Filters', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      31 | 	await opened(page);
+      32 | 	await pictured(page, info, 'pages-tip');
+    > 33 | 	await expect(page.getByRole('button', { name: 'Filters', exact: true })).toHaveCount(1);
+         | 	                                                                         ^
+      34 | 	await expect(page.getByRole('combobox', { name: 'Verification filter' })).toHaveCount(0);
+      35 | 	expect(await listedIds(page)).toEqual(pages);
+      36 | 	await changeFilter(page, 'Verification filter', 'passed');
+        at /private/tmp/harness-snapshot-3Ne415/packages/desktop/tests/e2e/ui-catalog-listing.spec.ts:33:75
+
+    Error Context: test-results/ui-catalog-listing-Pages-o-72a36-address-that-only-redirects/error-context.md
+
+  1 failed
+    tests/e2e/ui-catalog-listing.spec.ts:28:1 › Pages of the tip show every ordinary page and no card for an address that only redirects 

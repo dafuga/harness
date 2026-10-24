@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uYGd1I
+
+ ✓ test/loop.e2e.test.ts (7 tests) 52356ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  2987ms
+   ✓ generated app and lib instructions mention harness loops  925ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  2634ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  13183ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  12412ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  14723ms
+   ✓ standalone evidence capture preserves images and measurements without inventing a regression or full verdict  5491ms
+ ✓ test/resources-cli.e2e.test.ts (5 tests) 5429ms
+   ✓ resources status reports overall CPU, available cores, memory and the shared queue  975ms
+   ✓ managed . scripts forward caller arguments within a bounded lease  1430ms
+   ✓ managed packages/desktop scripts forward caller arguments within a bounded lease  1301ms
+   ✓ an impossible resource request is rejected before a command starts  656ms
+   ✓ an admitted command receives its bounded budget and releases its shared reservation  1066ms
+ ✓ test/resource-queue.e2e.test.ts (3 tests) 1681ms
+   ✓ separate native processes share atomic reservations and honor agent-test, coding, environment order  962ms
+   ✓ the Node CommonJS desktop bundle shares the Bun SQLite reservation protocol  550ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  15:46:00
+   Duration  62.38s (transform 144ms, setup 116ms, collect 161ms, tests 59.47s, environment 0ms, prepare 92ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uYGd1I/packages/desktop
+
+ ✓ test/cli-integration.test.ts (20 tests) 2302ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  15:47:03
+   Duration  2.88s (transform 247ms, setup 68ms, collect 335ms, tests 2.30s, environment 0ms, prepare 36ms)
+

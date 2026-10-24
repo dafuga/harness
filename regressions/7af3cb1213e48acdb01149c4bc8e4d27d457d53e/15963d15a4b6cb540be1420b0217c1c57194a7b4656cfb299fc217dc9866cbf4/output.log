@@ -1,0 +1,184 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [7.01s]
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4foYmy/packages/reports
+
+ ❯ test/components/entity-contract.test.ts (3 tests | 1 failed) 14ms
+   ✓ a dedicated contract lists types and example previews with full details behind info buttons 9ms
+   ✓ legacy contract tables retain types and example controls for opaque fields 1ms
+   × callable contracts preserve actual parameters and associate their returns 4ms
+     → expected '<!--[--><!--[--><div class="ex-conten…' to contain 'aria-label="Throws"'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-contract.test.ts > callable contracts preserve actual parameters and associate their returns
+AssertionError: expected '<!--[--><!--[--><div class="ex-conten…' to contain 'aria-label="Throws"'
+
+Expected: "aria-label="Throws""
+Received: "<!--[--><!--[--><div class="ex-content" data-mode="current"><!--[-1--><!--[0--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><a href="/harness/branch/feature%2Forders/functions"><!---->Helpers<!----></a><!----></li> <!--[-1--><li aria-current="page">Filter orders</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Filter orders</h1> <span class="ex-pill">Function</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <p class="ex-lead">Returns the orders whose name matches a search.</p></div> <div class="ex-head-actions"><!--[-1--><!--]--></div></header> <!--[-1--><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Filter orders sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/functions/app.function.filter-orders" aria-selected="false">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=contract" aria-selected="true">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=examples" aria-selected="false">Examples</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/functions/app.function.filter-orders/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[4--><div role="tabpanel" aria-label="Filter orders contract"><section class="ex-card ex-contract svelte-rrf560" data-harness-component="entity-contract" aria-label="Contract"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM14 3v5h5M9 13h6M9 17h6"></path></svg><!----> Contract</h2> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--[--><section class="callable svelte-rrf560" aria-label="countWords contract"><h3 class="svelte-rrf560"><code>countWords(textToConvert: string): number</code></h3> <!--[--><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[1--><p class="label svelte-fbltee">Parameters</p><!--]--> <!--[-1--><div class="frame svelte-fbltee"><table aria-label="Parameters" class="svelte-fbltee"><thead class="svelte-fbltee"><tr><!--[0--><th scope="col" class="leading svelte-fbltee">Name</th><!--]--><th scope="col" class="leading svelte-fbltee">Type</th><th scope="col" class="svelte-fbltee">Example</th><th scope="col" class="act svelte-fbltee" aria-label="Actions"></th></tr></thead><tbody class="svelte-fbltee"><!--[--><tr class="svelte-fbltee"><!--[0--><th scope="row" class="svelte-fbltee">textToConvert</th><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">string</code></td><td class="example svelte-fbltee"><!--[-1--><!--]--> <!--[0--><code>"hello world"</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for textToConvert" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-fbltee" data-harness-component="contract-table"><!--[1--><p class="label svelte-fbltee">Returns</p><!--]--> <!--[-1--><div class="frame svelte-fbltee"><table aria-label="Returns" class="svelte-fbltee"><thead class="svelte-fbltee"><tr><!--[-1--><!--]--><th scope="col" class="leading svelte-fbltee">Type</th><th scope="col" class="svelte-fbltee">Example</th><th scope="col" class="act svelte-fbltee" aria-label="Actions"></th></tr></thead><tbody class="svelte-fbltee"><!--[--><tr class="svelte-fbltee"><!--[-1--><!--]--><td class="svelte-fbltee"><code class="type svelte-fbltee">number</code></td><td class="example svelte-fbltee"><!--[-1--><!--]--> <!--[0--><code>2</code><!--]--></td><td class="act svelte-fbltee"><button type="button" class="info svelte-fbltee" aria-label="View example for return value" aria-haspopup="dialog"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><!--]--></section><!--]--></section> <!--[-1--><!--]--><!----><!----></div><!--]--><!----><!--]--><!----><!--]--></div><!--]--><!--]-->"
+
+ ❯ test/components/entity-contract.test.ts:104:15
+    102|  expect(body).toContain('aria-label="Parameters"');
+    103|  expect(body).toContain('aria-label="Returns"');
+    104|  expect(body).toContain('aria-label="Throws"');
+       |               ^
+    105|  expect(words(body)).toContain('No errors declared.');
+    106|  expect(words(body)).not.toMatch(/Count words · Value|Runs as|Module/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  13:20:10
+   Duration  1.05s (transform 563ms, setup 0ms, collect 761ms, tests 14ms, environment 0ms, prepare 30ms)
+
+
+Running 3 tests using 1 worker
+
+(node:54039) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at desktop width (6.3s)
+(node:54166) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at tablet width (6.0s)
+(node:54305) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at mobile width (6.0s)
+
+
+  1) test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at desktop width 
+
+    Error: callable errors use their own Throws table
+
+    expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true })
+    Expected substring: "No errors declared."
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - callable errors use their own Throws table getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true })
+
+
+       at entityPreviewPage.ts:202
+
+      200 | 		await expect(api.getByRole('table', { name: 'Returns', exact: true })).toContainText(result);
+      201 | 		const thrown = api.getByRole('table', { name: 'Throws', exact: true });
+    > 202 | 		await expect(thrown, 'callable errors use their own Throws table').toContainText(
+          | 		                                                                   ^
+      203 | 			name === 'countWords' ? 'TypeError' : 'No errors declared.'
+      204 | 		);
+      205 | 		if (name === 'countWords') {
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4foYmy/packages/reports/test/entityPreviewPage.ts:202:70)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4foYmy/packages/reports/test/entity-preview-words.spec.ts:199:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/error-context.md
+
+  2) test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at tablet width 
+
+    Error: callable errors use their own Throws table
+
+    expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true })
+    Expected substring: "No errors declared."
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - callable errors use their own Throws table getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true })
+
+
+       at entityPreviewPage.ts:202
+
+      200 | 		await expect(api.getByRole('table', { name: 'Returns', exact: true })).toContainText(result);
+      201 | 		const thrown = api.getByRole('table', { name: 'Throws', exact: true });
+    > 202 | 		await expect(thrown, 'callable errors use their own Throws table').toContainText(
+          | 		                                                                   ^
+      203 | 			name === 'countWords' ? 'TypeError' : 'No errors declared.'
+      204 | 		);
+      205 | 		if (name === 'countWords') {
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4foYmy/packages/reports/test/entityPreviewPage.ts:202:70)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4foYmy/packages/reports/test/entity-preview-words.spec.ts:199:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/error-context.md
+
+  3) test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at mobile width 
+
+    Error: callable errors use their own Throws table
+
+    expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true })
+    Expected substring: "No errors declared."
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - callable errors use their own Throws table getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'toKebabCase contract', exact: true }).getByRole('table', { name: 'Throws', exact: true })
+
+
+       at entityPreviewPage.ts:202
+
+      200 | 		await expect(api.getByRole('table', { name: 'Returns', exact: true })).toContainText(result);
+      201 | 		const thrown = api.getByRole('table', { name: 'Throws', exact: true });
+    > 202 | 		await expect(thrown, 'callable errors use their own Throws table').toContainText(
+          | 		                                                                   ^
+      203 | 			name === 'countWords' ? 'TypeError' : 'No errors declared.'
+      204 | 		);
+      205 | 		if (name === 'countWords') {
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4foYmy/packages/reports/test/entityPreviewPage.ts:202:70)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4foYmy/packages/reports/test/entity-preview-words.spec.ts:199:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at desktop width 
+    test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at tablet width 
+    test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at mobile width 

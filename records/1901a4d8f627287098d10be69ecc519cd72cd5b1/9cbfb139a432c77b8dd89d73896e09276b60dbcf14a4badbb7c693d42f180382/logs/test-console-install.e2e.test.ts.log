@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-0UFg8p[39m
+
+ [32m✓[39m test/console-install.e2e.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 33202[2mms[22m[39m
+   [33m[2m✓[22m[39m the installer refuses to serve anything without a policy of the host [33m 1496[2mms[22m[39m
+   [33m[2m✓[22m[39m the installed host builds for Workers and keeps history out of everything public [33m 8063[2mms[22m[39m
+   [33m[2m✓[22m[39m in workerd only the host administrator reaches the console, its data and its media [33m 2236[2mms[22m[39m
+   [33m[2m✓[22m[39m the mobile build of the same host still succeeds and carries no history [33m 5972[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 21:25:53
+[2m   Duration [22m 33.54s[2m (transform 63ms, setup 11ms, collect 64ms, tests 33.20s, environment 0ms, prepare 43ms)[22m
+

@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/project-context.test.ts (1 test) 2192ms
+   ✓ an explicit stale project ID cannot read the newly selected project  2192ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  21:20:55
+   Duration  2.50s (transform 93ms, setup 0ms, collect 172ms, tests 2.19s, environment 0ms, prepare 24ms)
+

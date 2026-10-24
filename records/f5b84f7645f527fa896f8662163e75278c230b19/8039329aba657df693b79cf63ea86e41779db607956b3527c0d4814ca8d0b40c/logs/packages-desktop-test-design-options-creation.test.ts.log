@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/design-options-creation.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 25869[2mms[22m[39m
+   [33m[2m✓[22m[39m a new visual plan is made as three separately directed options in one version [33m 7972[2mms[22m[39m
+   [33m[2m✓[22m[39m a new visual plan asked for two options from a headless catalog makes two [33m 7814[2mms[22m[39m
+   [33m[2m✓[22m[39m a new headless plan makes no image whatever count it is given [33m 6283[2mms[22m[39m
+   [33m[2m✓[22m[39m a failed option of a new plan saves no version and names the draft it made [33m 3799[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 19:42:35
+[2m   Duration [22m 26.69s[2m (transform 323ms, setup 0ms, collect 535ms, tests 25.87s, environment 0ms, prepare 59ms)[22m
+

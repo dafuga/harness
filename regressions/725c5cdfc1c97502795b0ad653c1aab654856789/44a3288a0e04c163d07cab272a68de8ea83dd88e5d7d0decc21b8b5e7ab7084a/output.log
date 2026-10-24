@@ -1,0 +1,240 @@
+
+Running 6 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (6.3s)
+  ✘  2 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (6.3s)
+  ✘  3 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (6.3s)
+  ✘  4 test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at desktop width (5.3s)
+  ✘  5 test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at tablet width (5.3s)
+  ✘  6 test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at mobile width (5.3s)
+
+
+  1) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "Orders page",
+        "OrderList",
+        "OrderStore",
+    +   "Order",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+        14 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:90
+
+      88 | 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+      89 | 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
+    > 90 | 		await expect(usage.getByRole('link')).toHaveText(['Orders page', 'OrderList', 'OrderStore']);
+         | 		                                      ^
+      91 | 		await expect(usage, 'Four eligible consumers retain the overflow indicator').toContainText('…');
+      92 | 		for (const kind of ['Components', 'Services', 'Models'])
+      93 | 			await expect(usage.getByRole('list', { name: kind, exact: true })).toHaveCount(0);
+        at reviewHelperUsage (/private/tmp/harness-snapshot-4y60NB/packages/reports/test/entityPreviewFunctions.ts:90:41)
+        at /private/tmp/harness-snapshot-4y60NB/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "Orders page",
+        "OrderList",
+        "OrderStore",
+    +   "Order",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+        14 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:90
+
+      88 | 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+      89 | 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
+    > 90 | 		await expect(usage.getByRole('link')).toHaveText(['Orders page', 'OrderList', 'OrderStore']);
+         | 		                                      ^
+      91 | 		await expect(usage, 'Four eligible consumers retain the overflow indicator').toContainText('…');
+      92 | 		for (const kind of ['Components', 'Services', 'Models'])
+      93 | 			await expect(usage.getByRole('list', { name: kind, exact: true })).toHaveCount(0);
+        at reviewHelperUsage (/private/tmp/harness-snapshot-4y60NB/packages/reports/test/entityPreviewFunctions.ts:90:41)
+        at /private/tmp/harness-snapshot-4y60NB/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "Orders page",
+        "OrderList",
+        "OrderStore",
+    +   "Order",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+        14 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:90
+
+      88 | 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+      89 | 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
+    > 90 | 		await expect(usage.getByRole('link')).toHaveText(['Orders page', 'OrderList', 'OrderStore']);
+         | 		                                      ^
+      91 | 		await expect(usage, 'Four eligible consumers retain the overflow indicator').toContainText('…');
+      92 | 		for (const kind of ['Components', 'Services', 'Models'])
+      93 | 			await expect(usage.getByRole('list', { name: kind, exact: true })).toHaveCount(0);
+        at reviewHelperUsage (/private/tmp/harness-snapshot-4y60NB/packages/reports/test/entityPreviewFunctions.ts:90:41)
+        at /private/tmp/harness-snapshot-4y60NB/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/error-context.md
+
+  4) test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at desktop width 
+
+    Error: Private dependencies reuse the canonical module card
+
+    expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('article', { name: 'single', exact: true })
+    Expected: "explorer-ui-explorer-module-card"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Private dependencies reuse the canonical module card getByRole('article', { name: 'single', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article', { name: 'single', exact: true })
+
+
+       at entityPreviewFunctions.ts:20
+
+      18 | 		);
+      19 | 		const card = page.getByRole('article', { name: 'single', exact: true });
+    > 20 | 		await expect(card, 'Private dependencies reuse the canonical module card').toHaveAttribute(
+         | 		                                                                           ^
+      21 | 			'data-harness-component',
+      22 | 			'explorer-ui-explorer-module-card'
+      23 | 		);
+        at reviewPrivateFunctions (/private/tmp/harness-snapshot-4y60NB/packages/reports/test/entityPreviewFunctions.ts:20:78)
+        at /private/tmp/harness-snapshot-4y60NB/packages/reports/test/entity-preview-groups.spec.ts:67:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-priv-16b50-dule-cards-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-priv-16b50-dule-cards-at-desktop-width/error-context.md
+
+  5) test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at tablet width 
+
+    Error: Private dependencies reuse the canonical module card
+
+    expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('article', { name: 'single', exact: true })
+    Expected: "explorer-ui-explorer-module-card"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Private dependencies reuse the canonical module card getByRole('article', { name: 'single', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article', { name: 'single', exact: true })
+
+
+       at entityPreviewFunctions.ts:20
+
+      18 | 		);
+      19 | 		const card = page.getByRole('article', { name: 'single', exact: true });
+    > 20 | 		await expect(card, 'Private dependencies reuse the canonical module card').toHaveAttribute(
+         | 		                                                                           ^
+      21 | 			'data-harness-component',
+      22 | 			'explorer-ui-explorer-module-card'
+      23 | 		);
+        at reviewPrivateFunctions (/private/tmp/harness-snapshot-4y60NB/packages/reports/test/entityPreviewFunctions.ts:20:78)
+        at /private/tmp/harness-snapshot-4y60NB/packages/reports/test/entity-preview-groups.spec.ts:67:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-priv-35474-odule-cards-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-priv-35474-odule-cards-at-tablet-width/error-context.md
+
+  6) test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at mobile width 
+
+    Error: Private dependencies reuse the canonical module card
+
+    expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('article', { name: 'single', exact: true })
+    Expected: "explorer-ui-explorer-module-card"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Private dependencies reuse the canonical module card getByRole('article', { name: 'single', exact: true }) with timeout 5000ms
+      - waiting for getByRole('article', { name: 'single', exact: true })
+
+
+       at entityPreviewFunctions.ts:20
+
+      18 | 		);
+      19 | 		const card = page.getByRole('article', { name: 'single', exact: true });
+    > 20 | 		await expect(card, 'Private dependencies reuse the canonical module card').toHaveAttribute(
+         | 		                                                                           ^
+      21 | 			'data-harness-component',
+      22 | 			'explorer-ui-explorer-module-card'
+      23 | 		);
+        at reviewPrivateFunctions (/private/tmp/harness-snapshot-4y60NB/packages/reports/test/entityPreviewFunctions.ts:20:78)
+        at /private/tmp/harness-snapshot-4y60NB/packages/reports/test/entity-preview-groups.spec.ts:67:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-priv-03789-odule-cards-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-priv-03789-odule-cards-at-mobile-width/error-context.md
+
+  6 failed
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 
+    test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at desktop width 
+    test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at tablet width 
+    test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at mobile width 

@@ -1,0 +1,99 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [21.07s]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-contract.spec.ts test/entity-preview-captures.spec.ts test/entity-preview-actions.spec.ts test/entity-preview-groups.spec.ts test/entity-preview-source.spec.ts test/entity-preview-metric-diff.spec.ts test/entity-preview.spec.ts
+
+Running 66 tests using 1 worker
+
+(node:18345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-actions.spec.ts:23:2 › visual overviews lead with screenshots at desktop width (5.8s)
+  ✓   2 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at desktop width (6.8s)
+  ✓   3 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (3.7s)
+  ✓   4 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at desktop width (526ms)
+  ✓   5 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at desktop width (210ms)
+  ✓   6 test/entity-preview-actions.spec.ts:144:2 › the console keeps a loaded revision responsive at desktop width (618ms)
+  ✓   7 test/entity-preview-actions.spec.ts:23:2 › visual overviews lead with screenshots at tablet width (5.2s)
+  ✓   8 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at tablet width (6.0s)
+  ✓   9 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (3.5s)
+  ✓  10 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at tablet width (562ms)
+  ✓  11 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at tablet width (217ms)
+  ✓  12 test/entity-preview-actions.spec.ts:144:2 › the console keeps a loaded revision responsive at tablet width (605ms)
+  ✓  13 test/entity-preview-actions.spec.ts:23:2 › visual overviews lead with screenshots at mobile width (5.1s)
+  ✓  14 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at mobile width (5.8s)
+  ✓  15 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (3.3s)
+  ✓  16 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at mobile width (511ms)
+  ✓  17 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at mobile width (216ms)
+  ✓  18 test/entity-preview-actions.spec.ts:144:2 › the console keeps a loaded revision responsive at mobile width (555ms)
+  ✓  19 test/entity-preview-actions.spec.ts:186:1 › the component catalog keeps reused screenshots revision-bound without extra source text (191ms)
+  ✓  20 test/entity-preview-actions.spec.ts:195:1 › branch and commit selection replace component screenshots with that revision (179ms)
+  ✓  21 test/entity-preview-captures.spec.ts:15:1 › preview captures retain decoded pixels and measured workloads with their served identity (227ms)
+  ✓  22 test/entity-preview-captures.spec.ts:63:1 › screenshots use their capture commit and comparisons show their paired revisions (758ms)
+  ✓  23 test/entity-preview-contract.spec.ts:9:1 › component contracts expose Props and keep verification states on States (287ms)
+  ✓  24 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at desktop width (780ms)
+  ✓  25 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at tablet width (767ms)
+  ✓  26 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at mobile width (741ms)
+  ✓  27 test/entity-preview-groups.spec.ts:9:2 › category folders group every collection and filter together at desktop (979ms)
+  ✓  28 test/entity-preview-groups.spec.ts:9:2 › category folders group every collection and filter together at tablet (979ms)
+  ✓  29 test/entity-preview-groups.spec.ts:9:2 › category folders group every collection and filter together at mobile (942ms)
+  ✓  30 test/entity-preview-groups.spec.ts:56:2 › source lists category implementation files only at desktop (886ms)
+  ✓  31 test/entity-preview-groups.spec.ts:56:2 › source lists category implementation files only at tablet (870ms)
+  ✓  32 test/entity-preview-groups.spec.ts:56:2 › source lists category implementation files only at mobile (871ms)
+  ✓  33 test/entity-preview-metric-diff.spec.ts:13:1 › a selected page diff shows before, after and performance metric changes (419ms)
+  ✓  34 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at desktop width (707ms)
+  ✓  35 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at desktop width (700ms)
+  ✓  36 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at desktop width (734ms)
+  ✓  37 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at desktop width (853ms)
+  ✓  38 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at desktop width (710ms)
+  ✓  39 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at desktop width (720ms)
+  ✓  40 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at desktop width (787ms)
+  ✓  41 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at tablet width (723ms)
+  ✓  42 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at tablet width (742ms)
+  ✓  43 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at tablet width (690ms)
+  ✓  44 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at tablet width (757ms)
+  ✓  45 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at tablet width (724ms)
+  ✓  46 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at tablet width (784ms)
+  ✓  47 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at tablet width (747ms)
+  ✓  48 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at mobile width (754ms)
+  ✓  49 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at mobile width (718ms)
+  ✓  50 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at mobile width (656ms)
+  ✓  51 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at mobile width (734ms)
+  ✓  52 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at mobile width (655ms)
+  ✓  53 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at mobile width (654ms)
+  ✓  54 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at mobile width (669ms)
+  ✓  55 test/entity-preview-source.spec.ts:121:1 › source file selection and closing retain the detail Source tab (266ms)
+  ✓  56 test/entity-preview-source.spec.ts:142:1 › Source opens file contents in a modal and older histories state an explicit gap (341ms)
+  ✓  57 test/entity-preview-source.spec.ts:172:1 › a delayed previous source read cannot replace the selected file (334ms)
+  ✓  58 test/entity-preview.spec.ts:7:1 › collections: search, changed only and order change what is listed (497ms)
+  ✓  59 test/entity-preview.spec.ts:33:1 › a row or a card of a collection opens its entity in the same branch and commit (430ms)
+  ✓  60 test/entity-preview.spec.ts:60:1 › a function shows its recorded run: steps, input, output and assertions (576ms)
+  ✓  61 test/entity-preview.spec.ts:93:1 › links walk page to component to function, and keep the branch and the commit (359ms)
+  ✓  62 test/entity-preview.spec.ts:120:1 › one entity page keeps source optional without a duplicate Details page (1.3s)
+  ✓  63 test/entity-preview.spec.ts:129:1 › history lists changes, keeps profiles apart and opens a revision (330ms)
+  ✓  64 test/entity-preview.spec.ts:152:2 › every screen fits a desktop window without scrolling sideways (939ms)
+  ✓  65 test/entity-preview.spec.ts:152:2 › every screen fits a tablet window without scrolling sideways (965ms)
+  ✓  66 test/entity-preview.spec.ts:152:2 › every screen fits a mobile window without scrolling sideways (952ms)
+
+  66 passed (1.4m)

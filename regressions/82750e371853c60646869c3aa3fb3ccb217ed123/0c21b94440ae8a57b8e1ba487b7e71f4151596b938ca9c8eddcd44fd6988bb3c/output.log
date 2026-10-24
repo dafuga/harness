@@ -1,0 +1,186 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [177.00ms]
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+vite v6.4.4 building SSR bundle for production...
+transforming...
+"handleConnectionChange" is imported from external module "@xyflow/system" but never used in "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/@xyflow/svelte/dist/lib/hooks/useNodeConnections.svelte.js" and "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/@xyflow/svelte/dist/lib/components/Handle/Handle.svelte".
+✓ 620 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 862 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                      0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                    7.95 kB │ gzip:   1.20 kB
+.svelte-kit/output/client/_app/immutable/assets/6.DnakDk5X.css                   0.80 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/assets/AgentModelPicker.ZumnCTff.css    1.86 kB │ gzip:   0.69 kB
+.svelte-kit/output/client/_app/immutable/assets/3.6_Tx8afU.css                  29.90 kB │ gzip:   5.21 kB
+.svelte-kit/output/client/_app/immutable/assets/design.BVZCHbIF.css             38.02 kB │ gzip:   7.51 kB
+.svelte-kit/output/client/_app/immutable/assets/2.BgSVeT8j.css                  49.90 kB │ gzip:   8.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cpmqpfp-.js                      0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bzak7iHL.js                      0.10 kB │ gzip:   0.10 kB
+.svelte-kit/output/client/_app/immutable/entry/start.D3ObiJWg.js                 0.12 kB │ gzip:   0.11 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.K6_Hi-GD.js                     0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.K6_Hi-GD.js                     0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/B3BHYGM_.js                      0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/chunks/CKJGga8R.js                      0.28 kB │ gzip:   0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.C-W2yMg9.js                     0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/ClwhBhLN.js                      0.37 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.CEbOYZN4.js                     0.41 kB │ gzip:   0.28 kB
+.svelte-kit/output/client/_app/immutable/chunks/BBUcQNsz.js                      0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/chunks/BVthCS_w.js                      0.52 kB │ gzip:   0.33 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                      1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/c8UCtCLq.js                      2.19 kB │ gzip:   1.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/DDEUxeUA.js                      2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.BlhpRZv7.js                     2.29 kB │ gzip:   1.21 kB
+.svelte-kit/output/client/_app/immutable/chunks/BYFBxfTf.js                      3.01 kB │ gzip:   1.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/BqkZ8Iah.js                      3.17 kB │ gzip:   1.48 kB
+.svelte-kit/output/client/_app/immutable/chunks/CcR6wKvU.js                      6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.BgPR3mqm.js                   7.10 kB │ gzip:   3.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/g4BxH8da.js                     11.81 kB │ gzip:   4.97 kB
+.svelte-kit/output/client/_app/immutable/chunks/CbZuukTe.js                     15.34 kB │ gzip:   6.78 kB
+.svelte-kit/output/client/_app/immutable/chunks/pBKm1piX.js                     21.31 kB │ gzip:   8.22 kB
+.svelte-kit/output/client/_app/immutable/chunks/hul_s3qq.js                     31.65 kB │ gzip:  12.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/De8EwQlb.js                     70.08 kB │ gzip:  23.36 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CRdgiSSX.js                   310.52 kB │ gzip: 106.51 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.D0jN9uBH.js                   711.85 kB │ gzip: 196.86 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.75s
+.svelte-kit/output/server/.vite/manifest.json                                                     6.54 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DnakDk5X.css                                0.80 kB
+.svelte-kit/output/server/_app/immutable/assets/AgentModelPicker.CuiVAy8e.css                     1.84 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CrWASipr.css                               16.26 kB
+.svelte-kit/output/server/_app/immutable/assets/design.BSlDkHNK.css                              37.81 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BwQsMQPO.css                               43.67 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/state.svelte.js                                                  0.43 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       0.73 kB
+.svelte-kit/output/server/entries/pages/game/_page.svelte.js                                      0.94 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/composeModes.js                                                  3.72 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.32 kB
+.svelte-kit/output/server/chunks/AgentModelPicker.svelte_svelte_type_style_lang.js                6.00 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         288.99 kB
+✓ built in 3.65s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+770f0a32945e11934dd2ba3646ad539aac446809f10b02ac29e5ed83a1fee3a7
+$ playwright test --project=chromium --config .cache/game-capture.config.ts game-authoring.spec.ts game-level-lifecycle.spec.ts checkpoint-images.spec.ts
+
+Running 20 tests using 1 worker
+
+(node:61504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/checkpoint-images.spec.ts:4:1 › checkpoint image generation persists with the graph and history stays read-only (736ms)
+  ✓   2 [chromium] › tests/e2e/checkpoint-images.spec.ts:57:1 › generation errors preserve the graph and late results never attach to another checkpoint (593ms)
+  -   3 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint
+  ✓   4 [chromium] › tests/e2e/game-authoring.spec.ts:14:1 › game authoring exposes independent mechanics and executable checkpoint graph (19.0s)
+  ✓   5 [chromium] › tests/e2e/game-authoring.spec.ts:26:2 › 2d preview executes key-door branching without AI (502ms)
+  ✓   6 [chromium] › tests/e2e/game-authoring.spec.ts:26:2 › 3d preview executes key-door branching without AI (582ms)
+  ✓   7 [chromium] › tests/e2e/game-authoring.spec.ts:50:1 › saved graph edits persist, invalid references block saves and history is read-only (20.1s)
+  ✓   8 [chromium] › tests/e2e/game-authoring.spec.ts:106:1 › view creation and checkpoint creation/deletion preserve independent mechanics (644ms)
+  ✓   9 [chromium] › tests/e2e/game-authoring.spec.ts:147:1 › 3D remains playable when the browser cannot provide WebGL (258ms)
+  ✓  10 [chromium] › tests/e2e/game-authoring.spec.ts:169:1 › project creation sends the chosen game type and dimension (222ms)
+  ✓  11 [chromium] › tests/e2e/game-authoring.spec.ts:204:1 › held arrow keys animate the 3D game through the vault branch (2.2s)
+  ✓  12 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:26:3 › 2d at 1440 planned level starts at spawn, respects walls and resets with touch controls (3.5s)
+  ✓  13 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:26:3 › 2d at 920 planned level starts at spawn, respects walls and resets with touch controls (502ms)
+  ✓  14 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:26:3 › 2d at 390 planned level starts at spawn, respects walls and resets with touch controls (532ms)
+  ✓  15 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:26:3 › 3d at 1440 planned level starts at spawn, respects walls and resets with touch controls (690ms)
+  ✓  16 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:26:3 › 3d at 920 planned level starts at spawn, respects walls and resets with touch controls (665ms)
+  ✓  17 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:26:3 › 3d at 390 planned level starts at spawn, respects walls and resets with touch controls (670ms)
+  ✓  18 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:59:1 › generation failures retain the brief and never approve or build a level (208ms)
+  ✓  19 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:77:1 › regeneration carries requested changes and requires approval again (303ms)
+  ✓  20 [chromium] › tests/e2e/game-level-lifecycle.spec.ts:108:1 › a changed brief rejects a late model response (227ms)
+
+  1 skipped
+  19 passed (53.9s)
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3Hse5G
+
+ ✓ test/game-project.test.ts (4 tests) 2010ms
+   ✓ game project retains app scaffolds with 2d engine  430ms
+   ✓ game project retains app scaffolds with 3d engine  373ms
+   ✓ game build scripts retain engine bytes and audit through the project CLI  1092ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  17:57:01
+   Duration  3.31s (transform 66ms, setup 60ms, collect 198ms, tests 2.01s, environment 0ms, prepare 29ms)
+
+../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+
+Running 25 tests using 1 worker
+
+(node:64929) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:22:1 › every active visual component has its own required capture state (3ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-controls at desktop (650ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-brief at desktop (578ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-plan at desktop (610ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-preview at desktop (1.1s)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-review at desktop (1.1s)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-preview at desktop (614ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-view-fields at desktop (593ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-workspace at desktop (632ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-controls at tablet (292ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-brief at tablet (277ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-plan at tablet (291ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-preview at tablet (375ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-review at tablet (380ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-preview at tablet (294ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-view-fields at tablet (275ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-workspace at tablet (329ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-controls at mobile (288ms)
+  ✓  19 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-brief at mobile (293ms)
+  ✓  20 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-plan at mobile (292ms)
+  ✓  21 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-preview at mobile (372ms)
+  ✓  22 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-level-review at mobile (410ms)
+  ✓  23 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-preview at mobile (294ms)
+  ✓  24 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-view-fields at mobile (290ms)
+  ✓  25 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.game-workspace at mobile (347ms)
+
+  25 passed (12.1s)

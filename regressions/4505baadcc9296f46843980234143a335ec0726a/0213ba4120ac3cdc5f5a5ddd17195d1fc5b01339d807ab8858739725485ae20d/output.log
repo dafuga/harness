@@ -1,0 +1,29 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-YVubqn
+
+ ✓ test/project-template.test.ts (4 tests) 131ms
+ ✓ test/guides.test.ts (7 tests) 12ms
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  18:56:12
+   Duration  4.00s (transform 159ms, setup 135ms, collect 385ms, tests 143ms, environment 0ms, prepare 79ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-YVubqn/packages/reports
+
+ ✓ test/utils/explorer-name.test.ts (18 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  18:56:17
+   Duration  358ms (transform 67ms, setup 0ms, collect 124ms, tests 6ms, environment 0ms, prepare 38ms)
+
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (6.1s)
+  ✓  2 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (5.5s)
+  ✓  3 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (5.0s)
+
+  3 passed (20.7s)

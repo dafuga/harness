@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0QU0x2/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/catalog-entity-reads.test.ts (3 tests) 15212ms
+   ✓ an entity request reads the planning snapshot once and shows the plan of that read  4665ms
+   ✓ each request reads again, so a design saved between two requests is in the second  6108ms
+   ✓ an entity that is not held and a corrupt plan fail as they did, after one read  4440ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:13:55
+   Duration  15.59s (transform 134ms, setup 0ms, collect 226ms, tests 15.21s, environment 0ms, prepare 31ms)
+

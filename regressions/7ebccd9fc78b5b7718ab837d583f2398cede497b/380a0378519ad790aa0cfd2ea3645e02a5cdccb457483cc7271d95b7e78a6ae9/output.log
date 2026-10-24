@@ -1,0 +1,270 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [10.76s]
+$ vitest run test/utils/explorer-category.test.ts test/components/entity-relations.test.ts
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-d3GWuE/packages/reports
+
+ ❯ test/utils/explorer-category.test.ts (13 tests | 1 failed) 177ms
+   ✓ compatibility details routes are nonvisual: pages 1ms
+   ✓ compatibility details routes are nonvisual: shells 0ms
+   ✓ compatibility details routes are nonvisual: components 0ms
+   ✓ compatibility details routes are nonvisual: functions 0ms
+   ✓ compatibility details routes are nonvisual: configs 0ms
+   ✓ compatibility details routes are nonvisual: services 0ms
+   ✓ compatibility details routes are nonvisual: models 0ms
+   × a unit of a product kind is listed under the category of that kind 3ms
+     → Type collections are not data models: expected 'models' to be null
+   ✓ a page is what renders an address, whatever kind it was registered as 0ms
+   ✓ what is not one of the five product kinds has no category and says what it is 1ms
+   ✓ a unit inside a category says its role in a word a reader knows 0ms
+   ✓ the policy holds for Harness's own registry 171ms
+   ✓ only explicitly pure functions with distinct runtime consumers are helpers 1ms
+ ❯ test/components/entity-relations.test.ts (5 tests | 2 failed) 52ms
+   ✓ component cards have identical content in catalogs and every relationship host 29ms
+   ✓ what an entity uses is one section of kinds of their own, and what uses it is another 4ms
+   ✓ each related entity is a link to it in the same branch and commit 11ms
+   × a page leads to its components and a component to the components inside it 6ms
+     → expected [ Array(6) ] to deeply equal [ 'Overview', 'Models', 'Uses', …(3) ]
+   × page models include models reached through services and remain bound to the revision 2ms
+     → expected [] to deeply equal [ 'app.model.order' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-relations.test.ts > a page leads to its components and a component to the components inside it
+AssertionError: expected [ Array(6) ] to deeply equal [ 'Overview', 'Models', 'Uses', …(3) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "Overview",[22m
+[32m-   "Models",[39m
+[31m+   "Contract",[39m
+[2m    "Uses",[22m
+[2m    "States",[22m
+[2m    "History",[22m
+[2m    "Source",[22m
+[2m  ][22m
+
+ ❯ test/components/entity-relations.test.ts:122:15
+    120|   words(match[1]).trim()
+    121|  );
+    122|  expect(tabs).toEqual(['Overview', 'Models', 'Uses', 'States', 'Histor…
+       |               ^
+    123| });
+    124| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/components/entity-relations.test.ts > page models include models reached through services and remain bound to the revision
+AssertionError: expected [] to deeply equal [ 'app.model.order' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "app.model.order",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/components/entity-relations.test.ts:135:52
+    133|   store.dependencies.push({ unit: 'app.model.retired', via: 'import' }…
+    134|   const relations = explorerRelations(head, ids.page);
+    135|   expect(relations.models?.map((item) => item.id)).toEqual(['app.model…
+       |                                                    ^
+    136|   const body = content(
+    137|    'current',
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/components/entity-relations.test.ts:126:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/utils/explorer-category.test.ts > a unit of a product kind is listed under the category of that kind
+AssertionError: Type collections are not data models: expected 'models' to be null
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+"models"
+
+ ❯ test/utils/explorer-category.test.ts:32:75
+     30|  for (const source of [['src/models/Order.types.ts'], ['src/models/dom…
+     31|   const types = owning('model.order-types', 'model', source);
+     32|   expect(explorerCategory(types), 'Type collections are not data model…
+       |                                                                           ^
+     33|   expect(explorerRole(types)).toBe('Type definitions');
+     34|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 15 passed (18)
+   Start at  22:29:27
+   Duration  1.98s (transform 952ms, setup 0ms, collect 1.36s, tests 230ms, environment 0ms, prepare 69ms)
+
+error: script "test:unit" exited with code 1
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-contract.spec.ts test/entity-preview-metric-diff.spec.ts
+
+Running 5 tests using 1 worker
+
+  ✓  1 test/entity-preview-contract.spec.ts:9:1 › component contracts expose Props and keep verification states on States (455ms)
+  ✘  2 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at desktop width (5.2s)
+  ✘  3 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at tablet width (5.3s)
+  ✘  4 test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at mobile width (5.2s)
+  ✘  5 test/entity-preview-metric-diff.spec.ts:13:1 › a selected page diff shows before, after and performance metric changes (5.2s)
+
+
+  1) test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at desktop width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Contract', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab', { name: 'Contract', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Contract', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      48 | 				['reports.component.harness-entity-overview']
+      49 | 			);
+    > 50 | 			await expect(tab.getByRole('tab', { name: 'Contract', exact: true })).toHaveCount(0);
+         | 			                                                                      ^
+      51 | 			await tab.getByRole('tab', { name: 'Models', exact: true }).click();
+      52 | 			const panel = tab.getByRole('tabpanel', { name: 'Orders page models', exact: true });
+      53 | 			await expect(panel).toBeVisible();
+        at /private/tmp/harness-snapshot-d3GWuE/packages/reports/test/entity-preview-contract.spec.ts:50:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-contract-pa-4804f-a-contract-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-contract-pa-4804f-a-contract-at-desktop-width/error-context.md
+
+  2) test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at tablet width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Contract', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab', { name: 'Contract', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Contract', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      48 | 				['reports.component.harness-entity-overview']
+      49 | 			);
+    > 50 | 			await expect(tab.getByRole('tab', { name: 'Contract', exact: true })).toHaveCount(0);
+         | 			                                                                      ^
+      51 | 			await tab.getByRole('tab', { name: 'Models', exact: true }).click();
+      52 | 			const panel = tab.getByRole('tabpanel', { name: 'Orders page models', exact: true });
+      53 | 			await expect(panel).toBeVisible();
+        at /private/tmp/harness-snapshot-d3GWuE/packages/reports/test/entity-preview-contract.spec.ts:50:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-contract-pa-3977d--a-contract-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-contract-pa-3977d--a-contract-at-tablet-width/error-context.md
+
+  3) test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at mobile width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Contract', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab', { name: 'Contract', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Contract', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      48 | 				['reports.component.harness-entity-overview']
+      49 | 			);
+    > 50 | 			await expect(tab.getByRole('tab', { name: 'Contract', exact: true })).toHaveCount(0);
+         | 			                                                                      ^
+      51 | 			await tab.getByRole('tab', { name: 'Models', exact: true }).click();
+      52 | 			const panel = tab.getByRole('tabpanel', { name: 'Orders page models', exact: true });
+      53 | 			await expect(panel).toBeVisible();
+        at /private/tmp/harness-snapshot-d3GWuE/packages/reports/test/entity-preview-contract.spec.ts:50:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-contract-pa-15e9a--a-contract-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-contract-pa-15e9a--a-contract-at-mobile-width/error-context.md
+
+  4) test/entity-preview-metric-diff.spec.ts:13:1 › a selected page diff shows before, after and performance metric changes 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Performance profile', exact: true }).getByRole('table', { name: 'Performance metric changes' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Performance profile', exact: true }).getByRole('table', { name: 'Performance metric changes' }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile', exact: true }).getByRole('table', { name: 'Performance metric changes' })
+
+
+      27 | 		const profile = tab.getByRole('region', { name: 'Performance profile', exact: true });
+      28 | 		const comparison = profile.getByRole('table', { name: 'Performance metric changes' });
+    > 29 | 		await expect(comparison).toBeVisible();
+         | 		                         ^
+      30 | 		await expect(profile).toContainText('Compared with first parent aaaaaaa');
+      31 | 		await expect(comparison.getByRole('columnheader')).toHaveText([
+      32 | 			'Metric',
+        at /private/tmp/harness-snapshot-d3GWuE/packages/reports/test/entity-preview-metric-diff.spec.ts:29:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-metric-diff-f2c03--performance-metric-changes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-metric-diff-f2c03--performance-metric-changes/error-context.md
+
+  4 failed
+    test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at desktop width 
+    test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at tablet width 
+    test/entity-preview-contract.spec.ts:39:2 › page sections show used models instead of a contract at mobile width 
+    test/entity-preview-metric-diff.spec.ts:13:1 › a selected page diff shows before, after and performance metric changes 
+  1 passed (26.2s)
+error: script "test:entities" exited with code 1

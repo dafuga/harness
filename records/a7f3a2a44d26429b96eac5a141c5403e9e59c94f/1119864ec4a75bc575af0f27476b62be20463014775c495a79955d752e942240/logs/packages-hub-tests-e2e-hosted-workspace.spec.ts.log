@@ -1,0 +1,22 @@
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort --port "5795"
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:7679) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:7728) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8055) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8055) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:8075) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/hosted-workspace.spec.ts:32:1 › the hosted workspace has no agent control and a comment never calls a run (1.2s)
+  ✓  2 tests/e2e/hosted-workspace.spec.ts:76:1 › a comment on a historical commit names that commit (344ms)
+  ✓  3 tests/e2e/hosted-workspace.spec.ts:93:1 › changing project leaves nothing of the previous one and reads only the new one (472ms)
+  ✓  4 tests/e2e/hosted-workspace.spec.ts:119:1 › a viewer reads the project and is offered no way to comment (294ms)
+  ✓  5 tests/e2e/hosted-workspace.spec.ts:130:1 › signed out, the workspace asks for sign-in and reads no project (261ms)
+
+  5 passed (6.8s)

@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/history-attach.e2e.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 18715[2mms[22m[39m
+   [33m[2m✓[22m[39m a passing record is stored immutably in Git without changing the source commit [33m 2885[2mms[22m[39m
+   [33m[2m✓[22m[39m a failed record stays failed, and a tampered record or capture is refused [33m 6159[2mms[22m[39m
+   [33m[2m✓[22m[39m separate runs of one commit are both kept and earlier evidence never changes [33m 4773[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 16:01:18
+[2m   Duration [22m 19.09s[2m (transform 93ms, setup 24ms, collect 81ms, tests 18.71s, environment 0ms, prepare 74ms)[22m
+

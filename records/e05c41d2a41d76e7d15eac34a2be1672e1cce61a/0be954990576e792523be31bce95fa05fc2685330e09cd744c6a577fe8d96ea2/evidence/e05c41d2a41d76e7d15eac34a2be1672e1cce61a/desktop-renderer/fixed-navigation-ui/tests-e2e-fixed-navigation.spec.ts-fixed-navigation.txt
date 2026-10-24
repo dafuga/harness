@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/fixed-navigation.spec.ts:9:2 › app navigation stays at the top while scrolling at 1440px (249ms)
+  ✓  2 tests/e2e/fixed-navigation.spec.ts:9:2 › app navigation stays at the top while scrolling at 920px (237ms)
+  ✓  3 tests/e2e/fixed-navigation.spec.ts:9:2 › app navigation stays at the top while scrolling at 390px (221ms)
+
+  3 passed (1.2s)
+(node:46527) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

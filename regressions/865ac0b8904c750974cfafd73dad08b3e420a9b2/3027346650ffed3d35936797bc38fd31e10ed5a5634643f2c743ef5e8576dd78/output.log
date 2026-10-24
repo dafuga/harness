@@ -1,0 +1,79 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-jl6cHK
+
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts (3 tests | 3 failed) 473ms
+   × project package catalog preserves declared versions, workspace origins and dependency kinds 185ms
+     → Revision detail publishes package catalog: expected false to be true // Object.is equality
+   × Cargo dependency declarations include workspace inheritance and build/dev dependencies 156ms
+     → Revision detail publishes package catalog: expected false to be true // Object.is equality
+   × missing and malformed declarations stay explicit without substituting installed packages 121ms
+     → Revision detail publishes package catalog: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-ui/project-dependencies.test.ts > project package catalog preserves declared versions, workspace origins and dependency kinds
+AssertionError: Revision detail publishes package catalog: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ snapshot test/utils/explorer-ui/project-dependencies.test.ts:39:5
+     37|    Object.hasOwn(detail, 'projectDependencies'),
+     38|    'Revision detail publishes package catalog'
+     39|   ).toBe(true);
+       |     ^
+     40|   const catalog = (
+     41|    detail as unknown as {
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts:81:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/utils/explorer-ui/project-dependencies.test.ts > Cargo dependency declarations include workspace inheritance and build/dev dependencies
+AssertionError: Revision detail publishes package catalog: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ snapshot test/utils/explorer-ui/project-dependencies.test.ts:39:5
+     37|    Object.hasOwn(detail, 'projectDependencies'),
+     38|    'Revision detail publishes package catalog'
+     39|   ).toBe(true);
+       |     ^
+     40|   const catalog = (
+     41|    detail as unknown as {
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts:136:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/utils/explorer-ui/project-dependencies.test.ts > missing and malformed declarations stay explicit without substituting installed packages
+AssertionError: Revision detail publishes package catalog: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ snapshot test/utils/explorer-ui/project-dependencies.test.ts:39:5
+     37|    Object.hasOwn(detail, 'projectDependencies'),
+     38|    'Revision detail publishes package catalog'
+     39|   ).toBe(true);
+       |     ^
+     40|   const catalog = (
+     41|    detail as unknown as {
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts:163:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  15:38:54
+   Duration  4.18s (transform 437ms, setup 99ms, collect 782ms, tests 473ms, environment 0ms, prepare 47ms)
+

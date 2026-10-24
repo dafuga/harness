@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N
+
+ ✓ test/history-sync.e2e.test.ts (3 tests) 20004ms
+   ✓ a fresh clone recovers notes, evidence and media after an explicit sync  5266ms
+   ✓ writers that diverge on evidence and notes are merged without losing either  7606ms
+   ✓ an interrupted push is completed by running it again  3429ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  04:13:53
+   Duration  20.25s (transform 33ms, setup 11ms, collect 28ms, tests 20.00s, environment 0ms, prepare 41ms)
+

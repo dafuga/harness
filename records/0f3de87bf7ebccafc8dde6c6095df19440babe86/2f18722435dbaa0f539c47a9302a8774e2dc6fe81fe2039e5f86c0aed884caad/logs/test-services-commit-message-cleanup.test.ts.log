@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2
+
+ ✓ test/services/commit-message-cleanup.test.ts (3 tests) 11621ms
+   ✓ git stripspace and the cleaning of a message file leave the same text  1854ms
+   ✓ a real commit whose message has whitespace Git drops is accepted, and stored as measured  7464ms
+   ✓ a cleaned message that is still too long or has no prefix is refused, and a bypass is found  2155ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  11:51:19
+   Duration  12.05s (transform 75ms, setup 17ms, collect 124ms, tests 11.62s, environment 0ms, prepare 50ms)
+

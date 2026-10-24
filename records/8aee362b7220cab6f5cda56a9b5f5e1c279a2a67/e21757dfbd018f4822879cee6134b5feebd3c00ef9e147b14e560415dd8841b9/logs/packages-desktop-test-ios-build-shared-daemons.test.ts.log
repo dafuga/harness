@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0QU0x2/packages/desktop
+
+ ✓ test/ios-build-shared-daemons.test.ts (3 tests) 45317ms
+   ✓ a shared daemon that another build takes up later is never signalled; it retires by itself  7031ms
+   ✓ a shared daemon that another build keeps using for long is waited for, not ended or abandoned  37869ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:17:17
+   Duration  45.53s (transform 44ms, setup 0ms, collect 53ms, tests 45.32s, environment 0ms, prepare 28ms)
+

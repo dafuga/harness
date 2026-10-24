@@ -1,0 +1,52 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-FJJI49
+
+ ❯ test/utils/run-isolated.test.ts (8 tests | 2 failed) 17173ms
+   ✓ commands retain exit codes and output with 0 ms spawn and 0 ms table observers  396ms
+   ✓ commands retain exit codes and output with 100 ms spawn and 0 ms table observers  448ms
+   × commands retain exit codes and output with 0 ms spawn and 150 ms table observers 3643ms
+     → expected { status: 'timeout', …(8) } to match object { Object (status, exitCode, ...) }
+(9 matching properties omitted from actual)
+   × commands retain exit codes and output with 100 ms spawn and 150 ms table observers 3700ms
+     → expected { status: 'timeout', …(8) } to match object { Object (status, exitCode, ...) }
+(9 matching properties omitted from actual)
+   ✓ a command that ignores termination is still stopped at its limit  1390ms
+   ✓ children of a timed-out or finished command are torn down with it  3026ms
+   ✓ output beyond the log limit is cut off without stalling the command 156ms
+   ✓ a process that left the group of a finished command is stopped and reported, never left running  4412ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/run-isolated.test.ts > commands retain exit codes and output with 0 ms spawn and 150 ms table observers
+ FAIL  test/utils/run-isolated.test.ts > commands retain exit codes and output with 100 ms spawn and 150 ms table observers
+AssertionError: expected { status: 'timeout', …(8) } to match object { Object (status, exitCode, ...) }
+(9 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "exitCode": 0,[39m
+[32m-   "status": "passed",[39m
+[32m-   "timedOut": false,[39m
+[31m+   "exitCode": null,[39m
+[31m+   "status": "timeout",[39m
+[31m+   "timedOut": true,[39m
+[2m  }[22m
+
+ ❯ test/utils/run-isolated.test.ts:102:25
+    100|   expect(absent).toMatchObject({ status: 'failed', exitCode: null, tim…
+    101|   const native = await observedBunExit(delay, tableDelay);
+    102|   expect(native.result).toMatchObject({ status: 'passed', exitCode: 0,…
+       |                         ^
+    103|   expect(native.output).toBe('out\nerr\n');
+    104|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  16:35:10
+   Duration  19.44s (transform 57ms, setup 48ms, collect 43ms, tests 17.17s, environment 0ms, prepare 30ms)
+

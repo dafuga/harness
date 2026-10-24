@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5/packages/desktop
+
+ ✓ test/catalog-listing.test.ts (4 tests) 2067ms
+   ✓ the tip lists every ordinary entity and no page manifest that only loads for an address  513ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  815ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  685ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  18:13:44
+   Duration  2.62s (transform 189ms, setup 0ms, collect 329ms, tests 2.07s, environment 0ms, prepare 35ms)
+

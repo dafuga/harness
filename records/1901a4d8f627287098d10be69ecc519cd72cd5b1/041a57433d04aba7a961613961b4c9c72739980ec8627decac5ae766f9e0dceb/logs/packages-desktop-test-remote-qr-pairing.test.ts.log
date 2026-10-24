@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PkpOjJ/packages/desktop
+
+ ✓ test/remote-qr-pairing.test.ts (6 tests) 6635ms
+   ✓ the computer offers one QR text that reads back to its open offer and holds nothing else  1071ms
+   ✓ a phone that scanned is a request until the person approves it for chosen projects  1230ms
+   ✓ a new code stops the earlier one, and a withdrawn code leaves none  1058ms
+   ✓ denied on the computer, the phone has nothing to exchange and is no device  1083ms
+   ✓ an offer the clock has passed is neither shown nor asked with  1102ms
+   ✓ an approved phone can be revoked, and its spent code pairs nobody again  1092ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  20:50:53
+   Duration  7.56s (transform 478ms, setup 0ms, collect 764ms, tests 6.64s, environment 0ms, prepare 30ms)
+

@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L
+
+ ✓ test/analytics.e2e.test.ts (2 tests) 2737ms
+   ✓ analytics imports loops idempotently and provides linked models and reports  1442ms
+   ✓ analytics cpu CLI samples real local counters with safe process output  1294ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  01:21:58
+   Duration  2.97s (transform 24ms, setup 10ms, collect 12ms, tests 2.74s, environment 0ms, prepare 42ms)
+

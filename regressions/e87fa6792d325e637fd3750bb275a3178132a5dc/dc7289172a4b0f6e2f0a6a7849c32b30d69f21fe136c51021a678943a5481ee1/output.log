@@ -1,0 +1,26 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [120.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BjCvJy
+
+ ✓ test/project-template.test.ts (4 tests) 80ms
+ ✓ test/utils/unit-documentation.test.ts (3 tests) 151ms
+ ✓ test/pieces.test.ts (6 tests) 5ms
+ ✓ test/utils/unit-identity.test.ts (3 tests) 24ms
+
+ Test Files  4 passed (4)
+      Tests  16 passed (16)
+   Start at  12:14:36
+   Duration  3.37s (transform 178ms, setup 139ms, collect 486ms, tests 260ms, environment 0ms, prepare 98ms)
+
+
+Running 3 tests using 1 worker
+
+(node:94379) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-source.spec.ts:81:3 › Helpers code opens only from the detail Source tab at desktop width (712ms)
+  ✓  2 test/entity-preview-source.spec.ts:81:3 › Helpers code opens only from the detail Source tab at tablet width (693ms)
+  ✓  3 test/entity-preview-source.spec.ts:81:3 › Helpers code opens only from the detail Source tab at mobile width (685ms)
+
+  3 passed (5.0s)

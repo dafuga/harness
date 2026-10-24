@@ -1,0 +1,60 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-brwk2R
+
+stdout | test/history-source.test.ts > history archives owned text from each commit, deduplicates it and states source gaps
+{"workload":"two committed source trees with text and gaps","method":"performance.now wall time; whole Vitest process RSS","buildMs":461.7858339999998,"processRssBytes":213745664}
+
+ ✓ test/history-source.test.ts (1 test) 1475ms
+   ✓ history archives owned text from each commit, deduplicates it and states source gaps  1474ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  13:15:54
+   Duration  4.66s (transform 378ms, setup 61ms, collect 811ms, tests 1.47s, environment 0ms, prepare 32ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-brwk2R
+
+ ✓ test/services/unit-index.test.ts (12 tests | 11 skipped) 7ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 11 skipped (12)
+   Start at  13:15:59
+   Duration  579ms (transform 119ms, setup 60ms, collect 298ms, tests 7ms, environment 0ms, prepare 30ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-brwk2R/packages/reports
+
+ ✓ test/components/entity-details.test.ts (7 tests) 27ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  13:16:00
+   Duration  1.36s (transform 812ms, setup 0ms, collect 1.15s, tests 27ms, environment 0ms, prepare 31ms)
+
+
+Running 21 tests using 1 worker
+
+  ✓   1 test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at desktop width (1.2s)
+  ✓   2 test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at desktop width (1.1s)
+  ✓   3 test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at desktop width (996ms)
+  ✓   4 test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at desktop width (1.2s)
+  ✓   5 test/entity-preview-source.spec.ts:77:3 › Layouts code opens only from the detail Source tab at desktop width (1.1s)
+  ✓   6 test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at desktop width (1.1s)
+  ✓   7 test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at desktop width (1.1s)
+  ✓   8 test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at tablet width (1.1s)
+  ✓   9 test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at tablet width (1.0s)
+  ✓  10 test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at tablet width (988ms)
+  ✓  11 test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at tablet width (1.1s)
+  ✓  12 test/entity-preview-source.spec.ts:77:3 › Layouts code opens only from the detail Source tab at tablet width (1.0s)
+  ✓  13 test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at tablet width (994ms)
+  ✓  14 test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at tablet width (1.1s)
+  ✓  15 test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at mobile width (948ms)
+  ✓  16 test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at mobile width (963ms)
+  ✓  17 test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at mobile width (955ms)
+  ✓  18 test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at mobile width (1.1s)
+  ✓  19 test/entity-preview-source.spec.ts:77:3 › Layouts code opens only from the detail Source tab at mobile width (997ms)
+  ✓  20 test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at mobile width (954ms)
+  ✓  21 test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at mobile width (1.0s)
+
+  21 passed (25.1s)

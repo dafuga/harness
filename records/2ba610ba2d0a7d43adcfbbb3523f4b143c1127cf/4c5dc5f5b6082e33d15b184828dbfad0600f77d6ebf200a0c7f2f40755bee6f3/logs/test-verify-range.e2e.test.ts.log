@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NpeyTr
+
+ ✓ test/verify-range.e2e.test.ts (5 tests) 21943ms
+   ✓ unapproved growth cannot pass through another base or an empty child  5486ms
+   ✓ a missing reason and a failed test cannot pass through an empty child  6733ms
+   ✓ an unverified parent is covered when its child is verified  1967ms
+   ✓ nothing changed since a passing record: evidence is inherited and nothing reruns  944ms
+   ✓ changes explained commit by commit are accepted when only the last commit is verified  3345ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  08:02:11
+   Duration  22.16s (transform 28ms, setup 9ms, collect 23ms, tests 21.94s, environment 0ms, prepare 37ms)
+

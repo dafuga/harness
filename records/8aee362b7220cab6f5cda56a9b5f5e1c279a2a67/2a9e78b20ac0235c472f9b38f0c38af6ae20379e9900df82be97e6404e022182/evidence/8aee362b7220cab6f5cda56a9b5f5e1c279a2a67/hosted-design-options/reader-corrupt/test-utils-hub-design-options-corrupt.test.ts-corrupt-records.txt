@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/hub[39m
+
+ [32m✓[39m test/utils/hub-design-options-corrupt.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 14651[2mms[22m[39m
+   [33m[2m✓[22m[39m options whose directions differ only by case and spacing are refused [33m 4993[2mms[22m[39m
+   [33m[2m✓[22m[39m two options holding one picture under two files are refused [33m 4645[2mms[22m[39m
+   [33m[2m✓[22m[39m an option prompt whose file no longer hashes to its record is refused [33m 5012[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 20:58:22
+[2m   Duration [22m 15.84s[2m (transform 558ms, setup 0ms, collect 899ms, tests 14.65s, environment 0ms, prepare 43ms)[22m
+
+JSON report written to /var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-runner-r3VBep/report.json

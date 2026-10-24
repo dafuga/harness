@@ -1,0 +1,125 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-06EjiY
+
+ ❯ test/utils/explorer-ui/config-values.test.ts (17 tests | 2 failed) 28ms
+   ✓ reads config initializer expressions without running them: export const enabled = false; export const retryCount = 0; export const fallback = null; export const label = ""; 6ms
+   ✓ reads config initializer expressions without running them: export const options = {pageSize: 25, nested: {sort: "newest"}} as const; 1ms
+   ✓ reads config initializer expressions without running them: const limit = 10; export default defineConfig({limit, build: {enabled: true}}); 1ms
+   ✓ reads config initializer expressions without running them: export const endpoint = process.env.ORIGIN ?? "local"; 1ms
+   ✓ reads config initializer expressions without running them: export const options = {...defaults, limit: 25}; 1ms
+   ✓ reads config initializer expressions without running them: export function readConfig() { throw Error("never execute"); } export { options } from "./other"; 1ms
+   ✓ reads config initializer expressions without running them: const a = b; const b = a; export const loop = a; 0ms
+   ✓ reads config initializer expressions without running them: export const settings = {self: settings, "a.b": false, "1": 0}; 0ms
+   ✓ revision metadata carries nested config values from its own source 7ms
+   ✓ JSON config keys keep their actual scalar values 0ms
+   × reads inspectable collection structure without execution: export const schema = z
+  .strictObject({schemaVersion: z.literal(1), groups: z.array(group), legacy: z.array(z.string())})
+  .superRefine(check); 4ms
+     → committed collection structure is inspectable: expected { name: 'schema', …(2) } to match object { name: 'schema', structure: { …(3) } }
+(2 matching properties omitted from actual)
+   × reads inspectable collection structure without execution: export const schema = z
+  .array(z.string()); 1ms
+     → committed collection structure is inspectable: expected { name: 'schema', …(2) } to match object { name: 'schema', structure: { …(2) } }
+(2 matching properties omitted from actual)
+   ✓ reads inspectable collection structure without execution: export const schema = z.strictObject({id: z.string(), groups: z.array(z.string())}).superRefine(check); 1ms
+   ✓ reads inspectable collection structure without execution: export const values = [{name: "First", flags: [true, false]}, "Second"]; 1ms
+   ✓ reads inspectable collection structure without execution: export const empty = []; 0ms
+   ✓ reads inspectable collection structure without execution: export const schema = z.object({settings: z.strictObject({enabled: z.boolean()})}); 0ms
+   ✓ unresolved collection sizes stay unknown and source code is never executed 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-ui/config-values.test.ts > reads inspectable collection structure without execution: export const schema = z
+  .strictObject({schemaVersion: z.literal(1), groups: z.array(group), legacy: z.array(z.string())})
+  .superRefine(check);
+AssertionError: committed collection structure is inspectable: expected { name: 'schema', …(2) } to match object { name: 'schema', structure: { …(3) } }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "name": "schema",
+-   "structure": {
+-     "count": 3,
+-     "entries": [
+-       {
+-         "name": "schemaVersion",
+-         "node": {
+-           "kind": "expression",
+-           "source": "z.literal(1)",
+-         },
+-       },
+-       {
+-         "name": "groups",
+-         "node": {
+-           "kind": "array",
+-         },
+-       },
+-       {
+-         "name": "legacy",
+-         "node": {
+-           "kind": "array",
+-         },
+-       },
+-     ],
+-     "kind": "object",
+-   },
+  }
+
+ ❯ test/utils/explorer-ui/config-values.test.ts:151:68
+    149|   await measureWorkload('function.unit-metadata', 'config-collection-s…
+    150|    const result = configValues(source, 'settings.ts').find((item) => i…
+    151|    expect(result, 'committed collection structure is inspectable').toM…
+       |                                                                    ^
+    152|     name,
+    153|     structure
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-ui/config-values.test.ts:149:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/utils/explorer-ui/config-values.test.ts > reads inspectable collection structure without execution: export const schema = z
+  .array(z.string());
+AssertionError: committed collection structure is inspectable: expected { name: 'schema', …(2) } to match object { name: 'schema', structure: { …(2) } }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "name": "schema",
+-   "structure": {
+-     "kind": "array",
+-     "schema": true,
+-   },
+  }
+
+ ❯ test/utils/explorer-ui/config-values.test.ts:151:68
+    149|   await measureWorkload('function.unit-metadata', 'config-collection-s…
+    150|    const result = configValues(source, 'settings.ts').find((item) => i…
+    151|    expect(result, 'committed collection structure is inspectable').toM…
+       |                                                                    ^
+    152|     name,
+    153|     structure
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-ui/config-values.test.ts:149:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 15 passed (17)
+   Start at  12:13:54
+   Duration  3.02s (transform 153ms, setup 60ms, collect 456ms, tests 28ms, environment 0ms, prepare 35ms)
+
+
+Running 3 tests using 1 worker
+
+(node:92069) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop (2.4s)
+  ✓  2 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet (2.0s)
+  ✓  3 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile (2.1s)
+
+  3 passed (9.6s)

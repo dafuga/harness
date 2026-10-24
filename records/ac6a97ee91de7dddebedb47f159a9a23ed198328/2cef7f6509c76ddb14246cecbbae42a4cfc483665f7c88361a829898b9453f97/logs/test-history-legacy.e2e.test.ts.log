@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-55pSB0
+
+ ✓ test/history-legacy.e2e.test.ts (3 tests) 6350ms
+   ✓ legacy reports keep their dates, outcomes and revisions, and only this repository is imported  986ms
+   ✓ the index shows legacy runs as recorded: running stays running and unlinked stays unlinked  913ms
+   ✓ the legacy store is only read, even when it cannot be written  456ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:01:31
+   Duration  6.60s (transform 32ms, setup 10ms, collect 30ms, tests 6.35s, environment 0ms, prepare 33ms)
+

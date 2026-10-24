@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ/packages/planning
+
+Switched to a new branch 'alternate'
+HEAD is now at ab947e6 feat: plan function.first
+ ✓ test/planning-history.test.ts (2 tests) 2761ms
+   ✓ branch snapshots and ancestry history contain only the selected entity  1499ms
+   ✓ rejects changed historical message prefix even with a recomputed current hash chain  1262ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  05:00:16
+   Duration  3.12s (transform 88ms, setup 5ms, collect 145ms, tests 2.76s, environment 0ms, prepare 38ms)
+

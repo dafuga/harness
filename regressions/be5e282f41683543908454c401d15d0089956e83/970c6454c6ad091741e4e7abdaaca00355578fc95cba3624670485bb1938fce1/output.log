@@ -1,0 +1,198 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JVKA6d
+
+ ❯ test/units.e2e.test.ts (4 tests | 1 failed | 3 skipped) 2526ms
+   ↓ generic unit generator coexists with the Svelte component generator
+   ↓ index derives contracts and keeps identity stable across re-index, moves and recreation
+   ↓ check rejects invalid manifests and schemas are exposed
+   × index records reviewed shared helper contracts for clients without source rescans 2525ms
+     → Callable examples are required: expected +0 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units.e2e.test.ts > index records reviewed shared helper contracts for clients without source rescans
+AssertionError: Callable examples are required: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/units.e2e.test.ts:189:61
+    187|  ]);
+    188|  const missing = await project.harness(['units', 'check'], false);
+    189|  expect(missing.exitCode, 'Callable examples are required').toBe(1);
+       |                                                             ^
+    190|  const examples = [
+    191|   {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  18:41:35
+   Duration  9.28s (transform 77ms, setup 18ms, collect 64ms, tests 2.53s, environment 0ms, prepare 79ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JVKA6d
+
+ ❯ test/project-template.test.ts (4 tests | 1 failed) 150ms
+   × app projects include SvelteKit and specification files 9ms
+     → Callable examples are required: expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'Callable usage examples'
+   ✓ library projects include Bun TypeScript test structure 1ms
+   ✓ generated app code and configuration obey their formatter settings 108ms
+   ✓ generated lib code and configuration obey their formatter settings 29ms
+ ❯ test/utils/unit-documentation.test.ts (3 tests | 1 failed) 107ms
+   ✓ committed documents preserve expected values and never invent observed results 6ms
+   ✓ revision documents come only from their own tree, and their bytes change the unit version 6ms
+   × every committed public helper example executes against its real implementation 94ms
+     → actual value must be number or bigint, received "undefined"
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: Callable examples are required: expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'Callable usage examples'
+
+- Expected
++ Received
+
+- Callable usage examples
++ # AGENTS.md
++
++ This is a Harness SvelteKit app. Treat Harness as the operating contract for every code change in this project.
++
++ ## Required Harness Workflow
++
++ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.
++ - Use Harness generators for supported code shapes instead of hand-rolling new structure.
++ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
++ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
++ - Add or update a feature spec before implementation.
++ - Keep files small, focused, and aligned with `harness.audit.json` limits.
++ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
++
++ ## Clean Code Review
++
++ - Use `harness info clean-code` for optional Jev reviews.
++ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.
++ - Configure a project-owned credential and assess advisory results before enabling the gate.
++ - Keep uncertain judgments visible and never call incomplete reviews clean.
++
++ ## Bug and Regression Loops
++
++ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
++ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
++ - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
++ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.
++ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.
++ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.
++ - When correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.
++ - For helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.
++ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.
++ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
++ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
++ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
++ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
++ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
++ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
++ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
++
++ ## Code Rules
++
++ - Files stay at or below 220 lines.
++ - Functions stay at or below 55 lines.
++ - Classes stay at or below 120 lines.
++ - Methods stay at or below 35 lines.
++ - Nesting stays at or below 4 levels.
++ - Functions and methods take at most 4 parameters.
++ - Cyclomatic complexity stays at or below 10.
++ - Each file defines at most 1 class.
++ - Generated scaffold file names should keep the casing and suffixes prescribed by Harness.
++ - Function exports should use camelCase and generated function files should export the expected name.
++ - Classes should not use catch-all Manager names.
++ - Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ - Core, template, workflow, and command imports move in one direction.
++ - Harness audit applies ecosystem adapters for app and library code surfaces.
++ - Unsupported file types must appear in audit coverage instead of being skipped silently.
++
++ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
++
+
+ ❯ test/project-template.test.ts:32:71
+     30|  );
+     31|  for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md'])
+     32|   expect(fileContents(files, path), 'Callable examples are required').…
+       |                                                                       ^
+     33|    'Callable usage examples'
+     34|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/utils/unit-documentation.test.ts > every committed public helper example executes against its real implementation
+TypeError: actual value must be number or bigint, received "undefined"
+ ❯ test/utils/unit-documentation.test.ts:92:70
+     90|   if (unit.status !== 'active') continue;
+     91|   for (const helper of unit.helperContracts ?? []) {
+     92|    expect(helper.examples?.length, 'Callable examples are required').t…
+       |                                                                      ^
+     93|    const source = await import(resolve(helper.source));
+     94|    for (const example of helper.examples) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 5 passed (7)
+   Start at  18:41:45
+   Duration  1.43s (transform 186ms, setup 12ms, collect 524ms, tests 256ms, environment 0ms, prepare 75ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview-words.spec.ts --grep desktop
+
+Running 1 test using 1 worker
+
+(node:52943) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-words.spec.ts:167:2 › contract has its own typed example view at desktop width (7.4s)
+
+
+  1) test/entity-preview-words.spec.ts:167:2 › contract has its own typed example view at desktop width 
+
+    Error: Callable examples are required
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.examples pre')
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Callable examples are required locator('.examples pre') with timeout 5000ms
+      - waiting for locator('.examples pre')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityCallableContract.ts:30
+
+      28 | 		await capture(page, `callable-examples-${name}-${commit ? 'commit' : 'tip'}-${viewport}`);
+      29 | 		const code = page.locator('.examples pre');
+    > 30 | 		await expect(code, 'Callable examples are required').toHaveCount(1);
+         | 		                                                     ^
+      31 | 		await expect(code).toContainText(
+      32 | 			name === 'reset' ? 'reset() ?? null' : `${name}("hello world")`
+      33 | 		);
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JVKA6d/packages/reports/test/entityCallableContract.ts:30:56)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JVKA6d/packages/reports/test/entity-preview-words.spec.ts:200:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/error-context.md
+
+  1 failed
+    test/entity-preview-words.spec.ts:167:2 › contract has its own typed example view at desktop width 
+error: script "test:entities" exited with code 1

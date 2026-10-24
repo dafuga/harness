@@ -1,0 +1,96 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kGQFX0
+
+ ❯ test/services/unit-index.test.ts (12 tests | 1 failed | 11 skipped) 544ms
+   ↓ recorded source moves retain definitions, owner-local placement and registered identity
+   ↓ public route filenames retain their registered ownership
+   ↓ declared preview and documentation survive source re-indexing
+   ↓ declared execution targets survive re-indexing and follow a moved default entry
+   ↓ recreating retired source elsewhere records lineage to the retired identity
+   ↓ a unit that takes a retired name records lineage even when its symbols differ
+   ↓ lineage cannot be dropped by editing the manifest
+   ↓ unrelated new units carry no lineage
+   ↓ a declared responsibility survives re-indexing while a derived one follows the unit
+   ↓ an alternative implementation is a related unit linked by a declared contract dependency
+   ↓ several owned files produce identical metadata after one indexing pass
+   × recorded service moves preserve implementations and registered owner-local placement 543ms
+     → service ownership: 21 gaps; packages/desktop/src/lib/select-environment/selectEnvironment.ts: missing; packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts: missing; packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts: missing; packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts: missing; packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts: missing; packages/hub/src/lib/server-hooks/hooks.server.ts: missing: expected [ …(21) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded service moves preserve implementations and registered owner-local placement
+AssertionError: service ownership: 21 gaps; packages/desktop/src/lib/select-environment/selectEnvironment.ts: missing; packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts: missing; packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts: missing; packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts: missing; packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts: missing; packages/hub/src/lib/server-hooks/hooks.server.ts: missing: expected [ …(21) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "packages/desktop/src/lib/select-environment/selectEnvironment.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/ElectronEnvironmentAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/agent-settings/AgentSettingsAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/CapacitorEnvironmentAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/CapacitorProjectsService.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server-hooks/hooks.server.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server-hooks/HubResponsesMiddleware.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteArtifact.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/capacitor-bridge-adapter/remoteGrant.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts: missing",[39m
+[31m+   "desktop.adapter.electron-environment: outside owner",[39m
+[31m+   "desktop.adapter.agent-settings: outside owner",[39m
+[31m+   "desktop.adapter.capacitor-environment: outside owner",[39m
+[31m+   "desktop.service.capacitor-projects: outside owner",[39m
+[31m+   "hub.middleware.hub-responses: outside owner",[39m
+[31m+   "desktop.adapter.capacitor-bridge: outside owner",[39m
+[31m+   "desktop.adapter.capacitor-account: outside owner",[39m
+[31m+ ][39m
+
+ ❯ test/services/unit-index.test.ts:200:89
+    198| test('recorded service moves preserve implementations and registered o…
+    199|  const gaps = serviceMoveGaps(services);
+    200|  expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0,…
+       |                                                                                         ^
+    201|   []
+    202|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  18:18:20
+   Duration  4.63s (transform 145ms, setup 11ms, collect 435ms, tests 544ms, environment 0ms, prepare 46ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kGQFX0
+
+ ✓ test/utils/unit-metadata.test.ts (28 tests) 72ms
+
+ Test Files  1 passed (1)
+      Tests  28 passed (28)
+   Start at  18:18:25
+   Duration  977ms (transform 170ms, setup 9ms, collect 635ms, tests 72ms, environment 0ms, prepare 36ms)
+
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width (1.8s)
+  ✓  2 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width (1.7s)
+  ✓  3 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width (1.9s)
+
+  3 passed (9.0s)
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kGQFX0/packages/reports
+
+ ✓ test/utils/entity-catalog.test.ts (9 tests) 86ms
+ ✓ test/components/explorer-catalog-screen.test.ts (10 tests) 27ms
+
+ Test Files  2 passed (2)
+      Tests  19 passed (19)
+   Start at  18:18:38
+   Duration  2.08s (transform 1.05s, setup 0ms, collect 1.52s, tests 113ms, environment 0ms, prepare 97ms)
+

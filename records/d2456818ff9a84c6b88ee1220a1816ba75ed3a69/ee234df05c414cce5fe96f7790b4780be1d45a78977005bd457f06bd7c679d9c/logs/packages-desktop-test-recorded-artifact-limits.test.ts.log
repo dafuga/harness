@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xCGYgj/packages/desktop
+
+Overwriting existing notes for object 6fa8018ba338fe9dce4c8d9cf3233b4b39122f16
+ ✓ test/recorded-artifact-limits.test.ts (4 tests) 27567ms
+   ✓ a capture of exactly 11 MiB is read, and one byte more is refused and stays listed  1630ms
+   ✓ tampered capture bytes are never returned as verified  2078ms
+   ✓ a corrupted record is never returned as verified  1702ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  06:26:12
+   Duration  28.76s (transform 609ms, setup 0ms, collect 980ms, tests 27.57s, environment 0ms, prepare 52ms)
+

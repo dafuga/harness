@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-evidence-states.spec.ts:36:1 › evidence is read only where it is shown, and each section has its own address (560ms)
+  ✓  2 tests/e2e/ui-evidence-states.spec.ts:80:1 › an answer for a scope or an entity that is no longer shown is dropped (4.3s)
+  ✓  3 tests/e2e/ui-evidence-states.spec.ts:107:1 › images of what is no longer shown are let go (197ms)
+  ✓  4 tests/e2e/ui-evidence-states.spec.ts:120:1 › a backend without the two reads says so, and designs are read as before (385ms)
+  ✓  5 tests/e2e/ui-evidence-states.spec.ts:140:1 › a shared project shows the same evidence, says when it is a saved copy, and lets go when refused (344ms)
+  ✓  6 tests/e2e/ui-evidence-states.spec.ts:162:1 › a phone shows the same overview, and says that its connection does not read evidence (209ms)
+
+  6 passed (6.6s)
+(node:81130) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+(node:16325) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-shells.spec.ts:28:2 › Shells lists the frame at the branch tip, Components does not, at desktop width (167ms)
+  ✓  2 test/entity-preview-shells.spec.ts:28:2 › Shells lists the frame at the branch tip, Components does not, at mobile width (123ms)
+  ✓  3 test/entity-preview-shells.spec.ts:42:1 › a commit that recorded the frame as a component lists it under Components, not Shells (128ms)
+  ✓  4 test/entity-preview-shells.spec.ts:52:1 › the shell says it is a Shell, uses the order list and is used in the orders page (136ms)
+
+  4 passed (2.2s)

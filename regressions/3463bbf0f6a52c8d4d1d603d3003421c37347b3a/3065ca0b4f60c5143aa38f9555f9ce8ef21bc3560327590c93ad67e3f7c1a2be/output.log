@@ -1,0 +1,162 @@
+
+Running 6 tests using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at desktop (1.4s)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at desktop (1.4s)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at tablet (1.4s)
+  ✘  4 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at tablet (1.4s)
+  ✘  5 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at mobile (1.4s)
+  ✘  6 tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at mobile (1.4s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at desktop 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    414.765625
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/tmp/harness-snapshot-mRDItc/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-a6396--loading-history-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-a6396--loading-history-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-a6396--loading-history-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at desktop 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    414.765625
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/tmp/harness-snapshot-mRDItc/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-8c549-loading-revision-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-8c549-loading-revision-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-8c549-loading-revision-at-desktop/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at tablet 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    342.109375
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/tmp/harness-snapshot-mRDItc/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-998f1-a-loading-history-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-998f1-a-loading-history-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-998f1-a-loading-history-at-tablet/error-context.md
+
+  4) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at tablet 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    342.109375
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/tmp/harness-snapshot-mRDItc/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-7564d--loading-revision-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7564d--loading-revision-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7564d--loading-revision-at-tablet/error-context.md
+
+  5) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at mobile 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    156
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/tmp/harness-snapshot-mRDItc/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-1eef5-a-loading-history-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-1eef5-a-loading-history-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-1eef5-a-loading-history-at-mobile/error-context.md
+
+  6) tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at mobile 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 8
+    Received:    156
+
+      60 | 				).toBeVisible();
+      61 | 				const ring = (await status.locator('[aria-hidden="true"]').boundingBox())!;
+    > 62 | 				expect(Math.abs(ring.x + ring.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(8);
+         | 				                                                               ^
+      63 | 				expect(Math.abs(ring.y + ring.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(8);
+      64 | 				await page.emulateMedia({ reducedMotion: 'reduce' });
+      65 | 				await expect(status.locator('[aria-hidden="true"]')).toHaveCSS('animation-name', 'none');
+        at /private/tmp/harness-snapshot-mRDItc/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:62:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-60f23--loading-revision-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-60f23--loading-revision-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-60f23--loading-revision-at-mobile/error-context.md
+
+  6 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: history at mobile 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:34:3 › console data loading: revision at mobile 

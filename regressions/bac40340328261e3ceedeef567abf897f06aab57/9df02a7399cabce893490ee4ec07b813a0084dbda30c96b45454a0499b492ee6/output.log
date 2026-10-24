@@ -1,0 +1,32 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [152.00ms]
+failed to load config from /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-lK15uA/packages/reports/vite.config.ts
+Loading Svelte config from Vite config failed: Error: The service was stopped
+    at /Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:603:9)
+    at Socket.afterClose (/Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/vite/node_modules/esbuild/lib/main.js:594:28)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) 
+
+Falling back to loading svelte.config.js
+
+Running 12 tests using 1 worker
+
+(node:39407) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at desktop (647ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at desktop (632ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at desktop (630ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at desktop (629ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at tablet (314ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at tablet (296ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at tablet (331ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at tablet (312ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at mobile (307ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at mobile (309ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at mobile (327ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at mobile (326ms)
+
+  12 passed (13.7s)

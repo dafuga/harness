@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX/packages/relay
+
+ ✓ test/services/pairing-offer.test.ts (9 tests) 5602ms
+   ✓ an expired offer says so to a phone that polls, once, and is gone  615ms
+   ✓ an expired offer is not found by a phone that asks for it  768ms
+   ✓ the alarm deletes an expired offer nobody came back for  4011ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  21:33:02
+   Duration  6.04s (transform 77ms, setup 0ms, collect 245ms, tests 5.60s, environment 0ms, prepare 35ms)
+

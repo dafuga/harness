@@ -1,0 +1,16 @@
+
+Running 9 tests using 1 worker
+
+(node:75648) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell.spec.ts:57:2 › the bar shows five categories with an icon above each label at desktop width (224ms)
+  ✓  2 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at desktop width (228ms)
+  ✓  3 tests/e2e/explorer-shell.spec.ts:173:2 › Go to tip, back, a reload and another branch each keep their place at desktop width (178ms)
+  ✓  4 tests/e2e/explorer-shell.spec.ts:57:2 › the bar shows five categories with an icon above each label at tablet width (158ms)
+  ✓  5 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at tablet width (209ms)
+  ✓  6 tests/e2e/explorer-shell.spec.ts:173:2 › Go to tip, back, a reload and another branch each keep their place at tablet width (171ms)
+  ✓  7 tests/e2e/explorer-shell.spec.ts:57:2 › the bar shows five categories with an icon above each label at mobile width (154ms)
+  ✓  8 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at mobile width (204ms)
+  ✓  9 tests/e2e/explorer-shell.spec.ts:173:2 › Go to tip, back, a reload and another branch each keep their place at mobile width (184ms)
+
+  9 passed (2.2s)

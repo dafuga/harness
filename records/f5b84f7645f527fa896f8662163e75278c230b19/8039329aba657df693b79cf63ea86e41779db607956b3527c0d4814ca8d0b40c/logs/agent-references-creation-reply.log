@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/project-run-references.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 9290[2mms[22m[39m
+   [33m[2m✓[22m[39m a pages request is asked with a registered function it names, and its checked notes are said [33m 5903[2mms[22m[39m
+   [33m[2m✓[22m[39m an answer in plain words is said before the run is refused as no proposal [33m 1617[2mms[22m[39m
+   [33m[2m✓[22m[39m a broken or fenced JSON answer is never said [33m 1769[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 21:40:05
+[2m   Duration [22m 10.44s[2m (transform 446ms, setup 0ms, collect 741ms, tests 9.29s, environment 1ms, prepare 121ms)[22m
+
+JSON report written to /var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-runner-LQTelQ/report.json

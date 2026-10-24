@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Mt1aP7
+
+ ✓ test/history-pairs.e2e.test.ts (7 tests) 5927ms
+   ✓ between diverged branches the stored sides give what the impact command gives  311ms
+   ✓ between the same change made on two branches the stored sides give what the impact command gives  301ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  02:25:36
+   Duration  6.19s (transform 51ms, setup 10ms, collect 76ms, tests 5.93s, environment 0ms, prepare 32ms)
+

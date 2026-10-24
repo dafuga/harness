@@ -1,0 +1,161 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [13.07s]
+External component capture driver cb42854f73b35fc68444bab2e26536d7ecae872a over unchanged selected source 654d74f8e0c4c77af5a9a85040562166493d3113
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+
+
+Running 114 tests using 1 worker
+
+(node:91324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.component.workspace-shell at desktop (1.0s)
+  ✓    2 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.harness-path at desktop (1.0s)
+  ✓    3 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.projects-project-id-harness-path at desktop (996ms)
+  ✓    4 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.root at desktop (593ms)
+  ✓    5 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.settings at desktop (573ms)
+  ✓    6 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.component.hosted-workspace at desktop (885ms)
+  ✓    7 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.layout.root at desktop (625ms)
+  ✓    8 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.invite-project-id-invitation-id at desktop (638ms)
+  ✓    9 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.native-handoff-id at desktop (641ms)
+  ✓   10 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.projects-project-id-harness-path at desktop (942ms)
+  ✓   11 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.projects-project-id-members at desktop (629ms)
+  ✓   12 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.root at desktop (622ms)
+  ✓   13 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-harness-console at desktop (2.2s)
+  ✓   14 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-harness-shell at desktop (1.4s)
+  ✓   15 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-screen at desktop (1.4s)
+  ✓   16 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.layout.root at desktop (1.4s)
+  ✓   17 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components at desktop (1.3s)
+  ✓   18 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components-entity at desktop (849ms)
+  ✓   19 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components-entity-history at desktop (845ms)
+  ✓   20 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs at desktop (612ms)
+  ✓   21 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs-entity at desktop (630ms)
+  ✓   22 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs-entity-history at desktop (614ms)
+  ✓   23 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions at desktop (611ms)
+  ✓   24 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions-entity at desktop (696ms)
+  ✓   25 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions-entity-history at desktop (634ms)
+  ✓   26 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models at desktop (630ms)
+  ✓   27 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models-entity at desktop (661ms)
+  ✓   28 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models-entity-history at desktop (634ms)
+  ✓   29 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages at desktop (867ms)
+  ✓   30 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages-entity at desktop (865ms)
+  ✓   31 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages-entity-history at desktop (645ms)
+  ✓   32 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services at desktop (617ms)
+  ✓   33 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services-entity at desktop (766ms)
+  ✓   34 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services-entity-history at desktop (658ms)
+  ✓   35 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells at desktop (635ms)
+  ✓   36 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells-entity at desktop (884ms)
+  ✓   37 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells-entity-history at desktop (653ms)
+  ✓   38 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-view at desktop (784ms)
+  ✓   39 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.component.workspace-shell at tablet (419ms)
+  ✓   40 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.harness-path at tablet (438ms)
+  ✓   41 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.projects-project-id-harness-path at tablet (435ms)
+  ✓   42 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.root at tablet (293ms)
+  ✓   43 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.settings at tablet (295ms)
+  ✓   44 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.component.hosted-workspace at tablet (415ms)
+  ✓   45 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.layout.root at tablet (328ms)
+  ✓   46 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.invite-project-id-invitation-id at tablet (344ms)
+  ✓   47 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.native-handoff-id at tablet (356ms)
+  ✓   48 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.projects-project-id-harness-path at tablet (419ms)
+  ✓   49 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.projects-project-id-members at tablet (336ms)
+  ✓   50 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.root at tablet (334ms)
+  ✓   51 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-harness-console at tablet (430ms)
+  ✓   52 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-harness-shell at tablet (431ms)
+  ✓   53 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-screen at tablet (429ms)
+  ✓   54 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.layout.root at tablet (433ms)
+  ✓   55 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components at tablet (414ms)
+  ✓   56 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components-entity at tablet (348ms)
+  ✓   57 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components-entity-history at tablet (365ms)
+  ✓   58 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs at tablet (314ms)
+  ✓   59 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs-entity at tablet (318ms)
+  ✓   60 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs-entity-history at tablet (314ms)
+  ✓   61 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions at tablet (316ms)
+  ✓   62 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions-entity at tablet (313ms)
+  ✓   63 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions-entity-history at tablet (332ms)
+  ✓   64 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models at tablet (311ms)
+  ✓   65 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models-entity at tablet (314ms)
+  ✓   66 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models-entity-history at tablet (313ms)
+  ✓   67 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages at tablet (367ms)
+  ✓   68 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages-entity at tablet (348ms)
+  ✓   69 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages-entity-history at tablet (312ms)
+  ✓   70 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services at tablet (312ms)
+  ✓   71 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services-entity at tablet (348ms)
+  ✓   72 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services-entity-history at tablet (313ms)
+  ✓   73 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells at tablet (314ms)
+  ✓   74 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells-entity at tablet (351ms)
+  ✓   75 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells-entity-history at tablet (357ms)
+  ✓   76 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-view at tablet (332ms)
+  ✓   77 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.component.workspace-shell at mobile (374ms)
+  ✓   78 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.harness-path at mobile (375ms)
+  ✓   79 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.projects-project-id-harness-path at mobile (359ms)
+  ✓   80 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.root at mobile (292ms)
+  ✓   81 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › desktop.page.settings at mobile (274ms)
+  ✓   82 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.component.hosted-workspace at mobile (357ms)
+  ✓   83 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.layout.root at mobile (317ms)
+  ✓   84 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.invite-project-id-invitation-id at mobile (309ms)
+  ✓   85 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.native-handoff-id at mobile (305ms)
+  ✓   86 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.projects-project-id-harness-path at mobile (344ms)
+  ✓   87 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.projects-project-id-members at mobile (322ms)
+  ✓   88 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › hub.page.root at mobile (307ms)
+  ✓   89 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-harness-console at mobile (432ms)
+  ✓   90 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-harness-shell at mobile (414ms)
+  ✓   91 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.component.harness-screen at mobile (425ms)
+  ✓   92 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.layout.root at mobile (409ms)
+  ✓   93 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components at mobile (413ms)
+  ✓   94 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components-entity at mobile (342ms)
+  ✓   95 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-components-entity-history at mobile (344ms)
+  ✓   96 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs at mobile (310ms)
+  ✓   97 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs-entity at mobile (312ms)
+  ✓   98 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-configs-entity-history at mobile (311ms)
+  ✓   99 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions at mobile (312ms)
+  ✓  100 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions-entity at mobile (310ms)
+  ✓  101 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-functions-entity-history at mobile (314ms)
+  ✓  102 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models at mobile (307ms)
+  ✓  103 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models-entity at mobile (311ms)
+  ✓  104 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-models-entity-history at mobile (309ms)
+  ✓  105 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages at mobile (345ms)
+  ✓  106 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages-entity at mobile (361ms)
+  ✓  107 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-pages-entity-history at mobile (317ms)
+  ✓  108 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services at mobile (310ms)
+  ✓  109 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services-entity at mobile (331ms)
+  ✓  110 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-services-entity-history at mobile (314ms)
+  ✓  111 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells at mobile (312ms)
+  ✓  112 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells-entity at mobile (345ms)
+  ✓  113 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-branch-branch-at-shells-entity-history at mobile (310ms)
+  ✓  114 ../../.cache/harness/component-capture-runner/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:10:2 › reports.page.harness-view at mobile (312ms)
+
+  114 passed (59.5s)
+

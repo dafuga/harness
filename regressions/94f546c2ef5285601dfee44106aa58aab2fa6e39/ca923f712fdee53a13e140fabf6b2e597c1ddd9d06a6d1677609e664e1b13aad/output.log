@@ -1,0 +1,231 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell-component-catalog.spec.ts --grep "(?:reports.component.explorer-dependencies-screen|reports.page.harness-branch-branch-at-dependencies) at"
+
+Running 6 tests using 1 worker
+
+(node:33038) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at desktop (5.4s)
+(node:33552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at desktop (5.4s)
+(node:34023) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at tablet (5.4s)
+(node:34691) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at tablet (5.4s)
+(node:35126) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at mobile (5.3s)
+(node:35765) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  6 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at mobile (5.4s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at desktop 
+
+    Error: Project dependencies include declarations
+
+    expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Project dependencies include declarations locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' })
+
+
+      94 | 					component.getByRole('table', { name: 'npm dependencies' }),
+      95 | 					'Project dependencies include declarations'
+    > 96 | 				).toBeVisible();
+         | 				  ^
+      97 | 				await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+      98 | 				const npm = component.getByRole('table', { name: 'npm dependencies' });
+      99 | 				await expect(npm.locator('tbody tr')).toHaveCount(3);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-auIe4l/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:96:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-4b403-endencies-screen-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-4b403-endencies-screen-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-4b403-endencies-screen-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at desktop 
+
+    Error: Project dependencies include declarations
+
+    expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Project dependencies include declarations locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' })
+
+
+      94 | 					component.getByRole('table', { name: 'npm dependencies' }),
+      95 | 					'Project dependencies include declarations'
+    > 96 | 				).toBeVisible();
+         | 				  ^
+      97 | 				await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+      98 | 				const npm = component.getByRole('table', { name: 'npm dependencies' });
+      99 | 				await expect(npm.locator('tbody tr')).toHaveCount(3);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-auIe4l/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:96:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-7a16d--at-dependencies-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7a16d--at-dependencies-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7a16d--at-dependencies-at-desktop/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at tablet 
+
+    Error: Project dependencies include declarations
+
+    expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Project dependencies include declarations locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' })
+
+
+      94 | 					component.getByRole('table', { name: 'npm dependencies' }),
+      95 | 					'Project dependencies include declarations'
+    > 96 | 				).toBeVisible();
+         | 				  ^
+      97 | 				await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+      98 | 				const npm = component.getByRole('table', { name: 'npm dependencies' });
+      99 | 				await expect(npm.locator('tbody tr')).toHaveCount(3);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-auIe4l/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:96:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-72b7e-pendencies-screen-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-72b7e-pendencies-screen-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-72b7e-pendencies-screen-at-tablet/error-context.md
+
+  4) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at tablet 
+
+    Error: Project dependencies include declarations
+
+    expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Project dependencies include declarations locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' })
+
+
+      94 | 					component.getByRole('table', { name: 'npm dependencies' }),
+      95 | 					'Project dependencies include declarations'
+    > 96 | 				).toBeVisible();
+         | 				  ^
+      97 | 				await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+      98 | 				const npm = component.getByRole('table', { name: 'npm dependencies' });
+      99 | 				await expect(npm.locator('tbody tr')).toHaveCount(3);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-auIe4l/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:96:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-e8712-h-at-dependencies-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-e8712-h-at-dependencies-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-e8712-h-at-dependencies-at-tablet/error-context.md
+
+  5) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at mobile 
+
+    Error: Project dependencies include declarations
+
+    expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Project dependencies include declarations locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-dependencies-screen"]').getByRole('table', { name: 'npm dependencies' })
+
+
+      94 | 					component.getByRole('table', { name: 'npm dependencies' }),
+      95 | 					'Project dependencies include declarations'
+    > 96 | 				).toBeVisible();
+         | 				  ^
+      97 | 				await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+      98 | 				const npm = component.getByRole('table', { name: 'npm dependencies' });
+      99 | 				await expect(npm.locator('tbody tr')).toHaveCount(3);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-auIe4l/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:96:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-00ece-pendencies-screen-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-00ece-pendencies-screen-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-00ece-pendencies-screen-at-mobile/error-context.md
+
+  6) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at mobile 
+
+    Error: Project dependencies include declarations
+
+    expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Project dependencies include declarations locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.page.harness-branch-branch-at-dependencies"]').getByRole('table', { name: 'npm dependencies' })
+
+
+      94 | 					component.getByRole('table', { name: 'npm dependencies' }),
+      95 | 					'Project dependencies include declarations'
+    > 96 | 				).toBeVisible();
+         | 				  ^
+      97 | 				await expect(component.getByRole('table', { name: 'Cargo dependencies' })).toBeVisible();
+      98 | 				const npm = component.getByRole('table', { name: 'npm dependencies' });
+      99 | 				await expect(npm.locator('tbody tr')).toHaveCount(3);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-auIe4l/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:96:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-c1198-h-at-dependencies-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-c1198-h-at-dependencies-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-c1198-h-at-dependencies-at-mobile/error-context.md
+
+  6 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.explorer-dependencies-screen at mobile 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.page.harness-branch-branch-at-dependencies at mobile 
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:shell" exited with code 1
