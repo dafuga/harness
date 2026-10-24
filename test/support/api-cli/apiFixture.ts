@@ -64,8 +64,14 @@ function evidence() {
 }
 
 function answer(operation: string, input: Record<string, unknown>) {
-	if (operation === 'connect') return { token: 'synthetic-local-secret', snapshot };
-	if (operation === 'snapshot') return snapshot;
+	const stable: Record<string, unknown> = {
+		connect: { token: 'synthetic-local-secret', snapshot },
+		snapshot,
+		startRun: { runId: 'run-1' },
+		cancelRun: true,
+		providers: [{ id: 'codex', models: [{ id: 'explicit-model' }] }]
+	};
+	if (Object.hasOwn(stable, operation)) return stable[operation];
 	if (operation === 'registry')
 		return {
 			commit,
@@ -80,9 +86,6 @@ function answer(operation: string, input: Record<string, unknown>) {
 		};
 	if (operation === 'entity') return { id: input.entityId, contract };
 	if (operation === 'createPlan') return { id: 'function.format-totals', contract: input.contract };
-	if (operation === 'startRun') return { runId: 'run-1' };
-	if (operation === 'cancelRun') return true;
-	if (operation === 'providers') return [{ id: 'codex', models: [{ id: 'explicit-model' }] }];
 	if (operation === 'events')
 		return {
 			events: [
