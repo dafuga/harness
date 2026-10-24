@@ -26,7 +26,7 @@
 			"title": "Add or update focused automated coverage.",
 			"status": "complete",
 			"completedAt": "2026-10-24T18:00:51.094Z",
-			"evidence": "16 API/context/session cases pass. Real local API bridge reads committed source and bound screenshot bytes and commits proposed contracts; 7 hosted-agent cases and 32 existing IPC/proposal/evidence cases pass. Unit ownership and readable-contract guards pass. Full verification remains blocked by inherited main formatting, lint and atom-preview registry failures."
+			"evidence": "20 CLI/context/registry/session cases, six real local API cases, eleven hosted API cases and thirty-two existing IPC/proposal/evidence cases passed at their source checkpoints. Original assertions and red-green history are retained. Ownership/readable-contract guards pass after integrating main. Final E2E capture runs on harbor-mbp-2; full verification remains pending for inherited main formatting, lint and atom-preview catalog failures."
 		},
 		{
 			"id": "verify",
