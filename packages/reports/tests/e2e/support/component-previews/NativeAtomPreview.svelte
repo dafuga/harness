@@ -9,10 +9,10 @@
 		Component,
 		source
 	}: { Component: SvelteComponent<Record<string, unknown>>; source: string } = $props();
-	const name = source.split('/').at(-1)?.replace('.svelte', '');
-	const definition = nativeAtoms.find((atom) => atom.name === name)!;
-	const tag = definition.tag;
-	const attributes = nativeAtomProps(tag, definition.type);
+	const name = $derived(source.split('/').at(-1)?.replace('.svelte', ''));
+	const definition = $derived(nativeAtoms.find((atom) => atom.name === name)!);
+	const tag = $derived(definition.tag);
+	const attributes = $derived(nativeAtomProps(tag, definition.type));
 	let host: HTMLElement;
 	onMount(() => {
 		const canvas = host.querySelector('canvas');
@@ -43,7 +43,7 @@
 		><button type="button">Continue</button>
 	{:else if tag === 'picture'}<img
 			src={nativeAtomProps('img').src as string}
-			alt="Example image"
+			alt="Example landscape"
 			width="180"
 			height="110"
 		/>
