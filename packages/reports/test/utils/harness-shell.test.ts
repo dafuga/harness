@@ -167,7 +167,12 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 	const { revision, categories, home } = view(null);
 	expect(revision).toBeNull();
 	expect(home).toEqual({ href: shellMount, to: null });
-	expect(categories.map((item) => item.label)).toEqual(['Pages', 'Code', 'Platforms']);
+	expect(categories.map((item) => item.label)).toEqual([
+		'Pages',
+		'Code',
+		'Translations',
+		'Platforms'
+	]);
 	expect(view(null)).toMatchObject({ modules: [] });
 	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
 		true

@@ -1,3 +1,5 @@
+import type { Page } from '@playwright/test';
+import { expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
@@ -107,4 +109,24 @@ export async function writeConsoleHost(directory: string, tarball: string): Prom
 		await mkdir(dirname(join(directory, path)), { recursive: true });
 		await writeFile(join(directory, path), contents);
 	}
+}
+
+/** New Code destinations use the installed host's current scope and revision. */
+export async function visitCodeCatalogs(page: Page, base: string, head: string) {
+	const bar = page.getByRole('banner');
+	const tabs = bar.getByRole('tablist', { name: 'Code categories' });
+	for (const [label, path] of [
+		['Dependencies', 'dependencies'],
+		['Configs', 'configs'],
+		['Styles', 'styles']
+	]) {
+		await tabs.getByRole('tab', { name: label, exact: true }).click();
+		await page.waitForURL(`**${base}${path}`);
+		await page.getByRole('heading', { level: 1, name: label, exact: true }).waitFor();
+		expect(await bar.getByRole('combobox', { name: 'Commit', exact: true }).inputValue()).toBe(
+			head
+		);
+	}
+	await tabs.getByRole('tab', { name: 'Helpers', exact: true }).click();
+	await page.waitForURL(`**${base}functions`);
 }

@@ -86,7 +86,7 @@ export async function revisionDivider(within: Locator): Promise<void> {
 	} else expect(line.content).toBe('none');
 }
 
-/** Modules opens a horizontal category row below the primary navigation. */
+/** Code opens a horizontal category row below the primary navigation. */
 export async function moduleNavigation(
 	page: Page,
 	home: string,

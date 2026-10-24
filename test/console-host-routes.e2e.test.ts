@@ -3,7 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest';
 import { browserErrorCollector } from './support/browserTest';
-import { sessions } from './support/consoleHost';
+import { sessions, visitCodeCatalogs } from './support/consoleHost';
 import {
 	installAndBuild,
 	pagesDev,
@@ -30,7 +30,7 @@ const main = (commit: string, rest: string) => `/harness/branch/main/commit/${co
 const tip = (rest: string) => `/harness/branch/main/${rest}`;
 /** The whole branch is one segment of an explorer address. */
 const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
-const categories = 'Pages,Modules,Styles,Configs,Translations,Platforms'.split(',');
+const categories = 'Pages,Code,Translations,Platforms'.split(',');
 const pathOf = (page: Page) => new URL(page.url()).pathname;
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
@@ -68,16 +68,12 @@ test('the host redirects the root and the query form to page paths, for the admi
 	]);
 	// Pages of the explorer, and page paths of the earlier console, which the console leads on.
 	const explorer = [
-		tip('pages'),
 		main(head, 'functions'),
-		`${slashed}/pages`,
-		tip('layouts'),
-		main(head, 'layouts'),
-		tip('shells'),
-		tip('types'),
-		main(head, 'types'),
-		`${slashed}/types`,
-		main(head, 'shells')
+		...['pages', 'layouts', 'shells', 'types', 'dependencies'].flatMap((path) => [
+			tip(path),
+			main(head, path),
+			`${slashed}/${path}`
+		])
 	];
 	const before = [main(head, 'map'), `/harness/branch/release/1.0%23rc/commit/${head}/map`];
 	for (const path of [...explorer, ...before, `/harness/commit/${head}/growth`]) {
@@ -131,6 +127,7 @@ test('in a browser each branch, commit and category of the installed console is 
 	await page.waitForURL(`**${main(other, 'functions')}`);
 	await bar(page).getByRole('link', { name: 'Go to tip' }).click();
 	await page.waitForURL(`**${tip('functions')}`);
+	await visitCodeCatalogs(page, tip(''), head);
 
 	await field(page, 'Branch').selectOption(slashBranch);
 	await page.waitForURL(`**${slashed}/functions`);

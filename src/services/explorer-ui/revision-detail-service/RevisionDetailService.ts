@@ -1,3 +1,4 @@
+import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
@@ -124,9 +125,7 @@ export class RevisionDetailService {
 		const stored = {
 			registry,
 			ledger,
-			platforms: await readPlatformCatalog(tree),
-			projectDependencies: await projectDependencies(tree),
-			translations: await translationCatalog(tree, registry.units)
+			...(await readCatalogs(tree, registry))
 		};
 		this.kept.registries.set(key, stored);
 		return stored;
@@ -178,5 +177,13 @@ function catalogFields(stored: Stored) {
 		platforms: stored.platforms,
 		translations: stored.translations,
 		projectDependencies: stored.projectDependencies
+	};
+}
+
+async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
+	return {
+		platforms: await readPlatformCatalog(tree),
+		projectDependencies: await projectDependencies(tree),
+		translations: await translationCatalog(tree, registry.units)
 	};
 }

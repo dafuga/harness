@@ -32,19 +32,7 @@ export async function projectDependencies(tree: SourceTree): Promise<ProjectDepe
 		if (!root) continue;
 		const npm = source === 'package.json';
 		const workspace = object(root.workspace);
-		const patterns = npm
-			? strings(Array.isArray(root.workspaces) ? root.workspaces : object(root.workspaces).packages)
-			: strings(workspace.members);
-		const excluded = npm ? [] : strings(workspace.exclude);
-		const candidates = [...paths].filter((path) => {
-			if (path === source) return true;
-			if (!path.endsWith('/' + source)) return false;
-			const directory = path.slice(0, -source.length - 1);
-			return (
-				patterns.some((pattern) => pathMatches(directory, pattern.replace(/\/$/, ''))) &&
-				!excluded.some((pattern) => pathMatches(directory, pattern))
-			);
-		});
+		const candidates = manifestPaths(paths, source, root);
 		for (const path of candidates.sort()) {
 			const manifest = path === source ? root : await readManifest(tree, path, catalog);
 			if (manifest)
@@ -60,6 +48,24 @@ export async function projectDependencies(tree: SourceTree): Promise<ProjectDepe
 		)
 	);
 	return catalog;
+}
+
+function manifestPaths(paths: Set<string>, source: string, root: Record<string, unknown>) {
+	const npm = source === 'package.json';
+	const workspace = object(root.workspace);
+	const patterns = npm
+		? strings(Array.isArray(root.workspaces) ? root.workspaces : object(root.workspaces).packages)
+		: strings(workspace.members);
+	const excluded = npm ? [] : strings(workspace.exclude);
+	return [...paths].filter((path) => {
+		if (path === source) return true;
+		if (!path.endsWith('/' + source)) return false;
+		const directory = path.slice(0, -source.length - 1);
+		return (
+			patterns.some((pattern) => pathMatches(directory, pattern.replace(/\/$/, ''))) &&
+			!excluded.some((pattern) => pathMatches(directory, pattern))
+		);
+	});
 }
 
 async function readManifest(tree: SourceTree, source: string, catalog: ProjectDependencies) {

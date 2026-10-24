@@ -2,10 +2,10 @@ import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../../test/support/measureWorkload';
 import ExplorerDependenciesScreen from '../../../src/components/explorer-ui/ExplorerDependenciesScreen.svelte';
-import { host } from '../../../tests/e2e/support/component-previews/explorerData';
+import { hostProps } from '../../entityRender';
 import { dependencyPreview } from '../../../tests/e2e/support/component-previews/dependencies';
 
-const shown = () => dependencyPreview(host());
+const shown = () => dependencyPreview(hostProps('commit'));
 const html = (props = shown()) => render(ExplorerDependenciesScreen, { props }).body;
 
 test('dependency inventory groups identical declarations but retains distinct requirements and kinds', async () => {

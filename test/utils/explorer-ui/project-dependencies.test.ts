@@ -37,21 +37,7 @@ async function snapshot(files: Record<string, string>) {
 			Object.hasOwn(detail, 'projectDependencies'),
 			'Revision detail publishes package catalog'
 		).toBe(true);
-		const catalog = (
-			detail as unknown as {
-				projectDependencies?: {
-					entries: Array<{
-						name: string;
-						version: string;
-						kind: string;
-						ecosystem: string;
-						workspace: string;
-						source: string;
-					}>;
-					gaps: string[];
-				};
-			}
-		).projectDependencies;
+		const catalog = detail.projectDependencies;
 		expect(catalog, 'Selected revision retains its package declarations').toBeDefined();
 		return catalog!;
 	} finally {
@@ -60,25 +46,26 @@ async function snapshot(files: Record<string, string>) {
 }
 const json = (data: unknown) => JSON.stringify(data);
 
+const npmTree = {
+	'package.json': json({
+		name: 'workspace-root',
+		workspaces: ['packages/*'],
+		dependencies: { zod: '^3.0.0' },
+		devDependencies: { vitest: '^4.0.0' },
+		scripts: { prepare: 'throw new Error()' }
+	}),
+	'packages/app/package.json': json({
+		name: 'app',
+		dependencies: { zod: '^4.0.0' },
+		peerDependencies: { react: '^19' },
+		optionalDependencies: { fsevents: '2' }
+	}),
+	'test/fixtures/package.json': json({ dependencies: { 'fixture-only': '*' } }),
+	'node_modules/hidden/package.json': json({ dependencies: { 'installed-only': '*' } })
+};
+
 test('project package catalog preserves declared versions, workspace origins and dependency kinds', async () => {
-	const tree = {
-		'package.json': json({
-			name: 'workspace-root',
-			workspaces: ['packages/*'],
-			dependencies: { zod: '^3.0.0' },
-			devDependencies: { vitest: '^4.0.0' },
-			scripts: { prepare: 'throw new Error()' }
-		}),
-		'packages/app/package.json': json({
-			name: 'app',
-			dependencies: { zod: '^4.0.0' },
-			peerDependencies: { react: '^19' },
-			optionalDependencies: { fsevents: '2' }
-		}),
-		'test/fixtures/package.json': json({ dependencies: { 'fixture-only': '*' } }),
-		'node_modules/hidden/package.json': json({ dependencies: { 'installed-only': '*' } })
-	};
-	const result = await snapshot(tree);
+	const result = await snapshot(npmTree);
 	expect(result.gaps).toEqual([]);
 	expect(result.entries).toEqual(
 		expect.arrayContaining([
