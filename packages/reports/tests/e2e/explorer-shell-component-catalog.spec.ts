@@ -14,7 +14,7 @@ import {
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
 import { assertComponentCapture } from './support/component-previews/previewCaptureAssertions';
-import { declaredStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
+import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
@@ -89,7 +89,7 @@ for (const viewport of catalogViewports) {
 				await expectColorRoles(component);
 				await expectStyleGroups(component);
 				await expect(component.locator('[data-style-token]')).toHaveCount(
-					declaredStyleTokens().length
+					documentedStyleTokens().length
 				);
 			}
 			for (const field of await component.locator('.hx-revision .has-display select').all())
