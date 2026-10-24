@@ -3,6 +3,7 @@ import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { stableJson } from '../../utils/development-tooling/stableJson';
 import { queueSchema } from './module-task-repository/taskSchemas';
 import { syncTaskQueue } from './module-task-repository/syncTaskQueue';
+import { taskOwner } from './module-task-repository/taskOwner';
 export { featureSchema, taskInputSchema } from './module-task-repository/taskSchemas';
 /** A Git-committed queue shared by this repository's worktrees; source and index are untouched. */
 export class ModuleTaskRepository {
@@ -38,6 +39,9 @@ export class ModuleTaskRepository {
 	}
 	async sync(remote: string) {
 		return syncTaskQueue(this.git, this.ref, remote);
+	}
+	owner() {
+		return taskOwner(this.git);
 	}
 	private async commit(text: string, previous?: string, source?: string) {
 		const blob = await this.git.run(['hash-object', '-w', '--stdin'], { input: text });

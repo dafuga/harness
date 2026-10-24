@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
+import { observedTaskOperation } from '../../support/taskProfiles';
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
@@ -13,6 +14,31 @@ test('Claude and Codex launch exact models and intelligence without shell interp
 			'model_provider="openai"'
 		])
 	);
+});
+test('successful public Claude CLI events retain requested model and summary', async () => {
+	const runner = new ModuleTaskRunnerAdapter(async () => ({
+		code: 0,
+		stdout:
+			'{"type":"system","subtype":"init","model":"claude-haiku-5-5"}\n{"type":"result","is_error":false,"result":"Implemented"}'
+	}));
+	const result = await observedTaskOperation(
+		'adapter.agents-providers-module-task-runner',
+		'parse-synthetic-cli-completion-only',
+		() =>
+			runner.run({
+				provider: 'claude',
+				model: 'claude-haiku-5-5',
+				intelligence: 'medium',
+				cwd: '.',
+				prompt: 'Goal',
+				signal: new AbortController().signal
+			})
+	);
+	expect(result).toMatchObject({
+		model: 'claude-haiku-5-5',
+		reportedModel: 'claude-haiku-5-5',
+		text: 'Implemented'
+	});
 });
 test.each(['quota', 'authentication', 'text-only-quota'])(
 	'fallback eligibility uses structured quota signals (%s)',

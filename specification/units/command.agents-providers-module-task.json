@@ -3,8 +3,8 @@
 	"id": "command.agents-providers-module-task",
 	"kind": "command",
 	"title": "ModuleTaskCommand",
-	"responsibility": "Owns the ModuleTaskCommand command registration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Expose committed feature contexts, module tasks and assigned foreground workers through the Harness CLI.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -65,7 +65,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

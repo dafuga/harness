@@ -16,6 +16,16 @@ export const taskInputSchema = z.strictObject({
 	title: text,
 	feature: id,
 	module: id,
+	moduleGoal: text.optional(),
+	verificationFiles: z
+		.array(
+			path.refine(
+				(p) => /(^|\/)(test|tests)\/|\.(test|spec)\.[jt]sx?$/.test(p),
+				'must name an explicit test or verification fixture'
+			)
+		)
+		.max(64)
+		.optional(),
 	instructions: text,
 	wantedContract: wantedContractSchema,
 	model: z.string().trim().min(1).max(150).default('auto'),
@@ -35,6 +45,12 @@ const result = z.strictObject({
 	fallback: z.boolean(),
 	finishedAt: z.iso.datetime()
 });
+const claim = z.strictObject({
+	worker: id,
+	token: z.uuid(),
+	startedAt: z.iso.datetime(),
+	owner: z.strictObject({ workspace: z.uuid(), pid: z.number().int().positive(), startedAt: text })
+});
 export const storedTaskSchema = taskInputSchema.omit({ module: true, feature: true }).extend({
 	feature: featureSchema,
 	module: z.strictObject({ id, goal: text, files: z.array(path).min(1) }),
@@ -42,7 +58,8 @@ export const storedTaskSchema = taskInputSchema.omit({ module: true, feature: tr
 	contractHash: z.string().regex(/^[a-f0-9]{64}$/),
 	status: z.enum(['queued', 'running', 'review', 'failed']),
 	createdAt: z.iso.datetime(),
-	claim: z.strictObject({ worker: id, token: z.uuid(), startedAt: z.iso.datetime() }).optional(),
+	claim: claim.optional(),
+	claimHistory: z.array(claim).default([]),
 	result: result.optional(),
 	attempts: z.array(result).default([])
 });

@@ -12,4 +12,5 @@ export interface TaskPublicEvent {
 	rate_limit_info?: { status?: string };
 	item?: { type?: string; text?: string };
 	modelUsage?: Record<string, unknown>;
+	permission_denials?: unknown[];
 }

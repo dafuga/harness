@@ -4,6 +4,7 @@ import { ModuleTaskService } from '../../../src/services/agents-providers/Module
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { observedTaskOperation } from '../../support/taskProfiles';
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -29,7 +30,11 @@ test('module filters and assignment claims select once, then preserve changes fo
 		});
 		expect((await worker.once('other')).status).toBe('idle');
 		expect((await worker.once('owner', ['service.other'])).status).toBe('idle');
-		const outcomes = await Promise.all([worker.once('owner'), worker.once('owner')]);
+		const outcomes = await observedTaskOperation(
+			'service.agents-providers-module-task-worker',
+			'exclusive-dispatch-with-synthetic-runner',
+			() => Promise.all([worker.once('owner'), worker.once('owner')])
+		);
 		expect(outcomes.map((x) => x.status).sort()).toEqual(['idle', 'review']);
 		expect((await service.show(input.id)).task.result?.changedFiles).toEqual(['src/orders.ts']);
 	} finally {

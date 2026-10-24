@@ -3,14 +3,15 @@
 	"id": "repository.agents-providers-module-task",
 	"kind": "repository",
 	"title": "ModuleTaskRepository",
-	"responsibility": "Owns the ModuleTaskRepository persistence boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Commit module task definitions and claims atomically in a dedicated Git ref while preserving source HEAD and the working index.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/repositories/agents-providers/ModuleTaskRepository.ts",
 			"src/repositories/agents-providers/ModuleTaskRepository.types.ts",
 			"src/repositories/agents-providers/module-task-repository/syncTaskQueue.ts",
+			"src/repositories/agents-providers/module-task-repository/taskOwner.ts",
 			"src/repositories/agents-providers/module-task-repository/taskSchemas.ts"
 		],
 		"symbols": [
@@ -21,6 +22,7 @@
 			"ModuleTaskRepository.read",
 			"ModuleTaskRepository.update",
 			"ModuleTaskRepository.sync",
+			"ModuleTaskRepository.owner",
 			"TaskFeature",
 			"ModuleTaskInput",
 			"ModuleTaskQueue",
@@ -30,6 +32,7 @@
 			"TaskRunResult",
 			"TaskRunner",
 			"syncTaskQueue",
+			"taskOwner",
 			"featureSchema",
 			"wantedContractSchema",
 			"taskInputSchema",
@@ -67,6 +70,10 @@
 			{
 				"name": "syncTaskQueue.remote",
 				"type": "string"
+			},
+			{
+				"name": "taskOwner.git",
+				"type": "GitAdapter"
 			}
 		],
 		"outputs": [
@@ -83,7 +90,15 @@
 				"type": "unknown"
 			},
 			{
+				"name": "ModuleTaskRepository.owner",
+				"type": "unknown"
+			},
+			{
 				"name": "syncTaskQueue",
+				"type": "unknown"
+			},
+			{
+				"name": "taskOwner",
 				"type": "unknown"
 			},
 			{
@@ -121,6 +136,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.stable-json",
 			"via": "import",
 			"origin": "derived"
@@ -141,7 +161,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

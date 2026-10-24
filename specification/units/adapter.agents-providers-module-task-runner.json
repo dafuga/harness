@@ -3,8 +3,8 @@
 	"id": "adapter.agents-providers-module-task-runner",
 	"kind": "adapter",
 	"title": "ModuleTaskRunnerAdapter",
-	"responsibility": "Owns the ModuleTaskRunnerAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Execute exact-model Claude Code or Codex CLI module tasks, exposing public results and structured quota rejection without transporting provider keys.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -94,7 +94,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

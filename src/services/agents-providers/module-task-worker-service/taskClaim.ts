@@ -2,9 +2,29 @@ import { randomUUID } from 'node:crypto';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type {
 	ModuleTask,
-	ModuleTaskQueue
+	ModuleTaskQueue,
+	TaskSelection
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
-export function claimedTask(queue: ModuleTaskQueue, worker: string, modules: string[]) {
+export function pendingTaskResult(
+	selection: TaskSelection,
+	worktree: string
+): NonNullable<ModuleTask['result']> {
+	return {
+		...selection,
+		reportedModel: null,
+		text: '',
+		worktree,
+		changedFiles: [],
+		fallback: false,
+		finishedAt: new Date().toISOString()
+	};
+}
+export function claimedTask(
+	queue: ModuleTaskQueue,
+	worker: string,
+	modules: string[],
+	owner: NonNullable<ModuleTask['claim']>['owner']
+) {
 	const busy = new Set(queue.tasks.filter((t) => t.status === 'running').map((t) => t.module.id));
 	const task = queue.tasks.find(
 		(t) =>
@@ -15,7 +35,7 @@ export function claimedTask(queue: ModuleTaskQueue, worker: string, modules: str
 	);
 	if (!task) return null;
 	task.status = 'running';
-	task.claim = { worker, token: randomUUID(), startedAt: new Date().toISOString() };
+	task.claim = { worker, token: randomUUID(), startedAt: new Date().toISOString(), owner };
 	return task;
 }
 export function finishTask(

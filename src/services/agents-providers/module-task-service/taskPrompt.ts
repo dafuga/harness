@@ -16,7 +16,7 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 		'Work on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.',
 		`Module: ${task.module.id}`,
 		`Overall module goal: ${task.module.goal}`,
-		`Allowed source files: ${task.module.files.join(', ')}`,
+		`Allowed task files: ${task.module.files.join(', ')}`,
 		`Task: ${task.title} (${task.id})`,
 		task.instructions,
 		'Implement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.',

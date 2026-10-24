@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
 import { UnitRegistryRepository } from '../../repositories/verification-evidence/UnitRegistryRepository';
 import {
@@ -13,6 +12,8 @@ import type {
 import { stableJson } from '../../utils/development-tooling/stableJson';
 import { moduleTaskPrompt, taskSelection } from './module-task-service/taskPrompt';
 import { z } from 'zod';
+import { retryableTask } from './module-task-service/retryableTask';
+import { queuedTask } from './module-task-service/queuedTask';
 /** Admit immutable feature context and wanted contracts before work is eligible for pickup. */
 export class ModuleTaskService {
 	readonly repository: ModuleTaskRepository;
@@ -39,22 +40,15 @@ export class ModuleTaskService {
 			throw new Error(
 				'Task module must be active and registered at the committed source revision.'
 			);
+		if (unit.responsibilityOrigin === 'derived' && !parsed.moduleGoal)
+			throw new Error('This module has only a generated placeholder goal; supply moduleGoal.');
 		const recorded = await this.repository.update((queue) => {
 			if (queue.tasks.some((t) => t.id === parsed.id))
 				throw new Error('Task id already exists; wanted contracts are immutable.');
 			const feature = queue.features.find((f) => f.id === parsed.feature);
 			if (!feature)
 				throw new Error('Commit the shared feature goal and TLDR with task feature first.');
-			const task: ModuleTask = {
-				...parsed,
-				feature,
-				module: { id: unit.id, goal: unit.responsibility, files: unit.owns.source },
-				sourceCommit: tree.revision,
-				contractHash: createHash('sha256').update(stableJson(parsed.wantedContract)).digest('hex'),
-				status: 'queued',
-				createdAt: new Date().toISOString(),
-				attempts: []
-			};
+			const task = queuedTask(parsed, feature, unit, tree.revision);
 			queue.tasks.push(task);
 			return task;
 		}, tree.revision);
@@ -62,9 +56,15 @@ export class ModuleTaskService {
 	}
 	async list() {
 		const snapshot = await this.repository.read();
-		return { features:snapshot.data.features,tasks: snapshot.data.tasks, commit: snapshot.commit };
+		return {
+			features: snapshot.data.features,
+			tasks: snapshot.data.tasks,
+			commit: snapshot.commit
+		};
 	}
-	schema() {return z.toJSONSchema(taskInputSchema);}
+	schema() {
+		return z.toJSONSchema(taskInputSchema);
+	}
 	async show(id: string) {
 		const { tasks, commit } = await this.list(),
 			task = tasks.find((t) => t.id === id);
@@ -79,11 +79,15 @@ export class ModuleTaskService {
 		return { prompt: moduleTaskPrompt(task, commit), selection: taskSelection(task) };
 	}
 	async retry(id: string) {
+		const owner = await this.repository.owner();
 		return this.repository.update((queue) => {
 			const task = queue.tasks.find((t) => t.id === id);
-			if (!task || task.status !== 'failed')
-				throw new Error('Only failed tasks may be retried; running claims are never stolen.');
+			if (!task || !retryableTask(task, owner.workspace))
+				throw new Error(
+					'Task cannot be retried while its owner is active, unknown or in another clone.'
+				);
 			if (task.result) task.attempts.push(task.result);
+			if (task.claim) task.claimHistory.push(task.claim);
 			delete task.result;
 			delete task.claim;
 			task.status = 'queued';

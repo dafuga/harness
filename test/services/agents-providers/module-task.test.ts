@@ -3,6 +3,7 @@ import { ModuleTaskService } from '../../../src/services/agents-providers/Module
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile } from 'node:fs/promises';
 import { taskSelection } from '../../../src/services/agents-providers/module-task-service/taskPrompt';
+import { observedTaskOperation } from '../../support/taskProfiles';
 test('admission rejects missing contracts, unknown modules and mutable task identities', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -19,7 +20,11 @@ test('admission rejects missing contracts, unknown modules and mutable task iden
 		await expect(service.add({ ...input, module: 'service.missing' })).rejects.toThrow(
 			'active and registered'
 		);
-		await service.add(input);
+		await observedTaskOperation(
+			'service.agents-providers-module-task',
+			'admit-committed-module-contract',
+			() => service.add(input)
+		);
 		await expect(service.add(input)).rejects.toThrow('already exists');
 		await expect(
 			service.feature({ id: 'checkout', goal: 'Changed goal', tldr: 'Changed context' })
@@ -30,6 +35,37 @@ test('admission rejects missing contracts, unknown modules and mutable task iden
 				'Overall goal: Reliable checkout\nFeature TLDR: Build validated orders.\n'
 			)
 		).toBe(true);
+	} finally {
+		await f.dispose();
+	}
+});
+test('retry preserves abandoned claims and refuses to steal an active owner', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		const service = new ModuleTaskService(f.root),
+			owner = await service.repository.owner();
+		await service.feature({
+			id: 'checkout',
+			goal: 'Reliable checkout',
+			tldr: 'Build validated orders.'
+		});
+		await service.add(JSON.parse(await readFile(await f.input(), 'utf8')));
+		const token = '733715ae-dd63-4896-b94b-58a51d693a58';
+		await service.repository.update((q) => {
+			q.tasks[0].status = 'running';
+			q.tasks[0].claim = { worker: 'owner', token, startedAt: new Date().toISOString(), owner };
+		});
+		await expect(service.retry('orders-validation')).rejects.toThrow(
+			'active, unknown or in another clone'
+		);
+		await service.repository.update((q) => {
+			q.tasks[0].claim!.owner.startedAt = 'Earlier process with a reused PID';
+		});
+		await service.retry('orders-validation');
+		const task = (await service.show('orders-validation')).task;
+		expect(task.status).toBe('queued');
+		expect(task.claim).toBeUndefined();
+		expect(task.claimHistory[0].token).toBe(token);
 	} finally {
 		await f.dispose();
 	}

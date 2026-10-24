@@ -3,8 +3,8 @@
 	"id": "service.agents-providers-module-task-worker",
 	"kind": "service",
 	"title": "ModuleTaskWorkerService",
-	"responsibility": "Owns the ModuleTaskWorkerService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -15,6 +15,7 @@
 			"ModuleTaskWorkerService",
 			"ModuleTaskWorkerService.constructor",
 			"ModuleTaskWorkerService.once",
+			"pendingTaskResult",
 			"claimedTask",
 			"finishTask",
 			"taskWrites"
@@ -44,6 +45,14 @@
 				"type": "unknown"
 			},
 			{
+				"name": "pendingTaskResult.selection",
+				"type": "TaskSelection"
+			},
+			{
+				"name": "pendingTaskResult.worktree",
+				"type": "string"
+			},
+			{
 				"name": "claimedTask.queue",
 				"type": "ModuleTaskQueue"
 			},
@@ -54,6 +63,10 @@
 			{
 				"name": "claimedTask.modules",
 				"type": "string[]"
+			},
+			{
+				"name": "claimedTask.owner",
+				"type": "NonNullable<ModuleTask['claim']>['owner']"
 			},
 			{
 				"name": "finishTask.queue",
@@ -80,6 +93,10 @@
 			{
 				"name": "ModuleTaskWorkerService.once",
 				"type": "unknown"
+			},
+			{
+				"name": "pendingTaskResult",
+				"type": "NonNullable<ModuleTask['result']>"
 			},
 			{
 				"name": "claimedTask",
@@ -133,7 +150,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

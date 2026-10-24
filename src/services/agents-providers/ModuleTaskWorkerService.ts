@@ -8,7 +8,12 @@ import type {
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
 import { ModuleTaskService } from './ModuleTaskService';
-import { claimedTask, finishTask, taskWrites } from './module-task-worker-service/taskClaim';
+import {
+	claimedTask,
+	finishTask,
+	taskWrites,
+	pendingTaskResult
+} from './module-task-worker-service/taskClaim';
 /** Foreground workers claim atomically in a shared Git repository and preserve isolated review work. */
 export class ModuleTaskWorkerService {
 	private readonly repository: ModuleTaskRepository;
@@ -21,7 +26,10 @@ export class ModuleTaskWorkerService {
 	async once(worker: string, modules: string[] = [], signal = AbortSignal.timeout(900000)) {
 		if (!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(worker))
 			throw new Error('Worker must be a lowercase dotted or dashed identifier.');
-		const claim = await this.repository.update((queue) => claimedTask(queue, worker, modules));
+		const owner = await this.repository.owner();
+		const claim = await this.repository.update((queue) =>
+			claimedTask(queue, worker, modules, owner)
+		);
 		if (!claim.value) return { status: 'idle' as const };
 		return this.execute(claim.value, claim.commit!, signal);
 	}
@@ -29,19 +37,25 @@ export class ModuleTaskWorkerService {
 		const git = new GitAdapter(this.root),
 			{ selection, prompt } = new ModuleTaskService(this.root).prepare(task, commit);
 		const common = await git.run(['rev-parse', '--git-common-dir']);
-		const worktree = resolve(this.root, common, 'harness', 'task-worktrees', task.claim!.token);
-		let result: ModuleTask['result'] = {
-			...selection,
-			reportedModel: null,
-			text: '',
-			worktree,
-			changedFiles: [],
-			fallback: false,
-			finishedAt: new Date().toISOString()
-		};
+		const worktree = resolve(
+			this.root,
+			common,
+			'..',
+			'.cache',
+			'harness',
+			'task-worktrees',
+			task.claim!.token
+		);
+		let result = pendingTaskResult(selection, worktree);
 		try {
 			await git.run(['worktree', 'add', '--detach', worktree, task.sourceCommit]);
-			const execution = await this.run(task, { ...selection, cwd: worktree, prompt, signal });
+			const execution = await this.run(
+				task,
+				{ ...selection, cwd: worktree, prompt, signal },
+				(choice) => {
+					result = { ...result, ...choice, fallback: true };
+				}
+			);
 			result = { ...result, ...execution };
 			result.changedFiles = await taskWrites(new GitAdapter(worktree), task);
 		} catch (error) {
@@ -57,7 +71,8 @@ export class ModuleTaskWorkerService {
 	}
 	private async run(
 		task: ModuleTask,
-		input: TaskSelection & { cwd: string; prompt: string; signal: AbortSignal }
+		input: TaskSelection & { cwd: string; prompt: string; signal: AbortSignal },
+		onFallback: (selection: TaskSelection) => void
 	) {
 		try {
 			return { ...(await this.runner.run(input)), fallback: false };
@@ -71,12 +86,12 @@ export class ModuleTaskWorkerService {
 			)
 				throw error;
 			input.signal.throwIfAborted();
+			const choice: TaskSelection = { provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' };
+			onFallback(choice);
 			return {
 				...(await this.runner.run({
 					...input,
-					provider: 'codex',
-					model: 'gpt-6-luna',
-					intelligence: 'max'
+					...choice
 				})),
 				fallback: true
 			};

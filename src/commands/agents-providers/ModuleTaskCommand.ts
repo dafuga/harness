@@ -40,7 +40,10 @@ export class ModuleTaskCommand {
 			});
 	}
 	private reads(task: Command): void {
-		task.command('schema').description('Print the required task and wanted-contract JSON schema.').action(()=>print(this.service.schema()));
+		task
+			.command('schema')
+			.description('Print the required task and wanted-contract JSON schema.')
+			.action(() => print(this.service.schema()));
 		task
 			.command('list')
 			.option('--json')
@@ -58,7 +61,7 @@ export class ModuleTaskCommand {
 		task
 			.command('retry <id>')
 			.option('--json')
-			.description('Queue a failed task again, retaining prior attempt evidence.')
+			.description('Retry a failed or confirmed abandoned local task, retaining prior attempts.')
 			.action(async (id) => print(await this.service.retry(id)));
 		task
 			.command('sync <remote>')

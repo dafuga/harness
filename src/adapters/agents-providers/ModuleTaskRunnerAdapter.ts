@@ -59,6 +59,8 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			);
 		}
 		const reported = events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
+		if (result.permission_denials?.length)
+			throw new Error('Claude was denied a required tool; review the preserved worktree.');
 		if (
 			reported !== input.model ||
 			Object.keys(result.modelUsage ?? {}).some((model) => model !== input.model)
@@ -105,7 +107,7 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'--effort',
 		selection.intelligence,
 		'--permission-mode',
-		'dontAsk',
+		'acceptEdits',
 		'--tools',
 		'Read,Edit,Write,Glob,Grep',
 		'--no-session-persistence'

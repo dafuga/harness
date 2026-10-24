@@ -3,12 +3,14 @@
 	"id": "service.agents-providers-module-task",
 	"kind": "service",
 	"title": "ModuleTaskService",
-	"responsibility": "Owns the ModuleTaskService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/agents-providers/ModuleTaskService.ts",
+			"src/services/agents-providers/module-task-service/queuedTask.ts",
+			"src/services/agents-providers/module-task-service/retryableTask.ts",
 			"src/services/agents-providers/module-task-service/taskPrompt.ts"
 		],
 		"symbols": [
@@ -17,10 +19,13 @@
 			"ModuleTaskService.feature",
 			"ModuleTaskService.add",
 			"ModuleTaskService.list",
+			"ModuleTaskService.schema",
 			"ModuleTaskService.show",
 			"ModuleTaskService.prompt",
 			"ModuleTaskService.prepare",
 			"ModuleTaskService.retry",
+			"queuedTask",
+			"retryableTask",
 			"moduleTaskPrompt",
 			"taskSelection"
 		]
@@ -61,6 +66,30 @@
 				"type": "string"
 			},
 			{
+				"name": "queuedTask.input",
+				"type": "ModuleTaskInput"
+			},
+			{
+				"name": "queuedTask.feature",
+				"type": "TaskFeature"
+			},
+			{
+				"name": "queuedTask.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "queuedTask.sourceCommit",
+				"type": "string"
+			},
+			{
+				"name": "retryableTask.task",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "retryableTask.workspace",
+				"type": "string"
+			},
+			{
 				"name": "moduleTaskPrompt.task",
 				"type": "ModuleTask"
 			},
@@ -87,6 +116,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "ModuleTaskService.schema",
+				"type": "unknown"
+			},
+			{
 				"name": "ModuleTaskService.show",
 				"type": "unknown"
 			},
@@ -101,6 +134,14 @@
 			{
 				"name": "ModuleTaskService.retry",
 				"type": "unknown"
+			},
+			{
+				"name": "queuedTask",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "retryableTask",
+				"type": "boolean"
 			},
 			{
 				"name": "moduleTaskPrompt",
@@ -125,7 +166,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -150,7 +201,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
