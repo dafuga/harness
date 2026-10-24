@@ -90,6 +90,11 @@ test('JSON config keys keep their actual scalar values', () => {
 test.each([
 	["'A \\'quoted\\' name'", "A 'quoted' name"],
 	['"<orders> & details"', '<orders> & details'],
+	[JSON.stringify('orders/'.repeat(35)), 'orders/'.repeat(35)],
+	[
+		'`Review the order checklist.\nKeep <orders> & details together.`',
+		'Review the order checklist.\nKeep <orders> & details together.'
+	],
 	['false', false],
 	['0', 0],
 	['-1', -1],

@@ -4,6 +4,7 @@ import ExplorerCatalogScreen from '../../src/components/explorer-ui/ExplorerCata
 import { record, revision } from '../entityFixture';
 import { content, drawn, count, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
+import { configStrings } from '../entityConfigFixtures';
 
 const kinds = { configs: ['Configs', 'orderSettings'] } as const;
 
@@ -35,6 +36,14 @@ test('nonvisual collections are tables of their own kind, never image cards', ()
 					expect(words(body)).not.toMatch(/Purpose|Used by|Changed|Verification/);
 					for (const value of ['false', '0', 'null', 'Empty string'])
 						expect(words(body)).toContain(value);
+					for (const [key, literal] of Object.entries(configStrings)) {
+						expect(words(body), 'decoded strings are initially readable').toContain(
+							literal.split('\n')[0]
+						);
+						expect(body).not.toContain(`aria-label="View value for orderSettings.${key}"`);
+					}
+					expect(body).toContain('&lt;orders> &amp; details');
+					expect(body).not.toContain('<orders>');
 					expect(count(body, /<article\b/g), category).toBe(0);
 					expect(drawn(body), category).toBe(drawn(content('commit', at)));
 				}
