@@ -188,9 +188,9 @@
 		gap: var(--hx-space-16);
 		min-width: 0;
 		padding: var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 	}
 	header {
 		display: flex;
@@ -204,6 +204,6 @@
 		font-size: var(--hx-type-size-lg);
 	}
 	small {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 </style>

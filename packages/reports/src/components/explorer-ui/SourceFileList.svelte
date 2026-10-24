@@ -64,7 +64,7 @@
 		display: flex;
 		white-space: nowrap;
 		overflow: hidden;
-		font: var(--hx-type-size-sm) var(--hx-font-family-mono);
+		font: var(--hx-type-size-sm) var(--hx-font-family-code);
 	}
 	.source-folder {
 		min-width: 0;
@@ -105,6 +105,6 @@
 		}
 	}
 	.source-empty {
-		color: var(--ex-muted, var(--muted));
+		color: var(--ex-muted, var(--hx-color-text-muted));
 	}
 </style>

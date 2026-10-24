@@ -61,20 +61,20 @@
 		align-items: center;
 		gap: var(--hx-space-6);
 		margin-inline-start: auto;
-		color: var(--ex-muted, var(--muted));
+		color: var(--ex-muted, var(--hx-color-text-muted));
 		font-size: var(--hx-type-size-sm);
 	}
 	.source-commit code {
 		color: var(--ex-text, inherit);
-		font-family: var(--hx-font-family-mono);
+		font-family: var(--hx-font-family-code);
 	}
 	.source-note,
 	.source-error {
 		margin: 0;
-		color: var(--ex-muted, var(--muted));
+		color: var(--ex-muted, var(--hx-color-text-muted));
 	}
 	.source-error {
-		color: var(--ex-fail, var(--hx-fail));
+		color: var(--ex-fail, var(--hx-color-error));
 	}
 	/* A long line scrolls inside the code, never the page or the dialog around it. */
 	.source-viewer .source-code {
@@ -83,10 +83,11 @@
 		margin: 0;
 		padding: var(--hx-space-14) var(--hx-space-16);
 		overflow: auto;
-		border: var(--hx-border-thin) solid var(--ex-line, var(--line, var(--hx-line)));
+		border: var(--hx-border-thin) solid
+			var(--ex-line, var(--hx-color-border, var(--hx-color-border)));
 		border-radius: var(--hx-radius-small);
-		background: var(--ex-raised, var(--hx-bg));
-		color: var(--ex-text, var(--hx-text));
+		background: var(--ex-raised, var(--hx-color-background));
+		color: var(--ex-text, var(--hx-color-text));
 		white-space: pre;
 		tab-size: 2;
 		font: var(--hx-style-code);

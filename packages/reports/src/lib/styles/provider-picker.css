@@ -5,24 +5,24 @@
 	box-sizing: border-box;
 }
 .provider-picker {
-	--gold: var(--hx-gold);
-	--panel: var(--hx-surface);
-	--raised: var(--hx-raised);
-	--line: var(--hx-line);
-	--edge: var(--hx-line-strong);
-	--muted: var(--hx-muted);
-	--alert: var(--hx-fail);
+	--gold: var(--hx-color-primary);
+	--panel: var(--hx-color-surface);
+	--raised: var(--hx-color-surface-raised);
+	--line: var(--hx-color-border);
+	--edge: var(--hx-color-border-strong);
+	--muted: var(--hx-color-text-muted);
+	--alert: var(--hx-color-error);
 	display: grid;
 	gap: var(--hx-space-18);
 	max-width: 720px;
 	margin: 0 auto;
 	padding: var(--hx-space-26);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-xlarge);
-	background: var(--panel);
-	color: var(--hx-text);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
 	color-scheme: dark;
-	font-family: var(--hx-font-family-sans);
+	font-family: var(--hx-font-family-body);
 	font-size: var(--hx-type-size-base);
 	line-height: var(--hx-style-leading-normal);
 }
@@ -43,14 +43,14 @@
 	padding-inline-end: var(--hx-space-14);
 }
 .provider-picker button:hover:not(:disabled) {
-	border-color: var(--gold);
+	border-color: var(--hx-color-primary);
 }
 .provider-picker :is(button, input):disabled {
 	opacity: var(--hx-opacity-dim);
 	cursor: not-allowed;
 }
 .provider-picker code {
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 }
 .picker-head,
 .picker-actions {
@@ -70,26 +70,26 @@
 .picker-badge,
 .picker-status {
 	padding: var(--hx-space-2) var(--hx-space-9);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-pill);
-	color: var(--chip, var(--muted));
+	color: var(--chip, var(--hx-color-text-muted));
 	font-size: var(--hx-type-size-xs);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-wide);
 }
 .picker-badge {
-	--chip: var(--gold);
+	--chip: var(--hx-color-primary);
 }
 .picker-note {
 	padding: var(--hx-space-10) var(--hx-space-14);
-	border-inline-start: var(--hx-border-heavy) solid var(--line);
+	border-inline-start: var(--hx-border-heavy) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-compact);
 	background: var(--raised);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-sm);
 }
 .picker-warn {
-	border-color: var(--gold);
+	border-color: var(--hx-color-primary);
 	color: inherit;
 }
 .picker-error {
@@ -101,7 +101,7 @@
 .picker-foot,
 .picker-card p,
 .picker-queue p {
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-compact);
 }
 .picker-bind {
@@ -120,7 +120,7 @@
 .picker-field > span,
 .picker-fields > span,
 .picker-card h3 {
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-compact);
 	font-weight: var(--hx-style-weight-semibold);
 	line-height: var(--hx-style-leading-snug);
@@ -135,7 +135,7 @@
 	align-content: start;
 	gap: var(--hx-space-6);
 	padding: var(--hx-space-16);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius);
 	background: var(--raised);
 	overflow-wrap: anywhere;
@@ -157,13 +157,13 @@
 	background: transparent;
 }
 .picker-active {
-	border-inline-start: var(--hx-border-heavy) solid var(--hx-pass);
+	border-inline-start: var(--hx-border-heavy) solid var(--hx-color-success);
 }
 .picker-request:is([data-status='pending'], [data-status='applying']) {
-	--chip: var(--gold);
+	--chip: var(--hx-color-primary);
 	border-style: dashed;
-	border-color: var(--gold);
-	background: var(--hx-gold-wash);
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary-wash);
 }
 .picker-request[data-status='failed'] {
 	--chip: var(--alert);
@@ -178,15 +178,15 @@
 }
 .provider-picker .picker-primary {
 	padding-inline: var(--hx-space-20);
-	border-color: var(--gold);
-	background: var(--gold);
-	color: var(--hx-gold-ink);
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary);
+	color: var(--hx-color-primary-contrast);
 	font-weight: var(--hx-style-weight-semibold);
 }
 .picker-queue,
 .picker-foot {
 	padding-top: var(--hx-space-16);
-	border-top: var(--hx-border-thin) solid var(--line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .picker-queue {
 	display: grid;

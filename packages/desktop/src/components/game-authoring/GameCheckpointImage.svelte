@@ -189,9 +189,9 @@
 		width: 100%;
 		max-height: min(420px, 45dvh);
 		object-fit: contain;
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius);
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 	}
 	label > span {
 		font-size: var(--hx-type-size-sm);
@@ -202,7 +202,7 @@
 		resize: vertical;
 	}
 	textarea:focus-visible {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 	}
 	.actions {
 		display: flex;

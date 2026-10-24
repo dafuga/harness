@@ -23,6 +23,8 @@ export interface StyleToken {
 	name: string;
 	/** As declared, whitespace collapsed; a derived token keeps the references it mixes. */
 	value: string;
+	/** What this browser resolves it to, with every reference it makes substituted. */
+	resolved: string;
 	group: StyleGroupName | UnclassifiedGroupName;
 }
 
@@ -30,4 +32,22 @@ export interface StyleTokenGroup {
 	name: StyleGroupName | UnclassifiedGroupName;
 	description: string;
 	tokens: StyleToken[];
+}
+
+/** A purpose-named choice as the config declares it: what it is for, its one variable, where the
+ *  apps read it, and the subordinate treatments mixed from it. */
+export interface StyleRole {
+	name: string;
+	use?: string;
+	where?: string;
+	base?: string;
+	tokens?: readonly string[];
+}
+
+/** A role drawn on Styles: its base variable, then the treatments subordinate to it. */
+export interface StyleRoleCard {
+	name: string;
+	use?: string;
+	where?: string;
+	sets: { label: string; base: boolean; rows: StyleToken[] }[];
 }

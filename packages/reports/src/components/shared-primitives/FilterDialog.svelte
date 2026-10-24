@@ -51,19 +51,19 @@
 		width: 48px;
 		height: 48px;
 		padding: 0;
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border-strong));
 		border-radius: var(--hx-radius-small);
-		background: var(--panel, var(--hx-surface));
-		color: var(--muted, var(--hx-muted));
+		background: var(--hx-color-surface, var(--hx-color-surface));
+		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 		cursor: pointer;
 	}
 	.filter-trigger:hover,
 	.filter-trigger.active {
-		border-color: var(--gold, var(--hx-gold));
-		color: var(--gold, var(--hx-gold));
+		border-color: var(--hx-color-primary);
+		color: var(--hx-color-primary);
 	}
 	.filter-trigger:focus-visible {
-		outline: var(--hx-border-thick) solid var(--gold, var(--hx-gold));
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thick);
 	}
 	.catalog-filter-dialog :global(.viewer-dialog[open]) {
@@ -72,14 +72,14 @@
 		height: fit-content;
 		max-height: calc(100dvh - 32px);
 		padding: 0;
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border-strong));
 		border-radius: var(--hx-radius-xlarge);
-		background: var(--panel, var(--hx-surface));
-		color: var(--text, var(--hx-text));
+		background: var(--hx-color-surface, var(--hx-color-surface));
+		color: var(--text, var(--hx-color-text));
 		box-shadow: var(--hx-shadow-dialog);
 	}
 	.catalog-filter-dialog :global(.viewer-dialog::backdrop) {
-		background: var(--hx-scrim);
+		background: var(--hx-color-scrim);
 		backdrop-filter: var(--hx-effect-blur-subtle);
 	}
 	.catalog-filter-dialog :global(.viewer-header) {
@@ -88,7 +88,7 @@
 		justify-content: space-between;
 		gap: var(--hx-space-16);
 		padding: var(--hx-space-12) var(--hx-space-20);
-		border-bottom: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border-strong));
 		background: transparent;
 	}
 	.catalog-filter-dialog :global(.viewer-header h2) {
@@ -125,27 +125,27 @@
 		width: 100%;
 		min-height: 44px;
 		padding: var(--hx-space-8) var(--hx-space-42) var(--hx-space-8) var(--hx-space-12);
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border-strong));
 		border-radius: var(--hx-radius-small);
-		background: var(--bg, var(--hx-bg));
+		background: var(--bg, var(--hx-color-background));
 		color: inherit;
 		font: inherit;
 	}
 	.filter-fields :global(input[type='checkbox']) {
-		accent-color: var(--hx-gold);
+		accent-color: var(--hx-color-primary);
 	}
 	.catalog-filter-dialog :global(footer) {
 		display: flex;
 		justify-content: space-between;
 		gap: var(--hx-space-12);
 		padding: var(--hx-space-16) var(--hx-space-20);
-		border-top: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border-top: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border-strong));
 	}
 	.filter-reset,
 	.filter-done {
 		min-height: 44px;
 		padding: var(--hx-space-8) var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line-strong));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border-strong));
 		border-radius: var(--hx-radius-small);
 		background: transparent;
 		color: inherit;
@@ -153,7 +153,7 @@
 		cursor: pointer;
 	}
 	.filter-done {
-		border-color: var(--gold, var(--hx-gold));
-		color: var(--gold, var(--hx-gold));
+		border-color: var(--hx-color-primary);
+		color: var(--hx-color-primary);
 	}
 </style>

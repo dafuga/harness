@@ -72,7 +72,7 @@
 		margin: var(--hx-space-8) 0;
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
-		font-family: var(--hx-font-family-mono);
+		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-compact);
 	}
 </style>

@@ -63,8 +63,8 @@
 	}
 	/* Prod is reached through Deploy alone; while prod is chosen, Deploy is marked as the way there. */
 	.gated .environment-choice :global(.agent-icon:enabled) {
-		border-color: var(--hx-gold-line);
-		color: var(--gold);
+		border-color: var(--hx-color-primary-line);
+		color: var(--hx-color-primary);
 	}
 	/* On a phone the environment and Deploy begin the shared control rail. */
 	@media (max-width: 560px) {
@@ -76,14 +76,14 @@
 			gap: 0;
 			margin: var(--hx-space-8) 0 0 var(--hx-space-6);
 			border-radius: var(--hx-radius-small) 0 0 var(--hx-radius-small);
-			background: var(--panel);
-			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--line);
+			background: var(--hx-color-surface);
+			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--hx-color-border);
 		}
 		/* The rail draws the choice; a hairline parts it from Deploy. */
 		.environment-picker .environment-choice :global(.report-select select) {
 			padding-inline: var(--hx-space-12) var(--hx-space-28);
 			border-color: transparent;
-			border-inline-end-color: var(--line);
+			border-inline-end-color: var(--hx-color-border);
 			border-radius: var(--hx-radius-small) 0 0 var(--hx-radius-small);
 			background-color: transparent;
 			font-weight: var(--hx-style-weight-semibold);
@@ -92,7 +92,7 @@
 			inset-inline-end: 8px;
 		}
 		.environment-choice :global(select:focus-visible) {
-			outline: var(--hx-border-thick) solid var(--gold);
+			outline: var(--hx-border-thick) solid var(--hx-color-primary);
 			outline-offset: calc(-1 * var(--hx-space-2));
 		}
 	}

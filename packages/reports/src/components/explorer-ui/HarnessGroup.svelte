@@ -64,7 +64,8 @@
 		margin-top: var(--hx-space-20);
 	}
 	.styles h2 {
-		font-size: var(--hx-type-size-xl);
+		font-family: var(--hx-font-family-heading);
+		font-size: var(--hx-type-size-heading);
 	}
 	button {
 		display: flex;
@@ -74,19 +75,19 @@
 		min-height: var(--hx-space-48);
 		padding: var(--hx-space-8) 0;
 		border: 0;
-		border-bottom: var(--hx-border-thin) solid var(--hx-line);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 		background: transparent;
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 		text-align: start;
 		font: inherit;
 		font-weight: var(--hx-style-weight-semibold);
 		cursor: pointer;
 	}
 	button:hover {
-		background: var(--hx-tint-hover);
+		background: var(--hx-color-hover);
 	}
 	button:focus-visible {
-		outline: var(--hx-border-thick) solid var(--hx-gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-space-2);
 		border-radius: var(--hx-radius-small);
 	}
@@ -95,7 +96,7 @@
 		overflow-wrap: anywhere;
 	}
 	.hx-group-count {
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-regular);
 		font-variant-numeric: var(--hx-style-numeric-tabular);

@@ -41,7 +41,7 @@
 
 <style>
 	:global(a.unit-reference) {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 		overflow-wrap: anywhere;
 		text-decoration: underline;
 		text-underline-offset: 2px;

@@ -119,7 +119,7 @@
 	header p,
 	.empty {
 		margin: 0;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-sm);
 	}
 	ol {
@@ -133,9 +133,9 @@
 		display: grid;
 		gap: var(--hx-space-12);
 		padding: var(--hx-space-18);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 	}
 	.head {
 		display: flex;
@@ -155,7 +155,7 @@
 		gap: var(--hx-space-6);
 	}
 	label span {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
 		letter-spacing: var(--hx-style-tracking-wide);
 		text-transform: uppercase;
@@ -166,7 +166,7 @@
 	code {
 		min-width: 0;
 		padding-bottom: var(--hx-space-12);
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
 		overflow-wrap: anywhere;
 	}

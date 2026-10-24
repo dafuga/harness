@@ -214,6 +214,6 @@
 	}
 	.back {
 		justify-self: start;
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 </style>

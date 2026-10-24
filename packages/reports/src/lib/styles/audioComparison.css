@@ -7,7 +7,7 @@
 	overflow-wrap: anywhere;
 }
 .audio-comparison-card:has(.audio-comparison-row:target) {
-	outline: var(--hx-border-heavy) solid var(--gold);
+	outline: var(--hx-border-heavy) solid var(--hx-color-primary);
 }
 /* The preview stands where a screenshot would, so mixed rows stay even; it outranks button rules. */
 .audio-comparison-card .audio-comparison-preview {
@@ -22,7 +22,8 @@
 	border: 0;
 	border-radius: var(--hx-radius-small);
 	background:
-		radial-gradient(120% 100% at 0% 0%, var(--hx-gold-wash), transparent 60%), var(--hx-bg);
+		radial-gradient(120% 100% at 0% 0%, var(--hx-color-primary-wash), transparent 60%),
+		var(--hx-color-background);
 	box-shadow: var(--hx-shadow-ring);
 	color: inherit;
 	font: inherit;
@@ -35,7 +36,7 @@
 	box-shadow: var(--hx-shadow-ring-strong);
 }
 .audio-comparison-card .audio-comparison-preview:focus-visible {
-	outline: var(--hx-border-heavy) solid var(--gold);
+	outline: var(--hx-border-heavy) solid var(--hx-color-primary);
 	outline-offset: var(--hx-border-thick);
 }
 .audio-comparison-phases {
@@ -50,7 +51,7 @@
 	min-width: 0;
 	padding: var(--hx-space-9) var(--hx-space-10) var(--hx-space-9) var(--hx-space-12);
 	border-radius: var(--hx-radius-small);
-	background: var(--hx-surface);
+	background: var(--hx-color-surface);
 	box-shadow: var(--hx-shadow-ring);
 	scroll-margin-top: 96px;
 }
@@ -61,29 +62,29 @@
 	margin: 0 0 0 auto;
 }
 .audio-comparison-missing {
-	color: var(--hx-warning);
+	color: var(--hx-color-warning);
 	font-size: var(--hx-type-size-xs);
 }
 .audio-comparison-open {
 	align-self: flex-end;
 	padding: var(--hx-space-5) var(--hx-space-12);
-	border: var(--hx-border-thin) solid var(--hx-gold-line);
+	border: var(--hx-border-thin) solid var(--hx-color-primary-line);
 	border-radius: var(--hx-radius-pill);
-	background: var(--hx-gold-wash);
-	color: var(--gold);
+	background: var(--hx-color-primary-wash);
+	color: var(--hx-color-primary);
 	font-size: var(--hx-type-size-xs);
 	font-weight: var(--hx-style-weight-semibold);
 }
 .audio-comparison-preview:hover .audio-comparison-open {
-	border-color: var(--gold);
+	border-color: var(--hx-color-primary);
 }
 /* Phase pills label each original in the card rows and above each viewer column. */
 .audio-comparison-phase {
 	flex: none;
 	padding: var(--hx-space-2) var(--hx-space-10);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-pill);
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-2xs);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-caps);
@@ -91,8 +92,8 @@
 	text-transform: uppercase;
 }
 .audio-comparison-phase.after {
-	border-color: var(--hx-gold-line);
-	color: var(--gold);
+	border-color: var(--hx-color-primary-line);
+	color: var(--hx-color-primary);
 }
 .audio-comparison-row .audio-comparison-phase {
 	min-width: 70px;
@@ -128,8 +129,8 @@
 	flex: 1 1 auto;
 	flex-direction: column;
 	min-width: 0;
-	border-color: var(--hx-line);
-	background: var(--hx-surface);
+	border-color: var(--hx-color-border);
+	background: var(--hx-color-surface);
 }
 /* Fixed stages keep both players on one line even when only one original has notes. */
 .audio-comparison-viewer .evidence-card.audio-card .audio-stage {
@@ -156,7 +157,7 @@
 	grid-template-columns: minmax(0, 1fr);
 }
 .upload-audio .upload-files small.chosen {
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 }
 .upload-audio .upload-note {
 	margin-bottom: var(--hx-space-16);

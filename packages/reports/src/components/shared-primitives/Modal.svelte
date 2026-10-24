@@ -69,15 +69,15 @@
 		margin: 0;
 		border: 0;
 		border-radius: 0;
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 		box-shadow: none;
 		overflow: hidden;
 	}
 	.lightbox .viewer-header {
 		flex: none;
 		padding: var(--hx-space-10) var(--hx-space-16) var(--hx-space-10) var(--hx-space-22);
-		border-bottom-color: var(--hx-line);
-		background: var(--hx-surface);
+		border-bottom-color: var(--hx-color-border);
+		background: var(--hx-color-surface);
 	}
 	.lightbox .viewer-header h2 {
 		min-width: 0;

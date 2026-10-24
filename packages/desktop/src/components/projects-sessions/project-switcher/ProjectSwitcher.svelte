@@ -97,7 +97,7 @@
 	}
 	.picker-field :global(select) {
 		max-width: none;
-		border-color: var(--line);
-		background: var(--hx-raised);
+		border-color: var(--hx-color-border);
+		background: var(--hx-color-surface-raised);
 	}
 </style>

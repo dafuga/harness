@@ -73,7 +73,7 @@
 		stroke-width: 1.5;
 		stroke-linecap: round;
 		stroke-linejoin: round;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.disabled {
 		opacity: var(--hx-opacity-dim);
@@ -97,8 +97,8 @@
 		color: transparent;
 	}
 	.has-display :global(option) {
-		color: var(--text, var(--hx-text));
-		background: var(--panel, var(--hx-surface));
+		color: var(--text, var(--hx-color-text));
+		background: var(--hx-color-surface, var(--hx-color-surface));
 	}
 	.report-select-value {
 		position: absolute;

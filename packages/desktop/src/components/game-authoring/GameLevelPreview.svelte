@@ -39,8 +39,8 @@
 		display: block;
 		width: 100%;
 		height: auto;
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 	}
 </style>

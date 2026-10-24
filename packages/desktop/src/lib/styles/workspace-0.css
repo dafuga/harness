@@ -1,17 +1,19 @@
 @import url('../../../../reports/src/lib/styles/app-tokens.css');
-/* Desktop, iOS and Hub use the shared app palette; its older names are forwarded there. */
+/* Desktop, iOS and Hub use the shared app choices; their older names are forwarded there. */
 :root {
-	font-family: var(--hx-font-family-sans);
-	color: var(--hx-text);
-	background: var(--hx-bg);
+	font-family: var(--hx-font-family-body);
+	color: var(--hx-color-text);
+	background: var(--hx-color-background);
 	font-synthesis: var(--hx-style-synthesis-none);
 	color-scheme: dark;
 }
 * {
 	box-sizing: border-box;
 }
+/* Body size is set on the body, so rem lengths keep measuring the root and never follow it. */
 body {
 	margin: 0;
+	font-size: var(--hx-type-size-body);
 }
 button,
 input,
@@ -29,18 +31,18 @@ select {
 }
 button:focus-visible,
 a:focus-visible {
-	outline: var(--hx-border-thick) solid var(--gold);
+	outline: var(--hx-border-thick) solid var(--hx-color-primary);
 }
-/* Controls take the explorer's field border, so they stay visible on the shared surfaces. */
+/* Controls take the secondary outline, so they stay visible on the shared surfaces. */
 button,
 .outline,
 input,
 textarea,
 select {
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
-	border-radius: var(--hx-radius-compact);
-	background: var(--hx-raised);
-	padding: var(--hx-space-10) var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--hx-color-secondary);
+	border-radius: var(--hx-radius-control);
+	background: var(--hx-color-surface-raised);
+	padding: var(--hx-space-10) var(--hx-space-control);
 }
 button,
 a {
@@ -56,7 +58,12 @@ a {
 }
 button:hover:not(:disabled),
 .outline:hover {
-	border-color: var(--hx-muted);
+	border-color: var(--hx-color-text-muted);
+}
+h1,
+h2,
+h3 {
+	font-family: var(--hx-font-family-heading);
 }
 h1 {
 	font-size: var(--hx-type-size-3xl);
@@ -64,7 +71,7 @@ h1 {
 	margin: 0 0 var(--hx-space-6);
 }
 h2 {
-	font-size: var(--hx-type-size-xl);
+	font-size: var(--hx-type-size-heading);
 	margin: 0;
 }
 h3 {
@@ -77,8 +84,8 @@ p {
 }
 small,
 .muted {
-	color: var(--muted);
-	font-size: var(--hx-type-size-xs);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-caption);
 }
 small {
 	display: block;
@@ -87,7 +94,7 @@ small {
 .row {
 	display: flex;
 	align-items: center;
-	gap: var(--hx-space-12);
+	gap: var(--hx-space-inline);
 }
 .row > div:first-child {
 	flex: 1;
@@ -96,14 +103,14 @@ small {
 	flex: 1;
 }
 .primary {
-	background: linear-gradient(var(--hx-gold-light), var(--hx-gold));
-	color: var(--hx-gold-ink);
-	border-color: var(--hx-gold);
+	background: linear-gradient(var(--hx-color-primary-light), var(--hx-color-primary));
+	color: var(--hx-color-primary-contrast);
+	border-color: var(--hx-color-primary);
 	font-weight: var(--hx-style-weight-semibold);
 }
 .gold {
-	color: var(--gold);
-	border-color: var(--gold);
+	color: var(--hx-color-primary);
+	border-color: var(--hx-color-primary);
 }
 .outline {
 	display: flex;
@@ -112,17 +119,21 @@ small {
 }
 .workspace {
 	min-height: 100vh;
-	background: radial-gradient(ellipse at 40% 60%, var(--hx-raised), var(--hx-bg) 75%);
+	background: radial-gradient(
+		ellipse at 40% 60%,
+		var(--hx-color-surface-raised),
+		var(--hx-color-background) 75%
+	);
 }
 .topbar {
 	position: sticky;
 	top: 0;
 	z-index: var(--hx-layer-sticky);
-	background: var(--hx-bg);
+	background: var(--hx-color-background);
 	min-height: 105px;
 	display: flex;
 	align-items: center;
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	gap: var(--hx-space-22);
 	padding: 0 var(--hx-space-26);
 }
@@ -134,7 +145,7 @@ small {
 	font-weight: var(--hx-style-weight-semibold);
 }
 .brand-mark {
-	color: var(--gold);
+	color: var(--hx-color-primary);
 	font-size: var(--hx-type-size-4xl);
 }
 .topbar nav {
@@ -152,11 +163,11 @@ small {
 	border-bottom: var(--hx-border-heavy) solid transparent;
 }
 .active {
-	color: var(--gold) !important;
-	border-color: var(--gold) !important;
+	color: var(--hx-color-primary) !important;
+	border-color: var(--hx-color-primary) !important;
 }
 .topbar nav a.active {
-	border-bottom-color: var(--gold);
+	border-bottom-color: var(--hx-color-primary);
 }
 /* The search of the shown revision is one icon, with the settings beside it. It follows the
    revision picker, in reading and focus order, and ends the bar. */

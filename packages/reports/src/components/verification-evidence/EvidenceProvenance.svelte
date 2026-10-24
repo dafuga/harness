@@ -30,7 +30,7 @@
 		gap: var(--hx-space-8);
 	}
 	.evidence-provenance dt {
-		color: var(--muted, var(--hx-muted));
+		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 	}
 	.evidence-provenance dd {
 		margin: 0;
