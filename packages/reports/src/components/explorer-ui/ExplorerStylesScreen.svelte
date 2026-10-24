@@ -20,7 +20,7 @@
 	const roles: Partial<Record<string, readonly StyleRole[]>> = appStyleTokensConfig.roles;
 	/** How a token is drawn, by the first prefix it matches; `$` stands for its own reference. */
 	const drawings: [RegExp, StyleSpecimen, string][] = [
-		[/^--hx-(?:color-|(?:bg|gold|muted)$)/, 'swatch', '--style-specimen: $'],
+		[/^--hx-color-/, 'swatch', '--style-specimen: $'],
 		[/^--hx-font-family-/, 'text', 'font-family: $'],
 		[/^--hx-type-size-/, 'text', 'font-size: $'],
 		[/^--hx-style-weight-/, 'text', 'font-weight: $'],
@@ -99,6 +99,7 @@
 	function readStyle(style: CSSStyleDeclaration, found: Map<string, string>) {
 		for (let index = 0; index < style.length; index += 1) {
 			const name = style.item(index);
+			if (appStyleTokensConfig.legacyAliases.test(name)) continue;
 			if (name.startsWith('--hx-') && !found.has(name))
 				found.set(name, style.getPropertyValue(name).replace(/\s+/g, ' ').trim());
 		}
@@ -192,7 +193,7 @@
 						resetKey={host.scope.commit}
 					>
 						{#if group.name === appStyleTokensConfig.foundation}
-							<p class="hx-styles-kicker">Foundation and compatibility</p>
+							<p class="hx-styles-kicker">Foundation</p>
 						{/if}
 						<div class="hx-styles-grid" class:hx-style-roles={!!roles[group.name]}>
 							{#if roles[group.name]}
