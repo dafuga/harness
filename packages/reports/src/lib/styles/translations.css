@@ -69,35 +69,18 @@
 }
 /* Match the documented small-tablet breakpoint; keep both requested languages visible together. */
 @media (max-width: 720px) {
-	.ex-translations-scroll {
-		overflow-x: hidden;
-	}
-	.ex-translations table,
-	.ex-translations thead,
-	.ex-translations tbody {
-		display: block;
-	}
-	.ex-translations tr {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+	.ex-translations table {
+		table-layout: fixed;
 	}
 	.ex-translations th,
 	.ex-translations td {
 		min-width: 0;
-	}
-	.ex-translations thead th:last-child {
-		display: none;
-	}
-	.ex-translations-usage {
-		grid-column: 1 / -1;
+		padding: var(--hx-space-2);
 	}
 	.ex-translations-controls {
 		flex-wrap: wrap;
 	}
 	.ex-translations-controls .ex-controls {
 		flex-basis: 100%;
-	}
-	.ex-translations-usage.ex-translations-unused {
-		display: none;
 	}
 }

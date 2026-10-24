@@ -142,8 +142,7 @@
 															>
 														</li>{/if}{/each}
 											</ul>
-											{#if !row.usedBy.length}<span class="ex-translations-missing"
-													>No literal caller recorded</span
+											{#if !row.usedBy.length}<span class="ex-translations-missing">—</span
 												>{/if}</td
 										>
 									</tr>
