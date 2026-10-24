@@ -3,7 +3,11 @@ import { at, expectNoOverflow, expectPath, tip } from './support/explorer';
 import { capturePhase, viewports } from './support/harnessCapture';
 import { seeded } from './support/harnessHistory';
 import { appStyleTokensConfig } from '../../src/configs/shared-primitives/appStyleTokensConfig';
-import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
+import {
+	declaredStyleTokens,
+	expectColorRoles,
+	expectRoleAssignments
+} from './support/styleCatalog';
 
 const { commits } = seeded();
 
@@ -39,5 +43,6 @@ for (const viewport of viewports) {
 		await expect(page.getByText('--hx-bg', { exact: true })).toBeVisible();
 		await expect(page.getByText('--hx-font-family-sans', { exact: true })).toBeVisible();
 		await expectNoOverflow(page);
+		await expectRoleAssignments(page);
 	});
 }

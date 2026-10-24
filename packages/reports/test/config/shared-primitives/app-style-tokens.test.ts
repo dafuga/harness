@@ -97,3 +97,42 @@ test('every responsive media and container threshold is documented in Styles', (
 	);
 	expect(missing).toEqual([]);
 });
+
+test('shared style roles are real canonical properties consumed by every application', () => {
+	const css = readFileSync(join(root, config.tokenFile), 'utf8');
+	const declared = new Set<string>();
+	postcss.parse(css).walkDecls((declaration) => {
+		declared.add(declaration.prop);
+	});
+	for (const role of [
+		'color-primary',
+		'color-secondary',
+		'color-tertiary',
+		'color-success',
+		'color-warning',
+		'color-error',
+		'color-info',
+		'color-background',
+		'color-surface',
+		'font-family-body',
+		'font-family-heading',
+		'font-family-code',
+		'type-size-body',
+		'type-size-heading',
+		'type-size-caption',
+		'space-section',
+		'space-control',
+		'space-inline',
+		'radius-control',
+		'radius-panel'
+	])
+		expect(declared.has(`--hx-${role}`), `Canonical assignment for ${role}`).toBe(true);
+	for (const directory of config.roots) {
+		const consumers = sources(directory)
+			.filter((path) => path !== config.tokenFile)
+			.map((path) => readFileSync(join(root, path), 'utf8'))
+			.join('\n');
+		expect(consumers, `${directory} uses the primary role`).toContain('var(--hx-color-primary)');
+		expect(consumers, `${directory} uses body typography`).toContain('var(--hx-font-family-body)');
+	}
+});
