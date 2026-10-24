@@ -56,8 +56,7 @@
 	margin-right: clamp(var(--hx-space-6), 0.8vw, var(--hx-space-14));
 	background: var(--hx-line-strong);
 }
-.hx-categories a,
-.hx-category {
+.hx-categories > * {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -67,6 +66,9 @@
 	min-width: 72px;
 	min-height: 64px;
 	padding: var(--hx-space-6) clamp(var(--hx-space-8), 1.25vw, var(--hx-space-22));
+	border: 0;
+	border-radius: 0;
+	background: none;
 	color: var(--hx-soft);
 	font-size: var(--hx-type-size-base);
 	font-weight: var(--hx-style-weight-medium);
@@ -74,17 +76,16 @@
 	white-space: nowrap;
 	outline-offset: calc(-1 * var(--hx-space-4));
 }
-.hx-categories a:hover {
+:is(.hx-categories, .hx-modules) :is(a, button):is(:hover, [aria-expanded='true']) {
 	color: var(--hx-text);
 }
 .hx-category {
 	opacity: var(--hx-opacity-dim);
 }
-.hx-categories a[aria-current='page'],
-.hx-categories a[aria-current='page']:hover {
+:is(.hx-categories, .hx-modules) :is(a, button)[aria-current='page'] {
 	color: var(--hx-gold);
 }
-.hx-categories a[aria-current='page']::after {
+.hx-categories [aria-current='page']::after {
 	content: '';
 	position: absolute;
 	inset: auto 6px 0;
@@ -98,27 +99,35 @@
 	flex: none;
 	align-items: center;
 }
-/* A module category's kinds: a strip edge to edge under the row, standing on the bar's own line. */
-.hx-nav > .hx-tabs {
-	flex: 1 1 calc(100% + 2 * var(--hx-gutter));
-	order: 3;
-	margin: 0 calc(-1 * var(--hx-gutter)) calc(-1 * var(--hx-space-8));
-	padding-inline: var(--hx-gutter);
-	border-top: var(--hx-border-thin) solid var(--hx-line);
-	border-bottom: 0;
+/* Modules opens its categories in a bubble under it, over the page and wholly on the screen. */
+.hx-categories button {
+	font-family: inherit;
+	anchor-name: --modules-trigger;
+}
+.hx-modules {
+	position-anchor: --modules-trigger;
+	position-area: bottom span-right;
+	position-try-fallbacks: flip-inline;
+	margin: var(--hx-space-4) 0 0;
+	padding: var(--hx-space-6);
+	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-raised);
+	box-shadow: var(--hx-shadow-popover);
+	color: var(--hx-soft);
+}
+.hx-modules a {
+	display: block;
+	padding: var(--hx-space-10) var(--hx-space-16);
+}
+.hx-modules [aria-current='page'] {
+	box-shadow: var(--hx-shadow-selected);
 }
 /* One row from 1420px, ended by the revision and the search: the revision keeps the whole width of
    its fields, a long repository name gives way, and the spacing narrows near the threshold. */
 @media (min-width: 1420px) {
 	.hx-nav {
 		flex-wrap: nowrap;
-	}
-	/* The kinds of a module category wrap below; the row above keeps the height it has alone. */
-	.hx-nav:has(> .hx-tabs) {
-		flex-wrap: wrap;
-	}
-	.hx-nav:has(> .hx-tabs) .hx-categories {
-		min-height: calc(92px - 2 * var(--hx-space-8) - var(--hx-border-thin));
 	}
 	.hx-nav:has(.hx-search) {
 		--hx-nav-gap: var(--hx-nav-gap-wide);
@@ -130,7 +139,7 @@
 	.hx-nav:has(.hx-search) .hx-repository {
 		flex-shrink: 2;
 	}
-	.hx-nav:has(.hx-search) :is(.hx-categories a, .hx-category) {
+	.hx-nav:has(.hx-search) .hx-categories > * {
 		padding-inline: clamp(var(--hx-space-8), 2.8vw - var(--hx-space-32), var(--hx-space-22));
 	}
 }
@@ -150,11 +159,6 @@
 	}
 	.hx-categories::before {
 		display: none;
-	}
-	/* The kinds follow the categories, over the revision, whose divider their tabs stand on. */
-	.hx-nav > .hx-tabs {
-		order: 1;
-		margin-bottom: 0;
 	}
 	.hx-nav .hx-revision {
 		position: relative;
@@ -185,8 +189,7 @@
 	.hx-categories {
 		flex-wrap: wrap;
 	}
-	.hx-categories a,
-	.hx-category {
+	.hx-categories > * {
 		min-width: 0;
 		font-size: var(--hx-type-size-nav);
 	}
@@ -207,8 +210,7 @@
 		border-top: var(--hx-border-thin) solid var(--hx-line);
 		overflow-x: auto;
 	}
-	.hx-categories a,
-	.hx-category {
+	.hx-categories > * {
 		flex: 1 0 auto;
 		min-width: 0;
 		min-height: 60px;
