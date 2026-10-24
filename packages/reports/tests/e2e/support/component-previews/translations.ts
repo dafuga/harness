@@ -3,13 +3,17 @@ import french from '../../../../src/translations/reports/fr.json' with { type: '
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type { TranslationCatalog } from '../../../../../../src/core/explorer-ui/Translation.types';
 export const translationData: TranslationCatalog = {
-	locales: ['en', 'fr'],
+	locales: ['en', 'fr', 'de'],
 	gaps: [],
 	rows: Object.entries(english)
 		.map(([key, en]) => ({
 			scope: 'packages/reports',
 			key,
-			values: { en, fr: french[key as keyof typeof french] },
+			values: {
+				en,
+				fr: french[key as keyof typeof french],
+				...(key === 'listenAndCompare' ? { de: 'Anhören und vergleichen' } : {})
+			},
 			sources: ['packages/reports/src/translations/reports/en.json'],
 			usedBy: []
 		}))

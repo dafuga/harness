@@ -1,1 +1,2 @@
 {"event":"loop.created","timestamp":"2026-10-24T13:54:44.864Z","name":"translations-catalog","goal":"Browse used translation keys and source strings by language at the selected revision with truthful missing values and search","template":"feature","templateLineage":["feature"]}
+{"event":"step.added","timestamp":"2026-10-24T15:27:08.513Z","loop":"translations-catalog","step":"language-selector","title":"Select a target language and show only English, its translation and Used In"}

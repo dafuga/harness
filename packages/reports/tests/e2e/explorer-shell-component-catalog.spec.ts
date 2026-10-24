@@ -87,8 +87,19 @@ for (const viewport of catalogViewports) {
 			await assertComponentCapture(page, unit.id, viewport.id);
 
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations')) {
-				await expect(component.getByRole('columnheader', { name: 'English en' })).toBeVisible();
-				await expect(component.getByRole('columnheader', { name: 'French fr' })).toBeAttached();
+				await expect(component.getByRole('combobox', { name: 'Language' })).toHaveValue('fr');
+				await expect(component.getByRole('columnheader')).toHaveText([
+					'English',
+					'French',
+					'Used In'
+				]);
+				await expect(component.locator('tbody code, tbody small')).toHaveCount(0);
+				await expect(
+					component.getByRole('columnheader', { name: 'English', exact: true })
+				).toBeVisible();
+				await expect(
+					component.getByRole('columnheader', { name: 'French', exact: true })
+				).toBeAttached();
 				await expect(component.locator('tbody tr')).toHaveCount(50);
 				await component.getByRole('button', { name: 'View More' }).click();
 				await expect(component.locator('tbody tr')).toHaveCount(100);
@@ -96,6 +107,15 @@ for (const viewport of catalogViewports) {
 				await expect(component.locator('tbody tr')).toHaveCount(1);
 				await expect(component.locator('tbody')).toContainText('Listen and compare');
 				await expect(component.locator('tbody')).toContainText('Écouter et comparer');
+				await component.getByRole('combobox', { name: 'Language' }).selectOption('de');
+				await expect(component.getByRole('columnheader')).toHaveText([
+					'English',
+					'German',
+					'Used In'
+				]);
+				await expect(component.locator('tbody')).toContainText('Anhören und vergleichen');
+				await expect(component.locator('tbody')).not.toContainText('Écouter et comparer');
+				await component.getByRole('combobox', { name: 'Language' }).selectOption('fr');
 				await component
 					.getByRole('searchbox', { name: 'Search translations' })
 					.fill('no-such-translation');
