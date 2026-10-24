@@ -103,21 +103,18 @@ function categoryTarget(
 
 /**
  * What the bar of the explorer shows for an address: where the brand leads, the five
- * categories inside the branch and commit that are viewed, and the revision controls. Every
- * address is formatted by the host; none is put together here.
+ * categories inside the branch and commit that are viewed, the six module categories Modules
+ * opens from any of them, and the revision controls. Every address is formatted by the host;
+ * none is put together here.
  */
 export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 	const { scope } = input;
-	const place = scope?.location ?? null;
 	const tip: ExplorerLocation | null =
 		scope && scope.branch !== null
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
 	const categories = labels.map(([id, label]) => categoryItem(input, id, label));
-	const modules =
-		place?.screen !== 'styles' && moduleLabels.some(([id]) => id === place?.category)
-			? moduleLabels.map(([id, label]) => categoryItem(input, id, label))
-			: [];
+	const modules = scope ? moduleLabels.map(([id, label]) => categoryItem(input, id, label)) : [];
 
 	return {
 		home: { href: tip ? input.href(tip) : input.base, to: tip },
