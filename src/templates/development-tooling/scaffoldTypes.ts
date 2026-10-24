@@ -216,5 +216,4 @@ function detail(
 ): ScaffoldDetail {
 	return { kind, summary, appOnly, contains, exampleCommand: `harness generate ${kind} example` };
 }
-
 export type { PieceKind } from './scaffoldTypes.types';

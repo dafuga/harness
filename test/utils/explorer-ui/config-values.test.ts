@@ -4,7 +4,6 @@ import { measureWorkload } from '../../support/measureWorkload';
 import { unitMetadata } from '../../../src/services/revision-detail-service/unitMetadata';
 import { revisionRegistry } from '../../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../../support/memoryTree';
-
 test.each([
 	[
 		'export const enabled = false; export const retryCount = 0; export const fallback = null; export const label = "";',
