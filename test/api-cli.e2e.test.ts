@@ -202,6 +202,7 @@ test('API CLI raw requests retain methods and bodies, binary output and HTTP err
 	try {
 		const result = await f.cli(['request', 'PATCH', '/api/custom', '--input', '{"enabled":true}']);
 		expect(JSON.parse(result.stdout)).toMatchObject({ method: 'PATCH', body: { enabled: true } });
+		expect(f.seen.filter((request) => request.operation === 'custom')).toHaveLength(1);
 		const output = join(f.directory, 'raw.png');
 		await f.cli(['get', '/api/raw-image', '--output', output]);
 		expect(await readFile(output)).toEqual(png);
