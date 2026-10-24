@@ -15,9 +15,10 @@ Focused integrated checks:
 - 10 coverage cases passed: explicit element bounds survive wire/stored schemas, decoded pixels
   match bounds at integer/fractional scales, and existing viewport/full-page and build checks remain.
 - Root TypeScript and Reports preview Svelte checks passed.
-- Root audit reports the inherited main `test/console-host-routes.e2e.test.ts` size violation;
-  Reports audit also reports the inherited main `tests/e2e/explorer-shell.spec.ts` size violation.
-  No unrelated source cleanup was included here.
+- Root audit passes after the coordinator-authorized removal of one blank line from the inherited
+  `test/console-host-routes.e2e.test.ts` size violation; every assertion is unchanged, and formatting
+  and ESLint pass. Reports audit still reports the inherited main `tests/e2e/explorer-shell.spec.ts`
+  size violation. No unrelated behavior or size-limit relaxation was included here.
 
 Formal isolated regression recording, full CLI/native/workspace suites and exhaustive capture
 qualification were deferred under Daniel's basic-check instruction. The loop's enforced
