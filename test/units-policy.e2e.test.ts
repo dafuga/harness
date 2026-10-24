@@ -134,6 +134,11 @@ test('public configs require real source controls and retain their reviewed decl
 				/duplicate control|unowned source|not a recorded config value/
 			);
 		}
+		await project.write(path, JSON.stringify({ ...publicConfig, configControls: [control] }));
+		await rm(join(project.root, source));
+		await project.harness(['units', 'retire', 'config.downloads', '--reason', 'Retired control']);
+		await project.harness(['units', 'index', '--write']);
+		await project.harness(['units', 'check']);
 	} finally {
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}

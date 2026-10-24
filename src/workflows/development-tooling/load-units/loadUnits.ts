@@ -89,19 +89,21 @@ async function committedHelpers(
 }
 
 function configControlErrors(units: Parameters<typeof unitMetadata>[1]): string[] {
-	return units.flatMap((unit) =>
-		(unit.configControls ?? [])
-			.filter(
-				(control) =>
-					!unit.configValues?.some(
-						(value) => value.source === control.source && value.name === control.name
-					)
-			)
-			.map(
-				(control) =>
-					`${unit.id}: ${control.name} is not a recorded config value in ${control.source}`
-			)
-	);
+	return units
+		.filter((unit) => unit.status === 'active' && unit.kind === 'config')
+		.flatMap((unit) =>
+			(unit.configControls ?? [])
+				.filter(
+					(control) =>
+						!unit.configValues?.some(
+							(value) => value.source === control.source && value.name === control.name
+						)
+				)
+				.map(
+					(control) =>
+						`${unit.id}: ${control.name} is not a recorded config value in ${control.source}`
+				)
+		);
 }
 
 export type { LoadedUnits } from './loadUnits.types';
