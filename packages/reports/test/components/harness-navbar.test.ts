@@ -34,12 +34,14 @@ const categories = (html: string) =>
 	/<nav\b[^>]*aria-label="Harness categories"[^>]*>(.*?)<\/nav>/s.exec(html)?.[1] ?? '';
 /** The links of the category row: where each leads, whether it is the current one, and its parts. */
 const links = (html: string) =>
-	[...categories(html).matchAll(/<a\b([^>]*)>(.*?)<\/a>/gs)].map(([, attributes, inner]) => ({
-		label: text(inner),
-		href: /href="([^"]*)"/.exec(attributes)?.[1],
-		current: /aria-current="page"/.test(attributes),
-		iconThenLabel: /^\s*<svg\b[^>]*aria-hidden="true".*<\/svg>\s*<span\b/s.test(inner)
-	}));
+	[...categories(html).matchAll(/<(?:a|button)\b([^>]*)>(.*?)<\/(?:a|button)>/gs)].map(
+		([, attributes, inner]) => ({
+			label: text(inner),
+			href: /href="([^"]*)"/.exec(attributes)?.[1],
+			current: /aria-current="page"/.test(attributes),
+			iconThenLabel: /^\s*<svg\b[^>]*aria-hidden="true".*<\/svg>\s*<span\b/s.test(inner)
+		})
+	);
 const field = (html: string, name: string) =>
 	new RegExp(`<select\\b[^>]*aria-label="${name}"[^>]*>(.*?)</select>`, 's').exec(html)?.[1];
 const chosen = (html: string, name: string) =>
@@ -68,15 +70,16 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(links(html)).toEqual(
 		['Pages', 'Modules', 'Styles', 'Configs', 'Platforms'].map((label) => ({
 			label,
-			href: `${scoped}/commit/${sha(4)}/${label === 'Modules' ? 'components' : label.toLowerCase()}`,
+			href: label === 'Modules' ? undefined : `${scoped}/commit/${sha(4)}/${label.toLowerCase()}`,
 			current: label === 'Modules',
 			iconThenLabel: true
 		}))
 	);
-	const moduleTabs =
-		/role="tablist"[^>]*aria-label="Module categories"[^>]*>(.*?)<\/div>/s.exec(html)?.[1] ?? '';
-	expect(text(moduleTabs)).toBe('Layouts Components Models Services Helpers Types');
-	expect(html).toContain('data-harness-component="harness-harness-tabs"');
+	const moduleMenu =
+		/<nav\b[^>]*aria-label="Module categories"[^>]*>(.*?)<\/nav>/s.exec(html)?.[1] ?? '';
+	expect(text(moduleMenu)).toBe('Layouts Components Models Services Helpers Types');
+	expect(html).toMatch(/<button\b[^>]*aria-expanded="false"/);
+	expect(html).not.toContain('role="tablist"');
 	const brand = /<a\b[^>]*class="hx-brand"[^>]*>(.*?)<\/a>/s.exec(html);
 	expect(brand?.[0]).toContain(`href="${scoped}/pages"`);
 	expect(text(brand?.[1] ?? '')).toBe('Harness');
@@ -121,7 +124,7 @@ test('at the tip of a branch the commit is the tip, said as current, and Go to t
 			.filter((item) => item.current)
 			.map((item) => item.label)
 	).toEqual(['Pages']);
-	expect(links(html)[1].href).toBe(`${scoped}/components`);
+	expect(links(html)[1].href).toBeUndefined();
 });
 
 test('at a selected commit the tip and the viewed hash differ, and Go to tip is the current route', () => {

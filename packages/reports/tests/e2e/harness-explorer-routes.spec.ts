@@ -102,7 +102,7 @@ test('a branch is one encoded segment, and another branch opens at its own tip',
 	await checkpoint(page, 'routes-branch-change');
 	await page.reload();
 	await expectScope(page, kept);
-	await expect(nav(page).getByRole('link', { name: 'Modules' })).toHaveAttribute(
+	await expect(nav(page).getByRole('button', { name: 'Modules' })).toHaveAttribute(
 		'aria-current',
 		'page'
 	);
