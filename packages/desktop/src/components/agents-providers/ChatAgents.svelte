@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
+	import ActivityList from '../../../../reports/src/components/projects-sessions/ActivityList.svelte';
+	import type { AgentEntry } from '../../../../../src/core/activityTypes';
 	import { createAgentRosterStore } from '../../lib/stores/agents-providers/agentRoster.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import ReferenceText from '../explorer-ui/reference-text/ReferenceText.svelte';
@@ -23,6 +25,18 @@
 		return activity.modules.map((module) => ({ ...module, known: Boolean(link(module.id)) }));
 	});
 </script>
+
+{#snippet sessionRow(item: { agent: AgentEntry; label: string })}
+	{@const { agent, label } = item}
+	<div class="agents-row">
+		<strong>{agent.label}</strong>
+		<span class="agents-quiet" class:working={label === 'Working'}>{label}</span>
+	</div>
+	{#if agent.task}<p class="agents-task">{agent.task}</p>{/if}
+	<p class="agents-quiet">
+		{[agent.model || agent.provider, agent.branch].filter(Boolean).join(' · ')}
+	</p>
+{/snippet}
 
 <section class="agents" data-harness-component="chat-agents" aria-busy={activity.loading}>
 	<div class="agents-head">
@@ -51,18 +65,13 @@
 			</p>{/if}
 		<section aria-label="Main chats">
 			<h3>Main chats</h3>
-			{#if activity.sessions.length}<ul>
-					{#each activity.sessions as { agent, label } (agent.id)}<li>
-							<div class="agents-row">
-								<strong>{agent.label}</strong>
-								<span class="agents-quiet" class:working={label === 'Working'}>{label}</span>
-							</div>
-							{#if agent.task}<p class="agents-task">{agent.task}</p>{/if}
-							<p class="agents-quiet">
-								{[agent.model || agent.provider, agent.branch].filter(Boolean).join(' · ')}
-							</p>
-						</li>{/each}
-				</ul>{:else}<p class="agents-quiet">
+			{#if activity.sessions.length}<ActivityList
+					items={activity.sessions}
+					label="Agent sessions"
+					noun="sessions"
+					preview={3}
+					row={sessionRow}
+				/>{:else}<p class="agents-quiet">
 					{unused ? 'No agent has registered here yet' : 'No sessions are registered'}
 				</p>{/if}
 		</section>
@@ -107,7 +116,8 @@
 	}
 	.agents p,
 	.agents h3,
-	.agents ul {
+	.agents ul,
+	.agents :global(.pa-list) {
 		margin: 0;
 	}
 	.agents-head,
@@ -143,11 +153,13 @@
 		font-size: var(--hx-type-size-compact);
 		font-weight: var(--hx-style-weight-semibold);
 	}
-	ul {
+	ul,
+	.agents :global(.pa-list) {
 		padding: 0;
 		list-style: none;
 	}
-	li {
+	li,
+	.agents :global(.pa-list > li) {
 		padding: var(--hx-space-8) 0;
 		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	}

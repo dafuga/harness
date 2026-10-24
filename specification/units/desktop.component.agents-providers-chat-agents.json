@@ -48,6 +48,16 @@
 			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.activity-list",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
