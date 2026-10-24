@@ -113,6 +113,7 @@ test('element captures retain explicit bounds in wire and stored evidence', () =
 	expect(captureSchema.parse(item.capture)).toHaveProperty('clip', region);
 	expect(imageFailures(item)).toEqual([]);
 	expect(imageFailures(image({}, 316, 100), 'element', 2)).toEqual([]);
+	expect(imageFailures(image({}, 198, 63), 'element', 1.25)).toEqual([]);
 });
 
 test('element captures reject absent or mismatched bounds and retain build checks', () => {
