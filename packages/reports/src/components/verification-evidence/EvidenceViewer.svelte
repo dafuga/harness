@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import {
@@ -95,58 +97,58 @@
 	variant="lightbox"
 	onclose={close}
 >
-	<div class="viewer-actions toolbar">
-		<button onclick={() => move(-1)} aria-label={$t('previous')}>←</button>
-		<button onclick={() => move(1)} aria-label={$t('next')}>→</button>
+	<hx-div class="viewer-actions toolbar">
+		<hx-button onclick={() => move(-1)} aria-label={$t('previous')}>←</hx-button>
+		<hx-button onclick={() => move(1)} aria-label={$t('next')}>→</hx-button>
 		{#if before}
-			<button
+			<hx-button
 				class:active={view === 'before'}
 				aria-label={$t('viewBeforeScreenshot')}
-				onclick={() => (view = 'before')}>{$t('before')}</button
+				onclick={() => (view = 'before')}>{$t('before')}</hx-button
 			>
-			<button
+			<hx-button
 				class:active={view === 'after'}
 				aria-label={$t('viewAfterScreenshot')}
-				onclick={() => (view = 'after')}>{$t('after')}</button
+				onclick={() => (view = 'after')}>{$t('after')}</hx-button
 			>
-			<button
+			<hx-button
 				class:active={view === 'compare'}
 				aria-label={$t('compare')}
-				onclick={() => (view = 'compare')}>{$t('compare')}</button
+				onclick={() => (view = 'compare')}>{$t('compare')}</hx-button
 			>
 		{/if}
-		<span class="muted">{$t('keyboard')}</span>
-	</div>
-	<div class="viewer-sizes toolbar" role="group" aria-label={$t('viewport')}>
+		<hx-span class="muted">{$t('keyboard')}</hx-span>
+	</hx-div>
+	<hx-div class="viewer-sizes toolbar" role="group" aria-label={$t('viewport')}>
 		{#each ['mobile', 'tablet', 'desktop'] as size}
-			<button
+			<hx-button
 				class:active={selected && screenSize(selected) === size}
 				aria-pressed={selected ? screenSize(selected) === size : false}
 				aria-label={$t('view' + size.charAt(0).toUpperCase() + size.slice(1) + 'Screenshots')}
 				disabled={!sizeCounts[size as 'mobile' | 'tablet' | 'desktop']}
-				onclick={() => switchSize(size as ScreenSize)}>{$t(size + 'Screenshots')}</button
+				onclick={() => switchSize(size as ScreenSize)}>{$t(size + 'Screenshots')}</hx-button
 			>
 		{/each}
-	</div>
+	</hx-div>
 	<!-- Stated before the image, so what produced it is read without scrolling past it. -->
 	{#if selected?.provenance}
-		<div class="viewer-provenance"><EvidenceProvenance item={selected} /></div>
+		<hx-div class="viewer-provenance"><EvidenceProvenance item={selected} /></hx-div>
 	{/if}
-	<div class:comparison={view === 'compare'} class="viewer-images">
+	<hx-div class:comparison={view === 'compare'} class="viewer-images">
 		<!-- Keyed by view too, so every image or view change mounts a fresh zoom state at fit. -->
-		{#each shown as item (`${view}:${item.id}`)}<figure>
-				{#if item.missing}<span class="missing">{item.note || $t('missing')}</span>
+		{#each shown as item (`${view}:${item.id}`)}<hx-figure>
+				{#if item.missing}<hx-span class="missing">{item.note || $t('missing')}</hx-span>
 				{:else}<ImageZoom src={assetBase + item.file} alt={item.title} />
-					<a class="text-link" href={assetBase + item.file} target="_blank" rel="noreferrer"
-						>{$t('downloadImage')} ↗</a
+					<hx-a class="text-link" href={assetBase + item.file} target="_blank" rel="noreferrer"
+						>{$t('downloadImage')} ↗</hx-a
 					>{/if}
-				<figcaption>
+				<hx-figcaption>
 					{item.standing ?? $t(item.phase || 'current')} · {item.title}{#if item.viewport}
 						· {item.viewport}{/if}
-					{#if !item.missing && item.note}<p class="viewer-note">{item.note}</p>{/if}
-				</figcaption>
-			</figure>{/each}
-	</div>
+					{#if !item.missing && item.note}<hx-p class="viewer-note">{item.note}</hx-p>{/if}
+				</hx-figcaption>
+			</hx-figure>{/each}
+	</hx-div>
 </Modal>
 
 <style>

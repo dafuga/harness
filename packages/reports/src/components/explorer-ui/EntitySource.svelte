@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts" module>
 	export { archivedSource } from '../../lib/explorer-ui/stores/sourceReader.svelte';
 </script>
@@ -34,12 +36,12 @@
 	}
 </script>
 
-<section
+<hx-section
 	class="ex-card"
 	aria-labelledby="ex-source-title"
 	data-harness-component="harness-entity-source"
 >
-	<h2 id="ex-source-title">Source files</h2>
+	<hx-h2 id="ex-source-title">Source files</hx-h2>
 	<SourceFileList
 		{files}
 		href={sourceLink}
@@ -49,7 +51,7 @@
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
 		{/snippet}
 	</SourceFileList>
-	<h2 class="source-tests-title">Test files</h2>
+	<hx-h2 class="source-tests-title">Test files</hx-h2>
 	<SourceFileList
 		files={tests}
 		label="Test files"
@@ -60,10 +62,10 @@
 			{#if entity && nav}<SourceCodeAction {entity} {nav} {path} />{/if}
 		{/snippet}
 	</SourceFileList>
-	{#if !files.some((file) => sourceLink(file))}<p class="ex-soft">
+	{#if !files.some((file) => sourceLink(file))}<hx-p class="ex-soft">
 			GitHub source unavailable for this revision.
-		</p>{/if}
-</section>
+		</hx-p>{/if}
+</hx-section>
 
 <style>
 	.source-tests-title {

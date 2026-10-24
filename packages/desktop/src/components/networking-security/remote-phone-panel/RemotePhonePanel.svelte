@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { RemotePhone } from '../../../lib/stores/networking-security/remotePhone.svelte';
 	import { grantSummary, remoteLabels } from './remoteLabels';
@@ -20,34 +22,38 @@
 	const fixture = 'Debug build for a test fixture: a relay on this machine is accepted.';
 </script>
 
-{#if status && labels}<section
+{#if status && labels}<hx-section
 		class="remote-connection"
 		class:compact
 		aria-label="Computer connection"
 	>
-		{#if status.state === 'unpaired'}{#if !compact}<h2>{labels.title}</h2>
-				<p class="muted">{how}</p>
-				{#if status.reason}<span class="error" role="alert">{status.reason}</span>{/if}
-				<form
+		{#if status.state === 'unpaired'}{#if !compact}<hx-h2>{labels.title}</hx-h2>
+				<hx-p class="muted">{how}</hx-p>
+				{#if status.reason}<hx-span class="error" role="alert">{status.reason}</hx-span>{/if}
+				<hx-form
 					onsubmit={(event) => {
 						event.preventDefault();
 						void store.scan(deviceName);
 					}}
 				>
-					<label
-						>Name of this phone<input type="text" bind:value={deviceName} maxlength="80" /></label
-					><button class="primary" disabled={store.busy}
-						>{store.scanFailure ? 'Scan again' : 'Scan QR code'}</button
+					<hx-label
+						>Name of this phone<hx-input
+							type="text"
+							bind:value={deviceName}
+							maxlength="80"
+						/></hx-label
+					><hx-button class="primary" disabled={store.busy}
+						>{store.scanFailure ? 'Scan again' : 'Scan QR code'}</hx-button
 					>
-				</form>{/if}{:else}<span class="remote-title">{labels.title}</span>{#if labels.detail}<small
-					class:remote-note={status.state !== 'online'}>{labels.detail}</small
-				>{/if}{#if !compact && status.grant}<small>{grantSummary(status.grant)}</small
-				>{/if}{#if !compact && status.device}<small class="muted"
-					>This phone: {status.device.name}</small
-				><small class="muted remote-key">Key {identityLabel(status.device.id)}</small>{/if}<button
-				type="button"
-				disabled={store.busy}
-				onclick={() => void store.disconnect()}>{action}</button
-			>{/if}{#if store.error}<span class="error" role="alert">{store.error}</span>{/if}
-		{#if store.fixture && !compact}<small class="remote-note">{fixture}</small>{/if}
-	</section>{/if}
+				</hx-form>{/if}{:else}<hx-span class="remote-title">{labels.title}</hx-span
+			>{#if labels.detail}<hx-small class:remote-note={status.state !== 'online'}
+					>{labels.detail}</hx-small
+				>{/if}{#if !compact && status.grant}<hx-small>{grantSummary(status.grant)}</hx-small
+				>{/if}{#if !compact && status.device}<hx-small class="muted"
+					>This phone: {status.device.name}</hx-small
+				><hx-small class="muted remote-key">Key {identityLabel(status.device.id)}</hx-small
+				>{/if}<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}
+				>{action}</hx-button
+			>{/if}{#if store.error}<hx-span class="error" role="alert">{store.error}</hx-span>{/if}
+		{#if store.fixture && !compact}<hx-small class="remote-note">{fixture}</hx-small>{/if}
+	</hx-section>{/if}

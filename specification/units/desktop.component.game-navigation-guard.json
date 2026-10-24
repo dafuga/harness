@@ -6,6 +6,10 @@
 	"responsibility": "Protect unsaved game edits during app navigation, browser unload and native window lifecycle decisions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": []
+	},
 	"owns": {
 		"source": ["packages/desktop/src/components/game-authoring/GameNavigationGuard.svelte"],
 		"symbols": ["GameNavigationGuard"]

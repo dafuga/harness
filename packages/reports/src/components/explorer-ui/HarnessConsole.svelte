@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
@@ -162,7 +164,7 @@
 </script>
 
 <!-- The console reads and chooses; the frame draws. Its marker draws no box around that frame. -->
-<div class="hx-console" data-harness-component="harness-harness-console">
+<hx-div class="hx-console" data-harness-component="harness-harness-console">
 	<ExplorerLayout
 		{base}
 		{problem}
@@ -184,10 +186,10 @@
 		{/if}
 		{#if shown}
 			{#if !shown.head.registry.available}
-				<p class="hc-notice" role="status">
+				<hx-p class="hc-notice" role="status">
 					{shown.head.registry.gap ?? 'No unit registry is stored at this revision'}. The registry
 					of another revision is not shown in its place.
-				</p>
+				</hx-p>
 			{/if}
 			<!-- Another category, entity or section opens afresh; a tab of the same page keeps it. -->
 			{#key contentKey}
@@ -207,7 +209,7 @@
 			{/key}
 		{/if}
 	</ExplorerLayout>
-</div>
+</hx-div>
 
 <style>
 	.hx-console {

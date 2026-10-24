@@ -157,6 +157,8 @@ test('every active visual module has its own required capture state', () => {
 	const visual = loaded.stored
 		.filter((unit) => {
 			if (unit.status !== 'active') return false;
+			if (unit.composition?.level === 'atom' && unit.catalog?.visibility === 'internal')
+				return false;
 			if (['component', 'shell'].includes(unit.kind)) return true;
 			const sources = unit.owns.source;
 			if (unit.kind === 'layout')

@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type {
 		ExplorerEntity,
@@ -76,39 +78,39 @@
 {/snippet}
 
 <!-- What uses the entity and what it uses are two sections; neither names a file. -->
-<div class="ex-relations" data-harness-component="harness-entity-relations">
+<hx-div class="ex-relations" data-harness-component="harness-entity-relations">
 	{#if show === 'models'}
-		<section class="ex-card" aria-label="Models">
-			<h2>
+		<hx-section class="ex-card" aria-label="Models">
+			<hx-h2>
 				<HarnessIcon name="database" size={22} /> Models
-				<span class="ex-count">{relations.models?.length ?? 0}</span>
-			</h2>
-			<p class="ex-soft">
+				<hx-span class="ex-count">{relations.models?.length ?? 0}</hx-span>
+			</hx-h2>
+			<hx-p class="ex-soft">
 				Data models used by this page, including through its components and services.
-			</p>
+			</hx-p>
 			{#if !relations.models?.length}
-				<p class="ex-soft">
+				<hx-p class="ex-soft">
 					{removed
 						? `${gone}models are unavailable at this revision.`
 						: 'No data models are recorded for this page.'}
-				</p>
+				</hx-p>
 			{:else}
 				{@render cards(relations.models, 'Models')}
 			{/if}
-		</section>
+		</hx-section>
 	{/if}
 	{#if show === 'both' || show === 'used-in'}
-		<section class="ex-card" aria-label="Used In">
-			<h2>
+		<hx-section class="ex-card" aria-label="Used In">
+			<hx-h2>
 				<HarnessIcon name="relationships" size={22} /> Used In
-				<span class="ex-count">{usage.usedIn.length}</span>
-			</h2>
+				<hx-span class="ex-count">{usage.usedIn.length}</hx-span>
+			</hx-h2>
 			{#if usage.usedIn.length === 0}
-				<p class="ex-soft">
+				<hx-p class="ex-soft">
 					{removed
 						? `${gone}nothing of this commit uses it.`
 						: 'No page shows it and nothing else uses it.'}
-				</p>
+				</hx-p>
 			{/if}
 			{#each usage.usedInGroups as group (group.title)}
 				<HarnessGroup
@@ -122,20 +124,20 @@
 					{@render cards(group.items, `${group.title} used in`)}
 				</HarnessGroup>
 			{/each}
-		</section>
+		</hx-section>
 	{/if}
 	{#if show === 'both' || show === 'uses'}
-		<section class="ex-card" aria-label="Uses">
-			<h2>
+		<hx-section class="ex-card" aria-label="Uses">
+			<hx-h2>
 				<HarnessIcon name="layers" size={22} /> Uses
-				<span class="ex-count">{usage.count}</span>
-			</h2>
+				<hx-span class="ex-count">{usage.count}</hx-span>
+			</hx-h2>
 			{#if usage.count === 0}
-				<p class="ex-soft">
+				<hx-p class="ex-soft">
 					{removed
 						? `${gone}what it used is not listed here.`
 						: 'It uses no component, function, config or service.'}
-				</p>
+				</hx-p>
 			{/if}
 			{#each usage.uses as group, position (position)}
 				<HarnessGroup
@@ -172,6 +174,6 @@
 					{/key}
 				</HarnessGroup>
 			{/if}
-		</section>
+		</hx-section>
 	{/if}
-</div>
+</hx-div>

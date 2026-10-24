@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import type { ExplorerBehavior, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
@@ -84,22 +86,22 @@
 	);
 </script>
 
-<section
+<hx-section
 	class="ex-card ex-evidence"
 	aria-labelledby="ex-behavior-title"
 	data-harness-component="harness-entity-behavior"
 >
-	<header class="ex-evidence-head">
-		<div>
-			<h2 id="ex-behavior-title">
+	<hx-header class="ex-evidence-head">
+		<hx-div>
+			<hx-h2 id="ex-behavior-title">
 				{paired ? 'End-to-end test comparison' : 'Current end-to-end behavior'}
-			</h2>
-			<p class="ex-soft">
+			</hx-h2>
+			<hx-p class="ex-soft">
 				{paired
 					? 'The same scenario and the same states on both revisions.'
 					: `What the end-to-end checks recorded at ${at}.`}
-			</p>
-		</div>
+			</hx-p>
+		</hx-div>
 		<HarnessAction href={nav.href(tests)} onclick={() => nav.go(tests)} icon="arrow-right"
 			>{unit ? 'View examples' : paired ? 'View full comparison' : 'View full test'}</HarnessAction
 		>
@@ -111,14 +113,14 @@
 				icon="arrow-right">View commit changes</HarnessAction
 			>
 		{/if}
-	</header>
+	</hx-header>
 	{#if shown.groups.length === 0}
-		<p class="ex-gap ex-unrecorded">
+		<hx-p class="ex-gap ex-unrecorded">
 			<HarnessVerdict passed={false} label="Evidence missing" />
-			<span>No end-to-end result is recorded for this entity at {at}.</span>
-		</p>
+			<hx-span>No end-to-end result is recorded for this entity at {at}.</hx-span>
+		</hx-p>
 	{:else}
-		<div class="ex-panes" class:paired>
+		<hx-div class="ex-panes" class:paired>
 			{#if paired}
 				<EntityRun
 					{shown}
@@ -139,9 +141,9 @@
 				lost={known === null}
 				{unit}
 			/>
-		</div>
+		</hx-div>
 	{/if}
-	<div class="ex-change">
+	<hx-div class="ex-change">
 		{#if pending}
 			<HarnessIcon name="clock" size={22} />
 		{:else if unknown}
@@ -151,25 +153,27 @@
 		{:else}
 			<HarnessIcon name="change" size={22} />
 		{/if}
-		<strong role="status">{label}</strong>
-		<span>{reasons?.behavior.text || why || 'No reason is recorded for this entity here.'}</span>
+		<hx-strong role="status">{label}</hx-strong>
+		<hx-span
+			>{reasons?.behavior.text || why || 'No reason is recorded for this entity here.'}</hx-span
+		>
 		{#if reasons}<EntityReasons {reasons} />{/if}
-		<dl class="ex-inline">
-			<div>
-				<dt>E2E duration</dt>
-				<dd class:unmeasured={duration === notMeasured}>{duration}</dd>
-			</div>
+		<hx-dl class="ex-inline">
+			<hx-div>
+				<hx-dt>E2E duration</hx-dt>
+				<hx-dd class:unmeasured={duration === notMeasured}>{duration}</hx-dd>
+			</hx-div>
 			{#each shown.scenarios as scenario (scenario.id)}
-				<div>
-					<dt>{scenario.title}</dt>
-					<dd class:failed={scenario.after !== 'passed'}>
+				<hx-div>
+					<hx-dt>{scenario.title}</hx-dt>
+					<hx-dd class:failed={scenario.after !== 'passed'}>
 						{paired ? `${scenario.before ?? 'not run'} → ` : ''}{scenario.after ?? 'not run'}
-					</dd>
-				</div>
+					</hx-dd>
+				</hx-div>
 			{/each}
-		</dl>
-	</div>
-</section>
+		</hx-dl>
+	</hx-div>
+</hx-section>
 
 <style>
 	.ex-gap.ex-unrecorded {

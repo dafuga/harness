@@ -24,9 +24,19 @@
 				"type": "void"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "workflow.generate-code",
 			"via": "import",
@@ -34,6 +44,11 @@
 		},
 		{
 			"unit": "workflow.generate-unit",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.projects-sessions-generate-code-generate-elements",
 			"via": "import",
 			"origin": "derived"
 		}

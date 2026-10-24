@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import ActivityList from '../../../../reports/src/components/projects-sessions/ActivityList.svelte';
@@ -28,86 +30,86 @@
 
 {#snippet sessionRow(item: { agent: AgentEntry; label: string })}
 	{@const { agent, label } = item}
-	<div class="agents-row">
-		<strong>{agent.label}</strong>
-		<span class="agents-quiet" class:working={label === 'Working'}>{label}</span>
-	</div>
-	{#if agent.task}<p class="agents-task">{agent.task}</p>{/if}
-	<p class="agents-quiet">
+	<hx-div class="agents-row">
+		<hx-strong>{agent.label}</hx-strong>
+		<hx-span class="agents-quiet" class:working={label === 'Working'}>{label}</hx-span>
+	</hx-div>
+	{#if agent.task}<hx-p class="agents-task">{agent.task}</hx-p>{/if}
+	<hx-p class="agents-quiet">
 		{[agent.model || agent.provider, agent.branch].filter(Boolean).join(' · ')}
-	</p>
+	</hx-p>
 {/snippet}
 
-<section
+<hx-section
 	class="agents"
 	data-harness-component="agents-providers-chat-agents"
 	aria-busy={activity.loading}
 >
-	<div class="agents-head">
-		{#if sample}<p class="agents-read">
-				<span><strong>{working ?? 'Unknown'}</strong> working</span>
-				<time datetime={sample.sampledAt} title={sample.sampledAt}
-					>read {sample.sampledAt.slice(11, 16)} UTC</time
+	<hx-div class="agents-head">
+		{#if sample}<hx-p class="agents-read">
+				<hx-span><hx-strong>{working ?? 'Unknown'}</hx-strong> working</hx-span>
+				<hx-time datetime={sample.sampledAt} title={sample.sampledAt}
+					>read {sample.sampledAt.slice(11, 16)} UTC</hx-time
 				>
-			</p>{:else}<p class="agents-quiet" role="status">
+			</hx-p>{:else}<hx-p class="agents-quiet" role="status">
 				{activity.loading
 					? 'Reading agent activity…'
 					: 'Live agent activity is unavailable for this project.'}
-			</p>{/if}
-		<button
+			</hx-p>{/if}
+		<hx-button
 			type="button"
 			aria-label="Refresh agents"
 			disabled={activity.loading}
-			onclick={() => activity.refresh()}>Refresh</button
+			onclick={() => activity.refresh()}>Refresh</hx-button
 		>
-	</div>
-	{#if pinned}<p class="agents-quiet">Live activity · independent of this revision</p>{/if}
+	</hx-div>
+	{#if pinned}<hx-p class="agents-quiet">Live activity · independent of this revision</hx-p>{/if}
 	{#if sample}
-		{#if activity.error}<p class="error" role="status">{activity.error}</p>{/if}
-		{#if sample.agents.unreadable}<p class="agents-quiet" role="status">
+		{#if activity.error}<hx-p class="error" role="status">{activity.error}</hx-p>{/if}
+		{#if sample.agents.unreadable}<hx-p class="agents-quiet" role="status">
 				{sample.agents.unreadable} unreadable registrations are not counted.
-			</p>{/if}
-		<section aria-label="Main chats">
-			<h3>Main chats</h3>
+			</hx-p>{/if}
+		<hx-section aria-label="Main chats">
+			<hx-h3>Main chats</hx-h3>
 			{#if activity.sessions.length}<ActivityList
 					items={activity.sessions}
 					label="Agent sessions"
 					noun="sessions"
 					preview={3}
 					row={sessionRow}
-				/>{:else}<p class="agents-quiet">
+				/>{:else}<hx-p class="agents-quiet">
 					{unused ? 'No agent has registered here yet' : 'No sessions are registered'}
-				</p>{/if}
-		</section>
-		<section aria-label="Modules being worked on">
-			<h3>Modules being worked on</h3>
-			{#if modules.length}<ul>
-					{#each modules as module (module.id)}<li>
-							<div class="agents-row">
-								<span class="agents-unit"
+				</hx-p>{/if}
+		</hx-section>
+		<hx-section aria-label="Modules being worked on">
+			<hx-h3>Modules being worked on</hx-h3>
+			{#if modules.length}<hx-ul>
+					{#each modules as module (module.id)}<hx-li>
+							<hx-div class="agents-row">
+								<hx-span class="agents-unit"
 									>{#if module.known}<ReferenceText
 											text={`[[unit:${module.id}]]`}
 											{workspace}
-										/>{:else}<code>{module.id}</code>
-										<span class="agents-quiet">Not in this revision</span>{/if}</span
+										/>{:else}<hx-code>{module.id}</hx-code>
+										<hx-span class="agents-quiet">Not in this revision</hx-span>{/if}</hx-span
 								>
-								{#if module.owners.length > 1}<span class="agents-quiet"
-										>{module.owners.length} agents</span
+								{#if module.owners.length > 1}<hx-span class="agents-quiet"
+										>{module.owners.length} agents</hx-span
 									>{/if}
-							</div>
-							<p class="agents-quiet">
-								{#each module.owners as owner, index (owner.id)}{index ? ', ' : ''}<span
-										>{owner.label}</span
+							</hx-div>
+							<hx-p class="agents-quiet">
+								{#each module.owners as owner, index (owner.id)}{index ? ', ' : ''}<hx-span
+										>{owner.label}</hx-span
 									>{/each}
-							</p>
-						</li>{/each}
-				</ul>{:else}<p class="agents-quiet">No fresh assignments</p>{/if}
-		</section>
-		<p class="agents-quiet">
+							</hx-p>
+						</hx-li>{/each}
+				</hx-ul>{:else}<hx-p class="agents-quiet">No fresh assignments</hx-p>{/if}
+		</hx-section>
+		<hx-p class="agents-quiet">
 			Sessions and modules as agents registered them with Harness; transcripts are not read.
-		</p>
+		</hx-p>
 	{/if}
-</section>
+</hx-section>
 
 <style>
 	.agents {

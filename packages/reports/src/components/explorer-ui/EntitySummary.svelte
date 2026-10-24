@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { notMeasured, type EntityMeasure } from '../../utils/explorer-ui/entityMeasure';
 	import { shortCommit } from '../../helpers/strings/shortCommit';
@@ -39,137 +41,140 @@
 </script>
 
 <!-- Size and timings share one profile; the contract keeps its own tab and Details section. -->
-<div class="ex-summary" class:compact data-harness-component="harness-entity-summary">
-	<section class="ex-card" aria-label="Performance profile">
-		<h2><HarnessIcon name="gauge" size={24} /> Performance profile</h2>
+<hx-div class="ex-summary" class:compact data-harness-component="harness-entity-summary">
+	<hx-section class="ex-card" aria-label="Performance profile">
+		<hx-h2><HarnessIcon name="gauge" size={24} /> Performance profile</hx-h2>
 		{#if comparison && compact}
-			<p class="ex-note">Compared with first parent {shortCommit(comparison.before.commit)}.</p>
-			<div class="ex-scroll">
-				<table class="ex-mini" aria-label="Performance metric changes">
-					<thead>
-						<tr>
-							<th scope="col">Metric</th>
-							<th scope="col">Before · {shortCommit(comparison.before.commit)}</th>
-							<th scope="col">After · {shortCommit(comparison.after.commit)}</th>
-							<th scope="col">Change</th>
-						</tr>
-					</thead>
-					<tbody>
+			<hx-p class="ex-note"
+				>Compared with first parent {shortCommit(comparison.before.commit)}.</hx-p
+			>
+			<hx-div class="ex-scroll">
+				<hx-table class="ex-mini" aria-label="Performance metric changes">
+					<hx-thead>
+						<hx-tr>
+							<hx-th scope="col">Metric</hx-th>
+							<hx-th scope="col">Before · {shortCommit(comparison.before.commit)}</hx-th>
+							<hx-th scope="col">After · {shortCommit(comparison.after.commit)}</hx-th>
+							<hx-th scope="col">Change</hx-th>
+						</hx-tr>
+					</hx-thead>
+					<hx-tbody>
 						{#each changes as row (row.key)}
-							<tr>
-								<th scope="row">{row.label}</th>
-								<td>
+							<hx-tr>
+								<hx-th scope="row">{row.label}</hx-th>
+								<hx-td>
 									{row.before}
-									{#if row.beforeContext}<span class="ex-note">{row.beforeContext}</span>{/if}
-								</td>
-								<td>
+									{#if row.beforeContext}<hx-span class="ex-note">{row.beforeContext}</hx-span>{/if}
+								</hx-td>
+								<hx-td>
 									{row.after}
-									{#if row.afterContext}<span class="ex-note">{row.afterContext}</span>{/if}
-								</td>
-								<td>{row.change}</td>
-							</tr>
+									{#if row.afterContext}<hx-span class="ex-note">{row.afterContext}</hx-span>{/if}
+								</hx-td>
+								<hx-td>{row.change}</hx-td>
+							</hx-tr>
 						{/each}
-					</tbody>
-				</table>
-			</div>
+					</hx-tbody>
+				</hx-table>
+			</hx-div>
 		{:else}
 			{#if measure.size.length > 0 || !tabled}
-				<dl class="ex-rows ex-figures">
+				<hx-dl class="ex-rows ex-figures">
 					{#each measure.size as row, position (position)}
 						{#if row.target !== 'none'}
-							<div>
-								<dt>{row.label}</dt>
-								<dd class:unmeasured={row.value === notMeasured} title={row.note}>
+							<hx-div>
+								<hx-dt>{row.label}</hx-dt>
+								<hx-dd class:unmeasured={row.value === notMeasured} title={row.note}>
 									{row.value}
-									{#if row.note && (!compact || row.value === notMeasured)}<span class="ex-note"
-											>{row.note}</span
+									{#if row.note && (!compact || row.value === notMeasured)}<hx-span class="ex-note"
+											>{row.note}</hx-span
 										>{/if}
-								</dd>
-							</div>
+								</hx-dd>
+							</hx-div>
 						{/if}
 					{/each}
 					{#if compact}
-						<div>
-							<dt>Latency</dt>
-							<dd class:unmeasured={!primary} title={primary?.note}>
+						<hx-div>
+							<hx-dt>Latency</hx-dt>
+							<hx-dd class:unmeasured={!primary} title={primary?.note}>
 								{primary?.value ?? notMeasured}
-							</dd>
-						</div>
-						<div>
-							<dt>Memory</dt>
-							<dd class:unmeasured={!memory} title={memory?.note}>
+							</hx-dd>
+						</hx-div>
+						<hx-div>
+							<hx-dt>Memory</hx-dt>
+							<hx-dd class:unmeasured={!memory} title={memory?.note}>
 								{memory?.value ?? notMeasured}
-							</dd>
-						</div>
+							</hx-dd>
+						</hx-div>
 					{:else if measure.performance.length === 0}
-						<div>
-							<dt>Latency</dt>
-							<dd class="unmeasured">{notMeasured}</dd>
-						</div>
-						<div>
-							<dt>Memory</dt>
-							<dd class="unmeasured">{notMeasured}</dd>
-						</div>
+						<hx-div>
+							<hx-dt>Latency</hx-dt>
+							<hx-dd class="unmeasured">{notMeasured}</hx-dd>
+						</hx-div>
+						<hx-div>
+							<hx-dt>Memory</hx-dt>
+							<hx-dd class="unmeasured">{notMeasured}</hx-dd>
+						</hx-div>
 					{:else if !tabled}
 						{@const row = measure.performance[0]}
-						<div>
-							<dt>Workload</dt>
-							<dd>{row.workload}</dd>
-						</div>
-						<div>
-							<dt>Environment</dt>
-							<dd class:unmeasured={where(row) === '—'}>{where(row)}</dd>
-						</div>
-						<div>
-							<dt>{row.metric}</dt>
-							<dd class:unmeasured={row.value === notMeasured} title={row.note}>
-								{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}
-							</dd>
-						</div>
-						<div>
-							<dt>Tolerance</dt>
-							<dd class:over={row.over}>
+						<hx-div>
+							<hx-dt>Workload</hx-dt>
+							<hx-dd>{row.workload}</hx-dd>
+						</hx-div>
+						<hx-div>
+							<hx-dt>Environment</hx-dt>
+							<hx-dd class:unmeasured={where(row) === '—'}>{where(row)}</hx-dd>
+						</hx-div>
+						<hx-div>
+							<hx-dt>{row.metric}</hx-dt>
+							<hx-dd class:unmeasured={row.value === notMeasured} title={row.note}>
+								{row.value}{#if row.note}<hx-span class="ex-note">{row.note}</hx-span>{/if}
+							</hx-dd>
+						</hx-div>
+						<hx-div>
+							<hx-dt>Tolerance</hx-dt>
+							<hx-dd class:over={row.over}>
 								{row.tolerance}{row.over ? ' · above the 5% policy' : ''}
-							</dd>
-						</div>
+							</hx-dd>
+						</hx-div>
 					{/if}
-				</dl>
+				</hx-dl>
 			{/if}
 			{#if measure.performance.length === 0}
-				<p class="ex-note">No benchmark is recorded for this revision.</p>
+				<hx-p class="ex-note">No benchmark is recorded for this revision.</hx-p>
 			{:else if tabled}
-				<div class="ex-scroll">
-					<table class="ex-mini" aria-label="Timings by workload and profile">
-						<thead>
-							<tr>
-								<th scope="col">Workload</th>
-								<th scope="col">Metric</th>
-								<th scope="col">Target · profile</th>
-								<th scope="col">Value</th>
-								<th scope="col">Tolerance</th>
-							</tr>
-						</thead>
-						<tbody>
+				<hx-div class="ex-scroll">
+					<hx-table class="ex-mini" aria-label="Timings by workload and profile">
+						<hx-thead>
+							<hx-tr>
+								<hx-th scope="col">Workload</hx-th>
+								<hx-th scope="col">Metric</hx-th>
+								<hx-th scope="col">Target · profile</hx-th>
+								<hx-th scope="col">Value</hx-th>
+								<hx-th scope="col">Tolerance</hx-th>
+							</hx-tr>
+						</hx-thead>
+						<hx-tbody>
 							{#each measure.performance as row, position (position)}
-								<tr>
-									<td>{row.workload}</td>
-									<td>{row.metric}</td>
-									<td>{where(row)}</td>
-									<td class:unmeasured={row.value === notMeasured} title={row.note}
-										>{row.value}{#if row.note}<span class="ex-note">{row.note}</span>{/if}</td
+								<hx-tr>
+									<hx-td>{row.workload}</hx-td>
+									<hx-td>{row.metric}</hx-td>
+									<hx-td>{where(row)}</hx-td>
+									<hx-td class:unmeasured={row.value === notMeasured} title={row.note}
+										>{row.value}{#if row.note}<hx-span class="ex-note">{row.note}</hx-span
+											>{/if}</hx-td
 									>
-									<td class:over={row.over}
-										>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</td
+									<hx-td class:over={row.over}
+										>{row.tolerance}{row.over ? ' · above the 5% policy' : ''}</hx-td
 									>
-								</tr>
+								</hx-tr>
 							{/each}
-						</tbody>
-					</table>
-				</div>
+						</hx-tbody>
+					</hx-table>
+				</hx-div>
 			{/if}
 		{/if}
-	</section>
-</div>
+	</hx-section>
+</hx-div>
 
 <style>
 	.ex-note {

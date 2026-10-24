@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { explorerName } from '../../../../reports/src/utils/explorerName';
 	import type { Category, Relationship } from '../../models/development-tooling/Desktop.types';
@@ -53,27 +55,29 @@
 	);
 </script>
 
-<section class="panel" aria-label={title}>
-	<h2>{title} <span class="count">{items.length}</span></h2>
+<hx-section class="panel" aria-label={title}>
+	<hx-h2>{title} <hx-span class="count">{items.length}</hx-span></hx-h2>
 	{#if items.length === 0}
-		<p class="muted">
+		<hx-p class="muted">
 			{direction === 'uses' ? 'No dependency is recorded.' : 'Nothing recorded uses it.'}
-		</p>
+		</hx-p>
 	{/if}
 	{#each groups as group (group.title)}
-		{#if group.title}<h3>{group.title} <span class="count">{group.items.length}</span></h3>{/if}
-		<div class="relationships">
-			{#each group.items as item (item.id)}<article class="relationship">
+		{#if group.title}<hx-h3
+				>{group.title} <hx-span class="count">{group.items.length}</hx-span></hx-h3
+			>{/if}
+		<hx-div class="relationships">
+			{#each group.items as item (item.id)}<hx-article class="relationship">
 					<Icon name={item.category || 'components'} />
-					<div>
+					<hx-div>
 						{#if item.category}<WorkspaceLink
 								{workspace}
 								to={workspace.path(item.category, item.id)}>{named(item)}</WorkspaceLink
-							>{:else}<span>{named(item)}</span>{/if}
-					</div>
-					{#if direction === 'used-by'}<span class="chip">{kind(item)[1]}</span>{/if}
+							>{:else}<hx-span>{named(item)}</hx-span>{/if}
+					</hx-div>
+					{#if direction === 'used-by'}<hx-span class="chip">{kind(item)[1]}</hx-span>{/if}
 					{#if item.hasPlan}<PlanBadge />{/if}
-				</article>{/each}
-		</div>
+				</hx-article>{/each}
+		</hx-div>
 	{/each}
-</section>
+</hx-section>

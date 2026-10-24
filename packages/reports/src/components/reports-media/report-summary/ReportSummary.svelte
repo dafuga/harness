@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Report } from '../../../models/reports-media/Report.types';
 	import { t } from '../../../utils/reports-media/reportLocale';
@@ -19,58 +21,71 @@
 	let runOpen = $state(false);
 </script>
 
-<header class="report-intro">
-	<div class="eyebrow">{report.project.name} <span>/</span> {$t(report.mode)}</div>
-	<div class="title-row">
-		<h1>{report.title}</h1>
+<hx-header class="report-intro">
+	<hx-div class="eyebrow">{report.project.name} <hx-span>/</hx-span> {$t(report.mode)}</hx-div>
+	<hx-div class="title-row">
+		<hx-h1>{report.title}</hx-h1>
 		<StatusBadge status={report.status} />
-	</div>
-	<p class="lead">{report.summary}</p>
-	<div class:has-gaps={gaps > 0} class="outcome-strip">
-		<strong>{$t('conclusion')}</strong><span class="outcome-value"
+	</hx-div>
+	<hx-p class="lead">{report.summary}</hx-p>
+	<hx-div class:has-gaps={gaps > 0} class="outcome-strip">
+		<hx-strong>{$t('conclusion')}</hx-strong><hx-span class="outcome-value"
 			>{$t('checksPassed', {
 				values: {
 					passed: report.checks.filter((item) => item.status === 'passed').length,
 					total: report.checks.length
 				}
-			})}</span
+			})}</hx-span
 		>
-		<span class="outcome-value gap-count"
-			>{$t('gapsCount', { values: { count: gaps } })} <small>{$t('openGaps')}</small></span
+		<hx-span class="outcome-value gap-count"
+			>{$t('gapsCount', { values: { count: gaps } })} <hx-small>{$t('openGaps')}</hx-small></hx-span
 		>
-		<span class="outcome-state"
-			>{report.state === 'finalized' ? $t('finalized') : $t('active')}</span
+		<hx-span class="outcome-state"
+			>{report.state === 'finalized' ? $t('finalized') : $t('active')}</hx-span
 		>
-	</div>
-	{#if report.historical}<p class="notice">{$t('historicalNote')}</p>{/if}
-	{#if reportStale(report)}<p class="notice">{$t('stale')}</p>{/if}
-	{#if report.state === 'finalizing'}<p class="notice">{$t('finalizingNote')}</p>{/if}
-	<div class="toolbar report-actions">
+	</hx-div>
+	{#if report.historical}<hx-p class="notice">{$t('historicalNote')}</hx-p>{/if}
+	{#if reportStale(report)}<hx-p class="notice">{$t('stale')}</hx-p>{/if}
+	{#if report.state === 'finalizing'}<hx-p class="notice">{$t('finalizingNote')}</hx-p>{/if}
+	<hx-div class="toolbar report-actions">
 		{#if report.exports}
-			<a class="button primary" href={downloadBase + report.exports.pdf} download>{$t('pdf')} ↗</a>
-		{:else}<span class="notice">{$t('exportsPending')}</span>{/if}
-		<details class="run-details" bind:open={runOpen}>
-			<summary>
-				<span>{$t('runDetails')}</span>
+			<hx-a class="button primary" href={downloadBase + report.exports.pdf} download
+				>{$t('pdf')} ↗</hx-a
+			>
+		{:else}<hx-span class="notice">{$t('exportsPending')}</hx-span>{/if}
+		<hx-details class="run-details" bind:open={runOpen}>
+			<hx-summary>
+				<hx-span>{$t('runDetails')}</hx-span>
 				{#if !report.revision}<StatusBadge status="not-proven" />{/if}
-				<span class="review-launch-count" aria-hidden="true">{runOpen ? '▴' : '▾'}</span>
-			</summary>
-			<div class="panel run-details-body">
-				<div class="metadata">
-					<div><span>{$t('environment')}</span><strong>{report.environment}</strong></div>
-					<div>
-						<span>{$t('revision')}</span>{#if report.revision}<code>{report.revision}</code
+				<hx-span class="review-launch-count" aria-hidden="true">{runOpen ? '▴' : '▾'}</hx-span>
+			</hx-summary>
+			<hx-div class="panel run-details-body">
+				<hx-div class="metadata">
+					<hx-div
+						><hx-span>{$t('environment')}</hx-span><hx-strong>{report.environment}</hx-strong
+						></hx-div
+					>
+					<hx-div>
+						<hx-span>{$t('revision')}</hx-span>{#if report.revision}<hx-code
+								>{report.revision}</hx-code
 							>{:else}<StatusBadge status="not-proven" />{/if}
-					</div>
-					<div><span>{$t('updated')}</span><strong>{dateLabel(report.updatedAt)}</strong></div>
-				</div>
+					</hx-div>
+					<hx-div
+						><hx-span>{$t('updated')}</hx-span><hx-strong>{dateLabel(report.updatedAt)}</hx-strong
+						></hx-div
+					>
+				</hx-div>
 				{#if report.exports && !portable}
-					<div class="toolbar downloads">
-						<a class="button" href={downloadBase + report.exports.zip} download>{$t('zip')} ↓</a>
-						<a class="button" href={downloadBase + report.exports.html} download>{$t('html')}</a>
-					</div>
+					<hx-div class="toolbar downloads">
+						<hx-a class="button" href={downloadBase + report.exports.zip} download
+							>{$t('zip')} ↓</hx-a
+						>
+						<hx-a class="button" href={downloadBase + report.exports.html} download
+							>{$t('html')}</hx-a
+						>
+					</hx-div>
 				{/if}
-			</div>
-		</details>
-	</div>
-</header>
+			</hx-div>
+		</hx-details>
+	</hx-div>
+</hx-header>

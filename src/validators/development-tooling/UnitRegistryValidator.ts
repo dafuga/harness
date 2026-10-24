@@ -1,5 +1,6 @@
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { unitLineage } from '../../workflows/development-tooling/load-units/unit-index-service/unitLineage';
+import { compositionFindings } from './atomicComposition';
 
 /** Checks relationships between manifests that no single manifest can prove alone. */
 export class UnitRegistryValidator {
@@ -7,6 +8,7 @@ export class UnitRegistryValidator {
 		const active = manifests.filter((manifest) => manifest.status === 'active');
 		const known = new Set(active.map((manifest) => manifest.id));
 		return [
+			...compositionFindings(active),
 			...active.flatMap((unit) => this.missingSource(unit, files)),
 			...active.flatMap((unit) => this.helperExamples(unit)),
 			...active.flatMap((unit) => this.helperSources(unit)),

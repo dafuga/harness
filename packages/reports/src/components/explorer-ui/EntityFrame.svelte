@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
@@ -71,7 +73,7 @@
 </script>
 
 <!-- The marker of the entity's frame draws no box. -->
-<div class="ex-entity" data-harness-component="harness-entity-frame">
+<hx-div class="ex-entity" data-harness-component="harness-entity-frame">
 	<ExplorerFrame {host}>
 		{#snippet children(nav)}
 			<!-- A component keeps the screenshots of its revision between its name and every row of tabs. -->
@@ -90,24 +92,24 @@
 				{/if}
 			{/snippet}
 			{#if choosing && moduleEntity}
-				<section class="ex-card">
-					<h1>{moduleEntity.name}</h1>
-					<p>Choose a helper to open its own detail page.</p>
-					<ul class="ex-links">
+				<hx-section class="ex-card">
+					<hx-h1>{moduleEntity.name}</hx-h1>
+					<hx-p>Choose a helper to open its own detail page.</hx-p>
+					<hx-ul class="ex-links">
 						{#each moduleEntity.unit.helpers ?? [] as helper}
-							<li>
+							<hx-li>
 								<EntityLink
 									{nav}
 									to={entityLens(host.route, {
 										entity: moduleEntity.id,
 										helper: helper.name,
 										tab: 'contract'
-									})}><code>{helper.name}()</code></EntityLink
+									})}><hx-code>{helper.name}()</hx-code></EntityLink
 								>
-							</li>
+							</hx-li>
 						{/each}
-					</ul>
-				</section>
+					</hx-ul>
+				</hx-section>
 			{:else if entity}
 				<EntityHeader {entity} {usesAvailable} {owner} {nav} preview={screens} />
 				{@render screen(entity, nav)}
@@ -123,7 +125,7 @@
 			{/if}
 		{/snippet}
 	</ExplorerFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-entity {

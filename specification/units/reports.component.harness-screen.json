@@ -6,6 +6,10 @@
 	"responsibility": "Connects a framework route to the explorer console and a supplied screen component.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.harness-harness-console"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/HarnessScreen.svelte",

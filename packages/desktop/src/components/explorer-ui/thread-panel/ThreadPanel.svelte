@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { explorerName } from '../../../../../reports/src/utils/explorerName';
@@ -159,19 +161,19 @@
 	}
 </script>
 
-<aside class="thread-panel" aria-label="Design conversation">
-	<div class="row">
-		<h2>{explorerName(entity)} · {heading}</h2>
-		<button class="icon-button" aria-label="Close conversation" onclick={close}>×</button>
-	</div>
-	<p class="muted">
+<hx-aside class="thread-panel" aria-label="Design conversation">
+	<hx-div class="row">
+		<hx-h2>{explorerName(entity)} · {heading}</hx-h2>
+		<hx-button class="icon-button" aria-label="Close conversation" onclick={close}>×</hx-button>
+	</hx-div>
+	<hx-p class="muted">
 		{aim.viewport || entity.kind} · {aim.version || version || 'Initial plan'}{aim.region
 			? ' · selected region'
 			: ''}
-	</p>
-	<div class="thread-scroll" bind:this={scroller}>
+	</hx-p>
+	<hx-div class="thread-scroll" bind:this={scroller}>
 		<ThreadHistory {entity} {workspace} {version} {option} select={(value) => (version = value)} />
-		<h3>Conversation</h3>
+		<hx-h3>Conversation</hx-h3>
 		<ThreadLinks
 			threads={entity.threads}
 			{thread}
@@ -181,13 +183,13 @@
 				[thread, target] = [value, null];
 			}}
 		/>
-		<MessageList messages={entries} {workspace} {entity} />{#if run.streaming}<p
+		<MessageList messages={entries} {workspace} {entity} />{#if run.streaming}<hx-p
 				class="streaming"
 				aria-live="polite"
 			>
 				<ReferenceText text={run.streaming} {workspace} {entity} />
-			</p>{/if}
-	</div>
+			</hx-p>{/if}
+	</hx-div>
 	<RunStatus
 		text={run.status}
 		active={Boolean(run.runId)}
@@ -195,12 +197,12 @@
 		{workspace}
 		{entity}
 	/>
-	{#if error}<p class="error" role="alert">{error}</p>{/if}{#if comments.acknowledged}<p
+	{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}{#if comments.acknowledged}<hx-p
 			class="comment-saved"
 			role="status"
 		>
 			Saved to GitHub · {comments.acknowledged.slice(0, 7)}
-		</p>{/if}<Composer
+		</hx-p>{/if}<Composer
 		{modes}
 		{providers}
 		{approved}
@@ -216,4 +218,4 @@
 			{approved}
 			{option}
 		/>{/if}
-</aside>
+</hx-aside>

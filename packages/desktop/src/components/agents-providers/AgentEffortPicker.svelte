@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import Icon from '../shared-primitives/Icon.svelte';
@@ -25,11 +27,11 @@
 >
 	{#snippet icon()}<Icon name="reasoning" size={18} />{/snippet}
 	{#snippet children(close: () => void)}
-		{#each efforts as item (item)}<button
+		{#each efforts as item (item)}<hx-button
 				type="button"
 				class:active={item === effort}
 				aria-pressed={item === effort}
-				onclick={() => choose(item, close)}>{item}</button
+				onclick={() => choose(item, close)}>{item}</hx-button
 			>{/each}
 	{/snippet}
 </ChoiceDialog>

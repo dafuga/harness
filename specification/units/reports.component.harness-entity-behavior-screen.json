@@ -6,6 +6,16 @@
 	"responsibility": "The screen of a function or a service: opens on what its end-to-end checks recorded, with any recorded clip below.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.harness-entity-audio",
+			"reports.component.harness-entity-behavior",
+			"reports.component.harness-entity-frame",
+			"reports.component.harness-entity-sections",
+			"reports.component.shared-primitives-atoms-html-div"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/EntityBehaviorScreen.svelte"],
 		"symbols": ["EntityBehaviorScreen"]
@@ -97,6 +107,11 @@
 		},
 		{
 			"unit": "reports.component.harness-entity-sections",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

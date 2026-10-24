@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { writingLimits } from '../../../../../../src/utils/writing-limits/writingLimits';
 	import type {
@@ -6,7 +8,11 @@
 		ExplorerLocation,
 		ExplorerVerdict
 	} from '../../../models/explorer-ui/Explorer.types';
-	import { signedBytes, signedCount, type HistoryTiming } from '../../../utils/explorer-ui/entityHistory';
+	import {
+		signedBytes,
+		signedCount,
+		type HistoryTiming
+	} from '../../../utils/explorer-ui/entityHistory';
 	import { type EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { shortCommit } from '../../../helpers/strings/shortCommit';
 	import { byteSize, notMeasured } from '../../../utils/explorer-ui/entityMeasure';
@@ -44,31 +50,35 @@
 	let complexity = $derived(row.measured?.complexity ?? detail?.sourceComplexity ?? null);
 </script>
 
-<tr class:viewed data-harness-component="harness-entity-history-row">
-	<td><time datetime={row.committedAt} title={row.committedAt}>{timeAgo(row.committedAt, Date.now(), 'always')}</time></td>
-	<td>
+<hx-tr class:viewed data-harness-component="harness-entity-history-row">
+	<hx-td
+		><hx-time datetime={row.committedAt} title={row.committedAt}
+			>{timeAgo(row.committedAt, Date.now(), 'always')}</hx-time
+		></hx-td
+	>
+	<hx-td>
 		<EntityLink {to} {nav} class="ex-hash">{hash}</EntityLink>
-		{#if viewed}<span class="ex-pill gold">Viewed commit</span>{/if}
+		{#if viewed}<hx-span class="ex-pill gold">Viewed commit</hx-span>{/if}
 		<EntityReasons {reasons} />
-	</td>
-	<td class="ex-said">
+	</hx-td>
+	<hx-td class="ex-said">
 		{reasons.behavior.text || subject}
-	</td>
-	<td class:unmeasured={size === null}>
+	</hx-td>
+	<hx-td class:unmeasured={size === null}>
 		{size === null ? notMeasured : byteSize(size)}
-		<span class="ex-soft ex-block">{signedBytes(row.sizeChange)}</span>
+		<hx-span class="ex-soft ex-block">{signedBytes(row.sizeChange)}</hx-span>
 		{#if row.reviews.some((review) => review.type === 'approval')}
-			<span class="ex-pill gold wraps">Budget increase approved</span>
+			<hx-span class="ex-pill gold wraps">Budget increase approved</hx-span>
 		{/if}
-	</td>
-	<td class:unmeasured={complexity === null}>
+	</hx-td>
+	<hx-td class:unmeasured={complexity === null}>
 		{complexity ?? notMeasured}
-		<span class="ex-soft ex-block">{signedCount(row.complexityChange)}</span>
-	</td>
-	<td class:unmeasured={!timing}>
+		<hx-span class="ex-soft ex-block">{signedCount(row.complexityChange)}</hx-span>
+	</hx-td>
+	<hx-td class:unmeasured={!timing}>
 		{#if timing}
 			{timing.before === undefined ? '' : `${timing.before} → `}{timing.after}
 			{timing.unit}
 		{:else}{notMeasured}{/if}
-	</td>
-</tr>
+	</hx-td>
+</hx-tr>

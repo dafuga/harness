@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
@@ -23,16 +25,16 @@
 
 <!-- Contract, Used In and Uses are tabs of their own; an overview does not repeat them. -->
 <!-- A stack, so the description, the evidence and the profile each stand 16px apart. -->
-<div
+<hx-div
 	role="tabpanel"
 	class="ex-stack"
 	aria-label={`${entity.name} overview`}
 	data-harness-component="harness-entity-overview"
 >
 	{#if entity.category === 'pages' && entity.purpose}
-		<p class="ex-lead">{entity.purpose}</p>
+		<hx-p class="ex-lead">{entity.purpose}</hx-p>
 	{/if}
 	{#if first}{@render children()}{/if}
 	<EntitySummary {measure} {comparison} compact />
 	{#if !first}{@render children()}{/if}
-</div>
+</hx-div>

@@ -18,6 +18,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 	const preview = kept.preview;
 	const documentation = kept.documentation;
 	const catalog = kept.catalog;
+	const composition = compositionMetadata(input, kept.composition);
 	return {
 		schemaVersion: 1,
 		id: input.id,
@@ -29,6 +30,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 				: derivedResponsibility(kept.kind, kept.title),
 		responsibilityOrigin: kept.responsibilityOrigin,
 		status: 'active',
+		...(composition ? { composition } : {}),
 		...(documentation ? { documentation } : {}),
 		...(catalog ? { catalog } : {}),
 		...(kept.configControls ? { configControls: kept.configControls } : {}),
@@ -42,6 +44,31 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		...(preview ? { preview } : {}),
 		budgets: kept.budgets
 	};
+}
+
+function compositionMetadata(input: DeriveInput, previous: ComponentManifest['composition']) {
+	const declared =
+		input.files.find((file) => file.path === input.previous?.runtime.entry)?.composition ??
+		input.files.find((file) => file.composition)?.composition ??
+		previous;
+	if (!declared) return undefined;
+	const uses = [
+		...new Set(
+			input.files.flatMap((file) =>
+				file.references.flatMap((reference) => {
+					if (
+						reference.typeOnly ||
+						!reference.path?.endsWith('.svelte') ||
+						!['import', 'dynamic-import', 'reexport'].includes(reference.via)
+					)
+						return [];
+					const owner = input.owners.get(reference.path);
+					return owner && owner !== input.id ? [owner] : [];
+				})
+			)
+		)
+	].sort();
+	return { ...declared, uses };
 }
 
 function defaults(input: DeriveInput): Declared {

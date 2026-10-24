@@ -6,6 +6,10 @@
 	"responsibility": "Preserve focused text drafts while reporting every keystroke for immediate unsaved-state tracking.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": ["reports.component.shared-primitives-atoms-html-input"]
+	},
 	"owns": {
 		"source": ["packages/desktop/src/components/game-authoring/GameTextField.svelte"],
 		"symbols": ["GameTextField"]
@@ -48,7 +52,13 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/components/game-authoring/GameTextField.svelte",

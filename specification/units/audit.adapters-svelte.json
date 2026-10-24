@@ -41,6 +41,11 @@
 			"unit": "audit.common-rules",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "audit.development-tooling-atomic-composition",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

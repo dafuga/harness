@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { SourceState } from '../../lib/explorer-ui/stores/sourceReader.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
@@ -19,25 +21,27 @@
 	let readable = $derived(state.path !== '' && !state.loading && !state.error);
 </script>
 
-<div class="source-viewer" data-harness-component="source-viewer">
-	<div class="source-bar">
+<hx-div class="source-viewer" data-harness-component="source-viewer">
+	<hx-div class="source-bar">
 		{#if state.files.length}
 			<Select label="Source file" compact bind:value={() => state.path, onSelect}>
-				{#each state.files as path (path)}<option value={path}>{path}</option>{/each}
+				{#each state.files as path (path)}<hx-option value={path}>{path}</hx-option>{/each}
 			</Select>
 		{/if}
 		{#if commit}
-			<span class="source-commit" title={commit}>
-				<HarnessIcon name="commit" size={16} /><span>Commit</span><code>{commit.slice(0, 7)}</code>
-			</span>
+			<hx-span class="source-commit" title={commit}>
+				<HarnessIcon name="commit" size={16} /><hx-span>Commit</hx-span><hx-code
+					>{commit.slice(0, 7)}</hx-code
+				>
+			</hx-span>
 		{/if}
-	</div>
-	{#if state.loading}<p class="source-note" role="status">Loading source…</p>
-	{:else if state.error}<p class="source-error" role="alert">{state.error}</p>
-	{:else if state.files.length === 0}<p class="source-note">{empty}</p>{/if}
+	</hx-div>
+	{#if state.loading}<hx-p class="source-note" role="status">Loading source…</hx-p>
+	{:else if state.error}<hx-p class="source-error" role="alert">{state.error}</hx-p>
+	{:else if state.files.length === 0}<hx-p class="source-note">{empty}</hx-p>{/if}
 	<!-- The text is the file and nothing else: no line numbers and no markup are added to it. -->
-	{#if readable}<pre class="source-code"><code>{state.text}</code></pre>{/if}
-</div>
+	{#if readable}<hx-pre class="source-code"><hx-code>{state.text}</hx-code></hx-pre>{/if}
+</hx-div>
 
 <style>
 	.source-viewer {

@@ -86,6 +86,8 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Code Rules
 
+- Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse the canonical native element atoms and existing shared controls; native markup belongs inside atoms. Declare `@harness-tier` and the relative `@harness-atoms` library directory. Native atom calls preserve bindings/actions and scoped CSS through `atomicComponents()`; keep generated native typings installed. Feature categories and stable unit IDs remain independent of composition level. Run the atomic audit, registry composition guard and normal interaction/catalog coverage. `harness info component` documents the supported APIs.
+
 - Scheduler changes must prove progress across mixed nesting depths, occupied ancestor budgets and pending siblings while preserving priority and headroom.
 - Process-runner observer changes must prove fast exit, retained output and delayed synchronous observers in both Bun and Node before broad verification.
 - Workspace verification and build entrypoints must join admission and preserve caller arguments; keep the existing workspace entrypoint inventory current. Standalone commands default to one CPU and 2 GiB; inherit supplied reservation limits.

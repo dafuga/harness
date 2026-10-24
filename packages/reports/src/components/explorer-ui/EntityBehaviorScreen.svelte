@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { behaviorDuration } from '../../utils/explorer-ui/entityBehavior';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
@@ -11,7 +13,7 @@
 
 <!-- What is run: a function or a service opens on what its end-to-end checks recorded. The
 	marker of the screen draws no box. -->
-<div class="ex-screen" data-harness-component="harness-entity-behavior-screen">
+<hx-div class="ex-screen" data-harness-component="harness-entity-behavior-screen">
 	<EntityFrame {host}>
 		{#snippet children(entity, nav)}
 			<EntitySections {host} {entity} {nav}>
@@ -36,7 +38,7 @@
 			</EntitySections>
 		{/snippet}
 	</EntityFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-screen {

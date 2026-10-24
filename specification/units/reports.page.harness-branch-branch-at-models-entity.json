@@ -6,6 +6,10 @@
 	"responsibility": "Owns the /harness/branch/[branch]/[...at]/models/[entity] route page.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.harness-entity-config-screen", "reports.component.harness-screen"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/harness/branch/[branch]/[...at]/models/[entity]/+page.svelte"

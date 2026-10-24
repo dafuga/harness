@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
@@ -9,6 +11,7 @@
 	import ExplorerControls from '../ExplorerControls.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	import HarnessGroup from '../HarnessGroup.svelte';
+	import Select from '../../shared-primitives/Select.svelte';
 	let {
 		category,
 		rows,
@@ -43,7 +46,15 @@
 	});
 	let label = $derived(entityLabels[category]);
 	let noun = $derived(label.title.toLowerCase());
-	let listed = $derived(catalogFilter(rows, filter));
+	let composition = $state('all');
+	let listed = $derived(
+		catalogFilter(rows, filter).filter(
+			(row) =>
+				category !== 'components' ||
+				composition === 'all' ||
+				row.entity.unit.composition?.level === composition
+		)
+	);
 	// Configs are one section for each source file; every other kind is grouped by responsibility.
 	let sections = $derived(
 		grouped.has(category)
@@ -53,53 +64,65 @@
 			: []
 	);
 	let filtered = $derived(Boolean(filter.search.trim()));
-	let resetKey = $derived(JSON.stringify([scope, category, filter]));
+	let resetKey = $derived(JSON.stringify([scope, category, filter, composition]));
 </script>
 
-<section
+<hx-section
 	class="ex-index"
 	aria-labelledby="ex-index-title"
 	data-harness-component="harness-explorer-index"
 >
-	<nav class="ex-crumbs" aria-label="Breadcrumb">
-		<ol>
-			<li><HarnessIcon name={categoryIcon[category]} size={18} /></li>
-			<li aria-current="page">{label.title}</li>
-		</ol>
-	</nav>
-	<h1 id="ex-index-title">{label.title}</h1>
-	<p class="ex-lead">{label.subtitle}</p>
+	<hx-nav class="ex-crumbs" aria-label="Breadcrumb">
+		<hx-ol>
+			<hx-li><HarnessIcon name={categoryIcon[category]} size={18} /></hx-li>
+			<hx-li aria-current="page">{label.title}</hx-li>
+		</hx-ol>
+	</hx-nav>
+	<hx-h1 id="ex-index-title">{label.title}</hx-h1>
+	<hx-p class="ex-lead">{label.subtitle}</hx-p>
 	{#if category === 'components'}
-		<p class="ex-soft">A component can contain other components.</p>
+		<hx-p class="ex-soft">A component can contain other components.</hx-p>
 	{:else if category === 'layouts'}
-		<p class="ex-soft">
+		<hx-p class="ex-soft">
 			The highlighted child area shows where each page renders within its layout.
-		</p>
+		</hx-p>
 	{/if}
 	<ExplorerControls {noun} bind:filter />
-	<p class="ex-hidden" role="status">{listed.length} of {rows.length} {noun} shown</p>
+	{#if category === 'components'}
+		<Select label="Component level" bind:value={composition}>
+			<hx-option value="all">All component levels</hx-option>
+			<hx-option value="atom">Atoms</hx-option>
+			<hx-option value="molecule">Molecules</hx-option>
+			<hx-option value="organism">Organisms</hx-option>
+			<hx-option value="layout">Layouts</hx-option>
+			<hx-option value="page">Pages</hx-option>
+		</Select>
+	{/if}
+	<hx-p class="ex-hidden" role="status">{listed.length} of {rows.length} {noun} shown</hx-p>
 	{#if rows.length === 0}
-		<p class="ex-empty">No {noun} are in the registry of this revision.</p>
+		<hx-p class="ex-empty">No {noun} are in the registry of this revision.</hx-p>
 	{:else if listed.length === 0}
-		<p class="ex-empty">
+		<hx-p class="ex-empty">
 			No {noun} match{filtered ? ' this search' : ''}.
-			<button
+			<hx-button
 				type="button"
 				class="ex-text-button"
-				onclick={() =>
-					(filter = {
+				onclick={() => {
+					composition = 'all';
+					filter = {
 						...filter,
 						search: '',
 						changedOnly: false,
 						verification: 'all',
 						usage: 'all',
 						groups: []
-					})}>Show all {noun}</button
+					};
+				}}>Show all {noun}</hx-button
 			>
-		</p>
+		</hx-p>
 	{:else if sections.length}
 		{#each sections as section (section.id)}
-			<section class="ex-group">
+			<hx-section class="ex-group">
 				<HarnessGroup
 					title={section.title}
 					count={section.rows.length}
@@ -108,12 +131,12 @@
 				>
 					{@render list(section.rows)}
 				</HarnessGroup>
-			</section>
+			</hx-section>
 		{/each}
 	{:else}
 		{@render list(listed)}
 	{/if}
-</section>
+</hx-section>
 
 <style>
 	.ex-group {

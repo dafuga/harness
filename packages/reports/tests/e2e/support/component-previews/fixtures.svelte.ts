@@ -13,6 +13,7 @@ import { routeFixture } from './routePages';
 import { desktopRoute } from './routeDesktop.svelte';
 import { hubRoute } from './routeHub';
 import type { PreviewCases } from './shared';
+import { nativeAtomFixture } from './nativeAtomProps';
 export function previewFixture(id: string) {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
@@ -52,7 +53,7 @@ export function previewFixture(id: string) {
 		routeFixture(id) ??
 		route?.props ??
 		hubRoute(id, hub.addresses['hub.component.hosted-workspace'], hub.project.id) ??
-		cases[id];
+		cases[id] ?? nativeAtomFixture(id);
 	if (!props) throw new Error(`No representative fixture for ${id}`);
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];

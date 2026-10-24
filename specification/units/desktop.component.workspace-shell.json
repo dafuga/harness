@@ -6,6 +6,18 @@
 	"responsibility": "Assembles workspace navigation, the catalog or entity view, project-agent controls and status.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.catalog-view",
+			"desktop.component.entity-view",
+			"desktop.component.nav-bar",
+			"desktop.component.project-agent",
+			"desktop.component.status-bar",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/WorkspaceShell.svelte",
@@ -64,6 +76,16 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		}

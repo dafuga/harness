@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { entitySearch } from './entitySearch';
@@ -69,15 +71,15 @@
 </script>
 
 {#snippet glass(size: number)}
-	<svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
-		<circle cx="11" cy="11" r="6.5" />
-		<path d="m16 16 4.5 4.5" />
-	</svg>
+	<hx-svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+		<hx-svg-circle cx="11" cy="11" r="6.5" />
+		<hx-svg-path d="m16 16 4.5 4.5" />
+	</hx-svg>
 {/snippet}
 
 <svelte:window onkeydown={shortcut} />
-<div class="entity-search" data-harness-component="entity-search">
-	<button
+<hx-div class="entity-search" data-harness-component="entity-search">
+	<hx-button
 		bind:this={trigger}
 		type="button"
 		class="entity-search-trigger"
@@ -85,12 +87,12 @@
 		aria-haspopup="dialog"
 		aria-keyshortcuts="Meta+K Control+K"
 		title="Search entities (⌘K)"
-		onclick={show}>{@render glass(18)}</button
+		onclick={show}>{@render glass(18)}</hx-button
 	>
 	<Modal open={searching} title="Search project" variant="text" onClose={hide}>
-		<div class="entity-search-field">
+		<hx-div class="entity-search-field">
 			{@render glass(16)}
-			<input
+			<hx-input
 				bind:this={field}
 				type="text"
 				role="combobox"
@@ -106,7 +108,7 @@
 				oninput={() => (active = 0)}
 				onkeydown={keys}
 			/>
-		</div>
+		</hx-div>
 		<EntitySearchResults
 			id="{id}-list"
 			{found}
@@ -118,7 +120,7 @@
 			{choose}
 		/>
 	</Modal>
-</div>
+</hx-div>
 
 <style>
 	svg {

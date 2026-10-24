@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Region, ThreadInfo } from '../../models/development-tooling/Desktop.types';
 	let {
@@ -75,17 +77,17 @@
 	}
 </script>
 
-<div class:fullscreen={expanded} class="image-viewer">
-	<div class="image-actions">
-		{#if caption}<strong class="image-caption">{caption}</strong>{/if}
-		<button onclick={() => (expanded = !expanded)}
-			>{expanded ? 'Close full size' : 'Open full size ↗'}</button
-		><button disabled={!writable} onclick={() => comment(null)}>Comment on image</button><button
-			disabled={!writable}
-			onclick={() => (keyboard = !keyboard)}>Select region with keyboard</button
+<hx-div class:fullscreen={expanded} class="image-viewer">
+	<hx-div class="image-actions">
+		{#if caption}<hx-strong class="image-caption">{caption}</hx-strong>{/if}
+		<hx-button onclick={() => (expanded = !expanded)}
+			>{expanded ? 'Close full size' : 'Open full size ↗'}</hx-button
+		><hx-button disabled={!writable} onclick={() => comment(null)}>Comment on image</hx-button
+		><hx-button disabled={!writable} onclick={() => (keyboard = !keyboard)}
+			>Select region with keyboard</hx-button
 		>
-	</div>
-	<div
+	</hx-div>
+	<hx-div
 		class="image-canvas"
 		role="group"
 		aria-label="Design image; drag to highlight a region"
@@ -94,50 +96,49 @@
 		onpointerup={finish}
 		onpointercancel={finish}
 	>
-		<img
+		<hx-img
 			{src}
 			alt={title}
 			draggable="false"
-		/>{#each threads as thread (thread.id)}{#if thread.region}<button
+		/>{#each threads as thread (thread.id)}{#if thread.region}<hx-button
 					class="image-pin"
 					style={`left:${thread.region.x * 100}%;top:${thread.region.y * 100}%`}
 					onclick={() => {
 						selectedRegion = thread.region;
 						select(thread);
 					}}
-					aria-label={`Open thread ${thread.pin}`}>{thread.pin}</button
-				>{/if}{/each}{#if selectedRegion}<div
-				class="image-region"
-				style={style(selectedRegion)}
-			></div>{/if}
-		{#if region}<div class="image-region" style={style(region)}></div>
-			<button class="region-comment" onclick={() => comment(region)}>Comment on selection</button
+					aria-label={`Open thread ${thread.pin}`}>{thread.pin}</hx-button
+				>{/if}{/each}{#if selectedRegion}<hx-div class="image-region" style={style(selectedRegion)}
+			></hx-div>{/if}
+		{#if region}<hx-div class="image-region" style={style(region)}></hx-div>
+			<hx-button class="region-comment" onclick={() => comment(region)}
+				>Comment on selection</hx-button
 			>{/if}
-	</div>
-	{#if keyboard}<form
+	</hx-div>
+	{#if keyboard}<hx-form
 			class="region-form"
 			onsubmit={(event) => {
 				event.preventDefault();
 				keyboardComment();
 			}}
 		>
-			{#each ['x', 'y', 'width', 'height'] as name (name)}<label
-					>{name} (%) {#if name === 'x'}<input
+			{#each ['x', 'y', 'width', 'height'] as name (name)}<hx-label
+					>{name} (%) {#if name === 'x'}<hx-input
 							type="number"
 							min="0"
 							max="99"
 							bind:value={x}
-						/>{:else if name === 'y'}<input
+						/>{:else if name === 'y'}<hx-input
 							type="number"
 							min="0"
 							max="99"
 							bind:value={y}
-						/>{:else if name === 'width'}<input
+						/>{:else if name === 'width'}<hx-input
 							type="number"
 							min="1"
 							max="100"
 							bind:value={width}
-						/>{:else}<input type="number" min="1" max="100" bind:value={height} />{/if}</label
-				>{/each}<button class="primary">Comment on region</button>
-		</form>{/if}
-</div>
+						/>{:else}<hx-input type="number" min="1" max="100" bind:value={height} />{/if}</hx-label
+				>{/each}<hx-button class="primary">Comment on region</hx-button>
+		</hx-form>{/if}
+</hx-div>

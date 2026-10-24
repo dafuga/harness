@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-svg-radial-gradient",
+	"kind": "component",
+	"title": "SvgRadialGradient",
+	"responsibility": "Renders the native radialGradient element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "radialGradient",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/SvgRadialGradient.svelte"],
+		"symbols": ["SvgRadialGradient"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SvgRadialGradient.attributes",
+				"type": "SvelteHTMLElements['radialGradient']",
+				"description": "Native radialGradient attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			},
+			{
+				"name": "SvgRadialGradient.children",
+				"type": "Snippet | undefined",
+				"description": "Optional content within the native radialGradient element; native HTML content rules still apply."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SvgRadialGradient",
+				"type": "markup",
+				"description": "The actual native radialGradient element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/SvgRadialGradient.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/SvgRadialGradient.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

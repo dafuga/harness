@@ -1,0 +1,56 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-atoms-html-br",
+	"kind": "component",
+	"title": "HtmlBr",
+	"responsibility": "Renders the native br element without extra wrapper DOM or feature behavior.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "atom",
+		"element": "br",
+		"uses": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/atoms/HtmlBr.svelte"],
+		"symbols": ["HtmlBr"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HtmlBr.attributes",
+				"type": "SvelteHTMLElements['br']",
+				"description": "Native br attributes and event handlers. The native atom call preserves Svelte bindings, actions and scoped styles."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HtmlBr",
+				"type": "markup",
+				"description": "The actual native br element, with forwarded attributes and content and no additional wrapper."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlBr.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/atoms/HtmlBr.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

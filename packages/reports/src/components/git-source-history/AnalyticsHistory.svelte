@@ -1,5 +1,7 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Props } from "./AnalyticsHistory.types";
+	import type { Props } from './AnalyticsHistory.types';
 
 	import type { AnalyticsSnapshot } from '../../services/explorer-ui/HarnessAnalyticsService';
 	import { analyticsCount, analyticsDisplay } from '../../utils/reports-media/analyticsDisplay';
@@ -34,78 +36,77 @@
 		{ title: 'Evaluator outcomes', rows: frequencies(summary.evaluatorOutcomes) },
 		{ title: 'Daily activity', rows: frequencies(summary.daily, true) }
 	]);
-
 </script>
 
-<section class="analytics-section" data-harness-component="analytics-history">
-	<div class="analytics-heading">
-		<h2>Loop history</h2>
-		<p class="analytics-note">{analyticsCount(loops.length)} shown · times in UTC</p>
-	</div>
-	<div class="panel">
+<hx-section class="analytics-section" data-harness-component="analytics-history">
+	<hx-div class="analytics-heading">
+		<hx-h2>Loop history</hx-h2>
+		<hx-p class="analytics-note">{analyticsCount(loops.length)} shown · times in UTC</hx-p>
+	</hx-div>
+	<hx-div class="panel">
 		{#if loops.length}
-			<div class="analytics-scroll">
-				<table class="analytics-table">
-					<thead>
-						<tr>
-							<th>Loop</th>
-							<th>Template</th>
-							<th>Agent model</th>
-							<th>Status</th>
-							<th>Created</th>
-							<th>Completed</th>
-							<th class="analytics-num">Duration</th>
-							<th class="analytics-num">Evaluations</th>
-						</tr>
-					</thead>
-					<tbody>
+			<hx-div class="analytics-scroll">
+				<hx-table class="analytics-table">
+					<hx-thead>
+						<hx-tr>
+							<hx-th>Loop</hx-th>
+							<hx-th>Template</hx-th>
+							<hx-th>Agent model</hx-th>
+							<hx-th>Status</hx-th>
+							<hx-th>Created</hx-th>
+							<hx-th>Completed</hx-th>
+							<hx-th class="analytics-num">Duration</hx-th>
+							<hx-th class="analytics-num">Evaluations</hx-th>
+						</hx-tr>
+					</hx-thead>
+					<hx-tbody>
 						{#each loops as loop}
 							{@const done = loop.status === 'complete'}
-							<tr>
-								<td class="analytics-wrap">
-									<strong>{loop.name}</strong>
-								</td>
-								<td>{loop.template ?? '—'}</td>
-								<td>{loop.agentModel}</td>
-								<td><span class="badge" class:passed={done}>{loop.status}</span></td>
-								<td>{stamp(loop.createdAt)}</td>
-								<td>{stamp(loop.completedAt)}</td>
-								<td class="analytics-num">{duration(loop.durationMs)}</td>
-								<td class="analytics-num">{loop.evaluations}</td>
-							</tr>
+							<hx-tr>
+								<hx-td class="analytics-wrap">
+									<hx-strong>{loop.name}</hx-strong>
+								</hx-td>
+								<hx-td>{loop.template ?? '—'}</hx-td>
+								<hx-td>{loop.agentModel}</hx-td>
+								<hx-td><hx-span class="badge" class:passed={done}>{loop.status}</hx-span></hx-td>
+								<hx-td>{stamp(loop.createdAt)}</hx-td>
+								<hx-td>{stamp(loop.completedAt)}</hx-td>
+								<hx-td class="analytics-num">{duration(loop.durationMs)}</hx-td>
+								<hx-td class="analytics-num">{loop.evaluations}</hx-td>
+							</hx-tr>
 						{/each}
-					</tbody>
-				</table>
-			</div>
+					</hx-tbody>
+				</hx-table>
+			</hx-div>
 		{:else}
-			<p class="analytics-empty">No loops recorded in this view.</p>
+			<hx-p class="analytics-empty">No loops recorded in this view.</hx-p>
 		{/if}
-	</div>
-	<div class="analytics-grid analytics-pair">
+	</hx-div>
+	<hx-div class="analytics-grid analytics-pair">
 		{#each lists as list (list.title)}
-			<div class="panel analytics-grid">
-				<div class="analytics-heading">
-					<h3>{list.title}</h3>
-					<span class="analytics-note">Count · share</span>
-				</div>
+			<hx-div class="panel analytics-grid">
+				<hx-div class="analytics-heading">
+					<hx-h3>{list.title}</hx-h3>
+					<hx-span class="analytics-note">Count · share</hx-span>
+				</hx-div>
 				{#if list.rows.length}
-					<ul class="analytics-bars analytics-scroll">
+					<hx-ul class="analytics-bars analytics-scroll">
 						{#each list.rows as row (row.name)}
-							<li>
-								<span>{row.name}</span>
-								<span class="analytics-num">
+							<hx-li>
+								<hx-span>{row.name}</hx-span>
+								<hx-span class="analytics-num">
 									{analyticsCount(row.count)} · {analyticsDisplay(row.share)}
-								</span>
-								<span class="analytics-bar" aria-hidden="true">
-									<span style:width="{row.width}%"></span>
-								</span>
-							</li>
+								</hx-span>
+								<hx-span class="analytics-bar" aria-hidden="true">
+									<hx-span style:width="{row.width}%"></hx-span>
+								</hx-span>
+							</hx-li>
 						{/each}
-					</ul>
+					</hx-ul>
 				{:else}
-					<p class="analytics-empty">No {list.title.toLowerCase()} recorded.</p>
+					<hx-p class="analytics-empty">No {list.title.toLowerCase()} recorded.</hx-p>
 				{/if}
-			</div>
+			</hx-div>
 		{/each}
-	</div>
-</section>
+	</hx-div>
+</hx-section>

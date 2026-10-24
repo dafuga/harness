@@ -155,6 +155,29 @@ test.each([
 	}
 });
 
+test.each([
+	['molecule', '<button>Save</button>', 'atomic-native-element'],
+	['organism', '<input aria-label="Name" />', 'atomic-native-element'],
+	['', '<p>Content</p>', 'atomic-tier-required'],
+	['atom', '<Other />', 'atomic-atom-composition'],
+	['molecule', '<!-- <button>example</button> -->{"<input>"}', undefined]
+])('Svelte atomic composition admits %s markup faithfully', async (tier, markup, rule) => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-atoms-'));
+	try {
+		await mkdir(join(root, 'src/components'), { recursive: true });
+		await writeFile(
+			join(root, 'src/components/Example.svelte'),
+			`${tier ? `<!-- @harness-tier ${tier} -->` : ''}\n${markup}`
+		);
+		const { findings } = await auditProject(root, { profile: 'app' });
+		const atomic = findings.filter((finding) => finding.rule.startsWith('atomic-'));
+		if (rule) expect(atomic.map((finding) => finding.rule)).toContain(rule);
+		else expect(atomic).toEqual([]);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+});
+
 async function writeTypePlacementFixtures(root: string): Promise<void> {
 	await mkdir(join(root, 'src/utils'), { recursive: true });
 	await mkdir(join(root, 'src/config'), { recursive: true });

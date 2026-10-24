@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { timeLabel } from '$desktop/utils/timeLabel';
 	import type { EmailProofStatus } from '../../models/accounts-access/HubAuth.types';
@@ -21,28 +23,28 @@
 	}
 </script>
 
-<h2>Confirm your email address</h2>
-<p>
-	Confirm <strong>{proof.email}</strong> belongs to you to finish signing in. Choose Send code to
-	receive an {EMAIL_CODE_LENGTH}-digit verification code.
-</p>
-{#if proof.sent}<p role="status">
+<hx-h2>Confirm your email address</hx-h2>
+<hx-p>
+	Confirm <hx-strong>{proof.email}</hx-strong> belongs to you to finish signing in. Choose Send code
+	to receive an {EMAIL_CODE_LENGTH}-digit verification code.
+</hx-p>
+{#if proof.sent}<hx-p role="status">
 		A code was sent to {proof.email}.{proof.expiresAt
 			? ` It works until ${timeLabel(proof.expiresAt)}.`
 			: ''}
-	</p>{/if}
-<form
+	</hx-p>{/if}
+<hx-form
 	class="hub-form email-proof"
 	onsubmit={(event) => {
 		event.preventDefault();
 		void verify();
 	}}
 >
-	<button type="button" disabled={session.busy} onclick={() => void session.sendEmailCode()}
-		>{proof.sent ? 'Resend code' : 'Send code'}</button
+	<hx-button type="button" disabled={session.busy} onclick={() => void session.sendEmailCode()}
+		>{proof.sent ? 'Resend code' : 'Send code'}</hx-button
 	>
-	<label
-		>{EMAIL_CODE_LENGTH}-digit code<input
+	<hx-label
+		>{EMAIL_CODE_LENGTH}-digit code<hx-input
 			bind:value={code}
 			inputmode="numeric"
 			autocomplete="one-time-code"
@@ -50,14 +52,14 @@
 			pattern={`[0-9]{${EMAIL_CODE_LENGTH}}`}
 			spellcheck="false"
 			disabled={!proof.sent}
-		/></label
+		/></hx-label
 	>
-	<div class="row">
-		<button class="primary" disabled={!complete || session.busy}>Verify</button><button
+	<hx-div class="row">
+		<hx-button class="primary" disabled={!complete || session.busy}>Verify</hx-button><hx-button
 			type="button"
 			disabled={session.busy}
-			onclick={() => void cancel()}>Cancel</button
+			onclick={() => void cancel()}>Cancel</hx-button
 		>
-	</div>
-	{#if session.error}<p class="error" role="alert">{session.error}</p>{/if}
-</form>
+	</hx-div>
+	{#if session.error}<hx-p class="error" role="alert">{session.error}</hx-p>{/if}
+</hx-form>

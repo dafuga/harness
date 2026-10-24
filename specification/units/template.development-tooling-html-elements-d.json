@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "template.development-tooling-html-elements-d",
+	"kind": "template",
+	"title": "htmlElements",
+	"responsibility": "Owns the htmlElements scaffold template.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/development-tooling/htmlElements.d.ts"],
+		"symbols": [
+			"htmlElements",
+			"svgElements",
+			"inputTypes",
+			"voidElements",
+			"elementName",
+			"nativeAtoms",
+			"atomTag",
+			"nativeAtomSource"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "elementName.tag",
+				"type": "string"
+			},
+			{
+				"name": "atomTag.atom",
+				"type": "{ name: string }"
+			},
+			{
+				"name": "nativeAtomSource.atom",
+				"type": "{ tag: string; type?: string }"
+			}
+		],
+		"outputs": [
+			{
+				"name": "htmlElements",
+				"type": "unknown"
+			},
+			{
+				"name": "svgElements",
+				"type": "unknown"
+			},
+			{
+				"name": "inputTypes",
+				"type": "unknown"
+			},
+			{
+				"name": "voidElements",
+				"type": "unknown"
+			},
+			{
+				"name": "elementName",
+				"type": "string; export const nativeAtoms: Array<{ name: string; tag: string; type?: string }>; export function atomTag(atom: { name: string }): string; export function nativeAtomSource(atom: { tag: string; type?: string }): string"
+			},
+			{
+				"name": "nativeAtoms",
+				"type": "unknown"
+			},
+			{
+				"name": "atomTag",
+				"type": "string; export function nativeAtomSource(atom: { tag: string; type?: string }): string"
+			},
+			{
+				"name": "nativeAtomSource",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/development-tooling/htmlElements.d.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/development-tooling/htmlElements.d.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

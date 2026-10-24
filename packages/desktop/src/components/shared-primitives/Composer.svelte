@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { ProviderState } from '../../models/development-tooling/Desktop.types';
@@ -61,7 +63,7 @@
 	}
 </script>
 
-<form
+<hx-form
 	class="composer"
 	class:compact
 	onsubmit={(event) => {
@@ -69,34 +71,34 @@
 		void submit();
 	}}
 >
-	<textarea
+	<hx-textarea
 		aria-label="Message"
 		placeholder={prompt}
 		bind:value={text}
 		rows="3"
 		disabled={!mode || running}
-	></textarea>
-	{#if modes.length > 1}<div class="mode-options" role="group" aria-label="Request mode">
-			{#each modes as item (item)}<button
+	></hx-textarea>
+	{#if modes.length > 1}<hx-div class="mode-options" role="group" aria-label="Request mode">
+			{#each modes as item (item)}<hx-button
 					type="button"
 					class:active={mode === item}
 					aria-pressed={mode === item}
 					disabled={item === 'change' && !approved}
 					title={item === 'change' && !approved ? 'Approve the current exact design first' : ''}
-					onclick={() => (chosen = item)}>{labels[item]}</button
+					onclick={() => (chosen = item)}>{labels[item]}</hx-button
 				>{/each}
-		</div>{/if}
-	{#snippet action()}<button
+		</hx-div>{/if}
+	{#snippet action()}<hx-button
 			class="primary send"
 			aria-label={`Send ${mode === 'ask' ? 'question' : (mode ?? 'message')}`}
-			disabled={blocked}>➤</button
+			disabled={blocked}>➤</hx-button
 		>{/snippet}
-	{#if request}<AgentControls {providers} bind:choice={agent} {compact} {action} />{:else}<div
+	{#if request}<AgentControls {providers} bind:choice={agent} {compact} {action} />{:else}<hx-div
 			class="composer-bottom"
 		>
-			<small class="composer-hint">{hint}</small>{@render action()}
-		</div>{/if}
-</form>
+			<hx-small class="composer-hint">{hint}</hx-small>{@render action()}
+		</hx-div>{/if}
+</hx-form>
 
 <style>
 	/* Compact, what is asked shares one row with the icons that choose its agent, beside send. */

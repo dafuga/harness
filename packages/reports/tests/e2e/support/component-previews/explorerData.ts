@@ -1,3 +1,4 @@
+import { compositionRows } from './nativeAtomProps';
 import { platformFixture } from '../../../../test/platformFixture';
 import { index, record, revision } from '../../../../test/entityFixture';
 import { place, scope, lens, nav } from '../../../../test/entityPlaces';
@@ -29,7 +30,7 @@ export const audioEvidence = desktopData.results[`${ids.search}|current|${commit
 export const contract = entityContract(entity.unit, { category: entity.category });
 export const measure = entityMeasure(entity.unit, head.records[0]);
 export const reasons = entityReasons(head.explanations);
-export const rows = entityCatalog(entities, 'components', reading.relations);
+export const rows = compositionRows(entityCatalog(entities, 'components', reading.relations));
 export const helperRows = entityCatalog(entities, 'functions', reading.relations);
 export const configRows = entityCatalog(entities, 'configs', reading.relations);
 export const options = screenOptions(evidence.scenarios);

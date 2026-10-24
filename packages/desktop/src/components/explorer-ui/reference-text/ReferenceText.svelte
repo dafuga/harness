@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
 	import type { CatalogEntity } from '../../../models/development-tooling/Desktop.types';

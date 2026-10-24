@@ -259,6 +259,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "template.development-tooling-atomic-components",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "template.development-tooling-separate-type-declarations",
 			"via": "import",
 			"origin": "derived"
@@ -280,6 +285,11 @@
 		},
 		{
 			"unit": "workflow.export-plans",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.projects-sessions-generate-code-atom-library",
 			"via": "import",
 			"origin": "derived"
 		}

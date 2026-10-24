@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	let {
@@ -28,22 +30,31 @@
 	);
 </script>
 
-<span
+<hx-span
 	class="report-select"
 	class:disabled
 	class:compact
 	class:has-display={display !== undefined}
 	data-harness-component="select"
 >
-	<select bind:value aria-label={label} {id} {name} {required} {disabled} title={title ?? display}>
+	<hx-select
+		bind:value
+		aria-label={label}
+		{id}
+		{name}
+		{required}
+		{disabled}
+		title={title ?? display}
+	>
 		{@render children()}
-	</select>
-	<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-		<path d="m4 6 4 4 4-4" />
-	</svg>
-	{#if display !== undefined}<span class="report-select-value" aria-hidden="true">{shown}</span
+	</hx-select>
+	<hx-svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+		<hx-svg-path d="m4 6 4 4 4-4" />
+	</hx-svg>
+	{#if display !== undefined}<hx-span class="report-select-value" aria-hidden="true"
+			>{shown}</hx-span
 		>{/if}
-</span>
+</hx-span>
 
 <style>
 	.report-select {

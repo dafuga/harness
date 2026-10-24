@@ -9,6 +9,8 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 ## Operating Rules
 
+Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse existing shared controls and canonical element atoms. Native markup belongs inside atoms; molecules compose atoms, and organisms compose smaller controls and feature sections. Keep feature categories and stable identities separate from level. Declare `@harness-tier` and the relative `@harness-atoms` directory; use native atom calls for bindings/actions and keep `atomicComponents()` plus generated native typings installed. Read `harness info component`; install the library with `harness generate elements`, and use `generate component --level organism` for feature sections. Validate composition with audit and units check, then exercise real interactions and the standard visual catalog.
+
 Harness application's own UI uses the documented shared design tokens across Reports, Desktop/iOS and Hub. Add missing design categories or named tokens to Styles before using them; run the standardized app-style-tokens admission checks. This application-specific palette must not be imposed on generated tenant projects. Preserve data-derived geometry, structural CSS and external asset branding.
 
 Choose component colors from Styles → Colors, defined in `appStyleTokensConfig`. Follow each role's usage guidance and the shared control's actual variant; decorative accents do not define action semantics. Keep that guide and the standard Styles assertions aligned when adding a semantic use. Keep one base primary color; document fill, border and contrasting-text treatments beneath it in the same Colors inventory.

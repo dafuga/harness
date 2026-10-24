@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Open } from "./ActivityFiles.types";
+	import type { Open } from './ActivityFiles.types';
 
 	import type { CommittedFile, WorktreeState } from '../../../../../src/core/activityTypes';
 	import { activityTime } from '../../utils/projects-sessions/activityDisplay';
@@ -22,55 +24,54 @@
 		(worktrees ?? []).flatMap((tree) => tree.changes.map((change) => ({ tree, change })))
 	);
 	let dirty = $derived((worktrees ?? []).filter((tree) => tree.changes.length).length);
-
 </script>
 
 {#snippet owners(units: string[])}
-	<span class="pa-tags">
-		{#each units as unit (unit)}<span class="pa-chip">{unit}</span>{:else}<span class="pa-note"
-				>no component</span
+	<hx-span class="pa-tags">
+		{#each units as unit (unit)}<hx-span class="pa-chip">{unit}</hx-span>{:else}<hx-span
+				class="pa-note">no component</hx-span
 			>{/each}
-	</span>
+	</hx-span>
 {/snippet}
 
 {#snippet openRow({ tree, change }: Open)}
-	<div class="pa-row"><code>{change.path}</code></div>
-	<div class="pa-meta">
-		<span>{change.status}</span>
-		<span>{tree.name} · branch {tree.branch ?? 'none'}</span>
+	<hx-div class="pa-row"><hx-code>{change.path}</hx-code></hx-div>
+	<hx-div class="pa-meta">
+		<hx-span>{change.status}</hx-span>
+		<hx-span>{tree.name} · branch {tree.branch ?? 'none'}</hx-span>
 		{@render owners(change.units)}
-	</div>
+	</hx-div>
 {/snippet}
 
 {#snippet fileRow(file: CommittedFile)}
-	<div class="pa-row">
-		<code>{file.path}</code>
-		<a href={href(file.commit)} title={'Last changed by commit ' + file.commit}
-			>{file.commit.slice(0, 7)}</a
+	<hx-div class="pa-row">
+		<hx-code>{file.path}</hx-code>
+		<hx-a href={href(file.commit)} title={'Last changed by commit ' + file.commit}
+			>{file.commit.slice(0, 7)}</hx-a
 		>
-	</div>
-	<div class="pa-meta">
-		<span>{file.status}</span>
-		<time datetime={file.committedAt}>{activityTime(file.committedAt)} UTC</time>
+	</hx-div>
+	<hx-div class="pa-meta">
+		<hx-span>{file.status}</hx-span>
+		<hx-time datetime={file.committedAt}>{activityTime(file.committedAt)} UTC</hx-time>
 		{@render owners(file.units)}
-	</div>
+	</hx-div>
 {/snippet}
 
-<section class="pa-card" aria-label="Recently changed files">
-	<div class="pa-head">
-		<h2>Recently changed files</h2>
-	</div>
-	<h3>Uncommitted now</h3>
+<hx-section class="pa-card" aria-label="Recently changed files">
+	<hx-div class="pa-head">
+		<hx-h2>Recently changed files</hx-h2>
+	</hx-div>
+	<hx-h3>Uncommitted now</hx-h3>
 	{#if !worktrees}
-		<p class="pa-empty">Uncommitted changes are not part of a recorded history.</p>
+		<hx-p class="pa-empty">Uncommitted changes are not part of a recorded history.</hx-p>
 	{:else if open.length}
-		<p class="pa-note">
+		<hx-p class="pa-note">
 			{open.length}
 			{open.length === 1 ? 'file is' : 'files are'} not committed in {dirty} of {worktrees.length}
 			checkouts{worktrees.some((tree) => tree.truncated)
 				? '; more are changed than are listed'
 				: ''}.
-		</p>
+		</hx-p>
 		<ActivityList
 			items={open}
 			label="Uncommitted files"
@@ -79,9 +80,9 @@
 			row={openRow}
 		/>
 	{:else}
-		<p class="pa-empty">No uncommitted change in any checkout of this repository.</p>
+		<hx-p class="pa-empty">No uncommitted change in any checkout of this repository.</hx-p>
 	{/if}
-	<h3>Committed</h3>
+	<hx-h3>Committed</hx-h3>
 	{#if files.length}
 		<ActivityList
 			items={files}
@@ -91,7 +92,7 @@
 			row={fileRow}
 		/>
 	{:else}
-		<p class="pa-empty">No committed change is in this history yet.</p>
+		<hx-p class="pa-empty">No committed change is in this history yet.</hx-p>
 	{/if}
-	<p class="pa-note">Components are named by the registry of {registry}.</p>
-</section>
+	<hx-p class="pa-note">Components are named by the registry of {registry}.</hx-p>
+</hx-section>

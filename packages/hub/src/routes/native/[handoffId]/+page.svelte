@@ -1,3 +1,5 @@
+<!-- @harness-tier page -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import HubFrame from '../../../components/shared-primitives/HubFrame.svelte';
@@ -11,7 +13,7 @@
 <!-- The address holds one identifier that is useless alone; the code is typed, never linked. -->
 <svelte:head><title>Harness · Connect a Harness device</title></svelte:head>
 <HubFrame>
-	<h1>Connect a Harness device</h1>
+	<hx-h1>Connect a Harness device</hx-h1>
 	{#if session.actor}{#key handoffId}<NativeApproval {handoffId} />{/key}{:else}<LoginPanel
 			reason="Sign in with Google to approve your Harness device. You then type the code it shows."
 		/>{/if}

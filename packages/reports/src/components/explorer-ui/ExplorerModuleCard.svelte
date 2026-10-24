@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
@@ -87,7 +89,7 @@
 
 {#snippet picture()}
 	{#if pictured && capture}
-		<img
+		<hx-img
 			src={mediaBase + file}
 			alt={`Screenshot of ${row.name}`}
 			loading="lazy"
@@ -95,12 +97,12 @@
 			onerror={() => (failed = file)}
 		/>
 	{:else}
-		<span class="ex-thumb-gap">
+		<hx-span class="ex-thumb-gap">
 			{#if kind}
 				<HarnessIcon name={categoryIcon[kind]} size={28} />
 			{/if}
-			<span>No screenshot is recorded at this revision</span>
-		</span>
+			<hx-span>No screenshot is recorded at this revision</hx-span>
+		</hx-span>
 	{/if}
 {/snippet}
 
@@ -109,7 +111,7 @@
 {/snippet}
 
 <!-- Every module card: its name, its own screenshot when it has one, and one Used In footer. -->
-<article
+<hx-article
 	class:ex-page-card={visual}
 	class:ex-page-minimal={page}
 	class:ex-function-tile={!visual}
@@ -118,32 +120,32 @@
 >
 	{#if page && to}
 		<EntityLink {to} {nav} class="ex-page-open" label={`Open ${row.name}`} title={provenance}>
-			<h2>{row.name}</h2>
-			<span class="ex-thumb">{@render picture()}</span>
+			<hx-h2>{row.name}</hx-h2>
+			<hx-span class="ex-thumb">{@render picture()}</hx-span>
 		</EntityLink>
 		<!-- Beside the page's link, never inside it: a link holds no other link. -->
 		{@render usage()}
 	{:else if visual && to}
-		<figure class="ex-card-shot">
+		<hx-figure class="ex-card-shot">
 			<EntityLink {to} {nav} class="ex-thumb" label={`Open ${row.name}`}>
 				{@render picture()}
 			</EntityLink>
-		</figure>
-		<div class="ex-page-body">
-			<h2><EntityLink {to} {nav}>{row.name}</EntityLink></h2>
+		</hx-figure>
+		<hx-div class="ex-page-body">
+			<hx-h2><EntityLink {to} {nav}>{row.name}</EntityLink></hx-h2>
 			{@render usage()}
-		</div>
+		</hx-div>
 	{:else if to}
 		<EntityLink {to} {nav} class="ex-function-call" title={entry?.helper ? hint : undefined}>
-			<code>{call}</code>
+			<hx-code>{call}</hx-code>
 		</EntityLink>
 		{@render usage()}
 	{:else}
 		<!-- A dependency without a page of its own is named, never linked to an invented one. -->
-		<span class="ex-function-call"><code>{call}</code></span>
+		<hx-span class="ex-function-call"><hx-code>{call}</hx-code></hx-span>
 		{@render usage()}
 	{/if}
-</article>
+</hx-article>
 
 <style>
 	/* Any code card: its call or name in code type above its Used In list. */

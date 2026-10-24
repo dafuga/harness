@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import EntityConfig from './EntityConfig.svelte';
@@ -8,7 +10,7 @@
 
 <!-- What is set: a config opens on what it provides and who uses it; it is not seen or run. The
 	marker of the screen draws no box. -->
-<div class="ex-screen" data-harness-component="harness-entity-config-screen">
+<hx-div class="ex-screen" data-harness-component="harness-entity-config-screen">
 	<EntityFrame {host}>
 		{#snippet children(entity, nav)}
 			<EntitySections {host} {entity} {nav}>
@@ -18,7 +20,7 @@
 			</EntitySections>
 		{/snippet}
 	</EntityFrame>
-</div>
+</hx-div>
 
 <style>
 	.ex-screen {

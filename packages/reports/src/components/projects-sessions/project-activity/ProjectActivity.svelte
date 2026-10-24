@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { LiveActivity, ProjectActivity } from '../../../../../../src/core/activityTypes';
 	import ActivityAgents from '../activity-agents/ActivityAgents.svelte';
@@ -34,16 +36,16 @@
 	}
 </script>
 
-<div class="project-activity">
-	<p class="pa-note pa-identity" aria-label="Repository">
-		Repository <strong>{activity.repository.name}</strong> · branch
+<hx-div class="project-activity">
+	<hx-p class="pa-note pa-identity" aria-label="Repository">
+		Repository <hx-strong>{activity.repository.name}</hx-strong> · branch
 		{activity.repository.branch ?? 'none'} · {activity.repository.head?.slice(0, 7) ?? 'no commit'}
-	</p>
+	</hx-p>
 	<ActivityAgents agents={live?.agents ?? null} sampledAt={live?.sampledAt} {reading} />
 	<ActivityFiles files={activity.files} worktrees={live?.worktrees ?? null} {href} {registry} />
 	<ActivityWork work={activity.work} {href} {recorded} />
 	<ActivityLoops loops={activity.loops} />
-</div>
+</hx-div>
 
 <style>
 	.project-activity {

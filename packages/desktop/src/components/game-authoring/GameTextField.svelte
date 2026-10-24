@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	/**
 	 * A text field that reports every keystroke, so unsaved work is known at once, yet keeps what was
@@ -20,7 +22,7 @@
 	let typed = $state<string | null>(null);
 </script>
 
-<input
+<hx-input
 	aria-label={label}
 	{placeholder}
 	{readonly}

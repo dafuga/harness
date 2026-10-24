@@ -2,6 +2,12 @@ import { format, type Options } from 'prettier';
 import { expect, test } from 'vitest';
 import { projectFiles } from '../src/templates/project';
 import { measureWorkload } from './support/measureWorkload';
+import { assertAtomCompiler } from './support/project-template/atoms';
+
+test(
+	'generated element atoms preserve native compilation and emitted runtime source',
+	assertAtomCompiler
+);
 
 test('app projects include SvelteKit and specification files', () =>
 	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {

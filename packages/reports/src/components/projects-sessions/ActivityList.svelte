@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts" generics="Item">
 	import type { Snippet } from 'svelte';
 	let {
@@ -22,18 +24,18 @@
 	let id = $derived('pa-' + label.toLowerCase().replace(/\W+/g, '-'));
 </script>
 
-<svelte:element this={ordered ? 'ol' : 'ul'} class="pa-list" aria-label={label} {id}>
+<hx-element this={ordered ? 'ol' : 'ul'} class="pa-list" aria-label={label} {id}>
 	{#each items as item, position (position)}
-		<li hidden={!open && position >= preview}>{@render row(item)}</li>
+		<hx-li hidden={!open && position >= preview}>{@render row(item)}</hx-li>
 	{/each}
-</svelte:element>
+</hx-element>
 {#if items.length > preview}
-	<button
+	<hx-button
 		type="button"
 		class="pa-more"
 		aria-expanded={open}
 		aria-controls={id}
 		onclick={() => (open = !open)}
-		>{open ? `Show fewer ${noun}` : `Show all ${items.length} ${noun}`}</button
+		>{open ? `Show fewer ${noun}` : `Show all ${items.length} ${noun}`}</hx-button
 	>
 {/if}

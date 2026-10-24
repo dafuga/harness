@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Place } from './EntityHeader.types';
 
@@ -102,45 +104,46 @@
 	let concise = $derived(entity.category === 'pages');
 </script>
 
-<nav class="ex-crumbs" aria-label="Breadcrumb">
-	<ol>
-		<li>
+<hx-nav class="ex-crumbs" aria-label="Breadcrumb">
+	<hx-ol>
+		<hx-li>
 			{#if privateFunction}
 				{#if owner}
 					<EntityLink
 						to={entityLens(nav.route, { category: owner.category, entity: owner.id })}
 						{nav}>{owner.name}</EntityLink
 					>
-				{:else}<span>Function</span>{/if}
+				{:else}<hx-span>Function</hx-span>{/if}
 			{:else}
 				<EntityLink to={entityLens(nav.route, { category: entity.category })} {nav}
 					>{label.title}</EntityLink
 				>
 			{/if}
-		</li>
+		</hx-li>
 		{#if !privateFunction && entity.unit.group}
-			<li>{entity.unit.group.title}</li>
+			<hx-li>{entity.unit.group.title}</hx-li>
 		{/if}
 		{#if nav.route.section === 'history'}
-			<li><EntityLink to={at()} {nav}>{entity.name}</EntityLink></li>
-			<li aria-current="page">History</li>
+			<hx-li><EntityLink to={at()} {nav}>{entity.name}</EntityLink></hx-li>
+			<hx-li aria-current="page">History</hx-li>
 		{:else}
-			<li aria-current="page">{entity.name}</li>
+			<hx-li aria-current="page">{entity.name}</hx-li>
 		{/if}
-	</ol>
-</nav>
-<header class="ex-head" data-harness-component="harness-entity-header">
-	<span class="ex-tile"><HarnessIcon name={categoryIcon[entity.category]} size={30} /></span>
-	<div class="ex-head-main">
-		<div class="ex-head-title">
-			<h1>{entity.name}</h1>
-			<span class="ex-pill">{entity.role}</span>
-			{#if entity.change === 'removed'}<span class="ex-pill">Removed at this commit</span>{/if}
+	</hx-ol>
+</hx-nav>
+<hx-header class="ex-head" data-harness-component="harness-entity-header">
+	<hx-span class="ex-tile"><HarnessIcon name={categoryIcon[entity.category]} size={30} /></hx-span>
+	<hx-div class="ex-head-main">
+		<hx-div class="ex-head-title">
+			<hx-h1>{entity.name}</hx-h1>
+			<hx-span class="ex-pill">{entity.role}</hx-span>
+			{#if entity.change === 'removed'}<hx-span class="ex-pill">Removed at this commit</hx-span
+				>{/if}
 			<HarnessVerdict {...entity.verdict} />
-		</div>
-		{#if !concise}<p class="ex-lead">{entity.purpose}</p>{/if}
-	</div>
-</header>
+		</hx-div>
+		{#if !concise}<hx-p class="ex-lead">{entity.purpose}</hx-p>{/if}
+	</hx-div>
+</hx-header>
 {@render preview?.()}
 <HarnessTabs
 	label={`${entity.name} sections`}

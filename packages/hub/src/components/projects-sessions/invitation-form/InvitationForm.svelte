@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import type { Invitation } from 'collaboration';
@@ -43,44 +45,46 @@
 	}
 </script>
 
-<section class="hub-card">
-	<h2>Invite someone</h2>
-	<form
+<hx-section class="hub-card">
+	<hx-h2>Invite someone</hx-h2>
+	<hx-form
 		class="hub-form"
 		onsubmit={(event) => {
 			event.preventDefault();
 			void invite();
 		}}
 	>
-		<label>Email<input type="email" bind:value={email} required autocomplete="off" /></label><label
+		<hx-label
+			>Email<hx-input type="email" bind:value={email} required autocomplete="off" /></hx-label
+		><hx-label
 			>Role<Select label="Role" bind:value={role}
-				><option value="writer">Write · read, comment and ask AI</option><option value="commenter"
-					>Comment · read and leave comments</option
-				><option value="viewer">Read · browse only</option></Select
-			></label
+				><hx-option value="writer">Write · read, comment and ask AI</hx-option><hx-option
+					value="commenter">Comment · read and leave comments</hx-option
+				><hx-option value="viewer">Read · browse only</hx-option></Select
+			></hx-label
 		>
-		<button class="primary" disabled={saving || !email.trim()}>Create invitation</button>
-		{#if error}<p class="error" role="alert">{error}</p>{/if}
-	</form>
-	{#if invitation}<div class="hub-form invitation-result">
-			<p>
+		<hx-button class="primary" disabled={saving || !email.trim()}>Create invitation</hx-button>
+		{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+	</hx-form>
+	{#if invitation}<hx-div class="hub-form invitation-result">
+			<hx-p>
 				Harness sends no email. Give the link and the code to the person yourself, by separate ways.
 				The code is shown only now and works once, until {new Date(
 					invitation.expiresAt
 				).toLocaleString()}, for the Google account with this email address.
-			</p>
-			<div class="copy-row">
-				<label>Invitation link<input readonly value={link} /></label><button
+			</hx-p>
+			<hx-div class="copy-row">
+				<hx-label>Invitation link<hx-input readonly value={link} /></hx-label><hx-button
 					type="button"
-					onclick={() => void copy('Link', link)}>Copy link</button
+					onclick={() => void copy('Link', link)}>Copy link</hx-button
 				>
-			</div>
-			<div class="copy-row">
-				<label>Invitation code<input readonly value={invitation.code} /></label><button
+			</hx-div>
+			<hx-div class="copy-row">
+				<hx-label>Invitation code<hx-input readonly value={invitation.code} /></hx-label><hx-button
 					type="button"
-					onclick={() => void copy('Code', invitation?.code ?? '')}>Copy code</button
+					onclick={() => void copy('Code', invitation?.code ?? '')}>Copy code</hx-button
 				>
-			</div>
-			{#if copied}<p class="muted" role="status">{copied}</p>{/if}
-		</div>{/if}
-</section>
+			</hx-div>
+			{#if copied}<hx-p class="muted" role="status">{copied}</hx-p>{/if}
+		</hx-div>{/if}
+</hx-section>

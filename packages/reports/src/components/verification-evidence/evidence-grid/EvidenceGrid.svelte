@@ -1,12 +1,18 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Media } from "./EvidenceGrid.types";
+	import type { Media } from './EvidenceGrid.types';
 
 	import type { Evidence } from '../../../models/reports-media/Report.types';
 	import type { Report } from '../../../models/reports-media/Report.types';
 	import { evidenceMedia } from '../../../utils/verification-evidence/evidenceMedia';
 	import { audioPairs } from '../../../utils/reports-media/audioPairs';
 	import { t } from '../../../utils/reports-media/reportLocale';
-	import { galleryEvidence, screenSize, type ScreenSize } from '../../../utils/verification-evidence/reportFilter';
+	import {
+		galleryEvidence,
+		screenSize,
+		type ScreenSize
+	} from '../../../utils/verification-evidence/reportFilter';
 	import { reportFilter } from './reportFilter';
 	import AudioComparisonViewer from '../../reports-media/AudioComparisonViewer.svelte';
 	import EvidenceCard from '../EvidenceCard.svelte';
@@ -89,97 +95,96 @@
 			viewport = size === 'other' ? '' : size;
 		}
 	}
-
 </script>
 
-<section class="gallery-section" aria-labelledby={idPrefix + 'gallery-title'}>
-	<div class="section-heading">
-		<div>
-			<h2 id={idPrefix + 'gallery-title'}>{$t(audioCount ? 'mediaGallery' : 'gallery')}</h2>
-			<p class="muted">{$t(audioCount ? 'mediaEvidenceNote' : 'evidenceNote')}</p>
-		</div>
-		<span class="muted"
+<hx-section class="gallery-section" aria-labelledby={idPrefix + 'gallery-title'}>
+	<hx-div class="section-heading">
+		<hx-div>
+			<hx-h2 id={idPrefix + 'gallery-title'}>{$t(audioCount ? 'mediaGallery' : 'gallery')}</hx-h2>
+			<hx-p class="muted">{$t(audioCount ? 'mediaEvidenceNote' : 'evidenceNote')}</hx-p>
+		</hx-div>
+		<hx-span class="muted"
 			>{#if pairs.size}{$t('galleryEntries', {
 					values: { shown: filtered.length, total: browsable.length }
-				})}{:else}{filtered.length} / {browsable.length}{/if}</span
+				})}{:else}{filtered.length} / {browsable.length}{/if}</hx-span
 		>
-	</div>
+	</hx-div>
 	{#if reportId && onUploaded}
 		<UploadComparison {reportId} {onUploaded} />
 		<UploadAudio {reportId} {onUploaded} />
 	{/if}
 	{#if showMedia}
-		<div class="media-tabs" role="group" aria-label={$t('mediaType')}>
-			<button class:active={!mediaMode} aria-pressed={!mediaMode} onclick={() => setMedia('')}
-				>{$t('allMedia')}</button
+		<hx-div class="media-tabs" role="group" aria-label={$t('mediaType')}>
+			<hx-button class:active={!mediaMode} aria-pressed={!mediaMode} onclick={() => setMedia('')}
+				>{$t('allMedia')}</hx-button
 			>
-			<button
+			<hx-button
 				class:active={mediaMode === 'image'}
 				aria-pressed={mediaMode === 'image'}
 				onclick={() => setMedia('image')}
-				>{$t('screenshots')} <span class="media-count">{imageCount}</span></button
+				>{$t('screenshots')} <hx-span class="media-count">{imageCount}</hx-span></hx-button
 			>
-			<button
+			<hx-button
 				class:active={mediaMode === 'audio'}
 				aria-pressed={mediaMode === 'audio'}
 				onclick={() => setMedia('audio')}
-				>{$t('audio')} <span class="media-count">{audioCount}</span></button
+				>{$t('audio')} <hx-span class="media-count">{audioCount}</hx-span></hx-button
 			>
-		</div>
+		</hx-div>
 	{/if}
-	<div class="gallery-filters" class:audio-mode={mediaMode === 'audio'}>
+	<hx-div class="gallery-filters" class:audio-mode={mediaMode === 'audio'}>
 		{#if mediaMode !== 'audio'}
-			<div class="toolbar viewport-tabs" role="group" aria-label={$t('viewport')}>
-				<button
+			<hx-div class="toolbar viewport-tabs" role="group" aria-label={$t('viewport')}>
+				<hx-button
 					class:active={!viewport}
 					aria-pressed={!viewport}
 					aria-label={$t('allScreenSizes')}
-					onclick={() => (viewport = '')}>{$t('all')}</button
+					onclick={() => (viewport = '')}>{$t('all')}</hx-button
 				>
 				{#each ['mobile', 'tablet', 'desktop'] as size}
-					<button
+					<hx-button
 						class:active={viewport === size}
 						aria-pressed={viewport === size}
 						aria-label={$t(size + 'Screenshots')}
-						onclick={() => (viewport = size as ScreenSize)}>{$t(size + 'Screenshots')}</button
+						onclick={() => (viewport = size as ScreenSize)}>{$t(size + 'Screenshots')}</hx-button
 					>
 				{/each}
-			</div>
+			</hx-div>
 		{/if}
-		<div class="toolbar category-tabs" role="group" aria-label={$t('filters')}>
-			<button class:active={!category} aria-pressed={!category} onclick={() => (category = '')}
-				>{$t('all')}</button
+		<hx-div class="toolbar category-tabs" role="group" aria-label={$t('filters')}>
+			<hx-button class:active={!category} aria-pressed={!category} onclick={() => (category = '')}
+				>{$t('all')}</hx-button
 			>
-			{#each categories as name}<button
+			{#each categories as name}<hx-button
 					class:active={category === name}
 					aria-pressed={category === name}
-					onclick={() => (category = name)}>{name}</button
+					onclick={() => (category = name)}>{name}</hx-button
 				>{/each}
-		</div>
-		<div class="toolbar">
-			<input
+		</hx-div>
+		<hx-div class="toolbar">
+			<hx-input
 				bind:value={search}
 				placeholder={$t(audioCount ? 'searchMedia' : 'searchEvidence')}
 				aria-label={$t(audioCount ? 'searchMedia' : 'searchEvidence')}
 			/>
 			<Select bind:value={status} label={$t('status')}
-				><option value="">{$t('status')}: {$t('all')}</option
-				>{#each ['passed', 'failed', 'blocked', 'skipped', 'not-proven'] as key}<option value={key}
-						>{$t(key)}</option
+				><hx-option value="">{$t('status')}: {$t('all')}</hx-option
+				>{#each ['passed', 'failed', 'blocked', 'skipped', 'not-proven'] as key}<hx-option
+						value={key}>{$t(key)}</hx-option
 					>{/each}</Select
 			>
-		</div>
-	</div>
-	<div class="evidence-grid">
+		</hx-div>
+	</hx-div>
+	<hx-div class="evidence-grid">
 		{#each filtered as item (item.id)}<EvidenceCard
 				{item}
 				before={pairs.get(item.id)}
 				{assetBase}
 				onopen={() => openItem(item)}
 			/>{/each}
-	</div>
-	{#if !filtered.length}<p class="empty">{$t('noEvidence')}</p>{/if}
-</section>
+	</hx-div>
+	{#if !filtered.length}<hx-p class="empty">{$t('noEvidence')}</hx-p>{/if}
+</hx-section>
 <EvidenceViewer
 	items={images}
 	navigableItems={filteredImages}

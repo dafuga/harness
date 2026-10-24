@@ -1,5 +1,7 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	let { label = 'Plan' }: { label?: string } = $props();
 </script>
 
-<span class="plan-badge">{label}</span>
+<hx-span class="plan-badge">{label}</hx-span>

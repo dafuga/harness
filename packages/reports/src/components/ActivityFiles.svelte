@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms shared-primitives/atoms -->
 <script lang="ts">
 	import CategoryImplementation from './projects-sessions/ActivityFiles.svelte';
 	import type { ComponentProps } from 'svelte';

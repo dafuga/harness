@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
@@ -26,10 +28,10 @@
 	}
 </script>
 
-<a
+<hx-a
 	aria-label={label}
 	{...rest}
 	href={nav.href(to)}
 	onclick={follow}
-	data-harness-component="harness-entity-link">{@render children()}</a
+	data-harness-component="harness-entity-link">{@render children()}</hx-a
 >

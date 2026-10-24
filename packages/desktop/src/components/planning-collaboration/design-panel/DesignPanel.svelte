@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import SegmentedChoice from '../../shared-primitives/SegmentedChoice.svelte';
@@ -104,17 +106,18 @@
 	}
 </script>
 
-<section class="panel design-panel">
-	<div class="row">
-		<h2>{headless ? 'Plan' : entity.planned ? 'Proposed ' + entity.kind : 'Design'}</h2>
-		{#if current}{#if !headless}<span class="chip">{current.generator}</span>{/if}<Select
+<hx-section class="panel design-panel">
+	<hx-div class="row">
+		<hx-h2>{headless ? 'Plan' : entity.planned ? 'Proposed ' + entity.kind : 'Design'}</hx-h2>
+		{#if current}{#if !headless}<hx-span class="chip">{current.generator}</hx-span>{/if}<Select
 				label={headless ? 'Plan version' : 'Design version'}
 				bind:value={version}
-				>{#each entity.versions as v (v.version)}<option value={v.version}>{imageLabel(v)}</option
+				>{#each entity.versions as v (v.version)}<hx-option value={v.version}
+						>{imageLabel(v)}</hx-option
 					>{/each}</Select
-			><small>Committed {headless ? 'plan' : 'design'} · {version}</small>{/if}
-	</div>
-	{#if current && choices.length}<div class="design-options">
+			><hx-small>Committed {headless ? 'plan' : 'design'} · {version}</hx-small>{/if}
+	</hx-div>
+	{#if current && choices.length}<hx-div class="design-options">
 			<SegmentedChoice
 				label="Design option"
 				options={choices.map((item) => named(item.id))}
@@ -122,9 +125,9 @@
 					() => (chosen ? named(chosen.id) : ''),
 					(value) => (option = choices[Number(value.slice(7)) - 1]?.id ?? option)
 				}
-			/>{#if chosen}<small class="option-direction">{chosen.direction}</small>{/if}
-		</div>{/if}
-	{#if current && selected}<div class="design-controls">
+			/>{#if chosen}<hx-small class="option-direction">{chosen.direction}</hx-small>{/if}
+		</hx-div>{/if}
+	{#if current && selected}<hx-div class="design-controls">
 			<SegmentedChoice
 				label="Viewport"
 				bind:value={viewport}
@@ -139,8 +142,8 @@
 					)
 				]}
 			/>
-		</div>
-		<div class:before-after={before}>
+		</hx-div>
+		<hx-div class:before-after={before}>
 			{#if before}<PriorImage
 					{workspace}
 					entityId={entity.id}
@@ -155,19 +158,19 @@
 					writable={annotatable}
 					{comment}
 					select={onthread}
-				/>{:else}<p class="empty">{error || 'Loading design image…'}</p>{/if}
-		</div>{:else if current}<article class="behavior-notes">
-			<h3>Planned behavior</h3>
-			<p>{current.notes || 'No behavior notes recorded for this version.'}</p>
-			{#if headless}<p class="muted">{proposed}{current.images.length ? earlier : ''}</p>{/if}
-		</article>{:else}<div class="empty">
-			<h3>{headless ? 'No plan yet' : 'No design image yet'}</h3>
-			<p>{workspace.capabilities.planning ? empty.planning : empty.committed}</p>
-		</div>{/if}
-	{#if error && url}<p class="error" role="alert">{error}</p>{/if}
-	{#if entity.category === 'pages'}<div class="row measures">
-			<span>Size · {entity.size.text || 'Not measured'}</span><span
-				>Performance · {entity.performance.text || 'Not measured'}</span
+				/>{:else}<hx-p class="empty">{error || 'Loading design image…'}</hx-p>{/if}
+		</hx-div>{:else if current}<hx-article class="behavior-notes">
+			<hx-h3>Planned behavior</hx-h3>
+			<hx-p>{current.notes || 'No behavior notes recorded for this version.'}</hx-p>
+			{#if headless}<hx-p class="muted">{proposed}{current.images.length ? earlier : ''}</hx-p>{/if}
+		</hx-article>{:else}<hx-div class="empty">
+			<hx-h3>{headless ? 'No plan yet' : 'No design image yet'}</hx-h3>
+			<hx-p>{workspace.capabilities.planning ? empty.planning : empty.committed}</hx-p>
+		</hx-div>{/if}
+	{#if error && url}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+	{#if entity.category === 'pages'}<hx-div class="row measures">
+			<hx-span>Size · {entity.size.text || 'Not measured'}</hx-span><hx-span
+				>Performance · {entity.performance.text || 'Not measured'}</hx-span
 			>
-		</div>{/if}
-</section>
+		</hx-div>{/if}
+</hx-section>

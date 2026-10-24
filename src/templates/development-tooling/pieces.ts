@@ -1,5 +1,6 @@
 import type { PieceContext } from './pieces.types';
 import { separateTypeDeclarations } from './separateTypeDeclarations';
+import { atomicMarkup } from './atomicMarkup';
 import { toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import {
@@ -83,7 +84,22 @@ export function pieceFiles(
 	name: string,
 	context: PieceContext = {}
 ): PlannedFile[] {
-	return separateTypeDeclarations(pieceBuilders[kind](name, context));
+	return separateTypeDeclarations(
+		pieceBuilders[kind](name, context).map((file) => ({
+			...file,
+			contents: file.path.endsWith('.svelte')
+				? atomicMarkup(
+						file.contents,
+						file.path,
+						kind === 'layout'
+							? 'layout'
+							: ['view', 'resource'].includes(kind)
+								? 'page'
+								: (context.level ?? 'molecule')
+					)
+				: file.contents
+		}))
+	);
 }
 
 function testFiles(name: string): PlannedFile[] {

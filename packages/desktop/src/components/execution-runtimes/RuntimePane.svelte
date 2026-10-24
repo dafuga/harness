@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../../../reports/src/models/Report.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
@@ -33,14 +35,15 @@
 	});
 </script>
 
-<figure class="runtime-pane" aria-label={title}>
-	<figcaption><strong>{title}</strong><span class="chip">{role}</span></figcaption>
-	{#if item.missing}<p class="runtime-gap">
-			<StatusIcon status="failed" reason="No capture" /><span>{item.note}</span>
-		</p>{:else if problem}<p class="runtime-gap">
-			<StatusIcon status="failed" reason="Not verified" /><span>{problem}</span>
-		</p>{:else if url}<img src={url} alt={`${item.title} at ${item.viewport}`} />
-		<p class="runtime-standing" class:stale={item.standing !== 'Fresh capture'}>
+<hx-figure class="runtime-pane" aria-label={title}>
+	<hx-figcaption><hx-strong>{title}</hx-strong><hx-span class="chip">{role}</hx-span></hx-figcaption
+	>
+	{#if item.missing}<hx-p class="runtime-gap">
+			<StatusIcon status="failed" reason="No capture" /><hx-span>{item.note}</hx-span>
+		</hx-p>{:else if problem}<hx-p class="runtime-gap">
+			<StatusIcon status="failed" reason="Not verified" /><hx-span>{problem}</hx-span>
+		</hx-p>{:else if url}<hx-img src={url} alt={`${item.title} at ${item.viewport}`} />
+		<hx-p class="runtime-standing" class:stale={item.standing !== 'Fresh capture'}>
 			{item.standing} · {item.status}
-		</p>{:else}<p class="muted">Reading the capture…</p>{/if}
-</figure>
+		</hx-p>{:else}<hx-p class="muted">Reading the capture…</hx-p>{/if}
+</hx-figure>

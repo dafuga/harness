@@ -6,6 +6,14 @@
 	"responsibility": "Offers the reasoning efforts supported by the selected model in a compact picker.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.choice-dialog",
+			"desktop.component.icon",
+			"reports.component.shared-primitives-atoms-html-button"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/AgentEffortPicker.svelte",
@@ -44,6 +52,11 @@
 		},
 		{
 			"unit": "desktop.component.icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
 		}

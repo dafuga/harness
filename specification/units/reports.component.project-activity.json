@@ -6,6 +6,18 @@
 	"responsibility": "Presents recorded repository activity alongside available live agent and worktree observations.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.activity-agents",
+			"reports.component.activity-files",
+			"reports.component.activity-loops",
+			"reports.component.activity-work",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/project-activity/ProjectActivity.svelte",
@@ -69,6 +81,21 @@
 		},
 		{
 			"unit": "reports.component.activity-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},

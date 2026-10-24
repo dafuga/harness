@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { timeLabel } from '../../utils/development-tooling/timeLabel';
@@ -28,11 +30,9 @@
 	});
 </script>
 
-<footer class="status-bar">
-	<span>{state}</span>{#if cache}<span class="cache-state">{cache}</span>{/if}<HostedConnection
-		{workspace}
-		compact
-	/><RemoteConnection {workspace} compact /><span
-		>{workspace.snapshot?.revision.commit.slice(0, 7)}</span
+<hx-footer class="status-bar">
+	<hx-span>{state}</hx-span>{#if cache}<hx-span class="cache-state">{cache}</hx-span
+		>{/if}<HostedConnection {workspace} compact /><RemoteConnection {workspace} compact /><hx-span
+		>{workspace.snapshot?.revision.commit.slice(0, 7)}</hx-span
 	>
-</footer>
+</hx-footer>

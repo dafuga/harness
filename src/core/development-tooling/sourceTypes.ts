@@ -1,7 +1,7 @@
 import type { ComplexityCoverage } from '../../utils/development-tooling/complexityCoverage';
 import type { ReferenceVia, SourceLanguage } from '../../utils/development-tooling/scanImports';
 import type { SourceBlock } from '../../utils/development-tooling/sourceBlocks';
-import type { ContractItem } from './unitTypes';
+import type { ContractItem, ComponentManifest } from './unitTypes';
 
 export type FileClass = 'source' | 'test' | 'global' | 'registry' | 'ignored' | 'other';
 export type UncertainReason =
@@ -29,6 +29,7 @@ export interface ResolvedReference {
 }
 
 export interface SourceFile {
+	composition?: ComponentManifest['composition'];
 	path: string;
 	/** Git blob hash of the contents. */
 	hash: string;

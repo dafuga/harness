@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	let { stream }: { stream?: MediaStream } = $props();
 	let video = $state<HTMLVideoElement>();
@@ -30,10 +32,12 @@
 	});
 </script>
 
-<div>
-	<video bind:this={video} autoplay muted playsinline aria-label="AI video"></video>
-	<small role="status">AI output: {fps === null ? 'waiting for video frames' : fps + ' fps'}</small>
-</div>
+<hx-div>
+	<hx-video bind:this={video} autoplay muted playsinline aria-label="AI video"></hx-video>
+	<hx-small role="status"
+		>AI output: {fps === null ? 'waiting for video frames' : fps + ' fps'}</hx-small
+	>
+</hx-div>
 
 <style>
 	video {

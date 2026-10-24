@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import { LevelValidator } from '../../../../game/src/index';
@@ -45,53 +47,54 @@
 		change({ style: (event.currentTarget as HTMLTextAreaElement).value });
 </script>
 
-<div class="fields" data-harness-component="game-view-fields">
-	<div class="toolbar">
+<hx-div class="fields" data-harness-component="game-view-fields">
+	<hx-div class="toolbar">
 		<Select label="View" bind:value={() => view.id, select}>
 			{#each views as item (item.id)}
-				<option value={item.id}>{item.title}</option>
+				<hx-option value={item.id}>{item.title}</hx-option>
 			{/each}
 		</Select>
-		<div class="sections" role="group" aria-label="Game sections">
+		<hx-div class="sections" role="group" aria-label="Game sections">
 			{#each shown as name (name)}
-				<button
+				<hx-button
 					type="button"
 					class:gold={section === name}
 					aria-pressed={section === name}
 					disabled={gated(name)}
-					onclick={() => (section = name)}>{name}</button
+					onclick={() => (section = name)}>{name}</hx-button
 				>
 			{/each}
-		</div>
-		<button
+		</hx-div>
+		<hx-button
 			type="button"
 			class="toggle"
 			aria-expanded={expanded}
 			aria-controls="game-view-settings"
 			onclick={() => (expanded = !expanded)}
 		>
-			View settings <span aria-hidden="true">{expanded ? '▴' : '▾'}</span>
-		</button>
-	</div>
-	<div id="game-view-settings" class="settings" hidden={!expanded}>
-		<label class="field">
-			<small>View title</small>
-			<input value={view.title} {readonly} oninput={retitle} />
-		</label>
-		<div class="field">
-			<small aria-hidden="true">Dimension</small>
+			View settings <hx-span aria-hidden="true">{expanded ? '▴' : '▾'}</hx-span>
+		</hx-button>
+	</hx-div>
+	<hx-div id="game-view-settings" class="settings" hidden={!expanded}>
+		<hx-label class="field">
+			<hx-small>View title</hx-small>
+			<hx-input value={view.title} {readonly} oninput={retitle} />
+		</hx-label>
+		<hx-div class="field">
+			<hx-small aria-hidden="true">Dimension</hx-small>
 			<Select label="Dimension" bind:value={() => view.dimension, reshape} disabled={readonly}>
-				<option value="2d">2D</option>
-				<option value="3d">3D</option>
+				<hx-option value="2d">2D</hx-option>
+				<hx-option value="3d">3D</hx-option>
 			</Select>
-		</div>
-		<label class="field style">
-			<small>Art direction</small>
-			<textarea rows="2" value={view.style} {readonly} oninput={restyle}></textarea>
-		</label>
-		{#if !readonly}<button type="button" class="new" onclick={createLevel}>New level</button>{/if}
-	</div>
-</div>
+		</hx-div>
+		<hx-label class="field style">
+			<hx-small>Art direction</hx-small>
+			<hx-textarea rows="2" value={view.style} {readonly} oninput={restyle}></hx-textarea>
+		</hx-label>
+		{#if !readonly}<hx-button type="button" class="new" onclick={createLevel}>New level</hx-button
+			>{/if}
+	</hx-div>
+</hx-div>
 
 <style>
 	.fields {

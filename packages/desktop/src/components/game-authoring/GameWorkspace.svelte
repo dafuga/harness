@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import type { Source } from './GameWorkspace.types';
 	import { resolve } from '$app/paths';
@@ -136,26 +138,30 @@
 </script>
 
 <GameNavigationGuard active={!demo && editable && dirty} />
-<section class="game" data-harness-component="game-workspace">
-	<a class="back" href={resolve('/harness')}><span aria-hidden="true">←</span> Back to project</a>
-	<header class="row" style="flex-wrap:wrap">
-		<h1 style="flex:1;margin:0">Game Views</h1>
-		{#if demo}<span class="chip gold">Demo</span>{/if}
-		{#if commit}<span class="chip">History · {commit.slice(0, 8)}</span>{/if}
-		{#if readonly && !commit}<span class="chip">Read-only</span>{/if}
-		{#if dirty}<span class="chip gold">Unsaved changes</span>{/if}
+<hx-section class="game" data-harness-component="game-workspace">
+	<hx-a class="back" href={resolve('/harness')}
+		><hx-span aria-hidden="true">←</hx-span> Back to project</hx-a
+	>
+	<hx-header class="row" style="flex-wrap:wrap">
+		<hx-h1 style="flex:1;margin:0">Game Views</hx-h1>
+		{#if demo}<hx-span class="chip gold">Demo</hx-span>{/if}
+		{#if commit}<hx-span class="chip">History · {commit.slice(0, 8)}</hx-span>{/if}
+		{#if readonly && !commit}<hx-span class="chip">Read-only</hx-span>{/if}
+		{#if dirty}<hx-span class="chip gold">Unsaved changes</hx-span>{/if}
 		{#if !demo && editable}
-			<button class="primary" disabled={!savable} onclick={save}>Save</button>
+			<hx-button class="primary" disabled={!savable} onclick={save}>Save</hx-button>
 		{/if}
-	</header>
-	{#if demo}<p class="muted">Demo: an in-memory example. Nothing here is saved.</p>{/if}
+	</hx-header>
+	{#if demo}<hx-p class="muted">Demo: an in-memory example. Nothing here is saved.</hx-p>{/if}
 	{#if conflict}
-		<p class="error" role="alert">
+		<hx-p class="error" role="alert">
 			This game was saved elsewhere since it was opened. Your edits are still here.
-			<button onclick={() => load({ projectId, commit, bridge })}>Discard edits and reload</button>
-		</p>
+			<hx-button onclick={() => load({ projectId, commit, bridge })}
+				>Discard edits and reload</hx-button
+			>
+		</hx-p>
 	{:else if error}
-		<p class="error" role="alert">{error}</p>
+		<hx-p class="error" role="alert">{error}</hx-p>
 	{/if}
 	{#if doc && view}
 		<GameViewFields
@@ -168,7 +174,7 @@
 			change={editView}
 		/>
 		{#if problems.length}
-			<p class="error" role="alert">Fix before saving or previewing: {problems.join(' ')}</p>
+			<hx-p class="error" role="alert">Fix before saving or previewing: {problems.join(' ')}</hx-p>
 		{/if}
 		{#if section === 'Level'}
 			<GameLevelPlan
@@ -203,9 +209,9 @@
 			<GamePreview initialRun={run} {view} {projectId} readonly={locked} onRun={track} {bridge} />
 		{/if}
 	{:else if busy}
-		<p class="muted">Loading the game…</p>
+		<hx-p class="muted">Loading the game…</hx-p>
 	{/if}
-</section>
+</hx-section>
 
 <style>
 	.game {

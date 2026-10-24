@@ -6,6 +6,10 @@
 	"responsibility": "Shows one shell at a branch tip or a selected commit: its contract, size, performance and what proves it.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": ["reports.component.harness-entity-visual-screen", "reports.component.harness-screen"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/harness/branch/[branch]/[...at]/layouts/[entity]/+page.svelte"

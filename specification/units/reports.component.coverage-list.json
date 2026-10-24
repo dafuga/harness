@@ -6,6 +6,10 @@
 	"responsibility": "Shows a report’s acceptance criteria and coverage checks.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.status-badge"]
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/CoverageList.svelte",

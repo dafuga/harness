@@ -6,6 +6,21 @@
 	"responsibility": "Provides repository, category, revision and scoped entity navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.brand-mark",
+			"reports.component.entity-search",
+			"reports.component.harness-harness-icon",
+			"reports.component.harness-harness-selectors",
+			"reports.component.harness-harness-tabs",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-nav",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"],
 		"symbols": ["HarnessNavbar"]
@@ -86,6 +101,31 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-tabs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

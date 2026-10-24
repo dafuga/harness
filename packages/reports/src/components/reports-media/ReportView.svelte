@@ -1,5 +1,7 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { Detail } from "./ReportView.types";
+	import type { Detail } from './ReportView.types';
 
 	import BrandMark from '../shared-primitives/BrandMark.svelte';
 	import { tick } from 'svelte';
@@ -37,53 +39,52 @@
 		opener?.focus();
 	}
 	let detailTitle = $derived(activeDetail ? $t(activeDetail) : '');
-
 </script>
 
-<main class="report-shell">
-	<nav class="topbar">
-		<a class="brand" href={portable ? '#' : '/harness/reports'}
-			><span class="brand-symbol"><BrandMark /></span> {$t('hub')}</a
+<hx-main class="report-shell">
+	<hx-nav class="topbar">
+		<hx-a class="brand" href={portable ? '#' : '/harness/reports'}
+			><hx-span class="brand-symbol"><BrandMark /></hx-span> {$t('hub')}</hx-a
 		>
-		<span class="workspace-label">{$t(portable ? 'html' : 'local')}</span>
-	</nav>
-	{#if !portable}<a class="back-link" href={'/harness/reports?project=' + report.project.id}
-			>← {$t('history')}</a
+		<hx-span class="workspace-label">{$t(portable ? 'html' : 'local')}</hx-span>
+	</hx-nav>
+	{#if !portable}<hx-a class="back-link" href={'/harness/reports?project=' + report.project.id}
+			>← {$t('history')}</hx-a
 		>{/if}
 	<ReportSummary {report} {downloadBase} {portable} />
 	<ReportFindings findings={report.findings} />
-	<section class="review-launch" aria-label={$t('reviewDetails')}>
-		<button
+	<hx-section class="review-launch" aria-label={$t('reviewDetails')}>
+		<hx-button
 			type="button"
 			aria-haspopup="dialog"
 			aria-label={`${$t('checks')}, ${report.checks.length} checks`}
 			onclick={(event) => openDetail('checks', event)}
 		>
-			<span>{$t('checks')}</span><span class="review-launch-count" aria-hidden="true"
-				>{report.checks.length} <span>↗</span></span
+			<hx-span>{$t('checks')}</hx-span><hx-span class="review-launch-count" aria-hidden="true"
+				>{report.checks.length} <hx-span>↗</hx-span></hx-span
 			>
-		</button>
-		<button
+		</hx-button>
+		<hx-button
 			type="button"
 			aria-haspopup="dialog"
 			aria-label={`${$t('acceptance')}, ${report.acceptance.length} criteria`}
 			onclick={(event) => openDetail('acceptance', event)}
 		>
-			<span>{$t('acceptance')}</span><span class="review-launch-count" aria-hidden="true"
-				>{report.acceptance.length} <span>↗</span></span
+			<hx-span>{$t('acceptance')}</hx-span><hx-span class="review-launch-count" aria-hidden="true"
+				>{report.acceptance.length} <hx-span>↗</hx-span></hx-span
 			>
-		</button>
-		<button
+		</hx-button>
+		<hx-button
 			type="button"
 			aria-haspopup="dialog"
 			aria-label={`${$t('coverage')}, ${report.coverage.length} workflows`}
 			onclick={(event) => openDetail('coverage', event)}
 		>
-			<span>{$t('coverage')}</span><span class="review-launch-count" aria-hidden="true"
-				>{report.coverage.length} <span>↗</span></span
+			<hx-span>{$t('coverage')}</hx-span><hx-span class="review-launch-count" aria-hidden="true"
+				>{report.coverage.length} <hx-span>↗</hx-span></hx-span
 			>
-		</button>
-	</section>
+		</hx-button>
+	</hx-section>
 	<Modal open={activeDetail !== null} title={detailTitle} variant="text" onClose={closeDetail}>
 		{#if activeDetail === 'checks'}<ReportChecks checks={report.checks} embedded />
 		{:else if activeDetail === 'acceptance'}<CoverageList {report} section="acceptance" embedded />
@@ -96,5 +97,7 @@
 		{onUploaded}
 	/>
 	<GameplayReplay {report} {assetBase} {portable} />
-	<footer class="report-footer"><span>{$t(report.state)}</span><span>{report.id}</span></footer>
-</main>
+	<hx-footer class="report-footer"
+		><hx-span>{$t(report.state)}</hx-span><hx-span>{report.id}</hx-span></hx-footer
+	>
+</hx-main>

@@ -6,6 +6,13 @@
 	"responsibility": "Shows running explorer design tokens while preserving selected branch or commit navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"reports.component.explorer-ui-harness-explorer-styles-screen",
+			"reports.component.harness-screen"
+		]
+	},
 	"owns": {
 		"source": ["packages/reports/src/routes/harness/branch/[branch]/[...at]/styles/+page.svelte"],
 		"symbols": ["+page"]

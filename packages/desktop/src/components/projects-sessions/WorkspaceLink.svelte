@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { base } from '$app/paths';
 	import type { Snippet } from 'svelte';
@@ -35,4 +37,4 @@
 
 <!-- Paths are validated by Workspace and shared across hosts with different generated route types. -->
 <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-<a class={style} {href} {title} aria-label={label} onclick={open}>{@render children()}</a>
+<hx-a class={style} {href} {title} aria-label={label} onclick={open}>{@render children()}</hx-a>

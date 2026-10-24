@@ -2,6 +2,7 @@ import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 
 /** Builds the side-effect-free public API, its declarations and the shipped kernel artifacts. */
 const entries = {
+	atoms: 'development-tooling/atoms',
 	contracts: 'contracts',
 	runtime: 'runtime',
 	verification: 'verification',

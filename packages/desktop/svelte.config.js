@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { atomicComponents } from '../../src/templates/development-tooling/atomicPreprocess.js';
 
 export default {
 	kit: {
@@ -7,5 +8,5 @@ export default {
 		alias: { $desktop: './src', $shared: '../reports/src/components' },
 		prerender: { entries: [] }
 	},
-	preprocess: vitePreprocess()
+	preprocess: [atomicComponents(), vitePreprocess()]
 };

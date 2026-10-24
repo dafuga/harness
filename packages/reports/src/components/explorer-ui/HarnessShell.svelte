@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import ExplorerContent from './ExplorerContent.svelte';
 	import HarnessConsole from './HarnessConsole.svelte';

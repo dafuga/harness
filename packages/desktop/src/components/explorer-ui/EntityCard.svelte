@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { explorerName } from '../../../../reports/src/utils/explorerName';
 	import type { CatalogEntity } from '../../models/development-tooling/Desktop.types';
@@ -25,7 +27,7 @@
 </script>
 
 {#snippet thumbnail(minimal = false)}
-	<div class="thumbnail" class:runtime={recorded !== null}>
+	<hx-div class="thumbnail" class:runtime={recorded !== null}>
 		{#if recorded}
 			<RecordedPreview
 				{workspace}
@@ -35,26 +37,26 @@
 				compact={minimal}
 			/>
 		{:else if image}
-			<img src={image} alt={`${entity.title} design ${entity.latestVersion ?? ''}`} />
+			<hx-img src={image} alt={`${entity.title} design ${entity.latestVersion ?? ''}`} />
 		{:else}
-			<span class="muted"
+			<hx-span class="muted"
 				>{entity.thumbnail
 					? 'Design preview unavailable'
 					: entity.hasPlan
 						? 'No design image yet'
-						: 'No screenshot recorded'}</span
+						: 'No screenshot recorded'}</hx-span
 			>
 		{/if}
-	</div>
+	</hx-div>
 {/snippet}
 
-<article class="entity-card" class:planned={entity.hasPlan}>
+<hx-article class="entity-card" class:planned={entity.hasPlan}>
 	{#if headless && !entity.hasPlan}
 		<WorkspaceLink
 			{workspace}
 			to={workspace.path(entity.category, entity.id)}
 			class="helper-card-link"
-			label={`Open ${entity.title}`}><code>{entity.title}</code></WorkspaceLink
+			label={`Open ${entity.title}`}><hx-code>{entity.title}</hx-code></WorkspaceLink
 		>
 	{:else if compact}
 		<WorkspaceLink
@@ -63,31 +65,32 @@
 			class="page-card-link"
 			label={`Open ${explorerName(entity)}`}
 		>
-			<h2>{explorerName(entity)}</h2>
+			<hx-h2>{explorerName(entity)}</hx-h2>
 			{@render thumbnail(true)}
 		</WorkspaceLink>
 	{:else}
-		<div class="row">
-			<h2>{explorerName(entity)}</h2>
+		<hx-div class="row">
+			<hx-h2>{explorerName(entity)}</hx-h2>
 			{#if entity.hasPlan}<PlanBadge />{/if}
-		</div>
-		<p>{entity.summary}</p>
+		</hx-div>
+		<hx-p>{entity.summary}</hx-p>
 		{#if !headless}{@render thumbnail()}{/if}
-		<div class="row card-meta">
-			<span>{recorded ? entity.kind : entity.latestVersion || entity.kind}</span><StatusIcon
+		<hx-div class="row card-meta">
+			<hx-span>{recorded ? entity.kind : entity.latestVersion || entity.kind}</hx-span><StatusIcon
 				status={entity.verification}
 				reason={entity.verificationNote}
 			/>
-		</div>
+		</hx-div>
 		<!-- A proposal is reviewed where its designs are, a function's where its plan is. -->
 		<WorkspaceLink
 			{workspace}
 			to={workspace.path(entity.category, entity.id, entity.hasPlan ? reviewed : '')}
 			class="outline gold"
-			>{entity.hasPlan ? `Review ${reviewed}` : 'Open ' + entity.kind} <span>→</span></WorkspaceLink
+			>{entity.hasPlan ? `Review ${reviewed}` : 'Open ' + entity.kind}
+			<hx-span>→</hx-span></WorkspaceLink
 		>
 	{/if}
-</article>
+</hx-article>
 
 <style>
 	:global(.entity-card .helper-card-link) {

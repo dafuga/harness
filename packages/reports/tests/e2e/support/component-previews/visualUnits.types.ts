@@ -7,4 +7,5 @@ export interface PreviewManifest {
 	owns: { source: string[]; symbols: string[] };
 	runtime: { entry: string };
 	catalog?: { visibility: 'public' | 'internal' };
+	composition?: { level: string; element?: string };
 }

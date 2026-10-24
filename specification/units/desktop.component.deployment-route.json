@@ -6,6 +6,10 @@
 	"responsibility": "Displays accessible source-to-destination labels and a directional arrow for a deployment.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": ["reports.component.shared-primitives-atoms-html-span"]
+	},
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/DeploymentRoute.svelte",
@@ -34,6 +38,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.deployment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		}

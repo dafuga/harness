@@ -1,3 +1,5 @@
+<!-- @harness-tier organism -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { HarnessLegacyReport } from '../../../models/explorer-ui/Harness.types';
 	import { legacyEvidence, legacyLink } from './legacyEvidence';
@@ -27,51 +29,51 @@
 	const status = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 </script>
 
-<section class="hc-card" aria-label="Earlier reports">
-	<h2>Earlier reports</h2>
-	<p class="hc-muted">
+<hx-section class="hc-card" aria-label="Earlier reports">
+	<hx-h2>Earlier reports</hx-h2>
+	<hx-p class="hc-muted">
 		Reports made before verification was kept in Git, with their original outcome and date. None of
 		them is a verification record, and none of their files is tied to a build.
-	</p>
-	<ul class="hc-records" aria-label="Earlier reports">
+	</hx-p>
+	<hx-ul class="hc-records" aria-label="Earlier reports">
 		{#each ordered as report (report.id)}
-			<li class:current={report.linked === commit}>
-				<strong>{report.title}</strong>
-				<span class="badge {report.status}"
-					><span aria-hidden="true">●</span> {status(report.status)}</span
+			<hx-li class:current={report.linked === commit}>
+				<hx-strong>{report.title}</hx-strong>
+				<hx-span class="badge {report.status}"
+					><hx-span aria-hidden="true">●</hx-span> {status(report.status)}</hx-span
 				>
-				<span class="hc-muted"
+				<hx-span class="hc-muted"
 					>{report.startedAt.slice(0, 10)} · {report.environment} · {legacyLink(
 						report,
 						commit
-					)}</span
+					)}</hx-span
 				>
 				{#if report.linked && report.linked !== commit && known.has(report.linked)}
-					<button type="button" class="hc-chip" onclick={() => onselect(report.linked ?? commit)}
-						>Show commit {report.linked.slice(0, 7)}</button
+					<hx-button type="button" class="hc-chip" onclick={() => onselect(report.linked ?? commit)}
+						>Show commit {report.linked.slice(0, 7)}</hx-button
 					>
 				{/if}
 				{#if report.media.length}
-					<button
+					<hx-button
 						type="button"
 						class="hc-chip"
 						aria-expanded={opened === report.id}
 						onclick={() => (opened = opened === report.id ? null : report.id)}
-						>{opened === report.id ? 'Hide its evidence' : 'Show its evidence'}</button
+						>{opened === report.id ? 'Hide its evidence' : 'Show its evidence'}</hx-button
 					>
 				{/if}
-				<details>
-					<summary>Summary and {report.checks.length} checks</summary>
-					<p>{report.summary}</p>
-					<div class="hc-failures">
-						{#each report.checks as check, position (position)}<p>
+				<hx-details>
+					<hx-summary>Summary and {report.checks.length} checks</hx-summary>
+					<hx-p>{report.summary}</hx-p>
+					<hx-div class="hc-failures">
+						{#each report.checks as check, position (position)}<hx-p>
 								{check.title}: {check.status}
-							</p>{/each}
-					</div>
-				</details>
-			</li>
+							</hx-p>{/each}
+					</hx-div>
+				</hx-details>
+			</hx-li>
 		{/each}
-	</ul>
+	</hx-ul>
 	{#if shown}
 		{#key shown.id}<EvidenceGrid
 				items={legacyEvidence(shown)}
@@ -79,4 +81,4 @@
 				idPrefix="legacy-"
 			/>{/key}
 	{/if}
-</section>
+</hx-section>

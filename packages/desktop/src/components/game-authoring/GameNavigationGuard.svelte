@@ -1,3 +1,5 @@
+<!-- @harness-tier molecule -->
+<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
 	import { beforeNavigate } from '$app/navigation';
 	let { active }: { active: boolean } = $props();
