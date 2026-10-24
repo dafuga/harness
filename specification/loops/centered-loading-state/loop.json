@@ -2,7 +2,7 @@
 	"name": "centered-loading-state",
 	"goal": "Show a centered spinner during history and revision loading at every viewport",
 	"createdAt": "2026-10-24T11:26:40.350Z",
-	"updatedAt": "2026-10-24T11:28:46.786Z",
+	"updatedAt": "2026-10-24T11:33:57.175Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T11:33:57.175Z",
+			"evidence": "Unchanged six-case loading matrix passed at 4e167f6ba. Paired stable-environment records: red 3065ca0b, green 1c826214; all six original and repaired screenshots retained in normal Git evidence."
 		},
 		{
 			"id": "verify",
