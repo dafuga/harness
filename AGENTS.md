@@ -23,6 +23,8 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 
 ## Shared Preview
 
+- Keep completed work on the common `main` codebase. Fetch and safely incorporate current remote `main` before landing; preserve unrelated changes and original source history. Route ready, frozen source heads through the coordinated merger so concurrent sessions do not overwrite one another.
+- Deliver the actual merged `main` app. Coordinate publication of both runtime source and revision data, select current `main` in the shared preview, and inspect fresh screenshots containing the change before claiming delivery. Report a pending merge or publication explicitly; branch fixtures and older selected commits do not prove current-main delivery.
 - Use one persistent browsing preview across Harness chats and worktrees. Reuse `http://127.0.0.1:5690`; verify the live owner at `http://127.0.0.1:47840/__harness_preview__` and coordinate source/history updates with Platforms.
 - Follow the shared preview lifecycle in `.codex/skills/harness/SKILL.md`. Do not change ownership ports or directly launch Vite, built servers or `report serve` to bypass the existing owner. Another persistent preview requires Daniel's explicit request.
 - Automated fixture servers are temporary: use existing test configuration and guaranteed task-owned teardown on every outcome. Preserve the shared preview, other projects' servers, source/history and evidence.
