@@ -4769,9 +4769,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "1bf1e0acb",
-			"reason": "Preserve declared catalog assignments when re-indexing module manifests.",
-			"definition": "4e12ef104588f51efedb9dc6ac149fc67cdf8fae4fd7367f9e4870889bd9d5a4"
+			"commit": "55e7a7bd5eac71b084e6392d31d93d0105fedf56",
+			"reason": "Preserve reviewed config controls when indexing; new config modules start internal.",
+			"definition": "ac01e017835f13fc239e5e764d9ba247f898871f3e773441f8cf8e1bc39321b5"
 		},
 		{
 			"unit": "hub.function.hub-snapshot",
