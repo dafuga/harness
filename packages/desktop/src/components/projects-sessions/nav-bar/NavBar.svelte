@@ -52,7 +52,9 @@
 				><Icon name={category} /><hx-span
 					>{category === 'functions'
 						? 'Helpers'
-						: category[0].toUpperCase() + category.slice(1)}</hx-span
+						: category === 'apis'
+							? 'APIs'
+							: category[0].toUpperCase() + category.slice(1)}</hx-span
 				></WorkspaceLink
 			>{/each}
 		<!-- On a phone, Game Views starts a row of its own, which search and settings then end. -->

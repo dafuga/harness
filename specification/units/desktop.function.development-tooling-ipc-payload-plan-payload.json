@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.development-tooling-ipc-payload-plan-payload",
+	"kind": "function",
+	"title": "planPayload",
+	"responsibility": "Validates a plan draft and preserves its optional proposed inputs, outputs and errors before local or hosted execution.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/development-tooling/ipc-payload/planPayload.ts"],
+		"symbols": ["planPayload"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "planPayload.input",
+				"type": "Record<string, unknown>",
+				"description": "Untrusted createPlan fields: category, title, goal and an optional proposed contract."
+			}
+		],
+		"outputs": [
+			{
+				"name": "planPayload",
+				"type": "PlanDraft",
+				"description": "Bounded plan fields, retaining the authored contract without adding states or viewports."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects invalid categories, text, contract fields, oversized lists and duplicate error names."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.ipc-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/development-tooling/ipc-payload/planPayload.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/development-tooling/ipc-payload/planPayload.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

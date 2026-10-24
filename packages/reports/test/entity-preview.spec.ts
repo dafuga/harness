@@ -1,4 +1,5 @@
 import { reviewHelperSource } from './entityPreviewFunctions';
+import { reviewApis } from './entityPreviewApis';
 import { expect, test } from '../../../test/support/browserTest';
 import { capture, fits, open, viewports, where } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -149,6 +150,12 @@ test('history lists changes, keeps profiles apart and opens a revision', async (
 	await expect(tab.getByText('First version')).toBeVisible();
 });
 for (const [name, size] of Object.entries(viewports)) {
+	test(`APIs catalog and per-page usage retain the selected revision at ${name}`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await reviewApis(page, name);
+	});
 	test(`every screen fits a ${name} window without scrolling sideways`, async ({ page: tab }) => {
 		await tab.setViewportSize(size);
 		const routes = [

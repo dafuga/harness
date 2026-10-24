@@ -38,6 +38,7 @@
 	} = $props();
 	const targets = (row: CatalogRow) => row.targets.map(humanize).join(' · ') || 'none';
 	const columns: Record<Kind, Column[]> = {
+		apis: [],
 		platforms: [],
 		layouts: [
 			['Used on', null],
@@ -86,6 +87,7 @@
 		if (chosen && !rows.includes(chosen)) chosen = null;
 	});
 </script>
+
 <hx-div
 	class="ex-scroll"
 	class:ex-config-values={category === 'configs'}
@@ -183,6 +185,7 @@
 		{/if}
 	</Modal>
 </hx-div>
+
 <style>
-	@import "./explorer-table/explorerTable.css";
+	@import './explorer-table/explorerTable.css';
 </style>

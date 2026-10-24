@@ -16,7 +16,7 @@ export function skillRules(projectType: string): string {
 }
 
 function regressionLoopRules(): string {
-	return `## Scaffold export coherence
+	return `${moduleTaskRules()}\n## Scaffold export coherence
 
 - Change generated source, tests and public export plans together. Verify every generated export targets an emitted scaffold and run the standard focused CLI project-check scenario after a scaffold shape change.
 
@@ -42,6 +42,17 @@ ${bugRepairPolicy()
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
 - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
+`;
+}
+
+function moduleTaskRules(): string {
+	return `## Module task handoff
+
+- When a Codex session assigns module implementation, use \`harness task feature <id> --goal <text> --tldr <text>\` then \`harness task add --input <file>\`.
+- Tasks require a registered module and a wantedContract with responsibility, inputs, outputs and errors. Harness commits the contract to refs/harness/tasks before pickup, preserving source HEAD and unrelated edits.
+- Task prompts start with the shared feature goal and TLDR, followed by the module's overall goal and pinned wanted contract. Keep shared context stable across related tasks.
+- Omitted models use auto: claude-haiku-5-5/medium, then gpt-6-luna/max only after confirmed Claude quota rejection. Explicit --model and --intelligence settings never silently fall back.
+- Run \`harness task worker --worker <id> --watch\` for assignment pickup. Workers preserve isolated worktrees for review; normal verification is still required. Use one repository as the active queue owner and \`harness task sync <remote>\` for explicit handoff; divergence is never overwritten.
 `;
 }
 

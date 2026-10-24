@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.networking-security-run-api-api-registry",
+	"kind": "workflow",
+	"title": "apiRegistry",
+	"responsibility": "Reads contracts for catalog entities, saved plans and backend units from the selected revision of the authorized project registry.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/networking-security/run-api/apiRegistry.ts"],
+		"symbols": ["apiRegistry"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "apiRegistry.client",
+				"type": "HarnessApiService"
+			},
+			{
+				"name": "apiRegistry.snapshot",
+				"type": "ApiSnapshot"
+			},
+			{
+				"name": "apiRegistry.resource",
+				"type": "string"
+			},
+			{
+				"name": "apiRegistry.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "apiRegistry",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/networking-security/run-api/apiRegistry.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/networking-security/run-api/apiRegistry.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

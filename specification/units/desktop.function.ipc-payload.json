@@ -114,6 +114,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.function.development-tooling-ipc-payload-plan-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.evidence-payload",
 			"via": "import",
 			"origin": "derived"

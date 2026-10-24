@@ -12,6 +12,7 @@ import {
 	versionPattern
 } from '../ipcFields';
 import { regionField } from './regionField';
+import { planPayload } from './planPayload';
 
 export function approvalPayload(value: unknown) {
 	const x = ipcFields(value);
@@ -150,12 +151,7 @@ export function ipcPayload(channel: string, input: unknown): unknown {
 	if (channel === 'project:snapshot')
 		return { branch: nullableText(x.branch), commit: nullableText(x.commit, commitPattern) };
 	if (channel.startsWith('deployment:')) return deploymentPayload(channel, x);
-	if (channel === 'plan:create')
-		return {
-			category: enumField(x.category, categories),
-			title: textField(x.title, 160),
-			goal: textField(x.goal, 6000)
-		};
+	if (channel === 'plan:create') return planPayload(x);
 	if (channel === 'thread:open') return threadPayload(x);
 	if (channel === 'run:start') return runPayload(x);
 	if (channel === 'run:cancel') return { runId: textField(x.runId, 80) };

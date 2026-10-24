@@ -1,0 +1,45 @@
+{
+	"name": "harness-api-cli",
+	"goal": "CLI users discover and retrieve local or hosted Harness resources, inspect and define contracts, download page screenshots and manage agents using the existing API with permissions and revision identity preserved",
+	"createdAt": "2026-10-24T17:14:42.020Z",
+	"updatedAt": "2026-10-24T18:00:51.094Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T17:18:48.371Z",
+			"evidence": "Both local and hosted confirmed. Spec defines generic API access, session isolation, exact-revision contracts, agent lifecycle and hash-verified recorded screenshots. HTTP-to-CLI matrix added before product implementation."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-24T17:37:51.289Z",
+			"evidence": "CLI and local/hosted API operations implemented at 1c1dcda3a. Immutable red/green record uses unchanged assertions and a 30-second integration-case limit; all 10 acceptance cases pass. Local and hosted controller cases also pass."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-24T18:00:51.094Z",
+			"evidence": "The clean-snapshot capture 38289a78de48e82a9ace123280ea323cee5737185385c9fee2ee34efd2f18231 at 2688f658b99f1ca52ca2b3e9b4a71249c77e8fe4 passed 73 tests on harbor-mbp-2: 20 CLI/context/registry/session, six local API, eleven hosted API, 36 IPC/proposal/evidence. All 20 changed executable units have timing and memory observations. Ownership/readable-contract guards pass after main integration. Full verification remains pending because process-cleanup and design-option-storage observation cases failed in the broader run. Both original failures reproduce in a clean snapshot of unchanged main bb0d5b323 on the same other laptop."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,45 @@
+{
+	"name": "module-task-queue",
+	"goal": "Module tasks require committed wanted contracts; assigned Claude and Codex workers receive feature-first prompts, module goals and exact model intelligence; auto falls back from Haiku 5.5 to Luna 6 max only on quota rejection",
+	"createdAt": "2026-10-24T20:36:25.100Z",
+	"updatedAt": "2026-10-24T22:22:03.465Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T22:22:02.444Z",
+			"evidence": "Task schema, shared feature prefix, pinned module goal, committed wanted contract, explicit model/intelligence and quota-only auto policy documented in verification.md; admission covered by the passing focused and CLI regressions."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-24T22:22:02.993Z",
+			"evidence": "Committed task queue, atomic assignment worker, native CLI adapters, retry/sync and Codex project guidance implemented. Source e4efd95a5c1c1bcb1886bc7c735ca63eb3ebed40; frozen-regression green f479aad816ff396078ec0ed9d1ddd3cf67ea6726. Live provider acceptance remains explicitly unproven."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-24T22:22:03.465Z",
+			"evidence": "31 combined CLI E2Es passed remotely; 31 focused unit/ownership/template cases passed. Frozen command discovery red d021e911faef9abaa3d05dbd1ab720e7730c9588e0f0601e58f6e6680302acc4 to green 8570b2ec0863a0cf5b24d91899c068cf350b17386989bf5bc07d6ff51f13acab; independent capture 2fdd5349bcc4a056333dcba5e1c3b66eb1b8549f77279d5cadd5e24486871e57. Full repository verification remains pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -40,19 +40,25 @@ beforeAll(async () => {
 }, 60_000);
 
 /** One tree as the impact analysis reads it, with the registry as it is stored. */
-function side(index: SourceIndex): ImpactSide {
+function side(index: SourceIndex, requests = true): ImpactSide {
+	const manifests = requests
+		? loaded.stored
+		: loaded.stored.map((unit) => ({
+				...unit,
+				dependencies: unit.dependencies.filter((dependency) => dependency.via !== 'http')
+			}));
 	return {
 		revision: 'working-tree',
 		config: loaded.config,
 		entries: [...index.files.values()].map(({ path, hash }) => ({ path, hash })),
-		manifests: loaded.stored,
+		manifests,
 		scenarios: loaded.scenarios,
-		graph: new SourceGraphService().build(index, loaded.stored, loaded.scenarios)
+		graph: new SourceGraphService().build(index, manifests, loaded.scenarios)
 	};
 }
 /** What the analysis reports when only the search's content differs from the tree indexed so. */
-function changed(index: SourceIndex): Promise<ImpactReport> {
-	const head = side(index);
+function changed(index: SourceIndex, requests = true): Promise<ImpactReport> {
+	const head = side(index, requests);
 	const entries = head.entries.map((entry) =>
 		entry.path === search ? { ...entry, hash: '0'.repeat(40) } : entry
 	);
@@ -116,8 +122,28 @@ test('without its declaration the import is a package from outside, and the bar 
 	expect(side(loaded.index).graph.uncertain).toEqual(side(bare).graph.uncertain);
 	const declared = reached(await changed(loaded.index));
 	const undeclared = reached(await changed(bare));
+	expect([
+		declared.includes('desktop.component.nav-bar'),
+		undeclared.includes('desktop.component.nav-bar')
+	]).toEqual([true, false]);
+	// Computed HTTP calls conservatively select their callers. Isolate module imports to retain
+	// the original negative proof rather than discarding it when new request facts are indexed.
+	const withoutRequests = (index: SourceIndex): SourceIndex => ({
+		...index,
+		files: new Map(
+			[...index.files].map(([path, file]) => [
+				path,
+				{
+					...file,
+					references: file.references.filter((reference) => reference.via !== 'http')
+				}
+			])
+		)
+	});
+	const imports = reached(await changed(withoutRequests(loaded.index), false));
+	const missing = reached(await changed(withoutRequests(bare), false));
 	const lost = ['desktop.component.nav-bar', 'desktop.page.root'];
-	expect(lost.map((unit) => [declared.includes(unit), undeclared.includes(unit)])).toEqual([
+	expect(lost.map((unit) => [imports.includes(unit), missing.includes(unit)])).toEqual([
 		[true, false],
 		[true, false]
 	]);

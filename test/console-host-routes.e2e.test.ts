@@ -3,7 +3,7 @@ import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest';
 import { browserErrorCollector } from './support/browserTest';
-import { sessions, visitCodeCatalogs } from './support/consoleHost';
+import { sessions, visitCodeCatalogs, visitApiCatalog } from './support/consoleHost';
 import {
 	installAndBuild,
 	pagesDev,
@@ -30,7 +30,7 @@ const main = (commit: string, rest: string) => `/harness/branch/main/commit/${co
 const tip = (rest: string) => `/harness/branch/main/${rest}`;
 /** The whole branch is one segment of an explorer address. */
 const slashed = `/harness/branch/${encodeURIComponent(slashBranch)}`;
-const categories = 'Pages,Code,Translations,Platforms'.split(',');
+const categories = 'Pages,APIs,Code,Translations,Platforms'.split(',');
 const pathOf = (page: Page) => new URL(page.url()).pathname;
 const bar = (page: Page) => page.getByRole('banner');
 const field = (page: Page, name: string) => bar(page).getByRole('combobox', { name, exact: true });
@@ -69,7 +69,7 @@ test('the host redirects the root and the query form to page paths, for the admi
 	// Pages of the explorer, and page paths of the earlier console, which the console leads on.
 	const explorer = [
 		main(head, 'functions'),
-		...['pages', 'layouts', 'shells', 'types', 'dependencies'].flatMap((path) => [
+		...['pages', 'apis', 'layouts', 'shells', 'types', 'dependencies'].flatMap((path) => [
 			tip(path),
 			main(head, path),
 			`${slashed}/${path}`
@@ -87,7 +87,6 @@ test('the host redirects the root and the query form to page paths, for the admi
 	const unasked = await get(`/harness?commit=${target.commit}`);
 	expect([unasked.status, unasked.headers.get('location')]).toEqual([403, null]);
 });
-
 test('in a browser each branch, commit and category of the installed console is its own path', async () => {
 	const page = await adminPage();
 	const [commit, other] = [field(page, 'Commit'), earlier()];
@@ -99,9 +98,7 @@ test('in a browser each branch, commit and category of the installed console is 
 		.getByRole('navigation', { name: 'Harness categories' })
 		.locator('a, button');
 	expect(await controls.allInnerTexts()).toEqual(categories);
-	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
-		0
-	);
+	await visitApiCatalog(page, tip('apis'), head);
 	await bar(page).getByRole('link', { name: 'Code', exact: true }).click();
 	const modules = bar(page).getByRole('tablist', { name: 'Code categories' });
 	await modules.getByRole('tab', { name: 'Layouts', exact: true }).click();

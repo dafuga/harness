@@ -1,3 +1,4 @@
+import { assertApiRoutes } from './explorer-route/apis';
 import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
 import {
@@ -62,6 +63,7 @@ test('keeps page and module entity categories separate from primary navigation',
 	measureWorkload('function.explorer-route', 'layout-catalog-behavior', () => {
 		expect(explorerCategories).toEqual([
 			'pages',
+			'apis',
 			'layouts',
 			'components',
 			'functions',
@@ -202,3 +204,5 @@ test('Models is a page tab and legacy page Contract links open Models in the sam
 	expect(explorerRoute('/branch/main/components/card', '?tab=models')?.tab).toBeUndefined();
 	expect(explorerRoute('/branch/main/components/card', '?tab=contract')?.tab).toBe('contract');
 });
+
+test('APIs are scoped catalog addresses and a page keeps its APIs tab', assertApiRoutes);

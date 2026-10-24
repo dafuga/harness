@@ -137,7 +137,15 @@
 			"PerformanceProfileService",
 			"registerTaskCommand",
 			"PerformanceEvidenceValidator",
-			"SourceProfileAdapter"
+			"SourceProfileAdapter",
+			"ApiCommand",
+			"HarnessApiService",
+			"HarnessHttpAdapter",
+			"ModuleTaskCommand",
+			"ModuleTaskRepository",
+			"ModuleTaskService",
+			"ModuleTaskRunnerAdapter",
+			"ModuleTaskWorkerService"
 		]
 	},
 	"contract": {
@@ -147,6 +155,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.claude-benchmark",
 			"via": "reexport",
@@ -178,6 +191,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.networking-security-harness-http",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.provider-catalog",
 			"via": "reexport",
 			"origin": "derived"
@@ -193,6 +211,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.agents-providers-module-task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.benchmark",
 			"via": "reexport",
 			"origin": "derived"
@@ -204,6 +227,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.networking-security-api",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -523,6 +551,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.benchmark",
 			"via": "reexport",
 			"origin": "derived"
@@ -559,6 +592,16 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -629,6 +672,11 @@
 		},
 		{
 			"unit": "service.native-picker-switch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -718,7 +766,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -45,6 +45,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.endpoint.api-project-activity",
+			"via": "http",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.run-activity",
 			"via": "import",
 			"origin": "derived"

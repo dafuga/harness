@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "service.networking-security-harness-api",
+	"kind": "service",
+	"title": "HarnessApiService",
+	"responsibility": "Maps project and agent operations to the selected local console or hosted API, preserving sessions and revision admission.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/networking-security/HarnessApiService.ts",
+			"src/services/networking-security/HarnessApiService.types.ts"
+		],
+		"symbols": [
+			"HarnessApiService",
+			"HarnessApiService.constructor",
+			"HarnessApiService.connect",
+			"HarnessApiService.snapshot",
+			"HarnessApiService.read",
+			"HarnessApiService.call",
+			"HarnessApiOptions",
+			"ApiSnapshot"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HarnessApiService.constructor.options",
+				"type": "HarnessApiOptions"
+			},
+			{
+				"name": "HarnessApiService.read.resource",
+				"type": "string"
+			},
+			{
+				"name": "HarnessApiService.read.input",
+				"type": "Record<string, unknown>"
+			},
+			{
+				"name": "HarnessApiService.call.method",
+				"type": "string"
+			},
+			{
+				"name": "HarnessApiService.call.input",
+				"type": "Record<string, unknown>"
+			},
+			{
+				"name": "HarnessApiService.call.requestId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "HarnessApiService.connect",
+				"type": "Promise<{ connected: true; server: string }>"
+			},
+			{
+				"name": "HarnessApiService.snapshot",
+				"type": "Promise<ApiSnapshot>"
+			},
+			{
+				"name": "HarnessApiService.read",
+				"type": "Promise<ApiResponse>"
+			},
+			{
+				"name": "HarnessApiService.call",
+				"type": "Promise<ApiResponse>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.networking-security-harness-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api-service-api-session-repository",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/networking-security/HarnessApiService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/networking-security/HarnessApiService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

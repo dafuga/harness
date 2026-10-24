@@ -1,0 +1,92 @@
+{
+	"schemaVersion": 1,
+	"id": "service.networking-security-harness-api-service-api-session-repository",
+	"kind": "service",
+	"title": "ApiSessionRepository",
+	"responsibility": "Stores local API session credentials in owner-only files bound to the exact server origin.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/networking-security/harness-api-service/ApiSessionRepository.ts",
+			"src/services/networking-security/harness-api-service/ApiSessionRepository.types.ts"
+		],
+		"symbols": [
+			"ApiSessionRepository",
+			"ApiSessionRepository.constructor",
+			"ApiSessionRepository.load",
+			"ApiSessionRepository.ensure",
+			"ApiSessionRepository.save",
+			"ApiSessionRepository.forget",
+			"ApiSession"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ApiSessionRepository.constructor.origin",
+				"type": "string"
+			},
+			{
+				"name": "ApiSessionRepository.constructor.directory",
+				"type": "unknown"
+			},
+			{
+				"name": "ApiSessionRepository.ensure.create",
+				"type": "() => Promise<string>"
+			},
+			{
+				"name": "ApiSessionRepository.save.token",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ApiSessionRepository.load",
+				"type": "Promise<string | undefined>"
+			},
+			{
+				"name": "ApiSessionRepository.ensure",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "ApiSessionRepository.save",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ApiSessionRepository.forget",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/networking-security/harness-api-service/ApiSessionRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/networking-security/harness-api-service/ApiSessionRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
