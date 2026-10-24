@@ -137,7 +137,7 @@ for (const width of [1440, 920, 390]) {
 		await expect(panel.getByText('Stale', { exact: true })).toBeVisible();
 		const modules = panel.getByRole('region', { name: 'Modules being worked on', exact: true });
 		await expect(modules.getByText('2 agents', { exact: true })).toBeVisible();
-		await expect(modules.getByRole('link', { name: 'Card', exact: true })).toBeVisible();
+		await expect(modules.getByRole('link', { name: 'Alpha button', exact: true })).toBeVisible();
 		await expect(modules.getByText('Old assignment', { exact: true })).toHaveCount(0);
 		await evidence(page, width, 'agents');
 		await scenarioCapture(page, scenario as ScenarioManifest, {
@@ -145,8 +145,8 @@ for (const width of [1440, 920, 390]) {
 			name: String(width),
 			note: 'Compiled renderer with synthetic declared sessions; no live model requests.'
 		});
-		await modules.getByRole('link', { name: 'Card', exact: true }).click();
-		await expect(page).toHaveURL(/components\/component.card/);
+		await modules.getByRole('link', { name: 'Alpha button', exact: true }).click();
+		await expect(page).toHaveURL(/components\/component(?::|%3A)button/);
 		await panel.getByRole('button', { name: 'Chat', exact: true }).click();
 		await expect(panel.getByRole('textbox', { name: 'Message', exact: true })).toHaveValue(
 			'Keep my draft.'

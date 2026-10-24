@@ -17,13 +17,13 @@ export async function agentActivityFixture(page: Page) {
 					id: 'chat-components',
 					label: 'Components',
 					task: 'Refine shared component previews',
-					units: ['component.card']
+					units: ['component:button']
 				},
 				{
 					id: 'chat-pages',
 					label: 'Pages',
 					task: 'Review card usage on the home page',
-					units: ['component.card', 'page.home']
+					units: ['component:button', 'page:activity']
 				},
 				{
 					id: 'chat-stale',
