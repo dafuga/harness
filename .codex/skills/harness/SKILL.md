@@ -261,6 +261,8 @@ those expectations; formatting alone does not verify a workflow change.
 
 ## Acceptance Fixture Review
 
+Temporary Git repositories initialize a generic repo-local author identity before any nested commit. Exercise the existing capture fixture with empty local author fields so personal or CI defaults cannot hide missing setup. A fixture-only repair uses diagnostic before/after captures; never change product code or relax the frozen-corpus guard merely to manufacture a product red-green pair.
+
 After editing acceptance fixtures, run their owning workspace typecheck, formatting
 and audit before a broad check, even when only imports or casts changed. Test files
 share the workspace size limits; a passing runtime case does not prove that audit.
