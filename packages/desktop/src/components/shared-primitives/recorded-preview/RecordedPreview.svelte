@@ -78,9 +78,9 @@
 	}
 	figcaption {
 		padding: var(--hx-space-8) var(--hx-space-10);
-		border-top: var(--hx-border-thin) solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 		font-size: var(--hx-type-size-xs);
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.placeholder {
 		flex: 1;

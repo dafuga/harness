@@ -27,24 +27,24 @@
 	.place {
 		min-width: 0;
 		padding: 0 var(--hx-space-7);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-xsmall);
-		background: var(--hx-tint-hover);
-		color: var(--hx-soft);
+		background: var(--hx-color-hover);
+		color: var(--hx-color-text-supporting);
 		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
 	.branch {
-		font-family: var(--hx-font-family-mono);
+		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-inline);
 	}
 	.to {
-		border-color: var(--hx-accent-line);
-		color: var(--hx-text);
+		border-color: var(--hx-color-info-line);
+		color: var(--hx-color-text);
 		font-weight: var(--hx-style-weight-semibold);
 	}
 	.arrow {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 		font-weight: var(--hx-style-weight-semibold);
 	}
 </style>

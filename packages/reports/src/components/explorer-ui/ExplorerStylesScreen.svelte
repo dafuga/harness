@@ -4,6 +4,8 @@
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
 		StyleGroupName,
+		StyleRole,
+		StyleRoleCard,
 		StyleSpecimen,
 		StyleToken,
 		StyleTokenGroup,
@@ -16,31 +18,27 @@
 
 	const unclassified: UnclassifiedGroupName = 'Unclassified tokens';
 	const { groupPrefixes: prefixes, groupDescriptions: descriptions } = appStyleTokensConfig;
-	/** How a group draws its tokens; `$` stands for the token's own reference. */
-	const groupDrawings: Record<StyleGroupName, [StyleSpecimen, string]> = {
-		Colors: ['swatch', '--style-specimen: $'],
-		'Font families': ['text', 'font-family: $'],
-		'Type scale': ['text', 'font-size: $'],
-		'Text styles': ['text', 'font: $'],
-		Spacing: ['bar', 'inline-size: $'],
-		'Borders and corners': ['corner', 'border-radius: $'],
-		Shadows: ['shadow', 'box-shadow: $'],
-		Effects: ['fade', 'filter: $'],
-		Opacity: ['fade', 'opacity: $'],
-		Motion: ['value', ''],
-		Layering: ['value', ''],
-		'Layout tokens': ['bar', 'inline-size: $'],
-		'Responsive breakpoints': ['bar', 'inline-size: calc($ / 6)']
-	};
-	/** Tokens of a group that one property of their own draws. */
-	const prefixDrawings: [RegExp, StyleSpecimen, string][] = [
+	const roles: Partial<Record<string, readonly StyleRole[]>> = appStyleTokensConfig.roles;
+	/** How a token is drawn, by the first prefix it matches; `$` stands for its own reference. */
+	const drawings: [RegExp, StyleSpecimen, string][] = [
+		[/^--hx-(?:color-|(?:bg|gold|muted)$)/, 'swatch', '--style-specimen: $'],
+		[/^--hx-font-family-/, 'text', 'font-family: $'],
+		[/^--hx-type-size-/, 'text', 'font-size: $'],
 		[/^--hx-style-weight-/, 'text', 'font-weight: $'],
 		[/^--hx-style-font-/, 'text', 'font-style: $'],
 		[/^--hx-style-leading-/, 'text', 'line-height: $'],
 		[/^--hx-style-tracking-/, 'text', 'letter-spacing: $'],
 		[/^--hx-style-numeric-/, 'text', 'font-variant-numeric: $'],
 		[/^--hx-style-synthesis-/, 'text', 'font-synthesis: $'],
-		[/^--hx-border-/, 'edge', 'border-block-start: $ solid']
+		[/^--hx-style-/, 'text', 'font: $'],
+		[/^--hx-(?:space-|gutter$|nav-|layout-)/, 'bar', 'inline-size: $'],
+		[/^--hx-border-/, 'edge', 'border-block-start: $ solid'],
+		[/^--hx-radius/, 'corner', 'border-radius: $'],
+		[/^--hx-shadow-/, 'shadow', 'box-shadow: $'],
+		[/^--hx-effect-/, 'fade', 'filter: $'],
+		[/^--hx-opacity-/, 'fade', 'opacity: $'],
+		[/^--hx-breakpoint-/, 'bar', 'inline-size: calc($ / 6)'],
+		[/^--hx-/, 'value', '']
 	];
 	let tokens = $state<StyleToken[]>([]);
 	let groups = $derived(groupTokens(tokens));
@@ -61,21 +59,21 @@
 		return [...declared, { name: unclassified, description, tokens: rest }];
 	}
 
-	/** Each color once, under the first role that lists it; a color no role lists is still shown. */
-	function assignColors(palette: StyleToken[]) {
-		const left = new Map(palette.map((token) => [token.name, token] as const));
-		const claim = ([name, job]: readonly [string, string]) => {
-			const token = left.get(name);
-			return left.delete(name) && token ? [{ token, job }] : [];
-		};
-		const roles = appStyleTokensConfig.colorRoles.map(({ name, use, base, tokens }) => {
-			const own = base ? [{ label: 'Base color', base: true, colors: claim(base) }] : [];
-			const label = base ? 'Treatments' : 'Variables';
-			return { name, use, sets: [...own, { label, base: false, colors: tokens.flatMap(claim) }] };
-		});
-		const colors = [...left.values()].map((token) => ({ token, job: 'No role lists it yet' }));
-		const sets = [{ label: 'Variables', base: false, colors }];
-		return colors.length ? [...roles, { ...appStyleTokensConfig.unassignedColors, sets }] : roles;
+	/** Each token once, under the first role that names it; a token no role names is still shown. */
+	function assignRoles(group: StyleTokenGroup): StyleRoleCard[] {
+		const left = new Set(group.tokens);
+		const claim = (name: string) => [...left].filter((t) => t.name === name && left.delete(t));
+		const sets = (base: StyleToken[], rows: StyleToken[]) =>
+			[
+				{ label: group.name === 'Colors' ? 'Base color' : 'Variable', base: true, rows: base },
+				{ label: base.length ? 'Treatments' : 'Variables', base: false, rows }
+			].filter((set) => set.rows.length);
+		const cards = (roles[group.name] ?? []).map(({ base, tokens: treatments = [], ...role }) => ({
+			...role,
+			sets: sets(base ? claim(base) : [], treatments.flatMap(claim))
+		}));
+		const rest = sets([], [...left.values()]);
+		return rest.length ? [...cards, { ...appStyleTokensConfig.unassigned, sets: rest }] : cards;
 	}
 
 	/** Only :root rules publish app tokens; a component stylesheet's own variables are not listed. */
@@ -107,29 +105,20 @@
 		}
 	}
 
-	/** The tokens in the order the token source declares them. */
+	/** The tokens in the order the token source declares them, with what each one resolves to. */
 	function discoverTokens(): StyleToken[] {
 		const found = new Map<string, string>();
 		for (const sheet of Array.from(document.styleSheets)) readSheet(sheet, found);
-		return [...found].map(([name, value]) => ({ name, value, group: groupFor(name) }));
+		const root = getComputedStyle(document.documentElement);
+		return [...found].map(([name, value]) => {
+			const resolved = root.getPropertyValue(name).replace(/\s+/g, ' ').trim() || value;
+			return { name, value, resolved, group: groupFor(name) };
+		});
 	}
 
-	function drawing(token: StyleToken): [StyleSpecimen, string] {
-		const own = prefixDrawings.find(([prefix]) => prefix.test(token.name));
-		if (own) return [own[1], own[2]];
-		return token.group === unclassified ? ['value', ''] : groupDrawings[token.group];
-	}
-
-	/** The specimen reads the token itself, so it shows the value this browser resolves. */
-	function specimenStyle(token: StyleToken): string {
-		return drawing(token)[1].replace('$', `var(${token.name})`);
-	}
-
-	function sample(token: StyleToken): string {
-		if (token.group === 'Font families') return 'Harness design system';
-		if (token.name.startsWith('--hx-style-leading-')) return 'Line one\nLine two';
-		return token.name.startsWith('--hx-style-numeric-') ? '1111 8888 0123' : 'Aa Bb 0123';
-	}
+	/** Two lines of numerals show leading and numeral styles; any other text style draws letters. */
+	const sample = (name: string) =>
+		/^--hx-style-(?:leading|numeric)-/.test(name) ? '1111 8888\n0123 4567' : 'Aa Bb 0123';
 
 	const headingId = (name: string) => `styles-group-${name.toLowerCase().replace(/\W+/g, '-')}`;
 
@@ -138,19 +127,47 @@
 	});
 </script>
 
+<!-- The specimen reads the token itself, so it shows the value this browser resolves. -->
 {#snippet specimen(token: StyleToken)}
-	{@const kind = drawing(token)[0]}
+	{@const [, kind, rule] = drawings.find(([prefix]) => prefix.test(token.name))!}
+	{@const style = rule.replace('$', `var(${token.name})`)}
 	{#if kind === 'text'}
-		<p class="hx-style-specimen" style={specimenStyle(token)}>
-			<span>{sample(token)}</span>
+		<p class="hx-style-specimen" {style}>
+			<span>{sample(token.name)}</span>
 		</p>
 	{:else if kind === 'value'}
 		<p class="hx-style-value">{token.value}</p>
 	{:else}
 		<div class="hx-style-frame" aria-hidden="true">
-			<span class={`hx-style-${kind}`} style={specimenStyle(token)}></span>
+			<span class={`hx-style-${kind}`} {style}></span>
 		</div>
 	{/if}
+{/snippet}
+
+<!-- A role: its purpose, its variable with resolved value and sample, then where it is used. -->
+{#snippet card(group: string, role: StyleRoleCard)}
+	{@const id = headingId(`${group} ${role.name}`)}
+	<article class="hx-style-role" aria-labelledby={id}>
+		<h3 {id}>{role.name}</h3>
+		{#if role.use}
+			<p><strong>Use for</strong> {role.use}</p>
+		{/if}
+		{#each role.sets as { label, base, rows } (label)}
+			<div role="group" aria-labelledby={`${id}-${base}`} class:hx-style-base={base}>
+				<p id={`${id}-${base}`}>{label}</p>
+				{#each rows as token (token.name)}
+					<div data-style-token={token.name}>
+						<code>{token.name}</code>
+						<span>{base ? token.resolved : token.value}</span>
+						{@render specimen(token)}
+					</div>
+				{/each}
+			</div>
+			{#if base && role.where}
+				<p><strong>Where used</strong> {role.where}</p>
+			{/if}
+		{/each}
+	</article>
 {/snippet}
 
 <ExplorerFrame {host}>
@@ -163,10 +180,7 @@
 			<header class="hx-styles-intro">
 				<p class="hx-styles-kicker">Design system</p>
 				<h1 id="styles-title">Styles</h1>
-				<p>
-					The shared design tokens of Reports, Desktop and Hub, each drawn with the value this
-					browser resolves.
-				</p>
+				<p>What each shared choice is for, the value it resolves to and where it is used.</p>
 			</header>
 
 			<div class="hx-styles-groups">
@@ -178,26 +192,13 @@
 						variant="styles"
 						resetKey={host.scope.commit}
 					>
-						<div class="hx-styles-grid" class:hx-color-roles={group.name === 'Colors'}>
-							{#if group.name === 'Colors'}
-								{#each assignColors(group.tokens) as role (role.name)}
-									<article class="hx-color-role" aria-labelledby={headingId(role.name)}>
-										<h3 id={headingId(role.name)}>{role.name}</h3>
-										<p><strong>Use for</strong> {role.use}</p>
-										{#each role.sets as { label, base, colors } (label)}
-											{@const id = headingId(`${role.name} ${label}`)}
-											<div role="group" aria-labelledby={id} class:hx-color-base={base}>
-												<p {id}>{label}</p>
-												{#each colors as { token, job } (token.name)}
-													<div data-style-token={token.name} style={specimenStyle(token)}>
-														<code>{token.name}</code>
-														<span>{job}</span>
-														<span>{token.value}</span>
-													</div>
-												{/each}
-											</div>
-										{/each}
-									</article>
+						{#if group.name === appStyleTokensConfig.foundation}
+							<p class="hx-styles-kicker">Foundation and compatibility</p>
+						{/if}
+						<div class="hx-styles-grid" class:hx-style-roles={!!roles[group.name]}>
+							{#if roles[group.name]}
+								{#each assignRoles(group) as role (role.name)}
+									{@render card(group.name, role)}
 								{/each}
 							{:else}
 								{#each group.tokens as token (token.name)}

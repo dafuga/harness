@@ -120,7 +120,7 @@
 		right: var(--fc-right);
 		z-index: var(--hx-layer-floating);
 		box-sizing: border-box;
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 		box-shadow: var(--hx-shadow-overlay);
 	}
 	.floating-chat-bubble,
@@ -136,8 +136,8 @@
 		bottom: var(--fc-bottom);
 		width: 54px;
 		height: 54px;
-		background: var(--ink, var(--hx-bg));
-		color: var(--gold, var(--hx-gold));
+		background: var(--hx-color-background);
+		color: var(--hx-color-primary);
 	}
 	.floating-chat-bubble svg {
 		fill: none;
@@ -148,12 +148,12 @@
 	.floating-chat-bubble:hover,
 	.floating-chat-bubble[aria-expanded='true'],
 	.floating-chat-close:hover {
-		border-color: var(--gold, var(--hx-gold));
-		color: var(--gold, var(--hx-gold));
+		border-color: var(--hx-color-primary);
+		color: var(--hx-color-primary);
 	}
 	.floating-chat-bubble:focus-visible,
 	.floating-chat-close:focus-visible {
-		outline: var(--hx-border-thick) solid var(--gold, var(--hx-gold));
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-heavy);
 	}
 	.floating-chat-panel {
@@ -164,8 +164,8 @@
 		max-height: min(620px, calc(100dvh - var(--fc-above) - var(--floating-chat-top, 168px)));
 		overflow: hidden;
 		border-radius: var(--hx-radius-xlarge);
-		background: var(--panel, var(--hx-surface));
-		color: var(--hx-text);
+		background: var(--hx-color-surface, var(--hx-color-surface));
+		color: var(--hx-color-text);
 	}
 	.floating-chat-panel:focus {
 		outline: none;
@@ -180,7 +180,7 @@
 		align-items: flex-start;
 		justify-content: space-between;
 		padding: var(--hx-space-12) var(--hx-space-10) var(--hx-space-10) var(--hx-space-16);
-		border-bottom: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 	}
 	h2 {
 		margin: 0;
@@ -189,7 +189,7 @@
 	}
 	header p {
 		margin: var(--hx-space-3) 0 0;
-		color: var(--muted, var(--hx-muted));
+		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 		font-size: var(--hx-type-size-compact);
 		line-height: var(--hx-style-leading-snug);
 	}
@@ -198,7 +198,7 @@
 		height: 32px;
 		border: 0;
 		background: none;
-		color: var(--muted, var(--hx-muted));
+		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 	}
 	.floating-chat-body {
 		display: flex;

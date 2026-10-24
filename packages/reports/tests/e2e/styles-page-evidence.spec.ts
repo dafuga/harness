@@ -3,8 +3,7 @@ import { join } from 'node:path';
 import { expect, test } from '../../../../test/support/browserTest';
 import { benchmarkCaptureSchema } from '../../../../src/core/verification-evidence/verifyTypes';
 import { expectNoOverflow, tip } from './support/explorer';
-import { appStyleTokensConfig } from '../../src/configs/shared-primitives/appStyleTokensConfig';
-import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
+import { declaredStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 import { captureScreen, evidenceDirectory, viewports } from './support/harnessCapture';
 
 const pageUnit = 'reports.page.harness-branch-branch-at-styles';
@@ -54,8 +53,10 @@ for (const viewport of viewports) {
 	test(`Styles records its rendered token catalog at ${viewport.id} width`, async ({ page }) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
 		await page.goto(tip('main', 'styles'));
-		for (const heading of ['Styles', ...appStyleTokensConfig.groups])
-			await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
+		await expect(
+			page.getByRole('heading', { level: 1, name: 'Styles', exact: true })
+		).toBeVisible();
+		await expectStyleGroups(page.locator('main'));
 		await expect(page.locator('[data-style-token]')).toHaveCount(declaredStyleTokens().length);
 		for (const name of declaredStyleTokens())
 			await expect(page.locator(`[data-style-token="${name}"]`)).toHaveCount(1);

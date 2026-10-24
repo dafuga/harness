@@ -1,17 +1,17 @@
 /* Recorded runtime evidence: what was captured from running software, apart from designs. */
 .runtime-chip {
-	border-color: var(--gold);
-	color: var(--gold);
+	border-color: var(--hx-color-primary);
+	color: var(--hx-color-primary);
 }
 .runtime-evidence > .row,
 .coverage-panel > .row {
 	flex-wrap: wrap;
 	padding-bottom: var(--hx-space-14);
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .runtime-card {
 	padding: var(--hx-space-16) 0;
-	border-bottom: var(--hx-border-thin) solid var(--line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 }
 .runtime-card:last-child {
 	border-bottom: 0;
@@ -45,7 +45,7 @@
 .runtime-pane {
 	margin: 0;
 	min-width: 0;
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 	padding: var(--hx-space-12);
 }
@@ -60,9 +60,9 @@
 .runtime-pane img {
 	display: block;
 	width: 100%;
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-compact);
-	background: var(--hx-bg);
+	background: var(--hx-color-background);
 }
 .runtime-pane audio {
 	width: 100%;
@@ -70,10 +70,10 @@
 .runtime-standing {
 	margin: var(--hx-space-8) 0 0;
 	font-size: var(--hx-type-size-xs);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .runtime-standing.stale {
-	color: var(--gold);
+	color: var(--hx-color-primary);
 }
 .runtime-gap {
 	display: flex;
@@ -116,7 +116,7 @@
 .runtime-artifact h5 {
 	margin: var(--hx-space-10) 0 var(--hx-space-4);
 	font-size: var(--hx-type-size-xs);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .runtime-artifact pre,
 .runtime-artifact li {
@@ -126,9 +126,9 @@
 .runtime-artifact pre {
 	margin: 0;
 	padding: var(--hx-space-10);
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-compact);
-	background: var(--hx-bg);
+	background: var(--hx-color-background);
 	font-size: var(--hx-type-size-xs);
 }
 .runtime-checks {
@@ -154,7 +154,7 @@
 	font-size: var(--hx-type-size-compact);
 }
 .runtime-facts dt {
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .runtime-facts dd {
 	margin: 0;
@@ -180,7 +180,7 @@
 	text-align: left;
 	vertical-align: top;
 	padding: var(--hx-space-8) var(--hx-space-10) var(--hx-space-8) 0;
-	border-top: var(--hx-border-thin) solid var(--line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	overflow-wrap: anywhere;
 }
 @media (max-width: 850px) {

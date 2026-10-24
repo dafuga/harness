@@ -77,7 +77,7 @@
 	h2 {
 		margin: 0;
 		font-size: var(--hx-type-size-base);
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	.receipt {
 		display: grid;
@@ -89,7 +89,7 @@
 		font-weight: var(--hx-style-weight-semibold);
 		letter-spacing: var(--hx-style-tracking-wide);
 		text-transform: uppercase;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	/* Each name beside its value; a full commit wraps rather than being cut on a phone. */
 	dl {
@@ -102,22 +102,22 @@
 	}
 	.facts {
 		padding-block: var(--hx-space-10);
-		border-block: var(--hx-border-thin) solid var(--line);
+		border-block: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	dl div {
 		display: contents;
 	}
 	dt {
 		font-size: var(--hx-type-size-xs);
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	dd {
 		margin: 0;
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 		overflow-wrap: anywhere;
 	}
 	code {
-		font-family: var(--hx-font-family-mono);
+		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-compact);
 	}
 </style>

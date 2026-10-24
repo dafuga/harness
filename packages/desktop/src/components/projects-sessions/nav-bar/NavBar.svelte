@@ -89,14 +89,14 @@
 		align-self: center;
 		width: 40px;
 		height: 40px;
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
 		color: inherit;
 	}
 	.topbar-settings:hover,
 	.topbar :global(.agent-icon:hover:not(:disabled)) {
-		color: var(--gold);
-		border-color: var(--gold);
+		color: var(--hx-color-primary);
+		border-color: var(--hx-color-primary);
 	}
 	/* Project, branch, commit, Deploy and Deployments are icons of one size; each opens a dialog. */
 	.topbar :global(.agent-icon) {

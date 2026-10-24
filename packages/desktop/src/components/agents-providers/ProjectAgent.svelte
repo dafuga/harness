@@ -126,7 +126,7 @@
 	.chat-message {
 		max-width: 88%;
 		padding: var(--hx-space-8) var(--hx-space-12);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-xlarge);
 		font-size: var(--hx-type-size-sm);
 		line-height: var(--hx-style-leading-normal);
@@ -136,11 +136,11 @@
 	.chat-message.user {
 		justify-self: end;
 		border-end-end-radius: var(--hx-radius-xsmall);
-		background: var(--hx-tint-hover);
+		background: var(--hx-color-hover);
 	}
 	.chat-message.agent {
 		justify-self: start;
-		border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+		border-color: color-mix(in srgb, var(--hx-color-primary) 45%, transparent);
 		border-end-start-radius: var(--hx-radius-xsmall);
 	}
 	/* Who said it is read out; the side of the conversation shows it. */
@@ -158,7 +158,7 @@
 		font-size: var(--hx-type-size-compact);
 	}
 	.chat-note {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.chat-status {
 		display: flex;
@@ -180,7 +180,7 @@
 		bottom: 0;
 		margin-top: auto;
 		padding: var(--hx-space-2) 0 var(--hx-space-14);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 	}
 	/* The request is what is read here: it is set as large as the words around it. */
 	.chat-compose :global(.composer textarea) {

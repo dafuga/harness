@@ -35,9 +35,9 @@
 		gap: var(--hx-space-10);
 		max-width: 420px;
 		padding: var(--hx-space-18);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 	}
 	h2 {
 		margin: 0;
@@ -48,14 +48,14 @@
 		gap: var(--hx-space-6);
 	}
 	.agent-setting span {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 		font-size: var(--hx-type-size-compact);
 	}
 	small {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.agent-settings-error {
 		margin: 0;
-		color: var(--hx-fail);
+		color: var(--hx-color-error);
 	}
 </style>

@@ -89,9 +89,9 @@
 		width: min(var(--picker-width), calc(100vw - 24px));
 		max-height: min(var(--picker-height), calc(100dvh - 24px));
 		padding: 0;
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 		color: inherit;
 		overflow: auto;
 		overscroll-behavior: contain;
@@ -105,11 +105,11 @@
 		position: sticky;
 		bottom: 0;
 		padding: var(--hx-space-12) var(--hx-space-14) var(--hx-space-14);
-		border-top: var(--hx-border-thin) solid var(--line);
-		background: var(--panel);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
+		background: var(--hx-color-surface);
 	}
 	.agent-picker::backdrop {
-		background: var(--hx-scrim);
+		background: var(--hx-color-scrim);
 	}
 	.agent-picker-body {
 		display: grid;

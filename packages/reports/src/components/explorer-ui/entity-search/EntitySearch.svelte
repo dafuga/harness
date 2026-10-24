@@ -136,7 +136,7 @@
 		width: 40px;
 		height: 40px;
 		padding: 0;
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 		border-radius: var(--hx-radius-small);
 		background: none;
 		color: inherit;
@@ -145,13 +145,13 @@
 	}
 	.entity-search-trigger:hover,
 	.entity-search :global(.viewer-dialog .viewer-header button:hover) {
-		border-color: var(--gold, var(--hx-gold));
-		color: var(--gold, var(--hx-gold));
+		border-color: var(--hx-color-primary);
+		color: var(--hx-color-primary);
 	}
 	.entity-search-trigger:focus-visible,
 	.entity-search :global(.viewer-dialog .viewer-header button:focus-visible),
 	.entity-search-field:focus-within {
-		outline: var(--hx-border-thick) solid var(--gold, var(--hx-gold));
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thin);
 	}
 	/* The shared dialog at this search's own size, near the top, in navy and gold on either host. */
@@ -165,22 +165,22 @@
 		margin: var(--hx-layout-dialog-offset) auto auto;
 		padding: 0;
 		overflow: hidden;
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 		border-radius: var(--hx-radius-xlarge);
-		background: var(--panel, var(--hx-surface));
-		color: var(--hx-text);
+		background: var(--hx-color-surface, var(--hx-color-surface));
+		color: var(--hx-color-text);
 		font-size: var(--hx-type-size-base);
 		box-shadow: var(--hx-shadow-dialog);
 	}
 	.entity-search :global(.viewer-dialog[open])::backdrop {
-		background: var(--hx-scrim);
+		background: var(--hx-color-scrim);
 	}
 	.entity-search :global(.viewer-dialog .viewer-header) {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding: var(--hx-space-8) var(--hx-space-8) var(--hx-space-8) var(--hx-space-18);
-		border-bottom: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 		background: none;
 	}
 	.entity-search :global(.viewer-dialog h2) {
@@ -192,10 +192,10 @@
 		align-items: center;
 		gap: var(--hx-space-10);
 		padding: 0 var(--hx-space-14);
-		border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+		border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 		border-radius: var(--hx-radius);
-		background: var(--hx-tint-hover);
-		color: var(--muted, var(--hx-muted));
+		background: var(--hx-color-hover);
+		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 	}
 	/* Under the field's border, which shows the focus; sixteen pixels, so a phone does not zoom in. */
 	input {
@@ -206,11 +206,11 @@
 		border: 0;
 		outline: none;
 		background: none;
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 		font: inherit;
 		font-size: var(--hx-type-size-base);
 	}
 	input::placeholder {
-		color: var(--muted, var(--hx-muted));
+		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 	}
 </style>

@@ -19,7 +19,7 @@
 }
 .states-gallery header p,
 .states-gallery small {
-	color: var(--muted, var(--hx-muted));
+	color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 }
 .states-gallery header p {
 	margin-top: var(--hx-space-6);
@@ -37,10 +37,10 @@
 }
 .states-gallery .state-card {
 	min-width: 0;
-	border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+	border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 	border-radius: var(--hx-radius-large);
 	padding: var(--hx-space-18);
-	background: var(--panel, var(--hx-surface));
+	background: var(--hx-color-surface, var(--hx-color-surface));
 }
 .states-gallery .state-heading {
 	margin-bottom: var(--hx-space-14);
@@ -66,12 +66,12 @@
 	gap: var(--hx-space-8);
 	align-items: center;
 	margin-bottom: var(--hx-space-8);
-	color: var(--muted, var(--hx-muted));
+	color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 	font-size: var(--hx-type-size-compact);
 }
 .states-gallery .state-gap {
 	padding: var(--hx-space-16);
-	border: var(--hx-border-thin) dashed var(--line, var(--hx-line));
+	border: var(--hx-border-thin) dashed var(--hx-color-border, var(--hx-color-border));
 	border-radius: var(--hx-radius-small);
 	margin-block: var(--hx-space-10);
 	overflow-wrap: anywhere;
@@ -79,7 +79,7 @@
 .states-gallery .evidence-card {
 	overflow: hidden;
 	border-radius: var(--hx-radius-small);
-	border: var(--hx-border-thin) solid var(--line, var(--hx-line));
+	border: var(--hx-border-thin) solid var(--hx-color-border, var(--hx-color-border));
 }
 .states-gallery .image-button {
 	display: block;
@@ -87,7 +87,7 @@
 	position: relative;
 	padding: 0;
 	border: 0;
-	background: var(--hx-bg);
+	background: var(--hx-color-background);
 }
 .states-gallery .image-button img {
 	display: block;
@@ -108,7 +108,7 @@
 	bottom: 10px;
 	border-radius: var(--hx-radius-xsmall);
 	padding: var(--hx-space-4) var(--hx-space-7);
-	background: var(--hx-scrim-strong);
+	background: var(--hx-color-scrim-strong);
 	font-size: var(--hx-type-size-xs);
 }
 @media (max-width: 680px) {

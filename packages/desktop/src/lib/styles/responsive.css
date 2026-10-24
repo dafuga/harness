@@ -50,7 +50,7 @@
 		z-index: var(--hx-layer-popover);
 		max-height: 85vh;
 		box-shadow: var(--hx-shadow-sheet);
-		border-top: var(--hx-border-thin) solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 		border-left: 0;
 	}
 	.thread-scroll {
@@ -100,9 +100,9 @@
 		grid-area: environment-start / 1 / summary-end / -1;
 		align-self: stretch;
 		margin-block: var(--hx-space-2);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 	}
 	/* The mark alone stands for Harness, so the project's name keeps the room. */
 	.topbar:has(.topbar-search) .brand-mark {
@@ -131,7 +131,7 @@
 		padding: 0;
 		border-color: transparent;
 		background: none;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	header.topbar .agent-icon:focus-visible {
 		outline-offset: calc(-1 * var(--hx-space-2));
@@ -146,7 +146,7 @@
 		gap: var(--hx-space-1);
 		padding: var(--hx-space-1) var(--hx-space-8) 0;
 		border-bottom-width: var(--hx-border-thick);
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-2xs);
 	}
 	.topbar nav svg {

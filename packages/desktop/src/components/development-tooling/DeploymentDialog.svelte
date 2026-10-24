@@ -122,7 +122,7 @@
 	h2 {
 		margin: 0;
 		font-size: var(--hx-type-size-base);
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	/* Preprod above production, each commit in full at the same place, so the two compare at a
 	   glance and wrap rather than being cut on a phone. */
@@ -132,9 +132,9 @@
 		gap: var(--hx-space-3);
 		margin: 0;
 		padding: var(--hx-space-10) var(--hx-space-12);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		background: var(--hx-raised);
+		background: var(--hx-color-surface-raised);
 		font-size: var(--hx-type-size-compact);
 	}
 	dt {
@@ -142,20 +142,20 @@
 		font-weight: var(--hx-style-weight-semibold);
 		letter-spacing: var(--hx-style-tracking-wide);
 		text-transform: uppercase;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	dd {
 		margin: 0;
-		color: var(--hx-text);
+		color: var(--hx-color-text);
 	}
 	code {
-		font-family: var(--hx-font-family-mono);
+		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-xs);
 		overflow-wrap: anywhere;
 	}
 	.when {
 		font-size: var(--hx-type-size-xs);
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	/* How far apart they are rides the arrow from preprod to production; teal once they match. */
 	.between {
@@ -165,10 +165,10 @@
 		min-height: 42px;
 		padding-inline: var(--hx-space-12);
 		font-size: var(--hx-type-size-compact);
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	.same .between {
-		color: var(--hx-pass);
+		color: var(--hx-color-success);
 	}
 	.arrow {
 		display: grid;
@@ -188,9 +188,9 @@
 		margin: 0;
 		padding: var(--hx-space-8) var(--hx-space-12) var(--hx-space-8) var(--hx-space-28);
 		border-radius: var(--hx-radius-compact);
-		background: var(--hx-danger-soft);
+		background: var(--hx-color-error-soft);
 		font-size: var(--hx-type-size-compact);
-		color: var(--hx-fail);
+		color: var(--hx-color-error);
 	}
 	.error {
 		margin: 0;
@@ -210,7 +210,7 @@
 		flex: 1 1 160px;
 		margin: 0;
 		font-size: var(--hx-type-size-xs);
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	.promote button {
 		margin-inline-start: auto;

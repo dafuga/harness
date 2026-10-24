@@ -1,49 +1,53 @@
-/* The one source of Harness application design values, read by Reports, Desktop/iOS and Hub.
-   Every derived color mixes the thirteen palette colors; nothing here adds a paint of its own. */
+/* The one source of Harness design values for Reports, Desktop/iOS and Hub. Each family opens with
+   the purpose-named choices components read; its foundation scale follows. Colors: one assignment
+   per purpose, then the treatments mixed from it. Two roles may share a value yet change apart. */
 :root {
-	/* Colors: the palette. */
-	--hx-bg: #0d1a26;
-	--hx-surface: #101f2d;
-	--hx-raised: #14273a;
-	--hx-line: #1f3144;
-	--hx-line-strong: #2c4259;
-	--hx-text: #f2f5fa;
-	--hx-soft: #cbd5e1;
-	--hx-muted: #8fa1b8;
-	--hx-gold: #f3c33b;
-	--hx-pass: #34d399;
-	--hx-fail: #f2545b;
-	--hx-accent: #73b7ff;
-	--hx-danger-soft: rgb(242 84 91 / 14%);
-	/* Colors: hover, selection, overlay, status and chart treatments mixed from the palette. */
-	--hx-tint-hover: color-mix(in srgb, var(--hx-text) 5%, transparent);
-	--hx-tint-selected: color-mix(in srgb, var(--hx-text) 8%, transparent);
-	--hx-tint-shadow: color-mix(in srgb, var(--hx-bg) 90%, transparent);
-	--hx-scrim: color-mix(in srgb, var(--hx-bg) 80%, transparent);
-	--hx-scrim-strong: color-mix(in srgb, var(--hx-bg) 92%, transparent);
-	--hx-gold-ink: var(--hx-bg);
-	--hx-gold-light: color-mix(in srgb, var(--hx-gold) 75%, var(--hx-text));
-	--hx-gold-wash: color-mix(in srgb, var(--hx-gold) 6%, transparent);
-	--hx-gold-soft: color-mix(in srgb, var(--hx-gold) 12%, transparent);
-	--hx-gold-tint: color-mix(in srgb, var(--hx-gold) 22%, transparent);
-	--hx-gold-line: color-mix(in srgb, var(--hx-gold) 45%, transparent);
-	--hx-gold-fill: color-mix(in srgb, var(--hx-gold) 35%, var(--hx-bg));
-	--hx-warning: color-mix(in srgb, var(--hx-gold) 80%, var(--hx-fail));
-	--hx-warning-soft: color-mix(in srgb, var(--hx-warning) 14%, transparent);
-	--hx-warning-line: color-mix(in srgb, var(--hx-warning) 40%, transparent);
-	--hx-pass-soft: color-mix(in srgb, var(--hx-pass) 14%, transparent);
-	--hx-pass-line: color-mix(in srgb, var(--hx-pass) 40%, transparent);
-	--hx-pass-fill: color-mix(in srgb, var(--hx-pass) 35%, var(--hx-bg));
-	--hx-danger-line: color-mix(in srgb, var(--hx-fail) 40%, transparent);
-	--hx-fail-fill: color-mix(in srgb, var(--hx-fail) 35%, var(--hx-bg));
-	--hx-accent-soft: color-mix(in srgb, var(--hx-accent) 14%, transparent);
-	--hx-accent-line: color-mix(in srgb, var(--hx-accent) 40%, transparent);
-	--hx-accent-fill: color-mix(in srgb, var(--hx-accent) 35%, var(--hx-bg));
-	/* Font families. */
-	--hx-font-family-sans:
+	--hx-color-primary: #f3c33b;
+	--hx-color-secondary: #2c4259;
+	--hx-color-tertiary: #73b7ff;
+	--hx-color-success: #34d399;
+	--hx-color-warning: #f3ad41;
+	--hx-color-error: #f2545b;
+	--hx-color-info: #73b7ff;
+	--hx-color-background: #0d1a26;
+	--hx-color-surface: #101f2d;
+	--hx-color-text: #f2f5fa;
+	--hx-color-border: #1f3144;
+	--hx-color-primary-soft: color-mix(in srgb, var(--hx-color-primary) 12%, transparent);
+	--hx-color-primary-tint: color-mix(in srgb, var(--hx-color-primary) 22%, transparent);
+	--hx-color-primary-wash: color-mix(in srgb, var(--hx-color-primary) 6%, transparent);
+	--hx-color-primary-line: color-mix(in srgb, var(--hx-color-primary) 45%, transparent);
+	--hx-color-direct: color-mix(in srgb, var(--hx-color-primary) 35%, var(--hx-color-background));
+	--hx-color-primary-light: color-mix(in srgb, var(--hx-color-primary) 75%, var(--hx-color-text));
+	--hx-color-primary-contrast: var(--hx-color-background);
+	--hx-color-success-soft: color-mix(in srgb, var(--hx-color-success) 14%, transparent);
+	--hx-color-success-line: color-mix(in srgb, var(--hx-color-success) 40%, transparent);
+	--hx-color-added: color-mix(in srgb, var(--hx-color-success) 35%, var(--hx-color-background));
+	--hx-color-warning-soft: color-mix(in srgb, var(--hx-color-warning) 14%, transparent);
+	--hx-color-warning-line: color-mix(in srgb, var(--hx-color-warning) 40%, transparent);
+	--hx-color-error-soft: color-mix(in srgb, var(--hx-color-error) 14%, transparent);
+	--hx-color-error-line: color-mix(in srgb, var(--hx-color-error) 40%, transparent);
+	--hx-color-removed: color-mix(in srgb, var(--hx-color-error) 35%, var(--hx-color-background));
+	--hx-color-info-soft: color-mix(in srgb, var(--hx-color-info) 14%, transparent);
+	--hx-color-info-line: color-mix(in srgb, var(--hx-color-info) 40%, transparent);
+	--hx-color-indirect: color-mix(in srgb, var(--hx-color-info) 35%, var(--hx-color-background));
+	--hx-color-scrim: color-mix(in srgb, var(--hx-color-background) 80%, transparent);
+	--hx-color-scrim-strong: color-mix(in srgb, var(--hx-color-background) 92%, transparent);
+	--hx-color-shadow: color-mix(in srgb, var(--hx-color-background) 90%, transparent);
+	--hx-color-surface-raised: #14273a;
+	--hx-color-hover: color-mix(in srgb, var(--hx-color-text) 5%, transparent);
+	--hx-color-selected: color-mix(in srgb, var(--hx-color-text) 8%, transparent);
+	--hx-color-text-supporting: #cbd5e1;
+	--hx-color-text-muted: #8fa1b8;
+	--hx-color-border-strong: #2c4259;
+	/* Typography and spacing: the choices to read, then the scale each one is drawn from. */
+	--hx-font-family-body:
 		Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--hx-font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-	/* Type scale: fixed steps, fluid title sizes, and inline text sized against its surroundings. */
+	--hx-font-family-heading: var(--hx-font-family-body);
+	--hx-font-family-code: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+	--hx-type-size-body: var(--hx-type-size-base);
+	--hx-type-size-heading: var(--hx-type-size-xl);
+	--hx-type-size-caption: var(--hx-type-size-xs);
 	--hx-type-size-2xs: 0.6875rem;
 	--hx-type-size-xs: 0.75rem;
 	--hx-type-size-compact: 0.8125rem;
@@ -58,7 +62,6 @@
 	--hx-type-size-display: clamp(2rem, 4vw, 3.5rem);
 	--hx-type-size-inline: 0.9em;
 	--hx-type-size-nav: clamp(var(--hx-type-size-sm), 2vw, var(--hx-type-size-base));
-	/* Text styles: weight, style, leading, tracking, numerals, and whole font shorthands. */
 	--hx-style-weight-regular: 400;
 	--hx-style-weight-medium: 500;
 	--hx-style-weight-semibold: 600;
@@ -78,13 +81,15 @@
 	--hx-style-numeric-tabular: tabular-nums;
 	--hx-style-synthesis-none: none;
 	--hx-style-body-small: var(--hx-type-size-sm)/var(--hx-style-leading-normal)
-		var(--hx-font-family-sans);
-	--hx-style-code: var(--hx-type-size-sm)/var(--hx-style-leading-normal) var(--hx-font-family-mono);
+		var(--hx-font-family-body);
+	--hx-style-code: var(--hx-type-size-sm)/var(--hx-style-leading-normal) var(--hx-font-family-code);
 	--hx-style-code-compact: var(--hx-type-size-compact)/var(--hx-style-leading-normal)
-		var(--hx-font-family-mono);
+		var(--hx-font-family-code);
 	--hx-style-code-small: var(--hx-type-size-xs)/var(--hx-style-leading-normal)
-		var(--hx-font-family-mono);
-	/* Spacing: padding, margin and gap lengths, each named by its size in pixels. */
+		var(--hx-font-family-code);
+	--hx-space-section: var(--hx-space-28);
+	--hx-space-control: var(--hx-space-14);
+	--hx-space-inline: var(--hx-space-12);
 	--hx-space-1: 1px;
 	--hx-space-2: 2px;
 	--hx-space-3: 3px;
@@ -118,11 +123,12 @@
 	--hx-space-64: 64px;
 	--hx-space-70: 70px;
 	--hx-space-96: 96px;
-	/* Borders and corners. */
 	--hx-border-thin: 1px;
 	--hx-border-medium: 1.5px;
 	--hx-border-thick: 2px;
 	--hx-border-heavy: 3px;
+	--hx-radius-control: var(--hx-radius-compact);
+	--hx-radius-panel: var(--hx-radius);
 	--hx-radius-hairline: 2px;
 	--hx-radius-xsmall: 4px;
 	--hx-radius-compact: 6px;
@@ -132,25 +138,21 @@
 	--hx-radius-xlarge: 16px;
 	--hx-radius-pill: 999px;
 	--hx-radius-round: 50%;
-	/* Shadows: elevation painted with the shared shadow tint, and outline rings. */
-	--hx-shadow-popover: 0 8px 24px var(--hx-tint-shadow);
-	--hx-shadow-overlay: 0 16px 40px var(--hx-tint-shadow);
-	--hx-shadow-dialog: 0 24px 80px var(--hx-tint-shadow);
-	--hx-shadow-sheet: 0 -24px 64px var(--hx-tint-shadow);
-	--hx-shadow-ring: 0 0 0 var(--hx-border-thin) var(--hx-line);
-	--hx-shadow-ring-strong: 0 0 0 var(--hx-border-thin) var(--hx-line-strong);
-	--hx-shadow-halo: 0 0 0 var(--hx-border-heavy) var(--hx-gold-tint);
-	--hx-shadow-selected: inset var(--hx-border-thick) 0 0 var(--hx-gold);
-	/* Effects preserve the existing blur and hover treatments. */
+	--hx-shadow-popover: 0 8px 24px var(--hx-color-shadow);
+	--hx-shadow-overlay: 0 16px 40px var(--hx-color-shadow);
+	--hx-shadow-dialog: 0 24px 80px var(--hx-color-shadow);
+	--hx-shadow-sheet: 0 -24px 64px var(--hx-color-shadow);
+	--hx-shadow-ring: 0 0 0 var(--hx-border-thin) var(--hx-color-border);
+	--hx-shadow-ring-strong: 0 0 0 var(--hx-border-thin) var(--hx-color-border-strong);
+	--hx-shadow-halo: 0 0 0 var(--hx-border-heavy) var(--hx-color-primary-tint);
+	--hx-shadow-selected: inset var(--hx-border-thick) 0 0 var(--hx-color-primary);
 	--hx-effect-blur-subtle: blur(3px);
 	--hx-effect-blur-strong: blur(5px);
 	--hx-effect-hover-dim: brightness(0.95);
-	/* Opacity. */
 	--hx-opacity-faint: 0.18;
 	--hx-opacity-disabled: 0.45;
 	--hx-opacity-dim: 0.55;
 	--hx-opacity-secondary: 0.75;
-	/* Motion: transition and animation durations and easing functions. */
 	--hx-motion-fast: 0.15s;
 	--hx-motion-reveal: 0.2s;
 	--hx-motion-stagger: 0.3s;
@@ -158,7 +160,6 @@
 	--hx-motion-pulse: 1.6s;
 	--hx-motion-linear: linear;
 	--hx-motion-ease-in-out: ease-in-out;
-	/* Layering: z-index order from behind content to a full-screen view. */
 	--hx-layer-behind: -1;
 	--hx-layer-raised: 1;
 	--hx-layer-raised-top: 2;
@@ -168,7 +169,6 @@
 	--hx-layer-popover: 40;
 	--hx-layer-overlay: 50;
 	--hx-layer-fullscreen: 60;
-	/* Layout tokens: gutters, navigation gaps and structural clearances. */
 	--hx-gutter: clamp(16px, 2.2vw, 28px);
 	--hx-nav-gap: clamp(10px, 1.1vw, 22px);
 	--hx-nav-gap-wide: clamp(10px, 2.2vw - 21px, 22px);
@@ -181,8 +181,7 @@
 	--hx-layout-bar-clearance-phone: 96px;
 	--hx-layout-zoom-view: max(320px, calc(100dvh - 340px));
 	--hx-layout-zoom-view-compact: max(320px, calc(100dvh - 132px));
-	/* Responsive breakpoints: reference widths. A media query cannot read a variable, so each
-	   threshold repeats its corresponding documented value literally. */
+	/* A media query cannot read a variable, so each threshold repeats its breakpoint literally. */
 	--hx-breakpoint-phone-small: 480px;
 	--hx-breakpoint-phone: 560px;
 	--hx-breakpoint-tablet-small: 720px;
@@ -190,7 +189,6 @@
 	--hx-breakpoint-laptop: 1100px;
 	--hx-breakpoint-desktop: 1250px;
 	--hx-breakpoint-wide: 1420px;
-	/* Component-specific thresholds retain their geometry instead of snapping layouts. */
 	--hx-breakpoint-width-360: 360px;
 	--hx-breakpoint-width-420: 420px;
 	--hx-breakpoint-width-520: 520px;
@@ -208,10 +206,14 @@
 	--hx-breakpoint-container-narrow: 400px;
 	--hx-breakpoint-container-wide: 800px;
 	--hx-breakpoint-short-height: 560px;
-	/* The names older stylesheets read, forwarded to the palette. */
-	--gold: var(--hx-gold);
-	--muted: var(--hx-muted);
-	--line: var(--hx-line);
-	--panel: var(--hx-surface);
-	--ink: var(--hx-bg);
+	/* Compatibility: older names, each forwarded to the choice that replaced it. */
+	--hx-bg: var(--hx-color-background);
+	--hx-gold: var(--hx-color-primary);
+	--hx-muted: var(--hx-color-text-muted);
+	--hx-font-family-sans: var(--hx-font-family-body);
+	--gold: var(--hx-color-primary);
+	--muted: var(--hx-color-text-muted);
+	--line: var(--hx-color-border);
+	--panel: var(--hx-color-surface);
+	--ink: var(--hx-color-background);
 }
