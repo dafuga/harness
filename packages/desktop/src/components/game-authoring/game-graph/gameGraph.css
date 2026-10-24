@@ -1,0 +1,71 @@
+.game-graph {
+	display: grid;
+	gap: var(--hx-space-12);
+}
+header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--hx-space-8);
+}
+header p {
+	margin: 0;
+	margin-inline-end: auto;
+	color: var(--hx-color-text-muted);
+}
+header strong {
+	color: var(--hx-color-primary);
+}
+header p span {
+	font-size: var(--hx-type-size-compact);
+}
+button:hover:not(:disabled) {
+	border-color: var(--hx-color-primary);
+	color: var(--hx-color-primary);
+}
+/* The map is the page: tall enough to work in, short enough to stay in sight with its controls. */
+.canvas {
+	height: clamp(380px, 65dvh, 880px);
+	overflow: hidden;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-large);
+	--xy-background-color: var(--hx-color-surface);
+	--xy-background-pattern-color: var(--hx-color-border);
+	--xy-node-background-color: color-mix(
+		in srgb,
+		var(--hx-color-surface) 70%,
+		var(--hx-color-background)
+	);
+	--xy-node-border: var(--hx-space-1) solid var(--hx-color-border);
+	--xy-node-boxshadow-selected: 0 0 0 var(--hx-space-1) var(--hx-color-primary);
+	--xy-edge-stroke: var(--hx-color-border);
+	--xy-edge-stroke-selected: var(--hx-color-primary);
+	--xy-connectionline-stroke: var(--hx-color-primary);
+	--xy-handle-background-color: var(--hx-color-primary);
+	--xy-controls-button-background-color: var(--hx-color-surface);
+	--xy-controls-button-color: var(--hx-color-text-muted);
+	--xy-controls-button-color-hover: var(--hx-color-primary);
+}
+.canvas :global(.svelte-flow__node.checkpoint) {
+	width: 184px;
+	padding: var(--hx-space-14) var(--hx-space-18);
+	border-radius: var(--hx-radius);
+	text-align: start;
+	font-size: var(--hx-type-size-sm);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.canvas :global(.svelte-flow__node.eligible) {
+	border-color: var(--hx-color-primary);
+}
+.canvas :global(.svelte-flow__node.completed) {
+	border-color: color-mix(in srgb, var(--hx-color-primary) 55%, transparent);
+}
+.canvas :global(.svelte-flow__node.completed::after) {
+	content: 'Completed';
+	display: block;
+	margin-top: var(--hx-space-6);
+	color: var(--hx-color-primary);
+	font-size: var(--hx-type-size-xs);
+	letter-spacing: var(--hx-style-tracking-caps);
+	text-transform: uppercase;
+}

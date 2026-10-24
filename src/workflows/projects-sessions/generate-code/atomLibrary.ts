@@ -14,17 +14,8 @@ export function atomLibrary(root: string): string {
 	for (const entry of readdirSync(source, { recursive: true, withFileTypes: true })) {
 		if (!entry.isFile() || !entry.name.endsWith('.svelte')) continue;
 		const path = join(entry.parentPath, entry.name);
-		const code = readFileSync(path, 'utf8');
-		if (!code.includes('@harness-atoms')) continue;
-		let directory;
-		try {
-			directory = atomicSyntax(code).directory;
-		} catch {
-			continue;
-		}
-		if (!directory) continue;
-		const target = resolve(dirname(path), directory);
-		if (existsSync(join(target, 'HtmlButton.svelte'))) directories.add(target);
+		const target = declaredLibrary(path);
+		if (target) directories.add(target);
 	}
 	if (directories.size > 1)
 		fail(
@@ -50,4 +41,18 @@ export function useAtomLibrary(files: PlannedFile[], directory: string): Planned
 				)
 			: file.contents
 	}));
+}
+
+function declaredLibrary(path: string) {
+	const code = readFileSync(path, 'utf8');
+	if (!code.includes('@harness-atoms')) return undefined;
+	let directory;
+	try {
+		directory = atomicSyntax(code).directory;
+	} catch {
+		return undefined;
+	}
+	if (!directory) return undefined;
+	const target = resolve(dirname(path), directory);
+	return existsSync(join(target, 'HtmlButton.svelte')) ? target : undefined;
 }

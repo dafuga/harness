@@ -176,55 +176,5 @@
 </ExplorerFrame>
 
 <style>
-	.dep-group {
-		display: grid;
-		gap: var(--hx-space-10);
-		min-width: 0;
-	}
-	.dep-scroll {
-		overflow-x: auto;
-	}
-	.dep-table {
-		width: 100%;
-	}
-	.dep-table thead th:first-child {
-		width: 36%;
-	}
-	.dep-table code {
-		white-space: nowrap;
-	}
-	.dep-name {
-		font-weight: var(--hx-style-weight-medium);
-	}
-	.dep-uses {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0 var(--hx-space-6);
-		overflow-wrap: anywhere;
-	}
-	.dep-uses li,
-	.dep-gaps li {
-		margin: 0;
-		line-height: var(--hx-style-leading-normal);
-	}
-	.dep-uses li:not(:last-child)::after {
-		content: ',';
-	}
-	.dep-gaps {
-		display: grid;
-		grid-template-columns: auto minmax(0, 1fr);
-		gap: var(--hx-space-10);
-		padding: var(--hx-space-12) var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--ex-line-strong);
-		border-radius: var(--hx-radius-small);
-		color: var(--ex-soft);
-		font-size: var(--hx-type-size-sm);
-	}
-	.dep-gaps ul {
-		display: grid;
-		gap: var(--hx-space-4);
-		margin-top: var(--hx-space-6);
-		color: var(--ex-muted);
-		overflow-wrap: anywhere;
-	}
+	@import './explorer-dependencies-screen/explorerDependenciesScreen.css';
 </style>

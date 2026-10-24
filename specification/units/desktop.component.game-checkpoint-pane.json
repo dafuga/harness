@@ -21,7 +21,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/game-authoring/GameCheckpointPane.svelte"],
+		"source": [
+			"packages/desktop/src/components/game-authoring/GameCheckpointPane.svelte",
+			"packages/desktop/src/components/game-authoring/game-checkpoint-pane/gameCheckpointPane.css"
+		],
 		"symbols": ["GameCheckpointPane"]
 	},
 	"contract": {

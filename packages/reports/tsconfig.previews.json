@@ -2,27 +2,13 @@
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
 		"paths": {
-			"$desktop": [
-				"./.svelte-kit/../../desktop/src"
-			],
-			"$desktop/*": [
-				"./.svelte-kit/../../desktop/src/*"
-			],
-			"$shared": [
-				"./.svelte-kit/../src/components"
-			],
-			"$shared/*": [
-				"./.svelte-kit/../src/components/*"
-			],
-			"$lib": [
-				"./.svelte-kit/../src/lib"
-			],
-			"$lib/*": [
-				"./.svelte-kit/../src/lib/*"
-			],
-			"$app/types": [
-				"./.svelte-kit/types/index.d.ts"
-			]
+			"$desktop": ["./.svelte-kit/../../desktop/src"],
+			"$desktop/*": ["./.svelte-kit/../../desktop/src/*"],
+			"$shared": ["./.svelte-kit/../src/components"],
+			"$shared/*": ["./.svelte-kit/../src/components/*"],
+			"$lib": ["./.svelte-kit/../src/lib"],
+			"$lib/*": ["./.svelte-kit/../src/lib/*"],
+			"$app/types": ["./.svelte-kit/types/index.d.ts"]
 		}
 	},
 	"include": [

@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"desktop.component.agents-providers-chat-agents",
 			"desktop.component.composer",
 			"desktop.component.reference-text",
 			"reports.component.floating-chat",
@@ -23,7 +24,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/ProjectAgent.svelte",
-			"packages/desktop/src/components/agents-providers/ProjectAgent.svelte"
+			"packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"packages/desktop/src/components/agents-providers/project-agent/projectAgent.css"
 		],
 		"symbols": ["ProjectAgent", "ProjectAgent"]
 	},
@@ -46,6 +48,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.agents-providers-chat-agents",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.composer",
 			"via": "import",

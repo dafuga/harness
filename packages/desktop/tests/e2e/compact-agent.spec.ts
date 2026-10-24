@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
+import { agentActivityFixture, readyForAgentCapture } from './ui-agent-activity-fixture';
 import { projectFixture, alpha } from './ui-project-fixture';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenario from '../../../../specification/scenarios/agent-creation.json' with { type: 'json' };
@@ -113,4 +114,82 @@ test('compact controls send the selected provider, model, effort and design coun
 			effort: 'high',
 			designOptions: 2
 		});
+});
+
+// The standard project-chat matrix also proves the adjacent activity view and retained draft.
+for (const width of [1440, 920, 390]) {
+	test(`project chat shows sessions and module owners at ${width}px`, async ({ page }) => {
+		await page.setViewportSize({ width, height: 900 });
+		await agentActivityFixture(page);
+		await page.goto(`/projects/${alpha}/harness/branch/feat%2Falpha/components`);
+		await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+		await panel.getByRole('textbox', { name: 'Message', exact: true }).fill('Keep my draft.');
+		await evidence(page, width);
+		await panel.getByRole('button', { name: /^Agents/ }).click();
+		await expect(panel.getByRole('heading', { name: 'Main chats', exact: true })).toBeVisible();
+		await expect(
+			panel.getByText('Refine shared component previews', { exact: true })
+		).toBeVisible();
+		await expect(
+			panel.getByText('Review card usage on the home page', { exact: true })
+		).toBeVisible();
+		await expect(panel.getByText('Stale', { exact: true })).toBeVisible();
+		const modules = panel.getByRole('region', { name: 'Modules being worked on', exact: true });
+		await expect(modules.getByText('2 agents', { exact: true })).toBeVisible();
+		await expect(modules.getByRole('link', { name: 'Card', exact: true })).toBeVisible();
+		await expect(modules.getByText('Old assignment', { exact: true })).toHaveCount(0);
+		await evidence(page, width, 'agents');
+		await scenarioCapture(page, scenario as ScenarioManifest, {
+			state: 'chat-agents',
+			name: String(width),
+			note: 'Compiled renderer with synthetic declared sessions; no live model requests.'
+		});
+		await modules.getByRole('link', { name: 'Card', exact: true }).click();
+		await expect(page).toHaveURL(/components\/component.card/);
+		await panel.getByRole('button', { name: 'Chat', exact: true }).click();
+		await expect(panel.getByRole('textbox', { name: 'Message', exact: true })).toHaveValue(
+			'Keep my draft.'
+		);
+	});
+}
+
+async function evidence(page: Page, width: number, state = 'chat') {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	await readyForAgentCapture(page);
+	await page.mouse.move(0, 0);
+	mkdirSync('/tmp/chat-agents-evidence', { recursive: true });
+	await page.screenshot({
+		path: `/tmp/chat-agents-evidence/${process.env.SCREENSHOT_LABEL}-${width}-${state}.png`
+	});
+}
+
+test('agent refresh failures retain the last reading and unsupported hosts stay unknown', async ({
+	page
+}) => {
+	await agentActivityFixture(page);
+	await page.goto(`/projects/${alpha}/harness/branch/feat%2Falpha/components`);
+	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+	await panel.getByRole('button', { name: /^Agents/ }).click();
+	await expect(panel.getByText('Refine shared component previews', { exact: true })).toBeVisible();
+	await page.evaluate(() => {
+		(window as unknown as { __activityFailed: boolean }).__activityFailed = true;
+	});
+	await panel.getByRole('button', { name: 'Refresh agents', exact: true }).click();
+	await expect(
+		panel.getByText('Could not refresh. Showing the last reading.', { exact: true })
+	).toBeVisible();
+	await expect(panel.getByText('Refine shared component previews', { exact: true })).toBeVisible();
+	await evidence(page, 1440, 'refresh-failed');
+	await page.getByRole('button', { name: 'Close chat', exact: true }).click();
+	await page.evaluate(() => {
+		delete (window as unknown as { harness: { agentActivity?: unknown } }).harness.agentActivity;
+	});
+	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
+	await expect(
+		panel.getByText('Live agent activity is unavailable for this project.', { exact: true })
+	).toBeVisible();
+	await expect(panel.getByText('0 working', { exact: true })).toHaveCount(0);
+	await evidence(page, 1440, 'unavailable');
 });

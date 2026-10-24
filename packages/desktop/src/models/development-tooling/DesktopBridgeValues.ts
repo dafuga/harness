@@ -35,6 +35,7 @@ export const channels = {
 	messages: 'thread:messages',
 	approve: 'design:approve',
 	providers: 'providers:list',
+	agentActivity: 'project:agents',
 	startRun: 'run:start',
 	cancelRun: 'run:cancel'
 } as const;

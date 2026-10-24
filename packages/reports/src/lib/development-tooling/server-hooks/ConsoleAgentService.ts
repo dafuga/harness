@@ -16,6 +16,7 @@ import { reportSite } from '../../../utils/reports-media/reportSite';
 const arbiter = new RepositoryArbiterService();
 const outbox = new CommentOutboxService(join(reportSite().root, 'work/console-comments.json'));
 const allowed = [
+	'agentActivity',
 	'snapshot',
 	'entity',
 	'history',
