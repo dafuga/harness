@@ -48,4 +48,53 @@ Focused unit, source/ownership and project-template checks pass. The initial eig
 
 The unchanged pre-implementation CLI admission test fails on source `76064a9aebe4e1d55a62d84bc5afc74bc246568a`: the feature command exits 1 where committed context requires exit 0. Its ordinary remote run preserves that assertion. Running this CLI fixture through the existing instrumented snapshot recorder instead times out at 30 seconds; that timeout is not counted as red/green proof. A separate command-discovery regression and focused unit observation capture retain their own scopes.
 
-Final revision IDs, full-check results, immutable records and native-runner evidence are recorded below after verification. The Project Reports run is `0808761d-acee-44b6-b9e0-3c5d26cb7108`. Required blocked checks keep its report active and PR #114 draft. There is no frontend change requiring a new browser screenshot for this CLI feature.
+Executable source is `e4efd95a5c1c1bcb1886bc7c735ca63eb3ebed40`; sealed proof and corrected verification metadata are `f479aad816ff396078ec0ed9d1ddd3cf67ea6726`. Subsequent handoff changes only update this loop's documentation and trace. All automated CLI E2Es, native probes and the aggregate check run on `harbor-mbp-2`; none ran on the primary Mac.
+
+- All 31 combined CLI E2Es pass at executable source `e4efd95a5c1c1bcb1886bc7c735ca63eb3ebed40`: eight module-task cases plus 23 existing API cases, one worker, 42.97 seconds. The provider executables are synthetic protocol fixtures. Remote log: `/tmp/harness-module-task-cli-final.log`.
+- All 31 focused module-task, unit ownership and project-template cases pass. Root types and lint pass. Harness audit has no findings; registry integrity reports 1,777 units, 161 recorded uncertainties and no errors. Local logs: `/tmp/harness-module-tasks-focused-verified.log`, `/tmp/harness-module-tasks-types-verified.log`, `/tmp/harness-module-tasks-lint-verified.log`, `/tmp/harness-module-task-audit-final.json` and `/tmp/harness-module-task-unit-integrity-final.json`.
+- The installed local Harness CLI was rebuilt from the executable source above. Manual `harness task --help` and `harness task schema` confirm the new commands and preserved `task check`.
+- Required `bun run check` at sealed source `f479aad816ff396078ec0ed9d1ddd3cf67ea6726` passes formatting, root types, lint, Rust checks and the kernel build, then stops at the broad unit suite: **1,215 passed, 2 failed, 25 skipped** across 266 files, 568.73 seconds. The failures are `test/late-cleanup.test.ts:135` (tool start expected 1, observed 0) and `test/verification-observations.test.ts:168` (design-option-storage recording times out after 60 seconds). Both were independently reproduced on clean main `bb0d5b323e7e93886c3e19f1e88b46af582bed8b` during the preceding API work. Assertions remain unchanged. Aggregate E2E, full build/package and downstream workspace stages after this gate did not execute; focused CLI passes do not replace them. Log: `/tmp/harness-module-task-check-verified.log`.
+- Ten exact-range change reasons are committed in Harness Git notes on the sealed source. `explain check` passes for `9f3d5bab2b053fbb0a6d04f0fc3f3c932d9cbdfe..f479aad816ff396078ec0ed9d1ddd3cf67ea6726`. Red, green and capture records were fetched back to the primary checkout and successfully re-read through `RegressionProofRepository`, checking record, manifest, log and source identities.
+
+## Frozen regression and observations
+
+The final red source, `2874fa2c5683e9a1638985db6f9303fef3a75cd2`, retains the earlier application without module-task commands and adds the complete final test corpus, scenario definitions and runner configuration. `package.json` is explicitly named as a test input because its change only registers the new E2E file. The green source descends from red and introduces the product implementation without changing any frozen tests or runner inputs. Earlier implementation history is retained as the other parent.
+
+| Checkpoint               | Immutable record                                                   | Result                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Command discovery red    | `d021e911faef9abaa3d05dbd1ab720e7730c9588e0f0601e58f6e6680302acc4` | Unchanged assertion `module task commands must be discoverable` fails, exit 1.                         |
+| Same command green       | `8570b2ec0863a0cf5b24d91899c068cf350b17386989bf5bc07d6ff51f13acab` | Same assertion and complete test/configuration corpus pass, exit 0.                                    |
+| Independent unit capture | `2fdd5349bcc4a056333dcba5e1c3b66eb1b8549f77279d5cadd5e24486871e57` | Six focused test files pass; 684 observations include 90 for the task-related units and program entry. |
+
+The capture runs normal test behavior on Node 24.19.0, profile `fae395e860966b98`, at the sealed green revision. Examples below include setup, shared code, Git subprocesses and assertions. RSS is whole worker/process memory, not isolated module memory; these are single observed cases, not production latency budgets. Synthetic runner parsing does not measure a paid provider or its CLI process.
+
+| Observed workload                        | Duration   | Process/worker RSS |
+| ---------------------------------------- | ---------- | ------------------ |
+| Task command discovery                   | 4.074 ms   | 265,142,272 bytes  |
+| Six concurrent Git queue transactions    | 376.352 ms | 104,611,840 bytes  |
+| Contract admission                       | 71.908 ms  | 101,122,048 bytes  |
+| Exclusive dispatch with synthetic runner | 170.739 ms | 106,741,760 bytes  |
+| Synthetic CLI completion parsing         | 0.153 ms   | 99,057,664 bytes   |
+
+Current source measurements include every owned helper and type file. Module units emit no separate artifact. `entry.index` only adds exports; the combined CLI exercises that entry, without an independent per-barrel runtime measurement.
+
+| Changed unit                                  | Source bytes | Source lines | Complexity points | Dependencies |
+| --------------------------------------------- | ------------ | ------------ | ----------------- | ------------ |
+| `adapter.agents-providers-module-task-runner` | 7,215        | 228          | 47                | 4            |
+| `command.agents-providers-module-task`        | 4,184        | 122          | 17                | 5            |
+| `repository.agents-providers-module-task`     | 8,570        | 206          | 28                | 8            |
+| `service.agents-providers-module-task`        | 7,737        | 189          | 47                | 8            |
+| `service.agents-providers-module-task-worker` | 5,770        | 167          | 32                | 6            |
+| `command.task`                                | 2,954        | 94           | 15                | 4            |
+| `template.project-guidance`                   | 14,501       | 109          | 8                 | 3            |
+| `entry.index`                                 | 12,547       | 194          | 6                 | 121          |
+
+The whole bundled CLI is 14,869,773 bytes, SHA256 `8300372659850e14ceb0cef4f8d236d7f794de558e2d43ad451d49473116914f`. This includes the existing CLI and dependencies; it is not attributed to the new modules. Physical artifact and source measurements are retained in `/tmp/harness-module-task-final-sizes.json` on the primary Mac.
+
+## Native provider boundary
+
+Official Codex CLI 0.154.0 and Claude Code 2.1.296 were installed in task-local caches on `harbor-mbp-2`, without changing global CLI configuration or copying credentials. Claude Code meets the documented Haiku 5.5 minimum version, but its auth status reports `loggedIn: false` on that host, so live Claude acceptance remains blocked.
+
+The native Codex probe uses the real task admission and worker path, explicitly requesting `gpt-6-luna` with `max` intelligence. Although `codex login status` identifies a saved ChatGPT login, the actual protocol returns: “Your access token could not be refreshed because your refresh token was already used.” The task is correctly recorded as failed, its source remains unchanged, and `reportedModel` is null. This does not establish model availability or a live execution pass. The saved login session was preserved. Remote sanitized evidence: `/tmp/harness-module-native-errors.json` and `/tmp/harness-module-native-result.json`.
+
+The Project Reports run is `0808761d-acee-44b6-b9e0-3c5d26cb7108`. Required blocked checks keep its report active and PR #114 draft. There is no frontend change requiring a new browser screenshot for this CLI feature. No package publication, application deployment, source merge or production promotion is part of this handoff.
