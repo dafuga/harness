@@ -40,6 +40,11 @@
 				"name": "SourceFileList.empty",
 				"type": "string | undefined",
 				"description": "Caller-supplied empty message for the selected file collection."
+			},
+			{
+				"name": "SourceFileList.relativeTo",
+				"type": "string | undefined",
+				"description": "Directory prefix omitted from matching display labels. Complete paths remain in hover text and links, and are passed to each file action."
 			}
 		],
 		"outputs": [
