@@ -95,6 +95,9 @@ test('Rails-ish scaffolds create their expected code shapes', async () => {
 		pieceFiles('config', 'Search')
 	);
 	expect(config.map((file) => file.path)).toContain('src/configs/searchConfig.ts');
+	const configSource = config.find((file) => file.path === 'src/configs/searchConfig.ts')!;
+	expect(configSource.contents).toContain('export const searchConfig = {} as const;');
+	expect(configSource.contents).not.toMatch(/\b(?:name|enabled):/);
 	expect(pieceFiles('middleware', 'Auth').map((file) => file.path)).toContain(
 		'src/middleware/AuthMiddleware.ts'
 	);

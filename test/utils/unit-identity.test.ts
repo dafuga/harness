@@ -9,6 +9,9 @@ test('unitIdentity derives kind and name from Harness scaffold folders', () => {
 		['src/services/AnalyticsService.ts', 'service.analytics'],
 		['src/utils/commandAction.ts', 'function.command-action'],
 		['src/core/files.ts', 'function.files'],
+		['src/configs/downloadsConfig.ts', 'config.downloads'],
+		['src/configs/downloads/transferConfig.ts', 'config.downloads-transfer'],
+		['src/config/downloadsConfig.ts', 'config.downloads'],
 		['src/audit/adapters/cpp.ts', 'audit.adapters-cpp'],
 		['src/components/EvidenceGrid.svelte', 'component.evidence-grid'],
 		[

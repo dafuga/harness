@@ -109,6 +109,18 @@ export const componentManifestSchema = z.strictObject({
 		.optional(),
 	/** Internal implementation units stay addressable as dependencies but out of public catalogs. */
 	catalog: z.strictObject({ visibility: z.enum(['public', 'internal']) }).optional(),
+	/** Reviewed controls people intentionally change; other exports are implementation details. */
+	configControls: z
+		.array(
+			z.strictObject({
+				source: text,
+				name: text,
+				audience: z.enum(['user', 'developer', 'operator']),
+				purpose: text
+			})
+		)
+		.min(1)
+		.optional(),
 	retired: z.strictObject({ reason: text, at: text }).optional(),
 	/** Retired identities this unit continues; their baselines and history carry over. */
 	lineage: z.strictObject({ predecessors: z.array(identifier).min(1) }).optional(),

@@ -31,6 +31,7 @@ export interface RevisionRegistry {
 		serviceClasses?: UnitMetadata['serviceClasses'];
 		modelDefinitions?: UnitMetadata['modelDefinitions'];
 		configValues?: UnitMetadata['configValues'];
+		configControls?: ComponentManifest['configControls'];
 		sourceFiles?: UnitMetadata['sourceFiles'];
 		testFiles?: UnitMetadata['testFiles'];
 		/** Static observations from this source commit; not a verification verdict. */

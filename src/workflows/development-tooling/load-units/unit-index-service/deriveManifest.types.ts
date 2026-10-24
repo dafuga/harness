@@ -12,5 +12,6 @@ export type Declared = Pick<
 	| 'helperContracts'
 	| 'documentation'
 	| 'catalog'
+	| 'configControls'
 	| 'budgets'
 >;

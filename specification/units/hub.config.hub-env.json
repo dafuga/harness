@@ -6,6 +6,9 @@
 	"responsibility": "Owns the hubEnvConfig typed configuration.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"packages/hub/src/configs/development-tooling/hubEnvConfig.ts",
