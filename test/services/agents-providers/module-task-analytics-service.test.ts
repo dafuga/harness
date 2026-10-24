@@ -65,7 +65,7 @@ test('missing Codex cache-write counts produce a priced range rather than a gues
 	expect(cost).toMatchObject({
 		usd: null,
 		basis: 'standard-api-estimate',
-		rateCard: 'standard-global-2026-10-24'
+		rateCard: 'standard-global-2026-10-25'
 	});
 	expect(cost.minimumUsd).toBeCloseTo(0.0000173, 10);
 	expect(cost.maximumUsd).toBeCloseTo(0.0000278, 10);

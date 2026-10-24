@@ -73,6 +73,10 @@ export const moduleTaskVerificationScopes: Record<string, VerificationScope> = {
 					'usage-pricing',
 				'API quotes use versioned rates and preserve unknown models (claude-haiku-5-5, 100001 input)':
 					'usage-pricing',
+				'API quotes use versioned rates and preserve unknown models (gpt-6.1-sol, 100 input)':
+					'usage-pricing',
+				'API quotes use versioned rates and preserve unknown models (gpt-6-astra, 100 input)':
+					'usage-pricing',
 				'API quotes use versioned rates and preserve unknown models (unpriced-model, 100 input)':
 					'usage-pricing'
 			},

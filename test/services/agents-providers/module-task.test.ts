@@ -92,6 +92,8 @@ test('auto owns model and intelligence, while exact model choices retain their e
 test.each([
 	['claude-haiku-5-5', 100, 0.00002, 0.00002],
 	['claude-haiku-5-5', 100001, 0.0100101, 0.0500505],
+	['gpt-6.1-sol', 100, 0.0004, 0.0004],
+	['gpt-6-astra', 100, 0.002, 0.002],
 	['unpriced-model', 100, null, null]
 ])(
 	'API quotes use versioned rates and preserve unknown models (%s, %i input)',
@@ -107,7 +109,11 @@ test.each([
 			await service.add(
 				JSON.parse(
 					await readFile(
-						await f.input({ model, provider: 'claude', intelligence: 'medium' }),
+						await f.input({
+							model,
+							provider: String(model).startsWith('gpt-') ? 'codex' : 'claude',
+							intelligence: 'medium'
+						}),
 						'utf8'
 					)
 				)
@@ -134,7 +140,10 @@ test.each([
 			if (minimum === null)
 				expect(quote).toMatchObject({ usd: null, minimumUsd: null, maximumUsd: null });
 			else {
-				expect(quote?.minimumUsd).toBeCloseTo(Number(minimum), 10);
+				expect(quote?.minimumUsd, 'known exact model pricing must be available').toBeCloseTo(
+					Number(minimum),
+					10
+				);
 				expect(quote?.maximumUsd).toBeCloseTo(Number(maximum), 10);
 			}
 			expect(quote).toHaveProperty('rateCard');
