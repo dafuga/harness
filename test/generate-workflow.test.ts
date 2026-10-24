@@ -49,6 +49,17 @@ test('app generation allows app-only scaffolds without package exports', async (
 
 	expect(result.writes.map((file) => file.path)).toContain('src/routes/dashboard/+page.svelte');
 	expect(result.exportsUpdated).toBe(false);
+	const page = await readFile(join(root, 'src/routes/dashboard/+page.svelte'), 'utf8');
+	expect(page).toContain('@harness-tier page');
+	expect(page).toContain('<HtmlH1>');
+	await generatePiece({ root, kind: 'component', name: 'PostCard' });
+	const component = await readFile(join(root, 'src/components/PostCard.svelte'), 'utf8');
+	expect(component).toContain('@harness-tier molecule');
+	expect(component).toContain('<HtmlSection');
+	const button = await readFile(join(root, 'src/components/atoms/HtmlButton.svelte'), 'utf8');
+	expect(button).toContain('@harness-element button');
+	const input = await readFile(join(root, 'src/components/atoms/HtmlInput.svelte'), 'utf8');
+	expect(input).toContain('@harness-element input');
 	await rm(root, { recursive: true, force: true });
 });
 
