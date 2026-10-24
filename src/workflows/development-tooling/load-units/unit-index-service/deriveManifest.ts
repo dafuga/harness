@@ -31,6 +31,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		status: 'active',
 		...(documentation ? { documentation } : {}),
 		...(catalog ? { catalog } : {}),
+		...(kept.configControls ? { configControls: kept.configControls } : {}),
 		...lineage(input),
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
 		contract: kept.contract.origin === 'declared' ? kept.contract : derivedContract(files),
@@ -49,6 +50,7 @@ function defaults(input: DeriveInput): Declared {
 		title: title(input.files[0].path),
 		responsibility: '',
 		responsibilityOrigin: 'derived',
+		...(input.kind === 'config' ? { catalog: { visibility: 'internal' as const } } : {}),
 		contract: { origin: 'derived', inputs: [], outputs: [], errors: [] },
 		scenarios: [],
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }

@@ -12,7 +12,7 @@ export interface LoadedUnits {
 	/** Manifests exactly as stored. */
 	stored: ComponentManifest[];
 	scenarios: ScenarioManifest[];
-	/** Schema problems found in stored manifests and scenarios. */
+	/** Schema problems and config controls that cannot be read from their declared source. */
 	errors: string[];
 	/** Units whose stored file is not in canonical form. */
 	unformatted: string[];

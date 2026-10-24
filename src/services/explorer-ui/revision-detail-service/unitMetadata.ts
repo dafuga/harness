@@ -144,6 +144,12 @@ async function configurationsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): 
 				// A missing historical file cannot retain values from another revision.
 			}
 		}
+		if (unit.configControls)
+			unit.configValues = unit.configValues.filter((value) =>
+				unit.configControls!.some(
+					(control) => control.source === value.source && control.name === value.name
+				)
+			);
 	}
 }
 

@@ -6,6 +6,9 @@
 	"responsibility": "Builds the console as one script and one stylesheet for hosts that serve it themselves.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/configs/consoleViteConfig.ts",

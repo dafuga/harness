@@ -6,6 +6,9 @@
 	"responsibility": "Builds one page of the shell fixture as one script and one stylesheet into the directory of the run that asked for it.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/configs/development-tooling/shellViteConfig.ts",

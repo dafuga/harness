@@ -75,6 +75,8 @@ test('scaffold guidance tells agents what generated code contains', () => {
 	expect(mailer?.contains?.join('\n')).toContain('Mailer class under src/mailers');
 	expect(mailer?.exampleCommands[0]).toBe('harness generate mailer example');
 	expect(findGuide('layout')?.rules.join(' ')).toContain('child-content slot');
+	expect(findGuide('config')?.rules.join(' ')).toContain('audience and purpose');
+	expect(findGuide('config')?.contains?.join(' ')).not.toContain('Name and enabled fields');
 });
 
 test('guide lookup accepts common scaffold aliases', () =>
