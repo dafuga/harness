@@ -76,13 +76,13 @@
 	white-space: nowrap;
 	outline-offset: calc(-1 * var(--hx-space-4));
 }
-:is(.hx-categories, .hx-modules) :is(a, button):is(:hover, [aria-expanded='true']) {
+.hx-categories a:hover {
 	color: var(--hx-color-text);
 }
 .hx-category {
 	opacity: var(--hx-opacity-dim);
 }
-:is(.hx-categories, .hx-modules) :is(a, button)[aria-current='page'] {
+.hx-categories a[aria-current='page'] {
 	color: var(--hx-color-primary);
 }
 .hx-categories [aria-current='page']::after {
@@ -99,35 +99,26 @@
 	flex: none;
 	align-items: center;
 }
-/* Modules opens its categories in a bubble under it, over the page and wholly on the screen. */
-.hx-categories button {
-	font-family: inherit;
-	anchor-name: --modules-trigger;
-}
-.hx-modules {
-	position-anchor: --modules-trigger;
-	position-area: bottom span-right;
-	position-try-fallbacks: flip-inline;
-	margin: var(--hx-space-4) 0 0;
-	padding: var(--hx-space-6);
-	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
-	border-radius: var(--hx-radius-small);
-	background: var(--hx-color-surface-raised);
-	box-shadow: var(--hx-shadow-popover);
-	color: var(--hx-color-text-supporting);
-}
-.hx-modules a {
-	display: block;
-	padding: var(--hx-space-10) var(--hx-space-16);
-}
-.hx-modules [aria-current='page'] {
-	box-shadow: var(--hx-shadow-selected);
+/* Module kinds share the horizontal tab strip below the primary navigation. */
+.hx-nav > .hx-tabs {
+	flex: 1 1 calc(100% + 2 * var(--hx-gutter));
+	order: 3;
+	margin: 0 calc(-1 * var(--hx-gutter)) calc(-1 * var(--hx-space-8));
+	padding-inline: var(--hx-gutter);
+	border-top: var(--hx-border-thin) solid var(--hx-line);
+	border-bottom: 0;
 }
 /* One row from 1420px, ended by the revision and the search: the revision keeps the whole width of
    its fields, a long repository name gives way, and the spacing narrows near the threshold. */
 @media (min-width: 1420px) {
 	.hx-nav {
 		flex-wrap: nowrap;
+	}
+	.hx-nav:has(> .hx-tabs) {
+		flex-wrap: wrap;
+	}
+	.hx-nav:has(> .hx-tabs) .hx-categories {
+		min-height: calc(92px - 2 * var(--hx-space-8) - var(--hx-border-thin));
 	}
 	.hx-nav:has(.hx-search) {
 		--hx-nav-gap: var(--hx-nav-gap-wide);
@@ -159,6 +150,10 @@
 	}
 	.hx-categories::before {
 		display: none;
+	}
+	.hx-nav > .hx-tabs {
+		order: 1;
+		margin-bottom: 0;
 	}
 	.hx-nav .hx-revision {
 		position: relative;
