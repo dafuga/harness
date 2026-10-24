@@ -140,6 +140,7 @@
 		"reports.component.explorer-ui-explorer-platform-details",
 		"reports.component.explorer-ui-explorer-platforms",
 		"reports.component.explorer-ui-harness-explorer-styles-screen",
+		"reports.component.explorer-ui-harness-group",
 		"reports.component.explorer-usage",
 		"reports.component.explorer-usage-link",
 		"reports.component.filter-dialog",
@@ -1073,6 +1074,12 @@
 			"units": ["reports.component.explorer-ui-harness-explorer-styles-screen"]
 		},
 		{
+			"id": "reports-component-explorer-ui-harness-group",
+			"title": "HarnessGroup",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-harness-group"]
+		},
+		{
 			"id": "reports-component-explorer-usage",
 			"title": "ExplorerUsage",
 			"coverage": "required",
@@ -1925,6 +1932,7 @@
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
+				"reports-component-explorer-ui-harness-group",
 				"reports-component-explorer-usage",
 				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",

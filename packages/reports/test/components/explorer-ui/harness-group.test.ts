@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { content } from '../../entityRender';
+import { content, hostProps } from '../../entityRender';
+import { withGroups } from '../../entityPreviewData';
 
 // SSR must render useful, expanded groups before hydration, with distinct control targets.
 test('catalog groups render named expanded controls and unique content targets', () => {
@@ -13,7 +14,7 @@ test('catalog groups render named expanded controls and unique content targets',
 		'models',
 		'types'
 	] as const) {
-		const markup = content('commit', { category });
+		const markup = content('commit', { category }, { head: withGroups(hostProps('commit').head) });
 		const controls = [
 			...markup.matchAll(/<button\b[^>]*aria-expanded="true"[^>]*aria-controls="([^"]+)"/g)
 		];

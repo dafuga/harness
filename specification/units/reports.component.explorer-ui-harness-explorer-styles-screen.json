@@ -90,6 +90,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.component.explorer-ui-harness-group",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-frame",
 			"via": "import",
 			"origin": "derived"
