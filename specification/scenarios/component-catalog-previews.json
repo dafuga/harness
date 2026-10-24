@@ -97,7 +97,6 @@
 		"hub.component.native-approval",
 		"hub.component.project-create",
 		"hub.component.project-list",
-		"hub.layout.root",
 		"hub.page.invite-project-id-invitation-id",
 		"hub.page.native-handoff-id",
 		"hub.page.projects-project-id-harness-path",
@@ -140,6 +139,7 @@
 		"reports.component.explorer-ui-explorer-platform-details",
 		"reports.component.explorer-ui-explorer-platforms",
 		"reports.component.explorer-ui-harness-explorer-styles-screen",
+		"reports.component.explorer-ui-harness-group",
 		"reports.component.explorer-usage",
 		"reports.component.explorer-usage-link",
 		"reports.component.filter-dialog",
@@ -225,7 +225,6 @@
 		"reports.component.upload-comparison",
 		"reports.component.usage-examples-usage-examples",
 		"reports.layout.explorer-layout",
-		"reports.layout.root",
 		"reports.page.harness-branch-branch-at-components",
 		"reports.page.harness-branch-branch-at-components-entity",
 		"reports.page.harness-branch-branch-at-components-entity-history",
@@ -815,12 +814,6 @@
 			"units": ["hub.component.project-list"]
 		},
 		{
-			"id": "hub-layout-root",
-			"title": "/",
-			"coverage": "required",
-			"units": ["hub.layout.root"]
-		},
-		{
 			"id": "hub-page-invite-project-id-invitation-id",
 			"title": "/invite/[projectId]/[invitationId]",
 			"coverage": "required",
@@ -1071,6 +1064,12 @@
 			"title": "ExplorerStylesScreen",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-harness-explorer-styles-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-harness-group",
+			"title": "HarnessGroup",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-harness-group"]
 		},
 		{
 			"id": "reports-component-explorer-usage",
@@ -1583,12 +1582,6 @@
 			"title": "Preview reports.layout.explorer-layout with representative inputs"
 		},
 		{
-			"id": "reports-layout-root",
-			"title": "/",
-			"coverage": "required",
-			"units": ["reports.layout.root"]
-		},
-		{
 			"id": "reports-page-harness-branch-branch-at-components",
 			"title": "/harness/branch/[branch]/[...at]/components",
 			"coverage": "required",
@@ -1882,7 +1875,6 @@
 				"hub-component-native-approval",
 				"hub-component-project-create",
 				"hub-component-project-list",
-				"hub-layout-root",
 				"hub-page-invite-project-id-invitation-id",
 				"hub-page-native-handoff-id",
 				"hub-page-projects-project-id-harness-path",
@@ -1925,6 +1917,7 @@
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
+				"reports-component-explorer-ui-harness-group",
 				"reports-component-explorer-usage",
 				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",
@@ -2010,7 +2003,6 @@
 				"reports-component-upload-comparison",
 				"reports-component-usage-examples-usage-examples",
 				"reports-layout-explorer-layout",
-				"reports-layout-root",
 				"reports-page-harness-branch-branch-at-components",
 				"reports-page-harness-branch-branch-at-components-entity",
 				"reports-page-harness-branch-branch-at-components-entity-history",

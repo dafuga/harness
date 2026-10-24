@@ -6,6 +6,9 @@
 	"responsibility": "Applies report styles and renders the current page with the explorer chat where available.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["packages/reports/src/routes/+layout.svelte"],
 		"symbols": ["+layout"]

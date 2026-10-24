@@ -9,6 +9,7 @@ import {
 	reviewServiceFolders
 } from './entityPreviewFunctions';
 import { entityLabels } from '../src/utils/entityLens';
+import { reviewGroupDisclosure } from './entityPreviewDisclosure';
 
 test.setTimeout(90_000);
 
@@ -22,7 +23,8 @@ async function pageFamilies(page: Page): Promise<void> {
 		['Pages', 3],
 		['Services', 3],
 		['Platforms', 2],
-		['Styles', 1]
+		['Styles', 1],
+		['Types', 3]
 	] as const) {
 		await expect
 			.soft(
@@ -31,6 +33,8 @@ async function pageFamilies(page: Page): Promise<void> {
 			)
 			.toBeVisible({ timeout: 500 });
 	}
+	await expect(page.getByRole('heading', { name: /^Explorer & navigation/ })).toHaveCount(0);
+	await expect(page.getByRole('article', { name: 'Harness view', exact: true })).toHaveCount(0);
 }
 
 async function configVariables(page: Page, viewport: string): Promise<void> {
@@ -80,6 +84,13 @@ async function configVariables(page: Page, viewport: string): Promise<void> {
 }
 
 for (const [viewport, size] of Object.entries(viewports)) {
+	test(`group headings collapse independently and reopen by keyboard at ${viewport}`, async ({
+		page
+	}) => {
+		await page.setViewportSize(size);
+		await reviewGroupDisclosure(page, viewport);
+	});
+
 	test(`private dependencies reuse module cards at ${viewport} width`, async ({ page }) => {
 		await page.setViewportSize(size);
 		await reviewPrivateFunctions(page, viewport);

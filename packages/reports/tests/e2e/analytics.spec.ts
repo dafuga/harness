@@ -22,7 +22,9 @@ test('the analytics address leads into the explorer, which has no analytics scre
 	}
 	await expect(page.getByRole('heading', { name: /Analytics/ })).toHaveCount(0);
 	await expect(page.getByText('Response first try', { exact: true })).toHaveCount(0);
-	const categories = page.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+	const categories = page
+		.getByRole('navigation', { name: 'Harness categories' })
+		.locator('a, button');
 	await expect(categories).toHaveText(expectedCategories);
 	await expect(page.getByRole('link', { name: /analytics|reports|activity/i })).toHaveCount(0);
 });

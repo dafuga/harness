@@ -38,7 +38,6 @@ const field = (page: Page, name: string) => bar(page).getByRole('combobox', { na
 /** A commit of the main branch other than its tip, so choosing it is a change of address. */
 const earlier = () =>
 	target.index.revisions.map((revision) => revision.commit).find((commit) => commit !== head) ?? '';
-
 beforeAll(async () => {
 	target = await syntheticHost();
 	await installAndBuild(target);
@@ -51,14 +50,12 @@ afterAll(async () => {
 	await worker?.stop();
 	await target?.dispose();
 });
-
 async function adminPage(): Promise<Page> {
 	const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 	browserErrors.watch(context);
 	await context.addCookies([{ name: 'session', value: sessions.admin, url: worker.url }]);
 	return context.newPage();
 }
-
 test('the host redirects the root and the query form to page paths, for the administrator only', async () => {
 	const root = await get('/harness', admin);
 	expect([root.status, root.headers.get('location')]).toEqual([308, tip('pages')]);
@@ -103,18 +100,21 @@ test('in a browser each branch, commit and category of the installed console is 
 	await page.goto(`${worker.url}/harness`);
 	await page.getByRole('heading', { level: 1, name: 'Pages' }).waitFor();
 	expect(pathOf(page)).toBe(tip('pages'));
-	const links = bar(page).getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
-	expect(await links.allInnerTexts()).toEqual(categories);
+	const controls = bar(page)
+		.getByRole('navigation', { name: 'Harness categories' })
+		.locator('a, button');
+	expect(await controls.allInnerTexts()).toEqual(categories);
 	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
 		0
 	);
-	await links.filter({ hasText: 'Modules' }).click();
-	const modules = bar(page).getByRole('tablist', { name: 'Module categories' });
-	await modules.getByRole('tab', { name: 'Layouts', exact: true }).click();
+	await bar(page).getByRole('button', { name: 'Modules', exact: true }).click();
+	const modules = bar(page).getByRole('navigation', { name: 'Module categories' });
+	await modules.getByRole('link', { name: 'Layouts', exact: true }).click();
 	await page.waitForURL(`**${tip('layouts')}`);
 	await page.getByRole('heading', { level: 1, name: 'Layouts' }).waitFor();
 	expect(await commit.inputValue()).toBe(head);
-	await modules.getByRole('tab', { name: 'Helpers', exact: true }).click();
+	await bar(page).getByRole('button', { name: 'Modules', exact: true }).click();
+	await modules.getByRole('link', { name: 'Helpers', exact: true }).click();
 	await page.waitForURL(`**${tip('functions')}`);
 	expect(await commit.inputValue()).toBe(head);
 	await commit.selectOption(other);
@@ -209,8 +209,10 @@ test('the installed console names the repository of its recorded history, to the
 	await page.goto(worker.url + main(head, 'activity'));
 	await page.waitForURL(`**${main(head, 'pages')}`);
 	await bar(page).getByText(recorded.repository.name, { exact: true }).waitFor();
-	const links = bar(page).getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
-	expect(await links.allInnerTexts()).toEqual(categories);
+	const controls = bar(page)
+		.getByRole('navigation', { name: 'Harness categories' })
+		.locator('a, button');
+	expect(await controls.allInnerTexts()).toEqual(categories);
 	// Nothing in the installed console asks for agents: a host has no checkout to read them from.
 	expect(await page.getByRole('tab', { name: 'Activity' }).count()).toBe(0);
 	expect(await page.getByTestId('agents-working').count()).toBe(0);
