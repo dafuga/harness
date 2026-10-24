@@ -1,10 +1,11 @@
 import { expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { previewState } from './catalogUnits';
+import { catalogScenario, previewState } from './catalogUnits';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(page: Page, id: string, viewport: string) {
+	assertCaptureSlot(id, viewport);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selector: Record<string, string> = {
@@ -41,4 +42,22 @@ export async function assertComponentCapture(page: Page, id: string, viewport: s
 			`${id} excludes the preview title and empty canvas`
 		).toBeLessThanOrEqual(Math.ceil(actual) + 18);
 	}
+}
+
+/** The recorded slot selects the manifest's element rules as well as its required state. */
+function assertCaptureSlot(id: string, viewport: string) {
+	const directory = process.env.HARNESS_EVIDENCE_DIR;
+	if (!directory || process.env.TAKE_SCREENSHOT !== '1') return;
+	const lines = readFileSync(join(directory, 'captures.ndjson'), 'utf8')
+		.split('\n')
+		.filter(Boolean)
+		.map((text) => JSON.parse(text));
+	const capture = lines.findLast(
+		(line) =>
+			line.kind === 'screenshot' && line.state === previewState(id) && line.viewport === viewport
+	);
+	expect(
+		catalogScenario.evidence,
+		'a component capture uses declared element evidence'
+	).toContainEqual(expect.objectContaining({ id: capture?.evidence, capture: 'element' }));
 }

@@ -30,3 +30,9 @@ red/green record steps remain pending; these diagnostic runs are not a sealed re
 Publication must regenerate component screenshots using the new element capture mode. Existing
 historical page-sized images retain their original provenance and must not be relabeled as new
 component captures. The shared preview remains owned by Platforms; no additional server was started.
+
+Follow-up: the normal evidence-producing EnvironmentPicker case now also checks that its recorded
+slot is declared as element evidence. It failed with the old unit-ID slot and passed unchanged
+after the producer used the scenario's `screens` slot (1 case, 9.4s). This prevents cropped images
+from missing the required slot or being interpreted as viewport images. The original geometry
+and source/build assertions remain in place; this is focused proof, not full scenario verification.
