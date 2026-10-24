@@ -17,6 +17,7 @@ test('module task commands retain the existing evidence-based task check', () =>
 				'prompt',
 				'worker',
 				'retry',
+				'review',
 				'sync'
 			])
 		);

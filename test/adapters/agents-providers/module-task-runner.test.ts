@@ -88,3 +88,81 @@ test('a completed CLI run that reports another model is rejected', async () => {
 		})
 	).rejects.toThrow('different model');
 });
+test.each(['claude', 'codex'] as const)(
+	'public %s usage is retained without guessing absent counters',
+	async (provider) => {
+		const model = provider === 'claude' ? 'claude-haiku-5-5' : 'gpt-6-luna';
+		const events =
+			provider === 'claude'
+				? [
+						{ type: 'system', subtype: 'init', model },
+						{
+							type: 'result',
+							is_error: false,
+							result: 'Done',
+							total_cost_usd: 0.02,
+							usage: {
+								input_tokens: 5,
+								output_tokens: 4,
+								cache_read_input_tokens: 10,
+								cache_creation_input_tokens: 20,
+								cache_creation: { ephemeral_5m_input_tokens: 20, ephemeral_1h_input_tokens: 0 }
+							}
+						}
+					]
+				: [
+						{
+							type: 'turn.completed',
+							model,
+							usage: { input_tokens: 35, output_tokens: 4, cached_input_tokens: 10 }
+						}
+					];
+		const runner = new ModuleTaskRunnerAdapter(async () => ({
+			code: 0,
+			stdout: events.map((e) => JSON.stringify(e)).join('\n')
+		}));
+		const result = await runner.run({
+			provider,
+			model,
+			intelligence: 'medium',
+			cwd: '.',
+			prompt: 'Goal',
+			signal: new AbortController().signal
+		});
+		expect(result).toMatchObject({
+			usage: {
+				inputTokens: 35,
+				outputTokens: 4,
+				cacheReadTokens: 10,
+				cacheWriteTokens: provider === 'claude' ? 20 : null,
+				reportedCostUsd: provider === 'claude' ? 0.02 : null
+			}
+		});
+	}
+);
+test('failed turns preserve available usage for cost attribution', async () => {
+	const runner = new ModuleTaskRunnerAdapter(async () => ({
+		code: 1,
+		stdout: JSON.stringify({
+			type: 'result',
+			is_error: true,
+			usage: {
+				input_tokens: 7,
+				output_tokens: 2,
+				cache_read_input_tokens: 0,
+				cache_creation_input_tokens: 0
+			},
+			total_cost_usd: 0.01
+		})
+	}));
+	await expect(
+		runner.run({
+			provider: 'claude',
+			model: 'claude-haiku-5-5',
+			intelligence: 'medium',
+			cwd: '.',
+			prompt: 'Goal',
+			signal: new AbortController().signal
+		})
+	).rejects.toMatchObject({ usage: { inputTokens: 7, outputTokens: 2, reportedCostUsd: 0.01 } });
+});

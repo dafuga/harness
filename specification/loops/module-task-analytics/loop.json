@@ -1,0 +1,41 @@
+{
+	"name": "module-task-analytics",
+	"goal": "Committed module task attempts retain model, intelligence, provider token usage and API price provenance; explicit incomplete reviews requeue the preserved work and produce an auditable bounce rate in existing analytics.",
+	"createdAt": "2026-10-24T22:47:26.487Z",
+	"updatedAt": "2026-10-24T22:47:26.487Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
