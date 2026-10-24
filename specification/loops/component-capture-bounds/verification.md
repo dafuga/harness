@@ -17,8 +17,9 @@ Focused integrated checks:
 - Root TypeScript and Reports preview Svelte checks passed.
 - Root audit passes after the coordinator-authorized removal of one blank line from the inherited
   `test/console-host-routes.e2e.test.ts` size violation; every assertion is unchanged, and formatting
-  and ESLint pass. Reports audit still reports the inherited main `tests/e2e/explorer-shell.spec.ts`
-  size violation. No unrelated behavior or size-limit relaxation was included here.
+  and ESLint pass. The coordinator also requested removal of six blank lines from the inherited
+  Reports shell test size violation; every nonblank line is identical to main. Both audits pass.
+  No unrelated behavior or size-limit relaxation was included here.
 
 Formal isolated regression recording, full CLI/native/workspace suites and exhaustive capture
 qualification were deferred under Daniel's basic-check instruction. The loop's enforced
