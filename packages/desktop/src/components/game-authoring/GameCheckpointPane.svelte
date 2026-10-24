@@ -120,15 +120,15 @@
 		max-width: calc(100vw - 24px);
 		max-height: calc(100dvh - 24px);
 		padding: 0;
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-xlarge);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 		color: inherit;
 		box-shadow: var(--hx-shadow-dialog);
 		overflow: hidden;
 	}
 	.checkpoint-modal :global(.viewer-dialog::backdrop) {
-		background: var(--hx-scrim);
+		background: var(--hx-color-scrim);
 	}
 	.checkpoint-modal :global(.viewer-header),
 	.checkpoint-modal :global(footer) {
@@ -139,7 +139,7 @@
 	}
 	.checkpoint-modal :global(.viewer-header) {
 		justify-content: space-between;
-		border-bottom: var(--hx-border-thin) solid var(--line);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	.checkpoint-modal :global(.viewer-header button) {
 		display: grid;
@@ -158,7 +158,7 @@
 		padding: var(--hx-space-20);
 	}
 	.checkpoint-modal :global(footer) {
-		border-top: var(--hx-border-thin) solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	.fields,
 	label {
@@ -178,7 +178,7 @@
 	}
 	input:focus-visible,
 	textarea:focus-visible {
-		outline: var(--hx-border-thick) solid var(--gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 	}
 	.name {
 		grid-template-columns: auto minmax(0, 1fr);
@@ -186,7 +186,7 @@
 		gap: var(--hx-space-12);
 	}
 	.name > span {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-weight: var(--hx-style-weight-regular);
 	}
 	.name input {
@@ -198,7 +198,7 @@
 		justify-self: start;
 		border-color: transparent;
 		background: none;
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.disclosure {
 		padding-inline: 0;
@@ -206,11 +206,11 @@
 	.disclosure:hover,
 	.disclosure[aria-expanded='true'],
 	.quiet:hover {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	.rules {
 		padding-top: var(--hx-space-16);
-		border-top: var(--hx-border-thin) solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	.done {
 		margin-inline-start: auto;

@@ -1,4 +1,4 @@
-/* The Styles catalog: every shared app token grouped and drawn by itself, colors by their role. */
+/* The Styles catalog: purpose-named choices as role cards, then every other token drawn by itself. */
 .hx-styles-page {
 	max-width: 1440px;
 	margin: 0 auto;
@@ -8,65 +8,73 @@
 }
 .hx-styles-kicker {
 	margin: 0 0 var(--hx-space-4);
-	color: var(--hx-gold);
-	font-size: var(--hx-type-size-xs);
+	color: var(--hx-color-primary);
+	font-size: var(--hx-type-size-caption);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
 }
 .hx-styles-intro h1 {
 	margin: 0;
+	font-family: var(--hx-font-family-heading);
 	font-size: var(--hx-type-size-3xl);
 	line-height: var(--hx-style-leading-tight);
 }
 .hx-styles-intro > p:last-child {
 	margin: var(--hx-space-10) 0 0;
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-lg);
 }
 .hx-styles-groups {
 	display: grid;
-	gap: var(--hx-space-28);
+	gap: var(--hx-space-section);
 }
-/* As many columns as fit, never one narrower than the screen allows. */
+/* The foundation starts under a rule, after every purpose-named choice. */
+.hx-module-group:has(> div > .hx-styles-kicker) {
+	padding-top: var(--hx-space-section);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border-strong);
+}
+/* As many columns as fit, never one narrower than the screen allows; a role card is wider. */
 .hx-styles-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+	gap: var(--hx-space-10);
+}
+.hx-styles-grid.hx-style-roles {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
 	gap: var(--hx-space-12);
 }
 .hx-style-token,
-.hx-color-role {
+.hx-style-role {
 	display: flex;
 	flex-direction: column;
 	gap: var(--hx-space-12);
 	min-width: 0;
-	padding: var(--hx-space-14);
-	border: var(--hx-border-thin) solid var(--hx-line);
-	border-radius: var(--hx-radius);
-	background: var(--hx-surface);
+	padding: var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-panel);
+	background: var(--hx-color-surface);
 }
 .hx-style-token-head {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: flex-start;
 	justify-content: space-between;
-	gap: var(--hx-space-6) var(--hx-space-12);
-	min-height: 34px;
+	gap: var(--hx-space-4) var(--hx-space-12);
 }
 .hx-style-token-head code,
-.hx-color-role code {
+.hx-style-role code {
 	max-width: 100%;
-	color: var(--hx-soft);
-	font-family: var(--hx-font-family-mono);
-	font-size: var(--hx-type-size-xs);
+	color: var(--hx-color-text);
+	font-family: var(--hx-font-family-code);
+	font-size: var(--hx-type-size-caption);
 	font-weight: var(--hx-style-weight-medium);
 	overflow-wrap: anywhere;
 }
 .hx-style-token-head > span,
-.hx-color-role [data-style-token] > :last-child {
-	color: var(--hx-muted);
-	font-family: var(--hx-font-family-mono);
-	font-size: var(--hx-type-size-xs);
+.hx-style-role [data-style-token] > span {
+	color: var(--hx-color-text-muted);
+	font-family: var(--hx-font-family-code);
+	font-size: var(--hx-type-size-caption);
 	overflow-wrap: anywhere;
 }
 /* Sample text keeps its line breaks, so a leading token shows the distance between two lines. */
@@ -75,19 +83,19 @@
 	align-items: center;
 	min-height: 40px;
 	margin: 0;
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 	white-space: pre-line;
 	overflow-wrap: anywhere;
 }
 .hx-style-value {
 	margin: 0;
-	color: var(--hx-text);
-	font-family: var(--hx-font-family-mono);
+	color: var(--hx-color-text);
+	font-family: var(--hx-font-family-code);
 	font-size: var(--hx-type-size-xl);
 	font-variant-numeric: var(--hx-style-numeric-tabular);
 	overflow-wrap: anywhere;
 }
-/* Measures, edges, corners, raised surfaces and faded blocks sit in one row of the same height. */
+/* Measures, edges, corners, raised surfaces and faded blocks share one row height. */
 .hx-style-frame {
 	display: flex;
 	align-items: center;
@@ -97,95 +105,87 @@
 	max-width: 100%;
 	height: 12px;
 	border-radius: var(--hx-radius-hairline);
-	background: var(--hx-gold);
+	background: var(--hx-color-primary);
 }
 .hx-style-edge {
 	width: 100%;
-	color: var(--hx-gold);
+	color: var(--hx-color-primary);
 }
 .hx-style-corner,
 .hx-style-shadow,
 .hx-style-fade {
 	width: 64px;
 	height: 40px;
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface-raised);
 }
 .hx-style-corner {
-	border: var(--hx-border-thin) solid var(--hx-gold);
-	background: var(--hx-raised);
-}
-.hx-style-shadow {
-	border-radius: var(--hx-radius-small);
-	background: var(--hx-raised);
+	border: var(--hx-border-thin) solid var(--hx-color-primary);
 }
 .hx-style-fade {
+	background: var(--hx-color-primary);
+}
+/* A swatch is painted by its own variable; the base color of a role is drawn larger. */
+.hx-style-swatch {
+	width: 28px;
+	height: 28px;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 	border-radius: var(--hx-radius-small);
-	background: var(--hx-gold);
+	background: var(--style-specimen);
 }
-/* Colors: one card per role, wide enough for a declared value beside its swatch. */
-.hx-styles-grid.hx-color-roles {
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+.hx-style-base .hx-style-swatch {
+	width: 56px;
+	height: 56px;
 }
-.hx-color-role > h3,
-.hx-color-role > p {
+.hx-style-role > h3 {
 	margin: 0;
+	font-family: var(--hx-font-family-heading);
+	font-size: var(--hx-type-size-base);
 	line-height: var(--hx-style-leading-snug);
 }
-.hx-color-role > h3 {
-	font-size: var(--hx-type-size-base);
-}
-.hx-color-role > p {
-	color: var(--hx-soft);
+.hx-style-role > p {
+	margin: 0;
+	color: var(--hx-color-text-supporting);
 	font-size: var(--hx-type-size-sm);
+	line-height: var(--hx-style-leading-snug);
 }
-/* Each labelled set starts under a rule, so a base color stands apart from its treatments. */
-.hx-color-role [role='group'] {
+/* Each labelled set starts under a rule, so a base variable stands apart from its treatments. */
+.hx-style-role [role='group'] {
 	display: grid;
 	gap: var(--hx-space-10);
 	padding: var(--hx-space-12) 0 0;
-	border-top: var(--hx-border-thin) solid var(--hx-line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 }
-.hx-color-role [role='group'] > p {
+.hx-style-role [role='group'] > p {
 	margin: 0;
-	color: var(--hx-muted);
+	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-2xs);
 	font-weight: var(--hx-style-weight-semibold);
 	letter-spacing: var(--hx-style-tracking-caps);
 	text-transform: uppercase;
 }
-/* A color: the swatch its own variable paints, then its name, what it paints and its value. */
-.hx-color-role [data-style-token] {
+/* A variable: its drawing beside its name and value, or sample text across the row below them. */
+.hx-style-role [data-style-token] {
 	display: grid;
-	grid-template-columns: 28px minmax(0, 1fr);
-	align-content: start;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: center;
 	column-gap: var(--hx-space-10);
-	color: var(--hx-soft);
-	font-size: var(--hx-type-size-xs);
 	line-height: var(--hx-style-leading-snug);
 }
-.hx-color-role [data-style-token]::before {
-	content: '';
-	grid-row: span 3;
-	height: 28px;
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
-	border-radius: var(--hx-radius-small);
-	background: var(--style-specimen);
+.hx-style-role [data-style-token]:has(> .hx-style-specimen) {
+	grid-template-columns: minmax(0, 1fr);
 }
-.hx-color-role [data-style-token] > code {
-	color: var(--hx-text);
+.hx-style-role [data-style-token] > .hx-style-frame {
+	grid-area: 1 / 1 / span 2;
+	min-height: 0;
 }
-/* The one base color of a role is drawn larger than any treatment of it. */
-.hx-color-base [data-style-token] {
-	grid-template-columns: 56px minmax(0, 1fr);
-}
-.hx-color-base [data-style-token]::before {
-	height: 56px;
+/* The value a role's base variable resolves to reads as plainly as its name. */
+.hx-style-base [data-style-token] > span {
+	color: var(--hx-color-text);
+	font-size: var(--hx-type-size-sm);
 }
 @media (max-width: 560px) {
 	.hx-styles-intro {
 		margin-bottom: var(--hx-space-24);
-	}
-	.hx-style-token,
-	.hx-color-role {
-		padding: var(--hx-space-12);
 	}
 }

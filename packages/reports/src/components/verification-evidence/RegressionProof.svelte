@@ -111,15 +111,15 @@
 	.regression-proof {
 		margin: var(--hx-space-20) 0;
 		padding: var(--hx-space-22);
-		border: var(--hx-border-thin) solid var(--hx-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
-		background: var(--hx-surface);
+		background: var(--hx-color-surface);
 		min-width: 0;
 	}
 	.proof-context,
 	header p,
 	.footnote {
-		color: var(--hx-muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-sm);
 	}
 	h2 {
@@ -130,7 +130,7 @@
 		margin: var(--hx-space-20) 0 var(--hx-space-12);
 		text-transform: capitalize;
 		font-size: var(--hx-type-size-sm);
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	.proof-steps {
 		display: grid;
@@ -139,15 +139,15 @@
 	}
 	.proof-step {
 		padding: var(--hx-space-16);
-		border: var(--hx-border-thin) solid var(--hx-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
 		min-width: 0;
 	}
 	.failed {
-		border-top: var(--hx-border-heavy) solid var(--hx-fail);
+		border-top: var(--hx-border-heavy) solid var(--hx-color-error);
 	}
 	.passed {
-		border-top: var(--hx-border-heavy) solid var(--hx-pass);
+		border-top: var(--hx-border-heavy) solid var(--hx-color-success);
 	}
 	.step-heading {
 		display: flex;
@@ -165,7 +165,7 @@
 		align-items: center;
 		flex-wrap: wrap;
 		gap: var(--hx-space-10);
-		color: var(--hx-accent);
+		color: var(--hx-color-info);
 		font-size: var(--hx-type-size-compact);
 		text-decoration: none;
 	}
@@ -174,7 +174,7 @@
 	}
 	a code {
 		padding: var(--hx-space-4) var(--hx-space-6);
-		border: var(--hx-border-thin) solid var(--hx-line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-xsmall);
 	}
 	details {
@@ -183,7 +183,7 @@
 	summary {
 		cursor: pointer;
 		font-size: var(--hx-type-size-sm);
-		color: var(--hx-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	.command {
 		display: block;
@@ -194,7 +194,7 @@
 		max-height: 260px;
 		padding: var(--hx-space-12);
 		overflow: auto;
-		background: var(--hx-bg);
+		background: var(--hx-color-background);
 		font-size: var(--hx-type-size-xs);
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;

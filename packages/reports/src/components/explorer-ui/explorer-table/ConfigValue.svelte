@@ -100,7 +100,7 @@
 		border-radius: var(--hx-radius-pill);
 		background: var(--ex-raised);
 		color: var(--ex-soft);
-		font-family: var(--hx-font-family-mono);
+		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-sm);
 	}
 	.pill :global(.hx-icon) {
@@ -139,11 +139,11 @@
 	.number,
 	.keyword,
 	.source {
-		font-family: var(--hx-font-family-mono);
+		font-family: var(--hx-font-family-code);
 		font-size: var(--hx-type-size-sm);
 	}
 	.number {
-		color: var(--hx-accent);
+		color: var(--hx-color-info);
 		font-variant-numeric: var(--hx-style-numeric-tabular);
 	}
 	.keyword {

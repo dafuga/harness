@@ -3,7 +3,7 @@
 	display: flex;
 	align-items: center;
 	gap: var(--hx-space-6);
-	border-inline: var(--hx-border-thin) solid var(--line);
+	border-inline: var(--hx-border-thin) solid var(--hx-color-border);
 	padding: var(--hx-space-8) var(--hx-space-14);
 	min-width: 0;
 }
@@ -23,7 +23,7 @@
 }
 .project-switcher select:hover,
 .project-switcher select:focus-visible {
-	border-color: var(--line);
+	border-color: var(--hx-color-border);
 }
 .add-project {
 	width: 30px;
@@ -31,13 +31,13 @@
 	padding: 0;
 	font-size: var(--hx-type-size-lg);
 	line-height: var(--hx-style-leading-none);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .account {
 	display: flex;
 	align-items: center;
 	gap: var(--hx-space-10);
-	border-left: var(--hx-border-thin) solid var(--line);
+	border-left: var(--hx-border-thin) solid var(--hx-color-border);
 	padding-left: var(--hx-space-16);
 	font-size: var(--hx-type-size-xs);
 }
@@ -50,7 +50,7 @@
 .revision-picker small.historical,
 .status-bar .cache-state,
 .message-note {
-	color: var(--gold);
+	color: var(--hx-color-primary);
 }
 .recent-projects {
 	display: grid;
@@ -61,7 +61,7 @@
 .recent-projects h2 {
 	font-size: var(--hx-type-size-compact);
 	font-weight: var(--hx-style-weight-medium);
-	color: var(--muted);
+	color: var(--hx-color-text-muted);
 }
 .recent-projects button {
 	display: flex;
@@ -112,7 +112,7 @@
 .prior-image img {
 	display: block;
 	width: 100%;
-	border: var(--hx-border-thin) solid var(--line);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-compact);
 }
 .image-caption {
@@ -123,13 +123,13 @@
 
 /* Human comments. */
 .message.pending {
-	border-left: var(--hx-border-thick) dashed var(--hx-muted);
+	border-left: var(--hx-border-thick) dashed var(--hx-color-text-muted);
 	padding-left: var(--hx-space-10);
 }
 .comment-saved {
 	margin: var(--hx-space-8) 0 0;
 	font-size: var(--hx-type-size-xs);
-	color: var(--hx-pass);
+	color: var(--hx-color-success);
 }
 .composer-hint {
 	flex: 1;
@@ -147,7 +147,7 @@
 	justify-items: start;
 	margin-top: var(--hx-space-28);
 	padding-top: var(--hx-space-20);
-	border-top: var(--hx-border-thin) solid var(--line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	text-align: left;
 	font-size: var(--hx-type-size-compact);
 }
@@ -170,16 +170,16 @@
 	border-radius: var(--hx-radius-xsmall);
 }
 .user-code {
-	font: var(--hx-style-weight-semibold) var(--hx-type-size-2xl) var(--hx-font-family-mono);
+	font: var(--hx-style-weight-semibold) var(--hx-type-size-2xl) var(--hx-font-family-code);
 	letter-spacing: var(--hx-style-tracking-code);
-	color: var(--gold);
+	color: var(--hx-color-primary);
 }
 .hosted-connection.compact .user-code {
 	font-size: var(--hx-type-size-sm);
 	letter-spacing: var(--hx-style-tracking-caps);
 }
 .hosted-address {
-	font-family: var(--hx-font-family-mono);
+	font-family: var(--hx-font-family-code);
 	overflow-wrap: anywhere;
 	user-select: all;
 }

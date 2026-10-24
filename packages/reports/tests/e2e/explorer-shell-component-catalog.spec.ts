@@ -13,7 +13,7 @@ import {
 	capturePreview
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
-import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
+import { declaredStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
@@ -85,6 +85,7 @@ for (const viewport of catalogViewports) {
 			await capturePreview(page, home, unit.id, viewport.id);
 			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen') {
 				await expectColorRoles(component);
+				await expectStyleGroups(component);
 				await expect(component.locator('[data-style-token]')).toHaveCount(
 					declaredStyleTokens().length
 				);

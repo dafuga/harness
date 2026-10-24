@@ -6,10 +6,10 @@
 	gap: var(--hx-space-10);
 	min-height: 44px;
 	padding: 0 var(--hx-space-16);
-	border: var(--hx-border-thin) solid var(--hx-gold);
+	border: var(--hx-border-thin) solid var(--hx-color-primary);
 	border-radius: var(--hx-radius-small);
 	background: transparent;
-	color: var(--hx-gold);
+	color: var(--hx-color-primary);
 	font: inherit;
 	font-weight: var(--hx-style-weight-medium);
 	line-height: var(--hx-style-leading-tight);
@@ -17,23 +17,23 @@
 	cursor: pointer;
 }
 .hx-action:hover {
-	border-color: var(--hx-gold);
-	background: var(--hx-gold-soft);
+	border-color: var(--hx-color-primary);
+	background: var(--hx-color-primary-soft);
 	text-decoration: none;
 }
 .hx-action.plain,
 .hx-action.plain:hover {
-	border-color: var(--hx-line-strong);
-	color: var(--hx-text);
+	border-color: var(--hx-color-border-strong);
+	color: var(--hx-color-text);
 }
 .hx-action.plain:hover {
-	background: var(--hx-tint-hover);
+	background: var(--hx-color-hover);
 }
 .hx-action:disabled,
 .hx-action:disabled:hover {
-	border-color: var(--hx-line-strong);
+	border-color: var(--hx-color-border-strong);
 	background: transparent;
-	color: var(--hx-muted);
+	color: var(--hx-color-text-muted);
 	opacity: var(--hx-opacity-secondary);
 	cursor: not-allowed;
 }
@@ -51,7 +51,7 @@
 .hx-tabs {
 	display: flex;
 	gap: var(--hx-space-6);
-	border-bottom: var(--hx-border-thin) solid var(--hx-line);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	overflow-x: auto;
 }
 .hx-tabs a,
@@ -65,7 +65,7 @@
 	border-bottom: var(--hx-border-thick) solid transparent;
 	border-radius: 0;
 	background: none;
-	color: var(--hx-soft);
+	color: var(--hx-color-text-supporting);
 	font: inherit;
 	white-space: nowrap;
 	outline-offset: calc(-1 * var(--hx-space-4));
@@ -73,8 +73,8 @@
 }
 .hx-tabs a:hover,
 .hx-tabs button:hover {
-	border-bottom-color: var(--hx-line-strong);
-	color: var(--hx-text);
+	border-bottom-color: var(--hx-color-border-strong);
+	color: var(--hx-color-text);
 	text-decoration: none;
 }
 /* Keep keyboard focus visible inside the scrolling strip, without clipped side lines. */
@@ -85,13 +85,13 @@
 }
 .hx-tabs [aria-selected='true'],
 .hx-tabs [aria-selected='true']:hover {
-	border-bottom-color: var(--hx-gold);
-	color: var(--hx-gold);
+	border-bottom-color: var(--hx-color-primary);
+	color: var(--hx-color-primary);
 }
 .hx-tabs button:disabled,
 .hx-tabs button:disabled:hover {
 	border-bottom-color: transparent;
-	color: var(--hx-muted);
+	color: var(--hx-color-text-muted);
 	opacity: var(--hx-opacity-dim);
 	cursor: not-allowed;
 }
@@ -107,14 +107,14 @@
 	max-width: 100%;
 	margin-left: auto;
 	padding: 0 0 0 var(--hx-space-12);
-	border-left: var(--hx-border-thin) solid var(--hx-line-strong);
+	border-left: var(--hx-border-thin) solid var(--hx-color-border-strong);
 }
 .hx-revision label {
 	position: relative;
 	flex: none;
 	width: 116px;
 	min-width: 0;
-	color: var(--hx-text);
+	color: var(--hx-color-text);
 	font-size: var(--hx-type-size-xs);
 	line-height: var(--hx-style-leading-tight);
 }
@@ -128,7 +128,7 @@
 	top: 50%;
 	transform: translateY(-50%);
 	pointer-events: none;
-	color: var(--hx-muted);
+	color: var(--hx-color-text-muted);
 }
 .hx-revision label > span:first-child svg {
 	width: 14px;
@@ -143,16 +143,16 @@
 }
 .hx-revision select {
 	padding-inline-start: var(--hx-space-28);
-	border: var(--hx-border-thin) solid var(--hx-line-strong);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
 	border-radius: var(--hx-radius-compact);
-	background: var(--hx-bg);
+	background: var(--hx-color-background);
 	font: inherit;
 }
 .hx-revision .report-select-value {
 	inset-inline-start: 28px;
 }
 .hx-revision select:hover {
-	border-color: var(--hx-muted);
+	border-color: var(--hx-color-text-muted);
 }
 .hx-revision .hx-action {
 	flex: none;

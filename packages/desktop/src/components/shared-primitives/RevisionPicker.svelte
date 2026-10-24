@@ -173,8 +173,8 @@
 			justify-self: start;
 			margin: var(--hx-space-8) 0 0 calc(-1 * var(--hx-space-1));
 			border-radius: 0 var(--hx-radius-small) var(--hx-radius-small) 0;
-			background: var(--panel);
-			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--line);
+			background: var(--hx-color-surface);
+			box-shadow: inset 0 0 0 var(--hx-border-thin) var(--hx-color-border);
 		}
 		.revision-summary {
 			grid-area: summary;
@@ -204,10 +204,10 @@
 			height: 30px;
 			margin: var(--hx-space-8) var(--hx-space-6) 0 0;
 			padding: 0 var(--hx-space-12);
-			border-color: var(--hx-gold-line);
+			border-color: var(--hx-color-primary-line);
 			border-radius: var(--hx-radius-xlarge);
 			background: none;
-			color: var(--gold);
+			color: var(--hx-color-primary);
 		}
 	}
 </style>

@@ -173,7 +173,7 @@
 
 <style>
 	.ex-gap.ex-unrecorded {
-		border-color: var(--hx-line);
-		color: var(--hx-muted);
+		border-color: var(--hx-color-border);
+		color: var(--hx-color-text-muted);
 	}
 </style>

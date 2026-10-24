@@ -59,9 +59,9 @@
 	.project-activity :global(.pa-card) {
 		min-width: 0;
 		padding: var(--hx-space-18);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-large);
-		background: var(--panel);
+		background: var(--hx-color-surface);
 	}
 	.project-activity :global(.pa-head),
 	.project-activity :global(.pa-row) {
@@ -91,7 +91,7 @@
 		font-size: var(--hx-type-size-compact);
 		letter-spacing: var(--hx-style-tracking-caps);
 		text-transform: uppercase;
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	.project-activity :global(.pa-list) {
 		display: grid;
@@ -113,7 +113,7 @@
 		margin: 0 0 0 var(--hx-space-8);
 	}
 	.project-activity :global(.pa-detail summary) {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 		font-size: var(--hx-type-size-compact);
 		cursor: pointer;
 	}
@@ -123,8 +123,8 @@
 	.project-activity :global(.pa-warn) {
 		margin: var(--hx-space-10) 0 0;
 		padding: var(--hx-space-8) var(--hx-space-12);
-		border-left: var(--hx-border-heavy) solid var(--hx-warning);
-		color: var(--hx-warning);
+		border-left: var(--hx-border-heavy) solid var(--hx-color-warning);
+		color: var(--hx-color-warning);
 		font-size: var(--hx-type-size-sm);
 	}
 	.project-activity :global(.pa-list li:not([hidden])) {
@@ -132,7 +132,7 @@
 		gap: var(--hx-space-4);
 		min-width: 0;
 		padding-top: var(--hx-space-10);
-		border-top: var(--hx-border-thin) solid var(--line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 		overflow-wrap: anywhere;
 	}
 	.project-activity :global(.pa-meta),
@@ -147,12 +147,12 @@
 	.project-activity :global(.pa-note),
 	.project-activity :global(.pa-empty),
 	.project-activity :global(small) {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-compact);
 	}
 	.project-activity :global(.pa-chip) {
 		padding: var(--hx-space-1) var(--hx-space-8);
-		border: var(--hx-border-thin) solid var(--line);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-pill);
 		font-size: var(--hx-type-size-xs);
 	}
@@ -160,11 +160,11 @@
 	.project-activity :global(.pa-state.stale),
 	.project-activity :global(.pa-state.gone),
 	.project-activity :global(.pa-state.failed) {
-		color: var(--hx-warning);
+		color: var(--hx-color-warning);
 	}
 	.project-activity :global(.pa-state.working),
 	.project-activity :global(a) {
-		color: var(--gold);
+		color: var(--hx-color-primary);
 	}
 	.project-activity :global(.pa-count) {
 		display: flex;
@@ -179,7 +179,7 @@
 		margin: 0;
 	}
 	.project-activity :global(.pa-reason span) {
-		color: var(--muted);
+		color: var(--hx-color-text-muted);
 	}
 	.project-activity :global(code) {
 		font-size: var(--hx-type-size-sm);
