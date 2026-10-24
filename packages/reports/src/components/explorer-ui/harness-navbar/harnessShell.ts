@@ -1,5 +1,6 @@
 import type {
 	HarnessNavbarInput,
+	HarnessShellCategory,
 	HarnessShellRevision,
 	HarnessShellView
 } from '../../../utils/explorer-ui/harnessShell';
@@ -13,17 +14,47 @@ import { branchCommits } from './harnessAncestry';
 import { retainedBranch } from '../../../utils/explorer-ui/harnessAncestry';
 import { categoryIcon, type HarnessIconName } from '../../../utils/explorer-ui/harnessIcons';
 
-const labels: Array<[ExplorerCategory | 'styles', string]> = [
+const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['pages', 'Pages'],
+	['modules', 'Modules'],
+	['styles', 'Styles'],
+	['configs', 'Configs'],
+	['platforms', 'Platforms']
+];
+const moduleLabels: Array<[ExplorerCategory, string]> = [
 	['layouts', 'Layouts'],
 	['components', 'Components'],
 	['models', 'Models'],
 	['services', 'Services'],
 	['functions', 'Helpers'],
-	['configs', 'Configs'],
-	['styles', 'Styles'],
-	['platforms', 'Platforms']
+	['types', 'Types']
 ];
+
+function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory['id']): boolean {
+	if (!place) return false;
+	if (id === 'styles') return place.screen === 'styles';
+	if (place.screen === 'styles') return false;
+	if (id === 'modules') return moduleLabels.some(([category]) => category === place.category);
+	return place.category === id;
+}
+
+function categoryGlyph(id: HarnessShellCategory['id']): HarnessIconName {
+	if (id === 'styles') return 'styles';
+	if (id === 'modules') return 'layers';
+	return categoryIcon[id];
+}
+
+function categoryItem(
+	input: HarnessNavbarInput,
+	id: HarnessShellCategory['id'],
+	label: string
+): HarnessShellCategory {
+	const place = input.scope?.location ?? null;
+	const to = categoryTarget(place, id);
+	const active = categoryActive(place, id);
+	const icon = categoryGlyph(id);
+	return { id, label, icon, active, href: to ? input.href(to) : null, to };
+}
 
 function viewed(scope: ExplorerScope): string {
 	if (scope.branch === null) return 'Retained commit';
@@ -57,13 +88,14 @@ function revision(input: HarnessNavbarInput, scope: ExplorerScope): HarnessShell
 
 function categoryTarget(
 	place: ExplorerLocation | null,
-	id: ExplorerCategory | 'styles'
+	id: HarnessShellCategory['id']
 ): ExplorerLocation | null {
 	if (!place) return null;
+	const category = id === 'modules' ? 'components' : id;
 	const target: ExplorerLocation = {
 		branch: place.branch,
 		commit: place.commit,
-		category: id === 'styles' ? 'pages' : id
+		category: category === 'styles' ? 'pages' : category
 	};
 	if (id === 'styles') target.screen = 'styles';
 	return target;
@@ -81,18 +113,16 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 		scope && scope.branch !== null
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
-	const categories = labels.map(([id, label]) => {
-		const to = categoryTarget(place, id);
-		const active =
-			id === 'styles'
-				? place?.screen === 'styles'
-				: place?.screen !== 'styles' && place?.category === id;
-		const icon: HarnessIconName = id === 'styles' ? 'styles' : categoryIcon[id];
-		return { id, label, icon, active, href: to ? input.href(to) : null, to };
-	});
+	const categories = labels.map(([id, label]) => categoryItem(input, id, label));
+	const modules =
+		place?.screen !== 'styles' && moduleLabels.some(([id]) => id === place?.category)
+			? moduleLabels.map(([id, label]) => categoryItem(input, id, label))
+			: [];
+
 	return {
 		home: { href: tip ? input.href(tip) : input.base, to: tip },
 		categories,
+		modules,
 		revision: scope ? revision(input, scope) : null
 	};
 }

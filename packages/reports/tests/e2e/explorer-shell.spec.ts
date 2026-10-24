@@ -8,7 +8,8 @@ import {
 	reachable,
 	navigationSpacing,
 	styled,
-	revisionDivider
+	revisionDivider,
+	moduleNavigation
 } from './support/shellChecks';
 import { sha, shellBranch, shellMount, longBranch } from './support/shellData';
 import { shellCategories as categories } from './support/shellData';
@@ -45,10 +46,11 @@ async function opened(page: Page, width: number, height: number): Promise<Locato
 }
 /** Chooses an earlier commit, then opens Helpers there with the keyboard. */
 async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
-	const functions = bar.getByRole('link', { name: 'Helpers' });
+	const functions = bar.getByRole('tab', { name: 'Helpers', exact: true });
 	await expect(combo(bar, 'Commit')).toBeVisible();
 	await combo(bar, 'Commit').selectOption(sha(3));
 	await expect(page).toHaveURL(at(`${earlier}/pages`));
+	await bar.getByRole('link', { name: 'Modules', exact: true }).click();
 	await functions.focus();
 	await page.keyboard.press('Enter');
 	await expect(page).toHaveURL(at(`${earlier}/functions`));
@@ -92,7 +94,6 @@ for (const [screen, width, height] of screens) {
 		await expect(brand).toHaveAttribute('href', `${scoped}/pages`);
 		await reachable(brand, width);
 		await expect(bar.getByText('synthetic-repository', { exact: true })).toBeVisible();
-
 		// The keyboard walks the bar in reading order, and shows where it is.
 		await brand.focus();
 		for (const name of categories) {
@@ -127,8 +128,7 @@ for (const [screen, width, height] of screens) {
 		await expect(page).toHaveURL(at(`${scoped}/styles`));
 		await links.filter({ hasText: 'Platforms' }).click();
 		await expect(page).toHaveURL(at(`${scoped}/platforms`));
-		await links.filter({ hasText: 'Helpers' }).click();
-		await expect(page).toHaveURL(at(`${scoped}/functions`));
+		await moduleNavigation(page, home, screen, `${scoped}`);
 	});
 	test(`the branch with its tip and the viewed commit are told apart at ${screen} width`, async ({
 		page
@@ -154,7 +154,7 @@ for (const [screen, width, height] of screens) {
 		const functions = await earlierFunctions(page, bar);
 		await expect(commit).toHaveAttribute('title', /Historical commit/);
 		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
-		await expect(functions).toHaveAttribute('aria-current', 'page');
+		await expect(functions).toHaveAttribute('aria-selected', 'true');
 		await expect(bar.getByRole('link', { name: 'Pages' })).toHaveAttribute(
 			'href',
 			`${earlier}/pages`
@@ -201,7 +201,7 @@ for (const [screen, width, height] of screens) {
 		await expect(commit).toHaveValue(sha(3));
 		await page.reload();
 		await expect(commit).toHaveValue(sha(3));
-		await expect(functions).toHaveAttribute('aria-current', 'page');
+		await expect(functions).toHaveAttribute('aria-selected', 'true');
 		await page.goForward();
 		await expect(page).toHaveURL(at(`${scoped}/functions`));
 		await expect(commit).toHaveValue(sha(5));

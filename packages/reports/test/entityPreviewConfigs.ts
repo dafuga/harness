@@ -1,7 +1,7 @@
 import { expect, type Page } from '../../../test/support/browserTest';
 import { capture, fits } from './entityPreviewPage';
 import { commits } from './entityUnits';
-import { configExpression, longConfigValue } from './entityConfigFixtures';
+import { configExpression, configRemoteExpression, configStrings } from './entityConfigFixtures';
 
 export const configUnits = [
 	'reports.component.harness-explorer-table',
@@ -16,9 +16,10 @@ export async function inspectConfigValues(
 ): Promise<void> {
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	await capture(page, `groups-config-values-${commit.slice(0, 7)}-${viewport}`, configUnits);
+	await inspectConfigStrings(page);
 	for (const [name, value] of [
 		['schema', configExpression(commit)],
-		['archivePath', longConfigValue]
+		['remoteEndpoint', configRemoteExpression]
 	]) {
 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
 		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
@@ -53,6 +54,39 @@ export async function inspectConfigValues(
 		'false'
 	);
 	expect(await table.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+}
+
+/** Decoded strings stay readable in the cell, independently of their source length or line breaks. */
+async function inspectConfigStrings(page: Page): Promise<void> {
+	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
+	for (const [name, literal] of Object.entries(configStrings)) {
+		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+		const text = row.getByRole('img', { name: `String ${literal}`, exact: true });
+		await expect.soft(text, 'decoded strings are visible inline').toBeVisible({ timeout: 500 });
+		await expect
+			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+			.toHaveCount(0);
+		if (!(await text.count())) continue;
+		await expect.soft(text).toHaveText(literal);
+		const layout = await text.evaluate((element) => {
+			const style = getComputedStyle(element);
+			return {
+				width: element.clientWidth,
+				clipped: element.scrollWidth > element.clientWidth,
+				lines: element.getBoundingClientRect().height / Number.parseFloat(style.lineHeight),
+				ellipsis: style.textOverflow,
+				whitespace: style.whiteSpace
+			};
+		});
+		expect.soft(layout.width, 'the beginning has visible space').toBeGreaterThan(0);
+		expect.soft(layout.lines, 'multiline strings occupy one line').toBeLessThan(1.1);
+		expect.soft(layout.clipped).toBe(name !== 'defaultSort');
+		if (name !== 'defaultSort') {
+			expect.soft(layout.ellipsis).toBe('ellipsis');
+			expect.soft(layout.whitespace).toBe('nowrap');
+		}
+		await expect.soft(row.locator('orders')).toHaveCount(0);
+	}
 }
 
 export async function inspectConfigCollections(page: Page, viewport: string): Promise<void> {

@@ -35,7 +35,7 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(cards(page).locator('code')).toHaveText(/^slugify\(/);
 	await expect(cards(page).getByRole('heading')).toHaveCount(0);
 	await expect(cards(page).getByRole('button')).toHaveCount(0);
-	await expect(page.getByRole('link', { name: 'Models', exact: true })).toBeVisible();
+	await expect(page.getByRole('tab', { name: 'Models', exact: true })).toBeVisible();
 	// The title itself is clicked, as a reader does, not an address that the test put together.
 	await titled(page).click();
 	await expectPath(page, at('main', commits.approved, 'helpers/slugify/contract'));
@@ -43,10 +43,10 @@ test('a catalog is searchable, and a click on a listed entity opens it in the sa
 	await expect(page.getByRole('heading', { level: 1, name: 'slugify', exact: true })).toBeVisible();
 	await page.goBack();
 	await expectPath(page, at('main', commits.approved, 'functions'));
-	await page.getByRole('link', { name: 'Models', exact: true }).click();
+	await page.getByRole('tab', { name: 'Models', exact: true }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Models' })).toBeVisible();
 	await expectPath(page, at('main', commits.approved, 'models'));
-	await page.getByRole('link', { name: 'Services', exact: true }).click();
+	await page.getByRole('tab', { name: 'Services', exact: true }).click();
 	await expect(page.getByRole('heading', { level: 1, name: 'Services' })).toBeVisible();
 	await expect(commit(page)).toHaveValue(commits.approved);
 });

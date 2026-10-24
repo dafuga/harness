@@ -96,7 +96,8 @@ for (const [viewport, size] of Object.entries(viewports)) {
 			'functions',
 			'configs',
 			'services',
-			'models'
+			'models',
+			'types'
 		] as const) {
 			await open(page, { category, commit: commits.middle }, 'groups');
 			await ready(page);

@@ -41,6 +41,10 @@ const shapes: Array<[string, Partial<ExplorerLocation>]> = [
 		'/configs/config.site/history',
 		{ category: 'configs', entity: 'config.site', section: 'history' }
 	],
+	['/types', { category: 'types' }],
+	['/types/model.input', { category: 'types', entity: 'model.input' }],
+	['/types/model.input/details', { category: 'types', entity: 'model.input', section: 'details' }],
+	['/types/model.input/history', { category: 'types', entity: 'model.input', section: 'history' }],
 	['/services', { category: 'services' }],
 	['/services/service.clock', { category: 'services', entity: 'service.clock' }],
 	[
@@ -52,7 +56,7 @@ const shapes: Array<[string, Partial<ExplorerLocation>]> = [
 		{ category: 'services', entity: 'service.clock', section: 'history' }
 	]
 ];
-test('has exactly seven categories, pages then shells first', () =>
+test('keeps page and module entity categories separate from primary navigation', () =>
 	measureWorkload('function.explorer-route', 'layout-catalog-behavior', () => {
 		expect(explorerCategories).toEqual([
 			'pages',
@@ -62,6 +66,7 @@ test('has exactly seven categories, pages then shells first', () =>
 			'configs',
 			'services',
 			'models',
+			'types',
 			'platforms'
 		]);
 	}));
@@ -81,8 +86,8 @@ test.each(shapes)('selected commit %s', (tail, selected) => {
 		path.replace(/\/details$/, location.category === 'pages' ? '?tab=models' : '?tab=contract')
 	);
 });
-test('there are nineteen designed shapes in each scope, and a Page has a history too', () => {
-	expect(shapes).toHaveLength(19);
+test('there are twenty-three designed shapes in each scope, and a Page has a history too', () => {
+	expect(shapes).toHaveLength(23);
 	const history: ExplorerLocation = {
 		branch: 'main',
 		commit: null,

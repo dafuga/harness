@@ -20,6 +20,8 @@ export async function prepareRepair(root: string, template: string): Promise<voi
 	);
 	const captureScript = await captureFixture(root);
 	await runCommand(['git', 'init', '-q'], root);
+	await runCommand(['git', 'config', 'user.name', 'Harness Fixture'], root);
+	await runCommand(['git', 'config', 'user.email', 'fixture@harness.invalid'], root);
 	await commitRepair(root, 'feat: existing value and test');
 	await runHarness(
 		['loop', 'create', 'repair', '--from', template, '--goal', 'Persist the selected value'],

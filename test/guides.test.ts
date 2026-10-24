@@ -10,7 +10,9 @@ test('model guidance is available for agents', () =>
 		const guide = findGuide('model');
 
 		expect(guide?.topic).toBe('model');
-		expect(guide?.rules.join('\n')).toContain('Shared model names omit the .types file suffix');
+		expect(guide?.rules.join('\n')).toContain('Persisted data wrappers belong under Models');
+		expect(guide?.rules.join('\n')).toContain('shared type modules belong under Types');
+		expect(guide?.rules.join('\n')).toContain('Omit .types from displayed names');
 		expect(guide?.exampleCommands[0]).toContain('harness generate model');
 	}));
 

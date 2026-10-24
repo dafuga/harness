@@ -1,7 +1,10 @@
+import { deliveryConfig } from './entityConfigFixtures';
+import { modelDefinition } from './entityClassFixtures';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { ids, units } from './entityUnits';
 import taxonomy from '../../../harness.groups.json' with { type: 'json' };
 import { moduleGroup } from '../../../src/utils/development-tooling/moduleGroup';
+import { modelContractFixture } from './entityModelContract';
 
 import componentsList from '../../../specification/units/reports.page.harness-branch-branch-at-components.json' with { type: 'json' };
 import componentsDetail from '../../../specification/units/reports.page.harness-branch-branch-at-components-entity.json' with { type: 'json' };
@@ -117,23 +120,6 @@ function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {
 	};
 }
 
-function deliveryConfig(settings: HarnessUnit): HarnessUnit {
-	return {
-		...settings,
-		id: 'app.config.delivery-settings',
-		title: 'deliverySettings',
-		owns: { source: ['src/configs/orders/deliverySettings.ts'], symbols: ['deliverySettings'] },
-		configValues: [
-			{
-				name: 'deliverySettings.enabled',
-				value: 'true',
-				source: 'src/configs/orders/deliverySettings.ts',
-				literal: true
-			}
-		]
-	};
-}
-
 /** Every collection shares revision-bound groups and physical implementation addresses. */
 export function categorySources(detail: HarnessRevision): HarnessRevision {
 	const delivery = deliveryConfig(detail.registry.units.find((unit) => unit.id === ids.settings)!);
@@ -142,7 +128,8 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		id: 'app.model.order',
 		kind: 'model',
 		title: 'Order',
-		responsibility: 'An order placed by an account.',
+		responsibility: 'Wraps stored order data.',
+		modelDefinitions: [modelDefinition('Order', 'src/models/orders/Order.ts')],
 		dependencies: [],
 		owns: { source: ['src/models/orders/Order.ts'], symbols: ['Order'] }
 	};
@@ -150,6 +137,7 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 		...model,
 		id: 'app.model.order-types',
 		title: 'Order.types',
+		modelDefinitions: [modelDefinition('OrderInput', 'src/models/orders/Order.types.ts')],
 		owns: { source: ['src/models/orders/Order.types.ts'], symbols: ['OrderInput'] }
 	};
 	return {
@@ -161,17 +149,20 @@ export function categorySources(detail: HarnessRevision): HarnessRevision {
 				delivery,
 				...(detail.registry.units.some((unit) => unit.id === model.id) ? [] : [model, types])
 			].map((unit) =>
-				categoryUnit(
-					unit.id === ids.store && detail.commit !== 'a'.repeat(40)
-						? {
-								...unit,
-								dependencies: [
-									...unit.dependencies,
-									{ unit: model.id, via: 'import' },
-									{ unit: types.id, via: 'import' }
-								]
-							}
-						: unit,
+				modelContractFixture(
+					categoryUnit(
+						unit.id === ids.store && detail.commit !== 'a'.repeat(40)
+							? {
+									...unit,
+									dependencies: [
+										...unit.dependencies,
+										{ unit: model.id, via: 'import' },
+										{ unit: types.id, via: 'import' }
+									]
+								}
+							: unit,
+						detail.commit
+					),
 					detail.commit
 				)
 			)

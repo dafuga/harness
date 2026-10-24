@@ -18,8 +18,27 @@ export function declaredStyleTokens(): string[] {
 
 /** A color inventory must also tell a component author which token fits the intended role. */
 export async function expectColorRoles(scope: Locator): Promise<void> {
-	const palette = scope.getByRole('region', { name: 'Color roles', exact: true });
-	await expect(palette, 'Styles explains primary and secondary color roles').toBeVisible();
+	const palette = scope.getByRole('region', { name: 'Colors', exact: true });
+	await expect(
+		scope.getByRole('region', { name: 'Color roles', exact: true }),
+		'Colors combines role guidance and the token inventory'
+	).toHaveCount(0);
+	await expect(palette, 'Styles has one Colors catalog').toHaveCount(1);
+	await expect(palette).toBeVisible();
+	const primary = palette.getByRole('article', { name: 'Primary', exact: true });
+	const base = primary.getByRole('group', { name: 'Base color', exact: true });
+	await expect(base, 'Primary identifies one base color').toBeVisible();
+	await expect(base.locator('[data-style-token]')).toHaveCount(1);
+	await expect(base.locator('[data-style-token]')).toHaveAttribute('data-style-token', '--hx-gold');
+	const treatments = primary.getByRole('group', { name: 'Treatments', exact: true });
+	await expect(treatments, 'Primary variants are subordinate treatments').toBeVisible();
+	await expect(treatments.locator('[data-style-token="--hx-gold-soft"]')).toHaveCount(1);
+	await expect(base.locator('[data-style-token="--hx-gold-soft"]')).toHaveCount(0);
+	await expect(primary).toContainText(/#[\da-f]{6}|rgb\(/i);
+	for (const name of declaredStyleTokens().filter((name) =>
+		appStyleTokensConfig.groupPrefixes.Colors.test(name)
+	))
+		await expect(palette.locator(`[data-style-token="${name}"]`)).toHaveCount(1);
 	for (const role of [
 		/primary/i,
 		/secondary/i,
@@ -34,7 +53,7 @@ export async function expectColorRoles(scope: Locator): Promise<void> {
 	const references = (await palette.locator('code').allTextContents()).flatMap((text) =>
 		[...text.matchAll(/--hx-[\w-]+/g)].map((match) => match[0])
 	);
-	expect(references.length, 'Color roles name the CSS variables to use').toBeGreaterThan(1);
+	expect(references.length, 'Colors names the CSS variables to use').toBeGreaterThan(1);
 	const known = new Set(declaredStyleTokens());
 	expect(
 		references.filter((name) => !known.has(name)),

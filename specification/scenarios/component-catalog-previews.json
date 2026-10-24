@@ -250,6 +250,9 @@
 		"reports.page.harness-branch-branch-at-services-entity",
 		"reports.page.harness-branch-branch-at-services-entity-history",
 		"reports.page.harness-branch-branch-at-styles",
+		"reports.page.harness-branch-branch-at-types",
+		"reports.page.harness-branch-branch-at-types-entity",
+		"reports.page.harness-branch-branch-at-types-entity-history",
 		"reports.page.harness-view"
 	],
 	"states": [
@@ -1730,6 +1733,24 @@
 			"units": ["reports.page.harness-branch-branch-at-styles"]
 		},
 		{
+			"id": "reports-page-harness-branch-branch-at-types",
+			"title": "/harness/branch/[branch]/[...at]/types",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-types"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-types-entity",
+			"title": "/harness/branch/[branch]/[...at]/types/[entity]",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-types-entity"]
+		},
+		{
+			"id": "reports-page-harness-branch-branch-at-types-entity-history",
+			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
+		},
+		{
 			"id": "reports-page-harness-view",
 			"title": "/harness/[...view]",
 			"coverage": "required",
@@ -2014,6 +2035,9 @@
 				"reports-page-harness-branch-branch-at-services-entity",
 				"reports-page-harness-branch-branch-at-services-entity-history",
 				"reports-page-harness-branch-branch-at-styles",
+				"reports-page-harness-branch-branch-at-types",
+				"reports-page-harness-branch-branch-at-types-entity",
+				"reports-page-harness-branch-branch-at-types-entity-history",
 				"reports-page-harness-view"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],

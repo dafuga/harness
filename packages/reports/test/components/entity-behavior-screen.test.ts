@@ -1,3 +1,5 @@
+import { callableUsesFixture } from '../entityPreviewCallables';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import EntityBehaviorScreen from '../../src/components/explorer-ui/EntityBehaviorScreen.svelte';
 import { record, revision } from '../entityFixture';
@@ -42,4 +44,44 @@ test('its tabs and a missing entity behave as on every entity screen', () => {
 	expect(related).toContain('aria-label="filterOrders used in"');
 	const gone = { category: 'functions' as const, entity: 'app.function.gone' };
 	expect(words(screen(EntityBehaviorScreen, 'commit', gone))).toContain('Not at this revision');
+});
+
+test('selected callable Uses exclude module dependencies and hide empty navigation', async () => {
+	const head = revision(commits.tip, []);
+	const unit = callableUsesFixture(head.registry.units.find((item) => item.id === ids.filter)!);
+	head.registry.units = head.registry.units.map((item) => (item.id === unit.id ? unit : item));
+	head.registry.units.push({
+		...unit,
+		id: 'app.function.external',
+		title: 'externalHelpers',
+		helpers: [
+			{
+				name: 'external',
+				source: 'external.ts',
+				inputs: [],
+				pure: true,
+				consumers: [{ unit: ids.filter, symbol: 'outer' }]
+			}
+		]
+	});
+	const uses = (helper: string) =>
+		content(
+			'current',
+			{ category: 'functions', entity: ids.filter, helper, tab: 'uses' },
+			{ head }
+		);
+	const outer = await measureWorkload(
+		'reports.function.entity-shown',
+		'selected-callable-uses',
+		() =>
+			measureWorkload('reports.function.entity-catalog', 'private-callable-card', () =>
+				uses('outer')
+			)
+	);
+	expect(words(outer)).toContain('inner()');
+	expect(words(uses('outer'))).toContain('external()');
+	expect(uses('outer')).not.toContain('aria-label="Configs uses"');
+	expect(uses('inner')).not.toContain('aria-label="inner uses"');
+	expect(words(uses('inner'))).not.toMatch(/\bUses\b/);
+	expect(words(uses('sibling'))).not.toMatch(/\bUses\b/);
 });

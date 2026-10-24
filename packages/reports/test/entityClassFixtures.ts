@@ -1,3 +1,5 @@
+import type { HarnessUnit } from '../src/models/Harness.types';
+import type { ModelDefinition } from '../../../src/utils/unitMetadata';
 import type { Reads } from './entityClassFixtures.types';
 import type { ExplorerEntity } from '../src/models/Explorer.types';
 import type { entityCatalog } from '../src/utils/entityCatalog';
@@ -107,4 +109,88 @@ export function relationSource(kind: string, offset: number): string {
 	if (kind === 'service') return `src/routes/orders/Consumer${offset + 1}.ts`;
 	if (kind === 'page') return `src/routes/consumers/${offset + 1}/+page.svelte`;
 	return `src/${kind}s/Consumer${offset + 1}.${['component', 'shell'].includes(kind) ? 'svelte' : 'ts'}`;
+}
+
+/** Synthetic declaration evidence shared by normal model and type catalog matrices. */
+export function modelDefinition(name: string, source: string) {
+	const types = /\.(?:types|d)\.[cm]?tsx?$/.test(source);
+	return {
+		name,
+		source,
+		kind: types ? ('interface' as const) : ('class' as const),
+		fields: [{ name: 'id', type: 'string', optional: false }],
+		methods: [],
+		...(types
+			? {}
+			: {
+					table: {
+						name: name.toLowerCase(),
+						primaryKey: 'id',
+						columns: [
+							{ property: 'id', name: 'id', type: 'TEXT', nullable: false, primaryKey: true }
+						]
+					}
+				})
+	};
+}
+
+/** Shared declaration shapes exercise fields, signatures, aliases and source ownership. */
+export function typeDeclarations(source: string): ModelDefinition[] {
+	const first = modelDefinition('OrderInput', source);
+	return [
+		{
+			...first,
+			fields: [...first.fields, { name: 'note', type: 'string', optional: true }],
+			methods: [{ name: 'resolve', inputs: [{ name: 'key', type: 'string' }], output: 'number' }]
+		},
+		{ ...first, name: 'OrderIds', kind: 'type', fields: [], type: 'string[]' },
+		{ ...first, name: 'ForeignInput', source: 'src/Other.types.ts' }
+	];
+}
+
+/** Persisted wrappers and an independent shared declaration module used by consumer cards. */
+export function consumerModels(seed: HarnessUnit) {
+	const model = {
+		...seed,
+		id: 'app.model.order',
+		kind: 'model',
+		title: 'Order',
+		responsibility: 'Wraps stored order data.',
+		owns: {
+			source: ['src/models/Order.ts', 'src/models/Order.types.ts'],
+			symbols: ['Order']
+		},
+		modelDefinitions: [modelDefinition('Order', 'src/models/Order.ts')]
+	};
+	const secondModel = {
+		...model,
+		id: 'app.model.invoice',
+		title: 'Invoice',
+		owns: { source: ['src/models/Invoice.ts'], symbols: ['Invoice'] },
+		modelDefinitions: [modelDefinition('Invoice', 'src/models/Invoice.ts')]
+	};
+	const types = {
+		...model,
+		id: 'app.model.order-input',
+		title: 'OrderInput',
+		responsibility: 'Describes the input data for an order.',
+		owns: {
+			source: ['src/models/OrderInput.types.ts', 'src/models/OrderInputValues.ts'],
+			symbols: ['OrderInput']
+		},
+		modelDefinitions: [modelDefinition('OrderInput', 'src/models/OrderInput.types.ts')]
+	};
+	return [model, secondModel, types];
+}
+
+/** The normal unit fixture supplies declaration proof only for registered model modules. */
+export function modelMetadata(id: string, kind: string, extra: Partial<HarnessUnit>) {
+	if (kind !== 'model') return {};
+	const source =
+		extra.owns?.source.find(
+			(path) => !/\.(?:types|d)\.[cm]?tsx?$/.test(path) && !path.endsWith('Values.ts')
+		) ??
+		extra.owns?.source[0] ??
+		`src/${id}.ts`;
+	return { modelDefinitions: [modelDefinition(id.split('.').pop() ?? id, source)] };
 }

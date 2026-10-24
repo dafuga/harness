@@ -13,7 +13,7 @@ import {
 	capturePreview
 } from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
-import { expectColorRoles } from './support/styleCatalog';
+import { declaredStyleTokens, expectColorRoles } from './support/styleCatalog';
 let home = '';
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
@@ -80,8 +80,12 @@ for (const viewport of catalogViewports) {
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
-			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen')
+			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen') {
 				await expectColorRoles(component);
+				await expect(component.locator('[data-style-token]')).toHaveCount(
+					declaredStyleTokens().length
+				);
+			}
 			for (const field of await component.locator('.hx-revision .has-display select').all())
 				await expect(
 					field,

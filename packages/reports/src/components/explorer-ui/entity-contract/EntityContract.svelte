@@ -7,9 +7,10 @@
 		callableContracts,
 		contractFacts,
 		contractFields,
+		typeLabel,
 		type CallableContract
 	} from './contractFields';
-	import { serviceContract } from './serviceMethods';
+	import { modelContract, serviceContract } from './serviceMethods';
 	import { type ContractField } from '../../../utils/explorer-ui/contractFields';
 	import ContractExample from '../../shared-primitives/ContractExample.svelte';
 	import ContractTable from '../../shared-primitives/ContractTable.svelte';
@@ -30,18 +31,51 @@
 	} = $props();
 	// A function's callables each show their own signature; whole-module facts say nothing of them.
 	let callables = $derived(category === 'functions' ? callableContracts(unit) : []);
-	// A service shows each declared method apart; what no one method declares is said once.
+	// A service or model shows each declared method apart; what no method declares is said once.
 	let service = $derived(
-		category === 'services' ? serviceContract(unit) : { methods: [], facts: [] }
+		category === 'services'
+			? serviceContract(unit)
+			: category === 'models'
+				? modelContract(unit)
+				: { methods: [], facts: [] }
 	);
+	// Their declared errors are one table under the methods, never repeated under each method.
+	let byMethod = $derived(category === 'services' || category === 'models');
+	// A model's own declarations, the one its title names first; a field's value is never guessed.
+	let shapes = $derived.by((): CallableContract[] => {
+		if (category !== 'models') return [];
+		const all = unit.modelDefinitions ?? [];
+		const named = all.filter((item) => item.name === unit.title);
+		return (named.length > 0 ? named : all)
+			.filter((item) => item.fields.length > 0)
+			.map((item) => ({
+				name: item.name,
+				signature: `${item.kind} ${item.name}`,
+				groups: [
+					{
+						id: 'inputs' as const,
+						title: 'Fields',
+						none: 'No fields declared.',
+						fields: item.fields.map((field) => ({
+							name: field.optional ? `${field.name}?` : field.name,
+							type: typeLabel(field.type),
+							source: 'missing' as const,
+							examples: []
+						}))
+					}
+				]
+			}));
+	});
+	// A model whose revision records no member, as an older type-only address, says so alone.
+	let bare = $derived(category === 'models' && service.methods.length === 0 && shapes.length === 0);
 	let groups = $derived(
-		(callables.length > 0 || service.methods.length > 0
+		(callables.length > 0 || service.methods.length > 0 || category === 'models'
 			? []
 			: contractFields(unit, category)
-		).filter((group) => category !== 'services' || group.id !== 'errors')
+		).filter((group) => !byMethod || group.id !== 'errors')
 	);
 	let serviceErrors = $derived.by(() => {
-		if (category !== 'services') return undefined;
+		if (!byMethod) return undefined;
 		const group = contractFields(unit, category).find((group) => group.id === 'errors');
 		return (
 			group && {
@@ -89,10 +123,17 @@
 	{#each callables as callable, position (position)}
 		{@render callableSection(callable, `${callable.name} contract`)}
 	{:else}
-		<p class="ex-note">
-			Declared examples are written in the contract. Illustrative ones are placeholders shaped by
-			the type alone. Neither is the result of a test.
-		</p>
+		{#if bare}
+			<p class="ex-note">This revision records no public methods or fields of this model.</p>
+		{:else}
+			<p class="ex-note">
+				Declared examples are written in the contract. Illustrative ones are placeholders shaped by
+				the type alone. Neither is the result of a test.
+			</p>
+		{/if}
+		{#each shapes as shape, position (position)}
+			{@render callableSection(shape, `${shape.name} fields`)}
+		{/each}
 		{#each service.methods as method (method.name)}
 			{@render callableSection(method, `${method.name} method`)}
 		{:else}
@@ -118,7 +159,7 @@
 {#snippet callableSection(callable: CallableContract, label: string)}
 	<section class="callable" aria-label={label}>
 		<h3><code>{callable.signature}</code></h3>
-		{#each callable.groups.filter((group) => category !== 'services' || group.id !== 'errors') as group (group.id)}
+		{#each callable.groups.filter((group) => !byMethod || group.id !== 'errors') as group (group.id)}
 			<ContractTable
 				{group}
 				plain

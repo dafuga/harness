@@ -3,7 +3,7 @@
 	"id": "reports.component.entity-contract",
 	"kind": "component",
 	"title": "Typed contract",
-	"responsibility": "Shows component fields or each function’s actual parameters and return value, with types and example details.",
+	"responsibility": "Shows component fields, callable APIs and source-declared service or model methods with shared parameter, return and example tables.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,7 +19,7 @@
 			{
 				"name": "EntityContract.unit",
 				"type": "HarnessUnit",
-				"description": "The entity at the selected revision, including the fields and examples its contract records."
+				"description": "The entity at the selected revision, including source-declared model definitions, fields, methods and recorded examples."
 			},
 			{
 				"name": "EntityContract.category",
@@ -41,7 +41,7 @@
 			{
 				"name": "EntityContract",
 				"type": "markup",
-				"description": "Typed component tables or separate callable API contracts. Literal parameter names and each return value stay together; info controls open full examples."
+				"description": "Typed component fields or separate callable, service and model method contracts. Models expose actual fields and methods without invented CRUD; declared errors appear once and info controls open full examples."
 			}
 		],
 		"errors": []

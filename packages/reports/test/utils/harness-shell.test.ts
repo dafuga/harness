@@ -36,31 +36,34 @@ const historical: ExplorerLocation = {
 const canonical = { ...historical };
 delete canonical.section;
 
-test('the bar has seven entity categories and a Styles screen scoped to the viewed branch and commit', async () => {
+test('the bar groups module categories under five scoped primary destinations', async () => {
 	await measureWorkload('reports.function.harness-shell', 'scoped-navbar-destinations', () => {
 		const { categories } = view(historical);
 		expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 			['pages', 'Pages', 'pages'],
-			['layouts', 'Layouts', 'layouts'],
-			['components', 'Components', 'components'],
-			['models', 'Models', 'database'],
-			['services', 'Services', 'services'],
-			['functions', 'Helpers', 'functions'],
-			['configs', 'Configs', 'configs'],
+			['modules', 'Modules', 'layers'],
 			['styles', 'Styles', 'styles'],
+			['configs', 'Configs', 'configs'],
 			['platforms', 'Platforms', 'platforms']
 		]);
-		// The whole branch is one segment, and a category opens its index: no entity, section or tab.
-		expect(categories.map((item) => item.href)).toEqual([
-			...['pages', 'layouts', 'components', 'models', 'services', 'functions', 'configs'].map(
+		expect(categories.map((item) => item.href)).toEqual(
+			['pages', 'components', 'styles', 'configs', 'platforms'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
-			),
-			`${scoped}/commit/${sha(4)}/styles`,
-			`${scoped}/commit/${sha(4)}/platforms`
-		]);
-		expect(categories[4].to).toEqual({ branch: shellBranch, commit: sha(4), category: 'services' });
-		// Details of a function keep Functions active, and nothing else is.
-		expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['functions']);
+			)
+		);
+		expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['modules']);
+		for (const category of ['layouts', 'components', 'models', 'services', 'functions', 'types']) {
+			const place = { ...historical, category } as ExplorerLocation;
+			expect(view(place)).toMatchObject({
+				modules: ['layouts', 'components', 'models', 'services', 'functions', 'types'].map(
+					(id) => ({
+						id,
+						href: `${scoped}/commit/${sha(4)}/${id}`,
+						active: id === category
+					})
+				)
+			});
+		}
 	});
 });
 
@@ -74,7 +77,7 @@ test('on a current branch route the viewed commit is the tip, and there is no ti
 		href: `${scoped}/pages`,
 		to: { branch: shellBranch, commit: null, category: 'pages' }
 	});
-	expect(categories[2].href).toBe(`${scoped}/components`);
+	expect(categories[1].href).toBe(`${scoped}/components`);
 	expect(revision).toMatchObject({
 		branch: shellBranch,
 		commit: sha(5),
@@ -149,15 +152,12 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 	expect(home).toEqual({ href: shellMount, to: null });
 	expect(categories.map((item) => item.label)).toEqual([
 		'Pages',
-		'Layouts',
-		'Components',
-		'Models',
-		'Services',
-		'Helpers',
-		'Configs',
+		'Modules',
 		'Styles',
+		'Configs',
 		'Platforms'
 	]);
+	expect(view(null)).toMatchObject({ modules: [] });
 	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
 		true
 	);
@@ -172,7 +172,7 @@ test('Styles stays active across branch and commit selection without becoming an
 	};
 	const { categories, revision } = view(styles);
 	expect(categories.filter((item) => item.active).map((item) => item.id)).toEqual(['styles']);
-	expect(categories[7]).toMatchObject({
+	expect(categories[2]).toMatchObject({
 		href: `${scoped}/commit/${sha(4)}/styles`,
 		to: styles
 	});

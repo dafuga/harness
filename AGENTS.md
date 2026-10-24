@@ -81,9 +81,9 @@ These rules apply only to this Harness repository, including requests made in an
 - Workspace verification and build entrypoints must join admission and preserve caller arguments; keep the existing workspace entrypoint inventory current. Standalone commands default to one CPU and 2 GiB; inherit supplied reservation limits.
 - Application UI design values belong in the shared app token source documented by Styles. Reports, Desktop/iOS and Hub use one palette. New colors, typography, spacing, borders, shadows, opacity, motion and layering values require named tokens and catalog coverage; do not hide them in component CSS, inline styles or literal fallbacks. Keep the standardized app-style-tokens admission checks in normal Reports verification. Data-derived image/chart geometry and structural CSS keywords remain data/layout, and third-party asset colors retain their provenance.
 
-- Before choosing component colors, consult Styles → Color roles and its definitions in `appStyleTokensConfig`. Use the documented role and shared control variant; a decorative accent does not establish an action style. Update role guidance and standardized Styles coverage when introducing a new semantic use.
+- Before choosing component colors, consult Styles → Colors and its definitions in `appStyleTokensConfig`. Use the documented role and shared control variant; a decorative accent does not establish an action style. Update role guidance and standardized Styles coverage when introducing a new semantic use. Keep one base primary color; document fill, border and contrasting-text treatments beneath it in the same Colors inventory.
 
-- Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models define data shapes and schemas. Unknown or effectful functions are not helpers.
+- Helpers are pure, synchronous value transformations: the same input gives the same result, without I/O, time/randomness, hidden state, or mutation. Declare reviewed helper contracts with `@pure`; the catalog requires this declaration, its conservative source guard and two distinct consumers. Service classes own operations and effects; models wrap persisted data; shared interfaces and aliases belong under Types. Unknown or effectful functions are not helpers.
 - Reserve shared helper folders for pure callable helpers used by at least two distinct components, services or named functions, in any combination. Count actual runtime references; repeated calls by one consumer, type-only references, unused imports and forwarding exports do not establish sharing.
 - A helper with one consumer belongs in that consumer's folder, beside the component, service or function that owns it. Keep private helpers out of codebase-wide utility folders. Promote them into shared folders only when a second distinct consumer needs them; move them back when only one remains.
 - Preserve registered identities, contracts and history when relocating helpers. Update imports, tests and owned source together. Mixed shared/private modules must be split by responsibility rather than moving a shared helper into one consumer's folder. An unused export has no proven owner; check public API contracts and dynamic/runtime use before removing or relocating it.
@@ -107,7 +107,7 @@ These rules apply only to this Harness repository, including requests made in an
 
 ## Module Naming
 
-Shared model names omit the .types file suffix. Preserve shared type-only models, registered IDs, source paths and classification; use the same clean name on cards, links and headings.
+Models are persisted data wrappers with source-declared storage schemas. Existing shared type modules belong under Types. Preserve their registered IDs and source paths; omit the .types suffix on cards, links and headings.
 
 Before extending an alias resolver, strengthen its standard lookup matrix with
 canonical-name collisions, plural forms and normalization. Canonical names keep
@@ -146,7 +146,13 @@ folders and titles from the selected source revision for every collection.
 
 ## Type Files
 
-Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
+Model contracts show source-declared public methods with the shared service method tables.
+Shared interfaces expose their actual fields and callable members; exported constants are not
+returned values. Never invent initialization, CRUD or database tables. The separate Table tab
+documents committed storage definitions without importing model code or reading live rows.
+Keep dynamic schema gaps and each historical revision's own declarations explicit.
+
+Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type modules retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
 
 Source tabs list implementation files, sibling type files and associated tests from the selected revision. Resolve tests from direct source imports or authored scenario coverage; retain their committed bytes and gaps, and reuse the shared file list and code viewer. Never substitute working-copy or newer test contents.
 

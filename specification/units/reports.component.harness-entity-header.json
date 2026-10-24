@@ -3,7 +3,7 @@
 	"id": "reports.component.harness-entity-header",
 	"kind": "component",
 	"title": "Entity header",
-	"responsibility": "Shows entity identity and one tab bar for overview, contract, usage, component audio, states or tests, history and optional source.",
+	"responsibility": "Shows entity identity and scoped section tabs, including model Table schema, component audio, usage, tests, history and optional source.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -46,7 +46,7 @@
 			{
 				"name": "EntityHeader",
 				"type": "markup",
-				"description": "Entity identity, verification and one tab bar. Pages omit Used In, purpose prose and route metadata. Component screenshots remain above tabs, and component recordings open in Audio. Private function breadcrumbs identify their recorded owner and never link to Helpers. Grouped catalog entities include the selected revision’s responsibility folder between collection and entity in every tab breadcrumb."
+				"description": "Entity identity, verification and one tab bar. Pages omit Used In, purpose prose and route metadata. Models expose a Table tab after Contract. Component screenshots remain above tabs, and component recordings open in Audio. Private function breadcrumbs identify their recorded owner and never link to Helpers. Grouped catalog entities include the selected revision’s responsibility folder between collection and entity in every tab breadcrumb."
 			}
 		],
 		"errors": []

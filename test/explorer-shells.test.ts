@@ -29,6 +29,7 @@ test('the explorer has entity categories, Layouts after Pages', () => {
 		'configs',
 		'services',
 		'models',
+		'types',
 		'platforms'
 	]);
 });

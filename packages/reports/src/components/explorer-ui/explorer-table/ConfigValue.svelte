@@ -28,7 +28,7 @@
 			? literal
 			: null
 	);
-	let mark = $derived(valueMark(structure, source));
+	let mark = $derived(typeof literal === 'string' ? undefined : valueMark(structure, source));
 </script>
 
 <div class="cv" data-harness-part="config-value">
@@ -66,7 +66,7 @@
 				</li>
 			{:else}<li class="chip blank">Empty array</li>{/each}
 		</ul>
-	{:else if !mark && typeof literal === 'string'}
+	{:else if typeof literal === 'string'}
 		<span class="string" role="img" aria-label={`String ${literal}`}>{literal}</span>
 	{:else if !mark}<code class="source">{source}</code>{/if}
 </div>
@@ -74,6 +74,7 @@
 <style>
 	/* One value in its cell: a typed mark for a literal, the text as written for an expression. */
 	.cv {
+		contain: inline-size;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
@@ -150,14 +151,18 @@
 	}
 	.string {
 		color: var(--ex-text);
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.string,
 	.source {
 		min-width: 0;
-		white-space: pre-wrap;
-		overflow-wrap: anywhere;
 	}
 	.source {
 		color: var(--ex-soft);
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
 	}
 </style>

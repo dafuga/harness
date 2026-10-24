@@ -118,7 +118,9 @@ function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
 		expect(fileContents(files, path)).toContain(
 			'use route groups when public URLs must stay unchanged'
 		);
-		expect(fileContents(files, path)).toContain('Shared model names omit the .types file suffix');
+		expect(fileContents(files, path)).toContain('Persisted data wrappers belong under Models');
+		expect(fileContents(files, path)).toContain('shared type modules belong under Types');
+		expect(fileContents(files, path)).toContain('Omit .types from displayed names');
 		expect(fileContents(files, path)).toContain('canonical and compatibility titles and links');
 		expect(fileContents(files, path)).toContain(
 			'affected downstream consumer tests alongside their typechecks'

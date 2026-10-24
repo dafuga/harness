@@ -1,4 +1,4 @@
-import { observedLoop } from './support/loop-repair/observedLoop';
+import { observedLoop, expectCaptureBindings } from './support/loop-repair/observedLoop';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -165,6 +165,9 @@ const captureCommit = [
 test('standalone evidence capture preserves images and measurements without inventing a regression or full verdict', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-capture-cli-'));
 	try {
+		await runCommand(['git', 'init', '-q'], root);
+		await runCommand(['git', 'config', 'user.name', ''], root);
+		await runCommand(['git', 'config', 'user.email', ''], root);
 		await prepareRepair(root, 'bug-fix');
 		await writeFile(join(root, 'source.ts'), 'export const value = 3;');
 		await runCommand(['git', 'add', 'source.ts'], root);
@@ -204,6 +207,7 @@ test('standalone evidence capture preserves images and measurements without inve
 		const status = await runHarness(['history', 'status', '--json'], root);
 		expect(JSON.parse(status.stdout).verified).toBe(false);
 		await expectFailedCapture(root);
+		await expectCaptureBindings(root);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

@@ -13,7 +13,8 @@ const opened: Record<string, string> = {
 	functions: ids.filter,
 	configs: ids.settings,
 	services: ids.store,
-	models: routeIds.model
+	models: routeIds.model,
+	types: routeIds.types
 };
 /** The index of a category, the entity it opens on, and the history of that entity. */
 function category([name, entity]: [string, string]): Array<[string, RoutePreview]> {

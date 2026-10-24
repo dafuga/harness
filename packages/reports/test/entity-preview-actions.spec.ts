@@ -1,4 +1,4 @@
-import { reviewModelCard, reviewFlatModelUsage } from './entityPreviewModels';
+import { reviewModelCard, reviewFlatModelUsage, reviewTypeCard } from './entityPreviewModels';
 import {
 	reviewHelperCard,
 	reviewHelperUsage,
@@ -8,6 +8,7 @@ import {
 import { expect, test } from '../../../test/support/browserTest';
 import {
 	capture,
+	ready,
 	fits,
 	open,
 	viewports,
@@ -52,18 +53,15 @@ for (const [name, size] of Object.entries(viewports)) {
 		tab.on('console', (message) => {
 			if (message.type() === 'error') browserErrors.push(message.text());
 		});
-		for (const category of ['models', 'components', 'functions', 'services'] as const) {
+		for (const category of ['models', 'types', 'components', 'functions', 'services'] as const) {
 			await open(tab, { category }, 'helpers');
-			await tab.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all([...document.images].map((image) => image.decode()));
-			});
+			await ready(tab);
 			await capture(tab, `grid-${category}-${name}`, moduleCard.units);
 			const cards = tab.getByRole('article');
 			await expect(
 				cards,
 				'collections use cards; helpers and models require two distinct visible consumers'
-			).toHaveCount({ models: 2, components: 3, functions: 1, services: 1 }[category]);
+			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
 			for (const item of await cards.all()) {
 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
@@ -76,7 +74,9 @@ for (const [name, size] of Object.entries(viewports)) {
 				expect(card.width, 'cards leave room for neighbors').toBeLessThan(available.width * 0.6);
 			}
 			expect(await fits(tab)).toBe(true);
+			if (category === 'types') await reviewTypeCard(tab, name);
 			if (category === 'models') {
+				await expect(tab.getByRole('article', { name: 'OrderInput', exact: true })).toHaveCount(0);
 				for (const modelCard of await cards.all())
 					await reviewFlatModelUsage(
 						modelCard.getByRole('group', { name: 'Used In', exact: true })
@@ -98,10 +98,7 @@ for (const [name, size] of Object.entries(viewports)) {
 		await tab.setViewportSize(size);
 		for (const commit of [null, commits.middle, commits.first]) {
 			await open(tab, { category: 'components', commit });
-			await tab.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all([...document.images].map((image) => image.decode()));
-			});
+			await ready(tab);
 			await capture(tab, `component-cards-${commit?.slice(0, 7) ?? 'tip'}-${name}`);
 			const cards = tab.getByRole('article');
 			await expect(cards, 'components show screenshot cards').toHaveCount(3);
@@ -122,10 +119,7 @@ for (const [name, size] of Object.entries(viewports)) {
 	}) => {
 		await tab.setViewportSize(size);
 		await open(tab);
-		await tab.evaluate(async () => {
-			await document.fonts.ready;
-			await Promise.all([...document.images].map((image) => image.decode()));
-		});
+		await ready(tab);
 		await capture(tab, `compact-page-${name}`, moduleCard.units);
 		const card = tab.getByRole('article', { name: 'Orders page', exact: true });
 		await expect(card.getByRole('group', { name: 'Used In', exact: true })).toHaveText('Used In—');
@@ -157,7 +151,11 @@ for (const [name, size] of Object.entries(viewports)) {
 		const categoryStart = await tab.evaluate(() => performance.now());
 		await tab
 			.getByRole('navigation', { name: 'Harness categories' })
-			.getByRole('link', { name: 'Helpers', exact: true })
+			.getByRole('link', { name: 'Modules', exact: true })
+			.click();
+		await tab
+			.getByRole('tablist', { name: 'Module categories' })
+			.getByRole('tab', { name: 'Helpers', exact: true })
 			.click();
 		await expect(tab.getByRole('status').filter({ hasText: 'helpers shown' })).toHaveText(
 			'1003 of 1003 helpers shown'

@@ -13,7 +13,7 @@
 		{#snippet children(entity, nav)}
 			<EntitySections {host} {entity} {nav}>
 				{#snippet pane()}
-					{#if entity.category !== 'models'}<EntityConfig {entity} scope={host.scope} {nav} />{/if}
+					{#if entity.category === 'configs'}<EntityConfig {entity} scope={host.scope} {nav} />{/if}
 				{/snippet}
 			</EntitySections>
 		{/snippet}

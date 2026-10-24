@@ -29,6 +29,7 @@ export interface RevisionRegistry {
 		serviceExports?: UnitMetadata['serviceExports'];
 		serviceConsumers?: UnitMetadata['serviceConsumers'];
 		serviceClasses?: UnitMetadata['serviceClasses'];
+		modelDefinitions?: UnitMetadata['modelDefinitions'];
 		configValues?: UnitMetadata['configValues'];
 		sourceFiles?: UnitMetadata['sourceFiles'];
 		testFiles?: UnitMetadata['testFiles'];

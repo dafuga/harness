@@ -42,12 +42,13 @@ export async function recordRegression(input: RecordRegressionInput) {
 	if (phase.data === 'green' && !red)
 		return fail('First record the committed failing test with loop record --phase red.');
 	const request = regressionRequest(evidenceRequest(input), red);
-	await declaredUnits(root, commit, request.units);
+	const knownUnits = await declaredUnits(root, commit, request.units);
 	await regressionFiles(root, commit, request.tests);
 	if (red) await regressionFixCommit(root, commit, red);
 	else if (phase.data === 'red') await regressionTestCommit(root, commit, request.tests);
 	return new RegressionProofService(root).run({
 		...request,
+		knownUnits,
 		commit,
 		loop,
 		phase: phase.data,
@@ -139,8 +140,8 @@ function regressionTimeout(value?: string): number {
 	return result;
 }
 
-async function declaredUnits(root: string, commit: string, units: string[]): Promise<void> {
-	if (!units.length) return;
+async function declaredUnits(root: string, commit: string, units: string[]) {
+	if (!units.length) return undefined;
 	const registry = await new UnitRegistryRepository(root).read(
 		await CommitTreeAdapter.open(root, commit)
 	);
@@ -149,6 +150,7 @@ async function declaredUnits(root: string, commit: string, units: string[]): Pro
 		registry.manifests.filter((unit) => unit.status === 'active').map((unit) => unit.id)
 	);
 	if (units.some((id) => !known.has(id))) fail('Every --unit must be active at the tested commit.');
+	return registry.manifests.map((unit) => unit.id);
 }
 
 export type { RecordRegressionInput } from './recordRegression.types';

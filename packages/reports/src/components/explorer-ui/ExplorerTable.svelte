@@ -49,6 +49,7 @@
 			['Purpose', (row) => row.summary],
 			['Used by', null]
 		],
+		types: [['Used by', null]],
 		configs: [],
 		services: [
 			['Responsibility', (row) => row.summary],
@@ -66,7 +67,6 @@
 	);
 	const open = (row: CatalogRow) => entityLens(nav.route, { category, entity: row.entity.id });
 	const value = (row: CatalogRow) => row.setting?.value ?? 'Not recorded at this revision';
-	/** A name stays one text, breaking after a dot or between camel-case words, never inside one. */
 	const words = (name: string) => name.match(/.+?(?:\.|[a-z\d](?=[A-Z])|$)/g) ?? [];
 	let chosen = $state.raw<CatalogRow | null>(null);
 	let contents = $derived(collection(chosen?.setting?.structure));
@@ -178,9 +178,6 @@
 </div>
 
 <style>
-	.ex-config-values .ex-table {
-		table-layout: fixed;
-	}
 	.ex-config-values.ex-scroll :global(:is(th, td)) {
 		padding-block: var(--hx-space-12);
 		vertical-align: top;

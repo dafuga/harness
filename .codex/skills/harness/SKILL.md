@@ -11,7 +11,7 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 Harness application's own UI uses the documented shared design tokens across Reports, Desktop/iOS and Hub. Add missing design categories or named tokens to Styles before using them; run the standardized app-style-tokens admission checks. This application-specific palette must not be imposed on generated tenant projects. Preserve data-derived geometry, structural CSS and external asset branding.
 
-Choose component colors from Styles → Color roles, defined in `appStyleTokensConfig`. Follow each role's usage guidance and the shared control's actual variant; decorative accents do not define action semantics. Keep that guide and the standard Styles assertions aligned when adding a semantic use.
+Choose component colors from Styles → Colors, defined in `appStyleTokensConfig`. Follow each role's usage guidance and the shared control's actual variant; decorative accents do not define action semantics. Keep that guide and the standard Styles assertions aligned when adding a semantic use. Keep one base primary color; document fill, border and contrasting-text treatments beneath it in the same Colors inventory.
 
 1. Treat `harness info`, Harness generators, and `harness audit` as mandatory project controls.
 2. Run `bun run dev -- info <topic>` or `bun run dev -- info scaffolds --json` before creating unfamiliar code shapes.
@@ -26,6 +26,8 @@ Choose component colors from Styles → Color roles, defined in `appStyleTokensC
 11. Helpers are pure synchronous value transformations with explicit reviewed `@pure` contracts and no I/O, mutation, hidden state, clocks or randomness. Service classes and models have separate catalog categories. A shared helper needs at least two distinct component, service or named-function consumers. Keep a single-consumer helper in its owner's folder. Preserve unit identity/history and update imports, tests and owned source when moving it; split mixed shared/private modules. Check public API and runtime references before changing an unused export. When moving definitions behind forwarding exports, extend the owning standardized test to cold-import and call both public and owner entries in fresh runtimes; a warm test-module graph does not prove initialization safety. For moved import.meta.url code, test source and packaged layouts separately; bundled output-relative addresses must keep their artifact paths. Before a broad suite for moves reachable from public SDK exports, run `bun scripts/build-api.ts --types-only`; retain the published import and type-entry addresses.
 
 ## Service Ownership
+
+Before changing a recorded implementation, search every ownership ledger by its stable unit/class identity and historical, owner and forwarding paths. Catalog privacy does not remove migration ownership. Preserve original move definitions and prior reviews; use the ledger's existing review mechanism and committed-source pack, then run the unchanged unit-index guard before broader qualification.
 
 A shared service needs at least two distinct active runtime owner units. Single-consumer implementations and their private helpers live inside the owner code area. Count runtime references to exported operations or classes; exclude types, unused imports, repeated references by one owner, forwarding modules and indirect page reachability. Keep public entry and route contracts stable, preserve registered identity and source history, and review dynamic/runtime use before relocating an export with no statically proven owner.
 
@@ -73,6 +75,8 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 - Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
+- Freeze scenario slot/state declarations and shared browser marker assertions in the test-only checkpoint alongside the strengthened test. The complete test corpus is frozen, including tests outside the declared command. A repair commit changes product source only; partition scenario or fixture corrections before recording the matched pair.
+
 - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
 - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
 - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
@@ -106,6 +110,12 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Screenshot Evidence
 
+Use source-and-run-specific output directories for verification attempts. Before reporting progress or a pass, check the tested commit, served build/revision and capture timestamps; reject logs and images left by an earlier attempt. A reused filename or successful file read does not establish fresh proof.
+
+- For a new or changed table layout, extend its existing viewport matrix beyond text presence
+  and document fit: preserve readable identifiers/types and short labels, contain horizontal
+  scrolling, and exercise full-example keyboard access. Capture both panes before assertions;
+  a compressed unreadable table can fit the page and still fail acceptance.
 - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
 - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
@@ -141,7 +151,7 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Module Naming
 
-Shared model names omit the .types file suffix. Preserve shared type-only models, registered IDs, source paths and classification; use the same clean name on cards, links and headings.
+Models are persisted data wrappers with source-declared storage schemas. Existing shared type modules belong under Types. Preserve their registered IDs and source paths; omit the .types suffix on cards, links and headings.
 
 Read `harness info naming` and the scaffold guide before naming a module. Classes keep PascalCase and their role suffix; models and components keep PascalCase; functions, pure helpers and value modules keep their actual camelCase name. Match source filenames and primary declarations, preserve framework entries and stable registered IDs, and keep descriptive responsibilities separate from code names. Use the same canonical code identity on cards, usage links and detail headings. Standard catalog coverage compares those surfaces for class, callable, component and model consumers at current and historical revisions; card-only naming overrides are not allowed.
 
@@ -158,6 +168,8 @@ folders. Reuse that feature category with `--group`; use route groups when publi
 URLs must stay unchanged. Avoid broad technical catch-alls when a feature is known.
 
 Config modules use the plural `src/configs/<category>/` folder, one focused source file per config. Generate new configs there and preserve stable IDs when relocating existing files. The Configs explorer shows one table per source file; responsibility grouping must not combine unrelated configs. Decode only static source literals for presentation, preserve raw expressions for inspection, and never execute configuration or read host secrets to populate the catalog. Extend the standard mixed-config browser fixture whenever grouping or value presentation changes.
+
+For typed-value presentation changes, review the fixture's decoded metadata as well as its source text. Cover short, long and multiline string literals independently from computed expressions and collections; do not omit literal metadata to force an inspection path. The standard parser matrix must prove that these string forms decode without executing code, and the browser matrix must check initial inline text, overflow and inspection behavior at every declared viewport.
 
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
@@ -249,9 +261,13 @@ those expectations; formatting alone does not verify a workflow change.
 
 ## Acceptance Fixture Review
 
+Temporary Git repositories initialize a generic repo-local author identity before any nested commit. Exercise the existing capture fixture with empty local author fields so personal or CI defaults cannot hide missing setup. A fixture-only repair uses diagnostic before/after captures; never change product code or relax the frozen-corpus guard merely to manufacture a product red-green pair.
+
 After editing acceptance fixtures, run their owning workspace typecheck, formatting
 and audit before a broad check, even when only imports or casts changed. Test files
 share the workspace size limits; a passing runtime case does not prove that audit.
+
+When changing collection table sizing, run both the standard word-geometry and typed Configs groups matrices. Preserve the original fitting-content boundary and a genuinely wider input: both must keep words inside their cells and the document inside the viewport; only content wider than its frame requires internal scrolling. Size-contained value wrappers must retain usable inline strings, ellipsis and keyboard inspection.
 
 Review fixture actions as well as assertions: adding scroll, focus or navigation can
 weaken the original acceptance state. A control required to fit at first paint must
@@ -281,7 +297,12 @@ When adding or changing workspace build aliases, run the existing `test/shared-s
 
 ## Type Files
 
-Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type-only models retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
+Model contracts use the service method presentation for actual public methods, including static
+persistence methods. Keep shared interface fields and callable members distinct from constants.
+Do not synthesize initialization, CRUD or storage. The Table tab reads selected-revision schema
+syntax only; unknown expressions stay unresolved and no live database rows are accessed.
+
+Keep named interfaces and type aliases in a sibling `<module>.types.ts` file beside their implementation. Use `import type`; preserve public type imports through type-only re-exports. This applies to components, services, helpers, configs, tests and scripts. Keep runtime constants and classes separate from type declarations; shared type modules retain their established owner. Generators must emit the companion file, and `harness audit` rejects mixed declarations. New companions belong to their implementation unit; preserve already registered standalone type-module identities.
 Component implementations belong directly in their responsibility category, with private code in an owner folder. Do not insert an application-name namespace beneath that category or retain a duplicate internal forwarding tree after relocation. Keep meaningful route prefixes, supported package exports, registered IDs and original migration records stable; record subsequent helper locations as reviewed follow-ups. Run the existing visual registry, import/alias impact, namespace-spy and ownership migration guards before broad verification.
 
 For structural relocations, rewrite resolved import addresses without normalizing unrelated URL literals. Directory URLs retain their trailing slash. Review the complete URL diff and run the existing catalog-listing and preview-binding tests alongside the visual catalog before sealing final evidence.
