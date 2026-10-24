@@ -59,10 +59,10 @@ function pagesOf(graph: Graph, from: string): HarnessUnit[] {
 }
 
 /** Models used anywhere in a page's dependency graph, including behind components and services. */
-function modelsOf(graph: Graph, from: string): HarnessUnit[] {
+function categoryOf(graph: Graph, from: string, category: ExplorerCategory): HarnessUnit[] {
 	const models: HarnessUnit[] = [];
 	walk(graph, graph.uses, from, (unit) => {
-		if (graph.category(unit) === 'models') models.push(unit);
+		if (graph.category(unit) === category) models.push(unit);
 		return true;
 	});
 	return models;
@@ -155,9 +155,13 @@ function related(graph: Graph, id: string, entity: Entity): ExplorerRelations {
 		configs: of('configs'),
 		services: of('services'),
 		types: of('types'),
+		apis:
+			held && graph.category(graph.units.get(id)!) === 'pages'
+				? entities(categoryOf(graph, id, 'apis'))
+				: of('apis'),
 		models:
 			held && graph.category(graph.units.get(id)!) === 'pages'
-				? entities(modelsOf(graph, id))
+				? entities(categoryOf(graph, id, 'models'))
 				: of('models'),
 		usedBy: entities(using).filter((found) => found.category !== 'pages'),
 		support: contained.support.map(support)

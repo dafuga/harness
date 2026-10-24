@@ -70,11 +70,13 @@ function relationships(data: {
 	unit: ComponentManifest;
 }): Relationship[] {
 	const { units, items, unit } = data;
+	const apis = unit.kind === 'page' ? pageApis(unit, units) : new Set<string>();
 	return units.flatMap((candidate) => {
 		if (candidate.id === unit.id) return [];
 		let direction: Relationship['direction'];
 		if (candidate.dependencies.some((d) => d.unit === unit.id)) direction = 'used-by';
-		else if (unit.dependencies.some((d) => d.unit === candidate.id)) direction = 'uses';
+		else if (unit.dependencies.some((d) => d.unit === candidate.id) || apis.has(candidate.id))
+			direction = 'uses';
 		else return [];
 		const related = items.find((i) => i.id === candidate.id);
 		return [
@@ -88,4 +90,30 @@ function relationships(data: {
 			}
 		];
 	});
+}
+
+/** Follow page dependencies at this revision; no runtime-only requests are inferred. */
+function pageApis(page: ComponentManifest, units: ComponentManifest[]): Set<string> {
+	const found = new Set<string>();
+	const byId = new Map(units.map((unit) => [unit.id, unit]));
+	const layouts = units.filter(
+		(unit) =>
+			unit.kind === 'layout' &&
+			unit.owns.source.some(
+				(source) =>
+					source.endsWith('/+layout.svelte') &&
+					page.owns.source.some((path) => path.startsWith(source.slice(0, -14)))
+			)
+	);
+	const queue = [page.id, ...layouts.map((unit) => unit.id)];
+	const seen = new Set<string>();
+	for (const id of queue) {
+		if (seen.has(id)) continue;
+		seen.add(id);
+		const unit = byId.get(id);
+		if (!unit) continue;
+		if (categoryOf(unit.kind) === 'apis') found.add(id);
+		queue.push(...unit.dependencies.map((dependency) => dependency.unit));
+	}
+	return found;
 }

@@ -48,6 +48,7 @@ function screenOf(title: string): string[] {
 
 /** A code unit keeps its recorded symbol or module name; route screens keep readable labels. */
 export function explorerName(unit: Named): string {
+	if (['endpoint', 'api'].includes(unit.kind) && unit.title.startsWith('/')) return unit.title;
 	const code = codeName(unit);
 	if (code) return code;
 	const title = unit.title.trim();
@@ -65,7 +66,11 @@ const frameworkLayout = (unit: Named) =>
 /** Owned source decides code identity even when a manifest has a descriptive title. */
 function codeName(unit: Named): string | undefined {
 	if (frameworkLayout(unit)) return undefined;
-	if (['page', 'view', 'api', 'style', 'script', 'template', 'guide', 'audit'].includes(unit.kind))
+	if (
+		['page', 'view', 'endpoint', 'api', 'style', 'script', 'template', 'guide', 'audit'].includes(
+			unit.kind
+		)
+	)
 		return undefined;
 	const stems = (unit.owns?.source ?? [])
 		.filter((source) => /\.(?:svelte|[cm]?[jt]sx?)$/.test(source))

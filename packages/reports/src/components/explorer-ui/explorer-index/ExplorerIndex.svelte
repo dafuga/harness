@@ -28,6 +28,7 @@
 	/** The kinds whose entities carry a category; any other kind is listed whole. */
 	const grouped = new Set<string>([
 		'pages',
+		'apis',
 		'layouts',
 		'components',
 		'functions',
