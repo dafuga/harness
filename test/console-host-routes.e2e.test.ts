@@ -87,7 +87,6 @@ test('the host redirects the root and the query form to page paths, for the admi
 	const unasked = await get(`/harness?commit=${target.commit}`);
 	expect([unasked.status, unasked.headers.get('location')]).toEqual([403, null]);
 });
-
 test('in a browser each branch, commit and category of the installed console is its own path', async () => {
 	const page = await adminPage();
 	const [commit, other] = [field(page, 'Commit'), earlier()];

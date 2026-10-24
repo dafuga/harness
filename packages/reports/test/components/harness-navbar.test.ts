@@ -105,7 +105,7 @@ test('Styles has its own active state and keeps the selected revision in its add
 	const html = body(styles);
 	const menu = links(html);
 	expect(menu.filter((item) => item.current).map((item) => item.label)).toEqual(['Code']);
-	expect(menu[1]).toMatchObject({
+	expect(menu[2]).toMatchObject({
 		label: 'Code',
 		href: `${scoped}/commit/${sha(4)}/components`,
 		current: true
@@ -142,7 +142,7 @@ test('at the tip of a branch the commit is the tip, said as current, and Go to t
 			.filter((item) => item.current)
 			.map((item) => item.label)
 	).toEqual(['Pages']);
-	expect(links(html)[1].href).toBe(`${scoped}/components`);
+	expect(links(html)[2].href).toBe(`${scoped}/components`);
 	expect(html).not.toContain('aria-label="Code categories"');
 });
 

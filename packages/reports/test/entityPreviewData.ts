@@ -1,3 +1,5 @@
+/** Whole-app variants share the same unpadded host mount in the browser and HTML fixture. */
+export const shellVariants: ReadonlySet<string> = new Set(['console', 'platforms', 'apis']);
 import type {
 	HarnessExplanation,
 	HarnessRecord,
