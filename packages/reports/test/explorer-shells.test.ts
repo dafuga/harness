@@ -57,9 +57,9 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 	});
 	expect(categories.map((item) => [item.id, item.label, item.icon, item.active])).toEqual([
 		['pages', 'Pages', 'pages', false],
+		['apis', 'APIs', 'route', false],
 		['modules', 'Code', 'layers', true],
-		['styles', 'Styles', 'styles', false],
-		['configs', 'Configs', 'configs', false],
+		['translations', 'Translations', 'web', false],
 		['platforms', 'Platforms', 'platforms', false]
 	]);
 	expect(modules.map((item) => [item.id, item.active])).toEqual([
@@ -68,7 +68,10 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 		['models', false],
 		['services', false],
 		['functions', false],
-		['types', false]
+		['types', false],
+		['configs', false],
+		['styles', false],
+		['dependencies', false]
 	]);
 	expect(categoryIcon.layouts).not.toBe(categoryIcon.components);
 });
