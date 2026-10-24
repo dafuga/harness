@@ -104,7 +104,29 @@ for (const [viewport, size] of Object.entries(viewports)) {
 				'reports.component.contract-table',
 				...modelPanes
 			]);
-			for (const method of ['initialize', 'create', 'update'])
+			await expect(
+				page.getByRole('region', { name: / method$/ }).getByRole('heading', { level: 3 })
+			).toHaveText([
+				'create(input)',
+				'findBy(fields)',
+				'find(id)',
+				'update(id, input)',
+				'delete(id)',
+				'initialize(adapter)'
+			]);
+			const heading = page
+				.getByRole('region', { name: 'create method', exact: true })
+				.getByRole('heading');
+			const nameColor = await heading
+				.getByText('create', { exact: true })
+				.evaluate((node) => getComputedStyle(node).color);
+			const parameterColor = await heading
+				.getByText('input', { exact: true })
+				.evaluate((node) => getComputedStyle(node).color);
+			expect(nameColor, 'method and parameter names have distinct text colors').not.toBe(
+				parameterColor
+			);
+			for (const method of ['initialize', 'create', 'findBy', 'find', 'update', 'delete'])
 				await expect(
 					page.getByRole('region', { name: `${method} method`, exact: true })
 				).toBeVisible();
