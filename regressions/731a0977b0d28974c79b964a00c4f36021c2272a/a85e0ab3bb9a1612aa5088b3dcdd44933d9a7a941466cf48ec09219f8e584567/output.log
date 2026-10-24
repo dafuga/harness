@@ -1,0 +1,109 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sNsvyh
+
+ ❯ test/generate-workflow.test.ts (5 tests | 1 failed) 141ms
+   ✓ lib generation auto-exports package-safe scaffolds 29ms
+   ✓ app-only scaffolds fail in lib projects 2ms
+   × app generation allows app-only scaffolds without package exports 5ms
+     → expected '<script lang="ts">\n\tconst title = \…' to contain '@harness-tier page'
+   ✓ generation keeps category folders, imports and package exports in agreement 24ms
+   ✓ the same category works for every source scaffold and can be extended 73ms
+ ❯ test/audit-adapters.test.ts (18 tests | 4 failed) 71ms
+   ✓ audit profiles select ecosystem adapters 1ms
+   ✓ auto profile detects Svelte apps and Harness libs 3ms
+   ✓ coverage reports covered, ignored, and unknown files 7ms
+   ✓ ecosystem adapters report app and library rule violations 9ms
+   ✓ utility runtime naming handles named alias 4ms
+   ✓ utility runtime naming handles multiline 3ms
+   ✓ utility runtime naming handles local list 2ms
+   ✓ utility runtime naming handles type clause 18ms
+   ✓ utility runtime naming handles inline type 3ms
+   ✓ utility runtime naming handles another name 2ms
+   ✓ utility runtime naming handles wildcard 1ms
+   ✓ utility runtime naming handles comment 2ms
+   ✓ utility runtime naming handles string 2ms
+   × Svelte atomic composition admits molecule markup faithfully 4ms
+     → expected [] to include 'atomic-native-element'
+   × Svelte atomic composition admits organism markup faithfully 2ms
+     → expected [] to include 'atomic-native-element'
+   × Svelte atomic composition admits  markup faithfully 2ms
+     → expected [] to include 'atomic-tier-required'
+   × Svelte atomic composition admits atom markup faithfully 2ms
+     → expected [] to include 'atomic-atom-composition'
+   ✓ Svelte atomic composition admits molecule markup faithfully 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit-adapters.test.ts > Svelte atomic composition admits molecule markup faithfully
+ FAIL  test/audit-adapters.test.ts > Svelte atomic composition admits organism markup faithfully
+AssertionError: expected [] to include 'atomic-native-element'
+ ❯ test/audit-adapters.test.ts:174:59
+    172|   const { findings } = await auditProject(root, { profile: 'app' });
+    173|   const atomic = findings.filter((finding) => finding.rule.startsWith(…
+    174|   if (rule) expect(atomic.map((finding) => finding.rule)).toContain(ru…
+       |                                                           ^
+    175|   else expect(atomic).toEqual([]);
+    176|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/audit-adapters.test.ts > Svelte atomic composition admits  markup faithfully
+AssertionError: expected [] to include 'atomic-tier-required'
+ ❯ test/audit-adapters.test.ts:174:59
+    172|   const { findings } = await auditProject(root, { profile: 'app' });
+    173|   const atomic = findings.filter((finding) => finding.rule.startsWith(…
+    174|   if (rule) expect(atomic.map((finding) => finding.rule)).toContain(ru…
+       |                                                           ^
+    175|   else expect(atomic).toEqual([]);
+    176|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/audit-adapters.test.ts > Svelte atomic composition admits atom markup faithfully
+AssertionError: expected [] to include 'atomic-atom-composition'
+ ❯ test/audit-adapters.test.ts:174:59
+    172|   const { findings } = await auditProject(root, { profile: 'app' });
+    173|   const atomic = findings.filter((finding) => finding.rule.startsWith(…
+    174|   if (rule) expect(atomic.map((finding) => finding.rule)).toContain(ru…
+       |                                                           ^
+    175|   else expect(atomic).toEqual([]);
+    176|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/generate-workflow.test.ts > app generation allows app-only scaffolds without package exports
+AssertionError: expected '<script lang="ts">\n\tconst title = \…' to contain '@harness-tier page'
+
+- Expected
++ Received
+
+- @harness-tier page
++ <script lang="ts">
++ 	const title = 'Dashboard';
++ </script>
++
++ <svelte:head>
++ 	<title>{title}</title>
++ </svelte:head>
++
++ <section data-harness-view="dashboard">
++ 	<h1>{title}</h1>
++ </section>
++
+
+ ❯ test/generate-workflow.test.ts:53:15
+     51|  expect(result.exportsUpdated).toBe(false);
+     52|  const page = await readFile(join(root, 'src/routes/dashboard/+page.sv…
+     53|  expect(page).toContain('@harness-tier page');
+       |               ^
+     54|  expect(page).toContain('<HtmlH1>');
+     55|  await generatePiece({ root, kind: 'component', name: 'PostCard' });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 18 passed (23)
+   Start at  16:53:52
+   Duration  3.99s (transform 276ms, setup 136ms, collect 576ms, tests 213ms, environment 0ms, prepare 62ms)
+
