@@ -8,6 +8,7 @@
 		"desktop.component.agent-effort-picker",
 		"desktop.component.agent-model-picker",
 		"desktop.component.agent-settings",
+		"desktop.component.agents-providers-chat-agents",
 		"desktop.component.annotated-image",
 		"desktop.component.approval-button",
 		"desktop.component.catalog-view",
@@ -281,6 +282,12 @@
 			"title": "Agent settings preference",
 			"coverage": "required",
 			"units": ["desktop.component.agent-settings"]
+		},
+		{
+			"id": "desktop-component-agents-providers-chat-agents",
+			"title": "Agents panel",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-chat-agents"]
 		},
 		{
 			"id": "desktop-component-annotated-image",
@@ -1807,6 +1814,7 @@
 				"desktop-component-agent-effort-picker",
 				"desktop-component-agent-model-picker",
 				"desktop-component-agent-settings",
+				"desktop-component-agents-providers-chat-agents",
 				"desktop-component-annotated-image",
 				"desktop-component-approval-button",
 				"desktop-component-catalog-view",

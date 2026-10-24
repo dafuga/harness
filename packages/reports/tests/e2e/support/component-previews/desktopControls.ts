@@ -2,6 +2,8 @@ import type { DesktopCase } from './desktopData.svelte';
 import { providers } from './desktopData.svelte';
 import { children, done, noop, text, image } from './shared';
 import { routeIds } from './routeUnits';
+import { live } from './activity';
+import { ids } from './explorerData';
 export const desktopControls: Record<string, DesktopCase> = {
 	'desktop.component.agent-controls': () => ({
 		providers,
@@ -15,6 +17,22 @@ export const desktopControls: Record<string, DesktopCase> = {
 		model: 'preview-model'
 	}),
 	'desktop.component.agent-settings': () => ({}),
+	'desktop.component.agents-providers-chat-agents': (d) => {
+		d.bridge.agentActivity = async () => ({
+			sampledAt: new Date().toISOString(),
+			agents: {
+				...live.agents,
+				tracking: 'available',
+				roster: live.agents.roster.map((agent) => ({
+					...agent,
+					state: 'working',
+					units: [ids.card],
+					expiresAt: new Date(Date.now() + 900_000).toISOString()
+				}))
+			}
+		});
+		return { workspace: d.workspace };
+	},
 	'desktop.component.annotated-image': (d) => ({
 		src: image,
 		title: 'Activity list',
