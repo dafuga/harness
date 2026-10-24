@@ -921,6 +921,7 @@ harness analytics summary
 harness analytics loops --project /path/to/project --json
 harness analytics jev --since 2026-10-01 --json
 harness analytics models
+harness analytics tasks --project /path/to/project --json
 harness analytics cpu --json
 harness analytics events --loop delivery --json
 harness analytics export --project /path/to/project --output analytics.html
@@ -928,6 +929,17 @@ harness loop create delivery --from feature --goal 'Ship the feature' --agent-mo
 harness response-check --request request.txt --response answer.txt --loop delivery --step implement
 harness audit . --clean-code --loop delivery --step implement --agent-model claude-opus-5-5
 ```
+
+Module task analytics group executions, submissions, accepted reviews, token usage
+and API-equivalent cost by model and intelligence. Missing provider usage and
+unverified prices remain unknown; saved price provenance distinguishes CLI reports
+from standard API estimates and ranges. These are not subscription invoices.
+
+Review a submitted claim with `harness task review TASK --attempt CLAIM_TOKEN
+--verdict accepted`, or use `--verdict incomplete --feedback 'Repair needed'`.
+An incomplete review commits the submitted work as the next attempt's repair base.
+Bounce rate is incomplete reviews divided by all accepted and incomplete reviews;
+execution failures count separately. Stale or duplicate reviews are refused.
 
 For standalone checks, use `--task <stable-id>` instead of `--loop`/`--step`.
 Revisions keep their task identity; new tasks use new IDs. `--agent-model` overrides

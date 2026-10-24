@@ -172,6 +172,8 @@ Codex sessions assigning module work use `harness task feature <id> --goal <text
 
 Use `--model <exact-id> --intelligence <level>` for explicit selection. Otherwise auto tries `claude-haiku-5-5` at medium and falls back to `gpt-6-luna` at max only for structured Claude quota rejection. Worker prompts begin with the identical shared feature goal/TLDR, then include the overall module goal and committed wanted contract. `harness task worker --worker <id> --watch` picks up matching assignments in isolated worktrees; CLI success leaves changes in review, not verified completion. Use one repository as the active queue owner; `task sync <remote>` exchanges the task ref and refuses divergence.
 
+Bind reviews to the submitted claim with `harness task review <id> --attempt <token> --verdict accepted|incomplete`; incomplete reviews require `--feedback`. Rejection commits the submitted source as the next repair base and preserves the wanted contract. `harness analytics tasks --project <root> --json` reconciles committed attempts and reviews idempotently. Keep reported model and token counters distinct from requested settings; preserve unknown usage and API price ranges. Bounce rate counts incomplete reviews over accepted plus incomplete reviews, separately from execution failures.
+
 ## Hard Limits
 
 - Files: 220 lines.

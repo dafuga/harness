@@ -2,11 +2,9 @@
 	"name": "verification-admission-repair",
 	"goal": "Declared headless scenario commands admit one registered test and record actual assertions; profiler bootstrap and Mac probe fixtures remain bounded.",
 	"createdAt": "2026-10-24T23:24:20.622Z",
-	"updatedAt": "2026-10-24T23:32:05.564Z",
+	"updatedAt": "2026-10-24T23:39:04.608Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T23:39:03.547Z",
+			"evidence": "Immutable profiler red checkpoint d481a078e26d9d0a18ea5672c5c691422d23780929f0025484972aa8cad094ef reproduces the registry bootstrap self-wait on the frozen test corpus."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T23:39:04.608Z",
+			"evidence": "Use one registered file per capture and validate headless declarations in normal checks. Load schema bootstrap before the lazy loader and launch Mac probe scripts through the installed interpreter."
 		},
 		{
 			"id": "implement",
