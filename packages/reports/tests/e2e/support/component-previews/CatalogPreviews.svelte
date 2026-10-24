@@ -7,6 +7,7 @@
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
+	import ConsoleChat from '../../../../src/components/planning-collaboration/ConsoleChat.svelte';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
@@ -77,8 +78,11 @@
 						<p class="preview-child-hint">Your page renders here</p>
 					</section>
 				{/snippet}
+				{#snippet layoutChat()}
+					<ConsoleChat base="/harness" path="/branch/feature%2Forders/layouts" navigate={() => {}} />
+				{/snippet}
 				{#if layout}
-					<Component {...fixture.props} children={layoutChild} />
+					<Component {...fixture.props} children={layoutChild} chat={layoutChat} />
 				{:else if id === 'reports.component.harness-entity-history-row'}
 					<div class="ex-scroll">
 						<table class="ex-table ex-history" aria-label="History row preview">

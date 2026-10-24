@@ -158,6 +158,10 @@ test("the policy holds for Harness's own registry", () => {
 	expect(listed('pages').map((item) => item.id)).toContain('reports.page.harness-view');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.root');
 	expect(listed('pages').map((item) => item.id)).not.toContain('reports.layout.root');
+	expect(
+		listed('layouts').map((item) => item.id),
+		'Only visual frames belong in Layouts; bootstrap wrappers are internal'
+	).toEqual(['reports.layout.explorer-layout']);
 	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];
 	for (const item of units.filter((found) => invented.includes(found.kind))) {
 		expect([item.id, explorerCategory(item)]).toEqual([item.id, null]);
