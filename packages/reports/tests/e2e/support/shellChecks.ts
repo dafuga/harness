@@ -94,7 +94,7 @@ export async function moduleNavigation(
 	scoped: string
 ): Promise<void> {
 	const bar = page.getByRole('banner');
-	const trigger = bar.getByRole('button', { name: 'Modules', exact: true });
+	const trigger = bar.getByText('Modules', { exact: true });
 	const modules = bar.getByRole('navigation', { name: 'Module categories' });
 	const before = page.url();
 	const height = (await box(bar)).height;
