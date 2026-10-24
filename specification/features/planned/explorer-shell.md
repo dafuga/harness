@@ -4,7 +4,7 @@
 
 Every route of the Harness explorer shares one horizontal bar and one set of shared pieces. The
 bar holds the gold mark, the Harness name and the repository the website shows, five categories
-(Pages, Components, Functions, Configs, Services, in that order) with an outline icon above each
+(Pages, Modules, Styles, Configs, Platforms, in that order) with an outline icon above each
 label and a gold line under the one that is shown, and on the right the branch with the hash of
 its tip, the commit that is viewed with what it is to that tip, and Go to tip. The same icon
 set, binary verification badge, outlined action, row of tabs and style tokens are used by the
@@ -16,9 +16,15 @@ to the formatted address, and a plain click or a choice in a field is handed to 
 
 ## Acceptance Criteria
 
-- `HarnessNavbar` renders exactly five category links, pages first, each an icon above its
+- `HarnessNavbar` renders five primary controls, Pages first, each an icon above its
   label and centred over it; only the category of the route has `aria-current="page"`, its own
   colour and the line under it. Details and History of an entity keep that entity's category.
+- Clicking Modules opens a compact navigation bubble containing Layouts, Components, Models,
+  Services, Helpers and Types from every resolved route. Opening it keeps the current address
+  and header height. The six categories have real scoped links and no persistent second row.
+- Escape returns focus to Modules; clicking outside, choosing a category or changing routes
+  closes the bubble. It stays within desktop, tablet and phone viewports, and highlights the
+  current module category. Modified category clicks retain normal browser link behavior.
 - No link to reports, analytics, activity, growth or a legacy view is in the bar, and the
   header draws no title row or "Other views" links when it is given a navbar.
 - Every category link stays in the branch and commit that are viewed and drops the entity,

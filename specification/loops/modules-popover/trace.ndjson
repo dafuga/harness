@@ -1,1 +1,2 @@
 {"event":"loop.created","timestamp":"2026-10-24T09:59:44.608Z","name":"modules-popover","goal":"Modules opens a scoped category bubble without a persistent navigation row","template":"visual-change","templateLineage":["feature","visual-change"]}
+{"event":"step.completed","timestamp":"2026-10-24T10:09:09.588Z","loop":"modules-popover","step":"spec","evidence":"The existing explorer-shell moduleNavigation check asserted a permanent tab strip; strengthened that standardized matrix to require overlay navigation, dismissal, scope and responsive fit before repair."}
