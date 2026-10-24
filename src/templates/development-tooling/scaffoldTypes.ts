@@ -193,9 +193,10 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 		'Typed config input.',
 		'Initializer unit test.'
 	]),
-	config: detail('config', 'Typed feature configuration.', false, [
+	config: detail('config', 'Meaningful controls for people running or developing the app.', false, [
 		'Config object under src/configs.',
-		'Name and enabled fields.',
+		'An empty starting object; add only controls with a concrete audience and purpose.',
+		'Internal by default; declare configControls before exposing public settings.',
 		'Config unit test.'
 	]),
 	middleware: detail('middleware', 'Request middleware boundary.', false, [

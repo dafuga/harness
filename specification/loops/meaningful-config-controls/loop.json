@@ -1,0 +1,43 @@
+{
+	"name": "meaningful-config-controls",
+	"goal": "Only meaningful human or app developer controls appear in Configs; framework and generated skills enforce deliberate settings",
+	"createdAt": "2026-10-24T13:29:28.539Z",
+	"updatedAt": "2026-10-24T13:37:52.675Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-24T13:37:52.675Z",
+			"evidence": "Reviewed eleven config modules: eight relay controls retained; internal metadata stays addressable. Public controls require source, audience and purpose. Basic-only scope; full suites deferred by Daniel."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

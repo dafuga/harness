@@ -30,14 +30,14 @@ export async function loadUnits(
 	const registry = await repository.read(source);
 	const scenarios = await new ScenarioRepository(absolute).read(source);
 	const fresh = new UnitIndexService().index(index, registry.manifests);
-	await committedHelpers(source, fresh, registry.manifests);
+	const metadataErrors = await committedHelpers(source, fresh, registry.manifests);
 	return {
 		root: absolute,
 		config,
 		index,
 		stored: registry.manifests,
 		scenarios: scenarios.manifests,
-		errors: [...registry.errors, ...scenarios.errors],
+		errors: [...registry.errors, ...scenarios.errors, ...metadataErrors],
 		unformatted: registry.unformatted,
 		fresh,
 		repository
@@ -52,7 +52,7 @@ async function committedHelpers(
 	tree: SourceTree,
 	fresh: UnitIndexResult,
 	stored: ComponentManifest[]
-): Promise<void> {
+): Promise<string[]> {
 	const enriched = revisionRegistry(fresh.manifests, []).units;
 	await unitMetadata(tree, enriched);
 	for (const unit of fresh.manifests) {
@@ -85,6 +85,23 @@ async function committedHelpers(
 	fresh.updated = fresh.manifests
 		.filter((unit) => !created.has(unit.id) && before.get(unit.id) !== stableJson(unit))
 		.map((unit) => unit.id);
+	return configControlErrors(enriched);
+}
+
+function configControlErrors(units: Parameters<typeof unitMetadata>[1]): string[] {
+	return units.flatMap((unit) =>
+		(unit.configControls ?? [])
+			.filter(
+				(control) =>
+					!unit.configValues?.some(
+						(value) => value.source === control.source && value.name === control.name
+					)
+			)
+			.map(
+				(control) =>
+					`${unit.id}: ${control.name} is not a recorded config value in ${control.source}`
+			)
+	);
 }
 
 export type { LoadedUnits } from './loadUnits.types';

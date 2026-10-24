@@ -66,7 +66,6 @@ test.each([
 			);
 		})
 );
-
 test('revision metadata selects declared controls without importing internal constants', async () => {
 	const source = 'src/config/settings.ts';
 	const files = {
@@ -93,7 +92,6 @@ test('revision metadata selects declared controls without importing internal con
 	await unitMetadata(memoryTree({}), registry.units);
 	expect(registry.units[0].configValues).toEqual([]);
 });
-
 test('JSON config keys keep their actual scalar values', () => {
 	expect(configValues('{"port": 8080, "feature": {"enabled": false}}', 'settings.json')).toEqual([
 		{ name: 'settings.port', value: '8080', source: 'settings.json', literal: 8080 },
@@ -206,7 +204,6 @@ test.each([
 		});
 	}
 );
-
 test('unresolved collection sizes stay unknown and source code is never executed', async () => {
 	await measureWorkload('function.unit-metadata', 'config-unknown-collection-size', () => {
 		const source =

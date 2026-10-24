@@ -6,6 +6,9 @@
 	"responsibility": "Runs the browser checks of the explorer shell alone: no server, no seeded history and no build of the application.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/configs/development-tooling/shellPlaywrightConfig.ts",
