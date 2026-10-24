@@ -36,9 +36,19 @@
 				"type": "Promise<unknown>"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.unit-types",
 			"via": "import",
