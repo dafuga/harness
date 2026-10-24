@@ -10,9 +10,9 @@
 		"source": [
 			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.ts",
 			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.types.ts",
-			"src/services/revision-detail-service/RevisionDetailService.ts",
 			"src/services/explorer-ui/revision-detail-service/projectDependencies.ts",
-			"src/services/explorer-ui/revision-detail-service/projectDependencies.types.ts"
+			"src/services/explorer-ui/revision-detail-service/projectDependencies.types.ts",
+			"src/services/revision-detail-service/RevisionDetailService.ts"
 		],
 		"symbols": [
 			"revisionSources",
@@ -24,6 +24,9 @@
 			"RevisionDetail",
 			"Stored",
 			"BuiltRevision",
+			"projectDependencies",
+			"ProjectDependency",
+			"ProjectDependencies",
 			"revisionSources",
 			"RevisionDetailService"
 		]
@@ -54,6 +57,10 @@
 			{
 				"name": "RevisionDetailService.build.media",
 				"type": "MediaPlacer"
+			},
+			{
+				"name": "projectDependencies.tree",
+				"type": "SourceTree"
 			}
 		],
 		"outputs": [
@@ -64,6 +71,10 @@
 			{
 				"name": "RevisionDetailService.build",
 				"type": "Promise<BuiltRevision>"
+			},
+			{
+				"name": "projectDependencies",
+				"type": "Promise<ProjectDependencies>"
 			}
 		],
 		"errors": []
@@ -130,7 +141,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.units-config",
 			"via": "import",
 			"origin": "derived"
 		},

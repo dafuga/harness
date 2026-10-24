@@ -73,6 +73,11 @@
 			"unit": "reports.model.report-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.revision-detail",
+			"via": "dynamic-import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

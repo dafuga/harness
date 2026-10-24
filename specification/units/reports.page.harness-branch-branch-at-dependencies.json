@@ -3,7 +3,7 @@
 	"id": "reports.page.harness-branch-branch-at-dependencies",
 	"kind": "page",
 	"title": "/harness/branch/[branch]/[...at]/dependencies",
-	"responsibility": "Shows the selected revision\u2019s direct project package declarations within scoped Code navigation.",
+	"responsibility": "Shows the selected revision’s direct project package declarations within scoped Code navigation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -24,7 +24,18 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-dependencies-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-screen",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/routes/harness/branch/[branch]/[...at]/dependencies/+page.svelte",

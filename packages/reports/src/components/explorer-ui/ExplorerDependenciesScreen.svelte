@@ -180,6 +180,9 @@
 	.dep-table thead th:first-child {
 		width: 36%;
 	}
+	.dep-table code {
+		white-space: nowrap;
+	}
 	.dep-name {
 		font-weight: var(--hx-style-weight-medium);
 	}
