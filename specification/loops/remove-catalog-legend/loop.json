@@ -2,7 +2,7 @@
 	"name": "remove-catalog-legend",
 	"goal": "Catalog lists end with their module rows and omit the redundant proof legend footer",
 	"createdAt": "2026-10-24T14:19:15.431Z",
-	"updatedAt": "2026-10-24T14:20:44.480Z",
+	"updatedAt": "2026-10-24T14:34:25.762Z",
 	"template": "visual-change",
 	"templateLineage": ["feature", "visual-change"],
 	"enforceOrder": false,
@@ -17,17 +17,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T14:34:24.012Z",
+			"evidence": "Removed the shared ExplorerIndex footer, unused HarnessVerdict import, legend-only styles and obsolete unit dependency. Standard unchanged two-case green b4e5a6b3 passed at87472ab54 after red65bae60f on88eaba67b."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T14:34:25.063Z",
+			"evidence": "Standard component-catalog-previews desktop/mobile ExplorerIndex cases fail on the redundant legend before repair and pass unchanged after repair. Additional catalog rendering/filtering unit files:25 tests passed."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T14:34:25.762Z",
+			"evidence": "Focused browser cases2 passed; catalog unit tests25 passed; targeted Prettier passed; Harness audit passed; units registry1538 valid. ESLint config does not include these Svelte/spec paths (reported ignored, not linted). Fullsuite intentionally outside human basic-check scope."
 		},
 		{
 			"id": "browser-proof",
