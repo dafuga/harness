@@ -124,6 +124,12 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Screenshot Evidence
 
+Isolated component catalog captures frame the rendered component itself, including fragments,
+visible dialogs and fixed surfaces. Exclude fixture headings and unused page canvas. Declare
+`capture: "element"` and retain the actual CSS-pixel clip bounds; decoded dimensions must match
+those bounds at the declared viewport scale. Keep real layouts and shells in their required app
+context. Never repair component thumbnails by relabeling or stretching older full-page images.
+
 Use source-and-run-specific output directories for verification attempts. Before reporting progress or a pass, check the tested commit, served build/revision and capture timestamps; reject logs and images left by an earlier attempt. A reused filename or successful file read does not establish fresh proof.
 
 - For a new or changed table layout, extend its existing viewport matrix beyond text presence

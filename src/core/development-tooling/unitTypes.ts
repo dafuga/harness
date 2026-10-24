@@ -199,8 +199,8 @@ export const scenarioManifestSchema = z.strictObject({
 			provenance: z.enum(['fixture', 'actual-capture']).optional(),
 			/** The declared build whose server must have produced these captures. */
 			build: identifier.optional(),
-			/** A screenshot shows exactly the viewport, or the full page at viewport width. */
-			capture: z.enum(['viewport', 'full-page']).optional(),
+			/** A screenshot shows the viewport, full page, or explicitly bounded element. */
+			capture: z.enum(['viewport', 'full-page', 'element']).optional(),
 			required: z.boolean()
 		})
 	)
