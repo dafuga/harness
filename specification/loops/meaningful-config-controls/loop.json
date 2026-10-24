@@ -2,7 +2,7 @@
 	"name": "meaningful-config-controls",
 	"goal": "Only meaningful human or app developer controls appear in Configs; framework and generated skills enforce deliberate settings",
 	"createdAt": "2026-10-24T13:29:28.539Z",
-	"updatedAt": "2026-10-24T13:58:27.517Z",
+	"updatedAt": "2026-10-24T14:52:11.758Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -31,7 +31,9 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T14:52:11.758Z",
+			"evidence": "PR #97 landed at 1409ab4a14e064e3f540b76ec3516cc93a62bb73; exact immutable main passed 68 tests in seven files. Registry, audit, formatting and both skill validations passed. Shared preview 5690 rendered eight controls and zero internal descriptions; search and Styles retention passed with inspected images. Finalized report 077afd60-5bd2-4a31-82ca-123e9ec2d025 retains proof. Full CLI, native and viewport suites deferred under Daniel basic-only instruction; no full-check pass claimed."
 		}
 	],
 	"evaluators": [
