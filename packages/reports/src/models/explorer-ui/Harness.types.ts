@@ -1,3 +1,4 @@
+import type { ProjectDependencies } from '../../../../../src/services/explorer-ui/revision-detail-service/projectDependencies.types';
 import type { TranslationCatalog } from '../../../../../src/core/explorer-ui/Translation.types';
 import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
@@ -185,7 +186,7 @@ export interface HarnessExplanation {
 	performance: { attempt: string; outcome: string };
 }
 export interface HarnessRevision {
-	projectDependencies?: import('../../../../../src/services/explorer-ui/revision-detail-service/projectDependencies.types').ProjectDependencies;
+	projectDependencies?: ProjectDependencies;
 	platforms?: PlatformCatalog;
 	translations?: TranslationCatalog;
 	regressions?: RegressionView[];

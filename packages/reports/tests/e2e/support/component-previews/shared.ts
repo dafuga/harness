@@ -1,3 +1,4 @@
+import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 import { createRawSnippet } from 'svelte';
 import { formatDuration } from '../../../../src/utils/evidenceMedia';
 export const noop = () => {};
@@ -80,3 +81,13 @@ export const picker = {
 };
 
 export type { PreviewProps, PreviewCases } from './shared.types';
+
+/** The list an index is given: synthetic names alone, since each card has a preview of its own. */
+export const names = createRawSnippet((listed: () => CatalogRow[]) => ({
+	render: () =>
+		'<ul>' +
+		listed()
+			.map((row) => `<li>${row.name}</li>`)
+			.join('') +
+		'</ul>'
+}));

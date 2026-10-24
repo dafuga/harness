@@ -1,23 +1,13 @@
 import { dependencyPreview } from './dependencies';
 import { translationPreview } from './translations';
-import { createRawSnippet } from 'svelte';
-import type { CatalogRow } from '../../../../src/utils/entityCatalog';
 import type { PreviewCases } from './shared';
-import { children, text } from './shared';
+import { children, text, names } from './shared';
 import * as d from './explorerData';
 import { sourceCases } from './source';
 const base = { nav: d.navigation, lens: d.reading, scope: d.shown.scope, mediaBase: '/media/' };
 const entity = { entity: d.entity, ...base };
 const page = d.host();
-/** The list an index is given: synthetic names alone, since each card has a preview of its own. */
-const names = createRawSnippet((listed: () => CatalogRow[]) => ({
-	render: () =>
-		'<ul>' +
-		listed()
-			.map((row) => `<li>${row.name}</li>`)
-			.join('') +
-		'</ul>'
-}));
+
 const seen = {
 	shown: d.run,
 	side: 'after',
