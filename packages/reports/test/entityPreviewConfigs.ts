@@ -1,7 +1,7 @@
 import { expect, type Page } from '../../../test/support/browserTest';
 import { capture, fits } from './entityPreviewPage';
 import { commits } from './entityUnits';
-import { configExpression, configRemoteExpression, configStrings } from './entityConfigFixtures';
+import { configExpression, configExpressions, configStrings } from './entityConfigFixtures';
 
 export const configUnits = [
 	'reports.component.harness-explorer-table',
@@ -17,10 +17,8 @@ export async function inspectConfigValues(
 	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
 	await capture(page, `groups-config-values-${commit.slice(0, 7)}-${viewport}`, configUnits);
 	await inspectConfigStrings(page);
-	for (const [name, value] of [
-		['schema', configExpression(commit)],
-		['remoteEndpoint', configRemoteExpression]
-	]) {
+	await inspectConfigExpressions(page);
+	for (const [name, value] of [['schema', configExpression(commit)]]) {
 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
 		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
 		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
@@ -54,6 +52,40 @@ export async function inspectConfigValues(
 		'false'
 	);
 	expect(await table.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+}
+
+/** Expressions are committed text, never executed or hidden by their length. */
+async function inspectConfigExpressions(page: Page): Promise<void> {
+	const table = page.getByRole('table', { name: 'orderSettings', exact: true });
+	for (const [name, source] of Object.entries(configExpressions)) {
+		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+		const text = row.locator('td').last().locator('code');
+		await expect
+			.soft(text, 'config expression prefixes are visible inline')
+			.toBeVisible({ timeout: 500 });
+		await expect
+			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+			.toHaveCount(0);
+		if (!(await text.count())) continue;
+		await expect.soft(text).toHaveText(source);
+		await expect.soft(text).toHaveAttribute('title', source);
+		const layout = await text.evaluate((element) => {
+			const style = getComputedStyle(element);
+			return {
+				width: element.clientWidth,
+				clipped: element.scrollWidth > element.clientWidth,
+				lines: element.getBoundingClientRect().height / Number.parseFloat(style.lineHeight),
+				ellipsis: style.textOverflow,
+				whitespace: style.whiteSpace
+			};
+		});
+		expect.soft(layout.width, 'the expression prefix has visible space').toBeGreaterThan(0);
+		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+		expect.soft(layout.ellipsis).toBe('ellipsis');
+		expect.soft(layout.whitespace).toBe('nowrap');
+		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+		await expect.soft(row.locator('orders')).toHaveCount(0);
+	}
 }
 
 /** Decoded strings stay readable in the cell, independently of their source length or line breaks. */

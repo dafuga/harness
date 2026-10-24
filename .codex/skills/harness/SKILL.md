@@ -171,6 +171,8 @@ Config modules use the plural `src/configs/<category>/` folder, one focused sour
 
 For typed-value presentation changes, review the fixture's decoded metadata as well as its source text. Cover short, long and multiline string literals independently from computed expressions and collections; do not omit literal metadata to force an inspection path. The standard parser matrix must prove that these string forms decode without executing code, and the browser matrix must check initial inline text, overflow and inspection behavior at every declared viewport.
 
+Regex and computed-expression source text also stays inline, constrained to one ellipsized line with its full committed source available on hover. Keep collection inspection separate. The standard mixed-config matrix covers short expressions, long regexes and multiline expressions at current and historical revisions without evaluating them.
+
 Place every module type in `src/<kind>/<category>/` using the project taxonomy in
 `harness.groups.json`. Use `harness generate <kind> <name> --group <category>` for
 new code; a new explicit group extends the taxonomy. Reuse an existing category

@@ -22,6 +22,13 @@ export const configStrings = {
 export const longConfigValue = JSON.stringify(configStrings.archivePath);
 export const configRemoteExpression =
 	'process.env.REPORT_ORIGIN ?? "https://orders.example.test/integrations"';
+export const configExpressions = {
+	remoteEndpoint: configRemoteExpression,
+	designProperties:
+		'/^(?:color|background(?:-.+)?|border(?:-.+)?|outline(?:-.+)?|fill|stroke|opacity|box-shadow|filter|backdrop-filter|<orders>)$/',
+	message: '(() => {\n  throw new Error("Config expressions must never execute <orders>");\n})()',
+	retryDelay: '10 * 1000'
+};
 
 /** Source-derived settings vary with the selected revision, independently of contract examples. */
 export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
@@ -37,7 +44,7 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		schema: configExpression(commit),
 		archivePath: longConfigValue,
 		fulfilmentNote: JSON.stringify(configStrings.fulfilmentNote),
-		remoteEndpoint: configRemoteExpression,
+		...configExpressions,
 		steps: '[{label: "Pack", flags: [true, false]}, "Ship"]',
 		emptySteps: '[]'
 	};
@@ -45,7 +52,7 @@ export function configSnapshot(unit: HarnessUnit, commit: string): HarnessUnit {
 		configValues: Object.entries(values).map(([name, value]) => ({
 			name: `orderSettings.${name}`,
 			value,
-			...(['schema', 'remoteEndpoint', 'steps'].includes(name)
+			...(['schema', 'steps', ...Object.keys(configExpressions)].includes(name)
 				? {}
 				: { literal: JSON.parse(value) }),
 			source: unit.owns.source[0],
