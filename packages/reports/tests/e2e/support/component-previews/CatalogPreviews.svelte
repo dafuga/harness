@@ -79,7 +79,11 @@
 					</section>
 				{/snippet}
 				{#snippet layoutChat()}
-					<ConsoleChat base="/harness" path="/branch/feature%2Forders/layouts" navigate={() => {}} />
+					<ConsoleChat
+						base="/harness"
+						path="/branch/feature%2Forders/layouts"
+						navigate={() => {}}
+					/>
 				{/snippet}
 				{#if layout}
 					<Component {...fixture.props} children={layoutChild} chat={layoutChat} />
