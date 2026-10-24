@@ -1,0 +1,49 @@
+{
+	"name": "styles-unified-colors",
+	"goal": "Styles has one Colors section, each variable appears once, and Primary has one base color with subordinate treatments",
+	"createdAt": "2026-10-23T20:53:56.912Z",
+	"updatedAt": "2026-10-23T21:19:36.006Z",
+	"template": "visual-change",
+	"templateLineage": [
+		"feature",
+		"visual-change"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T21:19:36.006Z",
+			"evidence": "User confirmed one Colors section and one primary base. Spec/tests3cb032986 retained accepted responsive red358d2c40; all3before originals validated and inspected."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "browser-proof",
+			"title": "Exercise the affected UI path, require no unexpected browser errors, and capture fresh evidence with error diagnostics.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "browser-proof"
+		}
+	]
+}

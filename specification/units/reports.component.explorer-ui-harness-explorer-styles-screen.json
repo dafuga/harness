@@ -3,7 +3,7 @@
 	"id": "reports.component.explorer-ui-harness-explorer-styles-screen",
 	"kind": "component",
 	"title": "ExplorerStylesScreen",
-	"responsibility": "Explains app color roles and displays every shared design token by category with its value and browser-resolved specimen.",
+	"responsibility": "Displays one role-grouped Colors inventory with a single primary base and subordinate treatments, alongside every other shared design-token category.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -83,7 +83,7 @@
 			{
 				"name": "ExplorerStylesScreen",
 				"type": "markup",
-				"description": "Color-role guidance and the complete app token catalog, with browser-resolved specimens for colors, typography and layout categories."
+				"description": "Each color variable appears once with its role, usage, value and swatch; Primary separates one base from treatments. Other token categories retain their browser-resolved specimens."
 			}
 		],
 		"errors": []
