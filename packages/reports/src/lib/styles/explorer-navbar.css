@@ -105,7 +105,7 @@
 	order: 3;
 	margin: 0 calc(-1 * var(--hx-gutter)) calc(-1 * var(--hx-space-8));
 	padding-inline: var(--hx-gutter);
-	border-top: var(--hx-border-thin) solid var(--hx-line);
+	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	border-bottom: 0;
 }
 /* One row from 1420px, ended by the revision and the search: the revision keeps the whole width of
