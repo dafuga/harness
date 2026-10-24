@@ -74,6 +74,7 @@
 <style>
 	/* One value in its cell: a typed mark for a literal, the text as written for an expression. */
 	.cv {
+		contain: inline-size;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
