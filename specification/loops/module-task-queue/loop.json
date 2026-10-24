@@ -1,0 +1,41 @@
+{
+	"name": "module-task-queue",
+	"goal": "Module tasks require committed wanted contracts; assigned Claude and Codex workers receive feature-first prompts, module goals and exact model intelligence; auto falls back from Haiku 5.5 to Luna 6 max only on quota rejection",
+	"createdAt": "2026-10-24T20:36:25.100Z",
+	"updatedAt": "2026-10-24T20:36:25.100Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

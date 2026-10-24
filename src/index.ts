@@ -187,3 +187,6 @@ export { SourceProfileAdapter } from './adapters/verification-evidence/source-pr
 export { ApiCommand } from './commands/networking-security/ApiCommand';
 export { HarnessApiService } from './services/networking-security/HarnessApiService';
 export { HarnessHttpAdapter } from './adapters/networking-security/HarnessHttpAdapter';
+export { ModuleTaskCommand } from './commands/agents-providers/ModuleTaskCommand';
+export { ModuleTaskRepository } from './repositories/agents-providers/ModuleTaskRepository';
+export { ModuleTaskService } from './services/agents-providers/ModuleTaskService';
