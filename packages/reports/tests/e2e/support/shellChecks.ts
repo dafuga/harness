@@ -86,7 +86,7 @@ export async function revisionDivider(within: Locator): Promise<void> {
 	} else expect(line.content).toBe('none');
 }
 
-/** Primary Modules opens the scoped module strip without widening the page. */
+/** Modules discloses scoped links without navigating or adding another header row. */
 export async function moduleNavigation(
 	page: Page,
 	home: string,
@@ -94,12 +94,18 @@ export async function moduleNavigation(
 	scoped: string
 ): Promise<void> {
 	const bar = page.getByRole('banner');
-	await expect(bar).toHaveAttribute('data-harness-component', 'harness-harness-navbar');
-	await bar.getByRole('link', { name: 'Modules', exact: true }).click();
-	const modules = bar.getByRole('tablist', { name: 'Module categories' });
+	const trigger = bar.getByRole('button', { name: 'Modules', exact: true });
+	const modules = bar.getByRole('navigation', { name: 'Module categories' });
+	const before = page.url();
+	const height = (await box(bar)).height;
+	await trigger.click();
 	await pictured(page, `explorer-shell-modules-${screen}`);
 	await captureShell(page, home, { state: 'modules', viewport: screen });
-	await expect(modules.getByRole('tab')).toHaveText([
+	await expect(modules).toBeVisible();
+	await expect(page).toHaveURL(before);
+	await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+	expect((await box(bar)).height, 'the bubble overlays the page').toBe(height);
+	await expect(modules.getByRole('link')).toHaveText([
 		'Layouts',
 		'Components',
 		'Models',
@@ -107,15 +113,31 @@ export async function moduleNavigation(
 		'Helpers',
 		'Types'
 	]);
-	await modules.getByRole('tab', { name: 'Types', exact: true }).click();
+	await expect(bar.getByRole('tablist', { name: 'Module categories' })).toHaveCount(0);
+	await reachable(modules, (await page.viewportSize())!.width);
+	await page.keyboard.press('Escape');
+	await expect(modules).not.toBeVisible();
+	await expect(trigger).toBeFocused();
+	await page.keyboard.press('Enter');
+	await expect(modules).toBeVisible();
+	await bar.getByText('synthetic-repository', { exact: true }).click();
+	await expect(modules).not.toBeVisible();
+	await trigger.click();
+	await modules.getByRole('link', { name: 'Types', exact: true }).click();
+	await expect(modules).not.toBeVisible();
+	await expect(trigger).toHaveAttribute('aria-expanded', 'false');
 	await pictured(page, `explorer-shell-types-${screen}`);
 	await captureShell(page, home, { state: 'types', viewport: screen });
-	expect(await fits(page), 'module tabs scroll without widening the page').toBe(true);
+	expect(await fits(page), 'the module bubble stays inside the page').toBe(true);
 	await expect(page).toHaveURL(`${shellOrigin}${scoped}/types`);
-	await expect(bar.getByRole('link', { name: 'Modules', exact: true })).toHaveAttribute(
+	await expect(trigger).toHaveAttribute('aria-current', 'page');
+	await trigger.click();
+	await expect(modules.getByRole('link', { name: 'Types', exact: true })).toHaveAttribute(
 		'aria-current',
 		'page'
 	);
-	await modules.getByRole('tab', { name: 'Helpers', exact: true }).click();
+	await modules.getByRole('link', { name: 'Helpers', exact: true }).focus();
+	await page.keyboard.press('Enter');
 	await expect(page).toHaveURL(`${shellOrigin}${scoped}/functions`);
+	await expect(modules).not.toBeVisible();
 }
