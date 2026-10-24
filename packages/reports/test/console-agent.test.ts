@@ -41,3 +41,31 @@ test('oversized and malformed payloads never reach the executor', async () => {
 		expect((await controller.handle(request({}, body))).status).toBe(400);
 	expect(consoleAgent).not.toHaveBeenCalled();
 });
+
+test('native local API clients use bearer headers and receive original artifact bytes', async () => {
+	vi.mocked(consoleAgent).mockClear();
+	vi.mocked(consoleAgent).mockResolvedValueOnce({ accepted: true });
+	const reply = await controller.handle(
+		request(
+			{ authorization: 'Bearer synthetic-session' },
+			'{"method":"snapshot","input":{"branch":null,"commit":null}}'
+		)
+	);
+	expect(reply.status).toBe(200);
+	expect(consoleAgent).toHaveBeenLastCalledWith({
+		method: 'snapshot',
+		input: { branch: null, commit: null },
+		token: 'synthetic-session'
+	});
+	const bytes = new Uint8Array([137, 80, 78, 71]);
+	vi.mocked(consoleAgent).mockResolvedValueOnce({
+		bytes,
+		mediaType: 'image/png',
+		sha256: 'a'.repeat(64)
+	} as never);
+	const artifact = await controller.handle(
+		request({ authorization: 'Bearer synthetic-session' }, '{"method":"artifact","input":{}}')
+	);
+	expect(artifact.headers.get('content-type')).toBe('image/png');
+	expect(new Uint8Array(await artifact.arrayBuffer())).toEqual(bytes);
+});
