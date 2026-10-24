@@ -110,6 +110,7 @@ export const solidIcons: ReadonlySet<HarnessIconName> = new Set(['passed', 'fail
 /** The icon each category has in the bar, in the lists and at the head of an entity. */
 export const categoryIcon: Record<ExplorerCategory, HarnessIconName> = {
 	pages: 'pages',
+	apis: 'route',
 	layouts: 'layouts',
 	components: 'components',
 	functions: 'functions',

@@ -1,4 +1,5 @@
 export type ReferenceVia =
+	| 'http'
 	| 'import'
 	| 'reexport'
 	| 'dynamic-import'

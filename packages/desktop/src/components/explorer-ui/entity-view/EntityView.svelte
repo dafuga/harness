@@ -36,12 +36,14 @@
 	const visual = $derived(
 		['pages', 'components', 'layouts'].includes(workspace.entity?.category ?? '')
 	);
+	/** Only a page lists the APIs it requests, directly or through what it uses. */
 	const names = $derived(
 		(Object.keys(sections) as Section[]).filter(
 			(name) =>
 				name !== (headless ? 'Designs' : 'Plan') &&
 				name !== (visual ? 'Evidence' : 'States') &&
-				name !== (headless ? 'Evidence' : 'Examples')
+				name !== (headless ? 'Evidence' : 'Examples') &&
+				(name !== 'APIs' || workspace.entity?.category === 'pages')
 		)
 	);
 	let tab = $state<Section>('Overview');
@@ -51,6 +53,7 @@
 	let version = $state('');
 	let option = $state('');
 	const entity = $derived(workspace.entity!);
+	const apis = $derived(entity.relationships.filter((item) => item.category === 'apis'));
 	const shown = $derived(versionOption(entity.versions, version, option));
 	/** Another project, revision, entity or version shows its open thread's option, if any. */
 	$effect(() => {
@@ -191,10 +194,11 @@
 				bind:option={() => shown, (value) => (option = value)}
 				onthread={select}
 				onannotate={annotate}
-			/>{:else if tab === 'Used In' || tab === 'Uses'}<RelationshipsPanel
-				relationships={entity.relationships}
+			/>{:else if tab === 'Used In' || tab === 'Uses' || tab === 'APIs'}<RelationshipsPanel
+				relationships={tab === 'APIs' ? apis : entity.relationships}
+				label={tab === 'APIs' ? 'APIs' : undefined}
 				{workspace}
-				direction={tab === 'Uses' ? 'uses' : 'used-by'}
+				direction={tab === 'Used In' ? 'used-by' : 'uses'}
 			/>{:else if tab === 'Examples'}<EntityExamples documentation={entity.documentation} />
 			<CoveragePanel {entity} {evidence} {workspace} />
 		{:else if tab === 'Evidence' || tab === 'States'}<CoveragePanel
