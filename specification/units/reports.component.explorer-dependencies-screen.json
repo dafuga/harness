@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-dependencies-screen",
+	"kind": "component",
+	"title": "ExplorerDependenciesScreen",
+	"responsibility": "Shows direct project dependency declarations from the selected revision",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte"],
+		"symbols": ["ExplorerDependenciesScreen"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "host",
+				"type": "ExplorerScreenProps",
+				"description": "Selected revision, package catalog, navigation scope and shared explorer services. Older revisions may have no dependency inventory."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerDependenciesScreen",
+				"type": "markup",
+				"description": "Searchable direct package declarations grouped by ecosystem, with version requirements, dependency types, declaring workspaces and explicit unavailable-data messages."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.harness-explorer-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-explorer-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.gallery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.revision-detail",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

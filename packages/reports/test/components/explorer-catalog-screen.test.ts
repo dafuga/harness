@@ -148,3 +148,12 @@ test('a collection of a revision without a registry shows its gap and no table',
 	expect(words(body)).toContain('No registry at this revision');
 	expect(count(body, /<table\b/g)).toBe(0);
 });
+
+test('project style catalog renders through the embedded screen entry', () => {
+	const body = content('commit', { category: 'pages', screen: 'styles' });
+	expect(body, 'Embedded Code navigation renders Styles').toContain(
+		'data-harness-component="explorer-ui-harness-explorer-styles-screen"'
+	);
+	expect(words(body)).toContain('Styles');
+	expect(words(body)).toContain('Colors');
+});

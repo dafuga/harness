@@ -5,37 +5,38 @@ import type {
 	HarnessShellView
 } from '../../../utils/explorer-ui/harnessShell';
 import { canonicalExplorerLocation } from '../../../../../../src/utils/explorerRoute';
-import type {
-	ExplorerCategory,
-	ExplorerLocation,
-	ExplorerScope
-} from '../../../models/explorer-ui/Explorer.types';
+import type { ExplorerLocation, ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 import { branchCommits } from './harnessAncestry';
 import { retainedBranch } from '../../../utils/explorer-ui/harnessAncestry';
 import { categoryIcon, type HarnessIconName } from '../../../utils/explorer-ui/harnessIcons';
 
 const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['pages', 'Pages'],
-	['modules', 'Modules'],
-	['styles', 'Styles'],
-	['configs', 'Configs'],
+	['modules', 'Code'],
 	['translations', 'Translations'],
 	['platforms', 'Platforms']
 ];
-const moduleLabels: Array<[ExplorerCategory, string]> = [
+const moduleLabels: Array<[Exclude<HarnessShellCategory['id'], 'modules'>, string]> = [
 	['layouts', 'Layouts'],
 	['components', 'Components'],
 	['models', 'Models'],
 	['services', 'Services'],
 	['functions', 'Helpers'],
-	['types', 'Types']
+	['types', 'Types'],
+	['configs', 'Configs'],
+	['styles', 'Styles'],
+	['dependencies', 'Dependencies']
 ];
 
 function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory['id']): boolean {
 	if (!place) return false;
-	if (id === 'styles' || id === 'translations') return place.screen === id;
-	if (place.screen) return false;
-	if (id === 'modules') return moduleLabels.some(([category]) => category === place.category);
+	if (id === 'modules')
+		return (
+			place.screen === 'styles' ||
+			place.screen === 'dependencies' ||
+			(!place.screen && moduleLabels.some(([category]) => category === place.category))
+		);
+	if (place.screen) return id === place.screen;
 	return place.category === id;
 }
 
@@ -43,6 +44,7 @@ function categoryGlyph(id: HarnessShellCategory['id']): HarnessIconName {
 	if (id === 'styles') return 'styles';
 	if (id === 'translations') return 'web';
 	if (id === 'modules') return 'layers';
+	if (id === 'dependencies') return 'code';
 	return categoryIcon[id];
 }
 
@@ -97,16 +99,19 @@ function categoryTarget(
 	const target: ExplorerLocation = {
 		branch: place.branch,
 		commit: place.commit,
-		category: category === 'styles' || category === 'translations' ? 'pages' : category
+		category:
+			category === 'styles' || category === 'dependencies' || category === 'translations'
+				? 'pages'
+				: category
 	};
-	if (id === 'styles' || id === 'translations') target.screen = id;
+	if (id === 'styles' || id === 'dependencies' || id === 'translations') target.screen = id;
 	return target;
 }
 
 /**
- * What the bar of the explorer shows for an address: where the brand leads, the five
- * categories inside the branch and commit that are viewed, the six module categories Modules
- * opens from any of them, and the revision controls. Every address is formatted by the host;
+ * What the bar of the explorer shows for an address: where the brand leads, the primary
+ * categories inside the viewed branch and commit, the source catalogs grouped under Code,
+ * and the revision controls. Every address is formatted by the host;
  * none is put together here.
  */
 export function harnessShell(input: HarnessNavbarInput): HarnessShellView {

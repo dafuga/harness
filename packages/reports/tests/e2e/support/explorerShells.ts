@@ -10,10 +10,10 @@ const titled = (page: Page, name: string) =>
 const listed = (page: Page) =>
 	expect(content(page).getByRole('link', { name: 'TitleFrame', exact: true })).toBeVisible();
 const active = async (page: Page, name: string) => {
-	const trigger = nav(page).getByRole('link', { name: 'Modules', exact: true });
+	const trigger = nav(page).getByRole('link', { name: 'Code', exact: true });
 	await expect(trigger).toHaveAttribute('aria-current', 'page');
 	await expect(
-		page.getByRole('tablist', { name: 'Module categories' }).getByRole('tab', { name, exact: true })
+		page.getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name, exact: true })
 	).toHaveAttribute('aria-selected', 'true');
 };
 

@@ -103,9 +103,9 @@ test('the root fits mobile, shows the Harness navigation and offers no way to an
 	await expect(categories.locator('a, button')).toHaveText(expectedCategories);
 	await expect(page.getByRole('link', { name: 'Harness Analytics', exact: true })).toHaveCount(0);
 	// The categories are reachable on a phone: one press goes to another collection.
-	await categories.getByRole('link', { name: 'Modules', exact: true }).click();
+	await categories.getByRole('link', { name: 'Code', exact: true }).click();
 	await page
-		.getByRole('tablist', { name: 'Module categories' })
+		.getByRole('tablist', { name: 'Code categories' })
 		.getByRole('tab', { name: 'Helpers', exact: true })
 		.click();
 	await expect(page).toHaveURL(/\/functions$/);
