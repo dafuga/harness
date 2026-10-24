@@ -111,3 +111,21 @@ function structuredFixture(name: string, source: string) {
 		}
 	};
 }
+
+/** The grouped collection uses the same declared settings fixture with a separate responsibility. */
+export function deliveryConfig(settings: HarnessUnit): HarnessUnit {
+	return {
+		...settings,
+		id: 'app.config.delivery-settings',
+		title: 'deliverySettings',
+		owns: { source: ['src/configs/orders/deliverySettings.ts'], symbols: ['deliverySettings'] },
+		configValues: [
+			{
+				name: 'deliverySettings.enabled',
+				value: 'true',
+				source: 'src/configs/orders/deliverySettings.ts',
+				literal: true
+			}
+		]
+	};
+}

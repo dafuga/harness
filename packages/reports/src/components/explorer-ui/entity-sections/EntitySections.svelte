@@ -4,7 +4,7 @@
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import type { EntityNav } from '../../../utils/explorer-ui/entityLens';
 	import { entityMetricComparison } from '../../../utils/explorer-ui/entityMetricComparison';
-	import { entityShown } from './entityShown';
+	import { entityShown, modelTableView } from './entityShown';
 	import { helperRelations } from '../../../utils/explorer-ui/entityShown';
 	import EntityContract from '../entity-contract/EntityContract.svelte';
 	import EntitySource from '../EntitySource.svelte';
@@ -51,18 +51,9 @@
 	);
 	// The purpose is the sentence under the name of an overview tab; it is not said twice there.
 	let contract = $derived(summary.contract.filter((row) => row.label !== 'Purpose'));
-	// A model's tables, from the declaration its title names first as its contract reads them.
-	let definitions = $derived.by(() => {
-		const all = entity.unit.modelDefinitions ?? [];
-		const named = all.filter((item) => item.name === entity.unit.title);
-		return named.length > 0 ? named : all;
-	});
-	let tables = $derived(
-		definitions.flatMap(({ name, source, table }) => (table ? [{ name, source, table }] : []))
-	);
-	let gaps = $derived(
-		definitions.flatMap(({ name, tableGap }) => (tableGap ? [{ name, gap: tableGap }] : []))
-	);
+	let tableView = $derived(modelTableView(entity.unit));
+	let tables = $derived(tableView.tables);
+	let gaps = $derived(tableView.gaps);
 	let schemaTitle = $derived(entity.lastAt ? `Last table · ${entity.lastAt.slice(0, 7)}` : 'Table');
 </script>
 

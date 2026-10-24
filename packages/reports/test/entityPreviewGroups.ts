@@ -1,3 +1,4 @@
+import { deliveryConfig } from './entityConfigFixtures';
 import { modelDefinition } from './entityClassFixtures';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { ids, units } from './entityUnits';
@@ -116,23 +117,6 @@ function categoryUnit(unit: HarnessUnit, commit: string): HarnessUnit {
 			...unit.runtime,
 			targets: unit.runtime.targets.map((target) => ({ ...target, entry: source[0] }))
 		}
-	};
-}
-
-function deliveryConfig(settings: HarnessUnit): HarnessUnit {
-	return {
-		...settings,
-		id: 'app.config.delivery-settings',
-		title: 'deliverySettings',
-		owns: { source: ['src/configs/orders/deliverySettings.ts'], symbols: ['deliverySettings'] },
-		configValues: [
-			{
-				name: 'deliverySettings.enabled',
-				value: 'true',
-				source: 'src/configs/orders/deliverySettings.ts',
-				literal: true
-			}
-		]
 	};
 }
 

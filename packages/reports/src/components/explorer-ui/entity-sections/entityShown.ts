@@ -1,3 +1,4 @@
+import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import type { Shown, EntityShown } from '../../../utils/explorer-ui/entityShown';
 import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
 import { entityContract } from './entityContract';
@@ -24,4 +25,17 @@ export function entityShown(host: Shown, entity: ExplorerEntity): EntityShown {
 			: []
 	);
 	return { contract, measure: entityMeasure(entity.unit, record, observations), record };
+}
+
+/** Project the selected declaration's source tables and unresolved gaps for its owner's Table pane. */
+export function modelTableView(unit: HarnessUnit) {
+	const all = unit.modelDefinitions ?? [];
+	const named = all.filter((item) => item.name === unit.title);
+	const definitions = named.length > 0 ? named : all;
+	return {
+		tables: definitions.flatMap(({ name, source, table }) =>
+			table ? [{ name, source, table }] : []
+		),
+		gaps: definitions.flatMap(({ name, tableGap }) => (tableGap ? [{ name, gap: tableGap }] : []))
+	};
 }
