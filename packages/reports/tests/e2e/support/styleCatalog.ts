@@ -16,9 +16,25 @@ export function declaredStyleTokens(): string[] {
 	return [...names].sort();
 }
 
+/** Shared disclosure headings identify each semantic group and its actual token count. */
+export async function expectStyleGroups(scope: Locator): Promise<void> {
+	const declared = declaredStyleTokens();
+	for (const group of appStyleTokensConfig.groups) {
+		const count = declared.filter(
+			(name) =>
+				appStyleTokensConfig.groups.find((candidate) =>
+					appStyleTokensConfig.groupPrefixes[candidate].test(name)
+				) === group
+		).length;
+		await expect(
+			scope.getByRole('heading', { level: 2, name: `${group} ${count}`, exact: true })
+		).toBeVisible();
+	}
+}
+
 /** A color inventory must also tell a component author which token fits the intended role. */
 export async function expectColorRoles(scope: Locator): Promise<void> {
-	const palette = scope.getByRole('region', { name: 'Colors', exact: true });
+	const palette = scope.getByRole('region', { name: /^Colors \d+$/ });
 	await expect(
 		scope.getByRole('region', { name: 'Color roles', exact: true }),
 		'Colors combines role guidance and the token inventory'

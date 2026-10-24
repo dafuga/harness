@@ -210,5 +210,10 @@ export const explorerCases: PreviewCases = {
 	'reports.component.explorer-catalog-items': { category: 'components', rows: d.rows, ...base },
 	'reports.component.explorer-usage': { consumers: d.rows[0].usedIn ?? [], ...base },
 	'reports.component.explorer-usage-link': { entity: d.entity, ...base },
+	'reports.component.explorer-ui-harness-group': {
+		title: 'Orders',
+		count: 3,
+		children: text('<p>Three modules belong to this group.</p>')
+	},
 	...sourceCases
 };

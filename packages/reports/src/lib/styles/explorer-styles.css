@@ -30,35 +30,9 @@
 	gap: var(--hx-space-section);
 }
 /* The foundation starts under a rule, after every purpose-named choice. */
-.hx-styles-group:has(> .hx-styles-kicker) {
+.hx-module-group:has(> div > .hx-styles-kicker) {
 	padding-top: var(--hx-space-section);
 	border-top: var(--hx-border-thin) solid var(--hx-color-border-strong);
-}
-/* The title and count share a row; the description takes the row below. */
-.hx-styles-group-heading {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: var(--hx-space-4) var(--hx-space-12);
-	margin: 0 0 var(--hx-space-12);
-}
-.hx-styles-group-heading h2 {
-	margin: 0;
-	font-family: var(--hx-font-family-heading);
-	font-size: var(--hx-type-size-heading);
-	line-height: var(--hx-style-leading-tight);
-}
-.hx-styles-group-heading > span {
-	margin-left: auto;
-	color: var(--hx-color-text-muted);
-	font-size: var(--hx-type-size-sm);
-	font-variant-numeric: var(--hx-style-numeric-tabular);
-}
-.hx-styles-group-heading > p {
-	flex-basis: 100%;
-	margin: 0;
-	color: var(--hx-color-text-muted);
-	font-size: var(--hx-type-size-sm);
 }
 /* As many columns as fit, never one narrower than the screen allows; a role card is wider. */
 .hx-styles-grid {

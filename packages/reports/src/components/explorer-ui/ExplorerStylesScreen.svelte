@@ -12,6 +12,7 @@
 		UnclassifiedGroupName
 	} from './ExplorerStylesScreen.types';
 	import ExplorerFrame from './ExplorerFrame.svelte';
+	import HarnessGroup from './HarnessGroup.svelte';
 	import '../../lib/styles/explorer-styles.css';
 	let host: ExplorerScreenProps = $props();
 
@@ -184,15 +185,16 @@
 
 			<div class="hx-styles-groups">
 				{#each groups as group (group.name)}
-					<section class="hx-styles-group" aria-labelledby={headingId(group.name)}>
+					<HarnessGroup
+						title={group.name}
+						count={group.tokens.length}
+						description={group.description}
+						variant="styles"
+						resetKey={host.scope.commit}
+					>
 						{#if group.name === appStyleTokensConfig.foundation}
 							<p class="hx-styles-kicker">Foundation and compatibility</p>
 						{/if}
-						<div class="hx-styles-group-heading">
-							<h2 id={headingId(group.name)}>{group.name}</h2>
-							<span>{group.tokens.length}</span>
-							<p>{group.description}</p>
-						</div>
 						<div class="hx-styles-grid" class:hx-style-roles={!!roles[group.name]}>
 							{#if roles[group.name]}
 								{#each assignRoles(group) as role (role.name)}
@@ -210,7 +212,7 @@
 								{/each}
 							{/if}
 						</div>
-					</section>
+					</HarnessGroup>
 				{/each}
 			</div>
 		</section>
