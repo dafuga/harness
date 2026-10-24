@@ -90,7 +90,9 @@ function claudeTaskCommand(selection: TaskSelection): string[] {
 		'--permission-mode',
 		'acceptEdits',
 		'--tools',
-		'Read,Edit,Write,Glob,Grep',
+		'Read,Edit,Write,Glob,Grep,Bash',
+		'--allowedTools',
+		'Read,Edit,Write,Glob,Grep,Bash',
 		'--no-session-persistence'
 	];
 }

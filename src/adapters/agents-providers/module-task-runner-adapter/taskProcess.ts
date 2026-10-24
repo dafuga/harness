@@ -75,7 +75,13 @@ function taskEnvironment(resources: ResourceContext): Record<string, string | un
 		'SYSTEMROOT'
 	])
 		env[key] = process.env[key];
-	for (const key of ['HARNESS_RESOURCE_LEASE', 'HARNESS_RESOURCES_HOME'])
+	for (const key of [
+		'HARNESS_RESOURCE_LEASE',
+		'HARNESS_RESOURCES_HOME',
+		'HARNESS_RESOURCE_CPUS',
+		'HARNESS_RESOURCE_MEMORY_MIB',
+		'HARNESS_RESOURCE_PRIORITY'
+	])
 		env[key] = resources.env[key];
 	return env;
 }
