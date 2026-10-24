@@ -1,6 +1,6 @@
 import { addMessages } from 'svelte-i18n';
-import english from '../../../translations/replay/en.json' with { type: 'json' };
-import french from '../../../translations/replay/fr.json' with { type: 'json' };
+import english from './translations/en.json' with { type: 'json' };
+import french from './translations/fr.json' with { type: 'json' };
 let registered = false;
 /** Register the replay dictionaries once alongside the report strings. */
 export function replayLocale() {

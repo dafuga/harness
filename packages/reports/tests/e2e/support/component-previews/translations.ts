@@ -1,5 +1,5 @@
-import english from '../../../../src/translations/reports/en.json' with { type: 'json' };
-import french from '../../../../src/translations/reports/fr.json' with { type: 'json' };
+import english from '../../../../src/utils/reports-media/report-locale/en.json' with { type: 'json' };
+import french from '../../../../src/utils/reports-media/report-locale/fr.json' with { type: 'json' };
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type { TranslationCatalog } from '../../../../../../src/core/explorer-ui/Translation.types';
 export const translationData: TranslationCatalog = {
@@ -14,7 +14,7 @@ export const translationData: TranslationCatalog = {
 				fr: french[key as keyof typeof french],
 				...(key === 'listenAndCompare' ? { de: 'Anhören und vergleichen' } : {})
 			},
-			sources: ['packages/reports/src/translations/reports/en.json'],
+			sources: ['packages/reports/src/utils/reports-media/report-locale/en.json'],
 			usedBy: []
 		}))
 		.sort((a, b) => a.key.localeCompare(b.key))
