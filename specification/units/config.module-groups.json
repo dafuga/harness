@@ -6,6 +6,9 @@
 	"responsibility": "Validates project category definitions and explicit legacy entry paths.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"src/configs/development-tooling/moduleGroupsConfig.ts",

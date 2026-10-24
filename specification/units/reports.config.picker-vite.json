@@ -6,6 +6,9 @@
 	"responsibility": "Owns the pickerViteConfig typed configuration.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"packages/reports/src/configs/development-tooling/pickerViteConfig.ts",

@@ -126,6 +126,11 @@ function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
 			'affected downstream consumer tests alongside their typechecks'
 		);
 		expect(fileContents(files, path)).toContain('affected package lint and audit');
+		expect(fileContents(files, path)).toContain(
+			'important controls a user, operator or app developer'
+		);
+		expect(fileContents(files, path)).toContain('exact source, name, audience and purpose');
+		expect(fileContents(files, path)).toContain('design tokens belong in Styles');
 	}
 }
 

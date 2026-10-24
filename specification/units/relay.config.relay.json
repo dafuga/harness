@@ -3,9 +3,59 @@
 	"id": "relay.config.relay",
 	"kind": "config",
 	"title": "relayConfig",
-	"responsibility": "Owns the relayConfig typed configuration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Declares operator controls for relay request limits, pairing capacity and device traffic.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
+	"configControls": [
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.bodyBytes",
+			"audience": "operator",
+			"purpose": "Bound accepted request bodies to protect relay memory."
+		},
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.rateWindowMs",
+			"audience": "operator",
+			"purpose": "Choose the time window used to budget public pairing calls."
+		},
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.pairingCalls",
+			"audience": "operator",
+			"purpose": "Set pairing request capacity for expected device traffic."
+		},
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.failedConnects",
+			"audience": "operator",
+			"purpose": "Bound failed connection attempts before rate limiting a host."
+		},
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.openPairings",
+			"audience": "operator",
+			"purpose": "Limit simultaneous pairing offers retained for each host."
+		},
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.frameWindowMs",
+			"audience": "operator",
+			"purpose": "Choose the interval used to budget device frames."
+		},
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.deviceFrames",
+			"audience": "operator",
+			"purpose": "Set device frame capacity for expected interactive traffic."
+		},
+		{
+			"source": "packages/relay/src/configs/networking-security/relayConfig.ts",
+			"name": "relayConfig.sweepDelayMs",
+			"audience": "operator",
+			"purpose": "Set how long expired offers remain available to polling devices."
+		}
+	],
 	"owns": {
 		"source": [
 			"packages/relay/src/configs/networking-security/relayConfig.ts",
