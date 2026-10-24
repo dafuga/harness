@@ -1,0 +1,60 @@
+{
+	"name": "source-path-rows",
+	"goal": "Source paths and code actions fit one desktop line and at most two mobile lines",
+	"createdAt": "2026-10-23T14:50:06.746Z",
+	"updatedAt": "2026-10-23T14:58:44.392Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:50:59.944Z",
+			"evidence": "Desktop path and code action must share one line; mobile allows two. Folder text may truncate; filename and original link remain."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:51:00.705Z",
+			"evidence": "Existing entity-preview-source matrix verified links, modal and compact actions but not path wrapping or row height. Strengthened its shared fileLink check for no wrapping, full title and responsive row bound."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:55:45.918Z",
+			"evidence": "Committed ae43049ca; immutable red record retained with Source paths stay on one line failing on normal wrapping in the existing Source matrix."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:57:44.622Z",
+			"evidence": "Shared SourceFileList now uses two grid columns on desktop; folder text truncates before filename. Mobile has one path line plus one compact action line. Full title and accessible path retained."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-23T14:58:44.392Z",
+			"evidence": "Immutable green record passes the unchanged four existing service/selection cases on bf62eba2d. Corrected red a43ed1d54 and record bc23c82d retained; all pixel bytes and workload measurements are Git-backed."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
