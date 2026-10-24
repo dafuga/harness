@@ -8,6 +8,7 @@ export interface RegressionRun {
 	phase: RegressionPhase;
 	tests: string[];
 	units: string[];
+	knownUnits?: string[];
 	command: string;
 	assertion: string;
 	timeoutMs: number;
