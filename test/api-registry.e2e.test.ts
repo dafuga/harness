@@ -34,3 +34,20 @@ test.each(['local', 'hosted'] as const)(
 	},
 	30000
 );
+
+test.each(['local', 'hosted'] as const)(
+	'API CLI lists registered %s APIs even when their visual snapshot is older',
+	async (mode) => {
+		const f = await apiFixture(mode, true);
+		try {
+			const result = await f.cli(['get', 'apis', '--commit', commit]);
+			expect(JSON.parse(result.stdout)).toEqual([
+				expect.objectContaining({ id: 'endpoint.orders', kind: 'endpoint', title: '/api/orders' })
+			]);
+			expect(f.seen.find((request) => request.operation === 'registry')?.input.commit).toBe(commit);
+		} finally {
+			await f.close();
+		}
+	},
+	30000
+);

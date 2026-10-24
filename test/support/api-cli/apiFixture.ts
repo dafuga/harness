@@ -63,7 +63,7 @@ function evidence() {
 	};
 }
 
-function answer(operation: string, input: Record<string, unknown>) {
+function answer(operation: string, input: Record<string, unknown>, endpoints: boolean) {
 	const stable: Record<string, unknown> = {
 		connect: { token: 'synthetic-local-secret', snapshot },
 		snapshot,
@@ -81,7 +81,18 @@ function answer(operation: string, input: Record<string, unknown>) {
 					id: 'entry.program',
 					kind: 'entry',
 					contract: { inputs: [], outputs: [{ name: 'buildProgram', type: 'Command' }], errors: [] }
-				}
+				},
+				...(endpoints
+					? [
+							{
+								id: 'endpoint.orders',
+								kind: 'endpoint',
+								status: 'active',
+								title: '/api/orders',
+								contract
+							}
+						]
+					: [])
 			]
 		};
 	if (operation === 'entity') return { id: input.entityId, contract };
@@ -140,14 +151,14 @@ function respond(response: ServerResponse, observed: ApiRequestObservation, corr
 			.end(corrupted ? Buffer.from('corrupt') : png);
 		return;
 	}
-	let value: unknown = answer(operation, input);
+	let value: unknown = answer(operation, input, endpoints);
 	if (url.pathname === '/api/future')
 		value = { tags: url.searchParams.getAll('tag'), text: 'x'.repeat(70000) };
 	if (url.pathname === '/api/custom') value = { method: observed.httpMethod, body };
 	response.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(value));
 }
 
-export async function apiFixture(mode: 'local' | 'hosted') {
+export async function apiFixture(mode: 'local' | 'hosted', endpoints = false) {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-api-cli-'));
 	const sessions = join(directory, 'sessions');
 	const seen: ApiRequestObservation[] = [];
@@ -156,7 +167,7 @@ export async function apiFixture(mode: 'local' | 'hosted') {
 		void observe(request)
 			.then((observed) => {
 				seen.push(observed);
-				respond(response, observed, corrupted);
+				respond(response, observed, corrupted, endpoints);
 			})
 			.catch(() => response.writeHead(500).end());
 	});
