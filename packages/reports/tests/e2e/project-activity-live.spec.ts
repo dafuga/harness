@@ -2,6 +2,8 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { activityAnswer } from './support/activityAnswer';
 import { activityFixture } from './support/activityFixture';
 import { expectRetired } from './support/portableReport';
+import { checkpoint, expectNoOverflow, tip } from './support/explorer';
+import { viewports } from './support/harnessCapture';
 
 /**
  * The page that kept reading who is working is gone. What let it read again, show a busy
@@ -21,6 +23,45 @@ test('the page that read activity live is gone: its address leads into the explo
 	await expect(page.getByRole('button', { name: 'Refresh activity' })).toHaveCount(0);
 	await expect(page.getByTestId('agents-working')).toHaveCount(0);
 });
+
+for (const viewport of viewports) {
+	test(`Agents shows live tasks and refreshes the roster at ${viewport.id} width`, async ({
+		page
+	}) => {
+		await page.setViewportSize(viewport);
+		await page.goto(tip('main', 'agents'));
+		await page.waitForLoadState('networkidle');
+		await checkpoint(page, `agents-${viewport.id}`);
+		await expect(
+			page.getByRole('heading', { level: 1, name: 'Agents', exact: true })
+		).toBeVisible();
+		await expect(page.getByTestId('agents-working')).toHaveText('1');
+		const roster = page.getByRole('list', { name: 'Agent roster' });
+		await expect(roster.getByText('Opus session', { exact: true })).toBeVisible();
+		await expect(roster.getByText('Task: Cart totals', { exact: true })).toBeVisible();
+		await expect(roster.getByText('anthropic · claude-opus-5-5', { exact: true })).toBeVisible();
+		await expect(roster.getByText('Stale', { exact: true })).toBeVisible();
+		await expect(roster.getByText('Finished', { exact: true })).toBeVisible();
+		await expect(roster.getByText('Foreign agent', { exact: true })).toHaveCount(0);
+		await expect(
+			page.getByText('Live activity for the running repository', { exact: false })
+		).toBeVisible();
+		const renewed = page.waitForResponse((response) =>
+			response.url().endsWith('/api/project-activity')
+		);
+		await page.getByRole('button', { name: 'Refresh activity' }).click();
+		expect((await renewed).ok()).toBe(true);
+		await expect(page.getByTestId('agents-working')).toHaveText('1');
+		await expectNoOverflow(page);
+		await page
+			.getByRole('navigation', { name: 'Harness categories' })
+			.getByRole('link', { name: 'Pages', exact: true })
+			.click();
+		await expect(page.getByRole('heading', { level: 1, name: 'Pages', exact: true })).toBeVisible();
+		await page.getByRole('link', { name: 'Agents', exact: true }).click();
+		await expect(page.getByTestId('agents-working')).toHaveText('1');
+	});
+}
 
 test('a reading says when it was taken and is taken anew on every request', async ({ request }) => {
 	const first = await activityAnswer(request);

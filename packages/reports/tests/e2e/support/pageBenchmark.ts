@@ -192,7 +192,7 @@ export function pageUnit(address: string): string | undefined {
 	if (/^\/harness\/commit\/[a-f0-9]{40}(?:\/|$)/.test(new URL(address).pathname))
 		return 'reports.page.harness-view';
 	const match =
-		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models|styles)(\/[^/]+)?(\/(?:history|details))?$/.exec(
+		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models|styles|agents)(\/[^/]+)?(\/(?:history|details))?$/.exec(
 			new URL(address).pathname
 		);
 	if (!match) return;

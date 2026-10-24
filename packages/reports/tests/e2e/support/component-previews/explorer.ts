@@ -25,6 +25,7 @@ const seen = {
 	mediaBase: '/media/'
 };
 export const explorerCases: PreviewCases = {
+	'reports.component.explorer-agents-screen': d.host() as unknown as Record<string, unknown>,
 	'reports.component.explorer-ui-explorer-translations-screen': translationPreview(
 		d.host()
 	) as unknown as Record<string, unknown>,

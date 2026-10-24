@@ -123,6 +123,8 @@ for (const [screen, width, height] of screens) {
 			expect(first.x).toBeLessThan((await box(combo(bar, 'Branch'))).x);
 		}
 		expect(await fits(page)).toBe(true);
+		await links.filter({ hasText: 'Agents' }).click();
+		await expect(page).toHaveURL(at(`${scoped}/agents`));
 		await links.filter({ hasText: 'Styles' }).click();
 		await expect(page).toHaveURL(at(`${scoped}/styles`));
 		await links.filter({ hasText: 'Platforms' }).click();

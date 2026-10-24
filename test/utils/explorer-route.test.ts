@@ -188,6 +188,15 @@ test('a trailing slash names the same address', () => {
 	expect(explorerRoute('/branch/main/pages/')).toEqual(expected);
 });
 
+test('Agents is a scoped screen independent of entity categories', () => {
+	for (const prefix of ['/branch/main', `/branch/main/commit/${sha}`, `/commit/${sha}`]) {
+		const route = explorerRoute(`${prefix}/agents`)!;
+		expect(route).toMatchObject({ category: 'pages', screen: 'agents' });
+		expect(explorerRoutePath(route)).toBe(`${prefix}/agents`);
+		expect(explorerRoute(`${prefix}/agents/unknown`)).toBeUndefined();
+	}
+});
+
 test('Models is a page tab and legacy page Contract links open Models in the same scope', () => {
 	const path = `/branch/main/commit/${sha}/pages/page.orders`;
 	for (const tab of ['models', 'contract']) {

@@ -60,7 +60,9 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 		['modules', 'Modules', 'layers', true],
 		['styles', 'Styles', 'styles', false],
 		['configs', 'Configs', 'configs', false],
-		['platforms', 'Platforms', 'platforms', false]
+		['translations', 'Translations', 'web', false],
+		['platforms', 'Platforms', 'platforms', false],
+		['agents', 'Agents', 'relationships', false]
 	]);
 	expect(modules.map((item) => [item.id, item.active])).toEqual([
 		['layouts', true],
