@@ -2,7 +2,7 @@
 	"name": "harness-apis-catalog",
 	"goal": "Selected-revision APIs catalog lists project endpoints, and page APIs tabs show source-proven direct and transitive usage with correct contracts and scoped links",
 	"createdAt": "2026-10-24T18:54:18.159Z",
-	"updatedAt": "2026-10-24T18:54:18.159Z",
+	"updatedAt": "2026-10-24T20:25:55.511Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -10,17 +10,23 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T20:25:54.312Z",
+			"evidence": "Selected project and revision APIs, source-derived direct/transitive page usage, contracts, consumer links, responsive and historical empty states are specified and covered."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T20:25:55.012Z",
+			"evidence": "Shared catalog/category, page tab, HTTP source resolution and registry-backed CLI API reads implemented; live CLI reads 14 endpoints without restarting the shared server."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-24T20:25:55.511Z",
+			"evidence": "112 root/source/ownership/import cases, 23 local/hosted CLI cases, 3 viewport flows and 9 API route preview cases pass in their recorded scopes. Full repository verification remains pending baseline failures."
 		},
 		{
 			"id": "verify",
