@@ -1,11 +1,55 @@
 ---
 name: harness
-description: Use this repository's Harness generators, audits, loops and revision-bound evidence when changing its code or verification.
+description: Use Harness contracts, CLI validation, assigned-file tasks, generators and revision-bound evidence when planning, implementing or verifying this project.
 ---
 
 # Harness Project Discipline
 
 Use this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness CLI project.
+
+## Contract-first CLI and task access
+
+Understand the application through its committed contracts. When acting as a CLI
+consumer or coordinator, do not read implementation files or test suites to infer
+behavior. Do not substitute repository searches, browser Source tabs, raw Git
+blobs or custom dependency-discovery scripts for missing contract data. These
+role boundaries also apply to implementation-review guidance elsewhere below.
+
+Use `harness units list`, `harness units show <id> --json` and
+`harness api contracts get <id>` for module and dependency contracts. Read
+relationships and API usage with `harness api get relations <id>` and
+`harness api get used-apis <id>`. Use `harness validate --json`, optionally with
+`--module <id>` or `--type <kind>`, to identify missing data. If a contract is
+incomplete, propose its wanted contract through the supported CLI authoring
+commands; do not reverse-engineer it from another module's implementation.
+`api contracts define` saves a proposal; that alone does not prove execution.
+
+Commit the reusable feature goal/TLDR with `harness task feature`, then commit
+each module goal and required wanted contract with `harness task add --input`.
+Check `harness task schema` and `harness task show <id> --json`. Every worker
+prompt starts with the identical overall goal and shared feature TLDR before
+module-specific context, so the reusable prefix can be cached.
+
+Workers may read contracts across the app. An implementation worker may inspect
+and modify only its exact Harness-assigned source files; a verification worker
+may access only its assigned verification files. The committed task's file grant
+is authoritative. Dependencies, verificationFiles and a broader worktree are not
+permission to edit other source. Request a new assignment before adding files or
+changing an unassigned module. The server/primary owns scaffold generation,
+registry publication, acceptance tests, final commits and review; workers must
+not expand their own grants, commit, push, deploy or accept their own work.
+
+The executor must enforce file grants before launching Claude Code or Codex CLI;
+prompt instructions and a post-run diff are insufficient isolation. If the
+boundary is unavailable, report the blocker. Run assigned focused checks only;
+the server/primary owns the full check and the applicable E2E host permissions.
+
+Preserve an explicit model and intelligence setting. Otherwise use auto:
+Haiku 5.5 with usable Claude credit, or Luna 6 at max after Claude quota
+exhaustion. Authentication or model-access errors are not quota exhaustion.
+Record actual dispatch, selected/reported model, usage, API-pricing provenance
+and review retries. Keep unknown cost/usage explicit; queued work, a CLI exit or
+a saved proposal must never be reported as completed implementation.
 
 ## Operating Rules
 
@@ -57,7 +101,7 @@ When relocating source, rewrite module specifiers and source-layout URLs only. O
 
 ## Helper Naming Review
 
-Before adding, cataloging or accepting a helper, read its implementation, state the
+For assigned helper implementation work, read only the assigned implementation, state the
 input-to-output operation and check one concrete call and result. Assess whether
 the name and signature communicate that operation to a reader without extra explanation.
 Purity and multiple consumers establish eligibility; they do not establish naming clarity.
@@ -355,7 +399,7 @@ Source tabs list implementation files, sibling type files and associated tests f
 
 Layouts are reusable visual frames with a real child-content slot, declared as kind `layout`.
 Routing hosts, data loaders, and options-only route modules are not visual layouts. Review the
-implementation rather than promoting everything previously called a shell. Keep stable unit IDs.
+assigned implementation rather than promoting everything previously called a shell. Keep stable unit IDs.
 Layout cards reuse ExplorerModuleCard with title, screenshot and links to the pages that use them.
 Capture the actual layout with a clearly labelled Child content placeholder passed through its
 real children slot. Never substitute a full page screenshot for a layout preview.
