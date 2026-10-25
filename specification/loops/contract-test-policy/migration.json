@@ -5,10 +5,10 @@
 	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
 	"inventory": {
 		"files": 1110,
-		"declarations": 4352,
-		"standardizedUnits": 32,
-		"standardizedCases": 416,
-		"errors": 5949
+		"declarations": 4422,
+		"standardizedUnits": 34,
+		"standardizedCases": 496,
+		"errors": 5937
 	},
 	"migrations": [
 		{
@@ -117,6 +117,22 @@
 			"testFiles": ["packages/remote/test/services/event-log.test.ts"]
 		},
 		{
+			"unit": "remote.service.host-pairing",
+			"shape": "service",
+			"cases": 56,
+			"states": [
+				"initialized",
+				"offered",
+				"requested",
+				"exhausted",
+				"expired",
+				"approved",
+				"denied",
+				"closed"
+			],
+			"testFiles": ["packages/remote/test/services/host-pairing.test.ts"]
+		},
+		{
 			"unit": "remote.service.response-ledger",
 			"shape": "service",
 			"cases": 6,
@@ -206,6 +222,13 @@
 			"cases": 32,
 			"states": ["typical", "boundary", "invalid"],
 			"testFiles": ["packages/reports/test/utils/report-filter.test.ts"]
+		},
+		{
+			"unit": "reports.function.wav-info",
+			"shape": "helper",
+			"cases": 24,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/reports/test/utils/wav-info.test.ts"]
 		},
 		{
 			"unit": "service.verification-evidence-test-artifact",

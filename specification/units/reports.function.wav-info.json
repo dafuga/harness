@@ -35,6 +35,11 @@
 				"name": "Error",
 				"type": "thrown",
 				"description": "Rejects invalid RIFF length, truncated or misaligned chunks, missing format/data, unsupported encoding/channel/rate, inconsistent sample alignment/byte rate and data lengths not divisible by sample alignment."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A null byte input cannot provide the required buffer length."
 			}
 		]
 	},
@@ -50,6 +55,962 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "wavInfo",
+				"name": "Derive duration from actual PCM data and tolerate non-audio chunks",
+				"call": "wavInfo(audioFixture(1.25)) and wavInfo(withJunk(audioFixture(1.25)))",
+				"input": [
+					{
+						"$fixture": "audio-with-junk",
+						"seconds": 1.25
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"durationSeconds": 1.25
+						},
+						{
+							"durationSeconds": 1.25
+						}
+					]
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Accept supported PCM sample widths at the parsed metadata boundaries",
+				"call": "wavInfo(wavFixture(pcm8)), wavInfo(wavFixture(pcm16)), wavInfo(wavFixture(pcm24)), and wavInfo(wavFixture(pcm32))",
+				"input": [
+					{
+						"$fixture": "metadata-matrix",
+						"matrix": [
+							{
+								"encoding": 1,
+								"channels": 8,
+								"sampleRate": 4000,
+								"bytesPerSecond": 32000,
+								"blockAlign": 8,
+								"bitsPerSample": 8,
+								"dataBytes": 32000
+							},
+							{
+								"encoding": 1,
+								"channels": 1,
+								"sampleRate": 16000,
+								"bytesPerSecond": 32000,
+								"blockAlign": 2,
+								"bitsPerSample": 16,
+								"dataBytes": 32000
+							},
+							{
+								"encoding": 1,
+								"channels": 1,
+								"sampleRate": 16000,
+								"bytesPerSecond": 48000,
+								"blockAlign": 3,
+								"bitsPerSample": 24,
+								"dataBytes": 48000
+							},
+							{
+								"encoding": 1,
+								"channels": 1,
+								"sampleRate": 384000,
+								"bytesPerSecond": 1536000,
+								"blockAlign": 4,
+								"bitsPerSample": 32,
+								"dataBytes": 1536000
+							}
+						]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"durationSeconds": 1
+						},
+						{
+							"durationSeconds": 1
+						},
+						{
+							"durationSeconds": 1
+						},
+						{
+							"durationSeconds": 1
+						}
+					]
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Accept a 32-bit IEEE float WAV fixture",
+				"call": "wavInfo(wavFixture({ encoding: 3, channels: 2, sampleRate: 16000, bytesPerSecond: 128000, blockAlign: 8, bitsPerSample: 32, dataBytes: 128000 }))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 3,
+							"channels": 2,
+							"sampleRate": 16000,
+							"bytesPerSecond": 128000,
+							"blockAlign": 8,
+							"bitsPerSample": 32,
+							"dataBytes": 128000
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"durationSeconds": 1
+					}
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject inconsistent sample format",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'audio', sampleRate: 0 }))",
+				"input": [
+					{
+						"$fixture": "audio",
+						"sampleRate": 0
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject missing audio data",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'missing-data' }))",
+				"input": [
+					{
+						"$fixture": "missing-data"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "WAV format and audio data are required"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject an invalid RIFF header",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'invalid-header' }))",
+				"input": [
+					{
+						"$fixture": "invalid-header"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV audio"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject a null input",
+				"call": "wavInfo(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'length')"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject an invalid RIFF container length",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'container-length' }))",
+				"input": [
+					{
+						"$fixture": "container-length"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV container length"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject a truncated WAV chunk",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'truncated' }))",
+				"input": [
+					{
+						"$fixture": "truncated"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Truncated WAV chunk"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject an invalid WAV chunk boundary",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'boundary' }))",
+				"input": [
+					{
+						"$fixture": "boundary"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV chunk boundary"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject a missing WAV format chunk",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'missing-format' }))",
+				"input": [
+					{
+						"$fixture": "missing-format"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "WAV format and audio data are required"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject a short WAV format chunk",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'invalid-format' }))",
+				"input": [
+					{
+						"$fixture": "invalid-format"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject an invalid sample alignment",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'invalid-sample' }))",
+				"input": [
+					{
+						"$fixture": "invalid-sample"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV sample format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject data whose length is not sample-aligned",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'invalid-data' }))",
+				"input": [
+					{
+						"$fixture": "invalid-data"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV audio data length"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject an unsupported WAV encoding",
+				"call": "wavInfo(fixtureBytes({ $fixture: 'unsupported-encoding' }))",
+				"input": [
+					{
+						"$fixture": "unsupported-encoding"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject zero channels",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":0,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 0,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject more than eight channels",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":9,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 9,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject rates below four kilohertz",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":3999,\"bytesPerSecond\":7998,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 3999,
+							"bytesPerSecond": 7998,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject rates above the supported maximum",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":384001,\"bytesPerSecond\":768002,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 384001,
+							"bytesPerSecond": 768002,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject unsupported sample widths",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":12,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 12,
+							"dataBytes": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV sample format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject inconsistent block alignment",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":16000,\"blockAlign\":1,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 16000,
+							"blockAlign": 1,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV sample format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject sixteen-bit IEEE float encoding",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":3,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 3,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject an empty data chunk",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":0}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 0
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "WAV format and audio data are required"
+				}
+			},
+			{
+				"subject": "wavInfo",
+				"name": "Reject an empty byte buffer",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"empty-buffer\"}))",
+				"input": [
+					{
+						"$fixture": "empty-buffer"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV audio"
+				}
+			}
+		],
+		"states": ["input", "boundary", "invalid"],
+		"props": ["bytes"],
+		"cases": [
+			{
+				"id": "wav-info.duration-with-junk",
+				"state": "input",
+				"subject": "wavInfo",
+				"example": "Derive duration from actual PCM data and tolerate non-audio chunks",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Derive duration from actual PCM data and tolerate non-audio chunks"
+				},
+				"props": ["bytes"]
+			},
+			{
+				"id": "wav-info.pcm-widths",
+				"state": "boundary",
+				"subject": "wavInfo",
+				"example": "Accept supported PCM sample widths at the parsed metadata boundaries",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Accept supported PCM sample widths at the parsed metadata boundaries"
+				},
+				"props": ["bytes"]
+			},
+			{
+				"id": "wav-info.float32",
+				"state": "input",
+				"subject": "wavInfo",
+				"example": "Accept a 32-bit IEEE float WAV fixture",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Accept a 32-bit IEEE float WAV fixture"
+				},
+				"props": ["bytes"]
+			},
+			{
+				"id": "wav-info.bad-format",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject inconsistent sample format",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject inconsistent sample format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.missing-data",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject missing audio data",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject missing audio data"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.invalid-header",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject an invalid RIFF header",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject an invalid RIFF header"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.null",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject a null input",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject a null input"
+				},
+				"props": ["bytes"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "wav-info.container-length",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject an invalid RIFF container length",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject an invalid RIFF container length"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.truncated-chunk",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject a truncated WAV chunk",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject a truncated WAV chunk"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.chunk-boundary",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject an invalid WAV chunk boundary",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject an invalid WAV chunk boundary"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.missing-format",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject a missing WAV format chunk",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject a missing WAV format chunk"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.short-format",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject a short WAV format chunk",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject a short WAV format chunk"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.sample-alignment",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject an invalid sample alignment",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject an invalid sample alignment"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.data-alignment",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject data whose length is not sample-aligned",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject data whose length is not sample-aligned"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.unsupported-encoding",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject an unsupported WAV encoding",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject an unsupported WAV encoding"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.zero-channels",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject zero channels",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":0,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 0,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject zero channels"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.excess-channels",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject more than eight channels",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":9,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 9,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject more than eight channels"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.low-rate",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject rates below four kilohertz",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":3999,\"bytesPerSecond\":7998,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 3999,
+							"bytesPerSecond": 7998,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject rates below four kilohertz"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.high-rate",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject rates above the supported maximum",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":384001,\"bytesPerSecond\":768002,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 384001,
+							"bytesPerSecond": 768002,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject rates above the supported maximum"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.invalid-bits",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject unsupported sample widths",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":12,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 12,
+							"dataBytes": 2
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject unsupported sample widths"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV sample format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.block-alignment",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject inconsistent block alignment",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":16000,\"blockAlign\":1,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 16000,
+							"blockAlign": 1,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject inconsistent block alignment"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV sample format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.float16",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject sixteen-bit IEEE float encoding",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":3,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":2}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 3,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 2
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject sixteen-bit IEEE float encoding"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Unsupported WAV audio format"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.empty-data",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject an empty data chunk",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"metadata\",\"metadata\":{\"encoding\":1,\"channels\":1,\"sampleRate\":16000,\"bytesPerSecond\":32000,\"blockAlign\":2,\"bitsPerSample\":16,\"dataBytes\":0}}))",
+				"input": [
+					{
+						"$fixture": "metadata",
+						"metadata": {
+							"encoding": 1,
+							"channels": 1,
+							"sampleRate": 16000,
+							"bytesPerSecond": 32000,
+							"blockAlign": 2,
+							"bitsPerSample": 16,
+							"dataBytes": 0
+						}
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject an empty data chunk"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "WAV format and audio data are required"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "wav-info.short-buffer",
+				"state": "invalid",
+				"subject": "wavInfo",
+				"example": "Reject an empty byte buffer",
+				"fixture": "packages/reports/test/utils/wav-info.test.ts",
+				"call": "wavInfo(fixtureBytes({\"$fixture\":\"empty-buffer\"}))",
+				"input": [
+					{
+						"$fixture": "empty-buffer"
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/utils/wav-info.test.ts",
+					"title": "wavInfo: Reject an empty byte buffer"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "Invalid WAV audio"
+				},
+				"props": ["bytes"],
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
