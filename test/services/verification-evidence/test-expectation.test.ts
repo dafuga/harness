@@ -1,7 +1,7 @@
+import { assertAuthoredJsonFields } from '../../support/testExpectationAuthoredCases';
 import {
 	assertJsonAdmission,
-	assertCompleteJsonFields,
-	assertAuthoredJsonFields
+	assertCompleteJsonFields
 } from '../../support/testExpectationJsonCases';
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';

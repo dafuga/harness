@@ -1,9 +1,5 @@
 import { expect } from 'vitest';
 import { z } from 'zod';
-import { componentManifestSchema } from '../../src/core/unitTypes';
-import { unitSchema } from '../../src/cli/program/inspectUnits';
-import { ModuleTaskService } from '../../src/services/agents-providers/ModuleTaskService';
-import { indexFiles, unitOf } from './memoryTree';
 import type { TestExpectationService } from '../../src/services/verification-evidence/TestExpectationService';
 
 /** Wire objects keep reserved property names as data; field changes must never disappear. */
@@ -119,87 +115,4 @@ function assertInvalidValues(service: TestExpectationService) {
 	const circular: unknown[] = [];
 	circular.push(circular);
 	expect(() => service.json(circular, [])).toThrow(RangeError);
-}
-
-/** Authored expected results survive registry parsing and both schema-export boundaries. */
-export async function assertAuthoredJsonFields(service: TestExpectationService) {
-	expect(() => unitSchema('ComponentManifest')).not.toThrow();
-	expect(() => new ModuleTaskService().schema()).not.toThrow();
-	const unit = unitOf(
-		await indexFiles({
-			'src/utils/echo.ts': 'export function echo(value: unknown): unknown { return value; }'
-		}),
-		'function.echo'
-	);
-	const raw = JSON.parse('{"__proto__":{"value":1},"nested":[{"__proto__":null}]}');
-	const example = { name: 'Wire fields', call: 'echo(input)', input: [raw], output: raw };
-	const testing = {
-		version: 1,
-		shape: 'helper',
-		states: ['input'],
-		cases: [
-			{
-				id: 'wire-fields',
-				state: 'input',
-				subject: 'echo',
-				example: 'Wire fields',
-				test: { file: 'test/echo.test.ts', title: 'echo: Wire fields' }
-			}
-		]
-	};
-	const contract = {
-		...unit.contract,
-		inputs: unit.contract.inputs.map((field) => ({ ...field, examples: [raw] }))
-	};
-	const canonical = {
-		...unit,
-		contract,
-		helperContracts: [],
-		testing: {
-			...testing,
-			examples: [{ subject: 'echo', ...example, expected: { kind: 'value', value: raw } }]
-		}
-	};
-	delete (canonical.testing.examples[0] as { output?: unknown }).output;
-	await assertExampleFields(service, canonical, raw);
-	const legacy = {
-		...unit,
-		contract,
-		testing,
-		helperContracts: [
-			{
-				name: 'echo',
-				source: 'src/utils/echo.ts',
-				inputs: [],
-				output: 'unknown',
-				pure: true,
-				consumers: [{ unit: 'function.fixture-a' }, { unit: 'function.fixture-b' }],
-				examples: [example]
-			}
-		]
-	};
-	await assertExampleFields(service, legacy, raw);
-}
-
-async function assertExampleFields(
-	service: TestExpectationService,
-	fixture: unknown,
-	raw: unknown
-) {
-	const parsed = componentManifestSchema.parse(fixture);
-	const runners: Array<() => Promise<void>> = [];
-	const observed: unknown[] = [];
-	service.registerExamples((_title, run) => runners.push(run), parsed, {
-		echo: (value) => {
-			observed.push(value);
-			return value;
-		}
-	});
-	for (const run of runners) await run();
-	expect(observed, 'authored JSON data must retain every field').toEqual([raw]);
-	expect(parsed.contract.inputs[0].examples).toEqual([raw]);
-	if (parsed.testing?.examples)
-		expect(parsed.testing.examples[0].expected).toEqual({ kind: 'value', value: raw });
-	if (parsed.helperContracts?.length)
-		expect(parsed.helperContracts[0].examples?.[0].output).toEqual(raw);
 }
