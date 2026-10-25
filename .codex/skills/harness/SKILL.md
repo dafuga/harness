@@ -404,3 +404,4 @@ Use exactly these five forms. Each draws its cases from the entity's declared co
 - Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.
 - A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.
 - Keep registered case titles and identities stable; verification records bind to them.
+- Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.

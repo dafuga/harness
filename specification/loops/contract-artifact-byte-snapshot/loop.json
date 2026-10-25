@@ -2,7 +2,7 @@
 	"name": "contract-artifact-byte-snapshot",
 	"goal": "Validate, hash and store the same generated audio bytes even when the input uses an own getter",
 	"createdAt": "2026-10-25T18:44:20.275Z",
-	"updatedAt": "2026-10-25T18:44:21.455Z",
+	"updatedAt": "2026-10-25T18:52:12.933Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T18:51:55.360Z",
+			"evidence": "Remote Node22.23.4 at 4366400430: record 7174482b4af45084b241ee99ced5ae69114fd6e81c5753a212c0440f97efb914. Existing audio case returns a hash of the second getter buffer, differing from stored original bytes. The same existing guidance cases also reject missing emitted snapshot rule. Nine unchanged cases, no setup error."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T18:52:12.933Z",
+			"evidence": "Copy accepted bytes once after property checks; use that immutable snapshot for WAV validation, digest and capture persistence. Shared generated project/app-agent policy and repository guidance require the same invariant and existing-case getter/alias characterization. Tests remain unchanged from 4366400430."
 		},
 		{
 			"id": "green",

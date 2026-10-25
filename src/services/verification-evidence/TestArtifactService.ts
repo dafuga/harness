@@ -16,7 +16,7 @@ export class TestArtifactService {
 	capture(input: TestArtifact) {
 		const facts = this.audio(input);
 		this.registered(input);
-		const sha256 = createHash('sha256').update(input.bytes).digest('hex');
+		const sha256 = createHash('sha256').update(facts.bytes).digest('hex');
 		const line = captureLineSchema.parse({
 			evidence: input.evidence,
 			state: input.state,
@@ -37,7 +37,7 @@ export class TestArtifactService {
 			this.env.HARNESS_EVIDENCE_DIR ?? join(process.cwd(), '.cache/harness/test-artifacts');
 		if (!line.file.endsWith('.wav')) throw new Error('Audio artifacts require a WAV filename');
 		line.file = line.file.slice(0, -4) + '-' + sha256 + '.wav';
-		recordCapture(line, input.bytes, {
+		recordCapture(line, facts.bytes, {
 			...this.env,
 			HARNESS_EVIDENCE_DIR: directory,
 			TAKE_SCREENSHOT: '1'
@@ -81,10 +81,11 @@ export class TestArtifactService {
 			throw new Error(
 				'Audio artifacts require a transcript, including an explicit no-speech description.'
 			);
-		const facts = mediaFacts(Buffer.from(input.bytes), 'audio/wav');
+		const bytes = Buffer.from(input.bytes);
+		const facts = mediaFacts(bytes, 'audio/wav');
 		if ('error' in facts) throw new Error(`Invalid audio artifact: ${facts.error}`);
 		if (facts.kind !== 'audio') throw new Error('Expected audio artifact');
-		return facts;
+		return { ...facts, bytes };
 	}
 }
 export type { TestArtifact } from './TestArtifactService.types';
