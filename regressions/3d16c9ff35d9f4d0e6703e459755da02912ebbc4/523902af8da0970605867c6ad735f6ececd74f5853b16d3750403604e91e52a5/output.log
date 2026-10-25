@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sh4oIR
+
+(node:23820) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/browser-error-evidence.test.ts (2 tests) 2853ms
+   ✓ CheckRunService.run initialized keeps diagnostics, settlement and inherited resource budget  2494ms
+   ✓ CheckRunService.version initialized reports only a passing tool's first nonempty line  349ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:32:19
+   Duration  6.84s (transform 250ms, setup 152ms, collect 224ms, tests 2.85s, environment 0ms, prepare 34ms)
+
