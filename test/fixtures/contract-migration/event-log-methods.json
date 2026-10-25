@@ -1,0 +1,275 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.service.event-log",
+	"kind": "service",
+	"title": "EventLogService",
+	"responsibility": "Owns the EventLogService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/services/EventLogService.ts",
+			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
+			"packages/remote/src/services/networking-security/wire-session-service/EventLogService.types.ts",
+			"packages/remote/src/services/wire-session-service/EventLogService.ts"
+		],
+		"symbols": [
+			"EventLogService",
+			"EventReplay",
+			"EventLogService",
+			"EventLogService.constructor",
+			"EventLogService.sequence",
+			"EventLogService.append",
+			"EventLogService.since",
+			"EventReplay",
+			"EventReplay",
+			"EventLogService"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EventLogService.constructor.options",
+				"type": "{ epoch?: string; capacity?: number }"
+			},
+			{
+				"name": "EventLogService.append.channel",
+				"type": "WireChannel"
+			},
+			{
+				"name": "EventLogService.append.value",
+				"type": "unknown"
+			},
+			{
+				"name": "EventLogService.since.resume",
+				"type": "RemoteResume | null"
+			}
+		],
+		"outputs": [
+			{
+				"name": "EventLogService.sequence",
+				"type": "number"
+			},
+			{
+				"name": "EventLogService.append",
+				"type": "WireEvent"
+			},
+			{
+				"name": "EventLogService.since",
+				"type": "EventReplay"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized", "recorded", "trimmed"],
+		"props": ["epoch", "capacity"],
+		"cases": [
+			{
+				"id": "constructor-initialized",
+				"state": "initialized",
+				"subject": "EventLogService.constructor",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "each log has its own random epoch"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"epochPattern": "^[a-f0-9]{32}$",
+						"distinctFromAnotherLog": true
+					}
+				}
+			},
+			{
+				"id": "sequence-initialized",
+				"state": "initialized",
+				"subject": "EventLogService.sequence",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "sequence of an initialized log is zero"
+				},
+				"expected": { "kind": "value", "value": { "sequence": 0 } },
+				"props": ["epoch"]
+			},
+			{
+				"id": "sequence-recorded",
+				"state": "recorded",
+				"subject": "EventLogService.sequence",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "sequence counts the events a recorded log keeps"
+				},
+				"expected": { "kind": "value", "value": { "sequence": 5 } },
+				"props": ["epoch"]
+			},
+			{
+				"id": "sequence-trimmed",
+				"state": "trimmed",
+				"subject": "EventLogService.sequence",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "sequence keeps counting after the window drops its oldest events"
+				},
+				"expected": { "kind": "value", "value": { "sequence": 5 } },
+				"props": ["epoch", "capacity"]
+			},
+			{
+				"id": "append-initialized",
+				"state": "initialized",
+				"subject": "EventLogService.append",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "events get one increasing sequence across channels"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"firstAppend": {
+							"type": "event",
+							"channel": "run",
+							"sequence": 1,
+							"value": { "a": 1 }
+						},
+						"secondSequence": 2,
+						"sequence": 2
+					}
+				},
+				"props": ["epoch"]
+			},
+			{
+				"id": "append-recorded",
+				"state": "recorded",
+				"subject": "EventLogService.append",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "append to a recorded log continues the sequence and stays replayable"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"appended": {
+							"type": "event",
+							"channel": "cache",
+							"sequence": 3,
+							"value": { "n": 3 }
+						},
+						"sequence": 3,
+						"replayFromZero": [1, 2, 3]
+					}
+				},
+				"props": ["epoch"]
+			},
+			{
+				"id": "append-trimmed",
+				"state": "trimmed",
+				"subject": "EventLogService.append",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "append to a trimmed log drops the oldest retained event"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"appended": {
+							"type": "event",
+							"channel": "run",
+							"sequence": 6,
+							"value": { "n": 6 }
+						},
+						"replayFromThree": [4, 5, 6],
+						"cursorTwo": { "replay": "gap", "events": [] }
+					}
+				},
+				"props": ["epoch", "capacity"]
+			},
+			{
+				"id": "since-initialized",
+				"state": "initialized",
+				"subject": "EventLogService.since",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "a resume on an initialized log replays nothing or is a gap"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"noResume": { "replay": "none", "events": [] },
+						"headCursorZero": { "replay": "resumed", "events": [] },
+						"futureCursorOne": { "replay": "gap", "events": [] },
+						"otherEpochCursorZero": { "replay": "gap", "events": [] }
+					}
+				},
+				"props": ["epoch"]
+			},
+			{
+				"id": "since-recorded",
+				"state": "recorded",
+				"subject": "EventLogService.since",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "a resume point inside the retained window replays what followed it"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"noResume": { "replay": "none", "events": [] },
+						"cursorThree": { "replay": "resumed", "sequences": [4, 5] },
+						"cursorFive": { "replay": "resumed", "events": [] }
+					}
+				},
+				"props": ["epoch"]
+			},
+			{
+				"id": "since-trimmed",
+				"state": "trimmed",
+				"subject": "EventLogService.since",
+				"test": {
+					"file": "packages/remote/test/services/event-log.test.ts",
+					"title": "another epoch, a future sequence or a trimmed window is a gap"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"boundaryCursorTwo": { "sequences": [3, 4, 5] },
+						"trimmedCursorOne": { "replay": "gap", "events": [] },
+						"otherEpochCursorFour": { "replay": "gap", "events": [] },
+						"futureCursorNine": { "replay": "gap", "events": [] }
+					}
+				},
+				"props": ["epoch", "capacity"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
