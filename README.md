@@ -41,10 +41,10 @@ The Explorer’s APIs catalog lists HTTP endpoints and method exports at the sel
 
 ## Committed module data
 
-Run validation after committing source. Resource reads in an opted-in project require complete,
+Run validation after committing source. Resource reads in every project require complete,
 committed module metadata; validation and repair remain available when reads are blocked.
 Missing screenshots and measurement observations are reported as evidence gaps and do not block reads.
-Enable this admission policy with `harness.validation.json` containing `{"schemaVersion":1}`.
+No opt-in is needed. An optional `harness.validation.json` containing `{"schemaVersion":1}` pins the metadata protocol version.
 
 ```bash
 harness validate --write

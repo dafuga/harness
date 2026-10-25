@@ -10,7 +10,7 @@ export const validateGuide: Guide = {
 		'Sync source evidence with harness history sync origin, then refresh metadata with harness validate --write --sync origin and rebuild prepared history.'
 	],
 	rules: [
-		'harness.validation.json with schemaVersion 1 declares required admission. Normal project resource reads refuse missing, stale or incomplete committed metadata. Validation, indexing and repair tasks remain usable.',
+		'Every project requires committed metadata by default, including legacy and newly generated projects. An optional harness.validation.json with schemaVersion 1 pins the protocol version. Normal resource reads refuse missing, stale or incomplete metadata; validation, indexing and repair tasks remain usable.',
 		'Source commits stay immutable. Snapshots and missing-data reports are committed on refs/harness/module-data, retaining source ancestry and all prior snapshot paths.',
 		'Module selectors use stable IDs. A singular type selects a manifest kind; plural catalog names select that revision’s public category.',
 		'Derived source facts, direct and transitive relationships and explicit empty API lists are stored together. App and CLI readers do not search source to answer usage queries.',
