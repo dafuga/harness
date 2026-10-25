@@ -1,0 +1,102 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.verification-evidence-test-case",
+	"kind": "validator",
+	"title": "TestCaseValidator",
+	"responsibility": "Validates the five test shapes against declared examples, methods, props and states.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/verification-evidence/TestCaseValidator.ts",
+			"src/validators/verification-evidence/TestCaseValidator.types.ts"
+		],
+		"symbols": [
+			"TestCaseValidator",
+			"TestCaseValidator.validate",
+			"TestCaseValidatorResult",
+			"TestCaseValidatorResult"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TestCaseValidator.validate.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "TestCaseValidator.validate.input",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "TestCaseValidator.validate",
+				"type": "TestCaseValidatorResult"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract-service-test-contract-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case-validator-case-shape-errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/verification-evidence/TestCaseValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/verification-evidence/TestCaseValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "validate-initialized",
+				"state": "initialized",
+				"subject": "TestCaseValidator.validate",
+				"test": {
+					"file": "test/validators/verification-evidence/test-case.test.ts",
+					"title": "validate each allowed shape and its missing or invalid states"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"valid": true,
+						"errors": []
+					}
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

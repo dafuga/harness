@@ -9,6 +9,7 @@ export type Declared = Pick<
 	| 'responsibilityOrigin'
 	| 'contract'
 	| 'scenarios'
+	| 'testing'
 	| 'preview'
 	| 'helperContracts'
 	| 'documentation'

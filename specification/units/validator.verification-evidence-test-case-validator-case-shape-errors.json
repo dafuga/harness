@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.verification-evidence-test-case-validator-case-shape-errors",
+	"kind": "validator",
+	"title": "caseShapeErrors",
+	"responsibility": "Owns the caseShapeErrors input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/verification-evidence/test-case-validator/caseShapeErrors.ts"],
+		"symbols": ["caseShapeErrors", "declaredInputErrors"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "caseShapeErrors.unit",
+				"type": "string"
+			},
+			{
+				"name": "caseShapeErrors.contract",
+				"type": "TestContract"
+			},
+			{
+				"name": "caseShapeErrors.item",
+				"type": "ContractCase"
+			},
+			{
+				"name": "declaredInputErrors.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "declaredInputErrors.contract",
+				"type": "TestContract"
+			}
+		],
+		"outputs": [
+			{
+				"name": "caseShapeErrors",
+				"type": "string[]"
+			},
+			{
+				"name": "declaredInputErrors",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/verification-evidence/test-case-validator/caseShapeErrors.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/verification-evidence/test-case-validator/caseShapeErrors.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

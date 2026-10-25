@@ -75,6 +75,11 @@
 			"unit": "repository.verification-store",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -1,0 +1,163 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-test-expectation",
+	"kind": "service",
+	"title": "TestExpectationService",
+	"responsibility": "Checks JSON responses and authored example outcomes without replacing expectations.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/TestExpectationService.ts",
+			"src/services/verification-evidence/TestExpectationService.types.ts"
+		],
+		"symbols": [
+			"TestExpectationService",
+			"TestExpectationService.registerExamples",
+			"TestExpectationService.json",
+			"TestExpectationService.example",
+			"ExampleInvocation",
+			"ExampleObservation",
+			"ExampleObservation",
+			"ExampleInvocation",
+			"ExampleRegistrar",
+			"ExampleFunctions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TestExpectationService.registerExamples.register",
+				"type": "ExampleRegistrar"
+			},
+			{
+				"name": "TestExpectationService.registerExamples.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "TestExpectationService.registerExamples.functions",
+				"type": "ExampleFunctions"
+			},
+			{
+				"name": "TestExpectationService.json.actual",
+				"type": "unknown"
+			},
+			{
+				"name": "TestExpectationService.json.expected",
+				"type": "unknown"
+			},
+			{
+				"name": "TestExpectationService.json.normalize",
+				"type": "string[]"
+			},
+			{
+				"name": "TestExpectationService.example.invoke",
+				"type": "ExampleInvocation"
+			},
+			{
+				"name": "TestExpectationService.example.example",
+				"type": "UsageExample"
+			}
+		],
+		"outputs": [
+			{
+				"name": "TestExpectationService.registerExamples",
+				"type": "void"
+			},
+			{
+				"name": "TestExpectationService.json",
+				"type": "void"
+			},
+			{
+				"name": "TestExpectationService.example",
+				"type": "Promise<ExampleObservation>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-documentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/TestExpectationService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/TestExpectationService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "json-initialized",
+				"state": "initialized",
+				"subject": "TestExpectationService.json",
+				"test": {
+					"file": "test/services/verification-evidence/test-expectation.test.ts",
+					"title": "json checks complete responses, type-preserving scalar normalization and errors"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "example-initialized",
+				"state": "initialized",
+				"subject": "TestExpectationService.example",
+				"test": {
+					"file": "test/services/verification-evidence/test-expectation.test.ts",
+					"title": "example asserts authored comments for successful and error inputs"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"name": "Round a value",
+						"input": 1.2,
+						"output": 1
+					}
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "registerexamples-initialized",
+				"state": "initialized",
+				"subject": "TestExpectationService.registerExamples",
+				"test": {
+					"file": "test/services/verification-evidence/test-expectation.test.ts",
+					"title": "registerExamples registers exactly the authored examples and rejects absent implementations"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Error"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

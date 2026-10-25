@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-test-contract",
+	"kind": "service",
+	"title": "TestContractService",
+	"responsibility": "Validates standardized test ownership and prevents case growth without capability changes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/TestContractService.ts",
+			"src/services/verification-evidence/TestContractService.types.ts"
+		],
+		"symbols": [
+			"TestContractService",
+			"TestContractService.validate",
+			"TestContractService.compare",
+			"TestContract",
+			"ContractCase",
+			"ContractRegistry",
+			"TestContract",
+			"ContractCase",
+			"ContractRegistry"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TestContractService.validate.registry",
+				"type": "ContractRegistry"
+			},
+			{
+				"name": "TestContractService.compare.before",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "TestContractService.compare.after",
+				"type": "ComponentManifest[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "TestContractService.validate",
+				"type": "string[]"
+			},
+			{
+				"name": "TestContractService.compare",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract-service-test-contract-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/TestContractService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/TestContractService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "validate-initialized",
+				"state": "initialized",
+				"subject": "TestContractService.validate",
+				"test": {
+					"file": "test/services/verification-evidence/test-contract.test.ts",
+					"title": "validate initialized and invalid registries against declared cases"
+				},
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"id": "compare-initialized",
+				"state": "initialized",
+				"subject": "TestContractService.compare",
+				"test": {
+					"file": "test/services/verification-evidence/test-contract.test.ts",
+					"title": "compare initialized contracts preserves identities unless capabilities change"
+				},
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

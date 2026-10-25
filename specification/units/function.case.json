@@ -114,6 +114,27 @@
 					"call": "toKebabCase(\"\")",
 					"input": [""],
 					"output": ""
+				},
+				{
+					"name": "Split a Pascal name",
+					"call": "toKebabCase(\"BlogPost\")",
+					"input": ["BlogPost"],
+					"output": "blog-post"
+				},
+				{
+					"name": "Normalize separators and numbers",
+					"call": "toKebabCase(\"API v2 report\")",
+					"input": ["API v2 report"],
+					"output": "api-v2-report"
+				},
+				{
+					"name": "Reject null input",
+					"call": "toKebabCase(null)",
+					"input": [null],
+					"error": {
+						"name": "TypeError",
+						"message": "Cannot read properties of null (reading 'replace')"
+					}
 				}
 			],
 			"consumers": [
@@ -287,6 +308,27 @@
 					"call": "toPascalCase(\"\")",
 					"input": [""],
 					"output": ""
+				},
+				{
+					"name": "Split a hyphenated name",
+					"call": "toPascalCase(\"blog-post\")",
+					"input": ["blog-post"],
+					"output": "BlogPost"
+				},
+				{
+					"name": "Normalize separators and numbers",
+					"call": "toPascalCase(\"  api__v2 report  \")",
+					"input": ["  api__v2 report  "],
+					"output": "ApiV2Report"
+				},
+				{
+					"name": "Reject null input",
+					"call": "toPascalCase(null)",
+					"input": [null],
+					"error": {
+						"name": "TypeError",
+						"message": "Cannot read properties of null (reading 'replace')"
+					}
 				}
 			],
 			"consumers": [
@@ -428,6 +470,27 @@
 					"call": "toCamelCase(\"\")",
 					"input": [""],
 					"output": ""
+				},
+				{
+					"name": "Lower the initial word",
+					"call": "toCamelCase(\"Blog post\")",
+					"input": ["Blog post"],
+					"output": "blogPost"
+				},
+				{
+					"name": "Normalize separators and numbers",
+					"call": "toCamelCase(\"API v2 report\")",
+					"input": ["API v2 report"],
+					"output": "apiV2Report"
+				},
+				{
+					"name": "Reject null input",
+					"call": "toCamelCase(null)",
+					"input": [null],
+					"error": {
+						"name": "TypeError",
+						"message": "Cannot read properties of null (reading 'replace')"
+					}
 				}
 			],
 			"consumers": [
@@ -513,6 +576,27 @@
 					"call": "toSnakeCase(\"\")",
 					"input": [""],
 					"output": ""
+				},
+				{
+					"name": "Split a Pascal name",
+					"call": "toSnakeCase(\"BlogPost\")",
+					"input": ["BlogPost"],
+					"output": "blog_post"
+				},
+				{
+					"name": "Normalize separators and numbers",
+					"call": "toSnakeCase(\"API v2 report\")",
+					"input": ["API v2 report"],
+					"output": "api_v2_report"
+				},
+				{
+					"name": "Reject null input",
+					"call": "toSnakeCase(null)",
+					"input": [null],
+					"error": {
+						"name": "TypeError",
+						"message": "Cannot read properties of null (reading 'replace')"
+					}
 				}
 			],
 			"consumers": [
@@ -542,6 +626,253 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["input", "invalid"],
+		"cases": [
+			{
+				"id": "tokebabcase.1",
+				"state": "input",
+				"subject": "toKebabCase",
+				"example": "Join separated words with lowercase hyphens",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toKebabCase: Join separated words with lowercase hyphens"
+				}
+			},
+			{
+				"id": "tokebabcase.2",
+				"state": "input",
+				"subject": "toKebabCase",
+				"example": "Split lowercase-to-uppercase word boundaries",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toKebabCase: Split lowercase-to-uppercase word boundaries"
+				}
+			},
+			{
+				"id": "tokebabcase.3",
+				"state": "input",
+				"subject": "toKebabCase",
+				"example": "Return blank when the input contains no words",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toKebabCase: Return blank when the input contains no words"
+				}
+			},
+			{
+				"id": "tokebabcase.4",
+				"state": "input",
+				"subject": "toKebabCase",
+				"example": "Split a Pascal name",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toKebabCase: Split a Pascal name"
+				}
+			},
+			{
+				"id": "tokebabcase.5",
+				"state": "input",
+				"subject": "toKebabCase",
+				"example": "Normalize separators and numbers",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toKebabCase: Normalize separators and numbers"
+				}
+			},
+			{
+				"id": "tokebabcase.6",
+				"state": "invalid",
+				"subject": "toKebabCase",
+				"example": "Reject null input",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toKebabCase: Reject null input"
+				}
+			},
+			{
+				"id": "topascalcase.1",
+				"state": "input",
+				"subject": "toPascalCase",
+				"example": "Capitalize and join separated words",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toPascalCase: Capitalize and join separated words"
+				}
+			},
+			{
+				"id": "topascalcase.2",
+				"state": "input",
+				"subject": "toPascalCase",
+				"example": "Split lowercase-to-uppercase word boundaries",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toPascalCase: Split lowercase-to-uppercase word boundaries"
+				}
+			},
+			{
+				"id": "topascalcase.3",
+				"state": "input",
+				"subject": "toPascalCase",
+				"example": "Return blank when the input contains no words",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toPascalCase: Return blank when the input contains no words"
+				}
+			},
+			{
+				"id": "topascalcase.4",
+				"state": "input",
+				"subject": "toPascalCase",
+				"example": "Split a hyphenated name",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toPascalCase: Split a hyphenated name"
+				}
+			},
+			{
+				"id": "topascalcase.5",
+				"state": "input",
+				"subject": "toPascalCase",
+				"example": "Normalize separators and numbers",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toPascalCase: Normalize separators and numbers"
+				}
+			},
+			{
+				"id": "topascalcase.6",
+				"state": "invalid",
+				"subject": "toPascalCase",
+				"example": "Reject null input",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toPascalCase: Reject null input"
+				}
+			},
+			{
+				"id": "tocamelcase.1",
+				"state": "input",
+				"subject": "toCamelCase",
+				"example": "Join separated words with a lowercase first word",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toCamelCase: Join separated words with a lowercase first word"
+				}
+			},
+			{
+				"id": "tocamelcase.2",
+				"state": "input",
+				"subject": "toCamelCase",
+				"example": "Split lowercase-to-uppercase word boundaries",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toCamelCase: Split lowercase-to-uppercase word boundaries"
+				}
+			},
+			{
+				"id": "tocamelcase.3",
+				"state": "input",
+				"subject": "toCamelCase",
+				"example": "Return blank when the input contains no words",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toCamelCase: Return blank when the input contains no words"
+				}
+			},
+			{
+				"id": "tocamelcase.4",
+				"state": "input",
+				"subject": "toCamelCase",
+				"example": "Lower the initial word",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toCamelCase: Lower the initial word"
+				}
+			},
+			{
+				"id": "tocamelcase.5",
+				"state": "input",
+				"subject": "toCamelCase",
+				"example": "Normalize separators and numbers",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toCamelCase: Normalize separators and numbers"
+				}
+			},
+			{
+				"id": "tocamelcase.6",
+				"state": "invalid",
+				"subject": "toCamelCase",
+				"example": "Reject null input",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toCamelCase: Reject null input"
+				}
+			},
+			{
+				"id": "tosnakecase.1",
+				"state": "input",
+				"subject": "toSnakeCase",
+				"example": "Join separated words with lowercase underscores",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toSnakeCase: Join separated words with lowercase underscores"
+				}
+			},
+			{
+				"id": "tosnakecase.2",
+				"state": "input",
+				"subject": "toSnakeCase",
+				"example": "Split lowercase-to-uppercase word boundaries",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toSnakeCase: Split lowercase-to-uppercase word boundaries"
+				}
+			},
+			{
+				"id": "tosnakecase.3",
+				"state": "input",
+				"subject": "toSnakeCase",
+				"example": "Return blank when the input contains no words",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toSnakeCase: Return blank when the input contains no words"
+				}
+			},
+			{
+				"id": "tosnakecase.4",
+				"state": "input",
+				"subject": "toSnakeCase",
+				"example": "Split a Pascal name",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toSnakeCase: Split a Pascal name"
+				}
+			},
+			{
+				"id": "tosnakecase.5",
+				"state": "input",
+				"subject": "toSnakeCase",
+				"example": "Normalize separators and numbers",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toSnakeCase: Normalize separators and numbers"
+				}
+			},
+			{
+				"id": "tosnakecase.6",
+				"state": "invalid",
+				"subject": "toSnakeCase",
+				"example": "Reject null input",
+				"test": {
+					"file": "test/case.test.ts",
+					"title": "toSnakeCase: Reject null input"
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -52,7 +52,7 @@ test('app projects include SvelteKit and specification files', () =>
 			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
 			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
-		expectRenameGuidance(files);
+		expectGeneratedGuidance(files);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
@@ -92,7 +92,7 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
 		expect(fileContents(files, path)).toContain('instantiated classes');
 	}
-	expectRenameGuidance(files);
+	expectGeneratedGuidance(files);
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -117,6 +117,11 @@ test.each(['app', 'lib'] as const)(
 	}
 );
 
+function expectGeneratedGuidance(files: ReturnType<typeof projectFiles>): void {
+	expectRenameGuidance(files);
+	expectStandardTestForms(files);
+}
+
 function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
 	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
 		expect(fileContents(files, path)).toContain(
@@ -138,6 +143,32 @@ function expectRenameGuidance(files: ReturnType<typeof projectFiles>): void {
 		);
 		expect(fileContents(files, path)).toContain('exact source, name, audience and purpose');
 		expect(fileContents(files, path)).toContain('design tokens belong in Styles');
+	}
+}
+
+function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		const text = fileContents(files, path);
+		expect(text, path).toContain('Write tests only in the five standard forms');
+		expect(text, path).toContain('## Standard Test Forms');
+		expect(text, path).toContain('Use exactly these five forms');
+		expect(text, path).toContain(
+			'Pages: Playwright screenshot matches of each declared page state'
+		);
+		expect(text, path).toContain(
+			'Components: Playwright screenshot matches of the component at rest'
+		);
+		expect(text, path).toContain('Helpers: one unit case per authored example');
+		expect(text, path).toContain(
+			'Classes: one case per method and declared initialization or lifecycle state'
+		);
+		expect(text, path).toContain('APIs: structural complete JSON response matches');
+		expect(text, path).toContain('Interaction, accessibility and console assertions stay inside');
+		expect(text, path).toContain('Do not add a sixth shape');
+		expect(text, path).toContain('Projects without UI have no page or component cases');
+		expect(text, path).toContain('Do not auto-accept screenshot baselines');
+		expect(text, path).toContain('fails explicitly');
+		expect(text, path).not.toContain('Keep exhaustive boundary cases in tests');
 	}
 }
 

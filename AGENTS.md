@@ -8,7 +8,7 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 - Use Harness generators for supported code shapes instead of hand-rolling new structure.
 - Ask `bun run dev -- info <topic>` before adding unfamiliar code or choosing a scaffold shape.
 - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
-- Add or update focused unit and E2E coverage for changes to audit rules, generators, or CLI behavior. When changing URL structure, tab aliases, defaults or canonicalization, run `test/utils/explorer-route.test.ts`, `test/utils/console-canonical.test.ts` and `test/utils/explorer-legacy.test.ts` together alongside the affected standard browser matrix, even when broad CLI/native suites are deferred.
+- Maintain the five standard test forms for audit, generator and CLI changes; strengthen existing cases for bugs without growing their counts. When changing URL structure, tab aliases, defaults or canonicalization, run `test/utils/explorer-route.test.ts`, `test/utils/console-canonical.test.ts` and `test/utils/explorer-legacy.test.ts` together alongside the affected standard browser matrix, even when broad CLI/native suites are deferred.
 - When relocating modules, run their existing namespace-spy tests against the declaration module imported by the subject; retain separate coverage of supported public forwarding entries.
 - Before replacing iteration, collection construction or property access in code that takes in-memory JSON, characterize through its public entry what admission accepts before serialization: own iterators, species and getters included. A JSON round trip holds none of them, so its parity is not enough; keep those cases in the normal tests.
 - When adding shared UI imports, declare their source reference bindings and run `test/shared-select-impact.test.ts`, `test/shared-search-impact.test.ts` and `test/shared-alias-index.test.ts` before handing off the component.
@@ -178,3 +178,26 @@ Keep named interfaces and type aliases in a sibling `<module>.types.ts` file bes
 Source tabs list implementation files, sibling type files and associated tests from the selected revision. Resolve tests from direct source imports or authored scenario coverage; retain their committed bytes and gaps, and reuse the shared file list and code viewer. Never substitute working-copy or newer test contents.
 
 When changing a shared Game renderer, include the root `test/game-runtime.test.ts` consumer guard in owning qualification, even when full CLI/native suites are deferred. Verify semantic object visibility and retained references; inactive scene containers must not change what a visibility assertion means.
+
+## Standard Test Forms
+
+Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.
+
+1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).
+2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction and error-prop state.
+3. Helpers: one unit case per authored example, asserting its documented output or error.
+4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.
+5. APIs: structural complete JSON response matches for each supported prop and error matrix row.
+
+- Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.
+- Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.
+- Projects without UI have no page or component cases; their modules use the helper, class and API forms.
+- Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.
+- Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.
+
+## Stable-Case Bug Policy
+
+- Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form (its input, fixture, state or assertion) under the same registered title.
+- Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.
+- A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.
+- Keep registered case titles and identities stable; verification records bind to them.

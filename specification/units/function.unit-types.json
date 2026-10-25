@@ -8,11 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/core/development-tooling/scenarioManifest.ts",
 			"src/core/development-tooling/unitTypes.ts",
 			"src/core/development-tooling/unitTypes.types.ts",
 			"src/core/unitTypes.ts"
 		],
 		"symbols": [
+			"scenarioManifestSchema",
 			"unitIdPattern",
 			"dependencyVias",
 			"runtimeKinds",
@@ -117,6 +119,11 @@
 	"dependencies": [
 		{
 			"unit": "function.development-tooling-composition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract-service-test-contract-schema",
 			"via": "import",
 			"origin": "derived"
 		}

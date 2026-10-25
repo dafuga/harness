@@ -9,6 +9,8 @@ export interface RevisionSide extends ImpactSide {
 	index: SourceIndex;
 	/** Manifests exactly as stored at the revision, before reconciliation with source. */
 	stored: ComponentManifest[];
+	/** Admission problems from the selected revision, including standardized test coverage. */
+	errors?: string[];
 	tree?: SourceTree;
 	/** The version of the writing limits the verification config of the revision declares. */
 	writing?: WritingVersion | null;

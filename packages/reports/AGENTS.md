@@ -54,3 +54,26 @@ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
 - Port 47840 is the loopback ownership/status slot, not a project web port. No launch or stop API is exposed.
 - `HARNESS_PREVIEW_OWNER_PORT` is reserved for isolated lifecycle tests; do not override it in ordinary previews.
 - Browser-test fixture servers keep their own isolated startup and teardown.
+
+## Standard Test Forms
+
+Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.
+
+1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).
+2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction and error-prop state.
+3. Helpers: one unit case per authored example, asserting its documented output or error.
+4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.
+5. APIs: structural complete JSON response matches for each supported prop and error matrix row.
+
+- Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.
+- Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.
+- Projects without UI have no page or component cases; their modules use the helper, class and API forms.
+- Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.
+- Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.
+
+## Stable-Case Bug Policy
+
+- Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form (its input, fixture, state or assertion) under the same registered title.
+- Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.
+- A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.
+- Keep registered case titles and identities stable; verification records bind to them.

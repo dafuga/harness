@@ -45,6 +45,7 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		...(kept.helperContracts?.length ? { helperContracts: kept.helperContracts } : {}),
 		runtime: runtime(input.previous, source),
 		scenarios: kept.scenarios,
+		...(kept.testing ? { testing: kept.testing } : {}),
 		...(preview ? { preview } : {}),
 
 		budgets: kept.budgets

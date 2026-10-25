@@ -79,6 +79,7 @@ function unitView(
 		scenarios: unit.scenarios,
 		owns: unit.owns,
 		contract: { inputs, outputs, errors },
+		...(unit.testing ? { testing: unit.testing } : {}),
 		...(unit.helperContracts ? { helpers: unit.helperContracts } : {}),
 		...(unit.catalog ? { catalog: unit.catalog } : {}),
 		...(unit.configControls ? { configControls: unit.configControls } : {}),
@@ -112,7 +113,12 @@ function scenarioView(scenario: ScenarioManifest): RevisionRegistry['scenarios']
 			...(units ? { units } : {})
 		})),
 		viewports: scenario.viewports,
-		tests: scenario.tests.map(({ id, kind, runner }) => ({ id, kind, runner })),
+		tests: scenario.tests.map(({ id, kind, runner, cases }) => ({
+			id,
+			kind,
+			runner,
+			...(cases ? { cases } : {})
+		})),
 		evidence: scenario.evidence.map(({ id, kind, states, viewports }) => ({
 			id,
 			kind,

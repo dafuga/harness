@@ -1,0 +1,120 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-test-discovery",
+	"kind": "service",
+	"title": "TestDiscoveryService",
+	"responsibility": "Inventories declared tests and reports skipped or unresolved cases.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/TestDiscoveryService.ts",
+			"src/services/verification-evidence/TestDiscoveryService.types.ts"
+		],
+		"symbols": [
+			"TestDiscoveryService",
+			"TestDiscoveryService.discover",
+			"TestDiscoveryService.scan",
+			"DiscoveredTest",
+			"TestDiscovery",
+			"DiscoveredTest",
+			"TestDiscovery"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TestDiscoveryService.discover.tree",
+				"type": "Pick<SourceTree, 'read'>"
+			},
+			{
+				"name": "TestDiscoveryService.discover.paths",
+				"type": "string[]"
+			},
+			{
+				"name": "TestDiscoveryService.scan.text",
+				"type": "string"
+			},
+			{
+				"name": "TestDiscoveryService.scan.file",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "TestDiscoveryService.discover",
+				"type": "Promise<TestDiscovery>"
+			},
+			{
+				"name": "TestDiscoveryService.scan",
+				"type": "DiscoveredTest[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery-service-example-declarations",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/TestDiscoveryService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/TestDiscoveryService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "scan-initialized",
+				"state": "initialized",
+				"subject": "TestDiscoveryService.scan",
+				"test": {
+					"file": "test/services/verification-evidence/test-discovery.test.ts",
+					"title": "scan initialized source finds imported cases, aliases and computed registration"
+				},
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"id": "discover-initialized",
+				"state": "initialized",
+				"subject": "TestDiscoveryService.discover",
+				"test": {
+					"file": "test/services/verification-evidence/test-discovery.test.ts",
+					"title": "discover initialized and unreadable sources retain explicit discovery gaps"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tests": [],
+						"errors": []
+					}
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

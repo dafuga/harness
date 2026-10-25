@@ -15,6 +15,8 @@ import { UnitRegistryRepository } from '../../../repositories/verification-evide
 import { SourceGraphService } from '../../../services/development-tooling/SourceGraphService';
 import { SourceIndexService } from '../../../services/development-tooling/source-index-service/SourceIndexService';
 import { UnitIndexService, type UnitIndexResult } from './unit-index-service/UnitIndexService';
+import { TestContractService } from '../../../services/verification-evidence/TestContractService';
+import { TestDiscoveryService } from '../../../services/verification-evidence/TestDiscoveryService';
 
 /** Reads the registry and indexes one source tree; the working tree unless one is supplied. */
 export async function loadUnits(
@@ -31,13 +33,37 @@ export async function loadUnits(
 	const scenarios = await new ScenarioRepository(absolute).read(source);
 	const fresh = new UnitIndexService().index(index, registry.manifests);
 	const metadataErrors = await committedHelpers(source, fresh, registry.manifests);
+	const discovered = config.testing
+		? await new TestDiscoveryService().discover(
+				source,
+				[...index.files.values()]
+					.filter(
+						(file) =>
+							file.classification === 'test' && /\.(test|spec)\.[cm]?[jt]sx?$/.test(file.path)
+					)
+					.map((file) => file.path)
+			)
+		: undefined;
+	const testingErrors = new TestContractService().validate({
+		units: registry.manifests,
+		scenarios: scenarios.manifests,
+		files: new Set(index.files.keys()),
+		tests: discovered?.tests,
+		required: Boolean(config.testing)
+	});
 	return {
 		root: absolute,
 		config,
 		index,
 		stored: registry.manifests,
 		scenarios: scenarios.manifests,
-		errors: [...registry.errors, ...scenarios.errors, ...metadataErrors],
+		errors: [
+			...registry.errors,
+			...scenarios.errors,
+			...metadataErrors,
+			...testingErrors,
+			...(discovered?.errors ?? [])
+		],
 		unformatted: registry.unformatted,
 		fresh,
 		repository

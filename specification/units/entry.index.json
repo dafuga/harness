@@ -147,7 +147,11 @@
 			"ModuleTaskRunnerAdapter",
 			"ModuleTaskWorkerService",
 			"ModuleTaskAnalyticsService",
-			"ModuleTaskWorktreeAdapter"
+			"ModuleTaskWorktreeAdapter",
+			"TestContractService",
+			"TestCaseValidator",
+			"TestDiscoveryService",
+			"TestExpectationService"
 		]
 	},
 	"contract": {
@@ -728,6 +732,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-expectation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.benchmark-definition",
 			"via": "reexport",
 			"origin": "derived"
@@ -749,6 +768,11 @@
 		},
 		{
 			"unit": "validator.performance-evidence",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -8,11 +8,11 @@ import { bugRepairPolicy } from '../../utils/development-tooling/bugRepairPolicy
 import { atomicComponentRules } from '../development-tooling/atomicGuidance';
 
 export function agentRules(projectType: string): string {
-	return `# AGENTS.md\n\nThis is a Harness ${projectType}. Treat Harness as the operating contract for every code change in this project.\n\n## Required Harness Workflow\n\n- Read this file and the \`.codex/skills/harness/SKILL.md\` skill before changing code.\n- Use Harness generators for supported code shapes instead of hand-rolling new structure.\n- Ask \`harness info <topic>\` before adding unfamiliar code or choosing a scaffold shape.\n- For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n- Add or update a feature spec before implementation.\n- Keep files small, focused, and aligned with \`harness.audit.json\` limits.\n- Run \`bun run check\` before handing work back; it includes formatting, type checks, lint, tests, build, and \`bun run audit\`.\n\n${machineResourceRules()}\n## Clean Code Review\n\n- Use \`harness info clean-code\` for optional Jev reviews.\n- Preview with \`harness audit . --clean-code --dry-run\`; reviews remain disabled until enabled.\n- Configure a project-owned credential and assess advisory results before enabling the gate.\n- Keep uncertain judgments visible and never call incomplete reviews clean.\n\n${regressionLoopRules()}\n${namingRules()}\n${screenshotRules()}\n## Code Rules\n\n${harnessRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${harnessRuleLimits.maxFileLines}, functions ${harnessRuleLimits.maxFunctionLines}, classes ${harnessRuleLimits.maxClassLines}, methods ${harnessRuleLimits.maxMethodLines}, nesting ${harnessRuleLimits.maxNestingDepth}.\n`;
+	return `# AGENTS.md\n\nThis is a Harness ${projectType}. Treat Harness as the operating contract for every code change in this project.\n\n## Required Harness Workflow\n\n- Read this file and the \`.codex/skills/harness/SKILL.md\` skill before changing code.\n- Use Harness generators for supported code shapes instead of hand-rolling new structure.\n- Ask \`harness info <topic>\` before adding unfamiliar code or choosing a scaffold shape.\n- For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n- Add or update a feature spec before implementation.\n- Write tests only in the five standard forms, and fix reported bugs by strengthening existing cases; see Standard Test Forms and Stable-Case Bug Policy.\n- Keep files small, focused, and aligned with \`harness.audit.json\` limits.\n- Run \`bun run check\` before handing work back; it includes formatting, type checks, lint, tests, build, and \`bun run audit\`.\n\n${machineResourceRules()}\n## Clean Code Review\n\n- Use \`harness info clean-code\` for optional Jev reviews.\n- Preview with \`harness audit . --clean-code --dry-run\`; reviews remain disabled until enabled.\n- Configure a project-owned credential and assess advisory results before enabling the gate.\n- Keep uncertain judgments visible and never call incomplete reviews clean.\n\n${regressionLoopRules()}\n${namingRules()}\n${screenshotRules()}\n## Code Rules\n\n${harnessRuleSummaries.map((rule) => `- ${rule}`).join('\n')}\n\nHard limits: files ${harnessRuleLimits.maxFileLines}, functions ${harnessRuleLimits.maxFunctionLines}, classes ${harnessRuleLimits.maxClassLines}, methods ${harnessRuleLimits.maxMethodLines}, nesting ${harnessRuleLimits.maxNestingDepth}.\n`;
 }
 
 export function skillRules(projectType: string): string {
-	return `# Harness Project Discipline\n\nUse this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness ${projectType}.\n\n## Operating Rules\n\n1. Treat \`harness info\`, Harness generators, and \`harness audit\` as mandatory project controls.\n2. Run \`harness info <topic>\` or \`harness info scaffolds --json\` before creating unfamiliar code shapes.\n3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n4. Prefer \`harness generate <kind> <name>\` for supported scaffolds, then adapt the generated file within Harness limits.\n5. Add or update the feature spec first so the intended behavior is explicit before implementation.\n6. Keep generated and hand-edited files inside the configured Harness rule limits.\n7. Use \`harness info clean-code\` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.\n8. Verify with \`bun run check\` before handing work back.\n\n${regressionLoopRules()}\n${namingRules()}\n${screenshotRules()}\n${measurementRules()}\n## Hard Limits\n\n- Files: ${harnessRuleLimits.maxFileLines} lines.\n- Functions: ${harnessRuleLimits.maxFunctionLines} lines.\n- Classes: ${harnessRuleLimits.maxClassLines} lines.\n- Methods: ${harnessRuleLimits.maxMethodLines} lines.\n- Nesting: ${harnessRuleLimits.maxNestingDepth} levels.\n- Parameters: ${harnessRuleLimits.maxParameters}.\n- Classes per file: ${harnessRuleLimits.maxClassesPerFile}.\n`;
+	return `# Harness Project Discipline\n\nUse this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness ${projectType}.\n\n## Operating Rules\n\n1. Treat \`harness info\`, Harness generators, and \`harness audit\` as mandatory project controls.\n2. Run \`harness info <topic>\` or \`harness info scaffolds --json\` before creating unfamiliar code shapes.\n3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a \`harness loop\`.\n4. Prefer \`harness generate <kind> <name>\` for supported scaffolds, then adapt the generated file within Harness limits.\n5. Add or update the feature spec first so the intended behavior is explicit before implementation.\n6. Keep generated and hand-edited files inside the configured Harness rule limits.\n7. Use \`harness info clean-code\` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.\n8. Verify with \`bun run check\` before handing work back.\n9. Write tests only in the five standard forms, and fix reported bugs by strengthening existing cases with fixed case counts.\n\n${regressionLoopRules()}\n${namingRules()}\n${screenshotRules()}\n${measurementRules()}\n## Hard Limits\n\n- Files: ${harnessRuleLimits.maxFileLines} lines.\n- Functions: ${harnessRuleLimits.maxFunctionLines} lines.\n- Classes: ${harnessRuleLimits.maxClassLines} lines.\n- Methods: ${harnessRuleLimits.maxMethodLines} lines.\n- Nesting: ${harnessRuleLimits.maxNestingDepth} levels.\n- Parameters: ${harnessRuleLimits.maxParameters}.\n- Classes per file: ${harnessRuleLimits.maxClassesPerFile}.\n`;
 }
 
 function regressionLoopRules(): string {
@@ -27,22 +27,53 @@ function regressionLoopRules(): string {
 ## Callable usage examples
 
 - Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.
-- Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests, not the Examples tab.
+- Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. A helper's unit cases are exactly its authored examples; add a boundary input as an example only when it documents a distinct behavior.
 - Run \`harness units check\`: missing helper examples, placeholder titles and repeated titles or calls must fail. Re-indexing must preserve authored examples. Each helper detail page shows only its own examples at the viewed commit.
 
+${testFormRules()}
 ## Bug and Regression Loops
 
 ${bugRepairPolicy()
 	.map((rule) => `- ${rule}`)
 	.join('\n')}
-- Use \`harness loop create <name> --from bug-fix --goal <text>\` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
-- Use \`--from regression-prevention\` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
+- Use \`harness loop create <name> --from bug-fix --goal <text>\` for bug repairs: reproduce with its strengthened standardized case failing before implementation, then repeat repair and the same unchanged case until it passes.
+- Use \`--from regression-prevention\` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard, a strengthened standardized case, in normal project verification.
 - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
 - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
 `;
+}
+
+const standardTestForms = [
+	'## Standard Test Forms',
+	'',
+	"Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.",
+	'',
+	'1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).',
+	'2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction and error-prop state.',
+	'3. Helpers: one unit case per authored example, asserting its documented output or error.',
+	'4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.',
+	'5. APIs: structural complete JSON response matches for each supported prop and error matrix row.',
+	'',
+	'- Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.',
+	'- Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.',
+	'- Projects without UI have no page or component cases; their modules use the helper, class and API forms.',
+	'- Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.',
+	'- Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.',
+	'',
+	'## Stable-Case Bug Policy',
+	'',
+	'- Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form (its input, fixture, state or assertion) under the same registered title.',
+	"- Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.",
+	'- A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.',
+	'- Keep registered case titles and identities stable; verification records bind to them.',
+	''
+];
+
+function testFormRules(): string {
+	return standardTestForms.join('\n');
 }
 
 function moduleTaskRules(): string {

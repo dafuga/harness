@@ -25,6 +25,7 @@ export interface RevisionRegistry {
 		/** What the unit owns and promises, as its manifest states it at this revision. */
 		owns: ComponentManifest['owns'];
 		contract: Pick<ComponentManifest['contract'], 'inputs' | 'outputs' | 'errors'>;
+		testing?: ComponentManifest['testing'];
 		helpers?: PublicHelper[];
 		helperGap?: string;
 		serviceExports?: UnitMetadata['serviceExports'];
@@ -63,7 +64,12 @@ export interface RevisionRegistry {
 			units?: string[];
 		}>;
 		viewports: ScenarioManifest['viewports'];
-		tests: Array<{ id: string; kind: string; runner: string }>;
+		tests: Array<{
+			id: string;
+			kind: string;
+			runner: string;
+			cases?: ScenarioManifest['tests'][number]['cases'];
+		}>;
 		evidence: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
 	}>;
 	graph: {

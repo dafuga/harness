@@ -19,7 +19,7 @@ Choose component colors from Styles → Colors, defined in `appStyleTokensConfig
 2. Run `bun run dev -- info <topic>` or `bun run dev -- info scaffolds --json` before creating unfamiliar code shapes.
 3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 4. Prefer adding or updating generators over manually duplicating scaffold behavior.
-5. Add or update unit and temp-workspace E2E tests for generator, audit, and CLI behavior changes.
+5. Use the five standard test forms for generator, audit and CLI behavior; retain disposable integration fixtures inside the owning method/example cases.
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
 7. Verify with `bun run check` before handing work back.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
@@ -378,3 +378,26 @@ When changing a scaffold shape or name, update emitted source, generated tests a
 Pure helper SDK exports keep their callable names. When an existing SDK binding already uses that name, preserve it and qualify the helper export with a Helper suffix (then a numeric suffix if necessary); regenerating the helper must be idempotent. Keep the same-name util/helper CLI compilation scenario alongside export-to-emitted-file coherence coverage when changing helper scaffolds.
 
 When changing a shared Game renderer, include the root `test/game-runtime.test.ts` consumer guard in owning qualification, even when full CLI/native suites are deferred. Verify semantic object visibility and retained references; inactive scene containers must not change what a visibility assertion means.
+
+## Standard Test Forms
+
+Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.
+
+1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).
+2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction and error-prop state.
+3. Helpers: one unit case per authored example, asserting its documented output or error.
+4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.
+5. APIs: structural complete JSON response matches for each supported prop and error matrix row.
+
+- Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.
+- Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.
+- Projects without UI have no page or component cases; their modules use the helper, class and API forms.
+- Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.
+- Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.
+
+## Stable-Case Bug Policy
+
+- Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form (its input, fixture, state or assertion) under the same registered title.
+- Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.
+- A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.
+- Keep registered case titles and identities stable; verification records bind to them.

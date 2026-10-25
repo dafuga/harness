@@ -194,3 +194,7 @@ export { ModuleTaskRunnerAdapter } from './adapters/agents-providers/ModuleTaskR
 export { ModuleTaskWorkerService } from './services/agents-providers/ModuleTaskWorkerService';
 export { ModuleTaskAnalyticsService } from './services/agents-providers/ModuleTaskAnalyticsService';
 export { ModuleTaskWorktreeAdapter } from './adapters/agents-providers/ModuleTaskWorktreeAdapter';
+export { TestContractService } from './services/verification-evidence/TestContractService';
+export { TestCaseValidator } from './validators/verification-evidence/TestCaseValidator';
+export { TestDiscoveryService } from './services/verification-evidence/TestDiscoveryService';
+export { TestExpectationService } from './services/verification-evidence/TestExpectationService';
