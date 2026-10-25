@@ -1679,12 +1679,12 @@
 			"unit": "workflow.load-units",
 			"from": "src/workflows/loadUnits.ts",
 			"to": "src/workflows/development-tooling/load-units/loadUnits.ts",
-			"definition": "e5963c6997dd60fb9a78bb07073c19dd211daa62d2d38a6197baab5f4a9eb350",
+			"definition": "db0a270c6cf1d1edbe2e51ccf1ae7f9f4a33c3965d8f6beda4fbc8c32f07276e",
 			"relocationDefinition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769",
 			"review": {
-				"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
+				"commit": "403a7493fa5394ee7f733242aef46117ed4d4030",
 				"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
-				"definition": "e5963c6997dd60fb9a78bb07073c19dd211daa62d2d38a6197baab5f4a9eb350",
+				"definition": "db0a270c6cf1d1edbe2e51ccf1ae7f9f4a33c3965d8f6beda4fbc8c32f07276e",
 				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
@@ -1711,6 +1711,12 @@
 					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
 					"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
 					"reason": "Validate active config controls against committed syntax while preserving retired histories."
+				},
+				{
+					"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
+					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
+					"definition": "e5963c6997dd60fb9a78bb07073c19dd211daa62d2d38a6197baab5f4a9eb350",
+					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 				}
 			]
 		},

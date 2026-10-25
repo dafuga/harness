@@ -11,11 +11,11 @@ import type { Guide } from './guide';
 const testShapes = {
 	page: {
 		label: 'page screenshot match',
-		rule: 'Test shape: page screenshot match. Capture each declared route state and viewport and match its committed baseline. Keep interaction, accessibility and console assertions inside those states; never auto-accept a baseline.'
+		rule: 'Test shape: page screenshot match. Reach each declared route state and viewport and match its reviewed baseline retained through Harness evidence. Keep interaction, accessibility and console assertions inside those states; never auto-accept a baseline.'
 	},
 	component: {
 		label: 'component screenshot match',
-		rule: 'Test shape: component screenshot match. Capture the component at rest and at each declared interaction or error prop state, matching each committed baseline. Keep interaction, accessibility and console assertions inside those states; never auto-accept a baseline.'
+		rule: 'Test shape: component screenshot match. Reach rest and each declared interaction or error prop state, matching its reviewed baseline retained through Harness evidence. Keep interaction, accessibility and console assertions inside those states; never auto-accept a baseline.'
 	},
 	helper: {
 		label: 'helper examples',

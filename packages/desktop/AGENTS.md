@@ -70,7 +70,7 @@ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
 Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.
 
 1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).
-2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction and error-prop state.
+2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.
 3. Helpers: one unit case per authored example, asserting its documented output or error.
 4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.
 5. APIs: structural complete JSON response matches for each supported prop and error matrix row.
@@ -79,6 +79,8 @@ Use exactly these five forms. Each draws its cases from the entity's declared co
 - Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.
 - Projects without UI have no page or component cases; their modules use the helper, class and API forms.
 - Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.
+- Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.
+- Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.
 - Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.
 
 ## Stable-Case Bug Policy

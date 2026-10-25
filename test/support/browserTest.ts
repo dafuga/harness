@@ -21,7 +21,8 @@ export const test = base.extend<{
 		browserErrors.watch(context);
 		await use(context);
 	},
-	matchScreenshot: async (_fixtures, use, testInfo) => {
+	// eslint-disable-next-line no-empty-pattern -- Playwright requires fixture destructuring.
+	matchScreenshot: async ({}, use, testInfo) => {
 		await use(createMatchScreenshot(testInfo));
 	},
 	browserErrors: [

@@ -5,6 +5,7 @@ import type {
 	TaskSelection
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
+import { bugRepairPolicy } from '../../../utils/development-tooling/bugRepairPolicy';
 export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 	if (
 		createHash('sha256').update(stableJson(task.wantedContract)).digest('hex') !== task.contractHash
@@ -17,6 +18,8 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 		`Module: ${task.module.id}`,
 		`Overall module goal: ${task.module.goal}`,
 		`Allowed task files: ${task.module.files.join(', ')}`,
+		'Write only those files and Harness task-owned state or evidence. Do not update personal or agent memory.',
+		...bugRepairPolicy(),
 		`Task: ${task.title} (${task.id})`,
 		task.instructions,
 		'Implement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.',

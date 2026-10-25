@@ -37,6 +37,10 @@ test('admission rejects missing contracts, unknown modules and mutable task iden
 				'Overall goal: Reliable checkout\nFeature TLDR: Build validated orders.\n'
 			)
 		).toBe(true);
+		expect(await service.prompt(input.id)).toContain('Do not update personal or agent memory.');
+		expect(await service.prompt(input.id)).toContain(
+			'Use exactly these five contract-driven test forms'
+		);
 	} finally {
 		await f.dispose();
 	}

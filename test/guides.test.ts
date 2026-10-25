@@ -95,7 +95,9 @@ test('scaffold guidance tells agents what generated code contains', () =>
 		expect(catalogRules()).toContain('util: Tiny utility function. Test shape: map by behavior.');
 		expect(catalogRules()).toContain('keeps the case count');
 		expect(generatedRules('component')).toContain('Test shape: component screenshot match.');
-		expect(generatedRules('component')).toContain('matching each committed baseline');
+		expect(generatedRules('component')).toContain(
+			'reviewed baseline retained through Harness evidence'
+		);
 		expect(generatedRules('view')).toContain('Test shape: page screenshot match.');
 		expect(generatedRules('helper')).toContain('must match the comment beside the example');
 		expect(generatedRules('api')).toContain('every field and every error body');
