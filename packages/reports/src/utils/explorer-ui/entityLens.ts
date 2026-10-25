@@ -3,12 +3,12 @@ import type { ExplorerCategory, ExplorerLocation } from '../../models/explorer-u
 
 /** Each collection, pages first, with its name and description. */
 export const entityLabels: Record<ExplorerCategory, EntityLabel> = {
+	pages: { title: 'Pages', one: 'Page', subtitle: 'Start with the pages people use.' },
 	apis: {
 		title: 'APIs',
 		one: 'API',
 		subtitle: 'HTTP endpoints defined by this project at the selected revision.'
 	},
-	pages: { title: 'Pages', one: 'Page', subtitle: 'Start with the pages people use.' },
 	layouts: {
 		title: 'Layouts',
 		one: 'Layout',
