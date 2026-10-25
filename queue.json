@@ -2786,7 +2786,7 @@
 			},
 			"sourceCommit": "57f9da6ec2ee2cc280605e1f897f0ddf6751cf0f",
 			"contractHash": "4b1bd290edcafc5e27cf2942274258e1cc22256855c0503986ecabf932442a59",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T16:09:27.416Z",
 			"claim": {
@@ -2800,6 +2800,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The explorer route can't be confirmed from this worktree, so I'll link source files instead of guessing a URL.\n\n## Status\n\nThe suite and the proposed manifest are migrated, and the focused suite passes 10 of 10. This is not ready for Harness handoff. The Harness CLI cannot start in this worktree, so activity registration, `units check`, audit, and the standard checks did not run.\n\n## Files\n\n- **`packages/remote/test/services/event-log.test.ts`** (modified): +40 lines, 0 deleted, 82 lines total. The four original tests are unchanged, including titles, assertions, the import path, and the `filled`/`sequences` helpers. I added a two-line state comment and six cases.\n- **`test/fixtures/contract-migration/event-log-methods.json`** (new): a full copy of `specification/units/remote.service.event-log.json` plus one `testing` block. It is +182 lines with 0 removed, 275 lines total, and is JSON data.\n- No product source, specification, or commits.\n\n## Counts\n\n- **Before:** 4 tests and 0 declared cases, since the unit had no `testing` block.\n- **After:** 10 tests and 10 declared cases. Four are kept and six are added: sequence ×3, append ×2, since ×1.\n- **Shape:** `service`. Subjects are `EventLogService.sequence`, `.append`, `.since`, and `.constructor`. States are `initialized`, `recorded` (events kept, none dropped), and `trimmed` (window dropped its oldest events). Props are `epoch` and `capacity`.\n\n| Case id | State | Subject | Test title | Origin |\n|---|---|---|---|---|\n| constructor-initialized | initialized | constructor | each log has its own random epoch | existing |\n| sequence-initialized | initialized | sequence | sequence of an initialized log is zero | new |\n| sequence-recorded | recorded | sequence | sequence counts the events a recorded log keeps | new |\n| sequence-trimmed | trimmed | sequence | sequence keeps counting after the window drops its oldest events | new |\n| append-initialized | initialized | append | events get one increasing sequence across channels | existing |\n| append-recorded | recorded | append | append to a recorded log continues the sequence and stays replayable | new |\n| append-trimmed | trimmed | append | append to a trimmed log drops the oldest retained event | new |\n| since-initialized | initialized | since | a resume on an initialized log replays nothing or is a gap | new |\n| since-recorded | recorded | since | a resume point inside the retained window replays what followed it | existing |\n| since-trimmed | trimmed | since | another epoch, a future sequence or a trimmed window is a gap | existing |\n\n## Verification\n\n- **Focused suite:** 4 of 4 before the edit, 10 of 10 after. Both runs used the out-of-repo config described below.\n- **Validator:** the real `TestContractService.validate` returns no errors for the proposal, with discovered titles. Four mutants each fail with the expected message: matrix hole, orphan plus hole, undeclared prop, renamed title.\n- **Schema:** the full proposed unit passes `componentManifestSchema`, as does the registered unit.\n- **Expected values:** each of the 10 authored values equals what the service returns for the calls the test makes. I checked this with a mirrored script, separate from the vitest assertions.\n- **Format:** `prettier --check` passes on both files.\n\n## Blocked or not run\n\n- **Harness CLI:** `bun run dev` fails with `Cannot find module '@electron/asar'` from `scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts`. The worktree has no `node_modules`, the main checkout lacks `@electron/asar`, and installs are off-limits. So these did not run: `info`, `activity register/heartbeat/finish`, `units check`, `audit`, `loop`, `bun run check`, typecheck, lint, and `readable-unit-contracts`. AGENTS.md requires activity registration, so that is still owed.\n- **Repo vitest config:** it fails here. The suite loads `packages/remote/src/utils/networking-security/remoteIdentity.ts:57`, which re-exports from `packages/desktop`. That tsconfig extends a generated `.svelte-kit/tsconfig.json` that is absent. Vitest 3.2.4 also crashes under Bun, so I ran it under Node.\n- **Workaround:** `/tmp/event-log-run/vitest.config.mjs` is outside the repo. It uses the same include and sets `tsconfigRaw` to a JSON string, which makes Vite skip that tsconfig lookup. Rerun `bun run test:unit` once the environment has generated configs.\n- **Entity links:** I did not link the registered entity before editing, and I could not confirm the explorer route for `remote.service.event-log`. Source links: the [spec](specification/units/remote.service.event-log.json) and the [class](packages/remote/src/services/networking-security/wire-session-service/EventLogService.ts). I checked but did not edit the consumer [WireSessionService.ts:39](packages/remote/src/services/networking-security/wire-session-service/WireSessionService.ts) and the dependency [remoteIdentity.ts:57](packages/remote/src/utils/networking-security/remoteIdentity.ts). The unit's History is unchanged, since there are no commits.\n\n## Coverage gaps\n\n1. The default capacity (`remoteLimits.eventLog`, 512) is not asserted. The constructor case is titled for the epoch, so adding capacity there would change its meaning.\n2. Capacity boundaries and invalid capacities (exactly full, 0, negative, NaN) have no case.\n3. The constructor accepts any epoch string. No case declares accepted or rejected epoch forms.\n4. `unit.contract.errors` is `[]`. `gap` is asserted as exact values but is not declared as an error.\n5. The suite keeps the `src/services/EventLogService.ts` import. The owner module and the package export (`packages/remote/src/index.ts:65`) have no cases, and `test/index.test.ts` checks only the name. `src/services/wire-session-service/EventLogService.ts` has no importers.\n6. The random-epoch expectation is a pattern plus a distinctness flag, not a literal value.\n\n## Notes for the primary\n\n- The validator counts the `sequence` getter as a method, which is why it has three cases.\n- The states are defined in the suite header comment, because the testing schema has no description field.\n- The 275-line manifest exceeds 220. Registered unit manifests already do (`function.case.json` is 877 lines), so I treated it as data. The audit could not confirm this.\n- `packages/remote/AGENTS.md` asks for a feature spec before implementation. This test-only change does not touch specs.\n- Decisions needed: whether to add a capacity-default assertion or declare a new state, and whether to declare `gap` as a contract error.\n\nScratch files are in `/tmp/event-log-run/` (`vitest.config.mjs`, `validate.ts`, `schema.ts`).",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/85d971e7-38e2-4e97-b940-272e30a513fa",
+				"changedFiles": [
+					"packages/remote/test/services/event-log.test.ts",
+					"test/fixtures/contract-migration/event-log-methods.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T16:20:33.102Z",
+				"attempt": "85d971e7-38e2-4e97-b940-272e30a513fa",
+				"sourceCommit": "57f9da6ec2ee2cc280605e1f897f0ddf6751cf0f",
+				"checkpointCommit": "770fd4b101e8afd69b4687b4c0e9416caeb95d0a",
+				"usage": {
+					"inputTokens": 10547006,
+					"outputTokens": 153516,
+					"cacheReadTokens": 10315773,
+					"cacheWriteTokens": 231107,
+					"cacheWriteLongTokens": 231107,
+					"reportedCostUsd": 0.9677723700000002,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 10547006,
+							"outputTokens": 153516,
+							"cacheReadTokens": 10315773,
+							"cacheWriteTokens": 231107,
+							"cacheWriteLongTokens": 231107,
+							"reportedCostUsd": 0.9677723700000002,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.9677723700000002,
+							"minimumUsd": 0.9677723700000002,
+							"maximumUsd": 0.9677723700000002,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T16:09:42.645Z",
+						"finishedAt": "2026-10-25T16:20:32.949Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
