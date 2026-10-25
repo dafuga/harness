@@ -132,7 +132,8 @@
 						"method": "open",
 						"preservesImmutableSource": true
 					}
-				}
+				},
+				"errors": ["ExpectedCliError"]
 			},
 			{
 				"id": "open.populated",
@@ -150,7 +151,8 @@
 						"method": "open",
 						"preservesImmutableSource": true
 					}
-				}
+				},
+				"errors": ["ExpectedCliError"]
 			},
 			{
 				"id": "list.empty",
@@ -204,7 +206,8 @@
 						"method": "read",
 						"preservesImmutableSource": true
 					}
-				}
+				},
+				"errors": ["Error"]
 			},
 			{
 				"id": "read.populated",
@@ -222,7 +225,8 @@
 						"method": "read",
 						"preservesImmutableSource": true
 					}
-				}
+				},
+				"errors": ["Error"]
 			}
 		]
 	},

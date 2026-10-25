@@ -34,7 +34,7 @@
 			"title": "Implement the smallest repair without weakening the regression test.",
 			"status": "complete",
 			"completedAt": "2026-10-25T17:21:55.103Z",
-			"evidence": "Every method/state permits exactly one case, orphan subjects are rejected, retained capabilities preserve their IDs and titles, and a new case must reference its actual added state, method, example, prop or error. Seven focused tests passed before the explicit in-memory admission characterization was added; source lint and registry checks pass. The final characterized green proof remains pending resource headroom."
+			"evidence": "Every method/state permits exactly one case, orphan subjects are rejected, retained capabilities preserve their IDs and titles, and a new case must reference its actual added state, method, example, prop or error. Seven focused tests passed before the explicit in-memory admission characterization was added; source lint passes. Registry checking exposed missing committed-tree error references and a stale TestContractService manifest; those remain pending repair. The final characterized green proof remains pending resource headroom."
 		},
 		{
 			"id": "green",
