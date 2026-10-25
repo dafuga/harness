@@ -13,13 +13,19 @@
 		],
 		"symbols": [
 			"ModuleDataSnapshotValidator",
+			"ModuleDataSnapshotValidator.sourceProducer",
 			"ModuleDataSnapshotValidator.validate",
-			"ModuleDataSnapshotValidatorResult"
+			"ModuleDataSnapshotValidatorResult",
+			"ModuleSourceProducerInput"
 		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "ModuleDataSnapshotValidator.sourceProducer.data",
+				"type": "ModuleSourceProducerInput"
+			},
 			{
 				"name": "ModuleDataSnapshotValidator.validate.input",
 				"type": "unknown"
@@ -27,13 +33,23 @@
 		],
 		"outputs": [
 			{
+				"name": "ModuleDataSnapshotValidator.sourceProducer",
+				"type": "boolean"
+			},
+			{
 				"name": "ModuleDataSnapshotValidator.validate",
 				"type": "ModuleDataSnapshotValidatorResult"
 			}
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-protocol",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/validators/development-tooling/ModuleDataSnapshotValidator.ts",

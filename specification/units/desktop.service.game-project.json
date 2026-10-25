@@ -88,6 +88,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.create-project",
 			"via": "import",
 			"origin": "derived"
