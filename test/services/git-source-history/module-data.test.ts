@@ -5,12 +5,25 @@ import { EvidenceTreeAdapter } from '../../../src/adapters/verification-evidence
 import { ModuleDataRepository } from '../../../src/repositories/git-source-history/ModuleDataRepository';
 import { ModuleDataReviewRepository } from '../../../src/repositories/git-source-history/ModuleDataReviewRepository';
 import { ModuleDataService } from '../../../src/services/git-source-history/ModuleDataService';
+import { moduleDataRequired } from '../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
 import { configureTestAuthor, unitProject } from '../../support/unitProject';
 import { runCommand } from '../../support/cli';
 import { expect, test } from 'vitest';
 import { componentManifestSchema } from '../../../src/core/unitTypes';
 import { revisionRegistry } from '../../../src/utils/revisionRegistry';
 import { moduleRelationships } from '../../../src/services/git-source-history/module-data-service/moduleRelationships';
+test('metadata admission is required without a project opt-in', async () => {
+	const project = await unitProject('lib');
+	try {
+		expect(
+			await moduleDataRequired(project.root, 'HEAD'),
+			'Every project requires committed module metadata'
+		).toBe(true);
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
+});
+
 function declared(id: string, kind: string, source: string, dependencies: string[] = []) {
 	return componentManifestSchema.parse({
 		schemaVersion: 1,

@@ -32,9 +32,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 		const head = await commitTitleModules(project);
 		const invoke = validationInvoker(project);
 		const before = await invoke([]);
-		expect(before.commit).toBe(head);
-		expect(before.committed).toBe(false);
-		expect(before.exitCode).toBe(1);
+		expect(before).toMatchObject({ commit: head, committed: false, exitCode: 1 });
 		const written = await invoke(['--write']);
 		expect(written.committed).toBe(true);
 		expect(written.modules).toEqual(
