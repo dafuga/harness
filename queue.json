@@ -4913,6 +4913,75 @@
 				]
 			},
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.check-run-methods",
+			"title": "Migrate service.check-run standard test cases",
+			"moduleGoal": "Complete canonical coverage without losing existing assertions",
+			"verificationFiles": [
+				"test/browser-error-evidence.test.ts",
+				"test/check-settlement-evidence.test.ts",
+				"test/support/checkRunCases.ts",
+				"test/support/checkRunCases.types.ts",
+				"test/fixtures/contract-migration/check-run-methods.json"
+			],
+			"instructions": "Initial test-contract migration for service.check-run. Edit ONLY the listed verification files. Write a full proposed copy of specification/units/service.check-run.json at test/fixtures/contract-migration/check-run-methods.json; do not edit specification or product source. Primary owns shared contracts, product repairs, integration, final commits, compiler/audit and runtime checks. Do not run tests/build/lint/install/audit, delegate, access credentials, update memory, commit or publish. Preserve every original assertion, public forwarding boundary, fixture and benchmark. Register canonical callbacks with TestExpectationService and a direct imported JSON manifest (an as-cast is fine). No dynamic test loops, standalone regression tests, skipped/fails/only cases, fake expected constants or observed-output-generated expectations. Keep files/functions small and types in allowed companion files or inline type expressions.\nCheckRunService is stateless after its readonly context is initialized. Migrate its run and version methods to exactly two initialized method cases. Move all four existing browser-error-evidence cases into the run case, retaining every diagnostics, raw-case, schema/history projection, malformed/timeout and disposable real child-process assertion. Also transfer every assertion of test/check-settlement-evidence.test.ts into the responsible run case; that old standalone entrypoint can be removed only after its assertions are retained. Keep fake settlement injection isolated and restore mocks/module state. Use test/support/checkRunCases files if needed to keep main suite small. The version case should exercise actual disposable child commands returning the first nonempty stdout line, empty stdout, nonzero exit and a missing executable; do not test raw constructors. Keep method case identities/titles stable in the proposed manifest.\nStrengthen the responsible existing run case with a resource-budget observation: the Node writer should print its HARNESS_RESOURCE_MEMORY_MIB to the existing log, and assert it inherits the parent process.env.HARNESS_RESOURCE_MEMORY_MIB (or standalone default 2048). Preserve all original checks first. Current execute() requests the schema default 512 and fails that assertion. DO NOT repair product code or weaken this expected failure: primary will record red and repair. Report exactly why the four old cases missed the budget error. Parent resource env is real; do not forge a lease. This is a unit fixture with small Node children, no browser or Harness CLI E2E launch.",
+			"wantedContract": {
+				"responsibility": "Preserve existing assertions in canonical method or Example cases",
+				"inputs": [
+					{
+						"name": "existing source contracts and realistic fixtures",
+						"type": "authored capability matrix"
+					}
+				],
+				"outputs": [
+					{
+						"name": "registered suite and proposed full manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid properties and failure outcomes",
+						"type": "explicit assertions"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "check-run-methods",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "service.check-run",
+				"goal": "Complete canonical coverage without losing existing assertions",
+				"files": [
+					"src/services/CheckRunService.ts",
+					"src/services/check-run-service/CheckRunService.ts",
+					"src/workflows/run-verify/verification-service/CheckRunService.ts",
+					"src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.types.ts",
+					"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readCaseResults.ts",
+					"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readCheckEvidence.ts",
+					"test/browser-error-evidence.test.ts",
+					"test/check-settlement-evidence.test.ts",
+					"test/support/checkRunCases.ts",
+					"test/support/checkRunCases.types.ts",
+					"test/fixtures/contract-migration/check-run-methods.json"
+				]
+			},
+			"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
+			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T18:42:02.932Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
