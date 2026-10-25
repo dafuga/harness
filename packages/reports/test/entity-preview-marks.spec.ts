@@ -157,7 +157,7 @@ test('a recorded clip plays on the overview: one at the tip, a pair at a commit'
 	const clip = current.locator('audio');
 	await expect(clip).toHaveCount(1);
 	await expect(clip).toHaveAttribute('src', '/media/ccccccc-match-audio.wav');
-	await expect(current.getByText('Order filed.')).toBeVisible();
+	await expect(current.getByText('[Synthetic 440 Hz tone; no spoken words.]')).toBeVisible();
 	await clip.evaluate((audio: HTMLAudioElement) => ((audio.muted = true), audio.play()));
 	await expect
 		.poll(() => clip.evaluate((audio: HTMLAudioElement) => audio.currentTime))

@@ -29,6 +29,7 @@ export async function reviewServiceExamples(page: Page, viewport: string): Promi
 		const pane = examplesOf(page);
 		await expect(pane).toBeVisible();
 		await reviewCalls(pane, commit);
+		await reviewGeneratedAudio(pane);
 		await reviewVerification(pane);
 		await capture(page, shot(`service-verification-${mode}-${viewport}`));
 		expect(await fits(page)).toBe(true);
@@ -39,6 +40,22 @@ export async function reviewServiceExamples(page: Page, viewport: string): Promi
 	}
 	await reviewGaps(page);
 	await reviewOtherKind(page, viewport);
+}
+
+/** Generated audio and its matching transcript are usable directly in Examples. */
+async function reviewGeneratedAudio(pane: Locator): Promise<void> {
+	const audio = pane.locator(':scope > [data-harness-component="harness-entity-audio"]');
+	await expect(audio).toBeVisible();
+	await expect(audio.getByText('[Synthetic 440 Hz tone; no spoken words.]').first()).toBeVisible();
+	const player = audio.locator('audio').first();
+	await player.evaluate(async (element: HTMLAudioElement) => {
+		element.muted = true;
+		await element.play();
+	});
+	await expect
+		.poll(() => player.evaluate((element: HTMLAudioElement) => element.currentTime))
+		.toBeGreaterThan(0);
+	await player.evaluate((element: HTMLAudioElement) => element.pause());
 }
 
 /** Construction leads once; each call follows with its expected result and never a verdict. */

@@ -181,7 +181,11 @@ export function capture(commit: string, seed: CaptureSeed): HarnessCapture {
 	const [extension, mediaType] = files[seed.kind] ?? ['json', 'application/json'];
 	const name = [commit.slice(0, 7), seed.state, seed.viewport ?? seed.kind].join('-');
 	const media = seed.media === undefined ? `media/${name}.${extension}` : seed.media;
-	const said = { transcript: 'Order filed.', durationSeconds: 2, provenance: 'fixture' };
+	const said = {
+		transcript: '[Synthetic 440 Hz tone; no spoken words.]',
+		durationSeconds: 2,
+		provenance: 'fixture'
+	};
 	return {
 		evidence: seed.kind === 'screenshot' ? 'screens' : seed.kind,
 		kind: seed.kind,
