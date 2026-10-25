@@ -5187,8 +5187,20 @@
 			},
 			"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "dfa52591-26e3-400d-958f-b56ef4da1631",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Source accepted with primary repairs at e4fce85384: 24 authored Examples preserve original WAV assertions and public paths, add missing format boundaries, and move named types into a companion. Unit24, root/reports/remote compilers, lint, audits and build pass; retained focused capture 7c80ac067919ba6ee9bf135c587df2743af829ee271779e95a7cc04f8069904b. CLI requested gpt-5.6-luna/max; reported backend model remains null and unverified. This acceptance covers reviewed source, not backend identity.",
+					"at": "2026-10-25T20:04:07.395Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				}
+			],
 			"createdAt": "2026-10-25T18:42:03.613Z",
 			"claim": {
 				"worker": "wav-info-examples",
