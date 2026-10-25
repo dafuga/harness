@@ -2855,7 +2855,7 @@
 			},
 			"sourceCommit": "57f9da6ec2ee2cc280605e1f897f0ddf6751cf0f",
 			"contractHash": "74e3388ce3a3cf2158b60074f58861eaa80ab6be5dfa94da4c93ebec2d02e321",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T16:09:28.058Z",
 			"claim": {
@@ -2869,6 +2869,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m applying the Harness workflow for the contract migration, limited to the six allowed files plus task-owned evidence. I’ll inspect the current source/suite/manifest first, then update only the stable method-state cases and run the focused unit suite; I will not commit, push, delegate, or run broad/E2E checks.\nThe initial repository read hit an environment-level Git LFS clean-filter error while checking status; it did not modify the allowed files. I’m isolating that read-path issue, then I’ll inspect the current source and test content directly so any prior task edits remain preserved.\nThe registered unit is `remote.service.response-ledger` ([manifest](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/f8d3db7c-b9b2-4b0c-b8be-e3f1a01eb590/specification/units/remote.service.response-ledger.json)); its implementation is a single public `run` method with constructor options and forwarding entrypoints. I’m treating the four source files as dependency/public-boundary checks and will edit only the suite plus the proposed manifest fixture. The current six tests cover replay, pending joins, digest conflicts, failed replay, expiry/eviction, and capacity refusal; I’m now mapping these to explicit lifecycle states without dropping assertions.\nThe sibling remote migrations confirm the intended shape: stateless classes use one `initialized` state and one case per public method, with all input/error rows nested inside that method case. I’ll use the same pattern here: one `ResponseLedgerService.run`/`initialized` case, preserving the six existing behavior blocks and their 16 assertions as lifecycle transitions inside it.\nThe migration files now define one `run-initialized` case and retain the six original behavior blocks. The assertion count is preserved at 16 substantive expectations (17 including the new manifest-title identity guard); no production source or forwarding boundary changed. I’m validating the manifest against the registered unit shape and then running only the focused response-ledger suite.\nPrettier passes on both changed files. The focused Vitest command is currently blocked before collection because Vite tries to write a cache bundle under the parent checkout’s read-only `node_modules/.vite-temp`; this is the same external cache boundary seen in adjacent migrations. I’m trying the runner-based config path, which avoids that cache without installing or changing external files.\nThe proposal passes the real manifest schema and `TestCaseValidator`, and its non-testing fields match the current registered unit byte-for-byte after JSON parsing. The focused runner path still fails at collection on the missing desktop-generated tsconfig, so I’m doing the remaining scoped integrity checks and one required activity-registration attempt; I will report both environment blockers separately from code results.\nThe sibling wire migration’s full proposal also promotes the observed thrown failure into the proposed unit contract, while leaving primary-owned specification untouched. I’m aligning this fixture the same way by declaring `RemoteFailure`; the case already covers it, and this makes the proposal’s error coverage self-validating.\nImplemented the contract migration in:\n\n- [response-ledger.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/f8d3db7c-b9b2-4b0c-b8be-e3f1a01eb590/packages/remote/test/services/response-ledger.test.ts)\n- [response-ledger-methods.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/f8d3db7c-b9b2-4b0c-b8be-e3f1a01eb590/test/fixtures/contract-migration/response-ledger-methods.json)\n\nBefore: 6 tests, 16 substantive assertions, no standardized manifest.  \nAfter: 1 `initialized` service case for `ResponseLedgerService.run`, preserving all 16 assertions and covering replay, pending joins, conflicts, failures, expiry/eviction, and capacity limits. `RemoteFailure` is declared in the proposed contract.\n\nValidation passed: Prettier, manifest schema, `TestCaseValidator`, and scoped diff checks.\n\nFocused Vitest was blocked before collection by the missing `packages/desktop/.svelte-kit/tsconfig.json`; activity registration was blocked by missing `@electron/asar`. No commits, pushes, installs, or source changes were made.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/f8d3db7c-b9b2-4b0c-b8be-e3f1a01eb590",
+				"changedFiles": [
+					"packages/remote/test/services/response-ledger.test.ts",
+					"test/fixtures/contract-migration/response-ledger-methods.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T16:17:57.133Z",
+				"attempt": "f8d3db7c-b9b2-4b0c-b8be-e3f1a01eb590",
+				"sourceCommit": "57f9da6ec2ee2cc280605e1f897f0ddf6751cf0f",
+				"checkpointCommit": "0051554a51cb9555f3f253f57a9ad89cff117871",
+				"usage": {
+					"inputTokens": 9842336,
+					"outputTokens": 49424,
+					"cacheReadTokens": 9650176,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 9842336,
+							"outputTokens": 49424,
+							"cacheReadTokens": 9650176,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T16:09:43.674Z",
+						"finishedAt": "2026-10-25T16:17:56.336Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
