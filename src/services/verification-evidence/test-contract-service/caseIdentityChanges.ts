@@ -1,59 +1,107 @@
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
-import { stableJson } from '../../../utils/development-tooling/stableJson';
+import type { ContractCase } from '../TestContractService.types';
 
-/** A sibling's new example must never authorize this callable's case identity change. */
+/** An added capability permits its own new case; supported existing identities stay intact. */
 export function caseIdentityChanges(before: ComponentManifest, after: ComponentManifest): string[] {
-	const old = before.testing!.cases,
+	const prior = before.testing!.cases,
 		next = after.testing!.cases;
-	const subjects = new Set([...old, ...next].map((item) => item.subject ?? before.id));
-	return [...subjects].flatMap((subject) => {
-		const prior = old
-			.filter((item) => (item.subject ?? before.id) === subject)
-			.map((item) => item.id)
-			.sort();
-		const current = next
-			.filter((item) => (item.subject ?? after.id) === subject)
-			.map((item) => item.id)
-			.sort();
-		if (
-			stableJson(prior) === stableJson(current) ||
-			capabilities(before, subject) !== capabilities(after, subject)
+	const errors: string[] = [];
+	const refuse = (item: ContractCase) =>
+		errors.push(
+			`${after.id}/${item.subject ?? after.id}: case identities/count changed without a matching declared capability change; strengthen existing cases for bugs`
+		);
+	for (const item of prior) {
+		const current = next.find((candidate) => candidate.id === item.id);
+		if (!current && stillSupported(before, after, item)) refuse(item);
+		else if (
+			current &&
+			(identity(before, item) !== identity(after, current) ||
+				current.test.title !== item.test.title)
 		)
-			return [];
-		return [
-			`${after.id}/${subject}: case identities/count changed without declared capability changes; strengthen existing cases for bugs`
-		];
-	});
+			refuse(item);
+	}
+	for (const item of next)
+		if (
+			!prior.some((candidate) => candidate.id === item.id) &&
+			!addedCapability(before, after, item)
+		)
+			refuse(item);
+	return errors;
 }
-function capabilities(unit: ComponentManifest, subject: string): string {
-	const belongs = (name: string) =>
-		subject === unit.id || name === subject || name.startsWith(`${subject}.`);
-	return stableJson({
-		inputs: unit.contract.inputs
-			.filter((item) => belongs(item.name))
-			.map(({ name, type }) => [name, type])
-			.sort(),
-		outputs: unit.contract.outputs
-			.filter((item) => belongs(item.name))
-			.map(({ name, type }) => [name, type])
-			.sort(),
-		errors: unit.contract.errors.map(({ name, type }) => [name, type]).sort(),
-		helpers: unit.helperContracts
-			?.filter((helper) => belongs(helper.name))
-			.map((helper) => ({
-				name: helper.name,
-				inputs: helper.inputs.map(({ name, type }) => [name, type]).sort(),
-				output: helper.output,
-				examples: helper.examples?.map((example) => example.name).sort()
-			}))
-			.sort((left, right) => left.name.localeCompare(right.name)),
-		symbols: [...new Set(unit.owns.symbols.filter(belongs))].sort(),
-		examples: unit.testing?.examples
-			?.filter((item) => belongs(item.subject))
-			.map(({ subject, name }) => [subject, name])
-			.sort(),
-		shape: unit.testing?.shape,
-		states: unit.testing?.states?.slice().sort(),
-		props: unit.testing?.props?.slice().sort()
-	});
+
+function identity(unit: ComponentManifest, item: ContractCase): string {
+	return JSON.stringify([unit.testing!.shape, item.subject, item.state, item.example]);
+}
+function hasExample(unit: ComponentManifest, item: ContractCase): boolean {
+	if (
+		unit.helperContracts?.some(
+			(helper) =>
+				helper.name === item.subject &&
+				helper.examples?.some((example) => example.name === item.example)
+		)
+	)
+		return true;
+	return Boolean(
+		unit.testing?.examples?.some(
+			(example) => example.subject === item.subject && example.name === item.example
+		)
+	);
+}
+function stillSupported(
+	before: ComponentManifest,
+	after: ComponentManifest,
+	item: ContractCase
+): boolean {
+	const contract = after.testing!;
+	if (before.testing!.shape !== contract.shape) return false;
+	if (contract.states && !contract.states.includes(item.state)) return false;
+	if (item.example) return hasExample(after, item);
+	if (contract.shape === 'service' && item.subject)
+		return after.owns.symbols.includes(item.subject);
+	return (
+		!(item.props ?? []).some(
+			(prop) => before.testing!.props?.includes(prop) && !contract.props?.includes(prop)
+		) &&
+		!(item.errors ?? []).some(
+			(error) =>
+				before.contract.errors.some((field) => field.name === error) &&
+				!after.contract.errors.some((field) => field.name === error)
+		)
+	);
+}
+function addedCapability(
+	before: ComponentManifest,
+	after: ComponentManifest,
+	item: ContractCase
+): boolean {
+	if (item.example) return hasExample(after, item) && !hasExample(before, item);
+	const prior = before.testing!;
+	const states = prior.states ?? prior.cases.map((row) => row.state);
+	if (after.testing!.states?.includes(item.state) && !states.includes(item.state)) return true;
+	if (
+		item.subject &&
+		after.owns.symbols.includes(item.subject) &&
+		!before.owns.symbols.includes(item.subject)
+	)
+		return true;
+	return addedInput(before, after, item);
+}
+function addedInput(
+	before: ComponentManifest,
+	after: ComponentManifest,
+	item: ContractCase
+): boolean {
+	if (
+		item.props?.some(
+			(prop) => after.testing!.props?.includes(prop) && !before.testing!.props?.includes(prop)
+		)
+	)
+		return true;
+	return Boolean(
+		item.errors?.some(
+			(error) =>
+				after.contract.errors.some((field) => field.name === error) &&
+				!before.contract.errors.some((field) => field.name === error)
+		)
+	);
 }

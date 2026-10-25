@@ -71,10 +71,10 @@ export class TestCaseValidator {
 		return errors;
 	}
 	private methods(unit: ComponentManifest, contract: TestContract): string[] {
-		const methods = unit.owns.symbols.filter(
+		const methods = [...new Set(unit.owns.symbols)].filter(
 			(name) => name.includes('.') && !name.endsWith('.constructor')
 		);
-		return methods.flatMap((subject) =>
+		const errors = methods.flatMap((subject) =>
 			(contract.states ?? ['initialized'])
 				.filter(
 					(state) =>
@@ -82,6 +82,16 @@ export class TestCaseValidator {
 				)
 				.map((state) => `${unit.id}: missing method/state ${subject}/${state}`)
 		);
+		const seen = new Set<string>();
+		for (const item of contract.cases) {
+			const identity = `${item.subject}/${item.state}`;
+			if (seen.has(identity))
+				errors.push(`${unit.id}: requires exactly one method/state ${identity}`);
+			seen.add(identity);
+			if (item.subject && !unit.owns.symbols.includes(item.subject))
+				errors.push(`${unit.id}: unknown method ${item.subject}`);
+		}
+		return errors;
 	}
 }
 export type { TestCaseValidatorResult } from './TestCaseValidator.types';

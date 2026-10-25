@@ -2,11 +2,9 @@
 	"name": "contract-method-state-counts",
 	"goal": "Reject duplicate method-state cases and retain existing supported case identities when other capabilities expand",
 	"createdAt": "2026-10-25T16:59:18.515Z",
-	"updatedAt": "2026-10-25T16:59:19.589Z",
+	"updatedAt": "2026-10-25T17:21:55.103Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T17:04:06.899Z",
+			"evidence": "Atcee40ae6d0 the unchanged one-case validator suite accepts a duplicate Runner.run/ready case, and the unchanged compare case accepts old-state inflation after adding an unused new state. Retained red checkpoint names the exactly-one-method/state assertion; three total owning tests remain fixed."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T17:21:55.103Z",
+			"evidence": "Every method/state permits exactly one case, orphan subjects are rejected, retained capabilities preserve their IDs and titles, and a new case must reference its actual added state, method, example, prop or error. Seven focused tests passed before the explicit in-memory admission characterization was added; source lint and registry checks pass. The final characterized green proof remains pending resource headroom."
 		},
 		{
 			"id": "green",
