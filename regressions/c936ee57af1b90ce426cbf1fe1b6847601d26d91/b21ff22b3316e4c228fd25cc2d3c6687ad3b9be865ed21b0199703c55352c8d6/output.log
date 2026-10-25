@@ -1,0 +1,204 @@
+
+Running 6 tests using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at desktop (5.5s)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at desktop (5.5s)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at tablet (5.5s)
+  ✘  4 tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at tablet (5.5s)
+  ✘  5 tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at mobile (5.5s)
+  ✘  6 tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at mobile (5.5s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at desktop 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true })
+
+
+      103 | 			}
+      104 | 			if (unit.id === 'reports.component.module-system-explorer-module-resources-screen') {
+    > 105 | 				await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
+          | 				                                                                              ^
+      106 | 				await expect(
+      107 | 					component.getByRole('heading', { name: 'Welcome', exact: true })
+      108 | 				).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hZlYcu/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:105:83
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-9ccff-resources-screen-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-9ccff-resources-screen-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-9ccff-resources-screen-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at desktop 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true })
+
+
+       97 | 				await expect(
+       98 | 					component.getByRole('heading', { name: 'Modules', exact: true })
+    >  99 | 				).toBeVisible();
+          | 				  ^
+      100 | 				await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
+      101 | 				await expect(component.getByText('Installed', { exact: true })).toBeVisible();
+      102 | 				await expect(component).toContainText('harness module add offline');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hZlYcu/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:99:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-214d5-r-modules-screen-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-214d5-r-modules-screen-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-214d5-r-modules-screen-at-desktop/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at tablet 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true })
+
+
+      103 | 			}
+      104 | 			if (unit.id === 'reports.component.module-system-explorer-module-resources-screen') {
+    > 105 | 				await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
+          | 				                                                                              ^
+      106 | 				await expect(
+      107 | 					component.getByRole('heading', { name: 'Welcome', exact: true })
+      108 | 				).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hZlYcu/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:105:83
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-62cf3--resources-screen-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-62cf3--resources-screen-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-62cf3--resources-screen-at-tablet/error-context.md
+
+  4) tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at tablet 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true })
+
+
+       97 | 				await expect(
+       98 | 					component.getByRole('heading', { name: 'Modules', exact: true })
+    >  99 | 				).toBeVisible();
+          | 				  ^
+      100 | 				await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
+      101 | 				await expect(component.getByText('Installed', { exact: true })).toBeVisible();
+      102 | 				await expect(component).toContainText('harness module add offline');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hZlYcu/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:99:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-b1f40-er-modules-screen-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-b1f40-er-modules-screen-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-b1f40-er-modules-screen-at-tablet/error-context.md
+
+  5) tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at mobile 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-module-resources-screen"]').getByRole('heading', { name: 'Emails', exact: true })
+
+
+      103 | 			}
+      104 | 			if (unit.id === 'reports.component.module-system-explorer-module-resources-screen') {
+    > 105 | 				await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
+          | 				                                                                              ^
+      106 | 				await expect(
+      107 | 					component.getByRole('heading', { name: 'Welcome', exact: true })
+      108 | 				).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hZlYcu/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:105:83
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-a620e--resources-screen-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-a620e--resources-screen-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-a620e--resources-screen-at-mobile/error-context.md
+
+  6) tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at mobile 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').getByRole('heading', { name: 'Modules', exact: true })
+
+
+       97 | 				await expect(
+       98 | 					component.getByRole('heading', { name: 'Modules', exact: true })
+    >  99 | 				).toBeVisible();
+          | 				  ^
+      100 | 				await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
+      101 | 				await expect(component.getByText('Installed', { exact: true })).toBeVisible();
+      102 | 				await expect(component).toContainText('harness module add offline');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hZlYcu/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:99:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-2aead-er-modules-screen-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-2aead-er-modules-screen-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-2aead-er-modules-screen-at-mobile/error-context.md
+
+  6 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-module-resources-screen at mobile 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:89:3 › reports.component.module-system-explorer-modules-screen at mobile 
