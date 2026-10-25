@@ -1,3 +1,6 @@
+import { ModuleCatalogService } from '../../services/module-system/ModuleCatalogService';
+import type { ModuleCatalog } from '../../services/module-system/moduleDefinition.types';
+import { moduleOutputPath } from '../../services/module-system/moduleWrites';
 import type { AuditCollectedFileInput, AuditFileInput } from './audit.types';
 import { readFile } from 'node:fs/promises';
 import { relative } from 'node:path';
@@ -62,7 +65,9 @@ async function auditStaticProject(root: string, options: AuditOptions): Promise<
 			})
 		)
 	);
+	const catalog = await new ModuleCatalogService().load(root);
 	const structureFindings = auditProjectStructure(activeAdapters, {
+		moduleSourceFolders: declaredSourceFolders(catalog),
 		root,
 		profile,
 		files: files.map((file) => file.relativePath),
@@ -70,7 +75,15 @@ async function auditStaticProject(root: string, options: AuditOptions): Promise<
 	});
 
 	const filteredFindings = filterIgnoredFindings(
-		[...structureFindings, ...findings.flat()],
+		[
+			...catalog.gaps.map((message) => ({
+				path: 'harness.modules.json',
+				rule: 'harness-source-structure',
+				message
+			})),
+			...structureFindings,
+			...findings.flat()
+		],
 		config
 	);
 
@@ -141,4 +154,23 @@ function unknownFiles(
 			(file) => knownExtensions.has(file.extension) && !adapterForExtension(file.extension, profile)
 		)
 		.map((file) => file.relativePath);
+}
+
+/** Only active, validated module output plans extend the source-folder boundary. */
+function declaredSourceFolders(catalog: ModuleCatalog): string[] {
+	const paths = catalog.modules
+		.filter((entry) => entry.installed)
+		.flatMap((entry) => [
+			...entry.definition.setup,
+			...entry.definition.resources.flatMap((resource) => resource.files)
+		]);
+	return paths.flatMap((file) => {
+		try {
+			const path = moduleOutputPath(file.path.replace(/\{\{[A-Za-z]+\}\}/g, 'ModuleName'));
+			const folder = /^src\/([a-z][a-z0-9-]*)\//.exec(path)?.[1];
+			return folder ? [folder] : [];
+		} catch {
+			return [];
+		}
+	});
 }

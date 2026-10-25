@@ -10,16 +10,23 @@ import {
 import type { AuditFinding } from '../types';
 
 export function auditHarnessStructure(structure: AuditStructure): AuditFinding[] {
+	const moduleFolders = new Set(structure.moduleSourceFolders ?? []);
 	const artifacts = planningArtifactPaths(structure.root, structure.files);
 	return [
 		...auditPlanningFiles([...structure.files, ...structure.dirs], artifacts),
 		...auditFolderNames(structure.dirs),
 		...moduleCategoryFindings(structure),
-		...auditSourceFolders(structure.dirs.filter((path) => !artifacts.has(path))),
+		...auditSourceFolders(
+			structure.dirs.filter((path) => !artifacts.has(path)),
+			moduleFolders
+		),
 		...auditTestFolders(structure.dirs),
 		...auditDbFolders(structure.dirs),
 		...auditRootTypeScriptFiles(structure.files),
-		...auditSourceFiles(structure.files.filter((path) => !artifacts.has(path))),
+		...auditSourceFiles(
+			structure.files.filter((path) => !artifacts.has(path)),
+			moduleFolders
+		),
 		...auditSpecFiles(structure.files)
 	];
 }
@@ -38,10 +45,15 @@ function auditFolderNames(dirs: string[]): AuditFinding[] {
 	});
 }
 
-function auditSourceFolders(dirs: string[]): AuditFinding[] {
+function auditSourceFolders(dirs: string[], moduleFolders: Set<string>): AuditFinding[] {
 	return dirs.flatMap((dir) => {
 		const segments = pathSegments(dir);
-		if (segments[0] !== 'src' || segments.length < 2 || allowedSrcFolders.has(segments[1])) {
+		if (
+			segments[0] !== 'src' ||
+			segments.length < 2 ||
+			allowedSrcFolders.has(segments[1]) ||
+			moduleFolders.has(segments[1])
+		) {
 			return [];
 		}
 		return [
@@ -99,12 +111,12 @@ function auditRootTypeScriptFiles(files: string[]): AuditFinding[] {
 	});
 }
 
-function auditSourceFiles(files: string[]): AuditFinding[] {
+function auditSourceFiles(files: string[], moduleFolders: Set<string>): AuditFinding[] {
 	return files.flatMap((file) => {
 		const segments = file.split('/');
 		if (segments[0] !== 'src') return [];
 		if (segments.length === 2) return auditDirectSourceFile(file, segments[1]);
-		if (allowedSrcFolders.has(segments[1])) return [];
+		if (allowedSrcFolders.has(segments[1]) || moduleFolders.has(segments[1])) return [];
 		return [
 			{
 				path: file,

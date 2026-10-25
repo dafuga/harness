@@ -66,6 +66,7 @@ export interface AuditResult {
 }
 
 export interface AuditStructure {
+	moduleSourceFolders?: string[];
 	/** Project root used to validate planning metadata before recognizing artifact paths. */
 	root?: string;
 	profile: Exclude<AuditProfile, 'auto'>;
