@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { expect } from 'vitest';
+import { spawnSync } from 'node:child_process';
 import { benchmarkCaptureSchema } from '../../src/core/verification-evidence/verifyTypes';
 import { runCommand } from './cli';
 
@@ -145,4 +146,28 @@ function config(root: string) {
 import { sourceProfilePlugin } from ${JSON.stringify(entry)};
 export default defineConfig({ plugins:[sourceProfilePlugin(${JSON.stringify(root)})],
 test:{include:['subject.test.ts'],minWorkers:1,maxWorkers:1} });\n`;
+}
+
+/** Exercise the real transitive schema graph in a fresh profiled runtime. */
+export function assertProjectBootstrap(environment: Record<string, string>) {
+	const root = repository;
+	const cold = spawnSync(
+		'bun',
+		[
+			'--preload',
+			preload,
+			'-e',
+			"import {unitIdPattern} from './src/core/unitTypes'; console.log(unitIdPattern.test('function.real'));"
+		],
+		{
+			cwd: root,
+			env: { ...process.env, ...environment, HARNESS_RUNTIME_PROFILE_ROOT: root },
+			encoding: 'utf8',
+			timeout: 5000
+		}
+	);
+	expect(
+		[cold.error?.message, cold.status, cold.stdout.trim()],
+		'real registry bootstrap must not await itself'
+	).toEqual([undefined, 0, 'true']);
 }

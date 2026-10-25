@@ -1,5 +1,6 @@
 import { format, type Options } from 'prettier';
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from './verificationExpect';
 import { projectFiles } from '../src/templates/project';
 import { measureWorkload } from './support/measureWorkload';
 import { assertAtomCompiler } from './support/project-template/atoms';

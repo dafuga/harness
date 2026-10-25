@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { buildProgram } from '../../../src/cli/program';
 import { measureWorkload } from '../../support/measureWorkload';
 test('module task commands retain the existing evidence-based task check', () =>
@@ -17,6 +18,7 @@ test('module task commands retain the existing evidence-based task check', () =>
 				'prompt',
 				'worker',
 				'retry',
+				'review',
 				'sync'
 			])
 		);

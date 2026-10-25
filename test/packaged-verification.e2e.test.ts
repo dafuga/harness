@@ -165,8 +165,11 @@ test('a packed consumer uses the verification contracts and evidence protocol', 
 	);
 	await writeFile(join(project, 'consumer.ts'), consumer);
 	await runCommand(['bun', 'install'], project);
-	for (const optional of ['svelte', '@sveltejs/kit'])
+	// The CLI installs Svelte; this SDK fixture explicitly proves these imports work without it.
+	for (const optional of ['svelte', '@sveltejs/kit']) {
+		await rm(join(project, 'node_modules', optional), { recursive: true, force: true });
 		expect(existsSync(join(project, 'node_modules', optional))).toBe(false);
+	}
 	const typecheck = await runCommand(['bun', 'x', 'tsc', '-p', '.'], project, false);
 	expect(typecheck.stdout + typecheck.stderr).toBe('');
 	await commitConsumer(project);
