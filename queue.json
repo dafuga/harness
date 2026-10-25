@@ -6051,7 +6051,7 @@
 			},
 			"sourceCommit": "7d263753ece7aa867f9bc067322647c3ba136058",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T20:38:33.075Z",
 			"claim": {
@@ -6065,6 +6065,63 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’ll use the Harness workflow for this module. I’ll first read the repo skill and current task files, register activity, then make only the permitted migration/manifest edits; I will not run tests, builds, lint, audit, commit, publish, delegate, or update memory.\nThe Harness skill confirms the five-form/stable-case rules and requires activity attribution. I found no relevant prior memory entry for this module, so I’ll proceed from the current worktree and task contract only.\nActivity registration was attempted but is blocked by the worktree’s missing `@electron/asar` dependency; I will not install it. The initial Git status check also hit an unrelated Git-LFS clean-filter permission failure, so I’m switching to direct read-only inspection of the allowed files.\nThe existing suite is a legacy 11-test block: its assertions are not registered against a manifest, loops hide stable identities, and it has no explicit fixture path or canonical example titles. I’ll preserve those matrices inside 11 fixed authored Examples—six for `commitMessage`, five for `writtenMessage`—with a benchmark projection for the 200,000-space case.\nThe migration files are now in place and within the 220-line limit. I also restored the original cleanup assertion that each cleaned padded message still passes `commitMessage`; the fixture retains both owner and forwarding entry calls. Next I’m doing read-only syntax/shape checks only—no test, build, lint, audit, install, or commit.\nThe manifest now passes static identity checks: 11 authored Examples map one-to-one to 11 canonical cases, all five declared states are represented, and the copied non-testing manifest fields match the source specification. I’m doing one final scope/whitespace check now.\nImplemented the contract migration in the allowed files:\n\n- Registered 11 stable helper Examples/cases via `registerExamples`.\n- Preserved original assertions, Git cleanup modes, Unicode boundaries, aliases, and 200,000-space benchmark.\n- Added full proposed manifest copy with canonical states and fixture paths.\n- No product source files changed.\n\nStatic checks passed: JSON parsing, manifest identity/coverage, source-spec comparison, scope, and whitespace.\n\nTests/build/lint/audit were not run per instruction. Activity registration was attempted but blocked by missing `@electron/asar`; no commit was made.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/64824dd9-7088-4f07-835c-ea14c2457b12",
+				"changedFiles": [
+					"test/utils/commit-message.test.ts",
+					"test/fixtures/contract-migration/commit-message-examples.json",
+					"test/support/commitMessageExamples.ts",
+					"test/support/commitMessageExamples.types.ts"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T20:44:49.617Z",
+				"attempt": "64824dd9-7088-4f07-835c-ea14c2457b12",
+				"sourceCommit": "7d263753ece7aa867f9bc067322647c3ba136058",
+				"checkpointCommit": "ab49f151247ec4f1d1930e203fce1f6915c0f733",
+				"usage": {
+					"inputTokens": 4363538,
+					"outputTokens": 54140,
+					"cacheReadTokens": 4211328,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 4363538,
+							"outputTokens": 54140,
+							"cacheReadTokens": 4211328,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T20:38:46.731Z",
+						"finishedAt": "2026-10-25T20:44:48.732Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
