@@ -6756,6 +6756,73 @@
 			},
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.server-runtime",
+			"title": "Implement server-owned contract plan task admission and dispatch",
+			"moduleGoal": "Create and dispatch work from committed desired contracts without manual per-task worker launches.",
+			"verificationFiles": ["test/services/agents-providers/module-task-server.test.ts"],
+			"instructions": "Implement the wanted contract in the assigned generated ModuleTaskServerService source only, plus its assigned standardized unit test. Read dependency contracts with Harness CLI rather than other modules' implementation or test suites. Public dependencies: ModuleTaskService.feature/add/list, ModuleTaskWorkerService.once, taskInputSchema, featureSchema, ModuleTaskRepository queue. Design public `submit(plan)` and `run(plan, worker, modules, once, signal)` methods so a thin CLI `task serve --input <file> --worker <id> --modules <ids> --once|--watch` can invoke them after this task. A plan is {feature:{id,goal,tldr},tasks:ModuleTaskInput[]}; validate every task and active module/required wanted contract and full scope before any queue mutation; feature ids must agree, ids unique, explicit assignees honored. Same existing definitions are reused idempotently; conflicting definitions rejected without mutation. Require committed complete module metadata at the selected source revision before dispatch. Server run must admit tasks automatically, invoke existing workers, keep polling queued jobs for watch, await every child, propagate cancellation and report running/review/failed/queued truthfully; no self-acceptance. Reuse queue CAS/claims, no second task store. Preserve model auto and explicit settings and provider quota-only fallback; model/token/cost/bounce tracking remains in existing worker. Don’t create new HTTP listener or persistent preview. Use imported existing types or inline parameter types; no unassigned support files. Files220/functions55. Other agents work in shared Git refs; preserve their work. No delegate, commits, push, deployments, credentials, install, broad aggregate tests, E2E runs or persistent database changes. Run only owning focused unit cases and relevant format/typecheck when guard allows; do not bypass resources. Return exact paths, commands/results, remaining gaps.",
+			"wantedContract": {
+				"responsibility": "Admit a validated desired-contract plan and automatically run matching module subagents using the existing immutable queue and claimed isolated worktrees, with bounded single-worker lifecycle and cancellation.",
+				"inputs": [
+					{
+						"name": "plan",
+						"type": "{feature:TaskFeature,tasks:ModuleTaskInput[]}",
+						"description": "Reusable goal and TLDR plus explicit module wanted contracts and assigned files, validated in full before writes."
+					},
+					{
+						"name": "execution",
+						"type": "worker id, module filter, once/watch, AbortSignal",
+						"description": "Server lifecycle owns automatic pickup and child termination."
+					}
+				],
+				"outputs": [
+					{
+						"name": "submission",
+						"type": "admitted or reused task ids",
+						"description": "Duplicate-safe Git committed tasks; no partial submission on invalid definitions."
+					},
+					{
+						"name": "execution",
+						"type": "tracked task outcomes",
+						"description": "Real worker invocation with exact selected/reported model, token usage, API equivalent costs and review/bounce records; never treats queue admission as execution."
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid or conflicting plan",
+						"type": "explicit diagnostic before queue mutation"
+					},
+					{
+						"name": "unavailable executor or cancelled run",
+						"type": "retained task outcome",
+						"description": "No fabricated completion or provider substitution."
+					}
+				]
+			},
+			"model": "auto",
+			"assignee": "contract-first-server-bootstrap",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "service.agents-providers-module-task-server",
+				"goal": "Create and dispatch work from committed desired contracts without manual per-task worker launches.",
+				"files": [
+					"src/services/agents-providers/ModuleTaskServerService.ts",
+					"test/services/agents-providers/module-task-server.test.ts"
+				]
+			},
+			"sourceCommit": "6827856fbacf015ff22c72c91f458447f2acd2a8",
+			"contractHash": "f94bcff73160279dc60cd9e720687dc551e80302b542d5acdecd76b801ec60bb",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T22:28:42.216Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
