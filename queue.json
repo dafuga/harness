@@ -1593,6 +1593,64 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "contract-tests.evidence-examples",
+			"title": "Migrate reports.function.evidence-media to authored example cases",
+			"moduleGoal": "Preserve all existing assertions through canonical authored example cases",
+			"verificationFiles": [
+				"packages/reports/test/utils/evidence-media.test.ts",
+				"test/fixtures/contract-migration/evidence-examples.json"
+			],
+			"instructions": "Migrate the owned functions to the approved helper example contract, preserving every substantive assertion and disposable fixture. Read specification/units/function.case.json, test/case.test.ts, TestExpectationService.registerExamples, TestCaseValidator and the current target unit manifest. Primary owns all shared schema and committed specification changes. Author a FULL proposed unit manifest JSON at test/fixtures/contract-migration/evidence-examples.json (primary will promote it to specification). Add testing shape helper with finite states and one stable case per canonical helperContracts example; ordinary impure functions use testing.examples with authored value/error/void expected entries, not fake pure helper eligibility. Cover current boundaries and invalid/error inputs. Use one canonical source for executable input and expected comment/result, register with TestExpectationService from this proposal JSON; primary will change the import to the real manifest. Transfer existing assertions into the responsible example cases. Preserve any assertions belonging to another entity explicitly until primary transfers them. New counts are allowed only for migration to declared examples; do not invent new behavior, skip tests, mirror implementation, or create standalone regression suites. Do not edit production behavior unless a genuine defect is found: report it first so primary can freeze an existing strengthened red case. Do not edit shared contracts or specification files. Keep files under220 lines/functions55. Do not delegate, commit, push, publish, access credentials, install, or run E2Es/broad checks. You may run only relevant existing unit test commands; environment failures must be reported separately. Return exact files, before/after test counts, coverage preserved and remaining ownership gaps.",
+			"wantedContract": {
+				"responsibility": "Canonical executable example matrix for reports.function.evidence-media",
+				"inputs": [
+					{
+						"name": "declared behavior and existing assertions",
+						"type": "source and authored examples"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard helper suite and proposed manifest",
+						"type": "stable executable examples"
+					}
+				],
+				"errors": [
+					{
+						"name": "missing or mismatched example",
+						"type": "explicit assertion failure"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "evidence-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "reports.function.evidence-media",
+				"goal": "Preserve all existing assertions through canonical authored example cases",
+				"files": [
+					"packages/reports/src/helpers/strings/formatDuration.ts",
+					"packages/reports/src/utils/evidenceMedia.ts",
+					"packages/reports/src/utils/verification-evidence/evidenceMedia.ts",
+					"packages/reports/test/utils/evidence-media.test.ts",
+					"test/fixtures/contract-migration/evidence-examples.json"
+				]
+			},
+			"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
+			"contractHash": "55f1ad99f4a55051effe8b5f4cb3e5bbf7c197cf322ee88299131e6ac7a8712b",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T14:38:32.262Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
