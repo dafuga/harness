@@ -89,7 +89,13 @@ export async function browserDiagnostics(exitCode: DiagnosticsExit): Promise<voi
 		await writeFile(join(root, 'writer.cjs'), writerScript(exitCode));
 		const sample = verificationSample();
 		const outcome = await runnerFor(root).run(runnerCheck(10_000));
-		expect(outcome.passed).toBe(exitCode === 0);
+		expect(
+			outcome.passed,
+			JSON.stringify({
+				failures: outcome.failures,
+				log: await readFile(join(root, outcome.entry.log.path), 'utf8')
+			})
+		).toBe(exitCode === 0);
 		expect(outcome.entry.status).toBe(exitCode === 0 ? 'passed' : 'failed');
 		expect(outcome.entry).toMatchObject({
 			browserErrors: [diagnostics],
