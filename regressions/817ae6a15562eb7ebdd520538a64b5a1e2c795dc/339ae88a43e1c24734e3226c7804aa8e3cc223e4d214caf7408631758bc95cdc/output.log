@@ -1,0 +1,30 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-AbHB6I/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/recorded-artifact.test.ts (6 tests) 45635ms
+   ✓ a listed capture is read as its recorded bytes, with a media type that was checked  790ms
+   ✓ an inherited result is read from the record that produced it, on either side  379ms
+   ✓ a capture of another entity, record, side or hash is refused  700ms
+   ✓ a capture is read only in the project that recorded it  2101ms
+   ✓ a notes-only update renews the identity and keeps the shown artifact readable  1720ms
+   ✓ a newer record of the same commit never stands in for the one that was shown  8028ms
+ ✓ test/services/recorded-evidence.test.ts (6 tests) 28897ms
+   ✓ the tip of a branch is shown alone, with what it was read at  560ms
+   ✓ a commit is compared with its exact first parent, also when it is the tip  453ms
+   ✓ a commit without a record answers with its gap, and a first commit has no parent  442ms
+Overwriting existing notes for object b722a43b4d5b3b1a3a1f6475c0179b8b7331ca01
+ ✓ test/recorded-artifact-limits.test.ts (4 tests) 43360ms
+   ✓ a capture of exactly 11 MiB is read, and one byte more is refused and stays listed  964ms
+   ✓ tampered capture bytes are never returned as verified  1298ms
+   ✓ a corrupted record is never returned as verified  1270ms
+ ✓ test/recorded-evidence-transport.test.ts (2 tests) 29270ms
+   ✓ the window reads recorded evidence and its bytes over the loopback socket  1948ms
+   ✓ a phone reads the evidence of a granted project and of no other  1974ms
+
+ Test Files  4 passed (4)
+      Tests  18 passed (18)
+   Start at  04:19:26
+   Duration  152.50s (transform 1.84s, setup 289ms, collect 4.47s, tests 147.16s, environment 0ms, prepare 132ms)
+
