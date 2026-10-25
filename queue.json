@@ -2981,7 +2981,7 @@
 			},
 			"sourceCommit": "57f9da6ec2ee2cc280605e1f897f0ddf6751cf0f",
 			"contractHash": "74e3388ce3a3cf2158b60074f58861eaa80ab6be5dfa94da4c93ebec2d02e321",
-			"status": "review",
+			"status": "accepted",
 			"repairCommit": "0051554a51cb9555f3f253f57a9ad89cff117871",
 			"reviews": [
 				{
@@ -2990,6 +2990,17 @@
 					"reviewer": "primary",
 					"feedback": "The six original scenarios describe meaningful lifecycle states of run: initialized/settled replay, pending replay, digest conflict, remembered failure, expired/evicted, and pending-capacity full. They must be declared and receive one stable method/state case each. Do not hide every supported state inside one initialized case. Preserve the six original substantive cases, disposable fixtures and assertions, rename only to stable method/state identities, update the full proposed manifest to six declared states and six cases. Keep error matrices within the responsible state case. Do not write personal memory, change product/shared files, commit, delegate or run E2Es. Only the same two owned proposal/test files. Primary will run canonical Vitest after integration if your worker dependencies remain unavailable.",
 					"at": "2026-10-25T16:20:56.548Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				},
+				{
+					"attempt": "3595c670-a4fc-4077-8426-89eba377a8c2",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Primary integrated the reviewed proposal with canonical manifests, retained original assertions and fixtures, strengthened invalid-prop coverage where needed, and verified owning focused Vitest suites. Integration commit4c746db7ed; repository-wide migration and full acceptance remain pending.",
+					"at": "2026-10-25T16:31:56.961Z",
 					"provider": "codex",
 					"model": "gpt-5.6-luna",
 					"intelligence": "max",
