@@ -4709,7 +4709,7 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "874b754790ae2ba8b36f72acdbe85134b1bbb7b02e5282d3b1fe17864c37cf45",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:00:29.318Z",
 			"claim": {
@@ -4723,6 +4723,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The two allowed files are edited and ready for review. Nothing is committed. I did not run vitest, the typecheck, prettier, lint, audit or `units check`, as instructed. This worktree also has no `node_modules`, so the registration path is checked by reading and by static checks only, not run.\n\n**Files**\n- `packages/relay/test/utils/connect-claims.test.ts`: the old `expect` tests are replaced by one `TestExpectationService.registerExamples` call. It uses `connectClaims` from the original public forwarding entry. Diff: 20 insertions, 62 deletions.\n- `test/fixtures/contract-migration/relay-connect-claims-examples.json` (new): a full copy of `specification/units/relay.function.connect-claims.json` with `testing` added. The non-testing fields are identical as parsed JSON.\n\n**Counts**\n- Before: 7 tests and 20 assertion executions. The refusal loop is 9 values plus one missing-header check.\n- After: 20 examples and 20 cases, titled `connectClaims: <name>`. States: input 2, boundary 9, invalid 9. Expectations: 4 values, 16 `void` (undefined).\n\n**Original assertions mapped to examples**\n\n| Original | Examples |\n|---|---|\n| reads a host | Read a host claim with an empty device id |\n| reads a device | Read a device claim with its well-formed device id |\n| host ignores a device id | Ignore a device id header on a host claim |\n| scheme in any case | Accept the Bearer scheme in any letter case |\n| refuses non-43-char bearer (9 values + no header) | 10 examples: empty, bare, Basic, 42 chars, 44 chars, `=`, `+`, two credentials, double space, missing header |\n| refuses missing/unknown role (3) | missing role, `admin`, `Host` |\n| device id required for a device (3) | device without id, 38 chars, uppercase |\n\nRetained boundaries: a 43-character credential is accepted, while 42 and 44 are refused. A 40-character lowercase device id is accepted, while 38 and uppercase are refused. Each null prop state (missing Authorization, role or device id) has an example.\n\n**Judgment calls to review**\n1. The refusal loop became 10 separate examples, because each refused input is one authored invocation. Nothing in the loop was stateful.\n2. I dropped the `?.deviceId` and `?.credential` projections. The helper returns a plain claims object, so the examples compare the whole object, which still contains each original field assertion. The T4 example now also checks `role` and `deviceId`, so it is stricter. The change from `toEqual` to strict equality applies the same way.\n3. Non-Headers input is not covered. `contract.errors` is empty, and a `TypeError` message would be engine-specific and undeclared, so I added no error example.\n4. The fixture marker is `{ \"fixture\": \"Headers\", \"init\": {...} }`. The callback rebuilds `new Headers(init)`, and each `call` string shows that reconstructed invocation. No `.types.ts` file was added, and no repo convention existed to match.\n5. `testing.props` uses the header names (`Authorization`, `X-Harness-Role`, `X-Harness-Device`), because the one input is a Headers object.\n6. The old titles (for example `connectClaims reads a host`) are retired. This is a migration, not a bug repair.\n7. The empty-Authorization and missing-Authorization examples are near-duplicates. I kept both, since the original asserted both.\n\n**Checks I ran (read-only; no test, build, lint, install or audit)**\n- A Python check confirmed that the non-testing fields match the spec, and that each `call` equals the string rebuilt from its input. It also confirmed that the literals match the computed 43-character credential and 40-character device id.\n- An independent model of the documented rules agrees with all 20 expectations. The testing block satisfies the `testContractSchema` constraints as I replicated them by hand; zod itself was not run.\n- Reading `registerExamples`, `TestCaseValidator` and `exampleDeclarations` shows that the fixture import resolves from the test file.\n- Tabs only, no trailing whitespace, final newline. `git status` shows only the test file modified and the new fixture directory untracked (not gitignored).\n\n**Left for primary**\n- Run vitest on the test file, the root and relay typechecks, `prettier --check` on both files (I hand-formatted the JSON), lint, `harness audit`, `units check`, and `test/readable-unit-contracts.test.ts`.\n- Add `relay.function.connect-claims` to `specification/loops/contract-test-policy/migration.json`. I did not touch it.\n- When the fixture is promoted to `specification/units/`, repoint the test's JSON import. It currently reads the fixture path.\n- Decide whether to declare an error in `contract.errors` for non-Headers input. If you do, it needs a matching example and case.\n- No timing or memory workload measurements were collected.\n\nHarness activity `fba8e469-3ead-46d6-a11b-6fca6f117ca0` is registered, heartbeated and finished as completed, with verification noted as deferred.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3e247798-c779-4f0e-bed2-38435b8a71b8",
+				"changedFiles": [
+					"packages/relay/test/utils/connect-claims.test.ts",
+					"test/fixtures/contract-migration/relay-connect-claims-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T18:19:18.805Z",
+				"attempt": "3e247798-c779-4f0e-bed2-38435b8a71b8",
+				"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
+				"checkpointCommit": "758dfaa30d1856b2b1ef9627e89d86439387ce4d",
+				"usage": {
+					"inputTokens": 4684002,
+					"outputTokens": 141207,
+					"cacheReadTokens": 4468795,
+					"cacheWriteTokens": 215145,
+					"cacheWriteLongTokens": 215145,
+					"reportedCostUsd": 0.6399771700000002,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 4684002,
+							"outputTokens": 141207,
+							"cacheReadTokens": 4468795,
+							"cacheWriteTokens": 215145,
+							"cacheWriteLongTokens": 215145,
+							"reportedCostUsd": 0.6399771700000002,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.6399771700000002,
+							"minimumUsd": 0.6399771700000002,
+							"maximumUsd": 0.6399771700000002,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:10:02.900Z",
+						"finishedAt": "2026-10-25T18:19:18.674Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
