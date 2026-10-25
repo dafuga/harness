@@ -1,3 +1,4 @@
+import { addAcceptanceModel } from './support/moduleValidation';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -12,21 +13,7 @@ function everyKind(): HarnessRevision {
 	const detail = JSON.parse(
 		readFileSync(join(home, 'data/revisions', `${commits.shelled}.json`), 'utf8')
 	) as HarnessRevision;
-	const template = detail.registry.units.find((unit) => unit.kind === 'config')!;
-	const id = 'model.acceptance-payload';
-	detail.registry.units.push({
-		...template,
-		id,
-		kind: 'model',
-		title: 'Acceptance payload',
-		responsibility: 'Synthetic model input for category acceptance; it describes no real source.',
-		sourceMeasurements: template.sourceMeasurements?.map((item) => ({
-			...item,
-			unit: id,
-			method: 'Synthetic model observations copied from the config fixture for category acceptance.'
-		}))
-	});
-	return detail;
+	return addAcceptanceModel(detail);
 }
 
 /** Evidence runs require both observed figures, not merely a successful navigation. */
@@ -74,18 +61,26 @@ for (const viewport of viewports)
 			await checkpoint(page, `current-measurements-${category}-${viewport.id}`);
 			expectRuntimeObservations(`current-measurements-${category}-${viewport.id}`, category);
 			for (const metric of ['Source size', 'Complexity']) {
-				const row = profile
+				const compared = profile
+					.getByRole('row')
+					.filter({
+						has: page.getByRole('rowheader', { name: metric, exact: true })
+					})
+					.getByRole('cell')
+					.nth(1);
+				const current = profile
 					.locator('dl > div')
-					.filter({ has: page.getByText(metric, { exact: true }) });
-				await expect(row).not.toContainText('Not measured');
-				await expect(row.locator('dd')).toContainText(/\d/);
+					.filter({ has: page.getByText(metric, { exact: true }) })
+					.getByRole('definition');
+				await expect(current.or(compared)).toHaveCount(1);
+				await expect(current.or(compared)).not.toContainText('Not measured');
+				await expect(current.or(compared)).toContainText(/\d/);
 			}
 			await captureSections(page, `current-measurements-${category}-${viewport.id}`, checkpoint);
 			await page.goto(at('feature/shells', commits.shelled, `${category}/${unit.id}/details`));
-			await expect(page.getByRole('tab', { name: 'Contract', exact: true })).toHaveAttribute(
-				'aria-selected',
-				'true'
-			);
+			await expect(
+				page.getByRole('tab', { name: category === 'pages' ? 'Models' : 'Contract', exact: true })
+			).toHaveAttribute('aria-selected', 'true');
 			await checkpoint(page, `details-measurements-${category}-${viewport.id}`);
 		}
 	});

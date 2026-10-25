@@ -14,7 +14,7 @@ const { commits } = seeded();
 test('Styles navigation preserves the selected branch and commit', async ({ page }) => {
 	await page.goto(at('main', commits.approved, 'components'));
 	await capturePhase(page, 'styles-navigation');
-	const styles = page.getByRole('link', { name: 'Styles', exact: true });
+	const styles = page.getByRole('tab', { name: 'Styles', exact: true });
 	await expect(styles).toBeVisible();
 	await styles.click();
 	await expectPath(page, at('main', commits.approved, 'styles'));

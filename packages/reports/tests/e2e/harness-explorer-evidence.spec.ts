@@ -72,16 +72,19 @@ test('page source stays hidden and a missing repository is explicit on its Sourc
 	await expect(content(page).getByRole('link', { name: 'Details', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('tab')).toHaveText([
 		'Overview',
-		'Contract',
+		'Models',
+		'APIs',
 		'Uses',
 		'States',
 		'History',
 		'Source'
 	]);
-	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
-	await expectPath(page, main(`pages/${units.page}?tab=contract`));
+	await page.goto(main(`pages/${units.page}?tab=contract`));
+	await expectPath(page, main(`pages/${units.page}?tab=models`));
 	await checkpoint(page, 'evidence-page-contract');
-	await expect(content(page).getByRole('heading', { name: 'Contract', exact: true })).toBeVisible();
+	await expect(
+		content(page).getByRole('tabpanel', { name: 'Titles models', exact: true })
+	).toBeVisible();
 	await expect(content(page).getByText(file)).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Source', exact: true }).click();
 	await expectPath(page, main(`pages/${units.page}?tab=source`));
@@ -105,7 +108,6 @@ test('a verdict is a green check for complete passing evidence and a red cross f
 	await page.goto(tip('main', `functions/${units.slugify}`));
 	await checkpoint(page, 'evidence-verdict-missing');
 	await expect(verdict(page, 'Evidence missing').first()).toBeVisible();
-	// Only the mark is drawn; why it is not proven is told when it is pointed at.
 	await verdict(page, 'Evidence missing').first().hover();
 	await expect(
 		page.getByRole('tooltip').filter({ hasText: 'No verification record' })
@@ -116,7 +118,6 @@ test('a verdict is a green check for complete passing evidence and a red cross f
 	await page.goto(at('main', commits.restated, `services/${units.service}`));
 	await expect(heading(page, 'TitleService')).toBeVisible();
 	await expect(passed(page)).toHaveCount(0);
-	// A budget the commit broke is that unit's failure.
 	await page.goto(at('main', commits.grown, `functions/${units.slugify}`));
 	await expect(verdict(page, 'Verification failed').first()).toBeVisible();
 	await expect(content(page).getByText(/\d\s?%|partial|amber/i)).toHaveCount(0);
@@ -127,7 +128,7 @@ test('a branch tip shows one current screenshot and a selected commit shows pare
 }) => {
 	await page.goto(tip(explorerBranch, `pages/${units.page}`));
 	await checkpoint(page, 'evidence-current-page');
-	await expect(content(page).getByText(`Branch tip · ${short(commits.approved)}`)).toBeVisible();
+	await expect(content(page).getByText(short(commits.approved), { exact: true })).toBeVisible();
 	await expect(content(page).getByText(/^Before ·/)).toHaveCount(0);
 	await expect(content(page).locator('img[src*="/harness/media/"]')).toHaveCount(1);
 	await content(page).getByRole('group', { name: 'Viewport' }).getByText('Mobile').click();
@@ -135,15 +136,19 @@ test('a branch tip shows one current screenshot and a selected commit shows pare
 
 	await page.goto(at('main', commits.shout, `pages/${units.page}`));
 	await checkpoint(page, 'evidence-commit-page');
-	await expect(content(page).getByText(`Before · ${short(commits.baseline)}`)).toBeVisible();
-	await expect(content(page).getByText(`After · ${short(commits.shout)}`)).toBeVisible();
+	const comparison = content(page).getByRole('region', { name: 'Commit comparison' });
+	await expect(
+		comparison.getByRole('figure', { name: `Before · ${short(commits.baseline)}` })
+	).toBeVisible();
+	await expect(
+		comparison.getByRole('figure', { name: `After · ${short(commits.shout)}` })
+	).toBeVisible();
 	await expect(content(page).locator('img[src*="/harness/media/"]')).toHaveCount(2);
 });
 
 test('a component is shown with the states that show it, not every state of its scenario', async ({
 	page
 }) => {
-	// One scenario captures the list and its row; each capture belongs to the component it shows.
 	const shots = (state: string) => content(page).locator(`img[alt*="· ${state} at"]`);
 	await page.goto(tip(explorerBranch, `components/${units.row}`));
 	await expect(heading(page, 'TitleRow')).toBeVisible();

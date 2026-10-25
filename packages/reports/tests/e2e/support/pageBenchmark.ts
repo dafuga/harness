@@ -133,7 +133,7 @@ async function includedUnits(page: Page, route: string): Promise<string[]> {
 			'reports.function.harness-icons',
 			'reports.function.harness-shell'
 		);
-	const screened = /-(pages|shells|components)-entity$/.test(route);
+	const screened = /-(pages|layouts|components)-entity$/.test(route);
 	if (screened) ran.push('reports.function.entity-screens');
 	const units = new Set([route, ...ran, ...(await shownUnits(page, true))]);
 	return [...units].filter((unit) => existsSync(join(unitsDirectory, unit + '.json')));
@@ -153,7 +153,12 @@ export async function shownUnits(page: Page, whole = false): Promise<string[]> {
 	const units = [
 		...(route ? [route] : []),
 		...mounted.map(({ unit }) => unit),
-		...marked.map((name) => `reports.component.${name}`)
+		// The frame kept its DOM marker when its stable unit moved into Layouts.
+		...marked.map((name) =>
+			name === 'explorer-ui-explorer-layout'
+				? 'reports.layout.explorer-layout'
+				: `reports.component.${name}`
+		)
 	];
 	return [...new Set(units)].sort();
 }
@@ -192,7 +197,7 @@ export function pageUnit(address: string): string | undefined {
 	if (/^\/harness\/commit\/[a-f0-9]{40}(?:\/|$)/.test(new URL(address).pathname))
 		return 'reports.page.harness-view';
 	const match =
-		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|shells|components|functions|configs|services|models|styles)(\/[^/]+)?(\/(?:history|details))?$/.exec(
+		/^\/harness\/branch\/[^/]+\/(?:commit\/[a-f0-9]{40}\/)?(pages|layouts|components|functions|configs|services|models|styles)(\/[^/]+)?(\/(?:history|details))?$/.exec(
 			new URL(address).pathname
 		);
 	if (!match) return;

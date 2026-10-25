@@ -22,6 +22,7 @@
 		"reports.component.entity-search",
 		"reports.component.entity-search-results",
 		"reports.component.explorer-ui-explorer-module-card",
+		"reports.component.explorer-ui-harness-group",
 		"reports.component.harness-entity-behavior-screen",
 		"reports.component.harness-entity-config-screen",
 		"reports.component.harness-entity-frame",
@@ -31,6 +32,7 @@
 		"reports.component.harness-entity-history-screen",
 		"reports.component.harness-entity-link",
 		"reports.component.harness-entity-missing",
+		"reports.component.harness-entity-overview",
 		"reports.component.harness-entity-reasons",
 		"reports.component.harness-entity-relations",
 		"reports.component.harness-entity-sections",
@@ -95,6 +97,7 @@
 		"reports.function.harness-shell",
 		"reports.function.navbar-search",
 		"reports.function.report-destination",
+		"reports.layout.explorer-layout",
 		"reports.page.harness-branch-branch-at-components",
 		"reports.page.harness-branch-branch-at-components-entity",
 		"reports.page.harness-branch-branch-at-components-entity-history",
@@ -104,15 +107,15 @@
 		"reports.page.harness-branch-branch-at-functions",
 		"reports.page.harness-branch-branch-at-functions-entity",
 		"reports.page.harness-branch-branch-at-functions-entity-history",
+		"reports.page.harness-branch-branch-at-layouts",
+		"reports.page.harness-branch-branch-at-layouts-entity",
+		"reports.page.harness-branch-branch-at-layouts-entity-history",
 		"reports.page.harness-branch-branch-at-pages",
 		"reports.page.harness-branch-branch-at-pages-entity",
 		"reports.page.harness-branch-branch-at-pages-entity-history",
 		"reports.page.harness-branch-branch-at-services",
 		"reports.page.harness-branch-branch-at-services-entity",
 		"reports.page.harness-branch-branch-at-services-entity-history",
-		"reports.page.harness-branch-branch-at-layouts",
-		"reports.page.harness-branch-branch-at-layouts-entity",
-		"reports.page.harness-branch-branch-at-layouts-entity-history",
 		"reports.page.harness-view",
 		"reports.style.entity",
 		"reports.style.entity-evidence",
@@ -131,6 +134,7 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
@@ -144,6 +148,7 @@
 				"reports.component.harness-harness-selectors",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-pages"
 			]
 		},
@@ -168,6 +173,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-pages-entity"
 			]
 		},
@@ -192,6 +198,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-pages-entity"
 			]
 		},
@@ -216,6 +223,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-pages-entity"
 			]
 		},
@@ -236,9 +244,11 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-components-entity"
 			]
 		},
@@ -249,6 +259,7 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
@@ -266,6 +277,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-pages-entity"
 			]
 		},
@@ -286,9 +298,11 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-components-entity"
 			]
 		},
@@ -314,6 +328,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -339,6 +354,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -352,6 +368,8 @@
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
+				"reports.component.harness-entity-overview",
+				"reports.component.harness-entity-sections",
 				"reports.component.harness-entity-summary",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
@@ -364,6 +382,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-configs-entity"
 			]
 		},
@@ -391,6 +410,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -417,6 +437,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -442,6 +463,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity-history"
 			]
 		},
@@ -467,6 +489,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -492,6 +515,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -517,6 +541,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -541,6 +566,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -560,9 +586,11 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -587,6 +615,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -611,6 +640,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -634,6 +664,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -655,8 +686,10 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions"
 			]
 		},
@@ -683,6 +716,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-pages-entity"
 			]
 		},
@@ -695,6 +729,7 @@
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-history",
+				"reports.component.harness-entity-history-row",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-entity-reasons",
@@ -709,6 +744,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-pages-entity-history"
 			]
 		},
@@ -718,8 +754,6 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
-				"reports.component.explorer-ui-explorer-module-card",
-				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
@@ -730,8 +764,10 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-components"
 			]
 		},
@@ -752,9 +788,11 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-components-entity"
 			]
 		},
@@ -775,9 +813,11 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-components-entity-history"
 			]
 		},
@@ -787,6 +827,7 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
@@ -799,9 +840,10 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
-				"reports.component.harness-harness-verdict",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-configs"
 			]
 		},
@@ -829,6 +871,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-configs-entity"
 			]
 		},
@@ -855,6 +898,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-configs-entity-history"
 			]
 		},
@@ -874,9 +918,10 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
-				"reports.component.harness-harness-verdict",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-services"
 			]
 		},
@@ -885,11 +930,13 @@
 			"title": "Details of a service",
 			"coverage": "required",
 			"units": [
+				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-behavior-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
+				"reports.component.harness-entity-sections",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -901,6 +948,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -926,6 +974,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-services-entity-history"
 			]
 		},
@@ -936,6 +985,7 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-content",
 				"reports.component.harness-explorer-controls",
@@ -950,6 +1000,7 @@
 				"reports.component.harness-harness-selectors",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-view"
 			]
 		},
@@ -959,20 +1010,23 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
+				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-explorer-index",
-				"reports.component.harness-explorer-table",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
 				"reports.component.harness-harness-header",
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-layouts"
 			]
 		},
@@ -982,20 +1036,23 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
+				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-explorer-index",
-				"reports.component.harness-explorer-table",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
 				"reports.component.harness-harness-header",
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-layouts"
 			]
 		},
@@ -1020,6 +1077,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-layouts-entity"
 			]
 		},
@@ -1047,6 +1105,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-layouts-entity"
 			]
 		},
@@ -1059,7 +1118,6 @@
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-history",
-				"reports.component.harness-entity-history-row",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-frame",
@@ -1073,6 +1131,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-layouts-entity-history"
 			]
 		},
@@ -1100,6 +1159,7 @@
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.function.corrected-location",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-layouts-entity"
 			]
 		},
@@ -1120,10 +1180,12 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.function.corrected-location",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-components-entity"
 			]
 		},
@@ -1136,7 +1198,6 @@
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-history",
-				"reports.component.harness-entity-history-row",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-content",
@@ -1151,6 +1212,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-view"
 			]
 		},
@@ -1161,24 +1223,27 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.entity-search-results",
+				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-explorer-index",
-				"reports.component.harness-explorer-table",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
 				"reports.component.harness-harness-header",
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.modal",
 				"reports.component.select",
 				"reports.function.entity-search",
 				"reports.function.explorer-search-entries",
 				"reports.function.navbar-search",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-layouts"
 			]
 		},
@@ -1190,6 +1255,7 @@
 				"reports.component.entity-search",
 				"reports.component.entity-search-results",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
@@ -1201,12 +1267,14 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.modal",
 				"reports.component.select",
 				"reports.function.entity-search",
 				"reports.function.explorer-search-entries",
 				"reports.function.navbar-search",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions"
 			]
 		},
@@ -1235,6 +1303,7 @@
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.function.contract-fields",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -1263,6 +1332,7 @@
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.function.contract-fields",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -1293,6 +1363,7 @@
 				"reports.component.modal",
 				"reports.component.select",
 				"reports.function.contract-fields",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -1323,6 +1394,7 @@
 				"reports.component.modal",
 				"reports.component.select",
 				"reports.function.contract-fields",
+				"reports.layout.explorer-layout",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		}

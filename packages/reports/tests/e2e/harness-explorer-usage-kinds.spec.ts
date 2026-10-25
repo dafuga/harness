@@ -14,7 +14,7 @@ const main = (rest: string) => at('main', commits.approved, rest);
 const content = (page: Page) => page.locator('.ex-content');
 const card = (page: Page, name: string) => content(page).getByRole('region', { name, exact: true });
 const heading = (page: Page, name: string) => page.getByRole('heading', { level: 1, name });
-const named = ['Overview', 'Contract', 'Used In', 'Uses', 'Tests', 'History', 'Source'];
+const named = ['Overview', 'Contract', 'Used In', 'Uses', 'Examples', 'History', 'Source'];
 
 for (const viewport of viewports)
 	test(`a config lists what uses it once, under Used In, at ${viewport.id} width`, async ({
@@ -50,8 +50,11 @@ test('a service keeps its contract and both usage directions in dedicated tabs',
 	await expect(tabs).toHaveText(named);
 	for (const name of ['Contract', 'Used In', 'Uses']) await expect(card(page, name)).toHaveCount(0);
 	await page.getByRole('tab', { name: 'Contract', exact: true }).click();
-	await expect(card(page, 'Contract').getByRole('heading', { name: /^Inputs/ })).toBeVisible();
-	await expect(card(page, 'Contract').getByRole('heading', { name: /^Outputs/ })).toBeVisible();
+	const method = card(page, 'Contract').getByRole('region', { name: 'run method' });
+	await expect(method.getByRole('table', { name: 'Parameters', exact: true })).toContainText(
+		'value'
+	);
+	await expect(method.getByRole('table', { name: 'Returns', exact: true })).toContainText('string');
 	await page.getByRole('tab', { name: 'Uses', exact: true }).click();
 	await expect(card(page, 'Uses')).toBeVisible();
 	await expect(card(page, 'Used In')).toHaveCount(0);

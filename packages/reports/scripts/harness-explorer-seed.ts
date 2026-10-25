@@ -1,7 +1,6 @@
 /**
- * Adds a synthetic page/component/function graph, a config and two fixture scenarios. One
- * captures components at three viewports; the other records function inputs, results and
- * assertions. Everything here is made up for the test.
+ * Adds a synthetic graph, a config and two scenarios. They capture components at three
+ * viewports and record function inputs, results and assertions.
  */
 import type { VerifyRepo } from '../../../test/support/verifyRepo';
 import { execFileSync } from 'node:child_process';
@@ -188,6 +187,7 @@ export async function seedExplorer(repo: VerifyRepo): Promise<void> {
 		path,
 		JSON.stringify({
 			...manifest,
+			catalog: { visibility: 'public' },
 			configControls: [
 				{
 					source: 'src/config/titlesConfig.ts',

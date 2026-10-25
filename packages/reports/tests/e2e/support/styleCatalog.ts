@@ -133,7 +133,7 @@ export async function expectRoleAssignments(page: Page): Promise<void> {
 		root.setProperty('--hx-space-section', '37px');
 	});
 	try {
-		await expect(page.getByRole('link', { name: 'Styles', exact: true })).toHaveCSS(
+		await expect(page.getByRole('tab', { name: 'Styles', exact: true })).toHaveCSS(
 			'color',
 			'rgb(17, 34, 51)'
 		);

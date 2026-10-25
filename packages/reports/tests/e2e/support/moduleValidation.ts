@@ -1,5 +1,7 @@
 import { explorerCategory } from '../../../src/utils/explorer-ui/explorerCategory';
-import type { HarnessRevision } from '../../../src/models/Harness.types';
+import type { HarnessRevision, HarnessUnit } from '../../../src/models/Harness.types';
+import { moduleRelationships } from '../../../../../src/services/git-source-history/module-data-service/moduleRelationships';
+import { modelDefinition } from '../../../test/entityClassFixtures';
 import { expect, type Page } from '../../../../../test/support/browserTest';
 import { at, checkpoint } from './explorer';
 import { seeded } from './harnessHistory';
@@ -60,4 +62,63 @@ function validationFixture(detail: HarnessRevision, repaired: boolean) {
 		relationships: detail.moduleData.relationships
 	};
 	return moduleData;
+}
+
+/** Mock registry growth always authors the matching admission data before the app reads it. */
+export function appendFixtureModules(
+	detail: HarnessRevision,
+	units: HarnessUnit[]
+): HarnessRevision {
+	if (!detail.moduleData?.committed)
+		throw new Error('Synthetic module fixtures require admitted seed data.');
+	detail.registry.units.push(...units);
+	const registry = {
+		...detail.registry,
+		graph: {
+			...detail.registry.graph,
+			nodes: [
+				...detail.registry.units.map((unit) => ({ id: `unit:${unit.id}`, kind: 'unit' as const })),
+				...detail.registry.scenarios.map((scenario) => ({
+					id: `scenario:${scenario.id}`,
+					kind: 'scenario' as const
+				}))
+			]
+		}
+	};
+	detail.registry = registry;
+	detail.moduleData.relationships = moduleRelationships(registry);
+	detail.moduleData.modules.push(
+		...units
+			.filter((unit) => unit.status === 'active')
+			.map((unit) => ({
+				id: unit.id,
+				kind: unit.kind,
+				category: explorerCategory(unit),
+				issues: []
+			}))
+	);
+	return detail;
+}
+
+/** A synthetic database-model wrapper for the standard category and measurement matrix. */
+export function addAcceptanceModel(detail: HarnessRevision): HarnessRevision {
+	const template = detail.registry.units.find((unit) => unit.kind === 'config')!;
+	const id = 'model.acceptance-payload';
+	return appendFixtureModules(detail, [
+		{
+			...template,
+			id,
+			kind: 'model',
+			title: 'Acceptance payload',
+			catalog: { visibility: 'public' },
+			responsibility: 'Synthetic model input for category acceptance; it describes no real source.',
+			modelDefinitions: [modelDefinition('AcceptancePayload', template.owns.source[0])],
+			sourceMeasurements: template.sourceMeasurements?.map((item) => ({
+				...item,
+				unit: id,
+				method:
+					'Synthetic model observations copied from the config fixture for category acceptance.'
+			}))
+		}
+	]);
 }

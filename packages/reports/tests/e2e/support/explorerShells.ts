@@ -23,7 +23,7 @@ const active = async (page: Page, name: string) => {
  * Components address of it; and the commit where it was still recorded as a component.
  */
 export const shellStates: Record<string, (page: Page) => Promise<void>> = {
-	async shells(page) {
+	async layouts(page) {
 		await page.goto(at(shellsBranch, commits.shelled, 'layouts'));
 		await titled(page, 'Layouts');
 		await listed(page);
@@ -35,7 +35,7 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 	},
 	// Its overview, what it uses and that nothing uses it yet.
 	async shell(page) {
-		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}`));
+		await page.goto(at(shellsBranch, commits.shelled, `layouts/${unit}`));
 		await titled(page, 'TitleFrame');
 		await expect(page.getByRole('tab', { name: 'Overview', exact: true })).toHaveAttribute(
 			'aria-selected',
@@ -45,19 +45,19 @@ export const shellStates: Record<string, (page: Page) => Promise<void>> = {
 		await expect(content(page).getByRole('region', { name: 'Uses', exact: true })).toHaveCount(0);
 	},
 	async 'shell-details'(page) {
-		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}/details`));
+		await page.goto(at(shellsBranch, commits.shelled, `layouts/${unit}/details`));
 		await expect(
 			content(page).getByRole('heading', { name: 'Contract', exact: true })
 		).toBeVisible();
 	},
 	async 'shell-history'(page) {
-		await page.goto(at(shellsBranch, commits.shelled, `shells/${unit}/history`));
+		await page.goto(at(shellsBranch, commits.shelled, `layouts/${unit}/history`));
 		await titled(page, 'TitleFrame');
 	},
 	// The address of a component leads a shell to Shells, with its branch, commit, section and tab.
 	async 'shell-redirect'(page) {
 		await page.goto(at(shellsBranch, commits.shelled, `components/${unit}/details?tab=source`));
-		await expectPath(page, at(shellsBranch, commits.shelled, `shells/${unit}?tab=source`));
+		await expectPath(page, at(shellsBranch, commits.shelled, `layouts/${unit}?tab=source`));
 		await expect(content(page).getByText('src/components/TitleFrame.svelte').first()).toBeVisible();
 		await active(page, 'Layouts');
 	},

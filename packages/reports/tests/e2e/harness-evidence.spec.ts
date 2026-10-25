@@ -32,7 +32,9 @@ const registry = readdirSync('../../specification/units').map(
 	(file) => JSON.parse(readFileSync(`../../specification/units/${file}`, 'utf8')) as HarnessUnit
 );
 const visual = new Set(
-	registry.filter(({ kind }) => ['page', 'shell', 'component'].includes(kind)).map(({ id }) => id)
+	registry
+		.filter(({ kind }) => ['page', 'shell', 'layout', 'component'].includes(kind))
+		.map(({ id }) => id)
 );
 /** What each state showed: the units drawn in its window, one list per viewport. */
 const shown = new Map<string, string[][]>();

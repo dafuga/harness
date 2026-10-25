@@ -183,9 +183,10 @@ export async function captureSections(
 	name: string,
 	checkpoint: (page: Page, name: string) => Promise<void>
 ): Promise<void> {
-	const tabs = await page.getByRole('tablist').getByRole('tab').allTextContents();
+	const sections = page.getByRole('main').getByRole('tablist');
+	const tabs = await sections.getByRole('tab').allTextContents();
 	for (const label of tabs.filter((label) => label.trim() !== 'Overview')) {
-		await page.getByRole('tab', { name: label.trim(), exact: true }).click();
+		await sections.getByRole('tab', { name: label.trim(), exact: true }).click();
 		await checkpoint(page, name + '-' + label.trim().toLowerCase().replaceAll(' ', '-'));
 	}
 }
