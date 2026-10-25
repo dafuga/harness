@@ -67635,365 +67635,397 @@
 			"dependencies": [],
 			"helperContracts": [
 				{
-					"name": "toKebabCase",
-					"source": "src/helpers/strings/case.ts",
+					"consumers": [
+						{
+							"symbol": "named",
+							"unit": "function.unit-identity"
+						},
+						{
+							"symbol": "validateRouteName",
+							"unit": "function.validation"
+						},
+						{
+							"symbol": "apiFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "componentFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "e2eFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "hookFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "layoutFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "partialFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "storeFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "viewFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "checkpointFiles",
+							"unit": "template.game-pieces"
+						},
+						{
+							"symbol": "gameViewFiles",
+							"unit": "template.game-pieces"
+						},
+						{
+							"symbol": "mechanicFiles",
+							"unit": "template.game-pieces"
+						},
+						{
+							"symbol": "modelFiles",
+							"unit": "template.model"
+						},
+						{
+							"symbol": "adapterFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "classFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "controllerFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "policyFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "repositoryFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "seederFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "serializerFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "utilFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "validatorFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "featureFiles",
+							"unit": "template.pieces"
+						},
+						{
+							"symbol": "migrationFiles",
+							"unit": "template.pieces"
+						},
+						{
+							"symbol": "channelFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "concernFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "configFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "formFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "helperFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "initializerFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "mailerFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "middlewareFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"unit": "workflow.export-plans"
+						}
+					],
+					"examples": [
+						{
+							"call": "toKebabCase(\"Hello_world value\")",
+							"input": ["Hello_world value"],
+							"name": "Normalize a mixed identifier",
+							"output": "hello-world-value"
+						}
+					],
 					"inputs": [
 						{
 							"name": "toKebabCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toKebabCase",
 					"output": "string",
 					"pure": true,
+					"source": "src/helpers/strings/case.ts"
+				},
+				{
 					"consumers": [
 						{
-							"unit": "function.unit-identity",
-							"symbol": "named"
+							"symbol": "prefixedRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "function.validation",
-							"symbol": "validateRouteName"
+							"symbol": "seedRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "apiFiles"
+							"symbol": "storeRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "componentFiles"
+							"symbol": "toCamelCase",
+							"unit": "helper.strings-case"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "e2eFiles"
+							"symbol": "componentFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "hookFiles"
+							"symbol": "partialFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "layoutFiles"
+							"symbol": "storeFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "partialFiles"
+							"symbol": "titleName",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "storeFiles"
+							"symbol": "checkpointFiles",
+							"unit": "template.game-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "viewFiles"
+							"symbol": "gameViewFiles",
+							"unit": "template.game-pieces"
 						},
 						{
-							"unit": "template.game-pieces",
-							"symbol": "checkpointFiles"
+							"symbol": "modelFiles",
+							"unit": "template.model"
 						},
 						{
-							"unit": "template.game-pieces",
-							"symbol": "gameViewFiles"
+							"symbol": "adapterFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.game-pieces",
-							"symbol": "mechanicFiles"
+							"symbol": "classFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.model",
-							"symbol": "modelFiles"
+							"symbol": "controllerFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "adapterFiles"
+							"symbol": "policyFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "classFiles"
+							"symbol": "repositoryFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "controllerFiles"
+							"symbol": "seederFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "policyFiles"
+							"symbol": "serializerFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "repositoryFiles"
+							"symbol": "validatorFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "seederFiles"
+							"symbol": "featureFiles",
+							"unit": "template.pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "serializerFiles"
+							"symbol": "channelFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "utilFiles"
+							"symbol": "concernFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "validatorFiles"
+							"symbol": "formFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.pieces",
-							"symbol": "featureFiles"
+							"symbol": "initializerFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.pieces",
-							"symbol": "migrationFiles"
+							"symbol": "mailerFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.rails-pieces",
-							"symbol": "channelFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "concernFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "configFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "formFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "helperFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "initializerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "mailerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "middlewareFiles"
+							"symbol": "middlewareFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
 							"unit": "workflow.export-plans"
 						}
-					]
-				},
-				{
-					"name": "toPascalCase",
-					"source": "src/helpers/strings/case.ts",
+					],
+					"examples": [
+						{
+							"call": "toPascalCase(\"Hello_world value\")",
+							"input": ["Hello_world value"],
+							"name": "Normalize a mixed identifier",
+							"output": "HelloWorldValue"
+						}
+					],
 					"inputs": [
 						{
 							"name": "toPascalCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toPascalCase",
 					"output": "string",
 					"pure": true,
+					"source": "src/helpers/strings/case.ts"
+				},
+				{
 					"consumers": [
 						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "prefixedRule"
+							"symbol": "camelFunctionRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "seedRule"
+							"symbol": "hookRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "storeRule"
+							"symbol": "parseField",
+							"unit": "function.fields"
 						},
 						{
-							"unit": "helper.strings-case",
-							"symbol": "toCamelCase"
+							"symbol": "validateExportName",
+							"unit": "function.validation"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "componentFiles"
+							"symbol": "hookFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "partialFiles"
+							"symbol": "storeFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "storeFiles"
+							"symbol": "checkpointFiles",
+							"unit": "template.game-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "titleName"
+							"symbol": "gameViewFiles",
+							"unit": "template.game-pieces"
 						},
 						{
-							"unit": "template.game-pieces",
-							"symbol": "checkpointFiles"
+							"symbol": "mechanicFiles",
+							"unit": "template.game-pieces"
 						},
 						{
-							"unit": "template.game-pieces",
-							"symbol": "gameViewFiles"
+							"symbol": "utilFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.model",
-							"symbol": "modelFiles"
+							"symbol": "configFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "adapterFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "classFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "controllerFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "policyFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "repositoryFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "seederFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "serializerFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "validatorFiles"
-						},
-						{
-							"unit": "template.pieces",
-							"symbol": "featureFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "channelFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "concernFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "formFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "initializerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "mailerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "middlewareFiles"
+							"symbol": "helperFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
 							"unit": "workflow.export-plans"
 						}
-					]
-				},
-				{
-					"name": "toCamelCase",
-					"source": "src/helpers/strings/case.ts",
+					],
+					"examples": [
+						{
+							"call": "toCamelCase(\"Hello_world value\")",
+							"input": ["Hello_world value"],
+							"name": "Normalize a mixed identifier",
+							"output": "helloWorldValue"
+						}
+					],
 					"inputs": [
 						{
 							"name": "toCamelCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toCamelCase",
 					"output": "string",
 					"pure": true,
-					"consumers": [
-						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "camelFunctionRule"
-						},
-						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "hookRule"
-						},
-						{
-							"unit": "function.fields",
-							"symbol": "parseField"
-						},
-						{
-							"unit": "function.validation",
-							"symbol": "validateExportName"
-						},
-						{
-							"unit": "template.app-pieces",
-							"symbol": "hookFiles"
-						},
-						{
-							"unit": "template.app-pieces",
-							"symbol": "storeFiles"
-						},
-						{
-							"unit": "template.game-pieces",
-							"symbol": "checkpointFiles"
-						},
-						{
-							"unit": "template.game-pieces",
-							"symbol": "gameViewFiles"
-						},
-						{
-							"unit": "template.game-pieces",
-							"symbol": "mechanicFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "utilFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "configFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "helperFiles"
-						},
-						{
-							"unit": "workflow.export-plans"
-						}
-					]
+					"source": "src/helpers/strings/case.ts"
 				},
 				{
-					"name": "toSnakeCase",
-					"source": "src/helpers/strings/case.ts",
+					"consumers": [
+						{
+							"symbol": "parseField",
+							"unit": "function.fields"
+						},
+						{
+							"symbol": "sqliteColumn",
+							"unit": "function.sqlite-table-sql"
+						},
+						{
+							"symbol": "modelFiles",
+							"unit": "template.model"
+						}
+					],
+					"examples": [
+						{
+							"call": "toSnakeCase(\"Hello_world value\")",
+							"input": ["Hello_world value"],
+							"name": "Normalize a mixed identifier",
+							"output": "hello_world_value"
+						}
+					],
 					"inputs": [
 						{
 							"name": "toSnakeCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toSnakeCase",
 					"output": "string",
 					"pure": true,
-					"consumers": [
-						{
-							"unit": "function.fields",
-							"symbol": "parseField"
-						},
-						{
-							"unit": "function.sqlite-table-sql",
-							"symbol": "sqliteColumn"
-						},
-						{
-							"unit": "template.model",
-							"symbol": "modelFiles"
-						}
-					]
+					"source": "src/helpers/strings/case.ts"
 				}
 			],
 			"runtime": {
@@ -166459,7 +166491,416 @@
 			}
 		}
 	],
-	"reviews": [],
+	"reviews": [
+		{
+			"commit": "4d1a5f87e492b6a0e063b947ef39c6b560aa230e",
+			"digest": "4e8f1a166f83f4d4c6056c831a4f6a3170c921ae9f1605153551ef816e94ac54",
+			"files": {
+				"src/helpers/strings/case.ts": "b24f3e1a239045ddda1bb7c00e479d9b50f5e8a2"
+			},
+			"metadata": {
+				"helperContracts": [
+					{
+						"consumers": [
+							{
+								"symbol": "named",
+								"unit": "function.unit-identity"
+							},
+							{
+								"symbol": "validateRouteName",
+								"unit": "function.validation"
+							},
+							{
+								"symbol": "apiFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "componentFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "e2eFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "hookFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "layoutFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "partialFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "storeFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "viewFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "checkpointFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "gameViewFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "mechanicFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "modelFiles",
+								"unit": "template.model"
+							},
+							{
+								"symbol": "adapterFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "classFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "controllerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "policyFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "repositoryFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "seederFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "serializerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "utilFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "validatorFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "featureFiles",
+								"unit": "template.pieces"
+							},
+							{
+								"symbol": "migrationFiles",
+								"unit": "template.pieces"
+							},
+							{
+								"symbol": "channelFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "concernFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "configFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "formFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "helperFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "initializerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "mailerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "middlewareFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"unit": "workflow.export-plans"
+							}
+						],
+						"examples": [
+							{
+								"call": "toKebabCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "hello-world-value"
+							}
+						],
+						"inputs": [
+							{
+								"name": "toKebabCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toKebabCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/helpers/strings/case.ts"
+					},
+					{
+						"consumers": [
+							{
+								"symbol": "prefixedRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "seedRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "storeRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "toCamelCase",
+								"unit": "helper.strings-case"
+							},
+							{
+								"symbol": "componentFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "partialFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "storeFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "titleName",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "checkpointFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "gameViewFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "modelFiles",
+								"unit": "template.model"
+							},
+							{
+								"symbol": "adapterFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "classFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "controllerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "policyFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "repositoryFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "seederFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "serializerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "validatorFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "featureFiles",
+								"unit": "template.pieces"
+							},
+							{
+								"symbol": "channelFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "concernFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "formFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "initializerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "mailerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "middlewareFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"unit": "workflow.export-plans"
+							}
+						],
+						"examples": [
+							{
+								"call": "toPascalCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "HelloWorldValue"
+							}
+						],
+						"inputs": [
+							{
+								"name": "toPascalCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toPascalCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/helpers/strings/case.ts"
+					},
+					{
+						"consumers": [
+							{
+								"symbol": "camelFunctionRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "hookRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "parseField",
+								"unit": "function.fields"
+							},
+							{
+								"symbol": "validateExportName",
+								"unit": "function.validation"
+							},
+							{
+								"symbol": "hookFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "storeFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "checkpointFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "gameViewFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "mechanicFiles",
+								"unit": "template.game-pieces"
+							},
+							{
+								"symbol": "utilFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "configFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "helperFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"unit": "workflow.export-plans"
+							}
+						],
+						"examples": [
+							{
+								"call": "toCamelCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "helloWorldValue"
+							}
+						],
+						"inputs": [
+							{
+								"name": "toCamelCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toCamelCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/helpers/strings/case.ts"
+					},
+					{
+						"consumers": [
+							{
+								"symbol": "parseField",
+								"unit": "function.fields"
+							},
+							{
+								"symbol": "sqliteColumn",
+								"unit": "function.sqlite-table-sql"
+							},
+							{
+								"symbol": "modelFiles",
+								"unit": "template.model"
+							}
+						],
+						"examples": [
+							{
+								"call": "toSnakeCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "hello_world_value"
+							}
+						],
+						"inputs": [
+							{
+								"name": "toSnakeCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toSnakeCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/helpers/strings/case.ts"
+					}
+				]
+			},
+			"reason": "Helper examples executed against an identical source blob in the historical source review receipt; preserve the actual signature, source and consumers at this revision.",
+			"schemaVersion": 1,
+			"tree": "3b76498c30a66b2d7adb0683442c408e6ca76d08",
+			"unit": "helper.strings-case"
+		}
+	],
 	"registry": {
 		"available": true,
 		"units": [
@@ -303635,6 +304076,14 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/helpers/strings/case.ts",
+						"examples": [
+							{
+								"call": "toKebabCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "hello-world-value"
+							}
+						],
 						"group": {
 							"id": "strings",
 							"title": "Strings"
@@ -303789,6 +304238,14 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/helpers/strings/case.ts",
+						"examples": [
+							{
+								"call": "toPascalCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "HelloWorldValue"
+							}
+						],
 						"group": {
 							"id": "strings",
 							"title": "Strings"
@@ -303915,6 +304372,14 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/helpers/strings/case.ts",
+						"examples": [
+							{
+								"call": "toCamelCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "helloWorldValue"
+							}
+						],
 						"group": {
 							"id": "strings",
 							"title": "Strings"
@@ -303985,6 +304450,14 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/helpers/strings/case.ts",
+						"examples": [
+							{
+								"call": "toSnakeCase(\"Hello_world value\")",
+								"input": ["Hello_world value"],
+								"name": "Normalize a mixed identifier",
+								"output": "hello_world_value"
+							}
+						],
 						"group": {
 							"id": "strings",
 							"title": "Strings"
@@ -304019,7 +304492,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "751df9d3f1f46204",
+				"version": "ab62db6676951fdf",
 				"group": {
 					"id": "strings",
 					"title": "Strings"
@@ -569447,7 +569920,7 @@
 		},
 		"helper.strings-case": {
 			"unit": "helper.strings-case",
-			"manifest": "f8112b33112ba313f2bcac1ec61fcfcb8228531856778fe7458281e278a8ee88",
+			"manifest": "5afcc9be77602ae28ff86b052f511fa7ecbcfd69fca1299379bd79058b89af16",
 			"source": "30aeca12116490547de9d8050d6ae39f3f75f1c6736711dbbf65c62437f8be90",
 			"contract": "4f9717c176f105c3e118f07997b17a5a12f9ad690ef1dd96c5d1945a542fa923",
 			"runtime": "9d299e9eee45fceee9202957111077ac48f60bcd9d626edf9d779f6107d15df5",
@@ -803601,11 +804074,7 @@
 		"service.verification-evidence-test-discovery: manifest Unrecognized key: \"testing\"",
 		"service.verification-evidence-test-expectation: manifest Unrecognized key: \"testing\"",
 		"validator.verification-evidence-test-case: manifest Unrecognized key: \"testing\"",
-		"generated-test-artifacts: tests.0 Unrecognized key: \"cases\"",
-		"helper.strings-case: toKebabCase requires at least one usage example with call, arguments and expected result",
-		"helper.strings-case: toPascalCase requires at least one usage example with call, arguments and expected result",
-		"helper.strings-case: toCamelCase requires at least one usage example with call, arguments and expected result",
-		"helper.strings-case: toSnakeCase requires at least one usage example with call, arguments and expected result"
+		"generated-test-artifacts: tests.0 Unrecognized key: \"cases\""
 	],
 	"modules": [
 		{
@@ -816111,48 +816580,7 @@
 			"id": "helper.strings-case",
 			"kind": "helper",
 			"category": "functions",
-			"issues": [
-				{
-					"field": "helpers.toKebabCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.toPascalCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.toCamelCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.toSnakeCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "registry",
-					"message": "helper.strings-case: toKebabCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "helper.strings-case: toPascalCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "helper.strings-case: toCamelCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "helper.strings-case: toSnakeCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "hub.adapter.d1-auth-store",
@@ -829499,5 +829927,5 @@
 		}
 	],
 	"issues": ["generated-test-artifacts: tests.0 Unrecognized key: \"cases\""],
-	"digest": "c2a68ec84039b0b68aaf978effe39b62ce8feb16f1c684ecfe66fc779dd82222"
+	"digest": "877512605e177d0778f490d901d68cc0d185f9e42a013dc684f4f180007d8971"
 }
