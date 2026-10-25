@@ -1,0 +1,636 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.validator.wire-message",
+	"kind": "validator",
+	"title": "WireMessageValidator",
+	"responsibility": "Owns the WireMessageValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/validators/WireMessageValidator.ts",
+			"packages/remote/src/validators/networking-security/WireMessageValidator.ts",
+			"packages/remote/src/validators/networking-security/WireMessageValidator.types.ts"
+		],
+		"symbols": [
+			"WireMessageValidator",
+			"WireMessageValidator",
+			"WireMessageValidator.request",
+			"WireMessageValidator.message",
+			"Fields"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "WireMessageValidator.request.text",
+				"type": "string"
+			},
+			{
+				"name": "WireMessageValidator.request.limit",
+				"type": "number"
+			},
+			{
+				"name": "WireMessageValidator.message.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "WireMessageValidator.request",
+				"type": "WireRequest"
+			},
+			{
+				"name": "WireMessageValidator.message",
+				"type": "WireResponse | WireEvent"
+			}
+		],
+		"errors": [
+			{
+				"name": "RemoteFailure",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/validators/networking-security/WireMessageValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/validators/networking-security/WireMessageValidator.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "request-initialized",
+				"state": "initialized",
+				"subject": "WireMessageValidator.request",
+				"test": {
+					"file": "packages/remote/test/validators/wire-message.test.ts",
+					"title": "request admits only listed request envelopes and refuses the rest by code, keeping any usable request id"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"rows": [
+							{
+								"name": "a listed method with an object input is returned as the request",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"value": {
+										"type": "request",
+										"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+										"method": "snapshot",
+										"input": { "projectId": "p" }
+									}
+								}
+							},
+							{
+								"name": "method shell.run is not listed",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "shell.run",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "unknown-method",
+										"requestId": "8775318f-d765-4e78-9d40-6cb92e1f6b11"
+									}
+								}
+							},
+							{
+								"name": "method fs.read is not listed",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "fs.read",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "unknown-method",
+										"requestId": "8775318f-d765-4e78-9d40-6cb92e1f6b11"
+									}
+								}
+							},
+							{
+								"name": "method eval is not listed",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "eval",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "unknown-method",
+										"requestId": "8775318f-d765-4e78-9d40-6cb92e1f6b11"
+									}
+								}
+							},
+							{
+								"name": "method __proto__ is not listed",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "__proto__",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "unknown-method",
+										"requestId": "8775318f-d765-4e78-9d40-6cb92e1f6b11"
+									}
+								}
+							},
+							{
+								"name": "method constructor is not listed",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "constructor",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "unknown-method",
+										"requestId": "8775318f-d765-4e78-9d40-6cb92e1f6b11"
+									}
+								}
+							},
+							{
+								"name": "method toString is not listed",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "toString",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "unknown-method",
+										"requestId": "8775318f-d765-4e78-9d40-6cb92e1f6b11"
+									}
+								}
+							},
+							{
+								"name": "text that is not JSON has no request id",
+								"input": "not json",
+								"expected": {
+									"error": {
+										"code": "invalid-message",
+										"requestId": null
+									}
+								}
+							},
+							{
+								"name": "a JSON array is not an envelope",
+								"input": "[]",
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "JSON null is not an envelope",
+								"input": "null",
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a JSON string is not an envelope",
+								"input": "\"request\"",
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an envelope without input is invalid",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot"
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an array input is invalid",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot",
+									"input": []
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a null input is invalid",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot",
+									"input": null
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a text input is invalid",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot",
+									"input": "x"
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a short request id is invalid",
+								"input": {
+									"type": "request",
+									"id": "1",
+									"method": "snapshot",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an uppercase request id is invalid",
+								"input": {
+									"type": "request",
+									"id": "8775318F-D765-4E78-9D40-6CB92E1F6B11",
+									"method": "snapshot",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a type other than request is invalid",
+								"input": {
+									"type": "call",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a method that is not text is invalid",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": 5,
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an extra field is invalid but keeps the usable request id",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot",
+									"input": { "projectId": "p" },
+									"extra": 1
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message",
+										"requestId": "8775318f-d765-4e78-9d40-6cb92e1f6b11"
+									}
+								}
+							},
+							{
+								"name": "an unusable request id is invalid with no request id",
+								"input": {
+									"type": "request",
+									"id": "nope",
+									"method": "snapshot",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message",
+										"requestId": null
+									}
+								}
+							},
+							{
+								"name": "ASCII text above the request byte bound is too large",
+								"input": { "builder": "asciiTextAboveRequestBytes" },
+								"expected": {
+									"error": {
+										"code": "too-large"
+									}
+								}
+							},
+							{
+								"name": "multibyte text under the character bound but over the byte bound is too large",
+								"input": { "builder": "multibyteTextAboveRequestBytes" },
+								"expected": {
+									"error": {
+										"code": "too-large"
+									}
+								}
+							}
+						]
+					}
+				},
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "message-initialized",
+				"state": "initialized",
+				"subject": "WireMessageValidator.message",
+				"test": {
+					"file": "packages/remote/test/validators/wire-message.test.ts",
+					"title": "message admits only response and event envelopes and refuses every other message as invalid"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"rows": [
+							{
+								"name": "an ok response is returned unchanged",
+								"input": {
+									"type": "response",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"ok": true,
+									"value": { "a": 1 }
+								},
+								"expected": {
+									"value": {
+										"type": "response",
+										"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+										"ok": true,
+										"value": { "a": 1 }
+									}
+								}
+							},
+							{
+								"name": "a refused response with a known code is returned unchanged",
+								"input": {
+									"type": "response",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"ok": false,
+									"error": { "code": "busy", "message": "Busy" }
+								},
+								"expected": {
+									"value": {
+										"type": "response",
+										"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+										"ok": false,
+										"error": { "code": "busy", "message": "Busy" }
+									}
+								}
+							},
+							{
+								"name": "a run event is returned unchanged",
+								"input": {
+									"type": "event",
+									"channel": "run",
+									"sequence": 3,
+									"value": { "kind": "cancelled" }
+								},
+								"expected": {
+									"value": {
+										"type": "event",
+										"channel": "run",
+										"sequence": 3,
+										"value": { "kind": "cancelled" }
+									}
+								}
+							},
+							{
+								"name": "a request is not a client message",
+								"input": {
+									"type": "request",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"method": "snapshot",
+									"input": { "projectId": "p" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an event on an unlisted channel is invalid",
+								"input": {
+									"type": "event",
+									"channel": "shell",
+									"sequence": 3,
+									"value": { "kind": "cancelled" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an event with sequence zero is invalid",
+								"input": {
+									"type": "event",
+									"channel": "run",
+									"sequence": 0,
+									"value": { "kind": "cancelled" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an event with a fractional sequence is invalid",
+								"input": {
+									"type": "event",
+									"channel": "run",
+									"sequence": 1.5,
+									"value": { "kind": "cancelled" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an event with a text sequence is invalid",
+								"input": {
+									"type": "event",
+									"channel": "run",
+									"sequence": "3",
+									"value": { "kind": "cancelled" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an event with an extra field is invalid",
+								"input": {
+									"type": "event",
+									"channel": "run",
+									"sequence": 3,
+									"value": { "kind": "cancelled" },
+									"extra": true
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a refusal with an unknown code is invalid",
+								"input": {
+									"type": "response",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"ok": false,
+									"error": { "code": "made-up", "message": "x" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a refusal without its message is invalid",
+								"input": {
+									"type": "response",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"ok": false,
+									"error": { "code": "busy" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "an ok response that also carries an error is invalid",
+								"input": {
+									"type": "response",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"ok": true,
+									"value": { "a": 1 },
+									"error": { "code": "busy", "message": "x" }
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "a response whose ok flag is not boolean is invalid",
+								"input": {
+									"type": "response",
+									"id": "8775318f-d765-4e78-9d40-6cb92e1f6b11",
+									"ok": "yes",
+									"value": 1
+								},
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							},
+							{
+								"name": "text that is not JSON is invalid",
+								"input": "not json",
+								"expected": {
+									"error": {
+										"code": "invalid-message"
+									}
+								}
+							}
+						]
+					}
+				},
+				"errors": ["RemoteFailure"]
+			}
+		]
+	}
+}
