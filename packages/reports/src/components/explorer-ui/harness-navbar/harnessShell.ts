@@ -152,7 +152,7 @@ function codeItems(input: HarnessNavbarInput): HarnessShellCategory[] {
 		input.modules?.modules ??
 		standardCodeModules.map((definition) => ({ definition, installed: true }));
 	return source
-		.filter((entry) => entry.installed)
+		.filter((entry) => entry.installed && !entry.definition.testing)
 		.sort((a, b) => (a.definition.order ?? 100) - (b.definition.order ?? 100))
 		.flatMap((entry) =>
 			entry.definition.resources.map((resource) => {

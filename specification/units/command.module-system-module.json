@@ -52,6 +52,11 @@
 			"unit": "service.module-system-module-resource",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-testing-plugin",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

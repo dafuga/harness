@@ -56,6 +56,8 @@ export const moduleDefinitionSchema = z
 		description: text,
 		appOnly: z.boolean().optional(),
 		includedByDefault: z.boolean().optional(),
+		visibility: z.enum(['internal', 'plugin']).optional(),
+		testing: z.strictObject({ headless: z.literal(true), script: text }).optional(),
 		order: z.number().int().min(0).max(10000).optional(),
 		packageScripts: z.record(z.string(), text).optional(),
 		instructions: z.array(text).min(1),

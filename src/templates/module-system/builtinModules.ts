@@ -1,3 +1,4 @@
+import { testingPlugins } from './testingPlugins';
 import { standardCodeModules } from './standardCodeModules';
 import { rustWasmModule } from './rustWasmModule';
 import { rustBackendModule } from './rustBackendModule';
@@ -8,6 +9,7 @@ import { moduleDefinitionSchema } from '../../services/module-system/moduleDefin
 /** Bundled capability definitions use exactly the same admission contract as project modules. */
 export const builtinModules = [
 	...standardCodeModules,
+	...testingPlugins,
 	emailModule,
 	offlineModule,
 	rustWasmModule,

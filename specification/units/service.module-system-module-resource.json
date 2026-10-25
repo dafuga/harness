@@ -79,6 +79,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.module-system-module-install",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.module-system-module-package",
 			"via": "import",
 			"origin": "derived"

@@ -12,8 +12,12 @@ export class ModuleInstallService {
 		if (catalog.gaps.length) throw new Error(catalog.gaps.join('\n'));
 		const entry = catalog.modules.find((item) => item.definition.id === id);
 		if (!entry) throw new Error(`Unknown module: ${id}`);
-		if (entry.installed) return [];
 		const state = await catalogService.state(moduleTree(root));
+		if (
+			entry.installed &&
+			(!entry.definition.testing || state.modules.some((item) => item.definition.id === id))
+		)
+			return [];
 		state.modules.push({ definition: entry.definition, source: entry.source });
 		const instructions = entry.definition.instructions.map((line) => `- ${line}`).join('\n');
 		const files = [
