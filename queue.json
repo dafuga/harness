@@ -3458,8 +3458,20 @@
 			},
 			"sourceCommit": "96a034905fd30aa4f0d95385266f39e831f8d152",
 			"contractHash": "601f94368cc49272b527705ed29b261c2114869a2b6c30c774f4fbf2da2cc73e",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "4ceb282f-7be6-4a74-b85a-e79f6e05cfed",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Primary reviewed and integrated the proposal as twenty canonical method/state cases, combining the duplicate scanned/initialized error case, restoring actual requested-state setup and retaining original relay/crypto assertions. Main source commits 2dd571528d through d529e6b453 own integration and split fixtures. On harbor-mbp-2 at d529e6b453, pairing twenty plus fresh-instance RemoteInput six cases pass; affected lint is clean. Raw proposal twenty-one-case registration was not accepted verbatim. Requested gpt-5.6-luna/max completed through Codex but reportedModel is null, so backend execution identity remains unverified.",
+					"at": "2026-10-25T17:45:20.677Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				}
+			],
 			"createdAt": "2026-10-25T16:27:03.119Z",
 			"claim": {
 				"worker": "device-pairing-methods",
