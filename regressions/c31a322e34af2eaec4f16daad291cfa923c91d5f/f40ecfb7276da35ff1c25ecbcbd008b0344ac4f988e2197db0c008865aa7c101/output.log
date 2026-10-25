@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-pexwFM
+
+ ✓ test/module-data.e2e.test.ts (3 tests) 28329ms
+   ✓ validate persists revision-bound module gaps, filters them and invalidates cached searches  17969ms
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  4960ms
+   ✓ historical helper layout does not masquerade as missing module metadata  5395ms
+ ✓ test/units-policy.e2e.test.ts (5 tests) 39214ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  8105ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  6905ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  3605ms
+   ✓ public configs require real source controls and retain their reviewed declarations  13650ms
+   ✓ source-bound reviews repair historical default runtime targets without changing source commits  6947ms
+
+ Test Files  2 passed (2)
+      Tests  8 passed (8)
+   Start at  12:41:19
+   Duration  70.82s (transform 145ms, setup 170ms, collect 98ms, tests 67.54s, environment 0ms, prepare 62ms)
+
