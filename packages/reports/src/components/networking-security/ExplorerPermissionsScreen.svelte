@@ -73,7 +73,7 @@
 {#snippet data(rows: DataGrant[], label: string)}
 	{#if rows.length}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable table must be keyboard reachable.) -->
-		<hx-div class="ex-scroll" tabindex="0" role="region" aria-label={label}>
+		<hx-div class="ex-scroll permission-data" tabindex="0" role="region" aria-label={label}>
 			<hx-table class="ex-table">
 				<hx-thead>
 					<hx-tr>
@@ -207,3 +207,8 @@
 		{/snippet}
 	</ExplorerFrame>
 {/if}
+
+<style>
+ .permission-data :global(table) { table-layout: auto; min-width: max-content; }
+ .permission-data :global(code) { white-space: nowrap; }
+</style>
