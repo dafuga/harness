@@ -1059,6 +1059,59 @@
 			"createdAt": "2026-10-25T12:57:08.097Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.package-scaffolds",
+			"title": "package scaffolds",
+			"moduleGoal": "Implement the requested standardized test contracts without dropping assertions",
+			"verificationFiles": ["test/pieces.test.ts"],
+			"instructions": "Work only in allowed files. Do not delegate, commit, push, publish, access credentials or run E2Es/broad checks. Preserve unrelated changes. Migrate generated function/class tests in packagePieces to meaningful authored examples or method/initialization-state tests, including declared invalid inputs. Remove generated tautological type/instance/path smoke assertions. Preserve APIs and meaningful assertions; do not add arbitrary product behavior just to invent a test case. Keep emitted code, tests and expected comments coherent, with fixed test counts for future bug fixes. No E2Es or broad checks. Extend existing generator assertions without new declarations.",
+			"wantedContract": {
+				"responsibility": "Migrate generated function/class tests in packagePieces to meaningful authored examples or method/initialization-state tests, including declared invalid inputs. Remove generated tautological type/instance/path smoke assertions. Preserve APIs and meaningful assertions; do not add arbitrary product behavior just to invent a test case. Keep emitted code, tests and expected comments coherent, with fixed test counts for future bug fixes. No E2Es or broad checks. Extend existing generator assertions without new declarations.",
+				"inputs": [
+					{
+						"name": "declared entity capabilities",
+						"type": "finite test contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standardized tests",
+						"type": "reviewable source and focused results"
+					}
+				],
+				"errors": [
+					{
+						"name": "missing coverage or baseline",
+						"type": "explicit failure"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"intelligence": "max",
+			"assignee": "contract-classes",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "template.package-pieces",
+				"goal": "Implement the requested standardized test contracts without dropping assertions",
+				"files": [
+					"src/templates/development-tooling/packagePieces.ts",
+					"src/templates/development-tooling/packagePieces.types.ts",
+					"src/templates/packagePieces.ts",
+					"test/pieces.test.ts"
+				]
+			},
+			"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
+			"contractHash": "08d9daf4772dd8718958498725f53e49516d6483dc1a8735773555bcf71e5948",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T12:57:08.789Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
