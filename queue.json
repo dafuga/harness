@@ -3807,9 +3807,19 @@
 			},
 			"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
 			"contractHash": "9aee2731de88769b388eaeed07d7195c75f65dd8901f2fba1bd2eb3fbce60434",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T17:38:42.789Z",
+			"claim": {
+				"worker": "relay-pairing-methods",
+				"token": "4675affe-a30b-4ac9-8abc-700ed826830c",
+				"startedAt": "2026-10-25T17:38:50.783Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 24317,
+					"startedAt": "Sun Oct 25 17:38:50 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		},
