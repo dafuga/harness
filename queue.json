@@ -5049,8 +5049,20 @@
 			},
 			"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "1c686dc7-cd75-4f22-978a-ffbcdd60ce4b",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Haiku reported claude-haiku-5-5/max. Primary retained all diagnostics and settlement assertions, split version fixtures, corrected writer escaping, characterized getter/null admission and repaired inherited CPU/memory requests. Paired two-case green at 3d16c9ff35. Root compiler, lint, registry, audit and final 18 ownership/contract/method checks pass. Full repository migration and aggregate gates remain pending.",
+					"at": "2026-10-25T20:04:07.011Z",
+					"provider": "claude",
+					"model": "claude-haiku-5-5",
+					"intelligence": "max",
+					"reportedModel": "claude-haiku-5-5"
+				}
+			],
 			"createdAt": "2026-10-25T18:42:02.932Z",
 			"claim": {
 				"worker": "check-run-methods",
