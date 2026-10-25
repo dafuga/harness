@@ -1,6 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { open, capture, ready } from './entityPreviewPage';
 import { apiIds } from './entityApiFixtures';
+import { commits } from './entityUnits';
 const profileUnit = 'reports.component.networking-security-explorer-permissions-screen';
 /** Every permission view uses the normal host, real tab routing and the same synthetic policy. */
 export async function reviewPermissionProfiles(page: Page, viewport: string): Promise<void> {
@@ -38,6 +39,29 @@ export async function reviewPermissionProfiles(page: Page, viewport: string): Pr
 			await expect(page.locator('.ex-content')).not.toContainText('All accounts');
 		await page.locator('a[href$="/permissions"]').first().click();
 	}
+	await reviewHistoricalPermissions(page, viewport);
 	await open(page, { category: 'apis', entity: apiIds.orders }, 'apis');
 	await ready(page);
+}
+
+/** Switching revisions never borrows a profile or grants from the later source. */
+async function reviewHistoricalPermissions(page: Page, viewport: string): Promise<void> {
+	await page.locator('a[href$="/permissions/member"]').first().click();
+	await expect(page.getByRole('heading', { level: 1, name: 'Member', exact: true })).toBeVisible();
+	await page.getByRole('combobox', { name: 'Commit', exact: true }).selectOption(commits.first);
+	await expect(
+		page.getByRole('heading', { level: 1, name: 'Profile not found', exact: true })
+	).toBeVisible();
+	await expect(page.locator('.ex-content')).not.toContainText('Own account only');
+	await expect(page.getByRole('table')).toHaveCount(0);
+	await page.reload();
+	await ready(page);
+	await capture(page, `permission-profile-missing-${viewport}`, [profileUnit]);
+	await page.locator('a[href$="/permissions"]').first().click();
+	await expect(page.locator('.ex-content')).toContainText(
+		'No profiles are declared at this revision.'
+	);
+	await page.reload();
+	await ready(page);
+	await capture(page, `permission-profiles-empty-${viewport}`, [profileUnit]);
 }

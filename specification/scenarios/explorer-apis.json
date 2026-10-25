@@ -91,6 +91,18 @@
 			"title": "Administrator profile access",
 			"coverage": "required",
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "permission-profile-missing",
+			"title": "A later profile is absent from the earlier revision",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "permission-profiles-empty",
+			"title": "The selected revision declares no profiles",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
 		}
 	],
 	"viewports": [
