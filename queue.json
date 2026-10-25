@@ -1939,7 +1939,7 @@
 			},
 			"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
 			"contractHash": "40d8ffd3c7fd43b09e637fdffcf5e09c8e72f4502faa42f84c9ed51753705604",
-			"status": "running",
+			"status": "review",
 			"repairCommit": "d0630d994856070210073ff50ab0c064cb555ba2",
 			"reviews": [
 				{
@@ -1977,6 +1977,61 @@
 					}
 				}
 			],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness skill for this contract-scoped test migration. I’ll inspect the current worktree and module guidance first, then update only the allowed files, preserve public forwarding entrypoints, run the relevant unit test(s), and report count/coverage gaps without committing.\nThe required activity registration was attempted but is blocked by the checkout’s existing missing `@electron/asar` dependency during Harness CLI startup; I’ll keep that as an environment gap and continue with read-only inspection before editing.\nThe current draft already has the helper shape and 42 stable cases, but it dropped the original public/forwarding imports and lacks the requested invalid cases. I’m checking the baseline test and exact runtime error text before patching the proposal.\nBaseline execution is environment-blocked: Vitest cannot write its config temp under the parent checkout’s read-only `node_modules/.vite-temp`. Runtime probing confirmed the requested invalid branches and their current behavior; I’m now patching only the test entrypoints and proposal manifest.\nThe proposal now has 52 authored registrations and 52 stable cases (5 pure-helper examples plus 47 ordinary-function examples), including every requested invalid branch. I’m validating schema/registration and will retry the focused Vitest through a temporary empty local module-cache directory so no dependency install or source change is needed.\nFocused verification now passes: the migrated suite registers and executes all 52 authored cases through the public utility and component forwarding entrypoints. I’m removing only the temporary Vitest config/cache scaffolding, then I’ll validate manifest identity/counts and inspect the final diff for scope and formatting.\nThe focused Vitest passed, and the final diff is limited to the two allowed files. A scoped Prettier check found only the test import formatting, so I’m applying that mechanical formatting and rerunning the focused checks.\nImplemented only the allowed files:\n\n- [remote-labels.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/6f32fd11-ab74-4912-a2e7-8ec642015a10/packages/desktop/test/utils/remote-labels.test.ts:1): restored public utility and component forwarding imports.\n- [remote-label-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/6f32fd11-ab74-4912-a2e7-8ec642015a10/test/fixtures/contract-migration/remote-label-examples.json:308): added invalid/error examples and stable cases.\n\nCounts: legacy 5 tests → repair draft 42 cases → final 52 cases/registrations: 47 ordinary examples plus 5 pure-helper examples.\n\nVerification:\n\n- Focused Vitest: 52/52 passed.\n- Prettier, JSON parsing, and scoped diff checks passed.\n- No production, specification, commit, push, E2E, or broad-check changes.\n\nGaps: primary must promote the proposal into specification. Harness activity registration was blocked by missing `@electron/asar`; normal Vitest startup also hit the parent checkout’s Git/Vite permission issues.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/6f32fd11-ab74-4912-a2e7-8ec642015a10",
+				"changedFiles": [
+					"packages/desktop/test/utils/remote-labels.test.ts",
+					"test/fixtures/contract-migration/remote-label-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T15:07:23.999Z",
+				"attempt": "6f32fd11-ab74-4912-a2e7-8ec642015a10",
+				"sourceCommit": "d0630d994856070210073ff50ab0c064cb555ba2",
+				"checkpointCommit": "c2d94d27b1c00c0808386cf32491a5f859237078",
+				"usage": {
+					"inputTokens": 7092492,
+					"outputTokens": 40928,
+					"cacheReadTokens": 6927872,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 7092492,
+							"outputTokens": 40928,
+							"cacheReadTokens": 6927872,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T15:01:52.947Z",
+						"finishedAt": "2026-10-25T15:07:23.152Z"
+					}
+				]
+			},
 			"attempts": [
 				{
 					"provider": "codex",
