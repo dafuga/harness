@@ -7320,6 +7320,69 @@
 			"createdAt": "2026-10-25T23:04:36.337Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.assignment-schema-luna",
+			"title": "Declare canonical assigned file scopes on committed tasks",
+			"moduleGoal": "Persist explicit module task permissions without granting source-tree or Git metadata escape.",
+			"verificationFiles": ["test/services/agents-providers/module-task.test.ts"],
+			"instructions": "Only edit the five source paths owned by the assigned repository unit and assigned verification file. Extend ModuleTaskInput with optional assignedFiles:string[] (max64) and persist canonical immutable file scope in stored tasks. Paths are explicit repository-relative file names; reject absolute paths, dot/traversal/control chars, .git and symlink escapes; no wildcard, directory or broad prefix grants. Preserve old task compatibility and existing verificationFiles semantics: verificationFiles remain tests/fixtures, not a path-grant loophole. This schema change is followed by a separate task in ModuleTaskService to resolve/authorize assignedFiles and freeze them in task.module.files; do not edit that service now. TaskRunInput should carry the immutable allowed read/write context needed for a sandbox: app-wide contract reads; implementation reads/writes only assigned files; acceptance tests not exposed to implementation workers. Keep fields optional/backward-compatible until the service publishes them. Use CLI contracts for dependencies; do not inspect unassigned source/tests. Preserve other agents' work. No delegation, commits, push, deployments, dependency installation, credentials, broad checks or automated E2Es. Focused existing repository/unit cases and format/typecheck only. Return changed paths, commands/results, unresolved risks.",
+			"wantedContract": {
+				"responsibility": "Persist explicit canonical assigned-file grants with committed wanted contracts, while preserving legacy queues and rejecting unsafe filesystem paths.",
+				"inputs": [
+					{
+						"name": "task",
+						"type": "ModuleTaskInput & {assignedFiles?:string[]}"
+					},
+					{
+						"name": "runtimeScope",
+						"type": "immutable allowedFiles and contract-read capability",
+						"description": "Separate assigned source access from app-wide contract visibility and server-owned acceptance tests."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stored task",
+						"type": "ModuleTask",
+						"description": "Optional explicit scope survives queue persistence, claim/retry and schema output without broadening existing verification-file grants."
+					}
+				],
+				"errors": [
+					{
+						"name": "unsafe or noncanonical grant",
+						"type": "schema/admission diagnostic",
+						"description": "Absolute, traversal, .git, wildcard, directory, symlink escape or malformed entries cannot become grants."
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "contract-first-schema-luna",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "repository.agents-providers-module-task",
+				"goal": "Persist explicit module task permissions without granting source-tree or Git metadata escape.",
+				"files": [
+					"src/repositories/agents-providers/ModuleTaskRepository.ts",
+					"src/repositories/agents-providers/ModuleTaskRepository.types.ts",
+					"src/repositories/agents-providers/module-task-repository/syncTaskQueue.ts",
+					"src/repositories/agents-providers/module-task-repository/taskOwner.ts",
+					"src/repositories/agents-providers/module-task-repository/taskSchemas.ts",
+					"test/services/agents-providers/module-task.test.ts"
+				]
+			},
+			"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
+			"contractHash": "610403ed06faa319ff37a2ab26f58c371029ab1363155508c81e6bff69339fc0",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T23:04:36.986Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
