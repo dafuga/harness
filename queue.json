@@ -3304,9 +3304,19 @@
 			},
 			"sourceCommit": "96a034905fd30aa4f0d95385266f39e831f8d152",
 			"contractHash": "601f94368cc49272b527705ed29b261c2114869a2b6c30c774f4fbf2da2cc73e",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T16:27:03.119Z",
+			"claim": {
+				"worker": "device-pairing-methods",
+				"token": "4ceb282f-7be6-4a74-b85a-e79f6e05cfed",
+				"startedAt": "2026-10-25T16:27:32.053Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 88225,
+					"startedAt": "Sun Oct 25 16:27:31 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		},
