@@ -135,7 +135,7 @@ export async function assertModulePreview(component: Locator, id: string) {
 	if (id === 'reports.component.module-system-explorer-module-resources-screen') {
 		await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
 		await expect(component.getByRole('heading', { name: 'Welcome', exact: true })).toBeVisible();
-		await expect(component).toContainText('harness module generate email email');
+		await expect(component).toContainText('harness plugin generate email email');
 	}
 }
 
