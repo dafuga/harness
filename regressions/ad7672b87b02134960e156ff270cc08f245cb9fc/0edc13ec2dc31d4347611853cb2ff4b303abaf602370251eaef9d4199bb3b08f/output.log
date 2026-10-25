@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-7opSMY
+
+ ❯ test/regression-loops.test.ts (8 tests | 1 failed) 58ms
+   × regression profiles ignore volatile macOS launcher identity while retaining workload settings 4ms
+     → resource lease identity is not workload configuration: expected 'darwin/arm64/v25.9.0/0007dd4b9edb6318…' to be 'darwin/arm64/v25.9.0/b2dbdf5ff18a0f2f…' // Object.is equality
+   ✓ bug-fix exposes ordered proof and project checks 14ms
+   ✓ fix exposes ordered proof and project checks 8ms
+   ✓ regression-prevention exposes ordered proof and project checks 10ms
+   ✓ project templates can extend regression prevention and override its guard 2ms
+   ✓ generated app guidance selects loops and explains retries 13ms
+   ✓ generated lib guidance selects loops and explains retries 1ms
+   ✓ loop guide explains red-green evidence, prevention guards, and agent retries 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/regression-loops.test.ts > regression profiles ignore volatile macOS launcher identity while retaining workload settings
+AssertionError: resource lease identity is not workload configuration: expected 'darwin/arm64/v25.9.0/0007dd4b9edb6318…' to be 'darwin/arm64/v25.9.0/b2dbdf5ff18a0f2f…' // Object.is equality
+
+Expected: "darwin/arm64/v25.9.0/b2dbdf5ff18a0f2ff5b775d9faaa5e1f173185df9bd5fe6a64f8ac63f851255f"
+Received: "darwin/arm64/v25.9.0/0007dd4b9edb63187c5cb103cfde58baf5f18cad1953533ebee4e528d305a0ee"
+
+ ❯ test/regression-loops.test.ts:33:4
+     31|   environmentProfile({ ...managed, HARNESS_RESOURCE_LEASE: 'lease-two'…
+     32|   'resource lease identity is not workload configuration'
+     33|  ).toBe(environmentProfile(managed));
+       |    ^
+     34|  expect(environmentProfile({ ...managed, HARNESS_RESOURCE_CPUS: '2' })…
+     35|   environmentProfile(managed)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  17:47:18
+   Duration  2.79s (transform 213ms, setup 84ms, collect 438ms, tests 58ms, environment 0ms, prepare 20ms)
+
