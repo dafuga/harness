@@ -13,7 +13,7 @@ export function controllerFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: `test/controllers/${fileName}-controller.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${className} } from '../../src/controllers/${className}';\n\ntest('${className} index returns ok', async () => {\n\tconst response = await new ${className}().index();\n\texpect(await response.json()).toEqual({ ok: true });\n});\n`
+			contents: `import { expect, test } from 'vitest';\nimport { ${className} } from '../../src/controllers/${className}';\n\ntest('${className}.index from default initialization returns ok', async () => {\n\tconst response = await new ${className}().index();\n\t// => { ok: true }\n\texpect(await response.json()).toEqual({ ok: true });\n});\n`
 		}
 	];
 }
@@ -29,7 +29,7 @@ export function classFiles(folder: string, name: string, suffix: string): Planne
 		},
 		{
 			path: `test/${folder}/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${className} } from '../../src/${folder}/${className}';\n\ntest('${className} runs', () => {\n\texpect(new ${className}().run()).toBe('${fileName}');\n});\n`
+			contents: `import { expect, test } from 'vitest';\nimport { ${className} } from '../../src/${folder}/${className}';\n\ntest('${className}.run from default initialization returns the file name', () => {\n\t// => '${fileName}'\n\texpect(new ${className}().run()).toBe('${fileName}');\n});\n`
 		}
 	];
 }
@@ -43,17 +43,7 @@ export function repositoryFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents: repositoryContents(className),
-		testContents: `test('${className} saves records', () => {
-	const repository = new ${className}();
-	const record = { id: 1 };
-	expect(repository.save(record)).toBe(record);
-	expect(repository.find(record.id)).toBe(record);
-});
-
-test('${className} finds no records before saving', () => {
-	const repository = new ${className}();
-	expect(repository.find(1)).toBeUndefined();
-});`
+		testContents: `test('${className}.find from empty initialization returns missing', () => {\n\tconst repository = new ${className}();\n\t// => undefined\n\texpect(repository.find(1)).toBeUndefined();\n});\n\ntest('${className}.find from prepopulated initialization returns matching and missing records', () => {\n\tconst repository = new ${className}();\n\tconst record = { id: 1 };\n\trepository.save(record);\n\t// => { id: 1 }\n\texpect(repository.find(record.id)).toBe(record);\n\t// => undefined\n\texpect(repository.find(2)).toBeUndefined();\n});\n\ntest('${className}.save from empty initialization stores a record', () => {\n\tconst repository = new ${className}();\n\tconst record = { id: 1 };\n\t// => { id: 1 }\n\texpect(repository.save(record)).toBe(record);\n\t// => { id: 1 }\n\texpect(repository.find(record.id)).toBe(record);\n});\n\ntest('${className}.save from prepopulated initialization replaces a record', () => {\n\tconst repository = new ${className}();\n\trepository.save({ id: 1, label: 'original' });\n\tconst replacement = { id: 1, label: 'replacement' };\n\t// => { id: 1, label: 'replacement' }\n\texpect(repository.save(replacement)).toBe(replacement);\n\t// => { id: 1, label: 'replacement' }\n\texpect(repository.find(replacement.id)).toBe(replacement);\n});\n\ntest('${className}.save from empty initialization rejects an invalid record', () => {\n\tconst repository = new ${className}();\n\t// throws TypeError\n\texpect(() => repository.save(null as never)).toThrow(TypeError);\n});`
 	});
 }
 
@@ -67,13 +57,7 @@ export function adapterFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		testContents: `test('${className} connects', () => {
-	expect(new ${className}().connect()).toBe('${fileName}');
-});
-
-test('${className} connects with a configured name', () => {
-	expect(new ${className}({ name: 'custom' }).connect()).toBe('custom');
-});`
+		testContents: `test('${className}.connect from default initialization returns the file name', () => {\n\t// => '${fileName}'\n\texpect(new ${className}().connect()).toBe('${fileName}');\n});\n\ntest('${className}.connect from custom initialization returns the configured name', () => {\n\t// => 'custom'\n\texpect(new ${className}({ name: 'custom' }).connect()).toBe('custom');\n});\n\ntest('${className}.connect with invalid config throws TypeError', () => {\n\tconst adapter = new ${className}(null as never);\n\t// throws TypeError\n\texpect(() => adapter.connect()).toThrow(TypeError);\n});`
 	});
 }
 
@@ -87,19 +71,7 @@ export function validatorFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		testContents: `test('${className} validates input', () => {
-	expect(new ${className}().validate({ title: 'value' })).toEqual({
-		valid: true,
-		errors: []
-	});
-});
-
-test('${className} rejects empty input', () => {
-	expect(new ${className}().validate({})).toEqual({
-		valid: false,
-		errors: ['input is empty']
-	});
-});`
+		testContents: `test('${className}.validate with nonempty input returns valid', () => {\n\t// => { valid: true, errors: [] }\n\texpect(new ${className}().validate({ title: 'value' })).toEqual({\n\t\tvalid: true,\n\t\terrors: []\n\t});\n});\n\ntest('${className}.validate with empty input returns an error', () => {\n\t// => { valid: false, errors: ['input is empty'] }\n\texpect(new ${className}().validate({})).toEqual({\n\t\tvalid: false,\n\t\terrors: ['input is empty']\n\t});\n});\n\ntest('${className}.validate with null input throws TypeError', () => {\n\t// throws TypeError\n\texpect(() => new ${className}().validate(null as never)).toThrow(TypeError);\n});`
 	});
 }
 
@@ -113,12 +85,7 @@ export function serializerFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		testContents: `test('${className} serializes input', () => {
-	const input = { title: 'value' };
-	const result = new ${className}().serialize(input);
-	expect(result).toEqual(input);
-	expect(result).not.toBe(input);
-});`
+		testContents: `test('${className}.serialize with empty input returns a new empty record', () => {\n\tconst input = {};\n\tconst result = new ${className}().serialize(input);\n\t// => {}\n\texpect(result).toEqual(input);\n\texpect(result).not.toBe(input);\n});\n\ntest('${className}.serialize with populated input returns a copy', () => {\n\tconst input = { title: 'value' };\n\tconst result = new ${className}().serialize(input);\n\t// => { title: 'value' }\n\texpect(result).toEqual(input);\n\texpect(result).not.toBe(input);\n});\n\ntest('${className}.serialize with null input returns an empty record', () => {\n\t// => {}\n\texpect(new ${className}().serialize(null as never)).toEqual({});\n});\n\ntest('${className}.serialize with undefined input returns an empty record', () => {\n\t// => {}\n\texpect(new ${className}().serialize(undefined as never)).toEqual({});\n});`
 	});
 }
 
@@ -132,13 +99,7 @@ export function policyFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		testContents: `test('${className} checks access', () => {
-	expect(new ${className}().canRead({ role: 'admin' })).toBe(true);
-});
-
-test('${className} denies non-admin access', () => {
-	expect(new ${className}().canRead({ role: 'member' })).toBe(false);
-});`
+		testContents: `test('${className}.canRead with an admin actor allows access', () => {\n\t// => true\n\texpect(new ${className}().canRead({ role: 'admin' })).toBe(true);\n});\n\ntest('${className}.canRead with a member actor denies access', () => {\n\t// => false\n\texpect(new ${className}().canRead({ role: 'member' })).toBe(false);\n});\n\ntest('${className}.canRead with a missing role denies access', () => {\n\t// => false\n\texpect(new ${className}().canRead({})).toBe(false);\n});\n\ntest('${className}.canRead with an invalid actor throws TypeError', () => {\n\t// throws TypeError\n\texpect(() => new ${className}().canRead(null as never)).toThrow(TypeError);\n});`
 	});
 }
 
@@ -153,7 +114,7 @@ export function seederFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: `test/seeders/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${functionName} } from '../../db/seed-data/${fileName}';\n\ntest('${functionName} returns seed metadata', async () => {\n\texpect(await ${functionName}()).toEqual({ seeded: '${fileName}' });\n});\n`
+			contents: `import { expect, test } from 'vitest';\nimport { ${functionName} } from '../../db/seed-data/${fileName}';\n\ntest('${functionName} returns seed metadata for default invocation', async () => {\n\t// => { seeded: '${fileName}' }\n\texpect(await ${functionName}()).toEqual({ seeded: '${fileName}' });\n});\n`
 		}
 	];
 }
@@ -169,7 +130,7 @@ export function utilFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: `test/utils/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${functionName} } from '../../src/utils/${functionName}';\n\ntest('${functionName} trims values', () => {\n\texpect(${functionName}(' value ')).toBe('value');\n});\n`
+			contents: `import { expect, test } from 'vitest';\nimport { ${functionName} } from '../../src/utils/${functionName}';\n\ntest('${functionName} trims padded text input', () => {\n\t// => 'value'\n\texpect(${functionName}(' value ')).toBe('value');\n});\n\ntest('${functionName} with null input throws TypeError', () => {\n\t// throws TypeError\n\texpect(() => ${functionName}(null as never)).toThrow(TypeError);\n});\n\ntest('${functionName} with undefined input throws TypeError', () => {\n\t// throws TypeError\n\texpect(() => ${functionName}(undefined as never)).toThrow(TypeError);\n});\n`
 		}
 	];
 }
