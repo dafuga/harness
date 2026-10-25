@@ -1,4 +1,3 @@
-import { reviewedModuleFacts } from './moduleReviews';
 import { SourceIndexService } from '../../development-tooling/source-index-service/SourceIndexService';
 import { ModuleDataCache } from './ModuleDataCache';
 import type { ModuleData } from '../ModuleDataService.types';
@@ -20,14 +19,10 @@ export class ModuleDataBuilder {
 	private builds = 0;
 	private evidence?: { key: string; history: HistoryStatusService };
 	constructor(private repository: ModuleDataRepository) {}
-	async build(
-		identity: ModuleDataIdentity,
-		refreshSource = false,
-		reviewed?: ModuleData
-	): Promise<ModuleData> {
+	async build(identity: ModuleDataIdentity, refreshSource = false): Promise<ModuleData> {
 		this.boundCaches();
 		const root = this.repository.root;
-		const facts = await this.facts(identity, refreshSource, reviewed);
+		const facts = await this.facts(identity, refreshSource);
 		const history = this.history(identity);
 		const { records } = await new RevisionDetailService(root, history).recorded(
 			identity.commit,
@@ -52,9 +47,8 @@ export class ModuleDataBuilder {
 		};
 		return { ...body, digest: this.repository.digest(body) };
 	}
-	private async facts(identity: ModuleDataIdentity, refreshSource: boolean, reviewed?: ModuleData) {
+	private async facts(identity: ModuleDataIdentity, refreshSource: boolean) {
 		const root = this.repository.root;
-		if (reviewed) return reviewedModuleFacts(root, reviewed);
 		if (!refreshSource) {
 			const prior =
 				(await this.repository.source(identity))?.data ??

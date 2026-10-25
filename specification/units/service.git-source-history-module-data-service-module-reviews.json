@@ -8,12 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/git-source-history/module-data-service/moduleReviews.ts"],
-		"symbols": [
-			"readModuleReviews",
-			"applyModuleReviews",
-			"reviewedModuleFacts",
-			"unresolvedReviewIssues"
-		]
+		"symbols": ["readModuleReviews", "applyModuleReviews", "unresolvedReviewIssues"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -35,14 +30,6 @@
 				"type": "Map<string, string>"
 			},
 			{
-				"name": "reviewedModuleFacts.root",
-				"type": "string"
-			},
-			{
-				"name": "reviewedModuleFacts.prior",
-				"type": "ModuleData"
-			},
-			{
 				"name": "unresolvedReviewIssues.issues",
 				"type": "string[]"
 			},
@@ -61,10 +48,6 @@
 				"type": "unknown"
 			},
 			{
-				"name": "reviewedModuleFacts",
-				"type": "unknown"
-			},
-			{
 				"name": "unresolvedReviewIssues",
 				"type": "unknown"
 			}
@@ -78,31 +61,6 @@
 	},
 	"dependencies": [
 		{
-			"unit": "adapter.git-source-history-module-data-source",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.component-version",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.git-source-history-module-scenario-reviews",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.revision-registry",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.unit-metadata",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
@@ -114,21 +72,6 @@
 		},
 		{
 			"unit": "repository.git-source-history-module-data-review-repository-module-review-schema",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.scenario",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.git-source-history-module-data",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "validator.unit-registry",
 			"via": "import",
 			"origin": "derived"
 		}
