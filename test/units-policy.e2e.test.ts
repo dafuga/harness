@@ -8,13 +8,15 @@ import {
 	slugifySource,
 	unitProject,
 	configureTestAuthor,
-	validationInvoker
+	validationInvoker,
+	commitModuleData
 } from './support/unitProject';
 
 test('CLI exposes execution targets and component versions, and refuses relaxed tolerance', async () => {
 	const project = await unitProject('lib');
 	await project.write('src/utils/slugify.ts', slugifySource);
 	await project.harness(['units', 'index', '--write']);
+	await commitModuleData(project);
 	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
 	expect(shown.manifest.runtime).toEqual({
 		kind: 'module',
@@ -45,6 +47,7 @@ test('CLI exposes execution targets and component versions, and refuses relaxed 
 	);
 	await project.harness(['units', 'index', '--write']);
 	await project.harness(['units', 'check']);
+	await commitModuleData(project);
 	const documented = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
 	expect(documented.manifest.contract.inputs[0].examples).toEqual(examples);
 	expect(documented.version.contract).not.toBe(shown.version.contract);
@@ -71,6 +74,7 @@ test('CLI records lineage when retired source is recreated under a new identity'
 	await project.write('src/core/slug.ts', slugifySource);
 	const index = await project.harnessJson<{ added: string[] }>(['units', 'index', '--write']);
 	expect(index.added).toEqual(['function.slug']);
+	await commitModuleData(project);
 	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slug']);
 	expect(shown.manifest.lineage).toEqual({ predecessors: ['function.slugify'] });
 	await project.harness(['units', 'check']);

@@ -86,6 +86,18 @@ export async function configureTestAuthor(root: string) {
 	await runCommand(['git', 'config', 'user.email', 'harness@example.invalid'], root);
 }
 
+/** Publish real fixture metadata before exercising the committed resource readers. */
+export async function commitModuleData(project: UnitProject) {
+	await runCommand(['git', 'init', '-q'], project.root);
+	await configureTestAuthor(project.root);
+	await runCommand(['git', 'add', '.'], project.root);
+	await runCommand(
+		['git', 'commit', '-q', '--allow-empty', '-m', 'chore: commit reader fixture'],
+		project.root
+	);
+	await project.harness(['validate', '--write']);
+}
+
 export function validationInvoker(project: Awaited<ReturnType<typeof unitProject>>) {
 	return async (args: string[]) => {
 		const result = await project.harness(['validate', ...args, '--json'], false);

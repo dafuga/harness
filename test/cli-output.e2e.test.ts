@@ -5,6 +5,7 @@ import { runHarness } from './support/cli';
 const root = resolve(import.meta.dirname, '..');
 
 test('JSON larger than a pipe buffer reaches a piped reader whole', async () => {
+	await runHarness(['validate', '--write'], root);
 	const graph = await runHarness(['units', 'graph', '--json'], root);
 	expect(graph.stdout.length).toBeGreaterThan(65_536);
 	const parsed = JSON.parse(graph.stdout) as { nodes: unknown[] };

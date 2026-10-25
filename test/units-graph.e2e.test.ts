@@ -2,7 +2,12 @@ import type { Graph } from './units-graph.e2e.test.types';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { slugifySource, titleServiceSource, unitProject } from './support/unitProject';
+import {
+	slugifySource,
+	titleServiceSource,
+	unitProject,
+	commitModuleData
+} from './support/unitProject';
 
 const loaderSource = [
 	'export class LoaderService {',
@@ -49,6 +54,7 @@ test('source graph resolves imports, re-exports, dynamic imports and Svelte scri
 		"import { TitleService } from '../../src/services/TitleService';\nexport const subject = TitleService;\n"
 	);
 	await project.harness(['units', 'index', '--write']);
+	await commitModuleData(project);
 	const graph = await project.harnessJson<Graph>(['units', 'graph']);
 	const edge = (from: string, to: string) =>
 		graph.edges.find((item) => item.from === `file:${from}` && item.to === `file:${to}`)?.via;
@@ -83,6 +89,7 @@ test('unresolved references are uncertain and text inside strings or comments is
 	await project.write('src/services/LoaderService.ts', 'export class LoaderService {}\n');
 	await project.write('src/utils/decoy.ts', decoySource);
 	await project.harness(['units', 'index', '--write']);
+	await commitModuleData(project);
 	const graph = await project.harnessJson<Graph>(['units', 'graph']);
 	const from = graph.edges.filter((item) => item.from === 'file:src/utils/decoy.ts');
 
