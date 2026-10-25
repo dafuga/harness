@@ -1,3 +1,4 @@
+import { assertPluginRoutes } from './explorer-route/plugins';
 import * as apiRoutes from './explorer-route/apis';
 import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
@@ -199,7 +200,6 @@ test('a trailing slash names the same address', () => {
 	const expected = { branch: 'main', commit: null, category: 'pages' };
 	expect(explorerRoute('/branch/main/pages/')).toEqual(expected);
 });
-
 test('Models is a page tab and legacy page Contract links open Models in the same scope', () => {
 	const path = `/branch/main/commit/${sha}/pages/page.orders`;
 	for (const tab of ['models', 'contract']) {
@@ -210,10 +210,10 @@ test('Models is a page tab and legacy page Contract links open Models in the sam
 	expect(explorerRoute('/branch/main/components/card', '?tab=models')?.tab).toBeUndefined();
 	expect(explorerRoute('/branch/main/components/card', '?tab=contract')?.tab).toBe('contract');
 });
-
 test('APIs are scoped catalog addresses and a page keeps its APIs tab', apiRoutes.assertApiRoutes);
-
 test('API permission tabs and profile routes retain exact revision scope', () => {
 	apiRoutes.assertPermissionRoutes();
 	apiRoutes.assertPermissionGetterAdmission();
 });
+
+test('Plugins retain legacy links and category-like identities', assertPluginRoutes);
