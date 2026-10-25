@@ -33,15 +33,22 @@ const isComponent = (path: string) =>
 	!units.some((unit) => unit.composition?.level === 'atom' && unit.owns.source.includes(path));
 const named = (path: string) => path.slice(path.lastIndexOf('/') + 1).replace('.svelte', '');
 
+const references = new Map<string, string[]>();
+
 /** The files one file refers to: all of them, or only those it needs when it runs. */
 function refers(path: string, runs: boolean): string[] {
 	path = entry(path);
+	const key = `${path}:${runs}`;
+	const cached = references.get(key);
+	if (cached) return cached;
 	const script = path.endsWith('.ts') ? 'ts' : 'other';
 	const language = isComponent(path) ? 'svelte' : script;
 	const code = readFileSync(join(repo, path), 'utf8');
-	return scanImports(code, language)
+	const found = scanImports(code, language)
 		.map((reference) => resolveImport(path, reference, { files, workspaceRoot }))
 		.flatMap((found) => (found.path && !(runs && found.typeOnly) ? [found.path] : []));
+	references.set(key, found);
+	return found;
 }
 
 /** Every component a file draws when it runs, through whatever it imports, by name. */
