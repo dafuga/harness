@@ -4,6 +4,7 @@ import { expect, test } from 'vitest';
 import { availableGuideTopics, findGuide, guides } from '../src/guides/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
 import { findGuideByTopic } from '../src/guides/topics';
+import { scaffoldGuides } from '../src/guides/scaffolds';
 
 test('model guidance is available for agents', () =>
 	measureWorkload('guide.scaffolds', 'layout-catalog-behavior', () => {
@@ -19,6 +20,7 @@ test('model guidance is available for agents', () =>
 test('guidance covers every non-model scaffold topic', () =>
 	measureWorkload('guide.guide', 'helper-source-category-guide', () => {
 		const topics = new Set(guides.map((guide) => guide.topic));
+		const generated = scaffoldGuides();
 		const gameNames: Record<string, string> = {
 			'game-view': '<camelName>ViewConfig.ts',
 			mechanic: '<camelName>.ts',
@@ -33,6 +35,9 @@ test('guidance covers every non-model scaffold topic', () =>
 			);
 			if (gameNames[kind])
 				expect(findGuide(kind)?.rules.join('\n'), kind).toContain(gameNames[kind]);
+			expect(generated.find((guide) => guide.topic === kind)?.rules.join('\n'), kind).toContain(
+				'Test shape:'
+			);
 		}
 	}));
 
@@ -67,17 +72,38 @@ test('loop guidance describes loop driven development', () => {
 	expect(guide?.exampleCommands.join('\n')).toContain('harness loop create');
 });
 
-test('scaffold guidance tells agents what generated code contains', () => {
-	const catalog = findGuide('scaffolds');
-	const mailer = findGuide('mailer');
+test('scaffold guidance tells agents what generated code contains', () =>
+	measureWorkload('guide.scaffolds', 'scaffold-test-shape-guidance', () => {
+		const catalog = findGuide('scaffolds');
+		const mailer = findGuide('mailer');
+		const catalogRules = () => catalog?.rules.join('\n') ?? '';
+		const generatedRules = (topic: string) =>
+			scaffoldGuides()
+				.find((guide) => guide.topic === topic)
+				?.rules.join('\n') ?? '';
 
-	expect(catalog?.rules.join('\n')).toContain('mailer: Email rendering');
-	expect(mailer?.contains?.join('\n')).toContain('Mailer class under src/mailers');
-	expect(mailer?.exampleCommands[0]).toBe('harness generate mailer example');
-	expect(findGuide('layout')?.rules.join(' ')).toContain('child-content slot');
-	expect(findGuide('config')?.rules.join(' ')).toContain('audience and purpose');
-	expect(findGuide('config')?.contains?.join(' ')).not.toContain('Name and enabled fields');
-});
+		expect(catalog?.rules.join('\n')).toContain('mailer: Email rendering');
+		expect(mailer?.contains?.join('\n')).toContain('Mailer class under src/mailers');
+		expect(mailer?.exampleCommands[0]).toBe('harness generate mailer example');
+		expect(findGuide('layout')?.rules.join(' ')).toContain('child-content slot');
+		expect(findGuide('config')?.rules.join(' ')).toContain('audience and purpose');
+		expect(findGuide('config')?.contains?.join(' ')).not.toContain('Name and enabled fields');
+		expect(catalogRules()).toContain('Five standard test shapes');
+		expect(catalogRules()).toContain(
+			'Classes take class method-state cases; a pure function takes helper examples'
+		);
+		expect(catalogRules()).toContain(
+			'mailer: Email rendering without delivery side effects. Test shape: class method-state cases.'
+		);
+		expect(catalogRules()).toContain('util: Tiny utility function. Test shape: map by behavior.');
+		expect(catalogRules()).toContain('keeps the case count');
+		expect(generatedRules('component')).toContain('Test shape: component screenshot match.');
+		expect(generatedRules('component')).toContain('matching each committed baseline');
+		expect(generatedRules('view')).toContain('Test shape: page screenshot match.');
+		expect(generatedRules('helper')).toContain('must match the comment beside the example');
+		expect(generatedRules('api')).toContain('every field and every error body');
+		expect(generatedRules('feature')).toContain('Test shape: none.');
+	}));
 
 test('guide lookup accepts common scaffold aliases', () =>
 	measureWorkload('guide.topics', 'guide-topic-lookup', () => {
