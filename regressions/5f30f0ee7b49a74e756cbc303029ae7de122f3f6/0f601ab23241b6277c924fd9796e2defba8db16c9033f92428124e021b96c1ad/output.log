@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-bHqF2U
+
+ ✓ test/module-data.e2e.test.ts (3 tests) 39385ms
+   ✓ validate persists revision-bound module gaps, filters them and invalidates cached searches  25543ms
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  7555ms
+   ✓ historical helper layout does not masquerade as missing module metadata  6280ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:01:10
+   Duration  43.32s (transform 259ms, setup 199ms, collect 203ms, tests 39.39s, environment 0ms, prepare 71ms)
+

@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-ffgwGw
+
+ ❯ test/units-policy.e2e.test.ts (5 tests | 1 failed) 66588ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  19084ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  11686ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  5473ms
+   ✓ public configs require real source controls and retain their reviewed declarations  21155ms
+   × source-bound reviews repair historical default runtime targets without changing source commits 9186ms
+     → Obsolete preview declarations must be withdrawable: expected 1 to be +0 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-policy.e2e.test.ts > source-bound reviews repair historical default runtime targets without changing source commits
+AssertionError: Obsolete preview declarations must be withdrawable: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ test/units-policy.e2e.test.ts:197:83
+    195|    false
+    196|   );
+    197|   expect(accepted.exitCode, 'Obsolete preview declarations must be wit…
+       |                                                                                   ^
+    198|   const repaired = JSON.parse(accepted.stdout);
+    199|   expect(repaired.valid, JSON.stringify(repaired)).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  15:20:32
+   Duration  75.76s (transform 488ms, setup 768ms, collect 96ms, tests 66.59s, environment 0ms, prepare 98ms)
+
