@@ -6,7 +6,9 @@ import type {
 } from './regressionInputFixture.types';
 
 /** Exercise admitted values directly; neither the caller nor its arrays are JSON-normalized. */
-export function observeRegressionRecord(base: RegressionInputFixture['red']): ObservedRegressionRecord {
+export function observeRegressionRecord(
+	base: RegressionInputFixture['red']
+): ObservedRegressionRecord {
 	const reads = {
 		source: 0,
 		tests: 0,
@@ -39,8 +41,13 @@ export function observeRegressionRecord(base: RegressionInputFixture['red']): Ob
 		record,
 		verify() {
 			expect(reads, 'Preserve admitted checkpoint getter and array behavior').toEqual({
-				source: 2, tests: 1, inputs: 1, testsIterator: 1,
-				inputIterator: 0, inputItems: 1, species: 0
+				source: 2,
+				tests: 1,
+				inputs: 1,
+				testsIterator: 1,
+				inputIterator: 0,
+				inputItems: 1,
+				species: 0
 			});
 			expect(Object.getPrototypeOf(record)).toBe(prototype);
 		}

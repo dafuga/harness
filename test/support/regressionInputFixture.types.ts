@@ -29,7 +29,10 @@ export interface FixtureRecordInput {
 	inputs: FrozenFixtureInputs['inputs'];
 }
 
-export interface ObservedRegressionRecord { record: RegressionInputFixture['red']; verify: () => void; }
+export interface ObservedRegressionRecord {
+	record: RegressionInputFixture['red'];
+	verify: () => void;
+}
 
 export interface CheckpointReads {
 	source: number;
