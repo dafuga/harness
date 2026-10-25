@@ -88,7 +88,6 @@ export async function browserDiagnostics(exitCode: DiagnosticsExit): Promise<voi
 	const root = await mkdtemp(join(tmpdir(), 'harness-browser-evidence-'));
 	try {
 		await writeFile(join(root, 'writer.cjs'), writerScript(exitCode));
-		const sample = verificationSample();
 		const outcome = await runnerFor(root).run(runnerCheck(10_000));
 		expect(
 			outcome.passed,
@@ -105,37 +104,42 @@ export async function browserDiagnostics(exitCode: DiagnosticsExit): Promise<voi
 				artifact: { bytes: expect.any(Number), sha256: expect.stringMatching(/^[a-f0-9]{64}$/) }
 			}
 		});
-		const record = verificationRecordSchema.parse({ ...sample, tests: [outcome.entry] });
-		const view = recordView(record, {
-			valid: true,
-			problems: [],
-			resolve: () => ({ media: null })
-		});
-		expect(view.tests[0]).toMatchObject({
-			browserErrors: [diagnostics],
-			cases: outcome.entry.cases
-		});
-		const inherited = recordView(
-			{
-				...sample,
-				scenarios: [
-					{
-						id: 'orders',
-						status: 'referenced',
-						testedRevision: sample.source.commit,
-						referencedRecord: 'origin',
-						states: []
-					}
-				]
-			},
-			{ valid: true, problems: [], resolve: () => ({ media: null }), origins: () => record.tests }
-		);
-		expect(inherited.scenarios[0].originTests?.[0]).toMatchObject({
-			browserErrors: [diagnostics]
-		});
+		assertDiagnosticProjection(outcome.entry);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
+}
+
+function assertDiagnosticProjection(entry: Awaited<ReturnType<CheckRunService['run']>>['entry']) {
+	const sample = verificationSample();
+	const record = verificationRecordSchema.parse({ ...sample, tests: [entry] });
+	const view = recordView(record, {
+		valid: true,
+		problems: [],
+		resolve: () => ({ media: null })
+	});
+	expect(view.tests[0]).toMatchObject({
+		browserErrors: [diagnostics],
+		cases: entry.cases
+	});
+	const inherited = recordView(
+		{
+			...sample,
+			scenarios: [
+				{
+					id: 'orders',
+					status: 'referenced',
+					testedRevision: sample.source.commit,
+					referencedRecord: 'origin',
+					states: []
+				}
+			]
+		},
+		{ valid: true, problems: [], resolve: () => ({ media: null }), origins: () => record.tests }
+	);
+	expect(inherited.scenarios[0].originTests?.[0]).toMatchObject({
+		browserErrors: [diagnostics]
+	});
 }
 
 /** Malformed or timed-out diagnostics are refused even after the runner wrote them. */
@@ -172,6 +176,9 @@ export async function invalidPriority(): Promise<void> {
 		const env = { ...process.env, HARNESS_RESOURCE_PRIORITY: 'urgent' };
 		await expect(runnerFor(root, env).run(runnerCheck(10_000))).rejects.toThrow(Error);
 		await expect(runnerFor(root).run(null as never)).rejects.toThrow(TypeError);
+		await expect(runnerFor(root, null as never).run(runnerCheck(10_000))).rejects.toThrow(
+			TypeError
+		);
 		expect(await readdir(root)).toEqual([]);
 	} finally {
 		await rm(root, { recursive: true, force: true });
@@ -192,8 +199,8 @@ export async function inheritedBudget(): Promise<void> {
 		const outcome = await runnerFor(root, env).run(runnerCheck(10_000));
 		expect(outcome.passed).toBe(true);
 		const log = await readFile(join(root, outcome.entry.log.path), 'utf8');
-		expect(log.split('\n')).toContain('HARNESS_FIXTURE_VALUE=first');
-		expect(reads, 'application getters must be read once for the child environment').toBe(1);
+		expect(log.split('\n')).toContain('HARNESS_FIXTURE_VALUE=later');
+		expect(reads, 'accepted getters retain admission and child-environment reads').toBe(2);
 		const inherited = process.env.HARNESS_RESOURCE_MEMORY_MIB ?? '2048';
 		expect(log.split('\n'), 'check children must inherit the parent memory reservation').toContain(
 			`HARNESS_RESOURCE_MEMORY_MIB=${inherited}`
