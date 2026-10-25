@@ -13,16 +13,14 @@ afterEach(async () => {
 async function project() {
 	const root = await mkdtemp(join(tmpdir(), 'harness-modules-'));
 	roots.push(root);
-	await writeFile(
-		join(root, 'package.json'),
-		JSON.stringify({ name: 'example', harness: { kind: 'app' } })
-	);
+	await writeFile(join(root, 'package.json'), '{"name":"example","harness":{"kind":"app"}}');
 	return root;
 }
 test('module library exposes Email and Offline with instructions and resource generators', async () => {
 	await measureWorkload('service.module-system-module-catalog', 'read-module-library', async () => {
 		const catalog = await new ModuleCatalogService().load(await project());
 		expect(catalog.gaps).toEqual([]);
+		expect(catalog.modules).toHaveLength(18);
 		expect(catalog.modules.filter((entry) => entry.definition.testing)).toHaveLength(2);
 		expect(catalog.modules.map((item) => item.definition.id).sort()).toEqual(
 			'apis components configs dependencies email headless-audio helpers layouts models modules offline permissions playwright rust-backend rust-wasm services styles types'.split(
