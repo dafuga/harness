@@ -104915,7 +104915,7 @@
 			"id": "template.project-guidance",
 			"kind": "template",
 			"title": "projectGuidance",
-			"responsibility": "Generates project agent and skill instructions, including required regression proof and fresh change measurements.",
+			"responsibility": "Owns the projectGuidance scaffold template.",
 			"responsibilityOrigin": "declared",
 			"status": "active",
 			"owns": {
@@ -111987,14 +111987,14 @@
 		},
 		{
 			"commit": "3561feb26b3254c3ceaf5e6540b220c74a71a80d",
-			"digest": "6f80a5d6b74dec0da0b15fd8f3b474fda1da43624dab0c3139e1337ff8a2044b",
+			"digest": "0e9ffd1a35190fe8ca7b4f3d55c843150dabfdcc06e5d55f6759af590b706cb0",
 			"files": {
 				"src/templates/projectGuidance.ts": "c26a0e8d801734409b88e9077b92eaa7728b7f43"
 			},
 			"metadata": {
-				"responsibility": "Generates project agent and skill instructions, including required regression proof and fresh change measurements."
+				"responsibility": "Owns the projectGuidance scaffold template."
 			},
-			"reason": "Retain the authored responsibility already present in this source commit; correct its derived label through a source-bound metadata review.",
+			"reason": "Reviewed the exact owned source for configuration purpose and audience or helper argument/result behavior. Historical source layout and absent measurements are preserved. Source variants are separately inventoried in the migration receipt.",
 			"schemaVersion": 1,
 			"tree": "33459b2460f5afe59c589aa099e1efe840e8f579",
 			"unit": "template.project-guidance"
@@ -331570,7 +331570,7 @@
 				"kind": "template",
 				"status": "active",
 				"title": "projectGuidance",
-				"responsibility": "Generates project agent and skill instructions, including required regression proof and fresh change measurements.",
+				"responsibility": "Owns the projectGuidance scaffold template.",
 				"dependencies": [
 					{
 						"unit": "function.bug-repair-policy",
@@ -331623,7 +331623,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "3c0458eab8c437d3",
+				"version": "81e50c839e0c6165",
 				"limits": {
 					"metrics": {
 						"source-bytes": 4311,
@@ -395924,7 +395924,7 @@
 		},
 		"template.project-guidance": {
 			"unit": "template.project-guidance",
-			"manifest": "a4d24fcba4ef80101f7b6e9700d41f5ceeec3bb0ff89c1b9511eadd526d21f1c",
+			"manifest": "ff4da3366ac99b35c0d6f66d16e9db51b1d50829816bf7e17503b61978a7836a",
 			"source": "12f344fa9e3d4e41bdcb5460d3108bb93cb2b894ca496deeff15bb166839f37a",
 			"contract": "a362597230693799dc43d0a9c118a0fc701a9d928fe9f238d52ff6a6e993c202",
 			"runtime": "3d322a4374e84d7c6b9e361241001a053e2a58f89d9bbd41a7d0802f73801a83",
@@ -536499,5 +536499,5 @@
 		}
 	],
 	"issues": [],
-	"digest": "22cff561cd9e571e2a7b9018170d9b392ece1a77ed5c226264ebf3b58dd0860b"
+	"digest": "f3250681a761829fce3d27eb42b2e1cd91658435d587314b137faf0b15f0f841"
 }
