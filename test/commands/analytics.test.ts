@@ -10,6 +10,7 @@ test('analytics exposes all query and import/export operations', () => {
 		'loops',
 		'jev',
 		'models',
+		'tasks',
 		'benchmarks',
 		'events',
 		'import',
