@@ -157,6 +157,11 @@ test('historical helper layout does not masquerade as missing module metadata', 
 		await git(['init', '-b', 'main']);
 		await configureTestAuthor(project.root);
 		await project.write('src/utils/slugify.ts', '/** @pure */\n' + slugifySource);
+		for (const name of ['first', 'second'])
+			await project.write(
+				`src/utils/${name}.ts`,
+				`import { slugify } from './slugify'; export function ${name}(value: string) { return slugify(value); }`
+			);
 		await project.harness(['units', 'index', '--write']);
 		const path = 'specification/units/function.slugify.json';
 		const manifest = await project.json<Record<string, unknown>>(path);
@@ -167,7 +172,7 @@ test('historical helper layout does not masquerade as missing module metadata', 
 				inputs: [{ name: 'input', type: 'string' }],
 				output: 'string',
 				pure: true,
-				consumers: [],
+				consumers: [{ unit: 'function.first' }, { unit: 'function.second' }],
 				examples: [
 					{
 						name: 'Normalize a title',
@@ -183,7 +188,9 @@ test('historical helper layout does not masquerade as missing module metadata', 
 		await git(['commit', '-m', 'feat: retain historical helper source']);
 		const report = await validationInvoker(project)(['--write', '--module', 'function.slugify']);
 		expect(report.valid, JSON.stringify(report.modules)).toBe(true);
-		expect(report.modules[0].issues.filter((issue) => issue.kind !== 'evidence')).toEqual([]);
+		expect(
+			report.modules[0].issues.filter((issue: { kind?: string }) => issue.kind !== 'evidence')
+		).toEqual([]);
 		const audit = await project.harness(['units', 'check'], false);
 		expect(audit.stdout + audit.stderr).toContain('must be implemented under src/helpers/');
 	} finally {
