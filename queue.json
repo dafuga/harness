@@ -1008,6 +1008,57 @@
 			"createdAt": "2026-10-25T12:57:07.388Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.screenshot-api",
+			"title": "screenshot api",
+			"moduleGoal": "Implement the requested standardized test contracts without dropping assertions",
+			"verificationFiles": ["packages/reports/test/routes/report-screenshot-upload-api.test.ts"],
+			"instructions": "Work only in allowed files. Do not delegate, commit, push, publish, access credentials or run E2Es/broad checks. Preserve unrelated changes. Migrate the existing screenshot-upload API test cases to complete structural JSON response checking for all declared form/header/file props, meaningful boundary and error states. Preserve existing case titles/counts and assertions. Use isolated mocks for storage; no real R2/network/database writes, credentials or .env edits. Assert exact success and error JSON and status/headers; normalize only truly nondeterministic fields explicitly. Do not change product endpoint behavior. Return the supported prop/error matrix for primary unit-contract registration. Use focused workspace unit tests if feasible; report dependency blockers.",
+			"wantedContract": {
+				"responsibility": "Migrate the existing screenshot-upload API test cases to complete structural JSON response checking for all declared form/header/file props, meaningful boundary and error states. Preserve existing case titles/counts and assertions. Use isolated mocks for storage; no real R2/network/database writes, credentials or .env edits. Assert exact success and error JSON and status/headers; normalize only truly nondeterministic fields explicitly. Do not change product endpoint behavior. Return the supported prop/error matrix for primary unit-contract registration. Use focused workspace unit tests if feasible; report dependency blockers.",
+				"inputs": [
+					{
+						"name": "declared entity capabilities",
+						"type": "finite test contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standardized tests",
+						"type": "reviewable source and focused results"
+					}
+				],
+				"errors": [
+					{
+						"name": "missing coverage or baseline",
+						"type": "explicit failure"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"intelligence": "max",
+			"assignee": "contract-policy",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "reports.endpoint.api-report-screenshot-upload",
+				"goal": "Implement the requested standardized test contracts without dropping assertions",
+				"files": [
+					"packages/reports/src/routes/api/report-screenshot-upload/+server.ts",
+					"packages/reports/test/routes/report-screenshot-upload-api.test.ts"
+				]
+			},
+			"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
+			"contractHash": "7e0e07358c84ed06e3577313a054433fd51dd071a8c2be8a2cb39ae1725296d6",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T12:57:08.097Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
