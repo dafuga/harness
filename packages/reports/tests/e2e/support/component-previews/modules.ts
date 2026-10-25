@@ -59,6 +59,19 @@ export const moduleData = {
 		}
 	]
 };
+const testing = ['playwright', 'headless-audio'].map((id) => ({
+	definition: {
+		...definition(id, id === 'playwright' ? 'Playwright' : 'Headless audio', 'test', 'Tests'),
+		includedByDefault: id === 'playwright',
+		testing: {
+			headless: true as const,
+			script: id === 'playwright' ? 'test:browser' : 'test:audio'
+		}
+	},
+	source: 'builtin' as const,
+	installed: id === 'playwright',
+	instances: []
+}));
 const completeModuleData = {
 	gaps: moduleData.gaps,
 	modules: [
@@ -74,7 +87,8 @@ const completeModuleData = {
 			installed: false,
 			instances: []
 		})),
-		...moduleData.modules
+		...moduleData.modules,
+		...testing
 	]
 };
 export function modulePreview(host: ExplorerScreenProps, entity?: string): ExplorerScreenProps {

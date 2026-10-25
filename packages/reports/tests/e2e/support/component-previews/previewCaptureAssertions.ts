@@ -121,11 +121,16 @@ export async function assertModulePreview(component: Locator, id: string) {
 		).toBeVisible();
 		await expect(component.getByRole('link', { name: 'Rust Backend', exact: true })).toBeVisible();
 		await expect(
-			component.getByRole('heading', { level: 1, name: 'Modules', exact: true })
+			component.getByRole('heading', { level: 1, name: 'Plugins', exact: true })
 		).toBeVisible();
 		await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
 		await expect(component.getByText('Installed', { exact: true })).toBeVisible();
-		await expect(component).toContainText('harness module add offline');
+		await expect(component.getByRole('link', { name: 'Layouts', exact: true })).toHaveCount(0);
+		await expect(component.getByRole('link', { name: 'Playwright', exact: true })).toBeVisible();
+		await expect(
+			component.getByRole('link', { name: 'Headless audio', exact: true })
+		).toBeVisible();
+		await expect(component).toContainText('harness plugin add offline');
 	}
 	if (id === 'reports.component.module-system-explorer-module-resources-screen') {
 		await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();

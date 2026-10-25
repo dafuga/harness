@@ -6,7 +6,6 @@ import { ModuleCatalogService } from '../../../src/services/module-system/Module
 import { ModuleInstallService } from '../../../src/services/module-system/ModuleInstallService';
 import { ModuleResourceService } from '../../../src/services/module-system/ModuleResourceService';
 import { measureWorkload } from '../../support/measureWorkload';
-
 const roots: string[] = [];
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
@@ -20,15 +19,21 @@ async function project() {
 	);
 	return root;
 }
-
 test('module library exposes Email and Offline with instructions and resource generators', async () => {
 	await measureWorkload('service.module-system-module-catalog', 'read-module-library', async () => {
 		const catalog = await new ModuleCatalogService().load(await project());
 		expect(catalog.gaps).toEqual([]);
 		expect(catalog.modules.map((item) => item.definition.id).sort()).toEqual(
-			'apis components configs dependencies email helpers layouts models modules offline permissions rust-backend rust-wasm services styles types'.split(
+			'apis components configs dependencies email headless-audio helpers layouts models modules offline permissions playwright rust-backend rust-wasm services styles types'.split(
 				' '
 			)
+		);
+		expect(catalog.modules.find((entry) => entry.definition.id === 'playwright')).toMatchObject({
+			installed: true,
+			definition: { testing: { headless: true, script: 'test:browser' } }
+		});
+		expect(catalog.modules.find((entry) => entry.definition.id === 'headless-audio')).toMatchObject(
+			{ installed: false, definition: { testing: { headless: true, script: 'test:audio' } } }
 		);
 		for (const entry of catalog.modules) {
 			expect(entry.installed).toBe(Boolean(entry.definition.includedByDefault));
@@ -37,7 +42,6 @@ test('module library exposes Email and Offline with instructions and resource ge
 		}
 	});
 });
-
 test('installing modules enables resource generation without replacing existing source', async () => {
 	const root = await project();
 	const install = new ModuleInstallService();
@@ -53,7 +57,7 @@ test('installing modules enables resource generation without replacing existing 
 		}
 	);
 	const catalog = await new ModuleCatalogService().load(root);
-	expect(catalog.modules.filter((item) => item.installed)).toHaveLength(14);
+	expect(catalog.modules.filter((item) => item.installed)).toHaveLength(15);
 	await measureWorkload('service.module-system-module-resource', 'generate-email-resource', () =>
 		resources.generate(root, 'email', 'email', 'Welcome')
 	);
@@ -70,7 +74,6 @@ test('installing modules enables resource generation without replacing existing 
 	const packageJson = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
 	expect(packageJson.dependencies['@dafuga01/offline-sync']).toMatch(/#[a-f0-9]{40}$/);
 });
-
 test('projects define a resource generator once and the catalog discovers it', async () => {
 	const root = await project();
 	await mkdir(join(root, 'specification/modules/notes'), { recursive: true });
@@ -115,7 +118,6 @@ test('projects define a resource generator once and the catalog discovers it', a
 		instances: [{ name: 'Meeting', type: 'note' }]
 	});
 });
-
 test('module admission rejects invalid definitions, collisions and escaping output paths', async () => {
 	const root = await project();
 	await mkdir(join(root, 'specification/modules/email'), { recursive: true });
@@ -130,10 +132,9 @@ test('module admission rejects invalid definitions, collisions and escaping outp
 	).rejects.toThrow();
 	expect(await readFile(join(root, 'package.json'), 'utf8')).not.toContain('offline-sync');
 });
-
 test('included modules expose every existing Code catalog through the module contract', async () => {
 	const catalog = await new ModuleCatalogService().load(await project());
-	const included = catalog.modules.filter((entry) => entry.definition.includedByDefault);
+	const included = catalog.modules.filter((entry) => entry.definition.visibility === 'internal');
 	expect(included).toHaveLength(12);
 	expect(
 		included.every((entry) =>
@@ -153,6 +154,7 @@ test('included modules expose every existing Code catalog through the module con
 	const optional = catalog.modules.filter((entry) => !entry.definition.includedByDefault);
 	expect(optional.map((entry) => entry.definition.id).sort()).toEqual([
 		'email',
+		'headless-audio',
 		'offline',
 		'rust-backend',
 		'rust-wasm'
@@ -166,7 +168,6 @@ test('included modules expose every existing Code catalog through the module con
 		expect(entry.definition.instructions.join(' ')).toMatch(/cargo/);
 	}
 });
-
 test('included and project modules use declared catalogs and real scaffold generation', async () => {
 	const root = await project();
 	const generate = new ModuleResourceService();

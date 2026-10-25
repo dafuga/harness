@@ -12,8 +12,8 @@ const branch = 'feature/kept#1';
 const encoded = 'feature%2Fkept%231';
 const entity = 'reports.component.harness-harness-console';
 const shapes: Array<[string, Partial<ExplorerLocation>]> = [
-	['/modules', { category: 'pages', screen: 'modules' }],
-	['/modules/email', { category: 'pages', screen: 'modules', entity: 'email' }],
+	['/plugins', { category: 'pages', screen: 'modules' }],
+	['/plugins/email', { category: 'pages', screen: 'modules', entity: 'email' }],
 	[
 		'/module-resources/email.email',
 		{ category: 'pages', screen: 'module-resources', entity: 'email.email' }

@@ -85,7 +85,7 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 			html
 		)?.[1] ?? '';
 	expect(text(moduleMenu)).toBe(
-		'APIs Layouts Components Models Services Helpers Types Configs Styles Dependencies Users &amp; Permissions Modules'
+		'APIs Layouts Components Models Services Helpers Types Configs Styles Dependencies Users &amp; Permissions Plugins'
 	);
 	expect(moduleMenu.match(/role="tab"/g)).toHaveLength(12);
 	expect(html).not.toMatch(/popover|popovertarget|aria-expanded/);
@@ -104,7 +104,7 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 test('Code screens select their module tab and retain the selected revision', () => {
 	for (const [screen, title] of [
 		['styles', 'Styles'],
-		['modules', 'Modules'],
+		['modules', 'Plugins'],
 		['permissions', 'Users &amp; Permissions']
 	] as const) {
 		const html = body({ ...styles, screen });

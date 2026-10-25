@@ -14,11 +14,27 @@ test('module library presents real definitions, installation state and generator
 	expect(html).toContain('Email');
 	expect(html).toContain('Offline');
 	expect(html).toContain('Installed');
-	expect(html).toContain('harness module add offline');
+	expect(html).toContain('harness plugin add offline');
+	expect(html).toContain('Plugins');
+	for (const title of [
+		'Layouts',
+		'Components',
+		'Models',
+		'Services',
+		'Helpers',
+		'Types',
+		'Configs',
+		'Styles',
+		'Dependencies',
+		'Users &amp; Permissions'
+	])
+		expect(html).not.toContain(`>${title}</a>`);
+	expect(html).toContain('Playwright');
+	expect(html).toContain('Headless audio');
 	const detail = render(ExplorerModulesScreen, {
 		props: modulePreview(hostProps('commit'), 'email')
 	}).body;
 	expect(detail).toContain('RESEND_API_KEY');
 	expect(detail).toContain('Emails');
-	expect(detail).toContain('harness module generate email email');
+	expect(detail).toContain('harness plugin generate email email');
 });

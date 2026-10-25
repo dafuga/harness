@@ -22,11 +22,24 @@ export async function assertModuleProject(root: string): Promise<void> {
 	const catalog = await runHarness(['module', 'list', '--json'], project);
 	expect(
 		JSON.parse(catalog.stdout).modules.filter((entry: { installed: boolean }) => entry.installed)
-	).toHaveLength(14);
+	).toHaveLength(15);
 	const repeated = await runHarness(['module', 'add', 'email'], project);
 	expect(repeated.stdout).toContain('already installed');
 	await assertRustModuleProject(project);
 	await runCommand(['bun', 'install'], project);
+	await runHarness(['plugin', 'generate', 'playwright', 'test', 'Smoke'], project);
+	await runHarness(['plugin', 'add', 'headless-audio'], project);
+	await runHarness(['plugin', 'generate', 'headless-audio', 'test', 'Playback'], project);
+	await runCommand(['bun', 'install'], project);
+	const plugins = JSON.parse((await runHarness(['plugin', 'list', '--json'], project)).stdout);
+	expect(plugins.modules).toHaveLength(6);
+	expect(
+		plugins.modules.some(
+			(entry: { definition: { id: string } }) => entry.definition.id === 'services'
+		)
+	).toBe(false);
+	await runHarness(['plugin', 'test', 'playwright'], project);
+	await runHarness(['plugin', 'test', 'headless-audio'], project);
 	await runCommand(['bun', 'run', 'format'], project);
 	const check = await runCommand(['bun', 'run', 'check'], project);
 	expect(check.stdout + check.stderr).toContain('Harness audit passed');
