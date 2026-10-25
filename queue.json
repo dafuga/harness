@@ -603,6 +603,57 @@
 			},
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.project-test-scaffolds-luna56",
+			"title": "Remove tautological scaffold smoke tests",
+			"moduleGoal": "Emit and enforce contract-driven tests for this module",
+			"verificationFiles": ["test/project-template.test.ts"],
+			"instructions": "Use Harness CLI as appropriate. Do not delegate, commit, push, deploy, install credentials, run E2Es or broad checks. Edit only your owned source and listed verification files. Preserve unrelated work. User explicitly requests only five standard test shapes: pages and components Playwright screenshot matches of declared states (component at rest plus interactions/error props), helpers one unit case per authored example asserting its documented output/error, classes method x declared initialization/lifecycle state cases including errors, APIs structural complete JSON response matches for supported prop/error matrices. Existing interaction/accessibility/console assertions stay within those cases. Other functions/classes map by behavior. No standalone bug regression tests: strengthen existing cases, fixed counts unless explicit capabilities change. Use finite documented matrices. Report exact files and focused commands/results. No auto-accept screenshot baselines.\nRemove tautological scaffold smoke tests. Emit real initial page screenshot test via existing browser fixture with explicit state; helper/class tests only when generated entities exist. Existing integration assertions must be retained at appropriate layer. Do not introduce an extra type of suite. Extend existing project-template assertions without extra declarations.",
+			"wantedContract": {
+				"responsibility": "Remove tautological scaffold smoke tests. Emit real initial page screenshot test via existing browser fixture with explicit state; helper/class tests only when generated entities exist. Existing integration assertions must be retained at appropriate layer. Do not introduce an extra type of suite. Extend existing project-template assertions without extra declarations.",
+				"inputs": [
+					{
+						"name": "entity contract",
+						"type": "declared examples, methods, props and states"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard testing behavior",
+						"type": "generated source or instructions"
+					}
+				],
+				"errors": [
+					{
+						"name": "unsupported or missing test coverage",
+						"type": "explicit validation failure"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"intelligence": "max",
+			"assignee": "contract-generators",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "template.project-tests",
+				"goal": "Emit and enforce contract-driven tests for this module",
+				"files": [
+					"src/templates/projects-sessions/projectTests.ts",
+					"test/project-template.test.ts"
+				]
+			},
+			"sourceCommit": "a89292560d6347d4288b468c0b344e333dfd1090",
+			"contractHash": "8b8125487f36e446154a2d106fbdb5c71024c6f07021af4a645bc80675c0e3e8",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T12:22:31.456Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
