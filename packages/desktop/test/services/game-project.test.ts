@@ -1,4 +1,5 @@
 import { expect, test, vi } from 'vitest';
+import { committedModuleData } from '../../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
 import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -83,6 +84,9 @@ test('project creation initializes a game without overwriting an existing direct
 	expect(created.project.kind).toBe('game');
 	expect(created.project.dimension).toBe('3d');
 	expect(created.writable).toBe(true);
+	const createdRoot = join(root, 'projects', 'test-game');
+	const createdCommit = git(createdRoot, 'rev-parse', 'HEAD');
+	expect((await committedModuleData(createdRoot, createdCommit))?.data.commit).toBe(createdCommit);
 	const planned = await service.read({ projectId: created.project.id! });
 	expect(planned.document.views[0].planning).toEqual({ concept: '', description: '' });
 	expect(planned.document.views[0].checkpoints).toEqual([]);

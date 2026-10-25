@@ -131,6 +131,14 @@ test('page API relationships follow transitive requests at the selected committe
 		join(f.root, endpoint.owns.source[0]),
 		'export function GET() { return new Response("orders"); }'
 	);
+	await writeFile(
+		join(f.root, 'src/services/Analytics.ts'),
+		"export function listOrders() { return fetch('/api/orders'); }\n"
+	);
+	await writeFile(
+		join(f.root, 'src/pages/Home.ts'),
+		"import { listOrders } from '../services/Analytics'; export const orders = listOrders();\n"
+	);
 	await write(endpoint);
 	await write({
 		...service,
