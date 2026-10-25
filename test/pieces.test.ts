@@ -47,15 +47,38 @@ test.each(['2d', '3d'] as const)(
 );
 
 test('view, layout, and api scaffolds use SvelteKit route files', () => {
+	const component = pieceFiles('component', 'StatusBadge');
+	const componentTest = component.find((file) => file.path.endsWith('-component.spec.ts'));
+	expect(component.map((file) => file.path)).toContain(
+		'src/routes/__harness/components/status-badge/+page.svelte'
+	);
+	expect(componentTest?.contents).toContain('toHaveScreenshot(state.screenshot)');
+	expect(componentTest?.contents).toContain("id: 'interaction-expanded'");
+	expect(componentTest?.contents).toContain("id: 'error-prop'");
+
 	expect(pieceFiles('view', 'BlogPost').map((file) => file.path)).toContain(
 		'src/routes/blog-post/+page.svelte'
 	);
+	const viewTest = pieceFiles('view', 'BlogPost').find((file) =>
+		file.path.endsWith('-page.spec.ts')
+	);
+	expect(viewTest?.contents).toContain('toHaveScreenshot(state.screenshot)');
+	expect(viewTest?.contents).toContain("id: 'error-state'");
+	const e2eTest = pieceFiles('e2e', 'BlogPost').find((file) =>
+		file.path.endsWith('blog-post.spec.ts')
+	);
+	expect(e2eTest?.contents).toContain('toHaveScreenshot(state.screenshot)');
+	expect(e2eTest?.contents).toContain("from './support/browserTest'");
 	expect(pieceFiles('layout', 'BlogPost').map((file) => file.path)).toContain(
 		'src/routes/blog-post/+layout.svelte'
 	);
 	expect(pieceFiles('api', 'BlogPost').map((file) => file.path)).toContain(
 		'src/routes/api/blog-post/+server.ts'
 	);
+	const apiTest = pieceFiles('api', 'BlogPost').find((file) => file.path.endsWith('-api.test.ts'));
+	expect(apiTest?.contents).toContain('test.each(cases)');
+	expect(apiTest?.contents).toContain("contentType: 'application/json'");
+	expect(apiTest?.contents).toContain("id: 'error prop returns complete JSON'");
 });
 
 test('marks only SvelteKit scaffolds as app-only', () => {
