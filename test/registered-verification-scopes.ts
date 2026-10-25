@@ -13,6 +13,7 @@ import { planFixtureVerificationScopes } from './plan-fixture-verification-scope
 import { hubDesignVerificationScopes } from './hub-design-verification-scopes';
 import { brandingVerificationScopes } from './branding-verification-scopes';
 import { historyFixtureVerificationScopes } from './history-fixture-verification-scopes';
+import { moduleTaskVerificationScopes } from './module-task-verification-scopes';
 import type { VerificationScope } from './verification-targets';
 
 /** Registered scenario mappings, kept in their existing precedence order. */
@@ -35,5 +36,6 @@ export const registeredVerificationScopes: Record<string, VerificationScope> = {
 	...planFixtureVerificationScopes,
 	...hubDesignVerificationScopes,
 	...brandingVerificationScopes,
-	...historyFixtureVerificationScopes
+	...historyFixtureVerificationScopes,
+	...moduleTaskVerificationScopes
 };

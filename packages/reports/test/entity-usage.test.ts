@@ -4,7 +4,7 @@ import { explorerRoute, explorerRoutePath } from '../../../src/utils/explorerRou
 import EntityRelations from '../src/components/explorer-ui/entity-relations/EntityRelations.svelte';
 import type { ExplorerRelations } from '../src/models/Explorer.types';
 import type { EntityNav } from '../src/utils/entityLens';
-import { content, hostProps, words } from './entityRender';
+import { content, hostProps, sectionWords as card, words } from './entityRender';
 import { commits, ids } from './entityUnits';
 
 /**
@@ -25,13 +25,13 @@ const tabs = (body: string) =>
 	[...body.matchAll(/role="tab"[^>]*>(.*?)<\/(?:a|button)>/gs)].map((match) =>
 		words(match[1]).trim()
 	);
-/** The words of one card, from its name to its end; empty when the screen has no such card. */
-function card(body: string, name: string): string {
-	const from = body.indexOf(`aria-label="${name}"`);
-	if (from < 0) return '';
-	const text = words(body.slice(body.indexOf('>', from) + 1, body.indexOf('</section>', from)));
-	return text.replace(/\s+/g, ' ').trim();
-}
+
+test('the section reader includes every nested group and stops before adjacent sections', () => {
+	const body =
+		'<section aria-label="Uses"><h2>Uses</h2><section>First<section>Nested</section>Last</section>After groups</section><section aria-label="Other">Unrelated</section>';
+	expect(card(body, 'Uses')).toBe('Uses First Nested Last After groups');
+	expect(card(body, 'Missing')).toBe('');
+});
 
 test('the sections of an entity are named Used In and Uses, and none is a relationship', () => {
 	for (const entity of [list, filter, page]) {

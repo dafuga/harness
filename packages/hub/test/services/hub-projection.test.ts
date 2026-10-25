@@ -1,4 +1,6 @@
 import { expect, test } from 'vitest';
+import { z } from 'zod';
+import { componentManifestSchema } from '../../../../src/core/unitTypes';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { readFileSync } from 'node:fs';
 import {
@@ -78,10 +80,12 @@ test('registry reads include backend contracts and recheck project membership be
 		)
 	);
 	expect(response.status).toBe(200);
-	const result = await response.json();
+	const result = z
+		.object({ commit: z.string(), units: z.array(componentManifestSchema) })
+		.parse(await response.json());
 	expect(result.commit).toBe(commit);
 	expect(
-		result.units.find((entry: { id: string }) => entry.id === 'entry.program').contract.outputs
+		result.units.find((entry) => entry.id === 'entry.program')?.contract.outputs
 	).toContainEqual({ name: 'buildProgram', type: 'Command' });
 	f.setActor(outsider);
 	expect((await f.controller.handle(request())).status).toBe(403);
