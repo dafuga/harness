@@ -1714,6 +1714,72 @@
 			"createdAt": "2026-10-25T14:38:33.001Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.remote-label-examples",
+			"title": "Migrate desktop.function.remote-labels to authored example cases",
+			"moduleGoal": "Preserve all existing assertions through canonical authored example cases",
+			"verificationFiles": [
+				"packages/desktop/test/utils/remote-labels.test.ts",
+				"test/fixtures/contract-migration/remote-label-examples.json"
+			],
+			"instructions": "Migrate the owned functions to the approved helper example contract, preserving every substantive assertion and disposable fixture. Read specification/units/function.case.json, test/case.test.ts, TestExpectationService.registerExamples, TestCaseValidator and the current target unit manifest. Primary owns all shared schema and committed specification changes. Author a FULL proposed unit manifest JSON at test/fixtures/contract-migration/remote-label-examples.json (primary will promote it to specification). Add testing shape helper with finite states and one stable case per canonical helperContracts example; ordinary impure functions use testing.examples with authored value/error/void expected entries, not fake pure helper eligibility. Cover current boundaries and invalid/error inputs. Use one canonical source for executable input and expected comment/result, register with TestExpectationService from this proposal JSON; primary will change the import to the real manifest. Transfer existing assertions into the responsible example cases. Preserve any assertions belonging to another entity explicitly until primary transfers them. New counts are allowed only for migration to declared examples; do not invent new behavior, skip tests, mirror implementation, or create standalone regression suites. Do not edit production behavior unless a genuine defect is found: report it first so primary can freeze an existing strengthened red case. Do not edit shared contracts or specification files. Keep files under220 lines/functions55. Do not delegate, commit, push, publish, access credentials, install, or run E2Es/broad checks. You may run only relevant existing unit test commands; environment failures must be reported separately. Return exact files, before/after test counts, coverage preserved and remaining ownership gaps.",
+			"wantedContract": {
+				"responsibility": "Canonical executable example matrix for desktop.function.remote-labels",
+				"inputs": [
+					{
+						"name": "declared behavior and existing assertions",
+						"type": "source and authored examples"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard helper suite and proposed manifest",
+						"type": "stable executable examples"
+					}
+				],
+				"errors": [
+					{
+						"name": "missing or mismatched example",
+						"type": "explicit assertion failure"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "remote-label-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "desktop.function.remote-labels",
+				"goal": "Preserve all existing assertions through canonical authored example cases",
+				"files": [
+					"packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
+					"packages/desktop/src/components/networking-security/remote-offer-code/remoteLabels.ts",
+					"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.ts",
+					"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.types.ts",
+					"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
+					"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
+					"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts",
+					"packages/desktop/src/helpers/networking-security/identityLabel.ts",
+					"packages/desktop/src/helpers/strings/plural.ts",
+					"packages/desktop/src/utils/networking-security/remoteLabels.ts",
+					"packages/desktop/src/utils/remoteLabels.ts",
+					"packages/desktop/test/utils/remote-labels.test.ts",
+					"test/fixtures/contract-migration/remote-label-examples.json"
+				]
+			},
+			"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
+			"contractHash": "40d8ffd3c7fd43b09e637fdffcf5e09c8e72f4502faa42f84c9ed51753705604",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T14:38:33.692Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
