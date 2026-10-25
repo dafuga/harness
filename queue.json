@@ -1175,7 +1175,7 @@
 			},
 			"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
 			"contractHash": "2a4b6a9e5e8eab94a10031593b49b620b820fc8f7a33de5ed48dbf26a0adda8c",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T12:57:07.388Z",
 			"claim": {
@@ -1200,6 +1200,64 @@
 					}
 				}
 			],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness skill because this is a registered Harness module change. I’ll inspect the existing fixture and task-scoped edits first, then implement only the five allowed files and run focused non-E2E verification.\nThe initial repository status check is blocked by a pre-existing Git LFS clean-filter permission error on an unrelated design PNG. I’m leaving that untouched and will inspect the task files directly, then use file-scoped checks that avoid rewriting or staging unrelated content.\nThe fixture is currently clean in all task-scoped files. I’m adding a named Playwright fixture (not an after-hook) so only explicit `matchScreenshot(target, name, options)` calls compare reviewed snapshots; font/image/frame readiness and optional `TAKE_SCREENSHOT` attachments stay inside that helper.\nThe root and generated fixtures now match byte-for-byte, including the separated type companion. I also added a non-E2E contract test that checks explicit target matching/readiness, keeps `TAKE_SCREENSHOT` evidence separate, and rejects automatic page-wide hooks.\nFormatting and generated/root alignment pass. The focused Vitest run could not start because the shared parent `node_modules/.vite-temp` is read-only (`EPERM`); I’m keeping that environment untouched and will continue with read-only source/type checks and fixture-generation checks.\nFocused ESLint and TypeScript checks now pass, including the generated fixture source. I fixed the browser-global lint issue without changing behavior. The only unavailable verification remains the Vitest runner, blocked by the shared read-only Vite temp directory; no E2E or broad checks have been run.\nImplemented the snapshot fixture contract in the allowed files:\n\n- Added explicit `matchScreenshot(Page | Locator, name, options)` with font/image/frame readiness.\n- Enforced reviewed-baseline mode; no automatic snapshot updates or page-wide captures.\n- Preserved browser-error collection and aligned generated/root fixtures and types.\n- Added focused contract coverage.\n\nVerification passed:\n\n- Prettier\n- ESLint\n- Focused TypeScript compilation\n- Generated-fixture alignment checks\n\nVitest was blocked by a read-only shared `.vite-temp` directory. No E2Es or broad checks were run.\n\nPrimary integration still needs stable Playwright snapshot-path configuration and a separate reviewed baseline-materialization process.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/7843931f-7294-4e1a-a3ab-3d15c31e0a5a",
+				"changedFiles": [
+					"src/templates/development-tooling/browserTest.ts",
+					"test/browser-console-errors.test.ts",
+					"test/support/browserTest.ts",
+					"test/support/browserTest.types.ts",
+					"test/browser-console-expected.test.ts"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T13:46:02.732Z",
+				"attempt": "7843931f-7294-4e1a-a3ab-3d15c31e0a5a",
+				"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
+				"checkpointCommit": "ec118394e4e161a6f7d5a1bf2d5c3d77b8e5d0fe",
+				"usage": {
+					"inputTokens": 12941453,
+					"outputTokens": 55299,
+					"cacheReadTokens": 12727040,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 12941453,
+							"outputTokens": 55299,
+							"cacheReadTokens": 12727040,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T13:37:27.344Z",
+						"finishedAt": "2026-10-25T13:46:02.095Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
