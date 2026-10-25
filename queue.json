@@ -54,7 +54,7 @@
 			},
 			"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
 			"contractHash": "7ca286e86e94f11e212ad646e5d524735a42408e5456873ac1d1ff238a770eb0",
-			"status": "running",
+			"status": "failed",
 			"reviews": [],
 			"createdAt": "2026-10-25T12:19:12.960Z",
 			"claim": {
@@ -68,6 +68,49 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/72d798de-2a75-45ba-8b8c-c06f43516f1b",
+				"changedFiles": [],
+				"error": "Codex task failed; inspect CLI authentication, permissions or model access.",
+				"fallback": false,
+				"finishedAt": "2026-10-25T12:19:26.671Z",
+				"attempt": "72d798de-2a75-45ba-8b8c-c06f43516f1b",
+				"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": null,
+							"outputTokens": null,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://developers.openai.com/api/docs/pricing",
+							"note": "CLI token usage is incomplete."
+						},
+						"status": "failed",
+						"startedAt": "2026-10-25T12:19:23.598Z",
+						"finishedAt": "2026-10-25T12:19:26.671Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
