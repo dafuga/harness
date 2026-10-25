@@ -164,6 +164,8 @@ test('source-bound reviews repair historical default runtime targets without cha
 		await project.harness(['units', 'index', '--write']);
 		const path = 'specification/units/service.title.json';
 		const manifest = await project.json<{
+			responsibility: string;
+			responsibilityOrigin: string;
 			runtime: { kind: string; entry: string; targets: Array<{ kind: string; entry: string }> };
 		}>(path);
 		const wanted = {
@@ -171,6 +173,8 @@ test('source-bound reviews repair historical default runtime targets without cha
 			targets: [{ kind: manifest.runtime.kind, entry: manifest.runtime.entry }]
 		};
 		manifest.runtime.targets = [{ kind: 'module', entry: 'src/services/old/TitleService.ts' }];
+		manifest.responsibility = 'Serve the title from this module implementation.';
+		manifest.responsibilityOrigin = 'derived';
 		await project.write(path, JSON.stringify(manifest));
 		await git(['add', '.']);
 		await git(['commit', '-m', 'feat: retain historical runtime target']);
@@ -185,7 +189,7 @@ test('source-bound reviews repair historical default runtime targets without cha
 			JSON.stringify({
 				unit: 'service.title',
 				reason: 'Bind the default target to the owned implementation at this source commit.',
-				metadata: { runtime: wanted }
+				metadata: { runtime: wanted, responsibility: manifest.responsibility }
 			})
 		);
 		const repaired = await invoke(['--write', '--review', review, '--module', 'service.title']);
