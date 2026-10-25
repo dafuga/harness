@@ -37,9 +37,7 @@ function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory
 		return place.screen === 'module-resources' && place.entity === id.slice(9);
 	if (id === 'modules')
 		return (
-			place.screen === 'styles' ||
-			place.screen === 'dependencies' ||
-			place.screen === 'module-resources' ||
+			['styles', 'dependencies', 'module-resources'].includes(place.screen ?? '') ||
 			(!place.screen && moduleLabels.some(([category]) => category === place.category))
 		);
 	if (place.screen) return id === place.screen;
@@ -114,15 +112,15 @@ function categoryTarget(
 			entity: id.slice(9)
 		};
 	const category = id === 'modules' ? 'components' : id;
+	const screen = (['styles', 'dependencies', 'translations'] as const).find(
+		(value) => value === id
+	);
 	const target: ExplorerLocation = {
 		branch: place.branch,
 		commit: place.commit,
-		category:
-			category === 'styles' || category === 'dependencies' || category === 'translations'
-				? 'pages'
-				: (category as ExplorerLocation['category'])
+		category: screen ? 'pages' : (category as ExplorerLocation['category'])
 	};
-	if (id === 'styles' || id === 'dependencies' || id === 'translations') target.screen = id;
+	if (screen) target.screen = screen;
 	return target;
 }
 

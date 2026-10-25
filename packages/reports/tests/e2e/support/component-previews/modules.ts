@@ -70,3 +70,17 @@ export function modulePreview(host: ExplorerScreenProps, entity?: string): Explo
 		head: { ...host.head, modules: moduleData }
 	};
 }
+
+export function moduleCases(host: ExplorerScreenProps) {
+	const library = modulePreview(host);
+	return {
+		'reports.component.module-system-explorer-modules-screen': library as unknown as Record<
+			string,
+			unknown
+		>,
+		'reports.component.module-system-explorer-module-resources-screen': {
+			...library,
+			route: { ...library.route, screen: 'module-resources', entity: 'email.email' }
+		} as unknown as Record<string, unknown>
+	};
+}

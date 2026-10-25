@@ -1,4 +1,4 @@
-import { modulePreview } from './modules';
+import { moduleCases } from './modules';
 import { dependencyPreview } from './dependencies';
 import { translationPreview } from './translations';
 import type { PreviewCases } from './shared';
@@ -17,13 +17,7 @@ const seen = {
 	mediaBase: '/media/'
 };
 export const explorerCases: PreviewCases = {
-	'reports.component.module-system-explorer-modules-screen': modulePreview(
-		d.host()
-	) as unknown as Record<string, unknown>,
-	'reports.component.module-system-explorer-module-resources-screen': (() => {
-		const host = modulePreview(d.host());
-		return { ...host, route: { ...host.route, screen: 'module-resources', entity: 'email.email' } };
-	})() as unknown as Record<string, unknown>,
+	...moduleCases(d.host()),
 	'reports.component.explorer-dependencies-screen': dependencyPreview(
 		d.host()
 	) as unknown as Record<string, unknown>,
