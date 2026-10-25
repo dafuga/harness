@@ -6957,7 +6957,7 @@
 			},
 			"sourceCommit": "6827856fbacf015ff22c72c91f458447f2acd2a8",
 			"contractHash": "610403ed06faa319ff37a2ab26f58c371029ab1363155508c81e6bff69339fc0",
-			"status": "running",
+			"status": "failed",
 			"reviews": [],
 			"createdAt": "2026-10-25T22:29:04.256Z",
 			"claim": {
@@ -6971,6 +6971,40 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "medium",
+				"reportedModel": null,
+				"text": "",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/7d88edb8-6213-4760-8dd4-3fd953cbbf68",
+				"changedFiles": [],
+				"error": "The operation was aborted.",
+				"fallback": false,
+				"finishedAt": "2026-10-25T22:46:08.418Z",
+				"attempt": "7d88edb8-6213-4760-8dd4-3fd953cbbf68",
+				"sourceCommit": "6827856fbacf015ff22c72c91f458447f2acd2a8",
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "medium",
+						"reportedModel": null,
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI token usage is incomplete."
+						},
+						"status": "failed",
+						"startedAt": "2026-10-25T22:31:47.532Z",
+						"finishedAt": "2026-10-25T22:46:08.418Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
