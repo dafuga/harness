@@ -25,6 +25,7 @@ test('diagnostic cache stays within its disk budget while retaining the newest s
 		const cache = new ModuleDataCache(repository, budget);
 		for (let index = 0; index < 8; index++) {
 			const { digest: _digest, ...body } = data;
+			expect(_digest).toBe(repository.digest(body));
 			body.inputs = { ...body.inputs, notes: String(index).padStart(40, '0') };
 			data = { ...body, digest: repository.digest(body) };
 			await cache.write(data);
