@@ -5531,7 +5531,7 @@
 			},
 			"sourceCommit": "8dbd4d77c15833d2339864aa4ce757e20226fa04",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:56:07.859Z",
 			"claim": {
@@ -5556,6 +5556,61 @@
 					}
 				}
 			],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’ll inspect the current test, fixture, Harness guidance, and source contract first. I’ll keep changes limited to the two authorized migration files and will not run verification commands or commit.\nI’m using the Harness skill because this is a Harness-managed contract migration. The current worktree status check is blocked by an unrelated Git LFS clean-filter error on an existing design asset; I’ll avoid touching that and inspect only the authorized text files.\nThe contract migration has no existing fixture directory in this revision, so this task will add the requested fixture and replace the two-case ad hoc test with manifest-driven helper examples. I’m registering the work against `function.stable-json` as required by Harness.\nI found the migration conventions: proposed manifests carry a `helper` testing contract, one case per `testing.examples` entry, case `fixture` provenance, and explicit error names. I’ll preserve the original Prettier oracle inside one Example, add finite edge/admission markers, and keep canonical JSON behavior out of this stable-json-owned change.\nThe migration is now drafted in the two allowed files: 89-line test adapter and 181-line proposed manifest. I’m doing only read-only structural checks now—JSON parsing, one-to-one Example/case identity, state/error coverage, and line limits; no test/build/lint/audit command.\nRead-only checks pass for the draft: 12 authored Examples, 12 matching canonical cases, all four declared states covered, both declared errors covered, and both files remain below 220 lines. No runtime test or verification suite has been run per task instructions.\nCompleted the migration in only the authorized files:\n\n- [stable-json.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/b61081c0-0663-4c69-9f31-c26a4818e95d/test/utils/stable-json.test.ts:1)\n- [stable-json-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/b61081c0-0663-4c69-9f31-c26a4818e95d/test/fixtures/contract-migration/stable-json-examples.json:1)\n\nThe suite now registers 12 authored Examples with matching stable cases, preserves the Prettier oracle and nine width boundaries, and reconstructs non-JSON fixtures.\n\nRead-only checks passed: JSON parsing, identity/state/error coverage, and line limits (89/181 lines).\n\nNot run per instruction: tests, compiler/build, lint, audit, or `units check`. No commit, push, deployment, credentials, or product/spec edits.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/b61081c0-0663-4c69-9f31-c26a4818e95d",
+				"changedFiles": [
+					"test/utils/stable-json.test.ts",
+					"test/fixtures/contract-migration/stable-json-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T19:48:54.737Z",
+				"attempt": "b61081c0-0663-4c69-9f31-c26a4818e95d",
+				"sourceCommit": "8dbd4d77c15833d2339864aa4ce757e20226fa04",
+				"checkpointCommit": "91e9bf8802e9441a08156c274f6918818263375c",
+				"usage": {
+					"inputTokens": 3775771,
+					"outputTokens": 44345,
+					"cacheReadTokens": 3591936,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 3775771,
+							"outputTokens": 44345,
+							"cacheReadTokens": 3591936,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T19:43:19.962Z",
+						"finishedAt": "2026-10-25T19:48:53.899Z"
+					}
+				]
+			},
 			"attempts": [
 				{
 					"provider": "codex",
