@@ -6904,6 +6904,72 @@
 			},
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.runtime-sandbox",
+			"title": "Enforce assigned-file worker access before subprocess launch",
+			"moduleGoal": "Give Claude Code and Codex app-wide contract visibility while preventing writes outside the immutable task file assignment.",
+			"verificationFiles": ["test/adapters/agents-providers/module-task-sandbox.test.ts"],
+			"instructions": "Implement only assigned adapter source/companion types and its assigned unit test. Public adapter API: prepare(input) returns a command prefix plus process environment/cwd and cleanup handle; input is task worktree, exact assigned file paths, read-only app contract snapshot path, isolated per-run scratch, repository/common Git paths, provider argv. Define concrete named input/output types in owned .types.ts. Enforce paths in the OS before provider launch (macOS sandbox-exec exists here; support a verified Linux backend or explicitly fail closed). No shell blacklist or post-run diff as the access boundary; diff review is defense in depth. All other project worktrees/source and Git objects/refs/index must be protected, including source root outside the worker worktree. Deny file writes globally except exact assigned file targets and Harness-owned per-run scratch needed by the CLI; do not grant entire parent directories or home for atomic edits. Resolve real paths and reject symlink/parent traversal escapes and arbitrary wildcards. Make contract-only read snapshots accessible throughout app, but implementation reads only for explicitly assigned files; server-owned acceptance source is not visible. Runtime/CLI executable and system dependencies may be read from immutable outside-workspace locations. Worker must not bypass this by directly reading Git objects or local unscoped API/source endpoints; restrict local/private network when required, and keep contracts available offline through the snapshot. Cleanup owned scratch on completion/cancel without touching other tasks or servers. No fallback to unrestricted execution when backend/setup is missing. Reuse existing public dependencies as exposed by CLI contracts, do not inspect other implementation/test suites. Preserve shared work. No commits, push, external writes, install, credentials, broad suites or automated E2Es. Focused unit cases must include actual sandboxed subprocess attempts on supported OS: assigned write succeeds; foreign modify/create/delete/rename, symlink escape and Git-object reads fail; caller files remain unchanged. Report unavailable platform proof honestly. Files220/functions55. Return exact paths and commands/results, remaining integration requirements.",
+			"wantedContract": {
+				"responsibility": "Construct a fail-closed OS process boundary for Claude and Codex workers from immutable Harness file grants, with app-wide contract-only reads and explicit per-run scratch.",
+				"inputs": [
+					{
+						"name": "task scope",
+						"type": "canonical task root, exact assigned files, read-only contract snapshot, isolated scratch, common Git paths"
+					},
+					{
+						"name": "process",
+						"type": "provider argv and cancellation signal"
+					}
+				],
+				"outputs": [
+					{
+						"name": "sandboxed process configuration",
+						"type": "SandboxProcess",
+						"description": "Provider and all child tools are denied foreign source/test/Git reads and any unassigned project mutation before it happens; app-wide CLI contract reads and assigned writes succeed."
+					},
+					{
+						"name": "cleanup",
+						"type": "owned resource release",
+						"description": "Only per-run resources are released; no source, session or persistent preview changes."
+					}
+				],
+				"errors": [
+					{
+						"name": "unsafe file scope",
+						"type": "explicit prelaunch diagnostic"
+					},
+					{
+						"name": "sandbox unavailable",
+						"type": "explicit failed task",
+						"description": "Unsupported hosts fail closed; isolation is never reduced to prompt instructions or after-the-fact diff rejection."
+					}
+				]
+			},
+			"model": "auto",
+			"assignee": "contract-first-sandbox",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "adapter.agents-providers-module-task-sandbox",
+				"goal": "Give Claude Code and Codex app-wide contract visibility while preventing writes outside the immutable task file assignment.",
+				"files": [
+					"src/adapters/agents-providers/ModuleTaskSandboxAdapter.ts",
+					"src/adapters/agents-providers/ModuleTaskSandboxAdapter.types.ts",
+					"test/adapters/agents-providers/module-task-sandbox.test.ts"
+				]
+			},
+			"sourceCommit": "ed3350c72dd3fa5acfefa2cd15e882c9175086a5",
+			"contractHash": "24fd26438edcd068a2845cc9b60f7dfc8f6f4fdf8ed425481a81c571bd5eb5af",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T22:35:29.945Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
